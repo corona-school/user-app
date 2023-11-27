@@ -151,6 +151,10 @@
             "title": "Anmeldung fehlgeschlagen",
             "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden. Bitte kontrolliere die eingegebene E-Mail-Adresse und versuche es erneut."
         },
+        "accountDeactivated": {
+            "title": "Anmeldung fehlgeschlagen",
+            "alert_html": "Dein Account wurde deaktiviert. Bitte kontaktiere den Support (support@lern-fair.de) für weitere Informationen."
+        },
         "invalidMailMessage": "Die eingegebene E-Mail-Adresse ist fehlerhaft.",
         "invalidTokenAlert": {
             "text": "Der Token, mit dem du versucht hast, dich anzumelden, ist ungültig. Bitte versuche, dich erneut anzumelden."
