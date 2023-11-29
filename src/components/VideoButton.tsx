@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from '../gql';
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useLazyQuery } from '@apollo/client';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
