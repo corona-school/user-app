@@ -5,7 +5,7 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import { Stack, useBreakpointValue, Box, Modal } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
-import FloatingActionButton from '../widgets/FloatingActionButton';
+import FloatingActionButton from '../components/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
 import { useChat } from '../context/ChatContext';
 import { useLocation } from 'react-router-dom';

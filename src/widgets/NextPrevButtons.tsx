@@ -1,4 +1,4 @@
-import { Box, Button, Column, Row, useTheme } from 'native-base';
+import { Box, Button, Row, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 
 export const NextPrevButtons = ({

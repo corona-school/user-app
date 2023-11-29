@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import useApollo from '../hooks/useApollo';
+import { useTranslation } from 'react-i18next';
 
 const VerifyEmail: React.FC = () => {
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
+    const { t } = useTranslation();
     const [searchParams] = useSearchParams();
     const redirectTo = searchParams?.get('redirectTo');
     const redirectEncoded = redirectTo ? window.atob(redirectTo) : '/';
@@ -44,17 +46,17 @@ const VerifyEmail: React.FC = () => {
                         }}
                     />
                     <Logo />
-                    <Heading mt={space['1']}>E-Mail Verifizierung</Heading>
+                    <Heading mt={space['1']}>{t('verify_email.title')}</Heading>
                 </Box>
                 <VStack space={space['1']} paddingX={space['1']} mt={space['4']} marginX="auto" width={ContainerWidth} justifyContent="center">
                     {(showSuccess && (
                         <VStack>
-                            <Heading>Dein Account wurde aktiviert!</Heading>
+                            <Heading>{t('verify_email.success')}</Heading>
                             <Button marginTop={space['1']} onPress={() => navigate(redirectEncoded, { state: {} })}>
-                                Fortfahren
+                                {t('verify_email.proceed')}
                             </Button>
                         </VStack>
-                    )) || <Heading>Token ungültig</Heading>}
+                    )) || <Heading>{t('verify_email.invalid')}</Heading>}
                 </VStack>
             </>
         </Flex>

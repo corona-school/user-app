@@ -233,7 +233,7 @@ const SingleCourseStudent = () => {
             const appointmentStart = DateTime.fromISO(appointment.start);
             const appointmentEnd = DateTime.fromISO(appointment.start).plus(appointment.duration);
 
-            const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 30 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
+            const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 240 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
 
             return isWithinTimeFrame;
         });
@@ -301,10 +301,10 @@ const SingleCourseStudent = () => {
     };
 
     const cancelCourse = useCallback(async () => {
-        await cancelSubcourse();
-        toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
-        refetchBasics();
         setShowCancelModal(false);
+        await cancelSubcourse();
+        toast.show({ description: t('course.cancelation_success'), placement: 'top' });
+        refetchBasics();
     }, [canceldData]);
 
     const tabs: Tab[] = [
@@ -434,6 +434,17 @@ const SingleCourseStudent = () => {
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     };
 
+    const isActiveSubcourse = useMemo(() => {
+        const today = DateTime.now().endOf('day');
+        const isSubcourseCancelled = subcourse?.cancelled;
+        if (isSubcourseCancelled) return false;
+
+        const lastLecture = appointments[appointments.length - 1];
+        const lastLecturePlus30Days = DateTime.fromISO(lastLecture?.start).plus({ days: 30 });
+        const is30DaysBeforeToday = lastLecturePlus30Days < today;
+        return !is30DaysBeforeToday;
+    }, [appointments, subcourse?.cancelled]);
+
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
@@ -461,6 +472,7 @@ const SingleCourseStudent = () => {
                             subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
                             refresh={refetchBasics}
                             appointment={myNextAppointment as Lecture}
+                            isActiveSubcourse={isActiveSubcourse}
                         />
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (

@@ -5,7 +5,7 @@ import Unsplash from '../../modals/Unsplash';
 import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
 import ImageWidget from './ImageWidget';
-import ResizableTextArea from './ResizableTextArea';
+import ResizableTextArea from '../../components/ResizableTextArea';
 
 const MAX_LENGTH_TITLE = 50;
 
