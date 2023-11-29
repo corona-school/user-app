@@ -30,9 +30,8 @@ enum PolaroidImageSize {
 }
 
 enum StreakImageSize {
-    SMALL = '72px',
-    MEDIUM = '178px',
-    LARGE = '224px',
+    SMALL = '90px',
+    LARGE = '180px',
 }
 
 enum ShineSize {

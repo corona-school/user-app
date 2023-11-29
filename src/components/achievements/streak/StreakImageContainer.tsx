@@ -14,23 +14,9 @@ type StreakImageContainerProps = {
 };
 
 const StreakImageContainer: React.FC<StreakImageContainerProps> = ({ streak, image, alternativeText, size, isRecord }) => {
-    let imageSize: number;
-    switch (size) {
-        case StreakImageSize.SMALL:
-            imageSize = 52;
-            break;
-        case StreakImageSize.MEDIUM:
-            imageSize = 120;
-            break;
-        case StreakImageSize.LARGE:
-            imageSize = 180;
-            break;
-        default:
-            imageSize = 120;
-    }
-    const sparkSize = `${imageSize * 1.5}px`;
+    const sparkSize = `calc(${Number(size) * 1.5}px)`;
     return (
-        <VStack justifyContent={'center'} alignItems="center" width={size}>
+        <VStack justifyContent={'center'} alignItems="center" width={size} height={size}>
             {isRecord && (
                 <VStack position={'absolute'} justifyContent={'center'} alignItems={'center'} width={sparkSize} height={size}>
                     <Box position={'absolute'} width={size}>
@@ -41,7 +27,7 @@ const StreakImageContainer: React.FC<StreakImageContainerProps> = ({ streak, ima
                     </Box>
                 </VStack>
             )}
-            <StreakImage streak={streak} image={image} alternativeText={alternativeText} size={size} />
+            <StreakImage streak={streak} image={image} alternativeText={alternativeText} size={size} isRecord={isRecord} />
             {isRecord && (
                 <Box position={'absolute'} width={sparkSize} height={sparkSize}>
                     <StreakSparks />

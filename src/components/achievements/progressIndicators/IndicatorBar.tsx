@@ -18,7 +18,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
 
     const flexDirection = useBreakpointValue({ base: achievementType === AchievementType.STREAK ? 'column' : 'row-reverse', md: 'column-reverse' });
     const alignItems = useBreakpointValue({ base: 'center', md: centerText ? 'center' : 'left' });
-    const space = useBreakpointValue({ base: 1, md: 0 });
+    const space = useBreakpointValue({ base: 1, md: 1 });
     const textWidth = useBreakpointValue({ base: achievementType === AchievementType.STREAK ? '100%' : '20%', md: centerText ? '100%' : 'fit-content' });
     const alignText = useBreakpointValue({ base: 'right', md: centerText ? 'center' : 'left' });
     const finishedStepsInformation = useBreakpointValue({
@@ -29,9 +29,10 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
         base: fullWidth || achievementType === AchievementType.STREAK ? '100%' : '80%',
         md: fullWidth ? '100%' : '80%',
     });
+    const fontSize = achievementType === AchievementType.STREAK ? '10px' : centerText ? '12px' : '14px';
     return (
         <Stack direction={flexDirection} alignItems={alignItems} space={space}>
-            <Text width={textWidth} textAlign={alignText} fontSize={centerText ? '12px' : '14px'} color="primary.500" height="fit-content" numberOfLines={1}>
+            <Text width={textWidth} textAlign={alignText} fontSize={fontSize} color="primary.500" height="fit-content" numberOfLines={1}>
                 {achievementType === AchievementType.STREAK
                     ? `${leftSteps === 0 ? `${t('achievement.modal.record', { record: maxSteps })}` : `${t('achievement.modal.streak', { leftSteps })}`}`
                     : `${finishedStepsInformation}`}

@@ -1,5 +1,5 @@
 import { Box, HStack, Text, VStack, useBreakpointValue } from 'native-base';
-import { ActionTypes } from '../../../types/achievement';
+import { AchievementType, ActionTypes } from '../../../types/achievement';
 import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
 import ClockGreen from '../../../assets/icons/icon_clock_green.svg';
@@ -11,11 +11,12 @@ import Info from '../../../assets/icons/icon_info_dk_green.svg';
 
 type CardprogressDescriptionProps = {
     actionType?: ActionTypes;
+    achievementType?: AchievementType;
     progressDescription: string;
     isColorized?: boolean;
 };
 
-const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actionType, progressDescription, isColorized }) => {
+const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actionType, achievementType, progressDescription, isColorized }) => {
     let icon;
     const colorize = useBreakpointValue({ base: true, md: isColorized });
     switch (actionType) {
@@ -37,7 +38,7 @@ const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actio
     const numberOfLines = useBreakpointValue({ base: 2, md: 1 });
     const justifyContent = useBreakpointValue({ base: 'flex-start', md: 'center' });
     const iconHeight = useBreakpointValue({ base: '11.5px', md: '12.5px' });
-    const fontSize = useBreakpointValue({ base: '10px', md: '12px' });
+    const fontSize = useBreakpointValue({ base: '10px', md: achievementType === AchievementType.STREAK ? '10px' : '12px' });
 
     return (
         <HStack alignItems="flex-start" space="4px" justifyContent={justifyContent}>

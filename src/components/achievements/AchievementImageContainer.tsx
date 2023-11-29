@@ -28,8 +28,11 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
         md: PuzzleImageSize.MEDIUM,
         lg: isLarge ? PuzzleImageSize.LARGE : PuzzleImageSize.MEDIUM,
     });
+    const streakImageSize = useBreakpointValue({
+        base: StreakImageSize.SMALL,
+        md: isLarge ? StreakImageSize.LARGE : StreakImageSize.SMALL,
+    });
     const puzzleBorderRadius = useBreakpointValue({ base: isLarge ? '3px' : '2px', md: '3px', lg: isLarge ? '4px' : '3px' });
-    const imageWrapperWidth = useBreakpointValue({ base: '100%', md: '142px' });
     const shadow = useBreakpointValue({ base: 3, md: 5, lg: 9 });
     switch (achievementType) {
         case AchievementType.TIERED:
@@ -51,14 +54,8 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
         case AchievementType.STREAK:
             if (!image) return null;
             return (
-                <VStack alignItems="center" width={imageWrapperWidth}>
-                    <StreakImageContainer
-                        streak={streak || 0}
-                        image={image}
-                        alternativeText={alternativeText}
-                        size={isLarge ? StreakImageSize.LARGE : StreakImageSize.MEDIUM}
-                        isRecord={isRecord}
-                    />
+                <VStack alignItems="center" width={streakImageSize}>
+                    <StreakImageContainer streak={streak || 0} image={image} alternativeText={alternativeText} size={streakImageSize} isRecord={isRecord} />
                 </VStack>
             );
         case AchievementType.SEQUENTIAL:

@@ -110,7 +110,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                     <VStack space={textSpace} alignItems={textAlignment} paddingLeft={textPaddingLeft} width={maxTextWidth}>
                         <Stack space={0} alignItems={textAlignment} width={textContainerWidth}>
                             <Text
-                                fontSize="xs"
+                                fontSize="sm"
                                 color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
                                 width="100%"
                                 textAlign={textAlignment}
@@ -120,9 +120,10 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                             <Text
                                 width="100%"
                                 fontSize="md"
+                                lineHeight="sm"
                                 color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
                                 bold
-                                numberOfLines={1}
+                                numberOfLines={2}
                                 overflow="hidden"
                                 textAlign={textAlignment}
                             >

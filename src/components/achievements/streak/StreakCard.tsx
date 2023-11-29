@@ -1,4 +1,4 @@
-import { HStack, VStack, Text, PresenceTransition, useBreakpointValue, Box, Pressable } from 'native-base';
+import { HStack, VStack, Text, useBreakpointValue, Box, Pressable } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
 import { AchievementType, ActionTypes, ShineSize } from '../../../types/achievement';
 import { useTranslation, Trans } from 'react-i18next';
@@ -30,19 +30,13 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progress
                             <NewAchievementShine size={ShineSize.XSMALL} />
                         </VStack>
                     )}
-                    <PresenceTransition
-                        initial={{
-                            scale: 0.75,
-                        }}
-                    >
-                        <AchievementImageContainer
-                            image={image}
-                            alternativeText={alternativeText}
-                            achievementType={AchievementType.STREAK}
-                            streak={streak}
-                            isRecord={!record || streak === record}
-                        />
-                    </PresenceTransition>
+                    <AchievementImageContainer
+                        image={image}
+                        alternativeText={alternativeText}
+                        achievementType={AchievementType.STREAK}
+                        streak={streak}
+                        isRecord={!record || streak === record}
+                    />
                 </VStack>
                 <VStack maxWidth={maxTextWidth} height="100%" justifyContent="flex-start" space="6px">
                     <Text width="100%" color="white" noOfLines={1}>
@@ -54,7 +48,12 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progress
                     {record && (
                         <Box>
                             {streak === record ? (
-                                <CardProgressDescription actionType={actionType} progressDescription={progressDescription} isColorized />
+                                <CardProgressDescription
+                                    actionType={actionType}
+                                    achievementType={AchievementType.STREAK}
+                                    progressDescription={progressDescription}
+                                    isColorized
+                                />
                             ) : (
                                 <IndicatorBar maxSteps={record} currentStep={streak} achievementType={AchievementType.STREAK} />
                             )}

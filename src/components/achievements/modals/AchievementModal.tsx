@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Link, Modal, Stack, Text, VStack, useBreakpointValue } from 'native-base';
+import { Box, Button, CloseIcon, HStack, Link, Modal, Pressable, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
@@ -67,7 +67,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     const contentDirection = useBreakpointValue({ base: 'column', lg: 'row' });
     const contentInnerSpace = useBreakpointValue({ base: '32px', lg: '0' });
     const contentPadding = useBreakpointValue({ base: '16px', lg: '32px' });
-    const imageContainerOffset = useBreakpointValue({ base: { top: '20px', left: '0' }, lg: { top: '0', left: '40px' } });
+    const imageContainerOffset = useBreakpointValue({ base: { top: '20px' }, lg: { top: '0' } });
     const imageContainerHeight = useBreakpointValue({ base: 'fit-content', lg: '100%' });
     const textBoxWidth = useBreakpointValue({ base: '100%', lg: '473px' });
     const textBoxMaxWidth = useBreakpointValue({ base: '100%', lg: '473px' });
@@ -112,7 +112,11 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                 marginTop={achievementType === AchievementType.TIERED && achievementState === AchievementState.COMPLETED && modalBodyMarginTop}
                 overflow={modalBodyOverflow}
             >
-                <Modal.CloseButton />
+                <Box position="absolute" zIndex="1" right="20px" top="14px">
+                    <Pressable onPress={onClose}>
+                        <CloseIcon color="white" />
+                    </Pressable>
+                </Box>
                 <VStack width="100%" maxWidth={contentMaxWidth} height="100%" space={contentSpace} justifyContent={contentJustifyContent}>
                     <VStack width="100%" maxWidth={modalBodyMaxWidth} height={contentMaxHeight}>
                         <Stack
