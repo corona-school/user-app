@@ -44,7 +44,7 @@ query overrrideLink($appointmentId: Float!) {
         if (overrideLink == null) {
             navigate(`/video-chat/${appointmentId}/${appointmentType}`);
         } else {
-            window.open(overrideLink);
+            window.open(overrideLink, '_self');
         }
     };
     return (
