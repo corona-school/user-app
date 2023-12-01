@@ -1393,7 +1393,8 @@
         "dissolve": {
             "modal": {
                 "title": "Warum möchtest du das Lernpaar auflösen?",
-                "btn": "Lernpaar auflösen"
+                "btn": "Lernpaar auflösen",
+                "tooltip": "Du musst einen Grund angeben."
             },
             "warningModal": {
                 "title": "Bist du sicher?",
