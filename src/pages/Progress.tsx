@@ -6,40 +6,38 @@ import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement, AchievementState, AchievementType, ActionTypes, Step } from '../types/achievement';
 import { checkAndGetSecondEnumValue } from '../helper/achievement-helper';
-import { achievements } from '../components/achievements/progress-page-test-data';
 
-// const achievements = gql(`
-//     query achievements {
-//         me {
-//             achievements {
-//                 name
-//                 subtitle
-//                 description
-//                 image
-//                 alternativeText
-//                 actionType
-//                 achievementType
-//                 achievementState
-//                 steps {
-//                     description
-//                     isActive
-//                 }
-//                 maxSteps
-//                 currentStep
-//                 newAchievement
-//                 progressDescription
-//                 actionName
-//                 actionRedirectLink
-//             }
-//         }
-//     }
-// `);
+const achievements = gql(`
+    query achievements {
+        me {
+            achievements {
+                name
+                subtitle
+                description
+                image
+                alternativeText
+                actionType
+                achievementType
+                achievementState
+                steps {
+                    description
+                    isActive
+                }
+                maxSteps
+                currentStep
+                newAchievement
+                progressDescription
+                actionName
+                actionRedirectLink
+            }
+        }
+    }
+`);
 
 const Progress = () => {
-    // const { data, error, loading } = useQuery(achievements);
-    // if (loading || error || !data) return <p>Loading...</p>;
-    // const foundAchievements: Achievement[] = data.me.achievements.map((achievement) => {
-    const foundAchievements: Achievement[] = achievements.map((achievement) => {
+    const { data, error, loading } = useQuery(achievements);
+    if (loading || error || !data) return <p>Loading...</p>;
+    const foundAchievements: Achievement[] = data.me.achievements.map((achievement) => {
         const actionType: keyof typeof ActionTypes | null = checkAndGetSecondEnumValue(achievement.actionType, ActionTypes);
         const achievementType: keyof typeof AchievementType | null = checkAndGetSecondEnumValue(achievement.achievementType, AchievementType);
         const achievementState: keyof typeof AchievementState | null = checkAndGetSecondEnumValue(achievement.achievementState, AchievementState);
@@ -70,6 +68,7 @@ const Progress = () => {
         };
         return element;
     });
+    console.log(foundAchievements);
     return (
         <AsNavigationItem
             path="/progress"
