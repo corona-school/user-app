@@ -114,7 +114,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
             >
                 <Box position="absolute" zIndex="1" right="20px" top="14px">
                     <Pressable onPress={onClose}>
-                        <CloseIcon color="white" />
+                        <CloseIcon color={achievementState === AchievementState.COMPLETED ? 'white' : 'grey.500'} />
                     </Pressable>
                 </Box>
                 <VStack width="100%" maxWidth={contentMaxWidth} height="100%" space={contentSpace} justifyContent={contentJustifyContent}>
@@ -131,7 +131,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             marginBottom={contentSpace}
                         >
                             <VStack
-                                top={imageContainerOffset.top}
+                                top={achievementState === AchievementState.COMPLETED && imageContainerOffset.top}
                                 left={achievementType === AchievementType.STREAK && imageContainerOffset.left}
                                 alignItems="center"
                                 height={imageContainerHeight}
@@ -178,7 +178,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 )}
                             </VStack>
                             {!showDescriptionBeforeIndicator && (
-                                <VStack width="100%" alignItems="center" space="8px">
+                                <VStack width="100%" alignItems="center" space="8">
                                     <Box width="80%">
                                         {achievementState === AchievementState.COMPLETED ? (
                                             <Box width="100%" display="flex" alignItems="center">
@@ -247,7 +247,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                         )}
                     </VStack>
                     {buttonLink && buttonText && achievementState !== AchievementState.COMPLETED ? (
-                        <Stack width="100%" direction={buttonAlignment} space={2}>
+                        <Stack width="100%" direction={buttonAlignment} space={2} paddingTop="2">
                             <Button flex={1} variant="outline" onPress={onClose}>
                                 <Text color="primary.500">{t('achievement.modal.close')}</Text>
                             </Button>
@@ -259,7 +259,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </Link>
                         </Stack>
                     ) : (
-                        <Stack width="100%" direction={buttonAlignment} space={2}>
+                        <Stack width="100%" direction={buttonAlignment} space={2} paddingTop="2">
                             <Button flex={1} variant="outlinelight">
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>

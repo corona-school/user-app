@@ -15,7 +15,7 @@ type AnimatedShineProps = {
 const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft, positionTop, animationSpeed, size }) => {
     const relativeSize = initialSize * size;
     const thresholdY = -(size * 10);
-    const maxPositionY = size === ShineSize.XSMALL ? 80 : 200;
+    const maxPositionY = size === ShineSize.XSMALL ? 80 - thresholdY : 200 - thresholdY;
 
     const [firstRender, setFirstRender] = useState(true);
     const [positionY, setPositionY] = useState(positionTop);
@@ -30,9 +30,10 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
         setStartAnimation(!startAnimation);
     }, intervalSpeed);
     return (
-        <Stack position="absolute" left={`calc(${positionLeft}% - ${relativeSize * 0.5}px)`} justifyContent="center" alignItems="center">
+        <Stack position="absolute" left={`calc(${positionLeft}% - ${relativeSize * 0.5}px)`} justifyContent="center" alignItems="center" top={thresholdY}>
             <PresenceTransition
                 style={{
+                    position: 'absolute',
                     opacity: startAnimation ? 1 : 0,
                 }}
                 visible={startAnimation}
@@ -52,7 +53,10 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
                 </VStack>
             </PresenceTransition>
             <PresenceTransition
-                style={{ opacity: startAnimation ? 0 : 1 }}
+                style={{
+                    position: 'absolute',
+                    opacity: startAnimation ? 0 : 1,
+                }}
                 visible={!startAnimation}
                 initial={{
                     translateY: positionY,

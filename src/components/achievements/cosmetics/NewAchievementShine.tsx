@@ -19,7 +19,7 @@ const NewAchievementShine: React.FC<NewAchievementShineProps> = ({ size }) => {
     const shineElements = shineElementProps.map((props) => <AnimatedShine key={props.positionLeft} size={size} {...props} />);
 
     return (
-        <Box zIndex={5} position="absolute" height="inherit" width="100%" backgroundColor="transparent">
+        <Box zIndex={5} position="absolute" height={size === ShineSize.XSMALL ? 80 - size * 10 : 200 - size * 10} width="100%" backgroundColor="transparent">
             {shineElements}
         </Box>
     );
