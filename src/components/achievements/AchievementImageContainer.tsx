@@ -29,7 +29,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
         lg: isLarge ? PuzzleImageSize.LARGE : PuzzleImageSize.MEDIUM,
     });
     const streakImageSize = useBreakpointValue({
-        base: StreakImageSize.SMALL,
+        base: isLarge ? StreakImageSize.LARGE : StreakImageSize.SMALL,
         md: isLarge ? StreakImageSize.LARGE : StreakImageSize.SMALL,
     });
     const puzzleBorderRadius = useBreakpointValue({ base: isLarge ? '3px' : '2px', md: '3px', lg: isLarge ? '4px' : '3px' });

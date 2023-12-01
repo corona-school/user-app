@@ -13,7 +13,7 @@ const EmptyPolaroidField: React.FC<EmptyPolaroidFieldProps> = ({ isLarge }) => {
         lg: isLarge ? PolaroidImageSize.LARGE : PolaroidImageSize.MEDIUM,
     });
     const shadow = useBreakpointValue({ base: 3, md: 5, lg: 9 });
-    const updatedSize = size === PolaroidImageSize.MEDIUM ? size : `calc(${size} * 0.85)`;
+    const updatedSize = size === PolaroidImageSize.MEDIUM ? size : `calc(${size} * 0.75)`;
     return (
         <Box width={updatedSize} height={`calc(${updatedSize} * 1.35)`} position="relative">
             <Box position="absolute" width="100%">

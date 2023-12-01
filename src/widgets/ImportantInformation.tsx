@@ -1,5 +1,5 @@
 import { useTranslation, getI18n, Trans } from 'react-i18next';
-import { Box, Heading, Text, Button, HStack, useTheme, ScrollView, Column, Container } from 'native-base';
+import { Box, Heading, Text, Button, HStack, useTheme, ScrollView, Column, Container, Link } from 'native-base';
 import Card from '../components/Card';
 import BooksIcon from '../assets/icons/lernfair/lf-books.svg';
 import { useMutation, useQuery } from '@apollo/client';
@@ -12,6 +12,7 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { ConfirmCertificate } from './certificates/ConfirmCertificate';
 import { SuccessModal } from '../modals/SuccessModal';
+import { Router } from 'express';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -346,7 +347,14 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     if (!infos.length && !configurableInfos.length) return null;
 
     return (
-        <HSection scrollable title={t('helperwizard.nextStep')} marginBottom="25px">
+        <HSection
+            scrollable
+            title={t('helperwizard.nextStep')}
+            referenceTitle={t('helperwizard.progress')}
+            marginBottom="25px"
+            onShowAll={() => navigate('/progress')}
+            showAll
+        >
             {configurableInfos.map((info, index) => {
                 return (
                     <Column width="97%" maxWidth="500px">

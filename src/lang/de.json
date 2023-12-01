@@ -1038,6 +1038,7 @@
     },
     "helperwizard": {
         "nextStep": "Deine nächsten Schritte",
+        "progress": "Alle Fortschritte anzeigen",
         "verifizierung": {
             "title": "Verifiziere deine E-Mail-Adresse",
             "content": "“Bevor du bei Lern-Fair starten kanst, musst du zunächst deine E-Mail-Adresse bestätigen. Wir haben dir dazu am {{date}} eine E-Mail an {{email}} gesendet. Du hast keine E-Mail von uns erhalten?”",
