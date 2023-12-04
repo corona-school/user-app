@@ -1,11 +1,12 @@
 import AchievementProgress from '../widgets/AchievementProgress';
 import WithNavigation from '../components/WithNavigation';
 import AsNavigationItem from '../components/AsNavigationItem';
-import { Box } from 'native-base';
+import { Box, useBreakpointValue } from 'native-base';
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement, AchievementState, AchievementType, ActionTypes, Step } from '../types/achievement';
 import { checkAndGetSecondEnumValue } from '../helper/achievement-helper';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 const achievements = gql(`
     query achievements {
@@ -35,8 +36,9 @@ const achievements = gql(`
 `);
 
 const Progress = () => {
+    const margin = useBreakpointValue({ base: '4', md: '0' });
     const { data, error, loading } = useQuery(achievements);
-    if (loading || error || !data) return <p>Loading...</p>;
+    if (loading || error || !data) return <CenterLoadingSpinner />;
     const foundAchievements: Achievement[] = data.me.achievements.map((achievement) => {
         const actionType: keyof typeof ActionTypes | null = checkAndGetSecondEnumValue(achievement.actionType, ActionTypes);
         const achievementType: keyof typeof AchievementType | null = checkAndGetSecondEnumValue(achievement.achievementType, AchievementType);
@@ -68,13 +70,13 @@ const Progress = () => {
         };
         return element;
     });
-    console.log(foundAchievements);
+
     return (
         <AsNavigationItem
             path="/progress"
             children={
                 <WithNavigation showBack headerTitle="Progress">
-                    <Box mx="4">
+                    <Box mx={margin}>
                         <AchievementProgress achievements={foundAchievements} />
                     </Box>
                 </WithNavigation>

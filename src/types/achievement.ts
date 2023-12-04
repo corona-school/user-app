@@ -19,7 +19,7 @@ enum AchievementState {
 
 enum PuzzleImageSize {
     SMALL = '62px',
-    MEDIUM = '184px',
+    MEDIUM = '152px',
     LARGE = '210px',
 }
 

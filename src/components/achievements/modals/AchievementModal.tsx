@@ -86,8 +86,8 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
         lg: ShineSize.LARGE,
     });
     const polaroidImageSize = useBreakpointValue({
-        base: PolaroidImageSize.MEDIUM,
-        md: PolaroidImageSize.MEDIUM,
+        base: { width: PolaroidImageSize.MEDIUM, height: `calc(${PolaroidImageSize.MEDIUM} * 1.4)` },
+        md: { width: PolaroidImageSize.LARGE, height: `calc(${PolaroidImageSize.LARGE} * 1.4)` },
     });
 
     const activeStep = steps ? steps.findIndex((step) => step.isActive) + 1 : 0;
@@ -114,7 +114,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
             >
                 <Box position="absolute" zIndex="1" right="20px" top="14px">
                     <Pressable onPress={onClose}>
-                        <CloseIcon color={achievementState === AchievementState.COMPLETED ? 'white' : 'grey.500'} />
+                        <CloseIcon
+                            color={achievementState === AchievementState.COMPLETED || achievementType === AchievementType.STREAK ? 'white' : 'grey.500'}
+                        />
                     </Pressable>
                 </Box>
                 <VStack width="100%" maxWidth={contentMaxWidth} height="100%" space={contentSpace} justifyContent={contentJustifyContent}>
@@ -146,9 +148,11 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     isLarge
                                 />
                                 {newAchievement && (
-                                    <Box position="absolute" width={polaroidImageSize} height="100%">
-                                        <NewAchievementShine size={shineSize} />
-                                    </Box>
+                                    <VStack position="absolute" width="fit-content" height={polaroidImageSize.width} justifyContent="flex-end">
+                                        <Box width={polaroidImageSize.width} height={polaroidImageSize.height}>
+                                            <NewAchievementShine size={shineSize} isLarge />
+                                        </Box>
+                                    </VStack>
                                 )}
                             </VStack>
                             <VStack width={textBoxWidth} space={3} maxWidth={textBoxMaxWidth} height={textBoxHeight} alignItems={textBoxAlignItems}>
@@ -193,7 +197,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                         ) : (
                                             <Box width="100%">
                                                 {(achievementType === AchievementType.TIERED || achievementType === AchievementType.STREAK) && maxSteps ? (
-                                                    <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText fullWidth />
+                                                    <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText fullWidth largeText />
                                                 ) : (
                                                     <Box width="100%">
                                                         {steps && (
@@ -211,7 +215,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                             </Box>
                                         )}
                                     </Box>
-                                    <Text width="100%" color={textColor}>
+                                    <Text width="100%" color={textColor} fontSize="12px">
                                         {description}
                                     </Text>
                                 </VStack>
@@ -226,7 +230,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 )}
                                 {(achievementType === AchievementType.TIERED || achievementType === AchievementType.STREAK) && maxSteps && (
                                     <Box width="100%">
-                                        {<IndicatorBar maxSteps={maxSteps} currentStep={currentStep} achievementType={achievementType} fullWidth />}
+                                        {<IndicatorBar maxSteps={maxSteps} currentStep={currentStep} achievementType={achievementType} fullWidth largeText />}
                                     </Box>
                                 )}
                             </Box>

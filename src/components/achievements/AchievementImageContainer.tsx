@@ -60,15 +60,17 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
             );
         case AchievementType.SEQUENTIAL:
             return (
-                <Box
-                    width={puzzleBorderWidth}
-                    height={puzzleBorderWidth}
-                    borderRadius={puzzleBorderRadius}
-                    overflow={'hidden'}
-                    shadow={achievementState === AchievementState.COMPLETED && shadow}
-                >
-                    <Image src={image} alt={alternativeText} width="100%" height="100%" />
-                </Box>
+                <VStack alignItems="center" paddingY="4">
+                    <Box
+                        width={puzzleBorderWidth}
+                        height={puzzleBorderWidth}
+                        borderRadius={puzzleBorderRadius}
+                        overflow={'hidden'}
+                        shadow={achievementState === AchievementState.COMPLETED && shadow}
+                    >
+                        <Image src={image} alt={alternativeText} width="100%" height="100%" />
+                    </Box>
+                </VStack>
             );
         default:
             return null;

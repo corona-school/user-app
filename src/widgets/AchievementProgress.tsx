@@ -95,6 +95,14 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
     });
     const cardSpace = useBreakpointValue({ base: 0, md: 5 });
     const spaceAfterHeadline = useBreakpointValue({ base: 3, md: 1 });
+    const streaksContainerWidth = useBreakpointValue({
+        base: 'auto',
+        md: 'calc(100% + 16px)',
+    });
+    const streaksContainerPaddingRight = useBreakpointValue({
+        base: '0',
+        md: '16px',
+    });
 
     const handleOnClick = (type?: AchievementType, state?: AchievementState) => {
         if (type && type === AchievementType.STREAK) {
@@ -132,8 +140,10 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                     overflowX={streakContainerOverflow}
                     backgroundColor={cardContainerBg}
                     borderRadius="8px"
+                    width={streaksContainerWidth}
                     height={collapsed[AchievementType.STREAK] ? '0' : 'fit-content'}
                     overflowY="hidden"
+                    paddingRight={streaksContainerPaddingRight}
                 >
                     {streaks.map((achievement) => (
                         <Stack key={achievement.name} marginTop={cardMargin}>
