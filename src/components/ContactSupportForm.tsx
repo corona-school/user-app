@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import AlertMessage from '../widgets/AlertMessage';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
+import DisablebleButton from './DisablebleButton';
 
 type FormularProps = {};
 
@@ -53,6 +54,16 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
         return !dsgvo || message?.length < 5 || subject?.length < 5;
     }, [dsgvo, message?.length, subject?.length]);
 
+    const reasonDisabled = useMemo(() => {
+        const reasons = t('helpcenter.btn.reasonDisabled', { returnObjects: true });
+
+        if (subject?.length < 5) return reasons[0];
+        if (message?.length < 5) return reasons[1];
+        if (!dsgvo) return reasons[2];
+
+        return '';
+    }, [dsgvo, message?.length, subject?.length]);
+
     return (
         <View paddingLeft={space['1.5']}>
             <>
@@ -99,9 +110,17 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
                 <Row flexDirection="column" paddingY={space['0.5']}>
                     {messageSent && <AlertMessage content={t('helpcenter.contact.success')} />}
                     {showError && <AlertMessage content={t('helpcenter.contact.error')} />}
-                    <Button marginX="auto" width={buttonWidth} isDisabled={isButtonDisabled} onPress={sendContactMessage}>
+                    <DisablebleButton
+                        isDisabled={isButtonDisabled}
+                        reasonDisabled={reasonDisabled}
+                        buttonProps={{
+                            marginX: 'auto',
+                            width: buttonWidth,
+                            onPress: sendContactMessage,
+                        }}
+                    >
                         {t('helpcenter.btn.formsubmit')}
-                    </Button>
+                    </DisablebleButton>
                 </Row>
             </FormControl>
         </View>
