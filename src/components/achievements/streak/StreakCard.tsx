@@ -39,7 +39,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progress
                     />
                 </VStack>
                 <VStack maxWidth={maxTextWidth} height="100%" justifyContent="flex-start" space="6px">
-                    <Text width="100%" color="white" noOfLines={1}>
+                    <Text width="100%" color="white" noOfLines={1} bold>
                         {title}
                     </Text>
                     <Text color="white" fontSize="xs" noOfLines={2}>

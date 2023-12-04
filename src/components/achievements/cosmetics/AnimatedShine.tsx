@@ -10,17 +10,18 @@ type AnimatedShineProps = {
     positionTop: number;
     animationSpeed: number;
     size: ShineSize;
+    isLarge?: boolean;
 };
 
-const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft, positionTop, animationSpeed, size }) => {
+const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft, positionTop, animationSpeed, size, isLarge }) => {
     const relativeSize = initialSize * size;
     const thresholdY = -(size * 10);
-    const maxPositionY = size === ShineSize.XSMALL ? 80 - thresholdY : 200 - thresholdY;
+    const maxPositionY = size === ShineSize.XSMALL ? 80 - thresholdY : isLarge ? 290 : 200 - thresholdY;
 
     const [firstRender, setFirstRender] = useState(true);
     const [positionY, setPositionY] = useState(positionTop);
     const [startAnimation, setStartAnimation] = useState(true);
-    const intervalSpeed = (2000 / maxPositionY) * positionY * animationSpeed;
+    const intervalSpeed = (4000 / maxPositionY) * positionY * animationSpeed;
 
     useInterval(() => {
         if (firstRender) {

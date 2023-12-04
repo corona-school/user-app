@@ -11,7 +11,7 @@ type IndicatorBarProps = {
     fullWidth?: boolean;
 };
 
-const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achievementType, centerText, fullWidth }) => {
+const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achievementType, centerText, fullWidth, largeText }) => {
     const { t } = useTranslation();
     const progress = currentStep ? (currentStep / maxSteps) * 100 : 0;
     const leftSteps = currentStep ? maxSteps - currentStep : maxSteps;
@@ -26,13 +26,22 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
         md: `${t('achievement.card.finishedStepsInformation', { currentStep, maxSteps })}`,
     });
     const progressBarWidth = useBreakpointValue({
-        base: fullWidth || achievementType === AchievementType.STREAK ? '100%' : '80%',
+        base: fullWidth || largeText ? '100%' : '80%',
         md: fullWidth ? '100%' : '80%',
     });
-    const fontSize = achievementType === AchievementType.STREAK ? '10px' : centerText ? '12px' : '14px';
+    const fontSize = achievementType === AchievementType.STREAK ? (largeText ? '14px' : '10px') : centerText ? '12px' : '14px';
     return (
         <Stack direction={flexDirection} alignItems={alignItems} space={space}>
-            <Text width={textWidth} textAlign={alignText} fontSize={fontSize} color="primary.500" height="fit-content" numberOfLines={1}>
+            <Text
+                width={textWidth}
+                textAlign={alignText}
+                fontSize={fontSize}
+                color="primary.500"
+                height="fit-content"
+                numberOfLines={1}
+                overflow="hidden"
+                ellipsizeMode="tail"
+            >
                 {achievementType === AchievementType.STREAK
                     ? `${leftSteps === 0 ? `${t('achievement.modal.record', { record: maxSteps })}` : `${t('achievement.modal.streak', { leftSteps })}`}`
                     : `${finishedStepsInformation}`}

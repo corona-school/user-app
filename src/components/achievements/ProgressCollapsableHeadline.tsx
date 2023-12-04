@@ -1,7 +1,7 @@
-import { ChevronDownIcon, HStack, Text, useBreakpointValue, Box, Link } from 'native-base';
+import { ChevronDownIcon, HStack, Text, useBreakpointValue, Box, Link, PresenceTransition } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { AchievementState, AchievementType } from '../../types/achievement';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { Pressable } from 'react-native';
 
 type ProgressCollapsableHeadlineProps = {
@@ -12,6 +12,7 @@ type ProgressCollapsableHeadlineProps = {
 
 const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = ({ achievementState, achievementType, onClick }) => {
     const { t } = useTranslation();
+    const [isRotated, setIsRotated] = useState(false);
     const headline = useMemo(() => {
         if (achievementType === AchievementType.STREAK) {
             return t('achievement.progress.streak.headline');
@@ -32,7 +33,10 @@ const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = 
         md: false,
     });
     const handlePress = () => {
-        isCollapsable && onClick();
+        if (isCollapsable) {
+            setIsRotated(!isRotated);
+            onClick();
+        }
     };
     return (
         <Pressable
@@ -41,7 +45,8 @@ const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = 
                 width: '100%',
                 flexDirection: 'column',
             }}
-            disabled={!isCollapsable} >
+            disabled={!isCollapsable}
+        >
             <HStack
                 width="100%"
                 height="100%"
@@ -55,7 +60,20 @@ const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = 
                             {headline}
                         </Text>
                         <Box />
-                        <ChevronDownIcon />
+                        <PresenceTransition
+                            visible={isRotated}
+                            initial={{
+                                rotate: '0deg',
+                            }}
+                            animate={{
+                                rotate: '180deg',
+                                transition: {
+                                    duration: 250,
+                                },
+                            }}
+                        >
+                            <ChevronDownIcon />
+                        </PresenceTransition>
                     </HStack>
                 ) : (
                     <Text fontSize="md" fontWeight="bold">

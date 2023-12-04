@@ -2,11 +2,12 @@ import { Box } from 'native-base';
 
 type InnerShadowProps = {
     deviation?: number;
+    opacity?: number;
 };
 
-const InnerShadow: React.FC<InnerShadowProps> = ({ deviation }) => {
+const InnerShadow: React.FC<InnerShadowProps> = ({ deviation, opacity }) => {
     return (
-        <Box width="100%" height="100%" position="absolute" zIndex={1}>
+        <Box width="100%" height="100%" position="absolute" zIndex={1} opacity={opacity}>
             <svg width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g width="100%" height="100%" filter="url(#filter0_i_1111_19771)">
                     <rect width="100%" height="100%" rx="8" fill="#D9D9D9" fill-opacity="0.15" />

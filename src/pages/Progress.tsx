@@ -1,7 +1,7 @@
 import AchievementProgress from '../widgets/AchievementProgress';
 import WithNavigation from '../components/WithNavigation';
 import AsNavigationItem from '../components/AsNavigationItem';
-import { Box } from 'native-base';
+import { Box, useBreakpointValue } from 'native-base';
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement, AchievementState, AchievementType, ActionTypes, Step } from '../types/achievement';
@@ -36,10 +36,12 @@ import { achievements } from '../components/achievements/progress-page-test-data
 // `);
 
 const Progress = () => {
+    const margin = useBreakpointValue({ base: '4', md: '0' });
     // const { data, error, loading } = useQuery(achievements);
     // if (loading || error || !data) return <p>Loading...</p>;
     // const foundAchievements: Achievement[] = data.me.achievements.map((achievement) => {
     const foundAchievements: Achievement[] = achievements.map((achievement) => {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
         const actionType: keyof typeof ActionTypes | null = checkAndGetSecondEnumValue(achievement.actionType, ActionTypes);
         const achievementType: keyof typeof AchievementType | null = checkAndGetSecondEnumValue(achievement.achievementType, AchievementType);
         const achievementState: keyof typeof AchievementState | null = checkAndGetSecondEnumValue(achievement.achievementState, AchievementState);
@@ -75,7 +77,7 @@ const Progress = () => {
             path="/progress"
             children={
                 <WithNavigation showBack headerTitle="Progress">
-                    <Box mx="4">
+                    <Box mx={margin}>
                         <AchievementProgress achievements={foundAchievements} />
                     </Box>
                 </WithNavigation>
