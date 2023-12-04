@@ -12,7 +12,7 @@ type DisablebleButtonProps = {
 
 const DisablebleButton: React.FC<PropsWithChildren<DisablebleButtonProps>> = ({ isDisabled, reasonDisabled, disabledButtonContent, children, buttonProps }) => {
     return (
-        <Tooltip maxW={300} label={reasonDisabled} isDisabled={!isDisabled}>
+        <Tooltip maxW={300} label={reasonDisabled} isDisabled={!isDisabled} _text={{ textAlign: 'center' }}>
             <Button isDisabled={isDisabled} {...buttonProps}>
                 {(isDisabled && disabledButtonContent) || children}
             </Button>
