@@ -469,13 +469,7 @@
                 "readerError": "Die Datei konnte nicht gelesen werden!",
                 "maxLimitExceeded": "Maximale Anzahl an Dateien überschritten!",
                 "minLimitNotReached": "Minimale Anzahl an Dateien nicht erreicht!"
-            },
-            "dsgvo": [
-                "Ich habe die ",
-                "Datenschutzbestimmungen ",
-                "zur Kenntnis genommen und bin damit einverstanden, dass meine persönlichen Daten entsprechend des Zwecks, Umfangs und der Dauer wie in der Datenschutzerklärung angegeben, verarbeitet und gespeichert werden. Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über die in den USA sitzenden Auftragsverarbeitern Google und Zapier stattfindet, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO. Alternativ ist eine Kontaktierung per E-Mail an ",
-                "möglich."
-            ]
+            }
         },
         "btn": {
             "formsubmit": "Anfrage senden",

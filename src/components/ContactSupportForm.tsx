@@ -50,11 +50,11 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
         }
     }, [contactSupport, message, subject]);
 
-    const isButtonDisabled = useMemo(() => {
+    const isButtonDisabled = () => {
         return !dsgvo || message?.length < 5 || subject?.length < 5;
-    }, [dsgvo, message?.length, subject?.length]);
+    };
 
-    const reasonDisabled = useMemo(() => {
+    const reasonDisabled = () => {
         const reasons = t('helpcenter.btn.reasonDisabled', { returnObjects: true });
 
         if (subject?.length < 5) return reasons[0];
@@ -62,7 +62,7 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
         if (!dsgvo) return reasons[2];
 
         return '';
-    }, [dsgvo, message?.length, subject?.length]);
+    };
 
     return (
         <View paddingLeft={space['1.5']}>
@@ -111,8 +111,8 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
                     {messageSent && <AlertMessage content={t('helpcenter.contact.success')} />}
                     {showError && <AlertMessage content={t('helpcenter.contact.error')} />}
                     <DisablebleButton
-                        isDisabled={isButtonDisabled}
-                        reasonDisabled={reasonDisabled}
+                        isDisabled={isButtonDisabled()}
+                        reasonDisabled={reasonDisabled()}
                         buttonProps={{
                             marginX: 'auto',
                             width: buttonWidth,
