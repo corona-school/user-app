@@ -8,6 +8,7 @@ import SequenceExample04 from '../../assets/images/achievements/Sequence_Example
 
 const achievements: Achievement[] = [
     {
+        id: 1,
         name: '5 erreichte Meilensteine',
         subtitle: 'Projektfortschritt',
         progressDescription: 'Ein Beispieltext für diesen Meilenstein...',
@@ -28,6 +29,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 2,
         name: '10 abgeschlossene Schulungseinheiten',
         subtitle: 'Weiterbildung',
         progressDescription: 'Ein Beispieltext für diese Schulungseinheit...',
@@ -42,6 +44,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 3,
         name: '20 Stunden Teamzusammenarbeit',
         subtitle: 'Kollaboration',
         progressDescription: 'Ein Beispieltext für diese Teamzusammenarbeit...',
@@ -56,6 +59,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 4,
         name: '15 erfolgreiche Kundenpräsentationen',
         subtitle: 'Vertrieb',
         progressDescription: 'Ein Beispieltext für diese Kundenpräsentation...',
@@ -71,6 +75,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 5,
         name: '30 Tage kontinuierliche Code-Optimierung',
         subtitle: 'Softwareentwicklung',
         progressDescription: 'Ein Beispieltext für diese Code-Optimierung...',
@@ -85,6 +90,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 6,
         name: '25 behandelte Support-Anfragen',
         subtitle: 'Kundenbetreuung',
         progressDescription: 'Ein Beispieltext für diese Support-Anfragen...',
@@ -105,6 +111,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 7,
         name: '40 veröffentlichte Artikel',
         subtitle: 'Content-Erstellung',
         progressDescription: 'Ein Beispieltext für diese Artikelveröffentlichungen...',
@@ -119,6 +126,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 8,
         name: '5 Stunden interne Schulungen geleitet',
         subtitle: 'Weiterbildung',
         progressDescription: 'Ein Beispieltext für diese internen Schulungen...',
@@ -139,6 +147,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 9,
         name: '12 abgeschlossene Schulungseinheiten',
         subtitle: 'Weiterbildung',
         progressDescription: 'Ein Beispieltext für diese Schulungseinheit...',
@@ -153,6 +162,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 10,
         name: '25 Stunden Teamzusammenarbeit',
         subtitle: 'Kollaboration',
         progressDescription: 'Ein Beispieltext für diese Teamzusammenarbeit...',
@@ -167,6 +177,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 11,
         name: '20 erfolgreiche Kundenpräsentationen',
         subtitle: 'Vertrieb',
         progressDescription: 'Ein Beispieltext für diese Kundenpräsentation...',
@@ -181,6 +192,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 12,
         name: '35 Tage kontinuierliche Code-Optimierung',
         subtitle: 'Softwareentwicklung',
         progressDescription: 'Ein Beispieltext für diese Code-Optimierung...',
@@ -195,6 +207,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 13,
         name: '30 behandelte Support-Anfragen',
         subtitle: 'Kundenbetreuung',
         progressDescription: 'Ein Beispieltext für diese Support-Anfragen...',
@@ -215,6 +228,7 @@ const achievements: Achievement[] = [
         actionName: 'Kontakt aufnehmen',
     },
     {
+        id: 14,
         name: '45 veröffentlichte Artikel',
         subtitle: 'Content-Erstellung',
         progressDescription: 'Ein Beispieltext für diese Artikelveröffentlichungen...',

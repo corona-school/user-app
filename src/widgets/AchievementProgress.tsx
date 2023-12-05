@@ -5,12 +5,21 @@ import StreakCard from '../components/achievements/streak/StreakCard';
 import ProgressCollapsableHeadline from '../components/achievements/ProgressCollapsableHeadline';
 import { useEffect, useMemo, useState } from 'react';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
+import { useMutation } from '@apollo/client';
+import { gql } from '../gql';
 
 type AchievementProgressProps = {
     achievements: Achievement[];
 };
 
 const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements }) => {
+    const [isSeen] = useMutation(
+        gql(`
+        mutation achievementIsSeen($id: Float!) {
+            achievementIsSeen(achievementId: $id)
+        }
+    `)
+    );
     // Sort Example Data: Will be removed when the API data is implemented
     const streaks: Achievement[] = useMemo(() => {
         const allStreaks: Achievement[] = [];
@@ -157,6 +166,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                                 record={achievement.maxSteps}
                                 onClick={() => {
                                     setSelectedAchievement(achievement);
+                                    if (achievement.newAchievement) isSeen({ variables: { id: achievement.id } });
                                     setOpenModal(true);
                                 }}
                             />
@@ -191,6 +201,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                                         newAchievement={achievement.newAchievement}
                                         onClick={() => {
                                             setSelectedAchievement(achievement);
+                                            if (achievement.newAchievement) isSeen({ variables: { id: achievement.id } });
                                             setOpenModal(true);
                                         }}
                                     />
