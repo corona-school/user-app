@@ -102,8 +102,19 @@
             "cancelButton": "Termin absagen",
             "editButton": "Termin bearbeiten",
             "canceledToast": "Termin wurde abgesagt",
-            "deleteTooltip": "Der letzte Termin kann nicht gelöscht werden.",
-            "editBlockedWarning": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."
+            "reasonDisabled": {
+                "editBtn": {
+                    "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."
+                },
+                "deleteBtn": {
+                    "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht gelöscht werden.",
+                    "isLast": "Der letzte Termin kann nicht gelöscht werden."
+                },
+                "cancelBtn": {
+                    "isOver": "Du kannst diesen Termin nicht absagen, da er bereits vorbei ist.",
+                    "isCancelled": "Du hast diesen Termin bereits abgesagt."
+                }
+            }
         },
         "attendeesModal": {
             "title": "Teilnehmer:innen",
