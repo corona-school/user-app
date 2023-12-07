@@ -12,8 +12,8 @@ const Subjects: React.FC = () => {
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">Fachauswahl</Heading>
-            <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
+            <Heading fontSize="2xl">{t('matching.wizard.student.subjects.title')}</Heading>
+            <Heading>{t('matching.wizard.student.subjects.subtitle')}</Heading>
             <SubjectSelector
                 subjects={matchRequest.subjects.map((it) => it.name)}
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}

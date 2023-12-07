@@ -50,14 +50,13 @@ const SchoolClasses: React.FC<Props> = () => {
                 <Box maxWidth="600px" height="100%" justifyContent="center" alignItems="center" textAlign="center">
                     <PartyIcon />
                     <Heading fontSize={'2xl'} color="lightText" textAlign="center" marginY={space['1.5']}>
-                        Geschafft, du bist ein:e Held:in!
+                        {t('matching.wizard.student.success.title')}
                     </Heading>
                     <Text color="lightText" textAlign="center" marginBottom={space['1']}>
-                        Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!
+                        {t('matching.wizard.student.success.subtitle')}
                     </Text>
                     <Text color="lightText" textAlign="center" marginBottom={space['1']}>
-                        Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche dauert in der Regel maximal eine Woche. Sobald wir jemanden für dich
-                        gefunden haben, werden wir dich direkt per E-Mail benachrichtigen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.
+                        {t('matching.wizard.student.success.subtitle2')}
                     </Text>
                     <Button
                         w={buttonWidth}
@@ -68,7 +67,7 @@ const SchoolClasses: React.FC<Props> = () => {
                             hide();
                         }}
                     >
-                        Fertig
+                        {t('done')}
                     </Button>
                 </Box>
             </VStack>
@@ -84,20 +83,20 @@ const SchoolClasses: React.FC<Props> = () => {
                 if (resRequest.data && !resRequest.errors) {
                     showModal();
                 } else {
-                    toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
+                    toast.show({ description: t('error'), placement: 'top' });
                 }
             } else {
                 showModal();
             }
         } else {
-            toast.show({ description: 'Es ist ein Fehler aufgetreten', placement: 'top' });
+            toast.show({ description: t('error'), placement: 'top' });
         }
     }, [createMatchRequest, isEdit, matchRequest, showModal, toast, updateSubjects]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">Jahrgangsstufen</Heading>
-            <Heading>In welchen Jahrgangsstufen möchtest du helfen?</Heading>
+            <Heading fontSize="2xl">{t('matching.wizard.student.grades.title')}</Heading>
+            <Heading>{t('matching.wizard.student.grades.question')}</Heading>
 
             <VStack space={space['1']}>
                 {matchRequest.subjects.map((subject) => (
@@ -126,7 +125,7 @@ const SubjectGradeSlider = ({ subject, setSubject }: { subject: Subject; setSubj
             <VStack space={space['0.5']}>
                 <Heading fontSize="md">{t(`lernfair.subjects.${subject.name}` as unknown as TemplateStringsArray)}</Heading>
                 <Heading fontSize="md">
-                    Klasse {subject.grade!.min}-{subject.grade!.max}
+                    {t('grade')} {subject.grade!.min}-{subject.grade!.max}
                 </Heading>
 
                 <Slider

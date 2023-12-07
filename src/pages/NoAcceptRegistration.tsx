@@ -1,8 +1,8 @@
-import { useTheme, Text, View, Modal } from 'native-base';
+import { useTheme, Text, View } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-warning.svg';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import InfoScreen from '../widgets/InfoScreen';
 
@@ -12,9 +12,8 @@ const NoAcceptRegistration: React.FC<Props> = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const [cancelModal, setCancelModal] = useState<boolean>(false);
 
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackPageView } = useMatomo();
 
     useEffect(() => {
         trackPageView({
@@ -26,31 +25,28 @@ const NoAcceptRegistration: React.FC<Props> = () => {
         <View>
             <InfoScreen
                 variant="dark"
-                title="Registrierung fehlgeschlagen!"
+                title={t('registration.barrier_failed.title')}
                 isOutlineButtonLink={true}
                 content={
                     <>
                         <Text color="lightText" paddingY={space['0.5']} display="block">
-                            Da Du unsere Teilnahmebedingungen abgelehnt hast, können wir Dir leider keine Registrierung ermöglichen.
+                            {t('registration.barrier_failed.subtitle')}
                         </Text>
                         <Text bold color="lightText" paddingBottom={space['0.5']} display="block">
-                            Erst nach dem Bestätigen unserer Teilnahmebedingungen können wir Dir gerne die Registrierung gewähren.
+                            {t('registration.barrier_failed.subtitle2')}
                         </Text>
                     </>
                 }
-                outlineButtonText="Registrierung erneut beginnen"
+                outlineButtonText={t('registration.barrier_failed.retry')}
                 outlinebuttonLink={() => {
                     navigate('/registration');
                 }}
-                defaultButtonText="Weitere Infos erhalten"
+                defaultButtonText={t('registration.barrier_failed.alternatives')}
                 defaultbuttonLink={() => {
                     window.open('https://digitale-lernangebote.de/', '_blank');
                 }}
                 icon={<Logo />}
             />
-            <Modal bg="modalbg" isOpen={cancelModal} onClose={() => setCancelModal(false)}>
-                <Text>Hallo</Text>
-            </Modal>
         </View>
     );
 };
