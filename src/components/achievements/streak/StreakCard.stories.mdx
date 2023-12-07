@@ -1,0 +1,50 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import StreakCard from './StreakCard';
+import { ActionTypes } from '../../../types/achievement';
+import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_image.png';
+import ExampleStreakFinished from '../../../assets/images/achievements/example_streak_image_record.png';
+
+<Meta title="Achievements/Streak/StreakCard" component={StreakCard} />
+
+# StreakCard
+
+-   The Streak Card represents the current streak in different Streak Elements
+
+<Story name="Streak Card">
+    <StreakCard
+        streak={17}
+        record={27}
+        title="Pünktlichkeits-Rekord"
+        progressDescription="Weiter so, um den Rekord zu erhöhen"
+        image={ExampleStreakUnfinished}
+        alternativeText="27 day streak"
+        actionType={ActionTypes.ACTION}
+    />
+</Story>
+
+# Streak Card with finished streak
+
+<Story name="Streak Card Finished">
+    <StreakCard
+        streak={27}
+        record={27}
+        title="Pünktlichkeits-Rekord"
+        progressDescription="Weiter so, um den Rekord zu erhöhen"
+        image={ExampleStreakFinished}
+        alternativeText="27 day streak"
+        actionType={ActionTypes.ACTION}
+    />
+</Story>
+
+# Streak Card without record value
+
+<Story name="Streak Card Without Record">
+    <StreakCard
+        streak={27}
+        title="Lern-Fair Community Member"
+        progressDescription="Du bist bereits seit 8 Monaten ein Teil der Lern-Fair Community. Schön, dass du hier bist!"
+        image={ExampleStreakFinished}
+        alternativeText="27 day streak"
+        actionType={ActionTypes.ACTION}
+    />
+</Story>

@@ -1,0 +1,222 @@
+import { Meta, Story } from '@storybook/addon-docs';
+import AchievementModal from './AchievementModal';
+import { AchievementState, AchievementType } from '../../../types/achievement';
+import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
+import ExampleStreakImageRecord from '../../../assets/images/achievements/example_streak_image_record.png';
+import ExampleStreakImage from '../../../assets/images/achievements/example_streak_image.png';
+import SequenceExample01 from '../../../assets/images/achievements/Sequence_Example_01.png';
+import SequenceExample04 from '../../../assets/images/achievements/Sequence_Example_04.png';
+
+<Meta title="Achievements/AchievementModal" component={AchievementModal} />
+
+-   An Achievement Modal is a User Interface that displays the user's achievements based on their successes.
+
+# Achievement Modal
+
+<Story name="Achievement Modal">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        buttonText="Kontakt aufnehmen"
+        achievementState={AchievementState.ACTIVE}
+        achievementType={AchievementType.TIERED}
+        maxSteps={6}
+        currentStep={4}
+        progressDescription="Alle Schritte abgeschlossen"
+        image={KanufahrtDschungel}
+        showModal
+    />
+</Story>
+
+# Achievement Completed Modal
+
+<Story name="Achievement Completed Modal">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        buttonText="Kontakt aufnehmen"
+        progressDescription="Alle Schritte abgeschlossen"
+        achievementState={AchievementState.COMPLETED}
+        achievementType={AchievementType.TIERED}
+        maxSteps={6}
+        currentStep={6}
+        image={KanufahrtDschungel}
+        showModal
+    />
+</Story>
+
+# Achievement New Completed Modal
+
+<Story name="New Achievement Completed Modal">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        buttonText="Kontakt aufnehmen"
+        achievementState={AchievementState.COMPLETED}
+        achievementType={AchievementType.TIERED}
+        maxSteps={6}
+        currentStep={6}
+        image={KanufahrtDschungel}
+        newAchievement
+        showModal
+    />
+</Story>
+
+# Achievement Modal Sequential
+
+<Story name="Achievement Modal Sequential">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        achievementState={AchievementState.ACTIVE}
+        achievementType={AchievementType.SEQUENTIAL}
+        steps={[
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+                isActive: true,
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+        ]}
+        buttonText="Kontakt aufnehmen"
+        buttonLink="https://www.google.de"
+        image={SequenceExample01}
+        showModal
+    />
+</Story>
+
+# Achievement New Completed Modal SEQUENTIAL
+
+<Story name="New Achievement Completed Modal Sequential">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        achievementState={AchievementState.COMPLETED}
+        achievementType={AchievementType.SEQUENTIAL}
+        steps={[
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+        ]}
+        buttonText="Kontakt aufnehmen"
+        buttonLink="https://www.google.de"
+        image={SequenceExample04}
+        newAchievement
+        showModal
+    />
+</Story>
+
+# Achievement Modal Action
+
+<Story name="Achievement Modal Action">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        achievementState={AchievementState.ACTIVE}
+        achievementType={AchievementType.SEQUENTIAL}
+        steps={[
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+                isActive: true,
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+        ]}
+        progressDescription="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest."
+        buttonText="Kontakt aufnehmen"
+        buttonLink="https://www.google.de"
+        image={KanufahrtDschungel}
+        showModal
+    />
+</Story>
+
+# Achievement New Completed Modal action
+
+<Story name="New Achievement Completed Modal Action">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        achievementState={AchievementState.COMPLETED}
+        achievementType={AchievementType.SEQUENTIAL}
+        steps={[
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+                isActive: true,
+            },
+            {
+                description: 'Dieser Text muss noch geliefert werden!',
+            },
+        ]}
+        progressDescription="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest."
+        buttonText="Kontakt aufnehmen"
+        buttonLink="https://www.google.de"
+        image={KanufahrtDschungel}
+        newAchievement
+        showModal
+    />
+</Story>
+
+# Achievement Modal Streak
+
+<Story name="Achievement Modal Streak">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        achievementState={AchievementState.ACTIVE}
+        achievementType={AchievementType.STREAK}
+        maxSteps={16}
+        currentStep={5}
+        progressDescription="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest."
+        image={ExampleStreakImage}
+        showModal
+    />
+</Story>
+
+# Achievement New Completed Modal Streak
+
+<Story name="New Achievement Completed Modal Streak">
+    <AchievementModal
+        title="Name des Lernangebots"
+        name="Name des Erfolgs"
+        description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
+        achievementState={AchievementState.COMPLETED}
+        achievementType={AchievementType.STREAK}
+        maxSteps={27}
+        currentStep={27}
+        progressDescription="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest."
+        image={ExampleStreakImageRecord}
+        newAchievement
+        showModal
+    />
+</Story>

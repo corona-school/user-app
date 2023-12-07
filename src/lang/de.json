@@ -1038,6 +1038,7 @@
     },
     "helperwizard": {
         "nextStep": "Deine nächsten Schritte",
+        "progress": "Alle Fortschritte anzeigen",
         "verifizierung": {
             "title": "Verifiziere deine E-Mail-Adresse",
             "content": "“Bevor du bei Lern-Fair starten kanst, musst du zunächst deine E-Mail-Adresse bestätigen. Wir haben dir dazu am {{date}} eine E-Mail an {{email}} gesendet. Du hast keine E-Mail von uns erhalten?”",
@@ -1858,5 +1859,38 @@
         "registered_since": "registriert seit",
         "dissolved_by": "Aufgelöst von: {{dissolver}}",
         "dissolve_reason": "Grund: {{reason}}"
+    },
+    "achievement": {
+        "card": {
+            "newAchievement": "neuer Erfolg",
+            "finishedStepsInformation": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen",
+            "finishedStepsInformationMobile": "{{currentStep}}/{{maxSteps}}"
+        },
+        "nextStepCard": {
+            "finishedSteps": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen."
+        },
+        "modal": {
+            "close": "Schließen",
+            "achievements": "Zu den Erfolgen",
+            "step": "schritt {{step}}",
+            "streak": "Noch {{leftSteps}} mal pünktlich erscheinen, um den Rekord erneut zu brechen.",
+            "record": "Du warst bei {{record}} Terminen in Folge anwesend! Verpasse weiterhin keinen Termin, um den Rekord zu erhöhen."
+        },
+        "streak": {
+            "count": "{{streak}}x",
+            "card": {
+                "info": "Du warst bei <strong>{{streak}} Terminen</strong> in Folge pünktlich!"
+            }
+        },
+        "progress": {
+            "state": {
+                "completed": "Erhaltene Erfolge",
+                "active": "Angefangene Erfolge",
+                "inactive": "Weitere Erfolge"
+            },
+            "streak": {
+                "headline": "Streaks"
+            }
+        }
     }
 }
