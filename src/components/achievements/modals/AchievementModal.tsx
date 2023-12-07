@@ -1,4 +1,4 @@
-import { Box, Button, HStack, Link, Modal, Stack, Text, VStack, useBreakpointValue } from 'native-base';
+import { Box, Button, CloseIcon, HStack, Link, Modal, Pressable, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
@@ -7,6 +7,7 @@ import { AchievementState, AchievementType, PolaroidImageSize, ShineSize } from 
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
+import { Step } from '../../../gql/graphql';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
 
 type AchievementModalProps = {
@@ -18,14 +19,10 @@ type AchievementModalProps = {
     buttonText?: string;
     buttonLink?: string;
     newAchievement?: boolean;
-    steps?: {
-        description: string;
-        isActive?: boolean;
-    }[];
+    steps?: Step[];
     maxSteps?: number;
     currentStep?: number;
-    actionDescription?: string;
-    achievedText?: string;
+    progressDescription?: string;
     image?: string;
     alternativeText?: string;
     onClose?: () => void;
@@ -42,8 +39,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     steps,
     maxSteps,
     currentStep,
-    actionDescription,
-    achievedText,
+    progressDescription,
     image,
     alternativeText,
     achievementState,
@@ -69,10 +65,11 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     const contentDirection = useBreakpointValue({ base: 'column', lg: 'row' });
     const contentInnerSpace = useBreakpointValue({ base: '32px', lg: '0' });
     const contentPadding = useBreakpointValue({ base: '16px', lg: '32px' });
-    const imageContainerOffset = useBreakpointValue({ base: { top: '20px', left: '0' }, lg: { top: '0', left: '40px' } });
+    const imageContainerOffset = useBreakpointValue({ base: { top: '20px' }, lg: { top: '0' } });
+    const imageContainerHeight = useBreakpointValue({ base: 'fit-content', lg: '100%' });
     const textBoxWidth = useBreakpointValue({ base: '100%', lg: '473px' });
     const textBoxMaxWidth = useBreakpointValue({ base: '100%', lg: '473px' });
-    const textBoxHeight = useBreakpointValue({ base: 'auto', lg: '245px' });
+    const textBoxHeight = useBreakpointValue({ base: 'auto', lg: '100%' });
     const textBoxAlignItems = useBreakpointValue({ base: 'center', lg: 'normal' });
     const showBadgeWithTitle = useBreakpointValue({ base: false, lg: true });
     const modalNameFontSize = useBreakpointValue({ base: 'xl', lg: '4xl' });
@@ -87,8 +84,8 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
         lg: ShineSize.LARGE,
     });
     const polaroidImageSize = useBreakpointValue({
-        base: PolaroidImageSize.MEDIUM,
-        md: PolaroidImageSize.MEDIUM,
+        base: { width: PolaroidImageSize.MEDIUM, height: `calc(${PolaroidImageSize.MEDIUM} * 1.4)` },
+        md: { width: PolaroidImageSize.LARGE, height: `calc(${PolaroidImageSize.LARGE} * 1.4)` },
     });
 
     const activeStep = steps ? steps.findIndex((step) => step.isActive) + 1 : 0;
@@ -113,7 +110,13 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                 marginTop={achievementType === AchievementType.TIERED && achievementState === AchievementState.COMPLETED && modalBodyMarginTop}
                 overflow={modalBodyOverflow}
             >
-                <Modal.CloseButton />
+                <Box position="absolute" zIndex="1" right="20px" top="14px">
+                    <Pressable onPress={onClose}>
+                        <CloseIcon
+                            color={achievementState === AchievementState.COMPLETED || achievementType === AchievementType.STREAK ? 'white' : 'grey.500'}
+                        />
+                    </Pressable>
+                </Box>
                 <VStack width="100%" maxWidth={contentMaxWidth} height="100%" space={contentSpace} justifyContent={contentJustifyContent}>
                     <VStack width="100%" maxWidth={modalBodyMaxWidth} height={contentMaxHeight}>
                         <Stack
@@ -128,9 +131,10 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             marginBottom={contentSpace}
                         >
                             <VStack
-                                top={imageContainerOffset.top}
+                                top={achievementState === AchievementState.COMPLETED && imageContainerOffset.top}
                                 left={achievementType === AchievementType.STREAK && imageContainerOffset.left}
                                 alignItems="center"
+                                height={imageContainerHeight}
                             >
                                 <AchievementImageContainer
                                     image={achievementType === AchievementType.TIERED && achievementState !== AchievementState.COMPLETED ? undefined : image}
@@ -142,9 +146,11 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     isLarge
                                 />
                                 {newAchievement && (
-                                    <Box position="absolute" width={polaroidImageSize} height="100%">
-                                        <NewAchievementShine size={shineSize} />
-                                    </Box>
+                                    <VStack position="absolute" width="fit-content" height={polaroidImageSize.width} justifyContent="flex-end">
+                                        <Box width={polaroidImageSize.width} height={polaroidImageSize.height}>
+                                            <NewAchievementShine size={shineSize} isLarge />
+                                        </Box>
+                                    </VStack>
                                 )}
                             </VStack>
                             <VStack width={textBoxWidth} space={3} maxWidth={textBoxMaxWidth} height={textBoxHeight} alignItems={textBoxAlignItems}>
@@ -174,7 +180,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 )}
                             </VStack>
                             {!showDescriptionBeforeIndicator && (
-                                <VStack width="100%" alignItems="center" space="8px">
+                                <VStack width="100%" alignItems="center" space="8">
                                     <Box width="80%">
                                         {achievementState === AchievementState.COMPLETED ? (
                                             <Box width="100%" display="flex" alignItems="center">
@@ -182,14 +188,14 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                     <AchievementBadge isInline />
                                                 ) : (
                                                     <Text color="primary.500" textAlign="center">
-                                                        {actionDescription}
+                                                        {progressDescription}
                                                     </Text>
                                                 )}
                                             </Box>
                                         ) : (
                                             <Box width="100%">
                                                 {(achievementType === AchievementType.TIERED || achievementType === AchievementType.STREAK) && maxSteps ? (
-                                                    <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText fullWidth />
+                                                    <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText fullWidth largeText />
                                                 ) : (
                                                     <Box width="100%">
                                                         {steps && (
@@ -207,7 +213,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                             </Box>
                                         )}
                                     </Box>
-                                    <Text width="100%" color={textColor}>
+                                    <Text width="100%" color={textColor} fontSize="12px">
                                         {description}
                                     </Text>
                                 </VStack>
@@ -222,12 +228,12 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 )}
                                 {(achievementType === AchievementType.TIERED || achievementType === AchievementType.STREAK) && maxSteps && (
                                     <Box width="100%">
-                                        {<IndicatorBar maxSteps={maxSteps} currentStep={currentStep} achievementType={achievementType} fullWidth />}
+                                        {<IndicatorBar maxSteps={maxSteps} currentStep={currentStep} achievementType={achievementType} fullWidth largeText />}
                                     </Box>
                                 )}
                             </Box>
                         )}
-                        {!steps && !maxSteps && actionDescription && (
+                        {!steps && !maxSteps && progressDescription && (
                             <HStack alignItems={'center'} space={'sm'}>
                                 {achievementState === AchievementState.COMPLETED ? (
                                     <CheckGreen />
@@ -237,13 +243,13 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     </Box>
                                 )}
                                 <Text fontSize={'14px'} color="primary.500">
-                                    {actionDescription}
+                                    {progressDescription}
                                 </Text>
                             </HStack>
                         )}
                     </VStack>
                     {buttonLink && buttonText && achievementState !== AchievementState.COMPLETED ? (
-                        <Stack width="100%" direction={buttonAlignment} space={2}>
+                        <Stack width="100%" direction={buttonAlignment} space={2} paddingTop="2">
                             <Button flex={1} variant="outline" onPress={onClose}>
                                 <Text color="primary.500">{t('achievement.modal.close')}</Text>
                             </Button>
@@ -255,7 +261,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </Link>
                         </Stack>
                     ) : (
-                        <Stack width="100%" direction={buttonAlignment} space={2}>
+                        <Stack width="100%" direction={buttonAlignment} space={2} paddingTop="2">
                             <Button flex={1} variant="outlinelight">
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>

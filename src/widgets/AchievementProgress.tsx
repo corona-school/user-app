@@ -95,6 +95,14 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
     });
     const cardSpace = useBreakpointValue({ base: 0, md: 5 });
     const spaceAfterHeadline = useBreakpointValue({ base: 3, md: 1 });
+    const streaksContainerWidth = useBreakpointValue({
+        base: 'auto',
+        md: 'calc(100% + 16px)',
+    });
+    const streaksContainerPaddingRight = useBreakpointValue({
+        base: '0',
+        md: '16px',
+    });
 
     const handleOnClick = (type?: AchievementType, state?: AchievementState) => {
         if (type && type === AchievementType.STREAK) {
@@ -105,24 +113,25 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
     };
     return (
         <Box>
-            <AchievementModal
-                title={selectedAchievement.subtitle}
-                name={selectedAchievement.name}
-                description={selectedAchievement.description}
-                achievementState={selectedAchievement.achievementState}
-                achievementType={selectedAchievement.achievementType}
-                newAchievement={isNewAchievement}
-                steps={selectedAchievement.steps}
-                maxSteps={selectedAchievement.maxSteps}
-                currentStep={selectedAchievement.currentStep}
-                actionDescription={selectedAchievement.actionDescription}
-                achievedText={selectedAchievement.achievedText}
-                image={selectedAchievement.image}
-                alternativeText={selectedAchievement.alternativeText}
-                buttonText={selectedAchievement.buttonLabel}
-                onClose={() => setOpenModal(false)}
-                showModal={openModal}
-            />
+            {selectedAchievement && (
+                <AchievementModal
+                    title={selectedAchievement.subtitle}
+                    name={selectedAchievement.name}
+                    description={selectedAchievement.description}
+                    achievementState={selectedAchievement.achievementState}
+                    achievementType={selectedAchievement.achievementType}
+                    newAchievement={isNewAchievement}
+                    steps={selectedAchievement.steps}
+                    maxSteps={selectedAchievement.maxSteps}
+                    currentStep={selectedAchievement.currentStep}
+                    progressDescription={selectedAchievement.progressDescription}
+                    image={selectedAchievement.image}
+                    alternativeText={selectedAchievement.alternativeText}
+                    buttonText={selectedAchievement.actionName}
+                    onClose={() => setOpenModal(false)}
+                    showModal={openModal}
+                />
+            )}
             <VStack space={spaceAfterHeadline}>
                 <ProgressCollapsableHeadline achievementType={AchievementType.STREAK} onClick={() => handleOnClick(AchievementType.STREAK, undefined)} />
                 <Stack
@@ -131,15 +140,17 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                     overflowX={streakContainerOverflow}
                     backgroundColor={cardContainerBg}
                     borderRadius="8px"
+                    width={streaksContainerWidth}
                     height={collapsed[AchievementType.STREAK] ? '0' : 'fit-content'}
                     overflowY="hidden"
+                    paddingRight={streaksContainerPaddingRight}
                 >
                     {streaks.map((achievement) => (
-                        <Stack marginTop={cardMargin}>
+                        <Stack key={achievement.name} marginTop={cardMargin}>
                             <StreakCard
                                 streak={achievement.currentStep}
                                 title={achievement.name}
-                                actionDescription={achievement.description}
+                                progressDescription={achievement.description}
                                 image={achievement.image}
                                 alternativeText={achievement.alternativeText}
                                 actionType={achievement.actionType}
@@ -154,19 +165,18 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                     ))}
                 </Stack>
                 {states.map((key) => (
-                    <VStack space={3} marginTop={10}>
+                    <VStack key={key} space={3} marginTop={10}>
                         <ProgressCollapsableHeadline achievementState={key} onClick={() => handleOnClick(undefined, key)} />
                         <HStack
                             width="100%"
                             flexWrap="wrap"
-                            space={cardSpace}
                             backgroundColor={key === AchievementState.COMPLETED && cardContainerBg}
                             borderRadius="8px"
                             height={collapsed[key] ? '0' : 'fit-content'}
                             overflowY={collapsed[key] ? 'hidden' : 'unset'}
                         >
-                            {sortedAchievements[key].map((achievement, idx) => (
-                                <Box marginTop={cardMargin} width={achievementContainerWidth} overflow="visible">
+                            {sortedAchievements[key].map((achievement) => (
+                                <Box key={achievement.name} marginTop={cardMargin} width={achievementContainerWidth} overflow="visible" marginRight={cardSpace}>
                                     <AchievementCard
                                         achievementState={achievement.achievementState}
                                         achievementType={achievement.achievementType}
@@ -175,7 +185,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                                         alternativeText={''}
                                         subtitle={achievement.subtitle}
                                         title={achievement.name}
-                                        actionDescription={achievement.description}
+                                        progressDescription={achievement.steps ? achievement.steps[achievement.currentStep - 1]?.description : undefined}
                                         maxSteps={achievement.maxSteps}
                                         currentStep={achievement.currentStep}
                                         newAchievement={achievement.newAchievement}

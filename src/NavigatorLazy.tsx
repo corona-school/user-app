@@ -419,6 +419,7 @@ export default function NavigatorLazy() {
                     </WithNavigation>
                 }
             />
+            <Route path="/progress" element={<Progress />} />
 
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/start" />} />

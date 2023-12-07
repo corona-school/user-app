@@ -1,3 +1,5 @@
+import { Step } from '../gql/graphql';
+
 enum ActionTypes {
     ACTION = 'ACTION',
     WAIT = 'WAIT',
@@ -19,8 +21,8 @@ enum AchievementState {
 
 enum PuzzleImageSize {
     SMALL = '62px',
-    MEDIUM = '184px',
-    LARGE = '184px',
+    MEDIUM = '152px',
+    LARGE = '210px',
 }
 
 enum PolaroidImageSize {
@@ -30,9 +32,8 @@ enum PolaroidImageSize {
 }
 
 enum StreakImageSize {
-    SMALL = '72px',
-    MEDIUM = '178px',
-    LARGE = '224px',
+    SMALL = '90px',
+    LARGE = '180px',
 }
 
 enum ShineSize {
@@ -55,22 +56,18 @@ type Achievement = {
     description: string;
     image: string;
     alternativeText: string;
-    achievedAt: string;
-    achievedText: string;
-    actionType: ActionTypes;
+    actionType?: ActionTypes;
     achievementType: AchievementType;
     achievementState: AchievementState;
-    steps?: {
-        description: string;
-        isActive?: boolean;
-    }[];
+    steps?: Step[];
     maxSteps: number;
     currentStep: number;
     newAchievement?: boolean;
-    actionDescription?: string;
-    buttonLabel?: string;
+    progressDescription?: string;
+    actionName?: string;
+    actionRedirectLink?: string;
 };
 
 export { ActionTypes, AchievementType, AchievementState, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };
 
-export type { Achievement };
+export type { Achievement, Step };

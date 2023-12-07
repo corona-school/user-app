@@ -3,7 +3,7 @@ import AchievementImageContainer from '../AchievementImageContainer';
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
-import CardActionDescription from './CardActionDescription';
+import CardProgressDescription from './CardProgressDescription';
 import { AchievementState, AchievementType, ActionTypes, PolaroidImageSize, ShineSize } from '../../../types/achievement';
 import InnerShadow from '../cosmetics/InnerShadow';
 
@@ -18,7 +18,7 @@ type AchievementCardProps = {
     title: string;
     maxSteps?: number;
     currentStep?: number;
-    actionDescription?: string;
+    progressDescription?: string;
     onClick?: () => void;
 };
 
@@ -33,18 +33,18 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     title,
     maxSteps,
     currentStep,
-    actionDescription,
+    progressDescription,
     onClick,
 }) => {
     const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
     const shineOffsetLeft = useBreakpointValue({ base: '15px', md: 'none' });
-    const shineOffsetTop = useBreakpointValue({ base: 'none', md: '-20px' });
+    const shineOffsetTop = useBreakpointValue({ base: '-10px', md: '-10px' });
     const showInnerShadow = useBreakpointValue({ base: false, md: true });
     const cardFlexDirection = useBreakpointValue({ base: 'row', md: 'column' });
     const justifyCardContentMobile = useBreakpointValue({ base: 'flex-end', md: 'center' });
     const justifyCardContentUnfinished = useBreakpointValue({
         base: 'flex-start',
-        md: achievementType === AchievementType.SEQUENTIAL ? 'center' : justifyCardContentMobile,
+        md: achievementType === AchievementType.SEQUENTIAL ? 'space-between' : justifyCardContentMobile,
     });
     const cardSpacing = useBreakpointValue({ base: 0, md: 2 });
     const width = useBreakpointValue({ base: '100%', md: '280px' });
@@ -61,21 +61,29 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     });
     const shineSize = useBreakpointValue({ base: ShineSize.XSMALL, md: ShineSize.MEDIUM });
     const textSpace = useBreakpointValue({ base: 2, md: 5 });
-    const textPaddingLeft = useBreakpointValue({ base: '8px', md: '0' });
+    const textPaddingLeft = useBreakpointValue({ base: '12px', md: '0' });
     const indicatorTextSpace = useBreakpointValue({ base: 0, md: 2 });
     const indicatorFirst = useBreakpointValue({ base: false, md: true });
     const indicatorSecond = useBreakpointValue({ base: true, md: false });
+    const colorozeCard = useBreakpointValue({ base: true, md: false });
     return (
         <Pressable onPress={onClick}>
-            <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center">
-                {showInnerShadow && achievementState === AchievementState.INACTIVE && <InnerShadow deviation={7.5} />}
+            <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center" overflow="visible">
+                {showInnerShadow && achievementState === AchievementState.INACTIVE && <InnerShadow deviation={7.5} opacity={0.5} />}
                 {newAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
                         <AchievementBadge />
-                        <VStack position="absolute" zIndex={1} justifyContent="center" alignItems="center" left={shineOffsetLeft} top={shineOffsetTop}>
-                            <VStack width={polaroidImageSize.width} height={polaroidImageSize.height}>
-                                <NewAchievementShine size={shineSize} />
-                            </VStack>
+                        <VStack
+                            position="absolute"
+                            zIndex={1}
+                            justifyContent="center"
+                            alignItems="center"
+                            left={shineOffsetLeft}
+                            top={shineOffsetTop}
+                            width={polaroidImageSize.width}
+                            height={polaroidImageSize.height}
+                        >
+                            <NewAchievementShine size={shineSize} />
                         </VStack>
                     </>
                 )}
@@ -107,9 +115,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         achievementState={achievementState}
                     />
                     <VStack space={textSpace} alignItems={textAlignment} paddingLeft={textPaddingLeft} width={maxTextWidth}>
-                        <Stack space={0} alignItems={textAlignment} width={textContainerWidth}>
+                        <Stack space="1" alignItems={textAlignment} width={textContainerWidth}>
                             <Text
-                                fontSize="xs"
+                                fontSize="12px"
                                 color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
                                 width="100%"
                                 textAlign={textAlignment}
@@ -118,10 +126,11 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                             </Text>
                             <Text
                                 width="100%"
-                                fontSize="md"
+                                fontSize="16px"
+                                lineHeight="sm"
                                 color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
                                 bold
-                                numberOfLines={1}
+                                numberOfLines={2}
                                 overflow="hidden"
                                 textAlign={textAlignment}
                             >
@@ -131,7 +140,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         {achievementState !== AchievementState.COMPLETED && (
                             <VStack space={indicatorTextSpace} width="100%">
                                 {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
-                                {actionDescription && <CardActionDescription actionType={actionType} actionDescription={actionDescription} />}
+                                {progressDescription && (
+                                    <CardProgressDescription actionType={actionType} progressDescription={progressDescription} isColorized={colorozeCard} />
+                                )}
                                 {indicatorSecond && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
                             </VStack>
                         )}

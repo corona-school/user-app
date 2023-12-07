@@ -1,13 +1,11 @@
 import { Box, Progress, Stack, useBreakpointValue } from 'native-base';
 import IndicatorStep from './IndicatorStep';
 import { AchievementState } from '../../../types/achievement';
+import { Step } from '../../../gql/graphql';
 
 type IndicatorBarWithStepsProps = {
     maxSteps: number;
-    steps: {
-        description: string;
-        isActive?: boolean;
-    }[];
+    steps: Step[];
     achievementState?: AchievementState;
 };
 

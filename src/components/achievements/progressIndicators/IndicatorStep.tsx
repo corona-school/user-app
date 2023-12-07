@@ -1,13 +1,14 @@
 import { Text, VStack } from 'native-base';
 import Check from '../../../assets/icons/icon_check.svg';
 import { AchievementState } from '../../../types/achievement';
+import { Maybe } from '../../../gql/graphql';
 
 type IndicatorStepProps = {
     step: number;
     maxSteps: number;
     description: string;
     achievementState?: AchievementState;
-    isActive?: boolean;
+    isActive?: Maybe<boolean>;
     isInactive?: boolean;
 };
 
@@ -37,14 +38,14 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, descripti
                 backgroundColor={achievementState !== AchievementState.COMPLETED && isInactive ? 'gray.100' : 'primary.500'}
             >
                 {achievementState !== AchievementState.COMPLETED && (isActive || isInactive) ? (
-                    <Text fontSize={'xs'} color={isInactive ? 'gray.500' : 'white'}>
+                    <Text fontSize="12px" color={isInactive ? 'gray.500' : 'white'}>
                         {step + 1}
                     </Text>
                 ) : (
                     <Check />
                 )}
             </VStack>
-            <Text position="absolute" fontSize="xs" textAlign="center" top="32px" width={`calc(600px / ${maxSteps})`} color={textColor}>
+            <Text position="absolute" fontSize="12px" textAlign="center" top="32px" width={`calc(600px / ${maxSteps})`} color={textColor}>
                 {description}
             </Text>
         </VStack>
