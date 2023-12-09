@@ -5,6 +5,7 @@ import { FC, useContext, useMemo } from 'react';
 import { NotificationPreferencesContext } from '../../../pages/notification/NotficationControlPanel';
 import { getAllPreferencesInCategorySetToValue } from '../../../helper/notification-helper';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
+import DisablebleButton from '../../DisablebleButton';
 
 type PrefProps = {
     notificationCategories: NotificationCategories;
@@ -59,12 +60,28 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
         notificationCategories && (
             <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={boxWidth}>
                 <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
-                    <Button onPress={enableAll} isDisabled={allEnabled} width={buttonWidth}>
+                    <DisablebleButton
+                        isDisabled={allEnabled}
+                        reasonDisabled={t('notification.controlPanel.preference.enableAllTooltip')}
+                        buttonProps={{
+                            onPress: enableAll,
+                            width: buttonWidth,
+                        }}
+                    >
                         {t('notification.controlPanel.preference.enableAll')}
-                    </Button>
-                    <Button onPress={disableAll} _text={{ padding: '3px 5px' }} variant="outline" isDisabled={allDisabled} width={buttonWidth}>
+                    </DisablebleButton>
+                    <DisablebleButton
+                        isDisabled={allDisabled}
+                        reasonDisabled={t('notification.controlPanel.preference.disableAllTooltip')}
+                        buttonProps={{
+                            onPress: disableAll,
+                            _text: { padding: '3px 5px' },
+                            variant: 'outline',
+                            width: buttonWidth,
+                        }}
+                    >
                         {t('notification.controlPanel.preference.disableAll')}
-                    </Button>
+                    </DisablebleButton>
                 </Stack>
             </Box>
         )

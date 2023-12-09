@@ -1,4 +1,4 @@
-import { Button, Stack, useBreakpointValue } from 'native-base';
+import { Stack, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import useApollo from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';

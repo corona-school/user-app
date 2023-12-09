@@ -1699,6 +1699,8 @@
             "preference": {
                 "enableAll": "Alle Newsletter aktivieren",
                 "disableAll": "Alle Newsletter deaktivieren",
+                "enableAllTooltip": "Du hast bereits alle Newsletter aktiviert.",
+                "disableAllTooltip": "Du hast bereits alle Newsletter deaktiviert.",
                 "chat": {
                     "title": "Chat-Nachrichten",
                     "modalBody": "Wir schicken dir eine E-Mail für jede Chat-Nachricht, die du bekommst."
