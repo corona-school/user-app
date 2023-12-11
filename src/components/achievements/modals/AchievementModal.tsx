@@ -7,6 +7,7 @@ import { AchievementState, AchievementType, PolaroidImageSize, ShineSize } from 
 import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
+import { Step } from '../../../gql/graphql';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
 
 type AchievementModalProps = {
@@ -18,10 +19,7 @@ type AchievementModalProps = {
     buttonText?: string;
     buttonLink?: string;
     newAchievement?: boolean;
-    steps?: {
-        description: string;
-        isActive?: boolean;
-    }[];
+    steps?: Step[];
     maxSteps?: number;
     currentStep?: number;
     progressDescription?: string;

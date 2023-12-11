@@ -4,43 +4,42 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import { Box, useBreakpointValue } from 'native-base';
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { Achievement, AchievementState, AchievementType, ActionTypes, Step } from '../types/achievement';
+import { Achievement, AchievementState, AchievementType, ActionTypes } from '../types/achievement';
 import { checkAndGetSecondEnumValue } from '../helper/achievement-helper';
-import { achievements } from '../components/achievements/progress-page-test-data';
+import { Step } from '../gql/graphql';
 
-// const achievements = gql(`
-//     query achievements {
-//         me {
-//             achievements {
-//                 name
-//                 subtitle
-//                 description
-//                 image
-//                 alternativeText
-//                 actionType
-//                 achievementType
-//                 achievementState
-//                 steps {
-//                     description
-//                     isActive
-//                 }
-//                 maxSteps
-//                 currentStep
-//                 newAchievement
-//                 progressDescription
-//                 actionName
-//                 actionRedirectLink
-//             }
-//         }
-//     }
-// `);
+const achievements = gql(`
+    query achievements {
+        me {
+            achievements {
+                name
+                subtitle
+                description
+                image
+                alternativeText
+                actionType
+                achievementType
+                achievementState
+                steps {
+                    description
+                    isActive
+                }
+                maxSteps
+                currentStep
+                newAchievement
+                progressDescription
+                actionName
+                actionRedirectLink
+            }
+        }
+    }
+`);
 
 const Progress = () => {
     const margin = useBreakpointValue({ base: '4', md: '0' });
-    // const { data, error, loading } = useQuery(achievements);
-    // if (loading || error || !data) return <p>Loading...</p>;
-    // const foundAchievements: Achievement[] = data.me.achievements.map((achievement) => {
-    const foundAchievements: Achievement[] = achievements.map((achievement) => {
+    const { data, error, loading } = useQuery(achievements);
+    if (loading || error || !data) return <p>Loading...</p>;
+    const foundAchievements: Achievement[] = data.me.achievements.map((achievement) => {
         // eslint-disable-next-line react-hooks/rules-of-hooks
         const actionType: keyof typeof ActionTypes | null = checkAndGetSecondEnumValue(achievement.actionType, ActionTypes);
         const achievementType: keyof typeof AchievementType | null = checkAndGetSecondEnumValue(achievement.achievementType, AchievementType);
