@@ -47,7 +47,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
     });
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement>(achievements[0]);
     const [openModal, setOpenModal] = useState<boolean>(false);
-    const isNewAchievement = useMemo(() => {
+    const isisNewAchievement = useMemo(() => {
         if (selectedAchievement === undefined || !openModal) {
             return false;
         } else if (selectedAchievement.achievementType === AchievementType.STREAK) {
@@ -56,7 +56,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
             }
             return false;
         }
-        return selectedAchievement.newAchievement;
+        return selectedAchievement.isNewAchievement;
     }, [selectedAchievement, openModal]);
 
     const mobile = useBreakpointValue({ base: true, md: false });
@@ -120,7 +120,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
-                    newAchievement={isNewAchievement}
+                    isNewAchievement={isisNewAchievement}
                     steps={selectedAchievement.steps}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
@@ -185,10 +185,10 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                                         alternativeText={''}
                                         subtitle={achievement.subtitle}
                                         title={achievement.name}
-                                        progressDescription={achievement.steps ? achievement.steps[achievement.currentStep - 1]?.description : undefined}
+                                        progressDescription={achievement.steps ? achievement.steps[achievement.currentStep - 1]?.name : undefined}
                                         maxSteps={achievement.maxSteps}
                                         currentStep={achievement.currentStep}
-                                        newAchievement={achievement.newAchievement}
+                                        isNewAchievement={achievement.isNewAchievement}
                                         onClick={() => {
                                             setSelectedAchievement(achievement);
                                             setOpenModal(true);

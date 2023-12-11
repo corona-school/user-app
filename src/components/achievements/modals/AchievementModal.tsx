@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
 import ArrowGreen from '../../../assets/icons/icon_arrow_right_green.svg';
-import { AchievementState, AchievementType, PolaroidImageSize, ShineSize } from '../../../types/achievement';
+import { AchievementState, AchievementType, PolaroidImageSize, ShineSize, Step } from '../../../types/achievement';
 import AchievementBadge from '../AchievementBadge';
-import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
+import NewAchievementShine from '../cosmetics/NewAchievementShine';
 
 type AchievementModalProps = {
     title: string;
@@ -17,11 +17,8 @@ type AchievementModalProps = {
     achievementType: AchievementType;
     buttonText?: string;
     buttonLink?: string;
-    newAchievement?: boolean;
-    steps?: {
-        description: string;
-        isActive?: boolean;
-    }[];
+    isNewAchievement?: boolean;
+    steps?: Step[];
     maxSteps?: number;
     currentStep?: number;
     progressDescription?: string;
@@ -37,7 +34,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     description,
     buttonText,
     buttonLink,
-    newAchievement,
+    isNewAchievement,
     steps,
     maxSteps,
     currentStep,
@@ -147,7 +144,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     isRecord={maxSteps === currentStep}
                                     isLarge
                                 />
-                                {newAchievement && (
+                                {isNewAchievement && (
                                     <VStack position="absolute" width="fit-content" height={polaroidImageSize.width} justifyContent="flex-end">
                                         <Box width={polaroidImageSize.width} height={polaroidImageSize.height}>
                                             <NewAchievementShine size={shineSize} isLarge />
@@ -162,7 +159,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     </Text>
                                 ) : (
                                     <HStack alignItems="center" space="12px" height="20px">
-                                        {newAchievement && <AchievementBadge isInline />}
+                                        {isNewAchievement && <AchievementBadge isInline />}
                                         <Text color={textColor}>{title}</Text>
                                     </HStack>
                                 )}
@@ -186,7 +183,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     <Box width="80%">
                                         {achievementState === AchievementState.COMPLETED ? (
                                             <Box width="100%" display="flex" alignItems="center">
-                                                {newAchievement ? (
+                                                {isNewAchievement ? (
                                                     <AchievementBadge isInline />
                                                 ) : (
                                                     <Text color="primary.500" textAlign="center">

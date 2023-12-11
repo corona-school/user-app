@@ -5,13 +5,13 @@ import { AchievementState } from '../../../types/achievement';
 type IndicatorStepProps = {
     step: number;
     maxSteps: number;
-    description: string;
+    name: string;
     achievementState?: AchievementState;
     isActive?: boolean;
     isInactive?: boolean;
 };
 
-const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, description, achievementState, isActive, isInactive }) => {
+const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, name, achievementState, isActive, isInactive }) => {
     const offsetPerStep = 100 / (maxSteps - 1);
     const offset = offsetPerStep * step;
     const textColor = achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900';
@@ -45,7 +45,7 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, descripti
                 )}
             </VStack>
             <Text position="absolute" fontSize="12px" textAlign="center" top="32px" width={`calc(600px / ${maxSteps})`} color={textColor}>
-                {description}
+                {name}
             </Text>
         </VStack>
     );

@@ -60,14 +60,14 @@ type Achievement = {
     steps?: Step[];
     maxSteps: number;
     currentStep: number;
-    newAchievement?: boolean;
+    isNewAchievement?: boolean;
     progressDescription?: string;
     actionName?: string;
     actionRedirectLink?: string;
 };
 
 type Step = {
-    description: string;
+    name: string;
     isActive?: boolean;
 };
 
