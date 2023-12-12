@@ -1,5 +1,3 @@
-import { Step } from '../gql/graphql';
-
 enum ActionTypes {
     ACTION = 'ACTION',
     WAIT = 'WAIT',
@@ -62,10 +60,15 @@ type Achievement = {
     steps?: Step[];
     maxSteps: number;
     currentStep: number;
-    newAchievement?: boolean;
+    isNewAchievement?: boolean;
     progressDescription?: string;
     actionName?: string;
     actionRedirectLink?: string;
+};
+
+type Step = {
+    name: string;
+    isActive?: boolean;
 };
 
 export { ActionTypes, AchievementType, AchievementState, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };

@@ -13,7 +13,7 @@ type AchievementCardProps = {
     actionType?: ActionTypes;
     image: string | undefined;
     alternativeText: string;
-    newAchievement?: boolean;
+    isNewAchievement?: boolean;
     subtitle: string;
     title: string;
     maxSteps?: number;
@@ -28,7 +28,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     actionType,
     image,
     alternativeText,
-    newAchievement,
+    isNewAchievement,
     subtitle,
     title,
     maxSteps,
@@ -70,7 +70,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
         <Pressable onPress={onClick}>
             <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center" overflow="visible">
                 {showInnerShadow && achievementState === AchievementState.INACTIVE && <InnerShadow deviation={7.5} opacity={0.5} />}
-                {newAchievement && achievementState === AchievementState.COMPLETED && (
+                {isNewAchievement && achievementState === AchievementState.COMPLETED && (
                     <>
                         <AchievementBadge />
                         <VStack
