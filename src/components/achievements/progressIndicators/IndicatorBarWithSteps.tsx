@@ -1,13 +1,11 @@
 import { Box, Progress, Stack, useBreakpointValue } from 'native-base';
 import IndicatorStep from './IndicatorStep';
 import { AchievementState } from '../../../types/achievement';
+import { Step } from '../../../gql/graphql';
 
 type IndicatorBarWithStepsProps = {
     maxSteps: number;
-    steps: {
-        description: string;
-        isActive?: boolean;
-    }[];
+    steps: Step[];
     achievementState?: AchievementState;
 };
 
@@ -29,7 +27,7 @@ const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps,
                 <IndicatorStep
                     step={index}
                     maxSteps={steps.length}
-                    description={step.description}
+                    description={step.name}
                     isActive={step.isActive}
                     isInactive={typeof currentStep === 'number' ? index > currentStep : true}
                     achievementState={achievementState}

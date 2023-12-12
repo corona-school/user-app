@@ -37,7 +37,7 @@ const AchievementBadge: React.FC<AchievementBadgeProps> = ({ isInline }) => {
                 <HStack alignItems="center" space="4px">
                     <Trophy />
                     <Text fontSize="xs" color="primary.900" bold>
-                        {t('achievement.card.newAchievement')}
+                        {t('achievement.card.isNewAchievement')}
                     </Text>
                 </HStack>
             </Text>

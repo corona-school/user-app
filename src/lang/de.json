@@ -1862,7 +1862,7 @@
     },
     "achievement": {
         "card": {
-            "newAchievement": "neuer Erfolg",
+            "isNewAchievement": "neuer Erfolg",
             "finishedStepsInformation": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen",
             "finishedStepsInformationMobile": "{{currentStep}}/{{maxSteps}}"
         },

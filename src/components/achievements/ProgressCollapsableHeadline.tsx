@@ -1,4 +1,4 @@
-import { ChevronDownIcon, HStack, Text, useBreakpointValue, Box, Link, PresenceTransition } from 'native-base';
+import { ChevronDownIcon, HStack, Text, useBreakpointValue, Box, PresenceTransition } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { AchievementState, AchievementType } from '../../types/achievement';
 import { useMemo, useState } from 'react';
