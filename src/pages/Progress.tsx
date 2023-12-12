@@ -70,7 +70,6 @@ const Progress = () => {
         };
         return element;
     });
-
     return (
         <AsNavigationItem
             path="/progress"

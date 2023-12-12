@@ -47,7 +47,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
     });
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement>(achievements[0]);
     const [openModal, setOpenModal] = useState<boolean>(false);
-    const isisNewAchievement = useMemo(() => {
+    const isNewAchievement = useMemo(() => {
         if (selectedAchievement === undefined || !openModal) {
             return false;
         } else if (selectedAchievement.achievementType === AchievementType.STREAK) {
@@ -120,7 +120,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
-                    isNewAchievement={isisNewAchievement}
+                    isNewAchievement={isNewAchievement}
                     steps={selectedAchievement.steps}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
