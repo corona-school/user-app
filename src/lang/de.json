@@ -488,7 +488,8 @@
                 "Bitte wähle einen längeren Betreff (mindestens 5 Zeichen).",
                 "Bitte schreibe einen längere Nachricht (mindestens 5 Zeichen).",
                 "Du musst den Datenschutzbestimmungen zustimmen."
-            ]
+            ],
+            "readsonDisabledModal": "Du musst bestätigen, dass du diese Nachricht melden möchtest."
         },
         "reportSuccessToast": "Die Nachricht wurde erfolgreich gemeldet und wird zeitnah überprüft."
     },
