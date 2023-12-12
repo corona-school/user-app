@@ -4,9 +4,9 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import { Box, useBreakpointValue } from 'native-base';
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { Achievement, AchievementState, AchievementType, ActionTypes } from '../types/achievement';
+import { Achievement, AchievementState, AchievementType, ActionTypes, Step } from '../types/achievement';
 import { checkAndGetSecondEnumValue } from '../helper/achievement-helper';
-import { Step } from '../gql/graphql';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 const achievements = gql(`
     query achievements {
@@ -39,7 +39,7 @@ const achievements = gql(`
 const Progress = () => {
     const margin = useBreakpointValue({ base: '4', md: '0' });
     const { data, error, loading } = useQuery(achievements);
-    if (loading || error || !data) return <p>Loading...</p>;
+    if (loading || error || !data) return <CenterLoadingSpinner />;
     const foundAchievements: Achievement[] = data.me.achievements.map((achievement) => {
         const actionType: keyof typeof ActionTypes | null = checkAndGetSecondEnumValue(achievement.actionType, ActionTypes);
         const achievementType: keyof typeof AchievementType | null = checkAndGetSecondEnumValue(achievement.achievementType, AchievementType);

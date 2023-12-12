@@ -1,14 +1,13 @@
 import { Text, VStack } from 'native-base';
 import Check from '../../../assets/icons/icon_check.svg';
 import { AchievementState } from '../../../types/achievement';
-import { Maybe } from '../../../gql/graphql';
 
 type IndicatorStepProps = {
     step: number;
     maxSteps: number;
     name: string;
     achievementState?: AchievementState;
-    isActive?: Maybe<boolean>;
+    isActive?: boolean;
     isInactive?: boolean;
 };
 
