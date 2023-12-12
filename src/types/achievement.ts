@@ -49,6 +49,7 @@ enum ShineOffset {
 }
 
 type Achievement = {
+    id: number;
     name: string;
     subtitle: string;
     description: string;

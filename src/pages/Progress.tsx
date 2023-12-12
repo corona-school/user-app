@@ -12,6 +12,7 @@ const achievements = gql(`
     query achievements {
         me {
             achievements {
+                id
                 name
                 subtitle
                 description
@@ -52,6 +53,7 @@ const Progress = () => {
             return element;
         });
         const element: Achievement = {
+            id: achievement.id,
             name: achievement.name,
             subtitle: achievement.subtitle,
             description: achievement.description,
