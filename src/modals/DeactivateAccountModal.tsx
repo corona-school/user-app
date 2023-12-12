@@ -6,6 +6,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import useApollo, { useUserType } from '../hooks/useApollo';
+import DisablebleButton from '../components/DisablebleButton';
 
 // corresponding dissolve reason ids in translation file
 // for now just loop through 0-5 and 0-6 (+1 in loop)
@@ -123,9 +124,15 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
                     </VStack>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button isDisabled={!isValidInput || loadingDeactivate} onPress={deactivate}>
+                    <DisablebleButton
+                        isDisabled={!isValidInput || loadingDeactivate}
+                        reasonDisabled={t('profile.Deactivate.modal.tooltip')}
+                        buttonProps={{
+                            onPress: deactivate,
+                        }}
+                    >
                         {t('profile.Deactivate.modal.btn')}
-                    </Button>
+                    </DisablebleButton>
                 </Modal.Footer>
             </Modal.Content>
         </Modal>

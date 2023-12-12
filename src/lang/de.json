@@ -614,6 +614,7 @@
             "modal": {
                 "title": "Account deaktivieren",
                 "btn": "Account deaktivieren",
+                "tooltip": "Du musst einen Grund angeben.",
                 "other": {
                     "placeholder": "Deaktivierungsgrund"
                 },
