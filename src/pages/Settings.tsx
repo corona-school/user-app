@@ -44,7 +44,7 @@ const Settings: React.FC = () => {
         }
     `)
     );
-
+    // TODO: Add a setting to get to the progress page ( navigate to /progress )
     return (
         <>
             <WithNavigation
