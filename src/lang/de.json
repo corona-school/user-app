@@ -1997,6 +1997,7 @@
     },
     "reasonsDisabled": {
         "loading": "Es werden noch Daten geladen...",
-        "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an."
+        "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an.",
+        "formIncomplete": "Du musst alle Felder ausfüllen."
     }
 }
