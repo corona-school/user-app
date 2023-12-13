@@ -31,6 +31,7 @@ import PasswordInput from '../components/PasswordInput';
 import AlertMessage from '../widgets/AlertMessage';
 import { REDIRECT_PASSWORD } from '../Utility';
 import isEmail from 'validator/lib/isEmail';
+import DisablebleButton from '../components/DisablebleButton';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -249,9 +250,15 @@ export default function Login() {
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button isDisabled={pwEmail.length < 6 || _resetPW?.loading} onPress={() => resetPassword(pwEmail)}>
+                            <DisablebleButton
+                                isDisabled={pwEmail.length < 6 || _resetPW?.loading}
+                                reasonDisabled={_resetPW?.loading ? t('reasonsDisabled.loading') : t('registration.hint.password.length')}
+                                buttonProps={{
+                                    onPress: () => resetPassword(pwEmail),
+                                }}
+                            >
                                 {t('login.passwordReset.btn')}
-                            </Button>
+                            </DisablebleButton>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -394,13 +401,18 @@ export default function Login() {
                     )}
 
                     <Box paddingTop={4} marginX="90px" display="block">
-                        <Button
-                            onPress={showPasswordField ? attemptLogin : getLoginOption}
-                            width="100%"
+                        <DisablebleButton
                             isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
+                            reasonDisabled={
+                                _sendToken.loading || _determineLoginOptions.loading ? t('reasonsDisabled.loading') : t('reasonsDisabled.invalidEMail')
+                            }
+                            buttonProps={{
+                                onPress: showPasswordField ? attemptLogin : getLoginOption,
+                                width: '100%',
+                            }}
                         >
                             {t('signin')}
-                        </Button>
+                        </DisablebleButton>
                     </Box>
 
                     <Box paddingTop={10} paddingBottom={1}>
