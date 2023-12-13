@@ -1,9 +1,10 @@
-import { HStack, Pressable, View, Text, VStack, Button, Image, Box, Flex, useTheme, Row, Modal, Stack, useBreakpointValue } from 'native-base';
+import { HStack, Pressable, View, Text, VStack, Image, Box, Flex, useTheme, Row, Modal, Stack, useBreakpointValue } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SearchBar from '../components/SearchBar';
 import UnsplashPagination from '../components/UnsplashPagination';
+import DisablebleButton from '../components/DisablebleButton';
 
 type Props = {
     showUnsplashModal: boolean;
@@ -144,9 +145,15 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
                 </Modal.Body>
                 <Modal.Footer bgColor="primary.900">
                     <Box alignItems="flex-end" justifyContent="center" paddingRight={space['0.5']}>
-                        <Button onPress={pickPhoto} isDisabled={!selectedPhoto}>
+                        <DisablebleButton
+                            isDisabled={!selectedPhoto}
+                            reasonDisabled={t('course.unsplash.tooltipBtn')}
+                            buttonProps={{
+                                onPress: pickPhoto,
+                            }}
+                        >
                             {t('course.unsplash.choose')}
-                        </Button>
+                        </DisablebleButton>
                     </Box>
                 </Modal.Footer>
             </Modal.Content>
