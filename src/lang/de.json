@@ -1994,5 +1994,8 @@
         "Pupil": "Schüler:in",
         "Retiree": "Rentner:in",
         "Student": "Student:in"
+    },
+    "reasonsDisabled": {
+        "loading": "Es werden noch Daten geladen..."
     }
 }
