@@ -37,6 +37,8 @@ const query = gql(`
                     pupilEmail
                     appointments {
                         id
+                        matchId
+                        subcourseId
                     }
                 }
                 subcoursesInstructing {

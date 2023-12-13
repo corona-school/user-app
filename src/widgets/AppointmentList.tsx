@@ -48,6 +48,7 @@ const AppointmentList: React.FC<Props> = ({
     const { t } = useTranslation();
     const scrollViewRef = useRef<HTMLElement>(null);
 
+    console.log('APPOINTMENTS', appointments);
     const maxListWidth = useBreakpointValue({
         base: 'full',
         lg: isReadOnlyList || isFullWidth ? 'full' : '90%',
@@ -156,6 +157,8 @@ const AppointmentList: React.FC<Props> = ({
                         isOrganizer={appointment.isOrganizer}
                         displayName={appointment.displayName}
                         appointmentId={appointment.id}
+                        subcourseId={appointment.subcourseId}
+                        matchId={appointment.matchId ?? 0}
                     />
                 </Box>
             </Box>
