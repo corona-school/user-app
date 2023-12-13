@@ -1996,6 +1996,7 @@
         "Student": "Student:in"
     },
     "reasonsDisabled": {
-        "loading": "Es werden noch Daten geladen..."
+        "loading": "Es werden noch Daten geladen...",
+        "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an."
     }
 }
