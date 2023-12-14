@@ -1,14 +1,15 @@
 import { Box, VStack, PresenceTransition, Image, useBreakpointValue } from 'native-base';
 import CompletePolaroid from './polaroid/CompletePolaroid';
 import EmptyPolaroidField from './polaroid/EmptyPolaroidField';
-import { AchievementState, AchievementType, PuzzleImageSize, StreakImageSize } from '../../types/achievement';
+import { PuzzleImageSize, StreakImageSize } from '../../types/achievement';
 import StreakImageContainer from './streak/StreakImageContainer';
+import { Achievement_State, Achievement_Type_Enum } from '../../gql/graphql';
 
 type AchievementImageContainerProps = {
     image: string | undefined;
     alternativeText: string;
-    achievementType: AchievementType;
-    achievementState?: AchievementState;
+    achievementType: Achievement_Type_Enum;
+    achievementState?: Achievement_State;
     streak?: number;
     isRecord?: boolean;
     isLarge?: boolean;
@@ -35,10 +36,10 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
     const puzzleBorderRadius = useBreakpointValue({ base: isLarge ? '3px' : '2px', md: '3px', lg: isLarge ? '4px' : '3px' });
     const shadow = useBreakpointValue({ base: 3, md: 5, lg: 9 });
     switch (achievementType) {
-        case AchievementType.TIERED:
+        case Achievement_Type_Enum.Tiered:
             return (
                 <VStack alignItems="center" width="fit-content">
-                    {image && achievementState === AchievementState.COMPLETED ? (
+                    {image && achievementState === Achievement_State.Completed ? (
                         <PresenceTransition
                             initial={{
                                 rotate: '-5deg',
@@ -51,14 +52,14 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
                     )}
                 </VStack>
             );
-        case AchievementType.STREAK:
+        case Achievement_Type_Enum.Streak:
             if (!image) return null;
             return (
                 <VStack alignItems="center" width={streakImageSize}>
                     <StreakImageContainer streak={streak || 0} image={image} alternativeText={alternativeText} size={streakImageSize} isRecord={isRecord} />
                 </VStack>
             );
-        case AchievementType.SEQUENTIAL:
+        case Achievement_Type_Enum.Sequential:
             return (
                 <VStack alignItems="center" paddingY="4">
                     <Box
@@ -66,7 +67,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
                         height={puzzleBorderWidth}
                         borderRadius={puzzleBorderRadius}
                         overflow={'hidden'}
-                        shadow={achievementState === AchievementState.COMPLETED && shadow}
+                        shadow={achievementState === Achievement_State.Completed && shadow}
                     >
                         <Image src={image} alt={alternativeText} width="100%" height="100%" />
                     </Box>

@@ -4,13 +4,14 @@ import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardProgressDescription from './CardProgressDescription';
-import { AchievementState, AchievementType, ActionTypes, PolaroidImageSize, ShineSize } from '../../../types/achievement';
+import { PolaroidImageSize, ShineSize } from '../../../types/achievement';
 import InnerShadow from '../cosmetics/InnerShadow';
+import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../../../gql/graphql';
 
 type AchievementCardProps = {
-    achievementState: AchievementState;
-    achievementType: AchievementType;
-    actionType?: ActionTypes;
+    achievementState: Achievement_State;
+    achievementType: Achievement_Type_Enum;
+    actionType?: Achievement_Action_Type_Enum;
     image: string | undefined;
     alternativeText: string;
     isNewAchievement?: boolean;
@@ -44,14 +45,14 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const justifyCardContentMobile = useBreakpointValue({ base: 'flex-end', md: 'center' });
     const justifyCardContentUnfinished = useBreakpointValue({
         base: 'flex-start',
-        md: achievementType === AchievementType.SEQUENTIAL ? 'space-between' : justifyCardContentMobile,
+        md: achievementType === Achievement_Type_Enum.Sequential ? 'space-between' : justifyCardContentMobile,
     });
     const cardSpacing = useBreakpointValue({ base: 0, md: 2 });
     const width = useBreakpointValue({ base: '100%', md: '280px' });
     const maxTextWidth = useBreakpointValue({ base: 'calc(100% - 64px)', md: '100%' });
     const textAlignment = useBreakpointValue({ base: 'left', md: 'center' });
     const textContainerWidth = useBreakpointValue({ base: '100%', md: '214px' });
-    const cardHeight = useBreakpointValue({ base: '114px', md: achievementState === AchievementState.COMPLETED ? '300px' : '360px' });
+    const cardHeight = useBreakpointValue({ base: '114px', md: achievementState === Achievement_State.Completed ? '300px' : '360px' });
     const borderWidth = useBreakpointValue({ base: 'none', md: '1px' });
     const paddingX = useBreakpointValue({ base: '16px', md: '32px' });
     const bgColorIncomplete = useBreakpointValue({ base: 'white', md: 'gray.50' });
@@ -69,8 +70,8 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     return (
         <Pressable onPress={onClick}>
             <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center" overflow="visible">
-                {showInnerShadow && achievementState === AchievementState.INACTIVE && <InnerShadow deviation={7.5} opacity={0.5} />}
-                {isNewAchievement && achievementState === AchievementState.COMPLETED && (
+                {showInnerShadow && achievementState === Achievement_State.Inactive && <InnerShadow deviation={7.5} opacity={0.5} />}
+                {isNewAchievement && achievementState === Achievement_State.Completed && (
                     <>
                         <AchievementBadge />
                         <VStack
@@ -90,26 +91,26 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 <Stack
                     direction={cardFlexDirection}
                     alignItems="center"
-                    justifyContent={achievementState !== AchievementState.COMPLETED ? 'space-between' : justifyCardContentUnfinished}
+                    justifyContent={achievementState !== Achievement_State.Completed ? 'space-between' : justifyCardContentUnfinished}
                     space={cardSpacing}
                     width={width}
                     height={cardHeight}
-                    borderColor={achievementState === AchievementState.COMPLETED ? 'primary.900' : 'primary.grey'}
+                    borderColor={achievementState === Achievement_State.Completed ? 'primary.900' : 'primary.grey'}
                     borderRadius="8px"
                     borderWidth={borderWidth}
                     paddingY={'16px'}
                     paddingX={paddingX}
-                    borderStyle={achievementState === AchievementState.INACTIVE ? 'dashed' : 'solid'}
+                    borderStyle={achievementState === Achievement_State.Inactive ? 'dashed' : 'solid'}
                     backgroundColor={
-                        achievementState === AchievementState.ACTIVE
+                        achievementState === Achievement_State.Active
                             ? 'white'
-                            : achievementState === AchievementState.COMPLETED
+                            : achievementState === Achievement_State.Completed
                             ? 'primary.900'
                             : bgColorIncomplete
                     }
                 >
                     <AchievementImageContainer
-                        image={achievementState !== AchievementState.COMPLETED && achievementType === AchievementType.TIERED ? undefined : image}
+                        image={achievementState !== Achievement_State.Completed && achievementType === Achievement_Type_Enum.Tiered ? undefined : image}
                         alternativeText={alternativeText}
                         achievementType={achievementType}
                         achievementState={achievementState}
@@ -118,7 +119,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                         <Stack space="1" alignItems={textAlignment} width={textContainerWidth}>
                             <Text
                                 fontSize="12px"
-                                color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
+                                color={achievementState === Achievement_State.Completed ? 'white' : 'primary.900'}
                                 width="100%"
                                 textAlign={textAlignment}
                             >
@@ -128,7 +129,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                 width="100%"
                                 fontSize="16px"
                                 lineHeight="sm"
-                                color={achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900'}
+                                color={achievementState === Achievement_State.Completed ? 'white' : 'primary.900'}
                                 bold
                                 numberOfLines={2}
                                 overflow="hidden"
@@ -137,7 +138,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                 {title}
                             </Text>
                         </Stack>
-                        {achievementState !== AchievementState.COMPLETED && (
+                        {achievementState !== Achievement_State.Completed && (
                             <VStack space={indicatorTextSpace} width="100%">
                                 {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
                                 {progressDescription && (

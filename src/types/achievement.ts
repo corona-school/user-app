@@ -1,21 +1,4 @@
-enum ActionTypes {
-    ACTION = 'ACTION',
-    WAIT = 'WAIT',
-    APPOINTMENT = 'APPOINTMENT',
-    INFO = 'INFO',
-}
-
-enum AchievementType {
-    SEQUENTIAL = 'SEQUENTIAL',
-    TIERED = 'TIERED',
-    STREAK = 'STREAK',
-}
-
-enum AchievementState {
-    INACTIVE = 'INACTIVE',
-    ACTIVE = 'ACTIVE',
-    COMPLETED = 'COMPLETED',
-}
+import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum, Step } from '../gql/graphql';
 
 enum PuzzleImageSize {
     SMALL = '62px',
@@ -55,9 +38,9 @@ type Achievement = {
     description: string;
     image: string;
     alternativeText: string;
-    actionType?: ActionTypes;
-    achievementType: AchievementType;
-    achievementState: AchievementState;
+    actionType?: Achievement_Action_Type_Enum;
+    achievementType: Achievement_Type_Enum;
+    achievementState: Achievement_State;
     steps?: Step[];
     maxSteps: number;
     currentStep: number;
@@ -67,11 +50,6 @@ type Achievement = {
     actionRedirectLink?: string;
 };
 
-type Step = {
-    name: string;
-    isActive?: boolean;
-};
+export { Achievement_Action_Type_Enum, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };
 
-export { ActionTypes, AchievementType, AchievementState, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };
-
-export type { Achievement, Step };
+export type { Achievement };

@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import AchievementCard from './AchievementCard';
-import { AchievementState, AchievementType, ActionTypes } from '../../../types/achievement';
+import { Achievement_State, Achievement_Type_Enum, Achievement_Action_Type_Enum } from '../../../gql/graphql';
 import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
 import SequenceExample01 from '../../../assets/images/achievements/Sequence_Example_01.png';
 import SequenceExample04 from '../../../assets/images/achievements/Sequence_Example_04.png';
@@ -13,8 +13,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
 
 <Story name="Achievement Completed Card">
     <AchievementCard
-        achievementState={AchievementState.COMPLETED}
-        achievementType={AchievementType.TIERED}
+        achievementState={Achievement_State.Completed}
+        achievementType={Achievement_Type_Enum.Tiered}
         image={KanufahrtDschungel}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         isNewAchievement={false}
@@ -27,8 +27,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
 
 <Story name="New Achievement Completed Card">
     <AchievementCard
-        achievementState={AchievementState.COMPLETED}
-        achievementType={AchievementType.SEQUENTIAL}
+        achievementState={Achievement_State.Completed}
+        achievementType={Achievement_Type_Enum.Sequential}
         image={SequenceExample04}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         isNewAchievement
@@ -41,9 +41,9 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
 
 <Story name="Achievement Active Card">
     <AchievementCard
-        achievementState={AchievementState.ACTIVE}
-        achievementType={AchievementType.TIERED}
-        actionType={ActionTypes.WAIT}
+        achievementState={Achievement_State.Active}
+        achievementType={Achievement_Type_Enum.Tiered}
+        actionType={Achievement_Action_Type_Enum.Wait}
         image={KanufahrtDschungel}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         isNewAchievement
@@ -59,9 +59,9 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
 
 <Story name="Achievement Inactive Card">
     <AchievementCard
-        achievementState={AchievementState.INACTIVE}
-        achievementType={AchievementType.SEQUENTIAL}
-        actionType={ActionTypes.ACTION}
+        achievementState={Achievement_State.Inactive}
+        achievementType={Achievement_Type_Enum.Sequential}
+        actionType={Achievement_Action_Type_Enum.Action}
         image={SequenceExample01}
         alt="ein Polaroid Bild von Loki auf einer Kanufahrt durch den Dschungel"
         isNewAchievement

@@ -4,11 +4,11 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import { Box, useBreakpointValue } from 'native-base';
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { Achievement, AchievementState, AchievementType, ActionTypes, Step } from '../types/achievement';
-import { checkAndGetSecondEnumValue } from '../helper/achievement-helper';
+import { Achievement } from '../types/achievement';
+import { convertDataToAchievement } from '../helper/achievement-helper';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
-const achievements = gql(`
+const achievementsQuery = gql(`
     query achievements {
         me {
             achievements {
@@ -35,50 +35,48 @@ const achievements = gql(`
         }
     }
 `);
+const inactiveAchievementsQuery = gql(`
+    query inactiveAchievements {
+        me {
+            inactiveAchievements {
+                id
+                name
+                subtitle
+                description
+                image
+                alternativeText
+                actionType
+                achievementType
+                achievementState
+                steps {
+                    name
+                    isActive
+                }
+                maxSteps
+                currentStep
+                isNewAchievement
+                progressDescription
+                actionName
+                actionRedirectLink
+            }
+        }
+    }
+`);
 
 const Progress = () => {
     const margin = useBreakpointValue({ base: '4', md: '0' });
-    const { data, error, loading } = useQuery(achievements);
-    if (loading || error || !data) return <CenterLoadingSpinner />;
-    const foundAchievements: Achievement[] = data.me.achievements.map((achievement) => {
-        const actionType: keyof typeof ActionTypes | null = checkAndGetSecondEnumValue(achievement.actionType, ActionTypes);
-        const achievementType: keyof typeof AchievementType | null = checkAndGetSecondEnumValue(achievement.achievementType, AchievementType);
-        const achievementState: keyof typeof AchievementState | null = checkAndGetSecondEnumValue(achievement.achievementState, AchievementState);
-        if (!achievementType || !achievementState) throw new Error(`Error while trying to get the second enum value of ${achievement.achievementType}`);
-        const steps = achievement.steps?.map((step) => {
-            const element: Step = {
-                name: step.name,
-                isActive: step.isActive ? true : false,
-            };
-            return element;
-        });
-        const element: Achievement = {
-            id: achievement.id,
-            name: achievement.name,
-            subtitle: achievement.subtitle,
-            description: achievement.description,
-            image: achievement.image,
-            alternativeText: achievement.alternativeText,
-            actionType: actionType ? ActionTypes[actionType] : undefined,
-            achievementType: AchievementType[achievementType],
-            achievementState: AchievementState[achievementState],
-            steps: steps,
-            maxSteps: achievement.maxSteps,
-            currentStep: achievement.currentStep,
-            isNewAchievement: achievement.isNewAchievement ? true : false,
-            progressDescription: achievement.progressDescription ? achievement.progressDescription : undefined,
-            actionName: achievement.actionName ? achievement.actionName : undefined,
-            actionRedirectLink: achievement.actionRedirectLink ? achievement.actionRedirectLink : undefined,
-        };
-        return element;
-    });
+    const { data, error, loading } = useQuery(achievementsQuery);
+    const { data: inactiveData, error: inactiveError, loading: inactiveLoading } = useQuery(inactiveAchievementsQuery);
+    if (loading || inactiveLoading || error || inactiveError || !data || !inactiveData) return <CenterLoadingSpinner />;
+    const foundAchievements: Achievement[] = convertDataToAchievement({ data, type: 'achievements' });
+    const foundInactiveAchievements: Achievement[] = convertDataToAchievement({ data: inactiveData, type: 'inactiveAchievements' });
     return (
         <AsNavigationItem
             path="/progress"
             children={
                 <WithNavigation showBack headerTitle="Progress">
                     <Box mx={margin}>
-                        <AchievementProgress achievements={foundAchievements} />
+                        <AchievementProgress achievements={foundAchievements} inactiveAchievements={foundInactiveAchievements} />
                     </Box>
                 </WithNavigation>
             }

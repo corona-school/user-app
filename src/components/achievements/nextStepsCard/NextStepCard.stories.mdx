@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import NextStepsCard from './NextStepsCard';
-import { ActionTypes } from '../../../types/achievement';
+import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
 import NextStepsExample01 from '../../../assets/images/achievements/Next_Steps_Example_01.png';
 import IconVideoKonf from '../../../assets/images/achievements/Icon_VideoKonf.png';
 
@@ -18,7 +18,7 @@ import IconVideoKonf from '../../../assets/images/achievements/Icon_VideoKonf.pn
         maxSteps={4}
         currentStep={1}
         actionDescription="Jetzt zur Prüfung freigeben"
-        actionType={ActionTypes.ACTION}
+        actionType={Achievement_Action_Type_Enum.Action}
     />
 </Story>
 
@@ -31,6 +31,6 @@ import IconVideoKonf from '../../../assets/images/achievements/Icon_VideoKonf.pn
         name="Lust auf mehr?"
         description="Möchtest du weitere Schüler:innen un-terstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an."
         actionDescription="Jetzt Möglichkeiten ansehen"
-        actionType={ActionTypes.ACTION}
+        actionType={Achievement_Action_Type_Enum.Action}
     />
 </Story>

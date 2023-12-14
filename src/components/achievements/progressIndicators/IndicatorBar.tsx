@@ -1,11 +1,11 @@
 import { Box, Progress, Stack, Text, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AchievementType } from '../../../types/achievement';
+import { Achievement_Type_Enum } from '../../../gql/graphql';
 
 type IndicatorBarProps = {
     maxSteps: number;
     currentStep?: number;
-    achievementType?: AchievementType;
+    achievementType?: Achievement_Type_Enum;
     centerText?: boolean;
     largeText?: boolean;
     fullWidth?: boolean;
@@ -16,10 +16,10 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
     const progress = currentStep ? (currentStep / maxSteps) * 100 : 0;
     const leftSteps = currentStep ? maxSteps - currentStep : maxSteps;
 
-    const flexDirection = useBreakpointValue({ base: achievementType === AchievementType.STREAK ? 'column' : 'row-reverse', md: 'column-reverse' });
+    const flexDirection = useBreakpointValue({ base: achievementType === Achievement_Type_Enum.Streak ? 'column' : 'row-reverse', md: 'column-reverse' });
     const alignItems = useBreakpointValue({ base: 'center', md: centerText ? 'center' : 'left' });
     const space = useBreakpointValue({ base: 1, md: 1 });
-    const textWidth = useBreakpointValue({ base: achievementType === AchievementType.STREAK ? '100%' : '20%', md: centerText ? '100%' : 'fit-content' });
+    const textWidth = useBreakpointValue({ base: achievementType === Achievement_Type_Enum.Streak ? '100%' : '20%', md: centerText ? '100%' : 'fit-content' });
     const alignText = useBreakpointValue({ base: 'right', md: centerText ? 'center' : 'left' });
     const finishedStepsInformation = useBreakpointValue({
         base: `${t('achievement.card.finishedStepsInformationMobile', { currentStep, maxSteps })}`,
@@ -29,7 +29,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
         base: fullWidth || largeText ? '100%' : '80%',
         md: fullWidth ? '100%' : '80%',
     });
-    const fontSize = achievementType === AchievementType.STREAK ? (largeText ? '14px' : '10px') : centerText ? '12px' : '14px';
+    const fontSize = achievementType === Achievement_Type_Enum.Streak ? (largeText ? '14px' : '10px') : centerText ? '12px' : '14px';
     return (
         <Stack direction={flexDirection} alignItems={alignItems} space={space}>
             <Text
@@ -42,7 +42,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
                 overflow="hidden"
                 ellipsizeMode="tail"
             >
-                {achievementType === AchievementType.STREAK
+                {achievementType === Achievement_Type_Enum.Streak
                     ? `${leftSteps === 0 ? `${t('achievement.modal.record', { record: maxSteps })}` : `${t('achievement.modal.streak', { leftSteps })}`}`
                     : `${finishedStepsInformation}`}
             </Text>

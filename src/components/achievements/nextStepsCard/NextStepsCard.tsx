@@ -1,6 +1,6 @@
 import { Image, VStack, Text, HStack, Box, Heading } from 'native-base';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
-import { ActionTypes } from '../../../types/achievement';
+import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
 import ArrowRight from '../../../assets/icons/icon_arrow_right_yellow.svg';
 import Calendar from '../../../assets/icons/icon_calendar_yellow.svg';
 import Clock from '../../../assets/icons/icon_clock_yellow.svg';
@@ -11,7 +11,7 @@ type NextStepsCardProps = {
     title: string;
     name: string;
     actionDescription: string;
-    actionType: ActionTypes;
+    actionType: Achievement_Action_Type_Enum;
     maxSteps?: number;
     currentStep?: number;
     description?: string;
@@ -20,16 +20,16 @@ type NextStepsCardProps = {
 const NextStepsCard: React.FC<NextStepsCardProps> = ({ image, title, name, actionDescription, actionType, maxSteps, currentStep, description }) => {
     let icon;
     switch (actionType) {
-        case ActionTypes.ACTION:
+        case Achievement_Action_Type_Enum.Action:
             icon = <ArrowRight />;
             break;
-        case ActionTypes.APPOINTMENT:
+        case Achievement_Action_Type_Enum.Appointment:
             icon = <Calendar />;
             break;
-        case ActionTypes.INFO:
+        case Achievement_Action_Type_Enum.Info:
             icon = <Info />;
             break;
-        case ActionTypes.WAIT:
+        case Achievement_Action_Type_Enum.Wait:
             icon = <Clock />;
             break;
         default:

@@ -1,6 +1,7 @@
 import { HStack, VStack, Text, useBreakpointValue, Box, Pressable } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
-import { AchievementType, ActionTypes, ShineSize } from '../../../types/achievement';
+import { ShineSize } from '../../../types/achievement';
+import { Achievement_Action_Type_Enum, Achievement_Type_Enum } from '../../../gql/graphql';
 import { useTranslation, Trans } from 'react-i18next';
 import CardProgressDescription from '../achievementCard/CardProgressDescription';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
@@ -13,7 +14,7 @@ type StreakCardProps = {
     progressDescription: string;
     image: string;
     alternativeText: string;
-    actionType?: ActionTypes;
+    actionType?: Achievement_Action_Type_Enum;
     onClick: () => void;
 };
 
@@ -33,7 +34,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progress
                     <AchievementImageContainer
                         image={image}
                         alternativeText={alternativeText}
-                        achievementType={AchievementType.STREAK}
+                        achievementType={Achievement_Type_Enum.Streak}
                         streak={streak}
                         isRecord={!record || streak === record}
                     />
@@ -50,12 +51,12 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progress
                             {streak === record ? (
                                 <CardProgressDescription
                                     actionType={actionType}
-                                    achievementType={AchievementType.STREAK}
+                                    achievementType={Achievement_Type_Enum.Streak}
                                     progressDescription={progressDescription}
                                     isColorized
                                 />
                             ) : (
-                                <IndicatorBar maxSteps={record} currentStep={streak} achievementType={AchievementType.STREAK} />
+                                <IndicatorBar maxSteps={record} currentStep={streak} achievementType={Achievement_Type_Enum.Streak} />
                             )}
                         </Box>
                     )}
