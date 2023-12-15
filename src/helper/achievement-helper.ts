@@ -1,4 +1,12 @@
-import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum, AchievementsQuery, InactiveAchievementsQuery, Step } from '../gql/graphql';
+import {
+    Achievement_Action_Type_Enum,
+    Achievement_State,
+    Achievement_Type_Enum,
+    AchievementsQuery,
+    GetOnboardingInfosQuery,
+    InactiveAchievementsQuery,
+    Step,
+} from '../gql/graphql';
 import { Achievement } from '../types/achievement';
 
 function checkAndGetSecondEnumValue<T extends Record<string, string>>(enumElement: any, comparator: T): keyof T | null {
@@ -14,14 +22,26 @@ function checkAndGetSecondEnumValue<T extends Record<string, string>>(enumElemen
 
 export type AchievementsQueryType = {
     type: 'achievements';
-    data: AchievementsQuery;
+    data?: AchievementsQuery;
 };
 export type InactiveAchievementsQueryType = {
     type: 'inactiveAchievements';
-    data: InactiveAchievementsQuery;
+    data?: InactiveAchievementsQuery;
 };
-function convertDataToAchievement(dataWithType: AchievementsQueryType | InactiveAchievementsQueryType): Achievement[] {
-    const query = dataWithType.type === 'achievements' ? dataWithType.data.me.achievements : dataWithType.data.me.inactiveAchievements;
+export type NextStepAchievementsQueryType = {
+    type: 'nextStepAchievements';
+    data?: GetOnboardingInfosQuery;
+};
+function convertDataToAchievement(dataWithType: AchievementsQueryType | InactiveAchievementsQueryType | NextStepAchievementsQueryType): Achievement[] {
+    if (!dataWithType?.data) {
+        return [];
+    }
+    const query =
+        dataWithType.type === 'achievements'
+            ? dataWithType.data.me.achievements
+            : dataWithType.type === 'inactiveAchievements'
+            ? dataWithType.data.me.inactiveAchievements
+            : dataWithType.data.me.nextStepAchievements;
     const foundAchievements = query.map((achievement) => {
         const actionType: keyof typeof Achievement_Action_Type_Enum | null = checkAndGetSecondEnumValue(achievement.actionType, Achievement_Action_Type_Enum);
         const achievementType: keyof typeof Achievement_Type_Enum | null = checkAndGetSecondEnumValue(achievement.achievementType, Achievement_Type_Enum);
