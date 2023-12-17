@@ -1959,6 +1959,7 @@
             "state_manual": "Manuell",
             "state_awaiting": "Warten auf Bestätigung",
             "state_approved": "Bestätigt",
+            "reasonBtnDisabled": "Dein:e Schüler:in muss deine Bescheinigung noch bestätigen.",
             "loading": "Dein Zertifikat wird heruntergeladen",
             "error": "Beim Download ist ein Fehler aufgetreten",
             "download": "Herunterladen",
