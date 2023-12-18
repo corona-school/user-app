@@ -406,6 +406,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             {selectedInformation && (
                 <NextStepModal
                     header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
+                    title={`${t('important')}!`}
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     buttons={selectedInformation.btntxt?.map((txt, index) => ({
                         label: txt,

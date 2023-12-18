@@ -1,8 +1,10 @@
-import { Text, Modal, Button, useTheme, Column } from 'native-base';
+import { Text, Modal, Button, Stack, HStack, VStack, Box } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import IconBook from '../../../assets/icons/icon_buch.svg';
 
 type Props = {
     header: string;
+    title: string;
     description: string;
     buttons?: {
         label: string;
@@ -12,32 +14,45 @@ type Props = {
     onClose: () => any;
 };
 
-const NextStepModal: React.FC<Props> = ({ header, description, buttons, isOpen, onClose }) => {
-    const { space } = useTheme();
+const NextStepModal: React.FC<Props> = ({ header, title, description, buttons, isOpen, onClose }) => {
     const { t } = useTranslation();
     return (
-        <Modal onClose={onClose} isOpen={isOpen}>
-            <Modal.Content>
+        <Modal isOpen={isOpen} onClose={onClose}>
+            <Modal.Content width="530px" maxWidth="unset" padding={6}>
                 <Modal.CloseButton />
-                <Modal.Header>{header}</Modal.Header>
-                <Modal.Body>
-                    <Text>{description}</Text>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Column space={space['1']} width="100%">
-                        {buttons?.map((btn) => (
-                            <Button
-                                variant="outline"
-                                onPress={() => {
-                                    btn.btnfn && btn.btnfn();
-                                }}
-                            >
-                                {btn.label}
-                            </Button>
-                        ))}
-                        <Button onPress={onClose}>{t('cancel')}</Button>
-                    </Column>
-                </Modal.Footer>
+                <VStack space={6}>
+                    <HStack space={6} paddingX={6} paddingTop={6}>
+                        <IconBook />
+                        <VStack>
+                            <Text fontSize="14px">{header}</Text>
+                            <Text fontSize="36px" bold>
+                                {title}
+                            </Text>
+                        </VStack>
+                    </HStack>
+                    <Box>
+                        <Text>{description}</Text>
+                    </Box>
+                    <Box>
+                        <Stack space={4} width="100%" direction={buttons?.length && buttons.length > 1 ? 'row' : 'column'} flexWrap="wrap">
+                            {buttons?.map((btn, idx) => (
+                                <Button
+                                    variant={idx === 0 ? 'solid' : 'outline'}
+                                    onPress={() => {
+                                        btn.btnfn && btn.btnfn();
+                                    }}
+                                    width={buttons.length > 1 ? '232px' : '100%'}
+                                    marginBottom="16px"
+                                >
+                                    {btn.label}
+                                </Button>
+                            ))}
+                        </Stack>
+                        <Button onPress={onClose} width="100%" variant="outline">
+                            {t('cancel')}
+                        </Button>
+                    </Box>
+                </VStack>
             </Modal.Content>
         </Modal>
     );
