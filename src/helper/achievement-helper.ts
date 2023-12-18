@@ -1,52 +1,35 @@
-import {
-    Achievement_Action_Type_Enum,
-    Achievement_State,
-    Achievement_Type_Enum,
-    AchievementsQuery,
-    GetOnboardingInfosQuery,
-    InactiveAchievementsQuery,
-    Step,
-} from '../gql/graphql';
+import { Achievement_State, AchievementsQuery, GetOnboardingInfosQuery, InactiveAchievementsQuery, Step } from '../gql/graphql';
 import { Achievement } from '../types/achievement';
 
-function checkAndGetSecondEnumValue<T extends Record<string, string>>(enumElement: any, comparator: T): keyof T | null {
-    if (typeof enumElement !== 'string') {
-        return null;
-    }
-    const secondEnumElement = Object.keys(comparator).find((key) => comparator[key] === enumElement);
-    if (secondEnumElement) {
-        return secondEnumElement;
-    }
-    return null;
+export enum TypeofAchievementQuery {
+    achievements = 'achievements',
+    inactiveAchievements = 'inactiveAchievements',
+    nextStepAchievements = 'nextStepAchievements',
 }
 
 export type AchievementsQueryType = {
-    type: 'achievements';
+    type: TypeofAchievementQuery.achievements;
     data?: AchievementsQuery;
 };
 export type InactiveAchievementsQueryType = {
-    type: 'inactiveAchievements';
+    type: TypeofAchievementQuery.inactiveAchievements;
     data?: InactiveAchievementsQuery;
 };
 export type NextStepAchievementsQueryType = {
-    type: 'nextStepAchievements';
+    type: TypeofAchievementQuery.nextStepAchievements;
     data?: GetOnboardingInfosQuery;
 };
-function convertDataToAchievement(dataWithType: AchievementsQueryType | InactiveAchievementsQueryType | NextStepAchievementsQueryType): Achievement[] {
-    if (!dataWithType?.data) {
+function convertDataToAchievement(achievementWithType: AchievementsQueryType | InactiveAchievementsQueryType | NextStepAchievementsQueryType): Achievement[] {
+    if (!achievementWithType?.data) {
         return [];
     }
     const query =
-        dataWithType.type === 'achievements'
-            ? dataWithType.data.me.achievements
-            : dataWithType.type === 'inactiveAchievements'
-            ? dataWithType.data.me.inactiveAchievements
-            : dataWithType.data.me.nextStepAchievements;
+        achievementWithType.type === TypeofAchievementQuery.achievements
+            ? achievementWithType.data.me.achievements
+            : achievementWithType.type === TypeofAchievementQuery.inactiveAchievements
+            ? achievementWithType.data.me.inactiveAchievements
+            : achievementWithType.data.me.nextStepAchievements;
     const foundAchievements = query.map((achievement) => {
-        const actionType: keyof typeof Achievement_Action_Type_Enum | null = checkAndGetSecondEnumValue(achievement.actionType, Achievement_Action_Type_Enum);
-        const achievementType: keyof typeof Achievement_Type_Enum | null = checkAndGetSecondEnumValue(achievement.achievementType, Achievement_Type_Enum);
-        const achievementState: keyof typeof Achievement_State | null = checkAndGetSecondEnumValue(achievement.achievementState, Achievement_State);
-        if (!achievementType || !achievementState) throw new Error(`Error while trying to get the second enum value of ${achievement.achievementType}`);
         const steps = achievement.steps?.map((step) => {
             const element: Step = {
                 name: step.name,
@@ -61,9 +44,9 @@ function convertDataToAchievement(dataWithType: AchievementsQueryType | Inactive
             description: achievement.description,
             image: achievement.image,
             alternativeText: achievement.alternativeText,
-            actionType: actionType ? Achievement_Action_Type_Enum[actionType] : undefined,
-            achievementType: Achievement_Type_Enum[achievementType],
-            achievementState: Achievement_State[achievementState],
+            actionType: achievement.actionType,
+            achievementType: achievement.achievementType,
+            achievementState: achievement.achievementState,
             steps,
             maxSteps: achievement.maxSteps,
             currentStep: achievement.currentStep,
@@ -83,4 +66,4 @@ const customSort = (a: Achievement_State, b: Achievement_State): number => {
     return order.indexOf(a) - order.indexOf(b);
 };
 
-export { checkAndGetSecondEnumValue, convertDataToAchievement, customSort };
+export { convertDataToAchievement, customSort };

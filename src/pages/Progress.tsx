@@ -5,7 +5,7 @@ import { Box, useBreakpointValue } from 'native-base';
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement } from '../types/achievement';
-import { convertDataToAchievement } from '../helper/achievement-helper';
+import { TypeofAchievementQuery, convertDataToAchievement } from '../helper/achievement-helper';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 const achievementsQuery = gql(`
@@ -68,8 +68,8 @@ const Progress = () => {
     const { data, error, loading } = useQuery(achievementsQuery);
     const { data: inactiveData, error: inactiveError, loading: inactiveLoading } = useQuery(inactiveAchievementsQuery);
     if (loading || inactiveLoading || error || inactiveError || !data || !inactiveData) return <CenterLoadingSpinner />;
-    const foundAchievements: Achievement[] = convertDataToAchievement({ data, type: 'achievements' });
-    const foundInactiveAchievements: Achievement[] = convertDataToAchievement({ data: inactiveData, type: 'inactiveAchievements' });
+    const foundAchievements: Achievement[] = convertDataToAchievement({ data, type: TypeofAchievementQuery.achievements });
+    const foundInactiveAchievements: Achievement[] = convertDataToAchievement({ data: inactiveData, type: TypeofAchievementQuery.inactiveAchievements });
     return (
         <AsNavigationItem
             path="/progress"

@@ -14,7 +14,7 @@ import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCar
 import { Achievement_Action_Type_Enum } from '../gql/graphql';
 import { Achievement } from '../types/achievement';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
-import { convertDataToAchievement } from '../helper/achievement-helper';
+import { TypeofAchievementQuery, convertDataToAchievement } from '../helper/achievement-helper';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 
 type Props = {
@@ -154,7 +154,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
-    const achievements = convertDataToAchievement({ data, type: 'nextStepAchievements' });
+    const achievements = convertDataToAchievement({ data, type: TypeofAchievementQuery.nextStepAchievements });
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
 
@@ -399,6 +399,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     image={selectedAchievement.image}
                     alternativeText={selectedAchievement.alternativeText}
                     buttonText={selectedAchievement.actionName}
+                    buttonLink={selectedAchievement.actionRedirectLink}
                     onClose={() => setSelectedAchievement(undefined)}
                     showModal={selectedAchievement !== undefined}
                 />
@@ -428,27 +429,28 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     return (
                         <NextStepsCard
                             key={index}
-                            title={info.title}
-                            name={`${t('important')}!`}
+                            title={`${t('important')}!`}
+                            name={info.title}
                             description={info.desciption}
                             actionDescription={t('moreInfoButton')}
                             actionType={Achievement_Action_Type_Enum.Action}
                             onClick={() => {
                                 info.btnfn && info.btnfn();
-                                console.log('CLICKED!');
                             }}
                         />
                     );
                 })}
                 {infos.map((config, index) => {
                     const buttontexts: string[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
+                    const actionDescription =
+                        t(`helperwizard.${config.label}.actionDescription` as unknown as TemplateStringsArray, config.lang) || t('moreInfoButton');
                     return (
                         <NextStepsCard
                             key={`${config.label}-${index}`}
-                            title={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
-                            name={`${t('important')}!`}
+                            title={`${t('important')}!`}
+                            name={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
                             description={t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
-                            actionDescription={t('moreInfoButton')}
+                            actionDescription={actionDescription}
                             actionType={Achievement_Action_Type_Enum.Action}
                             onClick={() => setSelectedInformation({ ...config, btntxt: buttontexts })}
                         />
