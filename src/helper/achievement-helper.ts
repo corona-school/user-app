@@ -1,9 +1,9 @@
-import { Achievement_State, AchievementsQuery, GetOnboardingInfosQuery, InactiveAchievementsQuery, Step } from '../gql/graphql';
+import { Achievement_State, AchievementsQuery, FurtherAchievementsQuery, GetOnboardingInfosQuery, Step } from '../gql/graphql';
 import { Achievement } from '../types/achievement';
 
 export enum TypeofAchievementQuery {
     achievements = 'achievements',
-    inactiveAchievements = 'inactiveAchievements',
+    furtherAchievements = 'furtherAchievements',
     nextStepAchievements = 'nextStepAchievements',
 }
 
@@ -12,8 +12,8 @@ export type AchievementsQueryType = {
     data?: AchievementsQuery;
 };
 export type InactiveAchievementsQueryType = {
-    type: TypeofAchievementQuery.inactiveAchievements;
-    data?: InactiveAchievementsQuery;
+    type: TypeofAchievementQuery.furtherAchievements;
+    data?: FurtherAchievementsQuery;
 };
 export type NextStepAchievementsQueryType = {
     type: TypeofAchievementQuery.nextStepAchievements;
@@ -26,8 +26,8 @@ function convertDataToAchievement(achievementWithType: AchievementsQueryType | I
     const query =
         achievementWithType.type === TypeofAchievementQuery.achievements
             ? achievementWithType.data.me.achievements
-            : achievementWithType.type === TypeofAchievementQuery.inactiveAchievements
-            ? achievementWithType.data.me.inactiveAchievements
+            : achievementWithType.type === TypeofAchievementQuery.furtherAchievements
+            ? achievementWithType.data.me.furtherAchievements
             : achievementWithType.data.me.nextStepAchievements;
     const foundAchievements = query.map((achievement) => {
         const steps = achievement.steps?.map((step) => {
