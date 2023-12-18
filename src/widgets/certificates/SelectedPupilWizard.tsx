@@ -7,6 +7,7 @@ import { Match, Pupil } from '../../gql/graphql';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import { SubjectSelector } from '../SubjectSelector';
 import UserProgress from '../UserProgress';
+import DisablebleButton from '../../components/DisablebleButton';
 
 const isValidNumber = (value: string) => {
     const parsed = parseFloat(value.replace(',', '.'));
@@ -41,6 +42,23 @@ const SelectedPupilWizard = ({
 
     const [hoursPerWeek, setHoursPerWeek] = useState<string>('');
     const [hoursTotal, setHoursTotal] = useState<string>('');
+
+    const onPress = () => {
+        const request = {
+            startDate,
+            endDate,
+            ongoingLessons,
+            hoursPerWeek: toValidNumber(hoursPerWeek)!,
+            hoursTotal: toValidNumber(hoursTotal)!,
+            subjects: subjects.join(', '),
+        };
+
+        setState((prev) => ({
+            ...prev,
+            requestData: { ...prev.requestData, [match.uuid]: request },
+        }));
+        onNext();
+    };
 
     return (
         <>
@@ -122,29 +140,17 @@ const SelectedPupilWizard = ({
                     </Row>
                 </VStack>
 
-                <Button
+                <DisablebleButton
                     isDisabled={
                         !startDate || !endDate || !hoursPerWeek || !hoursTotal || !subjects.length || !isValidNumber(hoursPerWeek) || !isValidNumber(hoursTotal)
                     }
-                    onPress={() => {
-                        const request = {
-                            startDate,
-                            endDate,
-                            ongoingLessons,
-                            hoursPerWeek: toValidNumber(hoursPerWeek)!,
-                            hoursTotal: toValidNumber(hoursTotal)!,
-                            subjects: subjects.join(', '),
-                        };
-
-                        setState((prev) => ({
-                            ...prev,
-                            requestData: { ...prev.requestData, [match.uuid]: request },
-                        }));
-                        onNext();
+                    reasonDisabled={t('reasonsDisabled.formIncomplete')}
+                    buttonProps={{
+                        onPress: onPress,
                     }}
                 >
                     {currentIndex + 1 < pupilCount ? t('certificate.request_for_match.next_pupil') : t('next')}
-                </Button>
+                </DisablebleButton>
                 <Button variant="link" onPress={onPrev}>
                     {t('back')}
                 </Button>
