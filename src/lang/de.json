@@ -2005,6 +2005,7 @@
         "loading": "Es werden noch Daten geladen...",
         "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an.",
         "formIncomplete": "Du musst alle Felder ausfüllen.",
+        "fieldEmpty": "Gebe etwas in dieses Feld ein.",
         "newFieldSameAsOld": "Das hast du bereits ausgewählt.",
         "missingSignature": "Es fehlt eine Unterschrift."
     }

@@ -1,8 +1,9 @@
 import { AddIcon, Button, Checkbox, Column, DeleteIcon, Heading, Row, useTheme, Text, VStack } from 'native-base';
-import { useCallback, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import TextInput from '../../components/TextInput';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import { useTranslation } from 'react-i18next';
+import DisablebleButton from '../../components/DisablebleButton';
 
 type Props = {
     onNext: () => any;
@@ -73,21 +74,24 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
 
             <Row>
                 <TextInput flex="1" value={addOther} onChangeText={setAddOther} _input={{ color: 'darkText' }} />
-                <Button
-                    w={'56px'}
-                    h={'56px'}
-                    backgroundColor={'primary.900'}
+                <DisablebleButton
                     isDisabled={!addOther}
-                    onPress={() => {
-                        setState((prev) => ({
-                            ...prev,
-                            otherActions: [...prev.otherActions, addOther],
-                        }));
-                        setAddOther('');
+                    reasonDisabled={t('reasonsDisabled.fieldEmpty')}
+                    buttonProps={{
+                        w: '56px',
+                        h: '56px',
+                        backgroundColor: 'primary.900',
+                        onPress: () => {
+                            setState((prev) => ({
+                                ...prev,
+                                otherActions: [...prev.otherActions, addOther],
+                            }));
+                            setAddOther('');
+                        },
                     }}
                 >
                     <AddIcon size="lg" color="white" />
-                </Button>
+                </DisablebleButton>
             </Row>
             <Button onPress={onNext}>{t('certificate.request_for_match.submit')}</Button>
             <Button variant="link" onPress={() => setWizardIndex((prev) => prev - 1)}>
