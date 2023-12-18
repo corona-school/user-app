@@ -2,13 +2,14 @@ import { useQuery } from '@apollo/client';
 import { Text, useTheme, VStack, Button, Heading } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import { LFMatch } from '../../types/lernfair/Match';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import Card from '../../components/Card';
 import CardOverlay from '../../components/CardOverlay';
 import { Pressable } from 'react-native';
 import { gql } from '../../gql';
 import { Match } from '../../gql/graphql';
+import { useTranslation } from 'react-i18next';
+import DisablebleButton from '../../components/DisablebleButton';
 
 type Props = {
     onNext: () => any;
@@ -17,6 +18,8 @@ type Props = {
 const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
     const { space } = useTheme();
     const { setState } = useContext(RequestCertificateContext);
+
+    const { t } = useTranslation();
 
     const { data, loading } = useQuery(
         gql(`
@@ -56,7 +59,7 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
 
     return (
         <VStack space={space['1']}>
-            <Text>Bei welchen Schüler:innen möchtest du eine Bescheinigung beantragen?</Text>
+            <Text>{t('certificate.request_page2.title')}</Text>
 
             <VStack space={space['1']}>
                 {data?.me?.student?.matches?.map((match) => {
@@ -75,7 +78,7 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
                                 <Card padding={space['1']} flexibleWidth>
                                     <VStack space={['0.5']}>
                                         <Heading>{match.pupil.firstname}</Heading>
-                                        <Text>Bescheinigung beantragen</Text>
+                                        <Text>{t('certificate.request_page2.card_content')}</Text>
                                     </VStack>
                                 </Card>
                             </Pressable>
@@ -84,9 +87,15 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
                 })}
             </VStack>
 
-            <Button isDisabled={selections.length === 0} onPress={next}>
-                Weiter
-            </Button>
+            <DisablebleButton
+                isDisabled={selections.length === 0}
+                reasonDisabled={t('certificate.request_page2.reason_btn_disabled')}
+                buttonProps={{
+                    onPress: next,
+                }}
+            >
+                {t('next')}
+            </DisablebleButton>
         </VStack>
     );
 };

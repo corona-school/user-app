@@ -1928,6 +1928,11 @@
             "procedure": "Du kannst die Bescheinigung hier beantragen und erhältst eine Benachrichtigung, sobald dein Engagement von deinem:r Schüler:in bestätigt wurde. Ab dann findest du die Bescheinigung auch in deinem Profil.",
             "apply": "Vollständige Bescheinigung beantragen"
         },
+        "request_page2": {
+            "title": "Bei welchen Schüler:innen möchtest du eine Bescheinigung beantragen?",
+            "card_content": "Bescheinigung beantragen",
+            "reason_btn_disabled": "Du musst eine:n Schüler:in auswählen."
+        },
         "request_for_match": {
             "title": "Angaben",
             "subtitle": "Gebe für jede:n Schüler:in an, in welchem Unfang du sie:ihn unterstützt hast.",
