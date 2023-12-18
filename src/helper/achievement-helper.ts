@@ -1,4 +1,4 @@
-import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum, AchievementsQuery, InactiveAchievementsQuery, Step } from '../gql/graphql';
+import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum, AchievementsQuery, FurtherAchievementsQuery, Step } from '../gql/graphql';
 import { Achievement } from '../types/achievement';
 
 function checkAndGetSecondEnumValue<T extends Record<string, string>>(enumElement: any, comparator: T): keyof T | null {
@@ -16,12 +16,12 @@ export type AchievementsQueryType = {
     type: 'achievements';
     data: AchievementsQuery;
 };
-export type InactiveAchievementsQueryType = {
-    type: 'inactiveAchievements';
-    data: InactiveAchievementsQuery;
+export type FurtherAchievementsQueryType = {
+    type: 'furtherAchievements';
+    data: FurtherAchievementsQuery;
 };
-function convertDataToAchievement(dataWithType: AchievementsQueryType | InactiveAchievementsQueryType): Achievement[] {
-    const query = dataWithType.type === 'achievements' ? dataWithType.data.me.achievements : dataWithType.data.me.inactiveAchievements;
+function convertDataToAchievement(dataWithType: AchievementsQueryType | FurtherAchievementsQueryType): Achievement[] {
+    const query = dataWithType.type === 'achievements' ? dataWithType.data.me.achievements : dataWithType.data.me.furtherAchievements;
     const foundAchievements = query.map((achievement) => {
         const actionType: keyof typeof Achievement_Action_Type_Enum | null = checkAndGetSecondEnumValue(achievement.actionType, Achievement_Action_Type_Enum);
         const achievementType: keyof typeof Achievement_Type_Enum | null = checkAndGetSecondEnumValue(achievement.achievementType, Achievement_Type_Enum);

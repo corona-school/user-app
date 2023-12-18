@@ -35,10 +35,10 @@ const achievementsQuery = gql(`
         }
     }
 `);
-const inactiveAchievementsQuery = gql(`
-    query inactiveAchievements {
+const furtherAchievementsQuery = gql(`
+    query furtherAchievements {
         me {
-            inactiveAchievements {
+            furtherAchievements {
                 id
                 name
                 subtitle
@@ -66,17 +66,17 @@ const inactiveAchievementsQuery = gql(`
 const Progress = () => {
     const margin = useBreakpointValue({ base: '4', md: '0' });
     const { data, error, loading } = useQuery(achievementsQuery);
-    const { data: inactiveData, error: inactiveError, loading: inactiveLoading } = useQuery(inactiveAchievementsQuery);
+    const { data: inactiveData, error: inactiveError, loading: inactiveLoading } = useQuery(furtherAchievementsQuery);
     if (loading || inactiveLoading || error || inactiveError || !data || !inactiveData) return <CenterLoadingSpinner />;
     const foundAchievements: Achievement[] = convertDataToAchievement({ data, type: 'achievements' });
-    const foundInactiveAchievements: Achievement[] = convertDataToAchievement({ data: inactiveData, type: 'inactiveAchievements' });
+    const foundFurtherAchievements: Achievement[] = convertDataToAchievement({ data: inactiveData, type: 'furtherAchievements' });
     return (
         <AsNavigationItem
             path="/progress"
             children={
                 <WithNavigation showBack headerTitle="Progress">
                     <Box mx={margin}>
-                        <AchievementProgress achievements={foundAchievements} inactiveAchievements={foundInactiveAchievements} />
+                        <AchievementProgress achievements={foundAchievements} inactiveAchievements={foundFurtherAchievements} />
                     </Box>
                 </WithNavigation>
             }
