@@ -1,4 +1,4 @@
-import { Text, VStack, Button, useTheme, useBreakpointValue, Heading } from 'native-base';
+import { Text, VStack, useTheme, useBreakpointValue, Heading } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 
@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import AlertMessage from '../../widgets/AlertMessage';
 import { gql } from '../../gql';
+import DisablebleButton from '../../components/DisablebleButton';
 
 type Props = {
     onRequestMatch: () => any;
@@ -63,6 +64,14 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const reasonDisabled = () => {
+        if (!data?.me?.pupil?.canRequestMatch?.allowed) {
+            return t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray);
+        }
+
+        return t('lernfair.reason.matching.pupil.deactivated_tooltip');
+    };
+
     return (
         <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
             <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
@@ -78,13 +87,16 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
             </Text>
 
             <VStack marginBottom={space['1.5']}>
-                <Button
+                <DisablebleButton
                     isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
-                    width={ButtonContainer}
-                    onPress={onRequestMatch}
+                    reasonDisabled={reasonDisabled()}
+                    buttonProps={{
+                        onPress: onRequestMatch,
+                        width: ButtonContainer,
+                    }}
                 >
                     {t('dashboard.helpers.buttons.requestMatchPupil')}
-                </Button>
+                </DisablebleButton>
                 {(!data?.me?.pupil?.canRequestMatch?.allowed && (
                     <AlertMessage
                         content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
