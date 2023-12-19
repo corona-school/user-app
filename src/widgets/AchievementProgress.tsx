@@ -1,5 +1,5 @@
 import { Box, Divider, HStack, Stack, VStack, useBreakpointValue } from 'native-base';
-import { Achievement, AchievementState, AchievementType } from '../types/achievement';
+import { Achievement } from '../types/achievement';
 import AchievementCard from '../components/achievements/achievementCard/AchievementCard';
 import StreakCard from '../components/achievements/streak/StreakCard';
 import ProgressCollapsableHeadline from '../components/achievements/ProgressCollapsableHeadline';
@@ -7,12 +7,15 @@ import { useEffect, useMemo, useState } from 'react';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
+import { Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
+import { customSort } from '../helper/achievement-helper';
 
 type AchievementProgressProps = {
     achievements: Achievement[];
+    inactiveAchievements: Achievement[];
 };
 
-const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements }) => {
+const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements, inactiveAchievements }) => {
     const [isSeen] = useMutation(
         gql(`
         mutation markAchievementAsSeen($id: Float!) {
@@ -20,46 +23,55 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
         }
     `)
     );
-    // Sort Example Data: Will be removed when the API data is implemented
+
     const streaks: Achievement[] = useMemo(() => {
         const allStreaks: Achievement[] = [];
         achievements.forEach((achievement) => {
-            if (achievement.achievementType === AchievementType.STREAK) {
+            if (achievement.achievementType === Achievement_Type_Enum.Streak) {
                 allStreaks.push(achievement);
             }
         });
         return allStreaks;
     }, [achievements]);
-    const sortedAchievements: { [key in AchievementState]: Achievement[] } = useMemo(() => {
-        const elements: { [key in AchievementState]: Achievement[] } = {
-            [AchievementState.COMPLETED]: [],
-            [AchievementState.ACTIVE]: [],
-            [AchievementState.INACTIVE]: [],
+
+    const sortedAchievements: { [key in Achievement_State]: Achievement[] } = useMemo(() => {
+        const elements: { [key in Achievement_State]: Achievement[] } = {
+            [Achievement_State.Completed]: [],
+            [Achievement_State.Active]: [],
+            [Achievement_State.Inactive]: [],
         };
         achievements.forEach((achievement) => {
-            if (achievement.achievementType !== AchievementType.STREAK) {
+            if (achievement.achievementType !== Achievement_Type_Enum.Streak) {
+                elements[achievement.achievementState].push(achievement);
+            }
+        });
+        inactiveAchievements.forEach((achievement) => {
+            if (achievement.achievementType !== Achievement_Type_Enum.Streak) {
                 elements[achievement.achievementState].push(achievement);
             }
         });
         return elements;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [achievements]);
-    const keys = Object.keys(sortedAchievements);
-    const states = keys.map((key) => AchievementState[key as keyof typeof AchievementState]);
-    // ------ End of Example Data ------
+    const states = Object.keys(Achievement_State)
+        .map((key) => {
+            return Achievement_State[key as keyof typeof Achievement_State];
+        })
+        .sort(customSort);
+    console.log(states);
 
     const [collapsed, setCollapsed] = useState({
-        [AchievementType.STREAK]: false,
-        [AchievementState.COMPLETED]: false,
-        [AchievementState.ACTIVE]: false,
-        [AchievementState.INACTIVE]: false,
+        [Achievement_Type_Enum.Streak]: false,
+        [Achievement_State.Completed]: false,
+        [Achievement_State.Active]: false,
+        [Achievement_State.Inactive]: false,
     });
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement>(achievements[0]);
     const [openModal, setOpenModal] = useState<boolean>(false);
     const isNewAchievement = useMemo(() => {
         if (selectedAchievement === undefined || !openModal) {
             return false;
-        } else if (selectedAchievement.achievementType === AchievementType.STREAK) {
+        } else if (selectedAchievement.achievementType === Achievement_Type_Enum.Streak) {
             if (selectedAchievement.currentStep === selectedAchievement.maxSteps) {
                 return true;
             }
@@ -73,10 +85,10 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
         if (!mobile) {
             setCollapsed({
                 ...collapsed,
-                [AchievementType.STREAK]: false,
-                [AchievementState.ACTIVE]: false,
-                [AchievementState.COMPLETED]: false,
-                [AchievementState.INACTIVE]: false,
+                [Achievement_Type_Enum.Streak]: false,
+                [Achievement_State.Active]: false,
+                [Achievement_State.Completed]: false,
+                [Achievement_State.Inactive]: false,
             });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -113,8 +125,8 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
         md: '16px',
     });
 
-    const handleOnClick = (type?: AchievementType, state?: AchievementState) => {
-        if (type && type === AchievementType.STREAK) {
+    const handleOnClick = (type?: Achievement_Type_Enum, state?: Achievement_State) => {
+        if (type && type === Achievement_Type_Enum.Streak) {
             setCollapsed({ ...collapsed, [type]: !collapsed[type] });
         } else if (state) {
             setCollapsed({ ...collapsed, [state]: !collapsed[state] });
@@ -142,7 +154,10 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                 />
             )}
             <VStack space={spaceAfterHeadline}>
-                <ProgressCollapsableHeadline achievementType={AchievementType.STREAK} onClick={() => handleOnClick(AchievementType.STREAK, undefined)} />
+                <ProgressCollapsableHeadline
+                    achievementType={Achievement_Type_Enum.Streak}
+                    onClick={() => handleOnClick(Achievement_Type_Enum.Streak, undefined)}
+                />
                 <Stack
                     direction={stackDirection}
                     space={cardSpace}
@@ -150,7 +165,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                     backgroundColor={cardContainerBg}
                     borderRadius="8px"
                     width={streaksContainerWidth}
-                    height={collapsed[AchievementType.STREAK] ? '0' : 'fit-content'}
+                    height={collapsed[Achievement_Type_Enum.Streak] ? '0' : 'fit-content'}
                     overflowY="hidden"
                     paddingRight={streaksContainerPaddingRight}
                 >
@@ -180,7 +195,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                         <HStack
                             width="100%"
                             flexWrap="wrap"
-                            backgroundColor={key === AchievementState.COMPLETED && cardContainerBg}
+                            backgroundColor={key === Achievement_State.Completed && cardContainerBg}
                             borderRadius="8px"
                             height={collapsed[key] ? '0' : 'fit-content'}
                             overflowY={collapsed[key] ? 'hidden' : 'unset'}
@@ -207,7 +222,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements 
                                     />
                                     {showDivider && (
                                         <Divider
-                                            bg={key === AchievementState.COMPLETED ? 'primary.500' : 'gray.300'}
+                                            bg={key === Achievement_State.Completed ? 'primary.500' : 'gray.300'}
                                             width="90%"
                                             left="5%"
                                             opacity={0.25}

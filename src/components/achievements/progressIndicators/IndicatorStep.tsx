@@ -1,20 +1,20 @@
 import { Text, VStack } from 'native-base';
 import Check from '../../../assets/icons/icon_check.svg';
-import { AchievementState } from '../../../types/achievement';
+import { Achievement_State, Maybe } from '../../../gql/graphql';
 
 type IndicatorStepProps = {
     step: number;
     maxSteps: number;
     name: string;
-    achievementState?: AchievementState;
-    isActive?: boolean;
+    achievementState?: Achievement_State;
+    isActive?: Maybe<boolean> | undefined;
     isInactive?: boolean;
 };
 
 const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, name, achievementState, isActive, isInactive }) => {
     const offsetPerStep = 100 / (maxSteps - 1);
     const offset = offsetPerStep * step;
-    const textColor = achievementState === AchievementState.COMPLETED ? 'white' : 'primary.900';
+    const textColor = achievementState === Achievement_State.Completed ? 'white' : 'primary.900';
     return (
         <VStack
             width="fit-content"
@@ -34,9 +34,9 @@ const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, name, ach
                 width="20px"
                 height="20px"
                 borderRadius="50%"
-                backgroundColor={achievementState !== AchievementState.COMPLETED && isInactive ? 'gray.100' : 'primary.500'}
+                backgroundColor={achievementState !== Achievement_State.Completed && isInactive ? 'gray.100' : 'primary.500'}
             >
-                {achievementState !== AchievementState.COMPLETED && (isActive || isInactive) ? (
+                {achievementState !== Achievement_State.Completed && (isActive || isInactive) ? (
                     <Text fontSize="12px" color={isInactive ? 'gray.500' : 'white'}>
                         {step + 1}
                     </Text>

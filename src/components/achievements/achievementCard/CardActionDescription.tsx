@@ -1,5 +1,5 @@
 import { Box, HStack, Text, VStack, useBreakpointValue } from 'native-base';
-import { ActionTypes } from '../../../types/achievement';
+import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
 import ArrowRightGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import CalendarGreen from '../../../assets/icons/icon_calendar_green.svg';
 import ClockGreen from '../../../assets/icons/icon_clock_green.svg';
@@ -10,7 +10,7 @@ import Clock from '../../../assets/icons/icon_clock.svg';
 import Info from '../../../assets/icons/icon_info.svg';
 
 type CardActionDescriptionProps = {
-    actionType?: ActionTypes;
+    actionType?: Achievement_Action_Type_Enum;
     actionDescription: string;
     isColorized?: boolean;
 };
@@ -19,16 +19,16 @@ const CardActionDescription: React.FC<CardActionDescriptionProps> = ({ actionTyp
     let icon;
     const colorize = useBreakpointValue({ base: true, md: isColorized });
     switch (actionType) {
-        case ActionTypes.ACTION:
+        case Achievement_Action_Type_Enum.Action:
             icon = colorize ? <ArrowRightGreen /> : <ArrowRight />;
             break;
-        case ActionTypes.APPOINTMENT:
+        case Achievement_Action_Type_Enum.Appointment:
             icon = colorize ? <CalendarGreen /> : <Calendar />;
             break;
-        case ActionTypes.INFO:
+        case Achievement_Action_Type_Enum.Info:
             icon = colorize ? <InfoGreen /> : <Info />;
             break;
-        case ActionTypes.WAIT:
+        case Achievement_Action_Type_Enum.Wait:
             icon = colorize ? <ClockGreen /> : <Clock />;
             break;
         default:

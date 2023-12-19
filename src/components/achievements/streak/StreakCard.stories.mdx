@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import StreakCard from './StreakCard';
-import { ActionTypes } from '../../../types/achievement';
+import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
 import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_image.png';
 import ExampleStreakFinished from '../../../assets/images/achievements/example_streak_image_record.png';
 
@@ -18,7 +18,7 @@ import ExampleStreakFinished from '../../../assets/images/achievements/example_s
         progressDescription="Weiter so, um den Rekord zu erhöhen"
         image={ExampleStreakUnfinished}
         alternativeText="27 day streak"
-        actionType={ActionTypes.ACTION}
+        actionType={Achievement_Action_Type_Enum.Action}
     />
 </Story>
 
@@ -32,7 +32,7 @@ import ExampleStreakFinished from '../../../assets/images/achievements/example_s
         progressDescription="Weiter so, um den Rekord zu erhöhen"
         image={ExampleStreakFinished}
         alternativeText="27 day streak"
-        actionType={ActionTypes.ACTION}
+        actionType={Achievement_Action_Type_Enum.Action}
     />
 </Story>
 
@@ -45,6 +45,6 @@ import ExampleStreakFinished from '../../../assets/images/achievements/example_s
         progressDescription="Du bist bereits seit 8 Monaten ein Teil der Lern-Fair Community. Schön, dass du hier bist!"
         image={ExampleStreakFinished}
         alternativeText="27 day streak"
-        actionType={ActionTypes.ACTION}
+        actionType={Achievement_Action_Type_Enum.Action}
     />
 </Story>

@@ -1,6 +1,6 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import IndicatorBarWithSteps from './IndicatorBarWithSteps';
-import { AchievementState } from '../../../types/achievement';
+import { Achievement_State } from '../../../gql/graphql';
 
 <Meta title="Achievements/ProgressIndicators/IndicatorBarWithSteps" component={IndicatorBarWithSteps} />
 
@@ -31,7 +31,7 @@ import { AchievementState } from '../../../types/achievement';
                 isActive: false,
             },
         ]}
-        achievementState={AchievementState.INACTIVE}
+        achievementState={Achievement_State.Inactive}
     />
 </Story>
 
@@ -82,6 +82,6 @@ import { AchievementState } from '../../../types/achievement';
                 isActive: false,
             },
         ]}
-        achievementState={AchievementState.COMPLETED}
+        achievementState={Achievement_State.Completed}
     />
 </Story>

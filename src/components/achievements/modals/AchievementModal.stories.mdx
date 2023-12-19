@@ -1,6 +1,6 @@
 import { Meta, Story } from '@storybook/addon-docs';
 import AchievementModal from './AchievementModal';
-import { AchievementState, AchievementType } from '../../../types/achievement';
+import { Achievement_State, Achievement_Type_Enum } from '../../../gql/graphql';
 import KanufahrtDschungel from '../../../assets/images/achievements/KanufahrtDschungel.png';
 import ExampleStreakImageRecord from '../../../assets/images/achievements/example_streak_image_record.png';
 import ExampleStreakImage from '../../../assets/images/achievements/example_streak_image.png';
@@ -19,8 +19,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
         buttonText="Kontakt aufnehmen"
-        achievementState={AchievementState.ACTIVE}
-        achievementType={AchievementType.TIERED}
+        achievementState={Achievement_State.Active}
+        achievementType={Achievement_Type_Enum.Tiered}
         maxSteps={6}
         currentStep={4}
         progressDescription="Alle Schritte abgeschlossen"
@@ -38,8 +38,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
         buttonText="Kontakt aufnehmen"
         progressDescription="Alle Schritte abgeschlossen"
-        achievementState={AchievementState.COMPLETED}
-        achievementType={AchievementType.TIERED}
+        achievementState={Achievement_State.Completed}
+        achievementType={Achievement_Type_Enum.Tiered}
         maxSteps={6}
         currentStep={6}
         image={KanufahrtDschungel}
@@ -55,8 +55,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
         buttonText="Kontakt aufnehmen"
-        achievementState={AchievementState.COMPLETED}
-        achievementType={AchievementType.TIERED}
+        achievementState={Achievement_State.Completed}
+        achievementType={Achievement_Type_Enum.Tiered}
         maxSteps={6}
         currentStep={6}
         image={KanufahrtDschungel}
@@ -72,8 +72,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
-        achievementState={AchievementState.ACTIVE}
-        achievementType={AchievementType.SEQUENTIAL}
+        achievementState={Achievement_State.Active}
+        achievementType={Achievement_Type_Enum.Sequential}
         steps={[
             {
                 description: 'Dieser Text muss noch geliefert werden!',
@@ -103,8 +103,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
-        achievementState={AchievementState.COMPLETED}
-        achievementType={AchievementType.SEQUENTIAL}
+        achievementState={Achievement_State.Completed}
+        achievementType={Achievement_Type_Enum.Sequential}
         steps={[
             {
                 description: 'Dieser Text muss noch geliefert werden!',
@@ -134,8 +134,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
-        achievementState={AchievementState.ACTIVE}
-        achievementType={AchievementType.SEQUENTIAL}
+        achievementState={Achievement_State.Active}
+        achievementType={Achievement_Type_Enum.Sequential}
         steps={[
             {
                 description: 'Dieser Text muss noch geliefert werden!',
@@ -163,8 +163,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
-        achievementState={AchievementState.COMPLETED}
-        achievementType={AchievementType.SEQUENTIAL}
+        achievementState={Achievement_State.Completed}
+        achievementType={Achievement_Type_Enum.Sequential}
         steps={[
             {
                 description: 'Dieser Text muss noch geliefert werden!',
@@ -193,8 +193,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
-        achievementState={AchievementState.ACTIVE}
-        achievementType={AchievementType.STREAK}
+        achievementState={Achievement_State.Active}
+        achievementType={Achievement_Type_Enum.Streak}
         maxSteps={16}
         currentStep={5}
         progressDescription="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest."
@@ -210,8 +210,8 @@ import SequenceExample04 from '../../../assets/images/achievements/Sequence_Exam
         title="Name des Lernangebots"
         name="Name des Erfolgs"
         description="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest, indem du Schüler:innen durch Nachhilfeunterricht unterstützt. Um mit der Lernunterstützung zu starten sind mehrere Aktionen nötig. Schließe jetzt den nächsten Schritt ab und komme dem Ziel einer neuen Lernunterstüzung ein Stück näher."
-        achievementState={AchievementState.COMPLETED}
-        achievementType={AchievementType.STREAK}
+        achievementState={Achievement_State.Completed}
+        achievementType={Achievement_Type_Enum.Streak}
         maxSteps={27}
         currentStep={27}
         progressDescription="Dieser Text muss noch geliefert werden! Wie cool, dass du dich ehrenamtlich engagieren möchtest."

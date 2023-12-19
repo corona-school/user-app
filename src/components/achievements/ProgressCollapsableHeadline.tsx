@@ -1,12 +1,12 @@
 import { ChevronDownIcon, HStack, Text, useBreakpointValue, Box, PresenceTransition } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { AchievementState, AchievementType } from '../../types/achievement';
 import { useMemo, useState } from 'react';
 import { Pressable } from 'react-native';
+import { Achievement_State, Achievement_Type_Enum } from '../../gql/graphql';
 
 type ProgressCollapsableHeadlineProps = {
-    achievementState?: AchievementState;
-    achievementType?: AchievementType;
+    achievementState?: Achievement_State;
+    achievementType?: Achievement_Type_Enum;
     onClick: () => void;
 };
 
@@ -14,15 +14,15 @@ const ProgressCollapsableHeadline: React.FC<ProgressCollapsableHeadlineProps> = 
     const { t } = useTranslation();
     const [isRotated, setIsRotated] = useState(false);
     const headline = useMemo(() => {
-        if (achievementType === AchievementType.STREAK) {
+        if (achievementType === Achievement_Type_Enum.Streak) {
             return t('achievement.progress.streak.headline');
         }
         switch (achievementState) {
-            case AchievementState.COMPLETED:
+            case Achievement_State.Completed:
                 return t('achievement.progress.state.completed');
-            case AchievementState.ACTIVE:
+            case Achievement_State.Active:
                 return t('achievement.progress.state.active');
-            case AchievementState.INACTIVE:
+            case Achievement_State.Inactive:
                 return t('achievement.progress.state.inactive');
             default:
                 return '';

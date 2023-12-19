@@ -1,7 +1,7 @@
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Modal, Button } from 'native-base';
+import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Button } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -71,6 +71,9 @@ const Settings: React.FC = () => {
                             </Column>
                             <Column mb={tabspace}>
                                 <EditDataRow label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
+                            </Column>
+                            <Column mb={tabspace}>
+                                <EditDataRow label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
                             </Column>
                         </ProfileSettingRow>
                     )}
