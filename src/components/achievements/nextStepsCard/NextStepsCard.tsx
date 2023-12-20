@@ -5,7 +5,7 @@ import ArrowRight from '../../../assets/icons/icon_arrow_right_yellow.svg';
 import Calendar from '../../../assets/icons/icon_calendar_yellow.svg';
 import Clock from '../../../assets/icons/icon_clock_yellow.svg';
 import Info from '../../../assets/icons/icon_info_yellow.svg';
-import BooksIcon from '../../../assets/icons/lernfair/lf-books.svg';
+import BooksIcon from '../../../assets/icons/icon_buch.svg';
 import { Pressable } from 'react-native';
 
 type NextStepsCardProps = {
@@ -45,9 +45,9 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({ image, title, name, actio
                     {image ? (
                         <Image width="64px" height="64px" src={image} />
                     ) : (
-                        <Box width="64px" height="64px">
+                        <VStack width="64px" height="64px" backgroundColor="white" borderRadius="50%" justifyContent="center" alignItems="center">
                             <BooksIcon />
-                        </Box>
+                        </VStack>
                     )}
                 </VStack>
                 <VStack>

@@ -1,16 +1,16 @@
-enum InformationType {
-    community = 'community',
-    book = 'book',
-    appointment = 'appointment',
+export enum InformationType {
+    COMMUNITY = 'community',
+    BOOK = 'book',
+    APPOINTMENT = 'appointment',
 }
 
 export function getImportantInformationIcon(informationType: InformationType) {
     switch (informationType) {
-        case InformationType.community:
+        case InformationType.COMMUNITY:
             return 'community';
-        case InformationType.book:
+        case InformationType.BOOK:
             return 'book';
-        case InformationType.appointment:
+        case InformationType.APPOINTMENT:
             return 'appointment';
         default:
             return null;

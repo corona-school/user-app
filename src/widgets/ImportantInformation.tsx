@@ -143,7 +143,7 @@ query GetOnboardingInfos {
 
 const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { space } = useTheme();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const textColor = variant === 'dark' ? 'lightText' : 'darkText';
 
@@ -442,8 +442,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 })}
                 {infos.map((config, index) => {
                     const buttontexts: string[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
-                    const actionDescription =
-                        t(`helperwizard.${config.label}.actionDescription` as unknown as TemplateStringsArray, config.lang) || t('moreInfoButton');
+                    const actionDescription = i18n.exists(`helperwizard.${config.label}.actionDescription`)
+                        ? t(`helperwizard.${config.label}.actionDescription` as unknown as TemplateStringsArray, config.lang)
+                        : t('moreInfoButton');
                     return (
                         <NextStepsCard
                             key={`${config.label}-${index}`}
