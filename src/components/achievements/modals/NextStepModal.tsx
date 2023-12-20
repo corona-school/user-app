@@ -34,14 +34,14 @@ const NextStepModal: React.FC<Props> = ({ header, title, description, buttons, i
                         <Text>{description}</Text>
                     </Box>
                     <Box>
-                        <Stack space={4} width="100%" direction={buttons && buttons.length > 2 ? 'row' : 'column'} flexWrap="wrap">
+                        <Stack space={4} width="100%" direction={buttons && buttons.length > 1 ? 'row' : 'column'} flexWrap="wrap">
                             {buttons?.map((btn, idx) => (
                                 <Button
                                     variant={idx === 0 ? 'solid' : 'outline'}
                                     onPress={() => {
                                         btn.btnfn && btn.btnfn();
                                     }}
-                                    width={buttons.length > 1 ? '232px' : '100%'}
+                                    width={idx + 1 === buttons.length && (idx + 1) % 2 !== 0 ? '100%' : '232px'}
                                     marginBottom="16px"
                                 >
                                     {btn.label}
