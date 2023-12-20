@@ -58,7 +58,6 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
             return Achievement_State[key as keyof typeof Achievement_State];
         })
         .sort(customSort);
-    console.log(states);
 
     const [collapsed, setCollapsed] = useState({
         [Achievement_Type_Enum.Streak]: false,
