@@ -59,7 +59,12 @@ const Filter: React.FC = () => {
                         align="left"
                     />
                     <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
-                    <NextPrevButtons isDisabledNext={!isFit || !isAcceptWaitingTime} onPressNext={next} onlyNext />
+                    <NextPrevButtons
+                        isDisabledNext={!isFit || !isAcceptWaitingTime}
+                        disablingNext={{ is: !isFit || !isAcceptWaitingTime, reason: t('reasonsDisabled.questionsUnaswerd') }}
+                        onPressNext={next}
+                        onlyNext
+                    />
                 </VStack>
             )}
             {currentIndex === 1 && (
