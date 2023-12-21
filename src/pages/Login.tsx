@@ -37,6 +37,7 @@ export default function Login() {
     const { onLogin, sessionState, loginWithPassword } = useApollo();
     const { space, sizes } = useTheme();
     const [showNoAccountModal, setShowNoAccountModal] = useState(false);
+    const [showAccountDeactivatedModal, setShowAccountDeactivatedModal] = useState(false);
     const [email, setEmail] = useState<string>();
     const [showEmailSent, setShowEmailSent] = useState(false);
     const [loginEmail, setLoginEmail] = useState<string>();
@@ -175,8 +176,10 @@ export default function Login() {
             setIsInvalidEmail(true);
             return;
         }
-        const res = await determineLoginOptions({ variables: { email } });
-        if (res.data!.userDetermineLoginOptions === 'password') {
+        let res = await determineLoginOptions({ variables: { email } });
+        if (res.data!.userDetermineLoginOptions === 'deactivated') {
+            setShowAccountDeactivatedModal(true);
+        } else if (res.data!.userDetermineLoginOptions === 'password') {
             setShowPasswordField(true);
             setLoginEmail(email);
         } else if (res.data!.userDetermineLoginOptions === 'email') {
@@ -273,6 +276,29 @@ export default function Login() {
                     <Modal.Footer>
                         <Row space={space['0.5']}>
                             <Button onPress={() => setShowNoAccountModal(false)}>{t('back')}</Button>
+                        </Row>
+                    </Modal.Footer>
+                </Modal.Content>
+            </Modal>
+        );
+    };
+
+    const AccountDeactivatedModal: React.FC<{
+        showModal: boolean;
+    }> = ({ showModal }) => {
+        return (
+            <Modal isOpen={showModal} onClose={() => setShowAccountDeactivatedModal(false)}>
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>{t('login.accountDeactivated.title')}</Modal.Header>
+                    <Modal.Body>
+                        <VStack space={space['0.5']}>
+                            <Text>{t('login.accountDeactivated.alert_html')}</Text>
+                        </VStack>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Row space={space['0.5']}>
+                            <Button onPress={() => setShowAccountDeactivatedModal(false)}>{t('back')}</Button>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -393,6 +419,7 @@ export default function Login() {
             </VStack>
             <PasswordModal showModal={showPasswordModal} email={email || ''} />
             <NoAccountModal showModal={showNoAccountModal} email={email || ''} />
+            <AccountDeactivatedModal showModal={showAccountDeactivatedModal} />
         </>
     );
 }

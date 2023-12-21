@@ -8,7 +8,7 @@ import Login from './pages/Login';
 import Welcome from './pages/Welcome';
 import LoginToken from './pages/LoginToken';
 import { RequireAuth } from './User';
-import FullPageModal from './widgets/FullPageModal';
+import FullPageModal from './modals/FullPageModal';
 import { lazyWithRetry } from './lazy';
 
 // All other pages load lazy:

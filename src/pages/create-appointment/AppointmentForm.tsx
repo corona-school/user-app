@@ -9,7 +9,7 @@ import { useCallback, useState } from 'react';
 import { FormErrors } from './AppointmentCreation';
 import { isDateToday } from '../../helper/appointment-helper';
 import { DateTime } from 'luxon';
-import CustomSelect from '../../widgets/CustomSelect';
+import CustomSelect from '../../components/CustomSelect';
 
 type FormProps = {
     errors: FormErrors;

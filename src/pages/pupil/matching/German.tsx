@@ -5,7 +5,7 @@ import AlertMessage from '../../../widgets/AlertMessage';
 import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
-import { YesNoSelector } from '../../../widgets/YesNoSelector';
+import { YesNoSelector } from '../../../components/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
 
