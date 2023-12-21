@@ -1,9 +1,12 @@
-import { Box, Button, Row, useTheme } from 'native-base';
+import { Box, Row, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import DisablebleButton from '../components/DisablebleButton';
 
 export const NextPrevButtons = ({
     isDisabledPrev,
     isDisabledNext,
+    disablingPrev,
+    disablingNext,
     onPressPrev,
     onPressNext,
     onlyNext,
@@ -12,6 +15,8 @@ export const NextPrevButtons = ({
 }: {
     isDisabledPrev?: boolean;
     isDisabledNext?: boolean;
+    disablingNext?: { is: boolean; reason: string };
+    disablingPrev?: { is: boolean; reason: string };
     onPressPrev?: () => void;
     onPressNext?: () => void;
     onlyNext?: boolean;
@@ -27,13 +32,31 @@ export const NextPrevButtons = ({
             <Box alignItems="center" marginTop={space['0.5']}>
                 <Row w="100%" space={space['1']} justifyContent="center">
                     {!onlyNext && (
-                        <Button maxW="220px" flex={1} h="100%" isDisabled={isDisabledPrev} variant="outline" onPress={onPressPrev}>
+                        <DisablebleButton
+                            isDisabled={disablingPrev?.is ?? isDisabledPrev ?? false}
+                            reasonDisabled={disablingPrev?.reason ?? ''}
+                            buttonProps={{
+                                maxW: '220px',
+                                flex: 1,
+                                h: '100%',
+                                variant: 'outline',
+                                onPress: onPressPrev,
+                            }}
+                        >
                             {altPrevText ?? t('back')}
-                        </Button>
+                        </DisablebleButton>
                     )}
-                    <Button maxW="220px" flex={1} isDisabled={isDisabledNext} onPress={onPressNext}>
+                    <DisablebleButton
+                        isDisabled={disablingNext?.is ?? isDisabledNext ?? false}
+                        reasonDisabled={disablingNext?.reason ?? ''}
+                        buttonProps={{
+                            maxW: '220px',
+                            flex: 1,
+                            onPress: onPressNext,
+                        }}
+                    >
                         {altNextText ?? t('next')}
-                    </Button>
+                    </DisablebleButton>
                 </Row>
             </Box>
         </>
