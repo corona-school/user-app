@@ -112,7 +112,7 @@ export function ScreeningDashboard() {
                     lastname
                     email
                     languages
-                    subjectsFormatted { name }
+                    subjectsFormatted { name mandatory }
                     grade
                     matches {
                         createdAt
