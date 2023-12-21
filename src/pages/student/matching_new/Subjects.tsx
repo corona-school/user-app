@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { RequestMatchContext } from './RequestMatch';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
-import { DAZ } from '../../../types/subject';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
@@ -13,12 +12,13 @@ const Subjects: React.FC = () => {
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">Fachauswahl</Heading>
-            <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
+            <Heading fontSize="2xl">{t('matching.wizard.student.subjects.title')}</Heading>
+            <Heading>{t('matching.wizard.student.subjects.subtitle')}</Heading>
             <SubjectSelector
-                subjects={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
+                subjects={matchRequest.subjects.map((it) => it.name)}
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}
                 removeSubject={removeSubject}
+                includeDaz
             />
             <NextPrevButtons
                 isDisabledNext={matchRequest.subjects.length === 0}

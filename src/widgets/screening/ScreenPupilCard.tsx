@@ -7,13 +7,13 @@ import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
 import { SubjectTagList } from '../../components/SubjectTag';
 import { gql } from '../../gql';
-import { Pupil_Screening_Status_Enum, PupilScreeningStatus, Subject } from '../../gql/graphql';
+import { PupilScreeningStatus, Pupil_Screening_Status_Enum } from '../../gql/graphql';
 import { ConfirmModal } from '../../modals/ConfirmModal';
 import { PupilForScreening, PupilScreening } from '../../types';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
 import { PupilScreeningCard } from './PupilScreeningCard';
 import { ScreeningSuggestionCard } from './ScreeningSuggestionCard';
-import { useUser } from '../../hooks/useApollo';
+import { useUser, useRoles } from '../../hooks/useApollo';
 import { SubjectSelector } from '../SubjectSelector';
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
@@ -204,6 +204,7 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
 export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; refresh: () => void }) {
     const { space } = useTheme();
     const { t } = useTranslation();
+    const myRoles = useRoles();
 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId) }`));
 
@@ -211,6 +212,12 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(
         gql(`
             mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $pupilId) }
+        `)
+    );
+
+    const [createLoginToken, { loading: loadingLoginToken, data: loginTokenResult }] = useMutation(
+        gql(`
+            mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
         `)
     );
 
@@ -261,6 +268,23 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     // Otherwise the screening is successful and not invalidated yet, so no need to take action
 
+    const impersonate = async () => {
+        // We need to work around the popup blocker of modern browsers, as you can only
+        // call window.open(.., '_blank') in a synchronous event handler of onClick,
+        // so we open the window before we call any asynchronous functions and later set the URL when we have the data.
+        const w = window.open('', '_blank');
+        if (w != null) {
+            const res = await createLoginToken({ variables: { userId: `pupil/${pupil!.id}` } });
+            const token = res?.data?.tokenCreateAdmin;
+
+            w.location.href =
+                process.env.NODE_ENV === 'production'
+                    ? `https://app.lern-fair.de/login-token?secret_token=${token}&temporary`
+                    : `http://localhost:3000/login-token?secret_token=${token}&temporary`;
+            w.focus();
+        }
+    };
+
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
@@ -285,6 +309,17 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                     {showEditSubjects ? 'Fertig' : 'Bearbeiten'}
                 </Button>
             </HStack>
+            {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
+                <HStack space={space['1']}>
+                    <Button
+                        onPress={async () => {
+                            await impersonate();
+                        }}
+                    >
+                        Als Nutzer anmelden
+                    </Button>
+                </HStack>
+            )}
             {showEditSubjects && (
                 <SubjectSelector
                     subjects={pupil.subjectsFormatted.map((it) => it.name)}

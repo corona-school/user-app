@@ -1,7 +1,8 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
-import de from './lang/de';
+
+import de from './lang/de.json';
 
 export const resources = {
     de: {

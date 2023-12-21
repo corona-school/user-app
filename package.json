@@ -128,7 +128,8 @@
         "graphql-fetch-schema": "node scripts/fetch-graphql-schema.js",
         "graphql-watch": "graphql-codegen --config config/graphql-codegen.ts --watch",
         "graphql-build": "graphql-codegen --config config/graphql-codegen.ts",
-        "heroku:release": "./scripts/dd-upload-source-maps.sh"
+        "heroku:release": "./scripts/dd-upload-source-maps.sh",
+        "translate": "node ./scripts/translate.js"
     },
     "eslintConfig": {
         "extends": [

@@ -11,23 +11,41 @@ The PupilScreeningCard shows information about a Pupil Screening:
 Successful Screening:
 
 <Story name="PupilScreeningCard / success">
-    <PupilScreeningCard screening={{ status: 'success', createdAt: new Date(), invalidated: false }} />
+    <PupilScreeningCard
+        screening={{
+            status: 'success',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            invalidated: false,
+            screeners: [{ firstname: 'Max', lastname: 'Musterscreener' }],
+        }}
+    />
 </Story>
 
 Rejected Screening:
 
 <Story name="PupilScreeningCard / rejection">
-    <PupilScreeningCard screening={{ status: 'rejection', createdAt: new Date(), invalidated: false }} />
+    <PupilScreeningCard
+        screening={{
+            status: 'rejection',
+            createdAt: new Date(),
+            updatedAt: new Date(),
+            invalidated: false,
+            screeners: [{ firstname: 'Max', lastname: 'Musterscreener' }],
+        }}
+    />
 </Story>
 
 Pending Screening:
 
 <Story name="PupilScreeningCard / pending">
-    <PupilScreeningCard screening={{ status: 'pending', createdAt: new Date(), invalidated: false }} />
+    <PupilScreeningCard screening={{ status: 'pending', createdAt: new Date(), invalidated: false, screeners: [] }} />
 </Story>
 
 Disputed Screening:
 
 <Story name="PupilScreeningCard / dispute">
-    <PupilScreeningCard screening={{ status: 'dispute', createdAt: new Date(), invalidated: false }} />
+    <PupilScreeningCard
+        screening={{ status: 'dispute', createdAt: new Date(), invalidated: false, screeners: [{ firstname: 'Max', lastname: 'Musterscreener' }] }}
+    />
 </Story>
