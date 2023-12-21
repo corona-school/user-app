@@ -19,7 +19,7 @@ const UserState: React.FC = () => {
                     <Column mb={space['0.5']} mr={space['0.5']}>
                         <IconTagList
                             initial={userState === state.key}
-                            text={state.label}
+                            text={t(`lernfair.states.${state.key}` as unknown as TemplateStringsArray)}
                             onPress={() => setUserState(state.key)}
                             iconPath={`states/icon_${state.key}.svg`}
                         />
