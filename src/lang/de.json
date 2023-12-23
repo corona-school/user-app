@@ -1301,7 +1301,8 @@
                 "priority": {
                     "heading": "Priorisierung",
                     "subheading": "In welchen Fach brauchst du am meisten Hilfe?",
-                    "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist."
+                    "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
+                    "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "details": {
                     "heading": "Details",
