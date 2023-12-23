@@ -2007,6 +2007,7 @@
         "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an.",
         "formIncomplete": "Du musst alle Felder ausfüllen.",
         "fieldEmpty": "Gebe etwas in dieses Feld ein.",
+        "questionUnaswerd": "Bitte beantworte die Frage.",
         "questionsUnaswerd": "Bitte beantworte die Fragen.",
         "newFieldSameAsOld": "Das hast du bereits ausgewählt.",
         "missingSignature": "Es fehlt eine Unterschrift."
