@@ -237,7 +237,6 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <ImportantInformation variant="normal" />
                             </VStack>
                             {/* Next Appointment */}
-
                             <VStack marginBottom={space['1.5']}>
                                 <VStack space={space['1']}>
                                     <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
