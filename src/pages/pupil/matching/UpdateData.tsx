@@ -198,10 +198,10 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                 </ProfileSettingItem>
 
                 <NextPrevButtons
-                    isDisabledNext={isLoading}
+                    disablingNext={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
+                    disablingPrev={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
                     onPressNext={() => setCurrentIndex(2)}
                     onPressPrev={() => setCurrentIndex(0)}
-                    isDisabledPrev={isLoading}
                     onlyNext={isEdit}
                 />
             </VStack>
