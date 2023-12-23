@@ -22,7 +22,6 @@ const Subjects: React.FC = () => {
             />
             <NextPrevButtons
                 disablingNext={{ is: matchRequest.subjects.length === 0, reason: t('matching.wizard.student.subjects.reason_btn_disabled') }}
-                isDisabledNext={matchRequest.subjects.length === 0}
                 onPressPrev={() => setCurrentIndex(0)}
                 onPressNext={() => setCurrentIndex(2)}
             />

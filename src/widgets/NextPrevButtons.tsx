@@ -3,8 +3,6 @@ import { useTranslation } from 'react-i18next';
 import DisablebleButton from '../components/DisablebleButton';
 
 export const NextPrevButtons = ({
-    isDisabledPrev,
-    isDisabledNext,
     disablingPrev,
     disablingNext,
     onPressPrev,
@@ -13,8 +11,6 @@ export const NextPrevButtons = ({
     altNextText,
     altPrevText,
 }: {
-    isDisabledPrev?: boolean;
-    isDisabledNext?: boolean;
     disablingNext?: { is: boolean; reason: string };
     disablingPrev?: { is: boolean; reason: string };
     onPressPrev?: () => void;
@@ -33,7 +29,7 @@ export const NextPrevButtons = ({
                 <Row w="100%" space={space['1']} justifyContent="center">
                     {!onlyNext && (
                         <DisablebleButton
-                            isDisabled={disablingPrev?.is ?? isDisabledPrev ?? false}
+                            isDisabled={disablingPrev?.is ?? false}
                             reasonDisabled={disablingPrev?.reason ?? ''}
                             buttonProps={{
                                 maxW: '220px',
@@ -47,7 +43,7 @@ export const NextPrevButtons = ({
                         </DisablebleButton>
                     )}
                     <DisablebleButton
-                        isDisabled={disablingNext?.is ?? isDisabledNext ?? false}
+                        isDisabled={disablingNext?.is ?? false}
                         reasonDisabled={disablingNext?.reason ?? ''}
                         buttonProps={{
                             maxW: '220px',
