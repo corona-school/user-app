@@ -1295,7 +1295,7 @@
                 "subjects": {
                     "heading": "Fachauswahl",
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
-                    "reason_btn_disabled": "Bitte wähle ein Fache oder mehrere Fächer aus.",
+                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
                     "text": "Du kannst maximal 1 Fach auswählen."
                 },
                 "priority": {
@@ -1326,7 +1326,8 @@
             "student": {
                 "subjects": {
                     "title": "Fachauswahl",
-                    "subtitle": "In welchen Fächern möchtest du unterstützen?"
+                    "subtitle": "In welchen Fächern möchtest du unterstützen?",
+                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus."
                 },
                 "profile": {
                     "title": "Profil aktualisieren",
