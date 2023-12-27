@@ -1,4 +1,3 @@
-import { Button, Tooltip } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useNavigate } from 'react-router-dom';
@@ -30,10 +29,8 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         <DisablebleButton
             isDisabled={!canJoinMeeting || isOver}
             reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
-            buttonProps={{
-                width: width ?? width,
-                onPress: () => navigate(`/video-chat/${appointmentId}/${appointmentType}`),
-            }}
+            width={width ?? width}
+            onPress={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)}
         >
             {buttonText ? buttonText : isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
         </DisablebleButton>

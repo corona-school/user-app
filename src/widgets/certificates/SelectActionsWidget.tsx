@@ -77,17 +77,15 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
                 <DisablebleButton
                     isDisabled={!addOther}
                     reasonDisabled={t('reasonsDisabled.fieldEmpty')}
-                    buttonProps={{
-                        w: '56px',
-                        h: '56px',
-                        backgroundColor: 'primary.900',
-                        onPress: () => {
-                            setState((prev) => ({
-                                ...prev,
-                                otherActions: [...prev.otherActions, addOther],
-                            }));
-                            setAddOther('');
-                        },
+                    w="56px"
+                    h="56px"
+                    backgroundColor="primary.900"
+                    onPress={() => {
+                        setState((prev) => ({
+                            ...prev,
+                            otherActions: [...prev.otherActions, addOther],
+                        }));
+                        setAddOther('');
                     }}
                 >
                     <AddIcon size="lg" color="white" />

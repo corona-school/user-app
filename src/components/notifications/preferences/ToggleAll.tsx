@@ -1,4 +1,4 @@
-import { Button, Box, useBreakpointValue, Stack } from 'native-base';
+import { Box, useBreakpointValue, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { NotificationCategories } from '../../../helper/notification-preferences';
 import { FC, useContext, useMemo } from 'react';
@@ -63,22 +63,18 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
                     <DisablebleButton
                         isDisabled={allEnabled}
                         reasonDisabled={t('notification.controlPanel.preference.enableAllTooltip')}
-                        buttonProps={{
-                            onPress: enableAll,
-                            width: buttonWidth,
-                        }}
+                        onPress={enableAll}
+                        width={buttonWidth}
                     >
                         {t('notification.controlPanel.preference.enableAll')}
                     </DisablebleButton>
                     <DisablebleButton
                         isDisabled={allDisabled}
                         reasonDisabled={t('notification.controlPanel.preference.disableAllTooltip')}
-                        buttonProps={{
-                            onPress: disableAll,
-                            _text: { padding: '3px 5px' },
-                            variant: 'outline',
-                            width: buttonWidth,
-                        }}
+                        onPress={disableAll}
+                        _text={{ padding: '3px 5px' }}
+                        variant="outline"
+                        width={buttonWidth}
                     >
                         {t('notification.controlPanel.preference.disableAll')}
                     </DisablebleButton>

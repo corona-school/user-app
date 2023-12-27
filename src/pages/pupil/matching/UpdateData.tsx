@@ -234,9 +234,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                         <DisablebleButton
                             isDisabled={data === modalSelection || isLoading}
                             reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
-                            buttonProps={{
-                                onPress: changeData,
-                            }}
+                            onPress={changeData}
                         >
                             {t('change')}
                         </DisablebleButton>

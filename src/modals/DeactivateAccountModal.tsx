@@ -127,9 +127,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
                     <DisablebleButton
                         isDisabled={!isValidInput || loadingDeactivate}
                         reasonDisabled={t('profile.Deactivate.modal.tooltip')}
-                        buttonProps={{
-                            onPress: deactivate,
-                        }}
+                        onPress={deactivate}
                     >
                         {t('profile.Deactivate.modal.btn')}
                     </DisablebleButton>

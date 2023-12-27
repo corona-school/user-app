@@ -31,13 +31,11 @@ export const NextPrevButtons = ({
                         <DisablebleButton
                             isDisabled={disablingPrev?.is ?? false}
                             reasonDisabled={disablingPrev?.reason ?? ''}
-                            buttonProps={{
-                                maxW: '220px',
-                                flex: 1,
-                                h: '100%',
-                                variant: 'outline',
-                                onPress: onPressPrev,
-                            }}
+                            maxW="220px"
+                            flex={1}
+                            h="100%"
+                            variant="outline"
+                            onPress={onPressPrev}
                         >
                             {altPrevText ?? t('back')}
                         </DisablebleButton>
@@ -45,11 +43,9 @@ export const NextPrevButtons = ({
                     <DisablebleButton
                         isDisabled={disablingNext?.is ?? false}
                         reasonDisabled={disablingNext?.reason ?? ''}
-                        buttonProps={{
-                            maxW: '220px',
-                            flex: 1,
-                            onPress: onPressNext,
-                        }}
+                        maxW="220px"
+                        flex={1}
+                        onPress={onPressNext}
                     >
                         {altNextText ?? t('next')}
                     </DisablebleButton>

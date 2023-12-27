@@ -31,11 +31,9 @@ const ButtonRow: React.FC<ButtonProps> = ({ onCancel, onBack, onNext, isDisabled
                 <DisablebleButton
                     isDisabled={isDisabled ?? false}
                     reasonDisabled={t('reasonsDisabled.formIncomplete')}
-                    buttonProps={{
-                        width: ButtonContainer,
-                        marginBottom: space['1'],
-                        onPress: onNext,
-                    }}
+                    width={ButtonContainer}
+                    marginBottom={space['1']}
+                    onPress={onNext}
                 >
                     {t('next')}
                 </DisablebleButton>

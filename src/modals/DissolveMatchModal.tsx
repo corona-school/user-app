@@ -66,9 +66,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                                 <DisablebleButton
                                     isDisabled={!reason}
                                     reasonDisabled={t('matching.dissolve.modal.tooltip')}
-                                    buttonProps={{
-                                        onPress: () => onPressDissolve(reason ?? Dissolve_Reason.Unknown),
-                                    }}
+                                    onPress={() => onPressDissolve(reason ?? Dissolve_Reason.Unknown)}
                                 >
                                     {t('matching.dissolve.modal.btn')}
                                 </DisablebleButton>

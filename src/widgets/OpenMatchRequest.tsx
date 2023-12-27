@@ -50,14 +50,12 @@ const OpenMatchRequest = ({
                 <DisablebleButton
                     isDisabled={cancelLoading}
                     reasonDisabled={t('reasonsDisabled.loading')}
-                    buttonProps={{
-                        variant: 'outlinelight',
-                        mt: '3',
+                    variant="outlinelight"
+                    mt="3"
+                    color="darkText"
+                    onPress={showCancelMatchRequestModal}
+                    _text={{
                         color: 'darkText',
-                        onPress: showCancelMatchRequestModal,
-                        _text: {
-                            color: 'darkText',
-                        },
                     }}
                 >
                     {t('matching.request.check.removeRequest')}

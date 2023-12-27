@@ -145,13 +145,7 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
                 </Modal.Body>
                 <Modal.Footer bgColor="primary.900">
                     <Box alignItems="flex-end" justifyContent="center" paddingRight={space['0.5']}>
-                        <DisablebleButton
-                            isDisabled={!selectedPhoto}
-                            reasonDisabled={t('course.unsplash.tooltipBtn')}
-                            buttonProps={{
-                                onPress: pickPhoto,
-                            }}
-                        >
+                        <DisablebleButton isDisabled={!selectedPhoto} reasonDisabled={t('course.unsplash.tooltipBtn')} onPress={pickPhoto}>
                             {t('course.unsplash.choose')}
                         </DisablebleButton>
                     </Box>

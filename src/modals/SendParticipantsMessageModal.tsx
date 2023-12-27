@@ -66,9 +66,7 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
                         <DisablebleButton
                             isDisabled={!subject || !message}
                             reasonDisabled={!subject ? t('helpcenter.contact.subject.error') : t('helpcenter.contact.message.error')}
-                            buttonProps={{
-                                onPress: send,
-                            }}
+                            onPress={send}
                         >
                             {t('send')}
                         </DisablebleButton>

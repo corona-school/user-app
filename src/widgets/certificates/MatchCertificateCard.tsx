@@ -78,10 +78,8 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
                     <DisablebleButton
                         isDisabled={certificate.state === 'awaiting-approval' || requestCertificateState.loading}
                         reasonDisabled={requestCertificateState.loading ? t('reasonsDisabled.loading') : t('certificate.download.reasonBtnDisabled')}
-                        buttonProps={{
-                            variant: 'outline',
-                            onPress: () => setShowSelectPDFLanguageModal(true),
-                        }}
+                        variant="outline"
+                        onPress={() => setShowSelectPDFLanguageModal(true)}
                     >
                         {t('certificate.download.download')}
                     </DisablebleButton>

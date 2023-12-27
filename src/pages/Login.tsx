@@ -253,9 +253,7 @@ export default function Login() {
                             <DisablebleButton
                                 isDisabled={pwEmail.length < 6 || _resetPW?.loading}
                                 reasonDisabled={_resetPW?.loading ? t('reasonsDisabled.loading') : t('registration.hint.password.length')}
-                                buttonProps={{
-                                    onPress: () => resetPassword(pwEmail),
-                                }}
+                                onPress={() => resetPassword(pwEmail)}
                             >
                                 {t('login.passwordReset.btn')}
                             </DisablebleButton>
@@ -406,10 +404,8 @@ export default function Login() {
                             reasonDisabled={
                                 _sendToken.loading || _determineLoginOptions.loading ? t('reasonsDisabled.loading') : t('reasonsDisabled.invalidEMail')
                             }
-                            buttonProps={{
-                                onPress: showPasswordField ? attemptLogin : getLoginOption,
-                                width: '100%',
-                            }}
+                            onPress={showPasswordField ? attemptLogin : getLoginOption}
+                            width={'100%'}
                         >
                             {t('signin')}
                         </DisablebleButton>

@@ -1,5 +1,5 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
+import { VStack, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
 import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
@@ -216,18 +216,16 @@ const CoursePreview: React.FC<Props> = ({
                     <DisablebleButton
                         isDisabled={isDisabled ?? false}
                         reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
-                        buttonProps={{
-                            marginBottom: space['1'],
-                            width: ButtonContainer,
-                            onPress: () => {
-                                trackEvent({
-                                    category: 'kurse',
-                                    action: 'click-event',
-                                    name: 'Helfer Kurs erstellen – Änderungen Speichern Button',
-                                    documentTitle: 'Helfer Kurs erstellen',
-                                });
-                                update(appointmentsToBeCreated);
-                            },
+                        marginBottom={space['1']}
+                        width={ButtonContainer}
+                        onPress={() => {
+                            trackEvent({
+                                category: 'kurse',
+                                action: 'click-event',
+                                name: 'Helfer Kurs erstellen – Änderungen Speichern Button',
+                                documentTitle: 'Helfer Kurs erstellen',
+                            });
+                            update(appointmentsToBeCreated);
                         }}
                     >
                         {t('course.CourseDate.Preview.updateCourse')}
@@ -237,18 +235,16 @@ const CoursePreview: React.FC<Props> = ({
                     <DisablebleButton
                         isDisabled={isDisabled ?? false}
                         reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
-                        buttonProps={{
-                            marginBottom: space['1'],
-                            width: ButtonContainer,
-                            onPress: () => {
-                                trackEvent({
-                                    category: 'kurse',
-                                    action: 'click-event',
-                                    name: 'Helfer Kurs erstellen – veröffentlichen Button',
-                                    documentTitle: 'Helfer Kurs erstellen',
-                                });
-                                createAndSubmit();
-                            },
+                        marginBottom={space['1']}
+                        width={ButtonContainer}
+                        onPress={() => {
+                            trackEvent({
+                                category: 'kurse',
+                                action: 'click-event',
+                                name: 'Helfer Kurs erstellen – veröffentlichen Button',
+                                documentTitle: 'Helfer Kurs erstellen',
+                            });
+                            createAndSubmit();
                         }}
                     >
                         {t('course.CourseDate.Preview.publishCourse')}
@@ -258,18 +254,16 @@ const CoursePreview: React.FC<Props> = ({
                     <DisablebleButton
                         isDisabled={isDisabled ?? false}
                         reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
-                        buttonProps={{
-                            marginBottom: space['1'],
-                            width: ButtonContainer,
-                            onPress: () => {
-                                trackEvent({
-                                    category: 'kurse',
-                                    action: 'click-event',
-                                    name: 'Helfer Kurs erstellen – Erstellen Button',
-                                    documentTitle: 'Helfer Kurs erstellen',
-                                });
-                                createOnly();
-                            },
+                        marginBottom={space['1']}
+                        width={ButtonContainer}
+                        onPress={() => {
+                            trackEvent({
+                                category: 'kurse',
+                                action: 'click-event',
+                                name: 'Helfer Kurs erstellen – Erstellen Button',
+                                documentTitle: 'Helfer Kurs erstellen',
+                            });
+                            createOnly();
                         }}
                     >
                         {t('course.CourseDate.Preview.saveCourse')}
@@ -278,12 +272,10 @@ const CoursePreview: React.FC<Props> = ({
                 <DisablebleButton
                     isDisabled={isDisabled ?? false}
                     reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
-                    buttonProps={{
-                        marginBottom: space['1'],
-                        width: ButtonContainer,
-                        variant: 'outline',
-                        onPress: onBack,
-                    }}
+                    marginBottom={space['1']}
+                    width={ButtonContainer}
+                    variant="outline"
+                    onPress={onBack}
                 >
                     {t('course.CourseDate.Preview.editCourse')}
                 </DisablebleButton>

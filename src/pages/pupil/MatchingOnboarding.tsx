@@ -90,10 +90,8 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
                 <DisablebleButton
                     isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
                     reasonDisabled={reasonDisabled()}
-                    buttonProps={{
-                        onPress: onRequestMatch,
-                        width: ButtonContainer,
-                    }}
+                    onPress={onRequestMatch}
+                    width={ButtonContainer}
                 >
                     {t('dashboard.helpers.buttons.requestMatchPupil')}
                 </DisablebleButton>

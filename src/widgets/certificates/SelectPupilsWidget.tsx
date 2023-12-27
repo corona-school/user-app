@@ -87,13 +87,7 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
                 })}
             </VStack>
 
-            <DisablebleButton
-                isDisabled={selections.length === 0}
-                reasonDisabled={t('certificate.request_page2.reason_btn_disabled')}
-                buttonProps={{
-                    onPress: next,
-                }}
-            >
+            <DisablebleButton isDisabled={selections.length === 0} reasonDisabled={t('certificate.request_page2.reason_btn_disabled')} onPress={next}>
                 {t('next')}
             </DisablebleButton>
         </VStack>

@@ -6,14 +6,13 @@ type ButtonProps = ComponentProps<typeof Button>;
 type DisablebleButtonProps = {
     isDisabled: boolean;
     reasonDisabled: string;
-    buttonProps?: ButtonProps;
     disabledButtonContent?: ReactNode;
-};
+} & ButtonProps;
 
-const DisablebleButton: React.FC<PropsWithChildren<DisablebleButtonProps>> = ({ isDisabled, reasonDisabled, disabledButtonContent, children, buttonProps }) => {
+const DisablebleButton: React.FC<PropsWithChildren<DisablebleButtonProps>> = ({ isDisabled, reasonDisabled, disabledButtonContent, children, ...rest }) => {
     return (
         <Tooltip maxW={300} label={reasonDisabled} isDisabled={!isDisabled} _text={{ textAlign: 'center' }}>
-            <Button isDisabled={isDisabled} {...buttonProps}>
+            <Button isDisabled={isDisabled} {...rest}>
                 {(isDisabled && disabledButtonContent) || children}
             </Button>
         </Tooltip>

@@ -298,10 +298,8 @@ const Dashboard: React.FC<Props> = () => {
                                                 <DisablebleButton
                                                     isDisabled={_cancelMatchRequest?.loading}
                                                     reasonDisabled={t('reasonsDisabled.loading')}
-                                                    buttonProps={{
-                                                        width: ButtonContainer,
-                                                        onPress: () => setShowCancelModal(true),
-                                                    }}
+                                                    width={ButtonContainer}
+                                                    onPress={() => setShowCancelModal(true)}
                                                 >
                                                     {t('dashboard.offers.removeRequest')}
                                                 </DisablebleButton>

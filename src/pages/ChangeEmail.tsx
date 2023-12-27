@@ -85,10 +85,8 @@ const ChangeEmail = () => {
                             <DisablebleButton
                                 isDisabled={!canChange}
                                 reasonDisabled={t('reasonsDisabled.invalidEMail')}
-                                buttonProps={{
-                                    width: buttonWidth,
-                                    onPress: resetEmail,
-                                }}
+                                width={buttonWidth}
+                                onPress={resetEmail}
                             >
                                 {t('login.changeEmail')}
                             </DisablebleButton>

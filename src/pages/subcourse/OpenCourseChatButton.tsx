@@ -70,13 +70,7 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
     }, [conversationId, isInstructor, isParticipant, participantsCount]);
 
     return (
-        <DisablebleButton
-            isDisabled={disableButton}
-            reasonDisabled={t('chat.hint')}
-            buttonProps={{
-                onPress: openSubcourseGroupChat,
-            }}
-        >
+        <DisablebleButton isDisabled={disableButton} reasonDisabled={t('chat.hint')} onPress={openSubcourseGroupChat}>
             {groupChatType === Chat_Type.Announcement ? t('chat.openAnnouncementChat') : t('chat.openSubcourseChat')}
         </DisablebleButton>
     );

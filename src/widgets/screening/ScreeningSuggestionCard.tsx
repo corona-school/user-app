@@ -48,9 +48,7 @@ export function ScreeningSuggestionCard({ userID }: { userID: string }) {
             <DisablebleButton
                 isDisabled={!chosenSuggestion}
                 reasonDisabled="Du musst eine Empfehlung auswählen"
-                buttonProps={{
-                    onPress: () => send({ variables: { userID, suggestion: chosenSuggestion } }),
-                }}
+                onPress={() => send({ variables: { userID, suggestion: chosenSuggestion } })}
             >
                 Empfehlung senden
             </DisablebleButton>

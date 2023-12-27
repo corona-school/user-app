@@ -189,13 +189,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
-                    <DisablebleButton
-                        isDisabled={loadingSubcourseJoined}
-                        reasonDisabled={t('reasonsDisabled.loading')}
-                        buttonProps={{
-                            onPress: () => setSignInModal(true),
-                        }}
-                    >
+                    <DisablebleButton isDisabled={loadingSubcourseJoined} reasonDisabled={t('reasonsDisabled.loading')} onPress={() => setSignInModal(true)}>
                         {t('signin')}
                     </DisablebleButton>
                 )}
@@ -230,13 +224,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                             appointmentType={appointment.appointmentType}
                             canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 10, DateTime.now())}
                         />
-                        <DisablebleButton
-                            isDisabled={loadingSubcourseLeft}
-                            reasonDisabled={t('reasonsDisabled.loading')}
-                            buttonProps={{
-                                onPress: () => setSignOutModal(true),
-                            }}
-                        >
+                        <DisablebleButton isDisabled={loadingSubcourseLeft} reasonDisabled={t('reasonsDisabled.loading')} onPress={() => setSignOutModal(true)}>
                             {t('single.actions.leaveSubcourse')}
                         </DisablebleButton>
                     </>
@@ -245,10 +233,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                     <DisablebleButton
                         isDisabled={loadingJoinedWaitinglist}
                         reasonDisabled={t('reasonsDisabled.loading')}
-                        buttonProps={{
-                            variant: 'outline',
-                            onPress: () => setJoinWaitinglistModal(true),
-                        }}
+                        variant="outline"
+                        onPress={() => setJoinWaitinglistModal(true)}
                     >
                         {t('single.actions.joinWaitinglist')}
                     </DisablebleButton>

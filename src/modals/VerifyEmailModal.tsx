@@ -71,10 +71,8 @@ const VerifyEmailModal: React.FC<Props> = ({ email, retainPath }) => {
                 <DisablebleButton
                     isDisabled={_sendVerification?.loading}
                     reasonDisabled={t('reasonsDisabled.loading')}
-                    buttonProps={{
-                        onPress: requestEmailVerification,
-                        variant: 'link',
-                    }}
+                    onPress={requestEmailVerification}
+                    variant="link"
                 >
                     {t('registration.verifyemail.resend.button')}
                 </DisablebleButton>

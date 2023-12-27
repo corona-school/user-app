@@ -1,5 +1,5 @@
-import { Heading, View, Text, FormControl, Row, Input, TextArea, Checkbox, Link, useTheme, useBreakpointValue, Button, useToast } from 'native-base';
-import { useCallback, useMemo, useState } from 'react';
+import { Heading, View, Text, FormControl, Row, Input, TextArea, Checkbox, Link, useTheme, useBreakpointValue } from 'native-base';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AlertMessage from '../widgets/AlertMessage';
 import { useMutation } from '@apollo/client';
@@ -113,11 +113,9 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
                     <DisablebleButton
                         isDisabled={isButtonDisabled()}
                         reasonDisabled={reasonDisabled()}
-                        buttonProps={{
-                            marginX: 'auto',
-                            width: buttonWidth,
-                            onPress: sendContactMessage,
-                        }}
+                        marginX="auto"
+                        width={buttonWidth}
+                        onPress={sendContactMessage}
                     >
                         {t('helpcenter.btn.formsubmit')}
                     </DisablebleButton>

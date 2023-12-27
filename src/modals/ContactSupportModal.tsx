@@ -99,10 +99,8 @@ const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfo
                         <DisablebleButton
                             isDisabled={!dsgvo}
                             reasonDisabled={t('helpcenter.btn.readsonDisabledModal')}
-                            buttonProps={{
-                                marginX: 'auto',
-                                onPress: sendReportMessage,
-                            }}
+                            marginX="auto"
+                            onPress={sendReportMessage}
                         >
                             {t('helpcenter.btn.formsubmit')}
                         </DisablebleButton>

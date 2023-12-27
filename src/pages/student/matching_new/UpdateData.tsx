@@ -138,9 +138,7 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                         <DisablebleButton
                             isDisabled={data === modalSelection || isLoading}
                             reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
-                            buttonProps={{
-                                onPress: changeData,
-                            }}
+                            onPress={changeData}
                         >
                             {t('change')}
                         </DisablebleButton>

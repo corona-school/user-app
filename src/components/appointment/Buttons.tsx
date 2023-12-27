@@ -31,23 +31,19 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, isOve
                             reasonDisabled={
                                 isOver ? t('appointment.detail.reasonDisabled.deleteBtn.isOver') : t('appointment.detail.reasonDisabled.deleteBtn.isLast')
                             }
-                            buttonProps={{
-                                _text: { color: 'white' },
-                                onPress: onPress,
-                                bgColor: 'danger.100',
-                                width: buttonWidth,
-                            }}
+                            _text={{ color: 'white' }}
+                            onPress={onPress}
+                            bgColor="danger.100"
+                            width={buttonWidth}
                         >
                             {t('appointment.detail.deleteButton')}
                         </DisablebleButton>
                         <DisablebleButton
                             isDisabled={isOver}
                             reasonDisabled={t('appointment.detail.reasonDisabled.editBtn.isOver')}
-                            buttonProps={{
-                                variant: 'outline',
-                                width: buttonWidth,
-                                onPress: onEditPress,
-                            }}
+                            variant={'outline'}
+                            width={buttonWidth}
+                            onPress={onEditPress}
                         >
                             {t('appointment.detail.editButton')}
                         </DisablebleButton>
@@ -59,12 +55,10 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, isOve
                         reasonDisabled={
                             isOver ? t('appointment.detail.reasonDisabled.cancelBtn.isOver') : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
                         }
-                        buttonProps={{
-                            _text: { color: 'white' },
-                            onPress: onPress,
-                            bgColor: 'danger.100',
-                            width: buttonWidth,
-                        }}
+                        _text={{ color: 'white' }}
+                        onPress={onPress}
+                        bgColor="danger.100"
+                        width={buttonWidth}
                     >
                         {t('appointment.detail.cancelButton')}
                     </DisablebleButton>

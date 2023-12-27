@@ -145,9 +145,7 @@ const SelectedPupilWizard = ({
                         !startDate || !endDate || !hoursPerWeek || !hoursTotal || !subjects.length || !isValidNumber(hoursPerWeek) || !isValidNumber(hoursTotal)
                     }
                     reasonDisabled={t('reasonsDisabled.formIncomplete')}
-                    buttonProps={{
-                        onPress: onPress,
-                    }}
+                    onPress={onPress}
                 >
                     {currentIndex + 1 < pupilCount ? t('certificate.request_for_match.next_pupil') : t('next')}
                 </DisablebleButton>

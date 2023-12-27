@@ -122,11 +122,9 @@ function ConfirmData({
                     <DisablebleButton
                         isDisabled={isMinor === null || location.length < 2}
                         reasonDisabled={t('reasonsDisabled.formIncomplete')}
-                        buttonProps={{
-                            variant: 'solid',
-                            margin: space['1'],
-                            onPress: goSign,
-                        }}
+                        variant="solid"
+                        margin={space['1']}
+                        onPress={goSign}
                     >
                         {t('matching.certificate.goToSign')}
                     </DisablebleButton>
@@ -206,23 +204,14 @@ function Sign({
                 <DisablebleButton
                     isDisabled={!isSigned}
                     reasonDisabled={t('reasonsDisabled.missingSignature')}
-                    buttonProps={{
-                        onPress: discardSignature,
-                        flexGrow: '1',
-                        marginRight: space['1'],
-                        variant: 'primary',
-                    }}
+                    onPress={discardSignature}
+                    flexGrow="1"
+                    marginRight={space['1']}
+                    variant="primary"
                 >
                     {t('delete')}
                 </DisablebleButton>
-                <DisablebleButton
-                    isDisabled={!isSigned}
-                    reasonDisabled={t('reasonsDisabled.missingSignature')}
-                    buttonProps={{
-                        onPress: prepareSignature,
-                        flexGrow: '2',
-                    }}
-                >
+                <DisablebleButton isDisabled={!isSigned} reasonDisabled={t('reasonsDisabled.missingSignature')} onPress={prepareSignature} flexGrow="2">
                     {t('matching.certificate.sign')}
                 </DisablebleButton>
             </Box>
