@@ -13,7 +13,7 @@ import { CreateCourseContext } from '../CreateCourse';
 import { DateTime } from 'luxon';
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Props = {
     onBack: () => void;
@@ -213,7 +213,7 @@ const CoursePreview: React.FC<Props> = ({
             )}
             <Row space={space['1']} alignItems="center" flexDirection={ButtonContainerDirection}>
                 {update && (
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={isDisabled ?? false}
                         reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
                         marginBottom={space['1']}
@@ -229,10 +229,10 @@ const CoursePreview: React.FC<Props> = ({
                         }}
                     >
                         {t('course.CourseDate.Preview.updateCourse')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 )}
                 {createAndSubmit && (
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={isDisabled ?? false}
                         reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
                         marginBottom={space['1']}
@@ -248,10 +248,10 @@ const CoursePreview: React.FC<Props> = ({
                         }}
                     >
                         {t('course.CourseDate.Preview.publishCourse')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 )}
                 {createOnly && (
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={isDisabled ?? false}
                         reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
                         marginBottom={space['1']}
@@ -267,9 +267,9 @@ const CoursePreview: React.FC<Props> = ({
                         }}
                     >
                         {t('course.CourseDate.Preview.saveCourse')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 )}
-                <DisablebleButton
+                <DisableableButton
                     isDisabled={isDisabled ?? false}
                     reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
                     marginBottom={space['1']}
@@ -278,7 +278,7 @@ const CoursePreview: React.FC<Props> = ({
                     onPress={onBack}
                 >
                     {t('course.CourseDate.Preview.editCourse')}
-                </DisablebleButton>
+                </DisableableButton>
             </Row>
         </VStack>
     );

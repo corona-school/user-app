@@ -14,7 +14,7 @@ import { DateTime } from 'luxon';
 import { gql } from '../../../gql';
 import VideoButton from '../../../components/VideoButton';
 import { useNavigate } from 'react-router-dom';
-import DisablebleButton from '../../../components/DisablebleButton';
+import DisableableButton from '../../../components/DisablebleButton';
 
 type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
@@ -189,9 +189,9 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
-                    <DisablebleButton isDisabled={loadingSubcourseJoined} reasonDisabled={t('reasonsDisabled.loading')} onPress={() => setSignInModal(true)}>
+                    <DisableableButton isDisabled={loadingSubcourseJoined} reasonDisabled={t('reasonsDisabled.loading')} onPress={() => setSignInModal(true)}>
                         {t('signin')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 )}
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
                     <AlertMessage content={t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)} />
@@ -224,20 +224,24 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                             appointmentType={appointment.appointmentType}
                             canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 10, DateTime.now())}
                         />
-                        <DisablebleButton isDisabled={loadingSubcourseLeft} reasonDisabled={t('reasonsDisabled.loading')} onPress={() => setSignOutModal(true)}>
+                        <DisableableButton
+                            isDisabled={loadingSubcourseLeft}
+                            reasonDisabled={t('reasonsDisabled.loading')}
+                            onPress={() => setSignOutModal(true)}
+                        >
                             {t('single.actions.leaveSubcourse')}
-                        </DisablebleButton>
+                        </DisableableButton>
                     </>
                 )}
                 {!subcourse.isParticipant && !subcourse.isOnWaitingList && !subcourse.canJoin.allowed && subcourse.canJoinWaitinglist.allowed && (
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={loadingJoinedWaitinglist}
                         reasonDisabled={t('reasonsDisabled.loading')}
                         variant="outline"
                         onPress={() => setJoinWaitinglistModal(true)}
                     >
                         {t('single.actions.joinWaitinglist')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 )}
                 {subcourse.isOnWaitingList && (
                     <VStack space={space['0.5']} mb="5">

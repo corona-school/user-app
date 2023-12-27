@@ -13,7 +13,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import useModal from '../../hooks/useModal';
 import { SuccessModal } from '../../modals/SuccessModal';
 import { IMPORTANT_INFORMATION_QUERY } from '../ImportantInformation';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 type CertificateToConfirm = Pick<
     Participation_Certificate,
@@ -119,7 +119,7 @@ function ConfirmData({
                         <FormControl.Label> {t('matching.certificate.signPlace')}</FormControl.Label>
                         <Input value={location} onChangeText={setLocation} />
                     </FormControl>
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={isMinor === null || location.length < 2}
                         reasonDisabled={t('reasonsDisabled.formIncomplete')}
                         variant="solid"
@@ -127,7 +127,7 @@ function ConfirmData({
                         onPress={goSign}
                     >
                         {t('matching.certificate.goToSign')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 </>
             )}
         </>
@@ -201,7 +201,7 @@ function Sign({
                 {location}, {t('matching.certificate.dateFiller')} {DateTime.now().toFormat('dd.MM.yyyy')}
             </Text>
             <Box marginTop={space['2']} display="flex" flexDirection="row">
-                <DisablebleButton
+                <DisableableButton
                     isDisabled={!isSigned}
                     reasonDisabled={t('reasonsDisabled.missingSignature')}
                     onPress={discardSignature}
@@ -210,10 +210,10 @@ function Sign({
                     variant="primary"
                 >
                     {t('delete')}
-                </DisablebleButton>
-                <DisablebleButton isDisabled={!isSigned} reasonDisabled={t('reasonsDisabled.missingSignature')} onPress={prepareSignature} flexGrow="2">
+                </DisableableButton>
+                <DisableableButton isDisabled={!isSigned} reasonDisabled={t('reasonsDisabled.missingSignature')} onPress={prepareSignature} flexGrow="2">
                     {t('matching.certificate.sign')}
-                </DisablebleButton>
+                </DisableableButton>
             </Box>
         </>
     );

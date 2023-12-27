@@ -7,7 +7,7 @@ import { useEffect } from 'react';
 import { useQuery } from '@apollo/client';
 import AlertMessage from '../../widgets/AlertMessage';
 import { gql } from '../../gql';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Props = {
     onRequestMatch: () => any;
@@ -87,14 +87,14 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
             </Text>
 
             <VStack marginBottom={space['1.5']}>
-                <DisablebleButton
+                <DisableableButton
                     isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
                     reasonDisabled={reasonDisabled()}
                     onPress={onRequestMatch}
                     width={ButtonContainer}
                 >
                     {t('dashboard.helpers.buttons.requestMatchPupil')}
-                </DisablebleButton>
+                </DisableableButton>
                 {(!data?.me?.pupil?.canRequestMatch?.allowed && (
                     <AlertMessage
                         content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}

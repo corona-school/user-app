@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
 import { useTranslation } from 'react-i18next';
 import { Dissolve_Reason } from '../gql/graphql';
-import DisablebleButton from '../components/DisablebleButton';
+import DisableableButton from '../components/DisablebleButton';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
@@ -63,13 +63,13 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
-                                <DisablebleButton
+                                <DisableableButton
                                     isDisabled={!reason}
                                     reasonDisabled={t('matching.dissolve.modal.tooltip')}
                                     onPress={() => onPressDissolve(reason ?? Dissolve_Reason.Unknown)}
                                 >
                                     {t('matching.dissolve.modal.btn')}
-                                </DisablebleButton>
+                                </DisableableButton>
                                 <Button onPress={onPressBack} variant="ghost">
                                     {t('back')}
                                 </Button>

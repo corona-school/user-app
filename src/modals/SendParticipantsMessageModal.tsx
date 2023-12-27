@@ -3,7 +3,7 @@ import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FilePicker, { uploadFiles } from '../components/FilePicker';
 import AlertMessage from '../widgets/AlertMessage';
-import DisablebleButton from '../components/DisablebleButton';
+import DisableableButton from '../components/DisablebleButton';
 
 type Props = {
     isOpen?: boolean;
@@ -63,13 +63,13 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
                         <Button variant="outline" onPress={onClose}>
                             {t('cancel')}
                         </Button>
-                        <DisablebleButton
+                        <DisableableButton
                             isDisabled={!subject || !message}
                             reasonDisabled={!subject ? t('helpcenter.contact.subject.error') : t('helpcenter.contact.message.error')}
                             onPress={send}
                         >
                             {t('send')}
-                        </DisablebleButton>
+                        </DisableableButton>
                     </Row>
                 </Modal.Footer>
             </Modal.Content>

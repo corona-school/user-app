@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import AlertMessage from '../widgets/AlertMessage';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
-import DisablebleButton from './DisablebleButton';
+import DisableableButton from './DisablebleButton';
 
 type FormularProps = {};
 
@@ -110,7 +110,7 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
                 <Row flexDirection="column" paddingY={space['0.5']}>
                     {messageSent && <AlertMessage content={t('helpcenter.contact.success')} />}
                     {showError && <AlertMessage content={t('helpcenter.contact.error')} />}
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={isButtonDisabled()}
                         reasonDisabled={reasonDisabled()}
                         marginX="auto"
@@ -118,7 +118,7 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
                         onPress={sendContactMessage}
                     >
                         {t('helpcenter.btn.formsubmit')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 </Row>
             </FormControl>
         </View>

@@ -5,7 +5,7 @@ import { gql } from '../../gql';
 import { useNavigate } from 'react-router-dom';
 import { Chat_Type } from '../../gql/graphql';
 import { useMemo } from 'react';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 type OpenSubcourseChatProps = {
     groupChatType: Chat_Type;
@@ -70,9 +70,9 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
     }, [conversationId, isInstructor, isParticipant, participantsCount]);
 
     return (
-        <DisablebleButton isDisabled={disableButton} reasonDisabled={t('chat.hint')} onPress={openSubcourseGroupChat}>
+        <DisableableButton isDisabled={disableButton} reasonDisabled={t('chat.hint')} onPress={openSubcourseGroupChat}>
             {groupChatType === Chat_Type.Announcement ? t('chat.openAnnouncementChat') : t('chat.openSubcourseChat')}
-        </DisablebleButton>
+        </DisableableButton>
     );
 };
 

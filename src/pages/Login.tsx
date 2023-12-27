@@ -31,7 +31,7 @@ import PasswordInput from '../components/PasswordInput';
 import AlertMessage from '../widgets/AlertMessage';
 import { REDIRECT_PASSWORD } from '../Utility';
 import isEmail from 'validator/lib/isEmail';
-import DisablebleButton from '../components/DisablebleButton';
+import DisableableButton from '../components/DisablebleButton';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -250,13 +250,13 @@ export default function Login() {
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <DisablebleButton
+                            <DisableableButton
                                 isDisabled={pwEmail.length < 6 || _resetPW?.loading}
                                 reasonDisabled={_resetPW?.loading ? t('reasonsDisabled.loading') : t('registration.hint.password.length')}
                                 onPress={() => resetPassword(pwEmail)}
                             >
                                 {t('login.passwordReset.btn')}
-                            </DisablebleButton>
+                            </DisableableButton>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -399,7 +399,7 @@ export default function Login() {
                     )}
 
                     <Box paddingTop={4} marginX="90px" display="block">
-                        <DisablebleButton
+                        <DisableableButton
                             isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
                             reasonDisabled={
                                 _sendToken.loading || _determineLoginOptions.loading ? t('reasonsDisabled.loading') : t('reasonsDisabled.invalidEMail')
@@ -408,7 +408,7 @@ export default function Login() {
                             width={'100%'}
                         >
                             {t('signin')}
-                        </DisablebleButton>
+                        </DisableableButton>
                     </Box>
 
                     <Box paddingTop={10} paddingBottom={1}>

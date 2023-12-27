@@ -3,7 +3,7 @@ import { useContext, useState } from 'react';
 import TextInput from '../../components/TextInput';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import { useTranslation } from 'react-i18next';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Props = {
     onNext: () => any;
@@ -74,7 +74,7 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
 
             <Row>
                 <TextInput flex="1" value={addOther} onChangeText={setAddOther} _input={{ color: 'darkText' }} />
-                <DisablebleButton
+                <DisableableButton
                     isDisabled={!addOther}
                     reasonDisabled={t('reasonsDisabled.fieldEmpty')}
                     w="56px"
@@ -89,7 +89,7 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
                     }}
                 >
                     <AddIcon size="lg" color="white" />
-                </DisablebleButton>
+                </DisableableButton>
             </Row>
             <Button onPress={onNext}>{t('certificate.request_for_match.submit')}</Button>
             <Button variant="link" onPress={() => setWizardIndex((prev) => prev - 1)}>

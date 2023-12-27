@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SearchBar from '../components/SearchBar';
 import UnsplashPagination from '../components/UnsplashPagination';
-import DisablebleButton from '../components/DisablebleButton';
+import DisableableButton from '../components/DisablebleButton';
 
 type Props = {
     showUnsplashModal: boolean;
@@ -145,9 +145,9 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
                 </Modal.Body>
                 <Modal.Footer bgColor="primary.900">
                     <Box alignItems="flex-end" justifyContent="center" paddingRight={space['0.5']}>
-                        <DisablebleButton isDisabled={!selectedPhoto} reasonDisabled={t('course.unsplash.tooltipBtn')} onPress={pickPhoto}>
+                        <DisableableButton isDisabled={!selectedPhoto} reasonDisabled={t('course.unsplash.tooltipBtn')} onPress={pickPhoto}>
                             {t('course.unsplash.choose')}
-                        </DisablebleButton>
+                        </DisableableButton>
                     </Box>
                 </Modal.Footer>
             </Modal.Content>

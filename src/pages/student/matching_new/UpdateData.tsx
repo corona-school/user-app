@@ -11,7 +11,7 @@ import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
-import DisablebleButton from '../../../components/DisablebleButton';
+import DisableableButton from '../../../components/DisablebleButton';
 
 const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null; refetchQuery: DocumentNode }) => {
     const { setCurrentIndex } = useContext(RequestMatchContext);
@@ -135,13 +135,13 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                         </Row>
                     </Modal.Body>
                     <Modal.Footer>
-                        <DisablebleButton
+                        <DisableableButton
                             isDisabled={data === modalSelection || isLoading}
                             reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
                             onPress={changeData}
                         >
                             {t('change')}
-                        </DisablebleButton>
+                        </DisableableButton>
                     </Modal.Footer>
                 </Modal.Content>
             </Modal>

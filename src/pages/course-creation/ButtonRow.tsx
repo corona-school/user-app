@@ -1,7 +1,7 @@
 import { Button, Row, useBreakpointValue, useTheme } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 type ButtonProps = {
     onCancel?: () => any;
@@ -28,7 +28,7 @@ const ButtonRow: React.FC<ButtonProps> = ({ onCancel, onBack, onNext, isDisabled
                 <Button marginBottom={space['1']} width={ButtonContainer} variant={'outline'} onPress={onBack ? onBack : onCancel}>
                     {onBack ? t('back') : t('cancel')}
                 </Button>
-                <DisablebleButton
+                <DisableableButton
                     isDisabled={isDisabled ?? false}
                     reasonDisabled={t('reasonsDisabled.formIncomplete')}
                     width={ButtonContainer}
@@ -36,7 +36,7 @@ const ButtonRow: React.FC<ButtonProps> = ({ onCancel, onBack, onNext, isDisabled
                     onPress={onNext}
                 >
                     {t('next')}
-                </DisablebleButton>
+                </DisableableButton>
             </Row>
         </>
     );

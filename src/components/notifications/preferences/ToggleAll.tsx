@@ -5,7 +5,7 @@ import { FC, useContext, useMemo } from 'react';
 import { NotificationPreferencesContext } from '../../../pages/notification/NotficationControlPanel';
 import { getAllPreferencesInCategorySetToValue } from '../../../helper/notification-helper';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
-import DisablebleButton from '../../DisablebleButton';
+import DisableableButton from '../../DisablebleButton';
 
 type PrefProps = {
     notificationCategories: NotificationCategories;
@@ -60,15 +60,15 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
         notificationCategories && (
             <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={boxWidth}>
                 <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={allEnabled}
                         reasonDisabled={t('notification.controlPanel.preference.enableAllTooltip')}
                         onPress={enableAll}
                         width={buttonWidth}
                     >
                         {t('notification.controlPanel.preference.enableAll')}
-                    </DisablebleButton>
-                    <DisablebleButton
+                    </DisableableButton>
+                    <DisableableButton
                         isDisabled={allDisabled}
                         reasonDisabled={t('notification.controlPanel.preference.disableAllTooltip')}
                         onPress={disableAll}
@@ -77,7 +77,7 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
                         width={buttonWidth}
                     >
                         {t('notification.controlPanel.preference.disableAll')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 </Stack>
             </Box>
         )

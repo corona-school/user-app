@@ -2,7 +2,7 @@ import { Stack, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import useApollo from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import DisablebleButton from '../DisablebleButton';
+import DisableableButton from '../DisablebleButton';
 
 type AvatarsProps = {
     onPress: () => void;
@@ -26,7 +26,7 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, isOve
             <Stack direction={isMobile ? 'column' : 'row'} space={3}>
                 {user?.student && (
                     <>
-                        <DisablebleButton
+                        <DisableableButton
                             isDisabled={isOver || isLast}
                             reasonDisabled={
                                 isOver ? t('appointment.detail.reasonDisabled.deleteBtn.isOver') : t('appointment.detail.reasonDisabled.deleteBtn.isLast')
@@ -37,8 +37,8 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, isOve
                             width={buttonWidth}
                         >
                             {t('appointment.detail.deleteButton')}
-                        </DisablebleButton>
-                        <DisablebleButton
+                        </DisableableButton>
+                        <DisableableButton
                             isDisabled={isOver}
                             reasonDisabled={t('appointment.detail.reasonDisabled.editBtn.isOver')}
                             variant={'outline'}
@@ -46,11 +46,11 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, isOve
                             onPress={onEditPress}
                         >
                             {t('appointment.detail.editButton')}
-                        </DisablebleButton>
+                        </DisableableButton>
                     </>
                 )}
                 {user?.pupil && (
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={canceled || isOver}
                         reasonDisabled={
                             isOver ? t('appointment.detail.reasonDisabled.cancelBtn.isOver') : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
@@ -61,7 +61,7 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, isOve
                         width={buttonWidth}
                     >
                         {t('appointment.detail.cancelButton')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 )}
             </Stack>
         </>

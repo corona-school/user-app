@@ -1,6 +1,6 @@
 import { Box, Row, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import DisablebleButton from '../components/DisablebleButton';
+import DisableableButton from '../components/DisablebleButton';
 
 export const NextPrevButtons = ({
     disablingPrev,
@@ -28,7 +28,7 @@ export const NextPrevButtons = ({
             <Box alignItems="center" marginTop={space['0.5']}>
                 <Row w="100%" space={space['1']} justifyContent="center">
                     {!onlyNext && (
-                        <DisablebleButton
+                        <DisableableButton
                             isDisabled={disablingPrev?.is ?? false}
                             reasonDisabled={disablingPrev?.reason ?? ''}
                             maxW="220px"
@@ -38,9 +38,9 @@ export const NextPrevButtons = ({
                             onPress={onPressPrev}
                         >
                             {altPrevText ?? t('back')}
-                        </DisablebleButton>
+                        </DisableableButton>
                     )}
-                    <DisablebleButton
+                    <DisableableButton
                         isDisabled={disablingNext?.is ?? false}
                         reasonDisabled={disablingNext?.reason ?? ''}
                         maxW="220px"
@@ -48,7 +48,7 @@ export const NextPrevButtons = ({
                         onPress={onPressNext}
                     >
                         {altNextText ?? t('next')}
-                    </DisablebleButton>
+                    </DisableableButton>
                 </Row>
             </Box>
         </>

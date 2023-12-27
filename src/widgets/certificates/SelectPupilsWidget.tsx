@@ -9,7 +9,7 @@ import { Pressable } from 'react-native';
 import { gql } from '../../gql';
 import { Match } from '../../gql/graphql';
 import { useTranslation } from 'react-i18next';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Props = {
     onNext: () => any;
@@ -87,9 +87,9 @@ const SelectPupilsWidget: React.FC<Props> = ({ onNext }) => {
                 })}
             </VStack>
 
-            <DisablebleButton isDisabled={selections.length === 0} reasonDisabled={t('certificate.request_page2.reason_btn_disabled')} onPress={next}>
+            <DisableableButton isDisabled={selections.length === 0} reasonDisabled={t('certificate.request_page2.reason_btn_disabled')} onPress={next}>
                 {t('next')}
-            </DisablebleButton>
+            </DisableableButton>
         </VStack>
     );
 };

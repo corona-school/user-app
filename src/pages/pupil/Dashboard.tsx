@@ -24,7 +24,7 @@ import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import CTACard from '../../widgets/CTACard';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Props = {};
 
@@ -295,14 +295,14 @@ const Dashboard: React.FC<Props> = () => {
                                                     </HStack>
                                                 </Alert>
 
-                                                <DisablebleButton
+                                                <DisableableButton
                                                     isDisabled={_cancelMatchRequest?.loading}
                                                     reasonDisabled={t('reasonsDisabled.loading')}
                                                     width={ButtonContainer}
                                                     onPress={() => setShowCancelModal(true)}
                                                 >
                                                     {t('dashboard.offers.removeRequest')}
-                                                </DisablebleButton>
+                                                </DisableableButton>
                                             </VStack>
                                         )}
                                     </HSection>

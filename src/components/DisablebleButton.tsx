@@ -3,13 +3,13 @@ import { PropsWithChildren, ComponentProps, ReactNode } from 'react';
 
 type ButtonProps = ComponentProps<typeof Button>;
 
-type DisablebleButtonProps = {
+type DisableableButtonProps = {
     isDisabled: boolean;
     reasonDisabled: string;
     disabledButtonContent?: ReactNode;
 } & ButtonProps;
 
-const DisablebleButton: React.FC<PropsWithChildren<DisablebleButtonProps>> = ({ isDisabled, reasonDisabled, disabledButtonContent, children, ...rest }) => {
+const DisableableButton: React.FC<PropsWithChildren<DisableableButtonProps>> = ({ isDisabled, reasonDisabled, disabledButtonContent, children, ...rest }) => {
     return (
         <Tooltip maxW={300} label={reasonDisabled} isDisabled={!isDisabled} _text={{ textAlign: 'center' }}>
             <Button isDisabled={isDisabled} {...rest}>
@@ -19,4 +19,4 @@ const DisablebleButton: React.FC<PropsWithChildren<DisablebleButtonProps>> = ({ 
     );
 };
 
-export default DisablebleButton;
+export default DisableableButton;

@@ -7,7 +7,7 @@ import { Match, Pupil } from '../../gql/graphql';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import { SubjectSelector } from '../SubjectSelector';
 import UserProgress from '../UserProgress';
-import DisablebleButton from '../../components/DisablebleButton';
+import DisableableButton from '../../components/DisablebleButton';
 
 const isValidNumber = (value: string) => {
     const parsed = parseFloat(value.replace(',', '.'));
@@ -140,7 +140,7 @@ const SelectedPupilWizard = ({
                     </Row>
                 </VStack>
 
-                <DisablebleButton
+                <DisableableButton
                     isDisabled={
                         !startDate || !endDate || !hoursPerWeek || !hoursTotal || !subjects.length || !isValidNumber(hoursPerWeek) || !isValidNumber(hoursTotal)
                     }
@@ -148,7 +148,7 @@ const SelectedPupilWizard = ({
                     onPress={onPress}
                 >
                     {currentIndex + 1 < pupilCount ? t('certificate.request_for_match.next_pupil') : t('next')}
-                </DisablebleButton>
+                </DisableableButton>
                 <Button variant="link" onPress={onPrev}>
                     {t('back')}
                 </Button>
