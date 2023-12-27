@@ -207,7 +207,6 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const { space } = useTheme();
     const { t } = useTranslation();
     const myRoles = useRoles();
-    const screener = useUser();
 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId) }`));
 
@@ -218,7 +217,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
         `)
     );
 
-    const [createLoginToken, { loading: loadingLoginToken, data: loginTokenResult }] = useMutation(
+    const [createLoginToken] = useMutation(
         gql(`
             mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
         `)
