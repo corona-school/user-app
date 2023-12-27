@@ -218,7 +218,7 @@
             "deutsch": "Deutsch",
             "englisch": "Englisch",
             "franz_sisch": "Französisch",
-            "französisch": "Französisch",
+            "t_rkisch": "Türkisch",
             "italienisch": "Italienisch",
             "kasachisch": "Kasachisch",
             "kurdisch": "Kurdisch",
@@ -276,6 +276,8 @@
             "st": "Sachsen-Anhalt",
             "sh": "Schleswig-Holstein",
             "th": "Thüringen",
+            "at": "Österreich",
+            "ch": "Schweiz",
             "other": "Andere"
         },
         "schooltypes": {
@@ -412,8 +414,8 @@
                 "subtitle": "Auf welche Schulform gehst du?"
             },
             "4": {
-                "title": "Bundesland",
-                "subtitle": "Aus welchem Bundesland kommst du?"
+                "title": "Schulort",
+                "subtitle": "Wo gehst du zur Schule?"
             },
             "5": {
                 "title": "Einwilligungen",
@@ -542,13 +544,13 @@
         },
         "State": {
             "empty": "Keine Angabe",
-            "label": "Bundesland",
+            "label": "Schulort",
             "single": {
-                "selectedStates": "Mein Bundesland",
-                "otherStates": "Weitere Bundesländer",
-                "header": "Bundesland ändern",
-                "title": "Mein Bundesland",
-                "others": "Bundesland wählen"
+                "selectedStates": "Mein Schulort",
+                "otherStates": "Weitere (Bundes-)Länder",
+                "header": "Schulort ändern",
+                "title": "Mein Schulort",
+                "others": "Schulort wählen"
             }
         },
         "SchoolType": {
@@ -605,7 +607,7 @@
         },
         "Notice": {
             "noLanguage": "Es wurden keine Sprachen angegeben",
-            "noState": "Es wurde kein Bundesland angegeben",
+            "noState": "Es wurde kein Schulort angegeben",
             "noSchoolType": "Es wurde keine Schulform angegeben",
             "noSchoolGrade": "Es wurde keine Klasse angegeben",
             "noSchoolSubject": "Es wurden keine Fächer angegeben"
@@ -1439,7 +1441,8 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "other": "Sonstiges"
+                "other": "Sonstiges",
+                "unknown": "Unbekannt"
             },
             "pupil": {
                 "ghosted": "Mein:e Lernpartner:in hat sich nicht zurückgemeldet",
@@ -1450,7 +1453,8 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "other": "Sonstiges"
+                "other": "Sonstiges",
+                "unknown": "Unbekannt"
             }
         },
         "certificate": {
