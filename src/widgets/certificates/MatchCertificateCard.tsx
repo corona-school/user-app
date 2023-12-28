@@ -6,6 +6,7 @@ import { gql } from '../../gql';
 import { Participation_Certificate } from '../../gql/graphql';
 import CertificateMatchIcon from '../../assets/icons/lernfair/lf-certificate-matching.svg';
 import { useTranslation } from 'react-i18next';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Certificate = Pick<
     Participation_Certificate,
@@ -74,13 +75,14 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
                             </Text>
                         </Text>
                     </VStack>
-                    <Button
+                    <DisableableButton
                         isDisabled={certificate.state === 'awaiting-approval' || requestCertificateState.loading}
+                        reasonDisabled={requestCertificateState.loading ? t('reasonsDisabled.loading') : t('certificate.download.reasonBtnDisabled')}
                         variant="outline"
                         onPress={() => setShowSelectPDFLanguageModal(true)}
                     >
                         {t('certificate.download.download')}
-                    </Button>
+                    </DisableableButton>
                 </VStack>
             </Card>
             <Modal

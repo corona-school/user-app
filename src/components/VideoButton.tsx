@@ -1,7 +1,7 @@
-import { Button, Tooltip } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useNavigate } from 'react-router-dom';
+import DisableableButton from './DisablebleButton';
 import { gql } from '../gql';
 import { useLazyQuery } from '@apollo/client';
 
@@ -48,13 +48,14 @@ query overrrideLink($appointmentId: Float!) {
         }
     };
     return (
-        <>
-            <Tooltip maxW={300} label={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')} isDisabled={canJoinMeeting || isOver}>
-                <Button width={width ?? width} onPress={openMeeting} isDisabled={!canJoinMeeting || isOver || loading}>
-                    {buttonText ? buttonText : isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
-                </Button>
-            </Tooltip>
-        </>
+        <DisableableButton
+            isDisabled={!canJoinMeeting || isOver}
+            reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
+            width={width ?? width}
+            onPress={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)}
+        >
+            {buttonText ? buttonText : isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
+        </DisableableButton>
     );
 };
 

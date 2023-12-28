@@ -111,7 +111,11 @@ const Details: React.FC<Props> = () => {
                 value={matchRequest.message}
                 onChangeText={setMessage}
             />
-            <NextPrevButtons isDisabledNext={_update.loading} onPressNext={requestMatch} onPressPrev={() => setCurrentIndex(skippedSubjectPriority ? 2 : 4)} />
+            <NextPrevButtons
+                disablingNext={{ is: _update.loading, reason: t('reasonsDisabled.loading') }}
+                onPressNext={requestMatch}
+                onPressPrev={() => setCurrentIndex(skippedSubjectPriority ? 2 : 4)}
+            />
         </VStack>
     );
 };
