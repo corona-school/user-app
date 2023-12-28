@@ -26,7 +26,7 @@ const Priority: React.FC = () => {
                 limit={1}
             />
             <NextPrevButtons
-                isDisabledNext={matchRequest.subjects.every((it) => !it.mandatory)}
+                disablingNext={{ is: matchRequest.subjects.every((it) => !it.mandatory), reason: t('matching.wizard.pupil.priority.reason_btn_disabled') }}
                 onPressPrev={() => setCurrentIndex(3)}
                 onPressNext={() => setCurrentIndex(5)}
             />
