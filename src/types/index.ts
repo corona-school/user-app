@@ -3,13 +3,13 @@ import { Course, Course_Tag, Instructor_Screening, Lecture, Match, Pupil, Pupil_
 export type Opt<T> = T | null | undefined;
 
 export type MatchWithStudent = Opt<
-    Pick<Match, 'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasonEnum' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'> & {
+    Pick<Match, 'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasons' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'> & {
         student?: { firstname?: Opt<string>; lastname?: Opt<string> };
     }
 >;
 
 export type MatchWithPupil = Opt<
-    Pick<Match, 'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasonEnum' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'> & {
+    Pick<Match, 'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasons' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'> & {
         pupil?: { firstname?: Opt<string>; lastname?: Opt<string> };
     }
 >;
