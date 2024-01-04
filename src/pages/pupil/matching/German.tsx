@@ -38,6 +38,7 @@ const German: React.FC = () => {
                 setSkippedSubjectList(true);
                 break;
             case '2-4':
+                for (const subject of matchRequest.subjects) removeSubject(subject.name);
                 setSubject({ name: DAZ, mandatory: true });
                 setCurrentIndex(3); // 3 = subjects
                 setSkippedSubjectPriority(true);
