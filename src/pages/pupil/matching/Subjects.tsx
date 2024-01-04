@@ -27,7 +27,7 @@ const Subjects: React.FC = () => {
             <NextPrevButtons
                 disablingNext={{ is: matchRequest.subjects.length === 0, reason: t('matching.wizard.pupil.subjects.reason_btn_disabled') }}
                 onPressPrev={() => setCurrentIndex(2)}
-                onPressNext={() => setCurrentIndex(4)}
+                onPressNext={() => setCurrentIndex(isDAZ ? 5 : 4)}
             />
         </VStack>
     );

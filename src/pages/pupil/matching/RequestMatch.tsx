@@ -43,6 +43,8 @@ type RequestMatchContextType = {
     setCurrentIndex: Dispatch<SetStateAction<number>>;
     setSkippedSubjectPriority: Dispatch<SetStateAction<boolean>>;
     skippedSubjectPriority: boolean;
+    setSkippedSubjectList: Dispatch<SetStateAction<boolean>>;
+    skippedSubjectList: boolean;
     isEdit: boolean;
 };
 export const RequestMatchContext = createContext<RequestMatchContextType>({
@@ -53,6 +55,8 @@ export const RequestMatchContext = createContext<RequestMatchContextType>({
     setCurrentIndex: () => null,
     setSkippedSubjectPriority: () => null,
     skippedSubjectPriority: false,
+    setSkippedSubjectList: () => null,
+    skippedSubjectList: false,
     isEdit: false,
 });
 
@@ -60,6 +64,7 @@ const RequestMatch: React.FC = () => {
     const { space } = useTheme();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [skippedSubjectPriority, setSkippedSubjectPriority] = useState<boolean>(false);
+    const [skippedSubjectList, setSkippedSubjectList] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [matchRequest, setMatchRequest] = useState<MatchRequest>({
         subjects: [],
@@ -122,7 +127,18 @@ const RequestMatch: React.FC = () => {
                 }
             >
                 <RequestMatchContext.Provider
-                    value={{ isEdit, matchRequest, setSubject, removeSubject, setCurrentIndex, setSkippedSubjectPriority, skippedSubjectPriority, setMessage }}
+                    value={{
+                        isEdit,
+                        matchRequest,
+                        setSubject,
+                        removeSubject,
+                        setCurrentIndex,
+                        setSkippedSubjectPriority,
+                        skippedSubjectPriority,
+                        setSkippedSubjectList,
+                        skippedSubjectList,
+                        setMessage,
+                    }}
                 >
                     {!loading && !isLoading && data && (
                         <Box paddingX={space['1']} paddingBottom={space['1']}>
