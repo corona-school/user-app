@@ -25,7 +25,10 @@ const Subjects: React.FC = () => {
                 limit={isDAZ ? 1 : undefined}
             />
             <NextPrevButtons
-                disablingNext={{ is: matchRequest.subjects.length === 0, reason: t('matching.wizard.pupil.subjects.reason_btn_disabled') }}
+                disablingNext={{
+                    is: matchRequest.subjects.length === 0 || (matchRequest.subjects.length === 1 && isDAZ),
+                    reason: isDAZ ? t('matching.wizard.pupil.subjects.reason_btn_disabled_DAZ') : t('matching.wizard.pupil.subjects.reason_btn_disabled'),
+                }}
                 onPressPrev={() => setCurrentIndex(2)}
                 onPressNext={() => setCurrentIndex(isDAZ ? 5 : 4)}
             />
