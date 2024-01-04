@@ -44,10 +44,12 @@ const CourseClassification: React.FC<SubjectProps> = ({ onNext, onBack }) => {
         if (category === Course_Category_Enum.Revision) {
             if (!courseSubject) return false;
             return true;
+        } else if (category === Course_Category_Enum.Focus) {
+            if (courseTags.length === 0) return false;
         }
 
         return true;
-    }, [category, courseSubject]);
+    }, [courseTags.length, category, courseSubject]);
 
     const onNextStep = useCallback(() => {
         setCourseCategory && setCourseCategory(category);
