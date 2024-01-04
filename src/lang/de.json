@@ -415,7 +415,8 @@
             },
             "4": {
                 "title": "Schulort",
-                "subtitle": "Wo gehst du zur Schule?"
+                "subtitle": "Wo gehst du zur Schule?",
+                "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt."
             },
             "5": {
                 "title": "Einwilligungen",
@@ -545,6 +546,7 @@
         "State": {
             "empty": "Keine Angabe",
             "label": "Schulort",
+            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
             "single": {
                 "selectedStates": "Mein Schulort",
                 "otherStates": "Weitere (Bundes-)Länder",

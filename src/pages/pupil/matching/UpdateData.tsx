@@ -181,6 +181,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                     }}
                 >
                     <Row flexWrap="wrap" w="100%">
+                        <Text marginBottom={3}>{t('profile.State.weightingNote')}</Text>
                         {(state && (
                             <Column marginRight={3} mb={space['0.5']}>
                                 {(state && (
