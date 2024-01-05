@@ -139,17 +139,15 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                         <VStack w="100%">
                             <Row flexWrap="wrap" width="100%">
                                 {languages.map(
-                                    (subject, index) =>
-                                        !selections.find((sel) => sel === subject.label) && (
+                                    (language, index) =>
+                                        !selections.find((sel) => sel === language.key) && (
                                             <Column marginRight={3} marginBottom={3} key={`offers-${index}`}>
                                                 <IconTagList
                                                     initial={false}
-                                                    iconPath={`languages/icon_${subject.key.toLowerCase()}.svg`}
-                                                    text={subject.label}
+                                                    iconPath={`languages/icon_${language.key.toLowerCase()}.svg`}
+                                                    text={t(`lernfair.languages.${language.key.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     onPress={() => {
-                                                        setSelections((prev) => [...prev, subject.key]); // 'Französisch' (display name) -> 'franz_sisch' (key)
-                                                        if (!selections.find((sel) => sel === subject.label)) {
-                                                        }
+                                                        setSelections((prev) => [...prev, language.key]); // 'Französisch' (display name) -> 'franz_sisch' (key)
                                                     }}
                                                 />
                                             </Column>

@@ -102,8 +102,19 @@
             "cancelButton": "Termin absagen",
             "editButton": "Termin bearbeiten",
             "canceledToast": "Termin wurde abgesagt",
-            "deleteTooltip": "Der letzte Termin kann nicht gelöscht werden.",
-            "editBlockedWarning": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."
+            "reasonDisabled": {
+                "editBtn": {
+                    "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."
+                },
+                "deleteBtn": {
+                    "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht gelöscht werden.",
+                    "isLast": "Der letzte Termin kann nicht gelöscht werden."
+                },
+                "cancelBtn": {
+                    "isOver": "Du kannst diesen Termin nicht absagen, da er bereits vorbei ist.",
+                    "isCancelled": "Du hast diesen Termin bereits abgesagt."
+                }
+            }
         },
         "attendeesModal": {
             "title": "Teilnehmer:innen",
@@ -150,6 +161,10 @@
         "accountNotFound": {
             "title": "Anmeldung fehlgeschlagen",
             "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden. Bitte kontrolliere die eingegebene E-Mail-Adresse und versuche es erneut."
+        },
+        "accountDeactivated": {
+            "title": "Anmeldung fehlgeschlagen",
+            "alert_html": "Dein Account wurde deaktiviert. Bitte kontaktiere den Support (support@lern-fair.de) für weitere Informationen."
         },
         "invalidMailMessage": "Die eingegebene E-Mail-Adresse ist fehlerhaft.",
         "invalidTokenAlert": {
@@ -203,7 +218,7 @@
             "deutsch": "Deutsch",
             "englisch": "Englisch",
             "franz_sisch": "Französisch",
-            "französisch": "Französisch",
+            "t_rkisch": "Türkisch",
             "italienisch": "Italienisch",
             "kasachisch": "Kasachisch",
             "kurdisch": "Kurdisch",
@@ -261,6 +276,8 @@
             "st": "Sachsen-Anhalt",
             "sh": "Schleswig-Holstein",
             "th": "Thüringen",
+            "at": "Österreich",
+            "ch": "Schweiz",
             "other": "Andere"
         },
         "schooltypes": {
@@ -302,7 +319,8 @@
                     "not-tutee": "Du kannst kein Lernpaar anfordern, da du nicht für die Lernunterstützung registriert bist.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
                     "max-matches": "Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.",
-                    "deactivated": "Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. "
+                    "deactivated": "Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
+                    "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
             }
         }
@@ -396,8 +414,8 @@
                 "subtitle": "Auf welche Schulform gehst du?"
             },
             "4": {
-                "title": "Bundesland",
-                "subtitle": "Aus welchem Bundesland kommst du?"
+                "title": "Schulort",
+                "subtitle": "Wo gehst du zur Schule?"
             },
             "5": {
                 "title": "Einwilligungen",
@@ -468,7 +486,13 @@
             }
         },
         "btn": {
-            "formsubmit": "Anfrage senden"
+            "formsubmit": "Anfrage senden",
+            "reasonDisabled": [
+                "Bitte wähle einen längeren Betreff (mindestens 5 Zeichen).",
+                "Bitte schreibe einen längere Nachricht (mindestens 5 Zeichen).",
+                "Du musst den Datenschutzbestimmungen zustimmen."
+            ],
+            "readsonDisabledModal": "Du musst bestätigen, dass du diese Nachricht melden möchtest."
         },
         "reportSuccessToast": "Die Nachricht wurde erfolgreich gemeldet und wird zeitnah überprüft."
     },
@@ -520,13 +544,13 @@
         },
         "State": {
             "empty": "Keine Angabe",
-            "label": "Bundesland",
+            "label": "Schulort",
             "single": {
-                "selectedStates": "Mein Bundesland",
-                "otherStates": "Weitere Bundesländer",
-                "header": "Bundesland ändern",
-                "title": "Mein Bundesland",
-                "others": "Bundesland wählen"
+                "selectedStates": "Mein Schulort",
+                "otherStates": "Weitere (Bundes-)Länder",
+                "header": "Schulort ändern",
+                "title": "Mein Schulort",
+                "others": "Schulort wählen"
             }
         },
         "SchoolType": {
@@ -583,7 +607,7 @@
         },
         "Notice": {
             "noLanguage": "Es wurden keine Sprachen angegeben",
-            "noState": "Es wurde kein Bundesland angegeben",
+            "noState": "Es wurde kein Schulort angegeben",
             "noSchoolType": "Es wurde keine Schulform angegeben",
             "noSchoolGrade": "Es wurde keine Klasse angegeben",
             "noSchoolSubject": "Es wurden keine Fächer angegeben"
@@ -593,6 +617,7 @@
             "modal": {
                 "title": "Account deaktivieren",
                 "btn": "Account deaktivieren",
+                "tooltip": "Du musst einen Grund angeben.",
                 "other": {
                     "placeholder": "Deaktivierungsgrund"
                 },
@@ -1272,12 +1297,14 @@
                 "subjects": {
                     "heading": "Fachauswahl",
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
+                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
                     "text": "Du kannst maximal 1 Fach auswählen."
                 },
                 "priority": {
                     "heading": "Priorisierung",
                     "subheading": "In welchen Fach brauchst du am meisten Hilfe?",
-                    "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist."
+                    "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
+                    "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "details": {
                     "heading": "Details",
@@ -1301,7 +1328,8 @@
             "student": {
                 "subjects": {
                     "title": "Fachauswahl",
-                    "subtitle": "In welchen Fächern möchtest du unterstützen?"
+                    "subtitle": "In welchen Fächern möchtest du unterstützen?",
+                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus."
                 },
                 "profile": {
                     "title": "Profil aktualisieren",
@@ -1389,7 +1417,8 @@
         "dissolve": {
             "modal": {
                 "title": "Warum möchtest du das Lernpaar auflösen?",
-                "btn": "Lernpaar auflösen"
+                "btn": "Lernpaar auflösen",
+                "tooltip": "Du musst einen Grund angeben."
             },
             "warningModal": {
                 "title": "Bist du sicher?",
@@ -1412,7 +1441,8 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "other": "Sonstiges"
+                "other": "Sonstiges",
+                "unknown": "Unbekannt"
             },
             "pupil": {
                 "ghosted": "Mein:e Lernpartner:in hat sich nicht zurückgemeldet",
@@ -1423,7 +1453,8 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "other": "Sonstiges"
+                "other": "Sonstiges",
+                "unknown": "Unbekannt"
             }
         },
         "certificate": {
@@ -1632,7 +1663,8 @@
             "placeholder": "Kursthema eingeben",
             "description": "Suche ein aussagekräftiges Bild für dein Kursthema mithilfe der Suchleiste. Es können aktuell keine eigenen Bilder verwendet werden.",
             "noSearchoResults": "Keine Suchergebnisse.",
-            "choose": "wählen"
+            "choose": "wählen",
+            "tooltipBtn": "Du musst ein Bild auswählen."
         },
         "addCourseInstructor": {
             "search": "Name oder E-Mail-Adresse",
@@ -1678,6 +1710,8 @@
             "preference": {
                 "enableAll": "Alle Newsletter aktivieren",
                 "disableAll": "Alle Newsletter deaktivieren",
+                "enableAllTooltip": "Du hast bereits alle Newsletter aktiviert.",
+                "disableAllTooltip": "Du hast bereits alle Newsletter deaktiviert.",
                 "chat": {
                     "title": "Chat-Nachrichten",
                     "modalBody": "Wir schicken dir eine E-Mail für jede Chat-Nachricht, die du bekommst."
@@ -1851,6 +1885,9 @@
         "disputed_screenings": "Schülerscreenings mit offener Entscheidung",
         "four_eyes": "Vier Augen",
         "was_screened_but_no_decision": "Dieser Schüler wurde bereits gescreent, aber eine Entscheidung steht noch aus",
+        "save": "Speichern",
+        "recommend_acceptance": "Annahme empfehlen",
+        "recommend_rejection": "Ablehnung empfehlen",
         "screening_saved": "Screening gespeichert",
         "account_deactivated": "Account deaktiviert",
         "account_deactivated_details": "Der Schüler kann sich nicht mehr im Userbereich anmelden. Der Support kann Accounts reaktivieren.",
@@ -1858,6 +1895,7 @@
         "success": "Annehmen",
         "rejection": "Ablehnen",
         "deactivate": "Account Deaktivieren",
+        "missed": "Screening verpasst",
         "confirm_success": "Willst du {{firstname}} {{lastname}} annehmen?",
         "confirm_rejection": "Willst du {{firstname}} {{lastname}} wirklich ablehnen?",
         "confirm_deactivate": "Willst du {{firstname}} {{lastname}} wirklich deaktivieren?",
@@ -1902,6 +1940,11 @@
             "procedure": "Du kannst die Bescheinigung hier beantragen und erhältst eine Benachrichtigung, sobald dein Engagement von deinem:r Schüler:in bestätigt wurde. Ab dann findest du die Bescheinigung auch in deinem Profil.",
             "apply": "Vollständige Bescheinigung beantragen"
         },
+        "request_page2": {
+            "title": "Bei welchen Schüler:innen möchtest du eine Bescheinigung beantragen?",
+            "card_content": "Bescheinigung beantragen",
+            "reason_btn_disabled": "Du musst eine:n Schüler:in auswählen."
+        },
         "request_for_match": {
             "title": "Angaben",
             "subtitle": "Gebe für jede:n Schüler:in an, in welchem Unfang du sie:ihn unterstützt hast.",
@@ -1933,6 +1976,7 @@
             "state_manual": "Manuell",
             "state_awaiting": "Warten auf Bestätigung",
             "state_approved": "Bestätigt",
+            "reasonBtnDisabled": "Dein:e Schüler:in muss deine Bescheinigung noch bestätigen.",
             "loading": "Dein Zertifikat wird heruntergeladen",
             "error": "Beim Download ist ein Fehler aufgetreten",
             "download": "Herunterladen",
@@ -1968,5 +2012,15 @@
         "Pupil": "Schüler:in",
         "Retiree": "Rentner:in",
         "Student": "Student:in"
+    },
+    "reasonsDisabled": {
+        "loading": "Es werden noch Daten geladen...",
+        "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an.",
+        "formIncomplete": "Du musst alle Felder ausfüllen.",
+        "fieldEmpty": "Gebe etwas in dieses Feld ein.",
+        "questionUnaswerd": "Bitte beantworte die Frage.",
+        "questionsUnaswerd": "Bitte beantworte die Fragen.",
+        "newFieldSameAsOld": "Das hast du bereits ausgewählt.",
+        "missingSignature": "Es fehlt eine Unterschrift."
     }
 }

@@ -6,6 +6,7 @@ import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import AlertMessage from '../widgets/AlertMessage';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
+import DisableableButton from '../components/DisablebleButton';
 
 export type ReportInfos = {
     messageId: string;
@@ -95,9 +96,14 @@ const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfo
                 </Modal.Body>
                 <Modal.Footer>
                     <Row space={space['2']}>
-                        <Button marginX="auto" isDisabled={!dsgvo} onPress={sendReportMessage}>
+                        <DisableableButton
+                            isDisabled={!dsgvo}
+                            reasonDisabled={t('helpcenter.btn.readsonDisabledModal')}
+                            marginX="auto"
+                            onPress={sendReportMessage}
+                        >
                             {t('helpcenter.btn.formsubmit')}
-                        </Button>
+                        </DisableableButton>
                         <Button onPress={onClose}>{t('cancel')}</Button>
                     </Row>
                 </Modal.Footer>

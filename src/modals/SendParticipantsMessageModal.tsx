@@ -3,17 +3,17 @@ import { ReactElement, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import FilePicker, { uploadFiles } from '../components/FilePicker';
 import AlertMessage from '../widgets/AlertMessage';
+import DisableableButton from '../components/DisablebleButton';
 
 type Props = {
     isOpen?: boolean;
-    isDisabled?: boolean;
     onClose?: () => void;
     onSend: (subject: string, message: string, fileIDs: string[]) => void;
     isInstructor: boolean;
     details?: ReactElement;
 };
 
-const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend, isDisabled, isInstructor, details }) => {
+const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend, isInstructor, details }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const [message, setMessage] = useState<string>('');
@@ -21,25 +21,7 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
 
     const [files, setFiles] = useState<File[]>([]);
 
-    const [noSubjectError, setNoSubjectError] = useState<string>();
-    const [noMessageError, setNoMessageError] = useState<string>();
     const [sendError, setSendError] = useState<string>();
-
-    useEffect(() => {
-        if (!message) {
-            setNoMessageError(t('helpcenter.contact.message.error'));
-        } else {
-            setNoMessageError(undefined);
-        }
-    }, [message]);
-
-    useEffect(() => {
-        if (!subject) {
-            setNoSubjectError(t('helpcenter.contact.subject.error'));
-        } else {
-            setNoSubjectError(undefined);
-        }
-    }, [subject]);
 
     const send = useCallback(async () => {
         if (message && subject && files) {
@@ -74,18 +56,20 @@ const SendParticipantsMessageModal: React.FC<Props> = ({ isOpen, onClose, onSend
                         <FilePicker handleFileChange={setFiles} />
                     </Row>
                     {details}
-                    {noSubjectError && <AlertMessage content={noSubjectError} />}
-                    {noMessageError && <AlertMessage content={noMessageError} />}
                     {sendError && <AlertMessage content={sendError} />}
                 </Modal.Body>
                 <Modal.Footer>
                     <Row space={space['1']}>
-                        <Button variant="outline" onPress={onClose} isDisabled={isDisabled}>
+                        <Button variant="outline" onPress={onClose}>
                             {t('cancel')}
                         </Button>
-                        <Button onPress={send} isDisabled={isDisabled}>
+                        <DisableableButton
+                            isDisabled={!subject || !message}
+                            reasonDisabled={!subject ? t('helpcenter.contact.subject.error') : t('helpcenter.contact.message.error')}
+                            onPress={send}
+                        >
                             {t('send')}
-                        </Button>
+                        </DisableableButton>
                     </Row>
                 </Modal.Footer>
             </Modal.Content>

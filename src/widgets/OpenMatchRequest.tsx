@@ -2,6 +2,7 @@ import { Text, Column, Box, Row, Button, useTheme, useBreakpointValue, Heading }
 import { useTranslation } from 'react-i18next';
 import Tag from '../components/Tag';
 import { Subject } from '../gql/graphql';
+import DisableableButton from '../components/DisablebleButton';
 
 const OpenMatchRequest = ({
     cancelLoading,
@@ -46,8 +47,9 @@ const OpenMatchRequest = ({
                             ))}
                     </Row>
                 </Column>
-                <Button
+                <DisableableButton
                     isDisabled={cancelLoading}
+                    reasonDisabled={t('reasonsDisabled.loading')}
                     variant="outlinelight"
                     mt="3"
                     color="darkText"
@@ -57,7 +59,7 @@ const OpenMatchRequest = ({
                     }}
                 >
                     {t('matching.request.check.removeRequest')}
-                </Button>
+                </DisableableButton>
                 <Button
                     mt={space['0.5']}
                     variant="link"

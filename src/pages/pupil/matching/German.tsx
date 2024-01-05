@@ -64,7 +64,11 @@ const German: React.FC = () => {
                         align="left"
                     />
                     <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
-                    <NextPrevButtons isDisabledNext={isNativeLanguage === null} onPressPrev={() => setCurrentIndex(1)} onPressNext={onGoNext} />
+                    <NextPrevButtons
+                        disablingNext={{ is: isNativeLanguage === null, reason: t('reasonsDisabled.questionUnaswerd') }}
+                        onPressPrev={() => setCurrentIndex(1)}
+                        onPressNext={onGoNext}
+                    />
                 </>
             )}
             {showSecond && (
@@ -111,7 +115,11 @@ const German: React.FC = () => {
 
                     {(learningSince === '<1' || learningSince === '1-2') && <AlertMessage content={t('matching.wizard.pupil.german.howlong.alertmsg')} />}
 
-                    <NextPrevButtons isDisabledNext={!learningSince} onPressPrev={() => setShowSecond(false)} onPressNext={onSecondNext} />
+                    <NextPrevButtons
+                        disablingNext={{ is: !learningSince, reason: t('reasonsDisabled.questionUnaswerd') }}
+                        onPressPrev={() => setShowSecond(false)}
+                        onPressNext={onSecondNext}
+                    />
                 </>
             )}
         </VStack>
