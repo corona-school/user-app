@@ -20,7 +20,7 @@ const Subjects: React.FC = () => {
             {isDAZ && <Text>{t('matching.wizard.pupil.subjects.text')}</Text>}
             <SubjectSelector
                 subjects={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
-                addSubject={(it) => setSubject({ name: it, mandatory: false })}
+                addSubject={(it) => setSubject({ name: it, mandatory: isDAZ })} //for "2-4 years german" daz students, who may only choose 1 subject => that subject gets prioritized
                 removeSubject={removeSubject}
                 limit={isDAZ ? 1 : undefined}
             />
