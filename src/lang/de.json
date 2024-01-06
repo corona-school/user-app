@@ -1298,6 +1298,7 @@
                     "heading": "Fachauswahl",
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
                     "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
+                    "reason_btn_disabled_DAZ": "Bitte wähle ein Fach aus.",
                     "text": "Du kannst maximal 1 Fach auswählen."
                 },
                 "priority": {
