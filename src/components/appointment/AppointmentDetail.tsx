@@ -107,11 +107,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         return appointment.organizers && appointment.participants ? [...appointment.organizers, ...appointment.participants] : [];
     }, [appointment.organizers, appointment.participants]);
 
-    const isAppointmentOver = useMemo(() => {
-        const end = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
-        return end < DateTime.now();
-    }, []);
-
     const isLastAppointment = useMemo(
         () => (appointment.appointmentType === Lecture_Appointmenttype_Enum.Group && appointment.total === 1 ? true : false),
         [appointment.total]
@@ -148,10 +143,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                 <Buttons
                     onPress={user?.student ? () => setShowDeleteModal(true) : () => setShowDeclineModal(true)}
                     onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
-                    canceled={canceled}
-                    declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
-                    canEdit={isPastAppointment}
-                    isOver={isAppointmentOver}
+                    canceled={(appointment.declinedBy?.includes(user?.userID ?? '') ?? false) || canceled}
+                    isOver={isPastAppointment}
                     isLast={isLastAppointment}
                 />
             </Box>

@@ -1,7 +1,9 @@
 import { AddIcon, Button, Checkbox, Column, DeleteIcon, Heading, Row, useTheme, Text, VStack } from 'native-base';
-import { useCallback, useContext, useState } from 'react';
+import { useContext, useState } from 'react';
 import TextInput from '../../components/TextInput';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
+import { useTranslation } from 'react-i18next';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Props = {
     onNext: () => any;
@@ -9,30 +11,41 @@ type Props = {
 
 const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
     const { space } = useTheme();
+    const { t } = useTranslation();
 
     const { state, setState, setWizardIndex } = useContext(RequestCertificateContext);
     const [addOther, setAddOther] = useState<string>('');
 
     return (
         <VStack space={space['1']}>
-            <Heading>Tätigkeit</Heading>
-            <Text>Wähle aus, mit welchen Tätigkeiten du deine Lernpartner:innen unterstützt hast</Text>
+            <Heading>{t('certificate.request_for_match.activities.title')}</Heading>
+            <Text>{t('certificate.request_for_match.activities.subtitle')}</Text>
             <Checkbox.Group value={state.actions} onChange={(actions) => setState((prev) => ({ ...prev, actions }))}>
                 <VStack space={space['0.5']}>
-                    <Checkbox value="Vorbereitung, Planung und Gestaltung von Unterrichtsstunden">
-                        Vorbereitung, Planung und Gestaltung von Unterrichtsstunden
+                    <Checkbox value={t('certificate.request_for_match.activities.preparation')}>
+                        {t('certificate.request_for_match.activities.preparation')}
                     </Checkbox>
-                    <Checkbox value="Bearbeitung und Vermittlung von Unterrichtsinhalten">Bearbeitung und Vermittlung von Unterrichtsinhalten</Checkbox>
-                    <Checkbox value="Digitale Aufbereitung und Veranschaulichung von Unterrichtsinhalten">
-                        Digitale Aufbereitung und Veranschaulichung von Unterrichtsinhalten
+                    <Checkbox value={t('certificate.request_for_match.activities.visualization')}>
+                        {t('certificate.request_for_match.activities.visualization')}
                     </Checkbox>
-                    <Checkbox value="Vertiefung und Wiederholung von Unterrichtsinhalten">Vertiefung und Wiederholung von Unterrichtsinhalten</Checkbox>
-                    <Checkbox value="Gemeinsame Bearbeitung von Übungs- und Hausaufgaben">Gemeinsame Bearbeitung von Übungs- und Hausaufgaben</Checkbox>
-                    <Checkbox value="Korrektur von Übungs- und Hausaufgaben">Korrektur von Übungs- und Hausaufgaben</Checkbox>
-                    <Checkbox value="Digitale Unterstützung bei der Prüfungsvorbereitung">Digitale Unterstützung bei der Prüfungsvorbereitung</Checkbox>
-                    <Checkbox value="Digitale Unterstützung beim Lernen">Digitale Unterstützung beim Lernen</Checkbox>
+                    <Checkbox value={t('certificate.request_for_match.activities.visualization_digital')}>
+                        {t('certificate.request_for_match.activities.visualization_digital')}
+                    </Checkbox>
+                    <Checkbox value={t('certificate.request_for_match.activities.repetition')}>
+                        {t('certificate.request_for_match.activities.repetition')}
+                    </Checkbox>
+                    <Checkbox value={t('certificate.request_for_match.activities.homework')}>{t('certificate.request_for_match.activities.homework')}</Checkbox>
+                    <Checkbox value={t('certificate.request_for_match.activities.correct_homework')}>
+                        {t('certificate.request_for_match.activities.correct_homework')}
+                    </Checkbox>
+                    <Checkbox value={t('certificate.request_for_match.activities.prepare_exam')}>
+                        {t('certificate.request_for_match.activities.prepare_exam')}
+                    </Checkbox>
+                    <Checkbox value={t('certificate.request_for_match.activities.help_learning')}>
+                        {t('certificate.request_for_match.activities.help_learning')}
+                    </Checkbox>
                     <Text bold mb="1" mt="3">
-                        Sonstiges
+                        {t('certificate.request_for_match.activities.other')}
                     </Text>
                 </VStack>
             </Checkbox.Group>
@@ -61,11 +74,12 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
 
             <Row>
                 <TextInput flex="1" value={addOther} onChangeText={setAddOther} _input={{ color: 'darkText' }} />
-                <Button
-                    w={'56px'}
-                    h={'56px'}
-                    backgroundColor={'primary.900'}
+                <DisableableButton
                     isDisabled={!addOther}
+                    reasonDisabled={t('reasonsDisabled.fieldEmpty')}
+                    w="56px"
+                    h="56px"
+                    backgroundColor="primary.900"
                     onPress={() => {
                         setState((prev) => ({
                             ...prev,
@@ -75,11 +89,11 @@ const SelectActionsWidget: React.FC<Props> = ({ onNext }) => {
                     }}
                 >
                     <AddIcon size="lg" color="white" />
-                </Button>
+                </DisableableButton>
             </Row>
-            <Button onPress={onNext}>Jetzt anfordern</Button>
+            <Button onPress={onNext}>{t('certificate.request_for_match.submit')}</Button>
             <Button variant="link" onPress={() => setWizardIndex((prev) => prev - 1)}>
-                Zurück
+                {t('back')}
             </Button>
         </VStack>
     );

@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import FloatingActionButton from '../widgets/FloatingActionButton';
+import FloatingActionButton from '../components/FloatingActionButton';
 import Hello from '../widgets/Hello';
 import { useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
@@ -113,7 +113,7 @@ const Appointments: React.FC = () => {
             },
         });
 
-        !noOldAppointments && scrollDirection === 'last' && toast.show({ description: 'Vergangene Termine geladen', placement: 'top' });
+        !noOldAppointments && scrollDirection === 'last' && toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
     };
 
     return (

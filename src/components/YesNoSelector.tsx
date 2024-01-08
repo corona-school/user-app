@@ -1,5 +1,5 @@
 import { Box, Column, Row, useTheme } from 'native-base';
-import IconTagList from './IconTagList';
+import IconTagList from '../widgets/IconTagList';
 import { useTranslation } from 'react-i18next';
 
 export const YesNoSelector = ({

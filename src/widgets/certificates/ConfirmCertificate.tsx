@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Box, Card, FormControl, Text, useTheme } from 'native-base';
 import TextInput from '../../components/TextInput';
 import { Participation_Certificate } from '../../gql/graphql';
-import { YesNoSelector } from '../YesNoSelector';
+import { YesNoSelector } from '../../components/YesNoSelector';
 import SignatureCanvas from 'react-signature-canvas';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useMutation } from '@apollo/client';
@@ -13,6 +13,7 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import useModal from '../../hooks/useModal';
 import { SuccessModal } from '../../modals/SuccessModal';
 import { IMPORTANT_INFORMATION_QUERY } from '../ImportantInformation';
+import DisableableButton from '../../components/DisablebleButton';
 
 type CertificateToConfirm = Pick<
     Participation_Certificate,
@@ -118,9 +119,15 @@ function ConfirmData({
                         <FormControl.Label> {t('matching.certificate.signPlace')}</FormControl.Label>
                         <Input value={location} onChangeText={setLocation} />
                     </FormControl>
-                    <Button isDisabled={isMinor === null || location.length < 2} variant="solid" margin={space['1']} onPress={goSign}>
+                    <DisableableButton
+                        isDisabled={isMinor === null || location.length < 2}
+                        reasonDisabled={t('reasonsDisabled.formIncomplete')}
+                        variant="solid"
+                        margin={space['1']}
+                        onPress={goSign}
+                    >
                         {t('matching.certificate.goToSign')}
-                    </Button>
+                    </DisableableButton>
                 </>
             )}
         </>
@@ -194,12 +201,19 @@ function Sign({
                 {location}, {t('matching.certificate.dateFiller')} {DateTime.now().toFormat('dd.MM.yyyy')}
             </Text>
             <Box marginTop={space['2']} display="flex" flexDirection="row">
-                <Button isDisabled={!isSigned} onPress={discardSignature} flexGrow="1" marginRight={space['1']} variant="primary">
+                <DisableableButton
+                    isDisabled={!isSigned}
+                    reasonDisabled={t('reasonsDisabled.missingSignature')}
+                    onPress={discardSignature}
+                    flexGrow="1"
+                    marginRight={space['1']}
+                    variant="primary"
+                >
                     {t('delete')}
-                </Button>
-                <Button isDisabled={!isSigned} onPress={prepareSignature} flexGrow="2">
+                </DisableableButton>
+                <DisableableButton isDisabled={!isSigned} reasonDisabled={t('reasonsDisabled.missingSignature')} onPress={prepareSignature} flexGrow="2">
                     {t('matching.certificate.sign')}
-                </Button>
+                </DisableableButton>
             </Box>
         </>
     );

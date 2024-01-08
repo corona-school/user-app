@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Card, Heading, HStack, Pressable, Stack, Text, TextArea, useLayout, useTheme, VStack } from 'native-base';
 import { Button } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
@@ -10,8 +10,10 @@ import Tag from '../../components/Tag';
 import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql';
 import { useUser } from '../../hooks/useApollo';
-import { PupilForScreening } from '../../types';
+import { PupilForScreening, StudentForScreening } from '../../types';
 import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
+import { ScreenStudentCard } from '../../widgets/screening/ScreenStudentCard';
+import { useShortcut } from '../../helper/keyboard';
 
 function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () => void }) {
     const { space } = useTheme();
@@ -19,7 +21,7 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
 
     return (
         <Pressable onPress={onClick}>
-            <HStack borderRadius="15px" backgroundColor="primary.900" padding="20px" margin="20px" minW="400px">
+            <HStack borderRadius="15px" backgroundColor="primary.900" padding="20px" margin="20px" minW="325px">
                 <VStack space={space['1.5']}>
                     <VStack space={space['0.5']}>
                         <Heading color="white" fontSize="20px">
@@ -32,7 +34,7 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
                             {t('screening.registered_since')} {new Date(pupil!.createdAt).toLocaleDateString()}
                         </Text>
                     </VStack>
-                    <HStack space={space['0.5']}>
+                    <HStack space={space['0.5']} display="flex" flexWrap="wrap" maxW="270px">
                         {pupil!.matches!.length > 0 && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
                         {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'dispute') && (
                             <Tag variant="orange" padding="5px" text={t('screening.dispute_screening')} />
@@ -47,6 +49,36 @@ function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () =
                         {pupil!.screenings!.some((it) => it!.status === 'rejection') && (
                             <Tag variant="orange" padding="5px" text={t('screening.rejection_screening')} />
                         )}
+                    </HStack>
+                </VStack>
+            </HStack>
+        </Pressable>
+    );
+}
+
+function StudentCard({ student, onClick }: { student: StudentForScreening; onClick: () => void }) {
+    const { space } = useTheme();
+    const { t } = useTranslation();
+
+    return (
+        <Pressable onPress={onClick}>
+            <HStack borderRadius="15px" backgroundColor="primary.400" padding="20px" margin="20px" minW="325px">
+                <VStack space={space['1.5']}>
+                    <VStack space={space['0.5']}>
+                        <Heading color="white" fontSize="20px">
+                            {student.firstname} {student.lastname}
+                        </Heading>
+                        <Text color="white" fontSize="15px">
+                            E-Mail: <b>{student.email}</b>
+                        </Text>
+                        <Text color="white" fontSize="15px">
+                            {t('screening.registered_since')} {new Date(student!.createdAt).toLocaleDateString()}
+                        </Text>
+                    </VStack>
+                    <HStack space={space['0.5']} display="flex" flexWrap="wrap" maxW="270px">
+                        {student!.matches!.length > 0 && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
+                        {student.instructorScreenings?.some((it) => it.success) && <Tag variant="orange" padding="5px" text={`gescreenter Kursleiter`} />}
+                        {student.tutorScreenings?.some((it) => it.success) && <Tag variant="orange" padding="5px" text={`gescreenter Helfer`} />}
                     </HStack>
                 </VStack>
             </HStack>
@@ -87,7 +119,7 @@ export function ScreeningDashboard() {
                         student { firstname lastname }
                         dissolved
                         dissolvedAt
-                        dissolveReasonEnum
+                        dissolveReasons
                         dissolvedBy
                         pupilFirstMatchRequest
                         subjectsFormatted { name }
@@ -101,6 +133,37 @@ export function ScreeningDashboard() {
                         updatedAt
                         screeners { firstname lastname }
                     }
+                }
+
+                student {
+                    active
+                    id
+                    createdAt
+                    email
+                    firstname
+                    lastname
+                    languages
+                    subjectsFormatted { name grade { min max } }
+                    matches {
+                        createdAt
+                        pupil { firstname lastname }
+                        dissolved
+                        dissolvedAt
+                        dissolveReasons
+                        dissolvedBy
+                        studentFirstMatchRequest
+                        subjectsFormatted { name }
+                    }
+                    
+                    subcoursesInstructing {
+                        id
+                        published
+                        course { name image courseState tags { name } }
+                        nextLecture { start duration }
+                    }
+
+                    tutorScreenings { createdAt success comment screener { firstname lastname } }
+                    instructorScreenings { createdAt success comment screener { firstname lastname } }
                 }
             }
         }
@@ -126,7 +189,7 @@ export function ScreeningDashboard() {
                     student { firstname lastname }
                     dissolved
                     dissolvedAt
-                    dissolveReasonEnum
+                    dissolveReasons
                     dissolvedBy
                     pupilFirstMatchRequest
                     subjectsFormatted { name }
@@ -147,12 +210,13 @@ export function ScreeningDashboard() {
     );
 
     const [selectedPupil, setSelectedPupil] = useState<PupilForScreening | null>(null);
+    const [selectedStudent, setSelectedStudent] = useState<StudentForScreening | null>(null);
 
     // Refetch user data when navigating between a certain user and the dashboard
     useEffect(() => {
         refetchDisputedScreenings();
         refetchUserSearch();
-    }, [selectedPupil, refetchDisputedScreenings, refetchUserSearch]);
+    }, [selectedPupil, selectedStudent, refetchDisputedScreenings, refetchUserSearch]);
 
     // Refresh the currently open screening in case we got new info from the backend:
 
@@ -175,27 +239,45 @@ export function ScreeningDashboard() {
                 if (update && update !== current) return update.pupil!;
                 return current;
             });
+
+            setSelectedStudent((current) => {
+                if (!current) return null;
+                const update = searchResult.usersSearch.find((it) => it.student?.id === current.id);
+                if (update && update !== current) return update.student!;
+                return current;
+            });
         }
-    }, [searchResult, setSelectedPupil]);
+    }, [searchResult, setSelectedPupil, setSelectedStudent]);
+
+    const searchbarRef = useRef<HTMLInputElement>();
+
+    useShortcut('KeyF', () => searchbarRef.current?.focus(), [searchbarRef]);
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
             <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={sizes['containerWidth']}>
                 <SearchBar
+                    inputRef={searchbarRef}
                     placeholder={t('screening.search.placeholder')}
                     onSearch={(search) => {
                         setSearchQuery(search);
                         setSelectedPupil(null);
+                        setSelectedStudent(null);
                     }}
                 />
                 {searchLoading && <CenterLoadingSpinner />}
                 {searchResult?.usersSearch.length === 0 && <InfoCard icon="no" title={t('not_found')} message={t('screening.search.not_found')} />}
-                {!selectedPupil && (
+                {!selectedPupil && !selectedStudent && (
                     <HStack display="flex" flexWrap="wrap">
                         {searchResult?.usersSearch
                             .filter((it) => it.pupil)
                             .map((it, id) => (
                                 <PupilCard key={id} onClick={() => setSelectedPupil(it.pupil!)} pupil={it.pupil!} />
+                            ))}
+                        {searchResult?.usersSearch
+                            .filter((it) => it.student)
+                            .map((it, id) => (
+                                <StudentCard key={id} onClick={() => setSelectedStudent(it.student!)} student={it.student!} />
                             ))}
                     </HStack>
                 )}
@@ -208,8 +290,16 @@ export function ScreeningDashboard() {
                         }}
                     />
                 )}
+                {selectedStudent && (
+                    <ScreenStudentCard
+                        student={selectedStudent}
+                        refresh={() => {
+                            refetchUserSearch();
+                        }}
+                    />
+                )}
 
-                {!searchQuery && !selectedPupil && (
+                {!searchQuery && !selectedPupil && !selectedStudent && (
                     <>
                         <InfoCard key="screening-welcome" icon="loki" title={`${greeting}, ${user.firstname}!`} message={t('screening.howto')} />
 

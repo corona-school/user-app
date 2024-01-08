@@ -4,7 +4,6 @@ import { useTranslation } from 'react-i18next';
 
 import WhatsappIcon from '../assets/icons/icon_whatsapp.svg';
 import CopyToClipboardIcon from '../assets/icons/icon_copy_to_clipboard.svg';
-import SignalIcon from '../assets/icons/icon_signal.svg';
 import EmailIcon from '../assets/icons/icon_email.svg';
 
 type ModalProps = {
@@ -56,7 +55,7 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
                         <Button onPress={() => handleCopyClick()}>
                             <Stack space="2" direction={'row'} alignItems="center">
                                 <CopyToClipboardIcon />
-                                {copied ? 'Text kopiert!' : 'Text kopieren'}
+                                {copied ? t('copied_text') : t('copy_text')}
                             </Stack>
                         </Button>
                         <Button

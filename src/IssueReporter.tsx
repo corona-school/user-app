@@ -1,6 +1,7 @@
 import { AlertDialog, Button } from 'native-base';
 import React, { ErrorInfo, useRef, useState } from 'react';
 import { datadogRum } from '@datadog/browser-rum';
+import { useTranslation } from 'react-i18next';
 
 // c.f. https://reactjs.org/docs/error-boundaries.html
 type ErrorBoundaryProps = React.PropsWithChildren<{ onError: (error: Error, errorInfo: ErrorInfo) => void }>;
@@ -19,6 +20,8 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps> {
 }
 
 export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
+    const { t } = useTranslation();
+
     const [hasIssue, setIssue] = useState(false);
 
     function contactSupport() {
@@ -32,18 +35,15 @@ export function IssueReporter({ children }: React.PropsWithChildren<{}>) {
         <>
             <AlertDialog isOpen={hasIssue} onClose={() => window.location.reload()} leastDestructiveRef={closeRef}>
                 <AlertDialog.Content>
-                    <AlertDialog.Header>Ein Fehler ist aufgetreten</AlertDialog.Header>
-                    <AlertDialog.Body>
-                        Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler. Solltest du Fragen haben, kontaktiere
-                        den Support
-                    </AlertDialog.Body>
+                    <AlertDialog.Header>{t('issueReporter.title')}</AlertDialog.Header>
+                    <AlertDialog.Body>{t('issueReporter.subtitle')}</AlertDialog.Body>
                     <AlertDialog.Footer>
                         <Button.Group direction="column" space={2}>
                             <Button colorScheme="blue" onPress={contactSupport} ref={closeRef}>
-                                Support kontaktieren
+                                {t('issueReporter.contactSupport')}
                             </Button>
                             <Button variant="unstyled" colorScheme="coolGray" onPress={() => window.location.reload()}>
-                                Trotzdem fortfahren
+                                {t('issueReporter.continue')}
                             </Button>
                         </Button.Group>
                     </AlertDialog.Footer>

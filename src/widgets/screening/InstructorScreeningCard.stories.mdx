@@ -1,0 +1,21 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading, Button } from 'native-base';
+import { InstructorScreeningCard } from './InstructorScreeningCard';
+
+<Meta title="Screening/InstructorScreeningCard" component={InstructorScreeningCard} />
+
+# InstructorScreeningCard
+
+The InstructorScreeningCard shows information about an Instructor Screening:
+
+Successful Screening:
+
+<Story name="InstructorScreeningCard / success">
+    <InstructorScreeningCard screening={{ createdAt: new Date(), success: true, screener: { firstname: 'Max', lastname: 'Mustermann' } }} />
+</Story>
+
+Rejected Screening:
+
+<Story name="InstructorScreeningCard / rejection">
+    <InstructorScreeningCard screening={{ createdAt: new Date(), success: false, screener: { firstname: 'Max', lastname: 'Mustermann' } }} />
+</Story>
