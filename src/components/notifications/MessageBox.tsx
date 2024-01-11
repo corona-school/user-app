@@ -7,6 +7,7 @@ import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primiti
 import LeavePageModal from '../../modals/LeavePageModal';
 import { Concrete_Notification } from '../../gql/graphql';
 import AppointmentCancelledModal from './NotificationModal';
+import AchievementMessageModal from '../../modals/AchievementMessageModal';
 
 type Props = {
     userNotification: Concrete_Notification;
@@ -17,6 +18,8 @@ type Props = {
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateLastTimeChecked }) => {
     const [leavePageModalOpen, setLeavePageModalOpen] = useState<boolean>(false);
+    const [achievementId, setAchievementId] = useState<number>(0);
+    const [achievementModalOpen, setAchievementModalOpen] = useState<boolean>(false);
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -46,8 +49,13 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
         updateLastTimeChecked && updateLastTimeChecked();
         if (navigateTo.charAt(0) === '/') {
             return navigate(navigateTo);
+        } else if (navigateTo.split('/')[0] == 'achievement') {
+            const achievementId = navigateTo.split('/')[1];
+            setAchievementId(Number(achievementId));
+            setAchievementModalOpen(true);
+        } else {
+            setLeavePageModalOpen(true);
         }
-        setLeavePageModalOpen(true);
     };
 
     const navigateExternal = () => (navigateTo ? window.open(navigateTo, '_blank') : null);
@@ -57,6 +65,20 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
     const LinkedBox: FC<InterfaceBoxProps> = ({ children, ...boxProps }) => {
         const Component = () => <Box {...boxProps}>{children}</Box>;
         if (typeof navigateTo === 'string') {
+            if (achievementModalOpen) {
+                return (
+                    <>
+                        <Pressable onPress={navigateToLink}>
+                            <Component />
+                        </Pressable>
+                        <AchievementMessageModal
+                            achievementId={achievementId}
+                            isOpenModal={achievementModalOpen}
+                            onClose={() => setAchievementModalOpen(false)}
+                        />
+                    </>
+                );
+            }
             return (
                 <>
                     <Pressable onPress={navigateToLink}>
