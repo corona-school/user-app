@@ -9,6 +9,7 @@ import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import { Achievement_State, Achievement_Type_Enum, Step } from '../../../gql/graphql';
+import { useNavigate } from 'react-router-dom';
 
 type AchievementModalProps = {
     title: string;
@@ -48,6 +49,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     showModal,
 }) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const justifyModalContent = useBreakpointValue({ base: 'normal', md: 'center' });
     const alignModalItems = useBreakpointValue({ base: 'normal', md: 'center' });
@@ -91,6 +93,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     const activeStep = steps ? steps.findIndex((step) => step.isActive) + 1 : 0;
     const backgroundColor = achievementState === Achievement_State.Completed || achievementType === Achievement_Type_Enum.Streak ? 'primary.900' : 'white';
     const textColor = achievementState === Achievement_State.Completed || achievementType === Achievement_Type_Enum.Streak ? 'white' : 'primary.900';
+
     return (
         <Modal
             isOpen={showModal}
@@ -256,7 +259,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             <Button flex={1} variant="outline" onPress={onClose}>
                                 <Text color="primary.500">{t('achievement.modal.close')}</Text>
                             </Button>
-                            <Button flex={1} variant="outline">
+                            <Button flex={1} variant="outline" onPress={() => navigate('/progress')}>
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
                             <Link href={buttonLink} flex={1} backgroundColor="secondary.900" borderRadius={4} justifyContent="center" alignItems="center">
@@ -265,7 +268,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                         </Stack>
                     ) : (
                         <Stack width="100%" direction={buttonAlignment} space={2} paddingTop="2">
-                            <Button flex={1} variant="outlinelight">
+                            <Button flex={1} variant="outlinelight" onPress={() => navigate('/progress')}>
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
                             <Button flex={1} variant="solid" onPress={onClose}>
