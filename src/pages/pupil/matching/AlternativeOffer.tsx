@@ -1,7 +1,7 @@
 import { Heading, VStack, Text, Box, useTheme } from 'native-base';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { useTranslation } from 'react-i18next';
-import BulletList from '../../../widgets/BulletList';
+import BulletList from '../../../components/BulletList';
 
 type Props = {
     heading: String;

@@ -1,4 +1,4 @@
-import { Box, Button, Column, Heading, HStack, Row, useTheme, VStack } from 'native-base';
+import { Heading, useTheme, VStack } from 'native-base';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RequestMatchContext } from './RequestMatch';
@@ -12,8 +12,8 @@ const Subjects: React.FC = () => {
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">Fachauswahl</Heading>
-            <Heading>In welchen Fächern möchtest du unterstützen?</Heading>
+            <Heading fontSize="2xl">{t('matching.wizard.student.subjects.title')}</Heading>
+            <Heading>{t('matching.wizard.student.subjects.subtitle')}</Heading>
             <SubjectSelector
                 subjects={matchRequest.subjects.map((it) => it.name)}
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}
@@ -21,7 +21,7 @@ const Subjects: React.FC = () => {
                 includeDaz
             />
             <NextPrevButtons
-                isDisabledNext={matchRequest.subjects.length === 0}
+                disablingNext={{ is: matchRequest.subjects.length === 0, reason: t('matching.wizard.student.subjects.reason_btn_disabled') }}
                 onPressPrev={() => setCurrentIndex(0)}
                 onPressNext={() => setCurrentIndex(2)}
             />

@@ -1,5 +1,5 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { VStack, Button, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
+import { VStack, useTheme, Heading, Text, Row, Box, Image, useBreakpointValue } from 'native-base';
 import { useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
@@ -13,10 +13,12 @@ import { CreateCourseContext } from '../CreateCourse';
 import { DateTime } from 'luxon';
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Props = {
     onBack: () => void;
     isDisabled?: boolean;
+    reasonDisabled?: string;
     isError?: boolean;
     courseId?: number;
     isEditing?: boolean;
@@ -26,7 +28,18 @@ type Props = {
     appointments: Appointment[];
 };
 
-const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId, appointments, isEditing, createAndSubmit, createOnly, update }) => {
+const CoursePreview: React.FC<Props> = ({
+    onBack,
+    isDisabled,
+    isError,
+    courseId,
+    appointments,
+    reasonDisabled,
+    isEditing,
+    createAndSubmit,
+    createOnly,
+    update,
+}) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
@@ -200,7 +213,9 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId,
             )}
             <Row space={space['1']} alignItems="center" flexDirection={ButtonContainerDirection}>
                 {update && (
-                    <Button
+                    <DisableableButton
+                        isDisabled={isDisabled ?? false}
+                        reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
                         marginBottom={space['1']}
                         width={ButtonContainer}
                         onPress={() => {
@@ -212,13 +227,14 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId,
                             });
                             update(appointmentsToBeCreated);
                         }}
-                        isDisabled={isDisabled}
                     >
                         {t('course.CourseDate.Preview.updateCourse')}
-                    </Button>
+                    </DisableableButton>
                 )}
                 {createAndSubmit && (
-                    <Button
+                    <DisableableButton
+                        isDisabled={isDisabled ?? false}
+                        reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
                         marginBottom={space['1']}
                         width={ButtonContainer}
                         onPress={() => {
@@ -230,13 +246,14 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId,
                             });
                             createAndSubmit();
                         }}
-                        isDisabled={isDisabled}
                     >
                         {t('course.CourseDate.Preview.publishCourse')}
-                    </Button>
+                    </DisableableButton>
                 )}
                 {createOnly && (
-                    <Button
+                    <DisableableButton
+                        isDisabled={isDisabled ?? false}
+                        reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
                         marginBottom={space['1']}
                         width={ButtonContainer}
                         onPress={() => {
@@ -248,14 +265,20 @@ const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, courseId,
                             });
                             createOnly();
                         }}
-                        isDisabled={isDisabled}
                     >
                         {t('course.CourseDate.Preview.saveCourse')}
-                    </Button>
+                    </DisableableButton>
                 )}
-                <Button marginBottom={space['1']} width={ButtonContainer} variant={'outline'} onPress={onBack} isDisabled={isDisabled}>
+                <DisableableButton
+                    isDisabled={isDisabled ?? false}
+                    reasonDisabled={reasonDisabled ?? t('reasonsDisabled.loading')}
+                    marginBottom={space['1']}
+                    width={ButtonContainer}
+                    variant="outline"
+                    onPress={onBack}
+                >
                     {t('course.CourseDate.Preview.editCourse')}
-                </Button>
+                </DisableableButton>
             </Row>
         </VStack>
     );

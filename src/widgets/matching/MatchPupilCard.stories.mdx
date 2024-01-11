@@ -1,0 +1,31 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import { Heading, Button } from 'native-base';
+import { MatchPupilCard } from './MatchPupilCard';
+
+<Meta title="Matching/MatchPupilCard" component={MatchPupilCard} />
+
+# MatchPupilCard
+
+The MatchPupilCard shows information about a Match Pupil (for a Student):
+
+Active Match:
+
+<Story name="MatchPupilCard / active">
+    <MatchPupilCard match={{ createdAt: new Date(), pupil: { firstname: 'Albert', lastname: 'Einstein' }, subjectsFormatted: [{ name: 'Physik' }] }} />
+</Story>
+
+Dissolved Match:
+
+<Story name="MatchPupilCard / dissolved">
+    <MatchPupilCard
+        match={{
+            createdAt: new Date(),
+            dissolved: true,
+            dissolvedAt: new Date(),
+            pupil: { firstname: 'Albert', lastname: 'Einstein' },
+            subjectsFormatted: [{ name: 'Physik' }],
+            dissolvedBy: 'student',
+            dissolveReasonEnum: 'noMoreHelpNeeded',
+        }}
+    />
+</Story>

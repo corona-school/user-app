@@ -3,10 +3,10 @@ import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
-import { YesNoSelector } from '../../../widgets/YesNoSelector';
+import { YesNoSelector } from '../../../components/YesNoSelector';
 import { RequestMatchContext } from './RequestMatch';
 import AlternativeOffer from './AlternativeOffer';
-import BulletList from '../../../widgets/BulletList';
+import BulletList from '../../../components/BulletList';
 
 const Filter: React.FC = () => {
     const { space } = useTheme();
@@ -59,7 +59,11 @@ const Filter: React.FC = () => {
                         align="left"
                     />
                     <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
-                    <NextPrevButtons isDisabledNext={!isFit || !isAcceptWaitingTime} onPressNext={next} onlyNext />
+                    <NextPrevButtons
+                        disablingNext={{ is: !isFit || !isAcceptWaitingTime, reason: t('reasonsDisabled.questionsUnaswerd') }}
+                        onPressNext={next}
+                        onlyNext
+                    />
                 </VStack>
             )}
             {currentIndex === 1 && (
