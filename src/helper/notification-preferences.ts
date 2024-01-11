@@ -6,6 +6,7 @@ import AnnouncementIcon from '../assets/icons/lernfair/notifications/lf_announce
 import CallIcon from '../assets/icons/lernfair/notifications/lf_call.svg';
 import AdviceIcon from '../assets/icons/lernfair/notifications/lf_advice.svg';
 import MatchIcon from '../assets/icons/lernfair/notifications/lf_match.svg';
+import AchievementIcon from '../assets/icons/lernfair/notifications/lf_achivement.svg';
 
 import IconChatModal from '../assets/icons/lernfair/notifications/Ic_Chat.svg';
 import IconSuggestionModal from '../assets/icons/lernfair/notifications/Ic_Suggestion.svg';
@@ -158,6 +159,7 @@ export const messageIcons: { [category: string]: FC } = {
     match: MatchIcon,
     alternative: SuggestionIcon,
     legacy: AdviceIcon,
+    achievement: AchievementIcon,
 };
 
 export const modalIcons: { [category: string]: FC } = {
