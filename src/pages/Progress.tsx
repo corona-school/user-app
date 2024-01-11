@@ -1,12 +1,14 @@
 import AchievementProgress from '../widgets/AchievementProgress';
 import WithNavigation from '../components/WithNavigation';
 import AsNavigationItem from '../components/AsNavigationItem';
-import { Box, useBreakpointValue } from 'native-base';
+import { Box, Stack, useBreakpointValue } from 'native-base';
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement } from '../types/achievement';
 import { TypeofAchievementQuery, convertDataToAchievement } from '../helper/achievement-helper';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import HelpNavigation from '../components/HelpNavigation';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 const achievementsQuery = gql(`
     query achievements {
@@ -74,7 +76,16 @@ const Progress = () => {
         <AsNavigationItem
             path="/progress"
             children={
-                <WithNavigation showBack headerTitle="Progress">
+                <WithNavigation
+                    showBack
+                    headerTitle="Progress"
+                    headerLeft={
+                        <Stack alignItems="center" direction="row">
+                            <HelpNavigation />
+                            <NotificationAlert />
+                        </Stack>
+                    }
+                >
                     <Box mx={margin}>
                         <AchievementProgress achievements={foundAchievements} inactiveAchievements={foundFurtherAchievements} />
                     </Box>
