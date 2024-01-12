@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Button, Input } from 'native-base';
+import { Heading, Input } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Box, Card, FormControl, Text, useTheme } from 'native-base';
 import TextInput from '../../components/TextInput';
@@ -265,7 +265,7 @@ export function ConfirmCertificate({ certificate }: { certificate: CertificateTo
             {!loading && sign && (
                 <Sign certificate={certificate} isMinor={isMinor!} location={location} signCertificate={(it) => signCertificate({ variables: it })} />
             )}
-            {/* <Box height="300px" /> */}
+            <Box height="300px" />
         </Box>
     );
 }
