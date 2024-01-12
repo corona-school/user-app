@@ -5,11 +5,12 @@ import ArrowRight from '../../../assets/icons/icon_arrow_right_yellow.svg';
 import Calendar from '../../../assets/icons/icon_calendar_yellow.svg';
 import Clock from '../../../assets/icons/icon_clock_yellow.svg';
 import Info from '../../../assets/icons/icon_info_yellow.svg';
-import BooksIcon from '../../../assets/icons/icon_buch.svg';
 import { Pressable } from 'react-native';
+import { NextStepLabelType, getNextStepIcon } from '../../../helper/important-information-helper';
 
 type NextStepsCardProps = {
     image?: string;
+    label?: NextStepLabelType;
     title: string;
     name: string;
     actionDescription: string;
@@ -20,7 +21,18 @@ type NextStepsCardProps = {
     description?: string;
 };
 
-const NextStepsCard: React.FC<NextStepsCardProps> = ({ image, title, name, actionDescription, actionType, onClick, maxSteps, currentStep, description }) => {
+const NextStepsCard: React.FC<NextStepsCardProps> = ({
+    image,
+    label = NextStepLabelType.DEFAULT,
+    title,
+    name,
+    actionDescription,
+    actionType,
+    onClick,
+    maxSteps,
+    currentStep,
+    description,
+}) => {
     let icon;
     switch (actionType) {
         case Achievement_Action_Type_Enum.Action:
@@ -38,16 +50,21 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({ image, title, name, actio
         default:
             break;
     }
+
+    const NextStepIcon = label ? getNextStepIcon(label) : getNextStepIcon(NextStepLabelType.DEFAULT);
+
     return (
         <Pressable onPress={onClick} disabled={!onClick}>
             <VStack width="288px" height="288px" padding="24px" backgroundColor="primary.900" borderRadius="8px" justifyContent="space-between">
                 <VStack width="fit-content" borderRadius="8px">
                     {image ? (
                         <Image width="64px" height="64px" src={image} />
-                    ) : (
+                    ) : label ? (
                         <VStack width="64px" height="64px" backgroundColor="white" borderRadius="50%" justifyContent="center" alignItems="center">
-                            <BooksIcon />
+                            <NextStepIcon />
                         </VStack>
+                    ) : (
+                        <VStack width="64px" height="64px" backgroundColor="white" borderRadius="50%" justifyContent="center" alignItems="center"></VStack>
                     )}
                 </VStack>
                 <VStack>
