@@ -15,7 +15,7 @@ import { SuccessModal } from '../../modals/SuccessModal';
 import { IMPORTANT_INFORMATION_QUERY } from '../ImportantInformation';
 import DisableableButton from '../../components/DisablebleButton';
 
-type CertificateToConfirm = Pick<
+export type CertificateToConfirm = Pick<
     Participation_Certificate,
     'uuid' | 'categories' | 'endDate' | 'hoursPerWeek' | 'hoursTotal' | 'medium' | 'ongoingLessons' | 'startDate' | 'state'
 > & { student: { firstname?: string | null; lastname?: string | null } };
@@ -265,7 +265,7 @@ export function ConfirmCertificate({ certificate }: { certificate: CertificateTo
             {!loading && sign && (
                 <Sign certificate={certificate} isMinor={isMinor!} location={location} signCertificate={(it) => signCertificate({ variables: it })} />
             )}
-            <Box height="300px" />
+            {/* <Box height="300px" /> */}
         </Box>
     );
 }

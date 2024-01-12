@@ -28,6 +28,7 @@ type Information = {
     lang: {};
     btntxt?: string[];
     key?: string;
+    content?: any;
 };
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
@@ -351,6 +352,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     endDate: DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy'),
                     hoursPerWeek: certificate.hoursPerWeek,
                 },
+                content: certificate,
                 key: `bescheinigung.${certificate.uuid}`,
             });
         }
@@ -421,6 +423,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     isOpen={selectedInformation !== undefined}
                     label={selectedInformation.label}
                     onClose={() => setSelectedInformation(undefined)}
+                    content={selectedInformation.content}
                 />
             )}
             <HSection
