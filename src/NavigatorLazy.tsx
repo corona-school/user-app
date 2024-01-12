@@ -183,7 +183,7 @@ export default function NavigatorLazy() {
                 path="/certificate-of-conduct"
                 element={
                     <RequireAuth>
-                        <CertificateOfConduct />
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CertificateOfConduct />} />
                     </RequireAuth>
                 }
             />
