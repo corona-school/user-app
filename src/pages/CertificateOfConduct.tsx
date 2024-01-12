@@ -78,11 +78,19 @@ const CertificateOfConduct = () => {
                     <HStack space={5}>
                         <Stack>
                             <Text>{t('certificateOfConduct.general_info')}</Text>
-                            <Box minW="500px" minH="400px" backgroundColor="cyan.800" />
+                            <Box maxW="600px">
+                                <video controls muted controlsList="nodownload">
+                                    <source src={process.env.PUBLIC_URL + '/videos/explain_coc.mp4'} type="video/mp4" />
+                                </video>
+                            </Box>
                         </Stack>
                         <Stack>
                             <Text>{t('certificateOfConduct.digital_request')}</Text>
-                            <Box minW="500px" minH="400px" backgroundColor="amber.900" />
+                            <Box maxW="600px">
+                                <video controls muted controlsList="nodownload">
+                                    <source src={process.env.PUBLIC_URL + '/videos/explain_digital_coc.mp4'} type="video/mp4" />
+                                </video>
+                            </Box>
                         </Stack>
                     </HStack>
                 </Stack>
