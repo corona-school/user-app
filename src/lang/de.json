@@ -2027,7 +2027,7 @@
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "Nach diesem Datum wird dein Account bei uns automatisch deaktiviert. Solltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
         "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
-        "download": "Bescheinigung herunterladen",
+        "download": "Vordruck herunterladen",
         "upload": "Führungszeugnis einreichen",
         "request_header": "Wie beantrage ich ein erweitertes Fürhungszeugnis?",
         "general_info": "Allgemeine Informationen",
