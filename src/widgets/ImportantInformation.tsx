@@ -1,21 +1,32 @@
-import { useTranslation, getI18n, Trans } from 'react-i18next';
-import { Box, Heading, Text, Button, HStack, useTheme, ScrollView, Column, Container, Link } from 'native-base';
-import Card from '../components/Card';
-import BooksIcon from '../assets/icons/lernfair/lf-books.svg';
+import { useTranslation, getI18n } from 'react-i18next';
+import { Box, useTheme } from 'native-base';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
 import { BACKEND_URL } from '../config';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { ConfirmCertificate } from './certificates/ConfirmCertificate';
 import { SuccessModal } from '../modals/SuccessModal';
-import { Router } from 'express';
+import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
+import { Achievement_Action_Type_Enum } from '../gql/graphql';
+import { Achievement } from '../types/achievement';
+import AchievementModal from '../components/achievements/modals/AchievementModal';
+import { TypeofAchievementQuery, convertDataToAchievement } from '../helper/achievement-helper';
+import NextStepModal from '../components/achievements/modals/NextStepModal';
 
 type Props = {
     variant?: 'normal' | 'dark';
+};
+
+type Information = {
+    label: string;
+    btnfn: ((() => void) | null)[];
+    lang: {};
+    btntxt?: string[];
+    key?: string;
 };
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
@@ -104,6 +115,27 @@ query GetOnboardingInfos {
          status
       }
     }
+    nextStepAchievements {
+        id
+        name
+        subtitle
+        description
+        image
+        alternativeText
+        actionType
+        achievementType
+        achievementState
+        steps {
+            name
+            isActive
+        }
+        maxSteps
+        currentStep
+        isNewAchievement
+        progressDescription
+        actionName
+        actionRedirectLink
+    }
   }
   myRoles
 }
@@ -111,7 +143,7 @@ query GetOnboardingInfos {
 
 const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { space } = useTheme();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const textColor = variant === 'dark' ? 'lightText' : 'darkText';
 
@@ -122,6 +154,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
+    const achievements = convertDataToAchievement({ data, type: TypeofAchievementQuery.nextStepAchievements });
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
 
@@ -165,7 +198,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }
 
     const infos = useMemo(() => {
-        let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {}; key?: string }[] = [];
+        let infos: Information[] = [];
 
         // -------- Verification -----------
         if (student && !student?.verifiedAt)
@@ -344,75 +377,105 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
+    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
+    const [selectedInformation, setSelectedInformation] = useState<Information>();
+
     if (!infos.length && !configurableInfos.length) return null;
 
     return (
-        <HSection
-            scrollable
-            title={t('helperwizard.nextStep')}
-            referenceTitle={t('helperwizard.progress')}
-            marginBottom="25px"
-            onShowAll={() => navigate('/progress')}
-            showAll
-        >
-            {configurableInfos.map((info, index) => {
-                return (
-                    <Column width="97%" maxWidth="500px">
-                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
-                            <Box marginBottom="20px">
-                                <BooksIcon />
-                            </Box>
-                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
-                                {info.title}
-                            </Heading>
-                            <Text color={textColor} marginBottom="25px">
-                                {info.desciption}
-                            </Text>
-                            {info.btnfn && (
-                                <Button
-                                    onPress={() => {
-                                        if (info.btnfn) info.btnfn();
-                                    }}
-                                    key={index}
-                                    marginBottom={'5px'}
-                                >
-                                    {t('moreInfoButton')}
-                                </Button>
-                            )}
-                        </Card>
-                    </Column>
-                );
-            })}
-            {infos.map((config, index) => {
-                const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
-                return (
-                    <Column width="97%" maxWidth="500px" key={config.key ?? config.label}>
-                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
-                            <Box marginBottom="20px">
-                                <BooksIcon />
-                            </Box>
-                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
-                                {t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
-                            </Heading>
-
-                            <Text color={textColor} marginBottom="25px">
-                                <Trans i18nKey={`helperwizard.${config.label}.content` as any} values={config.lang} components={{ b: <b />, br: <br /> }} />
-                            </Text>
-                            {buttontexts.map((buttontext, index) => {
-                                const btnFn = config.btnfn[index];
-                                if (!btnFn) return null;
-
-                                return (
-                                    <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>
-                                        {buttontext}
-                                    </Button>
-                                );
-                            })}
-                        </Card>
-                    </Column>
-                );
-            })}
-        </HSection>
+        <Box>
+            {selectedAchievement && (
+                <AchievementModal
+                    title={selectedAchievement.subtitle}
+                    name={selectedAchievement.name}
+                    description={selectedAchievement.description}
+                    achievementState={selectedAchievement.achievementState}
+                    achievementType={selectedAchievement.achievementType}
+                    isNewAchievement={selectedAchievement.isNewAchievement}
+                    steps={selectedAchievement.steps}
+                    maxSteps={selectedAchievement.maxSteps}
+                    currentStep={selectedAchievement.currentStep}
+                    progressDescription={selectedAchievement.progressDescription}
+                    image={selectedAchievement.image}
+                    alternativeText={selectedAchievement.alternativeText}
+                    buttonText={selectedAchievement.actionName}
+                    buttonLink={selectedAchievement.actionRedirectLink}
+                    onClose={() => setSelectedAchievement(undefined)}
+                    showModal={selectedAchievement !== undefined}
+                />
+            )}
+            {selectedInformation && (
+                <NextStepModal
+                    header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
+                    title={`${t('important')}!`}
+                    description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
+                    buttons={selectedInformation.btntxt?.map((txt, index) => ({
+                        label: txt,
+                        btnfn: selectedInformation.btnfn[index],
+                    }))}
+                    isOpen={selectedInformation !== undefined}
+                    onClose={() => setSelectedInformation(undefined)}
+                />
+            )}
+            <HSection
+                scrollable
+                title={t('helperwizard.nextStep')}
+                referenceTitle={t('helperwizard.progress')}
+                marginBottom="25px"
+                onShowAll={() => navigate('/progress')}
+                showAll
+            >
+                {configurableInfos.map((info, index) => {
+                    return (
+                        <NextStepsCard
+                            key={index}
+                            title={`${t('important')}!`}
+                            name={info.title}
+                            description={info.desciption}
+                            actionDescription={t('moreInfoButton')}
+                            actionType={Achievement_Action_Type_Enum.Action}
+                            onClick={() => {
+                                info.btnfn && info.btnfn();
+                            }}
+                        />
+                    );
+                })}
+                {infos.map((config, index) => {
+                    const buttontexts: string[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
+                    const actionDescription = i18n.exists(`helperwizard.${config.label}.actionDescription`)
+                        ? t(`helperwizard.${config.label}.actionDescription` as unknown as TemplateStringsArray, config.lang)
+                        : t('moreInfoButton');
+                    return (
+                        <NextStepsCard
+                            key={`${config.label}-${index}`}
+                            title={`${t('important')}!`}
+                            name={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
+                            description={t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
+                            actionDescription={actionDescription}
+                            actionType={Achievement_Action_Type_Enum.Action}
+                            onClick={() => setSelectedInformation({ ...config, btntxt: buttontexts })}
+                        />
+                    );
+                })}
+                {achievements.map((achievement) => {
+                    return (
+                        <NextStepsCard
+                            key={achievement.id}
+                            image={achievement.image}
+                            title={achievement.name}
+                            name={achievement.subtitle}
+                            actionDescription={achievement.actionName || ''}
+                            actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}
+                            maxSteps={achievement.maxSteps}
+                            currentStep={achievement.currentStep}
+                            onClick={() => {
+                                setSelectedAchievement(achievement);
+                            }}
+                        />
+                    );
+                })}
+            </HSection>
+        </Box>
     );
 };
 export default ImportantInformation;

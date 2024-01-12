@@ -8,10 +8,12 @@ type IndicatorBarProps = {
     achievementType?: Achievement_Type_Enum;
     centerText?: boolean;
     largeText?: boolean;
+    smallText?: boolean;
     fullWidth?: boolean;
+    bgDark?: boolean;
 };
 
-const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achievementType, centerText, fullWidth, largeText }) => {
+const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achievementType, centerText, fullWidth, largeText, smallText, bgDark }) => {
     const { t } = useTranslation();
     const progress = currentStep ? (currentStep / maxSteps) * 100 : 0;
     const leftSteps = currentStep ? maxSteps - currentStep : maxSteps;
@@ -31,11 +33,11 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
     });
     const fontSize = achievementType === Achievement_Type_Enum.Streak ? (largeText ? '14px' : '10px') : centerText ? '12px' : '14px';
     return (
-        <Stack direction={flexDirection} alignItems={alignItems} space={space}>
+        <Stack direction={flexDirection} alignItems={alignItems} space={space} width="100%">
             <Text
                 width={textWidth}
                 textAlign={alignText}
-                fontSize={fontSize}
+                fontSize={smallText ? '12px' : fontSize}
                 color="primary.500"
                 height="fit-content"
                 numberOfLines={1}
@@ -47,7 +49,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
                     : `${finishedStepsInformation}`}
             </Text>
             <Box width={progressBarWidth}>
-                <Progress bg="gray.100" value={progress} />
+                <Progress bg={bgDark ? '#60787D' : 'gray.100'} value={progress} />
             </Box>
         </Stack>
     );

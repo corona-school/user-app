@@ -11,7 +11,7 @@ import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum 
 type AchievementCardProps = {
     achievementState: Achievement_State;
     achievementType: Achievement_Type_Enum;
-    actionType?: Achievement_Action_Type_Enum;
+    actionType?: Achievement_Action_Type_Enum | null;
     image: string | undefined;
     alternativeText: string;
     isNewAchievement?: boolean;
