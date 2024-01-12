@@ -1082,63 +1082,78 @@
         "nextStep": "Deine nächsten Schritte",
         "progress": "Alle Fortschritte anzeigen",
         "verifizierung": {
+            "subtitle": "Verifizierung",
             "title": "Verifiziere deine E-Mail-Adresse",
             "content": "“Bevor du bei Lern-Fair starten kanst, musst du zunächst deine E-Mail-Adresse bestätigen. Wir haben dir dazu am {{date}} eine E-Mail an {{email}} gesendet. Du hast keine E-Mail von uns erhalten?”",
             "buttons": ["E-Mail erneut senden"]
         },
         "passwort": {
+            "subtitle": "Passwort",
             "title": "Passwort einrichten",
             "content": "Es ist endlich so weit, wir stellen unser Login-System um! Du kannst ab sofort ein Passwort für deinen Lern-Fair Account vergeben und dich damit zukünftig einloggen.",
             "buttons": ["Passwort einrichten"]
         },
         "willkommen": {
-            "title": "Willkommen bei Lern-Fair 👋",
+            "title": "Willkommen 👋",
+            "subtitle": "Schön, dass du hier bist!",
             "content": "Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir Nachhilfe-Kurse zu verschiedenen Themen wie Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere Lernunterstützung setzen",
+            "actionDescription": "Lernangebot ansehen",
             "buttons": ["Kurse ansehen", "Lernunterstützung beantragen"]
         },
         "statusSchüler": {
             "title": "Du bist auf der Warteliste!",
+            "subtitle": "Warteliste",
             "content": "Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
             "buttons": ["Kurse ansehen", "Anfrage zurücknehmen"]
         },
         "interestconfirmation": {
             "title": "Brauchst du noch Unterstützung?",
+            "subtitle": "Unterstützung",
             "content": "Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von  <b>14 Tagen </b> bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.",
             "buttons": ["Ja", "Nein"]
         },
         "kontaktSchüler": {
+            "subtitle": "1:1 Lernuntersützung",
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
             "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
         },
         "angeforderteBescheinigung": {
-            "title": "{{nameHelfer}} braucht eine Bestätigung von dir",
+            "title": "Bestätigung",
+            "subtitle": "Nachhilfe mit {{nameHelfer}} ",
             "content": "{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.",
-            "buttons": ["Angaben bestätigen"]
+            "buttons": ["Angaben bestätigen"],
+            "actionDescription": "Angaben bestätigen"
         },
         "kennenlernen": {
+            "subtitle": "Kennenlernen",
             "title": "Wir möchten dich kennenlernen 👋!",
             "content": "Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videokonferenzgespräch kennenlernen. Vereinbare einfach einen Termin mit uns.",
             "buttons": ["Termin vereinbaren"]
         },
         "zeugnis": {
+            "subtitle": "Wichtig!",
             "title": "Erweitertes Führungszeugnis",
             "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
             "buttons": ["Führungszeugnis einreichen", "Vordruck herunterladen"],
             "actionDescription": "Alles zum Führungszeugnis"
         },
         "statusStudent": {
+            "subtitle": "1:1 Lernuntersützung",
             "title": "Wir suchen nach einem:r Lernpartner:in für dich!",
             "content": "Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.",
             "buttons": ["Problem melden"]
         },
         "statusStudent2": {
-            "title": "Weitere Engagement-Möglichkeiten",
-            "content": "Wenn du Lust und Zeit hast, mehrere Schüler:innen zu unterstützen, kannst du jederzeit eine weitere Lernpartnerschaft anfragen. Wenn du hin und wieder Kleingruppen unterrichten möchtest, kannst du einen einmaligen oder fortlaufenden Gruppenkurs anbieten. Danke für dein Engagement!",
-            "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"]
+            "subtitle": "Weitere Engagement-Möglichkeiten",
+            "title": "Lust auf mehr?",
+            "content": "Möchtest du weitere Schüler:innen un-terstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
+            "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
+            "actionDescription": "Jetzt Möglichkeiten ansehen"
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
+            "subtitle": "1:1 Lernuntersützung",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
             "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
         },
