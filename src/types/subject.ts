@@ -32,7 +32,7 @@ export const SUBJECTS = [
 
 // Unfortunately this mapping is necessary as paths need to be ASCII to work reliably in the build setup
 export const SUBJECT_TO_ICON: { [subject in typeof SUBJECTS[number]]: string } = {
-    'Deutsch als Zweitsprache': 'deutsch_als_zweitsprace',
+    'Deutsch als Zweitsprache': 'deutsch_als_zweitsprache',
     Deutsch: 'deutsch',
     Altgriechisch: 'altgriechisch',
     Biologie: 'biologie',

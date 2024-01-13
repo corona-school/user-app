@@ -1,29 +1,34 @@
-import { Button, Modal, Radio, Row, Text, useTheme, VStack } from 'native-base';
-import { useMemo, useState } from 'react';
+import { Button, Modal, Radio, Row, useTheme, VStack } from 'native-base';
+import { useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { Dissolve_Reason } from '../gql/graphql';
+import DisableableButton from '../components/DisablebleButton';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
     alsoShowWarningModal?: boolean | undefined;
-    onPressDissolve: (dissolveReason: string) => any;
+    onPressDissolve: (dissolveReasons: Dissolve_Reason[]) => any;
     onPressBack: () => any;
 };
-
-// corresponding dissolve reason ids in translation file
-// for now just loop through 1-9 (+1 in loop)
-export const studentReasonOptions = new Array(9).fill(0);
-export const pupilReasonOptions = new Array(9).fill(0);
 
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack }) => {
     const [showedWarning, setShowedWarning] = useState<boolean>(false);
     const { t } = useTranslation();
     const { space } = useTheme();
     const userType = useUserType();
-    const [reason, setReason] = useState<string>('');
-
-    const reasons = useMemo(() => (userType === 'student' && studentReasonOptions) || pupilReasonOptions, [userType]);
+    const [reasons, setReasons] = useState<Dissolve_Reason[]>([]);
+    const availableReasons = [
+        Dissolve_Reason.Ghosted,
+        Dissolve_Reason.NoMoreHelpNeeded,
+        Dissolve_Reason.IsOfNoHelp,
+        Dissolve_Reason.NoMoreTime,
+        Dissolve_Reason.PersonalIssues,
+        Dissolve_Reason.ScheduleIssues,
+        Dissolve_Reason.TechnicalIssues,
+        Dissolve_Reason.LanguageIssues,
+        Dissolve_Reason.Other,
+    ];
 
     return (
         <Modal isOpen={showDissolveModal} onClose={onPressBack}>
@@ -46,11 +51,11 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                     <>
                         <Modal.Header>{t('matching.dissolve.modal.title')}</Modal.Header>
                         <Modal.Body>
-                            <Radio.Group name="dissolve-reason" value={reason} onChange={setReason}>
+                            <Radio.Group name="dissolve-reason" value={reasons[0]} onChange={(key) => setReasons([key as Dissolve_Reason])}>
                                 <VStack space={space['1']}>
-                                    {reasons.map((_: number, index: number) => (
-                                        <Radio key={index} value={`${index + 1}`}>
-                                            {t(`matching.dissolveReasons.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
+                                    {availableReasons.map((key) => (
+                                        <Radio key={key} value={key}>
+                                            {t(`matching.dissolveReasons.${userType}.${key}` as unknown as TemplateStringsArray)}
                                         </Radio>
                                     ))}
                                 </VStack>
@@ -58,9 +63,13 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
-                                <Button isDisabled={!reason} onPress={() => onPressDissolve(reason)}>
+                                <DisableableButton
+                                    isDisabled={reasons.length === 0}
+                                    reasonDisabled={t('matching.dissolve.modal.tooltip')}
+                                    onPress={() => onPressDissolve(reasons ?? [Dissolve_Reason.Unknown])}
+                                >
                                     {t('matching.dissolve.modal.btn')}
-                                </Button>
+                                </DisableableButton>
                                 <Button onPress={onPressBack} variant="ghost">
                                     {t('back')}
                                 </Button>

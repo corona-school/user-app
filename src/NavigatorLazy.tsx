@@ -42,10 +42,9 @@ import IFrame from './components/IFrame';
 import WithNavigation from './components/WithNavigation';
 import Registration from './pages/Registration';
 
-import RequestMatchStudent from './pages/student/matching_new/RequestMatch';
-import RequestMatch from './pages/pupil/matching_new/RequestMatch';
+import RequestMatchStudent from './pages/student/matching/RequestMatch';
+import RequestMatch from './pages/pupil/matching/RequestMatch';
 import Matching from './pages/pupil/Matching';
-import CertificateList from './pages/student/CertificateDetails';
 import NotficationControlPanel from './pages/notification/NotficationControlPanel';
 import Appointments from './pages/Appointments';
 import CreateAppointment from './pages/CreateAppointment';
@@ -169,14 +168,6 @@ export default function NavigatorLazy() {
                 }
             />
 
-            <Route
-                path="/certificate-list"
-                element={
-                    <RequireAuth>
-                        <CertificateList />
-                    </RequireAuth>
-                }
-            />
             <Route
                 path="/request-certificate"
                 element={

@@ -9,9 +9,10 @@ type Props = {
     onBack?: () => any;
     value?: string;
     onChangeText?: (text: string) => any;
+    inputRef?: React.MutableRefObject<HTMLInputElement | undefined>;
 };
 
-const SearchBar: React.FC<Props> = ({ placeholder, onSearch, showBack, onBack, value, onChangeText }) => {
+const SearchBar: React.FC<Props> = ({ placeholder, onSearch, showBack, onBack, value, onChangeText, inputRef }) => {
     const { space } = useTheme();
     const [searchString, setSearchString] = useState<string>('');
 
@@ -24,6 +25,7 @@ const SearchBar: React.FC<Props> = ({ placeholder, onSearch, showBack, onBack, v
     return (
         <Row flex="1">
             <Input
+                ref={inputRef}
                 flex="1"
                 value={value || searchString}
                 onChangeText={onChangeText || setSearchString}

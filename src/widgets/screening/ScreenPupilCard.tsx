@@ -45,6 +45,12 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
         `)
     );
 
+    const [missedScreening, { loading: loadingMissedScreening, data: missedScreeningResult }] = useMutation(
+        gql(
+            `mutation MissedScreening($pupilScreeningId: Float!, $comment: String!) { pupilMissedScreening(pupilScreeningId: $pupilScreeningId, comment: $comment) }`
+        )
+    );
+
     // For privacy, we deliberately clear the comment field when storing the final decision:
 
     function rejection() {
@@ -63,18 +69,27 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
         deactivateAccount({ variables: { pupilId: pupil!.id! } });
     }
 
+    function missed() {
+        const resultComment = `${screeningComment || ''}[${screener.firstname} ${screener.lastname}]: Screening verpasst\n\n`;
+        missedScreening({
+            variables: { pupilScreeningId: screening!.id!, comment: resultComment },
+        });
+        setScreeningComment(resultComment);
+    }
+
     function suggest(positive?: boolean) {
         let resultComment = screeningComment;
 
         if (positive === true) {
-            resultComment += `\n\n[${screener.firstname} ${screener.lastname}]: Annahme empfehlen\n\n`;
+            resultComment += `[${screener.firstname} ${screener.lastname}]: Annahme empfehlen\n\n`;
         }
 
         if (positive === false) {
-            resultComment += `\n\n[${screener.firstname} ${screener.lastname}]: Ablehnung empfehlen\n\n`;
+            resultComment += `[${screener.firstname} ${screener.lastname}]: Ablehnung empfehlen\n\n`;
         }
 
         storeEdit({ variables: { id: screening!.id!, screeningComment: resultComment, status: PupilScreeningStatus.Dispute } });
+        setScreeningComment(resultComment);
     }
 
     return (
@@ -92,25 +107,28 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                 <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="500px" width="100%" autoCompleteType="" />
 
                 <HStack space={space['1']} display="flex">
-                    {(loading || loadingDeactivation) && <CenterLoadingSpinner />}
-                    {data && <InfoCard icon="yes" title="" message={t('screening.screening_saved')} />}
+                    {(loading || loadingDeactivation || loadingMissedScreening) && <CenterLoadingSpinner />}
+                    {(data || missedScreeningResult) && <InfoCard icon="yes" title="" message={t('screening.screening_saved')} />}
                     {deactivateResult && <InfoCard icon="no" title={t('screening.account_deactivated')} message="" />}
-                    {!loading && !loadingDeactivation && !data && !deactivateResult && (
+                    {!loading && !loadingDeactivation && !loadingMissedScreening && !data && !deactivateResult && !missedScreeningResult && (
                         <>
                             <Button onPress={() => suggest()} variant={isDispute ? 'outline' : 'solid'}>
-                                Speichern
+                                {t('screening.save')}
                             </Button>
                             <Button onPress={() => suggest(true)} variant={isDispute ? 'outline' : 'solid'}>
-                                Annahme empfehlen
+                                {t('screening.recommend_acceptance')}
                             </Button>
                             <Button onPress={() => suggest(false)} variant={isDispute ? 'outline' : 'solid'}>
-                                Ablehnung empfehlen
+                                {t('screening.recommend_rejection')}
+                            </Button>
+                            <Button onPress={() => missed()} variant="outline">
+                                {t('screening.missed')}
                             </Button>
                         </>
                     )}
                 </HStack>
                 <HStack space={space['1']} display="flex">
-                    {!loading && !loadingDeactivation && !data && !deactivateResult && (
+                    {!loading && !loadingDeactivation && !loadingMissedScreening && !data && !deactivateResult && !missedScreeningResult && (
                         <>
                             <Button onPress={() => setConfirmSuccess(true)} variant={isDispute ? 'solid' : 'outline'}>
                                 {t('screening.success')}
@@ -199,7 +217,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
         `)
     );
 
-    const [createLoginToken, { loading: loadingLoginToken, data: loginTokenResult }] = useMutation(
+    const [createLoginToken] = useMutation(
         gql(`
             mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
         `)

@@ -4,6 +4,7 @@ import { Button, HStack, Select, VStack, useTheme } from 'native-base';
 import { useState } from 'react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
+import DisableableButton from '../../components/DisablebleButton';
 
 export function ScreeningSuggestionCard({ userID }: { userID: string }) {
     const { space } = useTheme();
@@ -44,9 +45,13 @@ export function ScreeningSuggestionCard({ userID }: { userID: string }) {
                     <Select.Item key={it.id} value={'' + it.id} label={it.description} />
                 ))}
             </Select>
-            <Button isDisabled={!chosenSuggestion} onPress={() => send({ variables: { userID, suggestion: chosenSuggestion } })}>
+            <DisableableButton
+                isDisabled={!chosenSuggestion}
+                reasonDisabled="Du musst eine Empfehlung auswählen"
+                onPress={() => send({ variables: { userID, suggestion: chosenSuggestion } })}
+            >
                 Empfehlung senden
-            </Button>
+            </DisableableButton>
         </HStack>
     );
 }

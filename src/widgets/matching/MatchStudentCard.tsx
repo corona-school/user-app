@@ -1,10 +1,11 @@
-import { Text, useTheme, Box, Pressable, useBreakpointValue, HStack, Center, VStack } from 'native-base';
+import { Box, Center, HStack, Pressable, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
 
 import { useTranslation } from 'react-i18next';
 
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student_56.svg';
 import Tag from '../../components/Tag';
 import { MatchWithStudent } from '../../types';
+import { Dissolve_Reason, Dissolved_By_Enum } from '../../gql/graphql';
 
 export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
     const { space } = useTheme();
@@ -19,6 +20,24 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
         base: true,
         lg: false,
     });
+
+    const labelForDissolver = (dissolvedBy: Dissolved_By_Enum) => {
+        switch (dissolvedBy) {
+            case Dissolved_By_Enum.Admin:
+                return 'Admin';
+            case Dissolved_By_Enum.Pupil:
+                return 'Schüler:in';
+            case Dissolved_By_Enum.Student:
+                return 'Helfer:in';
+            case Dissolved_By_Enum.Unknown:
+                return 'Unbekannt';
+        }
+    };
+
+    const reasonForDissolver = (dissolvedBy: Dissolved_By_Enum, reason: Dissolve_Reason) => {
+        let userType = dissolvedBy === Dissolved_By_Enum.Pupil ? 'pupil' : 'student';
+        return t(`matching.dissolveReasons.${userType}.${reason}` as unknown as TemplateStringsArray);
+    };
 
     return (
         <HStack minW="300">
@@ -61,6 +80,14 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
                             <Text>
                                 {t('till')} {new Date(match!.dissolvedAt).toLocaleDateString()}
                             </Text>
+                        )}
+                        {match!.dissolvedBy && <Text>{t('screening.dissolved_by', { dissolver: labelForDissolver(match!.dissolvedBy) })}</Text>}
+                        {match!.dissolveReasons?.length !== 0 && (
+                            <>
+                                {match!.dissolveReasons.map((reason) => (
+                                    <Text>{t('screening.dissolve_reason', { reason: reasonForDissolver(match!.dissolvedBy!, reason) })}</Text>
+                                ))}
+                            </>
                         )}
                     </VStack>
                 </HStack>

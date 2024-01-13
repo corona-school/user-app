@@ -31,12 +31,14 @@ import PasswordInput from '../components/PasswordInput';
 import AlertMessage from '../widgets/AlertMessage';
 import { REDIRECT_PASSWORD } from '../Utility';
 import isEmail from 'validator/lib/isEmail';
+import DisableableButton from '../components/DisablebleButton';
 
 export default function Login() {
     const { t } = useTranslation();
     const { onLogin, sessionState, loginWithPassword } = useApollo();
     const { space, sizes } = useTheme();
     const [showNoAccountModal, setShowNoAccountModal] = useState(false);
+    const [showAccountDeactivatedModal, setShowAccountDeactivatedModal] = useState(false);
     const [email, setEmail] = useState<string>();
     const [showEmailSent, setShowEmailSent] = useState(false);
     const [loginEmail, setLoginEmail] = useState<string>();
@@ -175,8 +177,10 @@ export default function Login() {
             setIsInvalidEmail(true);
             return;
         }
-        const res = await determineLoginOptions({ variables: { email } });
-        if (res.data!.userDetermineLoginOptions === 'password') {
+        let res = await determineLoginOptions({ variables: { email } });
+        if (res.data!.userDetermineLoginOptions === 'deactivated') {
+            setShowAccountDeactivatedModal(true);
+        } else if (res.data!.userDetermineLoginOptions === 'password') {
             setShowPasswordField(true);
             setLoginEmail(email);
         } else if (res.data!.userDetermineLoginOptions === 'email') {
@@ -246,9 +250,13 @@ export default function Login() {
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button isDisabled={pwEmail.length < 6 || _resetPW?.loading} onPress={() => resetPassword(pwEmail)}>
+                            <DisableableButton
+                                isDisabled={pwEmail.length < 6 || _resetPW?.loading}
+                                reasonDisabled={_resetPW?.loading ? t('reasonsDisabled.loading') : t('registration.hint.password.length')}
+                                onPress={() => resetPassword(pwEmail)}
+                            >
                                 {t('login.passwordReset.btn')}
-                            </Button>
+                            </DisableableButton>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -273,6 +281,29 @@ export default function Login() {
                     <Modal.Footer>
                         <Row space={space['0.5']}>
                             <Button onPress={() => setShowNoAccountModal(false)}>{t('back')}</Button>
+                        </Row>
+                    </Modal.Footer>
+                </Modal.Content>
+            </Modal>
+        );
+    };
+
+    const AccountDeactivatedModal: React.FC<{
+        showModal: boolean;
+    }> = ({ showModal }) => {
+        return (
+            <Modal isOpen={showModal} onClose={() => setShowAccountDeactivatedModal(false)}>
+                <Modal.Content>
+                    <Modal.CloseButton />
+                    <Modal.Header>{t('login.accountDeactivated.title')}</Modal.Header>
+                    <Modal.Body>
+                        <VStack space={space['0.5']}>
+                            <Text>{t('login.accountDeactivated.alert_html')}</Text>
+                        </VStack>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Row space={space['0.5']}>
+                            <Button onPress={() => setShowAccountDeactivatedModal(false)}>{t('back')}</Button>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -368,13 +399,16 @@ export default function Login() {
                     )}
 
                     <Box paddingTop={4} marginX="90px" display="block">
-                        <Button
-                            onPress={showPasswordField ? attemptLogin : getLoginOption}
-                            width="100%"
+                        <DisableableButton
                             isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
+                            reasonDisabled={
+                                _sendToken.loading || _determineLoginOptions.loading ? t('reasonsDisabled.loading') : t('reasonsDisabled.invalidEMail')
+                            }
+                            onPress={showPasswordField ? attemptLogin : getLoginOption}
+                            width={'100%'}
                         >
                             {t('signin')}
-                        </Button>
+                        </DisableableButton>
                     </Box>
 
                     <Box paddingTop={10} paddingBottom={1}>
@@ -393,6 +427,7 @@ export default function Login() {
             </VStack>
             <PasswordModal showModal={showPasswordModal} email={email || ''} />
             <NoAccountModal showModal={showNoAccountModal} email={email || ''} />
+            <AccountDeactivatedModal showModal={showAccountDeactivatedModal} />
         </>
     );
 }

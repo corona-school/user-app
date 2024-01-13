@@ -1,10 +1,11 @@
 import { useMutation } from '@apollo/client';
-import { Button, Tooltip, useToast } from 'native-base';
+import { useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { gql } from '../../gql';
 import { useNavigate } from 'react-router-dom';
 import { Chat_Type } from '../../gql/graphql';
 import { useMemo } from 'react';
+import DisableableButton from '../../components/DisablebleButton';
 
 type OpenSubcourseChatProps = {
     groupChatType: Chat_Type;
@@ -69,13 +70,9 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
     }, [conversationId, isInstructor, isParticipant, participantsCount]);
 
     return (
-        <>
-            <Tooltip maxWidth={300} label={t('chat.hint')} isDisabled={isParticipant || !disableButton}>
-                <Button onPress={openSubcourseGroupChat} isDisabled={disableButton}>
-                    {groupChatType === Chat_Type.Announcement ? t('chat.openAnnouncementChat') : t('chat.openSubcourseChat')}
-                </Button>
-            </Tooltip>
-        </>
+        <DisableableButton isDisabled={disableButton} reasonDisabled={t('chat.hint')} onPress={openSubcourseGroupChat}>
+            {groupChatType === Chat_Type.Announcement ? t('chat.openAnnouncementChat') : t('chat.openSubcourseChat')}
+        </DisableableButton>
     );
 };
 

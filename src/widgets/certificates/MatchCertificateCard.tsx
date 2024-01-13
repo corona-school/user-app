@@ -1,11 +1,12 @@
 import { useMutation } from '@apollo/client';
-import { DateTime } from 'luxon';
-import { useTheme, Card, VStack, Row, Icon, Box, Heading, Text, useToast, Modal, Button } from 'native-base';
+import { useTheme, Card, VStack, Row, Box, Heading, Text, useToast, Modal, Button } from 'native-base';
 import { useState, useCallback } from 'react';
 import { BACKEND_URL } from '../../config';
 import { gql } from '../../gql';
 import { Participation_Certificate } from '../../gql/graphql';
 import CertificateMatchIcon from '../../assets/icons/lernfair/lf-certificate-matching.svg';
+import { useTranslation } from 'react-i18next';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Certificate = Pick<
     Participation_Certificate,
@@ -15,6 +16,7 @@ type Certificate = Pick<
 export const MatchCertificateCard = ({ certificate }: { certificate: Certificate }) => {
     const { space } = useTheme();
     const toast = useToast();
+    const { t } = useTranslation();
 
     const [showSelectPDFLanguageModal, setShowSelectPDFLanguageModal] = useState<boolean>(false);
 
@@ -38,13 +40,13 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
             });
 
             if (res?.data?.participationCertificateAsPDF) {
-                toast.show({ description: 'Dein Zertifikat wird heruntergeladen', placement: 'top' });
+                toast.show({ description: t('certificate.download.loading'), placement: 'top' });
                 window.open(`${BACKEND_URL}${res?.data?.participationCertificateAsPDF}`, '_blank');
             } else {
-                toast.show({ description: 'Beim Download ist ein Fehler aufgetreten', placement: 'top' });
+                toast.show({ description: t('certificate.download.error'), placement: 'top' });
             }
         },
-        [certificate, requestCertificate, toast]
+        [t, certificate, requestCertificate, toast]
     );
 
     return (
@@ -62,24 +64,25 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
                     <VStack py={space['1']}>
                         <Text>
                             <Text bold mr="0.5">
-                                Status:{' '}
+                                {t('certificate.download.state')}:{' '}
                             </Text>
                             <Text>
-                                {{ manual: 'Manuell', 'awaiting-approval': 'Warten auf Bestätigung', approved: 'Bestätigt' }[certificate.state] ??
-                                    certificate.state}
+                                {{
+                                    manual: t('certificate.download.state_manual'),
+                                    'awaiting-approval': t('certificate.download.state_awaiting'),
+                                    approved: t('certificate.download.state_approved'),
+                                }[certificate.state] ?? certificate.state}
                             </Text>
                         </Text>
                     </VStack>
-                    <Button
+                    <DisableableButton
                         isDisabled={certificate.state === 'awaiting-approval' || requestCertificateState.loading}
+                        reasonDisabled={requestCertificateState.loading ? t('reasonsDisabled.loading') : t('certificate.download.reasonBtnDisabled')}
                         variant="outline"
                         onPress={() => setShowSelectPDFLanguageModal(true)}
                     >
-                        Herunterladen
-                    </Button>
-                    {/* <Button isDisabled={isDisabled} variant="link" onPress={onPressDetails}>
-                    Details ansehen
-                </Button> */}
+                        {t('certificate.download.download')}
+                    </DisableableButton>
                 </VStack>
             </Card>
             <Modal
@@ -92,11 +95,11 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
                     <Modal.CloseButton />
                     <Modal.Body>
                         <VStack space={space['0.5']}>
-                            <Heading>Bescheinigung herunterladen</Heading>
+                            <Heading>{t('certificate.download.download_certificate')}</Heading>
 
                             <>
-                                <Button onPress={() => downloadCertificate('de')}>Deutsche Version</Button>
-                                <Button onPress={() => downloadCertificate('en')}>Englische Version</Button>
+                                <Button onPress={() => downloadCertificate('de')}>{t('certificate.download.german_version')}</Button>
+                                <Button onPress={() => downloadCertificate('en')}>{t('certificate.download.english_version')}</Button>
                             </>
                         </VStack>
                     </Modal.Body>
