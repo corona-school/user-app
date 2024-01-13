@@ -10,7 +10,7 @@ export type LFCourse = {
     id?: string;
     name: string;
     description: string;
-    tags: LFTag[];
+    tags?: LFTag[];
     image?: string;
     category: string;
     allowContact?: boolean;
