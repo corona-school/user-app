@@ -224,14 +224,28 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                         </Stack>
                         {showDescriptionBeforeIndicator && (
                             <Box>
-                                {achievementType === Achievement_Type_Enum.Sequential && (
-                                    <Box width="100%">
-                                        {steps && <IndicatorBarWithSteps maxSteps={steps.length} steps={steps} achievementState={achievementState} />}
-                                    </Box>
-                                )}
-                                {(achievementType === Achievement_Type_Enum.Tiered || achievementType === Achievement_Type_Enum.Streak) && maxSteps && (
-                                    <Box width="100%">
-                                        {<IndicatorBar maxSteps={maxSteps} currentStep={currentStep} achievementType={achievementType} fullWidth largeText />}
+                                {achievementState === Achievement_State.Completed ? (
+                                    <Text color="primary.500">{progressDescription}</Text>
+                                ) : (
+                                    <Box>
+                                        {achievementType === Achievement_Type_Enum.Sequential && (
+                                            <Box width="100%">
+                                                {steps && <IndicatorBarWithSteps maxSteps={steps.length} steps={steps} achievementState={achievementState} />}
+                                            </Box>
+                                        )}
+                                        {(achievementType === Achievement_Type_Enum.Tiered || achievementType === Achievement_Type_Enum.Streak) && maxSteps && (
+                                            <Box width="100%">
+                                                {
+                                                    <IndicatorBar
+                                                        maxSteps={maxSteps}
+                                                        currentStep={currentStep}
+                                                        achievementType={achievementType}
+                                                        fullWidth
+                                                        largeText
+                                                    />
+                                                }
+                                            </Box>
+                                        )}
                                     </Box>
                                 )}
                             </Box>
