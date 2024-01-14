@@ -1107,7 +1107,7 @@
         "kontaktSchüler": {
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
-            "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
+            "buttons": ["Lernpartner:in ansehen"]
         },
         "angeforderteBescheinigung": {
             "title": "{{nameHelfer}} braucht eine Bestätigung von dir",
@@ -1137,7 +1137,7 @@
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
-            "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
+            "buttons": ["Lernpartner:in ansehen"]
         },
         "homeworkHelpStudent": {
             "title": "Hausaufgabenhilfe",
@@ -1176,7 +1176,6 @@
             "dissolveMatch": "Lernpaar auflösen",
             "dissolved": "Das Lernpaar wurde aufgelöst.",
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
-            "contactMail": "Via E-Mail kontaktieren",
             "tutorInstructor": "Tutor:in, Kursleiter:in",
             "appointmentsHeadline": "Termine",
             "createAppointment": "Termin erstellen"
