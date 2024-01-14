@@ -23,18 +23,18 @@ export function getImportantInformationIcon(informationType: InformationType) {
 }
 
 export enum NextStepLabelType {
-    WILLKOMMEN = 'willkommen',
-    VERIFIZIERUNG = 'verifizierung',
-    KENNENLERNEN = 'kennenlernen',
+    WELCOME = 'willkommen',
+    VERIFY = 'verifizierung',
+    GET_FAMILIAR = 'kennenlernen',
     PUPIL_SCREENING = 'pupilScreening',
     INTEREST_CONFIRMATION = 'interestconfirmation',
     STATUS_PUPIL = 'statusSchüler',
     STATUS_STUDENT = 'statusStudent',
     STATUS_STUDENT_TWO = 'statusStudent2',
-    PASSWORT = 'passwort',
+    PASSWORD = 'passwort',
     CONTACT_PUPIL = 'kontaktSchüler',
     CONTACT_STUDENT = 'kontaktStudent',
-    ZEUGNIS = 'zeugnis',
+    SCHOOL_CERTIFICATE = 'zeugnis',
     TUTORING_CERTIFICATE = 'angeforderteBescheinigung',
     DEFAULT = 'default',
 }
