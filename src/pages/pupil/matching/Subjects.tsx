@@ -15,9 +15,10 @@ const Subjects: React.FC = () => {
     const isDAZ = containsDAZ(matchRequest.subjects);
 
     useEffect(() => {
-        setSkippedSubjectPriority(isDAZ || matchRequest.subjects.length === 1);
-        matchRequest.subjects.forEach((subj) => setSubjectPriority(subj.name, skippedSubjectPriority));
-    }, [matchRequest.subjects.length, isDAZ, setSkippedSubjectPriority, setSubjectPriority, skippedSubjectPriority]);
+        const skipSubjectPriority = isDAZ || matchRequest.subjects.length === 1;
+        setSkippedSubjectPriority(skipSubjectPriority);
+        matchRequest.subjects.forEach((subj) => setSubjectPriority(subj.name, skipSubjectPriority));
+    }, [matchRequest.subjects.length, isDAZ, setSkippedSubjectPriority, setSubjectPriority]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
