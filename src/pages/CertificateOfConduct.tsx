@@ -33,6 +33,9 @@ const CertificateOfConduct = () => {
         window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
     }
 
+    const video_coc_general = 'https://user-app-files.fra1.digitaloceanspaces.com/static/videos/explanatory_video_certificate_of_good_conduct_v4.mp4';
+    const video_coc_digital = 'https://user-app-files.fra1.digitaloceanspaces.com/static/videos/explanatory_video_digital_certificate_of_good_conduct.mp4';
+
     return (
         <>
             <WithNavigation
@@ -80,7 +83,7 @@ const CertificateOfConduct = () => {
                             <Text>{t('certificateOfConduct.general_info')}</Text>
                             <Box maxW="600px">
                                 <video controls muted controlsList="nodownload">
-                                    <source src={process.env.PUBLIC_URL + '/videos/explain_coc.mp4'} type="video/mp4" />
+                                    <source src={video_coc_general} type="video/mp4" />
                                 </video>
                             </Box>
                         </Stack>
@@ -88,7 +91,7 @@ const CertificateOfConduct = () => {
                             <Text>{t('certificateOfConduct.digital_request')}</Text>
                             <Box maxW="600px">
                                 <video controls muted controlsList="nodownload">
-                                    <source src={process.env.PUBLIC_URL + '/videos/explain_digital_coc.mp4'} type="video/mp4" />
+                                    <source src={video_coc_digital} type="video/mp4" />
                                 </video>
                             </Box>
                         </Stack>
