@@ -1,4 +1,4 @@
-import { Box, Button, Circle, HStack, Heading, Stack, Text, Tooltip } from 'native-base';
+import { Box, Button, Circle, HStack, Heading, Stack, Text, Tooltip, useBreakpointValue, useTheme } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import HelpNavigation from '../components/HelpNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -24,7 +24,13 @@ const CertificateOfConduct = () => {
     const { t } = useTranslation();
     const { user } = useApollo();
     const { data } = useQuery(COC_DATE_QUERY);
+    const { space } = useTheme();
     const cocDate = data?.me?.student?.certificateOfConductDeactivationDate;
+
+    const direction = useBreakpointValue({
+        base: 'column',
+        lg: 'row',
+    });
 
     const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`));
 
@@ -47,7 +53,7 @@ const CertificateOfConduct = () => {
                 }
                 showBack
             >
-                <Stack space={3}>
+                <Stack space={3} width="100%" padding={space['1']}>
                     <Heading>{t('certificateOfConduct.header')}</Heading>
                     <Stack space={2} mb="3">
                         <Text>{t('certificateOfConduct.description')}</Text>
@@ -55,7 +61,6 @@ const CertificateOfConduct = () => {
                             <Text>
                                 <Trans>{t('certificateOfConduct.deadline', { cocDate: DateTime.fromISO(cocDate).toFormat('dd.MM.yyyy') })}</Trans>
                             </Text>
-                            <Text></Text>
                             <Tooltip label={t('certificateOfConduct.tooltip')}>
                                 <Circle rounded="full" bg="danger.100" size={4}>
                                     <Text color={'white'}>i</Text>
@@ -64,8 +69,7 @@ const CertificateOfConduct = () => {
                         </HStack>
                         <AlertMessage content={<Trans>{t('certificateOfConduct.alert_message')}</Trans>} />
                     </Stack>
-                    ´
-                    <HStack space={4} mb="10">
+                    <Stack direction={direction} space={4} mb="10">
                         <Button variant="outline" onPress={openRemissionRequest}>
                             {t('certificateOfConduct.download')}
                         </Button>
@@ -76,9 +80,9 @@ const CertificateOfConduct = () => {
                         >
                             {t('certificateOfConduct.upload')}
                         </Button>
-                    </HStack>
+                    </Stack>
                     <Heading fontSize="lg">{t('certificateOfConduct.request_header')}</Heading>
-                    <HStack space={5}>
+                    <Stack direction={direction} space={5}>
                         <Stack>
                             <Text>{t('certificateOfConduct.general_info')}</Text>
                             <Box maxW="600px">
@@ -95,7 +99,7 @@ const CertificateOfConduct = () => {
                                 </video>
                             </Box>
                         </Stack>
-                    </HStack>
+                    </Stack>
                 </Stack>
             </WithNavigation>
         </>
