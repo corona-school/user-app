@@ -40,6 +40,7 @@ type RequestMatchContextType = {
     setSubject: (value: Subject) => void;
     removeSubject: (name: string) => void;
     setMessage: (message: string) => void;
+    setSubjectPriority: (subjectName: string, mandatory: boolean) => void;
     setCurrentIndex: Dispatch<SetStateAction<number>>;
     setSkippedSubjectPriority: Dispatch<SetStateAction<boolean>>;
     skippedSubjectPriority: boolean;
@@ -52,6 +53,7 @@ export const RequestMatchContext = createContext<RequestMatchContextType>({
     setSubject: () => {},
     removeSubject: () => {},
     setMessage: () => {},
+    setSubjectPriority: () => {},
     setCurrentIndex: () => null,
     setSkippedSubjectPriority: () => null,
     skippedSubjectPriority: false,
@@ -83,6 +85,16 @@ const RequestMatch: React.FC = () => {
         [setMatchRequest]
     );
     const setMessage = useCallback((message: string) => setMatchRequest((prev) => ({ ...prev, message })), [setMatchRequest]);
+
+    const setSubjectPriority = useCallback(
+        (subjectName: string, mandatory: boolean) => {
+            setMatchRequest((prev) => ({
+                ...prev,
+                subjects: prev.subjects.map((subject) => (subject.name === subjectName ? { ...subject, mandatory } : subject)),
+            }));
+        },
+        [setMatchRequest]
+    );
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const location = useLocation();
@@ -138,6 +150,7 @@ const RequestMatch: React.FC = () => {
                         setSkippedSubjectList,
                         skippedSubjectList,
                         setMessage,
+                        setSubjectPriority,
                     }}
                 >
                     {!loading && !isLoading && data && (

@@ -8,7 +8,8 @@ import { useTranslation } from 'react-i18next';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
-    const { matchRequest, setSubject, removeSubject, setCurrentIndex, setSkippedSubjectPriority, skippedSubjectPriority } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, removeSubject, setCurrentIndex, setSkippedSubjectPriority, skippedSubjectPriority, setSubjectPriority } =
+        useContext(RequestMatchContext);
     const { t } = useTranslation();
 
     const isDAZ = containsDAZ(matchRequest.subjects);
@@ -17,16 +18,9 @@ const Subjects: React.FC = () => {
         setSkippedSubjectPriority(isDAZ || matchRequest.subjects.length === 1);
     }, [matchRequest.subjects.length]);
 
-    //TBD: if (skipPrio): set subject on mandatory after unmount
-    useEffect(
-        () => () => {
-            if (skippedSubjectPriority) {
-                matchRequest.subjects.forEach((subj) => setSubject({ name: subj.name, mandatory: true }));
-                console.log(matchRequest.subjects);
-            }
-        },
-        []
-    );
+    useEffect(() => {
+        matchRequest.subjects.forEach((subj) => setSubjectPriority(subj.name, skippedSubjectPriority));
+    }, [setSubjectPriority, skippedSubjectPriority]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
