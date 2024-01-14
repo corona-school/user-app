@@ -2,16 +2,15 @@ import { Text, Heading, useTheme, VStack, useBreakpointValue, Stack } from 'nati
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs, { Tab } from '../../components/Tabs';
+import Tabs from '../../components/Tabs';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import SearchBar from '../../components/SearchBar';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import { useLazyQuery, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { sortByDate } from '../../Utility';
-import { DateTime } from 'luxon';
 import Hello from '../../widgets/Hello';
 import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
@@ -21,7 +20,7 @@ import HelpNavigation from '../../components/HelpNavigation';
 type Props = {};
 
 const query = gql(`
-    query PupilSubcourseOverview {
+    query PupilSubcourseOverview($search: String) {
         me {
             pupil {
                 canJoinSubcourses {
@@ -29,7 +28,7 @@ const query = gql(`
                     reason
                     limit
                 }
-                subcoursesJoined {
+                subcoursesJoined(search: $search) {
                     id
                     minGrade
                     maxGrade
@@ -61,7 +60,7 @@ const query = gql(`
                     }
                 }
 
-                subcoursesWaitingList {
+                subcoursesWaitingList(search: $search) {
                     id
                     minGrade
                     maxGrade
@@ -98,7 +97,7 @@ const query = gql(`
 `);
 
 const queryPast = gql(`
-    query PupilPastSubcoursesOverview {
+    query PupilPastSubcoursesOverview($search: String) {
         me {
             pupil {
                 canJoinSubcourses {
@@ -106,7 +105,7 @@ const queryPast = gql(`
                     reason
                     limit
                 }
-                subcoursesJoined(onlyPast: true) {
+                subcoursesJoined(onlyPast: true, search: $search) {
                     cancelled
                     published
                     isOnWaitingList
@@ -141,14 +140,53 @@ const queryPast = gql(`
     }
 `);
 
+const queryPublic = gql(`
+query GetAllSubcourses($search: String) {
+    subcoursesPublic(search: $search, take: 20, excludeKnown: false) {
+        cancelled
+        published
+        isParticipant
+        minGrade
+        maxGrade
+        maxParticipants
+        participantsCount
+        id
+        isOnWaitingList
+        firstLecture {
+            start duration
+        }
+        nextLecture {
+            start duration
+        }
+        lectures {
+            start
+            duration
+        }
+        course {
+            name
+            image
+            category
+            tags {
+                name
+            }
+            description
+            courseState
+        }
+    }
+}
+`);
+
 const PupilGroup: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
-    const [lastSearch, setLastSearch] = useState<string>('');
-    const [activeTab, setActiveTab] = useState<number>(0);
-    const { data, loading } = useQuery(query);
-    const { data: dataPast, loading: loadingPast } = useQuery(queryPast);
+
+    const { data, loading, refetch: refetchOverview } = useQuery(query, { variables: { search: '' } });
+    const { data: dataPast, refetch: refetchPast } = useQuery(queryPast, { variables: { search: '' } });
+    const { loading: allSubcoursesSearchLoading, data: dataPublic, refetch: refetchPublic } = useQuery(queryPublic, { variables: { search: '' } });
+
+    const publicSubcourses = useMemo(() => dataPublic?.subcoursesPublic ?? [], [dataPublic]);
+    const subcoursesJoinedOrWaiting = useMemo(() => data?.me?.pupil?.subcoursesJoined.concat(data?.me?.pupil?.subcoursesWaitingList) ?? [], [data]);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -160,121 +198,37 @@ const PupilGroup: React.FC<Props> = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const [searchAllSubcoursesQuery, { loading: allSubcoursesSearchLoading, data: allSubcoursesData }] = useLazyQuery(
-        gql(`
-        query GetAllSubcourses($name: String) {
-            subcoursesPublic(search: $name, take: 20, excludeKnown: false) {
-                cancelled
-                published
-                isParticipant
-                minGrade
-                maxGrade
-                maxParticipants
-                participantsCount
-                id
-                isOnWaitingList
-                firstLecture {
-                    start duration
-                }
-                nextLecture {
-                    start duration
-                }
-                lectures {
-                    start
-                    duration
-                }
-                course {
-                    name
-                    image
-                    category
-                    tags {
-                        name
-                    }
-                    description
-                    courseState
-                }
-            }
-        }
-    `)
-    );
-
     useEffect(() => {
         trackPageView({
             documentTitle: 'Schüler Gruppe',
         });
+    }, [trackPageView]);
 
-        searchAllSubcoursesQuery({ variables: {} });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const courses = useMemo(() => {
-        let arr: Exclude<typeof allSubcoursesData, undefined | null>['subcoursesPublic'];
-        switch (activeTab) {
-            default:
-            case 0:
-                arr = allSubcoursesData?.subcoursesPublic || [];
-                break;
-            case 1:
-                arr = data?.me?.pupil?.subcoursesJoined.concat(data?.me?.pupil?.subcoursesWaitingList) || [];
-                break;
-        }
-        return arr;
-    }, [activeTab, allSubcoursesData?.subcoursesPublic, data?.me?.pupil?.subcoursesJoined, data?.me?.pupil?.subcoursesWaitingList]);
-
-    const activeCourses = useMemo(
-        () =>
-            sortByDate(
-                courses.filter((course) => {
-                    let ok = false;
-                    for (const lecture of course.lectures) {
-                        const date = DateTime.fromISO(lecture.start).toMillis();
-                        const now = DateTime.now().toMillis();
-                        if (date > now) {
-                            ok = true;
-                        }
-                    }
-                    return ok;
-                })
-            ),
-        [courses]
+    const search = useCallback(
+        async (search: string) => {
+            refetchOverview({ search });
+            refetchPast({ search });
+            refetchPublic({ search });
+        },
+        [refetchOverview, refetchPast, refetchPublic]
     );
-
-    const searchResults = useMemo(() => {
-        if (lastSearch.length === 0) return activeCourses;
-        return (
-            (lastSearch.length > 0 && activeTab !== 1 && activeCourses) ||
-            activeCourses?.filter((sub) => sub.course.name.toLowerCase().includes(lastSearch.toLowerCase())) ||
-            []
-        );
-    }, [lastSearch, activeTab, activeCourses]);
-
-    const search = useCallback(async () => {
-        switch (activeTab) {
-            case 0:
-                searchAllSubcoursesQuery({ variables: { name: lastSearch } });
-                break;
-            case 1:
-            default:
-                break;
-        }
-    }, [activeTab, lastSearch, searchAllSubcoursesQuery]);
 
     const languageCourses = useMemo(
-        () => sortByDate(searchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
-        [searchResults]
+        () => sortByDate(publicSubcourses.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Language)),
+        [publicSubcourses]
     );
     const focusCourses = useMemo(
-        () => sortByDate(searchResults.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
-        [searchResults]
+        () => sortByDate(publicSubcourses.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
+        [publicSubcourses]
     );
     const revisionCourses = useMemo(
         () =>
             sortByDate(
-                searchResults.filter(
+                publicSubcourses.filter(
                     (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
                 )
             ),
-        [searchResults]
+        [publicSubcourses]
     );
 
     return (
@@ -299,20 +253,10 @@ const PupilGroup: React.FC<Props> = () => {
                             </VStack>
 
                             <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-                                <SearchBar
-                                    value={lastSearch}
-                                    onChangeText={(text) => setLastSearch(text)}
-                                    onSearch={(s) => {
-                                        search();
-                                    }}
-                                />
+                                <SearchBar onSearch={search} />
                             </VStack>
 
                             <Tabs
-                                onPressTab={(tab: Tab, index: number) => {
-                                    setLastSearch('');
-                                    setActiveTab(index);
-                                }}
                                 tabs={[
                                     {
                                         title: t('matching.group.pupil.tabs.tab2.title'),
@@ -322,7 +266,7 @@ const PupilGroup: React.FC<Props> = () => {
                                         title: t('matching.group.pupil.tabs.tab1.title'),
                                         content: (
                                             <MySubcourses
-                                                currentCourses={searchResults}
+                                                currentCourses={subcoursesJoinedOrWaiting}
                                                 pastCourses={dataPast?.me?.pupil?.subcoursesJoined ?? []}
                                                 loading={allSubcoursesSearchLoading}
                                             />
