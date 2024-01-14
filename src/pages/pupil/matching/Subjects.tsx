@@ -20,14 +20,17 @@ const Subjects: React.FC = () => {
             {isDAZ && <Text>{t('matching.wizard.pupil.subjects.text')}</Text>}
             <SubjectSelector
                 subjects={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
-                addSubject={(it) => setSubject({ name: it, mandatory: false })}
+                addSubject={(it) => setSubject({ name: it, mandatory: isDAZ })} //for "2-4 years german" daz students, who may only choose 1 subject => that subject gets prioritized
                 removeSubject={removeSubject}
                 limit={isDAZ ? 1 : undefined}
             />
             <NextPrevButtons
-                disablingNext={{ is: matchRequest.subjects.length === 0, reason: t('matching.wizard.pupil.subjects.reason_btn_disabled') }}
+                disablingNext={{
+                    is: matchRequest.subjects.length === 0 || (matchRequest.subjects.length === 1 && isDAZ),
+                    reason: isDAZ ? t('matching.wizard.pupil.subjects.reason_btn_disabled_DAZ') : t('matching.wizard.pupil.subjects.reason_btn_disabled'),
+                }}
                 onPressPrev={() => setCurrentIndex(2)}
-                onPressNext={() => setCurrentIndex(4)}
+                onPressNext={() => setCurrentIndex(isDAZ ? 5 : 4)}
             />
         </VStack>
     );
