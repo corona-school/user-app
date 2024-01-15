@@ -34,7 +34,6 @@ const query = gql(`
                             name
                         }
                     }
-                    pupilEmail
                     appointments {
                         id
                     }

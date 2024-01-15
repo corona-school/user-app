@@ -56,7 +56,6 @@ const query = gql(`
                         }
                         schooltype
                     }
-                    pupilEmail
                 }
                 subcoursesInstructing {
                     id
