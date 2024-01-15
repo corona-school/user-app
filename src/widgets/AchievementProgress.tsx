@@ -192,18 +192,18 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                 {states.map((key) => (
                     <VStack key={key} space={3} marginTop={10}>
                         <ProgressCollapsableHeadline achievementState={key} onClick={() => handleOnClick(undefined, key)} />
-                        <HStack
-                            width="100%"
-                            flexWrap="wrap"
-                            backgroundColor={key === Achievement_State.Completed && sortedAchievements[key].length > 0 && cardContainerBg}
-                            borderRadius="8px"
-                            height={collapsed[key] ? '0' : 'fit-content'}
-                            overflowY={collapsed[key] ? 'hidden' : 'unset'}
-                        >
+                        <Box>
                             {sortedAchievements[key].length === 0 ? (
                                 <EmptyStateContainer achievementState={key} />
                             ) : (
-                                <Box>
+                                <HStack
+                                    width="100%"
+                                    flexWrap="wrap"
+                                    backgroundColor={key === Achievement_State.Completed && sortedAchievements[key].length > 0 && cardContainerBg}
+                                    borderRadius="8px"
+                                    height={collapsed[key] ? '0' : 'fit-content'}
+                                    overflowY={collapsed[key] ? 'hidden' : 'unset'}
+                                >
                                     {sortedAchievements[key].map((achievement) => (
                                         <Box
                                             key={achievement.name}
@@ -241,9 +241,9 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                             )}
                                         </Box>
                                     ))}
-                                </Box>
+                                </HStack>
                             )}
-                        </HStack>
+                        </Box>
                     </VStack>
                 ))}
             </VStack>
