@@ -36,6 +36,8 @@ export enum NextStepLabelType {
     CONTACT_STUDENT = 'kontaktStudent',
     SCHOOL_CERTIFICATE = 'zeugnis',
     TUTORING_CERTIFICATE = 'angeforderteBescheinigung',
+    COURSE_OFFER = 'kursAnbieten',
+    NEW_MATCH = 'neueLernunterstützung',
     DEFAULT = 'default',
 }
 

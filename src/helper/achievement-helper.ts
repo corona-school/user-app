@@ -1,5 +1,7 @@
 import { Achievement_State, AchievementsQuery, FurtherAchievementsQuery, GetOnboardingInfosQuery, Step } from '../gql/graphql';
 import { Achievement } from '../types/achievement';
+import FivePuzzlePieces from '../assets/images/achievements/five-puzzle-pieces.png';
+import ThreePuzzlePieces from '../assets/images/achievements/three-puzzle-pieces.png';
 
 export enum TypeofAchievementQuery {
     achievements = 'achievements',
@@ -66,4 +68,21 @@ const customSort = (a: Achievement_State, b: Achievement_State): number => {
     return order.indexOf(a) - order.indexOf(b);
 };
 
-export { convertDataToAchievement, customSort };
+export type PuzzlePiece = {
+    type: PuzzlePieceType;
+};
+enum PuzzlePieceType {
+    FIVE = 'five',
+    THREE = 'three',
+}
+const getPuzzleEmptyState = (countPieces: PuzzlePieceType): string => {
+    const image = puzzleImages.hasOwnProperty(countPieces) ? puzzleImages[countPieces] : puzzleImages[PuzzlePieceType.THREE];
+    return image;
+};
+
+const puzzleImages: { [countPieces: string]: string } = {
+    five: FivePuzzlePieces,
+    three: ThreePuzzlePieces,
+};
+
+export { convertDataToAchievement, customSort, PuzzlePieceType, getPuzzleEmptyState };
