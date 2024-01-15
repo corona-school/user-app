@@ -1928,6 +1928,12 @@
         "dissolve_reason": "Grund: {{reason}}"
     },
     "achievement": {
+        "empty_state": {
+            "Completed": {
+                "title": "Sammle deinen ersten Erfolg!",
+                "description": "Schließe angefangene Erfolge ab, um deine Belohnungen zu erhalten."
+            }
+        },
         "card": {
             "isNewAchievement": "neuer Erfolg",
             "finishedStepsInformation": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen",
