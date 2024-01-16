@@ -204,13 +204,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Verification -----------
         if (student && !student?.verifiedAt)
             infos.push({
-                label: NextStepLabelType.VERIFIZIERUNG,
+                label: NextStepLabelType.VERIFY,
                 btnfn: [sendMail],
                 lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email },
             });
         if (pupil && !pupil?.verifiedAt)
             infos.push({
-                label: NextStepLabelType.VERIFIZIERUNG,
+                label: NextStepLabelType.VERIFY,
                 btnfn: [sendMail],
                 lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email },
             });
@@ -229,7 +229,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 encodeURIComponent(data?.me?.lastname ?? '') +
                 '&email=' +
                 encodeURIComponent(email ?? '');
-            infos.push({ label: NextStepLabelType.KENNENLERNEN, btnfn: [() => window.open(student_url)], lang: {} });
+            infos.push({ label: NextStepLabelType.GET_FAMILIAR, btnfn: [() => window.open(student_url)], lang: {} });
         }
 
         // -------- Pupil Screening --------
@@ -259,7 +259,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
             infos.push({
-                label: NextStepLabelType.WILLKOMMEN,
+                label: NextStepLabelType.WELCOME,
                 btnfn: [roles.includes('PARTICIPANT') ? () => navigate('/group') : null, roles.includes('TUTEE') ? () => navigate('/matching') : null],
                 lang: {},
             });
@@ -298,7 +298,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
-            infos.push({ label: NextStepLabelType.PASSWORT, btnfn: [() => navigate('/new-password')], lang: {} });
+            infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------
         pupil?.matches?.forEach((match) => {
@@ -326,7 +326,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Certificate of Conduct -----------
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
-                label: NextStepLabelType.ZEUGNIS,
+                label: NextStepLabelType.SCHOOL_CERTIFICATE,
                 btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de'), openRemissionRequest],
                 lang: {
                     cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
