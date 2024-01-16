@@ -74,6 +74,8 @@ query GetOnboardingInfos {
         allowed
         reason
       }
+      doesNewMatchAchievementExist
+      doesCourseOfferAchievementExist
     }
     pupil {
       createdAt
@@ -120,6 +122,7 @@ query GetOnboardingInfos {
          invalidated
          status
       }
+      doesNewMatchAchievementExist
     }
     nextStepAchievements {
         id
@@ -207,60 +210,66 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         let infos: Information[] = [];
 
         // -------- Verification -----------
-        if (student && !student?.verifiedAt)
-            infos.push({
-                label: NextStepLabelType.VERIFY,
-                btnfn: [sendMail],
-                lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email },
-            });
-        if (pupil && !pupil?.verifiedAt)
-            infos.push({
-                label: NextStepLabelType.VERIFY,
-                btnfn: [sendMail],
-                lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email },
-            });
+        // TODO - remove if achievements are included
+
+        // if (student && !student?.verifiedAt)
+        //     infos.push({
+        //         label: NextStepLabelType.VERIFY,
+        //         btnfn: [sendMail],
+        //         lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email },
+        //     });
+        // if (pupil && !pupil?.verifiedAt)
+        //     infos.push({
+        //         label: NextStepLabelType.VERIFY,
+        //         btnfn: [sendMail],
+        //         lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email },
+        //     });
 
         // -------- Screening -----------
-        if (
-            student?.canRequestMatch?.reason === 'not-screened' ||
-            student?.canCreateCourse?.reason === 'not-screened' ||
-            (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
-        ) {
-            const student_url =
-                process.env.REACT_APP_SCREENING_URL +
-                '?first_name=' +
-                encodeURIComponent(data?.me?.firstname ?? '') +
-                '&last_name=' +
-                encodeURIComponent(data?.me?.lastname ?? '') +
-                '&email=' +
-                encodeURIComponent(email ?? '');
-            infos.push({ label: NextStepLabelType.GET_FAMILIAR, btnfn: [() => window.open(student_url)], lang: {} });
-        }
+        // TODO - remove if achievements are included
+        // if (
+        //     student?.canRequestMatch?.reason === 'not-screened' ||
+        //     student?.canCreateCourse?.reason === 'not-screened' ||
+        //     (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
+        // ) {
+        //     const student_url =
+        //         process.env.REACT_APP_SCREENING_URL +
+        //         '?first_name=' +
+        //         encodeURIComponent(data?.me?.firstname ?? '') +
+        //         '&last_name=' +
+        //         encodeURIComponent(data?.me?.lastname ?? '') +
+        //         '&email=' +
+        //         encodeURIComponent(email ?? '');
+        //     infos.push({ label: NextStepLabelType.GET_FAMILIAR, btnfn: [() => window.open(student_url)], lang: {} });
+        // }
 
         // -------- Pupil Screening --------
-        if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
-            const pupil_url =
-                process.env.REACT_APP_PUPIL_SCREENING_URL +
-                '?first_name=' +
-                encodeURIComponent(data?.me?.firstname ?? '') +
-                '&last_name=' +
-                encodeURIComponent(data?.me?.lastname ?? '') +
-                '&email=' +
-                encodeURIComponent(email ?? '') +
-                '&a1=' +
-                encodeURIComponent(pupil?.grade ?? '') +
-                '&a2=' +
-                encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
-            infos.push({
-                label: NextStepLabelType.PUPIL_SCREENING,
-                btnfn: [
-                    () => {
-                        window.open(pupil_url, '_blank');
-                    },
-                ],
-                lang: {},
-            });
-        }
+        // TODO - remove if achievements are included
+
+        // if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+        //     const pupil_url =
+        //         process.env.REACT_APP_PUPIL_SCREENING_URL +
+        //         '?first_name=' +
+        //         encodeURIComponent(data?.me?.firstname ?? '') +
+        //         '&last_name=' +
+        //         encodeURIComponent(data?.me?.lastname ?? '') +
+        //         '&email=' +
+        //         encodeURIComponent(email ?? '') +
+        //         '&a1=' +
+        //         encodeURIComponent(pupil?.grade ?? '') +
+        //         '&a2=' +
+        //         encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
+        //     infos.push({
+        //         label: NextStepLabelType.PUPIL_SCREENING,
+        //         btnfn: [
+        //             () => {
+        //                 window.open(pupil_url, '_blank');
+        //             },
+        //         ],
+        //         lang: {},
+        //     });
+        // }
+
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
             infos.push({
@@ -286,14 +295,16 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Open Match Request -----------
-        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
-            infos.push({
-                label: NextStepLabelType.STATUS_PUPIL,
-                btnfn: [() => navigate('/group'), deleteMatchRequest],
-                lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
-            });
-        if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
-            infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
+        // TODO - remove if achievements are included
+
+        // if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
+        //     infos.push({
+        //         label: NextStepLabelType.STATUS_PUPIL,
+        //         btnfn: [() => navigate('/group'), deleteMatchRequest],
+        //         lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
+        //     });
+        // if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
+        //     infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({
@@ -306,29 +317,33 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------
-        pupil?.matches?.forEach((match) => {
-            if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
-                infos.push({
-                    label: NextStepLabelType.CONTACT_PUPIL,
-                    btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
-                    lang: {
-                        nameHelfer: match.student.firstname,
-                        subjectHelfer: match.subjectsFormatted
-                            .map((it) => it.name)
-                            .join(', ') /* formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) */,
-                    },
-                });
-        });
-        student?.matches?.forEach((match: any) => {
-            if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
-                infos.push({
-                    label: NextStepLabelType.CONTACT_STUDENT,
-                    btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
-                    lang: { nameSchüler: match.pupil.firstname },
-                });
-        });
+        // TODO - remove if achievements are included
+
+        // pupil?.matches?.forEach((match) => {
+        //     if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
+        //         infos.push({
+        //             label: NextStepLabelType.CONTACT_PUPIL,
+        //             btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
+        //             lang: {
+        //                 nameHelfer: match.student.firstname,
+        //                 subjectHelfer: match.subjectsFormatted
+        //                     .map((it) => it.name)
+        //                     .join(', ') /* formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) */,
+        //             },
+        //         });
+        // });
+        // student?.matches?.forEach((match: any) => {
+        //     if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
+        //         infos.push({
+        //             label: NextStepLabelType.CONTACT_STUDENT,
+        //             btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
+        //             lang: { nameSchüler: match.pupil.firstname },
+        //         });
+        // });
 
         // -------- Certificate of Conduct -----------
+        // TODO - remove if achievements are included [ONBOARDING]?
+
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
                 label: NextStepLabelType.SCHOOL_CERTIFICATE,
@@ -387,94 +402,88 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }, [importantInformations, pupil, student]);
 
     const initialAchievements = useMemo(() => {
-        const achievements: InitialAchievement[] = [];
         // -------- COURSE OFFER ACHIEVEMENT -----
-        // TODO - resolver to check if achievement is not existing at this moment
-        // TODO - screened
-        if (student) {
+        if (
+            (student && !student.doesCourseOfferAchievementExist && student?.canCreateCourse?.reason === 'not-screened') ||
+            student?.canCreateCourse?.reason === 'not-instructor'
+        ) {
             achievements.push({
-                isAchievement: true,
-                achievement: {
-                    id: 1000,
-                    name: t('helperwizard.courseOffer.name'),
-                    subtitle: t('helperwizard.courseOffer.subtitle'),
-                    achievementState: Achievement_State.Active,
-                    achievementType: Achievement_Type_Enum.Sequential,
-                    actionName: 'Jetzt zur Prüfung freigeben',
-                    actionType: Achievement_Action_Type_Enum.Action,
-                    alternativeText: t('helperwizard.courseOffer.alternativText'),
-                    currentStep: 0,
-                    description: t('helperwizard.courseOffer.description'),
-                    image: getPuzzleEmptyState(PuzzlePieceType.THREE),
-                    maxSteps: 3,
-                    steps: [
-                        { isActive: false, name: t('helperwizard.courseOffer.stepname.one') },
-                        { isActive: false, name: t('helperwizard.courseOffer.stepname.two') },
-                        { isActive: false, name: t('helperwizard.courseOffer.stepname.three') },
-                    ],
-                },
+                id: 1000,
+                name: t('helperwizard.courseOffer.name'),
+                subtitle: t('helperwizard.courseOffer.subtitle'),
+                achievementState: Achievement_State.Active,
+                achievementType: Achievement_Type_Enum.Sequential,
+                actionName: 'Jetzt zur Prüfung freigeben',
+                actionType: Achievement_Action_Type_Enum.Action,
+                alternativeText: t('helperwizard.courseOffer.alternativText'),
+                currentStep: 0,
+                description: t('helperwizard.courseOffer.description'),
+                image: getPuzzleEmptyState(PuzzlePieceType.THREE),
+                maxSteps: 3,
+                steps: [
+                    { isActive: false, name: t('helperwizard.courseOffer.stepname.one') },
+                    { isActive: false, name: t('helperwizard.courseOffer.stepname.two') },
+                    { isActive: false, name: t('helperwizard.courseOffer.stepname.three') },
+                ],
             });
         }
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
-        // TODO - resolver to check if achievement is not existing at this moment
+        // TODO - check if achievement is not existing at this moment
         // TODO - screened
-        if (student) {
+        if (
+            (student && !student.doesNewMatchAchievementExist && student?.canCreateCourse?.reason === 'not-screened') ||
+            student?.canCreateCourse?.reason === 'not-instructor'
+        ) {
             achievements.push({
-                isAchievement: true,
-                achievement: {
-                    id: 1001,
-                    name: t('helperwizard.studentNewMatch.name'),
-                    subtitle: t('helperwizard.studentNewMatch.subtitle'),
-                    achievementState: Achievement_State.Active,
-                    achievementType: Achievement_Type_Enum.Sequential,
-                    actionName: t('helperwizard.studentNewMatch.actionName'),
-                    actionType: Achievement_Action_Type_Enum.Wait,
-                    alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
-                    currentStep: 0,
-                    description: t('helperwizard.studentNewMatch.description'),
-                    image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
-                    maxSteps: 3,
-                    steps: [
-                        { isActive: false, name: t('helperwizard.studentNewMatch.stepname.one') },
-                        { isActive: false, name: t('helperwizard.studentNewMatch.stepname.two') },
-                        { isActive: false, name: t('helperwizard.studentNewMatch.stepname.three') },
-                        { isActive: false, name: t('helperwizard.studentNewMatch.stepname.four') },
-                        { isActive: false, name: t('helperwizard.studentNewMatch.stepname.five') },
-                    ],
-                },
+                id: 1001,
+                name: t('helperwizard.studentNewMatch.name'),
+                subtitle: t('helperwizard.studentNewMatch.subtitle'),
+                achievementState: Achievement_State.Active,
+                achievementType: Achievement_Type_Enum.Sequential,
+                actionName: t('helperwizard.studentNewMatch.actionName'),
+                actionType: Achievement_Action_Type_Enum.Wait,
+                alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
+                currentStep: 0,
+                description: t('helperwizard.studentNewMatch.description'),
+                image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
+                maxSteps: 3,
+                steps: [
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.one') },
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.two') },
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.three') },
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.four') },
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.five') },
+                ],
             });
         }
         // -------- PUPIL NEW MATCH ACHIEVEMENT -----
-        // TODO - resolver to check if achievement is not existing at this moment
+        // TODO - check if achievement is not existing at this moment
         // TODO - screened
-        if (pupil) {
+        if (pupil && !pupil.doesNewMatchAchievementExist && pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
             achievements.push({
-                isAchievement: true,
-                achievement: {
-                    id: 2,
-                    name: t('helperwizard.pupilNewMatch.name'),
-                    subtitle: t('helperwizard.pupilNewMatch.subtitle'),
-                    achievementState: Achievement_State.Active,
-                    actionName: t('helperwizard.pupilNewMatch.actionName'),
-                    actionType: Achievement_Action_Type_Enum.Wait,
-                    achievementType: Achievement_Type_Enum.Sequential,
-                    alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
-                    currentStep: 0,
-                    description: t('helperwizard.pupilNewMatch.description'),
-                    image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
-                    maxSteps: 3,
-                    steps: [
-                        { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.one') },
-                        { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.two') },
-                        { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.three') },
-                        { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.four') },
-                        { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.five') },
-                    ],
-                },
+                id: 1002,
+                name: t('helperwizard.pupilNewMatch.name'),
+                subtitle: t('helperwizard.pupilNewMatch.subtitle'),
+                achievementState: Achievement_State.Active,
+                actionName: t('helperwizard.pupilNewMatch.actionName'),
+                actionType: Achievement_Action_Type_Enum.Wait,
+                achievementType: Achievement_Type_Enum.Sequential,
+                alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
+                currentStep: 0,
+                description: t('helperwizard.pupilNewMatch.description'),
+                image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
+                maxSteps: 3,
+                steps: [
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.one') },
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.two') },
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.three') },
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.four') },
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.five') },
+                ],
             });
         }
         return achievements;
-    }, [pupil, student]);
+    }, [achievements, pupil, student, t]);
 
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
     const [selectedAchievementInfo, setSelectedAchievementInfo] = useState<Achievement | undefined>();
@@ -596,7 +605,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                         />
                     );
                 })}
-                {initialAchievements.map((achievement) => {
+                {/* {initialAchievements.map((achievement) => {
                     const { achievement: initial } = achievement;
                     return (
                         <NextStepsCard
@@ -613,7 +622,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             }}
                         />
                     );
-                })}
+                })} */}
             </HSection>
         </Box>
     );
