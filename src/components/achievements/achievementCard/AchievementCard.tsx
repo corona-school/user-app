@@ -109,12 +109,14 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                             : bgColorIncomplete
                     }
                 >
-                    <AchievementImageContainer
-                        image={achievementState !== Achievement_State.Completed && achievementType === Achievement_Type_Enum.Tiered ? undefined : image}
-                        alternativeText={alternativeText}
-                        achievementType={achievementType}
-                        achievementState={achievementState}
-                    />
+                    <Stack paddingY={achievementType === Achievement_Type_Enum.Sequential ? 4 : 0}>
+                        <AchievementImageContainer
+                            image={achievementState !== Achievement_State.Completed && achievementType === Achievement_Type_Enum.Tiered ? undefined : image}
+                            alternativeText={alternativeText}
+                            achievementType={achievementType}
+                            achievementState={achievementState}
+                        />
+                    </Stack>
                     <VStack space={textSpace} alignItems={textAlignment} paddingLeft={textPaddingLeft} width={maxTextWidth}>
                         <Stack space="1" alignItems={textAlignment} width={textContainerWidth}>
                             <Text
