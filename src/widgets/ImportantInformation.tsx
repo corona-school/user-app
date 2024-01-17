@@ -6,9 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
 import { BACKEND_URL } from '../config';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
-import { ConfirmCertificate } from './certificates/ConfirmCertificate';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
 import { Achievement_Action_Type_Enum } from '../gql/graphql';
@@ -16,7 +15,7 @@ import { Achievement } from '../types/achievement';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import { TypeofAchievementQuery, convertDataToAchievement } from '../helper/achievement-helper';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
-import { NextStepLabelType, getNextStepIcon } from '../helper/important-information-helper';
+import { NextStepLabelType } from '../helper/important-information-helper';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -100,6 +99,7 @@ query GetOnboardingInfos {
         status
       }
       participationCertificatesToSign {
+        id
          uuid
          ongoingLessons
          state
@@ -337,14 +337,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         for (const certificate of data?.me.pupil?.participationCertificatesToSign.filter((it) => it.state === 'awaiting-approval') ?? []) {
             infos.push({
                 label: NextStepLabelType.TUTORING_CERTIFICATE,
-                btnfn: [
-                    () => {
-                        show(
-                            { variant: 'light', closeable: true, headline: t('matching.certificate.titleRequest') },
-                            <ConfirmCertificate certificate={certificate} />
-                        );
-                    },
-                ],
+                btnfn: [() => navigate(`/confirm-certificate/${certificate.id}`)],
                 lang: {
                     nameHelfer: certificate.student.firstname,
                     startDate: DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy'),
@@ -414,13 +407,17 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     title={`${t('important')}!`}
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
-                    buttons={selectedInformation.btntxt?.map((txt, index) => ({
-                        label: txt,
-                        btnfn: selectedInformation.btnfn[index],
-                    }))}
                     isOpen={selectedInformation !== undefined}
                     label={selectedInformation.label}
                     onClose={() => setSelectedInformation(undefined)}
+                    buttons={
+                        selectedInformation.btnfn?.length > 0
+                            ? selectedInformation.btntxt?.map((txt, index) => ({
+                                  label: txt,
+                                  btnfn: selectedInformation.btnfn ? selectedInformation.btnfn[index] : () => null,
+                              }))
+                            : []
+                    }
                 />
             )}
             <HSection
