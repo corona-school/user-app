@@ -1116,7 +1116,7 @@
             "subtitle": "1:1 Lernuntersützung",
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
-            "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
+            "buttons": ["Lernpartner:in ansehen"]
         },
         "angeforderteBescheinigung": {
             "title": "Bestätigung",
@@ -1155,7 +1155,7 @@
             "title": "Neue Lernpartner:in",
             "subtitle": "1:1 Lernuntersützung",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
-            "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
+            "buttons": ["Lernpartner:in ansehen"]
         },
         "homeworkHelpStudent": {
             "title": "Hausaufgabenhilfe",
@@ -1234,7 +1234,6 @@
             "dissolveMatch": "Lernpaar auflösen",
             "dissolved": "Das Lernpaar wurde aufgelöst.",
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
-            "contactMail": "Via E-Mail kontaktieren",
             "tutorInstructor": "Tutor:in, Kursleiter:in",
             "appointmentsHeadline": "Termine",
             "createAppointment": "Termin erstellen"
@@ -2076,6 +2075,18 @@
             "german_version": "Deutsche Version",
             "english_version": "Englische Version"
         }
+    },
+    "certificateOfConduct": {
+        "header": "Führungszeugnis einreichen",
+        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Um deinen Account aktiv zu halten, bitten wir dich, das erweiterte Führungszeugnis zeitnah zu beantragen und bis zur Frist bei uns einzureichen. Mithilfe der Bescheinigung kannst du das erweiterte Führungszeugnis kostenlos beantragen.",
+        "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
+        "tooltip": "Nach diesem Datum wird dein Account bei uns automatisch deaktiviert. Solltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
+        "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
+        "download": "Vordruck herunterladen",
+        "upload": "Führungszeugnis einreichen",
+        "request_header": "Wie beantrage ich ein erweitertes Führungszeugnis?",
+        "general_info": "Allgemeine Informationen",
+        "digital_request": "Digitale Beantragung"
     },
     "issueReporter": {
         "title": "Ein Fehler ist aufgetreten",

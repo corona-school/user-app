@@ -45,7 +45,6 @@ const query = gql(`
                         firstname
                         lastname
                     }
-                    studentEmail
                 }
                 firstMatchRequest
                 openMatchRequestCount

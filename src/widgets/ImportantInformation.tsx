@@ -6,9 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
 import { BACKEND_URL } from '../config';
-import { FC, useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
-import { ConfirmCertificate } from './certificates/ConfirmCertificate';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
 import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
@@ -28,11 +27,6 @@ type Information = {
     lang: {};
     btntxt?: string[];
     key?: string;
-};
-
-type InitialAchievement = {
-    isAchievement?: boolean;
-    achievement: Achievement;
 };
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
@@ -57,7 +51,6 @@ query GetOnboardingInfos {
       matches {
         dissolved
         createdAt
-        pupilEmail
         pupil {
           firstname
           lastname
@@ -90,7 +83,6 @@ query GetOnboardingInfos {
       matches {
         dissolved
         createdAt
-        studentEmail
         subjectsFormatted {
           name
         }
@@ -107,6 +99,7 @@ query GetOnboardingInfos {
         status
       }
       participationCertificatesToSign {
+        id
          uuid
          ongoingLessons
          state
@@ -357,14 +350,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         for (const certificate of data?.me.pupil?.participationCertificatesToSign.filter((it) => it.state === 'awaiting-approval') ?? []) {
             infos.push({
                 label: NextStepLabelType.TUTORING_CERTIFICATE,
-                btnfn: [
-                    () => {
-                        show(
-                            { variant: 'light', closeable: true, headline: t('matching.certificate.titleRequest') },
-                            <ConfirmCertificate certificate={certificate} />
-                        );
-                    },
-                ],
+                btnfn: [() => navigate(`/confirm-certificate/${certificate.id}`)],
                 lang: {
                     nameHelfer: certificate.student.firstname,
                     startDate: DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy'),
@@ -401,7 +387,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
-    const initialAchievements = useMemo(() => {
+    useMemo(() => {
         // -------- COURSE OFFER ACHIEVEMENT -----
         if (
             (student && !student.doesCourseOfferAchievementExist && student?.canCreateCourse?.reason === 'not-screened') ||
@@ -428,8 +414,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
         }
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
-        // TODO - check if achievement is not existing at this moment
-        // TODO - screened
         if (
             (student && !student.doesNewMatchAchievementExist && student?.canCreateCourse?.reason === 'not-screened') ||
             student?.canCreateCourse?.reason === 'not-instructor'
@@ -456,10 +440,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 ],
             });
         }
+
         // -------- PUPIL NEW MATCH ACHIEVEMENT -----
-        // TODO - check if achievement is not existing at this moment
-        // TODO - screened
-        if (pupil && !pupil.doesNewMatchAchievementExist && pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+        if (pupil && !pupil.doesNewMatchAchievementExist) {
             achievements.push({
                 id: 1002,
                 name: t('helperwizard.pupilNewMatch.name'),
@@ -482,14 +465,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 ],
             });
         }
-        return achievements;
     }, [achievements, pupil, student, t]);
 
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
     const [selectedAchievementInfo, setSelectedAchievementInfo] = useState<Achievement | undefined>();
     const [selectedInformation, setSelectedInformation] = useState<Information>();
 
-    if (!infos.length && !configurableInfos.length && !initialAchievements.length) return null;
+    if (!infos.length && !configurableInfos.length) return null;
 
     return (
         <Box>
@@ -538,13 +520,17 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     title={`${t('important')}!`}
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
-                    buttons={selectedInformation.btntxt?.map((txt, index) => ({
-                        label: txt,
-                        btnfn: selectedInformation.btnfn[index],
-                    }))}
                     isOpen={selectedInformation !== undefined}
                     label={selectedInformation.label}
                     onClose={() => setSelectedInformation(undefined)}
+                    buttons={
+                        selectedInformation.btnfn?.length > 0
+                            ? selectedInformation.btntxt?.map((txt, index) => ({
+                                  label: txt,
+                                  btnfn: selectedInformation.btnfn ? selectedInformation.btnfn[index] : () => null,
+                              }))
+                            : []
+                    }
                 />
             )}
             <HSection
@@ -605,24 +591,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                         />
                     );
                 })}
-                {/* {initialAchievements.map((achievement) => {
-                    const { achievement: initial } = achievement;
-                    return (
-                        <NextStepsCard
-                            key={initial.id}
-                            image={initial.image}
-                            title={initial.subtitle}
-                            name={initial.name}
-                            actionDescription={initial.actionName || ''}
-                            actionType={initial.actionType || Achievement_Action_Type_Enum.Action}
-                            maxSteps={initial.maxSteps}
-                            currentStep={initial.currentStep}
-                            onClick={() => {
-                                setSelectedAchievementInfo(initial);
-                            }}
-                        />
-                    );
-                })} */}
             </HSection>
         </Box>
     );

@@ -23,7 +23,7 @@ const German: React.FC = () => {
         } else {
             removeSubject(DAZ);
             setCurrentIndex(3);
-            setSkippedSubjectPriority(false);
+            setSkippedSubjectList(false);
         }
     }, [isNativeLanguage, setCurrentIndex]);
 
