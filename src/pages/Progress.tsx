@@ -67,9 +67,9 @@ const furtherAchievementsQuery = gql(`
 
 const Progress = () => {
     const margin = useBreakpointValue({ base: '4', md: '0' });
-    const { data, error, loading } = useQuery(achievementsQuery);
-    const { data: inactiveData, error: inactiveError, loading: inactiveLoading } = useQuery(furtherAchievementsQuery);
-    if (loading || inactiveLoading || error || inactiveError || !data || !inactiveData) return <CenterLoadingSpinner />;
+    const { data, loading } = useQuery(achievementsQuery);
+    const { data: inactiveData, loading: inactiveLoading } = useQuery(furtherAchievementsQuery);
+    if (loading || inactiveLoading) return <CenterLoadingSpinner />;
     const foundAchievements: Achievement[] = convertDataToAchievement({ data, type: TypeofAchievementQuery.achievements });
     const foundFurtherAchievements: Achievement[] = convertDataToAchievement({ data: inactiveData, type: TypeofAchievementQuery.furtherAchievements });
     return (
