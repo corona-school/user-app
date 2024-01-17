@@ -60,11 +60,9 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({
                     {image ? (
                         <Image width="64px" height="64px" src={image} />
                     ) : (
-                        label && (
-                            <VStack width="64px" height="64px" backgroundColor="white" borderRadius="50%" justifyContent="center" alignItems="center">
-                                <NextStepIcon />
-                            </VStack>
-                        )
+                        <VStack width="64px" height="64px" backgroundColor="white" borderRadius="50%" justifyContent="center" alignItems="center">
+                            <NextStepIcon />
+                        </VStack>
                     )}
                 </VStack>
                 <VStack>
