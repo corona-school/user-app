@@ -68,9 +68,6 @@ const customSort = (a: Achievement_State, b: Achievement_State): number => {
     return order.indexOf(a) - order.indexOf(b);
 };
 
-export type PuzzlePiece = {
-    type: PuzzlePieceType;
-};
 enum PuzzlePieceType {
     FIVE = 'five',
     THREE = 'three',

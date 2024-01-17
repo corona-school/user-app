@@ -59,7 +59,9 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({
             <VStack width="288px" height="288px" padding="24px" backgroundColor="primary.900" borderRadius="8px" justifyContent="space-between">
                 <VStack width="fit-content" borderRadius="8px">
                     {image ? (
-                        <Image src={image} width="64px" height="64px" />
+                        <VStack width="64px" height="64px" backgroundColor="white" borderRadius="4px" justifyContent="center" alignItems="center">
+                            <Image src={image} width="64px" height="64px" />
+                        </VStack>
                     ) : (
                         <VStack width="64px" height="64px" backgroundColor="white" borderRadius="50%" justifyContent="center" alignItems="center">
                             <NextStepIcon />
