@@ -8,7 +8,6 @@ import HSection from './HSection';
 import { BACKEND_URL } from '../config';
 import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
-import { ConfirmCertificate } from './certificates/ConfirmCertificate';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
 import { Achievement_Action_Type_Enum } from '../gql/graphql';
@@ -16,13 +15,14 @@ import { Achievement } from '../types/achievement';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import { TypeofAchievementQuery, convertDataToAchievement } from '../helper/achievement-helper';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
+import { NextStepLabelType } from '../helper/important-information-helper';
 
 type Props = {
     variant?: 'normal' | 'dark';
 };
 
 type Information = {
-    label: string;
+    label: NextStepLabelType;
     btnfn: ((() => void) | null)[];
     lang: {};
     btntxt?: string[];
@@ -97,6 +97,7 @@ query GetOnboardingInfos {
         status
       }
       participationCertificatesToSign {
+        id
          uuid
          ongoingLessons
          state
@@ -201,12 +202,16 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Verification -----------
         if (student && !student?.verifiedAt)
             infos.push({
-                label: 'verifizierung',
+                label: NextStepLabelType.VERIFY,
                 btnfn: [sendMail],
                 lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email },
             });
         if (pupil && !pupil?.verifiedAt)
-            infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
+            infos.push({
+                label: NextStepLabelType.VERIFY,
+                btnfn: [sendMail],
+                lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email },
+            });
 
         // -------- Screening -----------
         if (
@@ -222,7 +227,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 encodeURIComponent(data?.me?.lastname ?? '') +
                 '&email=' +
                 encodeURIComponent(email ?? '');
-            infos.push({ label: 'kennenlernen', btnfn: [() => window.open(student_url)], lang: {} });
+            infos.push({ label: NextStepLabelType.GET_FAMILIAR, btnfn: [() => window.open(student_url)], lang: {} });
         }
 
         // -------- Pupil Screening --------
@@ -240,7 +245,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 '&a2=' +
                 encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
             infos.push({
-                label: 'pupilScreening',
+                label: NextStepLabelType.PUPIL_SCREENING,
                 btnfn: [
                     () => {
                         window.open(pupil_url, '_blank');
@@ -252,7 +257,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
             infos.push({
-                label: 'willkommen',
+                label: NextStepLabelType.WELCOME,
                 btnfn: [roles.includes('PARTICIPANT') ? () => navigate('/group') : null, roles.includes('TUTEE') ? () => navigate('/matching') : null],
                 lang: {},
             });
@@ -263,7 +268,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
         if (showInterestConfirmation)
             infos.push({
-                label: 'interestconfirmation',
+                label: NextStepLabelType.INTEREST_CONFIRMATION,
                 btnfn: [confirmInterest, refuseInterest],
                 lang: {
                     subjectSchüler:
@@ -276,28 +281,28 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Open Match Request -----------
         if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
             infos.push({
-                label: 'statusSchüler',
+                label: NextStepLabelType.STATUS_PUPIL,
                 btnfn: [() => navigate('/group'), deleteMatchRequest],
                 lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
             });
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
-            infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
+            infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({
-                label: 'statusStudent2',
+                label: NextStepLabelType.STATUS_STUDENT_TWO,
                 btnfn: [() => navigate('/matching'), roles.includes('INSTRUCTOR') ? () => navigate('/group') : null],
                 lang: {},
             });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
-            infos.push({ label: 'passwort', btnfn: [() => navigate('/new-password')], lang: {} });
+            infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------
         pupil?.matches?.forEach((match) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
-                    label: 'kontaktSchüler',
+                    label: NextStepLabelType.CONTACT_PUPIL,
                     btnfn: [() => navigate('/matching')],
                     lang: {
                         nameHelfer: match.student.firstname,
@@ -310,7 +315,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         student?.matches?.forEach((match: any) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
-                    label: 'kontaktStudent',
+                    label: NextStepLabelType.CONTACT_STUDENT,
                     btnfn: [() => navigate('/matching')],
                     lang: { nameSchüler: match.pupil.firstname },
                 });
@@ -319,7 +324,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Certificate of Conduct -----------
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
-                label: 'zeugnis',
+                label: NextStepLabelType.SCHOOL_CERTIFICATE,
                 btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de'), openRemissionRequest],
                 lang: {
                     cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
@@ -329,15 +334,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Confirm Tutoring Certificate -----
         for (const certificate of data?.me.pupil?.participationCertificatesToSign.filter((it) => it.state === 'awaiting-approval') ?? []) {
             infos.push({
-                label: 'angeforderteBescheinigung',
-                btnfn: [
-                    () => {
-                        show(
-                            { variant: 'light', closeable: true, headline: t('matching.certificate.titleRequest') },
-                            <ConfirmCertificate certificate={certificate} />
-                        );
-                    },
-                ],
+                label: NextStepLabelType.TUTORING_CERTIFICATE,
+                btnfn: [() => navigate(`/confirm-certificate/${certificate.id}`)],
                 lang: {
                     nameHelfer: certificate.student.firstname,
                     startDate: DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy'),
@@ -407,12 +405,17 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     title={`${t('important')}!`}
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
-                    buttons={selectedInformation.btntxt?.map((txt, index) => ({
-                        label: txt,
-                        btnfn: selectedInformation.btnfn[index],
-                    }))}
                     isOpen={selectedInformation !== undefined}
+                    label={selectedInformation.label}
                     onClose={() => setSelectedInformation(undefined)}
+                    buttons={
+                        selectedInformation.btnfn?.length > 0
+                            ? selectedInformation.btntxt?.map((txt, index) => ({
+                                  label: txt,
+                                  btnfn: selectedInformation.btnfn ? selectedInformation.btnfn[index] : () => null,
+                              }))
+                            : []
+                    }
                 />
             )}
             <HSection
@@ -446,7 +449,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     return (
                         <NextStepsCard
                             key={`${config.label}-${index}`}
-                            title={`${t('important')}!`}
+                            label={config.label}
+                            title={t(`helperwizard.${config.label}.subtitle` as unknown as TemplateStringsArray, config.lang)}
                             name={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
                             description={t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
                             actionDescription={actionDescription}

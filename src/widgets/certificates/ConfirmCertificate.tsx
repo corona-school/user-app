@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon';
-import { Button, Input } from 'native-base';
+import { Heading, Input } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Box, Card, FormControl, Text, useTheme } from 'native-base';
 import TextInput from '../../components/TextInput';
@@ -15,7 +15,7 @@ import { SuccessModal } from '../../modals/SuccessModal';
 import { IMPORTANT_INFORMATION_QUERY } from '../ImportantInformation';
 import DisableableButton from '../../components/DisablebleButton';
 
-type CertificateToConfirm = Pick<
+export type CertificateToConfirm = Pick<
     Participation_Certificate,
     'uuid' | 'categories' | 'endDate' | 'hoursPerWeek' | 'hoursTotal' | 'medium' | 'ongoingLessons' | 'startDate' | 'state'
 > & { student: { firstname?: string | null; lastname?: string | null } };

@@ -1,6 +1,6 @@
 import { Text, Modal, Button, Stack, HStack, VStack, Box } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import IconBook from '../../../assets/icons/icon_buch.svg';
+import { NextStepLabelType, getNextStepIcon } from '../../../helper/important-information-helper';
 
 type Props = {
     header: string;
@@ -11,18 +11,21 @@ type Props = {
         btnfn: (() => void) | null;
     }[];
     isOpen?: boolean;
+    label?: NextStepLabelType;
     onClose: () => any;
 };
 
-const NextStepModal: React.FC<Props> = ({ header, title, description, buttons, isOpen, onClose }) => {
+const NextStepModal: React.FC<Props> = ({ header, title, description, buttons, isOpen, label, onClose }) => {
     const { t } = useTranslation();
+    const NextStepIcon = label ? getNextStepIcon(label) : getNextStepIcon(NextStepLabelType.DEFAULT);
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <Modal.Content width="530px" maxWidth="unset" padding={6}>
                 <Modal.CloseButton />
                 <VStack space={6}>
                     <HStack space={6} paddingX={6} paddingTop={6}>
-                        <IconBook />
+                        <NextStepIcon />
                         <VStack>
                             <Text fontSize="14px">{header}</Text>
                             <Text fontSize="36px" bold>
@@ -34,20 +37,22 @@ const NextStepModal: React.FC<Props> = ({ header, title, description, buttons, i
                         <Text>{description}</Text>
                     </Box>
                     <Box>
-                        <Stack space={4} width="100%" direction={buttons && buttons.length > 1 ? 'row' : 'column'} flexWrap="wrap">
-                            {buttons?.map((btn, idx) => (
-                                <Button
-                                    variant={idx === 0 ? 'solid' : 'outline'}
-                                    onPress={() => {
-                                        btn.btnfn && btn.btnfn();
-                                    }}
-                                    width={idx + 1 === buttons.length && (idx + 1) % 2 !== 0 ? '100%' : '232px'}
-                                    marginBottom="16px"
-                                >
-                                    {btn.label}
-                                </Button>
-                            ))}
-                        </Stack>
+                        {buttons && (
+                            <Stack space={4} width="100%" direction={buttons.length > 1 ? 'row' : 'column'} flexWrap="wrap">
+                                {buttons?.map((btn, idx) => (
+                                    <Button
+                                        variant={idx === 0 ? 'solid' : 'outline'}
+                                        onPress={() => {
+                                            btn.btnfn && btn.btnfn();
+                                        }}
+                                        width={idx + 1 === buttons.length && (idx + 1) % 2 !== 0 ? '100%' : '232px'}
+                                        marginBottom="16px"
+                                    >
+                                        {btn.label}
+                                    </Button>
+                                ))}
+                            </Stack>
+                        )}
                         <Button onPress={onClose} width="100%" variant="outline">
                             {t('cancel')}
                         </Button>
