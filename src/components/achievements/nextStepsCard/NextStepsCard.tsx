@@ -24,7 +24,7 @@ type NextStepsCardProps = {
 
 const NextStepsCard: React.FC<NextStepsCardProps> = ({
     image,
-    label = NextStepLabelType.DEFAULT,
+    label,
     title,
     name,
     actionDescription,
