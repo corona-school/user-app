@@ -2036,6 +2036,18 @@
             "english_version": "Englische Version"
         }
     },
+    "certificateOfConduct": {
+        "header": "Führungszeugnis einreichen",
+        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Um deinen Account aktiv zu halten, bitten wir dich, das erweiterte Führungszeugnis zeitnah zu beantragen und bis zur Frist bei uns einzureichen. Mithilfe der Bescheinigung kannst du das erweiterte Führungszeugnis kostenlos beantragen.",
+        "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
+        "tooltip": "Nach diesem Datum wird dein Account bei uns automatisch deaktiviert. Solltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
+        "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
+        "download": "Vordruck herunterladen",
+        "upload": "Führungszeugnis einreichen",
+        "request_header": "Wie beantrage ich ein erweitertes Führungszeugnis?",
+        "general_info": "Allgemeine Informationen",
+        "digital_request": "Digitale Beantragung"
+    },
     "issueReporter": {
         "title": "Ein Fehler ist aufgetreten",
         "subtitle": "Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler. Solltest du Fragen haben, kontaktiere den Support",

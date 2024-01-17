@@ -66,6 +66,7 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 import { datadogRum } from '@datadog/browser-rum';
 import Progress from './pages/Progress';
 import ConfirmCertificate from './pages/ConfirmCertificate';
+import CertificateOfConduct from './pages/CertificateOfConduct';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -175,6 +176,15 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <RequestCertificate />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/certificate-of-conduct"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CertificateOfConduct />} />
                     </RequireAuth>
                 }
             />
