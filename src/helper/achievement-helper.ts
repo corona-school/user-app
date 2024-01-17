@@ -75,14 +75,19 @@ enum PuzzlePieceType {
     FIVE = 'five',
     THREE = 'three',
 }
-const getPuzzleEmptyState = (countPieces: PuzzlePieceType): string => {
-    const image = puzzleImages.hasOwnProperty(countPieces) ? puzzleImages[countPieces] : puzzleImages[PuzzlePieceType.THREE];
+const getPuzzleEmptyState = (piecesCount: PuzzlePieceType): string => {
+    let image: string = '';
+    switch (piecesCount) {
+        case PuzzlePieceType.FIVE:
+            image = FivePuzzlePieces;
+            break;
+        case PuzzlePieceType.THREE:
+            image = ThreePuzzlePieces;
+            break;
+        default:
+            image = PuzzlePieceType.THREE;
+    }
     return image;
-};
-
-const puzzleImages: { [countPieces: string]: string } = {
-    five: FivePuzzlePieces,
-    three: ThreePuzzlePieces,
 };
 
 export { convertDataToAchievement, customSort, PuzzlePieceType, getPuzzleEmptyState };
