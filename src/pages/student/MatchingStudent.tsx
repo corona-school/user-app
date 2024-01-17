@@ -40,7 +40,6 @@ const query = gql(`
                         schooltype
                         grade
                     }
-                    pupilEmail
                 }
                 canRequestMatch {
                     allowed

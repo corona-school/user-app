@@ -8,7 +8,5 @@ export type LFMatch = {
     student: any;
     subjectsFormatted: Subject[];
     uuid: string;
-    studentEmail: string;
-    pupilEmail: string;
     appointments?: Appointment[];
 };
