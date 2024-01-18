@@ -109,8 +109,9 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         if (!session) return;
         const unreads = session.unreads;
 
-        unreads.onChange((message: UnreadConversation[]) => {
-            setUnreadMessagesCount(message.length);
+        unreads.onChange((messages: UnreadConversation[]) => {
+            const filteredMessages = messages.filter((message) => message.lastMessage.custom.type !== 'first');
+            setUnreadMessagesCount(filteredMessages.length);
         });
     }, [session]);
 
