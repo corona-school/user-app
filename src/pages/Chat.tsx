@@ -87,13 +87,22 @@ const Chat: React.FC = () => {
 
     useEffect(() => {
         if (!session) return;
+        const now = DateTime.now();
+        const yesterday = now.minus({ days: 1 });
+        const timestampOfYesterday = yesterday.toMillis();
+        const fifteenMinutesAgo = now.minus({ minutes: 15 });
+        const timestampFifteenMinutesAgo = fifteenMinutesAgo.toMillis();
+
         const inbox = session.createInbox({
             showMobileBackButton: false,
             messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
+            feedFilter: { lastMessageTs: ['>', timestampFifteenMinutesAgo] },
+            // messageFilter: { custom: { type: ['!=', 'first'] } },
         });
         inbox.mount(inboxRef.current);
         inbox.select(conversationId ?? selectedChatId);
         inbox.onCustomMessageAction('contact-support', (event) => handleContactSupport(event));
+
         inboxObject.current = inbox;
         if (isMobile) {
             inbox.onConversationSelected(({ conversation }) => {
