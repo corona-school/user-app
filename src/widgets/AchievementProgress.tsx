@@ -194,7 +194,14 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                         <ProgressCollapsableHeadline achievementState={key} onClick={() => handleOnClick(undefined, key)} />
                         <Box>
                             {sortedAchievements[key].length === 0 ? (
-                                <EmptyStateContainer achievementState={key} />
+                                <HStack
+                                    width="100%"
+                                    backgroundColor={key === Achievement_State.Completed && sortedAchievements[key].length > 0 && cardContainerBg}
+                                    height={collapsed[key] ? '0' : 'fit-content'}
+                                    overflowY={collapsed[key] ? 'hidden' : 'unset'}
+                                >
+                                    <EmptyStateContainer achievementState={key} />
+                                </HStack>
                             ) : (
                                 <HStack
                                     width="100%"

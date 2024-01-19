@@ -14,10 +14,10 @@ const EmptyStateContainer = ({ achievementState }: EmptyStateContainerProps) => 
             return (
                 <VStack width="100%" display="flex" flexDirection="column" alignItems="center" space="4px">
                     <EmptyStateCompleted />
-                    <Text fontWeight={600} fontSize="14px" lineHeight="17px" textAlign="center">
+                    <Text fontWeight={600} fontSize="md" lineHeight="sm" textAlign="center">
                         {t('achievement.empty_state.Completed.title')}
                     </Text>
-                    <Text fontWeight={400} fontSize="10px" lineHeight="12px" textAlign="center">
+                    <Text fontWeight={400} fontSize="xs" lineHeight="xs" textAlign="center">
                         {t('achievement.empty_state.Completed.description')}
                     </Text>
                 </VStack>
