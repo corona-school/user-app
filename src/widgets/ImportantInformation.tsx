@@ -411,7 +411,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 ],
             });
         }
-        console.log('OPEN MATCH REQUEST', student?.openMatchRequestCount);
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
         if (student && !student?.firstMatchRequest && student?.openMatchRequestCount === 0 && student?.matches.length === 0) {
             achievements.push({
