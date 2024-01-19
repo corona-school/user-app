@@ -61,7 +61,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
             );
         case Achievement_Type_Enum.Sequential:
             return (
-                <VStack alignItems="center" paddingY="4">
+                <VStack alignItems="center">
                     <Box
                         width={puzzleBorderWidth}
                         height={puzzleBorderWidth}
