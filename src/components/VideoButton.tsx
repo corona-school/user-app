@@ -35,18 +35,25 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 
     const [loadLink, { loading }] = useLazyQuery(
         gql(`
-query overrrideLink($appointmentId: Float!) {
-    appointment(appointmentId: $appointmentId) {
-        override_meeting_link
-    }
-}
-`),
+        query overrrideLink($appointmentId: Float!) {
+            appointment(appointmentId: $appointmentId) {
+                override_meeting_link
+            }
+        }
+        `),
         { variables: { appointmentId } }
     );
-    const [matchMeetingJoin, { data }] = useMutation(
+    const [matchMeetingJoin] = useMutation(
         gql(`
         mutation JoinMatchMeeting($matchId: Float!) { 
 	        matchMeetingJoin(matchId: $matchId)
+        }
+    `)
+    );
+    const [subcourseMeetingJoin] = useMutation(
+        gql(`
+        mutation JoinSubcourseMeeting($subcourseId: Float!) { 
+	        subcourseMeetingJoin(subcourseId: $subcourseId)
         }
     `)
     );
@@ -61,6 +68,7 @@ query overrrideLink($appointmentId: Float!) {
     };
     const onPress = () => {
         if (appointmentType === Lecture_Appointmenttype_Enum.Match && matchId) matchMeetingJoin({ variables: { matchId } });
+        if (appointmentType === Lecture_Appointmenttype_Enum.Group && subcourseId) subcourseMeetingJoin({ variables: { subcourseId } });
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
     };
     return (
