@@ -112,6 +112,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         buttonText={t('appointment.detail.videochatButton')}
                         width={buttonWidth}
                         isOver={isAppointmentOver}
+                        matchId={matchId}
                     />
                 </>
             )}
