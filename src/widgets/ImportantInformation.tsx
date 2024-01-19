@@ -463,7 +463,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }, [achievements, pupil, student, t]);
 
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
-    const [selectedAchievementInfo, setSelectedAchievementInfo] = useState<Achievement | undefined>();
     const [selectedInformation, setSelectedInformation] = useState<Information>();
 
     if (!infos.length && !configurableInfos.length && !achievements.length) return null;
@@ -488,26 +487,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     buttonLink={selectedAchievement.actionRedirectLink}
                     onClose={() => setSelectedAchievement(undefined)}
                     showModal={selectedAchievement !== undefined}
-                />
-            )}
-            {selectedAchievementInfo && (
-                <AchievementModal
-                    title={selectedAchievementInfo.subtitle}
-                    name={selectedAchievementInfo.name}
-                    description={selectedAchievementInfo.description}
-                    achievementState={selectedAchievementInfo.achievementState}
-                    achievementType={selectedAchievementInfo.achievementType}
-                    isNewAchievement={selectedAchievementInfo.isNewAchievement}
-                    steps={selectedAchievementInfo.steps}
-                    maxSteps={selectedAchievementInfo.maxSteps}
-                    currentStep={selectedAchievementInfo.currentStep}
-                    progressDescription={selectedAchievementInfo.progressDescription}
-                    image={selectedAchievementInfo.image}
-                    alternativeText={selectedAchievementInfo.alternativeText}
-                    buttonText={selectedAchievementInfo.actionName}
-                    buttonLink={selectedAchievementInfo.actionRedirectLink}
-                    onClose={() => setSelectedAchievementInfo(undefined)}
-                    showModal={selectedAchievementInfo !== undefined}
                 />
             )}
             {selectedInformation && (
