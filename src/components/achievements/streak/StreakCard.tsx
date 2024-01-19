@@ -14,7 +14,7 @@ type StreakCardProps = {
     progressDescription: string;
     image: string;
     alternativeText: string;
-    actionType?: Achievement_Action_Type_Enum;
+    actionType?: Achievement_Action_Type_Enum | null;
     onClick: () => void;
 };
 

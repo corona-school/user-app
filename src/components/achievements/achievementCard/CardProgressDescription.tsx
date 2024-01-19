@@ -10,7 +10,7 @@ import Clock from '../../../assets/icons/icon_clock_dk_green.svg';
 import Info from '../../../assets/icons/icon_info_dk_green.svg';
 
 type CardprogressDescriptionProps = {
-    actionType?: Achievement_Action_Type_Enum;
+    actionType?: Achievement_Action_Type_Enum | null;
     achievementType?: Achievement_Type_Enum;
     progressDescription: string;
     isColorized?: boolean;

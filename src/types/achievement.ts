@@ -38,7 +38,7 @@ type Achievement = {
     description: string;
     image: string;
     alternativeText: string;
-    actionType?: Achievement_Action_Type_Enum;
+    actionType?: Achievement_Action_Type_Enum | null;
     achievementType: Achievement_Type_Enum;
     achievementState: Achievement_State;
     steps?: Step[];
@@ -50,6 +50,6 @@ type Achievement = {
     actionRedirectLink?: string;
 };
 
-export { Achievement_Action_Type_Enum, PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };
+export { PuzzleImageSize, PolaroidImageSize, StreakImageSize, ShineSize, ShineOffset };
 
 export type { Achievement };
