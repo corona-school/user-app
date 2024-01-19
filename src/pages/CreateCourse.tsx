@@ -942,6 +942,7 @@ const CreateCourse: React.FC = () => {
                                         isEditing={isEditing}
                                         isError={showCourseError}
                                         isDisabled={loading || isLoading || imageLoading}
+                                        reasonDisabled={t('reasonsDisabled.loading')}
                                         appointments={courseAppointments ?? []}
                                     />
                                     <Modal isOpen={showModal} onClose={() => setShowModal(false)} background="modalbg">

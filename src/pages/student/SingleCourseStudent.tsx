@@ -307,7 +307,7 @@ const SingleCourseStudent = () => {
     const cancelCourse = useCallback(async () => {
         setShowCancelModal(false);
         await cancelSubcourse();
-        toast.show({ description: 'Der Kurs wurde erfolgreich abgesagt', placement: 'top' });
+        toast.show({ description: t('course.cancelation_success'), placement: 'top' });
         refetchBasics();
     }, [canceldData]);
 

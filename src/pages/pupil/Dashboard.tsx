@@ -24,6 +24,7 @@ import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import CTACard from '../../widgets/CTACard';
+import DisableableButton from '../../components/DisablebleButton';
 
 type Props = {};
 
@@ -44,7 +45,6 @@ const query = gql(`
                         firstname
                         lastname
                     }
-                    studentEmail
                 }
                 firstMatchRequest
                 openMatchRequestCount
@@ -296,13 +296,14 @@ const Dashboard: React.FC<Props> = () => {
                                                     </HStack>
                                                 </Alert>
 
-                                                <Button
-                                                    width={ButtonContainer}
+                                                <DisableableButton
                                                     isDisabled={_cancelMatchRequest?.loading}
+                                                    reasonDisabled={t('reasonsDisabled.loading')}
+                                                    width={ButtonContainer}
                                                     onPress={() => setShowCancelModal(true)}
                                                 >
                                                     {t('dashboard.offers.removeRequest')}
-                                                </Button>
+                                                </DisableableButton>
                                             </VStack>
                                         )}
                                     </HSection>

@@ -1,13 +1,13 @@
 import { DateTime } from 'luxon';
 import { Text, useTheme, VStack, Checkbox, Button, Row, Column, Heading } from 'native-base';
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import DatePicker from '../../components/DatePicker';
+import { useContext, useState } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import TextInput from '../../components/TextInput';
-import { Match, Pupil, Subject } from '../../gql/graphql';
+import { Match, Pupil } from '../../gql/graphql';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';
 import { SubjectSelector } from '../SubjectSelector';
 import UserProgress from '../UserProgress';
+import DisableableButton from '../../components/DisablebleButton';
 
 const isValidNumber = (value: string) => {
     const parsed = parseFloat(value.replace(',', '.'));
@@ -43,45 +43,62 @@ const SelectedPupilWizard = ({
     const [hoursPerWeek, setHoursPerWeek] = useState<string>('');
     const [hoursTotal, setHoursTotal] = useState<string>('');
 
+    const onPress = () => {
+        const request = {
+            startDate,
+            endDate,
+            ongoingLessons,
+            hoursPerWeek: toValidNumber(hoursPerWeek)!,
+            hoursTotal: toValidNumber(hoursTotal)!,
+            subjects: subjects.join(', '),
+        };
+
+        setState((prev) => ({
+            ...prev,
+            requestData: { ...prev.requestData, [match.uuid]: request },
+        }));
+        onNext();
+    };
+
     return (
         <>
             <VStack space={space['1']}>
-                <Heading>Angaben</Heading>
-                <Text>Gebe für jede:n Schüler:in an, in welchem Unfang du sie:ihn unterstützt hast.</Text>
+                <Heading>{t('certificate.request_for_match.title')}</Heading>
+                <Text>{t('certificate.request_for_match.subtitle')}</Text>
 
                 <VStack>
                     <UserProgress showPercent={false} percent={(currentIndex + 1 / pupilCount) * 100} />
                     <Text fontSize="sm">
-                        Schüler:in {currentIndex + 1} von {pupilCount}
+                        <Trans i18nKey="certificate.request_for_match.step" values={{ current: currentIndex + 1, total: pupilCount }} />
                     </Text>
                 </VStack>
 
                 <VStack>
-                    <Text bold>Schüler:in</Text>
+                    <Text bold>{t('pupil')}</Text>
                     <Heading>
                         {match.pupil.firstname} {match.pupil.lastname}
                     </Heading>
                 </VStack>
 
                 <VStack space={space['0.5']}>
-                    <Text bold>vom Zeitraum</Text>
+                    <Text bold>{t('certificate.request_for_match.from')}</Text>
                     <div className="lf__datepicker">
                         <input type="date" value={startDate} onChange={(e) => setStartDate(e.target.value)} />
                     </div>
                 </VStack>
                 <VStack space={space['0.5']}>
-                    <Text bold>bis zum</Text>
+                    <Text bold>{t('certificate.request_for_match.to')}</Text>
                     <div className="lf__datepicker">
                         <input type="date" min={startDate} value={endDate} onChange={(e) => setEndDate(e.target.value)} />
                     </div>
                 </VStack>
 
                 <Checkbox value={'ongoing'} isChecked={ongoingLessons} onChange={setOngoingLessons}>
-                    Unterstützung dauert noch an
+                    {t('certificate.request_for_match.continues')}
                 </Checkbox>
 
                 <VStack space={space['0.5']}>
-                    <Text bold>Fächer</Text>
+                    <Text bold>{t('matching.shared.subjects')}</Text>
                     <SubjectSelector
                         subjects={subjects}
                         addSubject={(it) => setSubjects((prev) => [...prev, it])}
@@ -91,9 +108,9 @@ const SelectedPupilWizard = ({
                 </VStack>
 
                 <VStack space={space['0.5']}>
-                    <Text bold>Zeit</Text>
+                    <Text bold>{t('duration')}</Text>
                     {((hoursPerWeek && !isValidNumber(hoursPerWeek)) || (hoursTotal && !isValidNumber(hoursTotal))) && (
-                        <Text color="danger.700">Du musst hier eine Zahl eingeben.</Text>
+                        <Text color="danger.700">{t('certificate.request_for_match.not_a_number')}</Text>
                     )}
                     <Row alignItems="center">
                         <Column flex={0.4}>
@@ -110,7 +127,7 @@ const SelectedPupilWizard = ({
                             />
                         </Column>
                         <Text flex="1" ml={space['1']}>
-                            Stunden die Woche (durchschnittlich)
+                            {t('certificate.request_for_match.hours_per_week')}
                         </Text>
                     </Row>
                     <Row alignItems="center">
@@ -118,34 +135,20 @@ const SelectedPupilWizard = ({
                             <TextInput keyboardType="numeric" value={hoursTotal} onChangeText={setHoursTotal} />
                         </Column>
                         <Text flex="1" ml={space['1']}>
-                            Stunden insgesamt
+                            {t('certificate.request_for_match.hours_total')}
                         </Text>
                     </Row>
                 </VStack>
 
-                <Button
+                <DisableableButton
                     isDisabled={
                         !startDate || !endDate || !hoursPerWeek || !hoursTotal || !subjects.length || !isValidNumber(hoursPerWeek) || !isValidNumber(hoursTotal)
                     }
-                    onPress={() => {
-                        const request = {
-                            startDate,
-                            endDate,
-                            ongoingLessons,
-                            hoursPerWeek: toValidNumber(hoursPerWeek)!,
-                            hoursTotal: toValidNumber(hoursTotal)!,
-                            subjects: subjects.join(', '),
-                        };
-
-                        setState((prev) => ({
-                            ...prev,
-                            requestData: { ...prev.requestData, [match.uuid]: request },
-                        }));
-                        onNext();
-                    }}
+                    reasonDisabled={t('reasonsDisabled.formIncomplete')}
+                    onPress={onPress}
                 >
-                    {currentIndex + 1 < pupilCount ? 'Nächste:r Schüler:in' : t('next')}
-                </Button>
+                    {currentIndex + 1 < pupilCount ? t('certificate.request_for_match.next_pupil') : t('next')}
+                </DisableableButton>
                 <Button variant="link" onPress={onPrev}>
                     {t('back')}
                 </Button>

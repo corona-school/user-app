@@ -5,6 +5,13 @@
     "clock": "Uhr",
     "time": "Uhrzeit",
     "duration": "Dauer",
+    "further_details": "Weitere Details",
+    "copy_text": "Text kopieren",
+    "copied_text": "Text kopiert!",
+    "select": "Auswählen",
+    "change": "Ändern",
+    "helper": "Helfer:in",
+    "to": "An",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -12,6 +19,7 @@
         "deleteAppointment": "Termin löschen",
         "goBack": "zur vorherigen Seite",
         "loadPastAppointments": "Vergangene Termine laden",
+        "loadedPastAppointments": "Vergangene Termine geladen",
         "courseNotPublished": "Der zu diesem Termin zugehörige Kurs wurde noch nicht zur Prüfung freigegeben.",
         "noNextAppointment": "Kein nächster Termin.",
         "toast": {
@@ -63,6 +71,7 @@
             "addAppointmentButton": "Termin(e) hinzufügen",
             "backButton": "zur vorherigen Seite",
             "lecture": "Lektion",
+            "add_lecture": "Lektion #{{position}} hinzufügen",
             "titleLabel": "Titel",
             "dateLabel": "Datum",
             "timeLabel": "Uhrzeit",
@@ -93,8 +102,19 @@
             "cancelButton": "Termin absagen",
             "editButton": "Termin bearbeiten",
             "canceledToast": "Termin wurde abgesagt",
-            "deleteTooltip": "Der letzte Termin kann nicht gelöscht werden.",
-            "editBlockedWarning": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."
+            "reasonDisabled": {
+                "editBtn": {
+                    "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."
+                },
+                "deleteBtn": {
+                    "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht gelöscht werden.",
+                    "isLast": "Der letzte Termin kann nicht gelöscht werden."
+                },
+                "cancelBtn": {
+                    "isOver": "Du kannst diesen Termin nicht absagen, da er bereits vorbei ist.",
+                    "isCancelled": "Du hast diesen Termin bereits abgesagt."
+                }
+            }
         },
         "attendeesModal": {
             "title": "Teilnehmer:innen",
@@ -141,6 +161,10 @@
         "accountNotFound": {
             "title": "Anmeldung fehlgeschlagen",
             "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden. Bitte kontrolliere die eingegebene E-Mail-Adresse und versuche es erneut."
+        },
+        "accountDeactivated": {
+            "title": "Anmeldung fehlgeschlagen",
+            "alert_html": "Dein Account wurde deaktiviert. Bitte kontaktiere den Support (support@lern-fair.de) für weitere Informationen."
         },
         "invalidMailMessage": "Die eingegebene E-Mail-Adresse ist fehlerhaft.",
         "invalidTokenAlert": {
@@ -194,7 +218,7 @@
             "deutsch": "Deutsch",
             "englisch": "Englisch",
             "franz_sisch": "Französisch",
-            "französisch": "Französisch",
+            "t_rkisch": "Türkisch",
             "italienisch": "Italienisch",
             "kasachisch": "Kasachisch",
             "kurdisch": "Kurdisch",
@@ -252,6 +276,8 @@
             "st": "Sachsen-Anhalt",
             "sh": "Schleswig-Holstein",
             "th": "Thüringen",
+            "at": "Österreich",
+            "ch": "Schweiz",
             "other": "Andere"
         },
         "schooltypes": {
@@ -293,7 +319,8 @@
                     "not-tutee": "Du kannst kein Lernpaar anfordern, da du nicht für die Lernunterstützung registriert bist.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
                     "max-matches": "Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.",
-                    "deactivated": "Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. "
+                    "deactivated": "Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
+                    "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
             }
         }
@@ -324,6 +351,13 @@
                 "yes": "Ja, die Punkte treffen zu",
                 "no": "Nein, die Punkte treffen nicht zu"
             }
+        },
+        "barrier_failed": {
+            "title": "Registrierung fehlgeschlagen!",
+            "subtitle": "Da Du unsere Teilnahmebedingungen abgelehnt hast, können wir Dir leider keine Registrierung ermöglichen.",
+            "subtitle2": "Erst nach dem Bestätigen unserer Teilnahmebedingungen können wir Dir gerne die Registrierung gewähren.",
+            "retry": "Registrierung erneut beginnen",
+            "alternatives": "Weitere Infos erhalten"
         },
         "hint": {
             "name": "Bitte gebe deinen vollen Namen an",
@@ -380,8 +414,8 @@
                 "subtitle": "Auf welche Schulform gehst du?"
             },
             "4": {
-                "title": "Bundesland",
-                "subtitle": "Aus welchem Bundesland kommst du?"
+                "title": "Schulort",
+                "subtitle": "Wo gehst du zur Schule?"
             },
             "5": {
                 "title": "Einwilligungen",
@@ -452,7 +486,13 @@
             }
         },
         "btn": {
-            "formsubmit": "Anfrage senden"
+            "formsubmit": "Anfrage senden",
+            "reasonDisabled": [
+                "Bitte wähle einen längeren Betreff (mindestens 5 Zeichen).",
+                "Bitte schreibe einen längere Nachricht (mindestens 5 Zeichen).",
+                "Du musst den Datenschutzbestimmungen zustimmen."
+            ],
+            "readsonDisabledModal": "Du musst bestätigen, dass du diese Nachricht melden möchtest."
         },
         "reportSuccessToast": "Die Nachricht wurde erfolgreich gemeldet und wird zeitnah überprüft."
     },
@@ -504,13 +544,13 @@
         },
         "State": {
             "empty": "Keine Angabe",
-            "label": "Bundesland",
+            "label": "Schulort",
             "single": {
-                "selectedStates": "Mein Bundesland",
-                "otherStates": "Weitere Bundesländer",
-                "header": "Bundesland ändern",
-                "title": "Mein Bundesland",
-                "others": "Bundesland wählen"
+                "selectedStates": "Mein Schulort",
+                "otherStates": "Weitere (Bundes-)Länder",
+                "header": "Schulort ändern",
+                "title": "Mein Schulort",
+                "others": "Schulort wählen"
             }
         },
         "SchoolType": {
@@ -567,7 +607,7 @@
         },
         "Notice": {
             "noLanguage": "Es wurden keine Sprachen angegeben",
-            "noState": "Es wurde kein Bundesland angegeben",
+            "noState": "Es wurde kein Schulort angegeben",
             "noSchoolType": "Es wurde keine Schulform angegeben",
             "noSchoolGrade": "Es wurde keine Klasse angegeben",
             "noSchoolSubject": "Es wurden keine Fächer angegeben"
@@ -577,6 +617,7 @@
             "modal": {
                 "title": "Account deaktivieren",
                 "btn": "Account deaktivieren",
+                "tooltip": "Du musst einen Grund angeben.",
                 "other": {
                     "placeholder": "Deaktivierungsgrund"
                 },
@@ -1068,7 +1109,7 @@
         "kontaktSchüler": {
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
-            "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
+            "buttons": ["Lernpartner:in ansehen"]
         },
         "angeforderteBescheinigung": {
             "title": "{{nameHelfer}} braucht eine Bestätigung von dir",
@@ -1098,7 +1139,7 @@
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
-            "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
+            "buttons": ["Lernpartner:in ansehen"]
         },
         "homeworkHelpStudent": {
             "title": "Hausaufgabenhilfe",
@@ -1137,7 +1178,6 @@
             "dissolveMatch": "Lernpaar auflösen",
             "dissolved": "Das Lernpaar wurde aufgelöst.",
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
-            "contactMail": "Via E-Mail kontaktieren",
             "tutorInstructor": "Tutor:in, Kursleiter:in",
             "appointmentsHeadline": "Termine",
             "createAppointment": "Termin erstellen"
@@ -1258,12 +1298,15 @@
                 "subjects": {
                     "heading": "Fachauswahl",
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
+                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
+                    "reason_btn_disabled_DAZ": "Bitte wähle ein Fach aus.",
                     "text": "Du kannst maximal 1 Fach auswählen."
                 },
                 "priority": {
                     "heading": "Priorisierung",
                     "subheading": "In welchen Fach brauchst du am meisten Hilfe?",
-                    "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist."
+                    "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
+                    "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "details": {
                     "heading": "Details",
@@ -1282,6 +1325,27 @@
                         "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
                     },
                     "groupCourses": "Zu den Gruppen-Kursen"
+                }
+            },
+            "student": {
+                "subjects": {
+                    "title": "Fachauswahl",
+                    "subtitle": "In welchen Fächern möchtest du unterstützen?",
+                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus."
+                },
+                "profile": {
+                    "title": "Profil aktualisieren",
+                    "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
+                    "personalData": "Persönliche Daten"
+                },
+                "success": {
+                    "title": "Geschafft, du bist ein:e Held:in!",
+                    "subtitle": "Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!",
+                    "subtitle2": "Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche dauert in der Regel maximal eine Woche. Sobald wir jemanden für dich gefunden haben, werden wir dich direkt per E-Mail benachrichtigen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden."
+                },
+                "grades": {
+                    "title": "Jahrgangsstufen",
+                    "question": "In welchen Jahrgangsstufen möchtest du helfen?"
                 }
             }
         },
@@ -1355,7 +1419,8 @@
         "dissolve": {
             "modal": {
                 "title": "Warum möchtest du das Lernpaar auflösen?",
-                "btn": "Lernpaar auflösen"
+                "btn": "Lernpaar auflösen",
+                "tooltip": "Du musst einen Grund angeben."
             },
             "warningModal": {
                 "title": "Bist du sicher?",
@@ -1378,7 +1443,8 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "other": "Sonstiges"
+                "other": "Sonstiges",
+                "unknown": "Unbekannt"
             },
             "pupil": {
                 "ghosted": "Mein:e Lernpartner:in hat sich nicht zurückgemeldet",
@@ -1389,7 +1455,8 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "other": "Sonstiges"
+                "other": "Sonstiges",
+                "unknown": "Unbekannt"
             }
         },
         "certificate": {
@@ -1428,6 +1495,7 @@
         "uploadImage": "Foto hochladen",
         "noticeDate": "Bitte fülle alle Felder korrekt aus",
         "selectPlaceHolderDuration": "Dauer auswählen",
+        "cancelation_success": "Der Kurs wurde erfolgreich abgesagt",
         "selectOptions": {
             "_15minutes": "15 Minuten",
             "_30minutes": "30 Minuten",
@@ -1597,7 +1665,8 @@
             "placeholder": "Kursthema eingeben",
             "description": "Suche ein aussagekräftiges Bild für dein Kursthema mithilfe der Suchleiste. Es können aktuell keine eigenen Bilder verwendet werden.",
             "noSearchoResults": "Keine Suchergebnisse.",
-            "choose": "wählen"
+            "choose": "wählen",
+            "tooltipBtn": "Du musst ein Bild auswählen."
         },
         "addCourseInstructor": {
             "search": "Name oder E-Mail-Adresse",
@@ -1611,30 +1680,9 @@
         "cancel": {
             "header": "Kurs absagen",
             "description": "Wenn du den Kurs absagst, werden alle Termine abgesagt und die teilnehmenden Schüler:innen über diese Änderung per E-Mail informiert. Bist du dir sicher, dass du den Kurs absagen möchtest?"
-        }
-    },
-    "archive": {
-        "appointments": {
-            "header": "Alle Termine",
-            "title": "Alle Termine",
-            "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et",
-            "sectionHeadline": "Alle Termine im Überblick",
-            "sectionContent": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
         },
-        "course": {
-            "header": "Alle Kurse",
-            "title": "Alle Kurse",
-            "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et",
-            "sectionHeadline": "Alle Kurse im Überblick",
-            "sectionContent": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
-        },
-        "learningpartner": {
-            "header": "Alle Lernpartner:innen",
-            "title": "Alle Lernpartner:innen",
-            "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et",
-            "sectionHeadline": "Alle Lernpartner:innen im Überblick",
-            "sectionContent": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et"
-        }
+        "select_participant": "Teilnehmer:in auswählen",
+        "all_participants": "alle Teilnehmer:innen"
     },
     "notification": {
         "timedifference": {
@@ -1664,6 +1712,8 @@
             "preference": {
                 "enableAll": "Alle Newsletter aktivieren",
                 "disableAll": "Alle Newsletter deaktivieren",
+                "enableAllTooltip": "Du hast bereits alle Newsletter aktiviert.",
+                "disableAllTooltip": "Du hast bereits alle Newsletter deaktiviert.",
                 "chat": {
                     "title": "Chat-Nachrichten",
                     "modalBody": "Wir schicken dir eine E-Mail für jede Chat-Nachricht, die du bekommst."
@@ -1837,6 +1887,9 @@
         "disputed_screenings": "Schülerscreenings mit offener Entscheidung",
         "four_eyes": "Vier Augen",
         "was_screened_but_no_decision": "Dieser Schüler wurde bereits gescreent, aber eine Entscheidung steht noch aus",
+        "save": "Speichern",
+        "recommend_acceptance": "Annahme empfehlen",
+        "recommend_rejection": "Ablehnung empfehlen",
         "screening_saved": "Screening gespeichert",
         "account_deactivated": "Account deaktiviert",
         "account_deactivated_details": "Der Schüler kann sich nicht mehr im Userbereich anmelden. Der Support kann Accounts reaktivieren.",
@@ -1844,9 +1897,11 @@
         "success": "Annehmen",
         "rejection": "Ablehnen",
         "deactivate": "Account Deaktivieren",
+        "missed": "Screening verpasst",
         "confirm_success": "Willst du {{firstname}} {{lastname}} annehmen?",
         "confirm_rejection": "Willst du {{firstname}} {{lastname}} wirklich ablehnen?",
         "confirm_deactivate": "Willst du {{firstname}} {{lastname}} wirklich deaktivieren?",
+        "matches": "Zuordnungen",
         "active_matches": "Aktive Zuordnungen",
         "dissolved_matches": "Aufgelöste Zuordnungen",
         "previous_screenings": "Vorherige Screenings",
@@ -1859,6 +1914,17 @@
         "has_matches": "Hat Lernpaar",
         "registered_since": "registriert seit",
         "dissolved_by": "Aufgelöst von: {{dissolver}}",
+        "dissolve_reason": "Grund: {{reason}}",
+        "login_as_user": "Als Nutzer:in anmelden",
+        "screen_as_instructor": "Als Kursleiter:in screenen",
+        "screen_as_tutor": "Für 1:1 screenen",
+        "courses": "Kurse",
+        "successful_instructor_screening": "Erfolgreiches Kursleiterscreening",
+        "rejected_instructor_screening": "Abgelehntes Kursleiterscreening",
+        "successful_tutor_screening": "Erfolgreiches 1:1-Screening",
+        "rejected_tutor_screening": "Abgelehntes 1:1-Screening",
+        "decision": "Entscheidung",
+        "screener": "Screener:in",
         "dissolve_reason": "Grund: {{reason}}"
     },
     "achievement": {
@@ -1893,5 +1959,103 @@
                 "headline": "Streaks"
             }
         }
+    },
+    "certificate": {
+        "request": {
+            "title": "Bescheinigung beantragen",
+            "subtitle": "Wir möchten uns für dein Engagement bei Lern-Fair bedanken! Für deine Tätigkeit stellen wir dir gerne eine Bescheinigung aus.",
+            "subtitle2": "Eine vollständige Lern Fair Bescheinigung besteht aus den folgenden zwei Teilen:",
+            "part1_title": "1. Bestätigung durch Lern-Fair",
+            "part1_1": "Registrieren auf unserer Plattform",
+            "part1_2": "Durchlaufen eines Eignungsgesprächs",
+            "part1_3": "Vermittlung an eine:n Schüler:in",
+            "part2_title": "2. Bestätigung durch Schüler:in",
+            "part2_1": "Ausmaß der Tätigkeit",
+            "part2_2": "Inhalte der Tätigkeit",
+            "procedure": "Du kannst die Bescheinigung hier beantragen und erhältst eine Benachrichtigung, sobald dein Engagement von deinem:r Schüler:in bestätigt wurde. Ab dann findest du die Bescheinigung auch in deinem Profil.",
+            "apply": "Vollständige Bescheinigung beantragen"
+        },
+        "request_page2": {
+            "title": "Bei welchen Schüler:innen möchtest du eine Bescheinigung beantragen?",
+            "card_content": "Bescheinigung beantragen",
+            "reason_btn_disabled": "Du musst eine:n Schüler:in auswählen."
+        },
+        "request_for_match": {
+            "title": "Angaben",
+            "subtitle": "Gebe für jede:n Schüler:in an, in welchem Unfang du sie:ihn unterstützt hast.",
+            "step": "Schüler:in {{current}} von {{total}}",
+            "from": "vom Zeitraum",
+            "to": "bis zum",
+            "continues": "Unterstützung dauert noch an",
+            "not_a_number": "Du musst hier eine Zahl eingeben.",
+            "hours_per_week": "Stunden die Woche (durchschnittlich)",
+            "hours_total": "Stunden insgesamt",
+            "next_pupil": "Nächste:r Schüler:in",
+            "activities": {
+                "title": "Tätigkeit",
+                "subtitle": "Wähle aus, mit welchen Tätigkeiten du deine Lernpartner:innen unterstützt hast",
+                "preparation": "Vorbereitung, Planung und Gestaltung von Unterrichtsstunden",
+                "visualization": "Bearbeitung und Vermittlung von Unterrichtsinhalten",
+                "visualization_digital": "Digitale Aufbereitung und Veranschaulichung von Unterrichtsinhalten",
+                "repetition": "Vertiefung und Wiederholung von Unterrichtsinhalten",
+                "homework": "Gemeinsame Bearbeitung von Übungs- und Hausaufgaben",
+                "correct_homework": "Korrektur von Übungs- und Hausaufgaben",
+                "prepare_exam": "Digitale Unterstützung bei der Prüfungsvorbereitung",
+                "help_learning": "Digitale Unterstützung beim Lernen",
+                "other": "Sonstiges"
+            },
+            "submit": "Jetzt anfordern"
+        },
+        "download": {
+            "state": "Status",
+            "state_manual": "Manuell",
+            "state_awaiting": "Warten auf Bestätigung",
+            "state_approved": "Bestätigt",
+            "reasonBtnDisabled": "Dein:e Schüler:in muss deine Bescheinigung noch bestätigen.",
+            "loading": "Dein Zertifikat wird heruntergeladen",
+            "error": "Beim Download ist ein Fehler aufgetreten",
+            "download": "Herunterladen",
+            "download_certificate": "Bescheinigung herunterladen",
+            "german_version": "Deutsche Version",
+            "english_version": "Englische Version"
+        }
+    },
+    "issueReporter": {
+        "title": "Ein Fehler ist aufgetreten",
+        "subtitle": "Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler. Solltest du Fragen haben, kontaktiere den Support",
+        "contactSupport": "Support kontaktieren",
+        "continue": "Trotzdem fortfahren"
+    },
+    "verify_email": {
+        "title": "E-Mail Verifizierung",
+        "success": "Dein Account wurde aktiviert!",
+        "proceed": "Fortfahren",
+        "invalid": "Token ungültig"
+    },
+    "set_password": {
+        "title": "Passwort neu setzen",
+        "change": "Passwort ändern",
+        "error": "Es ist ein Fehler aufgetreten. Bitte versuche es erneut.",
+        "success_title": "Passwort erfolgreich geändert",
+        "success_subtitle": "Dein Passwort wurde erfolgreich geändert. Du kannst dich nun mit dem neuen Passwort einloggen",
+        "failure_title": "Fehler: Passwort nicht geändert",
+        "failure_subtitle": "Dein Passwort konnte leider nicht geändert werden. Bitte versuche es erneut. Sollte der Fehler weiterhin auftreten, schicke eine neue E-Mail oder wende dich bitte an den Support."
+    },
+    "job_status": {
+        "Employee": "Berufstätig",
+        "Misc": "Sonstiges",
+        "Pupil": "Schüler:in",
+        "Retiree": "Rentner:in",
+        "Student": "Student:in"
+    },
+    "reasonsDisabled": {
+        "loading": "Es werden noch Daten geladen...",
+        "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an.",
+        "formIncomplete": "Du musst alle Felder ausfüllen.",
+        "fieldEmpty": "Gebe etwas in dieses Feld ein.",
+        "questionUnaswerd": "Bitte beantworte die Frage.",
+        "questionsUnaswerd": "Bitte beantworte die Fragen.",
+        "newFieldSameAsOld": "Das hast du bereits ausgewählt.",
+        "missingSignature": "Es fehlt eine Unterschrift."
     }
 }

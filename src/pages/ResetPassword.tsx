@@ -87,7 +87,7 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
                     {layout === 'new-pw' ? (
                         <Box paddingY={space['2']} justifyContent="center" alignItems="center">
                             <Logo />
-                            <Heading mt={space['1']}>Passwort neu setzen</Heading>
+                            <Heading mt={space['1']}>{t('set_password.title')}</Heading>
                         </Box>
                     ) : (
                         <Box position="relative" paddingY={space['2']} mb={space['3']} justifyContent="center" alignItems="center">
@@ -103,7 +103,7 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
                                 }}
                             />
                             <Logo />
-                            <Heading mt={space['1']}>Passwort neu setzen</Heading>
+                            <Heading mt={space['1']}>{t('set_password.title')}</Heading>
                         </Box>
                     )}
                     <VStack space={space['1']} paddingX={space['1']} mt={space['1']} marginX="auto" width={ContainerWidth} justifyContent="center">
@@ -122,14 +122,14 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
                                         onPress={resetPassword}
                                         isDisabled={!password.length || password.length != passwordRepeat.length}
                                     >
-                                        Passwort ändern
+                                        {t('set_password.change')}
                                     </Button>
                                 </Row>
                             </>
                         )}
                         {showResetPassword === 'error' && (
                             <>
-                                <Heading>Es ist ein Fehler aufgetreten. Bitte versuche es erneut.</Heading>
+                                <Heading>{t('set_password.error')}</Heading>
                             </>
                         )}
                     </VStack>
@@ -138,11 +138,11 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
             <Modal isOpen={showSuccessModal} onClose={onNext}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Passwort erfolgreich geändert</Modal.Header>
-                    <Modal.Body>Dein Passwort wurde erfolgreich geändert. Du kannst dich nun mit dem neuen Passwort einloggen</Modal.Body>
+                    <Modal.Header>{t('set_password.success_title')}</Modal.Header>
+                    <Modal.Body>{t('set_password.success_subtitle')}</Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button onPress={onNext}>Weiter</Button>
+                            <Button onPress={onNext}>{t('next')}</Button>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -150,14 +150,11 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
             <Modal isOpen={showErrorModal} onClose={() => navigate('/login')}>
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Fehler: Passwort nicht geändert</Modal.Header>
-                    <Modal.Body>
-                        Dein Passwort konnte leider nicht geändert werden. Bitte versuche es erneut. Sollte der Fehler weiterhin auftreten, schicke eine neue
-                        E-Mail oder wende dich bitte an den Support.
-                    </Modal.Body>
+                    <Modal.Header>{t('set_password.failure_title')}</Modal.Header>
+                    <Modal.Body>{t('set_password.failure_subtitle')}</Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button onPress={() => navigate('/login')}>Weiter</Button>
+                            <Button onPress={() => navigate('/login')}>{t('next')}</Button>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>

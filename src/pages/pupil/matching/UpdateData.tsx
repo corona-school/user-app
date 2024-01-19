@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
-import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast } from 'native-base';
+import { Text, VStack, useTheme, Heading, Row, Column, Modal, useToast } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
@@ -10,6 +10,7 @@ import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
+import DisableableButton from '../../../components/DisablebleButton';
 
 type Props = {
     schooltype: string;
@@ -197,10 +198,10 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                 </ProfileSettingItem>
 
                 <NextPrevButtons
-                    isDisabledNext={isLoading}
+                    disablingNext={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
+                    disablingPrev={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
                     onPressNext={() => setCurrentIndex(2)}
                     onPressPrev={() => setCurrentIndex(0)}
-                    isDisabledPrev={isLoading}
                     onlyNext={isEdit}
                 />
             </VStack>
@@ -213,7 +214,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
             >
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Ändern</Modal.Header>
+                    <Modal.Header>{t('change')}</Modal.Header>
                     <Modal.Body>
                         <Row flexWrap="wrap">
                             {listItems.map((item: { label: string; key: string }) => (
@@ -230,9 +231,13 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                         </Row>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button isDisabled={data === modalSelection || isLoading} onPress={changeData}>
-                            Ändern
-                        </Button>
+                        <DisableableButton
+                            isDisabled={data === modalSelection || isLoading}
+                            reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
+                            onPress={changeData}
+                        >
+                            {t('change')}
+                        </DisableableButton>
                     </Modal.Footer>
                 </Modal.Content>
             </Modal>

@@ -88,7 +88,6 @@ const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) =
                 isOpen={showMessageModal}
                 onClose={() => setShowMessageModal(false)}
                 onSend={onSendMessage}
-                isDisabled={_sendMessage.loading}
                 details={
                     <SelectParticipants
                         participants={participantsData?.subcourse!.participants ?? []}

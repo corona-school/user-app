@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import Icon from '../assets/icons/lernfair/ic_email.svg';
 import AlertMessage from '../widgets/AlertMessage';
 import useModal from '../hooks/useModal';
+import DisableableButton from '../components/DisablebleButton';
 
 type Props = {
     email?: string;
@@ -67,9 +68,14 @@ const VerifyEmailModal: React.FC<Props> = ({ email, retainPath }) => {
                 <Text bold color="lightText">
                     {t('registration.verifyemail.notreceived')}
                 </Text>
-                <Button isDisabled={_sendVerification?.loading} onPress={requestEmailVerification} variant={'link'}>
+                <DisableableButton
+                    isDisabled={_sendVerification?.loading}
+                    reasonDisabled={t('reasonsDisabled.loading')}
+                    onPress={requestEmailVerification}
+                    variant="link"
+                >
                     {t('registration.verifyemail.resend.button')}
-                </Button>
+                </DisableableButton>
                 {showSendEmailResult && (
                     <Box width="100%">
                         <AlertMessage

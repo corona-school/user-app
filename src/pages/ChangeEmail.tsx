@@ -9,6 +9,7 @@ import AlertMessage from '../widgets/AlertMessage';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import DisableableButton from '../components/DisablebleButton';
 
 const ChangeEmail = () => {
     const [newEmail, setNewEmail] = useState<string>();
@@ -81,9 +82,14 @@ const ChangeEmail = () => {
                         </Row>
                         {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
                         <Row justifyContent="center">
-                            <Button width={buttonWidth} isDisabled={!canChange} onPress={resetEmail}>
+                            <DisableableButton
+                                isDisabled={!canChange}
+                                reasonDisabled={t('reasonsDisabled.invalidEMail')}
+                                width={buttonWidth}
+                                onPress={resetEmail}
+                            >
                                 {t('login.changeEmail')}
-                            </Button>
+                            </DisableableButton>
                         </Row>
                     </VStack>
                 </Flex>
