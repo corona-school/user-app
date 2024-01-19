@@ -253,7 +253,7 @@ const PupilGroup: React.FC<Props> = () => {
                             </VStack>
 
                             <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-                                <SearchBar onSearch={search} />
+                                <SearchBar autoSubmit onSearch={search} />
                             </VStack>
 
                             <Tabs
