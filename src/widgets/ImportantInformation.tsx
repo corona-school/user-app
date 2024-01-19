@@ -11,9 +11,9 @@ import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
 import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
+import { PuzzlePieceType, TypeofAchievementQuery, convertDataToAchievement, getPuzzleEmptyState } from '../helper/achievement-helper';
 import { Achievement } from '../types/achievement';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
-import { PuzzlePieceType, TypeofAchievementQuery, convertDataToAchievement, getPuzzleEmptyState } from '../helper/achievement-helper';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
 
@@ -317,7 +317,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: NextStepLabelType.CONTACT_PUPIL,
-                    btnfn: [() => (window.location.href = 'mailto:' + match.student.email), () => navigate('/matching')],
+                    btnfn: [() => navigate('/matching')],
                     lang: {
                         nameHelfer: match.student.firstname,
                         subjectHelfer: match.subjectsFormatted
@@ -330,7 +330,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: NextStepLabelType.CONTACT_STUDENT,
-                    btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
+                    btnfn: [() => navigate('/matching')],
                     lang: { nameSchüler: match.pupil.firstname },
                 });
         });
