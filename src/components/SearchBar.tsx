@@ -31,7 +31,7 @@ const SearchBar: React.FC<Props> = ({ placeholder, onSearch, showBack, onBack, v
                 if (searchStringRef.current.value === searchString) {
                     onSearch(searchString);
                 }
-            }, 3000);
+            }, 1500);
 
             return () => clearTimeout(timer);
         }
