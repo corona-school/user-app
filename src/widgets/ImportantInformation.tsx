@@ -67,8 +67,9 @@ query GetOnboardingInfos {
         allowed
         reason
       }
-      doesNewMatchAchievementExist
-      doesCourseOfferAchievementExist
+      subcoursesInstructing {
+        id
+      }
     }
     pupil {
       createdAt
@@ -87,6 +88,7 @@ query GetOnboardingInfos {
           name
         }
         student {
+            email
           firstname
           lastname
         }
@@ -115,7 +117,6 @@ query GetOnboardingInfos {
          invalidated
          status
       }
-      doesNewMatchAchievementExist
     }
     nextStepAchievements {
         id
@@ -205,63 +206,63 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Verification -----------
         // TODO - remove if achievements are included
 
-        // if (student && !student?.verifiedAt)
-        //     infos.push({
-        //         label: NextStepLabelType.VERIFY,
-        //         btnfn: [sendMail],
-        //         lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email },
-        //     });
-        // if (pupil && !pupil?.verifiedAt)
-        //     infos.push({
-        //         label: NextStepLabelType.VERIFY,
-        //         btnfn: [sendMail],
-        //         lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email },
-        //     });
+        if (student && !student?.verifiedAt)
+            infos.push({
+                label: NextStepLabelType.VERIFY,
+                btnfn: [sendMail],
+                lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email },
+            });
+        if (pupil && !pupil?.verifiedAt)
+            infos.push({
+                label: NextStepLabelType.VERIFY,
+                btnfn: [sendMail],
+                lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email },
+            });
 
         // -------- Screening -----------
         // TODO - remove if achievements are included
-        // if (
-        //     student?.canRequestMatch?.reason === 'not-screened' ||
-        //     student?.canCreateCourse?.reason === 'not-screened' ||
-        //     (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
-        // ) {
-        //     const student_url =
-        //         process.env.REACT_APP_SCREENING_URL +
-        //         '?first_name=' +
-        //         encodeURIComponent(data?.me?.firstname ?? '') +
-        //         '&last_name=' +
-        //         encodeURIComponent(data?.me?.lastname ?? '') +
-        //         '&email=' +
-        //         encodeURIComponent(email ?? '');
-        //     infos.push({ label: NextStepLabelType.GET_FAMILIAR, btnfn: [() => window.open(student_url)], lang: {} });
-        // }
+        if (
+            student?.canRequestMatch?.reason === 'not-screened' ||
+            student?.canCreateCourse?.reason === 'not-screened' ||
+            (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
+        ) {
+            const student_url =
+                process.env.REACT_APP_SCREENING_URL +
+                '?first_name=' +
+                encodeURIComponent(data?.me?.firstname ?? '') +
+                '&last_name=' +
+                encodeURIComponent(data?.me?.lastname ?? '') +
+                '&email=' +
+                encodeURIComponent(email ?? '');
+            infos.push({ label: NextStepLabelType.GET_FAMILIAR, btnfn: [() => window.open(student_url)], lang: {} });
+        }
 
         // -------- Pupil Screening --------
         // TODO - remove if achievements are included
 
-        // if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
-        //     const pupil_url =
-        //         process.env.REACT_APP_PUPIL_SCREENING_URL +
-        //         '?first_name=' +
-        //         encodeURIComponent(data?.me?.firstname ?? '') +
-        //         '&last_name=' +
-        //         encodeURIComponent(data?.me?.lastname ?? '') +
-        //         '&email=' +
-        //         encodeURIComponent(email ?? '') +
-        //         '&a1=' +
-        //         encodeURIComponent(pupil?.grade ?? '') +
-        //         '&a2=' +
-        //         encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
-        //     infos.push({
-        //         label: NextStepLabelType.PUPIL_SCREENING,
-        //         btnfn: [
-        //             () => {
-        //                 window.open(pupil_url, '_blank');
-        //             },
-        //         ],
-        //         lang: {},
-        //     });
-        // }
+        if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+            const pupil_url =
+                process.env.REACT_APP_PUPIL_SCREENING_URL +
+                '?first_name=' +
+                encodeURIComponent(data?.me?.firstname ?? '') +
+                '&last_name=' +
+                encodeURIComponent(data?.me?.lastname ?? '') +
+                '&email=' +
+                encodeURIComponent(email ?? '') +
+                '&a1=' +
+                encodeURIComponent(pupil?.grade ?? '') +
+                '&a2=' +
+                encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
+            infos.push({
+                label: NextStepLabelType.PUPIL_SCREENING,
+                btnfn: [
+                    () => {
+                        window.open(pupil_url, '_blank');
+                    },
+                ],
+                lang: {},
+            });
+        }
 
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
@@ -290,14 +291,14 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Open Match Request -----------
         // TODO - remove if achievements are included
 
-        // if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
-        //     infos.push({
-        //         label: NextStepLabelType.STATUS_PUPIL,
-        //         btnfn: [() => navigate('/group'), deleteMatchRequest],
-        //         lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
-        //     });
-        // if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
-        //     infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
+        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
+            infos.push({
+                label: NextStepLabelType.STATUS_PUPIL,
+                btnfn: [() => navigate('/group'), deleteMatchRequest],
+                lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
+            });
+        if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
+            infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({
@@ -312,27 +313,27 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- New Match -----------
         // TODO - remove if achievements are included
 
-        // pupil?.matches?.forEach((match) => {
-        //     if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
-        //         infos.push({
-        //             label: NextStepLabelType.CONTACT_PUPIL,
-        //             btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
-        //             lang: {
-        //                 nameHelfer: match.student.firstname,
-        //                 subjectHelfer: match.subjectsFormatted
-        //                     .map((it) => it.name)
-        //                     .join(', ') /* formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) */,
-        //             },
-        //         });
-        // });
-        // student?.matches?.forEach((match: any) => {
-        //     if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
-        //         infos.push({
-        //             label: NextStepLabelType.CONTACT_STUDENT,
-        //             btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
-        //             lang: { nameSchüler: match.pupil.firstname },
-        //         });
-        // });
+        pupil?.matches?.forEach((match) => {
+            if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
+                infos.push({
+                    label: NextStepLabelType.CONTACT_PUPIL,
+                    btnfn: [() => (window.location.href = 'mailto:' + match.student.email), () => navigate('/matching')],
+                    lang: {
+                        nameHelfer: match.student.firstname,
+                        subjectHelfer: match.subjectsFormatted
+                            .map((it) => it.name)
+                            .join(', ') /* formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) */,
+                    },
+                });
+        });
+        student?.matches?.forEach((match: any) => {
+            if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
+                infos.push({
+                    label: NextStepLabelType.CONTACT_STUDENT,
+                    btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
+                    lang: { nameSchüler: match.pupil.firstname },
+                });
+        });
 
         // -------- Certificate of Conduct -----------
         // TODO - remove if achievements are included [ONBOARDING]?
@@ -388,11 +389,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }, [importantInformations, pupil, student]);
 
     useMemo(() => {
-        // -------- COURSE OFFER ACHIEVEMENT -----
-        if (
-            (student && !student.doesCourseOfferAchievementExist && student?.canCreateCourse?.reason === 'not-screened') ||
-            student?.canCreateCourse?.reason === 'not-instructor'
-        ) {
+        // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
+        if (student && student?.subcoursesInstructing.length === 0) {
             achievements.push({
                 id: 1000,
                 name: t('helperwizard.courseOffer.name'),
@@ -413,11 +411,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 ],
             });
         }
+        console.log('OPEN MATCH REQUEST', student?.openMatchRequestCount);
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
-        if (
-            (student && !student.doesNewMatchAchievementExist && student?.canCreateCourse?.reason === 'not-screened') ||
-            student?.canCreateCourse?.reason === 'not-instructor'
-        ) {
+        if (student && !student?.firstMatchRequest && student?.openMatchRequestCount === 0 && student?.matches.length === 0) {
             achievements.push({
                 id: 1001,
                 name: t('helperwizard.studentNewMatch.name'),
@@ -442,7 +438,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- PUPIL NEW MATCH ACHIEVEMENT -----
-        if (pupil && !pupil.doesNewMatchAchievementExist) {
+        if (pupil && !pupil?.firstMatchRequest && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0) {
             achievements.push({
                 id: 1002,
                 name: t('helperwizard.pupilNewMatch.name'),
@@ -471,7 +467,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const [selectedAchievementInfo, setSelectedAchievementInfo] = useState<Achievement | undefined>();
     const [selectedInformation, setSelectedInformation] = useState<Information>();
 
-    if (!infos.length && !configurableInfos.length) return null;
+    if (!infos.length && !configurableInfos.length && !achievements.length) return null;
 
     return (
         <Box>
@@ -579,8 +575,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                         <NextStepsCard
                             key={achievement.id}
                             image={achievement.image}
-                            title={achievement.name}
-                            name={achievement.subtitle}
+                            title={achievement.subtitle}
+                            name={achievement.name}
                             actionDescription={achievement.actionName || ''}
                             actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}
                             maxSteps={achievement.maxSteps}
