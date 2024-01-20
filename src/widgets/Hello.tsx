@@ -1,5 +1,3 @@
-import { gql } from './../gql';
-import { useQuery } from '@apollo/client';
 import { Heading } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useUser } from '../hooks/useApollo';
