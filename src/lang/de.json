@@ -1982,7 +1982,9 @@
             "download": "Herunterladen",
             "download_certificate": "Bescheinigung herunterladen",
             "german_version": "Deutsche Version",
-            "english_version": "Englische Version"
+            "english_version": "Englische Version",
+            "create": "Bescheinigung erstellen",
+            "download_browser": "Bescheinigung in Downloads speichern"
         }
     },
     "issueReporter": {
