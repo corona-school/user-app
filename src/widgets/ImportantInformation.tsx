@@ -1,21 +1,32 @@
-import { useTranslation, getI18n, Trans } from 'react-i18next';
-import { Box, Heading, Text, Button, HStack, useTheme, ScrollView, Column, Container, Link } from 'native-base';
-import Card from '../components/Card';
-import BooksIcon from '../assets/icons/lernfair/lf-books.svg';
+import { useTranslation, getI18n } from 'react-i18next';
+import { Box, useTheme } from 'native-base';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
 import { BACKEND_URL } from '../config';
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
-import { ConfirmCertificate } from './certificates/ConfirmCertificate';
 import { SuccessModal } from '../modals/SuccessModal';
-import { Router } from 'express';
+import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
+import { Achievement_Action_Type_Enum } from '../gql/graphql';
+import { Achievement } from '../types/achievement';
+import AchievementModal from '../components/achievements/modals/AchievementModal';
+import { TypeofAchievementQuery, convertDataToAchievement } from '../helper/achievement-helper';
+import NextStepModal from '../components/achievements/modals/NextStepModal';
+import { NextStepLabelType } from '../helper/important-information-helper';
 
 type Props = {
     variant?: 'normal' | 'dark';
+};
+
+type Information = {
+    label: NextStepLabelType;
+    btnfn: ((() => void) | null)[];
+    lang: {};
+    btntxt?: string[];
+    key?: string;
 };
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
@@ -86,6 +97,7 @@ query GetOnboardingInfos {
         status
       }
       participationCertificatesToSign {
+        id
          uuid
          ongoingLessons
          state
@@ -102,6 +114,27 @@ query GetOnboardingInfos {
          status
       }
     }
+    nextStepAchievements {
+        id
+        name
+        subtitle
+        description
+        image
+        alternativeText
+        actionType
+        achievementType
+        achievementState
+        steps {
+            name
+            isActive
+        }
+        maxSteps
+        currentStep
+        isNewAchievement
+        progressDescription
+        actionName
+        actionRedirectLink
+    }
   }
   myRoles
 }
@@ -109,7 +142,7 @@ query GetOnboardingInfos {
 
 const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { space } = useTheme();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const textColor = variant === 'dark' ? 'lightText' : 'darkText';
 
@@ -120,6 +153,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
+    const achievements = convertDataToAchievement({ data, type: TypeofAchievementQuery.nextStepAchievements });
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
 
@@ -163,17 +197,21 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }
 
     const infos = useMemo(() => {
-        let infos: { label: string; btnfn: ((() => void) | null)[]; lang: {}; key?: string }[] = [];
+        let infos: Information[] = [];
 
         // -------- Verification -----------
         if (student && !student?.verifiedAt)
             infos.push({
-                label: 'verifizierung',
+                label: NextStepLabelType.VERIFY,
                 btnfn: [sendMail],
                 lang: { date: DateTime.fromISO(student?.createdAt).toFormat('dd.MM.yyyy'), email: email },
             });
         if (pupil && !pupil?.verifiedAt)
-            infos.push({ label: 'verifizierung', btnfn: [sendMail], lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email } });
+            infos.push({
+                label: NextStepLabelType.VERIFY,
+                btnfn: [sendMail],
+                lang: { date: DateTime.fromISO(pupil?.createdAt).toFormat('dd.MM.yyyy'), email: email },
+            });
 
         // -------- Screening -----------
         if (
@@ -189,7 +227,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 encodeURIComponent(data?.me?.lastname ?? '') +
                 '&email=' +
                 encodeURIComponent(email ?? '');
-            infos.push({ label: 'kennenlernen', btnfn: [() => window.open(student_url)], lang: {} });
+            infos.push({ label: NextStepLabelType.GET_FAMILIAR, btnfn: [() => window.open(student_url)], lang: {} });
         }
 
         // -------- Pupil Screening --------
@@ -207,7 +245,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 '&a2=' +
                 encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
             infos.push({
-                label: 'pupilScreening',
+                label: NextStepLabelType.PUPIL_SCREENING,
                 btnfn: [
                     () => {
                         window.open(pupil_url, '_blank');
@@ -219,7 +257,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
             infos.push({
-                label: 'willkommen',
+                label: NextStepLabelType.WELCOME,
                 btnfn: [roles.includes('PARTICIPANT') ? () => navigate('/group') : null, roles.includes('TUTEE') ? () => navigate('/matching') : null],
                 lang: {},
             });
@@ -230,7 +268,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
         if (showInterestConfirmation)
             infos.push({
-                label: 'interestconfirmation',
+                label: NextStepLabelType.INTEREST_CONFIRMATION,
                 btnfn: [confirmInterest, refuseInterest],
                 lang: {
                     subjectSchüler:
@@ -243,28 +281,28 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Open Match Request -----------
         if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
             infos.push({
-                label: 'statusSchüler',
+                label: NextStepLabelType.STATUS_PUPIL,
                 btnfn: [() => navigate('/group'), deleteMatchRequest],
                 lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
             });
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
-            infos.push({ label: 'statusStudent', btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
+            infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({
-                label: 'statusStudent2',
+                label: NextStepLabelType.STATUS_STUDENT_TWO,
                 btnfn: [() => navigate('/matching'), roles.includes('INSTRUCTOR') ? () => navigate('/group') : null],
                 lang: {},
             });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
-            infos.push({ label: 'passwort', btnfn: [() => navigate('/new-password')], lang: {} });
+            infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------
         pupil?.matches?.forEach((match) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
-                    label: 'kontaktSchüler',
+                    label: NextStepLabelType.CONTACT_PUPIL,
                     btnfn: [() => navigate('/matching')],
                     lang: {
                         nameHelfer: match.student.firstname,
@@ -277,7 +315,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         student?.matches?.forEach((match: any) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
-                    label: 'kontaktStudent',
+                    label: NextStepLabelType.CONTACT_STUDENT,
                     btnfn: [() => navigate('/matching')],
                     lang: { nameSchüler: match.pupil.firstname },
                 });
@@ -286,7 +324,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Certificate of Conduct -----------
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
-                label: 'zeugnis',
+                label: NextStepLabelType.SCHOOL_CERTIFICATE,
                 btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de'), openRemissionRequest],
                 lang: {
                     cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
@@ -296,15 +334,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Confirm Tutoring Certificate -----
         for (const certificate of data?.me.pupil?.participationCertificatesToSign.filter((it) => it.state === 'awaiting-approval') ?? []) {
             infos.push({
-                label: 'angeforderteBescheinigung',
-                btnfn: [
-                    () => {
-                        show(
-                            { variant: 'light', closeable: true, headline: t('matching.certificate.titleRequest') },
-                            <ConfirmCertificate certificate={certificate} />
-                        );
-                    },
-                ],
+                label: NextStepLabelType.TUTORING_CERTIFICATE,
+                btnfn: [() => navigate(`/confirm-certificate/${certificate.id}`)],
                 lang: {
                     nameHelfer: certificate.student.firstname,
                     startDate: DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy'),
@@ -342,75 +373,111 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
+    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
+    const [selectedInformation, setSelectedInformation] = useState<Information>();
+
     if (!infos.length && !configurableInfos.length) return null;
 
     return (
-        <HSection
-            scrollable
-            title={t('helperwizard.nextStep')}
-            referenceTitle={t('helperwizard.progress')}
-            marginBottom="25px"
-            onShowAll={() => navigate('/progress')}
-            showAll
-        >
-            {configurableInfos.map((info, index) => {
-                return (
-                    <Column width="97%" maxWidth="500px">
-                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
-                            <Box marginBottom="20px">
-                                <BooksIcon />
-                            </Box>
-                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
-                                {info.title}
-                            </Heading>
-                            <Text color={textColor} marginBottom="25px">
-                                {info.desciption}
-                            </Text>
-                            {info.btnfn && (
-                                <Button
-                                    onPress={() => {
-                                        if (info.btnfn) info.btnfn();
-                                    }}
-                                    key={index}
-                                    marginBottom={'5px'}
-                                >
-                                    {t('moreInfoButton')}
-                                </Button>
-                            )}
-                        </Card>
-                    </Column>
-                );
-            })}
-            {infos.map((config, index) => {
-                const buttontexts: String[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
-                return (
-                    <Column width="97%" maxWidth="500px" key={config.key ?? config.label}>
-                        <Card flexibleWidth={true} padding={5} variant={variant} key={index}>
-                            <Box marginBottom="20px">
-                                <BooksIcon />
-                            </Box>
-                            <Heading color={textColor} fontSize="lg" marginBottom="17px">
-                                {t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
-                            </Heading>
-
-                            <Text color={textColor} marginBottom="25px">
-                                <Trans i18nKey={`helperwizard.${config.label}.content` as any} values={config.lang} components={{ b: <b />, br: <br /> }} />
-                            </Text>
-                            {buttontexts.map((buttontext, index) => {
-                                const btnFn = config.btnfn[index];
-                                if (!btnFn) return null;
-
-                                return (
-                                    <Button disabled={!btnFn} onPress={() => btnFn()} key={index} marginBottom={'5px'}>
-                                        {buttontext}
-                                    </Button>
-                                );
-                            })}
-                        </Card>
-                    </Column>
-                );
-            })}
-        </HSection>
+        <Box>
+            {selectedAchievement && (
+                <AchievementModal
+                    title={selectedAchievement.subtitle}
+                    name={selectedAchievement.name}
+                    description={selectedAchievement.description}
+                    achievementState={selectedAchievement.achievementState}
+                    achievementType={selectedAchievement.achievementType}
+                    isNewAchievement={selectedAchievement.isNewAchievement}
+                    steps={selectedAchievement.steps}
+                    maxSteps={selectedAchievement.maxSteps}
+                    currentStep={selectedAchievement.currentStep}
+                    progressDescription={selectedAchievement.progressDescription}
+                    image={selectedAchievement.image}
+                    alternativeText={selectedAchievement.alternativeText}
+                    buttonText={selectedAchievement.actionName}
+                    buttonLink={selectedAchievement.actionRedirectLink}
+                    onClose={() => setSelectedAchievement(undefined)}
+                    showModal={selectedAchievement !== undefined}
+                />
+            )}
+            {selectedInformation && (
+                <NextStepModal
+                    header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
+                    title={`${t('important')}!`}
+                    description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
+                    isOpen={selectedInformation !== undefined}
+                    label={selectedInformation.label}
+                    onClose={() => setSelectedInformation(undefined)}
+                    buttons={
+                        selectedInformation.btnfn?.length > 0
+                            ? selectedInformation.btntxt?.map((txt, index) => ({
+                                  label: txt,
+                                  btnfn: selectedInformation.btnfn ? selectedInformation.btnfn[index] : () => null,
+                              }))
+                            : []
+                    }
+                />
+            )}
+            <HSection
+                scrollable
+                title={t('helperwizard.nextStep')}
+                referenceTitle={t('helperwizard.progress')}
+                marginBottom="25px"
+                onShowAll={() => navigate('/progress')}
+                showAll
+            >
+                {configurableInfos.map((info, index) => {
+                    return (
+                        <NextStepsCard
+                            key={index}
+                            title={`${t('important')}!`}
+                            name={info.title}
+                            description={info.desciption}
+                            actionDescription={t('moreInfoButton')}
+                            actionType={Achievement_Action_Type_Enum.Action}
+                            onClick={() => {
+                                info.btnfn && info.btnfn();
+                            }}
+                        />
+                    );
+                })}
+                {infos.map((config, index) => {
+                    const buttontexts: string[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
+                    const actionDescription = i18n.exists(`helperwizard.${config.label}.actionDescription`)
+                        ? t(`helperwizard.${config.label}.actionDescription` as unknown as TemplateStringsArray, config.lang)
+                        : t('moreInfoButton');
+                    return (
+                        <NextStepsCard
+                            key={`${config.label}-${index}`}
+                            label={config.label}
+                            title={t(`helperwizard.${config.label}.subtitle` as unknown as TemplateStringsArray, config.lang)}
+                            name={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
+                            description={t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
+                            actionDescription={actionDescription}
+                            actionType={Achievement_Action_Type_Enum.Action}
+                            onClick={() => setSelectedInformation({ ...config, btntxt: buttontexts })}
+                        />
+                    );
+                })}
+                {achievements.map((achievement) => {
+                    return (
+                        <NextStepsCard
+                            key={achievement.id}
+                            image={achievement.image}
+                            title={achievement.name}
+                            name={achievement.subtitle}
+                            actionDescription={achievement.actionName || ''}
+                            actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}
+                            maxSteps={achievement.maxSteps}
+                            currentStep={achievement.currentStep}
+                            onClick={() => {
+                                setSelectedAchievement(achievement);
+                            }}
+                        />
+                    );
+                })}
+            </HSection>
+        </Box>
     );
 };
 export default ImportantInformation;

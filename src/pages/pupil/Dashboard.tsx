@@ -95,6 +95,8 @@ const query = gql(`
                 displayName
                 isOrganizer
                 isParticipant
+                subcourseId
+                matchId
                 organizers(skip: 0, take: 5) {
                     id
                     userID

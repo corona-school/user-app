@@ -110,6 +110,8 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
               total
               isOrganizer
               isParticipant
+              matchId
+              subcourseId
               subcourse {
                 published
               }

@@ -66,6 +66,8 @@ query SingleMatch($matchId: Int! ) {
             displayName
             isOrganizer
             isParticipant
+            matchId
+            subcourseId
             organizers(skip: 0, take: 5) {
                 id
                 firstname

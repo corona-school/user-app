@@ -30,6 +30,8 @@ type MetaProps = {
     appointmentId?: number;
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: Appointment['isOrganizer'];
+    subcourseId?: number;
+    matchId?: number;
 };
 const AppointmentMetaDetails: React.FC<MetaProps> = ({
     date,
@@ -46,6 +48,8 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     appointmentId,
     appointmentType,
     isOrganizer,
+    subcourseId,
+    matchId,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [_, setCurrentTime] = useState(0);
@@ -108,6 +112,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         buttonText={t('appointment.detail.videochatButton')}
                         width={buttonWidth}
                         isOver={isAppointmentOver}
+                        matchId={matchId}
                     />
                 </>
             )}

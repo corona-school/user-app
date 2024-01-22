@@ -213,7 +213,6 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                 >
                                     {sortedAchievements[key].map((achievement) => (
                                         <Box
-                                            key={achievement.name}
                                             marginTop={cardMargin}
                                             width={achievementContainerWidth}
                                             overflow="visible"
