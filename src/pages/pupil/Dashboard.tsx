@@ -308,14 +308,14 @@ const Dashboard: React.FC<Props> = () => {
                                 )}
 
                             {/* Suggestions */}
-                            <HSection
-                                marginBottom={space['1.5']}
-                                title={t('dashboard.relatedcontent.header')}
-                                onShowAll={() => navigate('/group')}
-                                showAll={(data?.subcoursesPublic?.length ?? 0) > 4}
-                            >
-                                {(data?.subcoursesPublic?.length &&
-                                    data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
+                            {data?.subcoursesPublic?.length && (
+                                <HSection
+                                    marginBottom={space['1.5']}
+                                    title={t('dashboard.relatedcontent.header')}
+                                    onShowAll={() => navigate('/group')}
+                                    showAll={(data?.subcoursesPublic?.length ?? 0) > 4}
+                                >
+                                    {data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
                                         <AppointmentCard
                                             key={subcourse.id}
                                             description={subcourse.course.description}
@@ -343,8 +343,9 @@ const Dashboard: React.FC<Props> = () => {
                                                 navigate(`/single-course/${subcourse.id}`);
                                             }}
                                         />
-                                    ))) || <AlertMessage content={t('dashboard.noproposalsPupil')} />}
-                            </HSection>
+                                    ))}
+                                </HSection>
+                            )}
                         </VStack>
                         {process.env.REACT_APP_HOMEWORKHELP !== '' && (
                             <VStack marginBottom={space['1.5']}>
