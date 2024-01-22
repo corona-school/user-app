@@ -113,6 +113,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         width={buttonWidth}
                         isOver={isAppointmentOver}
                         matchId={matchId}
+                        subcourseId={subcourseId}
                     />
                 </>
             )}

@@ -9,6 +9,7 @@ import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
 import { customSort } from '../helper/achievement-helper';
+import EmptyStateContainer from '../components/achievements/EmptyStateContainer';
 
 type AchievementProgressProps = {
     achievements: Achievement[];
@@ -191,46 +192,64 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                 {states.map((key) => (
                     <VStack key={key} space={3} marginTop={10}>
                         <ProgressCollapsableHeadline achievementState={key} onClick={() => handleOnClick(undefined, key)} />
-                        <HStack
-                            width="100%"
-                            flexWrap="wrap"
-                            backgroundColor={key === Achievement_State.Completed && cardContainerBg}
-                            borderRadius="8px"
-                            height={collapsed[key] ? '0' : 'fit-content'}
-                            overflowY={collapsed[key] ? 'hidden' : 'unset'}
-                        >
-                            {sortedAchievements[key].map((achievement) => (
-                                <Box key={achievement.name} marginTop={cardMargin} width={achievementContainerWidth} overflow="visible" marginRight={cardSpace}>
-                                    <AchievementCard
-                                        achievementState={achievement.achievementState}
-                                        achievementType={achievement.achievementType}
-                                        actionType={achievement.actionType}
-                                        image={achievement.image}
-                                        alternativeText={''}
-                                        subtitle={achievement.subtitle}
-                                        title={achievement.name}
-                                        progressDescription={achievement.steps ? achievement.steps[achievement.currentStep]?.name : undefined}
-                                        maxSteps={achievement.maxSteps}
-                                        currentStep={achievement.currentStep}
-                                        isNewAchievement={achievement.isNewAchievement}
-                                        onClick={() => {
-                                            setSelectedAchievement(achievement);
-                                            if (achievement.isNewAchievement) isSeen({ variables: { id: achievement.id } });
-                                            setOpenModal(true);
-                                        }}
-                                    />
-                                    {showDivider && (
-                                        <Divider
-                                            bg={key === Achievement_State.Completed ? 'primary.500' : 'gray.300'}
-                                            width="90%"
-                                            left="5%"
-                                            opacity={0.25}
+                        <Box>
+                            {sortedAchievements[key].length === 0 ? (
+                                <HStack
+                                    width="100%"
+                                    backgroundColor={key === Achievement_State.Completed && sortedAchievements[key].length > 0 && cardContainerBg}
+                                    height={collapsed[key] ? '0' : 'fit-content'}
+                                    overflowY={collapsed[key] ? 'hidden' : 'unset'}
+                                >
+                                    <EmptyStateContainer achievementState={key} />
+                                </HStack>
+                            ) : (
+                                <HStack
+                                    width="100%"
+                                    flexWrap="wrap"
+                                    backgroundColor={key === Achievement_State.Completed && sortedAchievements[key].length > 0 && cardContainerBg}
+                                    borderRadius="8px"
+                                    height={collapsed[key] ? '0' : 'fit-content'}
+                                    overflowY={collapsed[key] ? 'hidden' : 'unset'}
+                                >
+                                    {sortedAchievements[key].map((achievement) => (
+                                        <Box
                                             marginTop={cardMargin}
-                                        />
-                                    )}
-                                </Box>
-                            ))}
-                        </HStack>
+                                            width={achievementContainerWidth}
+                                            overflow="visible"
+                                            marginRight={cardSpace}
+                                        >
+                                            <AchievementCard
+                                                achievementState={achievement.achievementState}
+                                                achievementType={achievement.achievementType}
+                                                actionType={achievement.actionType}
+                                                image={achievement.image}
+                                                alternativeText={''}
+                                                subtitle={achievement.subtitle}
+                                                title={achievement.name}
+                                                progressDescription={achievement.steps ? achievement.steps[achievement.currentStep - 1]?.name : undefined}
+                                                maxSteps={achievement.maxSteps}
+                                                currentStep={achievement.currentStep}
+                                                isNewAchievement={achievement.isNewAchievement}
+                                                onClick={() => {
+                                                    setSelectedAchievement(achievement);
+                                                    if (achievement.isNewAchievement) isSeen({ variables: { id: achievement.id } });
+                                                    setOpenModal(true);
+                                                }}
+                                            />
+                                            {showDivider && (
+                                                <Divider
+                                                    bg={key === Achievement_State.Completed ? 'primary.500' : 'gray.300'}
+                                                    width="90%"
+                                                    left="5%"
+                                                    opacity={0.25}
+                                                    marginTop={cardMargin}
+                                                />
+                                            )}
+                                        </Box>
+                                    ))}
+                                </HStack>
+                            )}
+                        </Box>
                     </VStack>
                 ))}
             </VStack>
