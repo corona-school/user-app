@@ -10,9 +10,8 @@ import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
-import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
+import { Achievement, Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
 import { PuzzlePieceType, TypeofAchievementQuery, convertDataToAchievement, getPuzzleEmptyState } from '../helper/achievement-helper';
-import { Achievement } from '../types/achievement';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
@@ -389,10 +388,11 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }, [importantInformations, pupil, student]);
 
     useMemo(() => {
+        let newId = achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100;
         // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
         if (student && student?.subcoursesInstructing.length === 0) {
             achievements.push({
-                id: 1000,
+                id: newId,
                 name: t('helperwizard.courseOffer.name'),
                 subtitle: t('helperwizard.courseOffer.subtitle'),
                 achievementState: Achievement_State.Active,
@@ -410,11 +410,12 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     { isActive: false, name: t('helperwizard.courseOffer.stepname.three') },
                 ],
             });
+            newId++;
         }
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
         if (student && !student?.firstMatchRequest && student?.openMatchRequestCount === 0 && student?.matches.length === 0) {
             achievements.push({
-                id: 1001,
+                id: newId,
                 name: t('helperwizard.studentNewMatch.name'),
                 subtitle: t('helperwizard.studentNewMatch.subtitle'),
                 achievementState: Achievement_State.Active,
@@ -434,12 +435,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     { isActive: false, name: t('helperwizard.studentNewMatch.stepname.five') },
                 ],
             });
+            newId++;
         }
 
         // -------- PUPIL NEW MATCH ACHIEVEMENT -----
         if (pupil && !pupil?.firstMatchRequest && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0) {
             achievements.push({
-                id: 1002,
+                id: newId,
                 name: t('helperwizard.pupilNewMatch.name'),
                 subtitle: t('helperwizard.pupilNewMatch.subtitle'),
                 achievementState: Achievement_State.Active,
@@ -459,6 +461,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.five') },
                 ],
             });
+            newId++;
         }
     }, [achievements, pupil, student, t]);
 
@@ -476,15 +479,15 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
-                    isNewAchievement={selectedAchievement.isNewAchievement}
-                    steps={selectedAchievement.steps}
+                    isNewAchievement={selectedAchievement.isNewAchievement || false}
+                    steps={selectedAchievement.steps || undefined}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
-                    progressDescription={selectedAchievement.progressDescription}
+                    progressDescription={selectedAchievement.progressDescription || undefined}
                     image={selectedAchievement.image}
                     alternativeText={selectedAchievement.alternativeText}
-                    buttonText={selectedAchievement.actionName}
-                    buttonLink={selectedAchievement.actionRedirectLink}
+                    buttonText={selectedAchievement.actionName || undefined}
+                    buttonLink={selectedAchievement.actionRedirectLink || undefined}
                     onClose={() => setSelectedAchievement(undefined)}
                     showModal={selectedAchievement !== undefined}
                 />
