@@ -18,7 +18,6 @@ import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
-    matchId?: number;
     startMeeting?: boolean;
 };
 
@@ -28,7 +27,7 @@ type AppointmentDates = {
     endTime: string;
 };
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matchId }) => {
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
@@ -38,6 +37,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
     const [showDeclineModal, setShowDeclineModal] = useState<boolean>(false);
     const navigate = useNavigate();
 
+    const test = appointment.subcourseId;
     const containerWidth = useBreakpointValue({
         base: 'full',
         lg: sizes['containerWidth'],
@@ -137,6 +137,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     appointmentId={appointment.id}
                     appointmentType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
+                    subcourseId={appointment.subcourseId}
+                    matchId={appointment.matchId ?? 0}
                 />
                 <Description description={appointment.description} />
 

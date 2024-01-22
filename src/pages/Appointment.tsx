@@ -104,9 +104,7 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     return (
         <WithNavigation showBack headerLeft={<NotificationAlert />}>
             {loading && <CenterLoadingSpinner />}
-            {!error && data?.appointment && (
-                <AppointmentDetail appointment={data?.appointment} matchId={data?.appointment?.matchId} startMeeting={startMeeting} />
-            )}
+            {!error && data?.appointment && <AppointmentDetail appointment={data?.appointment} startMeeting={startMeeting} />}
         </WithNavigation>
     );
 };
