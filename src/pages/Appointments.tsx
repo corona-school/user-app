@@ -31,6 +31,8 @@ const getMyAppointments = gql(`
                 displayName
                 isOrganizer
                 isParticipant
+                matchId
+                subcourseId
                 organizers(skip: 0, take: 5) {
                     id
                     userID
