@@ -1151,7 +1151,7 @@
         },
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
-            "content": "Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nBevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
+            "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
             "buttons": ["Termin vereinbaren"]
         }
     },
