@@ -11,7 +11,7 @@ import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
 import { Achievement, Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
-import { PuzzlePieceType, TypeofAchievementQuery, convertDataToAchievement, getPuzzleEmptyState } from '../helper/achievement-helper';
+import { PuzzlePieceType, getPuzzleEmptyState } from '../helper/achievement-helper';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
@@ -156,7 +156,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
-    const achievements = convertDataToAchievement({ data, type: TypeofAchievementQuery.nextStepAchievements });
+    const achievements: Achievement[] = useMemo(() => {
+        return data?.me.nextStepAchievements ? data.me.nextStepAchievements : [];
+    }, [data]);
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
 
@@ -237,9 +239,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- Pupil Screening --------
-        // TODO - remove if achievements are included
-
-        if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+        const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
+        const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
+        if (pupil && (wasInvited || notYetScreened)) {
             const pupil_url =
                 process.env.REACT_APP_PUPIL_SCREENING_URL +
                 '?first_name=' +
