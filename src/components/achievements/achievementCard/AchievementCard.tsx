@@ -68,7 +68,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const indicatorSecond = useBreakpointValue({ base: true, md: false });
     const colorozeCard = useBreakpointValue({ base: true, md: false });
     return (
-        <Pressable onPress={onClick}>
+        <Pressable disabled={achievementState === Achievement_State.Inactive} onPress={onClick}>
             <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center" overflow="visible">
                 {showInnerShadow && achievementState === Achievement_State.Inactive && <InnerShadow deviation={7.5} opacity={0.5} />}
                 {isNewAchievement && achievementState === Achievement_State.Completed && (
