@@ -156,9 +156,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
-    const achievements: Achievement[] = useMemo(() => {
-        return data?.me.nextStepAchievements ? data.me.nextStepAchievements : [];
-    }, [data]);
+    const achievements: Achievement[] = data?.me.nextStepAchievements ?? [];
+
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
 
@@ -389,11 +388,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
-    useMemo(() => {
-        let newId = achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100;
+    const allAchievements: Achievement[] = useMemo(() => {
+        const foundAchievements = [...achievements];
+
+        let newId = achievements.length > 0 ? achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100 : 1;
         // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
         if (student && student?.subcoursesInstructing.length === 0) {
-            achievements.push({
+            foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.courseOffer.name'),
                 subtitle: t('helperwizard.courseOffer.subtitle'),
@@ -414,9 +415,10 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
             newId++;
         }
+
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
         if (student && !student?.firstMatchRequest && student?.openMatchRequestCount === 0 && student?.matches.length === 0) {
-            achievements.push({
+            foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.studentNewMatch.name'),
                 subtitle: t('helperwizard.studentNewMatch.subtitle'),
@@ -442,7 +444,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- PUPIL NEW MATCH ACHIEVEMENT -----
         if (pupil && !pupil?.firstMatchRequest && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0) {
-            achievements.push({
+            foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.pupilNewMatch.name'),
                 subtitle: t('helperwizard.pupilNewMatch.subtitle'),
@@ -465,12 +467,14 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
             newId++;
         }
+
+        return foundAchievements;
     }, [achievements, pupil, student, t]);
 
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
     const [selectedInformation, setSelectedInformation] = useState<Information>();
 
-    if (!infos.length && !configurableInfos.length && !achievements.length) return null;
+    if (!infos.length && !configurableInfos.length && !allAchievements.length) return null;
 
     return (
         <Box>
@@ -553,7 +557,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                         />
                     );
                 })}
-                {achievements.map((achievement) => {
+                {allAchievements.map((achievement) => {
                     return (
                         <NextStepsCard
                             key={achievement.id}
