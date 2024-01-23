@@ -231,7 +231,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- Pupil Screening --------
-        if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+        const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
+        const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
+        if (pupil && (wasInvited || notYetScreened)) {
             const pupil_url =
                 process.env.REACT_APP_PUPIL_SCREENING_URL +
                 '?first_name=' +

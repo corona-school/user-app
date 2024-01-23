@@ -183,7 +183,7 @@ const ProfileStudent: React.FC<Props> = () => {
                     <Flex
                         maxWidth={ContainerWidth}
                         marginX="auto"
-                        width="100%"
+                        width="85%"
                         bg={HeaderStyle.bgColor}
                         alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
                         justifyContent="center"
