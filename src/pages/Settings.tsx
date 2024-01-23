@@ -16,7 +16,7 @@ const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { logout } = useApollo();
+    const { logout, user } = useApollo();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
@@ -35,16 +35,6 @@ const Settings: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
-    const { data, loading } = useQuery(
-        gql(`
-        query GetFirstname {
-            me {
-                firstname
-            }
-        }
-    `)
-    );
-
     return (
         <>
             <WithNavigation
@@ -55,12 +45,11 @@ const Settings: React.FC = () => {
                         <CloseIcon color="lightText" />
                     </Button>
                 }
-                isLoading={loading}
                 headerLeft={userType !== 'screener' && <NotificationAlert />}
             >
                 <VStack paddingBottom={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <HStack space={space['1']} alignItems="center">
-                        <Heading>{data?.me?.firstname}</Heading>
+                        <Heading>{user?.firstname}</Heading>
                     </HStack>
                 </VStack>
                 <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
