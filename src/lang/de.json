@@ -1171,6 +1171,46 @@
             "title": "Wir möchten dich kennenlernen!",
             "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
             "buttons": ["Termin vereinbaren"]
+        },
+        "courseOffer": {
+            "name": "Kurs anbieten",
+            "subtitle": "Kursname",
+            "actionName": "Jetzt zur Prüfung freigeben",
+            "alternativText": "Drei Puzzleteile",
+            "description": "Wir freuen uns, wenn du einen Kurs auf unserer Plattform anbieten möchtest! Im Hilfestellungsbereich findest du unsere informativen Schulungs- und Erklärvideos, die dir den Einstieg erleichtern. Falls du Unterstützung benötigst, kannst du dort gerne einen Beratungstermin mit unserem pädagogischen Team buchen. Wir stehen bereit, um dich bei der Konzeption deines Kurses zu unterstützen und dir wertvolle Tipps zu geben. Dein Engagement bedeutet uns viel – wir können es kaum erwarten, gemeinsam mit dir neue Kurse zu entwefen und die Plattform zu bereichern!",
+            "stepname": {
+                "one": "Kurs entwerfen",
+                "two": "Kurs zur Prüfung freigeben",
+                "three": "Freigabe erhalten"
+            }
+        },
+        "studentNewMatch": {
+            "name": "Neue Lernuntersützung",
+            "subtitle": "Nachhilfe",
+            "actionName": "Auf Zuordnung warten",
+            "alternativText": "Fünf Puzzleteile",
+            "description": "Es war großartig, dich besser kennenzulernen und freuen uns, dass du gemeinsam mit uns die Bildungschancen von Schüler:innen verbessern möchtest. Um dir eine:n passende:n Lernpartner:in zuzuweisen, bitten wir dich zunächst, eine Anfrage auf unserer Plattform zu stellen. Hier kannst du die Fächer und Jahrgangsstufe angeben, die für dich passend sind. Wir freuen uns auf den Start!",
+            "stepname": {
+                "one": "Match-Anfrage gestellt",
+                "two": "Lernpartner:in erhalten",
+                "three": "Lenpartner:in kontaktieren",
+                "four": "Ersten Termin erstellen",
+                "five": "Kennenlerngespräch absolvieren"
+            }
+        },
+        "pupilNewMatch": {
+            "name": "Neue Lernuntersützung",
+            "subtitle": "Nachhilfe",
+            "actionName": "Du bist auf der Warteliste",
+            "alternativText": "Fünf Puzzleteile",
+            "description": "Damit wir dir den:die perfekte:n Lernpartner:in zuweisen können, musst du zunächst eine Anfrage auf unserer Plattform stellen. Dort kannst du ganz einfach die Fächer angeben, die für dich wichtig sind und in denen wir dir helfen können. Wir freuen uns darauf, mit dir gemeinsam durchzustarten und die Lernreise zu beginnen!",
+            "stepname": {
+                "one": "Match-Anfrage gestellt",
+                "two": "Screening absolviert",
+                "three": "Zuordnung erfolgt",
+                "four": "Lernpartner kontaktiert",
+                "five": "Gespräch absolviert"
+            }
         }
     },
     "matching": {

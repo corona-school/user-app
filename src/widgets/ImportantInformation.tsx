@@ -10,10 +10,9 @@ import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
-import { Achievement_Action_Type_Enum } from '../gql/graphql';
-import { Achievement } from '../types/achievement';
+import { Achievement, Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
+import { PuzzlePieceType, getPuzzleEmptyState } from '../helper/achievement-helper';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
-import { TypeofAchievementQuery, convertDataToAchievement } from '../helper/achievement-helper';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
 
@@ -67,6 +66,9 @@ query GetOnboardingInfos {
         allowed
         reason
       }
+      subcoursesInstructing {
+        id
+      }
     }
     pupil {
       createdAt
@@ -85,6 +87,7 @@ query GetOnboardingInfos {
           name
         }
         student {
+            email
           firstname
           lastname
         }
@@ -153,7 +156,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
-    const achievements = convertDataToAchievement({ data, type: TypeofAchievementQuery.nextStepAchievements });
+    const achievements: Achievement[] = useMemo(() => {
+        return data?.me.nextStepAchievements ? data.me.nextStepAchievements : [];
+    }, [data]);
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
 
@@ -200,6 +205,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         let infos: Information[] = [];
 
         // -------- Verification -----------
+        // TODO - remove if achievements are included
+
         if (student && !student?.verifiedAt)
             infos.push({
                 label: NextStepLabelType.VERIFY,
@@ -214,6 +221,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Screening -----------
+        // TODO - remove if achievements are included
         if (
             student?.canRequestMatch?.reason === 'not-screened' ||
             student?.canCreateCourse?.reason === 'not-screened' ||
@@ -256,6 +264,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 lang: {},
             });
         }
+
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
             infos.push({
@@ -281,6 +290,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Open Match Request -----------
+        // TODO - remove if achievements are included
+
         if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
             infos.push({
                 label: NextStepLabelType.STATUS_PUPIL,
@@ -301,6 +312,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------
+        // TODO - remove if achievements are included
+
         pupil?.matches?.forEach((match) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
@@ -324,6 +337,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         });
 
         // -------- Certificate of Conduct -----------
+        // TODO - remove if achievements are included [ONBOARDING]?
+
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
                 label: NextStepLabelType.SCHOOL_CERTIFICATE,
@@ -347,7 +362,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 key: `bescheinigung.${certificate.uuid}`,
             });
         }
-
         return infos;
     }, [student, sendMail, email, pupil, roles, deleteMatchRequest, data, confirmInterest, refuseInterest, openRemissionRequest, navigate, show, space]);
 
@@ -375,10 +389,88 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
+    useMemo(() => {
+        let newId = achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100;
+        // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
+        if (student && student?.subcoursesInstructing.length === 0) {
+            achievements.push({
+                id: newId,
+                name: t('helperwizard.courseOffer.name'),
+                subtitle: t('helperwizard.courseOffer.subtitle'),
+                achievementState: Achievement_State.Active,
+                achievementType: Achievement_Type_Enum.Sequential,
+                actionName: 'Jetzt zur Prüfung freigeben',
+                actionType: Achievement_Action_Type_Enum.Action,
+                alternativeText: t('helperwizard.courseOffer.alternativText'),
+                currentStep: 0,
+                description: t('helperwizard.courseOffer.description'),
+                image: getPuzzleEmptyState(PuzzlePieceType.THREE),
+                maxSteps: 3,
+                steps: [
+                    { isActive: false, name: t('helperwizard.courseOffer.stepname.one') },
+                    { isActive: false, name: t('helperwizard.courseOffer.stepname.two') },
+                    { isActive: false, name: t('helperwizard.courseOffer.stepname.three') },
+                ],
+            });
+            newId++;
+        }
+        // -------- STUDENT NEW MATCH ACHIEVEMENT -----
+        if (student && !student?.firstMatchRequest && student?.openMatchRequestCount === 0 && student?.matches.length === 0) {
+            achievements.push({
+                id: newId,
+                name: t('helperwizard.studentNewMatch.name'),
+                subtitle: t('helperwizard.studentNewMatch.subtitle'),
+                achievementState: Achievement_State.Active,
+                achievementType: Achievement_Type_Enum.Sequential,
+                actionName: t('helperwizard.studentNewMatch.actionName'),
+                actionType: Achievement_Action_Type_Enum.Wait,
+                alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
+                currentStep: 0,
+                description: t('helperwizard.studentNewMatch.description'),
+                image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
+                maxSteps: 3,
+                steps: [
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.one') },
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.two') },
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.three') },
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.four') },
+                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.five') },
+                ],
+            });
+            newId++;
+        }
+
+        // -------- PUPIL NEW MATCH ACHIEVEMENT -----
+        if (pupil && !pupil?.firstMatchRequest && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0) {
+            achievements.push({
+                id: newId,
+                name: t('helperwizard.pupilNewMatch.name'),
+                subtitle: t('helperwizard.pupilNewMatch.subtitle'),
+                achievementState: Achievement_State.Active,
+                actionName: t('helperwizard.pupilNewMatch.actionName'),
+                actionType: Achievement_Action_Type_Enum.Wait,
+                achievementType: Achievement_Type_Enum.Sequential,
+                alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
+                currentStep: 0,
+                description: t('helperwizard.pupilNewMatch.description'),
+                image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
+                maxSteps: 3,
+                steps: [
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.one') },
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.two') },
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.three') },
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.four') },
+                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.five') },
+                ],
+            });
+            newId++;
+        }
+    }, [achievements, pupil, student, t]);
+
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
     const [selectedInformation, setSelectedInformation] = useState<Information>();
 
-    if (!infos.length && !configurableInfos.length) return null;
+    if (!infos.length && !configurableInfos.length && !achievements.length) return null;
 
     return (
         <Box>
@@ -389,15 +481,15 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
-                    isNewAchievement={selectedAchievement.isNewAchievement}
-                    steps={selectedAchievement.steps}
+                    isNewAchievement={selectedAchievement.isNewAchievement || false}
+                    steps={selectedAchievement.steps || undefined}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
-                    progressDescription={selectedAchievement.progressDescription}
+                    progressDescription={selectedAchievement.progressDescription || undefined}
                     image={selectedAchievement.image}
                     alternativeText={selectedAchievement.alternativeText}
-                    buttonText={selectedAchievement.actionName}
-                    buttonLink={selectedAchievement.actionRedirectLink}
+                    buttonText={selectedAchievement.actionName || undefined}
+                    buttonLink={selectedAchievement.actionRedirectLink || undefined}
                     onClose={() => setSelectedAchievement(undefined)}
                     showModal={selectedAchievement !== undefined}
                 />
@@ -466,8 +558,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                         <NextStepsCard
                             key={achievement.id}
                             image={achievement.image}
-                            title={achievement.name}
-                            name={achievement.subtitle}
+                            title={achievement.subtitle}
+                            name={achievement.name}
                             actionDescription={achievement.actionName || ''}
                             actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}
                             maxSteps={achievement.maxSteps}

@@ -4,6 +4,7 @@ import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
 import ArrowRight from '../../../assets/icons/icon_arrow_right_yellow.svg';
 import Calendar from '../../../assets/icons/icon_calendar_yellow.svg';
 import Clock from '../../../assets/icons/icon_clock_yellow.svg';
+import ClocWhite from '../../../assets/icons/icon_clock_white.svg';
 import Info from '../../../assets/icons/icon_info_yellow.svg';
 import { Pressable } from 'react-native';
 import { NextStepLabelType, getNextStepIcon } from '../../../helper/important-information-helper';
@@ -45,7 +46,7 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({
             icon = <Info />;
             break;
         case Achievement_Action_Type_Enum.Wait:
-            icon = <Clock />;
+            icon = <ClocWhite />;
             break;
         default:
             break;
@@ -58,7 +59,9 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({
             <VStack width="288px" height="288px" padding="24px" backgroundColor="primary.900" borderRadius="8px" justifyContent="space-between">
                 <VStack width="fit-content" borderRadius="8px">
                     {image ? (
-                        <Image width="64px" height="64px" src={image} />
+                        <VStack width="64px" height="64px" backgroundColor="white" borderRadius="4px" justifyContent="center" alignItems="center">
+                            <Image src={image} width="64px" height="64px" />
+                        </VStack>
                     ) : (
                         <VStack width="64px" height="64px" backgroundColor="white" borderRadius="50%" justifyContent="center" alignItems="center">
                             <NextStepIcon />
@@ -74,7 +77,7 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({
                     </Heading>
                 </VStack>
                 <HStack height="54px" width="100%" justifyContent="flex-start" alignItems="center">
-                    {maxSteps && currentStep && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} fullWidth smallText bgDark />}
+                    {maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} fullWidth smallText bgDark />}
                     {description && (
                         <Text fontSize={12} lineHeight={18} color="white" noOfLines={3}>
                             {description}
@@ -89,7 +92,7 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({
                             </Box>
                         </VStack>
                     )}
-                    <Text fontSize={12} color="secondary.900" noOfLines={1}>
+                    <Text fontSize={12} color={actionType !== Achievement_Action_Type_Enum.Action ? 'white' : 'secondary.900'} noOfLines={1}>
                         {actionDescription}
                     </Text>
                 </HStack>

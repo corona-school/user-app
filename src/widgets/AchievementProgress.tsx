@@ -1,5 +1,4 @@
 import { Box, Divider, HStack, Stack, VStack, useBreakpointValue } from 'native-base';
-import { Achievement } from '../types/achievement';
 import AchievementCard from '../components/achievements/achievementCard/AchievementCard';
 import StreakCard from '../components/achievements/streak/StreakCard';
 import ProgressCollapsableHeadline from '../components/achievements/ProgressCollapsableHeadline';
@@ -7,7 +6,7 @@ import { useEffect, useMemo, useState } from 'react';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
-import { Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
+import { Achievement, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
 import { customSort } from '../helper/achievement-helper';
 import EmptyStateContainer from '../components/achievements/EmptyStateContainer';
 
@@ -141,14 +140,14 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
-                    isNewAchievement={isNewAchievement}
-                    steps={selectedAchievement.steps}
+                    isNewAchievement={isNewAchievement || undefined}
+                    steps={selectedAchievement.steps || undefined}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
-                    progressDescription={selectedAchievement.progressDescription}
+                    progressDescription={selectedAchievement.progressDescription || undefined}
                     image={selectedAchievement.image}
                     alternativeText={selectedAchievement.alternativeText}
-                    buttonText={selectedAchievement.actionName}
+                    buttonText={selectedAchievement.actionName || undefined}
                     onClose={() => setOpenModal(false)}
                     showModal={openModal}
                 />
@@ -212,12 +211,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                     overflowY={collapsed[key] ? 'hidden' : 'unset'}
                                 >
                                     {sortedAchievements[key].map((achievement) => (
-                                        <Box
-                                            marginTop={cardMargin}
-                                            width={achievementContainerWidth}
-                                            overflow="visible"
-                                            marginRight={cardSpace}
-                                        >
+                                        <Box marginTop={cardMargin} width={achievementContainerWidth} overflow="visible" marginRight={cardSpace}>
                                             <AchievementCard
                                                 achievementState={achievement.achievementState}
                                                 achievementType={achievement.achievementType}
@@ -229,7 +223,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                                 progressDescription={achievement.steps ? achievement.steps[achievement.currentStep - 1]?.name : undefined}
                                                 maxSteps={achievement.maxSteps}
                                                 currentStep={achievement.currentStep}
-                                                isNewAchievement={achievement.isNewAchievement}
+                                                isNewAchievement={achievement.isNewAchievement || undefined}
                                                 onClick={() => {
                                                     setSelectedAchievement(achievement);
                                                     if (achievement.isNewAchievement) isSeen({ variables: { id: achievement.id } });
