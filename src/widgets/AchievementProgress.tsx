@@ -148,6 +148,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                     image={selectedAchievement.image}
                     alternativeText={selectedAchievement.alternativeText}
                     buttonText={selectedAchievement.actionName || undefined}
+                    buttonLink={selectedAchievement.actionRedirectLink || undefined}
                     onClose={() => setOpenModal(false)}
                     showModal={openModal}
                 />
