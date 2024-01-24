@@ -66,12 +66,12 @@ const VideoWithThumbnail: React.FC<VideoWithThumbnailProps> = ({ video, thumbnai
                             position="absolute"
                             top="50%"
                             left="50%"
-                            marginTop={`calc(${resolution.h} / -6)`}
-                            marginLeft={`calc(${resolution.h} / -6)`}
-                            width={`calc(${resolution.h} / 3)`}
-                            height={`calc(${resolution.h} / 3)`}
-                            maxWidth="600px"
-                            maxHeight="337.5px"
+                            marginTop={resolution.h / -6}
+                            marginLeft={resolution.h / -6}
+                            width={resolution.h / 3}
+                            height={resolution.h / 3}
+                            maxWidth="200px"
+                            maxHeight="112.5px"
                         >
                             <PlayButton />
                         </Box>
