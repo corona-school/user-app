@@ -33,6 +33,15 @@ const ChatContext = createContext<IChatContext>({
     unreadMessagesCount: 0,
 });
 
+export enum SystemMessage {
+    FIRST = 'first',
+    GROUP_CHANGED = 'group_changed',
+    GROUP_OVER = 'group_over',
+    GROUP_REACTIVATE = 'group_reactivate',
+    ONE_ON_ONE_OVER = 'one_on_one_over',
+    ONE_ON_ONE_REACTIVATE = 'one_on_one_reactivate',
+}
+
 const getMyChatSignature = gql(`
 query myChatSignature {
     me {
@@ -109,8 +118,11 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
         if (!session) return;
         const unreads = session.unreads;
 
-        unreads.onChange((message: UnreadConversation[]) => {
-            setUnreadMessagesCount(message.length);
+        unreads.onChange((messages: UnreadConversation[]) => {
+            // const filteredMessages = messages.filter((message) => message.lastMessage.custom.type !== SystemMessage.FIRST );
+            const filteredMessages = messages.filter((message) => !Object.values(SystemMessage).includes(message.lastMessage.custom.type as SystemMessage));
+
+            setUnreadMessagesCount(filteredMessages.length);
         });
     }, [session]);
 
