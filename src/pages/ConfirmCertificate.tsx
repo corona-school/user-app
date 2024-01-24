@@ -3,7 +3,7 @@ import { gql } from '../gql';
 import { ConfirmCertificate as Component } from '../widgets/certificates/ConfirmCertificate';
 import { useParams } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
-import { Stack } from 'native-base';
+import { Box, Stack } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
@@ -40,7 +40,6 @@ const ConfirmCertificate: React.FC = () => {
         <>
             <WithNavigation
                 showBack
-                hideMenu
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <HelpNavigation />
@@ -48,7 +47,11 @@ const ConfirmCertificate: React.FC = () => {
                     </Stack>
                 }
             >
-                {certificate && <Component certificate={certificate} />}
+                {certificate && (
+                    <Box overflow="auto">
+                        <Component certificate={certificate} />
+                    </Box>
+                )}
             </WithNavigation>
         </>
     );

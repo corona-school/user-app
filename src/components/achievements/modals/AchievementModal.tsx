@@ -242,7 +242,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                         </Stack>
                         {showDescriptionBeforeIndicator && (
                             <Box>
-                                {(!steps || !maxSteps) && progressDescription ? (
+                                {!maxSteps && progressDescription ? (
                                     <HStack alignItems={'center'} space={'sm'}>
                                         {achievementState === Achievement_State.Completed ? (
                                             <CheckGreen />

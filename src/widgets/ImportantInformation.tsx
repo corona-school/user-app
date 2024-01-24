@@ -199,6 +199,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         const { data } = await downloadRemissionRequest();
         window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
     }
+    const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
+    const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
 
     const infos = useMemo(() => {
         let infos: Information[] = [];
@@ -238,8 +240,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- Pupil Screening --------
-        const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
-        const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
         if (pupil && (wasInvited || notYetScreened)) {
             const pupil_url =
                 process.env.REACT_APP_PUPIL_SCREENING_URL +
@@ -362,7 +362,21 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
         }
         return infos;
-    }, [student, sendMail, email, pupil, roles, deleteMatchRequest, data, confirmInterest, refuseInterest, openRemissionRequest, navigate, show, space]);
+    }, [
+        student,
+        sendMail,
+        email,
+        pupil,
+        wasInvited,
+        notYetScreened,
+        roles,
+        confirmInterest,
+        refuseInterest,
+        deleteMatchRequest,
+        data,
+        openRemissionRequest,
+        navigate,
+    ]);
 
     const configurableInfos = useMemo(() => {
         let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
@@ -393,7 +407,10 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         let newId = achievements.length > 0 ? achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100 : 1;
         // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
-        if (student && student?.subcoursesInstructing.length === 0) {
+        if (
+            student?.canCreateCourse?.reason === 'not-screened' ||
+            (student && student && student.subcoursesInstructing.length === 0 && student?.canCreateCourse?.reason === 'not-instructor')
+        ) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.courseOffer.name'),
@@ -401,6 +418,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 achievementState: Achievement_State.Active,
                 achievementType: Achievement_Type_Enum.Sequential,
                 actionName: 'Jetzt zur Prüfung freigeben',
+                actionRedirectLink: '',
                 actionType: Achievement_Action_Type_Enum.Action,
                 alternativeText: t('helperwizard.courseOffer.alternativText'),
                 currentStep: 0,
@@ -417,7 +435,16 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
-        if (student && !student?.firstMatchRequest && student?.openMatchRequestCount === 0 && student?.matches.length === 0) {
+        if (
+            student?.canRequestMatch?.reason === 'not-screened' ||
+            (student &&
+                student.canRequestMatch?.reason === 'not-tutor' &&
+                student &&
+                !student.firstMatchRequest &&
+                student.openMatchRequestCount === 0 &&
+                student.matches.length === 0 &&
+                roles.includes('TUTOR'))
+        ) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.studentNewMatch.name'),
@@ -443,7 +470,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- PUPIL NEW MATCH ACHIEVEMENT -----
-        if (pupil && !pupil?.firstMatchRequest && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0) {
+        if (pupil && !pupil?.firstMatchRequest && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0 && (wasInvited || notYetScreened)) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.pupilNewMatch.name'),
