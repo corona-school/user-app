@@ -1,4 +1,4 @@
-import { Box, Button, Circle, HStack, Heading, Stack, Text, Tooltip, useBreakpointValue, useTheme } from 'native-base';
+import { Button, Circle, HStack, Heading, Stack, Text, Tooltip, useBreakpointValue, useTheme } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import HelpNavigation from '../components/HelpNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -9,6 +9,7 @@ import AlertMessage from '../widgets/AlertMessage';
 import { Trans, useTranslation } from 'react-i18next';
 import useApollo from '../hooks/useApollo';
 import { BACKEND_URL } from '../config';
+import VideoWithThumbnail from '../components/VideoWithThumbnail';
 
 export const COC_DATE_QUERY = gql(`
 query GetCocDate {
@@ -31,6 +32,20 @@ const CertificateOfConduct = () => {
         base: 'column',
         lg: 'row',
     });
+    const alignment = useBreakpointValue({
+        base: 'center',
+        xl: 'flex-start',
+    });
+    const spaceValue = 5;
+
+    const video_coc_general = {
+        video: 'https://user-app-files.fra1.digitaloceanspaces.com/static/videos/explanatory_video_certificate_of_good_conduct_v4.mp4',
+        thumbnail: 'https://images.pexels.com/photos/1037992/pexels-photo-1037992.jpeg',
+    };
+    const video_coc_digital = {
+        video: 'https://user-app-files.fra1.digitaloceanspaces.com/static/videos/explanatory_video_digital_certificate_of_good_conduct.mp4',
+        thumbnail: 'https://images.pexels.com/photos/1037992/pexels-photo-1037992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+    };
 
     const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`));
 
@@ -38,9 +53,6 @@ const CertificateOfConduct = () => {
         const { data } = await downloadRemissionRequest();
         window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
     }
-
-    const video_coc_general = 'https://user-app-files.fra1.digitaloceanspaces.com/static/videos/explanatory_video_certificate_of_good_conduct_v4.mp4';
-    const video_coc_digital = 'https://user-app-files.fra1.digitaloceanspaces.com/static/videos/explanatory_video_digital_certificate_of_good_conduct.mp4';
 
     return (
         <>
@@ -82,22 +94,14 @@ const CertificateOfConduct = () => {
                         </Button>
                     </Stack>
                     <Heading fontSize="lg">{t('certificateOfConduct.request_header')}</Heading>
-                    <Stack direction={direction} space={5}>
+                    <Stack direction={direction} space={spaceValue} alignItems={alignment}>
                         <Stack>
                             <Text>{t('certificateOfConduct.general_info')}</Text>
-                            <Box maxW="600px">
-                                <video controls muted controlsList="nodownload">
-                                    <source src={video_coc_general} type="video/mp4" />
-                                </video>
-                            </Box>
+                            <VideoWithThumbnail video={video_coc_general.video} thumbnail={video_coc_general.thumbnail} space={spaceValue} />
                         </Stack>
                         <Stack>
                             <Text>{t('certificateOfConduct.digital_request')}</Text>
-                            <Box maxW="600px">
-                                <video controls muted controlsList="nodownload">
-                                    <source src={video_coc_digital} type="video/mp4" />
-                                </video>
-                            </Box>
+                            <VideoWithThumbnail video={video_coc_digital.video} thumbnail={video_coc_digital.thumbnail} space={spaceValue} />
                         </Stack>
                     </Stack>
                 </Stack>
