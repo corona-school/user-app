@@ -3,7 +3,6 @@ import IndicatorBar from '../progressIndicators/IndicatorBar';
 import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
 import ArrowRight from '../../../assets/icons/icon_arrow_right_yellow.svg';
 import Calendar from '../../../assets/icons/icon_calendar_yellow.svg';
-import Clock from '../../../assets/icons/icon_clock_yellow.svg';
 import ClocWhite from '../../../assets/icons/icon_clock_white.svg';
 import Info from '../../../assets/icons/icon_info_yellow.svg';
 import { Pressable } from 'react-native';
@@ -59,11 +58,11 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({
             <VStack width="288px" height="288px" padding="24px" backgroundColor="primary.900" borderRadius="8px" justifyContent="space-between">
                 <VStack width="fit-content" borderRadius="8px">
                     {image ? (
-                        <VStack width="64px" height="64px" backgroundColor="white" borderRadius="4px" justifyContent="center" alignItems="center">
+                        <VStack width="64px" height="64px" borderRadius="4px" justifyContent="center" alignItems="center">
                             <Image src={image} width="64px" height="64px" />
                         </VStack>
                     ) : (
-                        <VStack width="64px" height="64px" backgroundColor="white" borderRadius="50%" justifyContent="center" alignItems="center">
+                        <VStack width="64px" height="64px" borderRadius="50%" justifyContent="center" alignItems="center">
                             <NextStepIcon />
                         </VStack>
                     )}
