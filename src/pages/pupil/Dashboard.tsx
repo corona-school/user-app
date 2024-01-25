@@ -242,6 +242,23 @@ const Dashboard: React.FC<Props> = () => {
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
 
+                            {process.env.REACT_APP_HOMEWORKHELP !== '' && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
+                                <VStack marginBottom={space['1.5']}>
+                                    <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                    <CTACard
+                                        title={t('dashboard.homeworkhelp.catcher')}
+                                        closeable={false}
+                                        content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                        button={
+                                            <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                                {t('matching.homeworkhelp.button')}
+                                            </Button>
+                                        }
+                                        icon={<BooksIcon />}
+                                    />
+                                </VStack>
+                            )}
+
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 ||
@@ -348,22 +365,6 @@ const Dashboard: React.FC<Props> = () => {
                                 </HSection>
                             )}
                         </VStack>
-                        {process.env.REACT_APP_HOMEWORKHELP !== '' && (
-                            <VStack marginBottom={space['1.5']}>
-                                <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
-                                <CTACard
-                                    title={t('dashboard.homeworkhelp.catcher')}
-                                    closeable={false}
-                                    content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                    button={
-                                        <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                                            {t('matching.homeworkhelp.button')}
-                                        </Button>
-                                    }
-                                    icon={<BooksIcon />}
-                                />
-                            </VStack>
-                        )}
                     </VStack>
                 )}
             </WithNavigation>
