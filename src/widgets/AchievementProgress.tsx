@@ -176,7 +176,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                     <StreakCard
                                         streak={achievement.currentStep}
                                         title={achievement.name}
-                                        progressDescription={achievement.description}
+                                        progressDescription={achievement.progressDescription!}
                                         image={achievement.image}
                                         alternativeText={achievement.alternativeText}
                                         actionType={achievement.actionType}
