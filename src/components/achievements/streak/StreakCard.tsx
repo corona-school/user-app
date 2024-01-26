@@ -44,7 +44,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progress
                         {title}
                     </Text>
                     <Text color="white" fontSize="xs" noOfLines={2}>
-                        <Trans>{t('achievement.streak.card.info', { streak })}</Trans>
+                        <Trans>{t('achievement.streak.card.info', { streak: record })}</Trans>
                     </Text>
                     {record && (
                         <Box>
@@ -56,7 +56,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progress
                                     isColorized
                                 />
                             ) : (
-                                <IndicatorBar maxSteps={record} currentStep={streak} achievementType={Achievement_Type_Enum.Streak} />
+                                <IndicatorBar maxSteps={record} currentStep={streak} achievementType={Achievement_Type_Enum.Streak} fullWidth isCard />
                             )}
                         </Box>
                     )}

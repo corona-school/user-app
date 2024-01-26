@@ -2008,7 +2008,7 @@
         "streak": {
             "count": "{{streak}}x",
             "card": {
-                "info": "Du warst bei <strong>{{streak}} Termin(en)</strong> in Folge pünktlich!"
+                "info": "Du warst bei <strong>{{streak}} Termin(en)</strong> in Folge dabei!"
             }
         },
         "progress": {

@@ -11,14 +11,18 @@ type IndicatorBarProps = {
     smallText?: boolean;
     fullWidth?: boolean;
     bgDark?: boolean;
+    isCard?: boolean;
 };
 
-const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achievementType, centerText, fullWidth, largeText, smallText, bgDark }) => {
+const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achievementType, centerText, fullWidth, largeText, smallText, bgDark, isCard }) => {
     const { t } = useTranslation();
     const progress = currentStep ? (currentStep / maxSteps) * 100 : 0;
     const leftSteps = currentStep ? maxSteps - currentStep : maxSteps;
 
-    const flexDirection = useBreakpointValue({ base: achievementType === Achievement_Type_Enum.Streak ? 'column' : 'row-reverse', md: 'column-reverse' });
+    const flexDirection = useBreakpointValue({
+        base: achievementType === Achievement_Type_Enum.Streak ? 'column' : 'row-reverse',
+        md: achievementType === Achievement_Type_Enum.Streak ? 'column' : 'column-reverse',
+    });
     const alignItems = useBreakpointValue({ base: 'center', md: centerText ? 'center' : 'left' });
     const space = useBreakpointValue({ base: 1, md: 1 });
     const textWidth = useBreakpointValue({ base: achievementType === Achievement_Type_Enum.Streak ? '100%' : '20%', md: centerText ? '100%' : 'fit-content' });
@@ -32,6 +36,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
         md: fullWidth ? '100%' : '80%',
     });
     const fontSize = achievementType === Achievement_Type_Enum.Streak ? (largeText ? '14px' : '10px') : centerText ? '12px' : '14px';
+    const numberOfLines = useBreakpointValue({ base: 1, md: 2 });
     return (
         <Stack direction={flexDirection} alignItems={alignItems} space={space} width="100%">
             <Text
@@ -40,11 +45,11 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
                 fontSize={smallText ? '12px' : fontSize}
                 color="primary.500"
                 height="fit-content"
-                numberOfLines={1}
+                numberOfLines={numberOfLines}
                 overflow="hidden"
                 ellipsizeMode="tail"
             >
-                {achievementType === Achievement_Type_Enum.Streak
+                {achievementType === Achievement_Type_Enum.Streak && !isCard
                     ? `${leftSteps === 0 ? `${t('achievement.modal.record', { record: maxSteps })}` : `${t('achievement.modal.streak', { leftSteps })}`}`
                     : `${finishedStepsInformation}`}
             </Text>

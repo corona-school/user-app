@@ -36,12 +36,12 @@ const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actio
             break;
     }
     const numberOfLines = useBreakpointValue({ base: 2 });
-    const justifyContent = useBreakpointValue({ base: 'flex-start', md: 'center' });
+    const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
     const iconHeight = useBreakpointValue({ base: '11.5px', md: '12.5px' });
     const fontSize = useBreakpointValue({ base: '10px', md: achievementType === Achievement_Type_Enum.Streak ? '10px' : '12px' });
 
     return (
-        <HStack alignItems="flex-start" space="4px" justifyContent={justifyContent}>
+        <HStack alignItems={alignItems} space="4px" justifyContent="flex-start">
             {actionType && (
                 <VStack height={iconHeight} position="relative" justifyContent="flex-end">
                     <Box width="8px" height="8px">
@@ -49,7 +49,7 @@ const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actio
                     </Box>
                 </VStack>
             )}
-            <Text fontSize={fontSize} color={colorize ? 'primary.500' : 'primary.900'} numberOfLines={numberOfLines}>
+            <Text fontSize={fontSize} color={colorize ? 'primary.500' : 'primary.900'} numberOfLines={numberOfLines} justifyContent="flex-start">
                 {progressDescription}
             </Text>
         </HStack>
