@@ -1074,8 +1074,7 @@
             "title": "Hausaufgabenhilfe",
             "catcher": "Du brauchst Hilfe bei deinen Hausaufgaben?",
             "text": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst."
-        },
-        "noproposalsPupil": "Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!"
+        }
     },
     "helperwizard": {
         "nextStep": "Deine nächsten Schritte",
@@ -1151,7 +1150,7 @@
         },
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
-            "content": "Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nBevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
+            "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
             "buttons": ["Termin vereinbaren"]
         }
     },
@@ -1982,7 +1981,9 @@
             "download": "Herunterladen",
             "download_certificate": "Bescheinigung herunterladen",
             "german_version": "Deutsche Version",
-            "english_version": "Englische Version"
+            "english_version": "Englische Version",
+            "create": "Bescheinigung erstellen",
+            "download_browser": "Bescheinigung in Downloads speichern"
         }
     },
     "issueReporter": {

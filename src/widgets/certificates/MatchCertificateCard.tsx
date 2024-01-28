@@ -7,6 +7,14 @@ import { Participation_Certificate } from '../../gql/graphql';
 import CertificateMatchIcon from '../../assets/icons/lernfair/lf-certificate-matching.svg';
 import { useTranslation } from 'react-i18next';
 import DisableableButton from '../../components/DisablebleButton';
+import { ProgressSpinnerModal } from '../../components/ProgressSpinnerModal';
+
+function downloadFile(name: string, path: string) {
+    const link = document.createElement('a');
+    link.href = path;
+    link.download = name;
+    link.click();
+}
 
 type Certificate = Pick<
     Participation_Certificate,
@@ -19,6 +27,7 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
     const { t } = useTranslation();
 
     const [showSelectPDFLanguageModal, setShowSelectPDFLanguageModal] = useState<boolean>(false);
+    const [downloadStep, setDownloadStep] = useState<'' | 'create' | 'download'>('');
 
     const [requestCertificate, requestCertificateState] = useMutation(
         gql(`
@@ -31,6 +40,7 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
     const downloadCertificate = useCallback(
         async (lang: 'de' | 'en') => {
             setShowSelectPDFLanguageModal(false);
+            setDownloadStep('create');
 
             const res = await requestCertificate({
                 variables: {
@@ -39,18 +49,27 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
                 },
             });
 
+            setDownloadStep('download');
+
             if (res?.data?.participationCertificateAsPDF) {
-                toast.show({ description: t('certificate.download.loading'), placement: 'top' });
-                window.open(`${BACKEND_URL}${res?.data?.participationCertificateAsPDF}`, '_blank');
+                downloadFile(`Lernfair_Zertifikat_${Date.now()}.pdf`, `${BACKEND_URL}${res?.data?.participationCertificateAsPDF}`);
             } else {
                 toast.show({ description: t('certificate.download.error'), placement: 'top' });
             }
+
+            setDownloadStep('');
         },
         [t, certificate, requestCertificate, toast]
     );
 
     return (
         <>
+            {downloadStep === 'create' && (
+                <ProgressSpinnerModal title={t('certificate.download.download_certificate')} description={t('certificate.download.create')} />
+            )}
+            {downloadStep === 'download' && (
+                <ProgressSpinnerModal title={t('certificate.download.download_certificate')} description={t('certificate.download.download_browser')} />
+            )}
             <Card padding={space['1']} marginBottom={space['1']} marginRight={space['1']} minWidth="300px">
                 <VStack>
                     <Row justifyContent="flex-end" alignItems="center">
