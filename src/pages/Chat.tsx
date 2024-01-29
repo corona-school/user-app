@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import { Stack, useBreakpointValue, Box, Modal, Switch, Text, Row } from 'native-base';
+import { Stack, useBreakpointValue, Box, Modal } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
 import FloatingActionButton from '../components/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
@@ -14,8 +14,6 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import ContactSupportModal, { ReportInfos } from '../modals/ContactSupportModal';
 import { Inbox, MessageActionEvent } from 'talkjs/all';
 import { DateTime } from 'luxon';
-import { useMutation } from '@apollo/client';
-import { gql } from '../gql';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
@@ -35,19 +33,11 @@ const Chat: React.FC = () => {
         subject: '',
         conversationId: '',
     });
-    const [showEmptyChats, setShowEmptyChats] = useState<boolean>(false);
     const { session } = useChat();
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const location = useLocation();
 
-    const [clearFlag, { data }] = useMutation(
-        gql(`
-        mutation clearFlag($conversationId: String!) {
-            chatClearIntroFlag(conversationId: $conversationId)
-        }
-    `)
-    );
     const locationState = location.state as { conversationId: string };
     const conversationId = locationState?.conversationId;
 
@@ -62,7 +52,6 @@ const Chat: React.FC = () => {
     });
 
     const handleNewChatPress = () => {
-        console.log('OPEN MODAL', isContactModalOpen);
         setIsContactModalOpen(true);
     };
 
@@ -102,10 +91,14 @@ const Chat: React.FC = () => {
             showMobileBackButton: false,
             messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
         });
+
         inbox.mount(inboxRef.current);
-        inbox.select(conversationId ?? selectedChatId);
+        inbox.select(selectedChatId || conversationId);
         inbox.onCustomMessageAction('contact-support', (event) => handleContactSupport(event));
-        if (!showEmptyChats) inbox.setFeedFilter({ custom: { intro: ['!=', 'true'] } });
+        inbox.onConversationSelected((event) => {
+            if (!event.conversation?.id) return;
+            setSelectedChatId(event.conversation?.id.toString());
+        });
 
         inboxObject.current = inbox;
         if (isMobile) {
@@ -114,16 +107,7 @@ const Chat: React.FC = () => {
                 setIsConversationSelected(false);
             });
         }
-
-        session.onMessage(async (message) => {
-            const { isByMe } = message;
-            const isIntro = message.conversation.custom.intro === 'true';
-
-            if (isIntro && isByMe) {
-                await clearFlag({ variables: { conversationId: message.conversation.id.toString() } });
-            }
-        });
-    }, [session, t, conversationId, isMobile, clearFlag, selectedChatId, showEmptyChats]);
+    }, [t, conversationId, isMobile, selectedChatId, session]);
 
     return (
         <AsNavigationItem path="chat">
@@ -139,28 +123,12 @@ const Chat: React.FC = () => {
                 onBack={() => handleBack()}
             >
                 {!isConverstationSelected && <FloatingActionButton handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />}
-                {!isConverstationSelected && (
-                    <Row
-                        space={5}
-                        mb={1}
-                        pl={isMobile ? 2 : 1}
-                        borderBottomStyle="solid"
-                        borderBottomColor="primary.500"
-                        borderBottomWidth="1"
-                        width={isMobile ? 'full' : '310px'}
-                        height="40px"
-                        alignItems="center"
-                    >
-                        <Switch value={showEmptyChats} onToggle={() => setShowEmptyChats(!showEmptyChats)} />
-                        <Text>Zeige alle Chats</Text>
-                    </Row>
-                )}
+
                 <Box h="85%" pl={isMobile ? 2 : 0} pb={isMobile ? 5 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
                 <Modal isOpen={isContactModalOpen} onClose={onClose}>
                     <ChatContactsModal
                         onClose={onClose}
                         setChatId={(id: string) => {
-                            setShowEmptyChats(true);
                             setSelectedChatId(id);
                         }}
                     />
