@@ -32,6 +32,8 @@ const achievementsQuery = gql(`
                 progressDescription
                 actionName
                 actionRedirectLink
+                achievedText
+                streakProgress
             }
         }
     }
@@ -59,6 +61,8 @@ const furtherAchievementsQuery = gql(`
                 progressDescription
                 actionName
                 actionRedirectLink
+                achievedText
+                streakProgress
             }
         }
     }

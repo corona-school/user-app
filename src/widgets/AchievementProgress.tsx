@@ -131,6 +131,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
             setCollapsed({ ...collapsed, [state]: !collapsed[state] });
         }
     };
+    console.log(streaks);
     return (
         <Box>
             {selectedAchievement && (
@@ -176,7 +177,12 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                     <StreakCard
                                         streak={achievement.currentStep}
                                         title={achievement.name}
-                                        progressDescription={achievement.progressDescription!}
+                                        streakProgress={achievement.streakProgress!}
+                                        progressDescription={
+                                            achievement.achievementState === Achievement_State.Completed
+                                                ? achievement.achievedText!
+                                                : achievement.progressDescription!
+                                        }
                                         image={achievement.image}
                                         alternativeText={achievement.alternativeText}
                                         actionType={achievement.actionType}

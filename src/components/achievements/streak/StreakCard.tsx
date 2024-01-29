@@ -2,7 +2,7 @@ import { HStack, VStack, Text, useBreakpointValue, Box, Pressable } from 'native
 import AchievementImageContainer from '../AchievementImageContainer';
 import { ShineSize } from '../../../types/achievement';
 import { Achievement_Action_Type_Enum, Achievement_Type_Enum } from '../../../gql/graphql';
-import { useTranslation, Trans } from 'react-i18next';
+import { Trans } from 'react-i18next';
 import CardProgressDescription from '../achievementCard/CardProgressDescription';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
@@ -11,6 +11,7 @@ type StreakCardProps = {
     streak: number;
     record?: number;
     title: string;
+    streakProgress: string;
     progressDescription: string;
     image: string;
     alternativeText: string;
@@ -18,8 +19,7 @@ type StreakCardProps = {
     onClick: () => void;
 };
 
-const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progressDescription, image, alternativeText, actionType, onClick }) => {
-    const { t } = useTranslation();
+const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, streakProgress, progressDescription, image, alternativeText, actionType, onClick }) => {
     const width = useBreakpointValue({ base: '100%', md: '350px' });
     const maxTextWidth = useBreakpointValue({ base: 'calc(100% - 90px - 16px)', md: '215px' });
     return (
@@ -44,7 +44,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, progress
                         {title}
                     </Text>
                     <Text color="white" fontSize="xs" noOfLines={2}>
-                        <Trans>{t('achievement.streak.card.info', { streak: record })}</Trans>
+                        <Trans>{streakProgress}</Trans>
                     </Text>
                     {record && (
                         <Box>

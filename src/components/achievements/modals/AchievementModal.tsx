@@ -1,5 +1,5 @@
 import { Box, Button, CloseIcon, HStack, Link, Modal, Pressable, Stack, Text, VStack, useBreakpointValue } from 'native-base';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
 import ArrowGreen from '../../../assets/icons/icon_arrow_right_green.svg';
@@ -178,11 +178,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 >
                                     {name}
                                 </Text>
-                                {showDescriptionBeforeIndicator && (
-                                    <Text color={textColor} numberOfLines={7}>
-                                        {description}
-                                    </Text>
-                                )}
+                                <Text color={textColor} numberOfLines={7}>
+                                    <Trans>{description}</Trans>
+                                </Text>
                             </VStack>
                             {!showDescriptionBeforeIndicator && (
                                 <VStack width="100%" alignItems="center" space="8">
@@ -196,7 +194,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                 </Box>
                                             )}
                                             <Text fontSize={'14px'} color="primary.500">
-                                                {progressDescription}
+                                                <Trans>{progressDescription}</Trans>
                                             </Text>
                                         </HStack>
                                     ) : (
@@ -207,7 +205,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                         <AchievementBadge isInline />
                                                     ) : (
                                                         <Text color="primary.500" textAlign="center">
-                                                            {progressDescription}
+                                                            <Trans>{progressDescription}</Trans>
                                                         </Text>
                                                     )}
                                                 </Box>
@@ -235,7 +233,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                         </Box>
                                     )}
                                     <Text width="100%" color={textColor} fontSize="12px">
-                                        {description}
+                                        <Trans>{description}</Trans>
                                     </Text>
                                 </VStack>
                             )}
@@ -252,13 +250,15 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                             </Box>
                                         )}
                                         <Text fontSize={'14px'} color="primary.500">
-                                            {progressDescription}
+                                            <Trans>{progressDescription}</Trans>
                                         </Text>
                                     </HStack>
                                 ) : (
                                     <Box>
                                         {achievementState === Achievement_State.Completed ? (
-                                            <Text color="primary.500">{progressDescription}</Text>
+                                            <Text color="primary.500">
+                                                <Trans>{progressDescription}</Trans>
+                                            </Text>
                                         ) : (
                                             <Box>
                                                 {achievementType === Achievement_Type_Enum.Sequential && (
