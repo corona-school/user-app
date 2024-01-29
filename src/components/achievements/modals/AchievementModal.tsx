@@ -24,6 +24,7 @@ type AchievementModalProps = {
     maxSteps?: number;
     currentStep?: number;
     progressDescription?: string;
+    achievedText?: string;
     image?: string;
     alternativeText?: string;
     onClose?: () => void;
@@ -41,6 +42,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     maxSteps,
     currentStep,
     progressDescription,
+    achievedText,
     image,
     alternativeText,
     achievementState,
@@ -184,7 +186,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </VStack>
                             {!showDescriptionBeforeIndicator && (
                                 <VStack width="100%" alignItems="center" space="8">
-                                    {(!steps || !maxSteps) && progressDescription ? (
+                                    {!steps || !maxSteps ? (
                                         <HStack alignItems={'center'} space={'sm'}>
                                             {achievementState === Achievement_State.Completed ? (
                                                 <CheckGreen />
@@ -194,7 +196,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                 </Box>
                                             )}
                                             <Text fontSize={'14px'} color="primary.500">
-                                                <Trans>{progressDescription}</Trans>
+                                                <Trans>{achievementState === Achievement_State.Completed ? achievedText : progressDescription}</Trans>
                                             </Text>
                                         </HStack>
                                     ) : (
@@ -205,7 +207,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                         <AchievementBadge isInline />
                                                     ) : (
                                                         <Text color="primary.500" textAlign="center">
-                                                            <Trans>{progressDescription}</Trans>
+                                                            <Trans>
+                                                                {achievementState === Achievement_State.Completed ? achievedText : progressDescription}
+                                                            </Trans>
                                                         </Text>
                                                     )}
                                                 </Box>
@@ -240,7 +244,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                         </Stack>
                         {showDescriptionBeforeIndicator && (
                             <Box>
-                                {!maxSteps && progressDescription ? (
+                                {!maxSteps ? (
                                     <HStack alignItems={'center'} space={'sm'}>
                                         {achievementState === Achievement_State.Completed ? (
                                             <CheckGreen />
@@ -250,14 +254,14 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                             </Box>
                                         )}
                                         <Text fontSize={'14px'} color="primary.500">
-                                            <Trans>{progressDescription}</Trans>
+                                            <Trans>{achievementState === Achievement_State.Completed ? achievedText : progressDescription}</Trans>
                                         </Text>
                                     </HStack>
                                 ) : (
                                     <Box>
                                         {achievementState === Achievement_State.Completed ? (
                                             <Text color="primary.500">
-                                                <Trans>{progressDescription}</Trans>
+                                                <Trans>{achievementState === Achievement_State.Completed ? achievedText : progressDescription}</Trans>
                                             </Text>
                                         ) : (
                                             <Box>
