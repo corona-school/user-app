@@ -20,7 +20,6 @@ query achievementById($achievementId: Float!) {
         maxSteps
         currentStep
         progressDescription
-        achievedText
         image
         alternativeText
         actionName
@@ -49,7 +48,6 @@ const AchievementMessageModal: React.FC<{ achievementId: number; isOpenModal: bo
                     isNewAchievement
                     maxSteps={achievement.maxSteps}
                     progressDescription={achievement.progressDescription ?? ''}
-                    achievedText={achievement.achievedText ?? ''}
                     steps={achievement.steps ?? []}
                     onClose={onClose}
                 />

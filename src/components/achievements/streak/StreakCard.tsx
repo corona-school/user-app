@@ -35,7 +35,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, streakPr
                         image={image}
                         alternativeText={alternativeText}
                         achievementType={Achievement_Type_Enum.Streak}
-                        streak={record}
+                        streak={streak}
                         isRecord={!record || streak === record}
                     />
                 </VStack>
