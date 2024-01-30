@@ -222,7 +222,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                         <Box width="100%">
                                                             {steps && (
                                                                 <IndicatorBar
-                                                                    maxSteps={steps?.length || 0}
+                                                                    maxSteps={steps.length || 0}
                                                                     currentStep={activeStep}
                                                                     achievementType={achievementType}
                                                                     largeText
