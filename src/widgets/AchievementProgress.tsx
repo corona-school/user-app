@@ -176,7 +176,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                             {streaks.map((achievement) => (
                                 <Stack key={achievement.name} marginTop={cardMargin}>
                                     <StreakCard
-                                        streak={achievement.currentStep}
+                                        streak={achievement.maxSteps}
                                         title={achievement.name}
                                         streakProgress={achievement.streakProgress!}
                                         progressDescription={
