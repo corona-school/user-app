@@ -60,7 +60,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({
                 overflow="hidden"
                 ellipsizeMode="tail"
             >
-                {achievementType === Achievement_Type_Enum.Streak && !isCard ? progressDescription : `${finishedStepsInformation}`}
+                {(achievementType !== Achievement_Type_Enum.Streak && isCard) || !progressDescription ? `${finishedStepsInformation}` : progressDescription}
             </Text>
             <Box width={progressBarWidth}>
                 <Progress bg={bgDark ? '#60787D' : 'gray.100'} value={progress} />

@@ -1,25 +1,6 @@
-import { Achievement_State, AchievementsQuery, FurtherAchievementsQuery, GetOnboardingInfosQuery } from '../gql/graphql';
+import { Achievement_State } from '../gql/graphql';
 import FivePuzzlePieces from '../assets/images/achievements/five-puzzle-pieces.png';
 import ThreePuzzlePieces from '../assets/images/achievements/three-puzzle-pieces.png';
-
-export enum TypeofAchievementQuery {
-    achievements = 'achievements',
-    furtherAchievements = 'furtherAchievements',
-    nextStepAchievements = 'nextStepAchievements',
-}
-
-export type AchievementsQueryType = {
-    type: TypeofAchievementQuery.achievements;
-    data?: AchievementsQuery;
-};
-export type InactiveAchievementsQueryType = {
-    type: TypeofAchievementQuery.furtherAchievements;
-    data?: FurtherAchievementsQuery;
-};
-export type NextStepAchievementsQueryType = {
-    type: TypeofAchievementQuery.nextStepAchievements;
-    data?: GetOnboardingInfosQuery;
-};
 
 const customSort = (a: Achievement_State, b: Achievement_State): number => {
     const order = [Achievement_State.Completed, Achievement_State.Active, Achievement_State.Inactive];

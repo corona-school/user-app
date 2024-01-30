@@ -507,7 +507,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         <Box>
             {selectedAchievement && (
                 <AchievementModal
-                    title={selectedAchievement.subtitle}
+                    title={selectedAchievement.subtitle || undefined}
                     name={selectedAchievement.name}
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
@@ -590,7 +590,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                         <NextStepsCard
                             key={achievement.id}
                             image={achievement.image}
-                            title={achievement.subtitle}
+                            title={achievement.subtitle || undefined}
                             name={achievement.name}
                             actionDescription={achievement.actionName || ''}
                             actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}

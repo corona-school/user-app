@@ -37,7 +37,7 @@ const AchievementMessageModal: React.FC<{ achievementId: number; isOpenModal: bo
         return (
             <>
                 <AchievementModal
-                    title={achievement?.subtitle}
+                    title={achievement.subtitle ?? ''}
                     name={achievement.name}
                     description={achievement.description}
                     achievementState={achievement.achievementState}
