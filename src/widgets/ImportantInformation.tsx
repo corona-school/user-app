@@ -517,6 +517,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
                     progressDescription={selectedAchievement.progressDescription || undefined}
+                    achievedText={selectedAchievement.achievedText || undefined}
                     image={selectedAchievement.image}
                     alternativeText={selectedAchievement.alternativeText}
                     buttonText={selectedAchievement.actionName || undefined}

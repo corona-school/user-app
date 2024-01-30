@@ -147,6 +147,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                     currentStep={selectedAchievement.currentStep}
                     progressDescription={selectedAchievement.progressDescription || undefined}
                     image={selectedAchievement.image}
+                    achievedText={selectedAchievement.achievedText || undefined}
                     alternativeText={selectedAchievement.alternativeText}
                     buttonText={selectedAchievement.actionName || undefined}
                     buttonLink={selectedAchievement.actionRedirectLink || undefined}
@@ -175,7 +176,8 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                             {streaks.map((achievement) => (
                                 <Stack key={achievement.name} marginTop={cardMargin}>
                                     <StreakCard
-                                        streak={achievement.maxSteps}
+                                        streak={achievement.currentStep}
+                                        record={achievement.maxSteps}
                                         title={achievement.name}
                                         streakProgress={achievement.streakProgress!}
                                         progressDescription={
@@ -186,7 +188,6 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                         image={achievement.image}
                                         alternativeText={achievement.alternativeText}
                                         actionType={achievement.actionType}
-                                        record={achievement.maxSteps}
                                         onClick={() => {
                                             setSelectedAchievement(achievement);
                                             if (achievement.isNewAchievement) isSeen({ variables: { id: achievement.id } });

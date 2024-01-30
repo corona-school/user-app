@@ -10,7 +10,7 @@ type AchievementImageContainerProps = {
     alternativeText: string;
     achievementType: Achievement_Type_Enum;
     achievementState?: Achievement_State;
-    streak?: number;
+    record?: number;
     isRecord?: boolean;
     isLarge?: boolean;
 };
@@ -20,7 +20,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
     alternativeText,
     achievementType,
     achievementState,
-    streak,
+    record,
     isRecord,
     isLarge,
 }) => {
@@ -56,7 +56,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
             if (!image) return null;
             return (
                 <VStack alignItems="center" width={streakImageSize}>
-                    <StreakImageContainer streak={streak || 0} image={image} alternativeText={alternativeText} size={streakImageSize} isRecord={isRecord} />
+                    <StreakImageContainer streak={record || 0} image={image} alternativeText={alternativeText} size={streakImageSize} isRecord={isRecord} />
                 </VStack>
             );
         case Achievement_Type_Enum.Sequential:
