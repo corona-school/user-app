@@ -1,7 +1,7 @@
 import { gql } from './../../../gql';
 import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
-import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast, Box } from 'native-base';
+import { Text, VStack, useTheme, Heading, Row, Column, Modal, useToast } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
@@ -11,6 +11,7 @@ import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
+import DisableableButton from '../../../components/DisablebleButton';
 
 const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null; refetchQuery: DocumentNode }) => {
     const { setCurrentIndex } = useContext(RequestMatchContext);
@@ -134,9 +135,13 @@ const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null
                         </Row>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button isDisabled={data === modalSelection || isLoading} onPress={changeData}>
+                        <DisableableButton
+                            isDisabled={data === modalSelection || isLoading}
+                            reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
+                            onPress={changeData}
+                        >
                             {t('change')}
-                        </Button>
+                        </DisableableButton>
                     </Modal.Footer>
                 </Modal.Content>
             </Modal>

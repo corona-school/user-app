@@ -39,7 +39,6 @@ query GetOnboardingInfos {
       matches {
         dissolved
         createdAt
-        pupilEmail
         pupil {
           firstname
           lastname
@@ -70,7 +69,6 @@ query GetOnboardingInfos {
       matches {
         dissolved
         createdAt
-        studentEmail
         subjectsFormatted {
           name
         }
@@ -194,7 +192,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- Pupil Screening --------
-        if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+        const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
+        const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
+        if (pupil && (wasInvited || notYetScreened)) {
             const pupil_url =
                 process.env.REACT_APP_PUPIL_SCREENING_URL +
                 '?first_name=' +
@@ -266,7 +266,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: 'kontaktSchüler',
-                    btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
+                    btnfn: [() => navigate('/matching')],
                     lang: {
                         nameHelfer: match.student.firstname,
                         subjectHelfer: match.subjectsFormatted
@@ -279,7 +279,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: 'kontaktStudent',
-                    btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
+                    btnfn: [() => navigate('/matching')],
                     lang: { nameSchüler: match.pupil.firstname },
                 });
         });

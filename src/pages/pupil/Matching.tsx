@@ -44,7 +44,6 @@ const query = gql(`
                         firstname
                         lastname
                     }
-                    studentEmail
                 }
                 canRequestMatch {
                     allowed

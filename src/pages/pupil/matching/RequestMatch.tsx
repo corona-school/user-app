@@ -40,9 +40,12 @@ type RequestMatchContextType = {
     setSubject: (value: Subject) => void;
     removeSubject: (name: string) => void;
     setMessage: (message: string) => void;
+    setSubjectPriority: (subjectName: string, mandatory: boolean) => void;
     setCurrentIndex: Dispatch<SetStateAction<number>>;
     setSkippedSubjectPriority: Dispatch<SetStateAction<boolean>>;
     skippedSubjectPriority: boolean;
+    setSkippedSubjectList: Dispatch<SetStateAction<boolean>>;
+    skippedSubjectList: boolean;
     isEdit: boolean;
 };
 export const RequestMatchContext = createContext<RequestMatchContextType>({
@@ -50,9 +53,12 @@ export const RequestMatchContext = createContext<RequestMatchContextType>({
     setSubject: () => {},
     removeSubject: () => {},
     setMessage: () => {},
+    setSubjectPriority: () => {},
     setCurrentIndex: () => null,
     setSkippedSubjectPriority: () => null,
     skippedSubjectPriority: false,
+    setSkippedSubjectList: () => null,
+    skippedSubjectList: false,
     isEdit: false,
 });
 
@@ -60,6 +66,7 @@ const RequestMatch: React.FC = () => {
     const { space } = useTheme();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [skippedSubjectPriority, setSkippedSubjectPriority] = useState<boolean>(false);
+    const [skippedSubjectList, setSkippedSubjectList] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [matchRequest, setMatchRequest] = useState<MatchRequest>({
         subjects: [],
@@ -78,6 +85,16 @@ const RequestMatch: React.FC = () => {
         [setMatchRequest]
     );
     const setMessage = useCallback((message: string) => setMatchRequest((prev) => ({ ...prev, message })), [setMatchRequest]);
+
+    const setSubjectPriority = useCallback(
+        (subjectName: string, mandatory: boolean) => {
+            setMatchRequest((prev) => ({
+                ...prev,
+                subjects: prev.subjects.map((subject) => (subject.name === subjectName ? { ...subject, mandatory } : subject)),
+            }));
+        },
+        [setMatchRequest]
+    );
 
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const location = useLocation();
@@ -122,7 +139,19 @@ const RequestMatch: React.FC = () => {
                 }
             >
                 <RequestMatchContext.Provider
-                    value={{ isEdit, matchRequest, setSubject, removeSubject, setCurrentIndex, setSkippedSubjectPriority, skippedSubjectPriority, setMessage }}
+                    value={{
+                        isEdit,
+                        matchRequest,
+                        setSubject,
+                        removeSubject,
+                        setCurrentIndex,
+                        setSkippedSubjectPriority,
+                        skippedSubjectPriority,
+                        setSkippedSubjectList,
+                        skippedSubjectList,
+                        setMessage,
+                        setSubjectPriority,
+                    }}
                 >
                     {!loading && !isLoading && data && (
                         <Box paddingX={space['1']} paddingBottom={space['1']}>

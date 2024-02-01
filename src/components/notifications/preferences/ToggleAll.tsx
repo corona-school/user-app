@@ -1,10 +1,11 @@
-import { Button, Box, useBreakpointValue, Stack } from 'native-base';
+import { Box, useBreakpointValue, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { NotificationCategories } from '../../../helper/notification-preferences';
 import { FC, useContext, useMemo } from 'react';
 import { NotificationPreferencesContext } from '../../../pages/notification/NotficationControlPanel';
 import { getAllPreferencesInCategorySetToValue } from '../../../helper/notification-helper';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
+import DisableableButton from '../../DisablebleButton';
 
 type PrefProps = {
     notificationCategories: NotificationCategories;
@@ -59,12 +60,24 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
         notificationCategories && (
             <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={boxWidth}>
                 <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
-                    <Button onPress={enableAll} isDisabled={allEnabled} width={buttonWidth}>
+                    <DisableableButton
+                        isDisabled={allEnabled}
+                        reasonDisabled={t('notification.controlPanel.preference.enableAllTooltip')}
+                        onPress={enableAll}
+                        width={buttonWidth}
+                    >
                         {t('notification.controlPanel.preference.enableAll')}
-                    </Button>
-                    <Button onPress={disableAll} _text={{ padding: '3px 5px' }} variant="outline" isDisabled={allDisabled} width={buttonWidth}>
+                    </DisableableButton>
+                    <DisableableButton
+                        isDisabled={allDisabled}
+                        reasonDisabled={t('notification.controlPanel.preference.disableAllTooltip')}
+                        onPress={disableAll}
+                        _text={{ padding: '3px 5px' }}
+                        variant="outline"
+                        width={buttonWidth}
+                    >
                         {t('notification.controlPanel.preference.disableAll')}
-                    </Button>
+                    </DisableableButton>
                 </Stack>
             </Box>
         )

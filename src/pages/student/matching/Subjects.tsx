@@ -1,4 +1,4 @@
-import { Box, Button, Column, Heading, HStack, Row, useTheme, VStack } from 'native-base';
+import { Heading, useTheme, VStack } from 'native-base';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RequestMatchContext } from './RequestMatch';
@@ -21,7 +21,7 @@ const Subjects: React.FC = () => {
                 includeDaz
             />
             <NextPrevButtons
-                isDisabledNext={matchRequest.subjects.length === 0}
+                disablingNext={{ is: matchRequest.subjects.length === 0, reason: t('matching.wizard.student.subjects.reason_btn_disabled') }}
                 onPressPrev={() => setCurrentIndex(0)}
                 onPressNext={() => setCurrentIndex(2)}
             />

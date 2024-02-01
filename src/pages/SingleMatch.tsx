@@ -44,7 +44,6 @@ query SingleMatch($matchId: Int! ) {
         }
         aboutMe
     }
-    pupilEmail
     student {
         id
         firstname
@@ -55,7 +54,6 @@ query SingleMatch($matchId: Int! ) {
         }
         aboutMe
     }
-    studentEmail
     appointments {
         id
             title
@@ -113,8 +111,8 @@ const SingleMatch = () => {
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql(`
-            mutation dissolveMatchStudent2($matchId: Int!, $dissolveReason: dissolve_reason!) {
-                matchDissolve(info: { matchId: $matchId, dissolveReason: $dissolveReason})
+            mutation dissolveMatchStudent2($matchId: Int!, $dissolveReasons: [dissolve_reason!]!) {
+                matchDissolve(info: { matchId: $matchId, dissolveReasons: $dissolveReasons})
             }
         `)
     );
@@ -127,7 +125,7 @@ const SingleMatch = () => {
         `)
     );
     const dissolve = useCallback(
-        async (reason: Dissolve_Reason) => {
+        async (reasons: Dissolve_Reason[]) => {
             setShowDissolveModal(false);
             trackEvent({
                 category: 'matching',
@@ -138,7 +136,7 @@ const SingleMatch = () => {
             const dissolved = await dissolveMatch({
                 variables: {
                     matchId: matchId || 0,
-                    dissolveReason: reason,
+                    dissolveReasons: reasons,
                 },
             });
             dissolved && refetch();
@@ -238,19 +236,6 @@ const SingleMatch = () => {
                                         space={isMobile ? space['0.5'] : space['2']}
                                     >
                                         {isActiveMatch && (
-                                            <Button
-                                                onPress={() =>
-                                                    (window.location.href = `mailto:${
-                                                        userType === 'student' ? data!.match!.pupilEmail : data!.match!.studentEmail
-                                                    }`)
-                                                }
-                                                my={isMobile ? '0' : '1'}
-                                            >
-                                                {t('matching.shared.contactMail')}
-                                            </Button>
-                                        )}
-
-                                        {isActiveMatch && (
                                             <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
                                                 {t('matching.shared.contactViaChat')}
                                             </Button>
@@ -296,8 +281,8 @@ const SingleMatch = () => {
                 <DissolveMatchModal
                     showDissolveModal={showDissolveModal}
                     alsoShowWarningModal={data?.match?.createdAt && new Date(data.match.createdAt).getTime() > new Date().getTime() - 1000 * 60 * 60 * 24 * 14}
-                    onPressDissolve={async (reason: Dissolve_Reason) => {
-                        return await dissolve(reason);
+                    onPressDissolve={async (reasons: Dissolve_Reason[]) => {
+                        return await dissolve(reasons);
                     }}
                     onPressBack={() => setShowDissolveModal(false)}
                 />
