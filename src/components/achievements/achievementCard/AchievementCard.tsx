@@ -15,7 +15,7 @@ type AchievementCardProps = {
     image: string | undefined;
     alternativeText: string;
     isNewAchievement?: boolean;
-    subtitle: string;
+    subtitle?: string;
     title: string;
     maxSteps?: number;
     currentStep?: number;

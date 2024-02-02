@@ -1,7 +1,7 @@
 import { HStack, VStack, Text, useBreakpointValue, Box, Pressable } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
 import { ShineSize } from '../../../types/achievement';
-import { Achievement_Action_Type_Enum, Achievement_Type_Enum } from '../../../gql/graphql';
+import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../../../gql/graphql';
 import { Trans } from 'react-i18next';
 import CardProgressDescription from '../achievementCard/CardProgressDescription';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
@@ -10,6 +10,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 type StreakCardProps = {
     streak: number;
     record?: number;
+    achievementState: Achievement_State;
     title: string;
     streakProgress: string;
     progressDescription: string;
@@ -19,14 +20,25 @@ type StreakCardProps = {
     onClick: () => void;
 };
 
-const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, streakProgress, progressDescription, image, alternativeText, actionType, onClick }) => {
+const StreakCard: React.FC<StreakCardProps> = ({
+    streak,
+    record,
+    achievementState,
+    title,
+    streakProgress,
+    progressDescription,
+    image,
+    alternativeText,
+    actionType,
+    onClick,
+}) => {
     const width = useBreakpointValue({ base: '100%', md: '350px' });
     const maxTextWidth = useBreakpointValue({ base: 'calc(100% - 90px - 16px)', md: '215px' });
     return (
         <Pressable onPress={onClick}>
             <HStack backgroundColor="primary.900" width={width} height="128px" padding="16px" alignItems="center" borderRadius={8} space={2}>
                 <VStack alignItems="center" width="90px" justifyContent="center">
-                    {(!record || streak === record) && (
+                    {achievementState === Achievement_State.Completed && (
                         <VStack zIndex={1} position="absolute" width="90px" height="80px" alignItems="center" justifyContent="center" alignSelf="center">
                             <NewAchievementShine size={ShineSize.XSMALL} />
                         </VStack>
@@ -35,7 +47,7 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, streakPr
                         image={image}
                         alternativeText={alternativeText}
                         achievementType={Achievement_Type_Enum.Streak}
-                        streak={streak}
+                        record={record}
                         isRecord={!record || streak === record}
                     />
                 </VStack>
@@ -56,7 +68,14 @@ const StreakCard: React.FC<StreakCardProps> = ({ streak, record, title, streakPr
                                     isColorized
                                 />
                             ) : (
-                                <IndicatorBar maxSteps={record} currentStep={streak} achievementType={Achievement_Type_Enum.Streak} fullWidth isCard />
+                                <IndicatorBar
+                                    maxSteps={record + 1}
+                                    currentStep={streak}
+                                    progressDescription={progressDescription}
+                                    achievementType={Achievement_Type_Enum.Streak}
+                                    fullWidth
+                                    isCard
+                                />
                             )}
                         </Box>
                     )}

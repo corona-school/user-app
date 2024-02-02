@@ -17,8 +17,8 @@ const StreakImage: React.FC<StreakImageProps> = ({ streak, image, alternativeTex
 
     return (
         <VStack justifyContent="center" alignItems="center" width={size} height={size}>
-            <VStack position="absolute" width={size} height={size} justifyContent="center">
-                <Image width={size} height={size} resizeMode="contain" src={image} alt={alternativeText} />
+            <VStack position="absolute" width={`calc(${size}*1.3)`} height={`calc(${size}*1.3)`} justifyContent="center">
+                <Image width={`calc(${size}*1.3)`} height={`calc(${size}*1.3)`} resizeMode="contain" src={image} alt={alternativeText} />
             </VStack>
             <Box aria-label={alternativeText} position="relative" zIndex={1} top={streakTextOffset}>
                 <Text color={isRecord ? 'white' : 'gray.200'} fontSize={streakFontSize} bold>

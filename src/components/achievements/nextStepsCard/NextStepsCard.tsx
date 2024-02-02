@@ -11,7 +11,7 @@ import { NextStepLabelType, getNextStepIcon } from '../../../helper/important-in
 type NextStepsCardProps = {
     image?: string;
     label?: NextStepLabelType;
-    title: string;
+    title?: string;
     name: string;
     actionDescription: string;
     actionType: Achievement_Action_Type_Enum;
@@ -68,9 +68,11 @@ const NextStepsCard: React.FC<NextStepsCardProps> = ({
                     )}
                 </VStack>
                 <VStack>
-                    <Text fontSize={12} fontWeight="medium" color="white" noOfLines={1}>
-                        {title}
-                    </Text>
+                    {title && (
+                        <Text fontSize={12} color="white" noOfLines={1}>
+                            {title}
+                        </Text>
+                    )}
                     <Heading color="white" noOfLines={1}>
                         {name}
                     </Heading>

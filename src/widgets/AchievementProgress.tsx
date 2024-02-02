@@ -136,7 +136,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
         <Box>
             {selectedAchievement && (
                 <AchievementModal
-                    title={selectedAchievement.subtitle}
+                    title={selectedAchievement.subtitle || undefined}
                     name={selectedAchievement.name}
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
@@ -147,6 +147,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                     currentStep={selectedAchievement.currentStep}
                     progressDescription={selectedAchievement.progressDescription || undefined}
                     image={selectedAchievement.image}
+                    achievedText={selectedAchievement.achievedText || undefined}
                     alternativeText={selectedAchievement.alternativeText}
                     buttonText={selectedAchievement.actionName || undefined}
                     buttonLink={selectedAchievement.actionRedirectLink || undefined}
@@ -175,9 +176,11 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                             {streaks.map((achievement) => (
                                 <Stack key={achievement.name} marginTop={cardMargin}>
                                     <StreakCard
-                                        streak={achievement.maxSteps}
+                                        streak={achievement.currentStep}
+                                        record={achievement.maxSteps}
                                         title={achievement.name}
                                         streakProgress={achievement.streakProgress!}
+                                        achievementState={achievement.achievementState}
                                         progressDescription={
                                             achievement.achievementState === Achievement_State.Completed
                                                 ? achievement.achievedText!
@@ -186,7 +189,6 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                         image={achievement.image}
                                         alternativeText={achievement.alternativeText}
                                         actionType={achievement.actionType}
-                                        record={achievement.maxSteps}
                                         onClick={() => {
                                             setSelectedAchievement(achievement);
                                             if (achievement.isNewAchievement) isSeen({ variables: { id: achievement.id } });
@@ -231,7 +233,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                                         actionType={achievement.actionType}
                                                         image={achievement.image}
                                                         alternativeText={''}
-                                                        subtitle={achievement.subtitle}
+                                                        subtitle={achievement.subtitle || undefined}
                                                         title={achievement.name}
                                                         progressDescription={
                                                             achievement.steps ? achievement.steps[achievement.currentStep - 1]?.name : undefined

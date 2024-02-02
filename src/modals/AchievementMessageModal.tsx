@@ -20,6 +20,7 @@ query achievementById($achievementId: Float!) {
         maxSteps
         currentStep
         progressDescription
+        achievedText
         image
         alternativeText
         actionName
@@ -36,7 +37,7 @@ const AchievementMessageModal: React.FC<{ achievementId: number; isOpenModal: bo
         return (
             <>
                 <AchievementModal
-                    title={achievement?.subtitle}
+                    title={achievement.subtitle ?? ''}
                     name={achievement.name}
                     description={achievement.description}
                     achievementState={achievement.achievementState}
@@ -48,6 +49,7 @@ const AchievementMessageModal: React.FC<{ achievementId: number; isOpenModal: bo
                     isNewAchievement
                     maxSteps={achievement.maxSteps}
                     progressDescription={achievement.progressDescription ?? ''}
+                    achievedText={achievement.achievedText ?? ''}
                     steps={achievement.steps ?? []}
                     onClose={onClose}
                 />

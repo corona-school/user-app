@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Achievement_Type_Enum } from '../../../gql/graphql';
 
 type IndicatorBarProps = {
+    progressDescription?: string;
     maxSteps: number;
     currentStep?: number;
     achievementType?: Achievement_Type_Enum;
@@ -14,10 +15,20 @@ type IndicatorBarProps = {
     isCard?: boolean;
 };
 
-const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achievementType, centerText, fullWidth, largeText, smallText, bgDark, isCard }) => {
+const IndicatorBar: React.FC<IndicatorBarProps> = ({
+    progressDescription,
+    maxSteps,
+    currentStep,
+    achievementType,
+    centerText,
+    fullWidth,
+    largeText,
+    smallText,
+    bgDark,
+    isCard,
+}) => {
     const { t } = useTranslation();
     const progress = currentStep ? (currentStep / maxSteps) * 100 : 0;
-    const leftSteps = currentStep ? maxSteps - currentStep : maxSteps;
 
     const flexDirection = useBreakpointValue({
         base: achievementType === Achievement_Type_Enum.Streak ? 'column' : 'row-reverse',
@@ -49,9 +60,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({ maxSteps, currentStep, achi
                 overflow="hidden"
                 ellipsizeMode="tail"
             >
-                {achievementType === Achievement_Type_Enum.Streak && !isCard
-                    ? `${leftSteps === 0 ? `${t('achievement.modal.record', { record: maxSteps })}` : `${t('achievement.modal.streak', { leftSteps })}`}`
-                    : `${finishedStepsInformation}`}
+                {(achievementType !== Achievement_Type_Enum.Streak && isCard) || !progressDescription ? `${finishedStepsInformation}` : progressDescription}
             </Text>
             <Box width={progressBarWidth}>
                 <Progress bg={bgDark ? '#60787D' : 'gray.100'} value={progress} />
