@@ -3,7 +3,10 @@ import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import DisableableButton from './DisablebleButton';
 import { gql } from '../gql';
-import { useLazyQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
+import { Modal } from 'native-base';
+import ZoomMeetingModal from '../modals/ZoomMeetingModal';
+import { useMemo, useState } from 'react';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -27,35 +30,54 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-
+    const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const [loadLink, { loading }] = useLazyQuery(
         gql(`
 query overrrideLink($appointmentId: Float!) {
     appointment(appointmentId: $appointmentId) {
         override_meeting_link
+        zoomMeetingUrl
     }
 }
 `),
         { variables: { appointmentId } }
     );
+    const { data: zoomData } = useQuery(
+        gql(`
+query zoomMeetingUrl($appointmentId: Float!) {
+    appointment(appointmentId: $appointmentId) {
+        zoomMeetingUrl
+    }
+}
+`),
+        { variables: { appointmentId } }
+    );
+
     const openMeeting = async () => {
-        const data = await loadLink();
-        const overrideLink = data.data?.appointment?.override_meeting_link;
+        const { data } = await loadLink();
+
+        const overrideLink = data?.appointment?.override_meeting_link;
         if (overrideLink == null) {
             navigate(`/video-chat/${appointmentId}/${appointmentType}`);
         } else {
             window.open(overrideLink, '_self');
         }
     };
+
     return (
-        <DisableableButton
-            isDisabled={!canJoinMeeting || isOver}
-            reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
-            width={width ?? width}
-            onPress={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)}
-        >
-            {buttonText ? buttonText : isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
-        </DisableableButton>
+        <>
+            <Modal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}>
+                <ZoomMeetingModal appointmentId={appointmentId} appointmentType={appointmentType} zoomUrl={zoomData?.appointment.zoomMeetingUrl ?? ''} />
+            </Modal>
+            <DisableableButton
+                isDisabled={!canJoinMeeting || isOver}
+                reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
+                width={width ?? width}
+                onPress={() => setIsOpenModal(true)}
+            >
+                {buttonText ? buttonText : isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
+            </DisableableButton>
+        </>
     );
 };
 

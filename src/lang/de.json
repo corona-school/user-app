@@ -116,6 +116,12 @@
                 }
             }
         },
+        "zoomModal": {
+            "header": "Zoom Meeting",
+            "description": "Wie möchtest du dein Zoom Meeting öffnen?",
+            "browser": "Im Browser fortfahren",
+            "zoomClient": "In Zoom App öffnen"
+        },
         "attendeesModal": {
             "title": "Teilnehmer:innen",
             "closeButton": "Schließen",
