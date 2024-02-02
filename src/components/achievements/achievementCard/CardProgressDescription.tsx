@@ -41,9 +41,9 @@ const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actio
     const fontSize = useBreakpointValue({ base: '10px', md: achievementType === Achievement_Type_Enum.Streak ? '10px' : '12px' });
 
     return (
-        <HStack alignItems={alignItems} space="4px" justifyContent="flex-start">
+        <HStack alignItems="center" space="4px" justifyContent={alignItems}>
             {actionType && (
-                <VStack height={iconHeight} position="relative" justifyContent="flex-end">
+                <VStack height={iconHeight} position="relative" justifyContent="center">
                     <Box width="8px" height="8px">
                         {icon}
                     </Box>
