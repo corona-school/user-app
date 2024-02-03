@@ -15,7 +15,7 @@ const Details: React.FC<Props> = () => {
     const { show, hide } = useModal();
     const { space, sizes } = useTheme();
     const toast = useToast();
-    const { matchRequest, setMessage, setCurrentIndex, isEdit, skippedSubjectPriority } = useContext(RequestMatchContext);
+    const { matchRequest, setMessage, setCurrentIndex, isEdit, skippedSubjectPriority, skippedSubjectList } = useContext(RequestMatchContext);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -114,7 +114,7 @@ const Details: React.FC<Props> = () => {
             <NextPrevButtons
                 disablingNext={{ is: _update.loading, reason: t('reasonsDisabled.loading') }}
                 onPressNext={requestMatch}
-                onPressPrev={() => setCurrentIndex(skippedSubjectPriority ? 2 : 4)}
+                onPressPrev={() => setCurrentIndex(skippedSubjectPriority ? (skippedSubjectList ? 2 : 3) : 4)}
             />
         </VStack>
     );
