@@ -1605,7 +1605,7 @@
                 "otherOptionContact": "Kontaktaufnahme erlauben",
                 "otherGroupChatHeadline": "Gruppen- bzw. Ankündigungchat",
                 "allowChatContact": "Teilnehmer:innen erlauben in den Chat zu schreiben",
-                "prospectContactTooltip": "Schüler:innen, die sich für deinen Kurs interessieren (vor Kursbeginn)",
+                "prospectContactTooltip": "Schüler:innen und Helfer:innen, die sich für deinen Kurs interessieren (vor Kursbeginn)",
                 "participantsContactTooltip": "Schüler:innen, die sich für deinen Kurs angemeldet haben",
                 "otherOptionStartToolTip": "Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben."
             },
