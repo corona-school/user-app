@@ -1,5 +1,5 @@
 import { VStack, useTheme, Heading, Text } from 'native-base';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { containsDAZ, DAZ } from '../../../types/subject';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
@@ -8,10 +8,17 @@ import { useTranslation } from 'react-i18next';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
-    const { matchRequest, setSubject, removeSubject, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, removeSubject, setCurrentIndex, setSkippedSubjectPriority, skippedSubjectPriority, setSubjectPriority } =
+        useContext(RequestMatchContext);
     const { t } = useTranslation();
 
     const isDAZ = containsDAZ(matchRequest.subjects);
+
+    useEffect(() => {
+        const skipSubjectPriority = isDAZ || matchRequest.subjects.length === 1;
+        setSkippedSubjectPriority(skipSubjectPriority);
+        matchRequest.subjects.forEach((subj) => setSubjectPriority(subj.name, skipSubjectPriority));
+    }, [matchRequest.subjects.length, isDAZ, setSkippedSubjectPriority, setSubjectPriority]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -20,14 +27,17 @@ const Subjects: React.FC = () => {
             {isDAZ && <Text>{t('matching.wizard.pupil.subjects.text')}</Text>}
             <SubjectSelector
                 subjects={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
-                addSubject={(it) => setSubject({ name: it, mandatory: false })}
+                addSubject={(it) => setSubject({ name: it, mandatory: skippedSubjectPriority })}
                 removeSubject={removeSubject}
                 limit={isDAZ ? 1 : undefined}
             />
             <NextPrevButtons
-                disablingNext={{ is: matchRequest.subjects.length === 0, reason: t('matching.wizard.pupil.subjects.reason_btn_disabled') }}
+                disablingNext={{
+                    is: matchRequest.subjects.length === 0 || (matchRequest.subjects.length === 1 && isDAZ),
+                    reason: isDAZ ? t('matching.wizard.pupil.subjects.reason_btn_disabled_DAZ') : t('matching.wizard.pupil.subjects.reason_btn_disabled'),
+                }}
                 onPressPrev={() => setCurrentIndex(2)}
-                onPressNext={() => setCurrentIndex(4)}
+                onPressNext={() => setCurrentIndex(skippedSubjectPriority ? 5 : 4)}
             />
         </VStack>
     );

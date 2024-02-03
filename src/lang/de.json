@@ -257,7 +257,8 @@
             "Russisch": "Russisch",
             "Sachkunde": "Sachkunde",
             "Spanisch": "Spanisch",
-            "Wirtschaft": "Wirtschaft"
+            "Wirtschaft": "Wirtschaft",
+            "Lernen lernen": "Lernen lernen"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -1074,8 +1075,7 @@
             "title": "Hausaufgabenhilfe",
             "catcher": "Du brauchst Hilfe bei deinen Hausaufgaben?",
             "text": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst."
-        },
-        "noproposalsPupil": "Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!"
+        }
     },
     "helperwizard": {
         "nextStep": "Deine nächsten Schritte",
@@ -1107,7 +1107,7 @@
         "kontaktSchüler": {
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
-            "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
+            "buttons": ["Lernpartner:in ansehen"]
         },
         "angeforderteBescheinigung": {
             "title": "{{nameHelfer}} braucht eine Bestätigung von dir",
@@ -1137,7 +1137,7 @@
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
-            "buttons": ["Kontakt aufnehmen", "Lernpartner:in ansehen"]
+            "buttons": ["Lernpartner:in ansehen"]
         },
         "homeworkHelpStudent": {
             "title": "Hausaufgabenhilfe",
@@ -1151,7 +1151,7 @@
         },
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
-            "content": "Du hast dich vor einiger Zeit für die Lernunterstützung bei Lern-Fair registriert. Nun bist du auf der Warteliste bereits weit nach vorne gerückt und daher bald an der Reihe!\nBevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
+            "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
             "buttons": ["Termin vereinbaren"]
         }
     },
@@ -1176,7 +1176,6 @@
             "dissolveMatch": "Lernpaar auflösen",
             "dissolved": "Das Lernpaar wurde aufgelöst.",
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
-            "contactMail": "Via E-Mail kontaktieren",
             "tutorInstructor": "Tutor:in, Kursleiter:in",
             "appointmentsHeadline": "Termine",
             "createAppointment": "Termin erstellen"
@@ -1298,6 +1297,7 @@
                     "heading": "Fachauswahl",
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
                     "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
+                    "reason_btn_disabled_DAZ": "Bitte wähle ein Fach aus.",
                     "text": "Du kannst maximal 1 Fach auswählen."
                 },
                 "priority": {
@@ -1982,7 +1982,9 @@
             "download": "Herunterladen",
             "download_certificate": "Bescheinigung herunterladen",
             "german_version": "Deutsche Version",
-            "english_version": "Englische Version"
+            "english_version": "Englische Version",
+            "create": "Bescheinigung erstellen",
+            "download_browser": "Bescheinigung in Downloads speichern"
         }
     },
     "issueReporter": {

@@ -14,7 +14,6 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import Hello from '../../widgets/Hello';
-import AlertMessage from '../../widgets/AlertMessage';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
@@ -25,6 +24,7 @@ import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import CTACard from '../../widgets/CTACard';
 import DisableableButton from '../../components/DisablebleButton';
+import { useRoles } from '../../hooks/useApollo';
 
 type Props = {};
 
@@ -45,7 +45,6 @@ const query = gql(`
                         firstname
                         lastname
                     }
-                    studentEmail
                 }
                 firstMatchRequest
                 openMatchRequestCount
@@ -149,6 +148,7 @@ const query = gql(`
 
 const Dashboard: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
+    const roles = useRoles();
 
     const { space, sizes } = useTheme();
 
@@ -242,6 +242,23 @@ const Dashboard: React.FC<Props> = () => {
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
 
+                            {process.env.REACT_APP_HOMEWORKHELP !== '' && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
+                                <VStack marginBottom={space['1.5']}>
+                                    <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                    <CTACard
+                                        title={t('dashboard.homeworkhelp.catcher')}
+                                        closeable={false}
+                                        content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                        button={
+                                            <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                                {t('matching.homeworkhelp.button')}
+                                            </Button>
+                                        }
+                                        icon={<BooksIcon />}
+                                    />
+                                </VStack>
+                            )}
+
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 ||
@@ -309,14 +326,14 @@ const Dashboard: React.FC<Props> = () => {
                                 )}
 
                             {/* Suggestions */}
-                            <HSection
-                                marginBottom={space['1.5']}
-                                title={t('dashboard.relatedcontent.header')}
-                                onShowAll={() => navigate('/group')}
-                                showAll={(data?.subcoursesPublic?.length ?? 0) > 4}
-                            >
-                                {(data?.subcoursesPublic?.length &&
-                                    data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
+                            {roles.includes('PARTICIPANT') && data?.subcoursesPublic?.length && (
+                                <HSection
+                                    marginBottom={space['1.5']}
+                                    title={t('dashboard.relatedcontent.header')}
+                                    onShowAll={() => navigate('/group')}
+                                    showAll={(data?.subcoursesPublic?.length ?? 0) > 4}
+                                >
+                                    {data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
                                         <AppointmentCard
                                             key={subcourse.id}
                                             description={subcourse.course.description}
@@ -344,25 +361,10 @@ const Dashboard: React.FC<Props> = () => {
                                                 navigate(`/single-course/${subcourse.id}`);
                                             }}
                                         />
-                                    ))) || <AlertMessage content={t('dashboard.noproposalsPupil')} />}
-                            </HSection>
+                                    ))}
+                                </HSection>
+                            )}
                         </VStack>
-                        {process.env.REACT_APP_HOMEWORKHELP !== '' && (
-                            <VStack marginBottom={space['1.5']}>
-                                <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
-                                <CTACard
-                                    title={t('dashboard.homeworkhelp.catcher')}
-                                    closeable={false}
-                                    content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                    button={
-                                        <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                                            {t('matching.homeworkhelp.button')}
-                                        </Button>
-                                    }
-                                    icon={<BooksIcon />}
-                                />
-                            </VStack>
-                        )}
                     </VStack>
                 )}
             </WithNavigation>
