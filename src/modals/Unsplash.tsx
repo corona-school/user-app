@@ -16,7 +16,6 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
     const [photos, setPhotos] = useState([]);
     const [selectedPhoto, setSelectedPhoto] = useState<string>('');
     const [pageIndex, setPageIndex] = useState<number>(1);
-    const [lastSearch, setLastSearch] = useState<string>('');
     const [isLoading, setIsLoading] = useState<boolean>();
     const [totalPages, setTotalPages] = useState<number>(1);
     const { space } = useTheme();
@@ -36,31 +35,34 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
         base: 300,
         lg: 600,
     });
-    const loadPhotos = useCallback(async () => {
-        try {
-            const data = await fetch(
-                `https://api.unsplash.com/search/photos?query=${lastSearch.length > 0 ? lastSearch : 'Schule'}&page=${pageIndex}&per_page=9`,
-                {
+    const loadPhotos = useCallback(
+        async (search: string = '') => {
+            try {
+                const data = await fetch(`https://api.unsplash.com/search/photos?query=${search || 'Schule'}&page=${pageIndex}&per_page=9`, {
                     method: 'GET',
                     headers: {
                         Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH}`,
                     },
-                }
-            );
-            const res = await data.json();
-            setTotalPages(res.total_pages);
-            setPhotos(res.results || []);
-        } catch (e) {
-            setIsLoading(false);
-            console.error(e);
-        }
-    }, [lastSearch, pageIndex]);
+                });
+                const res = await data.json();
+                setTotalPages(res.total_pages);
+                setPhotos(res.results || []);
+            } catch (e) {
+                setIsLoading(false);
+                console.error(e);
+            }
+        },
+        [pageIndex]
+    );
 
-    const search = useCallback(async () => {
-        setIsLoading(true);
-        await loadPhotos();
-        setIsLoading(false);
-    }, [loadPhotos]);
+    const search = useCallback(
+        async (search: string) => {
+            setIsLoading(true);
+            await loadPhotos(search);
+            setIsLoading(false);
+        },
+        [loadPhotos]
+    );
 
     const pickPhoto = useCallback(() => {
         onPhotoSelected(selectedPhoto);
@@ -69,7 +71,6 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
 
     const closeModal = () => {
         onClose();
-        setLastSearch('');
     };
 
     useEffect(() => {
@@ -87,12 +88,11 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
                         <Row>
                             <SearchBar
                                 placeholder={t('course.unsplash.placeholder')}
-                                onSearch={() => {
+                                onSearch={(value: string) => {
                                     setPageIndex(1);
-                                    search();
+                                    search(value);
                                 }}
-                                onChangeText={setLastSearch}
-                                value={lastSearch}
+                                autoSubmit
                             />
                         </Row>
                         {isLoading && <CenterLoadingSpinner />}
@@ -138,7 +138,7 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
                             totalPagesCount={totalPages}
                             onPageChange={(index) => {
                                 setPageIndex(index);
-                                search();
+                                search('');
                             }}
                         />
                     </Stack>
