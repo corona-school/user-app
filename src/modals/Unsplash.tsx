@@ -59,7 +59,7 @@ const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose
             }
         })();
 
-        return controller.abort;
+        return () => controller.abort();
     }, [searchValue, pageIndex]);
 
     const pickPhoto = useCallback(() => {
