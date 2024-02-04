@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Heading, HStack, Radio, Text, TextArea, useTheme, VStack } from 'native-base';
+import { Button, Heading, HStack, Modal, Radio, Text, TextArea, useTheme, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -15,6 +15,7 @@ import { PupilScreeningCard } from './PupilScreeningCard';
 import { ScreeningSuggestionCard } from './ScreeningSuggestionCard';
 import { useUser, useRoles } from '../../hooks/useApollo';
 import { SubjectSelector } from '../SubjectSelector';
+import { EditSubjectsModal } from './EditSubjectsModal';
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
@@ -326,7 +327,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                         setShowEditSubjects(!showEditSubjects);
                     }}
                 >
-                    {showEditSubjects ? 'Fertig' : 'Bearbeiten'}
+                    Bearbeiten
                 </Button>
             </HStack>
             {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
@@ -340,45 +341,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                     </Button>
                 </HStack>
             )}
-            {showEditSubjects && (
-                <div>
-                    <SubjectSelector
-                        subjects={pupil.subjectsFormatted.map((it) => it.name)}
-                        addSubject={(it) => {
-                            updateSubjects([...pupil.subjectsFormatted, { name: it, mandatory: false }]);
-                        }}
-                        removeSubject={(it) => {
-                            updateSubjects(pupil.subjectsFormatted.filter((s) => s.name !== it));
-                        }}
-                        limit={undefined}
-                    />
-                    <Text>Priorisiertes Fach:</Text>
-                    <Radio.Group
-                        name="prioritized-subjects"
-                        value={prioritizedSubject?.name}
-                        onChange={(new_s) =>
-                            updateSubjects(
-                                pupil.subjectsFormatted.map((s) => {
-                                    if (s.name === prioritizedSubject?.name) {
-                                        return { ...s, mandatory: false };
-                                    } else if (s.name === new_s) {
-                                        return { ...s, mandatory: true };
-                                    }
-                                    return s;
-                                })
-                            )
-                        }
-                    >
-                        <VStack space={space['1']}>
-                            {pupil.subjectsFormatted.map((key) => (
-                                <Radio key={key.name} value={key.name}>
-                                    {key.name}
-                                </Radio>
-                            ))}
-                        </VStack>
-                    </Radio.Group>
-                </div>
-            )}
+            {showEditSubjects && <EditSubjectsModal onClose={() => setShowEditSubjects(false)} subjects={pupil.subjectsFormatted} store={updateSubjects} />}
             {!pupil.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
             {!screeningToEdit && (
                 <>
