@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Box, Button, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Button, Modal, Stack, Text, VStack, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
@@ -496,9 +496,11 @@ const SingleCourseStudent = () => {
                         />
                     )}
                     {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
-                        <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
-                            {t('single.actions.contactInstructor')}
-                        </Button>
+                        <Stack direction="row">
+                            <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
+                                {t('single.actions.contactInstructor')}
+                            </Button>
+                        </Stack>
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                         <PromoteBanner
