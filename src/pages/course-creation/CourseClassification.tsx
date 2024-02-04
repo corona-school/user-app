@@ -45,10 +45,10 @@ const CourseClassification: React.FC<SubjectProps> = ({ onNext, onBack }) => {
             if (!courseSubject) return false;
             return true;
         }
-        if(!courseTags) return false;
-        if(courseTags.length === 0) return false
+        if (!courseTags) return false;
+        if (courseTags.length === 0) return false;
         return true;
-    }, [category, courseSubject]);
+    }, [courseTags, category, courseSubject]);
 
     const onNextStep = useCallback(() => {
         setCourseCategory && setCourseCategory(category);
