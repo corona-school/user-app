@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Heading, HStack, Modal, Radio, Text, TextArea, useTheme, VStack } from 'native-base';
+import { Button, Heading, HStack, Modal, Radio, Stack, Text, TextArea, useTheme, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -311,7 +311,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             <Heading fontSize="30px">
                 {t('pupil')} / {pupil.firstname} {pupil.lastname}
             </Heading>
-            <HStack>
+            <HStack flexWrap="wrap" space={space['1']}>
                 <Text fontSize="20px" lineHeight="50px">
                     {pupil.grade} -{' '}
                 </Text>
@@ -320,15 +320,17 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                     {' '}
                     -{' '}
                 </Text>
-                <SubjectTagList subjects={pupil.subjectsFormatted} />
-                <Button
-                    marginLeft={2}
-                    onPress={() => {
-                        setShowEditSubjects(!showEditSubjects);
-                    }}
-                >
-                    Bearbeiten
-                </Button>
+                <Stack direction="row" space={space['1']}>
+                    <SubjectTagList subjects={pupil.subjectsFormatted} />
+                    <Button
+                        marginLeft={2}
+                        onPress={() => {
+                            setShowEditSubjects(!showEditSubjects);
+                        }}
+                    >
+                        Bearbeiten
+                    </Button>
+                </Stack>
             </HStack>
             {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
                 <HStack space={space['1']}>
