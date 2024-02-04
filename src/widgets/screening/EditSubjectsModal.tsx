@@ -17,6 +17,7 @@ export function EditSubjectsModal({ subjects, onClose, store }: { subjects: Subj
                 <Modal.Body>
                     <SubjectSelector
                         subjects={editedSubjects.map((it) => it.name)}
+                        includeDaz
                         addSubject={(it) => {
                             setEditedSubjects((prev) => [...prev, { name: it, mandatory: false }]);
                         }}
@@ -24,32 +25,18 @@ export function EditSubjectsModal({ subjects, onClose, store }: { subjects: Subj
                             setEditedSubjects((prev) => prev.filter((s) => s.name !== it));
                         }}
                     />
-                    {/* <Text>Priorisiertes Fach:</Text>
-                    <Radio.Group
-                        name="prioritized-subjects"
-                        value={prioritizedSubject?.name}
-                        onChange={(new_s) =>
-                            updateSubjects(
-                                pupil.subjectsFormatted.map((s) => {
-                                    if (s.name === prioritizedSubject?.name) {
-                                        return { ...s, mandatory: false };
-                                    } else if (s.name === new_s) {
-                                        return { ...s, mandatory: true };
-                                    }
-                                    return s;
-                                })
-                            )
-                        }
-                    >
-                        <VStack space={space['1']}>
-                            {pupil.subjectsFormatted.map((key) => (
-                                <Radio key={key.name} value={key.name}>
-                                    {key.name}
-                                </Radio>
-                            ))}
-                        </VStack>
-                            </Radio.Group> */}
 
+                    <Text bold>Priorisiertes Fach:</Text>
+                    <Stack direction="row">
+                        <SubjectSelector
+                            selectable={editedSubjects.map((it) => it.name)}
+                            subjects={editedSubjects.filter((it) => it.mandatory).map((it) => it.name)}
+                            limit={1}
+                            addSubject={(it) => setEditedSubjects((prev) => prev.map(({ name }) => ({ name, mandatory: name === it })))}
+                            removeSubject={() => setEditedSubjects((prev) => prev.map(({ name }) => ({ name, mandatory: false })))}
+                            justifyContent="left"
+                        />
+                    </Stack>
                     <Stack direction="row" space={space['1']}>
                         <Button variant="outline" onPress={onClose}>
                             Abbrechen
