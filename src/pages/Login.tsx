@@ -31,6 +31,7 @@ import PasswordInput from '../components/PasswordInput';
 import AlertMessage from '../widgets/AlertMessage';
 import { REDIRECT_PASSWORD } from '../Utility';
 import isEmail from 'validator/lib/isEmail';
+import DisableableButton from '../components/DisablebleButton';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -249,9 +250,13 @@ export default function Login() {
                     </Modal.Body>
                     <Modal.Footer>
                         <Row space={space['0.5']}>
-                            <Button isDisabled={pwEmail.length < 6 || _resetPW?.loading} onPress={() => resetPassword(pwEmail)}>
+                            <DisableableButton
+                                isDisabled={pwEmail.length < 6 || _resetPW?.loading}
+                                reasonDisabled={_resetPW?.loading ? t('reasonsDisabled.loading') : t('registration.hint.password.length')}
+                                onPress={() => resetPassword(pwEmail)}
+                            >
                                 {t('login.passwordReset.btn')}
-                            </Button>
+                            </DisableableButton>
                         </Row>
                     </Modal.Footer>
                 </Modal.Content>
@@ -394,13 +399,16 @@ export default function Login() {
                     )}
 
                     <Box paddingTop={4} marginX="90px" display="block">
-                        <Button
-                            onPress={showPasswordField ? attemptLogin : getLoginOption}
-                            width="100%"
+                        <DisableableButton
                             isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
+                            reasonDisabled={
+                                _sendToken.loading || _determineLoginOptions.loading ? t('reasonsDisabled.loading') : t('reasonsDisabled.invalidEMail')
+                            }
+                            onPress={showPasswordField ? attemptLogin : getLoginOption}
+                            width={'100%'}
                         >
                             {t('signin')}
-                        </Button>
+                        </DisableableButton>
                     </Box>
 
                     <Box paddingTop={10} paddingBottom={1}>

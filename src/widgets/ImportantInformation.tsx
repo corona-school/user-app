@@ -39,7 +39,6 @@ query GetOnboardingInfos {
       matches {
         dissolved
         createdAt
-        pupilEmail
         pupil {
           firstname
           lastname
@@ -70,7 +69,6 @@ query GetOnboardingInfos {
       matches {
         dissolved
         createdAt
-        studentEmail
         subjectsFormatted {
           name
         }
@@ -194,9 +192,11 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- Pupil Screening --------
-        if (pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending')) {
+        const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
+        const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
+        if (pupil && (wasInvited || notYetScreened)) {
             const pupil_url =
-                process.env.REACT_APP_PUPIL_SCREENING_URL +
+                (notYetScreened ? process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL : process.env.REACT_APP_PUPIL_SCREENING_URL) +
                 '?first_name=' +
                 encodeURIComponent(data?.me?.firstname ?? '') +
                 '&last_name=' +
@@ -208,7 +208,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 '&a2=' +
                 encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
             infos.push({
-                label: 'pupilScreening',
+                label: notYetScreened ? 'pupilFirstScreening' : 'pupilScreening',
                 btnfn: [
                     () => {
                         window.open(pupil_url, '_blank');
@@ -217,6 +217,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 lang: {},
             });
         }
+
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
             infos.push({
@@ -266,7 +267,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: 'kontaktSchüler',
-                    btnfn: [() => (window.location.href = 'mailto:' + match.studentEmail), () => navigate('/matching')],
+                    btnfn: [() => navigate('/matching')],
                     lang: {
                         nameHelfer: match.student.firstname,
                         subjectHelfer: match.subjectsFormatted
@@ -279,7 +280,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
                     label: 'kontaktStudent',
-                    btnfn: [() => (window.location.href = 'mailto:' + match.pupilEmail), () => navigate('/matching')],
+                    btnfn: [() => navigate('/matching')],
                     lang: { nameSchüler: match.pupil.firstname },
                 });
         });
