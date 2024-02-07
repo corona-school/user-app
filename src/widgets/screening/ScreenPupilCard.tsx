@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Heading, HStack, Text, TextArea, useTheme, VStack } from 'native-base';
+import { Button, Heading, HStack, Modal, Radio, Stack, Text, TextArea, useTheme, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -7,13 +7,15 @@ import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
 import { SubjectTagList } from '../../components/SubjectTag';
 import { gql } from '../../gql';
-import { Pupil_Screening_Status_Enum, PupilScreeningStatus } from '../../gql/graphql';
+import { PupilScreeningStatus, Pupil_Screening_Status_Enum, Subject } from '../../gql/graphql';
 import { ConfirmModal } from '../../modals/ConfirmModal';
 import { PupilForScreening, PupilScreening } from '../../types';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
 import { PupilScreeningCard } from './PupilScreeningCard';
 import { ScreeningSuggestionCard } from './ScreeningSuggestionCard';
-import { useRoles, useUser } from '../../hooks/useApollo';
+import { useUser, useRoles } from '../../hooks/useApollo';
+import { SubjectSelector } from '../SubjectSelector';
+import { EditSubjectsModal } from './EditSubjectsModal';
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
@@ -88,7 +90,13 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
             resultComment += `[${screener.firstname} ${screener.lastname}]: Ablehnung empfehlen\n\n`;
         }
 
-        storeEdit({ variables: { id: screening!.id!, screeningComment: resultComment, status: PupilScreeningStatus.Dispute } });
+        storeEdit({
+            variables: {
+                id: screening!.id!,
+                screeningComment: resultComment,
+                status: PupilScreeningStatus.Dispute,
+            },
+        });
         setScreeningComment(resultComment);
     }
 
@@ -143,20 +151,29 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                                 isOpen={confirmRejection}
                                 onClose={() => setConfirmRejection(false)}
                                 onConfirmed={rejection}
-                                text={t('screening.confirm_rejection', { firstname: pupil.firstname, lastname: pupil.lastname })}
+                                text={t('screening.confirm_rejection', {
+                                    firstname: pupil.firstname,
+                                    lastname: pupil.lastname,
+                                })}
                             />
                             <ConfirmModal
                                 isOpen={confirmSuccess}
                                 onClose={() => setConfirmSuccess(false)}
                                 onConfirmed={success}
-                                text={t('screening.confirm_success', { firstname: pupil.firstname, lastname: pupil.lastname })}
+                                text={t('screening.confirm_success', {
+                                    firstname: pupil.firstname,
+                                    lastname: pupil.lastname,
+                                })}
                             />
                             <ConfirmModal
                                 danger
                                 isOpen={confirmDeactivation}
                                 onClose={() => setConfirmDeactivation(false)}
                                 onConfirmed={deactivate}
-                                text={t('screening.confirm_deactivate', { firstname: pupil.firstname, lastname: pupil.lastname })}
+                                text={t('screening.confirm_deactivate', {
+                                    firstname: pupil.firstname,
+                                    lastname: pupil.lastname,
+                                })}
                             />
                         </>
                     )}
@@ -222,6 +239,25 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
         `)
     );
+
+    const [showEditSubjects, setShowEditSubjects] = useState(false);
+    const [mutationUpdateSubjects, {}] = useMutation(
+        gql(`
+            mutation PupilUpdateSubjects($pupilId: Float!, $data: PupilUpdateSubjectsInput!) { pupilUpdateSubjects(pupilId: $pupilId, data: $data) }
+        `)
+    );
+
+    const prioritizedSubject = useMemo(() => pupil?.subjectsFormatted?.find((s) => s.mandatory), [pupil.subjectsFormatted]);
+
+    function updateSubjects(newSubjects: Subject[]) {
+        mutationUpdateSubjects({
+            variables: {
+                pupilId: pupil!.id,
+                data: { subjects: newSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })) },
+            },
+        }).then(refresh);
+    }
+
     function deactivate() {
         setConfirmDeactivation(false);
         deactivateAccount({ variables: { pupilId: pupil!.id! } });
@@ -275,7 +311,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             <Heading fontSize="30px">
                 {t('pupil')} / {pupil.firstname} {pupil.lastname}
             </Heading>
-            <HStack>
+            <HStack flexWrap="wrap" space={space['1']}>
                 <Text fontSize="20px" lineHeight="50px">
                     {pupil.grade} -{' '}
                 </Text>
@@ -284,7 +320,17 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                     {' '}
                     -{' '}
                 </Text>
-                <SubjectTagList subjects={pupil.subjectsFormatted} />
+                <Stack direction="row" space={space['1']}>
+                    <SubjectTagList subjects={pupil.subjectsFormatted} />
+                    <Button
+                        marginLeft={2}
+                        onPress={() => {
+                            setShowEditSubjects(!showEditSubjects);
+                        }}
+                    >
+                        Bearbeiten
+                    </Button>
+                </Stack>
             </HStack>
             {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
                 <HStack space={space['1']}>
@@ -297,6 +343,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                     </Button>
                 </HStack>
             )}
+            {showEditSubjects && <EditSubjectsModal onClose={() => setShowEditSubjects(false)} subjects={pupil.subjectsFormatted} store={updateSubjects} />}
             {!pupil.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
             {!screeningToEdit && (
                 <>
@@ -321,7 +368,10 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                                         isOpen={confirmDeactivation}
                                         onClose={() => setConfirmDeactivation(false)}
                                         onConfirmed={deactivate}
-                                        text={t('screening.confirm_deactivate', { firstname: pupil.firstname, lastname: pupil.lastname })}
+                                        text={t('screening.confirm_deactivate', {
+                                            firstname: pupil.firstname,
+                                            lastname: pupil.lastname,
+                                        })}
                                     />
                                 </>
                             )}

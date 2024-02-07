@@ -12,6 +12,7 @@ export const SubjectSelector = ({
     selectable,
     variant = 'selection',
     includeDaz = false,
+    justifyContent,
 }: {
     subjects: Subject['name'][];
     selectable?: Subject['name'][];
@@ -20,12 +21,13 @@ export const SubjectSelector = ({
     limit?: number;
     variant?: 'normal' | 'selection';
     includeDaz?: boolean;
+    justifyContent?: string;
 }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
 
     return (
-        <HStack w="100%" flexWrap="wrap" justifyContent="center" alignItems="center">
+        <HStack w="100%" flexWrap="wrap" justifyContent={justifyContent ?? 'center'} alignItems={justifyContent ?? 'center'}>
             {((selectable ?? (includeDaz ? SUBJECTS : SUBJECTS.filter((it) => it !== DAZ))) as string[]).map((subject) => (
                 <Box margin={space['0.5']} maxW="250px" flexBasis="100px" flexGrow={1}>
                     <IconTagList

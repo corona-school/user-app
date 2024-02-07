@@ -27,9 +27,7 @@ export const decorators = [
         <I18nextProvider i18n={i18n}>
             <BrowserRouter>
                 <NativeBaseProvider theme={Theme}>
-                    <MockedProvider mocks={[]}>
-                        {Page()}
-                    </MockedProvider>
+                    <MockedProvider mocks={[]}>{Page()}</MockedProvider>
                 </NativeBaseProvider>
             </BrowserRouter>
         </I18nextProvider>

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Box, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Button, Modal, Stack, Text, VStack, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
@@ -111,6 +111,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             duration
         }
         instructors{
+            id
             firstname
             lastname
         }
@@ -307,6 +308,25 @@ const SingleCourseStudent = () => {
         refetchBasics();
     }, [canceldData]);
 
+    const [chatCreateAsProspect] = useMutation(
+        gql(`
+            mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
+                prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
+            }       
+        `)
+    );
+
+    async function contactInstructorAsProspect() {
+        const conversation = await chatCreateAsProspect({
+            variables: { subcourseId: subcourse!.id, instructorUserId: `student/${subcourse!.instructors[0].id}` },
+        });
+        if (conversation) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
+        } else {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
+    }
+
     const tabs: Tab[] = [
         {
             title: t('single.tabs.lessons'),
@@ -474,6 +494,13 @@ const SingleCourseStudent = () => {
                             appointment={myNextAppointment as Lecture}
                             isActiveSubcourse={isActiveSubcourse}
                         />
+                    )}
+                    {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
+                        <Stack direction="row">
+                            <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
+                                {t('single.actions.contactInstructor')}
+                            </Button>
+                        </Stack>
                     )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                         <PromoteBanner

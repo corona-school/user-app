@@ -257,7 +257,8 @@
             "Russisch": "Russisch",
             "Sachkunde": "Sachkunde",
             "Spanisch": "Spanisch",
-            "Wirtschaft": "Wirtschaft"
+            "Wirtschaft": "Wirtschaft",
+            "Lernen lernen": "Lernen lernen"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -415,7 +416,8 @@
             },
             "4": {
                 "title": "Schulort",
-                "subtitle": "Wo gehst du zur Schule?"
+                "subtitle": "Wo gehst du zur Schule?",
+                "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt."
             },
             "5": {
                 "title": "Einwilligungen",
@@ -545,6 +547,7 @@
         "State": {
             "empty": "Keine Angabe",
             "label": "Schulort",
+            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
             "single": {
                 "selectedStates": "Mein Schulort",
                 "otherStates": "Weitere (Bundes-)Länder",
@@ -1074,8 +1077,7 @@
             "title": "Hausaufgabenhilfe",
             "catcher": "Du brauchst Hilfe bei deinen Hausaufgaben?",
             "text": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst."
-        },
-        "noproposalsPupil": "Wir haben gerade keine neuen Vorschläge für dich. Schau später nochmal vorbei!"
+        }
     },
     "helperwizard": {
         "nextStep": "Deine nächsten Schritte",
@@ -1152,6 +1154,11 @@
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
             "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
+            "buttons": ["Termin vereinbaren"]
+        },
+        "pupilFirstScreening": {
+            "title": "Wir möchten dich kennenlernen!",
+            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
             "buttons": ["Termin vereinbaren"]
         }
     },
@@ -1605,7 +1612,7 @@
                 "otherOptionContact": "Kontaktaufnahme erlauben",
                 "otherGroupChatHeadline": "Gruppen- bzw. Ankündigungchat",
                 "allowChatContact": "Teilnehmer:innen erlauben in den Chat zu schreiben",
-                "prospectContactTooltip": "Schüler:innen, die sich für deinen Kurs interessieren (vor Kursbeginn)",
+                "prospectContactTooltip": "Schüler:innen und Helfer:innen, die sich für deinen Kurs interessieren (vor Kursbeginn)",
                 "participantsContactTooltip": "Schüler:innen, die sich für deinen Kurs angemeldet haben",
                 "otherOptionStartToolTip": "Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben."
             },

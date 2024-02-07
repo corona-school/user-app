@@ -28,6 +28,7 @@ export const SUBJECTS = [
     'Sachkunde',
     'Spanisch',
     'Wirtschaft',
+    'Lernen lernen',
 ] as const;
 
 // Unfortunately this mapping is necessary as paths need to be ASCII to work reliably in the build setup
@@ -58,6 +59,7 @@ export const SUBJECT_TO_ICON: { [subject in typeof SUBJECTS[number]]: string } =
     Sachkunde: 'sachkunde',
     Spanisch: 'spanisch',
     Wirtschaft: 'wirtschaft',
+    'Lernen lernen': 'lernen_lernen',
 };
 
 // Unfortunately this mapping is necessary as our two ORMs have problems with non ASCII chars:
@@ -88,6 +90,7 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in typeof SUBJECTS[number]]: 
     Sachkunde: Course_Subject_Enum.Sachkunde,
     Spanisch: Course_Subject_Enum.Spanisch,
     Wirtschaft: Course_Subject_Enum.Wirtschaft,
+    'Lernen lernen': Course_Subject_Enum.LernenLernen, // TODO
 };
 
 export const DAZ = 'Deutsch als Zweitsprache';
