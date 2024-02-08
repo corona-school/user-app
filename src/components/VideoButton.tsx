@@ -6,7 +6,7 @@ import { gql } from '../gql';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { Modal } from 'native-base';
 import ZoomMeetingModal from '../modals/ZoomMeetingModal';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -67,7 +67,7 @@ query zoomMeetingUrl($appointmentId: Float!) {
     return (
         <>
             <Modal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}>
-                <ZoomMeetingModal appointmentId={appointmentId} appointmentType={appointmentType} zoomUrl={zoomData?.appointment.zoomMeetingUrl ?? ''} />
+                <ZoomMeetingModal appointmentId={appointmentId} appointmentType={appointmentType} zoomUrl={zoomData?.appointment.zoomMeetingUrl ?? undefined} />
             </Modal>
             <DisableableButton
                 isDisabled={!canJoinMeeting || isOver}

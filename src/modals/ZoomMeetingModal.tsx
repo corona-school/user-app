@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 type ZoomMeetingModalProps = {
     appointmentId: number;
     appointmentType: Lecture_Appointmenttype_Enum;
-    zoomUrl: string;
+    zoomUrl: string | undefined;
 };
 
 const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ appointmentId, appointmentType, zoomUrl }) => {
@@ -21,12 +21,14 @@ const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ appointmentId, appo
                 <Modal.Body>
                     <VStack marginBottom={space['1.5']} alignItems="left">
                         <Heading fontSize="md">{t('appointment.zoomModal.header')}</Heading>
-                        <Text>{t('appointment.zoomModal.description')}</Text>
+                        <Text mt={5}>{t('appointment.zoomModal.description')}</Text>
                     </VStack>
 
                     <Stack space={space['0.5']} direction="column" width="full" justifyContent="center">
                         <Button onPress={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)}>{t('appointment.zoomModal.browser')}</Button>
-                        <Button onPress={() => window.open(zoomUrl, '_self')}>{t('appointment.zoomModal.zoomClient')}</Button>
+                        <Button isDisabled={!zoomUrl} onPress={() => window.open(zoomUrl, '_self')}>
+                            {t('appointment.zoomModal.zoomClient')}
+                        </Button>
                     </Stack>
                 </Modal.Body>
             </Modal.Content>
