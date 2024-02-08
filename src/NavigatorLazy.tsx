@@ -37,7 +37,7 @@ import NoAcceptRegistration from './pages/NoAcceptRegistration';
 import VerifyEmail from './pages/VerifyEmail';
 import VerifyEmailModal from './modals/VerifyEmailModal';
 import ResetPassword from './pages/ResetPassword';
-import { RequireAuth, SwitchUserType } from './User';
+import { RequireAuth, RequireRole, SwitchUserType } from './User';
 import IFrame from './components/IFrame';
 import WithNavigation from './components/WithNavigation';
 import Registration from './pages/Registration';
@@ -107,7 +107,9 @@ export default function NavigatorLazy() {
                 path="/single-course/:id"
                 element={
                     <RequireAuth isRetainPath>
-                        <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT']}>
+                            <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -254,7 +256,9 @@ export default function NavigatorLazy() {
                 path="/create-course"
                 element={
                     <RequireAuth>
-                        <CreateCourse />
+                        <RequireRole roles={['INSTRUCTOR']}>
+                            <CreateCourse />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -264,7 +268,9 @@ export default function NavigatorLazy() {
                 path="/edit-course"
                 element={
                     <RequireAuth>
-                        <CreateCourse />
+                        <RequireRole roles={['INSTRUCTOR']}>
+                            <CreateCourse />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -274,7 +280,10 @@ export default function NavigatorLazy() {
                 path="/group"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} />
+                        {/* for helpers ('students') we do not require the INSTRUCTOR role, as we have a fallback page in place */}
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT']}>
+                            <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} />
+                        </RequireRole>
                     </RequireAuth>
                 }
             ></Route>
@@ -336,7 +345,10 @@ export default function NavigatorLazy() {
                 path="/matching"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Matching />} studentComponent={<MatchPage />} />
+                        {/* for helpers ('students') we do not require the TUTOR role, as we have a fallback page in place */}
+                        <RequireRole roles={['STUDENT', 'TUTEE']}>
+                            <SwitchUserType pupilComponent={<Matching />} studentComponent={<MatchPage />} />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -345,7 +357,9 @@ export default function NavigatorLazy() {
                 path="/match/:id"
                 element={
                     <RequireAuth>
-                        <SingleMatch />
+                        <RequireRole roles={['TUTOR', 'TUTEE']}>
+                            <SingleMatch />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -353,7 +367,9 @@ export default function NavigatorLazy() {
                 path="/request-match"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                        <RequireRole roles={['TUTOR', 'TUTEE']}>
+                            <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
