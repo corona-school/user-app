@@ -9,7 +9,7 @@ import IndicatorBar from '../progressIndicators/IndicatorBar';
 import IndicatorBarWithSteps from '../progressIndicators/IndicatorBarWithSteps';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import { Achievement_State, Achievement_Type_Enum, Step } from '../../../gql/graphql';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 type AchievementModalProps = {
     title?: string;
@@ -50,9 +50,10 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     onClose,
     showModal,
 }) => {
-    console.log(steps);
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const location = useLocation();
+    const { pathname } = location;
 
     const justifyModalContent = useBreakpointValue({ base: 'normal', md: 'center' });
     const alignModalItems = useBreakpointValue({ base: 'normal', md: 'center' });
@@ -288,7 +289,13 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             <Button flex={1} variant="outline" onPress={onClose}>
                                 <Text color="primary.500">{t('achievement.modal.close')}</Text>
                             </Button>
-                            <Button flex={1} variant="outline" onPress={() => navigate('/progress')}>
+                            <Button
+                                flex={1}
+                                variant="outline"
+                                onPress={() => {
+                                    pathname === '/progress' && onClose ? onClose() : navigate('/progress');
+                                }}
+                            >
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
                             <Link href={buttonLink} flex={1} backgroundColor="secondary.900" borderRadius={4} justifyContent="center" alignItems="center">
@@ -297,7 +304,13 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                         </Stack>
                     ) : (
                         <Stack width="100%" direction={buttonAlignment} space={2} paddingTop="2">
-                            <Button flex={1} variant="outlinelight" onPress={() => navigate('/progress')}>
+                            <Button
+                                flex={1}
+                                variant="outlinelight"
+                                onPress={() => {
+                                    pathname === '/progress' && onClose ? onClose() : navigate('/progress');
+                                }}
+                            >
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
                             <Button flex={1} variant="solid" onPress={onClose}>
