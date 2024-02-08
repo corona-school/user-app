@@ -157,7 +157,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
             )}
             <VStack space={spaceAfterHeadline}>
                 {streaks.length > 0 && (
-                    <VStack space={spaceAfterHeadline}>
+                    <VStack space={spaceAfterHeadline} marginBottom={10}>
                         <ProgressCollapsableHeadline
                             achievementType={Achievement_Type_Enum.Streak}
                             onClick={() => handleOnClick(Achievement_Type_Enum.Streak, undefined)}
@@ -204,7 +204,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                 {states.map((key) => (
                     <Box>
                         {(sortedAchievements[key].length > 0 || key === Achievement_State.Completed) && (
-                            <VStack key={key} space={3} marginTop={10}>
+                            <VStack key={key} space={3} marginBottom={10}>
                                 <ProgressCollapsableHeadline achievementState={key} onClick={() => handleOnClick(undefined, key)} />
                                 <Box>
                                     {sortedAchievements[key].length === 0 ? (
