@@ -201,6 +201,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }
     const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
     const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
+    const screenedInstructor = roles.includes('INSTRUCTOR');
+    const screenedTutor = roles.includes('TUTOR');
 
     const infos = useMemo(() => {
         let infos: Information[] = [];
@@ -407,10 +409,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         let newId = achievements.length > 0 ? achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100 : 1;
         // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
-        if (
-            student?.canCreateCourse?.reason === 'not-screened' ||
-            (student && student && student.subcoursesInstructing.length === 0 && student?.canCreateCourse?.reason === 'not-instructor')
-        ) {
+
+        console.log('ROLES', roles, 'CAN CREATE COURSE', student?.canCreateCourse?.reason);
+        if (student && screenedInstructor) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.courseOffer.name'),
@@ -435,16 +436,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
-        if (
-            student?.canRequestMatch?.reason === 'not-screened' ||
-            (student &&
-                student.canRequestMatch?.reason === 'not-tutor' &&
-                student &&
-                !student.firstMatchRequest &&
-                student.openMatchRequestCount === 0 &&
-                student.matches.length === 0 &&
-                roles.includes('TUTOR'))
-        ) {
+        if (student && screenedTutor) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.studentNewMatch.name'),
@@ -470,7 +462,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- PUPIL NEW MATCH ACHIEVEMENT -----
-        if (pupil && !pupil?.firstMatchRequest && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0 && (wasInvited || notYetScreened)) {
+        if (!notYetScreened) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.pupilNewMatch.name'),
