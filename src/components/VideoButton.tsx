@@ -36,7 +36,6 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 query overrrideLink($appointmentId: Float!) {
     appointment(appointmentId: $appointmentId) {
         override_meeting_link
-        zoomMeetingUrl
     }
 }
 `),
