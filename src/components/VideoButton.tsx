@@ -66,9 +66,9 @@ const VideoButton: React.FC<VideoButtonProps> = ({
             window.open(overrideLink, '_self');
         }
     };
-    const onPress = () => {
-        if (appointmentType === Lecture_Appointmenttype_Enum.Match && matchId) matchMeetingJoin({ variables: { matchId } });
-        if (appointmentType === Lecture_Appointmenttype_Enum.Group && subcourseId) subcourseMeetingJoin({ variables: { subcourseId } });
+    const onPress = async () => {
+        if (appointmentType === Lecture_Appointmenttype_Enum.Match && matchId) await matchMeetingJoin({ variables: { matchId } });
+        if (appointmentType === Lecture_Appointmenttype_Enum.Group && subcourseId) await subcourseMeetingJoin({ variables: { subcourseId } });
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
     };
     return (

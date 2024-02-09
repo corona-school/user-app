@@ -87,7 +87,6 @@ query GetOnboardingInfos {
           name
         }
         student {
-            email
           firstname
           lastname
         }

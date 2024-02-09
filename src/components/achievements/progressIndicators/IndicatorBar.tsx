@@ -39,7 +39,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({
     const textWidth = useBreakpointValue({ base: achievementType === Achievement_Type_Enum.Streak ? '100%' : '20%', md: centerText ? '100%' : 'fit-content' });
     const alignText = useBreakpointValue({ base: 'right', md: centerText ? 'center' : 'left' });
     const finishedStepsInformation = useBreakpointValue({
-        base: `${t('achievement.card.finishedStepsInformationMobile', { currentStep, maxSteps })}`,
+        base: `${currentStep}/${maxSteps}`,
         md: `${t('achievement.card.finishedStepsInformation', { currentStep, maxSteps })}`,
     });
     const progressBarWidth = useBreakpointValue({

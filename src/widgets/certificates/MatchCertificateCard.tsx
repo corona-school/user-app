@@ -8,13 +8,7 @@ import CertificateMatchIcon from '../../assets/icons/lernfair/lf-certificate-mat
 import { useTranslation } from 'react-i18next';
 import DisableableButton from '../../components/DisablebleButton';
 import { ProgressSpinnerModal } from '../../components/ProgressSpinnerModal';
-
-function downloadFile(name: string, path: string) {
-    const link = document.createElement('a');
-    link.href = path;
-    link.download = name;
-    link.click();
-}
+import { downloadFile } from '../../helper/download-file';
 
 type Certificate = Pick<
     Participation_Certificate,

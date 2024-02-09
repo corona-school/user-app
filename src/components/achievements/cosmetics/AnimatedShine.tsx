@@ -21,6 +21,7 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
     const [firstRender, setFirstRender] = useState(true);
     const [positionY, setPositionY] = useState(positionTop);
     const [startAnimation, setStartAnimation] = useState(true);
+    const [easingVlaue, setEasingValue] = useState(0);
     const intervalSpeed = (4000 / maxPositionY) * positionY * animationSpeed;
 
     useInterval(() => {
@@ -30,12 +31,13 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
         }
         setStartAnimation(!startAnimation);
     }, intervalSpeed);
+
     return (
         <Stack position="absolute" left={`calc(${positionLeft}% - ${relativeSize * 0.5}px)`} justifyContent="center" alignItems="center" top={thresholdY}>
             <PresenceTransition
                 style={{
                     position: 'absolute',
-                    opacity: startAnimation ? 1 : 0,
+                    opacity: startAnimation ? easingVlaue : 0,
                 }}
                 visible={startAnimation}
                 initial={{
@@ -44,7 +46,10 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
                 animate={{
                     translateY: thresholdY,
                     transition: {
-                        easing: (value: number) => value * 1,
+                        easing: (value: number) => {
+                            setEasingValue(1.2 - value);
+                            return value;
+                        },
                         duration: intervalSpeed,
                     },
                 }}
@@ -56,7 +61,7 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
             <PresenceTransition
                 style={{
                     position: 'absolute',
-                    opacity: startAnimation ? 0 : 1,
+                    opacity: startAnimation ? 0 : easingVlaue,
                 }}
                 visible={!startAnimation}
                 initial={{
@@ -65,7 +70,10 @@ const AnimatedShine: React.FC<AnimatedShineProps> = ({ initialSize, positionLeft
                 animate={{
                     translateY: thresholdY,
                     transition: {
-                        easing: (value: number) => value * 1,
+                        easing: (value: number) => {
+                            setEasingValue(1.2 - value);
+                            return value;
+                        },
                         duration: intervalSpeed,
                     },
                 }}

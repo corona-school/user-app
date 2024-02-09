@@ -37,7 +37,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
     const [showDeclineModal, setShowDeclineModal] = useState<boolean>(false);
     const navigate = useNavigate();
 
-    const test = appointment.subcourseId;
     const containerWidth = useBreakpointValue({
         base: 'full',
         lg: sizes['containerWidth'],
@@ -138,7 +137,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     appointmentType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
                     subcourseId={appointment.subcourseId}
-                    matchId={appointment.matchId ?? 0}
+                    matchId={appointment.matchId ?? undefined}
                 />
                 <Description description={appointment.description} />
 
