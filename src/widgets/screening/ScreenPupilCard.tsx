@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { Button, Heading, HStack, Modal, Radio, Stack, Text, TextArea, useTheme, VStack } from 'native-base';
+import { Button, ChevronRightIcon, Heading, HStack, Modal, Radio, Stack, Text, TextArea, useTheme, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -7,7 +7,7 @@ import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
 import { SubjectTagList } from '../../components/SubjectTag';
 import { gql } from '../../gql';
-import { PupilScreeningStatus, Pupil_Screening_Status_Enum, Subject } from '../../gql/graphql';
+import { PupilScreeningStatus, Pupil_Languages_Enum, Pupil_Screening_Status_Enum, Subject } from '../../gql/graphql';
 import { ConfirmModal } from '../../modals/ConfirmModal';
 import { PupilForScreening, PupilScreening } from '../../types';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
@@ -16,6 +16,9 @@ import { ScreeningSuggestionCard } from './ScreeningSuggestionCard';
 import { useUser, useRoles } from '../../hooks/useApollo';
 import { SubjectSelector } from '../SubjectSelector';
 import { EditSubjectsModal } from './EditSubjectsModal';
+import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
+import { EditGradeModal } from './EditGradeModal';
+import { EditLanguagesModal } from './EditLanguagesModal';
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
@@ -220,6 +223,18 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
     );
 }
 
+const UPDATE_SUBJECTS_QUERY = gql(`
+mutation PupilUpdateSubjects($pupilId: Float!, $data: PupilUpdateSubjectsInput!) { pupilUpdateSubjects(pupilId: $pupilId, data: $data) }
+`);
+
+const UPDATE_GRADE_QUERY = gql(`
+    mutation PupilUpdateGrade($pupilId: Float!, $gradeAsInt: Int!) { pupilUpdate(pupilId: $pupilId, data: { gradeAsInt: $gradeAsInt }) }
+`);
+
+const UPDATE_LANGUAGES_QUERY = gql(`
+    mutation PupilUpdateLanguages($pupilId: Float!, $languages: [Language!]) { pupilUpdate(pupilId: $pupilId, data: { languages: $languages }) }
+`);
+
 export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; refresh: () => void }) {
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -241,19 +256,38 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     );
 
     const [showEditSubjects, setShowEditSubjects] = useState(false);
-    const [mutationUpdateSubjects, {}] = useMutation(
-        gql(`
-            mutation PupilUpdateSubjects($pupilId: Float!, $data: PupilUpdateSubjectsInput!) { pupilUpdateSubjects(pupilId: $pupilId, data: $data) }
-        `)
-    );
+    const [showEditLanguages, setShowEditLanguages] = useState(false);
+    const [showEditGrade, setShowEditGrade] = useState(false);
 
-    const prioritizedSubject = useMemo(() => pupil?.subjectsFormatted?.find((s) => s.mandatory), [pupil.subjectsFormatted]);
+    const [mutationUpdateSubjects, {}] = useMutation(UPDATE_SUBJECTS_QUERY);
+
+    const [mutationUpdateGrade, {}] = useMutation(UPDATE_GRADE_QUERY);
+
+    const [mutationUpdateLanguages, {}] = useMutation(UPDATE_LANGUAGES_QUERY);
 
     function updateSubjects(newSubjects: Subject[]) {
         mutationUpdateSubjects({
             variables: {
                 pupilId: pupil!.id,
                 data: { subjects: newSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })) },
+            },
+        }).then(refresh);
+    }
+
+    function updateGrade(grade: number) {
+        mutationUpdateGrade({
+            variables: {
+                pupilId: pupil.id,
+                gradeAsInt: grade,
+            },
+        }).then(refresh);
+    }
+
+    function updateLanguages(languages: Pupil_Languages_Enum[]) {
+        mutationUpdateLanguages({
+            variables: {
+                pupilId: pupil.id,
+                languages: languages as any,
             },
         }).then(refresh);
     }
@@ -315,20 +349,21 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 <Text fontSize="20px" lineHeight="50px">
                     {pupil.grade} -{' '}
                 </Text>
+                <Button variant="outline" onPress={() => setShowEditGrade(true)}>
+                    <EditIcon />
+                </Button>
                 <LanguageTagList languages={pupil.languages} />
+                <Button variant="outline" onPress={() => setShowEditLanguages(true)}>
+                    <EditIcon />
+                </Button>
                 <Text fontSize="20px" lineHeight="50px">
                     {' '}
                     -{' '}
                 </Text>
                 <Stack direction="row" space={space['1']}>
                     <SubjectTagList subjects={pupil.subjectsFormatted} />
-                    <Button
-                        marginLeft={2}
-                        onPress={() => {
-                            setShowEditSubjects(!showEditSubjects);
-                        }}
-                    >
-                        Bearbeiten
+                    <Button variant="outline" onPress={() => setShowEditSubjects(true)}>
+                        <EditIcon />
                     </Button>
                 </Stack>
             </HStack>
@@ -344,6 +379,9 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 </HStack>
             )}
             {showEditSubjects && <EditSubjectsModal onClose={() => setShowEditSubjects(false)} subjects={pupil.subjectsFormatted} store={updateSubjects} />}
+            {showEditGrade && <EditGradeModal grade={pupil.gradeAsInt} store={updateGrade} onClose={() => setShowEditGrade(false)} />}
+            {showEditLanguages && <EditLanguagesModal languages={pupil.languages} store={updateLanguages} onClose={() => setShowEditLanguages(false)} />}
+
             {!pupil.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
             {!screeningToEdit && (
                 <>

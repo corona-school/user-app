@@ -20,7 +20,7 @@ export type PupilScreening = Opt<Pick<Pupil_Screening, 'id' | 'createdAt' | 'upd
 
 export type PupilForScreening = Pick<
     Pupil,
-    'active' | 'id' | 'firstname' | 'lastname' | 'email' | 'createdAt' | 'subjectsFormatted' | 'languages' | 'grade'
+    'active' | 'id' | 'firstname' | 'lastname' | 'email' | 'createdAt' | 'subjectsFormatted' | 'languages' | 'grade' | 'gradeAsInt'
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];
