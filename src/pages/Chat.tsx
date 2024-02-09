@@ -33,7 +33,6 @@ const Chat: React.FC = () => {
         subject: '',
         conversationId: '',
     });
-
     const { session } = useChat();
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
@@ -87,13 +86,20 @@ const Chat: React.FC = () => {
 
     useEffect(() => {
         if (!session) return;
+
         const inbox = session.createInbox({
             showMobileBackButton: false,
             messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
         });
+
         inbox.mount(inboxRef.current);
-        inbox.select(conversationId ?? selectedChatId);
+        inbox.select(selectedChatId || conversationId);
         inbox.onCustomMessageAction('contact-support', (event) => handleContactSupport(event));
+        inbox.onConversationSelected((event) => {
+            if (!event.conversation?.id) return;
+            setSelectedChatId(event.conversation?.id.toString());
+        });
+
         inboxObject.current = inbox;
         if (isMobile) {
             inbox.onConversationSelected(({ conversation }) => {
@@ -101,7 +107,7 @@ const Chat: React.FC = () => {
                 setIsConversationSelected(false);
             });
         }
-    }, [session, selectedChatId]);
+    }, [t, conversationId, isMobile, selectedChatId, session]);
 
     return (
         <AsNavigationItem path="chat">
@@ -118,9 +124,14 @@ const Chat: React.FC = () => {
             >
                 {!isConverstationSelected && <FloatingActionButton handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />}
 
-                <Box h="90%" pl={isMobile ? 2 : 0} pb={isMobile ? 5 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
+                <Box h="85%" pl={isMobile ? 2 : 0} pb={isMobile ? 5 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
                 <Modal isOpen={isContactModalOpen} onClose={onClose}>
-                    <ChatContactsModal onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
+                    <ChatContactsModal
+                        onClose={onClose}
+                        setChatId={(id: string) => {
+                            setSelectedChatId(id);
+                        }}
+                    />
                 </Modal>
                 <ContactSupportModal
                     isOpen={isSupportContactModalOpen}
