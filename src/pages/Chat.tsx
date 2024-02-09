@@ -11,7 +11,7 @@ import { useChat } from '../context/ChatContext';
 import { useLocation } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import ContactSupportModal, { ReportInfos } from '../modals/ContactSupportModal';
+import { ChatContactSupportModal, ReportInfos } from '../modals/ChatContactSupportModal';
 import { Inbox, MessageActionEvent } from 'talkjs/all';
 import { DateTime } from 'luxon';
 
@@ -122,7 +122,7 @@ const Chat: React.FC = () => {
                 <Modal isOpen={isContactModalOpen} onClose={onClose}>
                     <ChatContactsModal onClose={onClose} setChatId={(id: string) => setSelectedChatId(id)} />
                 </Modal>
-                <ContactSupportModal
+                <ChatContactSupportModal
                     isOpen={isSupportContactModalOpen}
                     onClose={() => {
                         setIsSupportContactModalOpen(false);
