@@ -240,7 +240,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const { t } = useTranslation();
     const myRoles = useRoles();
 
-    const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId) }`));
+    const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId, silent: true) }`));
 
     const [confirmDeactivation, setConfirmDeactivation] = useState(false);
     const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(
