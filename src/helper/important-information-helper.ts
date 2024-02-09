@@ -26,6 +26,7 @@ export enum NextStepLabelType {
     WELCOME = 'willkommen',
     VERIFY = 'verifizierung',
     GET_FAMILIAR = 'kennenlernen',
+    PUPIL_FIRST_SCREENING = 'pupilFirstScreening',
     PUPIL_SCREENING = 'pupilScreening',
     INTEREST_CONFIRMATION = 'interestconfirmation',
     STATUS_PUPIL = 'statusSchüler',

@@ -71,7 +71,7 @@ const RequestMatching: React.FC = () => {
 
     useEffect(() => {
         trackPageView({
-            documentTitle: 'Schüler Matching',
+            documentTitle: 'Helfer Matching',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

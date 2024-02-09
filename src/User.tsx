@@ -1,8 +1,9 @@
 import { useLocation, Navigate } from 'react-router-dom';
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
-import useApollo, { ExtendedApolloContext, LFApollo } from './hooks/useApollo';
+import useApollo, { ExtendedApolloContext, LFApollo, useRoles } from './hooks/useApollo';
 import VerifyEmailModal from './modals/VerifyEmailModal';
 import { useApolloClient } from '@apollo/client';
+import { Role } from './types/lernfair/User';
 
 export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element; isRetainPath?: boolean }) => {
     const location = useLocation();
@@ -23,6 +24,17 @@ export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element;
 
     return <Navigate to="/welcome" state={{ from: location }} replace />;
 };
+
+// Always wrap in a RequireAuth component
+export function RequireRole({ roles, children }: { roles: Role[]; children: JSX.Element }) {
+    const actualRoles = useRoles();
+
+    if (roles.some((role) => actualRoles.includes(role))) {
+        return children;
+    }
+
+    return <Navigate to="/" replace />;
+}
 
 export const SwitchUserType = ({
     pupilComponent,

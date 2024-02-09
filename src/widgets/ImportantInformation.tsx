@@ -244,7 +244,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Pupil Screening --------
         if (pupil && (wasInvited || notYetScreened)) {
             const pupil_url =
-                process.env.REACT_APP_PUPIL_SCREENING_URL +
+                (notYetScreened ? process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL : process.env.REACT_APP_PUPIL_SCREENING_URL) +
                 '?first_name=' +
                 encodeURIComponent(data?.me?.firstname ?? '') +
                 '&last_name=' +
@@ -256,7 +256,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 '&a2=' +
                 encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
             infos.push({
-                label: NextStepLabelType.PUPIL_SCREENING,
+                label: notYetScreened ? NextStepLabelType.PUPIL_FIRST_SCREENING : NextStepLabelType.PUPIL_SCREENING,
                 btnfn: [
                     () => {
                         window.open(pupil_url, '_blank');
