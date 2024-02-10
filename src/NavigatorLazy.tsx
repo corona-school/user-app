@@ -379,7 +379,9 @@ export default function NavigatorLazy() {
                 path="/confirm-certificate/:id"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<ConfirmCertificate />} studentComponent={<Dashboard />} />
+                        <RequireRole roles={['PUPIL']}>
+                            <ConfirmCertificate />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
