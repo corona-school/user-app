@@ -4,11 +4,12 @@ import useApollo, { ExtendedApolloContext, LFApollo, useRoles } from './hooks/us
 import VerifyEmailModal from './modals/VerifyEmailModal';
 import { useApolloClient } from '@apollo/client';
 import { Role } from './types/lernfair/User';
+import { RequireScreeningModal } from './modals/RequireScreeningModal';
 
 export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element; isRetainPath?: boolean }) => {
     const location = useLocation();
 
-    const { sessionState, user } = useApollo();
+    const { sessionState, user, roles } = useApollo();
 
     if (sessionState === 'logged-out') return <Navigate to="/welcome" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
 
@@ -17,7 +18,18 @@ export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element;
     if (sessionState === 'unknown' || !user) return <CenterLoadingSpinner />;
 
     if (sessionState === 'logged-in') {
-        if (user && !user.screener && !(user.pupil ?? user.student)!.verifiedAt) return <VerifyEmailModal email={user.email} />;
+        // Blocking Modals that require the user from accessing the UserApp:
+
+        // Require pupils and students to be verified
+        if (user && !user.screener && !(user.pupil ?? user.student)!.verifiedAt) {
+            return <VerifyEmailModal email={user.email} />;
+        }
+
+        // Require an initial screening for newly-registered pupils
+        // (maybe extend to students in the future)
+        if (user && user.pupil && !['TUTEE' as const, 'PARTICIPANT' as const].some((role) => roles.includes(role))) {
+            return <RequireScreeningModal />;
+        }
 
         return children;
     }
