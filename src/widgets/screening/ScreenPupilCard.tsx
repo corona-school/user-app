@@ -19,6 +19,24 @@ import { EditSubjectsModal } from './EditSubjectsModal';
 import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
 import { EditGradeModal } from './EditGradeModal';
 import { EditLanguagesModal } from './EditLanguagesModal';
+import DisableableButton from '../../components/DisablebleButton';
+
+const MISSED_SCREENING_QUERY = gql(
+    `mutation MissedScreening($pupilScreeningId: Float!, $comment: String!) { pupilMissedScreening(pupilScreeningId: $pupilScreeningId, comment: $comment) }`
+);
+
+const DEACTIVATE_ACCOUNT_QUERY = gql(`
+mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $pupilId) }
+`);
+
+const UPDATE_SCREENING_QUERY = gql(`
+mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: PupilScreeningStatus!) {
+    pupilUpdateScreening(pupilScreeningId: $id, data: {
+        comment: $screeningComment,
+        status: $status
+    })
+}
+`);
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
@@ -33,28 +51,9 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     const [confirmSuccess, setConfirmSuccess] = useState(false);
     const [confirmDeactivation, setConfirmDeactivation] = useState(false);
 
-    const [storeEdit, { loading, data }] = useMutation(
-        gql(`
-            mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: PupilScreeningStatus!) {
-                pupilUpdateScreening(pupilScreeningId: $id, data: {
-                    comment: $screeningComment,
-                    status: $status
-                })
-            }
-        `)
-    );
-
-    const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(
-        gql(`
-            mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $pupilId) }
-        `)
-    );
-
-    const [missedScreening, { loading: loadingMissedScreening, data: missedScreeningResult }] = useMutation(
-        gql(
-            `mutation MissedScreening($pupilScreeningId: Float!, $comment: String!) { pupilMissedScreening(pupilScreeningId: $pupilScreeningId, comment: $comment) }`
-        )
-    );
+    const [storeEdit, { loading, data }] = useMutation(UPDATE_SCREENING_QUERY);
+    const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(DEACTIVATE_ACCOUNT_QUERY);
+    const [missedScreening, { loading: loadingMissedScreening, data: missedScreeningResult }] = useMutation(MISSED_SCREENING_QUERY);
 
     // For privacy, we deliberately clear the comment field when storing the final decision:
 
@@ -63,7 +62,7 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
         storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection } });
     }
 
-    function success() {
+    async function success() {
         setConfirmSuccess(false);
         storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Success } });
     }
@@ -235,6 +234,10 @@ const UPDATE_LANGUAGES_QUERY = gql(`
     mutation PupilUpdateLanguages($pupilId: Float!, $languages: [Language!]) { pupilUpdate(pupilId: $pupilId, data: { languages: $languages }) }
 `);
 
+const REQUEST_MATCH_QUERY = gql(`
+    mutation PupilRequestMatch($pupilId: Float!) { pupilCreateMatchRequest(pupilId: $pupilId) }
+`);
+
 export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; refresh: () => void }) {
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -260,10 +263,9 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [showEditGrade, setShowEditGrade] = useState(false);
 
     const [mutationUpdateSubjects, {}] = useMutation(UPDATE_SUBJECTS_QUERY);
-
     const [mutationUpdateGrade, {}] = useMutation(UPDATE_GRADE_QUERY);
-
     const [mutationUpdateLanguages, {}] = useMutation(UPDATE_LANGUAGES_QUERY);
+    const [requestMatch, { loading: loadingRequestMatch }] = useMutation(REQUEST_MATCH_QUERY);
 
     function updateSubjects(newSubjects: Subject[]) {
         mutationUpdateSubjects({
@@ -419,6 +421,18 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             )}
             {screeningToEdit && <EditScreening pupil={pupil} screening={screeningToEdit} />}
             {screeningToEdit && <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} />}
+            <HStack>
+                {pupil.openMatchRequestCount > 0 && <Text bold>{pupil.openMatchRequestCount} Matchanfragen</Text>}
+                <DisableableButton
+                    isDisabled={loadingRequestMatch || (needsScreening && !screeningToEdit)}
+                    reasonDisabled="Zuerst muss ein Screening angelegt werden"
+                    onPress={() => {
+                        requestMatch({ variables: { pupilId: pupil.id } }).then(refresh);
+                    }}
+                >
+                    Match anfragen
+                </DisableableButton>
+            </HStack>
             <PupilHistory pupil={pupil} previousScreenings={previousScreenings} />
         </VStack>
     );

@@ -115,6 +115,7 @@ export function ScreeningDashboard() {
                     subjectsFormatted { name mandatory }
                     grade
                     gradeAsInt
+                    openMatchRequestCount
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -186,6 +187,7 @@ export function ScreeningDashboard() {
                 subjectsFormatted { name }
                 grade
                 gradeAsInt
+                openMatchRequestCount
                 matches {
                     createdAt
                     student { firstname lastname }
