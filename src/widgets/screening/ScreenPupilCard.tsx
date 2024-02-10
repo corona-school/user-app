@@ -238,6 +238,10 @@ const REQUEST_MATCH_QUERY = gql(`
     mutation PupilRequestMatch($pupilId: Float!) { pupilCreateMatchRequest(pupilId: $pupilId) }
 `);
 
+const REVOKE_MATCH_REQUEST_QUERY = gql(`
+    mutation PupilRevokeMatchRequest($pupilId: Float!) { pupilDeleteMatchRequest(pupilId: $pupilId) }
+`);
+
 export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; refresh: () => void }) {
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -266,6 +270,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [mutationUpdateGrade, {}] = useMutation(UPDATE_GRADE_QUERY);
     const [mutationUpdateLanguages, {}] = useMutation(UPDATE_LANGUAGES_QUERY);
     const [requestMatch, { loading: loadingRequestMatch }] = useMutation(REQUEST_MATCH_QUERY);
+    const [revokeMatchRequest, { loading: loadingRevokeMatchRequest }] = useMutation(REVOKE_MATCH_REQUEST_QUERY);
 
     function updateSubjects(newSubjects: Subject[]) {
         mutationUpdateSubjects({
@@ -421,8 +426,8 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             )}
             {screeningToEdit && <EditScreening pupil={pupil} screening={screeningToEdit} />}
             {screeningToEdit && <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} />}
-            <HStack>
-                {pupil.openMatchRequestCount > 0 && <Text bold>{pupil.openMatchRequestCount} Matchanfragen</Text>}
+            <HStack space={space['1']}>
+                <VStack padding={space['1']}>{pupil.openMatchRequestCount > 0 && <Text bold>{pupil.openMatchRequestCount} Matchanfragen</Text>}</VStack>
                 <DisableableButton
                     isDisabled={loadingRequestMatch || (needsScreening && !screeningToEdit)}
                     reasonDisabled="Zuerst muss ein Screening angelegt werden"
@@ -431,6 +436,16 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                     }}
                 >
                     Match anfragen
+                </DisableableButton>
+                <DisableableButton
+                    variant="outline"
+                    isDisabled={loadingRevokeMatchRequest || pupil.openMatchRequestCount === 0}
+                    reasonDisabled="Keine offene Matchanfrage"
+                    onPress={() => {
+                        revokeMatchRequest({ variables: { pupilId: pupil.id } }).then(refresh);
+                    }}
+                >
+                    Anfrage zurücknehmen
                 </DisableableButton>
             </HStack>
             <PupilHistory pupil={pupil} previousScreenings={previousScreenings} />
