@@ -458,10 +458,6 @@ const CreateCourse: React.FC = () => {
             if (!tagsRes.data.courseSetTags && tagsRes.errors) {
                 errors.push('tags');
             }
-
-            if (alsoSubmit) {
-                await submitCourse({ variables: { courseId } });
-            }
             /**
              * Subcourse Creation
              */
@@ -498,6 +494,13 @@ const CreateCourse: React.FC = () => {
                         errors.push('instructors');
                     }
                 }
+            }
+
+            /**
+             * Submit Course after creation of course and subcourses
+             */
+            if (alsoSubmit) {
+                await submitCourse({ variables: { courseId } });
             }
 
             /**
