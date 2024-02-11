@@ -10,7 +10,6 @@ type FormularProps = {};
 
 const ContactSupportForm: React.FC<FormularProps> = () => {
     const [subject, setSubject] = useState<string>('');
-    const [dsgvo, setDSGVO] = useState<boolean>(false);
     const [message, setMessage] = useState<string>('');
     const [messageSent, setMessageSent] = useState<boolean>();
     const [showError, setShowError] = useState<boolean>();
@@ -51,7 +50,7 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
     }, [contactSupport, message, subject]);
 
     const isButtonDisabled = () => {
-        return !dsgvo || message?.length < 5 || subject?.length < 5;
+        return message?.length < 5 || subject?.length < 5;
     };
 
     const reasonDisabled = () => {
@@ -59,7 +58,6 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
 
         if (subject?.length < 5) return reasons[0];
         if (message?.length < 5) return reasons[1];
-        if (!dsgvo) return reasons[2];
 
         return '';
     };
@@ -68,8 +66,10 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
         <View paddingLeft={space['1.5']}>
             <>
                 <Heading paddingBottom={space['0.5']}>{t('helpcenter.contact.title')}</Heading>
-                <Text paddingBottom={space['1.5']}>{t('helpcenter.contact.content')}</Text>
-
+                <Text paddingBottom={space['0.5']}>{t('helpcenter.contact.content')}</Text>
+                <Text paddingBottom={space['1.5']} fontSize="xs">
+                    {t('contactSupport.legalNote')}
+                </Text>
                 <FormControl maxWidth={ContentContainerWidth}>
                     <Row flexDirection="column" paddingY={space['0.5']}>
                         <FormControl.Label>{t('helpcenter.contact.subject.label')}</FormControl.Label>
@@ -89,23 +89,7 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
             </>
 
             <FormControl>
-                <Row flexDirection="column" paddingY={space['1.5']}>
-                    <Checkbox value="dsgvo" isChecked={dsgvo} onChange={(val) => setDSGVO(val)}>
-                        <Text>
-                            Ich habe die <Link onPress={() => window.open('/datenschutz', '_blank')}> Datenschutzbestimmungen</Link> zur Kenntnis genommen und
-                            bin damit einverstanden, dass meine persönlichen Daten entsprechend des Zwecks, Umfangs und der Dauer wie in der
-                            Datenschutzerklärung angegeben, verarbeitet und gespeichert werden. Ich nehme zur Kenntnis, dass die Verarbeitung meiner
-                            personenbezogenen Daten über die in den USA sitzenden Auftragsverarbeitern Google und Zapier stattfindet, die die Einhaltung des
-                            europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu
-                            diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2
-                            lit. c DSGVO. Alternativ ist eine Kontaktierung per E-Mail an{' '}
-                            <Link onPress={() => (window.location.href = 'mailto:support@lern-fair.de?subject=Kontakt%20Userbereich')}>
-                                support@lern-fair.de
-                            </Link>{' '}
-                            möglich.
-                        </Text>
-                    </Checkbox>
-                </Row>
+                <Row flexDirection="column" paddingY={space['1.5']}></Row>
 
                 <Row flexDirection="column" paddingY={space['0.5']}>
                     {messageSent && <AlertMessage content={t('helpcenter.contact.success')} />}
