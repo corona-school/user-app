@@ -2164,7 +2164,8 @@
         "submit": "Anfrage senden",
         "disabled": "Bitte fülle das Formular aus",
         "success": "Deine Nachricht wurde erfolgreich versendet",
-        "failure": "Ein Fehler ist aufgetreten"
+        "failure": "Ein Fehler ist aufgetreten",
+        "legalNote": "Zur Bearbeitung von Support-Anfragen nutzen wir Google Workspace."
     },
     "logout": "Abmelden"
 }

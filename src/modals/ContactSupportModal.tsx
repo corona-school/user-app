@@ -51,6 +51,7 @@ export const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen }) =
                 <Modal.Header>{t('contactSupport.title')}</Modal.Header>
                 <Modal.Body>
                     <Text paddingBottom={space['1.5']}>{t('contactSupport.content')}</Text>
+                    <Text fontSize="xs">{t('contactSupport.legalNote')}</Text>
 
                     <FormControl>
                         <Row flexDirection="column" paddingY={space['0.5']}>
