@@ -326,7 +326,7 @@ const Dashboard: React.FC<Props> = () => {
                                 )}
 
                             {/* Suggestions */}
-                            {roles.includes('PARTICIPANT') && data?.subcoursesPublic?.length && (
+                            {roles.includes('PARTICIPANT') && (data?.subcoursesPublic?.length ?? 0 > 0) && (
                                 <HSection
                                     marginBottom={space['1.5']}
                                     title={t('dashboard.relatedcontent.header')}
