@@ -161,6 +161,9 @@ const Registration: React.FC = () => {
 
             if (!result.errors) {
                 show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} />);
+
+                // Remove /registration from the URL so that a refresh of the page won't show the registration form again
+                window.history.replaceState({}, '', '/');
             } else {
                 show(
                     { variant: 'dark' },

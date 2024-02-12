@@ -1,0 +1,36 @@
+import { Canvas, Meta, Story } from '@storybook/addon-docs';
+import NextStepsCard from './NextStepsCard';
+import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
+import NextStepsExample01 from '../../../assets/images/achievements/Next_Steps_Example_01.png';
+import IconVideoKonf from '../../../assets/images/achievements/Icon_VideoKonf.png';
+
+<Meta title="Achievements/NextStepsCard" component={NextStepsCard} />
+
+-   A Next Steps Card is a UI Component that shows tasks to be finished in the application.
+
+# Next Steps Card
+
+<Story name="Next Steps Card">
+    <NextStepsCard
+        image={NextStepsExample01}
+        title="Mathe Grundkurs"
+        name="Kurs anbieten"
+        maxSteps={4}
+        currentStep={1}
+        actionDescription="Jetzt zur Prüfung freigeben"
+        actionType={Achievement_Action_Type_Enum.Action}
+    />
+</Story>
+
+# Next Steps Card Description
+
+<Story name="Next Steps Card Description">
+    <NextStepsCard
+        image={IconVideoKonf}
+        title="Weitere Engagement-Möglichkeiten"
+        name="Lust auf mehr?"
+        description="Möchtest du weitere Schüler:innen un-terstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an."
+        actionDescription="Jetzt Möglichkeiten ansehen"
+        actionType={Achievement_Action_Type_Enum.Action}
+    />
+</Story>
