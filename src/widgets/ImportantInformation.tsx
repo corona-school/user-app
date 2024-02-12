@@ -10,8 +10,8 @@ import HSection from './HSection';
 import { BACKEND_URL } from '../config';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
-import { ConfirmCertificate } from './certificates/ConfirmCertificate';
 import { SuccessModal } from '../modals/SuccessModal';
+import { CertificateConfirmationBox } from './certificates/CertificateConfirmationBox';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -303,7 +303,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     () => {
                         show(
                             { variant: 'light', closeable: true, headline: t('matching.certificate.titleRequest') },
-                            <ConfirmCertificate certificate={certificate} />
+                            <CertificateConfirmationBox certificate={certificate} />
                         );
                     },
                 ],
