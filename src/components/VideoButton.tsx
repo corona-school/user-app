@@ -43,19 +43,12 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         `),
         { variables: { appointmentId } }
     );
-    const [matchMeetingJoin] = useMutation(
+    const [joinMeeting] = useMutation(
         gql(`
-        mutation JoinMatchMeeting($matchId: Float!) { 
-	        matchMeetingJoin(matchId: $matchId)
-        }
-    `)
-    );
-    const [subcourseMeetingJoin] = useMutation(
-        gql(`
-        mutation JoinSubcourseMeeting($subcourseId: Float!) { 
-	        subcourseMeetingJoin(subcourseId: $subcourseId)
-        }
-    `)
+            mutation JoinMeeting($appointmentId: Float!) { 
+                appointmentTrackJoin(appointmentId: $appointmentId)
+            }
+        `)
     );
     const openMeeting = async () => {
         const data = await loadLink();
@@ -67,8 +60,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         }
     };
     const onPress = async () => {
-        if (appointmentType === Lecture_Appointmenttype_Enum.Match && matchId) await matchMeetingJoin({ variables: { matchId } });
-        if (appointmentType === Lecture_Appointmenttype_Enum.Group && subcourseId) await subcourseMeetingJoin({ variables: { subcourseId } });
+        if (appointmentId) await joinMeeting({ variables: { appointmentId } });
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
     };
     return (
