@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Stack, Tooltip, Text, useBreakpointValue, useToast } from 'native-base';
+import { Box, Button, Checkbox, Stack, useBreakpointValue, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import WeeklyAppointments from './WeeklyAppointments';
@@ -6,7 +6,7 @@ import AppointmentForm from './AppointmentForm';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
@@ -20,6 +20,7 @@ export type FormErrors = {
     description?: string;
     dateNotInOneWeek?: string;
     timeNotInFiveMin?: string;
+    videoChat?: string;
 };
 
 export type StartDate = {
@@ -96,6 +97,13 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         } else {
             delete errors.time;
         }
+
+        // if (!appointmentToCreate.meetingLink) {
+        //     setErrors({ ...errors, videoChat: t('appointment.errors.videoChat') });
+        //     return false;
+        // } else {
+        //     delete errors.videoChat;
+        // }
         if (appointmentToCreate.duration === 0) {
             setErrors({ ...errors, duration: t('appointment.errors.duration') });
             return false;
@@ -134,7 +142,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: '',
+                        meetingLink: appointmentToCreate.meetingLink,
                         subcourseId: courseOrMatchId!,
                         appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
@@ -164,7 +172,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: '',
+                meetingLink: appointmentToCreate.meetingLink,
                 subcourseId: courseOrMatchId ? courseOrMatchId : 1,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
@@ -180,7 +188,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: '',
+                        meetingLink: appointmentToCreate.meetingLink,
                         subcourseId: courseOrMatchId ? courseOrMatchId : 1,
                         appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
@@ -189,6 +197,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 appointments.push(...weeklyAppointments);
             }
 
+            console.log('APPOINTMENTS', appointments);
             await createGroupAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
@@ -212,7 +221,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: '',
+                meetingLink: appointmentToCreate.meetingLink,
                 matchId: courseOrMatchId ? courseOrMatchId : 1,
                 appointmentType: Lecture_Appointmenttype_Enum.Match,
             };
@@ -236,6 +245,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 }
                 appointments.push(...weeklyAppointments);
             }
+            console.log('APPOINTMENTS', appointments);
 
             await createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
 

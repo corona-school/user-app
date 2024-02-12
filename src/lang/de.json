@@ -85,7 +85,8 @@
             "emptyDateError": "Datum darf nicht leer sein",
             "wrongDateError": "Datum kann frühestens in einer Woche sein",
             "emptyTimeError": "Zeit darf nicht leer sein",
-            "courseImageAltText": "Kursbild"
+            "courseImageAltText": "Kursbild",
+            "videoChatLabel": "Video-Chat"
         },
         "detail": {
             "group": "Gruppentermin mit {{instructor}}",
@@ -128,7 +129,8 @@
             "dateMinOneWeek": "Datum kann frühestens in einer Woche sein",
             "timeNotInFiveMin": "Zeit kann frühestens in 5 Minuten sein",
             "time": "Zeit darf nicht leer sein",
-            "duration": "Dauer darf nicht leer sein"
+            "duration": "Dauer darf nicht leer sein",
+            "videoChat": "Videochat muss gewählt sein"
         }
     },
     "visitcourse": "zum Kurs",

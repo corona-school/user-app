@@ -31,6 +31,7 @@ const createAppointmentFormReducer: Reducer<State, CreateAppointmentAction> = (s
                 date: '',
                 time: '',
                 duration: 0,
+                meetingLink: '',
                 isRecurring: false,
             };
         }
