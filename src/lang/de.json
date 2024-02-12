@@ -117,10 +117,17 @@
             }
         },
         "zoomModal": {
-            "header": "Zoom Meeting",
-            "description": "Wie möchtest du dein Zoom Meeting öffnen?",
+            "header": "Hinweise zum Videochat",
             "browser": "Im Browser fortfahren",
-            "zoomClient": "In Zoom App öffnen"
+            "zoomClient": "In Zoom öffnen",
+            "useZoomApp": {
+                "header": "Nutze die Zoom App",
+                "description": "Tipp: Öffne den Videochat in der Zoom-App. <br/> Einige Funktionen fehlen, wenn du Zoom im Browser verwendest."
+            },
+            "camera": {
+                "header": "Kamera an",
+                "description": "Wenn es geht, mache bitte deine Kamera an."
+            }
         },
         "attendeesModal": {
             "title": "Teilnehmer:innen",
