@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -379,8 +379,10 @@ const AppointmentCard: React.FC<Props> = ({
                                         <VideoButton
                                             appointmentId={appointmentId}
                                             appointmentType={appointmentType}
+                                            startDateTime={_dateNext}
+                                            duration={duration}
                                             isInstructor={isOrganizer}
-                                            canJoinMeeting={isCurrent}
+                                            canJoin={isCurrent}
                                         />
                                     </VStack>
                                 )}
