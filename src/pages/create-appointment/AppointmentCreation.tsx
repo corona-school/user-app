@@ -33,12 +33,22 @@ type Props = {
     isCourse?: boolean;
     isCourseCreation?: boolean;
     appointmentsTotal?: number;
+    overrideMeetingLink?: string;
     back: () => void;
     closeModal?: () => void;
     navigateToMatch?: () => Promise<void>;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse, isCourseCreation, appointmentsTotal, closeModal, navigateToMatch }) => {
+const AppointmentCreation: React.FC<Props> = ({
+    back,
+    courseOrMatchId,
+    isCourse,
+    isCourseCreation,
+    appointmentsTotal,
+    overrideMeetingLink,
+    closeModal,
+    navigateToMatch,
+}) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
@@ -197,7 +207,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 appointments.push(...weeklyAppointments);
             }
 
-            console.log('APPOINTMENTS', appointments);
             await createGroupAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
@@ -245,7 +254,6 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 }
                 appointments.push(...weeklyAppointments);
             }
-            console.log('APPOINTMENTS', appointments);
 
             await createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
 
@@ -277,6 +285,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     setTimeSelected(true);
                 }}
                 isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
+                overrideMeetingLink={overrideMeetingLink}
             />
             {dateSelected && timeSelected && (
                 <Box py="5">

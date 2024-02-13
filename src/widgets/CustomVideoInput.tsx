@@ -7,12 +7,13 @@ import ZoomIcon from '../assets/icons/zoom-logo.svg';
 
 type CustomVideoInputProps = {
     inputValue?: string;
+    overrideMeetingLink: string | undefined;
     handleInput?: (e: any) => void;
     handleBlur?: (e: any) => void;
     clearInput?: () => void;
 };
 
-const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, handleBlur, handleInput, clearInput }) => {
+const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, overrideMeetingLink, handleBlur, handleInput, clearInput }) => {
     const [videoChatType, setVideoChatType] = useState<string>('');
 
     const { t } = useTranslation();
@@ -22,10 +23,16 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, handleB
         clearInput && item === 'Zoom' && clearInput();
         setVideoChatType(item);
     };
+
     return (
         <Stack space={1}>
             <FormControl>
-                <CustomSelect placeholder="Videochat" onValueChange={handleValueChange}>
+                <CustomSelect
+                    placeholder="Videochat"
+                    onValueChange={handleValueChange}
+                    selectedValue={overrideMeetingLink ? 'Link' : undefined}
+                    isDisabled={overrideMeetingLink ? true : false}
+                >
                     <Select.Item value="Zoom" label={'          Zoom Meeting (automatisch generieren)'} />
                     <Select.Item value="Link" label={'Eigenen Meeting Link'} />
                 </CustomSelect>
@@ -44,7 +51,7 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, handleB
                     borderBottomRightRadius={5}
                     borderTopRightRadius={5}
                     placeholder={'Hinterlege deinen eigenen Link zum Videochat'}
-                    value={inputValue}
+                    value={overrideMeetingLink ? overrideMeetingLink : inputValue}
                     onBlur={handleBlur}
                     isDisabled={videoChatType === 'Zoom' || videoChatType === ''}
                 />

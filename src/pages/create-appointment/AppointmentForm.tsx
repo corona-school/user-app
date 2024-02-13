@@ -15,11 +15,12 @@ import CustomVideoInput from '../../widgets/CustomVideoInput';
 type FormProps = {
     errors: FormErrors;
     appointmentsCount: number;
+    overrideMeetingLink: string | undefined;
     onSetDate: () => void;
     onSetTime: () => void;
     isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, onSetTime, isCourse }) => {
+const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, overrideMeetingLink, onSetTime, isCourse }) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -175,6 +176,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                                 dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'meetingLink', value: meetingLink });
                             }}
                             clearInput={clearVideoInput}
+                            overrideMeetingLink={overrideMeetingLink}
                         />
                         {'videoChat' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>Bitte wähle ein Videochat.</FormControl.ErrorMessage>

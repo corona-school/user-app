@@ -16,6 +16,7 @@ const CreateAppointment = () => {
     const [courseOrMatchId, setCourseOrMatchId] = useState<number>(0);
     const [isCourse, setIsCourse] = useState<boolean>(false);
     const [appointmentsTotal, setAppointmentsTotal] = useState<number>(0);
+    const [overrideMeetingLink, setOverrideMeetingLink] = useState<string | undefined>(undefined);
 
     const { t } = useTranslation();
 
@@ -89,6 +90,7 @@ const CreateAppointment = () => {
                                 next={onNext}
                                 back={onBack}
                                 setAppointmentsTotal={setAppointmentsTotal}
+                                setOverrideMeetingLink={setOverrideMeetingLink}
                             />
                         )}
                         {currentIndex === 2 && (
@@ -98,6 +100,7 @@ const CreateAppointment = () => {
                                     courseOrMatchId={courseOrMatchId}
                                     isCourse={isCourse}
                                     appointmentsTotal={appointmentsTotal}
+                                    overrideMeetingLink={overrideMeetingLink}
                                 />
                             </Box>
                         )}

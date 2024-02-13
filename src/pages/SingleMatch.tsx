@@ -6,7 +6,7 @@ import MatchPartner from './match/MatchPartner';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { gql } from '../gql/gql';
+import { gql } from './../gql';
 import { useUserType } from '../hooks/useApollo';
 import { Dissolve_Reason, Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -66,6 +66,7 @@ query SingleMatch($matchId: Int! ) {
             displayName
             isOrganizer
             isParticipant
+            override_meeting_link
             organizers(skip: 0, take: 5) {
                 id
                 firstname
@@ -210,6 +211,7 @@ const SingleMatch = () => {
                                     isCourse={false}
                                     appointmentsTotal={appointments.length}
                                     navigateToMatch={async () => await goBackToMatch()}
+                                    overrideMeetingLink={appointments[0].override_meeting_link ?? undefined}
                                 />
                             ) : (
                                 <>
