@@ -1203,7 +1203,7 @@
         "pupilNewMatch": {
             "name": "Neue Lernuntersützung",
             "subtitle": "Nachhilfe",
-            "actionName": "Du bist auf der Warteliste",
+            "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
             "description": "Damit wir dir den:die perfekte:n Lernpartner:in zuweisen können, musst du zunächst eine Anfrage auf unserer Plattform stellen. Dort kannst du ganz einfach die Fächer angeben, die für dich wichtig sind und in denen wir dir helfen können. Wir freuen uns darauf, mit dir gemeinsam durchzustarten und die Lernreise zu beginnen!",
             "stepname": {
