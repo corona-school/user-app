@@ -7,7 +7,6 @@ import AchievementModal from '../components/achievements/modals/AchievementModal
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
-import { customSort } from '../helper/achievement-helper';
 import EmptyStateContainer from '../components/achievements/EmptyStateContainer';
 
 type AchievementProgressProps = {
@@ -25,12 +24,8 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
     );
 
     const streaks: Achievement[] = useMemo(() => {
-        const allStreaks: Achievement[] = [];
-        achievements.forEach((achievement) => {
-            if (achievement.achievementType === Achievement_Type_Enum.Streak) {
-                allStreaks.push(achievement);
-            }
-        });
+        const allStreaks: Achievement[] = achievements.filter((it) => it.achievementType === Achievement_Type_Enum.Streak);
+
         return allStreaks;
     }, [achievements]);
 
@@ -53,11 +48,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
         return elements;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [achievements]);
-    const states = Object.keys(Achievement_State)
-        .map((key) => {
-            return Achievement_State[key as keyof typeof Achievement_State];
-        })
-        .sort(customSort);
+    const states = [Achievement_State.Completed, Achievement_State.Active, Achievement_State.Inactive];
 
     const [collapsed, setCollapsed] = useState({
         [Achievement_Type_Enum.Streak]: false,
@@ -82,13 +73,13 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
     const mobile = useBreakpointValue({ base: true, md: false });
     useEffect(() => {
         if (!mobile) {
-            setCollapsed({
-                ...collapsed,
+            setCollapsed((prev) => ({
+                ...prev,
                 [Achievement_Type_Enum.Streak]: false,
                 [Achievement_State.Active]: false,
                 [Achievement_State.Completed]: false,
                 [Achievement_State.Inactive]: false,
-            });
+            }));
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mobile]);
@@ -124,9 +115,9 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
         md: '16px',
     });
 
-    const handleOnClick = (type?: Achievement_Type_Enum, state?: Achievement_State) => {
-        if (type && type === Achievement_Type_Enum.Streak) {
-            setCollapsed({ ...collapsed, [type]: !collapsed[type] });
+    const handleOnClick = (isStreak?: boolean, state?: Achievement_State) => {
+        if (isStreak) {
+            setCollapsed({ ...collapsed, [Achievement_Type_Enum.Streak]: !collapsed[Achievement_Type_Enum.Streak] });
         } else if (state) {
             setCollapsed({ ...collapsed, [state]: !collapsed[state] });
         }
@@ -158,10 +149,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
             <VStack space={spaceAfterHeadline}>
                 {streaks.length > 0 && (
                     <VStack space={spaceAfterHeadline} marginBottom={10}>
-                        <ProgressCollapsableHeadline
-                            achievementType={Achievement_Type_Enum.Streak}
-                            onClick={() => handleOnClick(Achievement_Type_Enum.Streak, undefined)}
-                        />
+                        <ProgressCollapsableHeadline achievementType={Achievement_Type_Enum.Streak} onClick={() => handleOnClick(true, undefined)} />
                         <Stack
                             direction={stackDirection}
                             space={cardSpace}
@@ -235,9 +223,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                                         alternativeText={''}
                                                         subtitle={achievement.subtitle || undefined}
                                                         title={achievement.name}
-                                                        progressDescription={
-                                                            achievement.steps ? achievement.steps[achievement.currentStep - 1]?.name : undefined
-                                                        }
+                                                        progressDescription={achievement.actionName || ''}
                                                         maxSteps={achievement.maxSteps}
                                                         currentStep={achievement.currentStep}
                                                         isNewAchievement={achievement.isNewAchievement || undefined}

@@ -2,7 +2,7 @@ import { Achievement_State } from '../gql/graphql';
 import FivePuzzlePieces from '../assets/images/achievements/five-puzzle-pieces.png';
 import ThreePuzzlePieces from '../assets/images/achievements/three-puzzle-pieces.png';
 
-const customSort = (a: Achievement_State, b: Achievement_State): number => {
+const sortAchievedFirst = (a: Achievement_State, b: Achievement_State): number => {
     const order = [Achievement_State.Completed, Achievement_State.Active, Achievement_State.Inactive];
 
     return order.indexOf(a) - order.indexOf(b);
@@ -27,4 +27,4 @@ const getPuzzleEmptyState = (piecesCount: PuzzlePieceType): string => {
     return image;
 };
 
-export { customSort, PuzzlePieceType, getPuzzleEmptyState };
+export { sortAchievedFirst, PuzzlePieceType, getPuzzleEmptyState };

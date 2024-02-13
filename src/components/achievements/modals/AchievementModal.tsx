@@ -62,7 +62,6 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     const modalBodyMaxWidth = useBreakpointValue({ base: '550px', lg: '820px' });
     const modalBodyHeight = useBreakpointValue({ base: '100vh', md: 'max-content', lg: '434px' });
     const modalBodyBorderRadius = useBreakpointValue({ base: '0', md: '8px' });
-    const modalBodyOverflow = useBreakpointValue({ base: 'scroll', lg: 'visible' });
     const modalBodyMarginTop = useBreakpointValue({ base: '0', md: '62px' });
     const contentMaxWidth = useBreakpointValue({ base: '550px', lg: '820px' });
     const contentSpace = useBreakpointValue({ base: 0, lg: 3 });
@@ -115,7 +114,6 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                 backgroundColor={backgroundColor}
                 borderRadius={modalBodyBorderRadius}
                 marginTop={achievementType === Achievement_Type_Enum.Tiered && achievementState === Achievement_State.Completed && modalBodyMarginTop}
-                overflow={modalBodyOverflow}
             >
                 <Box position="absolute" zIndex="1" right="20px" top="14px">
                     <Pressable onPress={onClose}>
@@ -298,9 +296,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             >
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
-                            <Link href={buttonLink} flex={1} backgroundColor="secondary.900" borderRadius={4} justifyContent="center" alignItems="center">
+                            <Button onPress={() => navigate(buttonLink)} flex={1} variant="solid">
                                 <Text>{buttonText}</Text>
-                            </Link>
+                            </Button>
                         </Stack>
                     ) : (
                         <Stack width="100%" direction={buttonAlignment} space={2} paddingTop="2">

@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { ConfirmCertificate as Component } from '../widgets/certificates/ConfirmCertificate';
+import { CertificateConfirmationBox } from '../widgets/certificates/CertificateConfirmationBox';
 import { useParams } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
 import { Box, Stack } from 'native-base';
@@ -49,7 +49,7 @@ const ConfirmCertificate: React.FC = () => {
             >
                 {certificate && (
                     <Box overflow="auto">
-                        <Component certificate={certificate} />
+                        <CertificateConfirmationBox certificate={certificate} />
                     </Box>
                 )}
             </WithNavigation>

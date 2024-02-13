@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon';
-import { Heading, Input, VStack } from 'native-base';
+import { Input, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Box, Card, FormControl, Text, useTheme } from 'native-base';
-import TextInput from '../../components/TextInput';
 import { Participation_Certificate } from '../../gql/graphql';
 import { YesNoSelector } from '../../components/YesNoSelector';
 import SignatureCanvas from 'react-signature-canvas';
@@ -219,7 +218,7 @@ function Sign({
     );
 }
 
-export function ConfirmCertificate({ certificate }: { certificate: CertificateToConfirm }) {
+export function CertificateConfirmationBox({ certificate }: { certificate: CertificateToConfirm }) {
     const { space } = useTheme();
     const { t } = useTranslation();
     const [location, setLocation] = useState('');

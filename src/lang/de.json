@@ -1998,8 +1998,7 @@
         },
         "card": {
             "isNewAchievement": "neuer Erfolg",
-            "finishedStepsInformation": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen",
-            "finishedStepsInformationMobile": "{{currentStep}}/{{maxSteps}}"
+            "finishedStepsInformation": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen"
         },
         "nextStepCard": {
             "finishedSteps": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen."
@@ -2007,12 +2006,10 @@
         "modal": {
             "close": "Schließen",
             "achievements": "Zu den Erfolgen",
-            "step": "schritt {{step}}",
             "streak": "Noch {{leftSteps}} mal pünktlich erscheinen, um den Rekord erneut zu brechen.",
             "record": "Du warst bei {{record}} Terminen in Folge anwesend! Verpasse weiterhin keinen Termin, um den Rekord zu erhöhen."
         },
         "streak": {
-            "count": "{{streak}}x",
             "card": {
                 "info": "Du warst bei <strong>{{streak}} Termin(en)</strong> in Folge dabei!"
             }
@@ -2139,5 +2136,35 @@
         "questionsUnaswerd": "Bitte beantworte die Fragen.",
         "newFieldSameAsOld": "Das hast du bereits ausgewählt.",
         "missingSignature": "Es fehlt eine Unterschrift."
-    }
+    },
+    "requireScreening": {
+        "contactSupport": "Support kontaktieren",
+
+        "noScreening": {
+            "title": "Wir möchten dich kennenlernen, {{firstname}}!",
+            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
+            "makeAppointment": "Termin vereinbaren"
+        },
+        "hasScreening": {
+            "title": "Bitte warte ein bisschen",
+            "content": "Du wurdest noch nicht freigeschaltet. Bitte warte ein bisschen, wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
+            "makeAnotherAppointment": "Erneut Termin vereinbaren"
+        },
+        "rejectedScreening": {
+            "title": "Leider können wir dir nicht helfen, {{firstname}}",
+            "content": "Leider können wir dir das Angebot von Lern-Fair nicht zur Verfügung stellen."
+        }
+    },
+    "contactSupport": {
+        "title": "Support kontaktieren",
+        "content": "Du hast Fragen oder brauchst Hilfe? Schreibe uns über das Kontaktformular, wir helfen dir gerne weiter.",
+        "titleLabel": "Betreff",
+        "contentLabel": "Deine Nachricht",
+        "contentPlaceholder": "Deine Nachricht an uns",
+        "submit": "Anfrage senden",
+        "disabled": "Bitte fülle das Formular aus",
+        "success": "Deine Nachricht wurde erfolgreich versendet",
+        "failure": "Ein Fehler ist aufgetreten"
+    },
+    "logout": "Abmelden"
 }

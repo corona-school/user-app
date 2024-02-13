@@ -1,7 +1,5 @@
-import { Box, VStack, Image, useBreakpointValue } from 'native-base';
+import { Box, useBreakpointValue } from 'native-base';
 import { useEffect, useState } from 'react';
-import { Pressable } from 'react-native';
-import PlayButton from '../assets/icons/play-button.svg';
 
 type VideoWithThumbnailProps = {
     video: string;
@@ -11,11 +9,19 @@ type VideoWithThumbnailProps = {
 
 const getWindowDimensions = () => {
     const { innerWidth: width, innerHeight: height } = window;
-    return {
-        width,
-        height,
-    };
+    return { width, height };
 };
+function debounce(func: Function, wait: number) {
+    let timeout: NodeJS.Timeout;
+    return function executedFunction(...args: any[]) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
 
 const VideoWithThumbnail: React.FC<VideoWithThumbnailProps> = ({ video, thumbnail, space }) => {
     const [windowDimensions, setWindowDimensions] = useState(getWindowDimensions());
@@ -24,60 +30,24 @@ const VideoWithThumbnail: React.FC<VideoWithThumbnailProps> = ({ video, thumbnai
         function handleResize() {
             setWindowDimensions(getWindowDimensions());
         }
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        const debouncedHandleResize = debounce(handleResize, 250);
+        window.addEventListener('resize', debouncedHandleResize);
+        return () => window.removeEventListener('resize', debouncedHandleResize);
     }, []);
 
-    const [open, setOpen] = useState(false);
-    const windowWidth = useBreakpointValue({
+    const windowWidth: number = useBreakpointValue({
         base: windowDimensions.width - 32,
         lg: windowDimensions.width - 240 - 108 - space,
     });
     const resolution = useBreakpointValue({
-        base: { w: windowWidth, h: windowWidth * 0.5625 },
-        lg: { w: windowWidth / 2, h: (windowWidth / 2) * 0.5625 },
+        base: { w: windowWidth, h: `calc(${windowWidth} * 0.5625px)` },
+        lg: { w: windowWidth / 2, h: `calc((${windowWidth} / 2) * 0.5625px)` },
     });
     return (
         <Box width={resolution.w} maxWidth="600px" height={resolution.h} maxHeight="337.5px">
-            <video hidden={open ? false : true} controls muted controlsList="nodownload">
+            <video controls muted controlsList="nodownload" poster={thumbnail}>
                 <source src={video} type="video/mp4" />
             </video>
-            <Box display={open ? 'none' : 'block'}>
-                <Pressable onPress={() => setOpen(true)}>
-                    <VStack
-                        position="relative"
-                        width={resolution.w}
-                        height={resolution.h}
-                        maxWidth="600px"
-                        maxHeight="337.5px"
-                        alignItems="center"
-                        justifyContent="center"
-                    >
-                        <Image
-                            source={{ uri: thumbnail }}
-                            alt="certificate of conduct video"
-                            resizeMode="cover"
-                            width={resolution.w}
-                            height={resolution.h}
-                            maxWidth="600px"
-                            maxHeight="337.5px"
-                        />
-                        <Box
-                            position="absolute"
-                            top="50%"
-                            left="50%"
-                            marginTop={resolution.h / -6}
-                            marginLeft={resolution.h / -6}
-                            width={resolution.h / 3}
-                            height={resolution.h / 3}
-                            maxWidth="200px"
-                            maxHeight="112.5px"
-                        >
-                            <PlayButton />
-                        </Box>
-                    </VStack>
-                </Pressable>
-            </Box>
         </Box>
     );
 };

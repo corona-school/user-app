@@ -1,4 +1,4 @@
-import { Box, Heading, Link, Row, useTheme } from 'native-base';
+import { Box, Heading, Link, Row, Stack, useBreakpointValue, useTheme } from 'native-base';
 import { ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 
@@ -31,10 +31,14 @@ const HSection: React.FC<Props> = ({
 }) => {
     const { space, fontSizes } = useTheme();
     const { t } = useTranslation();
+
+    const stackDir = useBreakpointValue({ base: 'column', md: 'row' });
+    const stackAlign = useBreakpointValue({ base: 'flex-start', md: 'center' });
     return (
         <Box marginBottom={marginBottom}>
-            <Row
-                alignItems={'center'}
+            <Stack
+                direction={stackDir}
+                alignItems={stackAlign}
                 justifyContent={'flex-end'}
                 marginX={isNoSpace === false ? -space['1'] : 0}
                 paddingX={isNoSpace === false ? space['1'] : 0}
@@ -46,7 +50,7 @@ const HSection: React.FC<Props> = ({
                     </Heading>
                 )}
                 {showAll && <Link onPress={onShowAll}>{referenceTitle ? referenceTitle : t('all')}</Link>}
-            </Row>
+            </Stack>
             <Row
                 flexWrap={wrap ? 'wrap' : 'nowrap'}
                 flexDirection={wrap ? 'column' : 'row'}

@@ -47,12 +47,13 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
         }
         if (typeof navigateTo !== 'string') return null;
         updateLastTimeChecked && updateLastTimeChecked();
-        if (navigateTo.charAt(0) === '/') {
-            return navigate(navigateTo);
-        } else if (navigateTo.split('/')[0] === 'achievement') {
-            const achievementId = navigateTo.split('/')[1];
+        const navigateToArray = navigateTo.split('/');
+        if ((navigateToArray[0] || navigateToArray[1]) === 'achievement') {
+            const achievementId = navigateToArray[navigateToArray.length - 1];
             setAchievementId(Number(achievementId));
             setAchievementModalOpen(true);
+        } else if (navigateToArray[0] === '/') {
+            return navigate(navigateTo);
         } else {
             setLeavePageModalOpen(true);
         }

@@ -64,7 +64,7 @@ import { lazyWithRetry } from './lazy';
 import { Suspense } from 'react';
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 import { datadogRum } from '@datadog/browser-rum';
-import Progress from './pages/Progress';
+import ProgressPage from './pages/Progress';
 import ConfirmCertificate from './pages/ConfirmCertificate';
 import CertificateOfConduct from './pages/CertificateOfConduct';
 
@@ -186,7 +186,9 @@ export default function NavigatorLazy() {
                 path="/certificate-of-conduct"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<CertificateOfConduct />} />
+                        <RequireRole roles={['STUDENT']}>
+                            <CertificateOfConduct />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -377,7 +379,9 @@ export default function NavigatorLazy() {
                 path="/confirm-certificate/:id"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<ConfirmCertificate />} studentComponent={<Dashboard />} />
+                        <RequireRole roles={['PUPIL']}>
+                            <ConfirmCertificate />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -395,7 +399,7 @@ export default function NavigatorLazy() {
                 path="/progress"
                 element={
                     <RequireAuth>
-                        <Progress />
+                        <ProgressPage />
                     </RequireAuth>
                 }
             />
@@ -445,8 +449,6 @@ export default function NavigatorLazy() {
                     </WithNavigation>
                 }
             />
-            <Route path="/progress" element={<Progress />} />
-
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/start" />} />
         </Routes>

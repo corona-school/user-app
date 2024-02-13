@@ -126,12 +126,12 @@ const SingleMatch = () => {
             }
         `)
     );
-    const [matchMeetingJoin] = useMutation(
+    const [joinMeeting] = useMutation(
         gql(`
-        mutation JoinMatchMeeting($matchId: Float!) { 
-	        matchMeetingJoin(matchId: $matchId)
-        }
-    `)
+            mutation JoinMeeting($appointmentId: Float!) { 
+                appointmentTrackJoin(appointmentId: $appointmentId)
+            }
+        `)
     );
     const dissolve = useCallback(
         async (reasons: Dissolve_Reason[]) => {
@@ -176,9 +176,9 @@ const SingleMatch = () => {
             throw new Error('Couldnt start ad-hoc meeting, because no appointment was found.');
         }
 
-        matchMeetingJoin({ variables: { matchId } });
+        joinMeeting({ variables: { appointmentId } });
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
-    }, [createAdHocMeeting, matchId, matchMeetingJoin, navigate]);
+    }, [createAdHocMeeting, matchId, joinMeeting, navigate]);
 
     const isActiveMatch = useMemo(() => {
         if (!data?.match.dissolved) return true;

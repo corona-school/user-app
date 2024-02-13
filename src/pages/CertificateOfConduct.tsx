@@ -10,6 +10,9 @@ import { Trans, useTranslation } from 'react-i18next';
 import useApollo from '../hooks/useApollo';
 import { BACKEND_URL } from '../config';
 import VideoWithThumbnail from '../components/VideoWithThumbnail';
+import { downloadFile } from '../helper/download-file';
+import thumbnailCoCGeneral from '../assets/images/onboarding/thumbnails/fuehrungszeugnisse-thumbnail.png';
+import thumbnailCoCDigital from '../assets/images/onboarding/thumbnails/digitales-fuehrungszeugnis-thumbnail.png';
 
 export const COC_DATE_QUERY = gql(`
 query GetCocDate {
@@ -40,18 +43,18 @@ const CertificateOfConduct = () => {
 
     const video_coc_general = {
         video: 'https://user-app-files.fra1.digitaloceanspaces.com/static/videos/explanatory_video_certificate_of_good_conduct_v4.mp4',
-        thumbnail: 'https://images.pexels.com/photos/1037992/pexels-photo-1037992.jpeg',
+        thumbnail: thumbnailCoCGeneral,
     };
     const video_coc_digital = {
         video: 'https://user-app-files.fra1.digitaloceanspaces.com/static/videos/explanatory_video_digital_certificate_of_good_conduct.mp4',
-        thumbnail: 'https://images.pexels.com/photos/1037992/pexels-photo-1037992.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2',
+        thumbnail: thumbnailCoCDigital,
     };
 
     const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`));
 
     async function openRemissionRequest() {
         const { data } = await downloadRemissionRequest();
-        window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
+        downloadFile('Antrag_auf_Befreiung_von_der_Schulpflicht.pdf', BACKEND_URL + data!.studentGetRemissionRequestAsPDF);
     }
 
     return (
