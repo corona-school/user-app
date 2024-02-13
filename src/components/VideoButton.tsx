@@ -61,7 +61,7 @@ query overrrideLink($appointmentId: Float!) {
 
     //
     const canStartMeeting = useMemo(
-        () => (canJoin ? canJoin : startDateTime && duration && canJoinMeeting(startDateTime, duration, isInstructor ? 240 : 10, DateTime.now())),
+        () => canJoin ?? (startDateTime && duration && canJoinMeeting(startDateTime, duration, isInstructor ? 240 : 10, DateTime.now())),
         [canJoin, duration, isInstructor, startDateTime]
     );
 
@@ -76,7 +76,7 @@ query overrrideLink($appointmentId: Float!) {
                 width={width ?? width}
                 onPress={() => openMeeting()}
             >
-                {buttonText ? buttonText : isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
+                {buttonText ?? isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
             </DisableableButton>
         </>
     );
