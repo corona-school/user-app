@@ -18,9 +18,20 @@ type FormProps = {
     overrideMeetingLink: string | undefined;
     onSetDate: () => void;
     onSetTime: () => void;
+    setVideoChatType: (type: string) => void;
+    videoChatType: string;
     isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, overrideMeetingLink, onSetTime, isCourse }) => {
+const AppointmentForm: React.FC<FormProps> = ({
+    errors,
+    appointmentsCount,
+    onSetDate,
+    overrideMeetingLink,
+    onSetTime,
+    isCourse,
+    setVideoChatType,
+    videoChatType,
+}) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -33,7 +44,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
-    const [meetingLink, setMeetingLink] = useState('');
+    const [meetingLink, setMeetingLink] = useState(overrideMeetingLink ?? '');
     const [isToday, setIsToday] = useState<boolean>(false);
 
     const handleTitleInput = (e: any) => {
@@ -83,6 +94,8 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
         }
         return undefined;
     }, []);
+
+    console.log('ERRORs', errors);
 
     return (
         <Box>
@@ -177,6 +190,8 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                             }}
                             clearInput={clearVideoInput}
                             overrideMeetingLink={overrideMeetingLink}
+                            setVideoChatType={setVideoChatType}
+                            videoChatType={videoChatType}
                         />
                         {'videoChat' in errors && (
                             <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>Bitte wähle ein Videochat.</FormControl.ErrorMessage>

@@ -58,8 +58,9 @@ const AppointmentCreation: React.FC<Props> = ({
     const toast = useToast();
     const navigate = useNavigate();
 
-    const [dateSelected, setDateSelected] = useState(false);
-    const [timeSelected, setTimeSelected] = useState(false);
+    const [dateSelected, setDateSelected] = useState<boolean>(false);
+    const [timeSelected, setTimeSelected] = useState<boolean>(false);
+    const [videoChatType, setVideoChatType] = useState<string>('');
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -108,12 +109,13 @@ const AppointmentCreation: React.FC<Props> = ({
             delete errors.time;
         }
 
-        // if (!appointmentToCreate.meetingLink) {
-        //     setErrors({ ...errors, videoChat: t('appointment.errors.videoChat') });
-        //     return false;
-        // } else {
-        //     delete errors.videoChat;
-        // }
+        if (videoChatType === '') {
+            setErrors({ ...errors, videoChat: t('appointment.errors.videoChat') });
+            return false;
+        } else {
+            delete errors.videoChat;
+        }
+
         if (appointmentToCreate.duration === 0) {
             setErrors({ ...errors, duration: t('appointment.errors.duration') });
             return false;
@@ -137,7 +139,7 @@ const AppointmentCreation: React.FC<Props> = ({
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: '',
+                meetingLink: appointmentToCreate.meetingLink,
                 subcourseId: courseOrMatchId!,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
@@ -222,6 +224,7 @@ const AppointmentCreation: React.FC<Props> = ({
     // * create appointments for an existing match
     const handleCreateMatchAppointment = async () => {
         if (!appointmentToCreate) return;
+
         if (validateInputs()) {
             let appointments: AppointmentCreateMatchInput[] = [];
 
@@ -246,7 +249,7 @@ const AppointmentCreation: React.FC<Props> = ({
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: '',
+                        meetingLink: appointmentToCreate.meetingLink,
                         matchId: courseOrMatchId ? courseOrMatchId : 1,
                         appointmentType: Lecture_Appointmenttype_Enum.Match,
                     };
@@ -286,6 +289,8 @@ const AppointmentCreation: React.FC<Props> = ({
                 }}
                 isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
                 overrideMeetingLink={overrideMeetingLink}
+                setVideoChatType={setVideoChatType}
+                videoChatType={videoChatType}
             />
             {dateSelected && timeSelected && (
                 <Box py="5">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
 import { Box, FormControl, Input, Select, Stack } from 'native-base';
 import CustomSelect from '../components/CustomSelect';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
@@ -8,14 +8,22 @@ import ZoomIcon from '../assets/icons/zoom-logo.svg';
 type CustomVideoInputProps = {
     inputValue?: string;
     overrideMeetingLink: string | undefined;
+    videoChatType: string;
+    setVideoChatType: (type: string) => void;
     handleInput?: (e: any) => void;
     handleBlur?: (e: any) => void;
     clearInput?: () => void;
 };
 
-const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, overrideMeetingLink, handleBlur, handleInput, clearInput }) => {
-    const [videoChatType, setVideoChatType] = useState<string>('');
-
+const CustomVideoInput: React.FC<CustomVideoInputProps> = ({
+    inputValue,
+    overrideMeetingLink,
+    videoChatType,
+    setVideoChatType,
+    handleBlur,
+    handleInput,
+    clearInput,
+}) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
@@ -23,6 +31,12 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, overrid
         clearInput && item === 'Zoom' && clearInput();
         setVideoChatType(item);
     };
+
+    useEffect(() => {
+        if (overrideMeetingLink) {
+            setVideoChatType('Link');
+        }
+    }, [overrideMeetingLink, setVideoChatType]);
 
     return (
         <Stack space={1}>
@@ -51,9 +65,9 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, overrid
                     borderBottomRightRadius={5}
                     borderTopRightRadius={5}
                     placeholder={'Hinterlege deinen eigenen Link zum Videochat'}
-                    value={overrideMeetingLink ? overrideMeetingLink : inputValue}
+                    value={inputValue}
                     onBlur={handleBlur}
-                    isDisabled={videoChatType === 'Zoom' || videoChatType === ''}
+                    isDisabled={!!overrideMeetingLink || videoChatType === 'Zoom' || videoChatType === ''}
                 />
             </FormControl>
         </Stack>

@@ -117,8 +117,10 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
     });
 
     useEffect(() => {
-        const meetingLink = appointments.find((appointment) => appointment.override_meeting_link)?.override_meeting_link;
-        setOverrideMeetingLink(meetingLink ?? undefined);
+        const lastAppointment = appointments[appointments.length - 1];
+        if (lastAppointment && lastAppointment.override_meeting_link !== null) {
+            setOverrideMeetingLink(lastAppointment.override_meeting_link);
+        }
         setAppointmentsTotal(appointments.length);
         isCourse ? refetchCourseAppointments() : refetchMatchAppointments();
     });
