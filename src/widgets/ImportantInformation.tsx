@@ -409,7 +409,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         let newId = achievements.length > 0 ? achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100 : 1;
         // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
 
-        console.log('ROLES', roles, 'CAN CREATE COURSE', student?.canCreateCourse?.reason);
         if (student && screenedInstructor) {
             foundAchievements.push({
                 id: newId,
@@ -417,8 +416,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 subtitle: t('helperwizard.courseOffer.subtitle'),
                 achievementState: Achievement_State.Active,
                 achievementType: Achievement_Type_Enum.Sequential,
-                actionName: 'Jetzt zur Prüfung freigeben',
-                actionRedirectLink: '',
+                actionName: 'Kurs entwerfen',
+                actionRedirectLink: '/group',
                 actionType: Achievement_Action_Type_Enum.Action,
                 alternativeText: t('helperwizard.courseOffer.alternativText'),
                 currentStep: 0,
@@ -443,7 +442,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 achievementState: Achievement_State.Active,
                 achievementType: Achievement_Type_Enum.Sequential,
                 actionName: t('helperwizard.studentNewMatch.actionName'),
-                actionType: Achievement_Action_Type_Enum.Wait,
+                actionType: Achievement_Action_Type_Enum.Action,
+                actionRedirectLink: '/matching',
                 alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
                 currentStep: 0,
                 description: t('helperwizard.studentNewMatch.description'),
