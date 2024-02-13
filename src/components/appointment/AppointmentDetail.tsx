@@ -137,6 +137,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     appointmentId={appointment.id}
                     appointmentType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
+                    overrideMeetingLink={appointment.override_meeting_link}
+                    zoomMeetingUrl={appointment.zoomMeetingUrl}
                 />
                 <Description description={appointment.description} />
 
