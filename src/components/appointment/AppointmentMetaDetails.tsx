@@ -69,7 +69,6 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         return end < DateTime.now();
     }, []);
 
-    console.log('MEETING LINK', overrideMeetingLink, zoomMeetingUrl);
     return (
         <>
             <Modal isOpen={showModal} backgroundColor="transparent" onClose={() => setShowModal(false)}>
