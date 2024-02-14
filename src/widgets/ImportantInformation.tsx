@@ -409,7 +409,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         let newId = achievements.length > 0 ? achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100 : 1;
         // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
 
-        if (student && screenedInstructor) {
+        if (student && screenedInstructor && student.subcoursesInstructing.length === 0) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.courseOffer.name'),
@@ -434,7 +434,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- STUDENT NEW MATCH ACHIEVEMENT -----
-        if (student && screenedTutor) {
+        if (student && screenedTutor && student.openMatchRequestCount === 0 && student.matches.length === 0) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.studentNewMatch.name'),
@@ -461,7 +461,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- PUPIL NEW MATCH ACHIEVEMENT -----
-        if (!notYetScreened) {
+        if (!notYetScreened && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0) {
             foundAchievements.push({
                 id: newId,
                 name: t('helperwizard.pupilNewMatch.name'),
