@@ -107,11 +107,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                 {zoomMeetingUrl && (
                     <Tooltip
                         maxWidth={270}
-                        label={
-                            isOrganizer
-                                ? 'Wenn du diesen Link aufrufst, trittst du dem Meeting als Teilnehmer:in bei. Um als Host dem Meeting beizutrteten nutze den Button "Jetzt Videochat beitreten".'
-                                : 'Teile diesen Link niemals mit anderen Personen. Nur so können wir die Sicherheit der Plattform gewährleisten.'
-                        }
+                        label={isOrganizer ? t('appointment.detail.zoomTooltipStudent') : t('appointment.detail.zoomTooltipPupil')}
                         bg={'primary.900'}
                         _text={{ textAlign: 'center' }}
                         p={3}

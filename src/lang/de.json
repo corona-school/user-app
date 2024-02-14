@@ -86,7 +86,12 @@
             "wrongDateError": "Datum kann frühestens in einer Woche sein",
             "emptyTimeError": "Zeit darf nicht leer sein",
             "courseImageAltText": "Kursbild",
-            "videoChatLabel": "Video-Chat"
+            "videoChatLabel": "Video-Chat",
+            "videoChatPlaceholder": "Hinterlege deinen eigenen Link zum Videochat",
+            "videoSelectOptions": {
+                "zoom": "          Zoom Meeting (automatisch generieren)",
+                "link": "Eigenen Meeting Links"
+            }
         },
         "detail": {
             "group": "Gruppentermin mit {{instructor}}",
@@ -103,6 +108,8 @@
             "cancelButton": "Termin absagen",
             "editButton": "Termin bearbeiten",
             "canceledToast": "Termin wurde abgesagt",
+            "zoomTooltipPupil": "Wenn du diesen Link aufrufst, trittst du dem Meeting als Teilnehmer:in bei. Um als Host dem Meeting beizutrteten nutze den Button \"Jetzt Videochat beitreten\".",
+            "zoomTooltipStudent": "Teile diesen Link niemals mit anderen Personen. Nur so können wir die Sicherheit der Plattform gewährleisten.",
             "reasonDisabled": {
                 "editBtn": {
                     "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."

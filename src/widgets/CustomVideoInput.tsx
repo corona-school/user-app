@@ -12,7 +12,7 @@ type CustomVideoInputProps = {
     setVideoChatType: (type: string) => void;
     handleInput?: (e: any) => void;
     handleBlur?: (e: any) => void;
-    clearInput?: () => void;
+    clearInput: () => void;
 };
 
 const CustomVideoInput: React.FC<CustomVideoInputProps> = ({
@@ -28,7 +28,7 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({
     const { isMobile } = useLayoutHelper();
 
     const handleValueChange = (item: string) => {
-        clearInput && item === 'Zoom' && clearInput();
+        if (item === 'Zoom') clearInput();
         setVideoChatType(item);
     };
 
@@ -47,8 +47,8 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({
                     selectedValue={overrideMeetingLink ? 'Link' : undefined}
                     isDisabled={overrideMeetingLink ? true : false}
                 >
-                    <Select.Item value="Zoom" label={'          Zoom Meeting (automatisch generieren)'} />
-                    <Select.Item value="Link" label={'Eigenen Meeting Link'} />
+                    <Select.Item value="Zoom" label={t('appointment.create.videoSelectOptions.zoom')} />
+                    <Select.Item value="Link" label={t('appointment.create.videoSelectOptions.link')} />
                 </CustomSelect>
                 {videoChatType === 'Zoom' && (
                     <Box top="12px" left="12px" pointerEvents="none" position="absolute">
@@ -64,7 +64,7 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({
                     onChange={handleInput}
                     borderBottomRightRadius={5}
                     borderTopRightRadius={5}
-                    placeholder={'Hinterlege deinen eigenen Link zum Videochat'}
+                    placeholder={t('appointment.create.videoChatPlaceholder')}
                     value={inputValue}
                     onBlur={handleBlur}
                     isDisabled={!!overrideMeetingLink || videoChatType === 'Zoom' || videoChatType === ''}
