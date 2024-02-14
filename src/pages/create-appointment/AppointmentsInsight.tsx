@@ -93,14 +93,14 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
         loading: loadingCourseAppointments,
         error: errorCourseAppointments,
         refetch: refetchCourseAppointments,
-    } = useQuery(GET_COURSE_APPOINTMENTS, { variables: { id } });
+    } = useQuery(GET_COURSE_APPOINTMENTS, { variables: { id }, skip: !isCourse });
 
     const {
         data: matchData,
         loading: loadingMatchAppointments,
         error: errorMatchAppointments,
         refetch: refetchMatchAppointments,
-    } = useQuery(GET_MATCH_APPOINTMENTS, { variables: { id } });
+    } = useQuery(GET_MATCH_APPOINTMENTS, { variables: { id }, skip: isCourse });
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
@@ -123,7 +123,7 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
         }
         setAppointmentsTotal(appointments.length);
         isCourse ? refetchCourseAppointments() : refetchMatchAppointments();
-    });
+    }, [appointments, isCourse, refetchCourseAppointments, refetchMatchAppointments, setAppointmentsTotal, setOverrideMeetingLink]);
 
     return (
         <Box>

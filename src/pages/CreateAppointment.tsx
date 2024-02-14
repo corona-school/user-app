@@ -48,6 +48,7 @@ const CreateAppointment = () => {
             }
             setCurrentIndex((prev) => prev + 2);
             setNoAppointments(true);
+            setOverrideMeetingLink(undefined);
         },
         [currentIndex]
     );

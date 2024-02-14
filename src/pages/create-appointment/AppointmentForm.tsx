@@ -95,8 +95,6 @@ const AppointmentForm: React.FC<FormProps> = ({
         return undefined;
     }, []);
 
-    console.log('ERRORs', errors);
-
     return (
         <Box>
             <VStack space={1} width="full">
