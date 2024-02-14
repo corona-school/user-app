@@ -18,20 +18,22 @@ const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps,
     const alignItems = useBreakpointValue({ base: 'center', md: 'left' });
     const space = useBreakpointValue({ base: 1, md: 0 });
     return (
-        <Stack width={width} left={left} direction={direction} alignItems={alignItems} justifyContent="center" space={space}>
-            <Box>
+        <Stack width={width} left={left} direction={direction} alignItems={alignItems} justifyContent="center" space={space} height="fit-content">
+            <Box position="absolute" height="8px" width="100%" top="8px">
                 <Progress bg="gray.100" value={progress} />
             </Box>
-            {steps.map((step, index) => (
-                <IndicatorStep
-                    step={index}
-                    maxSteps={steps.length}
-                    name={step.name}
-                    isActive={step.isActive}
-                    isInactive={typeof currentStep === 'number' ? index > currentStep : true}
-                    achievementState={achievementState}
-                />
-            ))}
+            <Box height="52px">
+                {steps.map((step, index) => (
+                    <IndicatorStep
+                        step={index}
+                        maxSteps={steps.length}
+                        name={step.name}
+                        isActive={step.isActive}
+                        isInactive={typeof currentStep === 'number' ? index > currentStep : true}
+                        achievementState={achievementState}
+                    />
+                ))}
+            </Box>
         </Stack>
     );
 };

@@ -49,7 +49,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({
     const fontSize = achievementType === Achievement_Type_Enum.Streak ? (largeText ? '14px' : '10px') : centerText ? '12px' : '14px';
     const numberOfLines = useBreakpointValue({ base: 1, md: 2 });
     return (
-        <Stack direction={flexDirection} alignItems={alignItems} space={space} width="100%">
+        <Stack direction={flexDirection} alignItems={alignItems} space={space} width="100%" height="fit-content">
             <Text
                 width={textWidth}
                 textAlign={alignText}
@@ -62,7 +62,7 @@ const IndicatorBar: React.FC<IndicatorBarProps> = ({
             >
                 {(achievementType !== Achievement_Type_Enum.Streak && isCard) || !progressDescription ? `${finishedStepsInformation}` : progressDescription}
             </Text>
-            <Box width={progressBarWidth}>
+            <Box width={progressBarWidth} height="fit-content">
                 <Progress bg={bgDark ? '#60787D' : 'gray.100'} value={progress} />
             </Box>
         </Stack>

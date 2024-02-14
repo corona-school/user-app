@@ -1,4 +1,4 @@
-import { Box, Divider, HStack, Stack, VStack, useBreakpointValue } from 'native-base';
+import { Box, Divider, HStack, Heading, Stack, VStack, useBreakpointValue } from 'native-base';
 import AchievementCard from '../components/achievements/achievementCard/AchievementCard';
 import StreakCard from '../components/achievements/streak/StreakCard';
 import ProgressCollapsableHeadline from '../components/achievements/ProgressCollapsableHeadline';
@@ -8,6 +8,7 @@ import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
 import EmptyStateContainer from '../components/achievements/EmptyStateContainer';
+import { useTranslation } from 'react-i18next';
 
 type AchievementProgressProps = {
     achievements: Achievement[];
@@ -22,6 +23,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
         }
     `)
     );
+    const { t } = useTranslation();
 
     const streaks: Achievement[] = useMemo(() => {
         const allStreaks: Achievement[] = achievements.filter((it) => it.achievementType === Achievement_Type_Enum.Streak);
@@ -48,7 +50,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
         return elements;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [achievements]);
-    const states = [Achievement_State.Completed, Achievement_State.Active, Achievement_State.Inactive];
+    const states = [Achievement_State.Active, Achievement_State.Completed, Achievement_State.Inactive];
 
     const [collapsed, setCollapsed] = useState({
         [Achievement_Type_Enum.Streak]: false,
@@ -125,6 +127,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
 
     return (
         <Box>
+            <Heading paddingBottom="5">{t('matching.request.check.title')}</Heading>
             {selectedAchievement && (
                 <AchievementModal
                     title={selectedAchievement.subtitle || undefined}

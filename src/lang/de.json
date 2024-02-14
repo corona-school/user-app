@@ -1990,6 +1990,7 @@
         "dissolve_reason": "Grund: {{reason}}"
     },
     "achievement": {
+        "header": "Deine Erfolge",
         "empty_state": {
             "Completed": {
                 "title": "Sammle deinen ersten Erfolg!",
