@@ -60,7 +60,7 @@ const AppointmentCreation: React.FC<Props> = ({
 
     const [dateSelected, setDateSelected] = useState<boolean>(false);
     const [timeSelected, setTimeSelected] = useState<boolean>(false);
-    const [videoChatType, setVideoChatType] = useState<string>('');
+    const [videoChatType, setVideoChatType] = useState<string>('Zoom');
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -258,7 +258,8 @@ const AppointmentCreation: React.FC<Props> = ({
                 appointments.push(...weeklyAppointments);
             }
 
-            await createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
+            console.log('CREATE APPOINTMENTS', appointments);
+            // await createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
@@ -268,11 +269,11 @@ const AppointmentCreation: React.FC<Props> = ({
                 placement: 'top',
             });
 
-            if (navigateToMatch) {
-                await navigateToMatch();
-            } else {
-                navigate('/appointments');
-            }
+            // if (navigateToMatch) {
+            //     await navigateToMatch();
+            // } else {
+            //     navigate('/appointments');
+            // }
         }
     };
 

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, FormControl, Input, Select, Stack } from 'native-base';
 import CustomSelect from '../components/CustomSelect';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
@@ -26,15 +26,12 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({
 }) => {
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
-
-    const handleValueChange = (item: string) => {
-        if (item === 'Zoom') clearInput();
-        setVideoChatType(item);
-    };
+    const [isPrefilled, setIsPrefilled] = useState<boolean>();
 
     useEffect(() => {
         if (overrideMeetingLink) {
             setVideoChatType('Link');
+            setIsPrefilled(true);
         }
     }, [overrideMeetingLink, setVideoChatType]);
 
@@ -43,9 +40,11 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({
             <FormControl>
                 <CustomSelect
                     placeholder="Videochat"
-                    onValueChange={handleValueChange}
-                    selectedValue={overrideMeetingLink ? 'Link' : undefined}
-                    isDisabled={overrideMeetingLink ? true : false}
+                    onValueChange={(value: string) => {
+                        setVideoChatType(value);
+                        setIsPrefilled(false);
+                    }}
+                    selectedValue={isPrefilled ? 'Link' : videoChatType}
                 >
                     <Select.Item value="Zoom" label={t('appointment.create.videoSelectOptions.zoom')} />
                     <Select.Item value="Link" label={t('appointment.create.videoSelectOptions.link')} />
@@ -57,19 +56,21 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({
                 )}
             </FormControl>
 
-            <FormControl>
-                <Input
-                    name="customLink"
-                    width={isMobile ? '60%' : '100%'}
-                    onChange={handleInput}
-                    borderBottomRightRadius={5}
-                    borderTopRightRadius={5}
-                    placeholder={t('appointment.create.videoChatPlaceholder')}
-                    value={inputValue}
-                    onBlur={handleBlur}
-                    isDisabled={!!overrideMeetingLink || videoChatType === 'Zoom' || videoChatType === ''}
-                />
-            </FormControl>
+            {videoChatType === 'Link' && (
+                <FormControl>
+                    <Input
+                        name="customLink"
+                        width={isMobile ? '60%' : '100%'}
+                        onChange={handleInput}
+                        borderBottomRightRadius={5}
+                        borderTopRightRadius={5}
+                        placeholder={t('appointment.create.videoChatPlaceholder')}
+                        value={inputValue}
+                        onBlur={handleBlur}
+                        // isDisabled={videoChatType === 'Zoom' || videoChatType === ''}
+                    />
+                </FormControl>
+            )}
         </Stack>
     );
 };
