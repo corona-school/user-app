@@ -9,8 +9,6 @@ import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import AlertMessage from '../../../widgets/AlertMessage';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
-import { canJoinMeeting } from '../../../widgets/AppointmentDay';
-import { DateTime } from 'luxon';
 import { gql } from '../../../gql';
 import VideoButton from '../../../components/VideoButton';
 import { useNavigate } from 'react-router-dom';
@@ -222,7 +220,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                         <VideoButton
                             appointmentId={appointment.id}
                             appointmentType={appointment.appointmentType}
-                            canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 10, DateTime.now())}
+                            startDateTime={appointment.start}
+                            duration={appointment.duration}
                         />
                         <DisableableButton
                             isDisabled={loadingSubcourseLeft}
