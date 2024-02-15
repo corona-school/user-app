@@ -67,6 +67,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import ProgressPage from './pages/Progress';
 import ConfirmCertificate from './pages/ConfirmCertificate';
 import CertificateOfConduct from './pages/CertificateOfConduct';
+import OnboardingNew from './pages/onboarding/student/OnBoardingNew';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -202,7 +203,8 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                <Route path="students" element={<OnBoardingStudentWelcome />} />
+                {/* <Route path="students" element={<OnBoardingStudentWelcome />} /> */}
+                <Route path="students" element={<OnboardingNew />} />
                 <Route path="helper" element={<OnBoardingHelperWelcome />} />
                 <Route path="helpermatching" element={<OnBoardingHelperMatchingWelcome />} />
             </Route>
