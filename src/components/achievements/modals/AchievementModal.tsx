@@ -1,4 +1,4 @@
-import { Box, Button, CloseIcon, HStack, Link, Modal, Pressable, Stack, Text, VStack, useBreakpointValue } from 'native-base';
+import { Box, Button, CloseIcon, HStack, Modal, Pressable, Stack, Text, VStack, useBreakpointValue } from 'native-base';
 import { Trans, useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
