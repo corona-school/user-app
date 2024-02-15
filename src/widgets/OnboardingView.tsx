@@ -59,26 +59,18 @@ const OnboardingView: React.FC<Props> = ({ title, content, contentEnd, image, is
                 </View>
             </Box>
             {video ? (
-                <Box
-                    /* TBD: Adjust Box dynamically to size of videoplayer */
-                    borderRadius="md"
-                    bg="primary.400"
-                    p={space['1']}
-                    mx={space['1']}
-                >
-                    <Center>
-                        <iframe
-                            width="100%" /* "576px" */
-                            height="100%" /* "324px" */
-                            src={`https://www.youtube.com/embed/${video}`} /* TBD: Datenschutzbanner für YouTube ODER Videos selbst hosten */
-                            /* allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" */
-                            allowFullScreen
-                            title="Embedded YouTube Video"
-                            style={{
-                                border: 'none',
-                            }}
-                        />
-                    </Center>
+                <Box borderRadius="md" bg="primary.400" height="140%" p={space['1']} mx={space['1']}>
+                    <iframe
+                        width="100%" /* "576px" */
+                        height="100%" /* "324px" */
+                        src={`https://www.youtube.com/embed/${video}`} /* TBD: Datenschutzbanner für YouTube ODER Videos selbst hosten */
+                        /* allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" */
+                        allowFullScreen
+                        title="Embedded YouTube Video"
+                        style={{
+                            border: 'none',
+                        }}
+                    />
                 </Box>
             ) : (
                 image && (
