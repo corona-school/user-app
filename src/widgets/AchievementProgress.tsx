@@ -127,7 +127,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
 
     return (
         <Box>
-            <Heading paddingBottom="5">{t('matching.request.check.title')}</Heading>
+            <Heading paddingBottom="5">{t('achievement.header')}</Heading>
             {selectedAchievement && (
                 <AchievementModal
                     title={selectedAchievement.subtitle || undefined}
