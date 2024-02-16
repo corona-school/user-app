@@ -118,7 +118,7 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
 
     useEffect(() => {
         const lastAppointment = appointments[appointments.length - 1];
-        if (lastAppointment && lastAppointment.override_meeting_link !== null) {
+        if (lastAppointment && lastAppointment.override_meeting_link) {
             setOverrideMeetingLink(lastAppointment.override_meeting_link);
         }
         setAppointmentsTotal(appointments.length);

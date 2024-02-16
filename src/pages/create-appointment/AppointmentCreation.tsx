@@ -6,7 +6,7 @@ import AppointmentForm from './AppointmentForm';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
@@ -20,13 +20,18 @@ export type FormErrors = {
     description?: string;
     dateNotInOneWeek?: string;
     timeNotInFiveMin?: string;
-    videoChat?: string;
+    invalidLink?: string;
 };
 
 export type StartDate = {
     date: string;
     time: string;
 };
+
+export enum VideoChatTypeEnum {
+    ZOOM = 'Zoom',
+    LINK = 'Link',
+}
 
 type Props = {
     courseOrMatchId?: number;
@@ -37,6 +42,7 @@ type Props = {
     back: () => void;
     closeModal?: () => void;
     navigateToMatch?: () => Promise<void>;
+    setIsLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
 const AppointmentCreation: React.FC<Props> = ({
@@ -48,6 +54,7 @@ const AppointmentCreation: React.FC<Props> = ({
     overrideMeetingLink,
     closeModal,
     navigateToMatch,
+    setIsLoading,
 }) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
@@ -55,12 +62,13 @@ const AppointmentCreation: React.FC<Props> = ({
     const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
+
     const toast = useToast();
     const navigate = useNavigate();
 
     const [dateSelected, setDateSelected] = useState<boolean>(false);
     const [timeSelected, setTimeSelected] = useState<boolean>(false);
-    const [videoChatType, setVideoChatType] = useState<string>('Zoom');
+    const [videoChatType, setVideoChatType] = useState<VideoChatTypeEnum>(VideoChatTypeEnum.ZOOM);
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -82,6 +90,28 @@ const AppointmentCreation: React.FC<Props> = ({
         }
     `)
     );
+
+    const newOverrideMeetingLink = useMemo(() => {
+        const meetingLink =
+            videoChatType === VideoChatTypeEnum.ZOOM ? undefined : appointmentToCreate.meetingLink ? appointmentToCreate.meetingLink : overrideMeetingLink;
+        return meetingLink;
+    }, [appointmentToCreate.meetingLink, overrideMeetingLink, videoChatType]);
+
+    const isValidUrl = (url?: string) => {
+        // if the chat type is an override meeting link, the link shouldn't be undefined or null
+        if (videoChatType === VideoChatTypeEnum.LINK && !url) {
+            return false;
+        }
+
+        // the regex should check, if the passed url is a valid meeting url
+        if (url) {
+            const urlRegex = /^(https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+)\.(?:[a-zA-Z]{2,})(?:\.[a-zA-Z]{2,})(\/[^\s]*)?(?:\?[^\s]*)?$/;
+            return urlRegex.test(url);
+        }
+
+        // if zoom is choosen no url must be given
+        return true;
+    };
 
     const validateInputs = () => {
         if (!appointmentToCreate.date) {
@@ -109,11 +139,11 @@ const AppointmentCreation: React.FC<Props> = ({
             delete errors.time;
         }
 
-        if (videoChatType === '') {
-            setErrors({ ...errors, videoChat: t('appointment.errors.videoChat') });
+        if (!isValidUrl(newOverrideMeetingLink)) {
+            setErrors({ ...errors, invalidLink: 'invalid link' });
             return false;
         } else {
-            delete errors.videoChat;
+            delete errors.invalidLink;
         }
 
         if (appointmentToCreate.duration === 0) {
@@ -134,12 +164,13 @@ const AppointmentCreation: React.FC<Props> = ({
     const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
+            setIsLoading && setIsLoading(true);
             const newAppointment: AppointmentCreateGroupInput = {
                 title: appointmentToCreate.title ? appointmentToCreate.title : '',
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: appointmentToCreate.meetingLink,
+                meetingLink: newOverrideMeetingLink,
                 subcourseId: courseOrMatchId!,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
@@ -154,7 +185,7 @@ const AppointmentCreation: React.FC<Props> = ({
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: appointmentToCreate.meetingLink,
+                        meetingLink: newOverrideMeetingLink,
                         subcourseId: courseOrMatchId!,
                         appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
@@ -177,6 +208,7 @@ const AppointmentCreation: React.FC<Props> = ({
     const handleCreateCourseAppointment = async () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
+            setIsLoading && setIsLoading(true);
             let appointments: AppointmentCreateGroupInput[] = [];
 
             const newAppointment: AppointmentCreateGroupInput = {
@@ -184,7 +216,7 @@ const AppointmentCreation: React.FC<Props> = ({
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: appointmentToCreate.meetingLink,
+                meetingLink: newOverrideMeetingLink,
                 subcourseId: courseOrMatchId ? courseOrMatchId : 1,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
@@ -200,7 +232,7 @@ const AppointmentCreation: React.FC<Props> = ({
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: appointmentToCreate.meetingLink,
+                        meetingLink: newOverrideMeetingLink,
                         subcourseId: courseOrMatchId ? courseOrMatchId : 1,
                         appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
@@ -224,8 +256,8 @@ const AppointmentCreation: React.FC<Props> = ({
     // * create appointments for an existing match
     const handleCreateMatchAppointment = async () => {
         if (!appointmentToCreate) return;
-
         if (validateInputs()) {
+            setIsLoading && setIsLoading(true);
             let appointments: AppointmentCreateMatchInput[] = [];
 
             const newAppointment: AppointmentCreateMatchInput = {
@@ -233,7 +265,7 @@ const AppointmentCreation: React.FC<Props> = ({
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: appointmentToCreate.meetingLink,
+                meetingLink: newOverrideMeetingLink,
                 matchId: courseOrMatchId ? courseOrMatchId : 1,
                 appointmentType: Lecture_Appointmenttype_Enum.Match,
             };
@@ -249,7 +281,7 @@ const AppointmentCreation: React.FC<Props> = ({
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: appointmentToCreate.meetingLink,
+                        meetingLink: newOverrideMeetingLink,
                         matchId: courseOrMatchId ? courseOrMatchId : 1,
                         appointmentType: Lecture_Appointmenttype_Enum.Match,
                     };
@@ -258,8 +290,7 @@ const AppointmentCreation: React.FC<Props> = ({
                 appointments.push(...weeklyAppointments);
             }
 
-            console.log('CREATE APPOINTMENTS', appointments);
-            // await createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
+            await createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
@@ -269,11 +300,12 @@ const AppointmentCreation: React.FC<Props> = ({
                 placement: 'top',
             });
 
-            // if (navigateToMatch) {
-            //     await navigateToMatch();
-            // } else {
-            //     navigate('/appointments');
-            // }
+            if (navigateToMatch) {
+                await navigateToMatch();
+                setIsLoading && setIsLoading(false);
+            } else {
+                navigate('/appointments');
+            }
         }
     };
 

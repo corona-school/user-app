@@ -17,6 +17,7 @@ const CreateAppointment = () => {
     const [isCourse, setIsCourse] = useState<boolean>(false);
     const [appointmentsTotal, setAppointmentsTotal] = useState<number>(0);
     const [overrideMeetingLink, setOverrideMeetingLink] = useState<string | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -70,7 +71,7 @@ const CreateAppointment = () => {
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerLeft={<NotificationAlert />} showBack>
+            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} showBack>
                 <CreateAppointmentProvider>
                     <Box mx="4">
                         <View position="sticky" mb={2} overflow="hidden">
@@ -102,6 +103,7 @@ const CreateAppointment = () => {
                                     isCourse={isCourse}
                                     appointmentsTotal={appointmentsTotal}
                                     overrideMeetingLink={overrideMeetingLink}
+                                    setIsLoading={setIsLoading}
                                 />
                             </Box>
                         )}

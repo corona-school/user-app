@@ -85,6 +85,7 @@
             "emptyDateError": "Datum darf nicht leer sein",
             "wrongDateError": "Datum kann frühestens in einer Woche sein",
             "emptyTimeError": "Zeit darf nicht leer sein",
+            "wrongVideoUrlError": "Bitte gebe einen gültigen Videolink ein.",
             "courseImageAltText": "Kursbild",
             "videoChatLabel": "Video-Chat",
             "videoChatPlaceholder": "Hinterlege deinen eigenen Link zum Videochat",

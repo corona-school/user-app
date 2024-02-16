@@ -86,7 +86,7 @@ export type StateWithoutWeeklies = {
     date: string;
     time: string;
     duration: number;
-    meetingLink?: string;
+    meetingLink: string | undefined;
     isRecurring: false;
 };
 
@@ -96,7 +96,7 @@ export type StateWithWeeklies = {
     date: string;
     time: string;
     duration: number;
-    meetingLink?: string;
+    meetingLink: string | undefined;
     isRecurring: true;
 };
 

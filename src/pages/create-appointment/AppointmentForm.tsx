@@ -5,8 +5,8 @@ import { useCreateAppointment } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
-import { useCallback, useState } from 'react';
-import { FormErrors } from './AppointmentCreation';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { FormErrors, VideoChatTypeEnum } from './AppointmentCreation';
 import { isDateToday } from '../../helper/appointment-helper';
 import { DateTime } from 'luxon';
 import CustomSelect from '../../components/CustomSelect';
@@ -18,7 +18,7 @@ type FormProps = {
     overrideMeetingLink: string | undefined;
     onSetDate: () => void;
     onSetTime: () => void;
-    setVideoChatType: (type: string) => void;
+    setVideoChatType: Dispatch<SetStateAction<VideoChatTypeEnum>>;
     videoChatType: string;
     isCourse: boolean;
 };
@@ -76,9 +76,6 @@ const AppointmentForm: React.FC<FormProps> = ({
 
     const handleVideoInput = (e: any) => {
         setMeetingLink(e.target.value);
-    };
-    const clearVideoInput = () => {
-        setMeetingLink('');
     };
 
     const getMinForDatePicker = useCallback((type: 'date' | 'time', isCourse: boolean, isToday: boolean) => {
@@ -177,7 +174,7 @@ const AppointmentForm: React.FC<FormProps> = ({
                 </Stack>
 
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
-                    <FormControl isInvalid={'videoChat' in errors} width={inputWidth}>
+                    <FormControl isInvalid={('invalidLink' || 'videoChat') in errors} width={inputWidth}>
                         {/* VIDEO CHAT */}
                         <FormControl.Label>{t('appointment.create.videoChatLabel')}</FormControl.Label>
                         <CustomVideoInput
@@ -186,13 +183,14 @@ const AppointmentForm: React.FC<FormProps> = ({
                             handleBlur={() => {
                                 dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'meetingLink', value: meetingLink });
                             }}
-                            clearInput={clearVideoInput}
                             overrideMeetingLink={overrideMeetingLink}
                             setVideoChatType={setVideoChatType}
                             videoChatType={videoChatType}
                         />
-                        {'videoChat' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>Bitte wähle ein Videochat.</FormControl.ErrorMessage>
+                        {'invalidLink' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.create.wrongVideoUrlError')}
+                            </FormControl.ErrorMessage>
                         )}
                     </FormControl>
                 </Stack>

@@ -101,6 +101,7 @@ const SingleMatch = () => {
     const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>(false);
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
         variables: {
@@ -180,6 +181,15 @@ const SingleMatch = () => {
         return !before;
     }, [data?.match.dissolved, data?.match.dissolvedAt]);
 
+    const overrideMeetingLink = useMemo(() => {
+        const lastAppointment = appointments[appointments.length - 1];
+        if (lastAppointment && lastAppointment.override_meeting_link !== null) {
+            return lastAppointment.override_meeting_link;
+        } else {
+            return undefined;
+        }
+    }, [appointments]);
+
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
@@ -198,6 +208,7 @@ const SingleMatch = () => {
                         <NotificationAlert />
                     </Stack>
                 }
+                isLoading={isLoading}
             >
                 {loading || !data ? (
                     <CenterLoadingSpinner />
@@ -211,7 +222,8 @@ const SingleMatch = () => {
                                     isCourse={false}
                                     appointmentsTotal={appointments.length}
                                     navigateToMatch={async () => await goBackToMatch()}
-                                    overrideMeetingLink={appointments[0].override_meeting_link ?? undefined}
+                                    overrideMeetingLink={overrideMeetingLink}
+                                    setIsLoading={setIsLoading}
                                 />
                             ) : (
                                 <>
