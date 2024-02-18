@@ -22,7 +22,8 @@ const OnboardingNew: React.FC<Props> = () => {
     });
 
     //TEMPORARY
-    const video = 'YCWwiSwg6OM';
+    const video = 'YCWwiSwg6OM'; //web
+    //const video = "LKjKYLXBrU0"; //mobile
 
     return (
         <Container backgroundColor="primary.100" maxWidth="100%" height="100%" overflowY="scroll" alignItems="stretch">
@@ -55,7 +56,7 @@ const OnboardingNew: React.FC<Props> = () => {
                     </View>
                 </Box>
                 {/* VIDEO */}
-                <Box borderRadius="md" bg="primary.400" height="80%" p={space['1']} mx={space['1']} marginBottom={space['1']}>
+                <Box borderRadius="md" bg="primary.400" height="50%" p={space['1']} mx={space['1']} marginBottom={space['1']}>
                     <iframe
                         width="100%"
                         height="100%"
@@ -74,7 +75,7 @@ const OnboardingNew: React.FC<Props> = () => {
                         color="lightText"
                         fontWeight="700"
                         textAlign="center"
-                        py="5"
+                        py={space['1']}
                         onPress={() => window.open('https://calendly.com/lern-fair/huh-kennenlernen')} /* TBD: Für Calendly Datenschutzbanner notwendig? */
                     >
                         Kennenlerngespräch buchen
