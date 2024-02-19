@@ -21,9 +21,26 @@ const OnboardingNew: React.FC<Props> = () => {
         lg: '570px',
     });
 
+    const videoSize = useBreakpointValue({
+        //Maybe write a custom hook that ajusts the size simply by 16 * n and 9 * n depending on size of the viewport?
+        base: {
+            width: '576px',
+            height: '324px',
+        },
+        lg: {
+            width: '864px',
+            height: '486px',
+        },
+        xl: {
+            width: '1152px',
+            height: '648px',
+        },
+    });
+
     //TEMPORARY
     const video = 'YCWwiSwg6OM'; //web
     //const video = "LKjKYLXBrU0"; //mobile
+    //const video = "dQw4w9WgXcQ"; //;)
 
     return (
         <Container backgroundColor="primary.100" maxWidth="100%" height="100%" overflowY="scroll" alignItems="stretch">
@@ -39,7 +56,6 @@ const OnboardingNew: React.FC<Props> = () => {
                     <View
                         paddingX={space['1']}
                         paddingBottom={space['1']}
-                        marginBottom={space['1']}
                         color="lightText"
                         alignItems="center"
                         borderBottomRadius="15px"
@@ -56,7 +72,7 @@ const OnboardingNew: React.FC<Props> = () => {
                     </View>
                 </Box>
                 {/* VIDEO */}
-                <Box borderRadius="md" bg="primary.400" height="50%" p={space['1']} mx={space['1']} marginBottom={space['1']}>
+                <Box borderRadius="md" bg="primary.400" p={space['1']} m={space['1']} height={videoSize.height} width={videoSize.width}>
                     <iframe
                         width="100%"
                         height="100%"
@@ -76,7 +92,7 @@ const OnboardingNew: React.FC<Props> = () => {
                         fontWeight="700"
                         textAlign="center"
                         py={space['1']}
-                        onPress={() => window.open('https://calendly.com/lern-fair/huh-kennenlernen')} /* TBD: Für Calendly Datenschutzbanner notwendig? */
+                        onPress={() => window.open('https://calendly.com/lern-fair/huh-kennenlernen')} /* TBD: Datenschutzinformationen einblenden */
                     >
                         Kennenlerngespräch buchen
                     </Text>
