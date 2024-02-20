@@ -30,6 +30,10 @@ const OnboardingNew: React.FC<Props> = () => {
             height: '486px',
         },
         xl: {
+            width: '1036.8px',
+            height: '583.2px',
+        },
+        '2xl': {
             width: '1152px',
             height: '648px',
         },
