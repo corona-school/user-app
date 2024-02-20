@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Container, Flex, useTheme, Box, Text, Row, Heading, View, useBreakpointValue } from 'native-base';
-import OnboardingView from '../../../widgets/OnboardingView';
 
 type Props = {};
 
@@ -22,7 +21,6 @@ const OnboardingNew: React.FC<Props> = () => {
     });
 
     const videoSize = useBreakpointValue({
-        //Maybe write a custom hook that ajusts the size simply by 16 * n and 9 * n depending on size of the viewport?
         base: {
             width: '576px',
             height: '324px',
@@ -45,12 +43,6 @@ const OnboardingNew: React.FC<Props> = () => {
     return (
         <Container backgroundColor="primary.100" maxWidth="100%" height="100%" overflowY="scroll" alignItems="stretch">
             <Flex justifyContent="space-between" height="100%">
-                {/* <OnboardingView
-                    title="Willkommen bei Lern-Fair!"
-                    content="Danke für deine Registrierung! In einem nächsten Schritt laden wir dich zu einem digitalen Kennenlerngespräch mit uns ein."
-                    video="YCWwiSwg6OM"
-                    videoMobile="LKjKYLXBrU0"
-                /> */}
                 {/* HEADER */}
                 <Box width="100%">
                     <View
@@ -59,7 +51,7 @@ const OnboardingNew: React.FC<Props> = () => {
                         color="lightText"
                         alignItems="center"
                         borderBottomRadius="15px"
-                        backgroundColor="primary.700"
+                        backgroundColor="primary.800"
                     >
                         <Row flexDirection="column">
                             <Heading fontSize="xl" color="lightText" textAlign="center" paddingY={space['1']} maxWidth={contentWidth}>
@@ -72,7 +64,16 @@ const OnboardingNew: React.FC<Props> = () => {
                     </View>
                 </Box>
                 {/* VIDEO */}
-                <Box borderRadius="md" bg="primary.400" p={space['1']} m={space['1']} height={videoSize.height} width={videoSize.width}>
+                <Box
+                    borderRadius="md"
+                    bg="primary.400"
+                    alignSelf="center"
+                    p={space['1']}
+                    m={space['1']}
+                    height={videoSize.height}
+                    width={videoSize.width}
+                    maxWidth={window.innerWidth - space['1'] * 8}
+                >
                     <iframe
                         width="100%"
                         height="100%"
