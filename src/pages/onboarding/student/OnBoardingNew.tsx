@@ -15,6 +15,10 @@ const OnboardingNew: React.FC<Props> = () => {
         });
     }, []); */
 
+    useEffect(() => {
+        console.log(space['1']);
+    }, []);
+
     const contentWidth = useBreakpointValue({
         base: '300px',
         lg: '570px',
@@ -22,20 +26,23 @@ const OnboardingNew: React.FC<Props> = () => {
 
     const videoSize = useBreakpointValue({
         base: {
-            width: '576px',
-            height: '324px',
+            width: 576,
+            height: 324,
         },
         lg: {
-            width: '864px',
-            height: '486px',
+            //*1.5
+            width: 864,
+            height: 486,
         },
         xl: {
-            width: '1036.8px',
-            height: '583.2px',
+            //*1.8
+            width: 1036.8,
+            height: 583.2,
         },
         '2xl': {
-            width: '1152px',
-            height: '648px',
+            //*2
+            width: 1152,
+            height: 648,
         },
     });
 
@@ -73,9 +80,9 @@ const OnboardingNew: React.FC<Props> = () => {
                     bg="primary.400"
                     alignSelf="center"
                     p={space['1']}
-                    m={space['1']}
+                    my={space['1']}
                     height={videoSize.height}
-                    width={videoSize.width}
+                    width={videoSize.width - space['1'] * 6.2} //please don't ask me why 6.2, in theory it should be 2...
                     maxWidth={window.innerWidth - space['1'] * 8}
                 >
                     <iframe
