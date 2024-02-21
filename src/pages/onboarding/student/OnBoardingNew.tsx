@@ -1,11 +1,14 @@
 import { useEffect, useRef, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Container, Flex, useTheme, Box, Text, Row, Heading, View, useBreakpointValue } from 'native-base';
+import { useTranslation } from 'react-i18next';
 
 type Props = {};
 
 const OnboardingNew: React.FC<Props> = () => {
     const { space } = useTheme();
+
+    const { t } = useTranslation();
 
     const video = 'YCWwiSwg6OM';
     const videoMobile = 'LKjKYLXBrU0';
@@ -54,10 +57,10 @@ const OnboardingNew: React.FC<Props> = () => {
                     >
                         <Row flexDirection="column">
                             <Heading fontSize="xl" color="lightText" textAlign="center" paddingY={space['1']} maxWidth={contentWidth}>
-                                Willkommen bei Lern-Fair!
+                                {t('onboarding.student.header')}
                             </Heading>
                             <Text color="lightText" textAlign="center" maxWidth={contentWidth} paddingBottom={space['1']}>
-                                Danke für deine Registrierung! In einem nächsten Schritt laden wir dich zu einem digitalen Kennenlerngespräch mit uns ein.
+                                {t('onboarding.student.text')}
                             </Text>
                         </Row>
                     </View>
@@ -96,7 +99,7 @@ const OnboardingNew: React.FC<Props> = () => {
                         py={space['1']}
                         onPress={() => window.open('https://calendly.com/lern-fair/huh-kennenlernen')} /* TBD: Datenschutzinformationen einblenden */
                     >
-                        Kennenlerngespräch buchen
+                        {t('onboarding.student.button')}
                     </Text>
                 </Box>
             </Flex>

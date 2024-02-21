@@ -2152,7 +2152,6 @@
     },
     "requireScreening": {
         "contactSupport": "Support kontaktieren",
-
         "noScreening": {
             "title": "Wir möchten dich kennenlernen, {{firstname}}!",
             "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
@@ -2179,5 +2178,12 @@
         "success": "Deine Nachricht wurde erfolgreich versendet",
         "failure": "Ein Fehler ist aufgetreten"
     },
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "onboarding": {
+        "student": {
+            "header": "Willkommen bei Lern-Fair!",
+            "text": "Danke für deine Registrierung! In einem nächsten Schritt laden wir dich zu einem digitalen Kennenlerngespräch mit uns ein.",
+            "button": "Kennenlerngespräch buchen"
+        }
+    }
 }
