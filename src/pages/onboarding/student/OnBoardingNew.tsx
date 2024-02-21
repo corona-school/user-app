@@ -65,7 +65,8 @@ const OnboardingNew: React.FC<Props> = () => {
                     p={space['1']}
                     my={space['1']}
                     height={videoHeight}
-                    width={'864px'}
+                    width={videoHeight * 1.7778 - space['1'] * 6.2} /* for the proper aspect ratio. 
+                    Please don't ask me why it's * 6.2, in theory it should be * 2 to accomodate for the padding */
                     maxWidth={window.innerWidth - space['1'] * 8}
                 >
                     <iframe
