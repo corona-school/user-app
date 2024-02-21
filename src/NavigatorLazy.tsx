@@ -203,7 +203,6 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                {/* <Route path="students" element={<OnBoardingStudentWelcome />} /> */}
                 <Route path="students" element={<OnboardingNew />} />
                 <Route path="helper" element={<OnBoardingHelperWelcome />} />
                 <Route path="helpermatching" element={<OnBoardingHelperMatchingWelcome />} />
