@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Container, Flex, useTheme, Box, Text, Row, Heading, View, useBreakpointValue } from 'native-base';
+import { Container, Flex, useTheme, Box, Text, Row, Heading, View, useBreakpointValue, Link } from 'native-base';
 import { useTranslation } from 'react-i18next';
+import { ConfirmModal } from '../../../modals/ConfirmModal';
 
 type Props = {};
 
+//TBD: How should this page be skipped / finished and to what page should they lead the user afterwards?
 const OnboardingNew: React.FC<Props> = () => {
     const { space } = useTheme();
 
@@ -16,6 +18,8 @@ const OnboardingNew: React.FC<Props> = () => {
 
     const [videoHeight, setVideoHeight] = useState(400);
     const [isVertival, setIsVertical] = useState(window.innerHeight > window.innerWidth);
+    const [showCalendlyModal, setShowCalendlyModal] = useState(false);
+    const [showYotubeModal, setShowYotubeModal] = useState(false);
 
     const headerRef = useRef<HTMLElement>(null);
     const footerRef = useRef<HTMLElement>(null);
@@ -79,9 +83,7 @@ const OnboardingNew: React.FC<Props> = () => {
                     <iframe
                         width="100%"
                         height="100%"
-                        src={`https://www.youtube.com/embed/${
-                            isVertival ? videoMobile : video
-                        }`} /* TBD: Datenschutzbanner für YouTube ODER Videos selbst hosten */
+                        src={`https://www.youtube.com/embed/${isVertival ? videoMobile : video}`} /* TBD: Datenschutzbanner für YouTube*/
                         allow="encrypted-media; gyroscope; picture-in-picture"
                         allowFullScreen
                         title="Onboarding Video"
@@ -92,17 +94,25 @@ const OnboardingNew: React.FC<Props> = () => {
                 </Box>
                 {/* FOOTER */}
                 <Box backgroundColor="primary.700" ref={footerRef}>
-                    <Text
-                        color="lightText"
-                        fontWeight="700"
-                        textAlign="center"
-                        py={space['1']}
-                        onPress={() => window.open('https://calendly.com/lern-fair/huh-kennenlernen')} /* TBD: Datenschutzinformationen einblenden */
-                    >
+                    <Text color="lightText" fontWeight="700" textAlign="center" py={space['1']} onPress={() => setShowCalendlyModal(true)}>
                         {t('onboarding.student.button')}
                     </Text>
                 </Box>
             </Flex>
+            <ConfirmModal
+                text=""
+                isOpen={showCalendlyModal}
+                onConfirmed={() => window.open('https://calendly.com/lern-fair/huh-kennenlernen')}
+                onClose={() => setShowCalendlyModal(false)}
+                danger={false}
+            >
+                <Text textAlign="center">
+                    {
+                        'Mit dem folgenden Link wirst du zu unserem in den USA sitzenden Dienstleister Calendly weitergeleitet.\nWeitere Informationen zur Datenverarbeitung bei Calendly findest du '
+                    }
+                    <Link onPress={() => window.open('https://calendly.com/privacy')}>hier</Link>.{'\n\nMöchtest du fortfahren?'}
+                </Text>
+            </ConfirmModal>
         </Container>
     );
 };
