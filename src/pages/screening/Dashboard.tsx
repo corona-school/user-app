@@ -114,6 +114,8 @@ export function ScreeningDashboard() {
                     languages
                     subjectsFormatted { name mandatory }
                     grade
+                    gradeAsInt
+                    openMatchRequestCount
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -184,6 +186,8 @@ export function ScreeningDashboard() {
                 languages
                 subjectsFormatted { name }
                 grade
+                gradeAsInt
+                openMatchRequestCount
                 matches {
                     createdAt
                     student { firstname lastname }

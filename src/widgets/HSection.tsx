@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 
 type Props = {
     title?: string;
+    referenceTitle?: string;
     showAll?: boolean;
     children: ReactNode | ReactNode[];
     onShowAll?: () => any;
@@ -17,6 +18,7 @@ type Props = {
 
 const HSection: React.FC<Props> = ({
     title,
+    referenceTitle,
     isDark = false,
     showAll = false,
     scrollable = true,
@@ -43,7 +45,7 @@ const HSection: React.FC<Props> = ({
                         {title}
                     </Heading>
                 )}
-                {showAll && <Link onPress={onShowAll}>{t('all')}</Link>}
+                {showAll && <Link onPress={onShowAll}>{referenceTitle ? referenceTitle : t('all')}</Link>}
             </Row>
             <Row
                 flexWrap={wrap ? 'wrap' : 'nowrap'}

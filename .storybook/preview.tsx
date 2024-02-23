@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import i18n from '../src/I18n';
 import { I18nextProvider } from 'react-i18next';
 import { MockedProvider } from '@apollo/client/testing';
+import './style.css';
 
 export const parameters = {
     actions: { argTypesRegex: '^on[A-Z].*' },
