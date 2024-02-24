@@ -1,11 +1,13 @@
 import { Flex, Spinner } from 'native-base';
 
-type Props = {};
+type Props = {
+    color?: string;
+};
 
-const CenterLoadingSpinner: React.FC<Props> = () => {
+const CenterLoadingSpinner: React.FC<Props> = ({ color }) => {
     return (
         <Flex flex="1" h="100%" justifyContent="center" alignItems="center">
-            <Spinner />
+            <Spinner color={color} />
         </Flex>
     );
 };

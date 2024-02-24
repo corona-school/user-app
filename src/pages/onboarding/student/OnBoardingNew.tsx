@@ -3,6 +3,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Container, Flex, useTheme, Box, Text, Row, Heading, View, useBreakpointValue, Link, Button, Card, ScrollView } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { ConfirmModal } from '../../../modals/ConfirmModal';
+import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
 
 type Props = {};
 
@@ -21,6 +22,7 @@ const OnboardingNew: React.FC<Props> = () => {
     const [isVertical, setIsVertical] = useState(window.innerHeight > window.innerWidth);
     const [showCalendlyModal, setShowCalendlyModal] = useState(false);
     const [agreedYoutubePrivacy, setAgreedYoutubePrivacy] = useState(false);
+    const [isIframeLoading, setIsIframeLoading] = useState(true);
 
     const headerRef = useRef<HTMLElement>(null);
     const footerRef = useRef<HTMLElement>(null);
@@ -81,8 +83,8 @@ const OnboardingNew: React.FC<Props> = () => {
                         height={videoHeight}
                         width={(videoHeight - 8 * paddingVidBox) * (isVertical ? 9 / 16 : 16 / 9) + 8 * paddingVidBox}
                         maxWidth={window.innerWidth - paddingVidBox * 8}
-                        minHeight={isVertical ? 400 : 260}
-                        minWidth={isVertical ? 260 : 400}
+                        minHeight={isVertical ? 400 : 239}
+                        minWidth={isVertical ? 239 : 400}
                     >
                         {!agreedYoutubePrivacy ? (
                             <Flex justifyContent="center" alignItems="center" height="100%">
@@ -98,17 +100,22 @@ const OnboardingNew: React.FC<Props> = () => {
                                 </Card>
                             </Flex>
                         ) : (
-                            <iframe
-                                width="100%"
-                                height="100%"
-                                src={`https://www.youtube.com/embed/${isVertical ? videoMobile : video}`}
-                                allow="encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                                title="Onboarding Video"
-                                style={{
-                                    border: 'none',
-                                }}
-                            />
+                            <>
+                                {isIframeLoading && <CenterLoadingSpinner color="primary.100" />}
+                                <iframe
+                                    width="100%"
+                                    height="100%"
+                                    src={`https://www.youtube.com/embed/${isVertical ? videoMobile : video}`}
+                                    allow="encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    title="Onboarding Video"
+                                    style={{
+                                        border: 'none',
+                                    }}
+                                    loading="lazy"
+                                    onLoad={() => setIsIframeLoading(false)}
+                                />
+                            </>
                         )}
                     </Box>
                     {/* FOOTER */}
