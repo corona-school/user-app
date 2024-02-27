@@ -52,7 +52,7 @@ query overrrideLink($appointmentId: Float!) {
 
     const openMeeting = async () => {
         const overrideLink = data?.appointment?.override_meeting_link;
-        if (overrideLink == null) {
+        if (!overrideLink) {
             setIsOpenModal(true);
         } else {
             window.open(overrideLink, '_blank');
