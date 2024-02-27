@@ -1,5 +1,5 @@
 import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
-import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
+import { Button, Modal, Stack, useTheme, useToast } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
@@ -9,8 +9,6 @@ import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import AlertMessage from '../../../widgets/AlertMessage';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
-import { canJoinMeeting } from '../../../widgets/AppointmentDay';
-import { DateTime } from 'luxon';
 import { gql } from '../../../gql';
 import VideoButton from '../../../components/VideoButton';
 import { useNavigate } from 'react-router-dom';
@@ -187,7 +185,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
     const appointment = subcourse.appointments[0];
     return (
         <>
-            <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
+            <Stack direction={isMobile ? 'column' : 'row'} mb="5" space={isMobile ? space['1'] : space['2']}>
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
                     <DisableableButton isDisabled={loadingSubcourseJoined} reasonDisabled={t('reasonsDisabled.loading')} onPress={() => setSignInModal(true)}>
                         {t('signin')}
@@ -222,7 +220,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                         <VideoButton
                             appointmentId={appointment.id}
                             appointmentType={appointment.appointmentType}
-                            canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 10, DateTime.now())}
+                            startDateTime={appointment.start}
+                            duration={appointment.duration}
                         />
                         <DisableableButton
                             isDisabled={loadingSubcourseLeft}
@@ -243,12 +242,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                         {t('single.actions.joinWaitinglist')}
                     </DisableableButton>
                 )}
-                {subcourse.isOnWaitingList && (
-                    <VStack space={space['0.5']} mb="5">
-                        <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingLeftWaitinglist} />
-                    </VStack>
-                )}
             </Stack>
+            {subcourse.isOnWaitingList && (
+                <Stack space={space['0.5']} mb="5">
+                    <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingLeftWaitinglist} />
+                </Stack>
+            )}
 
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>
                 <CourseConfirmationModal

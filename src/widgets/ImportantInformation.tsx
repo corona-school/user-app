@@ -10,8 +10,8 @@ import HSection from './HSection';
 import { BACKEND_URL } from '../config';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
-import { ConfirmCertificate } from './certificates/ConfirmCertificate';
 import { SuccessModal } from '../modals/SuccessModal';
+import { CertificateConfirmationBox } from './certificates/CertificateConfirmationBox';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -196,7 +196,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
         if (pupil && (wasInvited || notYetScreened)) {
             const pupil_url =
-                process.env.REACT_APP_PUPIL_SCREENING_URL +
+                (notYetScreened ? process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL : process.env.REACT_APP_PUPIL_SCREENING_URL) +
                 '?first_name=' +
                 encodeURIComponent(data?.me?.firstname ?? '') +
                 '&last_name=' +
@@ -208,7 +208,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 '&a2=' +
                 encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
             infos.push({
-                label: 'pupilScreening',
+                label: notYetScreened ? 'pupilFirstScreening' : 'pupilScreening',
                 btnfn: [
                     () => {
                         window.open(pupil_url, '_blank');
@@ -217,6 +217,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 lang: {},
             });
         }
+
         // -------- Welcome -----------
         if (pupil && !pupil?.firstMatchRequest && pupil?.subcoursesJoined.length === 0 && pupil?.matches.length === 0)
             infos.push({
@@ -302,7 +303,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     () => {
                         show(
                             { variant: 'light', closeable: true, headline: t('matching.certificate.titleRequest') },
-                            <ConfirmCertificate certificate={certificate} />
+                            <CertificateConfirmationBox certificate={certificate} />
                         );
                     },
                 ],

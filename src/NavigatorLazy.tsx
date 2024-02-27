@@ -37,7 +37,7 @@ import NoAcceptRegistration from './pages/NoAcceptRegistration';
 import VerifyEmail from './pages/VerifyEmail';
 import VerifyEmailModal from './modals/VerifyEmailModal';
 import ResetPassword from './pages/ResetPassword';
-import { RequireAuth, SwitchUserType } from './User';
+import { RequireAuth, RequireRole, SwitchUserType } from './User';
 import IFrame from './components/IFrame';
 import WithNavigation from './components/WithNavigation';
 import Registration from './pages/Registration';
@@ -64,6 +64,9 @@ import { lazyWithRetry } from './lazy';
 import { Suspense } from 'react';
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 import { datadogRum } from '@datadog/browser-rum';
+import ProgressPage from './pages/Progress';
+import ConfirmCertificate from './pages/ConfirmCertificate';
+import CertificateOfConduct from './pages/CertificateOfConduct';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -104,7 +107,9 @@ export default function NavigatorLazy() {
                 path="/single-course/:id"
                 element={
                     <RequireAuth isRetainPath>
-                        <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT']}>
+                            <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -177,6 +182,17 @@ export default function NavigatorLazy() {
                 }
             />
 
+            <Route
+                path="/certificate-of-conduct"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['STUDENT']}>
+                            <CertificateOfConduct />
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+
             {/* Onboarding Subpages */}
             <Route
                 path="/onboarding"
@@ -242,7 +258,9 @@ export default function NavigatorLazy() {
                 path="/create-course"
                 element={
                     <RequireAuth>
-                        <CreateCourse />
+                        <RequireRole roles={['INSTRUCTOR']}>
+                            <CreateCourse />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -252,7 +270,9 @@ export default function NavigatorLazy() {
                 path="/edit-course"
                 element={
                     <RequireAuth>
-                        <CreateCourse />
+                        <RequireRole roles={['INSTRUCTOR']}>
+                            <CreateCourse />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -262,7 +282,10 @@ export default function NavigatorLazy() {
                 path="/group"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} />
+                        {/* for helpers ('students') we do not require the INSTRUCTOR role, as we have a fallback page in place */}
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT']}>
+                            <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} />
+                        </RequireRole>
                     </RequireAuth>
                 }
             ></Route>
@@ -324,7 +347,10 @@ export default function NavigatorLazy() {
                 path="/matching"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Matching />} studentComponent={<MatchPage />} />
+                        {/* for helpers ('students') we do not require the TUTOR role, as we have a fallback page in place */}
+                        <RequireRole roles={['STUDENT', 'TUTEE']}>
+                            <SwitchUserType pupilComponent={<Matching />} studentComponent={<MatchPage />} />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -333,7 +359,9 @@ export default function NavigatorLazy() {
                 path="/match/:id"
                 element={
                     <RequireAuth>
-                        <SingleMatch />
+                        <RequireRole roles={['TUTOR', 'TUTEE']}>
+                            <SingleMatch />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -341,7 +369,19 @@ export default function NavigatorLazy() {
                 path="/request-match"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                        <RequireRole roles={['TUTOR', 'TUTEE']}>
+                            <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/confirm-certificate/:id"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['PUPIL']}>
+                            <ConfirmCertificate />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -352,6 +392,14 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <Chat />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/progress"
+                element={
+                    <RequireAuth>
+                        <ProgressPage />
                     </RequireAuth>
                 }
             />

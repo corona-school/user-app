@@ -28,7 +28,7 @@ const SearchBar: React.FC<Props> = ({ placeholder, onSearch, showBack, onBack, v
         if (autoSubmit) {
             const timer = setTimeout(() => {
                 // search string has not changed for 3 seconds
-                if (searchStringRef.current.value === searchString) {
+                if (prev !== searchString && searchStringRef.current.value === searchString) {
                     onSearch(searchString);
                 }
             }, 1500);
