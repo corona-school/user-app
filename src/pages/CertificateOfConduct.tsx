@@ -72,16 +72,20 @@ const CertificateOfConduct = () => {
                     <Heading>{t('certificateOfConduct.header')}</Heading>
                     <Stack space={2} mb="3">
                         <Text>{t('certificateOfConduct.description')}</Text>
-                        <HStack space={2}>
-                            <Text>
-                                <Trans>{t('certificateOfConduct.deadline', { cocDate: DateTime.fromISO(cocDate).toFormat('dd.MM.yyyy') })}</Trans>
-                            </Text>
-                            <Tooltip label={t('certificateOfConduct.tooltip')}>
-                                <Circle rounded="full" bg="danger.100" size={4}>
-                                    <Text color={'white'}>i</Text>
-                                </Circle>
-                            </Tooltip>
-                        </HStack>
+                        {cocDate ? (
+                            <HStack space={2}>
+                                <Text>
+                                    <Trans>{t('certificateOfConduct.deadline', { cocDate: DateTime.fromISO(cocDate).toFormat('dd.MM.yyyy') })}</Trans>
+                                </Text>
+                                <Tooltip label={t('certificateOfConduct.tooltip')}>
+                                    <Circle rounded="full" bg="danger.100" size={4}>
+                                        <Text color={'white'}>i</Text>
+                                    </Circle>
+                                </Tooltip>
+                            </HStack>
+                        ) : (
+                            <></>
+                        )}
                         <AlertMessage content={<Trans>{t('certificateOfConduct.alert_message')}</Trans>} />
                     </Stack>
                     <Stack direction={direction} space={4} mb="10">
