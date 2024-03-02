@@ -49,7 +49,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
         const navigateToArray = navigateTo.split('/');
         if ((navigateToArray[0] || navigateToArray[1]) === 'achievement') {
             const achievementId = navigateToArray[navigateToArray.length - 1];
-            setAchievementModalForId(Number(achievementId));
+            setAchievementModalForId(parseInt(achievementId, 10));
         } else if (navigateToArray[0] === '/') {
             return navigate(navigateTo);
         } else {
