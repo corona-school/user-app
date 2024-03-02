@@ -51,11 +51,12 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
             // and we navigate in the User App
 
             if (navigateTo.startsWith('/achievement')) {
+                // With the special link /achievement/{id} we open the Achievement Modal instead
                 const achievementId = navigateTo.split('/')[2];
                 setAchievementModalForId(parseInt(achievementId, 10));
+            } else {
+                return navigate(navigateTo);
             }
-
-            return navigate(navigateTo);
         } else {
             // Otherwise we treat it as an external link and warn the user:
             setLeavePageModalOpen(true);
