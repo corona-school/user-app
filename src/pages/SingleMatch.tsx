@@ -176,7 +176,7 @@ const SingleMatch = () => {
 
         await trackJoinMeeting({ variables: { appointmentId } });
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
-    }, [createAdHocMeeting, matchId, joinMeeting, navigate]);
+    }, [createAdHocMeeting, matchId, trackJoinMeeting, navigate]);
 
     const isActiveMatch = useMemo(() => {
         if (!data?.match.dissolved) return true;
