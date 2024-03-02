@@ -51,7 +51,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 
     const zoomUrl = data?.appointment?.zoomMeetingUrl;
 
-    const [joinMeeting] = useMutation(
+    const [trackJoinMeeting] = useMutation(
         gql(`
             mutation JoinMeeting($appointmentId: Float!) { 
                 appointmentTrackJoin(appointmentId: $appointmentId)
@@ -60,7 +60,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
     );
     const openMeeting = async () => {
         // Technically the user has not joined yet, but they tried, that should be good enough for now
-        await joinMeeting({ variables: { appointmentId } });
+        await trackJoinMeeting({ variables: { appointmentId } });
 
         const overrideLink = data?.appointment?.override_meeting_link;
         if (!overrideLink) {
