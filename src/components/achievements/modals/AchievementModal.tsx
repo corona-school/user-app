@@ -289,9 +289,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             <Button flex={1} variant="outline" onPress={() => navigate('/progress')}>
                                 <Text color="primary.500">{t('achievement.modal.achievements')}</Text>
                             </Button>
-                            <Link href={buttonLink} flex={1} backgroundColor="secondary.900" borderRadius={4} justifyContent="center" alignItems="center">
+                            <Button onPress={() => navigate(buttonLink)} flex={1} variant="solid">
                                 <Text>{buttonText}</Text>
-                            </Link>
+                            </Button>
                         </Stack>
                     ) : (
                         <Stack width="100%" direction={buttonAlignment} space={2} paddingTop="2">
