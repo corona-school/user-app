@@ -23,8 +23,6 @@ type Props = {
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
     appointmentId?: Appointment['id'];
-    subcourseId?: number;
-    matchId?: number;
     canJoinVideochat?: boolean;
 };
 
@@ -40,8 +38,6 @@ const AppointmentTile: React.FC<Props> = ({
     position,
     displayName,
     appointmentId,
-    subcourseId,
-    matchId,
     appointmentType,
     isOrganizer,
 }) => {

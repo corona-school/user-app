@@ -186,8 +186,6 @@ const CreateCourse: React.FC = () => {
                     position
                     total
                     appointmentType
-                    matchId
-                    subcourseId
                     participants(skip: 0, take: 10) {
                         firstname
                         lastname

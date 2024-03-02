@@ -84,8 +84,6 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                                     appointmentId={myNextAppointment.id}
                                     appointmentType={myNextAppointment.appointmentType}
                                     isOrganizer={myNextAppointment.isOrganizer}
-                                    matchId={myNextAppointment.matchId || undefined}
-                                    subcourseId={myNextAppointment.subcourseId ?? 0}
                                 />
                             );
                         })}

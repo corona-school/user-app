@@ -449,6 +449,7 @@ export default function NavigatorLazy() {
                     </WithNavigation>
                 }
             />
+
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/start" />} />
         </Routes>

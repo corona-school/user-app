@@ -144,8 +144,6 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
               total
               isOrganizer
               isParticipant
-              matchId
-              subcourseId
               organizers(skip: 0, take: 5) {
                 id
                 firstname
@@ -176,8 +174,6 @@ query GetInstructorSubcourse($subcourseId: Int!) {
         canContactParticipants { allowed reason }
         canCancel { allowed reason }
         appointments {
-            matchId
-            subcourseId
             participants(skip: 0, take: 50) {
                 id
                 firstname

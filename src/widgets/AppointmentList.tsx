@@ -156,8 +156,6 @@ const AppointmentList: React.FC<Props> = ({
                         isOrganizer={appointment.isOrganizer}
                         displayName={appointment.displayName}
                         appointmentId={appointment.id}
-                        subcourseId={appointment.subcourseId}
-                        matchId={appointment.matchId || undefined}
                     />
                 </Box>
             </Box>

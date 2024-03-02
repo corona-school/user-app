@@ -49,6 +49,8 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         { variables: { appointmentId } }
     );
 
+    const zoomUrl = data?.appointment?.zoomMeetingUrl;
+
     const [joinMeeting] = useMutation(
         gql(`
             mutation JoinMeeting($appointmentId: Float!) { 
@@ -57,6 +59,9 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         `)
     );
     const openMeeting = async () => {
+        // Technically the user has not joined yet, but they tried, that should be good enough for now
+        await joinMeeting({ variables: { appointmentId } });
+
         const overrideLink = data?.appointment?.override_meeting_link;
         if (!overrideLink) {
             setIsOpenModal(true);
