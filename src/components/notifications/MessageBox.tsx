@@ -46,13 +46,18 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
         }
         if (typeof navigateTo !== 'string') return null;
         updateLastTimeChecked && updateLastTimeChecked();
-        const navigateToArray = navigateTo.split('/');
-        if ((navigateToArray[0] || navigateToArray[1]) === 'achievement') {
-            const achievementId = navigateToArray[navigateToArray.length - 1];
-            setAchievementModalForId(parseInt(achievementId, 10));
-        } else if (navigateToArray[0] === '/') {
+        if (navigateTo.startsWith('/')) {
+            // If it starts with a / it is treated as a relative path,
+            // and we navigate in the User App
+
+            if (navigateTo.startsWith('/achievement')) {
+                const achievementId = navigateTo.split('/')[2];
+                setAchievementModalForId(parseInt(achievementId, 10));
+            }
+
             return navigate(navigateTo);
         } else {
+            // Otherwise we treat it as an external link and warn the user:
             setLeavePageModalOpen(true);
         }
     };
