@@ -105,10 +105,8 @@ const AppointmentTile: React.FC<Props> = ({
                         {!isReadOnly && isCurrentlyTakingPlace && appointmentId && appointmentType && (
                             <Box mt={2}>
                                 <VideoButton
-                                    matchId={matchId}
-                                    subcourseId={subcourseId}
                                     isInstructor={isOrganizer}
-                                    canJoinMeeting
+                                    canJoin
                                     appointmentId={appointmentId}
                                     appointmentType={appointmentType}
                                     width={buttonWidth}

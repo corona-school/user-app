@@ -9,7 +9,6 @@ import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
 import { useMemo, useState } from 'react';
 import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
-import { canJoinMeeting } from '../../widgets/AppointmentDay';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
 import useInterval from '../../hooks/useInterval';
@@ -64,7 +63,6 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         setCurrentTime(new Date().getTime());
     }, 30_000);
 
-    const canStartMeeting = useMemo(() => canJoinMeeting(startDateTime, duration, isOrganizer ? 240 : 10, DateTime.now()), []);
     const isAppointmentOver = useMemo(() => {
         const end = DateTime.fromISO(startDateTime).plus({ minutes: duration + 15 });
         return end < DateTime.now();
@@ -108,12 +106,11 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         isInstructor={isOrganizer}
                         appointmentId={appointmentId}
                         appointmentType={appointmentType}
-                        canJoinMeeting={canStartMeeting}
+                        startDateTime={startDateTime}
+                        duration={duration}
                         buttonText={t('appointment.detail.videochatButton')}
                         width={buttonWidth}
                         isOver={isAppointmentOver}
-                        matchId={matchId}
-                        subcourseId={subcourseId}
                     />
                 </>
             )}
