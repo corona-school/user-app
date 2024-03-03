@@ -21,7 +21,6 @@ export const STUDENT_APPOINTMENT = gql(`
             total
             displayName
             isOrganizer
-            matchId
             participants(skip: 0, take: 10) {
                 id
                 userID
