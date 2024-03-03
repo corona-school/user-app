@@ -301,7 +301,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Certificate of Conduct -----------
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
-                label: NextStepLabelType.SCHOOL_CERTIFICATE,
+                label: NextStepLabelType.CERTIFICATE_OF_CONDUCT,
                 btnfn: [() => navigate('/certificate-of-conduct')],
                 lang: {
                     cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
