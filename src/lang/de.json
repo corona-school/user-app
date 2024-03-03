@@ -1184,6 +1184,7 @@
         },
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
+            "subtitle": "Kennenlernen",
             "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
             "buttons": ["Termin vereinbaren"]
         },
@@ -1229,6 +1230,7 @@
         },
         "pupilFirstScreening": {
             "title": "Wir möchten dich kennenlernen!",
+            "subtitle": "Kennenlernen",
             "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
             "buttons": ["Termin vereinbaren"]
         }
