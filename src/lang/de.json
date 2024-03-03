@@ -2156,18 +2156,18 @@
         "contactSupport": "Support kontaktieren",
 
         "noScreening": {
-            "title": "Wir möchten dich kennenlernen, {{firstname}}!",
-            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
+            "title": "Bitte buche dir einen Termin, {{firstname}}!",
+            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
             "makeAppointment": "Termin vereinbaren"
         },
         "hasScreening": {
             "title": "Bitte warte ein bisschen",
-            "content": "Du wurdest noch nicht freigeschaltet. Bitte warte ein bisschen, wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
+            "content": "Wir haben uns sehr gefreut dich kennenzulernen. Dein Account wurde noch nicht freigeschaltet. Wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
             "makeAnotherAppointment": "Erneut Termin vereinbaren"
         },
         "rejectedScreening": {
             "title": "Leider können wir dir nicht helfen, {{firstname}}",
-            "content": "Leider können wir dir das Angebot von Lern-Fair nicht zur Verfügung stellen."
+            "content": "Leider haben wir entschieden, dass wir dir das Angebot von Lern-Fair nicht zur Verfügung stellen können. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
         }
     },
     "contactSupport": {
@@ -2179,7 +2179,8 @@
         "submit": "Anfrage senden",
         "disabled": "Bitte fülle das Formular aus",
         "success": "Deine Nachricht wurde erfolgreich versendet",
-        "failure": "Ein Fehler ist aufgetreten"
+        "failure": "Ein Fehler ist aufgetreten",
+        "legal": "Ich bin damit einverstanden, dass Lern-Fair die hier gemachten Angaben entsprechend meines Anliegens verarbeitet und nehme die Übermittlung an unsere Dienstleister in die USA und die <privacy>Datenschutzerklärung</privacy> zur Kenntnis."
     },
     "logout": "Abmelden"
 }
