@@ -13,6 +13,7 @@ import useModal from '../../hooks/useModal';
 import { SuccessModal } from '../../modals/SuccessModal';
 import { IMPORTANT_INFORMATION_QUERY } from '../ImportantInformation';
 import DisableableButton from '../../components/DisablebleButton';
+import { useNavigate } from 'react-router-dom';
 
 export type CertificateToConfirm = Pick<
     Participation_Certificate,
@@ -225,6 +226,7 @@ export function CertificateConfirmationBox({ certificate }: { certificate: Certi
     const [isMinor, setIsMinor] = useState<boolean | null>(null);
     const [sign, setSign] = useState(false);
     const { show } = useModal();
+    const navigate = useNavigate();
 
     const [signCertificate, { loading, data, error }] = useMutation(
         gql(
@@ -239,7 +241,11 @@ export function CertificateConfirmationBox({ certificate }: { certificate: Certi
         if (data) {
             show(
                 { variant: 'dark', closeable: true },
-                <SuccessModal title={t('matching.certificate.success')} content={t('matching.certificate.successInfo')} />
+                <SuccessModal
+                    title={t('matching.certificate.success')}
+                    content={t('matching.certificate.successInfo')}
+                    onClose={() => navigate('/', { replace: true })}
+                />
             );
         }
 
