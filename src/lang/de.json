@@ -1150,7 +1150,7 @@
             "subtitle": "Wichtig!",
             "title": "Erweitertes Führungszeugnis",
             "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "buttons": ["Führungszeugnis einreichen", "Vordruck herunterladen"],
+            "buttons": ["Führungszeugnis einreichen"],
             "actionDescription": "Alles zum Führungszeugnis"
         },
         "statusStudent": {
@@ -1162,7 +1162,7 @@
         "statusStudent2": {
             "subtitle": "Weitere Engagement-Möglichkeiten",
             "title": "Lust auf mehr?",
-            "content": "Möchtest du weitere Schüler:innen un-terstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
+            "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
             "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
             "actionDescription": "Jetzt Möglichkeiten ansehen"
         },
@@ -1184,6 +1184,7 @@
         },
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
+            "subtitle": "Kennenlernen",
             "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
             "buttons": ["Termin vereinbaren"]
         },
@@ -1229,6 +1230,7 @@
         },
         "pupilFirstScreening": {
             "title": "Wir möchten dich kennenlernen!",
+            "subtitle": "Kennenlernen",
             "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
             "buttons": ["Termin vereinbaren"]
         }
