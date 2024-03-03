@@ -207,7 +207,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Pupil Screening --------
         const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
         const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
-        if (pupil && (wasInvited || notYetScreened)) {
+        const inviteToScreening = wasInvited || notYetScreened;
+        if (pupil && inviteToScreening) {
             const pupil_url =
                 (notYetScreened ? process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL : process.env.REACT_APP_PUPIL_SCREENING_URL) +
                 '?first_name=' +
@@ -256,7 +257,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Open Match Request -----------
-        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
+        if (roles.includes('TUTEE') && !inviteToScreening && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
             infos.push({
                 label: NextStepLabelType.STATUS_PUPIL,
                 btnfn: [() => navigate('/group'), deleteMatchRequest],
