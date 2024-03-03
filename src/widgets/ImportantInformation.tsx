@@ -170,14 +170,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
     const [deleteMatchRequest] = useMutation(gql(`mutation deleteMatchRequest{ pupilDeleteMatchRequest }`), { refetchQueries: [IMPORTANT_INFORMATION_QUERY] });
 
-    const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`), {
-        refetchQueries: [IMPORTANT_INFORMATION_QUERY],
-    });
-    async function openRemissionRequest() {
-        const { data } = await downloadRemissionRequest();
-        window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
-    }
-
     const infos = useMemo(() => {
         let infos: Information[] = [];
 
@@ -310,7 +302,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
                 label: NextStepLabelType.SCHOOL_CERTIFICATE,
-                btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de'), openRemissionRequest],
+                btnfn: [() => navigate('/certificate-of-conduct')],
                 lang: {
                     cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
                 },
@@ -332,7 +324,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         return infos;
-    }, [student, sendMail, email, pupil, roles, confirmInterest, refuseInterest, deleteMatchRequest, data, openRemissionRequest, navigate]);
+    }, [student, sendMail, email, pupil, roles, confirmInterest, refuseInterest, deleteMatchRequest, data, navigate]);
 
     const configurableInfos = useMemo(() => {
         let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
