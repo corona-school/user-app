@@ -116,6 +116,27 @@ query GetOnboardingInfos {
          status
       }
     }
+    nextStepAchievements {
+        id
+        name
+        subtitle
+        description
+        image
+        alternativeText
+        actionType
+        achievementType
+        achievementState
+        steps {
+            name
+            isActive
+        }
+        maxSteps
+        currentStep
+        isNewAchievement
+        progressDescription
+        actionName
+        actionRedirectLink
+    }
   }
   myRoles
 }
@@ -132,10 +153,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { data } = useQuery(IMPORTANT_INFORMATION_QUERY);
 
     const [selectedInformation, setSelectedInformation] = useState<Information>();
+    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
 
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
+    const nextStepAchievements: Achievement[] = !GAMIFICATION_ACTIVE ? [] : data?.me.nextStepAchievements ?? [];
+
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
 
@@ -351,10 +375,31 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
-    if (!infos.length && !configurableInfos.length) return null;
+    if (!infos.length && !configurableInfos.length && !nextStepAchievements.length) return null;
 
     return (
         <Box>
+            {selectedAchievement && (
+                <AchievementModal
+                    title={selectedAchievement.subtitle || undefined}
+                    name={selectedAchievement.name}
+                    description={selectedAchievement.description}
+                    achievementState={selectedAchievement.achievementState}
+                    achievementType={selectedAchievement.achievementType}
+                    isNewAchievement={selectedAchievement.isNewAchievement || false}
+                    steps={selectedAchievement.steps || undefined}
+                    maxSteps={selectedAchievement.maxSteps}
+                    currentStep={selectedAchievement.currentStep}
+                    progressDescription={selectedAchievement.progressDescription || undefined}
+                    achievedText={selectedAchievement.achievedText || undefined}
+                    image={selectedAchievement.image}
+                    alternativeText={selectedAchievement.alternativeText}
+                    buttonText={selectedAchievement.actionName || undefined}
+                    buttonLink={selectedAchievement.actionRedirectLink || undefined}
+                    onClose={() => setSelectedAchievement(undefined)}
+                    showModal={selectedAchievement !== undefined}
+                />
+            )}
             {selectedInformation && (
                 <NextStepModal
                     header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
@@ -411,6 +456,23 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             actionDescription={actionDescription}
                             actionType={Achievement_Action_Type_Enum.Action}
                             onClick={() => setSelectedInformation({ ...config, btntxt: buttontexts })}
+                        />
+                    );
+                })}
+                {nextStepAchievements.map((achievement) => {
+                    return (
+                        <NextStepsCard
+                            key={achievement.id}
+                            image={achievement.image}
+                            title={achievement.subtitle || undefined}
+                            name={achievement.name}
+                            actionDescription={achievement.actionName || ''}
+                            actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}
+                            maxSteps={achievement.maxSteps}
+                            currentStep={achievement.currentStep}
+                            onClick={() => {
+                                setSelectedAchievement(achievement);
+                            }}
                         />
                     );
                 })}
