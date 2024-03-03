@@ -30,7 +30,7 @@ export function SuccessModal({ title, content, onClose }: { title: string; conte
                     <Button
                         onPress={() => {
                             if (onClose) onClose();
-                            else hide();
+                            hide();
                         }}
                         width="100%"
                         maxWidth="400px"

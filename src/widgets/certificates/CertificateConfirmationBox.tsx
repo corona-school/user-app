@@ -240,7 +240,7 @@ export function CertificateConfirmationBox({ certificate }: { certificate: Certi
     useEffect(() => {
         if (data) {
             show(
-                { variant: 'dark', closeable: true },
+                { variant: 'dark', closeable: false },
                 <SuccessModal
                     title={t('matching.certificate.success')}
                     content={t('matching.certificate.successInfo')}
