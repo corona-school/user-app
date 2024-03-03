@@ -268,7 +268,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({
                 label: NextStepLabelType.STATUS_STUDENT_TWO,
-                btnfn: [() => navigate('/matching'), roles.includes('INSTRUCTOR') ? () => navigate('/group') : null],
+                btnfn: [() => navigate('/matching'), () => navigate('/group')],
                 lang: {},
             });
         // -------- Password Login Promotion -----------
