@@ -59,7 +59,7 @@ const CertificateOfConduct = () => {
     async function openRemissionRequest() {
         setDissableDownload(true);
         const { data } = await downloadRemissionRequest();
-        downloadFile('Antrag_auf_Befreiung_von_der_Schulpflicht.pdf', BACKEND_URL + data!.studentGetRemissionRequestAsPDF);
+        downloadFile('Antrag_auf_Befreiung_von_Kosten.pdf', BACKEND_URL + data!.studentGetRemissionRequestAsPDF);
         setDissableDownload(false);
     }
 
