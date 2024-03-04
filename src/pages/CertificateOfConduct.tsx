@@ -13,6 +13,8 @@ import VideoWithThumbnail from '../components/VideoWithThumbnail';
 import { downloadFile } from '../helper/download-file';
 import thumbnailCoCGeneral from '../assets/images/onboarding/thumbnails/fuehrungszeugnisse-thumbnail.png';
 import thumbnailCoCDigital from '../assets/images/onboarding/thumbnails/digitales-fuehrungszeugnis-thumbnail.png';
+import { useState } from 'react';
+import DisableableButton from '../components/DisablebleButton';
 
 export const COC_DATE_QUERY = gql(`
 query GetCocDate {
@@ -30,6 +32,8 @@ const CertificateOfConduct = () => {
     const { data } = useQuery(COC_DATE_QUERY);
     const { space } = useTheme();
     const cocDate = data?.me?.student?.certificateOfConductDeactivationDate;
+
+    const [dissableDownload, setDissableDownload] = useState(false);
 
     const direction = useBreakpointValue({
         base: 'column',
@@ -53,8 +57,10 @@ const CertificateOfConduct = () => {
     const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`));
 
     async function openRemissionRequest() {
+        setDissableDownload(true);
         const { data } = await downloadRemissionRequest();
         downloadFile('Antrag_auf_Befreiung_von_der_Schulpflicht.pdf', BACKEND_URL + data!.studentGetRemissionRequestAsPDF);
+        setDissableDownload(false);
     }
 
     return (
@@ -89,9 +95,14 @@ const CertificateOfConduct = () => {
                         <AlertMessage content={<Trans>{t('certificateOfConduct.alert_message')}</Trans>} />
                     </Stack>
                     <Stack direction={direction} space={4} mb="10">
-                        <Button variant="outline" onPress={openRemissionRequest}>
+                        <DisableableButton
+                            isDisabled={dissableDownload}
+                            reasonDisabled={t('certificateOfConduct.reason_download_disabled')}
+                            variant="outline"
+                            onPress={openRemissionRequest}
+                        >
                             {t('certificateOfConduct.download')}
-                        </Button>
+                        </DisableableButton>
                         <Button
                             onPress={() =>
                                 (window.location.href = `mailto:fz@lern-fair.de?subject=F%C3%BChrungszeugnis%3A%20${user?.firstname}%20${user?.lastname}&body=Liebes%20Lern-Fair%20Team%2C%0D%0A%0D%0Aanbei%20finet%20ihr%20das%20erweiterte%20F%C3%BChrungszeugnis%2C%20welches%20ich%20gem%C3%A4%C3%9F%20der%20Anforderungen%20beantragt%20habe.%20Ich%20bedanke%20mich%20f%C3%BCr%20die%20Unterst%C3%BCtzung%20und%20freue%20mich%2C%20wenn%20ihr%20den%20Erhalt%20kurz%20best%C3%A4tigen%20k%C3%B6nnt.%0D%0A%0D%0ALiebe%20Gr%C3%BC%C3%9Fe%2C%0D%0A${user?.firstname}%0D%0A${user?.email}%0D%0A%0D%0A`)
