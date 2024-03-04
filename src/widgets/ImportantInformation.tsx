@@ -357,8 +357,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         <Box>
             {selectedInformation && (
                 <NextStepModal
-                    header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
-                    title={`${t('important')}!`}
+                    title={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     isOpen={selectedInformation !== undefined}
                     label={selectedInformation.label}
