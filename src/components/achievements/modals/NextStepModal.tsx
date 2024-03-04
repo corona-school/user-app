@@ -60,7 +60,7 @@ const NextStepModal: React.FC<Props> = ({ header, title, description, buttons, i
                                         onPress={() => {
                                             btn.btnfn && btn.btnfn();
                                         }}
-                                        width={idx + 1 === buttons.length && (idx + 1) % 2 !== 0 ? '100%' : '232px'}
+                                        flexGrow={1}
                                         marginBottom="16px"
                                     >
                                         {btn.label}
