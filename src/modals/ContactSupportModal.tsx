@@ -1,5 +1,5 @@
-import { Button, Checkbox, Modal, Row, Text, useTheme, useToast } from 'native-base';
-import { useTranslation } from 'react-i18next';
+import { Button, Checkbox, FormControl, Heading, Input, Link, Modal, Row, Text, TextArea, useTheme, useToast } from 'native-base';
+import { Trans, useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import useApollo from '../hooks/useApollo';
 import { useMutation } from '@apollo/client';
@@ -8,35 +8,21 @@ import AlertMessage from '../widgets/AlertMessage';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import DisableableButton from '../components/DisablebleButton';
 
-export type ReportInfos = {
-    messageId: string;
-    message: string;
-    messageType: string;
-    sender: string;
-    senderId: string;
-    sentAt: string;
-    conversationType: string;
-    subject?: string;
-    conversationId: string;
-};
-
 type ModalProps = {
     isOpen?: boolean;
-    reportInfos: ReportInfos;
     onClose: () => void;
 };
 
-const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfos }) => {
+export const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
-    const { user } = useApollo();
     const toast = useToast();
     const { isMobile } = useLayoutHelper();
 
-    const [dsgvo, setDSGVO] = useState<boolean>(false);
-    const [showError, setShowError] = useState<boolean>(false);
+    const [subject, setSubject] = useState('');
+    const [message, setMessage] = useState('');
 
-    const [contactSupport, { data }] = useMutation(
+    const [contactSupport, { loading }] = useMutation(
         gql(`
         mutation SendReportOnSupport($subject: String! $message: String!) { 
 	        userContactSupport(message: { subject: $subject message: $message })
@@ -45,64 +31,56 @@ const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfo
     );
 
     const sendReportMessage = async () => {
-        const reportMessage = reportInfos
-            ? `Sehr geehrtes Support-Team,
-
-                ich möchte hiermit eine Nachricht melden, die in unserer aktuellen Unterhaltung aufgetreten ist. Die Details lauten wie folgt:
-                
-                In unserer Konversation sind folgende Daten relevant:
-                
-                Message: ${reportInfos.message}
-                MessageId: ${reportInfos.messageId}
-                MessageType: ${reportInfos.messageType}
-                ConversationId: ${reportInfos.conversationId}
-                ConversationType: ${reportInfos.conversationType}
-                MessageSender: ${reportInfos.sender}
-                MessageSenderId: ${reportInfos.senderId}
-                SentAt: ${reportInfos.sentAt}
-                
-                Bitte die genannten Informationen überprüfen und gegebenenfalls erforderliche Maßnahmen ergreifen.
-
-                Mit freundlichen Grüßen,
-                ${user?.firstname} ${user?.lastname}
-                `
-            : 'Nachricht melden (keine Informationen)';
-
         const response = await contactSupport({
             variables: {
-                subject: 'Nachricht melden',
-                message: reportMessage,
+                subject,
+                message,
             },
         });
 
         if (response.data?.userContactSupport) {
-            toast.show({ description: t('helpcenter.reportSuccessToast'), placement: 'top' });
+            toast.show({ description: t('contactSupport.success'), placement: 'top' });
             onClose();
-        } else setShowError(true);
+        } else toast.show({ description: t('contactSupport.failure') });
     };
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <Modal.Content minW={isMobile ? '90vw' : 800}>
                 <Modal.CloseButton />
-                <Modal.Header>{t('chat.report.modalHeader')}</Modal.Header>
+                <Modal.Header>{t('contactSupport.title')}</Modal.Header>
                 <Modal.Body>
-                    <Row flexDirection="column" paddingY={space['1.5']}>
-                        <Checkbox value="dsgvo" isChecked={dsgvo} onChange={(val) => setDSGVO(val)}>
-                            <Text>{t('chat.report.modalMessage')}</Text>
-                        </Checkbox>
-                    </Row>
-                    {showError && <AlertMessage content={t('helpcenter.contact.error')} />}
+                    <Text paddingBottom={space['1.5']}>{t('contactSupport.content')}</Text>
+                    <Text italic paddingBottom={space['1.5']}>
+                        <Trans i18nKey="contactSupport.legal" components={{ privacy: <Link href="https://lern-fair.de/datenschutz" /> }} />
+                    </Text>
+
+                    <FormControl>
+                        <Row flexDirection="column" paddingY={space['0.5']}>
+                            <FormControl.Label>{t('contactSupport.titleLabel')}</FormControl.Label>
+                            <Input value={subject} onChangeText={setSubject} />
+                        </Row>
+                        <Row flexDirection="column" paddingY={space['0.5']}>
+                            <FormControl.Label>{t('contactSupport.contentLabel')}</FormControl.Label>
+                            <TextArea
+                                value={message}
+                                onChangeText={setMessage}
+                                h={500}
+                                placeholder={t('contactSupport.contentPlaceholder')}
+                                autoCompleteType={{}}
+                            />
+                        </Row>
+                    </FormControl>
                 </Modal.Body>
                 <Modal.Footer>
                     <Row space={space['2']}>
                         <DisableableButton
-                            isDisabled={!dsgvo}
-                            reasonDisabled={t('helpcenter.btn.readsonDisabledModal')}
+                            isDisabled={loading || !subject || !message}
                             marginX="auto"
+                            reasonDisabled={t('contactSupport.disabled')}
                             onPress={sendReportMessage}
                         >
-                            {t('helpcenter.btn.formsubmit')}
+                            {t('contactSupport.submit')}
                         </DisableableButton>
                         <Button onPress={onClose}>{t('cancel')}</Button>
                     </Row>
@@ -111,5 +89,3 @@ const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen, reportInfo
         </Modal>
     );
 };
-
-export default ContactSupportModal;

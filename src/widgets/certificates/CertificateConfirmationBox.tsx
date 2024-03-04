@@ -1,8 +1,7 @@
 import { DateTime } from 'luxon';
-import { Button, Input } from 'native-base';
+import { Input, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Box, Card, FormControl, Text, useTheme } from 'native-base';
-import TextInput from '../../components/TextInput';
 import { Participation_Certificate } from '../../gql/graphql';
 import { YesNoSelector } from '../../components/YesNoSelector';
 import SignatureCanvas from 'react-signature-canvas';
@@ -14,8 +13,9 @@ import useModal from '../../hooks/useModal';
 import { SuccessModal } from '../../modals/SuccessModal';
 import { IMPORTANT_INFORMATION_QUERY } from '../ImportantInformation';
 import DisableableButton from '../../components/DisablebleButton';
+import { useNavigate } from 'react-router-dom';
 
-type CertificateToConfirm = Pick<
+export type CertificateToConfirm = Pick<
     Participation_Certificate,
     'uuid' | 'categories' | 'endDate' | 'hoursPerWeek' | 'hoursTotal' | 'medium' | 'ongoingLessons' | 'startDate' | 'state'
 > & { student: { firstname?: string | null; lastname?: string | null } };
@@ -40,32 +40,32 @@ function ConfirmData({
     const [confirmed, setConfirmed] = useState<boolean | null>(null);
 
     return (
-        <>
+        <VStack overflow="auto">
             <Card bg="primary.900" width="100%">
                 <Text color="white" fontWeight="bold">
                     {t('matching.certificate.title', { firstname: certificate.student.firstname })}
                 </Text>
                 <Text color="white">
-                    <ul>
-                        <li>
-                            {t('matching.certificate.from')} {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}
-                        </li>
-                        <li>
-                            {t('matching.certificate.to')} {DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy')}
-                        </li>
-                        <li>
-                            {t('matching.certificate.approx')} {certificate.hoursPerWeek} {t('matching.certificate.hoursPerWeek')}
-                        </li>
-                        <li>
-                            {t('matching.certificate.approx')} {certificate.hoursTotal} {t('matching.certificate.totalHours')}
-                        </li>
-                        <li>{t('matching.certificate.contents')}</li>
-                        <ul>
+                    <VStack>
+                        <Text>
+                            {`\u2022  ${t('matching.certificate.from')}`} {DateTime.fromISO(certificate.startDate).toFormat('dd.MM.yyyy')}
+                        </Text>
+                        <Text>
+                            {`\u2022  ${t('matching.certificate.to')}`} {DateTime.fromISO(certificate.endDate).toFormat('dd.MM.yyyy')}
+                        </Text>
+                        <Text>
+                            {`\u2022  ${t('matching.certificate.approx')}`} {certificate.hoursPerWeek} {t('matching.certificate.hoursPerWeek')}
+                        </Text>
+                        <Text>
+                            {`\u2022  ${t('matching.certificate.approx')}`} {certificate.hoursTotal} {t('matching.certificate.totalHours')}
+                        </Text>
+                        <Text>{`\u2022  ${t('matching.certificate.contents')}`}</Text>
+                        <VStack paddingLeft="16px">
                             {certificate.categories.split('\n').map((it) => (
-                                <li>{it}</li>
+                                <Text>{`\u2022  ${it}`}</Text>
                             ))}
-                        </ul>
-                    </ul>
+                        </VStack>
+                    </VStack>
                 </Text>
             </Card>
 
@@ -130,7 +130,7 @@ function ConfirmData({
                     </DisableableButton>
                 </>
             )}
-        </>
+        </VStack>
     );
 }
 
@@ -219,13 +219,14 @@ function Sign({
     );
 }
 
-export function ConfirmCertificate({ certificate }: { certificate: CertificateToConfirm }) {
+export function CertificateConfirmationBox({ certificate }: { certificate: CertificateToConfirm }) {
     const { space } = useTheme();
     const { t } = useTranslation();
     const [location, setLocation] = useState('');
     const [isMinor, setIsMinor] = useState<boolean | null>(null);
     const [sign, setSign] = useState(false);
     const { show } = useModal();
+    const navigate = useNavigate();
 
     const [signCertificate, { loading, data, error }] = useMutation(
         gql(
@@ -239,8 +240,12 @@ export function ConfirmCertificate({ certificate }: { certificate: CertificateTo
     useEffect(() => {
         if (data) {
             show(
-                { variant: 'dark', closeable: true },
-                <SuccessModal title={t('matching.certificate.success')} content={t('matching.certificate.successInfo')} />
+                { variant: 'dark', closeable: false },
+                <SuccessModal
+                    title={t('matching.certificate.success')}
+                    content={t('matching.certificate.successInfo')}
+                    onClose={() => navigate('/', { replace: true })}
+                />
             );
         }
 
@@ -250,7 +255,7 @@ export function ConfirmCertificate({ certificate }: { certificate: CertificateTo
     }, [data, error]);
 
     return (
-        <Box padding={space['1']} height="100%" overflow="scroll" width="100%" maxWidth="600px" alignSelf="center">
+        <Box padding={space['1']} height="100%" overflow="auto" width="100%" maxWidth="600px" alignSelf="center">
             {loading && <CenterLoadingSpinner />}
             {!loading && !sign && (
                 <ConfirmData
@@ -265,7 +270,6 @@ export function ConfirmCertificate({ certificate }: { certificate: CertificateTo
             {!loading && sign && (
                 <Sign certificate={certificate} isMinor={isMinor!} location={location} signCertificate={(it) => signCertificate({ variables: it })} />
             )}
-            <Box height="300px" />
         </Box>
     );
 }

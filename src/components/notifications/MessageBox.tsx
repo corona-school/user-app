@@ -7,6 +7,7 @@ import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primiti
 import LeavePageModal from '../../modals/LeavePageModal';
 import { Concrete_Notification } from '../../gql/graphql';
 import AppointmentCancelledModal from './NotificationModal';
+import AchievementMessageModal from '../../modals/AchievementMessageModal';
 
 type Props = {
     userNotification: Concrete_Notification;
@@ -17,6 +18,7 @@ type Props = {
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateLastTimeChecked }) => {
     const [leavePageModalOpen, setLeavePageModalOpen] = useState<boolean>(false);
+    const [achievementModalForId, setAchievementModalForId] = useState<number | null>(null);
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -44,10 +46,21 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
         }
         if (typeof navigateTo !== 'string') return null;
         updateLastTimeChecked && updateLastTimeChecked();
-        if (navigateTo.charAt(0) === '/') {
-            return navigate(navigateTo);
+        if (navigateTo.startsWith('/')) {
+            // If it starts with a / it is treated as a relative path,
+            // and we navigate in the User App
+
+            if (navigateTo.startsWith('/achievement')) {
+                // With the special link /achievement/{id} we open the Achievement Modal instead
+                const achievementId = navigateTo.split('/')[2];
+                setAchievementModalForId(parseInt(achievementId, 10));
+            } else {
+                return navigate(navigateTo);
+            }
+        } else {
+            // Otherwise we treat it as an external link and warn the user:
+            setLeavePageModalOpen(true);
         }
-        setLeavePageModalOpen(true);
     };
 
     const navigateExternal = () => (navigateTo ? window.open(navigateTo, '_blank') : null);
@@ -65,6 +78,9 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
                     <Modal isOpen={leavePageModalOpen}>
                         <LeavePageModal url={navigateTo} messageType={type} onClose={() => setLeavePageModalOpen(false)} navigateTo={navigateExternal} />
                     </Modal>
+                    {achievementModalForId !== null && (
+                        <AchievementMessageModal achievementId={achievementModalForId} isOpenModal={true} onClose={() => setAchievementModalForId(null)} />
+                    )}
                 </>
             );
         } else if (modalText) {

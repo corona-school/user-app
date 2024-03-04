@@ -38,9 +38,10 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
 
         const nextAvailableAppointments = nextPublishedAppointments.filter((appointment) => {
             const { start, duration, isOrganizer } = appointment;
-            const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 30 : 10, DateTime.now());
+            const isCurrent = isCurrentOrOver(start, duration, isOrganizer ? 240 : 10, DateTime.now());
             if (isCurrent) return isCurrent;
         });
+
         // if there is no current we show the next upcoming appointment
         if (nextAvailableAppointments.length === 0) {
             const futureAppointments = nextPublishedAppointments.filter((appointment) => {

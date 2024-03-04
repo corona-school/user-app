@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { ReactElement, ReactNode, useMemo, useState, useRef } from 'react';
 import {
     View,
     Text,
@@ -159,7 +159,7 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = _dateNext && duration ? canJoinMeeting(_dateNext, duration, isOrganizer ? 30 : 10, DateTime.now()) : false;
+    const isCurrent = _dateNext && duration ? canJoinMeeting(_dateNext, duration, isOrganizer ? 240 : 10, DateTime.now()) : false;
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({
@@ -390,8 +390,10 @@ const AppointmentCard: React.FC<Props> = ({
                                         <VideoButton
                                             appointmentId={appointmentId}
                                             appointmentType={appointmentType}
+                                            startDateTime={_dateNext}
+                                            duration={duration}
                                             isInstructor={isOrganizer}
-                                            canJoinMeeting={isCurrent}
+                                            canJoin={isCurrent}
                                         />
                                     </VStack>
                                 )}

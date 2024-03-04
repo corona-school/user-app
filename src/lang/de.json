@@ -116,6 +116,19 @@
                 }
             }
         },
+        "zoomModal": {
+            "header": "Hinweise zum Videochat",
+            "browser": "Im Browser fortfahren",
+            "zoomClient": "In Zoom öffnen",
+            "useZoomApp": {
+                "header": "Nutze die Zoom App",
+                "description": "Tipp: Öffne den Videochat in der Zoom-App. <br/> Einige Funktionen fehlen, wenn du Zoom im Browser verwendest."
+            },
+            "camera": {
+                "header": "Kamera an",
+                "description": "Wenn es geht, mache bitte deine Kamera an."
+            }
+        },
         "attendeesModal": {
             "title": "Teilnehmer:innen",
             "closeButton": "Schließen",
@@ -257,7 +270,8 @@
             "Russisch": "Russisch",
             "Sachkunde": "Sachkunde",
             "Spanisch": "Spanisch",
-            "Wirtschaft": "Wirtschaft"
+            "Wirtschaft": "Wirtschaft",
+            "Lernen lernen": "Lernen lernen"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -415,7 +429,8 @@
             },
             "4": {
                 "title": "Schulort",
-                "subtitle": "Wo gehst du zur Schule?"
+                "subtitle": "Wo gehst du zur Schule?",
+                "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt."
             },
             "5": {
                 "title": "Einwilligungen",
@@ -545,6 +560,7 @@
         "State": {
             "empty": "Keine Angabe",
             "label": "Schulort",
+            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
             "single": {
                 "selectedStates": "Mein Schulort",
                 "otherStates": "Weitere (Bundes-)Länder",
@@ -822,7 +838,8 @@
             "profile": "Profil",
             "languageVersion": "Sprachversion",
             "notifications": "E-Mail Benachrichtigungen",
-            "onboarding": "Onboarding-Tour"
+            "onboarding": "Onboarding-Tour",
+            "progress": "Erfolge & Fortschritte"
         },
         "account": {
             "title": "Konto",
@@ -1078,63 +1095,80 @@
     },
     "helperwizard": {
         "nextStep": "Deine nächsten Schritte",
+        "progress": "Alle Fortschritte anzeigen",
         "verifizierung": {
+            "subtitle": "Verifizierung",
             "title": "Verifiziere deine E-Mail-Adresse",
             "content": "“Bevor du bei Lern-Fair starten kanst, musst du zunächst deine E-Mail-Adresse bestätigen. Wir haben dir dazu am {{date}} eine E-Mail an {{email}} gesendet. Du hast keine E-Mail von uns erhalten?”",
             "buttons": ["E-Mail erneut senden"]
         },
         "passwort": {
+            "subtitle": "Passwort",
             "title": "Passwort einrichten",
             "content": "Es ist endlich so weit, wir stellen unser Login-System um! Du kannst ab sofort ein Passwort für deinen Lern-Fair Account vergeben und dich damit zukünftig einloggen.",
             "buttons": ["Passwort einrichten"]
         },
         "willkommen": {
-            "title": "Willkommen bei Lern-Fair 👋",
+            "title": "Willkommen 👋",
+            "subtitle": "Schön, dass du hier bist!",
             "content": "Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir Nachhilfe-Kurse zu verschiedenen Themen wie Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere Lernunterstützung setzen",
+            "actionDescription": "Lernangebot ansehen",
             "buttons": ["Kurse ansehen", "Lernunterstützung beantragen"]
         },
         "statusSchüler": {
             "title": "Du bist auf der Warteliste!",
+            "subtitle": "Warteliste",
             "content": "Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
             "buttons": ["Kurse ansehen", "Anfrage zurücknehmen"]
         },
         "interestconfirmation": {
             "title": "Brauchst du noch Unterstützung?",
+            "subtitle": "Unterstützung",
             "content": "Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von  <b>14 Tagen </b> bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.",
             "buttons": ["Ja", "Nein"]
         },
         "kontaktSchüler": {
+            "subtitle": "1:1 Lernuntersützung",
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
             "buttons": ["Lernpartner:in ansehen"]
         },
         "angeforderteBescheinigung": {
-            "title": "{{nameHelfer}} braucht eine Bestätigung von dir",
+            "title": "Bestätigung",
+            "subtitle": "Nachhilfe mit {{nameHelfer}} ",
             "content": "{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.",
-            "buttons": ["Angaben bestätigen"]
+            "buttons": ["Angaben bestätigen"],
+            "actionDescription": "Angaben bestätigen"
         },
         "kennenlernen": {
+            "subtitle": "Kennenlernen",
             "title": "Wir möchten dich kennenlernen 👋!",
             "content": "Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videokonferenzgespräch kennenlernen. Vereinbare einfach einen Termin mit uns.",
             "buttons": ["Termin vereinbaren"]
         },
         "zeugnis": {
+            "subtitle": "Wichtig!",
             "title": "Erweitertes Führungszeugnis",
             "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "buttons": ["Führungszeugnis einreichen", "Vordruck herunterladen"]
+            "buttons": ["Führungszeugnis einreichen"],
+            "actionDescription": "Alles zum Führungszeugnis"
         },
         "statusStudent": {
+            "subtitle": "1:1 Lernuntersützung",
             "title": "Wir suchen nach einem:r Lernpartner:in für dich!",
             "content": "Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.",
             "buttons": ["Problem melden"]
         },
         "statusStudent2": {
-            "title": "Weitere Engagement-Möglichkeiten",
-            "content": "Wenn du Lust und Zeit hast, mehrere Schüler:innen zu unterstützen, kannst du jederzeit eine weitere Lernpartnerschaft anfragen. Wenn du hin und wieder Kleingruppen unterrichten möchtest, kannst du einen einmaligen oder fortlaufenden Gruppenkurs anbieten. Danke für dein Engagement!",
-            "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"]
+            "subtitle": "Weitere Engagement-Möglichkeiten",
+            "title": "Lust auf mehr?",
+            "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
+            "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
+            "actionDescription": "Jetzt Möglichkeiten ansehen"
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
+            "subtitle": "1:1 Lernuntersützung",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
             "buttons": ["Lernpartner:in ansehen"]
         },
@@ -1150,7 +1184,54 @@
         },
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
+            "subtitle": "Kennenlernen",
             "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
+            "buttons": ["Termin vereinbaren"]
+        },
+        "courseOffer": {
+            "name": "Kurs anbieten",
+            "subtitle": "Kursname",
+            "actionName": "Jetzt zur Prüfung freigeben",
+            "alternativText": "Drei Puzzleteile",
+            "description": "Wir freuen uns, wenn du einen Kurs auf unserer Plattform anbieten möchtest! Im Hilfestellungsbereich findest du unsere informativen Schulungs- und Erklärvideos, die dir den Einstieg erleichtern. Falls du Unterstützung benötigst, kannst du dort gerne einen Beratungstermin mit unserem pädagogischen Team buchen. Wir stehen bereit, um dich bei der Konzeption deines Kurses zu unterstützen und dir wertvolle Tipps zu geben. Dein Engagement bedeutet uns viel – wir können es kaum erwarten, gemeinsam mit dir neue Kurse zu entwefen und die Plattform zu bereichern!",
+            "stepname": {
+                "one": "Kurs entwerfen",
+                "two": "Kurs zur Prüfung freigeben",
+                "three": "Freigabe erhalten"
+            }
+        },
+        "studentNewMatch": {
+            "name": "Neue Lernuntersützung",
+            "subtitle": "Nachhilfe",
+            "actionName": "Auf Zuordnung warten",
+            "alternativText": "Fünf Puzzleteile",
+            "description": "Es war großartig, dich besser kennenzulernen und freuen uns, dass du gemeinsam mit uns die Bildungschancen von Schüler:innen verbessern möchtest. Um dir eine:n passende:n Lernpartner:in zuzuweisen, bitten wir dich zunächst, eine Anfrage auf unserer Plattform zu stellen. Hier kannst du die Fächer und Jahrgangsstufe angeben, die für dich passend sind. Wir freuen uns auf den Start!",
+            "stepname": {
+                "one": "Match-Anfrage gestellt",
+                "two": "Lernpartner:in erhalten",
+                "three": "Lenpartner:in kontaktieren",
+                "four": "Ersten Termin erstellen",
+                "five": "Kennenlerngespräch absolvieren"
+            }
+        },
+        "pupilNewMatch": {
+            "name": "Neue Lernuntersützung",
+            "subtitle": "Nachhilfe",
+            "actionName": "Du bist auf der Warteliste",
+            "alternativText": "Fünf Puzzleteile",
+            "description": "Damit wir dir den:die perfekte:n Lernpartner:in zuweisen können, musst du zunächst eine Anfrage auf unserer Plattform stellen. Dort kannst du ganz einfach die Fächer angeben, die für dich wichtig sind und in denen wir dir helfen können. Wir freuen uns darauf, mit dir gemeinsam durchzustarten und die Lernreise zu beginnen!",
+            "stepname": {
+                "one": "Match-Anfrage gestellt",
+                "two": "Screening absolviert",
+                "three": "Zuordnung erfolgt",
+                "four": "Lernpartner kontaktiert",
+                "five": "Gespräch absolviert"
+            }
+        },
+        "pupilFirstScreening": {
+            "title": "Wir möchten dich kennenlernen!",
+            "subtitle": "Kennenlernen",
+            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
             "buttons": ["Termin vereinbaren"]
         }
     },
@@ -1604,7 +1685,7 @@
                 "otherOptionContact": "Kontaktaufnahme erlauben",
                 "otherGroupChatHeadline": "Gruppen- bzw. Ankündigungchat",
                 "allowChatContact": "Teilnehmer:innen erlauben in den Chat zu schreiben",
-                "prospectContactTooltip": "Schüler:innen, die sich für deinen Kurs interessieren (vor Kursbeginn)",
+                "prospectContactTooltip": "Schüler:innen und Helfer:innen, die sich für deinen Kurs interessieren (vor Kursbeginn)",
                 "participantsContactTooltip": "Schüler:innen, die sich für deinen Kurs angemeldet haben",
                 "otherOptionStartToolTip": "Wenn du diese Option aktivierst, können sich Schüler:innen jederzeit zu deinem Kurs anmelden. Sie können sich insbesondere auch dann anmelden, wenn bereits eine oder mehrere Lektionen stattgefunden haben."
             },
@@ -1911,7 +1992,6 @@
         "has_matches": "Hat Lernpaar",
         "registered_since": "registriert seit",
         "dissolved_by": "Aufgelöst von: {{dissolver}}",
-        "dissolve_reason": "Grund: {{reason}}",
         "login_as_user": "Als Nutzer:in anmelden",
         "screen_as_instructor": "Als Kursleiter:in screenen",
         "screen_as_tutor": "Für 1:1 screenen",
@@ -1923,6 +2003,42 @@
         "decision": "Entscheidung",
         "screener": "Screener:in",
         "dissolve_reason": "Grund: {{reason}}"
+    },
+    "achievement": {
+        "empty_state": {
+            "Completed": {
+                "title": "Sammle deinen ersten Erfolg!",
+                "description": "Schließe angefangene Erfolge ab, um deine Belohnungen zu erhalten."
+            }
+        },
+        "card": {
+            "isNewAchievement": "neuer Erfolg",
+            "finishedStepsInformation": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen"
+        },
+        "nextStepCard": {
+            "finishedSteps": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen."
+        },
+        "modal": {
+            "close": "Schließen",
+            "achievements": "Zu den Erfolgen",
+            "streak": "Noch {{leftSteps}} mal pünktlich erscheinen, um den Rekord erneut zu brechen.",
+            "record": "Du warst bei {{record}} Terminen in Folge anwesend! Verpasse weiterhin keinen Termin, um den Rekord zu erhöhen."
+        },
+        "streak": {
+            "card": {
+                "info": "Du warst bei <strong>{{streak}} Termin(en)</strong> in Folge dabei!"
+            }
+        },
+        "progress": {
+            "state": {
+                "completed": "Erhaltene Erfolge",
+                "active": "Angefangene Erfolge",
+                "inactive": "Weitere Erfolge"
+            },
+            "streak": {
+                "headline": "Streaks"
+            }
+        }
     },
     "certificate": {
         "request": {
@@ -1986,6 +2102,18 @@
             "download_browser": "Bescheinigung in Downloads speichern"
         }
     },
+    "certificateOfConduct": {
+        "header": "Führungszeugnis einreichen",
+        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Um deinen Account aktiv zu halten, bitten wir dich, das erweiterte Führungszeugnis zeitnah zu beantragen und bis zur Frist bei uns einzureichen. Mithilfe der Bescheinigung kannst du das erweiterte Führungszeugnis kostenlos beantragen.",
+        "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
+        "tooltip": "Nach diesem Datum wird dein Account bei uns automatisch deaktiviert. Solltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
+        "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
+        "download": "Vordruck herunterladen",
+        "upload": "Führungszeugnis einreichen",
+        "request_header": "Wie beantrage ich ein erweitertes Führungszeugnis?",
+        "general_info": "Allgemeine Informationen",
+        "digital_request": "Digitale Beantragung"
+    },
     "issueReporter": {
         "title": "Ein Fehler ist aufgetreten",
         "subtitle": "Sorry, das sollte nicht passieren. Das Tech-Team wurde informiert und kümmert sich um den Fehler. Solltest du Fragen haben, kontaktiere den Support",
@@ -2023,5 +2151,36 @@
         "questionsUnaswerd": "Bitte beantworte die Fragen.",
         "newFieldSameAsOld": "Das hast du bereits ausgewählt.",
         "missingSignature": "Es fehlt eine Unterschrift."
-    }
+    },
+    "requireScreening": {
+        "contactSupport": "Support kontaktieren",
+
+        "noScreening": {
+            "title": "Bitte buche dir einen Termin, {{firstname}}!",
+            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
+            "makeAppointment": "Termin vereinbaren"
+        },
+        "hasScreening": {
+            "title": "Bitte warte ein bisschen",
+            "content": "Wir haben uns sehr gefreut dich kennenzulernen. Dein Account wurde noch nicht freigeschaltet. Wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
+            "makeAnotherAppointment": "Erneut Termin vereinbaren"
+        },
+        "rejectedScreening": {
+            "title": "Leider können wir dir nicht helfen, {{firstname}}",
+            "content": "Leider haben wir entschieden, dass wir dir das Angebot von Lern-Fair nicht zur Verfügung stellen können. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
+        }
+    },
+    "contactSupport": {
+        "title": "Support kontaktieren",
+        "content": "Du hast Fragen oder brauchst Hilfe? Schreibe uns über das Kontaktformular, wir helfen dir gerne weiter.",
+        "titleLabel": "Betreff",
+        "contentLabel": "Deine Nachricht",
+        "contentPlaceholder": "Deine Nachricht an uns",
+        "submit": "Anfrage senden",
+        "disabled": "Bitte fülle das Formular aus",
+        "success": "Deine Nachricht wurde erfolgreich versendet",
+        "failure": "Ein Fehler ist aufgetreten",
+        "legal": "Ich bin damit einverstanden, dass Lern-Fair die hier gemachten Angaben entsprechend meines Anliegens verarbeitet und nehme die Übermittlung an unsere Dienstleister in die USA und die <privacy>Datenschutzerklärung</privacy> zur Kenntnis."
+    },
+    "logout": "Abmelden"
 }
