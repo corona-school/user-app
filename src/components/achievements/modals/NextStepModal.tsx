@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { NextStepLabelType, getNextStepIcon } from '../../../helper/important-information-helper';
 
 type Props = {
-    header: string;
+    header?: string;
     title: string;
     description: string;
     buttons?: {
@@ -40,9 +40,9 @@ const NextStepModal: React.FC<Props> = ({ header, title, description, buttons, i
                             <Box style={{ transform: [{ scale: iconScale }] }} paddingY={iconPadding}>
                                 <NextStepIcon />
                             </Box>
-                            <VStack alignItems={iconTextAllign}>
-                                <Text fontSize="14px">{header}</Text>
-                                <Text fontSize="36px" bold>
+                            <VStack alignItems={iconTextAllign} flexShrink="1">
+                                {header && <Text fontSize="14px">{header}</Text>}
+                                <Text fontSize="20px" bold flexWrap="wrap">
                                     {title}
                                 </Text>
                             </VStack>
