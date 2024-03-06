@@ -33,7 +33,7 @@ const CertificateOfConduct = () => {
     const { space } = useTheme();
     const cocDate = data?.me?.student?.certificateOfConductDeactivationDate;
 
-    const [dissableDownload, setDissableDownload] = useState(false);
+    const [disableDownload, setDisableDownload] = useState(false);
 
     const direction = useBreakpointValue({
         base: 'column',
@@ -57,10 +57,10 @@ const CertificateOfConduct = () => {
     const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`));
 
     async function openRemissionRequest() {
-        setDissableDownload(true);
+        setDisableDownload(true);
         const { data } = await downloadRemissionRequest();
         downloadFile('Antrag_auf_Befreiung_von_Kosten.pdf', BACKEND_URL + data!.studentGetRemissionRequestAsPDF);
-        setDissableDownload(false);
+        setDisableDownload(false);
     }
 
     return (
@@ -96,7 +96,7 @@ const CertificateOfConduct = () => {
                     </Stack>
                     <Stack direction={direction} space={4} mb="10">
                         <DisableableButton
-                            isDisabled={dissableDownload}
+                            isDisabled={disableDownload}
                             reasonDisabled={t('certificateOfConduct.reason_download_disabled')}
                             variant="outline"
                             onPress={openRemissionRequest}
