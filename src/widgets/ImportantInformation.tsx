@@ -10,8 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
-import { Achievement, Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
-import { PuzzlePieceType, getPuzzleEmptyState } from '../helper/achievement-helper';
+import { Achievement, Achievement_Action_Type_Enum } from '../gql/graphql';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
@@ -116,27 +115,6 @@ query GetOnboardingInfos {
          status
       }
     }
-    nextStepAchievements {
-        id
-        name
-        subtitle
-        description
-        image
-        alternativeText
-        actionType
-        achievementType
-        achievementState
-        steps {
-            name
-            isActive
-        }
-        maxSteps
-        currentStep
-        isNewAchievement
-        progressDescription
-        actionName
-        actionRedirectLink
-    }
   }
   myRoles
 }
@@ -155,7 +133,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
-    const achievements: Achievement[] = data?.me.nextStepAchievements ?? [];
 
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
@@ -200,15 +177,11 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }
     const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
     const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
-    const screenedInstructor = roles.includes('INSTRUCTOR');
-    const screenedTutor = roles.includes('TUTOR');
 
     const infos = useMemo(() => {
         let infos: Information[] = [];
 
         // -------- Verification -----------
-        // TODO - remove if achievements are included
-
         if (student && !student?.verifiedAt)
             infos.push({
                 label: NextStepLabelType.VERIFY,
@@ -223,7 +196,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Screening -----------
-        // TODO - remove if achievements are included
         if (
             student?.canRequestMatch?.reason === 'not-screened' ||
             student?.canCreateCourse?.reason === 'not-screened' ||
@@ -290,7 +262,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Open Match Request -----------
-        // TODO - remove if achievements are included
 
         if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
             infos.push({
@@ -312,7 +283,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------
-        // TODO - remove if achievements are included
 
         pupil?.matches?.forEach((match) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
@@ -337,8 +307,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         });
 
         // -------- Certificate of Conduct -----------
-        // TODO - remove if achievements are included [ONBOARDING]?
-
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
                 label: NextStepLabelType.SCHOOL_CERTIFICATE,
@@ -403,96 +371,10 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
-    const allAchievements: Achievement[] = useMemo(() => {
-        const foundAchievements = [...achievements];
-
-        let newId = achievements.length > 0 ? achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100 : 1;
-        // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
-
-        if (student && screenedInstructor && student.subcoursesInstructing.length === 0) {
-            foundAchievements.push({
-                id: newId,
-                name: t('helperwizard.courseOffer.name'),
-                subtitle: t('helperwizard.courseOffer.subtitle'),
-                achievementState: Achievement_State.Active,
-                achievementType: Achievement_Type_Enum.Sequential,
-                actionName: 'Kurs entwerfen',
-                actionRedirectLink: '/group',
-                actionType: Achievement_Action_Type_Enum.Action,
-                alternativeText: t('helperwizard.courseOffer.alternativText'),
-                currentStep: 0,
-                description: t('helperwizard.courseOffer.description'),
-                image: getPuzzleEmptyState(PuzzlePieceType.THREE),
-                maxSteps: 3,
-                steps: [
-                    { isActive: false, name: t('helperwizard.courseOffer.stepname.one') },
-                    { isActive: false, name: t('helperwizard.courseOffer.stepname.two') },
-                    { isActive: false, name: t('helperwizard.courseOffer.stepname.three') },
-                ],
-            });
-            newId++;
-        }
-
-        // -------- STUDENT NEW MATCH ACHIEVEMENT -----
-        if (student && screenedTutor && student.openMatchRequestCount === 0 && student.matches.length === 0) {
-            foundAchievements.push({
-                id: newId,
-                name: t('helperwizard.studentNewMatch.name'),
-                subtitle: t('helperwizard.studentNewMatch.subtitle'),
-                achievementState: Achievement_State.Active,
-                achievementType: Achievement_Type_Enum.Sequential,
-                actionName: t('helperwizard.studentNewMatch.actionName'),
-                actionType: Achievement_Action_Type_Enum.Action,
-                actionRedirectLink: '/matching',
-                alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
-                currentStep: 0,
-                description: t('helperwizard.studentNewMatch.description'),
-                image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
-                maxSteps: 5,
-                steps: [
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.one') },
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.two') },
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.three') },
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.four') },
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.five') },
-                ],
-            });
-            newId++;
-        }
-
-        // -------- PUPIL NEW MATCH ACHIEVEMENT -----
-        if (!notYetScreened && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0) {
-            foundAchievements.push({
-                id: newId,
-                name: t('helperwizard.pupilNewMatch.name'),
-                subtitle: t('helperwizard.pupilNewMatch.subtitle'),
-                achievementState: Achievement_State.Active,
-                actionName: t('helperwizard.pupilNewMatch.actionName'),
-                actionType: Achievement_Action_Type_Enum.Action,
-                achievementType: Achievement_Type_Enum.Sequential,
-                alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
-                currentStep: 0,
-                description: t('helperwizard.pupilNewMatch.description'),
-                image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
-                maxSteps: 5,
-                steps: [
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.one') },
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.two') },
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.three') },
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.four') },
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.five') },
-                ],
-            });
-            newId++;
-        }
-
-        return foundAchievements;
-    }, [achievements, pupil, student, t]);
-
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
     const [selectedInformation, setSelectedInformation] = useState<Information>();
 
-    if (!infos.length && !configurableInfos.length && !allAchievements.length) return null;
+    if (!infos.length && !configurableInfos.length) return null;
 
     return (
         <Box>
@@ -573,23 +455,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             actionDescription={actionDescription}
                             actionType={Achievement_Action_Type_Enum.Action}
                             onClick={() => setSelectedInformation({ ...config, btntxt: buttontexts })}
-                        />
-                    );
-                })}
-                {allAchievements.map((achievement) => {
-                    return (
-                        <NextStepsCard
-                            key={achievement.id}
-                            image={achievement.image}
-                            title={achievement.subtitle || undefined}
-                            name={achievement.name}
-                            actionDescription={achievement.actionName || ''}
-                            actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}
-                            maxSteps={achievement.maxSteps}
-                            currentStep={achievement.currentStep}
-                            onClick={() => {
-                                setSelectedAchievement(achievement);
-                            }}
                         />
                     );
                 })}
