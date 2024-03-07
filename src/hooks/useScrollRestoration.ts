@@ -8,7 +8,6 @@ export function useRestoration({ restore, scrollGroup }: { restore: (id: string)
                 .find((it) => it.startsWith(scrollGroup))
                 ?.split('-')
                 .pop();
-            console.log('useRestoration - restore ', scrollGroup, id);
             restore(id!);
         }
     }, [scrollGroup, restore]);
@@ -23,7 +22,6 @@ export function useRestoration({ restore, scrollGroup }: { restore: (id: string)
             scrollPositions.push(scrollGroup + '-' + id);
 
             window.history.replaceState(null, '', '#' + scrollPositions.join('/'));
-            console.log('useRestoration - remember ', scrollGroup, id);
         },
         [scrollGroup]
     );
@@ -37,7 +35,6 @@ export function useScrollRestoration({ ref, scrollGroup, scrollId }: { ref: RefO
         restore: useCallback(
             (id) => {
                 if (id === scrollId) {
-                    console.log('useRestoration - restore scroll ', scrollId);
                     ref.current?.scrollIntoView({
                         behavior: 'smooth',
                         block: 'center',
