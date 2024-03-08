@@ -31,6 +31,7 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
     ) => (
         <AppointmentCard
             key={index}
+            subcourseId={subcourse.id}
             description={subcourse.course!.description}
             tags={subcourse.course!.tags}
             dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
