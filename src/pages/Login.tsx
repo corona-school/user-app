@@ -35,7 +35,7 @@ import DisableableButton from '../components/DisablebleButton';
 
 export default function Login() {
     const { t } = useTranslation();
-    const { onLogin, sessionState, loginWithPassword } = useApollo();
+    const { sessionState, loginWithPassword } = useApollo();
     const { space, sizes } = useTheme();
     const [showNoAccountModal, setShowNoAccountModal] = useState(false);
     const [showAccountDeactivatedModal, setShowAccountDeactivatedModal] = useState(false);
@@ -168,7 +168,6 @@ export default function Login() {
     const attemptLogin = useCallback(async () => {
         loginButton();
         const res = await loginWithPassword(email!, password!);
-        onLogin(res);
         setLoginResult(res);
     }, [email, loginButton, password]);
 

@@ -84,7 +84,6 @@ export function MockScreener({ children }: React.PropsWithChildren<{}>) {
     const context: LFApollo = {
         client: useApolloClient() as any,
         logout: () => Promise.resolve(),
-        onLogin: () => {},
         loginWithPassword: () => Promise.resolve({}),
         refreshUser: () => {},
         sessionState: 'logged-in',

@@ -46,8 +46,6 @@ export type LFApollo = {
     client: ApolloClient<NormalizedCacheObject>;
     // Invalidated the device token, destroys the session and goes back to the start page
     logout: () => Promise<void>;
-    // Call in case a mutation was run that associates the session with a user
-    onLogin: (result: FetchResult) => void;
     // If we suspect that a backend mutation caused a change in user data or roles, we might want to refresh:
     refreshUser: () => void;
 
@@ -347,6 +345,7 @@ const useApolloInternal = () => {
                 log('GraphQL', 'successfully logged in with secret token');
                 setSessionState('logged-in');
                 setUser(null); // refresh user information
+                createDeviceToken(); // fire and forget
                 return res;
             } catch (error) {
                 log('GraphQL', 'Failed to log in with secret token', error);
@@ -354,7 +353,7 @@ const useApolloInternal = () => {
                 return;
             }
         },
-        [client, setSessionState]
+        [client, setSessionState, createDeviceToken]
     );
 
     // ----------- Determine User --------------------------
@@ -487,19 +486,6 @@ const useApolloInternal = () => {
         log('GraphQL', 'Logged out');
     }, [client]);
 
-    // Logins outside this hook can call onLogin to update this state
-    const onLogin = useCallback(
-        (query: FetchResult) => {
-            if (query.data) {
-                log('GraphQL', 'Logged in successfully');
-                setSessionState('logged-in');
-                setUser(null); // refresh user information
-                createDeviceToken(); // fire and forget
-            }
-        },
-        [createDeviceToken, setSessionState]
-    );
-
     // ------------ Login with password -------------
     const loginWithPassword = useCallback(
         async (email: string, password: string): Promise<FetchResult> => {
@@ -514,14 +500,23 @@ const useApolloInternal = () => {
                 errorPolicy: 'all',
                 context: { skipAuthRetry: true },
             });
+
+            // Successful login
+            if (result.data) {
+                log('GraphQL', 'Logged in successfully');
+                setSessionState('logged-in');
+                setUser(null); // refresh user information
+                createDeviceToken(); // fire and forget
+            }
+
             return result;
         },
         [client]
     );
 
     return useMemo(
-        () => ({ client, logout, sessionState, user, onLogin, loginWithPassword, refreshUser: determineUser, roles }),
-        [client, logout, user, sessionState, onLogin, loginWithPassword, determineUser, roles]
+        () => ({ client, logout, sessionState, user, loginWithPassword, refreshUser: determineUser, roles }),
+        [client, logout, user, sessionState, loginWithPassword, determineUser, roles]
     );
 };
 
