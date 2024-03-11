@@ -1077,7 +1077,7 @@
                 "course": "Neuen Kurs eintragen",
                 "offer": "Wichtige Meldungen",
                 "requestMatchStudent": "Ein neues Lernpaar bilden",
-                "requestMatchPupil": "Auf die Warteliste setzen",
+                "requestMatchPupil": "Lernpartner:in erhalten",
                 "solveMatch": "Lernpaar auflösen",
                 "recommend": "Jetzt empfehlen"
             },
@@ -1118,7 +1118,7 @@
         "statusSchüler": {
             "title": "Du bist auf der Warteliste!",
             "subtitle": "Warteliste",
-            "content": "Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
+            "content": "Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
             "buttons": ["Kurse ansehen", "Anfrage zurücknehmen"]
         },
         "interestconfirmation": {
@@ -1263,11 +1263,7 @@
         "blocker": {
             "header": "Lernunterstützung",
             "title": "Unterstützung anfragen",
-            "firstContent": "Du benötigst individuelle Unterstützung? Dann ist die Lernunterstützung genau richtig. Wir verbinden dich mit einem:r Helfer:in, der:die dich individuell beim Lernen unterstützt.",
-            "headlineContent": "Wichtig",
-            "contentBox1": "Es kommt bei der Lernunterstützung zu",
-            "contentBox2": "längeren Wartezeiten.",
-            "contentBox3": "Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.",
+            "firstContent": "In der Lernunterstützung vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft. Sie bekommt dafür kein Geld und freut sich sehr über dein Dankeschön.",
             "button": "Unterstützung anfragen",
             "ctaCardHeader": "Gruppen-Kurse",
             "ctaCardContent": "Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…",
@@ -1399,7 +1395,7 @@
                         "ver2": "Geschafft, Änderungen gespeichert!"
                     },
                     "text": {
-                        "ver1": "Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.",
+                        "ver1": "Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.",
                         "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
                     },
                     "groupCourses": "Zu den Gruppen-Kursen"
