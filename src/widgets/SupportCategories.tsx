@@ -1,14 +1,14 @@
-import React from 'react';
-import { Heading, useTheme, Stack, HStack, Button } from 'native-base';
+import { useTheme, Stack, HStack, Button, Heading } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import CategoriesIcon from '../../../assets/icons/lernfair/lf-categories.svg';
-import PlayButtonIcon from '../../../assets/icons/lernfair/lf-play-button.svg';
-import BlitzIcon from '../../../assets/icons/lernfair/lf-blitz.svg';
-import GraduationCapIcon from '../../../assets/icons/lernfair/lf-graduation-cap.svg';
-import ToolsIcon from '../../../assets/icons/lernfair/lf-tools.svg';
-import DocumentIcon from '../../../assets/icons/lernfair/lf-document.svg';
-import BookIcon from '../../../assets/icons/lernfair/lf-book.svg';
-import AlignRightIcon from '../../../assets/icons/lernfair/lf-align-right.svg';
+import CategoriesIcon from '../assets/icons/lernfair/lf-categories.svg';
+import PlayButtonIcon from '../assets/icons/lernfair/lf-play-button.svg';
+import BlitzIcon from '../assets/icons/lernfair/lf-blitz.svg';
+import GraduationCapIcon from '../assets/icons/lernfair/lf-graduation-cap.svg';
+import ToolsIcon from '../assets/icons/lernfair/lf-tools.svg';
+import DocumentIcon from '../assets/icons/lernfair/lf-document.svg';
+import BookIcon from '../assets/icons/lernfair/lf-book.svg';
+import AlignRightIcon from '../assets/icons/lernfair/lf-align-right.svg';
+import React from 'react';
 
 const SUPPORT_CATEGORIES = [
     { id: 'all', icon: <CategoriesIcon /> },
@@ -22,7 +22,7 @@ const SUPPORT_CATEGORIES = [
     { id: 'add_support', icon: <AlignRightIcon /> },
 ];
 
-const SupportSection = () => {
+const SupportCategories = () => {
     const { t } = useTranslation();
     const { space } = useTheme();
 
@@ -53,4 +53,4 @@ const SupportSection = () => {
     );
 };
 
-export default SupportSection;
+export default SupportCategories;
