@@ -1,7 +1,7 @@
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Modal, Button } from 'native-base';
+import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Button } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +11,7 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import EditDataRow from '../widgets/EditDataRow';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { GAMIFICATION_ACTIVE } from '../config';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -61,6 +62,11 @@ const Settings: React.FC = () => {
                             <Column mb={tabspace}>
                                 <EditDataRow label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
                             </Column>
+                            {GAMIFICATION_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <EditDataRow label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
+                                </Column>
+                            )}
                         </ProfileSettingRow>
                     )}
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>

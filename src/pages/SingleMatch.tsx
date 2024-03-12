@@ -126,6 +126,13 @@ const SingleMatch = () => {
             }
         `)
     );
+    const [trackJoinMeeting] = useMutation(
+        gql(`
+            mutation JoinMeeting($appointmentId: Float!) { 
+                appointmentTrackJoin(appointmentId: $appointmentId)
+            }
+        `)
+    );
     const dissolve = useCallback(
         async (reasons: Dissolve_Reason[]) => {
             setShowDissolveModal(false);
@@ -164,14 +171,14 @@ const SingleMatch = () => {
         const meetingData = await createAdHocMeeting({ variables: { matchId: matchId } });
         const appointmentId = meetingData && meetingData.data?.matchCreateAdHocMeeting.id;
         const appointmentType = meetingData && meetingData.data?.matchCreateAdHocMeeting.appointmentType;
-        await refetch();
 
         if (!appointmentId || !appointmentType) {
             throw new Error('Couldnt start ad-hoc meeting, because no appointment was found.');
         }
 
+        await trackJoinMeeting({ variables: { appointmentId } });
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
-    }, [createAdHocMeeting, matchId, navigate, refetch]);
+    }, [createAdHocMeeting, matchId, trackJoinMeeting, navigate]);
 
     const isActiveMatch = useMemo(() => {
         if (!data?.match.dissolved) return true;

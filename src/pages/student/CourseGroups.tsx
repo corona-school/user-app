@@ -25,6 +25,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
     const renderSubcourse = (subcourse: SubsetSubcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
         <AppointmentCard
             key={index}
+            subcourseId={subcourse.id}
             description={subcourse.course.description}
             tags={subcourse.course.tags}
             dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}

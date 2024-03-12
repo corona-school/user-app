@@ -36,7 +36,7 @@ export type CreateAppointmentInput = {
     duration: number;
     subcourseId?: number;
     matchId?: number;
-    meetingLink: string;
+    meetingLink: string | null;
     appointmentType: Lecture_Appointmenttype_Enum;
 };
 

@@ -18,7 +18,6 @@ import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
-    matchId?: number;
     startMeeting?: boolean;
 };
 
@@ -28,7 +27,7 @@ type AppointmentDates = {
     endTime: string;
 };
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matchId }) => {
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();

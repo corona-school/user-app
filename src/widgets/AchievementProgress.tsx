@@ -223,9 +223,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                                         alternativeText={''}
                                                         subtitle={achievement.subtitle || undefined}
                                                         title={achievement.name}
-                                                        progressDescription={
-                                                            achievement.steps ? achievement.steps[achievement.currentStep - 1]?.name : undefined
-                                                        }
+                                                        progressDescription={achievement.actionName || ''}
                                                         maxSteps={achievement.maxSteps}
                                                         currentStep={achievement.currentStep}
                                                         isNewAchievement={achievement.isNewAchievement || undefined}
