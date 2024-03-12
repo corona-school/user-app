@@ -78,13 +78,6 @@ const MatchingOnboarding: React.FC<Props> = ({ onRequestMatch }) => {
             <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                 {t('matching.blocker.firstContent')}
             </Text>
-            <Text maxWidth={ContentContainerWidth} bold>
-                {t('matching.blocker.headlineContent')}
-            </Text>
-            <Text maxWidth={ContentContainerWidth} paddingBottom={space['1']}>
-                {t('matching.blocker.contentBox1')} <Text bold> {t('matching.blocker.contentBox2') + ' '}</Text>
-                {t('matching.blocker.contentBox3')}
-            </Text>
 
             <VStack marginBottom={space['1.5']}>
                 <DisableableButton
