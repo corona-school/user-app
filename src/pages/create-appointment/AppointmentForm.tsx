@@ -44,7 +44,7 @@ const AppointmentForm: React.FC<FormProps> = ({
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
-    const [meetingLink, setMeetingLink] = useState(overrideMeetingLink ?? '');
+    const [meetingLink, setMeetingLink] = useState(overrideMeetingLink ?? undefined);
     const [isToday, setIsToday] = useState<boolean>(false);
 
     const handleTitleInput = (e: any) => {
