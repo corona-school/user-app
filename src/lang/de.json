@@ -1068,12 +1068,24 @@
             "waitingTimeInfo": "Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in zu längeren Wartezeiten kommt. Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.",
             "removeRequest": "Anfrage zurücknehmen"
         },
+        "supportCategories": {
+            "all": "Alle",
+            "overview": "Übersicht",
+            "kurse": "Kurse",
+            "support": "1:1 Lernunterstützung",
+            "pedagogy": "Pädagogik",
+            "tools": "Digitale Tools",
+            "material": "Kostenlose Lehrmaterialien",
+            "daz": "Deutsch als Zweit- oder Fremdsprache",
+            "add_support": "Zusätzliche Unterstützung"
+        },
         "helpers": {
             "headlines": {
                 "course": "Meine Kurse",
                 "importantNews": "Wichtige Meldungen",
                 "myLearningPartner": "Meine Lernpartner:innen",
                 "openedRequests": "Suche nach Lernpartner:innen",
+                "support": "Unsere Hilfestellungen",
                 "recommend": "Empfiehl uns weiter",
                 "recommendFriends": "Empfiehl Lern-Fair deinen Freunden"
             },
