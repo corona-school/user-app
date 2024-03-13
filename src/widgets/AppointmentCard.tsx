@@ -53,7 +53,6 @@ type Props = {
     participantsCount?: number;
     minGrade?: number;
     maxGrade?: number;
-    child?: string;
     avatar?: ReactElement;
     avatarname?: string;
     button?: ReactNode;
@@ -93,7 +92,6 @@ const AppointmentCard: React.FC<Props> = ({
     participantsCount,
     minGrade,
     maxGrade,
-    child,
     variant = 'card',
     avatar,
     avatarname,
@@ -358,8 +356,6 @@ const AppointmentCard: React.FC<Props> = ({
                                         ))}
                                     </Row>
                                 )}
-
-                                {child && <CommunityUser name={child} />}
 
                                 {button && (
                                     <Link href={buttonlink}>
