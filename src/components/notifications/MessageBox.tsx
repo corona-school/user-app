@@ -18,8 +18,7 @@ type Props = {
 
 const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateLastTimeChecked }) => {
     const [leavePageModalOpen, setLeavePageModalOpen] = useState<boolean>(false);
-    const [achievementId, setAchievementId] = useState<number>(0);
-    const [achievementModalOpen, setAchievementModalOpen] = useState<boolean>(false);
+    const [achievementModalForId, setAchievementModalForId] = useState<number | null>(null);
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
 
@@ -47,14 +46,19 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
         }
         if (typeof navigateTo !== 'string') return null;
         updateLastTimeChecked && updateLastTimeChecked();
-        const navigateToArray = navigateTo.split('/');
-        if ((navigateToArray[0] || navigateToArray[1]) === 'achievement') {
-            const achievementId = navigateToArray[navigateToArray.length - 1];
-            setAchievementId(Number(achievementId));
-            setAchievementModalOpen(true);
-        } else if (navigateToArray[0] === '/') {
-            return navigate(navigateTo);
+        if (navigateTo.startsWith('/')) {
+            // If it starts with a / it is treated as a relative path,
+            // and we navigate in the User App
+
+            if (navigateTo.startsWith('/achievement')) {
+                // With the special link /achievement/{id} we open the Achievement Modal instead
+                const achievementId = navigateTo.split('/')[2];
+                setAchievementModalForId(parseInt(achievementId, 10));
+            } else {
+                return navigate(navigateTo);
+            }
         } else {
+            // Otherwise we treat it as an external link and warn the user:
             setLeavePageModalOpen(true);
         }
     };
@@ -66,20 +70,6 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
     const LinkedBox: FC<InterfaceBoxProps> = ({ children, ...boxProps }) => {
         const Component = () => <Box {...boxProps}>{children}</Box>;
         if (typeof navigateTo === 'string') {
-            if (achievementModalOpen) {
-                return (
-                    <>
-                        <Pressable onPress={navigateToLink}>
-                            <Component />
-                        </Pressable>
-                        <AchievementMessageModal
-                            achievementId={achievementId}
-                            isOpenModal={achievementModalOpen}
-                            onClose={() => setAchievementModalOpen(false)}
-                        />
-                    </>
-                );
-            }
             return (
                 <>
                     <Pressable onPress={navigateToLink}>
@@ -88,6 +78,9 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
                     <Modal isOpen={leavePageModalOpen}>
                         <LeavePageModal url={navigateTo} messageType={type} onClose={() => setLeavePageModalOpen(false)} navigateTo={navigateExternal} />
                     </Modal>
+                    {achievementModalForId !== null && (
+                        <AchievementMessageModal achievementId={achievementModalForId} isOpenModal={true} onClose={() => setAchievementModalForId(null)} />
+                    )}
                 </>
             );
         } else if (modalText) {

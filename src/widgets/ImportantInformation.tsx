@@ -5,7 +5,7 @@ import { gql } from '../gql';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
-import { BACKEND_URL } from '../config';
+import { BACKEND_URL, GAMIFICATION_ACTIVE } from '../config';
 import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
@@ -404,6 +404,10 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }, [importantInformations, pupil, student]);
 
     const allAchievements: Achievement[] = useMemo(() => {
+        if (!GAMIFICATION_ACTIVE) {
+            return [];
+        }
+
         const foundAchievements = [...achievements];
 
         let newId = achievements.length > 0 ? achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100 : 1;
@@ -541,7 +545,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 referenceTitle={t('helperwizard.progress')}
                 marginBottom="25px"
                 onShowAll={() => navigate('/progress')}
-                showAll
+                showAll={GAMIFICATION_ACTIVE}
             >
                 {configurableInfos.map((info, index) => {
                     return (

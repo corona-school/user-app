@@ -30,8 +30,6 @@ const GET_COURSE_APPOINTMENTS = gql`
                 position
                 total
                 appointmentType
-                matchId
-                subcourseId
                 participants(skip: 0, take: 10) {
                     id
                     firstname
@@ -68,8 +66,6 @@ const GET_MATCH_APPOINTMENTS = gql`
                 position
                 total
                 appointmentType
-                matchId
-                subcourseId
                 participants(skip: 0, take: 10) {
                     id
                     firstname

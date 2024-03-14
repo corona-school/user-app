@@ -21,8 +21,6 @@ export const STUDENT_APPOINTMENT = gql(`
             total
             displayName
             isOrganizer
-            matchId
-            subcourseId
             participants(skip: 0, take: 10) {
                 id
                 userID
@@ -55,8 +53,6 @@ export const PUPIL_APPOINTMENT = gql(`
             isCanceled
             position
             appointmentType
-            matchId
-            subcourseId
             total
             displayName
             isOrganizer

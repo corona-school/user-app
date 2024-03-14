@@ -11,6 +11,7 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import EditDataRow from '../widgets/EditDataRow';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { GAMIFICATION_ACTIVE } from '../config';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -61,9 +62,11 @@ const Settings: React.FC = () => {
                             <Column mb={tabspace}>
                                 <EditDataRow label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
                             </Column>
-                            <Column mb={tabspace}>
-                                <EditDataRow label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
-                            </Column>
+                            {GAMIFICATION_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <EditDataRow label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
+                                </Column>
+                            )}
                         </ProfileSettingRow>
                     )}
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>

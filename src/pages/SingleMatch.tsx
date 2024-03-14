@@ -66,8 +66,6 @@ query SingleMatch($matchId: Int! ) {
             displayName
             isOrganizer
             isParticipant
-            matchId
-            subcourseId
             organizers(skip: 0, take: 5) {
                 id
                 firstname
@@ -126,7 +124,7 @@ const SingleMatch = () => {
             }
         `)
     );
-    const [joinMeeting] = useMutation(
+    const [trackJoinMeeting] = useMutation(
         gql(`
             mutation JoinMeeting($appointmentId: Float!) { 
                 appointmentTrackJoin(appointmentId: $appointmentId)
@@ -176,9 +174,9 @@ const SingleMatch = () => {
             throw new Error('Couldnt start ad-hoc meeting, because no appointment was found.');
         }
 
-        joinMeeting({ variables: { appointmentId } });
+        await trackJoinMeeting({ variables: { appointmentId } });
         navigate(`/video-chat/${appointmentId}/${appointmentType}`);
-    }, [createAdHocMeeting, matchId, joinMeeting, navigate]);
+    }, [createAdHocMeeting, matchId, trackJoinMeeting, navigate]);
 
     const isActiveMatch = useMemo(() => {
         if (!data?.match.dissolved) return true;

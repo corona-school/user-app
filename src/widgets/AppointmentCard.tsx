@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useEffect, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useMemo, useState } from 'react';
 import {
     View,
     Text,
@@ -75,8 +75,6 @@ type Props = {
     showCourseTraffic?: boolean;
     showSchoolclass?: boolean;
     trafficLightStatus?: TrafficStatus;
-    matchId?: number;
-    subcourseId?: number;
 };
 
 const AppointmentCard: React.FC<Props> = ({
@@ -115,8 +113,6 @@ const AppointmentCard: React.FC<Props> = ({
     trafficLightStatus,
     hasVideoButton,
     isOrganizer,
-    matchId,
-    subcourseId,
 }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
@@ -383,10 +379,10 @@ const AppointmentCard: React.FC<Props> = ({
                                         <VideoButton
                                             appointmentId={appointmentId}
                                             appointmentType={appointmentType}
+                                            startDateTime={_dateNext}
+                                            duration={duration}
                                             isInstructor={isOrganizer}
-                                            canJoinMeeting={isCurrent}
-                                            subcourseId={subcourseId}
-                                            matchId={matchId}
+                                            canJoin={isCurrent}
                                         />
                                     </VStack>
                                 )}

@@ -4,9 +4,6 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Lecture, Subcourse } from '../../../gql/graphql';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
-import { canJoinMeeting } from '../../../widgets/AppointmentDay';
-import { DateTime } from 'luxon';
-import { useMemo } from 'react';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import VideoButton from '../../../components/VideoButton';
 
@@ -36,11 +33,6 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
     const { isMobile } = useLayoutHelper();
     const navigate = useNavigate();
 
-    const canJoin = useMemo(() => {
-        if (!appointment) return false;
-        return canJoinMeeting(appointment.start, appointment.duration, 240, DateTime.now());
-    }, []);
-
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
@@ -59,8 +51,8 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         isInstructor
                         appointmentId={appointment.id}
                         appointmentType={appointment.appointmentType}
-                        canJoinMeeting={canJoin}
-                        subcourseId={subcourse.id}
+                        startDateTime={appointment.start}
+                        duration={appointment.duration}
                     />
                 )}
                 {subcourse.canEdit.allowed && (
