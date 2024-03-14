@@ -1,5 +1,4 @@
-import { Text, ChevronRightIcon, useTheme, Pressable } from 'native-base';
-import DataRow from '../components/DataRow';
+import { Row, Text, ChevronRightIcon, useTheme, Pressable } from 'native-base';
 
 type Props = {
     label: string;
@@ -13,7 +12,7 @@ const EditDataRow: React.FC<Props> = ({ label, value, onPress, isDisabled }) => 
     const textColor = isDisabled ? 'gray.300' : 'darkText';
     return (
         <Pressable onPress={onPress} isDisabled={isDisabled}>
-            <DataRow>
+            <Row borderBottomWidth={1} borderBottomColor="primary.100" paddingBottom={space['0.5']}>
                 <Text flex="1" fontWeight={600} color={textColor}>
                     {label}
                 </Text>
@@ -23,7 +22,7 @@ const EditDataRow: React.FC<Props> = ({ label, value, onPress, isDisabled }) => 
                     </Text>
                 )}
                 <ChevronRightIcon color={textColor} />
-            </DataRow>
+            </Row>
         </Pressable>
     );
 };
