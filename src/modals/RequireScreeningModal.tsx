@@ -1,5 +1,5 @@
 import { Button, Flex, HStack, Heading, Spacer, Text, VStack, useTheme } from 'native-base';
-import EventIcon from '../assets/icons/lernfair/ic_event.svg';
+import EventIcon from '../assets/icons/Icon_Einzel.svg';
 import TimeIcon from '../assets/icons/lernfair/lf-timer.svg';
 import LokiIcon from '../assets/icons/lernfair/avatar_pupil_120.svg';
 

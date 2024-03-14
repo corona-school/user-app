@@ -6,7 +6,7 @@ import MatchPartner from './match/MatchPartner';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { gql } from '../gql/gql';
+import { gql } from './../gql';
 import { useUserType } from '../hooks/useApollo';
 import { Dissolve_Reason, Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -66,6 +66,7 @@ query SingleMatch($matchId: Int! ) {
             displayName
             isOrganizer
             isParticipant
+            override_meeting_link
             organizers(skip: 0, take: 5) {
                 id
                 firstname
@@ -100,6 +101,7 @@ const SingleMatch = () => {
     const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>(false);
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
         variables: {
@@ -186,6 +188,15 @@ const SingleMatch = () => {
         return !before;
     }, [data?.match.dissolved, data?.match.dissolvedAt]);
 
+    const overrideMeetingLink = useMemo(() => {
+        const lastAppointment = appointments[appointments.length - 1];
+        if (lastAppointment && lastAppointment.override_meeting_link !== null) {
+            return lastAppointment.override_meeting_link;
+        } else {
+            return undefined;
+        }
+    }, [appointments]);
+
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
@@ -204,6 +215,7 @@ const SingleMatch = () => {
                         <NotificationAlert />
                     </Stack>
                 }
+                isLoading={isLoading}
             >
                 {loading || !data ? (
                     <CenterLoadingSpinner />
@@ -217,6 +229,8 @@ const SingleMatch = () => {
                                     isCourse={false}
                                     appointmentsTotal={appointments.length}
                                     navigateToMatch={async () => await goBackToMatch()}
+                                    overrideMeetingLink={overrideMeetingLink}
+                                    setIsLoading={setIsLoading}
                                 />
                             ) : (
                                 <>

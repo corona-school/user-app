@@ -152,10 +152,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
     const { data } = useQuery(IMPORTANT_INFORMATION_QUERY);
 
+    const [selectedInformation, setSelectedInformation] = useState<Information>();
+    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
+
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
-    const achievements: Achievement[] = data?.me.nextStepAchievements ?? [];
+    const nextStepAchievements: Achievement[] = !GAMIFICATION_ACTIVE ? [] : data?.me.nextStepAchievements ?? [];
 
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
@@ -190,18 +193,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }, [show, refusedInterest]);
 
     const [deleteMatchRequest] = useMutation(gql(`mutation deleteMatchRequest{ pupilDeleteMatchRequest }`), { refetchQueries: [IMPORTANT_INFORMATION_QUERY] });
-
-    const [downloadRemissionRequest] = useMutation(gql(`mutation DownloadRemissionRequest { studentGetRemissionRequestAsPDF }`), {
-        refetchQueries: [IMPORTANT_INFORMATION_QUERY],
-    });
-    async function openRemissionRequest() {
-        const { data } = await downloadRemissionRequest();
-        window.open(BACKEND_URL + data!.studentGetRemissionRequestAsPDF, '_blank');
-    }
-    const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
-    const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
-    const screenedInstructor = roles.includes('INSTRUCTOR');
-    const screenedTutor = roles.includes('TUTOR');
 
     const infos = useMemo(() => {
         let infos: Information[] = [];
@@ -241,7 +232,10 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- Pupil Screening --------
-        if (pupil && (wasInvited || notYetScreened)) {
+        const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
+        const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
+        const inviteToScreening = wasInvited || notYetScreened;
+        if (pupil && inviteToScreening) {
             const pupil_url =
                 (notYetScreened ? process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL : process.env.REACT_APP_PUPIL_SCREENING_URL) +
                 '?first_name=' +
@@ -290,9 +284,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Open Match Request -----------
-        // TODO - remove if achievements are included
-
-        if (roles.includes('TUTEE') && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
+        if (roles.includes('TUTEE') && !inviteToScreening && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
             infos.push({
                 label: NextStepLabelType.STATUS_PUPIL,
                 btnfn: [() => navigate('/group'), deleteMatchRequest],
@@ -304,7 +296,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({
                 label: NextStepLabelType.STATUS_STUDENT_TWO,
-                btnfn: [() => navigate('/matching'), roles.includes('INSTRUCTOR') ? () => navigate('/group') : null],
+                btnfn: [() => navigate('/matching'), () => navigate('/group')],
                 lang: {},
             });
         // -------- Password Login Promotion -----------
@@ -341,8 +333,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
-                label: NextStepLabelType.SCHOOL_CERTIFICATE,
-                btnfn: [() => (window.location.href = 'mailto:fz@lern-fair.de'), openRemissionRequest],
+                label: NextStepLabelType.CERTIFICATE_OF_CONDUCT,
+                btnfn: [() => navigate('/certificate-of-conduct')],
                 lang: {
                     cocDate: DateTime.fromISO(student?.certificateOfConductDeactivationDate).toFormat('dd.MM.yyyy'),
                 },
@@ -363,21 +355,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
         }
         return infos;
-    }, [
-        student,
-        sendMail,
-        email,
-        pupil,
-        wasInvited,
-        notYetScreened,
-        roles,
-        confirmInterest,
-        refuseInterest,
-        deleteMatchRequest,
-        data,
-        openRemissionRequest,
-        navigate,
-    ]);
+    }, [student, sendMail, email, pupil, roles, confirmInterest, refuseInterest, deleteMatchRequest, data, navigate]);
 
     const configurableInfos = useMemo(() => {
         let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
@@ -403,100 +381,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
-    const allAchievements: Achievement[] = useMemo(() => {
-        if (!GAMIFICATION_ACTIVE) {
-            return [];
-        }
-
-        const foundAchievements = [...achievements];
-
-        let newId = achievements.length > 0 ? achievements.reduce((maxId, achievement) => Math.max(achievement.id, maxId), 0) + 100 : 1;
-        // -------- STUDENT COURSE OFFER ACHIEVEMENT -----
-
-        if (student && screenedInstructor && student.subcoursesInstructing.length === 0) {
-            foundAchievements.push({
-                id: newId,
-                name: t('helperwizard.courseOffer.name'),
-                subtitle: t('helperwizard.courseOffer.subtitle'),
-                achievementState: Achievement_State.Active,
-                achievementType: Achievement_Type_Enum.Sequential,
-                actionName: 'Kurs entwerfen',
-                actionRedirectLink: '/group',
-                actionType: Achievement_Action_Type_Enum.Action,
-                alternativeText: t('helperwizard.courseOffer.alternativText'),
-                currentStep: 0,
-                description: t('helperwizard.courseOffer.description'),
-                image: getPuzzleEmptyState(PuzzlePieceType.THREE),
-                maxSteps: 3,
-                steps: [
-                    { isActive: false, name: t('helperwizard.courseOffer.stepname.one') },
-                    { isActive: false, name: t('helperwizard.courseOffer.stepname.two') },
-                    { isActive: false, name: t('helperwizard.courseOffer.stepname.three') },
-                ],
-            });
-            newId++;
-        }
-
-        // -------- STUDENT NEW MATCH ACHIEVEMENT -----
-        if (student && screenedTutor && student.openMatchRequestCount === 0 && student.matches.length === 0) {
-            foundAchievements.push({
-                id: newId,
-                name: t('helperwizard.studentNewMatch.name'),
-                subtitle: t('helperwizard.studentNewMatch.subtitle'),
-                achievementState: Achievement_State.Active,
-                achievementType: Achievement_Type_Enum.Sequential,
-                actionName: t('helperwizard.studentNewMatch.actionName'),
-                actionType: Achievement_Action_Type_Enum.Action,
-                actionRedirectLink: '/matching',
-                alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
-                currentStep: 0,
-                description: t('helperwizard.studentNewMatch.description'),
-                image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
-                maxSteps: 5,
-                steps: [
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.one') },
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.two') },
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.three') },
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.four') },
-                    { isActive: false, name: t('helperwizard.studentNewMatch.stepname.five') },
-                ],
-            });
-            newId++;
-        }
-
-        // -------- PUPIL NEW MATCH ACHIEVEMENT -----
-        if (!notYetScreened && pupil?.openMatchRequestCount === 0 && pupil?.matches.length === 0) {
-            foundAchievements.push({
-                id: newId,
-                name: t('helperwizard.pupilNewMatch.name'),
-                subtitle: t('helperwizard.pupilNewMatch.subtitle'),
-                achievementState: Achievement_State.Active,
-                actionName: t('helperwizard.pupilNewMatch.actionName'),
-                actionType: Achievement_Action_Type_Enum.Action,
-                achievementType: Achievement_Type_Enum.Sequential,
-                alternativeText: t('helperwizard.pupilNewMatch.alternativText'),
-                currentStep: 0,
-                description: t('helperwizard.pupilNewMatch.description'),
-                image: getPuzzleEmptyState(PuzzlePieceType.FIVE),
-                maxSteps: 5,
-                steps: [
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.one') },
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.two') },
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.three') },
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.four') },
-                    { isActive: false, name: t('helperwizard.pupilNewMatch.stepname.five') },
-                ],
-            });
-            newId++;
-        }
-
-        return foundAchievements;
-    }, [achievements, pupil, student, t]);
-
-    const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
-    const [selectedInformation, setSelectedInformation] = useState<Information>();
-
-    if (!infos.length && !configurableInfos.length && !allAchievements.length) return null;
+    if (!infos.length && !configurableInfos.length && !nextStepAchievements.length) return null;
 
     return (
         <Box>
@@ -523,8 +408,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             )}
             {selectedInformation && (
                 <NextStepModal
-                    header={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
-                    title={`${t('important')}!`}
+                    title={t(`helperwizard.${selectedInformation.label}.title` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     isOpen={selectedInformation !== undefined}
                     label={selectedInformation.label}
@@ -580,7 +464,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                         />
                     );
                 })}
-                {allAchievements.map((achievement) => {
+                {nextStepAchievements.map((achievement) => {
                     return (
                         <NextStepsCard
                             key={achievement.id}

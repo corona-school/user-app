@@ -139,7 +139,7 @@ const Matching: React.FC<Props> = () => {
                 }
             >
                 {process.env.REACT_APP_HOMEWORKHELP !== '' && (
-                    <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                    <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth} marginBottom={space['1']}>
                         <Heading paddingBottom={space['0.5']}>{t('matching.homeworkhelp.title')}</Heading>
                         <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                             {t('matching.homeworkhelp.textpupil')}

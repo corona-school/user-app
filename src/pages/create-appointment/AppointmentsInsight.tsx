@@ -1,7 +1,8 @@
 import { Box, Button, Stack, useBreakpointValue, Text } from 'native-base';
 import React, { Dispatch, SetStateAction, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gql, useQuery } from '@apollo/client';
+import { gql } from './../../gql';
+import { useQuery } from '@apollo/client';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AppointmentList from '../../widgets/AppointmentList';
@@ -12,9 +13,10 @@ type Props = {
     next: () => void;
     back: () => void;
     setAppointmentsTotal: Dispatch<SetStateAction<number>>;
+    setOverrideMeetingLink: Dispatch<SetStateAction<string | undefined>>;
 };
 
-const GET_COURSE_APPOINTMENTS = gql`
+const GET_COURSE_APPOINTMENTS = gql(`
     query subcourseAppointments($id: Int!) {
         subcourse(subcourseId: $id) {
             course {
@@ -30,6 +32,7 @@ const GET_COURSE_APPOINTMENTS = gql`
                 position
                 total
                 appointmentType
+                override_meeting_link
                 participants(skip: 0, take: 10) {
                     id
                     firstname
@@ -45,9 +48,9 @@ const GET_COURSE_APPOINTMENTS = gql`
             }
         }
     }
-`;
+`);
 
-const GET_MATCH_APPOINTMENTS = gql`
+const GET_MATCH_APPOINTMENTS = gql(`
     query matchAppointments($id: Int!) {
         match(matchId: $id) {
             pupil {
@@ -66,6 +69,7 @@ const GET_MATCH_APPOINTMENTS = gql`
                 position
                 total
                 appointmentType
+                override_meeting_link
                 participants(skip: 0, take: 10) {
                     id
                     firstname
@@ -81,14 +85,26 @@ const GET_MATCH_APPOINTMENTS = gql`
             }
         }
     }
-`;
+`);
 
-const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setAppointmentsTotal }) => {
-    const { data, loading, error, refetch } = useQuery(isCourse ? GET_COURSE_APPOINTMENTS : GET_MATCH_APPOINTMENTS, { variables: { id } });
+const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setAppointmentsTotal, setOverrideMeetingLink }) => {
+    const {
+        data: courseData,
+        loading: loadingCourseAppointments,
+        error: errorCourseAppointments,
+        refetch: refetchCourseAppointments,
+    } = useQuery(GET_COURSE_APPOINTMENTS, { variables: { id }, skip: !isCourse });
+
+    const {
+        data: matchData,
+        loading: loadingMatchAppointments,
+        error: errorMatchAppointments,
+        refetch: refetchMatchAppointments,
+    } = useQuery(GET_MATCH_APPOINTMENTS, { variables: { id }, skip: isCourse });
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
-    const appointments = (isCourse ? data?.subcourse?.appointments : data?.match?.appointments) ?? [];
+    const appointments = (isCourse ? courseData?.subcourse?.appointments : matchData?.match?.appointments) ?? [];
 
     const maxHeight = useBreakpointValue({
         base: 400,
@@ -101,25 +117,31 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
     });
 
     useEffect(() => {
+        const lastAppointment = appointments[appointments.length - 1];
+        if (lastAppointment && lastAppointment.override_meeting_link) {
+            setOverrideMeetingLink(lastAppointment.override_meeting_link);
+        }
         setAppointmentsTotal(appointments.length);
-        refetch();
-    });
+        isCourse ? refetchCourseAppointments() : refetchMatchAppointments();
+    }, [appointments, isCourse, refetchCourseAppointments, refetchMatchAppointments, setAppointmentsTotal, setOverrideMeetingLink]);
 
     return (
         <Box>
-            {loading && <CenterLoadingSpinner />}
+            {(loadingCourseAppointments || loadingMatchAppointments) && <CenterLoadingSpinner />}
             {isCourse ? (
                 <Box py={6}>
-                    <Text>{t('appointment.create.insightCourseHeader', { courseTitle: data?.subcourse?.course?.name })}</Text>
+                    <Text>{t('appointment.create.insightCourseHeader', { courseTitle: courseData?.subcourse?.course?.name })}</Text>
                 </Box>
             ) : (
                 <Stack direction="row" py={6}>
                     <Text>
-                        {t('appointment.create.insightMatchHeader', { matchPartner: `${data?.match?.pupil?.firstname} ${data?.match?.pupil?.lastname}` })}
+                        {t('appointment.create.insightMatchHeader', {
+                            matchPartner: `${matchData?.match?.pupil?.firstname} ${matchData?.match?.pupil?.lastname}`,
+                        })}
                     </Text>
                 </Stack>
             )}
-            {!error && (
+            {(!errorCourseAppointments || errorMatchAppointments) && (
                 <Box minH={isMobile ? 400 : 600} maxH={maxHeight} flex="1" mb="10">
                     <AppointmentList isReadOnlyList={true} appointments={appointments as Appointment[]} />
                 </Box>

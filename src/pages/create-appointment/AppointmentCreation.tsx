@@ -1,4 +1,4 @@
-import { Box, Button, Checkbox, Stack, Tooltip, Text, useBreakpointValue, useToast } from 'native-base';
+import { Box, Button, Checkbox, Stack, useBreakpointValue, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import WeeklyAppointments from './WeeklyAppointments';
@@ -6,7 +6,7 @@ import AppointmentForm from './AppointmentForm';
 import { useMutation } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
@@ -20,6 +20,7 @@ export type FormErrors = {
     description?: string;
     dateNotInOneWeek?: string;
     timeNotInFiveMin?: string;
+    invalidLink?: string;
 };
 
 export type StartDate = {
@@ -27,28 +28,47 @@ export type StartDate = {
     time: string;
 };
 
+export enum VideoChatTypeEnum {
+    ZOOM = 'Zoom',
+    LINK = 'Link',
+}
+
 type Props = {
     courseOrMatchId?: number;
     isCourse?: boolean;
     isCourseCreation?: boolean;
     appointmentsTotal?: number;
+    overrideMeetingLink?: string;
     back: () => void;
     closeModal?: () => void;
     navigateToMatch?: () => Promise<void>;
+    setIsLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
-const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse, isCourseCreation, appointmentsTotal, closeModal, navigateToMatch }) => {
+const AppointmentCreation: React.FC<Props> = ({
+    back,
+    courseOrMatchId,
+    isCourse,
+    isCourseCreation,
+    appointmentsTotal,
+    overrideMeetingLink,
+    closeModal,
+    navigateToMatch,
+    setIsLoading,
+}) => {
     const [errors, setErrors] = useState<FormErrors>({});
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
     const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
+
     const toast = useToast();
     const navigate = useNavigate();
 
-    const [dateSelected, setDateSelected] = useState(false);
-    const [timeSelected, setTimeSelected] = useState(false);
+    const [dateSelected, setDateSelected] = useState<boolean>(false);
+    const [timeSelected, setTimeSelected] = useState<boolean>(false);
+    const [videoChatType, setVideoChatType] = useState<VideoChatTypeEnum>(VideoChatTypeEnum.ZOOM);
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -70,6 +90,28 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         }
     `)
     );
+
+    const newOverrideMeetingLink = useMemo(() => {
+        const meetingLink =
+            videoChatType === VideoChatTypeEnum.ZOOM ? undefined : appointmentToCreate.meetingLink ? appointmentToCreate.meetingLink : overrideMeetingLink;
+        return meetingLink;
+    }, [appointmentToCreate.meetingLink, overrideMeetingLink, videoChatType]);
+
+    const isValidUrl = (url?: string) => {
+        // if the chat type is an override meeting link, the link shouldn't be undefined or null
+        if (videoChatType === VideoChatTypeEnum.LINK && !url) {
+            return false;
+        }
+
+        // the regex should check, if the passed url is a valid meeting url
+        if (url) {
+            const urlRegex = /^(https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+)\.(?:[a-zA-Z]{2,})(?:\.[a-zA-Z]{2,})(\/[^\s]*)?(?:\?[^\s]*)?$/;
+            return urlRegex.test(url);
+        }
+
+        // if zoom is choosen no url must be given
+        return true;
+    };
 
     const validateInputs = () => {
         if (!appointmentToCreate.date) {
@@ -96,6 +138,14 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
         } else {
             delete errors.time;
         }
+
+        if (!isValidUrl(newOverrideMeetingLink)) {
+            setErrors({ ...errors, invalidLink: 'invalid link' });
+            return false;
+        } else {
+            delete errors.invalidLink;
+        }
+
         if (appointmentToCreate.duration === 0) {
             setErrors({ ...errors, duration: t('appointment.errors.duration') });
             return false;
@@ -114,12 +164,13 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
     const handleCreateCourseAppointments = () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
+            setIsLoading && setIsLoading(true);
             const newAppointment: AppointmentCreateGroupInput = {
                 title: appointmentToCreate.title ? appointmentToCreate.title : '',
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: null,
+                meetingLink: newOverrideMeetingLink,
                 subcourseId: courseOrMatchId!,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
@@ -134,7 +185,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: null,
+                        meetingLink: newOverrideMeetingLink,
                         subcourseId: courseOrMatchId!,
                         appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
@@ -157,6 +208,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
     const handleCreateCourseAppointment = async () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
+            setIsLoading && setIsLoading(true);
             let appointments: AppointmentCreateGroupInput[] = [];
 
             const newAppointment: AppointmentCreateGroupInput = {
@@ -164,7 +216,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: null,
+                meetingLink: newOverrideMeetingLink,
                 subcourseId: courseOrMatchId ? courseOrMatchId : 1,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
             };
@@ -180,7 +232,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: null,
+                        meetingLink: newOverrideMeetingLink,
                         subcourseId: courseOrMatchId ? courseOrMatchId : 1,
                         appointmentType: Lecture_Appointmenttype_Enum.Group,
                     };
@@ -205,6 +257,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
     const handleCreateMatchAppointment = async () => {
         if (!appointmentToCreate) return;
         if (validateInputs()) {
+            setIsLoading && setIsLoading(true);
             let appointments: AppointmentCreateMatchInput[] = [];
 
             const newAppointment: AppointmentCreateMatchInput = {
@@ -212,7 +265,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                 description: appointmentToCreate.description ? appointmentToCreate.description : '',
                 start: convertStartDate(appointmentToCreate.date, appointmentToCreate.time),
                 duration: appointmentToCreate.duration,
-                meetingLink: null,
+                meetingLink: newOverrideMeetingLink,
                 matchId: courseOrMatchId ? courseOrMatchId : 1,
                 appointmentType: Lecture_Appointmenttype_Enum.Match,
             };
@@ -228,7 +281,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                         description: weekly.description ? weekly.description : '',
                         start: convertStartDate(weekly.nextDate, appointmentToCreate.time),
                         duration: appointmentToCreate.duration,
-                        meetingLink: null,
+                        meetingLink: newOverrideMeetingLink,
                         matchId: courseOrMatchId ? courseOrMatchId : 1,
                         appointmentType: Lecture_Appointmenttype_Enum.Match,
                     };
@@ -249,6 +302,7 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
 
             if (navigateToMatch) {
                 await navigateToMatch();
+                setIsLoading && setIsLoading(false);
             } else {
                 navigate('/appointments');
             }
@@ -267,6 +321,9 @@ const AppointmentCreation: React.FC<Props> = ({ back, courseOrMatchId, isCourse,
                     setTimeSelected(true);
                 }}
                 isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
+                overrideMeetingLink={overrideMeetingLink}
+                setVideoChatType={setVideoChatType}
+                videoChatType={videoChatType}
             />
             {dateSelected && timeSelected && (
                 <Box py="5">

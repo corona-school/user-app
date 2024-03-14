@@ -21,6 +21,8 @@ export const STUDENT_APPOINTMENT = gql(`
             total
             displayName
             isOrganizer
+            override_meeting_link
+            zoomMeetingUrl
             participants(skip: 0, take: 10) {
                 id
                 userID
@@ -56,6 +58,8 @@ export const PUPIL_APPOINTMENT = gql(`
             total
             displayName
             isOrganizer
+            override_meeting_link
+            zoomMeetingUrl
             participants(skip: 0, take: 10) {
                 id
                 userID

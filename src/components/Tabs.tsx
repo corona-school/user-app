@@ -1,6 +1,7 @@
 import { Text, Row, VStack, Box, Pressable, useTheme, Badge, Stack } from 'native-base';
 import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRestoration, useRestoredNumberState } from '../hooks/useScrollRestoration';
 
 export type Tab = {
     title: string;
@@ -16,9 +17,10 @@ type Props = {
 };
 
 const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset }) => {
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const [currentIndex, setCurrentIndex] = useRestoredNumberState(0, 'tab');
     const { space } = useTheme();
     const location = useLocation();
+    const navigate = useNavigate();
     const tabIDState = location.state as { tabID: number };
 
     useEffect(() => {
@@ -30,6 +32,7 @@ const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset
     const Tab = ({ tab, index, active }: { tab: Tab; index: number; active: boolean }) => (
         <Pressable
             onPress={() => {
+                navigate('', { replace: true, state: { tabID: index } });
                 setCurrentIndex(index);
                 onPressTab && onPressTab(tab, index);
             }}
