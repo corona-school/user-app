@@ -1,6 +1,7 @@
 import { Canvas, Meta, Story } from '@storybook/addon-docs';
 import { Heading, Button } from 'native-base';
 import { MatchPupilCard } from './MatchPupilCard';
+import { Dissolve_Reason } from '../../gql/graphql.ts';
 
 <Meta title="Matching/MatchPupilCard" component={MatchPupilCard} />
 
@@ -11,7 +12,9 @@ The MatchPupilCard shows information about a Match Pupil (for a Student):
 Active Match:
 
 <Story name="MatchPupilCard / active">
-    <MatchPupilCard match={{ createdAt: new Date(), pupil: { firstname: 'Albert', lastname: 'Einstein' }, subjectsFormatted: [{ name: 'Physik' }] }} />
+    <MatchPupilCard
+        match={{ createdAt: new Date(), pupil: { firstname: 'Albert', lastname: 'Einstein' }, subjectsFormatted: [{ name: 'Physik' }], dissolveReasons: [] }}
+    />
 </Story>
 
 Dissolved Match:
@@ -26,6 +29,7 @@ Dissolved Match:
             subjectsFormatted: [{ name: 'Physik' }],
             dissolvedBy: 'student',
             dissolveReasonEnum: 'noMoreHelpNeeded',
+            dissolveReasons: [Dissolve_Reason.NoMoreHelpNeeded],
         }}
     />
 </Story>
