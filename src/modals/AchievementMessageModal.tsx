@@ -6,12 +6,13 @@ const ACHIEVMENT_BY_ID_QUERY = gql(`
 query achievementById($achievementId: Float!) {
     me {
       achievement(id: $achievementId) {
+        title
+        tagline
         subtitle
-        name
         description
+        footer
         achievementState
         achievementType
-        actionType
         isNewAchievement
         steps {
           name
@@ -19,10 +20,9 @@ query achievementById($achievementId: Float!) {
         }
         maxSteps
         currentStep
-        progressDescription
-        achievedText
         image
         alternativeText
+        actionType
         actionName
         actionRedirectLink
       }
@@ -37,8 +37,10 @@ const AchievementMessageModal: React.FC<{ achievementId: number; isOpenModal: bo
         return (
             <>
                 <AchievementModal
-                    title={achievement.subtitle ?? ''}
-                    name={achievement.name}
+                    title={achievement.title ?? ''}
+                    tagline={achievement.tagline ?? undefined}
+                    subtitle={achievement.subtitle ?? undefined}
+                    footer={achievement.footer ?? undefined}
                     description={achievement.description}
                     achievementState={achievement.achievementState}
                     achievementType={achievement.achievementType}
@@ -48,8 +50,6 @@ const AchievementMessageModal: React.FC<{ achievementId: number; isOpenModal: bo
                     image={achievement.image}
                     isNewAchievement
                     maxSteps={achievement.maxSteps}
-                    progressDescription={achievement.progressDescription ?? ''}
-                    achievedText={achievement.achievedText ?? ''}
                     steps={achievement.steps ?? []}
                     onClose={onClose}
                 />
