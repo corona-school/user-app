@@ -21,7 +21,7 @@ type AchievementModalProps = {
     buttonText?: string;
     buttonLink?: string;
     isNewAchievement?: boolean;
-    steps?: Step[];
+    steps: Step[];
     maxSteps?: number;
     currentStep?: number;
     progressDescription?: string;
@@ -94,7 +94,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
         md: { width: PolaroidImageSize.LARGE, height: `calc(${PolaroidImageSize.LARGE} * 1.4)` },
     });
 
-    const activeStep = steps ? steps.findIndex((step) => step.isActive) + 1 : 0;
+    const activeStep = steps.findIndex((step) => step.isActive);
     const backgroundColor = achievementState === Achievement_State.Completed || achievementType === Achievement_Type_Enum.Streak ? 'primary.900' : 'white';
     const textColor = achievementState === Achievement_State.Completed || achievementType === Achievement_Type_Enum.Streak ? 'white' : 'primary.900';
 
@@ -148,7 +148,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     alternativeText={alternativeText || ''}
                                     achievementType={achievementType}
                                     achievementState={achievementState}
-                                    record={steps ? steps.length : maxSteps}
+                                    record={steps.length > 0 ? steps.length : maxSteps}
                                     isRecord={maxSteps === currentStep}
                                     isLarge
                                 />
@@ -188,7 +188,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </VStack>
                             {!showDescriptionBeforeIndicator && (
                                 <VStack width="100%" alignItems="center" space="8">
-                                    {!steps ? (
+                                    {steps.length === 0 ? (
                                         <Box>
                                             {isNewAchievement ? (
                                                 <AchievementBadge isInline />
@@ -235,9 +235,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                         />
                                                     ) : (
                                                         <Box width="100%">
-                                                            {steps && (
+                                                            {steps.length > 0 && (
                                                                 <IndicatorBar
-                                                                    maxSteps={steps?.length || 0}
+                                                                    maxSteps={steps.length}
                                                                     currentStep={activeStep}
                                                                     achievementType={achievementType}
                                                                     progressDescription={progressDescription}
@@ -285,7 +285,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 </Box>
                             ) : (
                                 <Box width="100%" height="fit-content">
-                                    {steps && <IndicatorBarWithSteps maxSteps={steps.length} steps={steps} achievementState={achievementState} />}
+                                    {steps.length > 0 && <IndicatorBarWithSteps maxSteps={steps.length} steps={steps} achievementState={achievementState} />}
                                 </Box>
                             )}
                         </Box>

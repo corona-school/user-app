@@ -50,7 +50,7 @@ const AchievementMessageModal: React.FC<{ achievementId: number; isOpenModal: bo
                     maxSteps={achievement.maxSteps}
                     progressDescription={achievement.progressDescription ?? ''}
                     achievedText={achievement.achievedText ?? ''}
-                    steps={achievement.steps ?? undefined}
+                    steps={achievement.steps ?? []}
                     onClose={onClose}
                 />
             </>

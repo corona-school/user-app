@@ -393,7 +393,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
                     isNewAchievement={selectedAchievement.isNewAchievement || false}
-                    steps={selectedAchievement.steps || undefined}
+                    steps={selectedAchievement.steps || []}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
                     progressDescription={selectedAchievement.progressDescription || undefined}
