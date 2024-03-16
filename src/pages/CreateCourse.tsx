@@ -841,8 +841,6 @@ const CreateCourse: React.FC = () => {
         setCurrentIndex(index);
     }, []);
 
-    console.log({ addedInstructors, newInstructors });
-
     return (
         <AsNavigationItem path="group">
             <WithNavigation
