@@ -306,7 +306,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </Button>
                             <Button
                                 onPress={() => {
-                                    if (buttonLink.includes('mailto')) {
+                                    if (buttonLink.startsWith('mailto')) {
                                         Linking.openURL(buttonLink);
                                     } else {
                                         navigate(buttonLink);

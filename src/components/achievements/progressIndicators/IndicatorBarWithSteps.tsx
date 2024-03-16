@@ -9,8 +9,9 @@ type IndicatorBarWithStepsProps = {
 };
 
 const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps, steps, achievementState }) => {
-    const currentStep = steps ? steps.findIndex((step) => step.isActive) : undefined;
-    const progress = achievementState === Achievement_State.Completed ? 100 : currentStep ? (100 / (maxSteps - 1)) * (currentStep - 1) : 0;
+    // If we can't find any active step, we'll show all of them as inactive
+    const currentStep = steps ? steps.findIndex((step) => step.isActive) : -1;
+    const progress = achievementState === Achievement_State.Completed ? 100 : currentStep >= 0 ? (100 / (maxSteps - 1)) * (currentStep - 1) : 0;
 
     const width = useBreakpointValue({ base: '90%', md: '80%' });
     const left = useBreakpointValue({ base: 0, md: '10%' });
@@ -29,7 +30,7 @@ const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps,
                         maxSteps={steps.length}
                         name={step.name}
                         isActive={step.isActive}
-                        isInactive={typeof currentStep === 'number' ? index > currentStep : true}
+                        isInactive={index > currentStep}
                         achievementState={achievementState}
                     />
                 ))}
