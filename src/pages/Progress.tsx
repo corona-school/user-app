@@ -15,11 +15,13 @@ const achievementsQuery = gql(`
             achievements {
                 id
                 name
+                title
+                tagline
                 subtitle
                 description
+                footer
                 image
                 alternativeText
-                actionType
                 achievementType
                 achievementState
                 steps {
@@ -29,11 +31,9 @@ const achievementsQuery = gql(`
                 maxSteps
                 currentStep
                 isNewAchievement
-                progressDescription
+                actionType
                 actionName
                 actionRedirectLink
-                achievedText
-                streakProgress
             }
         }
     }
@@ -44,11 +44,13 @@ const furtherAchievementsQuery = gql(`
             furtherAchievements {
                 id
                 name
+                title
+                tagline
                 subtitle
                 description
+                footer
                 image
                 alternativeText
-                actionType
                 achievementType
                 achievementState
                 steps {
@@ -58,11 +60,9 @@ const furtherAchievementsQuery = gql(`
                 maxSteps
                 currentStep
                 isNewAchievement
-                progressDescription
+                actionType
                 actionName
                 actionRedirectLink
-                achievedText
-                streakProgress
             }
         }
     }

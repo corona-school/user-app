@@ -36,7 +36,7 @@ const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actio
             break;
     }
     const numberOfLines = useBreakpointValue({ base: 2 });
-    const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
+    const alignItems = useBreakpointValue({ base: 'flex-start', md: achievementType === Achievement_Type_Enum.Streak ? 'flex-start' : 'center' });
     const iconHeight = useBreakpointValue({ base: '11.5px', md: '12.5px' });
     const fontSize = useBreakpointValue({ base: '10px', md: achievementType === Achievement_Type_Enum.Streak ? '10px' : '12px' });
 

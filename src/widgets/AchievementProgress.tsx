@@ -1,4 +1,4 @@
-import { Box, Divider, HStack, Stack, VStack, useBreakpointValue } from 'native-base';
+import { Box, Divider, HStack, Heading, Stack, VStack, useBreakpointValue } from 'native-base';
 import AchievementCard from '../components/achievements/achievementCard/AchievementCard';
 import StreakCard from '../components/achievements/streak/StreakCard';
 import ProgressCollapsableHeadline from '../components/achievements/ProgressCollapsableHeadline';
@@ -8,6 +8,7 @@ import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import { Achievement, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
 import EmptyStateContainer from '../components/achievements/EmptyStateContainer';
+import { useTranslation } from 'react-i18next';
 
 type AchievementProgressProps = {
     achievements: Achievement[];
@@ -22,6 +23,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
         }
     `)
     );
+    const { t } = useTranslation();
 
     const streaks: Achievement[] = useMemo(() => {
         const allStreaks: Achievement[] = achievements.filter((it) => it.achievementType === Achievement_Type_Enum.Streak);
@@ -48,7 +50,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
         return elements;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [achievements]);
-    const states = [Achievement_State.Completed, Achievement_State.Active, Achievement_State.Inactive];
+    const states = [Achievement_State.Active, Achievement_State.Completed, Achievement_State.Inactive];
 
     const [collapsed, setCollapsed] = useState({
         [Achievement_Type_Enum.Streak]: false,
@@ -60,11 +62,6 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
     const [openModal, setOpenModal] = useState<boolean>(false);
     const isNewAchievement = useMemo(() => {
         if (selectedAchievement === undefined || !openModal) {
-            return false;
-        } else if (selectedAchievement.achievementType === Achievement_Type_Enum.Streak) {
-            if (selectedAchievement.currentStep === selectedAchievement.maxSteps) {
-                return true;
-            }
             return false;
         }
         return selectedAchievement.isNewAchievement;
@@ -125,20 +122,21 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
 
     return (
         <Box>
+            <Heading paddingBottom="5">{t('achievement.header')}</Heading>
             {selectedAchievement && (
                 <AchievementModal
-                    title={selectedAchievement.subtitle || undefined}
-                    name={selectedAchievement.name}
+                    tagline={selectedAchievement.tagline ?? undefined}
+                    subtitle={selectedAchievement.subtitle ?? undefined}
+                    title={selectedAchievement.title ?? ''}
+                    footer={selectedAchievement.footer ?? undefined}
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
                     isNewAchievement={isNewAchievement || undefined}
-                    steps={selectedAchievement.steps || undefined}
+                    steps={selectedAchievement.steps || []}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
-                    progressDescription={selectedAchievement.progressDescription || undefined}
                     image={selectedAchievement.image}
-                    achievedText={selectedAchievement.achievedText || undefined}
                     alternativeText={selectedAchievement.alternativeText}
                     buttonText={selectedAchievement.actionName || undefined}
                     buttonLink={selectedAchievement.actionRedirectLink || undefined}
@@ -148,7 +146,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
             )}
             <VStack space={spaceAfterHeadline}>
                 {streaks.length > 0 && (
-                    <VStack space={spaceAfterHeadline}>
+                    <VStack space={spaceAfterHeadline} marginBottom={10}>
                         <ProgressCollapsableHeadline achievementType={Achievement_Type_Enum.Streak} onClick={() => handleOnClick(true, undefined)} />
                         <Stack
                             direction={stackDirection}
@@ -166,17 +164,14 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                     <StreakCard
                                         streak={achievement.currentStep}
                                         record={achievement.maxSteps}
-                                        title={achievement.name}
-                                        streakProgress={achievement.streakProgress!}
+                                        title={achievement.title ?? ''}
+                                        streakProgress={achievement.subtitle ?? ''}
                                         achievementState={achievement.achievementState}
-                                        progressDescription={
-                                            achievement.achievementState === Achievement_State.Completed
-                                                ? achievement.achievedText!
-                                                : achievement.progressDescription!
-                                        }
+                                        progressDescription={achievement.footer ?? ''}
                                         image={achievement.image}
                                         alternativeText={achievement.alternativeText}
                                         actionType={achievement.actionType}
+                                        isNewAchievement={achievement.isNewAchievement ?? false}
                                         onClick={() => {
                                             setSelectedAchievement(achievement);
                                             if (achievement.isNewAchievement) isSeen({ variables: { id: achievement.id } });
@@ -192,7 +187,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                 {states.map((key) => (
                     <Box>
                         {(sortedAchievements[key].length > 0 || key === Achievement_State.Completed) && (
-                            <VStack key={key} space={3} marginTop={10}>
+                            <VStack key={key} space={3} marginBottom={10}>
                                 <ProgressCollapsableHeadline achievementState={key} onClick={() => handleOnClick(undefined, key)} />
                                 <Box>
                                     {sortedAchievements[key].length === 0 ? (
@@ -221,12 +216,15 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                                         actionType={achievement.actionType}
                                                         image={achievement.image}
                                                         alternativeText={''}
-                                                        subtitle={achievement.subtitle || undefined}
-                                                        title={achievement.name}
-                                                        progressDescription={achievement.actionName || ''}
+                                                        subtitle={achievement.subtitle ?? undefined}
+                                                        title={achievement.title ?? ''}
+                                                        // TODO: interesting :D
+                                                        progressDescription={achievement.actionName ?? ''}
+                                                        // The progress bar should only be shown for active achievements
+                                                        showProgressBar={achievement.achievementState === Achievement_State.Active}
                                                         maxSteps={achievement.maxSteps}
                                                         currentStep={achievement.currentStep}
-                                                        isNewAchievement={achievement.isNewAchievement || undefined}
+                                                        isNewAchievement={achievement.isNewAchievement ?? undefined}
                                                         onClick={() => {
                                                             setSelectedAchievement(achievement);
                                                             if (achievement.isNewAchievement) isSeen({ variables: { id: achievement.id } });
