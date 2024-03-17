@@ -6,7 +6,7 @@ type Props = {
     isDisabled?: boolean;
 };
 
-const EditDataRow: React.FC<Props> = ({ label, onPress, isDisabled }) => {
+const ListItem: React.FC<Props> = ({ label, onPress, isDisabled }) => {
     const { space } = useTheme();
     const textColor = isDisabled ? 'gray.300' : 'darkText';
     return (
@@ -20,4 +20,4 @@ const EditDataRow: React.FC<Props> = ({ label, onPress, isDisabled }) => {
         </Pressable>
     );
 };
-export default EditDataRow;
+export default ListItem;
