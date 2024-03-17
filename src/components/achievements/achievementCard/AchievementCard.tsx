@@ -73,7 +73,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
         <Pressable disabled={achievementState === Achievement_State.Inactive} onPress={onClick}>
             <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center" overflow="visible">
                 {showInnerShadow && achievementState === Achievement_State.Inactive && <InnerShadow deviation={7.5} opacity={0.5} />}
-                {isNewAchievement && achievementState === Achievement_State.Completed && (
+                {isNewAchievement && (
                     <>
                         <AchievementBadge />
                         <VStack
@@ -142,7 +142,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                 {title}
                             </Text>
                         </Stack>
-                        {achievementState !== Achievement_State.Completed && showProgressBar && (
+                        {showProgressBar && (
                             <VStack space={indicatorTextSpace} width="100%">
                                 {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
                                 {progressDescription && (
