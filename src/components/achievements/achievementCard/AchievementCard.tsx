@@ -20,6 +20,7 @@ type AchievementCardProps = {
     maxSteps?: number;
     currentStep?: number;
     progressDescription?: string;
+    showProgressBar: boolean;
     onClick?: () => void;
 };
 
@@ -35,6 +36,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     maxSteps,
     currentStep,
     progressDescription,
+    showProgressBar,
     onClick,
 }) => {
     const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
@@ -140,7 +142,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                 {title}
                             </Text>
                         </Stack>
-                        {achievementState !== Achievement_State.Completed && (
+                        {achievementState !== Achievement_State.Completed && showProgressBar && (
                             <VStack space={indicatorTextSpace} width="100%">
                                 {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
                                 {progressDescription && (
