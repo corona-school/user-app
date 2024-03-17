@@ -11,7 +11,18 @@ type IndicatorBarWithStepsProps = {
 const IndicatorBarWithSteps: React.FC<IndicatorBarWithStepsProps> = ({ maxSteps, steps, achievementState }) => {
     // If we can't find any active step, we'll show all of them as inactive
     const currentStep = steps ? steps.findIndex((step) => step.isActive) : -1;
-    const progress = achievementState === Achievement_State.Completed ? 100 : currentStep >= 0 ? (100 / (maxSteps - 1)) * (currentStep - 1) : 0;
+
+    // The percentage of each step in the progress bar
+    const partSize = 100 / (maxSteps - 1);
+    // How many parts of the progress bar should be filled
+    // -0.5 to make the progress bar fill up to half of the current step
+    let parts = currentStep - 0.5;
+    // If the achievement is completed, we'll show the progress bar as full
+    // To ensure that it's 100% full, we'll set the parts to the maxSteps, so that the result is always 100
+    if (achievementState === Achievement_State.Completed) {
+        parts = maxSteps;
+    }
+    const progress = partSize * parts;
 
     const width = useBreakpointValue({ base: '90%', md: '80%' });
     const left = useBreakpointValue({ base: 0, md: '10%' });
