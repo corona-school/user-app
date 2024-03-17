@@ -15,7 +15,7 @@ type AchievementCardProps = {
     image: string | undefined;
     alternativeText: string;
     isNewAchievement?: boolean;
-    subtitle?: string;
+    tagline?: string;
     title: string;
     maxSteps?: number;
     currentStep?: number;
@@ -31,7 +31,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     image,
     alternativeText,
     isNewAchievement,
-    subtitle,
+    tagline,
     title,
     maxSteps,
     currentStep,
@@ -127,7 +127,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                 width="100%"
                                 textAlign={textAlignment}
                             >
-                                {subtitle}
+                                {tagline}
                             </Text>
                             <Text
                                 width="100%"
