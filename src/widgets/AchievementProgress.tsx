@@ -216,7 +216,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                                         actionType={achievement.actionType}
                                                         image={achievement.image}
                                                         alternativeText={''}
-                                                        subtitle={achievement.subtitle ?? undefined}
+                                                        tagline={achievement.tagline ?? undefined}
                                                         title={achievement.title ?? ''}
                                                         // TODO: interesting :D
                                                         progressDescription={achievement.actionName ?? ''}
