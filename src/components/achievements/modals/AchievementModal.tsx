@@ -13,9 +13,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { Linking } from 'react-native';
 
 type AchievementModalProps = {
-    title?: string;
-    name: string;
+    tagline?: string;
+    title: string;
+    subtitle?: string;
     description: string;
+    footer?: string;
     achievementState: Achievement_State;
     achievementType: Achievement_Type_Enum;
     buttonText?: string;
@@ -24,8 +26,6 @@ type AchievementModalProps = {
     steps: Step[];
     maxSteps?: number;
     currentStep?: number;
-    progressDescription?: string;
-    achievedText?: string;
     image?: string;
     alternativeText?: string;
     onClose?: () => void;
@@ -34,7 +34,9 @@ type AchievementModalProps = {
 
 const AchievementModal: React.FC<AchievementModalProps> = ({
     title,
-    name,
+    tagline,
+    subtitle,
+    footer,
     description,
     buttonText,
     buttonLink,
@@ -42,8 +44,6 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     steps,
     maxSteps,
     currentStep,
-    progressDescription,
-    achievedText,
     image,
     alternativeText,
     achievementState,
@@ -163,12 +163,12 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             <VStack width={textBoxWidth} space={3} maxWidth={textBoxMaxWidth} alignItems={textBoxAlignItems}>
                                 {!showBadgeWithTitle ? (
                                     <Text color={textColor} textAlign="center">
-                                        {title}
+                                        {tagline}
                                     </Text>
                                 ) : (
                                     <HStack alignItems="center" space="12px" height="20px">
                                         {isNewAchievement && <AchievementBadge isInline />}
-                                        <Text color={textColor}>{title}</Text>
+                                        <Text color={textColor}>{tagline}</Text>
                                     </HStack>
                                 )}
                                 <Text
@@ -178,7 +178,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     textAlign={modalNameTextAlign}
                                     color={textColor}
                                 >
-                                    {name}
+                                    {title}
                                 </Text>
                                 {showDescriptionBeforeIndicator && (
                                     <Text color={textColor}>
@@ -202,7 +202,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                         </Box>
                                                     )}
                                                     <Text fontSize={'14px'} color="primary.500">
-                                                        <Trans>{achievementState === Achievement_State.Completed ? achievedText : progressDescription}</Trans>
+                                                        <Trans>{{ footer }}</Trans>
                                                     </Text>
                                                 </HStack>
                                             )}
@@ -215,9 +215,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                         <AchievementBadge isInline />
                                                     ) : (
                                                         <Text color="primary.500" textAlign="center">
-                                                            <Trans>
-                                                                {achievementState === Achievement_State.Completed ? achievedText : progressDescription}
-                                                            </Trans>
+                                                            <Trans>{{ footer }}</Trans>
                                                         </Text>
                                                     )}
                                                 </Box>
@@ -228,7 +226,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                         <IndicatorBar
                                                             maxSteps={maxSteps}
                                                             currentStep={currentStep}
-                                                            progressDescription={progressDescription}
+                                                            progressDescription={footer}
                                                             centerText
                                                             fullWidth
                                                             largeText
@@ -240,7 +238,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                                     maxSteps={steps.length}
                                                                     currentStep={activeStep}
                                                                     achievementType={achievementType}
-                                                                    progressDescription={progressDescription}
+                                                                    progressDescription={footer}
                                                                     largeText
                                                                     centerText
                                                                     fullWidth
@@ -267,7 +265,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                         <HStack alignItems="center" space="sm" height="fit-content">
                                             <CheckGreen />
                                             <Text fontSize={'14px'} color="primary.500">
-                                                <Trans>{achievementState === Achievement_State.Completed ? achievedText : progressDescription}</Trans>
+                                                <Trans>{{ footer }}</Trans>
                                             </Text>
                                         </HStack>
                                     ) : (
@@ -276,7 +274,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                 maxSteps={maxSteps || 0}
                                                 currentStep={currentStep}
                                                 achievementType={achievementType}
-                                                progressDescription={progressDescription}
+                                                progressDescription={footer}
                                                 fullWidth
                                                 largeText
                                             />

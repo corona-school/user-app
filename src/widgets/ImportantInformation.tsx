@@ -357,8 +357,10 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         <Box>
             {selectedAchievement && (
                 <AchievementModal
-                    title={selectedAchievement.subtitle || undefined}
-                    name={selectedAchievement.name}
+                    tagline={selectedAchievement.tagline || undefined}
+                    subtitle={selectedAchievement.subtitle || undefined}
+                    title={selectedAchievement.title ?? ''}
+                    footer={selectedAchievement.footer || undefined}
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
@@ -366,8 +368,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     steps={selectedAchievement.steps || []}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
-                    progressDescription={selectedAchievement.progressDescription || undefined}
-                    achievedText={selectedAchievement.achievedText || undefined}
                     image={selectedAchievement.image}
                     alternativeText={selectedAchievement.alternativeText}
                     buttonText={selectedAchievement.actionName || undefined}
