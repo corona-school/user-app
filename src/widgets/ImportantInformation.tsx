@@ -5,13 +5,12 @@ import { gql } from '../gql';
 import { useNavigate } from 'react-router-dom';
 import { DateTime } from 'luxon';
 import HSection from './HSection';
-import { BACKEND_URL, GAMIFICATION_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE } from '../config';
 import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
-import { Achievement, Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../gql/graphql';
-import { PuzzlePieceType, getPuzzleEmptyState } from '../helper/achievement-helper';
+import { Achievement, Achievement_Action_Type_Enum } from '../gql/graphql';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
@@ -116,27 +115,6 @@ query GetOnboardingInfos {
          status
       }
     }
-    nextStepAchievements {
-        id
-        name
-        subtitle
-        description
-        image
-        alternativeText
-        actionType
-        achievementType
-        achievementState
-        steps {
-            name
-            isActive
-        }
-        maxSteps
-        currentStep
-        isNewAchievement
-        progressDescription
-        actionName
-        actionRedirectLink
-    }
   }
   myRoles
 }
@@ -158,7 +136,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const pupil = data?.me?.pupil;
     const student = data?.me?.student;
     const email = data?.me?.email;
-    const nextStepAchievements: Achievement[] = !GAMIFICATION_ACTIVE ? [] : data?.me.nextStepAchievements ?? [];
 
     const roles = data?.myRoles ?? [];
     const importantInformations = data?.important_informations ?? [];
@@ -347,7 +324,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 key: `bescheinigung.${certificate.uuid}`,
             });
         }
-
         return infos;
     }, [student, sendMail, email, pupil, roles, confirmInterest, refuseInterest, deleteMatchRequest, data, navigate]);
 
@@ -375,23 +351,23 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
-    if (!infos.length && !configurableInfos.length && !nextStepAchievements.length) return null;
+    if (!infos.length && !configurableInfos.length) return null;
 
     return (
         <Box>
             {selectedAchievement && (
                 <AchievementModal
-                    title={selectedAchievement.subtitle || undefined}
-                    name={selectedAchievement.name}
+                    tagline={selectedAchievement.tagline || undefined}
+                    subtitle={selectedAchievement.subtitle || undefined}
+                    title={selectedAchievement.title ?? ''}
+                    footer={selectedAchievement.footer || undefined}
                     description={selectedAchievement.description}
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
                     isNewAchievement={selectedAchievement.isNewAchievement || false}
-                    steps={selectedAchievement.steps || undefined}
+                    steps={selectedAchievement.steps || []}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
-                    progressDescription={selectedAchievement.progressDescription || undefined}
-                    achievedText={selectedAchievement.achievedText || undefined}
                     image={selectedAchievement.image}
                     alternativeText={selectedAchievement.alternativeText}
                     buttonText={selectedAchievement.actionName || undefined}
@@ -455,23 +431,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             actionDescription={actionDescription}
                             actionType={Achievement_Action_Type_Enum.Action}
                             onClick={() => setSelectedInformation({ ...config, btntxt: buttontexts })}
-                        />
-                    );
-                })}
-                {nextStepAchievements.map((achievement) => {
-                    return (
-                        <NextStepsCard
-                            key={achievement.id}
-                            image={achievement.image}
-                            title={achievement.subtitle || undefined}
-                            name={achievement.name}
-                            actionDescription={achievement.actionName || ''}
-                            actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}
-                            maxSteps={achievement.maxSteps}
-                            currentStep={achievement.currentStep}
-                            onClick={() => {
-                                setSelectedAchievement(achievement);
-                            }}
                         />
                     );
                 })}

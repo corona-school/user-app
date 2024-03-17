@@ -38,7 +38,7 @@ const AchievementImageContainer: React.FC<AchievementImageContainerProps> = ({
     switch (achievementType) {
         case Achievement_Type_Enum.Tiered:
             return (
-                <VStack alignItems="center" width="fit-content">
+                <VStack alignItems="center" width="fit-content" maxHeight="215px">
                     {image && achievementState === Achievement_State.Completed ? (
                         <PresenceTransition
                             initial={{

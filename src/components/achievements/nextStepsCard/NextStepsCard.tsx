@@ -2,9 +2,9 @@ import { Image, VStack, Text, HStack, Box, Heading } from 'native-base';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
 import ArrowRight from '../../../assets/icons/icon_arrow_right_yellow.svg';
-import Calendar from '../../../assets/icons/icon_calendar_yellow.svg';
+import Calendar from '../../../assets/icons/icon_calendar_white.svg';
 import ClocWhite from '../../../assets/icons/icon_clock_white.svg';
-import Info from '../../../assets/icons/icon_info_yellow.svg';
+import Info from '../../../assets/icons/icon_info_white.svg';
 import { Pressable } from 'react-native';
 import { NextStepLabelType, getNextStepIcon } from '../../../helper/important-information-helper';
 
