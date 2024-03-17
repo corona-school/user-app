@@ -1225,7 +1225,7 @@
         "studentNewMatch": {
             "name": "Neue Lernuntersützung",
             "subtitle": "Nachhilfe",
-            "actionName": "Auf Zuordnung warten",
+            "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
             "description": "Es war großartig, dich besser kennenzulernen und freuen uns, dass du gemeinsam mit uns die Bildungschancen von Schüler:innen verbessern möchtest. Um dir eine:n passende:n Lernpartner:in zuzuweisen, bitten wir dich zunächst, eine Anfrage auf unserer Plattform zu stellen. Hier kannst du die Fächer und Jahrgangsstufe angeben, die für dich passend sind. Wir freuen uns auf den Start!",
             "stepname": {
@@ -1239,7 +1239,7 @@
         "pupilNewMatch": {
             "name": "Neue Lernuntersützung",
             "subtitle": "Nachhilfe",
-            "actionName": "Du bist auf der Warteliste",
+            "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
             "description": "Damit wir dir den:die perfekte:n Lernpartner:in zuweisen können, musst du zunächst eine Anfrage auf unserer Plattform stellen. Dort kannst du ganz einfach die Fächer angeben, die für dich wichtig sind und in denen wir dir helfen können. Wir freuen uns darauf, mit dir gemeinsam durchzustarten und die Lernreise zu beginnen!",
             "stepname": {
@@ -2023,6 +2023,7 @@
         "dissolve_reason": "Grund: {{reason}}"
     },
     "achievement": {
+        "header": "Deine Erfolge",
         "empty_state": {
             "Completed": {
                 "title": "Sammle deinen ersten Erfolg!",

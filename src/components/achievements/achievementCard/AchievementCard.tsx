@@ -42,10 +42,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const shineOffsetTop = useBreakpointValue({ base: '-10px', md: '-10px' });
     const showInnerShadow = useBreakpointValue({ base: false, md: true });
     const cardFlexDirection = useBreakpointValue({ base: 'row', md: 'column' });
-    const justifyCardContentMobile = useBreakpointValue({ base: 'flex-end', md: 'center' });
-    const justifyCardContentUnfinished = useBreakpointValue({
+    const justifyCardContent = useBreakpointValue({
         base: 'flex-start',
-        md: achievementType === Achievement_Type_Enum.Sequential ? 'space-between' : justifyCardContentMobile,
+        md: achievementType === Achievement_Type_Enum.Sequential && achievementState === Achievement_State.Active ? 'space-between' : 'center',
     });
     const cardSpacing = useBreakpointValue({ base: 0, md: 2 });
     const width = useBreakpointValue({ base: '100%', md: '280px' });
@@ -56,6 +55,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const borderWidth = useBreakpointValue({ base: 'none', md: '1px' });
     const paddingX = useBreakpointValue({ base: '16px', md: '32px' });
     const bgColorIncomplete = useBreakpointValue({ base: 'white', md: 'gray.50' });
+    const commonCardImageSize = useBreakpointValue({ base: 'auto', md: '190px' });
     const polaroidImageSize = useBreakpointValue({
         base: { width: '64px', height: '84px' },
         md: { width: PolaroidImageSize.LARGE, height: PolaroidImageSize.LARGE },
@@ -91,7 +91,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 <Stack
                     direction={cardFlexDirection}
                     alignItems="center"
-                    justifyContent={achievementState !== Achievement_State.Completed ? 'space-between' : justifyCardContentUnfinished}
+                    justifyContent={justifyCardContent}
                     space={cardSpacing}
                     width={width}
                     height={cardHeight}
@@ -109,7 +109,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                             : bgColorIncomplete
                     }
                 >
-                    <Stack paddingY={achievementType === Achievement_Type_Enum.Sequential ? 4 : 0}>
+                    <Stack height={commonCardImageSize} paddingY={achievementType === Achievement_Type_Enum.Sequential ? 4 : 0}>
                         <AchievementImageContainer
                             image={achievementState !== Achievement_State.Completed && achievementType === Achievement_Type_Enum.Tiered ? undefined : image}
                             alternativeText={alternativeText}

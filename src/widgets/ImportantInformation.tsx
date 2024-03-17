@@ -198,6 +198,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         let infos: Information[] = [];
 
         // -------- Verification -----------
+        // TODO - remove if achievements are included
+
         if (student && !student?.verifiedAt)
             infos.push({
                 label: NextStepLabelType.VERIFY,
@@ -212,6 +214,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Screening -----------
+        // TODO - remove if achievements are included
         if (
             student?.canRequestMatch?.reason === 'not-screened' ||
             student?.canCreateCourse?.reason === 'not-screened' ||
@@ -301,6 +304,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------
+        // TODO - remove if achievements are included
+
         pupil?.matches?.forEach((match) => {
             if (!match.dissolved && match.createdAt > new Date(Date.now() - 14 * 24 * 60 * 60 * 1000))
                 infos.push({
@@ -324,6 +329,8 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         });
 
         // -------- Certificate of Conduct -----------
+        // TODO - remove if achievements are included [ONBOARDING]?
+
         if (student && student?.certificateOfConductDeactivationDate)
             infos.push({
                 label: NextStepLabelType.CERTIFICATE_OF_CONDUCT,
@@ -347,7 +354,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 key: `bescheinigung.${certificate.uuid}`,
             });
         }
-
         return infos;
     }, [student, sendMail, email, pupil, roles, confirmInterest, refuseInterest, deleteMatchRequest, data, navigate]);
 
@@ -387,7 +393,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     achievementState={selectedAchievement.achievementState}
                     achievementType={selectedAchievement.achievementType}
                     isNewAchievement={selectedAchievement.isNewAchievement || false}
-                    steps={selectedAchievement.steps || undefined}
+                    steps={selectedAchievement.steps || []}
                     maxSteps={selectedAchievement.maxSteps}
                     currentStep={selectedAchievement.currentStep}
                     progressDescription={selectedAchievement.progressDescription || undefined}
