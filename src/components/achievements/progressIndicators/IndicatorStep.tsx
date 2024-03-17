@@ -7,11 +7,13 @@ type IndicatorStepProps = {
     maxSteps: number;
     name: string;
     achievementState?: Achievement_State;
+    // Active step is the current step the user is on
     isActive?: Maybe<boolean> | undefined;
-    isInactive?: boolean;
+    // Future steps are going to be greayed out to indicate that they are not yet active
+    isFutureStep?: boolean;
 };
 
-const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, name, achievementState, isActive, isInactive }) => {
+const IndicatorStep: React.FC<IndicatorStepProps> = ({ step, maxSteps, name, achievementState, isActive, isFutureStep: isInactive }) => {
     const offsetPerStep = 100 / (maxSteps - 1);
     const offset = offsetPerStep * step;
     const textColor = achievementState === Achievement_State.Completed ? 'white' : 'primary.900';
