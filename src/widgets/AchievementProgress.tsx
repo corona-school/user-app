@@ -63,11 +63,6 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
     const isNewAchievement = useMemo(() => {
         if (selectedAchievement === undefined || !openModal) {
             return false;
-        } else if (selectedAchievement.achievementType === Achievement_Type_Enum.Streak) {
-            if (selectedAchievement.currentStep === selectedAchievement.maxSteps) {
-                return true;
-            }
-            return false;
         }
         return selectedAchievement.isNewAchievement;
     }, [selectedAchievement, openModal]);
@@ -176,6 +171,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                         image={achievement.image}
                                         alternativeText={achievement.alternativeText}
                                         actionType={achievement.actionType}
+                                        isNewAchievement={achievement.isNewAchievement ?? false}
                                         onClick={() => {
                                             setSelectedAchievement(achievement);
                                             if (achievement.isNewAchievement) isSeen({ variables: { id: achievement.id } });
