@@ -6,5 +6,7 @@ import PromoteBanner from './PromoteBanner';
 # PromoteBanner
 
 <Story name="Promote Banner">
-    <PromoteBanner canNotPromote={false} isPromoted={true} onClick={() => console.log('promote')} courseStatus="free" />
+    <PromoteBanner canNotPromote={false} isPromoted={true} onClick={() => console.log('promote')} courseStatus="free" seatsFull={10} seatsMax={10} />
+    <br />
+    <PromoteBanner canNotPromote={false} isPromoted={false} onClick={() => console.log('promote')} courseStatus="free" seatsFull={1} seatsMax={20} />
 </Story>

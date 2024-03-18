@@ -1,11 +1,9 @@
 import { View, Text, Row, Circle, Divider, useTheme } from 'native-base';
 import { Pressable } from 'react-native';
-import InstructionMessage, { IInstructionMessage } from './InstructionMessage';
 
 type Instruction = {
     label: string;
     title?: string;
-    content?: IInstructionMessage[];
 };
 
 type Props = {
@@ -86,13 +84,6 @@ const InstructionProgress: React.FC<Props> = ({ isDark, instructions, currentInd
                     );
                 })}
             </Row>
-            {instructions && instructions[currentIndex]?.content && (
-                <Row display="block">
-                    {instructions[currentIndex].content?.map((instruction, i) => (
-                        <InstructionMessage isDark={isDark ? true : false} key={`instruction-${i}`} title={instruction.title} text={instruction.text} />
-                    ))}
-                </Row>
-            )}
         </View>
     );
 };
