@@ -481,7 +481,7 @@ const CreateCourse: React.FC = () => {
             }
 
             if (subRes.data.subcourseCreate && !subRes.errors) {
-                for await (const instructor of addedInstructors) {
+                for await (const instructor of newInstructors) {
                     let res = await addCourseInstructor({
                         variables: {
                             courseId: subRes.data?.subcourseCreate?.id,
@@ -591,7 +591,7 @@ const CreateCourse: React.FC = () => {
             _getCourseData,
             _getSubcourseData,
             addCourseInstructor,
-            addedInstructors,
+            newInstructors,
             createCourse,
             createSubcourse,
             finishCourseCreation,
