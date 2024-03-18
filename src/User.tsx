@@ -101,3 +101,25 @@ export function MockScreener({ children }: React.PropsWithChildren<{}>) {
 
     return <ExtendedApolloContext.Provider value={context} children={children} />;
 }
+
+export function MockStudent({ children }: React.PropsWithChildren<{}>) {
+    const context: LFApollo = {
+        client: useApolloClient() as any,
+        logout: () => Promise.resolve(),
+        loginWithPassword: () => Promise.resolve({}),
+        refreshUser: () => {},
+        sessionState: 'logged-in',
+        roles: ['STUDENT'],
+        user: {
+            email: 'test+student@lern-fair.de',
+            firstname: 'Max',
+            lastname: 'Musterstudent',
+            student: { id: 1, verifiedAt: new Date() },
+            userID: 'student/1',
+            pupil: null,
+            screener: null,
+        },
+    };
+
+    return <ExtendedApolloContext.Provider value={context} children={children} />;
+}

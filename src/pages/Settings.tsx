@@ -1,5 +1,3 @@
-import { gql } from './../gql';
-import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Button } from 'native-base';
 import { useEffect, useState } from 'react';
@@ -8,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
 import useApollo, { useUserType } from '../hooks/useApollo';
 import DeactivateAccountModal from '../modals/DeactivateAccountModal';
-import EditDataRow from '../widgets/EditDataRow';
+import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { GAMIFICATION_ACTIVE } from '../config';
@@ -57,31 +55,31 @@ const Settings: React.FC = () => {
                     {userType !== 'screener' && (
                         <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
                             <Column mb={tabspace}>
-                                <EditDataRow label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
+                                <ListItem label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
                             </Column>
                             <Column mb={tabspace}>
-                                <EditDataRow label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
+                                <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
                             </Column>
                             {GAMIFICATION_ACTIVE && (
                                 <Column mb={tabspace}>
-                                    <EditDataRow label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
+                                    <ListItem label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
                                 </Column>
                             )}
                         </ProfileSettingRow>
                     )}
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
                         <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
+                            <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
                         </Column>
                         <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
+                            <ListItem label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
                         </Column>
 
                         <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.account.deactivateAccount')} onPress={() => setShowDeactivate(true)} />
+                            <ListItem label={t('settings.account.deactivateAccount')} onPress={() => setShowDeactivate(true)} />
                         </Column>
                         <Column mb={tabspace}>
-                            <EditDataRow
+                            <ListItem
                                 label={t('settings.account.logout')}
                                 onPress={() => {
                                     trackEvent({
@@ -97,10 +95,10 @@ const Settings: React.FC = () => {
                     </ProfileSettingRow>
                     <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
                         <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.legal.imprint')} onPress={() => navigate('/impressum')} />
+                            <ListItem label={t('settings.legal.imprint')} onPress={() => navigate('/impressum')} />
                         </Column>
                         <Column mb={tabspace}>
-                            <EditDataRow label={t('settings.legal.datapolicy')} onPress={() => navigate('/datenschutz')} />
+                            <ListItem label={t('settings.legal.datapolicy')} onPress={() => navigate('/datenschutz')} />
                         </Column>
                     </ProfileSettingRow>
                 </VStack>

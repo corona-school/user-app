@@ -11,6 +11,11 @@ type Props = {
     showBack?: boolean;
 };
 
+/**
+ * Is used to display views below the scrollable header seamlessly.
+ * -  use `leftContent`and `rightContent` to display content on either side
+ * - `showBack` / `onBack` to use navigation in here
+ */
 const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightContent, onBack, showBack }) => {
     const { space, sizes } = useTheme();
 
