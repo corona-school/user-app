@@ -116,7 +116,6 @@ const CreateCourse: React.FC = () => {
     const [image, setImage] = useState<string>('');
     const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
 
-    const [isPublished, setIsPublished] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>();
     const [showCourseError, setShowCourseError] = useState<boolean>();
 
@@ -336,7 +335,6 @@ const CreateCourse: React.FC = () => {
         setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
         setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
-        setIsPublished(prefillCourse.published ?? false);
         setCourseAppointments(prefillCourse.appointments ?? []);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
@@ -483,7 +481,7 @@ const CreateCourse: React.FC = () => {
             }
 
             if (subRes.data.subcourseCreate && !subRes.errors) {
-                for await (const instructor of addedInstructors) {
+                for await (const instructor of newInstructors) {
                     let res = await addCourseInstructor({
                         variables: {
                             courseId: subRes.data?.subcourseCreate?.id,
@@ -593,7 +591,7 @@ const CreateCourse: React.FC = () => {
             _getCourseData,
             _getSubcourseData,
             addCourseInstructor,
-            addedInstructors,
+            newInstructors,
             createCourse,
             createSubcourse,
             finishCourseCreation,
@@ -799,18 +797,14 @@ const CreateCourse: React.FC = () => {
 
     const addInstructor = useCallback(
         (instructor: LFInstructor) => {
-            if (!prefillCourseId) {
-                if (addedInstructors.findIndex((i) => i.id === instructor.id) === -1) {
-                    setAddedInstructors((prev) => [...prev, instructor]);
-                }
-            } else {
-                if (newInstructors.findIndex((i) => i.id === instructor.id) === -1) {
-                    setNewInstructors((prev) => [...prev, instructor]);
-                }
+            const instructorExistsInArray = newInstructors.some((e) => e.id === instructor.id);
+            if (!instructorExistsInArray) {
+                // Instructors are only added "locally"
+                setNewInstructors((prev) => [...prev, instructor]);
             }
             hide();
         },
-        [addedInstructors, newInstructors, prefillCourseId, hide]
+        [newInstructors, hide]
     );
 
     const removeInstructor = useCallback(
