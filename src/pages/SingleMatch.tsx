@@ -22,6 +22,7 @@ import { pupilIdToUserId, studentIdToUserId } from '../helper/chat-helper';
 import AsNavigationItem from '../components/AsNavigationItem';
 import AdHocMeetingModal from '../modals/AdHocMeetingModal';
 import { DateTime } from 'luxon';
+import ReportMatchModal from '../modals/ReportMatchModal';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -99,6 +100,7 @@ const SingleMatch = () => {
     const toast = useToast();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
     const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>(false);
+    const [showReportModal, setShowReportModal] = useState(false);
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -271,6 +273,11 @@ const SingleMatch = () => {
                                                 {t('matching.shared.dissolveMatch')}
                                             </Button>
                                         )}
+                                        {isActiveMatch && (
+                                            <Button variant="outline" onPress={() => setShowReportModal(true)} my={isMobile ? '0' : '1'}>
+                                                {t('matching.shared.reportProblem')}
+                                            </Button>
+                                        )}
                                     </Stack>
                                     <Divider thickness={1} mb={4} />
                                     <Stack space={space['1']}>
@@ -314,6 +321,14 @@ const SingleMatch = () => {
                     }}
                     onPressBack={() => setShowAdHocMeetingModal(false)}
                 />
+                {data && data.match.pupil.firstname && data.match.student.firstname && (
+                    <ReportMatchModal
+                        matchName={userType === 'student' ? data.match.pupil.firstname : data.match.student.firstname}
+                        matchId={data.match.id}
+                        onClose={() => setShowReportModal(false)}
+                        isOpen={showReportModal}
+                    />
+                )}
             </WithNavigation>
         </AsNavigationItem>
     );
