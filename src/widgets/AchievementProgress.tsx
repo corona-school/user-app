@@ -218,8 +218,8 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
                                                         alternativeText={''}
                                                         tagline={achievement.tagline ?? undefined}
                                                         title={achievement.title ?? ''}
-                                                        // TODO: interesting :D
-                                                        progressDescription={achievement.actionName ?? ''}
+                                                        progressDescription={achievement.footer ?? ''}
+                                                        actionName={achievement.actionName ?? ''}
                                                         // The progress bar should only be shown for active achievements
                                                         showProgressBar={achievement.achievementState === Achievement_State.Active}
                                                         maxSteps={achievement.maxSteps}

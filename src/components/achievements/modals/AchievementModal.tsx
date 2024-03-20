@@ -188,68 +188,43 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </VStack>
                             {!showDescriptionBeforeIndicator && (
                                 <VStack width="100%" alignItems="center" space="8">
-                                    {steps.length === 0 ? (
-                                        <Box>
-                                            {isNewAchievement ? (
-                                                <AchievementBadge isInline />
-                                            ) : (
-                                                <HStack alignItems={'center'} space={'sm'}>
-                                                    {achievementState === Achievement_State.Completed ? (
-                                                        <CheckGreen />
-                                                    ) : (
-                                                        <Box width={'10px'} height={'10px'}>
-                                                            <ArrowGreen />
-                                                        </Box>
-                                                    )}
-                                                    <Text fontSize={'14px'} color="primary.500">
-                                                        <Trans>{{ footer }}</Trans>
-                                                    </Text>
-                                                </HStack>
-                                            )}
-                                        </Box>
-                                    ) : (
-                                        <Box width="80%">
-                                            {achievementState === Achievement_State.Completed ? (
-                                                <Box width="100%" display="flex" alignItems="center">
-                                                    {isNewAchievement ? (
-                                                        <AchievementBadge isInline />
-                                                    ) : (
+                                    <Box width="100%">
+                                        {achievementState === Achievement_State.Completed ? (
+                                            <Box width="100%" display="flex" alignItems="center">
+                                                {isNewAchievement ? (
+                                                    <AchievementBadge isInline />
+                                                ) : (
+                                                    <HStack alignItems={'center'} space={'sm'}>
+                                                        {achievementState === Achievement_State.Completed && <CheckGreen />}
                                                         <Text color="primary.500" textAlign="center">
                                                             <Trans>{{ footer }}</Trans>
                                                         </Text>
-                                                    )}
-                                                </Box>
-                                            ) : (
-                                                <Box width="100%">
-                                                    {(achievementType === Achievement_Type_Enum.Tiered || achievementType === Achievement_Type_Enum.Streak) &&
-                                                    maxSteps ? (
-                                                        <IndicatorBar
-                                                            maxSteps={maxSteps}
-                                                            currentStep={currentStep}
-                                                            progressDescription={footer}
-                                                            centerText
-                                                            fullWidth
-                                                            largeText
-                                                        />
-                                                    ) : (
-                                                        <Box width="100%">
-                                                            {steps.length > 0 && (
-                                                                <IndicatorBar
-                                                                    maxSteps={steps.length}
-                                                                    currentStep={activeStep}
-                                                                    achievementType={achievementType}
-                                                                    progressDescription={footer}
-                                                                    largeText
-                                                                    centerText
-                                                                    fullWidth
-                                                                />
-                                                            )}
-                                                        </Box>
-                                                    )}
-                                                </Box>
-                                            )}
-                                        </Box>
-                                    )}
+                                                    </HStack>
+                                                )}
+                                            </Box>
+                                        ) : (
+                                            <Box width="100%">
+                                                {achievementType === Achievement_Type_Enum.Sequential ? (
+                                                    <IndicatorBar
+                                                        maxSteps={steps.length}
+                                                        currentStep={activeStep}
+                                                        progressDescription={footer}
+                                                        largeText
+                                                        centerText
+                                                        fullWidth
+                                                    />
+                                                ) : (
+                                                    <IndicatorBar
+                                                        maxSteps={(maxSteps || 0) + 1}
+                                                        currentStep={currentStep}
+                                                        progressDescription={footer}
+                                                        fullWidth
+                                                        largeText
+                                                    />
+                                                )}
+                                            </Box>
+                                        )}
+                                    </Box>
                                     <Text width="100%" color={textColor} fontSize="12px">
                                         <Trans>{description}</Trans>
                                     </Text>
@@ -271,9 +246,8 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     ) : (
                                         <Box width="100%" height="fit-content">
                                             <IndicatorBar
-                                                maxSteps={maxSteps || 0}
+                                                maxSteps={(maxSteps || 0) + 1}
                                                 currentStep={currentStep}
-                                                achievementType={achievementType}
                                                 progressDescription={footer}
                                                 fullWidth
                                                 largeText
