@@ -399,9 +399,13 @@ export default function Login() {
 
                     <Box paddingTop={4} marginX="90px" display="block">
                         <DisableableButton
-                            isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
+                            isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading || (showPasswordField && !password)}
                             reasonDisabled={
-                                _sendToken.loading || _determineLoginOptions.loading ? t('reasonsDisabled.loading') : t('reasonsDisabled.invalidEMail')
+                                _sendToken.loading || _determineLoginOptions.loading
+                                    ? t('reasonsDisabled.loading')
+                                    : !email || email.length < 6
+                                    ? t('reasonsDisabled.invalidEMail')
+                                    : t('reasonsDisabled.formIncomplete')
                             }
                             onPress={showPasswordField ? attemptLogin : getLoginOption}
                             width={'100%'}
