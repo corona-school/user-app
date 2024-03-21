@@ -18,19 +18,18 @@ type CardprogressDescriptionProps = {
 
 const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actionType, achievementType, progressDescription, isColorized }) => {
     let icon;
-    const colorize = useBreakpointValue({ base: true, md: isColorized });
     switch (actionType) {
         case Achievement_Action_Type_Enum.Action:
-            icon = colorize ? <ArrowRightGreen /> : <ArrowRight />;
+            icon = isColorized ? <ArrowRightGreen /> : <ArrowRight />;
             break;
         case Achievement_Action_Type_Enum.Appointment:
-            icon = colorize ? <CalendarGreen /> : <Calendar />;
+            icon = isColorized ? <CalendarGreen /> : <Calendar />;
             break;
         case Achievement_Action_Type_Enum.Info:
-            icon = colorize ? <InfoGreen /> : <Info />;
+            icon = isColorized ? <InfoGreen /> : <Info />;
             break;
         case Achievement_Action_Type_Enum.Wait:
-            icon = colorize ? <ClockGreen /> : <Clock />;
+            icon = isColorized ? <ClockGreen /> : <Clock />;
             break;
         default:
             break;
@@ -49,7 +48,13 @@ const CardProgressDescription: React.FC<CardprogressDescriptionProps> = ({ actio
                     </Box>
                 </VStack>
             )}
-            <Text fontSize={fontSize} color={colorize ? 'primary.500' : 'primary.900'} numberOfLines={numberOfLines} justifyContent="flex-start">
+            <Text
+                fontSize={fontSize}
+                color={isColorized ? 'primary.500' : 'primary.900'}
+                numberOfLines={numberOfLines}
+                justifyContent="flex-start"
+                overflow="hidden"
+            >
                 {progressDescription}
             </Text>
         </HStack>

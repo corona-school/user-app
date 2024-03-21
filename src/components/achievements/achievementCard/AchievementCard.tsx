@@ -19,7 +19,8 @@ type AchievementCardProps = {
     title: string;
     maxSteps?: number;
     currentStep?: number;
-    progressDescription?: string;
+    progressDescription: string;
+    actionName?: string;
     showProgressBar: boolean;
     onClick?: () => void;
 };
@@ -36,6 +37,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     maxSteps,
     currentStep,
     progressDescription,
+    actionName,
     showProgressBar,
     onClick,
 }) => {
@@ -65,10 +67,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const shineSize = useBreakpointValue({ base: ShineSize.XSMALL, md: ShineSize.MEDIUM });
     const textSpace = useBreakpointValue({ base: 2, md: 5 });
     const textPaddingLeft = useBreakpointValue({ base: '12px', md: '0' });
-    const indicatorTextSpace = useBreakpointValue({ base: 0, md: 2 });
-    const indicatorFirst = useBreakpointValue({ base: false, md: true });
-    const indicatorSecond = useBreakpointValue({ base: true, md: false });
-    const colorozeCard = useBreakpointValue({ base: true, md: false });
+    const progressBarLargeText = useBreakpointValue({ base: false, md: true });
     return (
         <Pressable disabled={achievementState === Achievement_State.Inactive} onPress={onClick}>
             <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center" overflow="visible">
@@ -143,12 +142,18 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                             </Text>
                         </Stack>
                         {showProgressBar && (
-                            <VStack space={indicatorTextSpace} width="100%">
-                                {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
-                                {progressDescription && (
-                                    <CardProgressDescription actionType={actionType} progressDescription={progressDescription} isColorized={colorozeCard} />
+                            <VStack space="0" width="100%">
+                                {maxSteps && (
+                                    <IndicatorBar
+                                        maxSteps={maxSteps}
+                                        currentStep={currentStep}
+                                        progressDescription={progressDescription}
+                                        fullWidth
+                                        isCard
+                                        largeText={progressBarLargeText}
+                                    />
                                 )}
-                                {indicatorSecond && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
+                                {actionName && <CardProgressDescription actionType={actionType} progressDescription={actionName} />}
                             </VStack>
                         )}
                     </VStack>

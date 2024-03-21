@@ -2047,22 +2047,11 @@
             }
         },
         "card": {
-            "isNewAchievement": "neuer Erfolg",
-            "finishedStepsInformation": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen"
-        },
-        "nextStepCard": {
-            "finishedSteps": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen."
+            "isNewAchievement": "neuer Erfolg"
         },
         "modal": {
             "close": "Schließen",
-            "achievements": "Zu den Erfolgen",
-            "streak": "Noch {{leftSteps}} mal pünktlich erscheinen, um den Rekord erneut zu brechen.",
-            "record": "Du warst bei {{record}} Terminen in Folge anwesend! Verpasse weiterhin keinen Termin, um den Rekord zu erhöhen."
-        },
-        "streak": {
-            "card": {
-                "info": "Du warst bei <strong>{{streak}} Termin(en)</strong> in Folge dabei!"
-            }
+            "achievements": "Zu den Erfolgen"
         },
         "progress": {
             "state": {

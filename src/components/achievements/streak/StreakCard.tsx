@@ -50,7 +50,7 @@ const StreakCard: React.FC<StreakCardProps> = ({
                         alternativeText={alternativeText}
                         achievementType={Achievement_Type_Enum.Streak}
                         record={record}
-                        isRecord={!record || streak === record}
+                        isRecord={achievementState === Achievement_State.Completed}
                     />
                 </VStack>
                 <VStack maxWidth={maxTextWidth} height="100%" justifyContent="flex-start" space="6px">
@@ -62,7 +62,7 @@ const StreakCard: React.FC<StreakCardProps> = ({
                     </Text>
                     {record && (
                         <Box>
-                            {streak === record ? (
+                            {achievementState === Achievement_State.Completed ? (
                                 <CardProgressDescription
                                     actionType={actionType}
                                     achievementType={Achievement_Type_Enum.Streak}
@@ -70,14 +70,7 @@ const StreakCard: React.FC<StreakCardProps> = ({
                                     isColorized
                                 />
                             ) : (
-                                <IndicatorBar
-                                    maxSteps={record + 1}
-                                    currentStep={streak}
-                                    progressDescription={progressDescription}
-                                    achievementType={Achievement_Type_Enum.Streak}
-                                    fullWidth
-                                    isCard
-                                />
+                                <IndicatorBar maxSteps={record + 1} currentStep={streak} progressDescription={progressDescription} fullWidth isCard />
                             )}
                         </Box>
                     )}
