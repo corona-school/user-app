@@ -1274,6 +1274,7 @@
             "showMore": "Mehr anzeigen",
             "showLess": "Weniger anzeigen",
             "contactViaChat": "Per Chat kontaktieren",
+            "reportProblem": "Problem melden",
             "directCall": "Sofortbesprechung starten",
             "dissolveMatch": "Lernpaar auflösen",
             "dissolved": "Das Lernpaar wurde aufgelöst.",
@@ -1306,6 +1307,21 @@
                     "nothing": "Keine Angabe machen"
                 }
             }
+        },
+        "report": {
+            "modal": {
+                "title": "Problem mit {{firstName}} melden",
+                "pupil": {
+                    "description": "Hier kannst du sagen, dass du dich mich mit {{firstName}} unwohl fühlst. Wir kümmern uns darum."
+                },
+                "student": {
+                    "description": "Hier hast du die Möglichkeit uns ein Problem mit {{firstName}} mitzuteilen. Wir setzen uns anschließend mit dir in Verbindung, um das weitere Vorgehen zu besprechen."
+                },
+                "problemDescription": "Beschreibung des Problems",
+                "submitButton": "Meldung senden"
+            },
+            "success": "Deine Meldung wurde erfolgreich versendet",
+            "failure": "Ein Fehler ist aufgetreten"
         },
         "request": {
             "check": {
