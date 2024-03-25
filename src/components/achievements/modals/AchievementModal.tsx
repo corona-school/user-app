@@ -2,7 +2,6 @@ import { Box, Button, CloseIcon, HStack, Modal, Pressable, Stack, Text, VStack, 
 import { Trans, useTranslation } from 'react-i18next';
 import AchievementImageContainer from '../AchievementImageContainer';
 import CheckGreen from '../../../assets/icons/icon_check_green.svg';
-import ArrowGreen from '../../../assets/icons/icon_arrow_right_green.svg';
 import { PolaroidImageSize, ShineSize } from '../../../types/achievement';
 import AchievementBadge from '../AchievementBadge';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
@@ -61,7 +60,8 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
     const displayModalItems = useBreakpointValue({ base: 'flex', md: 'grid' });
     const modalBodyWidth = useBreakpointValue({ base: '100%', lg: '820px' });
     const modalBodyMaxWidth = useBreakpointValue({ base: '550px', lg: '820px' });
-    const modalBodyHeight = useBreakpointValue({ base: '100vh', lg: 'fit-content' });
+    // https://stackoverflow.com/a/72245072
+    const modalBodyHeight = useBreakpointValue({ base: '100dvh', lg: 'fit-content' });
     const modalBodyBorderRadius = useBreakpointValue({ base: '0', md: '8px' });
     const modalBodyMarginTop = useBreakpointValue({ base: '0', md: '62px' });
     const contentMaxWidth = useBreakpointValue({ base: '550px', lg: '820px' });
@@ -103,7 +103,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
             isOpen={showModal}
             onClose={onClose}
             width="100vw"
-            height="100vh"
+            height="100dvh"
             justifyContent={justifyModalContent}
             alignItems={alignModalItems}
             display={displayModalItems}
@@ -215,7 +215,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                                     />
                                                 ) : (
                                                     <IndicatorBar
-                                                        maxSteps={(maxSteps || 0) + 1}
+                                                        // In case of a streak, we have to reach maxValue + 1
+                                                        // Otherwise, max value is desired, like "3 / 5 Termine"
+                                                        maxSteps={achievementType === Achievement_Type_Enum.Streak ? (maxSteps || 0) + 1 : maxSteps || 0}
                                                         currentStep={currentStep}
                                                         progressDescription={footer}
                                                         fullWidth
@@ -246,7 +248,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                     ) : (
                                         <Box width="100%" height="fit-content">
                                             <IndicatorBar
-                                                maxSteps={(maxSteps || 0) + 1}
+                                                // In case of a streak, we have to reach maxValue + 1
+                                                // Otherwise, max value is desired, like "3 / 5 Termine"
+                                                maxSteps={achievementType === Achievement_Type_Enum.Streak ? (maxSteps || 0) + 1 : maxSteps || 0}
                                                 currentStep={currentStep}
                                                 progressDescription={footer}
                                                 fullWidth
@@ -278,7 +282,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                             </Button>
                             <Button
                                 onPress={() => {
-                                    if (buttonLink.startsWith('mailto')) {
+                                    if (buttonLink.startsWith('mailto') || buttonLink.startsWith('http')) {
                                         Linking.openURL(buttonLink);
                                     } else {
                                         navigate(buttonLink);
