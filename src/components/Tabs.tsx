@@ -14,9 +14,10 @@ type Props = {
     removeSpace?: boolean;
     onPressTab?: (tab: Tab, index: number) => any;
     tabInset?: number | string;
+    shouldRedirect?: false;
 };
 
-const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset }) => {
+const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset, shouldRedirect = true }) => {
     const [currentIndex, setCurrentIndex] = useRestoredNumberState(0, 'tab');
     const { space } = useTheme();
     const location = useLocation();
@@ -32,7 +33,9 @@ const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset
     const Tab = ({ tab, index, active }: { tab: Tab; index: number; active: boolean }) => (
         <Pressable
             onPress={() => {
-                navigate('', { replace: true, state: { tabID: index } });
+                if (shouldRedirect) {
+                    navigate('', { replace: true, state: { tabID: index } });
+                }
                 setCurrentIndex(index);
                 onPressTab && onPressTab(tab, index);
             }}
