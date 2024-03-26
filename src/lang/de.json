@@ -2206,5 +2206,12 @@
         "failure": "Ein Fehler ist aufgetreten",
         "legal": "Ich bin damit einverstanden, dass Lern-Fair die hier gemachten Angaben entsprechend meines Anliegens verarbeitet und nehme die Übermittlung an unsere Dienstleister in die USA und die <privacy>Datenschutzerklärung</privacy> zur Kenntnis."
     },
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "onboarding": {
+        "student": {
+            "header": "Willkommen bei Lern-Fair!",
+            "text": "Danke für deine Registrierung! In einem nächsten Schritt laden wir dich zu einem digitalen Kennenlerngespräch mit uns ein.",
+            "button": "Kennenlerngespräch buchen"
+        }
+    }
 }
