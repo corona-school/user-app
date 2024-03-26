@@ -244,6 +244,15 @@ const Theme = extendTheme({
                 },
             },
         },
+        Modal: {
+            sizes: {
+                full: {
+                    contentSize: {
+                        width: '80%',
+                    },
+                },
+            },
+        },
     },
     config: {
         initialColorMode: 'light',
