@@ -5,9 +5,9 @@ import Tabs, { type Tab as BaseTab, type TabsProps } from './Tabs';
 
 export type Tab = BaseTab;
 
-type NaivgationTabsProps = TabsProps & {};
+type NavigationTabsProps = TabsProps;
 
-const NavigationTabs: React.FC<NaivgationTabsProps> = ({ tabs, removeSpace = false, onPressTab, tabInset }) => {
+const NavigationTabs: React.FC<NavigationTabsProps> = ({ tabs, removeSpace = false, onPressTab, tabInset }) => {
     const [currentIndex, setCurrentIndex] = useRestoredNumberState(0, 'tab');
     const location = useLocation();
     const navigate = useNavigate();
