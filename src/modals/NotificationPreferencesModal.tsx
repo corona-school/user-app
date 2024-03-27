@@ -25,7 +25,6 @@ const NotificationPreferencesModal = ({ isOpen, onClose }: NotificationPreferenc
                     <Modal.Body>
                         <VStack ml={3}>
                             <Tabs
-                                shouldRedirect={false}
                                 tabs={[
                                     {
                                         title: t('notification.controlPanel.tabs.system.title'),
