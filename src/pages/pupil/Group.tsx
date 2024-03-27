@@ -2,7 +2,7 @@ import { Text, Heading, useTheme, VStack, useBreakpointValue, Stack } from 'nati
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs from '../../components/Tabs';
+import NavigationTabs from '../../components/NavigationTabs';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useCallback, useEffect, useMemo } from 'react';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -256,7 +256,7 @@ const PupilGroup: React.FC<Props> = () => {
                                 <SearchBar autoSubmit onSearch={search} />
                             </VStack>
 
-                            <Tabs
+                            <NavigationTabs
                                 tabs={[
                                     {
                                         title: t('matching.group.pupil.tabs.tab2.title'),
