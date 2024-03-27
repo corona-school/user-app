@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, Heading, Spacer, Text, VStack, useTheme } from 'native-base';
+import { Button, Flex, HStack, Heading, Link, Spacer, Text, VStack, useTheme } from 'native-base';
 import EventIcon from '../assets/icons/Icon_Einzel.svg';
 import TimeIcon from '../assets/icons/lernfair/lf-timer.svg';
 import LokiIcon from '../assets/icons/lernfair/avatar_pupil_120.svg';
@@ -7,9 +7,8 @@ import { useTranslation } from 'react-i18next';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 import useApollo from '../hooks/useApollo';
-import { useEffect, useState } from 'react';
-import { ContactSupportModal } from './ContactSupportModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import RequireScreeningSettingsDropdown from '../widgets/RequireScreeningSettingsDropdown';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -25,10 +24,9 @@ const EXISTING_SCREENINGS_QUERY = gql(`
 `);
 
 export function RequireScreeningModal() {
-    const { space, sizes } = useTheme();
+    const { space, sizes, colors } = useTheme();
     const { t } = useTranslation();
-    const [contactSupport, setContactSupport] = useState(false);
-    const { logout, user } = useApollo();
+    const { user } = useApollo();
 
     const { data } = useQuery(EXISTING_SCREENINGS_QUERY);
 
@@ -50,15 +48,9 @@ export function RequireScreeningModal() {
 
     return (
         <Flex p={space['2']} flex="1" alignItems="center" justifyContent="center" bgColor="primary.900">
-            <ContactSupportModal isOpen={contactSupport} onClose={() => setContactSupport(false)} />
-            <HStack width="100%" space={space['1']}>
+            <HStack width="100%" space={space['1']} alignItems="center">
                 <Spacer />
-                <Button variant="outlinelight" onPress={() => setContactSupport(true)}>
-                    {t('requireScreening.contactSupport')}
-                </Button>
-                <Button variant="outlinelight" onPress={logout}>
-                    {t('logout')}
-                </Button>
+                <RequireScreeningSettingsDropdown />
             </HStack>
             {!data && <CenterLoadingSpinner />}
             {data && !wasScreened && !wasRejected && (
@@ -115,6 +107,14 @@ export function RequireScreeningModal() {
                     <Spacer />
                 </VStack>
             )}
+            <HStack space={space['1']}>
+                <Text color={colors.white}>
+                    <Link onPress={() => window.open('/datenschutz', '_blank')}>{t('settings.legal.datapolicy')}</Link>
+                </Text>
+                <Text color={colors.white}>
+                    <Link onPress={() => window.open('/impressum', '_blank')}>{t('settings.legal.imprint')}</Link>
+                </Text>
+            </HStack>
         </Flex>
     );
 }
