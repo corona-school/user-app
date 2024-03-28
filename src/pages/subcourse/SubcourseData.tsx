@@ -1,4 +1,4 @@
-import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue } from 'native-base';
+import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue, Badge } from 'native-base';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
@@ -45,6 +45,12 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
         return getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants);
     }, [subcourse?.maxParticipants, subcourse?.participantsCount]);
 
+    // TODO: (josefa) get publishedAt prop here
+
+    // const today = new Date();
+    // const aWeekAgo = today.setDate(today.getDate() - 7);
+    // const isCourseNewlyAdded = publishedAt?.getTime() ?? new Date(0).getTime() > aWeekAgo;
+
     return (
         <>
             <Stack direction={isMobile ? 'column-reverse' : 'row'}>
@@ -61,6 +67,11 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                             {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
                         </Text>
                     )}
+                    {/* {isCourseNewlyAdded && (
+                    <Badge bgColor="danger.500" _text={{ color: 'white' }} rounded="full" style={{ maxWidth: '50px' }}>
+                        {t('dashboard.helpers.badges.new')}
+                    </Badge>
+                      )} */}
                     <Heading fontSize="3xl" maxW={isMobile ? 'full' : '80%'}>
                         {course?.name}
                     </Heading>
