@@ -14,6 +14,7 @@ import { Achievement, Achievement_Action_Type_Enum } from '../gql/graphql';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
+import { createPupilScreeningLink, createStudentScreeningLink } from '../helper/screening-helper';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -194,14 +195,11 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             student?.canCreateCourse?.reason === 'not-screened' ||
             (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
         ) {
-            const student_url =
-                process.env.REACT_APP_SCREENING_URL +
-                '?first_name=' +
-                encodeURIComponent(data?.me?.firstname ?? '') +
-                '&last_name=' +
-                encodeURIComponent(data?.me?.lastname ?? '') +
-                '&email=' +
-                encodeURIComponent(email ?? '');
+            const student_url = createStudentScreeningLink({
+                firstName: data?.me.firstname,
+                lastName: data?.me.lastname,
+                email,
+            });
             infos.push({ label: NextStepLabelType.GET_FAMILIAR, btnfn: [() => window.open(student_url)], lang: {} });
         }
 
@@ -210,18 +208,14 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
         const inviteToScreening = wasInvited || notYetScreened;
         if (pupil && inviteToScreening) {
-            const pupil_url =
-                (notYetScreened ? process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL : process.env.REACT_APP_PUPIL_SCREENING_URL) +
-                '?first_name=' +
-                encodeURIComponent(data?.me?.firstname ?? '') +
-                '&last_name=' +
-                encodeURIComponent(data?.me?.lastname ?? '') +
-                '&email=' +
-                encodeURIComponent(email ?? '') +
-                '&a1=' +
-                encodeURIComponent(pupil?.grade ?? '') +
-                '&a2=' +
-                encodeURIComponent(pupil?.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
+            const pupil_url = createPupilScreeningLink({
+                isFirstScreening: notYetScreened,
+                firstName: data?.me?.firstname,
+                lastName: data?.me?.lastname,
+                email,
+                grade: pupil.grade,
+                subjects: pupil.subjectsFormatted,
+            });
             infos.push({
                 label: notYetScreened ? NextStepLabelType.PUPIL_FIRST_SCREENING : NextStepLabelType.PUPIL_SCREENING,
                 btnfn: [

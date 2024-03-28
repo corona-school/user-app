@@ -3,7 +3,7 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 import useApollo, { ExtendedApolloContext, LFApollo, useRoles } from './hooks/useApollo';
 import VerifyEmailModal from './modals/VerifyEmailModal';
 import { useApolloClient } from '@apollo/client';
-import { Role } from './types/lernfair/User';
+import { ERole, Role } from './types/lernfair/User';
 import { RequireScreeningModal } from './modals/RequireScreeningModal';
 
 export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element; isRetainPath?: boolean }) => {
@@ -26,8 +26,8 @@ export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element;
         }
 
         // Require an initial screening for newly-registered pupils
-        // (maybe extend to students in the future)
-        if (user && user.pupil && !['TUTEE' as const, 'PARTICIPANT' as const].some((role) => roles.includes(role))) {
+        const requiresInitialScreening = ![ERole.TUTEE, ERole.PARTICIPANT, ERole.INSTRUCTOR, ERole.TUTOR].some((role) => roles.includes(role));
+        if (user && (user.pupil || user.student) && requiresInitialScreening) {
             return <RequireScreeningModal />;
         }
 
