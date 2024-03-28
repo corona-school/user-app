@@ -1,5 +1,5 @@
 import { Column, Heading, Row, Stack, Text, useBreakpointValue, useTheme, View, VStack } from 'native-base';
-import Tabs from '../../components/Tabs';
+import NavigationTabs from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { useTranslation } from 'react-i18next';
 import { SystemNotifications } from '../../components/notifications/preferences/SystemNotifications';
@@ -65,7 +65,7 @@ const NotficationControlPanel = () => {
                         </Column>
                     )}
                     <VStack ml={3}>
-                        <Tabs
+                        <NavigationTabs
                             tabs={[
                                 {
                                     title: t('notification.controlPanel.tabs.system.title'),

@@ -1,5 +1,5 @@
 import { Box, Stack, Text, VStack, useBreakpointValue } from 'native-base';
-import Tabs from '../../components/Tabs';
+import NavigationTabs from '../../components/NavigationTabs';
 import { gql } from './../../gql';
 import { useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
@@ -114,7 +114,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
             <Box py={6}>
                 <Text>{t('appointment.create.assignmentHeader')}</Text>
             </Box>
-            <Tabs
+            <NavigationTabs
                 tabs={[
                     {
                         title: t('appointment.create.oneToOneTitle'),
@@ -173,7 +173,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                         ),
                     },
                 ]}
-            ></Tabs>
+            ></NavigationTabs>
         </Box>
     );
 };

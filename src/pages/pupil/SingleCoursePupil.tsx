@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs, { Tab } from '../../components/Tabs';
+import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
@@ -218,7 +218,7 @@ const SingleCoursePupil = () => {
                 )}
 
                 {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
-                <Tabs tabs={tabs} />
+                <NavigationTabs tabs={tabs} />
             </Stack>
         </WithNavigation>
     );

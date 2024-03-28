@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs from '../../components/Tabs';
+import NavigationTabs from '../../components/NavigationTabs';
 import { useEffect, useMemo } from 'react';
 import { gql } from '../../gql';
 import { useQuery } from '@apollo/client';
@@ -254,7 +254,7 @@ const StudentGroup: React.FC = () => {
                                 </Stack>
                             </VStack>
                             <VStack space={space['5']} paddingY={space['1']}>
-                                <Tabs
+                                <NavigationTabs
                                     tabs={[
                                         {
                                             title: t('matching.group.helper.course.tabs.tab1.title'),
