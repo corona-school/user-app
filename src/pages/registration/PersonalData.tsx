@@ -5,9 +5,9 @@ import TextInput from '../../components/TextInput';
 import PasswordInput from '../../components/PasswordInput';
 import AlertMessage from '../../widgets/AlertMessage';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { gql } from '../../gql';
 import { RegistrationContext } from '../Registration';
-import { useNavigate } from 'react-router-dom';
 import isEmail from 'validator/es/lib/isEmail';
 import { Cooperation } from '../../gql/graphql';
 import { InfoCard } from '../../components/InfoCard';
@@ -29,7 +29,6 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
     } = useContext(RegistrationContext);
 
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const { space } = useTheme();
     const { trackEvent } = useMatomo();
 
@@ -39,11 +38,13 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
     const [showPasswordLength, setShowPasswordLength] = useState<boolean>(false);
     const [showPasswordConfirmNoMatch, setShowPasswordConfirmNoMatch] = useState<boolean>(false);
 
-    const [isEmailAvailable] = useMutation(gql`
+    const [isEmailAvailable] = useMutation(
+        gql(`
         mutation isEmailAvailable($email: String!) {
             isEmailAvailable(email: $email)
         }
-    `);
+    `)
+    );
 
     const isInputValid = useCallback(() => {
         setShowNameMissing(!firstname || !lastname);

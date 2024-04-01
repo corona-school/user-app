@@ -1,10 +1,12 @@
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
+import { gql } from '../../../gql';
 import { DocumentNode } from 'graphql';
 import { Text, VStack, useTheme, Heading, Row, Column, Modal, useToast } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
 import { schooltypes } from '../../../types/lernfair/SchoolType';
+import { SchoolType, State } from '../../../gql/graphql';
 import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
@@ -31,27 +33,27 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
     const [modalSelection, setModalSelection] = useState<string>();
 
     const [meUpdateSchooltype] = useMutation(
-        gql`
+        gql(`
             mutation changeSchooltypeData($data: SchoolType!) {
                 meUpdate(update: { pupil: { schooltype: $data } })
             }
-        `,
+        `),
         { refetchQueries: [refetchQuery] }
     );
     const [meUpdateSchoolClass] = useMutation(
-        gql`
+        gql(`
             mutation changeSchoolClassData($data: Int!) {
                 meUpdate(update: { pupil: { gradeAsInt: $data } })
             }
-        `,
+        `),
         { refetchQueries: [refetchQuery] }
     );
     const [meUpdateState] = useMutation(
-        gql`
+        gql(`
             mutation changePupilStateData($data: State!) {
                 meUpdate(update: { pupil: { state: $data } })
             }
-        `,
+        `),
         { refetchQueries: [refetchQuery] }
     );
 
@@ -97,7 +99,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
             switch (modalType) {
                 case 'schooltypes':
                     await meUpdateSchooltype({
-                        variables: { data: modalSelection },
+                        variables: { data: modalSelection as SchoolType },
                     });
                     break;
                 case 'schoolclass':
@@ -106,7 +108,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                     });
                     break;
                 case 'states':
-                    await meUpdateState({ variables: { data: modalSelection } });
+                    await meUpdateState({ variables: { data: modalSelection as State } });
                     break;
                 default:
                     break;

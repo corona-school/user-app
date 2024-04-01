@@ -1,9 +1,10 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
+import { gql } from '../../gql';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue } from 'native-base';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 
@@ -17,18 +18,12 @@ type Props = {};
 
 const ChangeSettingSchoolClass: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
-
     const { t } = useTranslation();
-
-    const location = useLocation();
-    const { state } = location as { state: { userType: string } };
-
     const [showError, setShowError] = useState<boolean>();
-
     const navigate = useNavigate();
 
     const { data, loading } = useQuery(
-        gql`
+        gql(`
             query GetPupilSchool {
                 me {
                     pupil {
@@ -37,32 +32,22 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                     }
                 }
             }
-        `,
+        `),
         {
             fetchPolicy: 'no-cache',
         }
     );
 
-    const [updateSchoolGrade, _updateSchoolGrade] = useMutation(gql`
+    const [updateSchoolGrade, _updateSchoolGrade] = useMutation(
+        gql(`
         mutation updateSchoolGradePupil($grade: Int!) {
             meUpdate(update: { pupil: { gradeAsInt: $grade } })
         }
-    `);
+    `)
+    );
 
     const schoolGrades = useMemo(() => {
         return new Array(13).fill(0).map((_, i) => i + 1);
-
-        // if (!data?.me?.pupil?.schooltype) {
-        //   return new Array(8).fill(0).map((_, i) => i + 5)
-        // }
-
-        // if (data?.me?.pupil?.schooltype === 'grundschule') {
-        //   return new Array(4).fill(0).map((_, i) => i + 1)
-        // } else if (data?.me?.pupil?.schooltype === 'gymnasium') {
-        //   return new Array(8).fill(0).map((_, i) => i + 5)
-        // } else {
-        //   return new Array(6).fill(0).map((_, i) => i + 5)
-        // }
     }, []);
 
     const [selectedGrade, setSelectedGrade] = useState<number>(1);
@@ -75,7 +60,6 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
 
     useEffect(() => {
         if (_updateSchoolGrade.data && !_updateSchoolGrade.error) {
-            // setUserSettingChanged(true)
             navigate('/profile', { state: { showSuccessfulChangeAlert: true } });
         }
     }, [_updateSchoolGrade.data, _updateSchoolGrade.error, navigate]);
@@ -145,49 +129,11 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                                         )
                                 )}
                             </Row>
-                            {/* {selections.includes('Andere') && (
-                <Row>
-                  <FormControl>
-                    <Stack>
-                      <FormControl.Label>
-                        <Text bold>
-                          {t('profile.SchoolClass.single.optional.label')}
-                        </Text>
-                      </FormControl.Label>
-                      <Input
-                        type="text"
-                        multiline
-                        numberOfLines={3}
-                        h={70}
-                        placeholder={t(
-                          'profile.SchoolClass.single.optional.placeholder'
-                        )}
-                      />
-                    </Stack>
-                  </FormControl>
-                </Row>
-              )} */}
                         </VStack>
                     </ProfileSettingItem>
                 </ProfileSettingRow>
             </VStack>
             <VStack paddingX={space['1.5']} paddingBottom={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                {/* {userSettingChanged && (
-          <Alert marginY={3} colorScheme="success" status="success">
-            <VStack space={2} flexShrink={1} w="100%">
-              <HStack
-                flexShrink={1}
-                space={2}
-                alignItems="center"
-                justifyContent="space-between">
-                <HStack space={2} flexShrink={1} alignItems="center">
-                  <Alert.Icon />
-                  <Text>{t('profile.successmessage')}</Text>
-                </HStack>
-              </HStack>
-            </VStack>
-          </Alert>
-        )} */}
                 {showError && <AlertMessage content={t('profile.errormessage')} />}
                 <Button width={ButtonContainer} onPress={() => updateSchoolGrade({ variables: { grade: selectedGrade } })}>
                     {t('saveSelection')}
