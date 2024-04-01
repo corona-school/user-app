@@ -5,7 +5,6 @@ import { Pressable } from 'react-native';
 import { useNavigate } from 'react-router-dom';
 import AlertMessage from '../../widgets/AlertMessage';
 import { RegistrationContext } from '../Registration';
-import ListItem from '../../widgets/ListItem';
 import BulletList from '../../components/BulletList';
 
 type Props = {
@@ -62,61 +61,51 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
 
             <Checkbox.Group onChange={(values) => setChecks(values || [])} value={checks} mt={space['1']}>
                 <VStack space={space['0.5']}>
-                    <Heading fontSize="md">Datenschutz</Heading>
-                    <Text>Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:</Text>
+                    <Heading fontSize="md">{t(`registration.legal.privacy`)}</Heading>
+                    <Text>{t(`registration.legal.whatHappensWithData`)}</Text>
                     <BulletList
-                        bulletPoints={[
-                            'Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts',
-                            'Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden',
-                            'Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können',
-                        ]}
+                        bulletPoints={[t(`registration.legal.usageBullets.1`), t(`registration.legal.usageBullets.2`), t(`registration.legal.usageBullets.3`)]}
                     />
                     <Checkbox value={'dsgvo'} alignItems="flex-start">
                         <Text>
-                            Ich habe die <Link onPress={() => window.open('/datenschutz', '_blank')}>Datenschutzbestimmungen</Link> zur Kenntnis genommen.
+                            {t(`registration.legal.accept`)}
+                            <Link onPress={() => window.open('/datenschutz', '_blank')}>{t(`registration.legal.privacypolicy`)}</Link>
                             <Required />
                         </Text>
                     </Checkbox>
 
                     <Row alignItems="flex-start" mt={space['0.5']} ml="28px">
-                        <Accordion title="Datenverarbeitung durch Auftragsverarbeiter in den USA">
-                            <Text>
-                                Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden
-                                Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit
-                                von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln
-                                abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO.
-                            </Text>
+                        <Accordion title={t(`registration.legal.accordionUsDataProcessors.title`)}>
+                            <Text>{t(`registration.legal.accordionUsDataProcessors.body`)}</Text>
                         </Accordion>
                     </Row>
 
-                    {errors['dsgvo'] && <AlertMessage content="Bitte bestätige die Datenschutzbestimmungen." />}
+                    {errors['dsgvo'] && <AlertMessage content={t(`registration.legal.error.confirmPolicy`)} />}
 
                     {userType === 'student' && (
                         <VStack space={space['0.5']} mt={space['1']}>
-                            <Heading fontSize="md">Selbstverpflichtungserklärung</Heading>
+                            <Heading fontSize="md">{t(`registration.legal.selfCommitment`)}</Heading>
                             <Checkbox value="straftaten" alignItems="flex-start">
                                 <Text>
-                                    Ich versichere, nicht wegen einer in{' '}
-                                    <Link onPress={() => window.open('/selbstverpflichtungserklaerung', '_blank')}>§ 72a Abs. 1 Satz 1 SGB VIII</Link>
-                                     bezeichneten Straftat rechtskräftig verurteilt worden zu sein und dass derzeit kein Ermittlungsverfahren wegen einer
-                                    solchen Straftat gegen mich läuft. <Required />
+                                    {t(`registration.legal.noInvestigation`)}{' '}
+                                    <Link onPress={() => window.open('/selbstverpflichtungserklaerung', '_blank')}>
+                                        {t(`registration.legal.selfCommitment`)}
+                                    </Link>
+                                    <Required />
                                 </Text>
                             </Checkbox>
-                            {errors['straftaten'] && <AlertMessage content="Bitte bestätige diese Aussage." />}
+                            {errors['straftaten'] && <AlertMessage content={t(`registration.legal.error.confirmNoInvestigation`)} />}
                         </VStack>
                     )}
 
                     <Heading fontSize="md" mt={space['2']}>
-                        Newsletter
+                        {t(`registration.legal.newsletter`)}
                     </Heading>
                     <Checkbox value="newsletter" alignItems="flex-start" mr={space['0.5']} onChange={(e) => setNewsletter(e)}>
-                        <Text>Ich möchte von Lern-Fair über Angebote, Aktionen und weitere Unterstützungsmöglichkeiten per E-Mail informiert werden.</Text>
+                        <Text>{t(`registration.legal.newsletterAgreement`)}</Text>
                     </Checkbox>
 
-                    <Text my={space['1']}>
-                        Hinweis: Für den Fall, dass die einwilligende Person das 18. Lebensjahr noch nicht vollendet hat, hat der Träger der elterlichen
-                        Verantwortung für die Person die Einwilligung zu erklären.
-                    </Text>
+                    <Text my={space['1']}>{t(`registration.legal.underageDisclaimer`)}</Text>
 
                     <Box alignItems="center" marginTop={space['2']}>
                         <Row space={space['1']} justifyContent="center">
