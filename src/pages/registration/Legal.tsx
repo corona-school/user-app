@@ -1,10 +1,12 @@
-import { Box, Button, Checkbox, ChevronDownIcon, ChevronUpIcon, Column, Heading, Link, Row, Text, useTheme, VStack } from 'native-base';
+import { Box, Button, Checkbox, ChevronDownIcon, ChevronUpIcon, Column, Heading, Link, List, Row, Text, useTheme, VStack } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
 import { useNavigate } from 'react-router-dom';
 import AlertMessage from '../../widgets/AlertMessage';
 import { RegistrationContext } from '../Registration';
+import ListItem from '../../widgets/ListItem';
+import BulletList from '../../components/BulletList';
 
 type Props = {
     onRegister: () => any;
@@ -61,13 +63,17 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
             <Checkbox.Group onChange={(values) => setChecks(values || [])} value={checks} mt={space['1']}>
                 <VStack space={space['0.5']}>
                     <Heading fontSize="md">Datenschutz</Heading>
+                    <Text>Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:</Text>
+                    <BulletList
+                        bulletPoints={[
+                            'Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts',
+                            'Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden',
+                            'Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können',
+                        ]}
+                    />
                     <Checkbox value={'dsgvo'} alignItems="flex-start">
                         <Text>
-                            Ich habe die <Link onPress={() => window.open('/datenschutz', '_blank')}>Datenschutzbestimmungen</Link> zur Kenntnis genommen und
-                            bin damit einverstanden, dass der Lern-Fair e.V. meine persönlichen Daten entsprechend des Zwecks, Umfangs und der Dauer wie in der
-                            Datenschutzerklärung angegeben, verarbeitet und gespeichert werden. Mir ist insbesondere bewusst, dass die von mir angegebenen Daten
-                            zur Durchführung der Angebote an zugeteilte Nutzer:innen weitergegeben werden und deren E-Mail-Adressen ggf. von Anbietern außerhalb
-                            der EU zur Verfügung gestellt werden, die die Einhaltung des europäischen Datenschutzniveaus nicht gewährleisten können.{' '}
+                            Ich habe die <Link onPress={() => window.open('/datenschutz', '_blank')}>Datenschutzbestimmungen</Link> zur Kenntnis genommen.
                             <Required />
                         </Text>
                     </Checkbox>
