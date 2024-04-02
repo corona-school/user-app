@@ -2197,19 +2197,32 @@
     },
     "requireScreening": {
         "contactSupport": "Support kontaktieren",
-        "noScreening": {
-            "title": "Bitte buche dir einen Termin, {{firstname}}!",
-            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
-            "makeAppointment": "Termin vereinbaren"
+        "pupil": {
+            "noScreening": {
+                "title": "Bitte buche dir einen Termin, {{firstname}}!",
+                "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
+                "makeAppointment": "Termin vereinbaren"
+            },
+            "hasScreening": {
+                "title": "Bitte warte ein bisschen",
+                "content": "Wir haben uns sehr gefreut dich kennenzulernen. Dein Account wurde noch nicht freigeschaltet. Wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
+                "makeAnotherAppointment": "Erneut Termin vereinbaren"
+            },
+            "rejectedScreening": {
+                "title": "Leider können wir dir nicht helfen, {{firstname}}",
+                "content": "Leider haben wir entschieden, dass wir dir das Angebot von Lern-Fair nicht zur Verfügung stellen können. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
+            }
         },
-        "hasScreening": {
-            "title": "Bitte warte ein bisschen",
-            "content": "Wir haben uns sehr gefreut dich kennenzulernen. Dein Account wurde noch nicht freigeschaltet. Wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
-            "makeAnotherAppointment": "Erneut Termin vereinbaren"
-        },
-        "rejectedScreening": {
-            "title": "Leider können wir dir nicht helfen, {{firstname}}",
-            "content": "Leider haben wir entschieden, dass wir dir das Angebot von Lern-Fair nicht zur Verfügung stellen können. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
+        "student": {
+            "noScreening": {
+                "title": "Bitte buche dir einen Termin, {{firstname}}!",
+                "content": "Bevor du mit dem Engagement bei Lern-Fair starten kannst, möchten wir dich in einem kurzem Gespräch kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
+                "makeAppointment": "Termin vereinbaren"
+            },
+            "rejectedScreening": {
+                "title": "Leider hat das nicht gepasst",
+                "content": "Leider haben wir entschieden, dass das Engagement bei Lern-Fair nicht zu dir passt. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
+            }
         }
     },
     "contactSupport": {
