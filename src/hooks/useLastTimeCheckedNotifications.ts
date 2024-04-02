@@ -1,18 +1,19 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
+import { gql } from '../gql';
 
-const getLastTimeCheckedQuery = gql`
+const getLastTimeCheckedQuery = gql(`
     query GetLastTimeCheckedNotifications {
         me {
             lastTimeCheckedNotifications
         }
     }
-`;
-const meLastTimeCheckedNotifications = gql`
+`);
+const meLastTimeCheckedNotifications = gql(`
     mutation updateMeLastTime($lastTimeCheckedNotifications: DateTime) {
         meUpdate(update: { lastTimeCheckedNotifications: $lastTimeCheckedNotifications })
     }
-`;
+`);
 
 export const useLastTimeCheckedNotifications = () => {
     const [lastTimeCheckedNotifications, setLastTimeCheckedNotifications] = useState('');
