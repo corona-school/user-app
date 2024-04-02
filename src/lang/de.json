@@ -5,7 +5,6 @@
     "clock": "Uhr",
     "time": "Uhrzeit",
     "duration": "Dauer",
-    "further_details": "Weitere Details",
     "copy_text": "Text kopieren",
     "copied_text": "Text kopiert!",
     "select": "Auswählen",
@@ -16,12 +15,9 @@
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
         "editSuccess": "Termin erfolgreich geändert",
-        "deleteAppointment": "Termin löschen",
         "goBack": "zur vorherigen Seite",
         "loadPastAppointments": "Vergangene Termine laden",
         "loadedPastAppointments": "Vergangene Termine geladen",
-        "courseNotPublished": "Der zu diesem Termin zugehörige Kurs wurde noch nicht zur Prüfung freigegeben.",
-        "noNextAppointment": "Kein nächster Termin.",
         "toast": {
             "createOneAppointmentSuccess": "Termin wurde erfolgreich erstellt und Schüler:in per E-Mail informiert.",
             "createAppointmentsSuccess": "Termine wurde erfolgreich erstellt und Schüler:in per E-Mail informiert."
@@ -31,13 +27,9 @@
             "noAppointmentsDesc": "Dir wurden aktuell noch keine Termine zugeordnet.",
             "noFurtherAppointments": "Keine weiteren Termine",
             "noFurtherDesc": "Scrolle nach oben, um vergangene Termine zu sehen.",
-            "createNewAppointmentDesc": "Erstelle nun den ersten Kurstermin.",
-            "noPublishedAppointmentsDesc": "Es wurden noch keine Termine veröffentlicht."
+            "createNewAppointmentDesc": "Erstelle nun den ersten Kurstermin."
         },
-        "tile": {
-            "videoButton": "Videochat beitreten",
-            "clock": "Uhr"
-        },
+        "tile": {},
         "clock": {
             "startToEnd": "{{start}} - {{end}} Uhr",
             "nowToEnd": "Jetzt - {{end}} Uhr"
@@ -86,7 +78,6 @@
             "wrongDateError": "Datum kann frühestens in einer Woche sein",
             "emptyTimeError": "Zeit darf nicht leer sein",
             "wrongVideoUrlError": "Bitte gebe einen gültigen Videolink ein.",
-            "courseImageAltText": "Kursbild",
             "videoChatLabel": "Video-Chat",
             "videoChatPlaceholder": "Hinterlege deinen eigenen Link zum Videochat",
             "videoSelectOptions": {
@@ -95,11 +86,7 @@
             }
         },
         "detail": {
-            "group": "Gruppentermin mit {{instructor}}",
-            "oneToOne": "Einzeltermin mit {{instructor}}",
-            "without": "Termin mit {{instructor}}",
             "appointmentTitle": "{{appointmentTitle}}",
-            "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Uhr ({{duration}} Minuten)",
             "repeatDate": "{{appointmentCount}}. von insgesamt {{appointmentsTotal}} Terminen",
             "participants": "{{participantsTotal}} Teilnehmer:innen",
@@ -129,14 +116,8 @@
             "header": "Hinweise zum Videochat",
             "browser": "Im Browser fortfahren",
             "zoomClient": "In Zoom öffnen",
-            "useZoomApp": {
-                "header": "Nutze die Zoom App",
-                "description": "Tipp: Öffne den Videochat in der Zoom-App. <br/> Einige Funktionen fehlen, wenn du Zoom im Browser verwendest."
-            },
-            "camera": {
-                "header": "Kamera an",
-                "description": "Wenn es geht, mache bitte deine Kamera an."
-            }
+            "useZoomApp": {},
+            "camera": {}
         },
         "attendeesModal": {
             "title": "Teilnehmer:innen",
@@ -145,18 +126,13 @@
             "pupil": "Schüler:in"
         },
         "errors": {
-            "title": "Title darf nicht leer sein",
             "date": "Datum darf nicht leer sein",
             "dateMinOneWeek": "Datum kann frühestens in einer Woche sein",
             "timeNotInFiveMin": "Zeit kann frühestens in 5 Minuten sein",
             "time": "Zeit darf nicht leer sein",
-            "duration": "Dauer darf nicht leer sein",
-            "videoChat": "Videochat muss gewählt sein"
+            "duration": "Dauer darf nicht leer sein"
         }
     },
-    "visitcourse": "zum Kurs",
-    "openchat": "Chat beginnen",
-    "openmatch": "Ansehen",
     "login": {
         "title": "Anmeldung",
         "error": "Deine Login-Daten stimmen nicht mit unseren Informationen überein. Bitte überprüfe deine Angaben.",
@@ -167,7 +143,6 @@
         "setNewEmail": "E-Mail neu setzen",
         "changeEmail": "E-Mail ändern",
         "emailVerification": "E-Mail Verifizierung",
-        "succesEmailVerification": "Dein E-Mail wurde erfolgreich geändert!",
         "invalidToken": "Token ungültig",
         "email": {
             "sent": "Wir haben dir eine E-Mail zum Login geschickt"
@@ -214,7 +189,6 @@
     "back": "Zurück",
     "important": "Wichtig",
     "error": "Es ist ein Fehler aufgetreten.",
-    "characterLimitNotice": "Max. Zeichenanzahl: {{limit}}",
     "datepickerPlaceholder": "Wähle ein Datum...",
     "timepickerPlaceholder": "00:00",
     "registrationTitle": "Anmeldung",
@@ -230,119 +204,19 @@
     "since": "seit",
     "till": "bis",
     "lernfair": {
-        "languages": {
-            "albanisch": "Albanisch",
-            "arabisch": "Arabisch",
-            "armenisch": "Armenisch",
-            "aserbaidschanisch": "Aserbaidschanisch",
-            "bosnisch": "Bosnisch",
-            "bulgarisch": "Bulgarisch",
-            "chinesisch": "Chinesisch",
-            "deutsch": "Deutsch",
-            "englisch": "Englisch",
-            "franz_sisch": "Französisch",
-            "t_rkisch": "Türkisch",
-            "italienisch": "Italienisch",
-            "kasachisch": "Kasachisch",
-            "kurdisch": "Kurdisch",
-            "polnisch": "Polnisch",
-            "portugiesisch": "Portugiesisch",
-            "russisch": "Russisch",
-            "spanisch": "Spanisch",
-            "ukrainisch": "Ukrainisch",
-            "vietnamesisch": "Vietnamesisch",
-            "other": "Andere",
-            "andere": "Andere"
-        },
-        "subjects": {
-            "Altgriechisch": "Altgriechisch",
-            "Biologie": "Biologie",
-            "Chemie": "Chemie",
-            "Chinesisch": "Chinesisch",
-            "Deutsch": "Deutsch",
-            "Deutsch als Zweitsprache": "Deutsch als Zweitsprache",
-            "Englisch": "Englisch",
-            "Erdkunde": "Erdkunde",
-            "Französisch": "Französisch",
-            "Geschichte": "Geschichte",
-            "Informatik": "Informatik",
-            "Italienisch": "Italienisch",
-            "Kunst": "Kunst",
-            "Latein": "Latein",
-            "Mathematik": "Mathematik",
-            "Musik": "Musik",
-            "Niederländisch": "Niederländisch",
-            "Pädagogik": "Pädagogik",
-            "Philosophie": "Philosophie",
-            "Physik": "Physik",
-            "Politik": "Politik",
-            "Religion": "Religion",
-            "Russisch": "Russisch",
-            "Sachkunde": "Sachkunde",
-            "Spanisch": "Spanisch",
-            "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
-        },
-        "states": {
-            "bw": "Baden-Württemberg",
-            "by": "Bayern",
-            "be": "Berlin",
-            "bb": "Brandenburg",
-            "hb": "Bremen",
-            "hh": "Hamburg",
-            "he": "Hessen",
-            "mv": "Mecklenburg-Vorpommern",
-            "ni": "Niedersachsen",
-            "nw": "Nordrhein-Westfalen",
-            "rp": "Rheinland-Pfalz",
-            "sl": "Saarland",
-            "sn": "Sachsen",
-            "st": "Sachsen-Anhalt",
-            "sh": "Schleswig-Holstein",
-            "th": "Thüringen",
-            "at": "Österreich",
-            "ch": "Schweiz",
-            "other": "Andere"
-        },
-        "schooltypes": {
-            "grundschule": "Grundschule",
-            "hauptschule": "Hauptschule",
-            "realschule": "Realschule",
-            "gymnasium": "Gymnasium",
-            "gesamtschule": "Gesamtschule",
-            "other": "Andere",
-            "berufsschule": "Berufsschule",
-            "f_rderschule": "Förderschule"
-        },
+        "languages": {},
+        "subjects": {},
+        "states": {},
+        "schooltypes": {},
         "schoolclass": "{{class}}. Klasse",
         "reason": {
             "course": {
-                "instructor": {
-                    "not-instructor": "Du bist noch nicht als Kursleiter:in registriert.",
-                    "not-screened": "Du bist noch nicht als Kursleiter:in freigeschaltet. Bitte führe zuerst dein Kennenlerngespräch mit uns.",
-                    "null": "Du darfst eigentlich neue Kurse erstellen ... Probier mal dich neu anzumelden ..."
-                },
-                "pupil": {
-                    "subcourse-full": "Dieser Kurs ist leider ausgebucht.",
-                    "grade-to-high": "Du kannst dich nicht zu diesem Kurs anmelden, weil du nicht in der vorgesehenen Jahrgangsstufe bist. Der Kurs ist für jüngere Schüler:innen gedacht.",
-                    "grade-to-low": "Du kannst dich nicht zu diesem Kurs anmelden, weil du nicht in der vorgesehenen Jahrgangsstufe bist. Der Kurs ist für ältere Schüler:innen gedacht.",
-                    "no-lectures": "Du kannst dich nicht anmelden, da keine Lektionen für diesen Kurs angelegt wurden.",
-                    "already-started": "Du kannst dich nicht mehr zum Kurs anmelden, da er bereits gestartet ist.",
-                    "already-participant": "Du bist bereits für diesen Kurs angemeldet.",
-                    "not-participant": "Du kannst dich nicht anmelden, weil dein Account für Gruppen-Kurse nicht freigeschaltet ist. Bitte wende dich an support@lern-fair.de, wenn du an diesem Kurs teilnehmen möchtest."
-                }
+                "instructor": {},
+                "pupil": {}
             },
             "matching": {
-                "tutor": {
-                    "not-screened": "Du kannst noch kein Lernpaar bilden. Bitte führe zuerst dein Kennenlerngespräch mit uns.",
-                    "not-tutor": "Du kannst kein Lernpaar bilden, da du nicht für die Lernunterstützung registriert bist.",
-                    "max-requests": "Du hast die maximale Zahl an erlaubten Anfragen erreichst und kannst daher keine weitere stellen."
-                },
+                "tutor": {},
                 "pupil": {
-                    "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
-                    "not-tutee": "Du kannst kein Lernpaar anfordern, da du nicht für die Lernunterstützung registriert bist.",
-                    "max-requests": "Du bist bereits auf der Warteliste.",
-                    "max-matches": "Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.",
                     "deactivated": "Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
@@ -358,19 +232,10 @@
     },
     "registration": {
         "password_repeat": "Passwort wiederholen",
-        "to_login": "Ich habe bereits einen Account",
-        "dsgvo": {
-            "accept": "Hiermit stimme ich der",
-            "datapolicy": "Datenschutzerklärung",
-            "lastword": "zu.",
-            "pleaseaccept": "Bitte akzeptiere unsere"
-        },
+        "dsgvo": {},
         "barrier": {
             "title": "Wichtig",
             "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
-            "point_0": "● Du brauchst Hilfe in der Schule",
-            "point_1": "● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
-            "point_2": "● Deine Familie kann keine Nachhilfe für dich bezahlen",
             "btn": {
                 "yes": "Ja, die Punkte treffen zu",
                 "no": "Nein, die Punkte treffen nicht zu"
@@ -393,66 +258,39 @@
                 "invalid": "Ungültige E-Mail-Adresse",
                 "unavailable": "Diese E-Mail-Adresse ist bereits vergeben"
             },
-            "userType": {
-                "missing": "Bitte identifiziere deine Rolle"
-            }
+            "userType": {}
         },
         "personal": {
-            "title": "Gib deine persönlichen Daten ein",
-            "about": {
-                "label": "Über mich",
-                "text": "Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können."
-            }
+            "about": {}
         },
         "result": {
-            "success": {
-                "title": "Erledigt!",
-                "text": "Dein Account wurde erfolgreich erstellt. Du kannst nun das Angebot von Lern-Fair nutzen!",
-                "btn": "Zur Anwendung"
-            },
+            "success": {},
             "error": {
                 "tryagain": "Erneut versuchen",
-                "message": {
-                    "Email is already used by another account": "Diese Email ist bereits in Verwendung",
-                    "Response not successful: Received status code 400": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.",
-                    "RateLimit Enforcement": "Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.",
-                    "Unknown User Type": "Dein Account-Typ konnte nicht bestimmt werden. Bitte versuche versuche einen einfachen Login."
-                }
+                "message": {}
             }
         },
         "steps": {
-            "0": {
-                "title": "Deine Rolle",
-                "subtitle": "Ich bin"
-            },
-            "1": {
-                "title": "Persönliche Daten",
-                "subtitle": "Persönliche Daten"
-            },
+            "0": {},
+            "1": {},
             "2": {
-                "title": "Klasse",
                 "subtitle": "In welcher Klasse bist du?"
             },
             "3": {
-                "title": "Schulform",
                 "subtitle": "Auf welche Schulform gehst du?"
             },
             "4": {
-                "title": "Schulort",
                 "subtitle": "Wo gehst du zur Schule?",
                 "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt."
             },
             "5": {
-                "title": "Einwilligungen",
                 "subtitle": "Einwilligungen"
             }
         },
         "pupil": {
             "label": "Schüler:in"
         },
-        "student": {
-            "label": "Helfer:in"
-        },
+        "student": {},
         "verifyemail": {
             "title": "Überprüfe dein E-Mail-Postfach!",
             "mailsendto": "Wir haben eine E-Mail an {{email}} gesendet.",
@@ -462,8 +300,7 @@
                 "button": "Bestätigungsmail erneut senden",
                 "successAlert": "Wir haben dir die Bestätigungs-E-Mail erneut gesendet. Bitte überprüfe deinen Posteingang und schau auch im Spam nach.",
                 "failedAlert": "Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut."
-            },
-            "backToWelcomeButton": "Zum Login-Bereich"
+            }
         }
     },
     "helpcenter": {
@@ -512,11 +349,7 @@
         },
         "btn": {
             "formsubmit": "Anfrage senden",
-            "reasonDisabled": [
-                "Bitte wähle einen längeren Betreff (mindestens 5 Zeichen).",
-                "Bitte schreibe einen längere Nachricht (mindestens 5 Zeichen).",
-                "Du musst den Datenschutzbestimmungen zustimmen."
-            ],
+            "reasonDisabled": [null, null, null],
             "readsonDisabledModal": "Du musst bestätigen, dass du diese Nachricht melden möchtest."
         },
         "reportSuccessToast": "Die Nachricht wurde erfolgreich gemeldet und wird zeitnah überprüft."
@@ -525,10 +358,6 @@
         "title": "Mein Profil",
         "successmessage": "Änderungen wurden erfolgreich gespeichert.",
         "errormessage": "Deine Änderungen konnten nicht gespeichert werden.",
-        "editprofile": "Profilbild ändern",
-        "birthday": "Geburtsdatum ändern",
-        "type": "Art der Unterstützung:",
-        "availability": "Verfügbarkeit verwalten",
         "noInfo": "Keine Angabe",
         "ProfileCompletion": {
             "name": "Profilvollständigkeit"
@@ -542,8 +371,7 @@
                 "email": "Deine E-Mail"
             },
             "popup": {
-                "header": "Name ändern",
-                "label": "Dein Name"
+                "header": "Name ändern"
             }
         },
         "AboutMe": {
@@ -556,15 +384,11 @@
         },
         "FluentLanguagenalData": {
             "label": "Fließende Sprache",
-            "empty": "Keine Angabe",
             "single": {
                 "header": "Sprache ändern",
                 "title": "Meine Sprachen",
                 "others": "Weitere Sprachen",
-                "optional": {
-                    "label": "Andere Schulform",
-                    "placeholder": "Gebe deine Schulform an."
-                }
+                "optional": {}
             }
         },
         "State": {
@@ -574,27 +398,20 @@
             "single": {
                 "selectedStates": "Mein Schulort",
                 "otherStates": "Weitere (Bundes-)Länder",
-                "header": "Schulort ändern",
-                "title": "Mein Schulort",
-                "others": "Schulort wählen"
+                "header": "Schulort ändern"
             }
         },
         "SchoolType": {
             "label": "Schulform",
-            "empty": "Keine Angabe",
             "single": {
                 "header": "Schulform ändern",
                 "title": "Meine Schulform",
                 "others": "Weitere Schulformen",
-                "optional": {
-                    "label": "Andere Schulform",
-                    "placeholder": "Gebe deine Schulform an."
-                }
+                "optional": {}
             }
         },
         "SchoolClass": {
             "label": "Klasse",
-            "empty": "Keine Angabe",
             "single": {
                 "header": "Schulklasse ändern",
                 "title": "Gewählte Schulklasse",
@@ -606,23 +423,11 @@
             }
         },
         "subjects": {
-            "label": "Meine Fächer",
-            "empty": "Keine Fächer angegeben",
-            "single": {
-                "title": "Meine Fächer"
-            }
+            "single": {}
         },
         "NeedHelpIn": {
-            "label": "Fächer, in denen ich mir Hilfe wünsche",
-            "empty": "Es wurden keine Fächer angegeben",
             "single": {
-                "header": "Fächer ändern",
-                "title": "Fächer, in denen ich mir Hilfe wünsche",
-                "others": "Weitere Fächer wählen",
-                "optional": {
-                    "label": "Anderes Fach",
-                    "placeholder": "Welche Fächer möchtest du wählen?"
-                }
+                "optional": {}
             }
         },
         "Helper": {
@@ -635,8 +440,7 @@
             "noLanguage": "Es wurden keine Sprachen angegeben",
             "noState": "Es wurde kein Schulort angegeben",
             "noSchoolType": "Es wurde keine Schulform angegeben",
-            "noSchoolGrade": "Es wurde keine Klasse angegeben",
-            "noSchoolSubject": "Es wurden keine Fächer angegeben"
+            "noSchoolGrade": "Es wurde keine Klasse angegeben"
         },
         "Deactivate": {
             "error": "Dein Account konnte nicht deaktiviert werden.",
@@ -652,42 +456,15 @@
                     "student": "Sobald du deinen Account deaktivierst, werden deine Lernpaare aufgelöst und deine Kurse abgesagt. Wir informieren deine aktiven Lernpartner:innen automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden."
                 }
             },
-            "pupil": {
-                "0": "Ich habe keine Zeit mehr.",
-                "1": "Ich habe kein Interesse mehr.",
-                "2": "Ich habe mich nur zu Testzwecken angemeldet.",
-                "3": "Ich habe eine andere Möglichkeit gefunden, Unterstützung zu erhalten.",
-                "4": "Ich habe mir das Programm anders vorgestellt.",
-                "5": "Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.",
-                "6": "Sonstiges"
-            },
-            "student": {
-                "0": "Ich habe keine Zeit mehr mich zu engagieren.",
-                "1": "Ich konnte/wollte das Kennenlerngespräch nicht wahrnehmen.",
-                "2": "Ich habe kein Interesse mehr.",
-                "3": "Ich habe mich nur zu Testzwecken angemeldet.",
-                "4": "Ich habe eine andere Möglichkeit gefunden mich zu engagieren.",
-                "5": "Ich habe mir das Programm anders vorgestellt.",
-                "6": "Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.",
-                "7": "Sonstiges"
-            }
+            "pupil": {},
+            "student": {}
         }
     },
     "single": {
         "global": {
             "clockFrom": "Ab",
-            "from": "aus",
             "clock": "Uhr",
             "timeFormatLocale": "de",
-            "category": "Kategorie",
-            "participating": "Teilnehmer:innen",
-            "quantity": "Anzahl",
-            "lesson": "Lektion",
-            "lessons": "Lektionen",
-            "duration": "Dauer",
-            "tutor": "Tutor:innen",
-            "more_tutors": "Weitere Tutor:innen",
-            "hours": "Stunde(n)",
             "state": "Status:",
             "status": {
                 "free": "Freie Plätze",
@@ -702,10 +479,7 @@
                 "draft": "Entwurf",
                 "submitted": "In Prüfung"
             },
-            "noMembers": "Es sind noch keine Teilnehmer:innen vorhanden.",
-            "noLections": "Es wurden keine Lektionen eingetragen.",
-            "leaveCourse": "Kurs verlassen",
-            "signOut": "Vom Kurs abmelden"
+            "noMembers": "Es sind noch keine Teilnehmer:innen vorhanden."
         },
         "tabs": {
             "description": "Beschreibung",
@@ -724,7 +498,6 @@
         "card": {
             "expandCardButton": "Mehr Infos",
             "alreadyRegistered": "Du bist bereits für diesen Kurs angemeldet.",
-            "waitingListMember": "Du bist bereits auf der Warteliste dieses Kurses",
             "appointments": "{{count}} Termin(e)",
             "time": {
                 "notStarted": "Startet:",
@@ -740,11 +513,7 @@
         "actions": {
             "leaveSubcourse": "Kurs verlassen",
             "joinWaitinglist": " Auf Warteliste setzen",
-            "leaveWaitinglist": "Warteliste verlassen",
-            "contactInstructor": "Kursleiter:in kontaktieren",
-            "videochat": "Videochat starten",
-            "videochatShouldOpen": "Der Videochat sollte sich in einem neuen Tab öffnen. Falls nicht probiere den folgenden Knopf:",
-            "openVideochatAgain": "Videochat erneut öffnen"
+            "contactInstructor": "Kursleiter:in kontaktieren"
         },
         "modals": {
             "contactMessage": {
@@ -761,8 +530,7 @@
             "freeTitle": "Auf freie Plätze aufmerksam machen?",
             "freeDescription": "Benachrichtige (einmalig) passende Schüler:innen.",
             "promotedTitle": "Dein Kurs wurde erneut beworben!",
-            "promotedDescription": "Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt.",
-            "participant": "Teilnehmer:innen"
+            "promotedDescription": "Schüler:innen mit den entsprechenden Interessen wurden benachrichtigt."
         },
         "banner": {
             "state": "Status: ",
@@ -803,7 +571,6 @@
             "toast": "Du bist auf der Warteliste!"
         },
         "leave": {
-            "course": "Kurs verlassen",
             "signOut": "Vom Kurs abmelden",
             "description": "Bist du sicher, dass du dich von diesem Kurs abmelden möchtest? Du kannst anschließend nicht mehr am Kurs teilnehmen.",
             "toast": "Du hast dich nun erfolgreich vom Kurs abgemeldet."
@@ -816,18 +583,10 @@
         "waitinglist": {
             "toast": "Schüler wurde dem Kurs hinzugefügt.",
             "error": "Schüler:in konnte nicht hinzugefügt werden.",
-            "onwaitinglist": "Auf Warteliste setzen",
             "leaveWaitinglist": "Warteliste verlassen",
-            "leaveSuccess": "Du hast die Warteliste erfolgreich verlassen.",
-            "joined": "Du wurdest der Warteliste für diesen Kurs erfolgreich hinzugefügt.",
             "joinMember": "Du bist auf der Warteliste für diesen Kurs.",
             "noPupilsOnWaitinglist": "Keine Schüler:innen auf der Warteliste.",
-            "modal": {
-                "info": "Wir informieren dich per E-Mail, wenn ein Platz für dich in diesem Kurs frei-geworden ist. Möchtest du dich auf die Warteliste setzen?",
-                "success": "Du bist auf der Warteliste!",
-                "button": "Auf die Warteliste",
-                "cancel": "Abbrechen"
-            }
+            "modal": {}
         },
         "joinPupilModal": {
             "header": "Schüler:innen nachrücken",
@@ -846,58 +605,33 @@
         "general": {
             "title": "Allgemein",
             "profile": "Profil",
-            "languageVersion": "Sprachversion",
             "notifications": "E-Mail Benachrichtigungen",
-            "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte"
         },
         "account": {
             "title": "Konto",
             "changeEmail": "E-Mail ändern",
             "changePassword": "Passwort ändern",
-            "changeUser": "Benutzer wechseln",
             "deactivateAccount": "Konto deaktivieren",
             "logout": "Abmelden"
         },
         "legal": {
             "title": "Rechtliches",
             "imprint": "Impressum",
-            "datapolicy": "Datenschutz",
-            "terms": "Nutzungsbedingungen"
+            "datapolicy": "Datenschutz"
         }
     },
     "onboardingList": {
         "header": "Onboarding-Tour",
         "title": "Onboarding",
         "buttontext": "Tour starten",
-        "skip": "Überspringen",
         "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod",
         "cards": {
-            "card0": {
-                "title": "Onboarding-Tour allgemein",
-                "content": "Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.",
-                "url": "/onboarding/students/"
-            },
-            "card1": {
-                "title": "Onboarding-Tour 1:1 Matching",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/onboarding/helpermatching/"
-            },
-            "card2": {
-                "title": "Onboarding-Tour Gruppenkurs",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            },
-            "card3": {
-                "title": "Onboarding-Tour Hilfebereich",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            },
-            "card4": {
-                "title": "Onboarding-Tour Termine",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            }
+            "card0": {},
+            "card1": {},
+            "card2": {},
+            "card3": {},
+            "card4": {}
         },
         "Wizard": {
             "students": {
@@ -927,22 +661,10 @@
                     "title": "Meine Termine",
                     "content": "Hier findest du eine Übersicht deiner geplanten Termine."
                 },
-                "helpCenter": {
-                    "title": "Hilfebereich",
-                    "content": "Hier findest du häufig gestellte Fragen mit ihren Antworten. Außerdem kannst du uns hier kontaktieren"
-                },
-                "profile": {
-                    "title": "Profil",
-                    "content": "In deinem Profil kannst du die Fächer, in denen du Hilfe brauchst, ändern."
-                },
-                "settings": {
-                    "title": "Einstellungen",
-                    "content": "In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mail-Adresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform."
-                },
-                "notification": {
-                    "title": "Benachrichtigung",
-                    "content": "Du wirst über Neuigkeiten zu deinem Matching, neue Kontaktaufnahmen, allgemeine Themen informiert. Über die Glocke oben rechts siehtst du, ob du neue Nachrichten hast."
-                },
+                "helpCenter": {},
+                "profile": {},
+                "settings": {},
+                "notification": {},
                 "finisher": {
                     "title": "Fertig!",
                     "content": "Einen Moment, dein persönliches Dashboard wird geladen.",
@@ -957,12 +679,7 @@
                     "answer": "Wir zeigen dir die wichtigsten Funktionen.",
                     "startTour": "Tour starten",
                     "skipTour": "Tour überspringen",
-                    "popup": {
-                        "title": "Bist du sicher, dass du die Tour überspringen möchtest?",
-                        "content": "Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.",
-                        "defaultButtonText": "Nein, Tour beginnen",
-                        "outlineButtonText": "Ja, Tour überspringen"
-                    }
+                    "popup": {}
                 },
                 "matching": {
                     "title": "Lernunterstützung",
@@ -1006,12 +723,7 @@
                     "answer": "Wir zeigen dir die wichtigsten Funktionen.",
                     "startTour": "Tour starten",
                     "skipTour": "Tour überspringen",
-                    "popup": {
-                        "title": "Bist du sicher, dass du die Tour überspringen möchtest?",
-                        "content": "Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.",
-                        "defaultButtonText": "Nein, Tour beginnen",
-                        "outlineButtonText": "Ja, Tour überspringen"
-                    }
+                    "popup": {}
                 },
                 "matching": {
                     "title": "Lernpartner:in anfordern",
@@ -1040,7 +752,6 @@
                     "firstContent": "Glückwunsch, du hast die Onboarding-Tour zur Lernunterstützung abgeschlossen.",
                     "headlineContent": "Hast du alles verstanden?",
                     "answer": "Du kannst dir die Tour nochmal ansehen und in unserem Hilfebereich vorbeischauen. Hier findest du die wichtigsten Informationen und Hilfestellungen für dich als Helfer:in.",
-                    "linkText": "Zum Hilfebereich",
                     "helpcenter": "Zum Hilfebereich",
                     "buttonText": "Tour beenden",
                     "buttonLinkText": "Tour nochmal ansehen"
@@ -1052,10 +763,7 @@
         "appointmentcard": {
             "header": "Nächster Termin"
         },
-        "myappointments": {
-            "header": "Meine Termine",
-            "noappointments": "Es wurden keine Termine gefunden."
-        },
+        "myappointments": {},
         "learningpartner": {
             "header": "Dein:e Lernpartner:in"
         },
@@ -1068,23 +776,11 @@
             "waitingTimeInfo": "Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in zu längeren Wartezeiten kommt. Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.",
             "removeRequest": "Anfrage zurücknehmen"
         },
-        "supportCategories": {
-            "all": "Alle",
-            "overview": "Übersicht",
-            "kurse": "Kurse",
-            "support": "1:1 Lernunterstützung",
-            "pedagogy": "Pädagogik",
-            "tools": "Digitale Tools",
-            "material": "Kostenlose Lehrmaterialien",
-            "daz": "Deutsch als Zweit- oder Fremdsprache",
-            "add_support": "Zusätzliche Unterstützung"
-        },
+        "supportCategories": {},
         "helpers": {
             "headlines": {
                 "course": "Meine Kurse",
-                "importantNews": "Wichtige Meldungen",
                 "myLearningPartner": "Meine Lernpartner:innen",
-                "openedRequests": "Suche nach Lernpartner:innen",
                 "support": "Unsere Hilfestellungen",
                 "recommend": "Empfiehl uns weiter",
                 "recommendFriends": "Empfiehl Lern-Fair deinen Freunden"
@@ -1097,10 +793,8 @@
             },
             "buttons": {
                 "course": "Neuen Kurs eintragen",
-                "offer": "Wichtige Meldungen",
                 "requestMatchStudent": "Ein neues Lernpaar bilden",
                 "requestMatchPupil": "Lernpartner:in erhalten",
-                "solveMatch": "Lernpaar auflösen",
                 "recommend": "Jetzt empfehlen"
             },
             "channels": {
@@ -1119,151 +813,66 @@
         "nextStep": "Deine nächsten Schritte",
         "progress": "Alle Fortschritte anzeigen",
         "verifizierung": {
-            "subtitle": "Verifizierung",
-            "title": "Verifiziere deine E-Mail-Adresse",
-            "content": "“Bevor du bei Lern-Fair starten kanst, musst du zunächst deine E-Mail-Adresse bestätigen. Wir haben dir dazu am {{date}} eine E-Mail an {{email}} gesendet. Du hast keine E-Mail von uns erhalten?”",
-            "buttons": ["E-Mail erneut senden"]
+            "buttons": [null]
         },
         "passwort": {
-            "subtitle": "Passwort",
-            "title": "Passwort einrichten",
-            "content": "Es ist endlich so weit, wir stellen unser Login-System um! Du kannst ab sofort ein Passwort für deinen Lern-Fair Account vergeben und dich damit zukünftig einloggen.",
-            "buttons": ["Passwort einrichten"]
+            "buttons": [null]
         },
         "willkommen": {
-            "title": "Willkommen 👋",
-            "subtitle": "Schön, dass du hier bist!",
-            "content": "Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir Nachhilfe-Kurse zu verschiedenen Themen wie Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere Lernunterstützung setzen",
-            "actionDescription": "Lernangebot ansehen",
-            "buttons": ["Kurse ansehen", "Lernunterstützung beantragen"]
+            "buttons": [null, null]
         },
         "statusSchüler": {
-            "title": "Du bist auf der Warteliste!",
-            "subtitle": "Warteliste",
-            "content": "Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
-            "buttons": ["Kurse ansehen", "Anfrage zurücknehmen"]
+            "buttons": [null, null]
         },
         "interestconfirmation": {
-            "title": "Brauchst du noch Unterstützung?",
-            "subtitle": "Unterstützung",
-            "content": "Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von  <b>14 Tagen </b> bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen.",
-            "buttons": ["Ja", "Nein"]
+            "buttons": [null, null]
         },
         "kontaktSchüler": {
-            "subtitle": "1:1 Lernuntersützung",
-            "title": "Neue Lernpartner:in",
-            "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
-            "buttons": ["Lernpartner:in ansehen"]
+            "buttons": [null]
         },
         "angeforderteBescheinigung": {
-            "title": "Bestätigung",
-            "subtitle": "Nachhilfe mit {{nameHelfer}} ",
-            "content": "{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.",
-            "buttons": ["Angaben bestätigen"],
-            "actionDescription": "Angaben bestätigen"
+            "buttons": [null]
         },
         "kennenlernen": {
-            "subtitle": "Kennenlernen",
-            "title": "Wir möchten dich kennenlernen 👋!",
-            "content": "Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videokonferenzgespräch kennenlernen. Vereinbare einfach einen Termin mit uns.",
-            "buttons": ["Termin vereinbaren"]
+            "buttons": [null]
         },
         "zeugnis": {
-            "subtitle": "Wichtig!",
-            "title": "Erweitertes Führungszeugnis",
-            "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "buttons": ["Führungszeugnis einreichen"],
-            "actionDescription": "Alles zum Führungszeugnis"
+            "buttons": [null]
         },
         "statusStudent": {
-            "subtitle": "1:1 Lernuntersützung",
-            "title": "Wir suchen nach einem:r Lernpartner:in für dich!",
-            "content": "Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.",
-            "buttons": ["Problem melden"]
+            "buttons": [null]
         },
         "statusStudent2": {
-            "subtitle": "Weitere Engagement-Möglichkeiten",
-            "title": "Lust auf mehr?",
-            "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
-            "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
-            "actionDescription": "Jetzt Möglichkeiten ansehen"
+            "buttons": [null, null]
         },
         "kontaktStudent": {
-            "title": "Neue Lernpartner:in",
-            "subtitle": "1:1 Lernuntersützung",
-            "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
-            "buttons": ["Lernpartner:in ansehen"]
+            "buttons": [null]
         },
         "homeworkHelpStudent": {
-            "title": "Hausaufgabenhilfe",
-            "content": "Bei der <b>Hausaufgabenhilfe</b> bekommen Schüler:innen einmalig, spontane, direkte Hilfe bei ihrer Frage zu den Hausaufgaben. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür einfach <b>von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>16-17 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben. Schau vorbei, wir freuen uns auf dich!",
-            "buttons": ["Zur Hausaufgabenhilfe\n(Zoom-Registrierung)"]
+            "buttons": [null]
         },
         "homeworkHelpPupil": {
-            "title": "Hilfe bei deinen Hausaufgaben",
-            "content": "Du kommst bei deiner Hausaufgabe nicht weiter? Bei der <b>Hausaufgabenhilfe</b> helfen wir dir <b>von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deiner Frage. Wir freuen uns auf dich!",
-            "buttons": ["Zur Hausaufgabenhilfe"]
+            "buttons": [null]
         },
         "pupilScreening": {
-            "title": "Wir möchten dich kennenlernen!",
-            "subtitle": "Kennenlernen",
-            "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
-            "buttons": ["Termin vereinbaren"]
+            "buttons": [null]
         },
         "courseOffer": {
-            "name": "Kurs anbieten",
-            "subtitle": "Kursname",
-            "actionName": "Jetzt zur Prüfung freigeben",
-            "alternativText": "Drei Puzzleteile",
-            "description": "Wir freuen uns, wenn du einen Kurs auf unserer Plattform anbieten möchtest! Im Hilfestellungsbereich findest du unsere informativen Schulungs- und Erklärvideos, die dir den Einstieg erleichtern. Falls du Unterstützung benötigst, kannst du dort gerne einen Beratungstermin mit unserem pädagogischen Team buchen. Wir stehen bereit, um dich bei der Konzeption deines Kurses zu unterstützen und dir wertvolle Tipps zu geben. Dein Engagement bedeutet uns viel – wir können es kaum erwarten, gemeinsam mit dir neue Kurse zu entwefen und die Plattform zu bereichern!",
-            "stepname": {
-                "one": "Kurs entwerfen",
-                "two": "Kurs zur Prüfung freigeben",
-                "three": "Freigabe erhalten"
-            }
+            "stepname": {}
         },
         "studentNewMatch": {
-            "name": "Neue Lernuntersützung",
-            "subtitle": "Nachhilfe",
-            "actionName": "Match-Anfrage stellen",
-            "alternativText": "Fünf Puzzleteile",
-            "description": "Es war großartig, dich besser kennenzulernen und freuen uns, dass du gemeinsam mit uns die Bildungschancen von Schüler:innen verbessern möchtest. Um dir eine:n passende:n Lernpartner:in zuzuweisen, bitten wir dich zunächst, eine Anfrage auf unserer Plattform zu stellen. Hier kannst du die Fächer und Jahrgangsstufe angeben, die für dich passend sind. Wir freuen uns auf den Start!",
-            "stepname": {
-                "one": "Match-Anfrage gestellt",
-                "two": "Lernpartner:in erhalten",
-                "three": "Lenpartner:in kontaktieren",
-                "four": "Ersten Termin erstellen",
-                "five": "Kennenlerngespräch absolvieren"
-            }
+            "stepname": {}
         },
         "pupilNewMatch": {
-            "name": "Neue Lernuntersützung",
-            "subtitle": "Nachhilfe",
-            "actionName": "Match-Anfrage stellen",
-            "alternativText": "Fünf Puzzleteile",
-            "description": "Damit wir dir den:die perfekte:n Lernpartner:in zuweisen können, musst du zunächst eine Anfrage auf unserer Plattform stellen. Dort kannst du ganz einfach die Fächer angeben, die für dich wichtig sind und in denen wir dir helfen können. Wir freuen uns darauf, mit dir gemeinsam durchzustarten und die Lernreise zu beginnen!",
-            "stepname": {
-                "one": "Match-Anfrage gestellt",
-                "two": "Screening absolviert",
-                "three": "Zuordnung erfolgt",
-                "four": "Lernpartner kontaktiert",
-                "five": "Gespräch absolviert"
-            }
+            "stepname": {}
         },
         "pupilFirstScreening": {
-            "title": "Wir möchten dich kennenlernen!",
-            "subtitle": "Kennenlernen",
-            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
-            "buttons": ["Termin vereinbaren"]
+            "buttons": [null]
         }
     },
     "matching": {
         "shared": {
             "subjects": "Fächer:",
-            "schooltype": "Schulform:",
-            "class": "Klasse:",
-            "state": "Status:",
-            "videochat": "Videochat",
             "contact": "Kontaktieren",
             "dissolve": "Lernpaar auflösen",
             "active": "aktiv",
@@ -1284,13 +893,7 @@
             "createAppointment": "Termin erstellen"
         },
         "blocker": {
-            "header": "Lernunterstützung",
-            "title": "Unterstützung anfragen",
-            "firstContent": "In der Lernunterstützung vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft. Sie bekommt dafür kein Geld und freut sich sehr über dein Dankeschön.",
-            "button": "Unterstützung anfragen",
-            "ctaCardHeader": "Gruppen-Kurse",
-            "ctaCardContent": "Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…",
-            "ctaCardButton": "Zu den Gruppen-Kursen"
+            "firstContent": "In der Lernunterstützung vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft. Sie bekommt dafür kein Geld und freut sich sehr über dein Dankeschön."
         },
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
@@ -1303,20 +906,15 @@
                 "title": "Anfrage zurücknehmen",
                 "description": "Möchtest du die Anfrage wirklich löschen? Damit verlierst du deinen Platz in der Warteschlange und wir werden deinen Platz an andere Schüler:innen vergeben.",
                 "buttons": {
-                    "dissolve": "Anfrage zurücknehmen",
-                    "nothing": "Keine Angabe machen"
+                    "dissolve": "Anfrage zurücknehmen"
                 }
             }
         },
         "report": {
             "modal": {
                 "title": "Problem mit {{firstName}} melden",
-                "pupil": {
-                    "description": "Hier kannst du sagen, dass du dich mich mit {{firstName}} unwohl fühlst. Wir kümmern uns darum."
-                },
-                "student": {
-                    "description": "Hier hast du die Möglichkeit uns ein Problem mit {{firstName}} mitzuteilen. Wir setzen uns anschließend mit dir in Verbindung, um das weitere Vorgehen zu besprechen."
-                },
+                "pupil": {},
+                "student": {},
                 "problemDescription": "Beschreibung des Problems",
                 "submitButton": "Meldung senden"
             },
@@ -1342,14 +940,10 @@
                 "noDissolvedMatches": "Du hast keine aufgelösten Lernpaare.",
                 "editRequestDescription": " Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.",
                 "noRequestsTutee": "Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.",
-                "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf 'Lernpaar bilden'-Button.",
-                "resolveMatch": "Das Lernpaar wurde aufgelöst"
+                "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf 'Lernpaar bilden'-Button."
             },
             "updateData": "Deine Daten wurden aktualisiert",
-            "daz": {
-                "heading": "Deutsch als Zweitsprache",
-                "description": "Kannst du dir vorstellen, Schüler:innen zu unterstützen, die Deutsch als Zweitsprache sprechen und nur über wenige Deutschkenntnisse verfügen?"
-            }
+            "daz": {}
         },
         "wizard": {
             "pupil": {
@@ -1357,11 +951,7 @@
                     "heading": "Die 1:1-Lernunterstützung",
                     "subheading1": "Für wen ist die 1:1-Lernunterstützung gedacht?",
                     "text1": "Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Lernunterstützung bei uns beantragen:",
-                    "bulletPoints": [
-                        "Du brauchst Hilfe in der Schule",
-                        "Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
-                        "Deine Familie kann keine Nachhilfe für dich bezahlen"
-                    ],
+                    "bulletPoints": [null, null, null],
                     "question1": "Treffen diese Punkte auf dich zu?",
                     "subheading2": "Lange Wartezeit: 3-6 Monate",
                     "text2": "Zur Zeit brauchen sehr viele Schüler:innen Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6 Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.",
@@ -1370,12 +960,7 @@
                 "alternatives": {
                     "heading": "Alternative Angebote",
                     "text": "Leider können wir dich bei Lern-Fair in diesem Fall nicht unterstützen. Unsere Hilfe wird von freiwilligen Helfer:innen angeboten. Deshalb haben wir nur begrenzte Plätze und möchten vor allem denjenigen Schüler:innen helfen, die folgende Kriterien erfüllen:",
-                    "bulletPoints": [
-                        "Du brauchst Hilfe beim Lernen.",
-                        "Du hast Nachteile beim Lernen.",
-                        "Deine Familie kann dir nicht beim Lernen helfen.",
-                        "Deine Familie kann keine Nachhilfe für dich bezahlen."
-                    ],
+                    "bulletPoints": [null, null, null, null],
                     "educloud": {
                         "heading": "Kennst du schon Edu-Cloud?",
                         "text": "Dort findest du viele Angebote, die für dich interessant sein können. Bei Fragen kannst du dich gerne jederzeit bei uns melden.",
@@ -1447,7 +1032,6 @@
                 },
                 "profile": {
                     "title": "Profil aktualisieren",
-                    "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
                     "personalData": "Persönliche Daten"
                 },
                 "success": {
@@ -1463,22 +1047,11 @@
         },
         "group": {
             "tabs": {
-                "tab1": {
-                    "title": "Meine Kurse",
-                    "content": "Unsere Empfehlungen basieren auf den Angaben in deinem Profil."
-                },
-                "tab2": {
-                    "title": "Empfehlungen",
-                    "content": "Unsere Empfehlungen basieren auf den Angaben in deinem Profil."
-                },
-                "tab3": {
-                    "title": "Alle Angebote",
-                    "content": "Unsere Empfehlungen basieren auf den Angaben in deinem Profil."
-                }
+                "tab1": {},
+                "tab2": {},
+                "tab3": {}
             },
-            "error": {
-                "nofound": "Es wurden keine Kurse gefunden. Bitte passe deine Suche an."
-            },
+            "error": {},
             "pupil": {
                 "header": "Gruppen-Kurse",
                 "title": "Angebote",
@@ -1503,7 +1076,6 @@
                 "content": "In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an: Nachhilfe-Kurse, Fokus-Kurse und 'Deutsch für Anfänger'.",
                 "button": "Kurs anlegen",
                 "course": {
-                    "title": "Meine Kurse",
                     "tabs": {
                         "tab1": {
                             "title": "Meine Kurse",
@@ -1516,18 +1088,14 @@
                         }
                     }
                 },
-                "otherCourses": {
-                    "title": "Kurse von Anderen"
-                },
+                "otherCourses": {},
                 "alert": {
                     "successfulEditing": "Dein Kurs wurde erfolgreich bearbeitet.",
                     "successfulCreation": "Dein Kurs wurde erfolgreich erstellt. Solltest du ihn nicht direkt zur Prüfung freigegeben haben, vergiss das bitte nicht. Nur so können wir deinen Kurs rechtzeitig veröffentlichen."
                 }
             }
         },
-        "status": {
-            "dissolved": "Das Lernpaar wurde aufgelöst."
-        },
+        "status": {},
         "dissolve": {
             "modal": {
                 "title": "Warum möchtest du das Lernpaar auflösen?",
@@ -1539,40 +1107,13 @@
                 "body": "Manchmal dauert es etwas bis sich dein Gegenüber zurückmeldet. Wir haben mit allen Schüler:innen Kennenlerngespräche geführt und ihren Bedarf an Lernunterstützung geprüft. Wir empfehlen dir daher, mindestens 14 Tage auf Rückmeldung zu warten, bevor du das Lernpaar auflöst.",
                 "btn": "Trotzdem auflösen"
             },
-            "newMatch": {
-                "title": "Neues Lernpaar bilden",
-                "descriptionPupil": "Möchtest du mit einem:r neuen Lernpartner:in verbunden werden? Beachte bitte, dass es wieder einige Zeit dauert bis wir jemanden für dich finden können.",
-                "descriptionStudent": "Möchtest du mit einem:r neuen Lernpartner:in verbunden werden? Wir freuen uns, wenn du (noch) eine:n Schüler:in unterstützt. Danke für dein Engagement!"
-            }
+            "newMatch": {}
         },
         "dissolveReasons": {
-            "student": {
-                "ghosted": "Mein:e Lernpartner:in hat sich nicht zurückgemeldet",
-                "isOfNoHelp": "Ich konnte meinem/meiner Lernpartner:in nicht behilflich sein",
-                "noMoreTime": "Ich habe keine Zeit mehr mein*e Lernpartner:in zu unterstützen",
-                "noMoreHelpNeeded": "Mein:e Lernpartner:in benötigt keine Unterstützung mehr",
-                "personalIssues": "Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene",
-                "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
-                "technicalIssues": "Wir hatten technische Schwierigkeiten",
-                "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "other": "Sonstiges",
-                "unknown": "Unbekannt"
-            },
-            "pupil": {
-                "ghosted": "Mein:e Lernpartner:in hat sich nicht zurückgemeldet",
-                "isOfNoHelp": "Mein:e Lernpartner:in konnte mir nicht behilflich sein",
-                "noMoreTime": "Mein:e Lernpartner:in hat keine Zeit mehr mich zu unterstützen",
-                "noMoreHelpNeeded": "Ich benötige keine Unterstützung mehr",
-                "personalIssues": "Wir hatten Schwierigkeiten auf zwischenmenschlicher Ebene",
-                "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
-                "technicalIssues": "Wir hatten technische Schwierigkeiten",
-                "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "other": "Sonstiges",
-                "unknown": "Unbekannt"
-            }
+            "student": {},
+            "pupil": {}
         },
         "certificate": {
-            "titleRequest": "Bescheinigung bestätigen",
             "title": "Lernunterstützung von {{firstname}}",
             "from": "ab dem",
             "to": "bis zum",
@@ -1604,9 +1145,6 @@
     "course": {
         "header": "Kurs erstellen",
         "edit": "Kurs bearbeiten",
-        "uploadImage": "Foto hochladen",
-        "noticeDate": "Bitte fülle alle Felder korrekt aus",
-        "selectPlaceHolderDuration": "Dauer auswählen",
         "cancelation_success": "Der Kurs wurde erfolgreich abgesagt",
         "selectOptions": {
             "_15minutes": "15 Minuten",
@@ -1623,16 +1161,8 @@
                 "pupil": "Videochat beitreten",
                 "student": "Videochat starten"
             },
-            "videotext": "Videochat noch nicht gestartet.",
-            "result": {
-                "success": "Deine Video-Konferenz wurde erfolgreich eingetragen.",
-                "error": "Deine Video-Konferenz konnt nicht eingetragen werden."
-            },
-            "modal": {
-                "title": "Videocall starten",
-                "button": "Jetzt starten",
-                "text": "Trage hier den Link zur Video-Konferenz ein"
-            },
+            "result": {},
+            "modal": {},
             "hint": {
                 "pupil": "Du kannst das Meeting erst 10 Minuten vor Beginn eines Termins starten.",
                 "student": "Du kannst das Meeting 4 Stunden vor Beginn des Termins starten."
@@ -1640,7 +1170,6 @@
         },
         "blocker": {
             "student": {
-                "header": "Kurs erstellen",
                 "title": "Die Gruppen-Kurse",
                 "firstContent": "Du hilfst einer:m bildungsbenachteiligten Schüler:in im Gruppen-Format dabei, Wissenslücken zu schließen. Die Frequenz, Häufigkeit und Dauer der digitalen Treffen ist ganz euch überlassen!",
                 "here": "hier",
@@ -1656,23 +1185,10 @@
             }
         },
         "appointments": {
-            "headline": "Wann soll der Kurs stattfinden?",
-            "content": "Termin erstellen",
-            "addOtherAppointment": "Weiteren Termin anlegen",
-            "check": "Angaben prüfen",
-            "saveDraft": "Als Entwurf speichern",
-            "prevPage": " Zur vorherigen Seite",
-            "existingAppointments": "Bestehende Termin(e)"
+            "addOtherAppointment": "Weiteren Termin anlegen"
         },
         "error": {
-            "course": "Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.",
-            "subcourse": "Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.",
-            "upload_image": "Dein Bild konnte leider nicht hochgeladen werden.",
-            "set_image": "Dein Bild konnte leider nicht als Kursbild gesetzt werden.",
-            "instructors": "Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.",
-            "lectures": "Ein oder mehrere Termine konnten nicht hinzugefügt werden.",
-            "tags": "Deine Tags konnten nicht hinzugefügt werden.",
-            "appointments": "Keine Termine angelegt."
+            "course": "Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut."
         },
         "CourseDate": {
             "headline": "Allgemeine Informationen zu deinem Kurs",
@@ -1698,15 +1214,10 @@
                 "CourseInstructors": "Kursleiter:innen",
                 "courseAddOntherLeadText": "Weitere Kursleiter:innen hinzufügen",
                 "courseAlreadyaAddedLead": "Du hast diese Person bereits hinzugefügt.",
-                "shortDescriptionLabel": "Kurzbeschreibung",
-                "shortDescriptionPlaceholder": "Kurzer Satz, um was es in deinem Kurs geht …",
                 "descriptionLabel": "Beschreibung",
                 "descriptionPlaceholder": "Beschreibung des Kurses",
                 "tagsLabel": "Tags",
                 "tagsEdit": "Tags bearbeiten",
-                "tagsPlaceholder": "Damit dein Kurs besser gefunden wird",
-                "tagsInfo": "Die einzelnen Tags müssen durch ein Komma (,) getrennt werden",
-                "detailsHeadline": "Details",
                 "detailsContent": "Für welche Klassen ist der Kurs geeignet?",
                 "classRange": "Klassen {{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Max. Teilnehmer:innenzahl",
@@ -1729,13 +1240,7 @@
                 "furtherTags": "Weitere Tags",
                 "noTagsFound": "Keine Tags gefunden"
             },
-            "Wizard": {
-                "headline": "Termin",
-                "date": "Datum",
-                "dateInfo": "Ein Kurs muss 7 Tage vor Kursbeginn angelegt werden.",
-                "durationPlaceholder": "Bessere Absprache zu UX",
-                "repeatAppoint": "Termin wiederholen"
-            },
+            "Wizard": {},
             "Image": {
                 "resetPhoto": "Bild zurücksetzen",
                 "deletePhoto": "Bild löschen"
@@ -1748,7 +1253,6 @@
                 "infoHeadline": "Allgemeine Informationen zu deinem Kurs",
                 "courseName": "Kursname:",
                 "courseSubject": "Fach",
-                "shortDesc": "Kurzbeschreibung",
                 "desc": "Beschreibung",
                 "tagHeadline": "Tags",
                 "classHeadline": "Klassen",
@@ -1760,8 +1264,6 @@
                 "startDateLabel": "Beitreten nach Kursbeginn:",
                 "allowContactLabel": "Kontaktaufnahme erlauben:",
                 "appointmentHeadline": "Termin(e) zum Kurs",
-                "appointmentLabel": "Termin",
-                "appointmentDate": "Datum:",
                 "publishCourse": "Zur Prüfung freigeben",
                 "saveCourse": "Kurs erstellen und später freigeben",
                 "editCourse": "Daten bearbeiten",
@@ -1800,12 +1302,9 @@
         "timedifference": {
             "yesterday": "Gestern",
             "dayBeforeYesterday": "Vorgestern",
-            "lastWeek": "letzte Woche",
-            "lastMonth": "letzten Monat",
             "now": "gerade eben",
             "beforeMinutes": "{{minutes}} Min."
         },
-        "send": "Benachrichtigung verschickt",
         "panel": {
             "noNotifications": "Keine Nachrichten vorhanden.",
             "button": {
@@ -1890,7 +1389,6 @@
         "hint": "Du kannst den Gruppen-Chat erst öffnen, wenn sich mindestens zwei Schüler:innen zu deinem Kurs angemeldet haben.",
         "instructor": "Kursleiter:in",
         "participant": "Kursteilnehmer:in",
-        "prospect": "Interessent:in",
         "matchee": "Lernpartner:in",
         "noContactOptions": "Keine Kontaktoptionen",
         "noContactOptionsHint": "Hier werden dir deine Lernpaare und Gruppenchats aufgelistet, mit denen du Chatten kannst.",
@@ -1902,18 +1400,10 @@
             "startChat": "Chat starten"
         },
         "course": {
-            "leftVideoChat": {
-                "title": "Du hast den Videochat verlassen",
-                "subtitle": "Wir hoffen, der Kurs hat dir gefallen!",
-                "button": "Zum Dashboard"
-            }
+            "leftVideoChat": {}
         },
         "oneOnOne": {
-            "leftVideoChat": {
-                "title": "Du hast den Videochat verlassen",
-                "subtitle": "Wir hoffen die 1:1-Lernunterstützung hat dir gefallen!",
-                "button": "Zum Dashboard"
-            }
+            "leftVideoChat": {}
         },
         "report": {
             "modalHeader": "Nachricht melden",
@@ -1923,8 +1413,6 @@
     "introduction": {
         "groupCourses": "Gruppenkurse",
         "match": "1:1-Lernunterstützung",
-        "imageGroupText": "Gib dein Wissen weiter und leite Gruppen-Kurse.",
-        "imageMatchText": "Mit nur 1-2 Stunden pro Woche gibst du einem bildungsbenachteiligten Kind die Chance auf eine bessere Zukunft.",
         "becomeAnInstructor": "Jetzt Kursleiter:in werden",
         "becomeTutor": "Jetzt Tutor:in werden",
         "talkWithTeam": "Kennenlerngespräch vereinbaren",
@@ -1933,7 +1421,6 @@
             "groupCourses": "In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an:",
             "oneToOneLearningSupport": "Bei der Lern-Fair Nachhilfe verbinden wir dich mit einem:r Schüler:in zu einem Lernpaar. Diese Schüler:innen haben besonderen Bedarf an einer Einzelhilfe in schulischen Themen."
         },
-        "groupRequestedDescription": "Vielen Dank, dass du dich für eine Kursleitung interessierst. Bevor es mit deinem Kurs losgehen kann, haben wir noch einige Hinweise für dich:",
         "toast": {
             "success": "Anfrage erfolgreich versendet",
             "fail": "Anfrage konnte nicht versendet werden"
@@ -2005,7 +1492,6 @@
         "screening_saved": "Screening gespeichert",
         "account_deactivated": "Account deaktiviert",
         "account_deactivated_details": "Der Schüler kann sich nicht mehr im Userbereich anmelden. Der Support kann Accounts reaktivieren.",
-        "save_and_four_eyes": "Speichern & Vier Augen",
         "success": "Annehmen",
         "rejection": "Ablehnen",
         "deactivate": "Account Deaktivieren",
@@ -2116,7 +1602,6 @@
             "state_awaiting": "Warten auf Bestätigung",
             "state_approved": "Bestätigt",
             "reasonBtnDisabled": "Dein:e Schüler:in muss deine Bescheinigung noch bestätigen.",
-            "loading": "Dein Zertifikat wird heruntergeladen",
             "error": "Beim Download ist ein Fehler aufgetreten",
             "download": "Herunterladen",
             "download_certificate": "Bescheinigung herunterladen",
@@ -2145,12 +1630,7 @@
         "contactSupport": "Support kontaktieren",
         "continue": "Trotzdem fortfahren"
     },
-    "verify_email": {
-        "title": "E-Mail Verifizierung",
-        "success": "Dein Account wurde aktiviert!",
-        "proceed": "Fortfahren",
-        "invalid": "Token ungültig"
-    },
+    "verify_email": {},
     "set_password": {
         "title": "Passwort neu setzen",
         "change": "Passwort ändern",
@@ -2160,13 +1640,7 @@
         "failure_title": "Fehler: Passwort nicht geändert",
         "failure_subtitle": "Dein Passwort konnte leider nicht geändert werden. Bitte versuche es erneut. Sollte der Fehler weiterhin auftreten, schicke eine neue E-Mail oder wende dich bitte an den Support."
     },
-    "job_status": {
-        "Employee": "Berufstätig",
-        "Misc": "Sonstiges",
-        "Pupil": "Schüler:in",
-        "Retiree": "Rentner:in",
-        "Student": "Student:in"
-    },
+    "job_status": {},
     "reasonsDisabled": {
         "loading": "Es werden noch Daten geladen...",
         "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an.",
