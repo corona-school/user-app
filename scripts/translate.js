@@ -1,4 +1,4 @@
-const { readdirSync, readFileSync, writeFileSync } = require("fs");
+const { readdirSync, readFileSync, writeFileSync, statSync } = require("fs");
 const { execSync } = require("child_process");
 const process = require("process");
 const path = require("path");
@@ -125,6 +125,7 @@ async function addMissingStrings(primaryLanguageTree, tree, paths, language) {
 function removeObsoletePaths(tree, paths) {
     console.log(" - remove obsolete translations");
     for (const path of [...paths].reverse()) {
+        if (!path) return;
         const obsoleteKey = path.pop();
         const root = lookup(tree, path);
 
@@ -194,6 +195,34 @@ function importDiffFromFile(filename, primaryLanguageTree, languageTree) {
         root[ path[path.length - 1] ] = translated;
     }
 
+}
+
+function walkLeaves(obj, prefix = '', usedKeys) {
+    for (const key in obj) {
+        const fullPath = prefix ? `${prefix}.${key}` : key;
+        if (typeof obj[key] === 'object') {
+            walkLeaves(obj[key], fullPath, usedKeys);
+        } else {
+            usedKeys.add(fullPath);
+        }
+    }
+}
+
+function findUnusedKeys(langFilePath, dir, usedKeys) {
+    const files = readdirSync(dir);
+    for (const file of files) {
+        const filePath = path.join(dir, file);
+        if (filePath !== langFilePath && statSync(filePath).isFile()) {
+            const content = readFileSync(filePath, "utf8");
+            for (const key of usedKeys) {
+                if (content.includes(key)) {
+                    usedKeys.delete(key);
+                }
+            }
+        } else if (statSync(filePath).isDirectory()) {
+            findUnusedKeys(langFilePath, filePath, usedKeys);
+        }
+    }
 }
 
 // Gets the current short hash of the latest commit, great way to identify a certain point in the (git) history
@@ -382,6 +411,20 @@ const languageFiles = readdirSync(path.resolve(__dirname, "../src/lang/"), { enc
 // The main language file all other files are compared to:
 const primaryLanguageTree = readLanguage("de.json");
 
+if (command === "check" || command === "translate") {
+    const usedKeys = new Set();
+    walkLeaves(primaryLanguageTree, '', usedKeys);
+    findUnusedKeys(path.resolve(__dirname, "../src/lang/de.json"), path.resolve(__dirname, "../src/"), usedKeys);
+    console.log("Unused keys:");
+    for (unused of usedKeys) {
+        console.log("-", unused, unused.split("."));
+    }
+    if (command === "translate") {
+        removeObsoletePaths(primaryLanguageTree, Array.from(usedKeys).map(path => path.split(".")));
+        writeLanguage("de.json", primaryLanguageTree);
+    }
+}
+
 
 let missmatches = false;
 
@@ -459,6 +502,11 @@ for (const languageFile of languageFiles) {
 
 if (missmatches) {
     console.error("\n\nmissmatches detected. Run 'npm run translate' to fix them");
+    process.exit(1);
+}
+
+if (unusedKeys) {
+    console.error("Unused keys detected. Run 'npm run translate' to remove them.");
     process.exit(1);
 }
 
