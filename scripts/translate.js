@@ -408,9 +408,15 @@ async function translateWithWeglot(texts, fromLanguage, toLanguage) {
 
 const languageFiles = readdirSync(path.resolve(__dirname, "../src/lang/"), { encoding: "utf-8" }).filter(it => it !== "de.json");
 
+const ignoreUnused = [
+    "lernfair.schooltypes",
+    "lernfair.states",
+    
+]
+
 // The main language file all other files are compared to:
 const primaryLanguageTree = readLanguage("de.json");
-
+let unusedKeys = false;
 if (command === "check" || command === "translate") {
     const usedKeys = new Set();
     walkLeaves(primaryLanguageTree, '', usedKeys);
@@ -419,6 +425,7 @@ if (command === "check" || command === "translate") {
     for (unused of usedKeys) {
         console.log("-", unused, unused.split("."));
     }
+    unusedKeys = usedKeys.length > 0;
     if (command === "translate") {
         removeObsoletePaths(primaryLanguageTree, Array.from(usedKeys).map(path => path.split(".")));
         writeLanguage("de.json", primaryLanguageTree);
