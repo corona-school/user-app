@@ -48,7 +48,7 @@ const TabItem = ({ tab, active, onPress }: TabItemProps) => {
 };
 
 const Tabs: React.FC<TabsProps> = ({ tabs, removeSpace = false, onPressTab, tabInset, currentTabIndex: controlledTabIndex }) => {
-    const [currentIndex, setCurrentIndex] = useState(controlledTabIndex);
+    const [currentIndex, setCurrentIndex] = useState(controlledTabIndex ?? 0);
     const { space } = useTheme();
 
     useEffect(() => {
