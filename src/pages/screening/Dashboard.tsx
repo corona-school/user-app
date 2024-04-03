@@ -116,6 +116,7 @@ export function ScreeningDashboard() {
                     grade
                     gradeAsInt
                     openMatchRequestCount
+                    verifiedAt
                     matches {
                         createdAt
                         student { firstname lastname }
