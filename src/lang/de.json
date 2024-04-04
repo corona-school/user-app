@@ -1150,7 +1150,7 @@
             "buttons": ["Ja", "Nein"]
         },
         "kontaktSchüler": {
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
             "buttons": ["Lernpartner:in ansehen"]
@@ -1176,7 +1176,7 @@
             "actionDescription": "Alles zum Führungszeugnis"
         },
         "statusStudent": {
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "title": "Wir suchen nach einem:r Lernpartner:in für dich!",
             "content": "Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.",
             "buttons": ["Problem melden"]
@@ -1190,7 +1190,7 @@
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
             "buttons": ["Lernpartner:in ansehen"]
         },
@@ -1223,7 +1223,7 @@
             }
         },
         "studentNewMatch": {
-            "name": "Neue Lernuntersützung",
+            "name": "Neue Lernunterstützung",
             "subtitle": "Nachhilfe",
             "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
@@ -1237,7 +1237,7 @@
             }
         },
         "pupilNewMatch": {
-            "name": "Neue Lernuntersützung",
+            "name": "Neue Lernunterstützung",
             "subtitle": "Nachhilfe",
             "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
@@ -1342,7 +1342,7 @@
                 "noDissolvedMatches": "Du hast keine aufgelösten Lernpaare.",
                 "editRequestDescription": " Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.",
                 "noRequestsTutee": "Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.",
-                "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf 'Lernpaar bilden'-Button.",
+                "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf den 'Lernpaar bilden'-Button.",
                 "resolveMatch": "Das Lernpaar wurde aufgelöst"
             },
             "updateData": "Deine Daten wurden aktualisiert",
@@ -1911,7 +1911,7 @@
         "oneOnOne": {
             "leftVideoChat": {
                 "title": "Du hast den Videochat verlassen",
-                "subtitle": "Wir hoffen die 1:1-Lernunterstützung hat dir gefallen!",
+                "subtitle": "Wir hoffen, die 1:1-Lernunterstützung hat dir gefallen!",
                 "button": "Zum Dashboard"
             }
         },
