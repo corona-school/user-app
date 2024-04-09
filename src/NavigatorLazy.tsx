@@ -67,6 +67,7 @@ import { datadogRum } from '@datadog/browser-rum';
 import ProgressPage from './pages/Progress';
 import ConfirmCertificate from './pages/ConfirmCertificate';
 import CertificateOfConduct from './pages/CertificateOfConduct';
+import ScreenerGroup from './pages/screening/ScreenerGroup';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -283,8 +284,9 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         {/* for helpers ('students') we do not require the INSTRUCTOR role, as we have a fallback page in place */}
-                        <RequireRole roles={['STUDENT', 'PARTICIPANT']}>
-                            <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} />
+                        {/* TBD: Replace screener role here with dedicated (yet to be created) COURSE_SCREENER role */}
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT', 'SCREENER']}>
+                            <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} screenerComponent={<ScreenerGroup />} />
                         </RequireRole>
                     </RequireAuth>
                 }

@@ -65,8 +65,6 @@ const WithNavigation: React.FC<Props> = ({
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
     };
 
-    // const [view, setView] = useState(null)
-
     const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
     return (
         <View flex="1">

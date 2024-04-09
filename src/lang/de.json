@@ -2029,14 +2029,19 @@
         "login_as_user": "Als Nutzer:in anmelden",
         "screen_as_instructor": "Als Kursleiter:in screenen",
         "screen_as_tutor": "Für 1:1 screenen",
-        "courses": "Kurse",
+        "their_courses": "Kurse",
         "successful_instructor_screening": "Erfolgreiches Kursleiterscreening",
         "rejected_instructor_screening": "Abgelehntes Kursleiterscreening",
         "successful_tutor_screening": "Erfolgreiches 1:1-Screening",
         "rejected_tutor_screening": "Abgelehntes 1:1-Screening",
         "decision": "Entscheidung",
         "screener": "Screener:in",
-        "dissolve_reason": "Grund: {{reason}}"
+        "dissolve_reason": "Grund: {{reason}}",
+        "courses": {
+            "header": "Screening Gruppenkurse",
+            "submitted_or_approved": "Eingereichte & genehmigte Kurse",
+            "denied_or_cancelled": "Abgelehnte & abgesagte Kurse"
+        }
     },
     "achievement": {
         "header": "Deine Erfolge",
