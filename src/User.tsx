@@ -6,7 +6,7 @@ import { useApolloClient } from '@apollo/client';
 import { ERole, Role } from './types/lernfair/User';
 import { RequireScreeningModal } from './modals/RequireScreeningModal';
 
-export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element; isRetainPath?: boolean }) => {
+export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.Element; isRetainPath?: boolean }) => {
     const location = useLocation();
 
     const { sessionState, user, roles } = useApollo();

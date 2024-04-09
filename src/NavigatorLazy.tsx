@@ -106,7 +106,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/single-course/:id"
                 element={
-                    <RequireAuth isRetainPath>
+                    <RequireAuth>
                         <RequireRole roles={['STUDENT', 'PARTICIPANT']}>
                             <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
                         </RequireRole>
@@ -126,7 +126,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/notifications"
                 element={
-                    <RequireAuth isRetainPath>
+                    <RequireAuth>
                         <NotficationControlPanel />
                     </RequireAuth>
                 }
