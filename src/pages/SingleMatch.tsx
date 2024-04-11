@@ -23,6 +23,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import AdHocMeetingModal from '../modals/AdHocMeetingModal';
 import { DateTime } from 'luxon';
 import ReportMatchModal from '../modals/ReportMatchModal';
+import { ScrollDirection } from './Appointments';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -33,6 +34,7 @@ query SingleMatch($matchId: Int! ) {
     dissolved
     dissolvedAt
     dissolveReason
+    appointmentsCount
     pupil {
         id
         firstname
@@ -55,14 +57,20 @@ query SingleMatch($matchId: Int! ) {
         }
         aboutMe
     }
-    appointments {
-        id
+  }
+}
+`);
+
+const appointmentsQuery = gql(`
+query SingleMatchAppointments($matchId: Int!, $take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
+    match(matchId: $matchId) {
+        appointments(take: $take, skip: $skip, cursor: $cursor,  direction: $direction) {
+            id
             title
             description
             start
             duration
             appointmentType
-            total
             position
             displayName
             isOrganizer
@@ -78,15 +86,19 @@ query SingleMatch($matchId: Int! ) {
                 firstname
                 lastname
             }
+            total
         }
-  }
-}`);
+    }
+}
+`);
 
 const matchChatMutation = gql(`
 mutation createMatcheeChat($matcheeId: String!) {
   matchChatCreate(matcheeUserId: $matcheeId)
 }
 `);
+
+const take = 10;
 
 const SingleMatch = () => {
     const { trackEvent } = useMatomo();
@@ -104,10 +116,25 @@ const SingleMatch = () => {
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [noNewAppointments, setNoNewAppointments] = useState<boolean>(false);
+    const [noOldAppointments, setNoOldAppointments] = useState<boolean>(false);
 
     const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
         variables: {
             matchId,
+        },
+    });
+    const {
+        data: matchAppointments,
+        loading: isLoadingAppointments,
+        error: appointmentsError,
+        refetch: refetchAppointments,
+        fetchMore: fetchMoreAppointments,
+    } = useQuery(appointmentsQuery, {
+        variables: {
+            matchId,
+            take,
+            skip: 0,
         },
     });
 
@@ -155,7 +182,7 @@ const SingleMatch = () => {
         [dissolveMatch, matchId, refetch, trackEvent]
     );
 
-    const appointments = data?.match?.appointments ?? [];
+    const appointments = matchAppointments?.match.appointments ?? [];
 
     const goBackToMatch = async () => {
         await refetch();
@@ -206,6 +233,39 @@ const SingleMatch = () => {
         }
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
+    const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
+        await fetchMoreAppointments({
+            variables: { take, skip, cursor, direction: scrollDirection },
+            updateQuery: (previousAppointments, { fetchMoreResult }) => {
+                const newAppointments = fetchMoreResult?.match?.appointments;
+                const prevAppointments = appointments;
+                if (scrollDirection === 'next') {
+                    if (!newAppointments || newAppointments.length === 0) {
+                        setNoNewAppointments(true);
+                        return previousAppointments;
+                    }
+                    return {
+                        match: {
+                            appointments: [...prevAppointments, ...newAppointments],
+                        },
+                    };
+                } else {
+                    if (!newAppointments || newAppointments.length === 0) {
+                        setNoOldAppointments(true);
+                        return previousAppointments;
+                    }
+                    return {
+                        match: {
+                            appointments: [...newAppointments, ...prevAppointments],
+                        },
+                    };
+                }
+            },
+        });
+
+        !noOldAppointments && scrollDirection === 'last' && toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
+    };
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
@@ -229,7 +289,7 @@ const SingleMatch = () => {
                                     back={() => setCreateAppointment(false)}
                                     courseOrMatchId={matchId}
                                     isCourse={false}
-                                    appointmentsTotal={appointments.length}
+                                    appointmentsTotal={data.match.appointmentsCount}
                                     navigateToMatch={async () => await goBackToMatch()}
                                     overrideMeetingLink={overrideMeetingLink}
                                     setIsLoading={setIsLoading}
@@ -286,9 +346,12 @@ const SingleMatch = () => {
                                     <MatchAppointments
                                         appointments={appointments as Appointment[]}
                                         minimumHeight={'30vh'}
-                                        loading={loading}
-                                        error={error}
+                                        loading={isLoadingAppointments}
+                                        error={appointmentsError}
                                         dissolved={data?.match?.dissolved}
+                                        loadMoreAppointments={loadMoreAppointments}
+                                        noNewAppointments={noNewAppointments}
+                                        noOldAppointments={noOldAppointments}
                                     />
                                     {userType === 'student' && !data?.match?.dissolved && (
                                         <Box>
