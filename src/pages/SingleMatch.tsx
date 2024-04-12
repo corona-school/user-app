@@ -120,7 +120,12 @@ const SingleMatch = () => {
     const [noNewAppointments, setNoNewAppointments] = useState<boolean>(false);
     const [noOldAppointments, setNoOldAppointments] = useState<boolean>(false);
 
-    const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
+    const {
+        data,
+        loading,
+        error,
+        refetch: refetchMatchData,
+    } = useQuery(singleMatchQuery, {
         variables: {
             matchId,
         },
@@ -163,6 +168,10 @@ const SingleMatch = () => {
             }
         `)
     );
+
+    const refetch = useCallback(async () => {
+        await Promise.all([refetchMatchData(), refetchAppointments()]);
+    }, [refetchMatchData, refetchAppointments]);
 
     const totalAppointmentsCount = data?.match.appointmentsCount || 0;
     const dissolve = useCallback(
