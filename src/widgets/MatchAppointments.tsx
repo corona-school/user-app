@@ -17,6 +17,8 @@ type MatchAppointmentsProps = {
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     noNewAppointments?: boolean;
     noOldAppointments?: boolean;
+    hasAppointments?: boolean;
+    lastAppointmentId?: number | null;
 };
 
 const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
@@ -28,13 +30,15 @@ const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
     loadMoreAppointments,
     noNewAppointments,
     noOldAppointments,
+    hasAppointments,
+    lastAppointmentId,
 }) => {
     const { t } = useTranslation();
 
     return (
         <Stack minH={minimumHeight}>
             {loading && <CenterLoadingSpinner />}
-            {!error && appointments.length > 0 ? (
+            {!error && hasAppointments ? (
                 <AppointmentList
                     appointments={appointments as Appointment[]}
                     isLoadingAppointments={loading}
@@ -43,6 +47,7 @@ const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
                     loadMoreAppointments={loadMoreAppointments}
                     noNewAppointments={noNewAppointments}
                     noOldAppointments={noOldAppointments}
+                    lastAppointmentId={lastAppointmentId}
                 />
             ) : (
                 <Box justifyContent="center">

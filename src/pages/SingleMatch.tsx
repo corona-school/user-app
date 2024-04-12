@@ -35,6 +35,7 @@ query SingleMatch($matchId: Int! ) {
     dissolvedAt
     dissolveReason
     appointmentsCount
+    lastAppointmentId
     pupil {
         id
         firstname
@@ -162,6 +163,8 @@ const SingleMatch = () => {
             }
         `)
     );
+
+    const totalAppointmentsCount = data?.match.appointmentsCount || 0;
     const dissolve = useCallback(
         async (reasons: Dissolve_Reason[]) => {
             setShowDissolveModal(false);
@@ -266,6 +269,8 @@ const SingleMatch = () => {
         !noOldAppointments && scrollDirection === 'last' && toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
     };
 
+    const hasMoreAppointments = appointments.length < totalAppointmentsCount;
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
@@ -289,7 +294,7 @@ const SingleMatch = () => {
                                     back={() => setCreateAppointment(false)}
                                     courseOrMatchId={matchId}
                                     isCourse={false}
-                                    appointmentsTotal={data.match.appointmentsCount}
+                                    appointmentsTotal={totalAppointmentsCount}
                                     navigateToMatch={async () => await goBackToMatch()}
                                     overrideMeetingLink={overrideMeetingLink}
                                     setIsLoading={setIsLoading}
@@ -350,8 +355,10 @@ const SingleMatch = () => {
                                         error={appointmentsError}
                                         dissolved={data?.match?.dissolved}
                                         loadMoreAppointments={loadMoreAppointments}
-                                        noNewAppointments={noNewAppointments}
-                                        noOldAppointments={noOldAppointments}
+                                        noNewAppointments={noNewAppointments || !hasMoreAppointments}
+                                        noOldAppointments={noOldAppointments || !hasMoreAppointments}
+                                        hasAppointments={hasMoreAppointments || !!appointments.length}
+                                        lastAppointmentId={data.match.lastAppointmentId}
                                     />
                                     {userType === 'student' && !data?.match?.dissolved && (
                                         <Box>
