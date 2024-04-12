@@ -72,6 +72,7 @@ query SingleMatchAppointments($matchId: Int!, $take: Float!, $skip: Float!, $cur
             start
             duration
             appointmentType
+            total
             position
             displayName
             isOrganizer
@@ -87,11 +88,10 @@ query SingleMatchAppointments($matchId: Int!, $take: Float!, $skip: Float!, $cur
                 firstname
                 lastname
             }
-            total
+
         }
     }
-}
-`);
+}`);
 
 const matchChatMutation = gql(`
 mutation createMatcheeChat($matcheeId: String!) {
@@ -244,7 +244,7 @@ const SingleMatch = () => {
             setToastShown(true);
             toast.show({ description: t('matching.shared.dissolved'), placement: 'top' });
         }
-    }, [dissolveData?.matchDissolve, toast, toastShown]);
+    }, [dissolveData?.matchDissolve, toast, toastShown, t]);
 
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         setIsFetchingMoreAppointments(true);
