@@ -117,12 +117,13 @@ const SingleMatch = () => {
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const [noNewAppointments, setNoNewAppointments] = useState<boolean>(false);
     const [noOldAppointments, setNoOldAppointments] = useState<boolean>(false);
 
     const {
         data,
-        loading,
+        loading: isLoadingMatchData,
         error,
         refetch: refetchMatchData,
     } = useQuery(singleMatchQuery, {
@@ -246,6 +247,7 @@ const SingleMatch = () => {
     }, [dissolveData?.matchDissolve, toast, toastShown]);
 
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
+        setIsFetchingMoreAppointments(true);
         await fetchMoreAppointments({
             variables: { take, skip, cursor, direction: scrollDirection },
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
@@ -274,6 +276,7 @@ const SingleMatch = () => {
                 }
             },
         });
+        setIsFetchingMoreAppointments(false);
 
         !noOldAppointments && scrollDirection === 'last' && toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
     };
@@ -291,9 +294,9 @@ const SingleMatch = () => {
                         <NotificationAlert />
                     </Stack>
                 }
-                isLoading={isLoading}
+                isLoading={(isLoadingMatchData && isLoadingAppointments) || isLoading}
             >
-                {loading || !data ? (
+                {isLoadingMatchData || !data ? (
                     <CenterLoadingSpinner />
                 ) : (
                     !error && (
@@ -360,7 +363,7 @@ const SingleMatch = () => {
                                     <MatchAppointments
                                         appointments={appointments as Appointment[]}
                                         minimumHeight={'30vh'}
-                                        loading={isLoadingAppointments}
+                                        loading={isLoadingAppointments || isFetchingMoreAppointments}
                                         error={appointmentsError}
                                         dissolved={data?.match?.dissolved}
                                         loadMoreAppointments={loadMoreAppointments}

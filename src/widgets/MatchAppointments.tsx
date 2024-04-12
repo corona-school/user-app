@@ -37,7 +37,6 @@ const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
 
     return (
         <Stack minH={minimumHeight}>
-            {loading && <CenterLoadingSpinner />}
             {!error && hasAppointments ? (
                 <AppointmentList
                     appointments={appointments as Appointment[]}
