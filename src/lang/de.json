@@ -2040,7 +2040,11 @@
         "courses": {
             "header": "Screening Gruppenkurse",
             "submitted_or_approved": "Eingereichte & genehmigte Kurse",
-            "denied_or_cancelled": "Abgelehnte & abgesagte Kurse"
+            "denied_or_cancelled": "Abgelehnte & abgesagte Kurse",
+            "submitted": "Eingereicht",
+            "approved": "Genehmigt",
+            "denied": "Abgelehnt",
+            "cancelled": "Abgesagt"
         }
     },
     "achievement": {

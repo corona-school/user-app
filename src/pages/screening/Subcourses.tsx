@@ -15,7 +15,7 @@ type Props = {
 
 /**
  *
- * @prop {Array<Array<ASubcourse>>} courseGroups - Multiple course groups to be rendered vertically separated on one page,
+ * @prop {Array<Array<Subcourse>>} courseGroups - Multiple course groups to be rendered vertically separated on one page,
  * with one course group being an array of courses in this matrix
  * @prop {Array<string>} titles - Titles for each course group, to be placed at the same index here as the course group
  * in courseGroups
@@ -52,7 +52,7 @@ const Subcourses: React.FC<Props> = ({ courseGroups, titles }) => {
         return (
             <Box>
                 <HSection scrollable title={title}>
-                    {subcourses?.map((subcourse: any, index: number) => {
+                    {subcourses.map((subcourse: any, index: number) => {
                         return renderSubcourse(subcourse, index);
                     })}
                 </HSection>
@@ -62,7 +62,8 @@ const Subcourses: React.FC<Props> = ({ courseGroups, titles }) => {
 
     return (
         <Stack space={5}>
-            {courseGroups?.map((courseGroup: any, index: number) => {
+            {courseGroups.map((courseGroup: ASubcourse[], index: number) => {
+                if (courseGroup.length === 0) return <></>;
                 return renderCourseGroup(courseGroup, titles[index]);
             })}
         </Stack>

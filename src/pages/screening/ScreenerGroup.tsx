@@ -7,18 +7,25 @@ import SearchBar from '../../components/SearchBar';
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import Subcourses from './Subcourses';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 
 const ScreenerGroup: React.FC = () => {
     /* courses with courseState "created" aren't yet approved for a screening 
     by the course creator, so we only want to show the other courses here */
-    const { data, loading } = useQuery(
+    // TBD: Add 'where' filter for this query on the backend, to filter out the courses mentioned above with
+    // where: { course: { isNot: { courseState: { equals: created } } } }
+    const {
+        data,
+        loading,
+        refetch: refetchCourses,
+    } = useQuery(
         gql(`
-            query courses {
-                subcoursesPublic(
-                    take: 20
-                    # where: { course: { isNot: { courseState: { equals: created } } } }
+            query Subcourses($search: String!) {
+                subcourseSearch(
+                    take: 40,
+                    search: $search
                 ) {
                 id
                 published
@@ -36,8 +43,9 @@ const ScreenerGroup: React.FC = () => {
                 maxParticipants
                 participantsCount
                 }
-            }    
-        `)
+            }  
+        `),
+        { variables: { search: '' } }
     );
 
     const { space, sizes } = useTheme();
@@ -53,59 +61,72 @@ const ScreenerGroup: React.FC = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const submittedOrAllowed = useMemo(
-        () =>
-            data?.subcoursesPublic.filter(
-                (subcourse) =>
-                    subcourse.course.courseState === Course_Coursestate_Enum.Submitted || subcourse.course.courseState === Course_Coursestate_Enum.Allowed
-            ),
-        [data?.subcoursesPublic]
+    const submitted = useMemo(
+        () => data?.subcourseSearch.filter((subcourse) => subcourse.course.courseState === Course_Coursestate_Enum.Submitted),
+        [data?.subcourseSearch]
     );
 
-    const DeniedOrCancelled = useMemo(
-        () =>
-            data?.subcoursesPublic.filter(
-                (subcourse) =>
-                    subcourse.course.courseState === Course_Coursestate_Enum.Denied || subcourse.course.courseState === Course_Coursestate_Enum.Cancelled
-            ),
-        [data?.subcoursesPublic]
+    const allowed = useMemo(
+        () => data?.subcourseSearch.filter((subcourse) => subcourse.course.courseState === Course_Coursestate_Enum.Allowed),
+        [data?.subcourseSearch]
     );
 
-    const all = data?.subcoursesPublic;
+    const denied = useMemo(
+        () => data?.subcourseSearch.filter((subcourse) => subcourse.course.courseState === Course_Coursestate_Enum.Denied),
+        [data?.subcourseSearch]
+    );
 
-    /* TEMPORARY REMOVE LATER */
-    const search = (s: string) => console.log(s);
+    const cancelled = useMemo(
+        () => data?.subcourseSearch.filter((subcourse) => subcourse.course.courseState === Course_Coursestate_Enum.Cancelled),
+        [data?.subcourseSearch]
+    );
 
-    const groups = new Array<Subcourse[]>();
-    groups.push(all as Subcourse[]);
-    groups.push(all as Subcourse[]);
+    const search = useCallback(
+        async (search: string) => {
+            refetchCourses({ search });
+        },
+        [refetchCourses]
+    );
 
     return (
         <AsNavigationItem path="group">
             <WithNavigation>
-                <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                    <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
-                        <Heading>{t('screening.courses.header')}</Heading>
-                        <br />
-                    </VStack>
+                {loading && <CenterLoadingSpinner />}
+                {!loading && (
+                    <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+                            <Heading>{t('screening.courses.header')}</Heading>
+                            <br />
+                        </VStack>
 
-                    <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-                        <SearchBar autoSubmit onSearch={search} />
-                    </VStack>
+                        <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
+                            <SearchBar autoSubmit onSearch={search} />
+                        </VStack>
 
-                    <NavigationTabs
-                        tabs={[
-                            {
-                                title: t('screening.courses.submitted_or_approved'),
-                                content: <Subcourses courseGroups={groups} titles={['Gruppe 1', 'Gruppe 2']} />,
-                            },
-                            {
-                                title: t('screening.courses.denied_or_cancelled'),
-                                content: <></>,
-                            },
-                        ]}
-                    />
-                </VStack>
+                        <NavigationTabs
+                            tabs={[
+                                {
+                                    title: t('screening.courses.submitted_or_approved'),
+                                    content: (
+                                        <Subcourses
+                                            courseGroups={[submitted as Subcourse[], allowed as Subcourse[]]}
+                                            titles={[t('screening.courses.submitted'), t('screening.courses.approved')]}
+                                        />
+                                    ),
+                                },
+                                {
+                                    title: t('screening.courses.denied_or_cancelled'),
+                                    content: (
+                                        <Subcourses
+                                            courseGroups={[denied as Subcourse[], cancelled as Subcourse[]]}
+                                            titles={[t('screening.courses.denied'), t('screening.courses.cancelled')]}
+                                        />
+                                    ),
+                                },
+                            ]}
+                        />
+                    </VStack>
+                )}
             </WithNavigation>
         </AsNavigationItem>
     );
