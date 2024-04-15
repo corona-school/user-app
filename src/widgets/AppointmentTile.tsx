@@ -44,7 +44,7 @@ const AppointmentTile: React.FC<Props> = ({
     const { t } = useTranslation();
     const width = useBreakpointValue({
         base: '100%',
-        lg: isFullWidth ? '95%' : '90%',
+        lg: isFullWidth ? '92%' : '90%',
     });
 
     const buttonWidth = useBreakpointValue({
