@@ -359,12 +359,6 @@
     "registration": {
         "password_repeat": "Passwort wiederholen",
         "to_login": "Ich habe bereits einen Account",
-        "dsgvo": {
-            "accept": "Hiermit stimme ich der",
-            "datapolicy": "Datenschutzerklärung",
-            "lastword": "zu.",
-            "pleaseaccept": "Bitte akzeptiere unsere"
-        },
         "barrier": {
             "title": "Wichtig",
             "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
@@ -464,6 +458,30 @@
                 "failedAlert": "Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut."
             },
             "backToWelcomeButton": "Zum Login-Bereich"
+        },
+        "legal": {
+            "privacy": "Datenschutz",
+            "whatHappensWithData": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
+            "usageBullets": {
+                "1": "Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts",
+                "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",
+                "3": "Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können"
+            },
+            "accept": "Ich habe die Datenschutzbestimmungen zur Kenntnis genommen:",
+            "privacypolicy": "Datenschutzbestimmungen",
+            "accordionUsDataProcessors": {
+                "title": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
+                "body": "Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO."
+            },
+            "noInvestigation": "Ich versichere, nicht wegen einer in § 72a Abs. 1 Satz 1 SGB VII bezeichneten Straftat rechtskräftig verurteilt worden zu sein und dass derzeit kein Ermittlungsverfahren wegen einer solchen Straftat gegen mich läuft.",
+            "selfCommitment": "Selbstverpflichtungserklärung",
+            "newsletter": "Newsletter",
+            "newsletterAgreement": "Ich möchte von Lern-Fair über Angebote, Aktionen und weitere Unterstützungsmöglichkeiten per E-Mail informiert werden.",
+            "underageDisclaimer": "Hinweis: Für den Fall, dass die einwilligende Person das 18. Lebensjahr noch nicht vollendet hat, hat der Träger der elterlichen Verantwortung für die Person die Einwilligung zu erklären.",
+            "error": {
+                "confirmPolicy": "Bitte bestätige die Datenschutzbestimmungen.",
+                "confirmNoInvestigation": "Bitte bestätige diese Aussage."
+            }
         }
     },
     "helpcenter": {
@@ -1690,7 +1708,7 @@
                 "courseCategory": "Kategorie",
                 "categoryPlaceholder": "Bitte wähle eine Kategorie",
                 "revision": "Nachhilfe-Kurs",
-                "language": "Deutsch-Kurs",
+                "language": "Deutsch für Anfänger Kurs",
                 "focus": "Fokus-Kurs",
                 "courseSubjectLabel": "Fach",
                 "coursePhotoLabel": "Foto",
