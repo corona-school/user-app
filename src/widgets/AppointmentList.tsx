@@ -94,8 +94,8 @@ const AppointmentList: React.FC<Props> = ({
         if (noOldAppointments) return null;
         return (
             <Box pb={10} justifyContent="center" alignItems="center">
-                <Button variant="outline" onPress={handleLoadPast}>
-                    {isLoadingAppointments ? <Spinner /> : t('appointment.loadPastAppointments')}
+                <Button variant="outline" onPress={handleLoadPast} isLoading={isLoadingAppointments}>
+                    {t('appointment.loadPastAppointments')}
                 </Button>
             </Box>
         );
@@ -126,7 +126,7 @@ const AppointmentList: React.FC<Props> = ({
         const weekDivider = showWeekDivider(appointment, previousAppointment);
         const monthDivider = showMonthDivider(appointment, previousAppointment);
 
-        if (isLoadingAppointments) return <CenterLoadingSpinner />;
+        if (isLoadingAppointments && !appointments.length) return <CenterLoadingSpinner />;
         return (
             <Box key={`${appointment.id + index}`} ml={isFullWidth ? 0 : 3}>
                 {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
