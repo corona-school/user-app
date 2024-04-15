@@ -14,8 +14,11 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 const ScreenerGroup: React.FC = () => {
     /* courses with courseState "created" aren't yet approved for a screening 
     by the course creator, so we only want to show the other courses here */
-    // TBD: Add 'where' filter for this query on the backend, to filter out the courses mentioned above with
-    // where: { course: { isNot: { courseState: { equals: created } } } }
+
+    /* TBD: Add 'where' filter for this query on the backend, to filter out the courses mentioned above with
+    where: { course: { isNot: { courseState: { equals: created } } } } 
+    OR do 2 seperate queries for submitted & allowed and denied & cancelled
+    */
     const {
         data,
         loading,

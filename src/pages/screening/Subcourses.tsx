@@ -32,7 +32,6 @@ const Subcourses: React.FC<Props> = ({ courseGroups, titles }) => {
                 tags={subcourse.course.tags}
                 image={subcourse.course.image ?? undefined}
                 title={subcourse.course.name}
-                /* countCourse={subcourse.lectures.length} */
                 maxParticipants={subcourse.maxParticipants}
                 participantsCount={subcourse.participantsCount}
                 minGrade={subcourse.minGrade}
