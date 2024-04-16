@@ -174,6 +174,7 @@ const AppointmentList: React.FC<Props> = ({
         return handleScrollIntoView(scrollViewRef.current);
     }, [isReadOnlyList, scrollId]);
 
+    const canLoadMoreAppointments = !isReadOnlyList && !noNewAppointments && !isLoadingAppointments;
     return (
         <FlatList
             keyExtractor={(item) => item.id.toString()}
@@ -181,8 +182,8 @@ const AppointmentList: React.FC<Props> = ({
             maxW={maxListWidth}
             data={appointments}
             renderItem={renderItems}
-            onEndReached={!isReadOnlyList && !noNewAppointments ? handleLoadMore : undefined}
-            onEndReachedThreshold={0.1}
+            onEndReached={canLoadMoreAppointments ? handleLoadMore : undefined}
+            onEndReachedThreshold={1}
             ListFooterComponent={!isReadOnlyList ? renderFooter : undefined}
             ListHeaderComponent={!isReadOnlyList ? renderHeader : undefined}
         />
