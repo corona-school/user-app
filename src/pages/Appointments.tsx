@@ -1,5 +1,5 @@
 import { Box, Stack, useBreakpointValue, useToast } from 'native-base';
-import React from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../components/AsNavigationItem';
@@ -69,7 +69,7 @@ const Appointments: React.FC = () => {
     const userType = useUserType();
     const toast = useToast();
     const { t } = useTranslation();
-
+    const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const navigate = useNavigate();
 
     const { data: myAppointments, loading: loadingMyAppointments, error, fetchMore } = useQuery(getMyAppointments, { variables: { take, skip: 0 } });
@@ -83,6 +83,7 @@ const Appointments: React.FC = () => {
     const appointments = myAppointments?.me?.appointments ?? [];
 
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
+        setIsFetchingMoreAppointments(true);
         await fetchMore({
             variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
             updateQuery: (previousAppointments, { fetchMoreResult }) => {
@@ -110,6 +111,7 @@ const Appointments: React.FC = () => {
                 }
             },
         });
+        setIsFetchingMoreAppointments(false);
     };
 
     const hasAppointments = !isLoadingHasAppointments && hasAppointmentsResult?.me.hasAppointments;
@@ -142,7 +144,7 @@ const Appointments: React.FC = () => {
                 {!error && hasAppointments && (
                     <AppointmentList
                         appointments={appointments as Appointment[]}
-                        isLoadingAppointments={loadingMyAppointments}
+                        isLoadingAppointments={loadingMyAppointments || isFetchingMoreAppointments}
                         isReadOnlyList={false}
                         loadMoreAppointments={loadMoreAppointments}
                         noNewAppointments={!hasMoreNewAppointments || !hasAppointments}
