@@ -63,6 +63,8 @@ export const PUPIL_APPOINTMENT = gql(`
             isOrganizer
             override_meeting_link
             zoomMeetingUrl
+            subcourseId
+            matchId
             participants(skip: 0, take: 10) {
                 id
                 userID
@@ -108,9 +110,9 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
 
     const getDefaultPreviousPath = () => {
         const apppointmentType: Lecture_Appointmenttype_Enum = data?.appointment?.appointmentType;
-        if (apppointmentType === Lecture_Appointmenttype_Enum.Match) {
+        if (apppointmentType === Lecture_Appointmenttype_Enum.Match && data?.appointment?.matchId) {
             return `/match/${data?.appointment?.matchId}`;
-        } else if (apppointmentType === Lecture_Appointmenttype_Enum.Group) {
+        } else if (apppointmentType === Lecture_Appointmenttype_Enum.Group && data?.appointment?.subcourseId) {
             return `/single-course/${data?.appointment?.subcourseId}`;
         }
         return '/appointments';
