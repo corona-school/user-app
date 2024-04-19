@@ -15,6 +15,7 @@ import { ToastNotifications } from './components/ToastNotifications';
 import { BrowserRouter } from 'react-router-dom';
 import { CreateAppointmentProvider } from './context/AppointmentContext';
 import { LFChatProvider } from './context/ChatContext';
+import NavigationStackProvider from './context/NavigationStackProvider';
 
 function App() {
     return (
@@ -28,8 +29,10 @@ function App() {
                                     <MatomoProvider value={matomo}>
                                         <NotificationsProvider>
                                             <LFChatProvider>
-                                                <Navigator />
-                                                <ToastNotifications />
+                                                <NavigationStackProvider>
+                                                    <Navigator />
+                                                    <ToastNotifications />
+                                                </NavigationStackProvider>
                                             </LFChatProvider>
                                         </NotificationsProvider>
                                     </MatomoProvider>
