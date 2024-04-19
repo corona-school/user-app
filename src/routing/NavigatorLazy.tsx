@@ -1,72 +1,72 @@
 import { Navigate, Outlet, Route, Routes } from 'react-router-dom';
-import Dashboard from './pages/pupil/Dashboard';
-import ProfilePupil from './pages/pupil/ProfilePupil';
+import Dashboard from '../pages/pupil/Dashboard';
+import ProfilePupil from '../pages/pupil/ProfilePupil';
 
-import Settings from './pages/Settings';
-import OnboardingTourList from './pages/OnboardingTourList';
-import HelpCenter from './pages/Helpcenter';
-import ChangeSettingSchoolType from './pages/change-setting/ChangeSettingSchoolType';
-import ChangeSettingState from './pages/change-setting/ChangeSettingState';
-import ChangeSettingLanguage from './pages/change-setting/ChangeSettingLanguage';
-import ChangeSettingSchoolClass from './pages/change-setting/ChangeSettingSchoolClass';
+import Settings from '../pages/Settings';
+import OnboardingTourList from '../pages/OnboardingTourList';
+import HelpCenter from '../pages/Helpcenter';
+import ChangeSettingSchoolType from '../pages/change-setting/ChangeSettingSchoolType';
+import ChangeSettingState from '../pages/change-setting/ChangeSettingState';
+import ChangeSettingLanguage from '../pages/change-setting/ChangeSettingLanguage';
+import ChangeSettingSchoolClass from '../pages/change-setting/ChangeSettingSchoolClass';
 
 // Onboarding Students
-import OnBoardingStudentWelcome from './pages/onboarding/student/OnBoardingStudentWelcome';
-import OnBoardingStudentSlides from './pages/onboarding/student/OnBoardingStudentSlides';
-import OnBoardingStudentFinisher from './pages/onboarding/student/OnBoardingStudentFinisher';
+import OnBoardingStudentWelcome from '../pages/onboarding/student/OnBoardingStudentWelcome';
+import OnBoardingStudentSlides from '../pages/onboarding/student/OnBoardingStudentSlides';
+import OnBoardingStudentFinisher from '../pages/onboarding/student/OnBoardingStudentFinisher';
 
 // Onboarding Helper
-import OnBoardingHelperWelcome from './pages/onboarding/helper/OnBoardingHelperWelcome';
-import OnBoardingHelperSlides from './pages/onboarding/helper/OnBoardingHelperSlides';
-import OnBoardingHelperFinisher from './pages/onboarding/helper/OnBoardingHelperFinisher';
+import OnBoardingHelperWelcome from '../pages/onboarding/helper/OnBoardingHelperWelcome';
+import OnBoardingHelperSlides from '../pages/onboarding/helper/OnBoardingHelperSlides';
+import OnBoardingHelperFinisher from '../pages/onboarding/helper/OnBoardingHelperFinisher';
 
 // Onboarding Helper Matching
-import OnBoardingHelperMatchingWelcome from './pages/onboarding/helper-matching/OnBoardingHelperMatchingWelcome';
-import OnBoardingHelperMatchingSlides from './pages/onboarding/helper-matching/OnBoardingHelperMatchingSlides';
-import OnBoardingHelperMatchingFinisher from './pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher';
+import OnBoardingHelperMatchingWelcome from '../pages/onboarding/helper-matching/OnBoardingHelperMatchingWelcome';
+import OnBoardingHelperMatchingSlides from '../pages/onboarding/helper-matching/OnBoardingHelperMatchingSlides';
+import OnBoardingHelperMatchingFinisher from '../pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher';
 
 // Profile
 
-import CreateCourse from './pages/CreateCourse';
-import DashboardStudent from './pages/student/DashboardStudent';
+import CreateCourse from '../pages/CreateCourse';
+import DashboardStudent from '../pages/student/DashboardStudent';
 
-import ProfileStudent from './pages/student/ProfileStudent';
-import RequestCertificate from './pages/RequestCertificate';
-import PupilGroup from './pages/pupil/Group';
-import NoAcceptRegistration from './pages/NoAcceptRegistration';
-import VerifyEmail from './pages/VerifyEmail';
-import VerifyEmailModal from './modals/VerifyEmailModal';
-import ResetPassword from './pages/ResetPassword';
-import { RequireAuth, RequireRole, SwitchUserType } from './User';
-import IFrame from './components/IFrame';
-import WithNavigation from './components/WithNavigation';
-import Registration from './pages/Registration';
+import ProfileStudent from '../pages/student/ProfileStudent';
+import RequestCertificate from '../pages/RequestCertificate';
+import PupilGroup from '../pages/pupil/Group';
+import NoAcceptRegistration from '../pages/NoAcceptRegistration';
+import VerifyEmail from '../pages/VerifyEmail';
+import VerifyEmailModal from '../modals/VerifyEmailModal';
+import ResetPassword from '../pages/ResetPassword';
+import { RequireAuth, RequireRole, SwitchUserType } from '../User';
+import IFrame from '../components/IFrame';
+import WithNavigation from '../components/WithNavigation';
+import Registration from '../pages/Registration';
 
-import RequestMatchStudent from './pages/student/matching/RequestMatch';
-import RequestMatch from './pages/pupil/matching/RequestMatch';
-import Matching from './pages/pupil/Matching';
-import NotficationControlPanel from './pages/notification/NotficationControlPanel';
-import Appointments from './pages/Appointments';
-import CreateAppointment from './pages/CreateAppointment';
-import Appointment from './pages/Appointment';
-import EditAppointment from './pages/EditAppointment';
-import SingleCoursePupil from './pages/pupil/SingleCoursePupil';
-import SingleCourseStudent from './pages/student/SingleCourseStudent';
-import LeftVideoChat from './widgets/LeftVideoChat';
-import ChangeEmail from './pages/ChangeEmail';
-import VerifyEmailChange from './pages/VerifyEmailChange';
-import SingleMatch from './pages/SingleMatch';
-import CoursePage from './pages/CoursePage';
-import MatchPage from './pages/MatchPage';
-import Chat from './pages/Chat';
-import { ScreeningDashboard } from './pages/screening/Dashboard';
-import { lazyWithRetry } from './lazy';
+import RequestMatchStudent from '../pages/student/matching/RequestMatch';
+import RequestMatch from '../pages/pupil/matching/RequestMatch';
+import Matching from '../pages/pupil/Matching';
+import NotficationControlPanel from '../pages/notification/NotficationControlPanel';
+import Appointments from '../pages/Appointments';
+import CreateAppointment from '../pages/CreateAppointment';
+import Appointment from '../pages/Appointment';
+import EditAppointment from '../pages/EditAppointment';
+import SingleCoursePupil from '../pages/pupil/SingleCoursePupil';
+import SingleCourseStudent from '../pages/student/SingleCourseStudent';
+import LeftVideoChat from '../widgets/LeftVideoChat';
+import ChangeEmail from '../pages/ChangeEmail';
+import VerifyEmailChange from '../pages/VerifyEmailChange';
+import SingleMatch from '../pages/SingleMatch';
+import CoursePage from '../pages/CoursePage';
+import MatchPage from '../pages/MatchPage';
+import Chat from '../pages/Chat';
+import { ScreeningDashboard } from '../pages/screening/Dashboard';
+import { lazyWithRetry } from '../lazy';
 import { Suspense } from 'react';
-import CenterLoadingSpinner from './components/CenterLoadingSpinner';
+import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { datadogRum } from '@datadog/browser-rum';
-import ProgressPage from './pages/Progress';
-import ConfirmCertificate from './pages/ConfirmCertificate';
-import CertificateOfConduct from './pages/CertificateOfConduct';
+import ProgressPage from '../pages/Progress';
+import ConfirmCertificate from '../pages/ConfirmCertificate';
+import CertificateOfConduct from '../pages/CertificateOfConduct';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -76,7 +76,7 @@ const ZoomMeeting = lazyWithRetry(
         // When leaving the window we reload the page, which reenables session replay (in another session)
         datadogRum.stopSessionReplayRecording();
         // Then load Zoom
-        return import('./components/ZoomMeeting');
+        return import('../components/ZoomMeeting');
     },
     { prefetch: false }
 );

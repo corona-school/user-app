@@ -1,6 +1,6 @@
 import { NativeBaseProvider } from 'native-base';
 import Theme from './Theme';
-import Navigator from './Navigator';
+import Navigator from './routing/Navigator';
 
 import { LFApolloProvider } from './hooks/useApollo';
 import matomo from './matomo';
