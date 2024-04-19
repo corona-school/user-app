@@ -46,6 +46,7 @@ const NotficationControlPanel = () => {
         <NotificationPreferencesContext.Provider value={{ ...userPreferences, channels }}>
             <WithNavigation
                 showBack
+                previousFallbackRoute="/settings"
                 headerTitle={t('notification.controlPanel.title')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">

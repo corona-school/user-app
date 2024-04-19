@@ -846,6 +846,7 @@ const CreateCourse: React.FC = () => {
             <WithNavigation
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
                 showBack
+                previousFallbackRoute="/group"
                 isLoading={loading || isLoading}
                 headerLeft={
                     <Stack alignItems="center" direction="row">

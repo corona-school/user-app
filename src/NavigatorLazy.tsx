@@ -418,7 +418,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/new-password"
                 element={
-                    <WithNavigation showBack hideMenu>
+                    <WithNavigation showBack previousFallbackRoute="/start" hideMenu>
                         <ResetPassword layout="new-pw" />
                     </WithNavigation>
                 }
@@ -428,7 +428,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/datenschutz"
                 element={
-                    <WithNavigation showBack headerTitle="Datenschutz" hideMenu>
+                    <WithNavigation showBack previousFallbackRoute="/start" headerTitle="Datenschutz" hideMenu>
                         <IFrame title="datenschutz" src="https://www.lern-fair.de/iframe/datenschutz" />
                     </WithNavigation>
                 }
@@ -436,7 +436,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/selbstverpflichtungserklaerung"
                 element={
-                    <WithNavigation showBack headerTitle="Selbstverpflichtungserklärung" hideMenu>
+                    <WithNavigation showBack previousFallbackRoute="/start" headerTitle="Selbstverpflichtungserklärung" hideMenu>
                         <IFrame title="selbstverpflichtungserklärung" src="https://lern-fair.de/iframe/straftaten" />
                     </WithNavigation>
                 }
@@ -444,7 +444,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/impressum"
                 element={
-                    <WithNavigation showBack headerTitle="Impressum" hideMenu>
+                    <WithNavigation showBack previousFallbackRoute="/start" headerTitle="Impressum" hideMenu>
                         <IFrame title="impressum" src="https://www.lern-fair.de/iframe/impressum" />
                     </WithNavigation>
                 }

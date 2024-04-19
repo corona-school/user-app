@@ -286,6 +286,7 @@ const SingleMatch = () => {
             <WithNavigation
                 headerTitle={''}
                 showBack={!createAppointment}
+                previousFallbackRoute="/matching"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <HelpNavigation />

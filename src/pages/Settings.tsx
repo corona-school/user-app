@@ -44,6 +44,7 @@ const Settings: React.FC = () => {
                         <CloseIcon color="lightText" />
                     </Button>
                 }
+                previousFallbackRoute="/start"
                 headerLeft={userType !== 'screener' && <NotificationAlert />}
             >
                 <VStack paddingBottom={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>

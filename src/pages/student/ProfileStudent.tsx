@@ -177,7 +177,7 @@ const ProfileStudent: React.FC<Props> = () => {
             <WithNavigation
                 showBack
                 isLoading={loading}
-                onBack={() => navigate(-1)}
+                previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
                 headerContent={
                     <Flex
