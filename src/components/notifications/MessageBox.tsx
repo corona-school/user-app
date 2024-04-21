@@ -1,4 +1,4 @@
-import { Box, HStack, Modal, Pressable, Spacer, Text, Tooltip, VStack } from 'native-base';
+import { Box, HStack, Modal, Pressable, Spacer, Text, Tooltip, VStack, useBreakpointValue } from 'native-base';
 import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
@@ -21,18 +21,22 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
     const [achievementModalForId, setAchievementModalForId] = useState<number | null>(null);
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
 
     if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
 
     const { sentAt } = userNotification || { sentAt: '' };
     const { headline, body, type, navigateTo, modalText } = userNotification.message;
-
     const boxProps = {
         mb: 2,
-        height: 54,
+        height: '100%',
         fullWidth: 320,
         width: 270,
         borderRadius: 10,
+        maxHeight: 500,
     };
 
     const vStackProps = {
@@ -110,6 +114,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
             mb={boxProps.mb}
             h={boxProps.height}
             w={!isStandalone ? boxProps.fullWidth : boxProps.width}
+            maxH={boxProps.maxHeight}
         >
             <HStack alignItems="center" space={1}>
                 <VStack>
@@ -122,7 +127,7 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
                         {headline}
                     </Text>
                     <Tooltip maxW={300} label={body} _text={{ textAlign: 'center' }}>
-                        <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={1}>
+                        <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={isMobile ? 5 : 2}>
                             {body}
                         </Text>
                     </Tooltip>
