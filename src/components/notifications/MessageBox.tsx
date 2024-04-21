@@ -1,4 +1,4 @@
-import { Box, HStack, Modal, Pressable, Spacer, Text, VStack } from 'native-base';
+import { Box, HStack, Modal, Pressable, Spacer, Text, Tooltip, VStack } from 'native-base';
 import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
@@ -121,9 +121,11 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
                     <Text bold fontSize="md" ellipsizeMode="tail" numberOfLines={1}>
                         {headline}
                     </Text>
-                    <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={1}>
-                        {body}
-                    </Text>
+                    <Tooltip maxW={300} label={body} _text={{ textAlign: 'center' }}>
+                        <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={1}>
+                            {body}
+                        </Text>
+                    </Tooltip>
                 </VStack>
                 <Spacer />
                 {!isStandalone && (
