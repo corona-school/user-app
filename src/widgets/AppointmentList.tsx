@@ -94,8 +94,8 @@ const AppointmentList: React.FC<Props> = ({
         if (noOldAppointments) return null;
         return (
             <Box pb={10} justifyContent="center" alignItems="center">
-                <Button variant="outline" onPress={handleLoadPast}>
-                    {isLoadingAppointments ? <Spinner /> : t('appointment.loadPastAppointments')}
+                <Button variant="outline" onPress={handleLoadPast} isLoading={isLoadingAppointments}>
+                    {t('appointment.loadPastAppointments')}
                 </Button>
             </Box>
         );
@@ -126,7 +126,7 @@ const AppointmentList: React.FC<Props> = ({
         const weekDivider = showWeekDivider(appointment, previousAppointment);
         const monthDivider = showMonthDivider(appointment, previousAppointment);
 
-        if (isLoadingAppointments) return <CenterLoadingSpinner />;
+        if (isLoadingAppointments && !appointments.length) return <CenterLoadingSpinner />;
         return (
             <Box key={`${appointment.id + index}`} ml={isFullWidth ? 0 : 3}>
                 {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
@@ -174,6 +174,7 @@ const AppointmentList: React.FC<Props> = ({
         return handleScrollIntoView(scrollViewRef.current);
     }, [isReadOnlyList, scrollId]);
 
+    const canLoadMoreAppointments = !isReadOnlyList && !noNewAppointments && !isLoadingAppointments;
     return (
         <FlatList
             keyExtractor={(item) => item.id.toString()}
@@ -181,8 +182,8 @@ const AppointmentList: React.FC<Props> = ({
             maxW={maxListWidth}
             data={appointments}
             renderItem={renderItems}
-            onEndReached={!isReadOnlyList ? handleLoadMore : undefined}
-            onEndReachedThreshold={0.1}
+            onEndReached={canLoadMoreAppointments ? handleLoadMore : undefined}
+            onEndReachedThreshold={1}
             ListFooterComponent={!isReadOnlyList ? renderFooter : undefined}
             ListHeaderComponent={!isReadOnlyList ? renderHeader : undefined}
         />

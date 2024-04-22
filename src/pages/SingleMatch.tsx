@@ -23,6 +23,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import AdHocMeetingModal from '../modals/AdHocMeetingModal';
 import { DateTime } from 'luxon';
 import ReportMatchModal from '../modals/ReportMatchModal';
+import { ScrollDirection } from './Appointments';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -33,6 +34,9 @@ query SingleMatch($matchId: Int! ) {
     dissolved
     dissolvedAt
     dissolveReason
+    appointmentsCount
+    lastAppointmentId
+    firstAppointmentId
     pupil {
         id
         firstname
@@ -55,8 +59,15 @@ query SingleMatch($matchId: Int! ) {
         }
         aboutMe
     }
-    appointments {
-        id
+  }
+}
+`);
+
+const appointmentsQuery = gql(`
+query SingleMatchAppointments($matchId: Int!, $take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
+    match(matchId: $matchId) {
+        appointments(take: $take, skip: $skip, cursor: $cursor,  direction: $direction) {
+            id
             title
             description
             start
@@ -78,8 +89,9 @@ query SingleMatch($matchId: Int! ) {
                 firstname
                 lastname
             }
+
         }
-  }
+    }
 }`);
 
 const matchChatMutation = gql(`
@@ -87,6 +99,8 @@ mutation createMatcheeChat($matcheeId: String!) {
   matchChatCreate(matcheeUserId: $matcheeId)
 }
 `);
+
+const take = 10;
 
 const SingleMatch = () => {
     const { trackEvent } = useMatomo();
@@ -104,10 +118,29 @@ const SingleMatch = () => {
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
 
-    const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
+    const {
+        data,
+        loading: isLoadingMatchData,
+        error,
+        refetch: refetchMatchData,
+    } = useQuery(singleMatchQuery, {
         variables: {
             matchId,
+        },
+    });
+    const {
+        data: matchAppointments,
+        loading: isLoadingAppointments,
+        error: appointmentsError,
+        refetch: refetchAppointments,
+        fetchMore: fetchMoreAppointments,
+    } = useQuery(appointmentsQuery, {
+        variables: {
+            matchId,
+            take,
+            skip: 0,
         },
     });
 
@@ -135,6 +168,12 @@ const SingleMatch = () => {
             }
         `)
     );
+
+    const refetch = useCallback(async () => {
+        await Promise.all([refetchMatchData(), refetchAppointments()]);
+    }, [refetchMatchData, refetchAppointments]);
+
+    const totalAppointmentsCount = data?.match.appointmentsCount || 0;
     const dissolve = useCallback(
         async (reasons: Dissolve_Reason[]) => {
             setShowDissolveModal(false);
@@ -155,7 +194,7 @@ const SingleMatch = () => {
         [dissolveMatch, matchId, refetch, trackEvent]
     );
 
-    const appointments = data?.match?.appointments ?? [];
+    const appointments = matchAppointments?.match.appointments ?? [];
 
     const goBackToMatch = async () => {
         await refetch();
@@ -204,7 +243,43 @@ const SingleMatch = () => {
             setToastShown(true);
             toast.show({ description: t('matching.shared.dissolved'), placement: 'top' });
         }
-    }, [dissolveData?.matchDissolve, toast, toastShown]);
+    }, [dissolveData?.matchDissolve, toast, toastShown, t]);
+
+    const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
+        setIsFetchingMoreAppointments(true);
+        await fetchMoreAppointments({
+            variables: { take, skip, cursor, direction: scrollDirection },
+            updateQuery: (previousAppointments, { fetchMoreResult }) => {
+                const newAppointments = fetchMoreResult?.match?.appointments;
+                const prevAppointments = appointments;
+                if (scrollDirection === 'next') {
+                    if (!newAppointments || newAppointments.length === 0) {
+                        return previousAppointments;
+                    }
+                    return {
+                        match: {
+                            appointments: [...prevAppointments, ...newAppointments],
+                        },
+                    };
+                } else {
+                    if (!newAppointments || newAppointments.length === 0) {
+                        return previousAppointments;
+                    }
+                    toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
+                    return {
+                        match: {
+                            appointments: [...newAppointments, ...prevAppointments],
+                        },
+                    };
+                }
+            },
+        });
+        setIsFetchingMoreAppointments(false);
+    };
+
+    const hasMoreAppointments = appointments.length < totalAppointmentsCount;
+    const hasMoreOldAppointments = !appointments.some((e) => e.id === data?.match.firstAppointmentId);
+    const hasMoreNewAppointments = !appointments.some((e) => e.id === data?.match.lastAppointmentId);
 
     return (
         <AsNavigationItem path="matching">
@@ -217,9 +292,9 @@ const SingleMatch = () => {
                         <NotificationAlert />
                     </Stack>
                 }
-                isLoading={isLoading}
+                isLoading={(isLoadingMatchData && isLoadingAppointments) || isLoading}
             >
-                {loading || !data ? (
+                {isLoadingMatchData || !data ? (
                     <CenterLoadingSpinner />
                 ) : (
                     !error && (
@@ -229,7 +304,7 @@ const SingleMatch = () => {
                                     back={() => setCreateAppointment(false)}
                                     courseOrMatchId={matchId}
                                     isCourse={false}
-                                    appointmentsTotal={appointments.length}
+                                    appointmentsTotal={totalAppointmentsCount}
                                     navigateToMatch={async () => await goBackToMatch()}
                                     overrideMeetingLink={overrideMeetingLink}
                                     setIsLoading={setIsLoading}
@@ -286,9 +361,14 @@ const SingleMatch = () => {
                                     <MatchAppointments
                                         appointments={appointments as Appointment[]}
                                         minimumHeight={'30vh'}
-                                        loading={loading}
-                                        error={error}
+                                        loading={isLoadingAppointments || isFetchingMoreAppointments}
+                                        error={appointmentsError}
                                         dissolved={data?.match?.dissolved}
+                                        loadMoreAppointments={loadMoreAppointments}
+                                        noNewAppointments={!hasMoreNewAppointments || !hasMoreAppointments}
+                                        noOldAppointments={!hasMoreOldAppointments || !hasMoreAppointments}
+                                        hasAppointments={hasMoreAppointments || !!appointments.length}
+                                        lastAppointmentId={data.match.lastAppointmentId}
                                     />
                                     {userType === 'student' && !data?.match?.dissolved && (
                                         <Box>
