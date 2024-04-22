@@ -36,6 +36,7 @@ query SingleMatch($matchId: Int! ) {
     dissolveReason
     appointmentsCount
     lastAppointmentId
+    firstAppointmentId
     pupil {
         id
         firstname
@@ -118,8 +119,6 @@ const SingleMatch = () => {
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
-    const [noNewAppointments, setNoNewAppointments] = useState<boolean>(false);
-    const [noOldAppointments, setNoOldAppointments] = useState<boolean>(false);
 
     const {
         data,
@@ -255,7 +254,6 @@ const SingleMatch = () => {
                 const prevAppointments = appointments;
                 if (scrollDirection === 'next') {
                     if (!newAppointments || newAppointments.length === 0) {
-                        setNoNewAppointments(true);
                         return previousAppointments;
                     }
                     return {
@@ -265,9 +263,9 @@ const SingleMatch = () => {
                     };
                 } else {
                     if (!newAppointments || newAppointments.length === 0) {
-                        setNoOldAppointments(true);
                         return previousAppointments;
                     }
+                    toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
                     return {
                         match: {
                             appointments: [...newAppointments, ...prevAppointments],
@@ -277,11 +275,11 @@ const SingleMatch = () => {
             },
         });
         setIsFetchingMoreAppointments(false);
-
-        !noOldAppointments && scrollDirection === 'last' && toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
     };
 
     const hasMoreAppointments = appointments.length < totalAppointmentsCount;
+    const hasMoreOldAppointments = !appointments.some((e) => e.id === data?.match.firstAppointmentId);
+    const hasMoreNewAppointments = !appointments.some((e) => e.id === data?.match.lastAppointmentId);
 
     return (
         <AsNavigationItem path="matching">
@@ -367,8 +365,8 @@ const SingleMatch = () => {
                                         error={appointmentsError}
                                         dissolved={data?.match?.dissolved}
                                         loadMoreAppointments={loadMoreAppointments}
-                                        noNewAppointments={noNewAppointments || !hasMoreAppointments}
-                                        noOldAppointments={noOldAppointments || !hasMoreAppointments}
+                                        noNewAppointments={!hasMoreNewAppointments || !hasMoreAppointments}
+                                        noOldAppointments={!hasMoreOldAppointments || !hasMoreAppointments}
                                         hasAppointments={hasMoreAppointments || !!appointments.length}
                                         lastAppointmentId={data.match.lastAppointmentId}
                                     />
