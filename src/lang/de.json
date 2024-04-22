@@ -1447,11 +1447,11 @@
                 },
                 "modalSuccess": {
                     "heading": {
-                        "ver1": "Geschafft, du bist auf der Warteliste!",
+                        "ver1": "Neue Anfrage erstellt",
                         "ver2": "Geschafft, Änderungen gespeichert!"
                     },
                     "text": {
-                        "ver1": "Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.",
+                        "ver1": "Als Nächstes laden wir dich per E-Mail zu einem Gespräch ein. Dann besprechen wir alles weitere persönlich. - Schau doch so lange bei unseren Gruppen-Kursen vorbei.",
                         "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
                     },
                     "groupCourses": "Zu den Gruppen-Kursen"
