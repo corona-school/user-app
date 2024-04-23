@@ -378,12 +378,12 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 <Text fontSize="20px" lineHeight="50px">
                     {pupil.grade} -{' '}
                 </Text>
-                <Button variant="outline" onPress={() => setShowEditGrade(true)}>
-                    <EditIcon />
+                <Button variant="outline" onPress={() => setShowEditGrade(true)} rightIcon={<EditIcon />}>
+                    Klasse bearbeiten
                 </Button>
                 <LanguageTagList languages={pupil.languages} />
-                <Button variant="outline" onPress={() => setShowEditLanguages(true)}>
-                    <EditIcon />
+                <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
+                    Sprachen bearbeiten
                 </Button>
                 <Text fontSize="20px" lineHeight="50px">
                     {' '}
@@ -391,8 +391,8 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 </Text>
                 <Stack direction="row" space={space['1']}>
                     <SubjectTagList subjects={pupil.subjectsFormatted} />
-                    <Button variant="outline" onPress={() => setShowEditSubjects(true)}>
-                        <EditIcon />
+                    <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
+                        Fächer bearbeiten
                     </Button>
                 </Stack>
             </HStack>
