@@ -73,6 +73,7 @@ const CertificateOfConduct = () => {
                     </Stack>
                 }
                 showBack
+                previousFallbackRoute="/start"
             >
                 <Stack space={3} width="100%" padding={space['1']}>
                     <Heading>{t('certificateOfConduct.header')}</Heading>

@@ -200,6 +200,7 @@ const SingleCoursePupil = () => {
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
             showBack
+            previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">

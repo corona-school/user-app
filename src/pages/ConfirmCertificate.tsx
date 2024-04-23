@@ -40,6 +40,7 @@ const ConfirmCertificate: React.FC = () => {
         <>
             <WithNavigation
                 showBack
+                previousFallbackRoute="/start"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <HelpNavigation />
