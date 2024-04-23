@@ -1,8 +1,18 @@
 import { createContext, useEffect, useState } from 'react';
 import { useLocation, useNavigationType, Location } from 'react-router-dom';
 
-export const NavigationStackContext = createContext<{ navigationStack: Location[] }>({
+interface NavigationStackContextValue {
+    navigationStack: Location[];
+    popRoute: () => void;
+    pushRoute: () => void;
+    replaceRoute: () => void;
+}
+
+export const NavigationStackContext = createContext<NavigationStackContextValue>({
     navigationStack: [],
+    popRoute: () => {},
+    pushRoute: () => {},
+    replaceRoute: () => {},
 });
 
 interface NavigationStackProviderProps {
@@ -29,7 +39,19 @@ const NavigationStackProvider = ({ children }: NavigationStackProviderProps) => 
         });
     }, [location]);
 
-    return <NavigationStackContext.Provider value={{ navigationStack }}>{children}</NavigationStackContext.Provider>;
+    const popRoute = () => {
+        setNavigationStack((stack) => stack.slice(0, -1));
+    };
+
+    const pushRoute = () => {
+        setNavigationStack((stack) => stack.concat(location));
+    };
+
+    const replaceRoute = () => {
+        setNavigationStack((stack) => stack.slice(0, -1).concat(location));
+    };
+
+    return <NavigationStackContext.Provider value={{ navigationStack, popRoute, pushRoute, replaceRoute }}>{children}</NavigationStackContext.Provider>;
 };
 
 export default NavigationStackProvider;

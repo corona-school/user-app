@@ -10,7 +10,7 @@ type Props = {
 
 const BackButton: React.FC<Props> = ({ onPress, previousFallbackRoute: fallback }) => {
     const navigate = useNavigate();
-    const { navigationStack } = useNavigationStack();
+    const { navigationStack, popRoute } = useNavigationStack();
     const location = useLocation();
 
     const handleOnBack = () => {
@@ -18,13 +18,16 @@ const BackButton: React.FC<Props> = ({ onPress, previousFallbackRoute: fallback 
             onPress();
             return;
         }
+        // A default route is when there is no back route (i.e open the app in a new tab, or coming from an external link)
         const isDefaultRoute = location.key === 'default';
 
         // -1 is the current one
         const previousRoute = navigationStack[navigationStack.length - 2]?.pathname;
         const isPreviousRouteValid = previousRoute && ![location.pathname, '/login', '/welcome', '/registration'].includes(previousRoute);
-        if ((isDefaultRoute || !isPreviousRouteValid) && !!fallback) {
+        const shouldRouteAlwaysUseFallback = ['/settings'].includes(location.pathname);
+        if ((isDefaultRoute || !isPreviousRouteValid || shouldRouteAlwaysUseFallback) && !!fallback) {
             navigate(fallback);
+            popRoute();
             return;
         }
 
