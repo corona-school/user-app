@@ -1,8 +1,8 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Button, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Participant } from '../../../gql/graphql';
+import { gql } from '../../../gql';
 import SendParticipantsMessageModal from '../../../modals/SendParticipantsMessageModal';
 import { SelectParticipants } from '../../../widgets/SelectParticipants';
 
@@ -11,7 +11,7 @@ type ContactProps = {
     refresh: () => void;
 };
 
-const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) => {
+const ContactParticipants: React.FC<ContactProps> = ({ subcourseId }) => {
     const toast = useToast();
     const { t } = useTranslation();
     const { sizes } = useTheme();
@@ -61,7 +61,7 @@ const ContactParticipants: React.FC<ContactProps> = ({ subcourseId, refresh }) =
                             participants:
                                 selectedParticipants.length > 0
                                     ? selectedParticipants
-                                    : participantsData.subcourse!.participants.map((it: Participant) => it.id),
+                                    : participantsData.subcourse!.participants.map((it: { id: number }) => it.id),
                             fileIDs,
                         },
                     });

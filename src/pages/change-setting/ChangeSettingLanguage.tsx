@@ -1,4 +1,5 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { gql } from '../../gql';
+import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Button, Text, Heading, useTheme, VStack, Row, Column, useBreakpointValue } from 'native-base';
 import { useEffect, useState } from 'react';
@@ -13,35 +14,31 @@ import AlertMessage from '../../widgets/AlertMessage';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
+import { StudentLanguage } from '../../gql/graphql';
 
-const queryStudent = gql`
+const query = gql(`
     query GetStudentLanguages {
         me {
             student {
                 languages
             }
-        }
-    }
-`;
-const queryPupil = gql`
-    query GetPupilLanguages {
-        me {
             pupil {
                 languages
             }
         }
     }
-`;
-const mutStudent = gql`
+`);
+
+const mutStudent = gql(`
     mutation updateLanguageStudent($languages: [StudentLanguage!]) {
         meUpdate(update: { student: { languages: $languages } })
     }
-`;
-const mutPupil = gql`
+`);
+const mutPupil = gql(`
     mutation updateLanguagePupil($languages: [Language!]) {
         meUpdate(update: { pupil: { languages: $languages } })
     }
-`;
+`);
 
 type Props = {};
 
@@ -52,19 +49,19 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
     const [selections, setSelections] = useState<string[]>([]);
 
     const [showError, setShowError] = useState<boolean>();
-    const userType = useUserType();
+    const userType = useUserType() as 'pupil' | 'student';
 
     const navigate = useNavigate();
 
-    const { data, loading } = useQuery(userType === 'student' ? queryStudent : queryPupil, {
+    const { data, loading } = useQuery(query, {
         fetchPolicy: 'no-cache',
     });
 
     const [updateLanguage, _updateLanguage] = useMutation(userType === 'student' ? mutStudent : mutPupil);
 
     useEffect(() => {
-        if (data?.me[userType || 'pupil'] && data?.me[userType || 'pupil'].languages) {
-            setSelections(data?.me[userType || 'pupil'].languages);
+        if (data?.me[userType || 'pupil'] && data?.me[userType || 'pupil']?.languages) {
+            setSelections(data?.me[userType || 'pupil']?.languages ?? []);
         }
     }, [data?.me, userType]);
 
@@ -164,7 +161,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                     width={ButtonContainer}
                     onPress={() => {
                         //language keys are lowercase in frontend; on backend the first letter is capitalized
-                        updateLanguage({ variables: { languages: selections } });
+                        updateLanguage({ variables: { languages: selections as StudentLanguage[] } });
                     }}
                 >
                     {t('saveSelection')}

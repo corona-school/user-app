@@ -1,20 +1,21 @@
-import { gql, useMutation, useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { NotificationPreferences } from '../types/lernfair/NotificationPreferences';
+import { gql } from '../gql';
 
-const notificationPreferencesQuery = gql`
+const notificationPreferencesQuery = gql(`
     query GetNotificationPreferences {
         me {
             notificationPreferences
         }
     }
-`;
+`);
 
-const notificationPreferencesMutation = gql`
+const notificationPreferencesMutation = gql(`
     mutation changeMeNotificationPref($preferences: PreferencesInput!) {
         meUpdate(update: { notificationPreferences: $preferences })
     }
-`;
+`);
 
 const useUserPreferences = () => {
     const [userPreferences, setUserPreferencesPrivate] = useState<NotificationPreferences>({});

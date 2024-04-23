@@ -1,5 +1,5 @@
 // eslint-disable-next-line lernfair-app-linter/typed-gql
-import { gql } from '../../src/gql';
+import { gql } from '../gql';
 import { ZoomMtg } from '@zoomus/websdk';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from './CenterLoadingSpinner';

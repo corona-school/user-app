@@ -8,7 +8,7 @@ import { useUserPreferences } from '../../hooks/useNotificationPreferences';
 import { createContext } from 'react';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useQuery } from '@apollo/client';
-import { gql } from '../../gql/gql';
+import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 
 const channels = ['email'];
