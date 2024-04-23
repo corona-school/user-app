@@ -10,7 +10,7 @@ type Props = {
 
 const BackButton: React.FC<Props> = ({ onPress, previousFallbackRoute: fallback }) => {
     const navigate = useNavigate();
-    const { navigationStack } = useNavigationStack();
+    const { navigationStack, popRoute } = useNavigationStack();
     const location = useLocation();
 
     const handleOnBack = () => {
@@ -27,6 +27,7 @@ const BackButton: React.FC<Props> = ({ onPress, previousFallbackRoute: fallback 
         const shouldRouteAlwaysUseFallback = ['/settings'].includes(location.pathname);
         if ((isDefaultRoute || !isPreviousRouteValid || shouldRouteAlwaysUseFallback) && !!fallback) {
             navigate(fallback);
+            popRoute();
             return;
         }
 
