@@ -9,6 +9,7 @@ type Props = {
     rightContent?: ReactNode | ReactNode[];
     onBack?: () => any;
     showBack?: boolean;
+    previousFallbackRoute?: string;
 };
 
 /**
@@ -16,7 +17,7 @@ type Props = {
  * -  use `leftContent`and `rightContent` to display content on either side
  * - `showBack` / `onBack` to use navigation in here
  */
-const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightContent, onBack, showBack }) => {
+const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightContent, onBack, showBack, previousFallbackRoute }) => {
     const { space, sizes } = useTheme();
 
     const headerTitleSize = useBreakpointValue({
@@ -29,18 +30,13 @@ const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightConten
         lg: false,
     });
 
-    // useEffect(() => {
-    //   portal && portal(children)
-    //   // eslint-disable-next-line react-hooks/exhaustive-deps
-    // }, [])
-
     return (
         <Box bgColor="primary.900" paddingY={`${sizes['headerPaddingYPx']}px`} borderBottomRadius={8} zIndex={9999}>
             <Box h={`${sizes['headerSizePx']}px`} position="fixed" top="0" left="0" right="0" bgColor="primary.900" zIndex="1">
                 <Row alignItems="center" justifyContent="center" h="100%" padding={space[1]}>
                     {showBack && (
                         <Box ml={space['2']} position="absolute" left="0" zIndex={5}>
-                            <BackButton onPress={onBack} />
+                            <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />
                         </Box>
                     )}
                     {(isMobile && (

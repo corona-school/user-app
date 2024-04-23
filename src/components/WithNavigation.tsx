@@ -23,6 +23,7 @@ type Props = {
     headerTitle?: string;
     isSidebarMenu?: boolean;
     showBack?: boolean;
+    previousFallbackRoute?: string;
     hideMenu?: boolean;
     isLoading?: boolean;
 
@@ -39,7 +40,7 @@ const WithNavigation: React.FC<Props> = ({
     showBack,
     hideMenu,
     isLoading,
-
+    previousFallbackRoute,
     onBack,
 }) => {
     const { sizes, space } = useTheme();
@@ -88,6 +89,7 @@ const WithNavigation: React.FC<Props> = ({
                     leftContent={headerLeft}
                     rightContent={headerRight || (isSidebarMenu && !hideMenu ? <SettingsButton /> : '')}
                     title={headerTitle}
+                    previousFallbackRoute={previousFallbackRoute}
                 >
                     {!isMobile && headerContent}
                 </HeaderCard>

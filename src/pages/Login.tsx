@@ -92,7 +92,7 @@ export default function Login() {
     );
 
     useEffect(() => {
-        if (sessionState === 'logged-in') navigate(retainPath);
+        if (sessionState === 'logged-in') navigate(retainPath, { replace: true });
         if (error && error === 'token-invalid') {
             toast.show({
                 render: ({ id }) => {
