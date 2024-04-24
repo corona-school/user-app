@@ -144,7 +144,10 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                 </FormControl>
                 <FormControl>
                     <FormControl.Label>
-                        Interner Kommentar (Wird <Box textDecoration="underline">nach Entscheidung</Box> gelöscht)
+                        Interner Kommentar{' '}
+                        <Text>
+                            (Wird <Text underline>nach Entscheidung</Text> gelöscht)
+                        </Text>
                     </FormControl.Label>
                     <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="200px" width="100%" autoCompleteType="" />
                 </FormControl>
