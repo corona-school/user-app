@@ -14,7 +14,7 @@ export type MatchWithPupil = Opt<
     }
 >;
 
-export type PupilScreening = Opt<Pick<Pupil_Screening, 'id' | 'createdAt' | 'updatedAt' | 'comment' | 'status' | 'invalidated'>> & {
+export type PupilScreening = Opt<Pick<Pupil_Screening, 'id' | 'createdAt' | 'updatedAt' | 'comment' | 'status' | 'invalidated' | 'knowsCoronaSchoolFrom'>> & {
     screeners: Pick<Screener, 'firstname' | 'lastname'>[];
 };
 

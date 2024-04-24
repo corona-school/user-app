@@ -1,5 +1,5 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { Button, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -19,6 +19,7 @@ import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
 import { EditGradeModal } from './EditGradeModal';
 import { EditLanguagesModal } from './EditLanguagesModal';
 import DisableableButton from '../../components/DisablebleButton';
+import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
 
 const MISSED_SCREENING_QUERY = gql(
     `mutation MissedScreening($pupilScreeningId: Float!, $comment: String!) { pupilMissedScreening(pupilScreeningId: $pupilScreeningId, comment: $comment) }`
@@ -29,13 +30,25 @@ mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $p
 `);
 
 const UPDATE_SCREENING_QUERY = gql(`
-mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: PupilScreeningStatus!) {
+mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: PupilScreeningStatus, $knowsFrom: String!) {
     pupilUpdateScreening(pupilScreeningId: $id, data: {
         comment: $screeningComment,
         status: $status
+        knowsCoronaSchoolFrom: $knowsFrom
     })
 }
 `);
+
+const knowsFromSuggestions = [
+    'Persönliche Empfehlung: Familie & Freunde',
+    'Jugendzentrum',
+    'Schule / Lehrkraft',
+    'TikTok',
+    'Instagram',
+    'Print (Flyer, Poster etc.)',
+    'Suchmaschine (Google)',
+    'Website',
+];
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
@@ -45,6 +58,7 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     const { t } = useTranslation();
 
     const [screeningComment, setScreeningComment] = useState(screening!.comment!);
+    const [knowsFrom, setKnowsFrom] = useState(screening.knowsCoronaSchoolFrom ?? '');
 
     const [confirmRejection, setConfirmRejection] = useState(false);
     const [confirmSuccess, setConfirmSuccess] = useState(false);
@@ -58,17 +72,17 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
 
     function rejection() {
         setConfirmRejection(false);
-        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection } });
+        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection, knowsFrom } });
     }
 
     async function success() {
         setConfirmSuccess(false);
-        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Success } });
+        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Success, knowsFrom } });
     }
 
     function deactivate() {
         setConfirmDeactivation(false);
-        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection } });
+        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection, knowsFrom } });
         deactivateAccount({ variables: { pupilId: pupil!.id! } });
     }
 
@@ -96,10 +110,21 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                 id: screening!.id!,
                 screeningComment: resultComment,
                 status: PupilScreeningStatus.Dispute,
+                knowsFrom,
             },
         });
         setScreeningComment(resultComment);
     }
+
+    const handleOnKnowsFromChanges = (value: string) => {
+        if (knowsFromSuggestions.includes(value.trim())) {
+            setKnowsFrom(value.replaceAll('Sonstiges: ', ''));
+        } else if (value) {
+            setKnowsFrom(value.includes('Sonstiges: ') ? value : `Sonstiges: ${value}`);
+        } else {
+            setKnowsFrom(value);
+        }
+    };
 
     return (
         <>
@@ -113,8 +138,16 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                 />
             )}
             <VStack flexGrow="1" space={space['1']}>
-                <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="500px" width="100%" autoCompleteType="" />
-
+                <FormControl width={['100%', '60%']}>
+                    <FormControl.Label>Kennt Lern-Fair durch:</FormControl.Label>
+                    <TextInputWithSuggestions value={knowsFrom} setValue={handleOnKnowsFromChanges} suggestions={knowsFromSuggestions} />
+                </FormControl>
+                <FormControl>
+                    <FormControl.Label>
+                        Interner Kommentar (Wird <Box textDecoration="underline">nach Entscheidung</Box> gelöscht)
+                    </FormControl.Label>
+                    <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="200px" width="100%" autoCompleteType="" />
+                </FormControl>
                 <HStack space={space['1']} display="flex">
                     {(loading || loadingDeactivation || loadingMissedScreening) && <CenterLoadingSpinner />}
                     {(data || missedScreeningResult) && <InfoCard icon="yes" title="" message={t('screening.screening_saved')} />}
