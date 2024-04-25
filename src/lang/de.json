@@ -2039,12 +2039,25 @@
         "dissolve_reason": "Grund: {{reason}}",
         "courses": {
             "header": "Screening Gruppenkurse",
-            "submitted_or_approved": "Eingereichte & genehmigte Kurse",
+            "submitted_or_allowed": "Eingereichte & genehmigte Kurse",
             "denied_or_cancelled": "Abgelehnte & abgesagte Kurse",
             "submitted": "Eingereicht",
-            "approved": "Genehmigt",
+            "allowed": "Genehmigt",
             "denied": "Abgelehnt",
-            "cancelled": "Abgesagt"
+            "cancelled": "Abgesagt",
+            "allow_course": "Kurs freischalten",
+            "deny_course": "Kurs ablehnen",
+            "are_you_shure_allow": "Bist du dir sicher, dass du diesen Kurs freischalten möchtest?",
+            "are_you_shure_deny": "Bist du dir sicher, dass du diesen Kurs ablehnen möchtest?",
+            "toast": {
+                "allowed": "Der Kurs wurde genehmigt",
+                "denied": "Der Kurs wurde abgelehnt"
+            },
+            "reasons_btn_disabled": {
+                "allowed": "Dieser Kurs wurde genehmigt",
+                "denied": "Dieser Kurs wurde abgelehnt",
+                "cancelled": "Dieser Kurs wurde abgesagt"
+            }
         }
     },
     "achievement": {

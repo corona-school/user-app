@@ -109,11 +109,11 @@ const ScreenerGroup: React.FC = () => {
                         <NavigationTabs
                             tabs={[
                                 {
-                                    title: t('screening.courses.submitted_or_approved'),
+                                    title: t('screening.courses.allowed'),
                                     content: (
                                         <Subcourses
                                             courseGroups={[submitted as Subcourse[], allowed as Subcourse[]]}
-                                            titles={[t('screening.courses.submitted'), t('screening.courses.approved')]}
+                                            titles={[t('screening.courses.submitted'), t('screening.courses.allowed')]}
                                         />
                                     ),
                                 },
