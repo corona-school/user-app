@@ -19,16 +19,9 @@ enum ZoomInfoIconEnum {
 
 type ZoomInfo = { icon: ZoomInfoIconEnum; label: string };
 
-const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ appointmentId, appointmentType, zoomUrl }) => {
-    const { space } = useTheme();
+export const ZoomInfoOptions = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const { isMobile } = useLayoutHelper();
-    const modalWidth = useBreakpointValue({
-        base: '350px',
-        lg: '580px',
-    });
-
     const iconPadding = useBreakpointValue({
         base: '3',
         lg: '5',
@@ -41,6 +34,36 @@ const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ appointmentId, appo
         },
         { icon: ZoomInfoIconEnum.CAMERA, label: 'camera' },
     ];
+    return (
+        <Stack space={5}>
+            {zoomInfos.map((info) => (
+                <HStack alignItems="center" space={1}>
+                    <VStack>
+                        <Box px={iconPadding}>{info.icon === ZoomInfoIconEnum.CHECK ? <CheckBadge /> : <CameraIcon />}</Box>
+                    </VStack>
+                    <VStack maxW={isMobile ? 250 : 'full'}>
+                        <Text bold fontSize="lg" ellipsizeMode="tail" numberOfLines={10}>
+                            {t(`appointment.zoomModal.${info.label}.header` as any)}
+                        </Text>
+                        <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={10}>
+                            <Trans i18nKey={`appointment.zoomModal.${info.label}.description` as any} components={{ b: <b />, br: <br /> }} />
+                        </Text>
+                    </VStack>
+                </HStack>
+            ))}
+        </Stack>
+    );
+};
+
+const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ appointmentId, appointmentType, zoomUrl }) => {
+    const { space } = useTheme();
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { isMobile } = useLayoutHelper();
+    const modalWidth = useBreakpointValue({
+        base: '350px',
+        lg: '580px',
+    });
 
     return (
         <>
@@ -50,24 +73,9 @@ const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ appointmentId, appo
                     <VStack marginBottom={space['2']} alignItems="left" p={space['1']}>
                         <Heading fontSize="2xl">{t('appointment.zoomModal.header')}</Heading>
                     </VStack>
-                    <Stack mb={10} space={5}>
-                        {zoomInfos.map((info) => (
-                            <HStack alignItems="top" space={1}>
-                                <VStack>
-                                    <Box px={iconPadding}>{info.icon === ZoomInfoIconEnum.CHECK ? <CheckBadge /> : <CameraIcon />}</Box>
-                                </VStack>
-                                <VStack maxW={isMobile ? 250 : 'full'}>
-                                    <Text bold fontSize="lg" ellipsizeMode="tail" numberOfLines={10}>
-                                        {t(`appointment.zoomModal.${info.label}.header` as any)}
-                                    </Text>
-                                    <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={10}>
-                                        <Trans i18nKey={`appointment.zoomModal.${info.label}.description` as any} components={{ b: <b />, br: <br /> }} />
-                                    </Text>
-                                </VStack>
-                            </HStack>
-                        ))}
-                    </Stack>
-
+                    <Box mb={10}>
+                        <ZoomInfoOptions />
+                    </Box>
                     <Stack space={isMobile ? space['0.5'] : space['1']} direction={isMobile ? 'column' : 'row'} width="full" justifyContent="center">
                         <Button minW="260px" variant="outline" onPress={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)}>
                             {t('appointment.zoomModal.browser')}
