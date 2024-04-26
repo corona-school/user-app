@@ -1615,8 +1615,10 @@
         },
         "adHocMeeting": {
             "title": "Sofortbesprechung starten",
-            "infoText": "Wir legen automatisch einen Termin für dich an und informieren dein:e Schüler:in per E-Mail sobald du eine Sofortbesprechung startest. Prinzipiell kannst du Termine mit deinem:r Schüler:in auch vorab im User-Bereich planen und anlegen.",
-            "startMeeting": "Besprechung starten"
+            "infoText": " Wir informieren dein:e Schüler:in per Email, sobald du das Meeting startest.",
+            "startMeeting": "Besprechung starten",
+            "browser": "Im Browser fortfahren",
+            "zoomClient": "In Zoom öffnen"
         }
     },
     "course": {
