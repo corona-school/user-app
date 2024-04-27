@@ -11,7 +11,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
 type SubcourseDataProps = {
-    course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
+    course: Pick<Course, 'name' | 'image' | 'shared'> & { tags: Pick<Course_Tag, 'name'>[] };
     subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published'> &
         Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant' | 'canJoin'>> & {
             instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
@@ -93,6 +93,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         Date.now() >= Date.parse(subcourse.lectures[0].start) &&
                         !isInPast &&
                         subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
+                    {userType === 'screener' && course?.shared /* TBD: REPLACE WITH COURSE_SCREENER ROLE */ && <Text>{t('single.courseInfo.is_shared')}</Text>}
                 </VStack>
                 <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>

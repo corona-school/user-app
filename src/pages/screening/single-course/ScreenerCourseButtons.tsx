@@ -1,4 +1,4 @@
-import { Stack, useTheme } from 'native-base';
+import { Button, Stack, useTheme } from 'native-base';
 import { useNavigate } from 'react-router-dom';
 import DisableableButton from '../../../components/DisablebleButton';
 import { Course_Coursestate_Enum } from '../../../gql/graphql';
@@ -8,11 +8,13 @@ import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 type Props = {
     courseState?: Course_Coursestate_Enum;
     subcourseId: Number;
+    isShared?: boolean;
     onAllow: () => void;
     onDeny: () => void;
+    onShare: () => void;
 };
 
-const ScreenerCourseButtons: React.FC<Props> = ({ courseState, subcourseId, onAllow, onDeny }) => {
+const ScreenerCourseButtons: React.FC<Props> = ({ courseState, isShared, subcourseId, onAllow, onDeny, onShare }) => {
     const navigate = useNavigate();
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -33,6 +35,9 @@ const ScreenerCourseButtons: React.FC<Props> = ({ courseState, subcourseId, onAl
             </DisableableButton>
             <DisableableButton isDisabled={courseState !== Course_Coursestate_Enum.Submitted} reasonDisabled={reasonBtnDisabled()} onPress={onDeny}>
                 {t('screening.courses.deny_course')}
+            </DisableableButton>
+            <DisableableButton isDisabled={isShared === null} reasonDisabled={t('reasonsDisabled.loading')} onPress={onShare} variant="outline">
+                {t(`screening.courses.${isShared ? 'unshare_course' : 'share_course'}`)}
             </DisableableButton>
             {/* <Button
                 onPress={() => {

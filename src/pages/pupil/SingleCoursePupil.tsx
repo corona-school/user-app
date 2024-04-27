@@ -86,6 +86,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
             name
             }
             allowContact
+            shared
         }
         lectures{
             start

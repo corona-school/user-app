@@ -43,6 +43,7 @@ query subcourse($subcourseId: Int!) {
             category
             description
             subject
+            shared
             tags {
             name
             }
@@ -92,6 +93,7 @@ const SingleCourseScreener: React.FC = () => {
     });
 
     const { data, loading } = useQuery(subcourseQuery, { variables: { subcourseId: subcourseId } });
+    const { subcourse } = data ?? {};
 
     const [allowCourse] = useMutation(
         gql(`
@@ -117,7 +119,25 @@ const SingleCourseScreener: React.FC = () => {
         }
     );
 
-    const { subcourse } = data ?? {};
+    const [shareCourseMutation] = useMutation(
+        gql(`
+            mutation shareCourse($courseId: Float!, $share: Boolean!) {
+                courseMarkShared(shared: $share, courseId: $courseId){shared}
+            }
+        `),
+        {
+            refetchQueries: [subcourseQuery],
+        }
+    );
+
+    const shareCourse = (share: boolean) => {
+        shareCourseMutation({
+            variables: {
+                courseId: subcourse?.course.id ?? -1,
+                share,
+            },
+        });
+    };
 
     const isInPast = useMemo(
         () =>
@@ -155,8 +175,13 @@ const SingleCourseScreener: React.FC = () => {
                     <ScreenerCourseButtons
                         courseState={subcourse?.course.courseState}
                         subcourseId={subcourseId}
+                        isShared={subcourse?.course.shared}
                         onAllow={() => setShowAllowModal(true)}
                         onDeny={() => setShowDenyModal(true)}
+                        onShare={() => {
+                            if (subcourse) shareCourse(!subcourse?.course.shared);
+                            toast.show({ description: t(`screening.courses.toast.${subcourse?.course.shared ? 'unshared' : 'shared'}`), placement: 'top' });
+                        }}
                     />
                     <NavigationTabs tabs={tabs} />
                 </Stack>

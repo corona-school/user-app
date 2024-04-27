@@ -127,6 +127,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             name
             }
             allowContact
+            shared
         }
         lectures{
             start
