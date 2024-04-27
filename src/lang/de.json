@@ -2058,9 +2058,9 @@
                 "shared": "Der Kurs wurde als Vorlage markiert",
                 "unshared": "Der Kurs wurde als 'keine Vorlage mehr' markiert"
             },
-            "reasons_btn_disabled": {
-                "allowed": "Dieser Kurs wurde genehmigt",
-                "denied": "Dieser Kurs wurde abgelehnt",
+            "already": {
+                "allowed": "Dieser Kurs wurde bereits genehmigt",
+                "denied": "Dieser Kurs wurde bereits abgelehnt",
                 "cancelled": "Dieser Kurs wurde abgesagt"
             }
         }

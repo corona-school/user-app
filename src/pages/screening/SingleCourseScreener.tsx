@@ -7,7 +7,7 @@ import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import { useParams } from 'react-router-dom';
 import { Box, Stack, useBreakpointValue, useTheme, Text, useToast } from 'native-base';
 import SubcourseData from '../subcourse/SubcourseData';
-import { Course, Subcourse } from '../../gql/graphql';
+import { Course, Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 import { useMemo, useState } from 'react';
 import { DateTime } from 'luxon';
 import AppointmentList from '../../widgets/AppointmentList';
@@ -94,6 +94,7 @@ const SingleCourseScreener: React.FC = () => {
 
     const { data, loading } = useQuery(subcourseQuery, { variables: { subcourseId: subcourseId } });
     const { subcourse } = data ?? {};
+    const { course } = subcourse ?? {};
 
     const [allowCourse] = useMutation(
         gql(`
@@ -133,7 +134,7 @@ const SingleCourseScreener: React.FC = () => {
     const shareCourse = (share: boolean) => {
         shareCourseMutation({
             variables: {
-                courseId: subcourse?.course.id ?? -1,
+                courseId: course?.id ?? -1,
                 share,
             },
         });
@@ -141,9 +142,9 @@ const SingleCourseScreener: React.FC = () => {
 
     const isInPast = useMemo(
         () =>
-            !data?.subcourse ||
-            data?.subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
-        [data?.subcourse]
+            !subcourse ||
+            subcourse?.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+        [subcourse]
     );
 
     const tabs: Tab[] = [
@@ -151,7 +152,7 @@ const SingleCourseScreener: React.FC = () => {
             title: t('single.tabs.lessons'),
             content: (
                 <Box minH={300}>
-                    <AppointmentList isReadOnlyList={false} disableScroll noOldAppointments appointments={data?.subcourse?.appointments as Appointment[]} />
+                    <AppointmentList isReadOnlyList={false} disableScroll noOldAppointments appointments={subcourse?.appointments as Appointment[]} />
                 </Box>
             ),
         },
@@ -159,7 +160,7 @@ const SingleCourseScreener: React.FC = () => {
             title: t('single.tabs.description'),
             content: (
                 <Text maxWidth={sizes['imageHeaderWidth']} marginBottom={space['1']}>
-                    {subcourse?.course?.description}
+                    {course?.description}
                 </Text>
             ),
         },
@@ -171,24 +172,27 @@ const SingleCourseScreener: React.FC = () => {
                 <CenterLoadingSpinner />
             ) : (
                 <Stack space={sectionSpacing} paddingX={space['1.5']}>
-                    <SubcourseData course={subcourse?.course as Course} subcourse={subcourse as Subcourse} isInPast={isInPast} />
+                    <SubcourseData course={course as Course} subcourse={subcourse as Subcourse} isInPast={isInPast} />
                     <ScreenerCourseButtons
-                        courseState={subcourse?.course.courseState}
+                        courseState={course?.courseState}
                         subcourseId={subcourseId}
-                        isShared={subcourse?.course.shared}
+                        isShared={course?.shared}
                         onAllow={() => setShowAllowModal(true)}
                         onDeny={() => setShowDenyModal(true)}
                         onShare={() => {
-                            if (subcourse) shareCourse(!subcourse?.course.shared);
-                            toast.show({ description: t(`screening.courses.toast.${subcourse?.course.shared ? 'unshared' : 'shared'}`), placement: 'top' });
+                            if (subcourse) shareCourse(!course?.shared);
+                            toast.show({ description: t(`screening.courses.toast.${course?.shared ? 'unshared' : 'shared'}`), placement: 'top' });
                         }}
                     />
                     <NavigationTabs tabs={tabs} />
                 </Stack>
             )}
             <ConfirmModal
-                text={t('screening.courses.are_you_shure_allow')}
+                text={`${course?.courseState === Course_Coursestate_Enum.Denied ? t('screening.courses.already.denied') + '.\n' : ''}${t(
+                    'screening.courses.are_you_shure_allow'
+                )}`}
                 isOpen={showAllowModal}
+                danger={course?.courseState === Course_Coursestate_Enum.Denied}
                 onConfirmed={() => {
                     allowCourse();
                     setShowAllowModal(false);
@@ -197,8 +201,11 @@ const SingleCourseScreener: React.FC = () => {
                 onClose={() => setShowAllowModal(false)}
             />
             <ConfirmModal
-                text={t('screening.courses.are_you_shure_deny')}
+                text={`${course?.courseState === Course_Coursestate_Enum.Allowed ? t('screening.courses.already.allowed') + '.\n' : ''}${t(
+                    'screening.courses.are_you_shure_deny'
+                )}`}
                 isOpen={showDenyModal}
+                danger={course?.courseState === Course_Coursestate_Enum.Allowed}
                 onConfirmed={() => {
                     denyCourse();
                     setShowDenyModal(false);
