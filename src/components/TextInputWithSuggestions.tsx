@@ -1,17 +1,18 @@
-import { useTheme, VStack, HStack, Text } from 'native-base';
-import { TextInput, Pressable } from 'react-native';
+import { useTheme, VStack, HStack, Text, Input, Button } from 'native-base';
 
 export function TextInputWithSuggestions({ value, setValue, suggestions }: { value: string; setValue: (it: string) => void; suggestions: string[] }) {
-    const { space, colors } = useTheme();
+    const { space } = useTheme();
 
     return (
         <VStack>
-            <TextInput style={{ backgroundColor: colors.primary['100'], fontSize: 15, padding: space['2'] }} value={value} onChangeText={setValue} />
-            <HStack paddingTop={space['1']} space={space['1']} display="flex" flexWrap="wrap">
+            <Input value={value} onChangeText={setValue} />
+            <HStack paddingTop={space['0.5']} space={space['0.5']} display="flex" flexWrap="wrap">
                 {suggestions.map((it) => (
-                    <Pressable onPress={() => setValue(it)}>
-                        <Text fontStyle="italic">{it}</Text>
-                    </Pressable>
+                    <Button onPress={() => setValue(it)} my={'0.5'} variant="ghost" colorScheme="tertiary" size="xs">
+                        <Text fontStyle="italic" fontSize="sm">
+                            {it}
+                        </Text>
+                    </Button>
                 ))}
             </HStack>
         </VStack>
