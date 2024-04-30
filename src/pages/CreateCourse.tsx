@@ -100,7 +100,7 @@ const CreateCourse: React.FC = () => {
     const [courseName, setCourseName] = useState<string>('');
     const [courseCategory, setCourseCategory] = useState<string>('');
     const [subject, setSubject] = useState<string | null>(null);
-    const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13]);
+    const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 14]);
     const [description, setDescription] = useState<string>('');
     const [tags, setTags] = useState<LFTag[]>([]);
     const [maxParticipantCount, setMaxParticipantCount] = useState<string>('');

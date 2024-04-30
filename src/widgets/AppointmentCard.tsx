@@ -21,7 +21,7 @@ import {
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import { toTimerString } from '../Utility';
+import { getGradeLabel, toTimerString } from '../Utility';
 import useInterval from '../hooks/useInterval';
 import { TrafficStatus } from '../types/lernfair/Course';
 import { DateTime } from 'luxon';
@@ -325,7 +325,8 @@ const AppointmentCard: React.FC<Props> = ({
                                 {showSchoolclass && (
                                     <Text maxWidth={sizes['imageHeaderWidth']}>
                                         <Text bold>{t('single.courseInfo.grade')}</Text>
-                                        {t('single.courseInfo.class', { minGrade: minGrade, maxGrade: maxGrade })}
+                                        {!!(minGrade && maxGrade) &&
+                                            t('single.courseInfo.class', { minGrade: getGradeLabel(minGrade), maxGrade: getGradeLabel(maxGrade) })}
                                     </Text>
                                 )}
 
