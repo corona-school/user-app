@@ -20,6 +20,7 @@ import { EditGradeModal } from './EditGradeModal';
 import { EditLanguagesModal } from './EditLanguagesModal';
 import DisableableButton from '../../components/DisablebleButton';
 import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
+import { getGradeLabel } from '../../Utility';
 
 const MISSED_SCREENING_QUERY = gql(
     `mutation MissedScreening($pupilScreeningId: Float!, $comment: String!) { pupilMissedScreening(pupilScreeningId: $pupilScreeningId, comment: $comment) }`
@@ -412,7 +413,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             </Heading>
             <HStack flexWrap="wrap" space={space['1']}>
                 <Text fontSize="20px" lineHeight="50px">
-                    {pupil.grade} -{' '}
+                    {getGradeLabel(pupil.gradeAsInt)} -{' '}
                 </Text>
                 <Button variant="outline" onPress={() => setShowEditGrade(true)} rightIcon={<EditIcon />}>
                     Klasse bearbeiten
