@@ -60,11 +60,6 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
         switch (modalType) {
             case 'schooltypes':
                 return schooltypes;
-            case 'schoolclass':
-                return Array.from({ length: 13 }, (_, i) => ({
-                    label: `${i + 1}. Klasse`,
-                    key: `${i + 1}`,
-                }));
             case 'states':
                 return states;
             default:
@@ -76,9 +71,6 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
         switch (modalType) {
             case 'schooltypes':
                 return schooltype;
-
-            case 'schoolclass':
-                return `${gradeAsInt}`;
             case 'states':
                 return state;
             default:

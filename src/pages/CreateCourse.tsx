@@ -334,7 +334,7 @@ const CreateCourse: React.FC = () => {
         setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
         setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
         setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
-        setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
+        setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 14]);
         setCourseAppointments(prefillCourse.appointments ?? []);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 

@@ -1,7 +1,7 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue } from 'native-base';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -45,22 +45,6 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
             meUpdate(update: { pupil: { gradeAsInt: $grade } })
         }
     `);
-
-    const schoolGrades = useMemo(() => {
-        return new Array(13).fill(0).map((_, i) => i + 1);
-
-        // if (!data?.me?.pupil?.schooltype) {
-        //   return new Array(8).fill(0).map((_, i) => i + 5)
-        // }
-
-        // if (data?.me?.pupil?.schooltype === 'grundschule') {
-        //   return new Array(4).fill(0).map((_, i) => i + 1)
-        // } else if (data?.me?.pupil?.schooltype === 'gymnasium') {
-        //   return new Array(8).fill(0).map((_, i) => i + 5)
-        // } else {
-        //   return new Array(6).fill(0).map((_, i) => i + 5)
-        // }
-    }, []);
 
     const [selectedGrade, setSelectedGrade] = useState<number>(1);
 
