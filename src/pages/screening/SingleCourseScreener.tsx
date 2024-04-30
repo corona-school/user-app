@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NavigationTabs, { Tab } from '../../components/NavigationTabs';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Box, Stack, useBreakpointValue, useTheme, Text, useToast } from 'native-base';
 import SubcourseData from '../subcourse/SubcourseData';
 import { Course, Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { DateTime } from 'luxon';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -80,11 +80,9 @@ const SingleCourseScreener: React.FC = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
 
-    const [showAllowModal, setShowAllowModal] = useState(false);
-    const [showDenyModal, setShowDenyModal] = useState(false);
-
     const toast = useToast();
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { space, sizes } = useTheme();
 
     const sectionSpacing = useBreakpointValue({
@@ -95,6 +93,21 @@ const SingleCourseScreener: React.FC = () => {
     const { data, loading } = useQuery(subcourseQuery, { variables: { subcourseId: subcourseId } });
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+
+    const [showAllowModal, setShowAllowModal] = useState(false);
+    const [showDenyModal, setShowDenyModal] = useState(false);
+
+    /**
+     * Courses with the state "created" aren't yet approved to be screened by the course creators.
+     * Their pages aren't reachable for screeners by directly using the app, but could be thru the url.
+     * This is extremely unlikely to happen, but not impossible.
+     * In this case we should to navigate the screener back to the start page.
+     */
+    useEffect(() => {
+        if (course?.courseState === Course_Coursestate_Enum.Created) {
+            navigate('/start');
+        }
+    }, [course?.courseState]);
 
     const [allowCourse] = useMutation(
         gql(`
