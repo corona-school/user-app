@@ -16,6 +16,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import { gql } from '../../gql';
 import useLernfair from '../../hooks/useLernfair';
 import HelpNavigation from '../../components/HelpNavigation';
+import { GradeTag } from '../../components/GradeSelector';
 
 type Props = {};
 
@@ -361,13 +362,7 @@ const ProfilePupil: React.FC<Props> = () => {
                                     {(data?.me?.pupil?.gradeAsInt && (
                                         <Column marginRight={3} mb={space['0.5']}>
                                             <CSSWrapper className="profil-tab-link">
-                                                <IconTagList
-                                                    isDisabled
-                                                    textIcon={`${data?.me?.pupil?.gradeAsInt}`}
-                                                    text={t('lernfair.schoolclass', {
-                                                        class: data?.me?.pupil?.gradeAsInt,
-                                                    })}
-                                                />
+                                                <GradeTag grade={data?.me?.pupil?.gradeAsInt} />
                                             </CSSWrapper>
                                         </Column>
                                     )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}

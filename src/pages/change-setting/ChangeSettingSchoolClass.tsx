@@ -3,15 +3,15 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue } from 'native-base';
 import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 
 import WithNavigation from '../../components/WithNavigation';
 import AlertMessage from '../../widgets/AlertMessage';
-import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
+import { GradeSelector, GradeTag } from '../../components/GradeSelector';
 
 type Props = {};
 
@@ -19,9 +19,6 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
 
     const { t } = useTranslation();
-
-    const location = useLocation();
-    const { state } = location as { state: { userType: string } };
 
     const [showError, setShowError] = useState<boolean>();
 
@@ -114,13 +111,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
                     <Row flexWrap="wrap" width="100%">
                         <Column marginRight={3} marginBottom={3} key={`selection-${selectedGrade}`}>
-                            <IconTagList
-                                isDisabled
-                                textIcon={`${selectedGrade}`}
-                                text={t('lernfair.schoolclass', {
-                                    class: selectedGrade,
-                                })}
-                            />
+                            <GradeTag grade={selectedGrade} />
                         </Column>
                     </Row>
                 </ProfileSettingItem>
@@ -130,20 +121,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                     <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
                         <VStack w="100%">
                             <Row flexWrap="wrap" width="100%">
-                                {schoolGrades?.map(
-                                    (subject, index) =>
-                                        selectedGrade !== subject && (
-                                            <Column marginRight={3} marginBottom={3} key={`offers-${index}`}>
-                                                <IconTagList
-                                                    textIcon={`${subject}`}
-                                                    text={t('lernfair.schoolclass', {
-                                                        class: subject,
-                                                    })}
-                                                    onPress={() => setSelectedGrade(subject)}
-                                                />
-                                            </Column>
-                                        )
-                                )}
+                                <GradeSelector onGradeChange={setSelectedGrade} omitGrades={[selectedGrade]} />
                             </Row>
                             {/* {selections.includes('Andere') && (
                 <Row>
