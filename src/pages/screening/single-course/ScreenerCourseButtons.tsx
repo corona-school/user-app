@@ -30,6 +30,7 @@ const ScreenerCourseButtons: React.FC<Props> = ({ courseState, isShared, subcour
 
     return (
         <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
+            {/* ALLOW COURSE */}
             <DisableableButton
                 isDisabled={courseState === Course_Coursestate_Enum.Allowed || courseState === Course_Coursestate_Enum.Cancelled}
                 reasonDisabled={reasonBtnDisabled()}
@@ -39,18 +40,15 @@ const ScreenerCourseButtons: React.FC<Props> = ({ courseState, isShared, subcour
             >
                 {t('screening.courses.allow_course')}
             </DisableableButton>
-            <DisableableButton
-                isDisabled={courseState === Course_Coursestate_Enum.Denied || courseState === Course_Coursestate_Enum.Cancelled}
-                reasonDisabled={reasonBtnDisabled()}
-                onPress={onDeny}
-                bgColor={courseState === Course_Coursestate_Enum.Allowed ? 'danger.100' : undefined}
-                _text={{ color: courseState === Course_Coursestate_Enum.Allowed ? 'white' : undefined }}
-            >
+            {/* DENY COURSE */}
+            <DisableableButton isDisabled={courseState !== Course_Coursestate_Enum.Submitted} reasonDisabled={reasonBtnDisabled()} onPress={onDeny}>
                 {t('screening.courses.deny_course')}
             </DisableableButton>
-            <DisableableButton isDisabled={isShared === null} reasonDisabled={t('reasonsDisabled.loading')} onPress={onShare} variant="outline">
+            {/* SHARE COURSE */}
+            <Button onPress={onShare} variant="outline">
                 {t(`screening.courses.${isShared ? 'unshare_course' : 'share_course'}`)}
-            </DisableableButton>
+            </Button>
+            {/* EDIT COURSE */}
             {/* <Button
                 onPress={() => {
                     navigate('/edit-course', {

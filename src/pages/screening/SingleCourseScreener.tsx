@@ -101,7 +101,7 @@ const SingleCourseScreener: React.FC = () => {
      * Courses with the state "created" aren't yet approved to be screened by the course creators.
      * Their pages aren't reachable for screeners by directly using the app, but could be thru the url.
      * This is extremely unlikely to happen, but not impossible.
-     * In this case we should to navigate the screener back to the start page.
+     * In this case we should navigate the screener back to the start page.
      */
     useEffect(() => {
         if (course?.courseState === Course_Coursestate_Enum.Created) {
@@ -200,6 +200,7 @@ const SingleCourseScreener: React.FC = () => {
                     <NavigationTabs tabs={tabs} />
                 </Stack>
             )}
+            {/* ALLOW COURSE MODAL */}
             <ConfirmModal
                 text={`${course?.courseState === Course_Coursestate_Enum.Denied ? t('screening.courses.already.denied') + '.\n' : ''}${t(
                     'screening.courses.are_you_shure_allow'
@@ -213,12 +214,10 @@ const SingleCourseScreener: React.FC = () => {
                 }}
                 onClose={() => setShowAllowModal(false)}
             />
+            {/* DENY COURSE MODAL */}
             <ConfirmModal
-                text={`${course?.courseState === Course_Coursestate_Enum.Allowed ? t('screening.courses.already.allowed') + '.\n' : ''}${t(
-                    'screening.courses.are_you_shure_deny'
-                )}`}
+                text={t('screening.courses.are_you_shure_deny')}
                 isOpen={showDenyModal}
-                danger={course?.courseState === Course_Coursestate_Enum.Allowed}
                 onConfirmed={() => {
                     denyCourse();
                     setShowDenyModal(false);
