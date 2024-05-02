@@ -109,7 +109,7 @@ export default function NavigatorLazy() {
                 path="/single-course/:id"
                 element={
                     <RequireAuth isRetainPath>
-                        <RequireRole roles={['STUDENT', 'PARTICIPANT', 'SCREENER']}>
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT', 'COURSE_SCREENER']}>
                             <SwitchUserType
                                 pupilComponent={<SingleCoursePupil />}
                                 studentComponent={<SingleCourseStudent />}
