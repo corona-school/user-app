@@ -2,6 +2,7 @@ import { Button, Modal, Text, Stack, useTheme, Heading, VStack } from 'native-ba
 import { useTranslation } from 'react-i18next';
 import { SubcourseParticipant } from '../types/lernfair/Course';
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType';
+import { getGradeLabel } from '../Utility';
 
 type RemoveParticipantFromCourseModalProps = {
     participant: SubcourseParticipant | undefined;
@@ -25,7 +26,7 @@ const RemoveParticipantFromCourseModal: React.FC<RemoveParticipantFromCourseModa
                             </Heading>
                             <Text>
                                 {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
-                                {participant.grade}
+                                {getGradeLabel(participant.gradeAsInt)}
                             </Text>
                         </VStack>
                     )}

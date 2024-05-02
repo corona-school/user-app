@@ -28,10 +28,11 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
                     id
                     firstname
                     grade
+                    gradeAsInt
                 }
             }
 
-            me { pupil { firstname lastname schooltype grade }}
+            me { pupil { firstname lastname schooltype grade, gradeAsInt }}
         }
     `),
         { variables: { subcourseId } }

@@ -2,6 +2,7 @@ import { Button, Modal, Text, Stack, useTheme, Heading, VStack } from 'native-ba
 import { useTranslation } from 'react-i18next';
 import { PupilOnWaitinglist } from '../types/lernfair/Course';
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType';
+import { getGradeLabel } from '../Utility';
 
 type JoinPupilModalProps = {
     pupil: PupilOnWaitinglist | undefined;
@@ -25,7 +26,7 @@ const AddPupilModal: React.FC<JoinPupilModalProps> = ({ pupil, addPupilToCourse 
                             </Heading>
                             <Text>
                                 {pupil.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
-                                {pupil.grade}
+                                {getGradeLabel(pupil.gradeAsInt)}
                             </Text>
                         </VStack>
                     )}
