@@ -11,7 +11,7 @@ import { useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
 import { DateTime } from 'luxon';
-import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
+import { getGradeLabel, getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -52,6 +52,7 @@ const query = gql(`
                         firstname
                         lastname
                         grade
+                        gradeAsInt
                         subjectsFormatted {
                             name
                         }
@@ -331,7 +332,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                             name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
                                                             subjects={match?.pupil?.subjectsFormatted}
                                                             schooltype={match?.pupil?.schooltype || ''}
-                                                            grade={match?.pupil?.grade || ''}
+                                                            grade={getGradeLabel(match?.pupil?.gradeAsInt) || ''}
                                                         />
                                                     </Box>
                                                 );

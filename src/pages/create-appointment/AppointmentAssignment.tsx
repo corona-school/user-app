@@ -5,7 +5,7 @@ import { useQuery } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { useMemo } from 'react';
 import { LFSubCourse } from '../../types/lernfair/Course';
-import { getTrafficStatus } from '../../Utility';
+import { getGradeLabel, getTrafficStatus } from '../../Utility';
 import { DateTime } from 'luxon';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import GroupTile from '../../widgets/GroupTile';
@@ -30,6 +30,7 @@ const query = gql(`
                         lastname
                         schooltype
                         grade
+                        gradeAsInt
                         subjectsFormatted {
                             name
                         }
@@ -132,7 +133,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                                             key={match.id}
                                                             matchId={match.id}
                                                             schooltype={match?.pupil?.schooltype}
-                                                            grade={match?.pupil?.grade || ''}
+                                                            grade={getGradeLabel(match?.pupil?.gradeAsInt) || ''}
                                                             pupil={{ firstname: match?.pupil?.firstname || '', lastname: match?.pupil?.lastname || '' }}
                                                             subjects={match?.pupil?.subjectsFormatted.map((subject: { name: string }) => subject.name)}
                                                             next={match.appointments && match.appointments.length === 0 ? skipStepTwo : next}

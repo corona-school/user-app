@@ -48,6 +48,7 @@ function Participants({
                     lastname
                     schooltype
                     grade
+                    gradeAsInt
                 }
             }
         }
@@ -169,6 +170,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
             lastname
             schooltype
             grade
+            gradeAsInt
         }
         canEdit { allowed reason }
         canContactParticipants { allowed reason }
