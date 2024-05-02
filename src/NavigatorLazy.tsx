@@ -289,8 +289,7 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         {/* for helpers ('students') we do not require the INSTRUCTOR role, as we have a fallback page in place */}
-                        {/* TBD: Replace screener role here with dedicated (yet to be created) COURSE_SCREENER role */}
-                        <RequireRole roles={['STUDENT', 'PARTICIPANT', 'SCREENER']}>
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT', 'COURSE_SCREENER']}>
                             <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} screenerComponent={<ScreenerGroup />} />
                         </RequireRole>
                     </RequireAuth>

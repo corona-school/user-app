@@ -204,7 +204,6 @@ const SingleCourseScreener: React.FC = () => {
                             </Text>
                             <Text ml="1" fontSize="md">
                                 {courseStatus()}
-                                {subcourse?.published}
                             </Text>
                         </Stack>
                     </Card>

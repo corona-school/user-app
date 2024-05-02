@@ -93,7 +93,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         Date.now() >= Date.parse(subcourse.lectures[0].start) &&
                         !isInPast &&
                         subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
-                    {userType === 'screener' && course?.shared /* TBD: REPLACE WITH COURSE_SCREENER ROLE */ && <Text>{t('single.courseInfo.is_shared')}</Text>}
+                    {userType === 'screener' && course?.shared && <Text>{t('single.courseInfo.is_shared')}</Text>}
                 </VStack>
                 <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
