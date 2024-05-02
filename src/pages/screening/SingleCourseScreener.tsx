@@ -5,7 +5,7 @@ import WithNavigation from '../../components/WithNavigation';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Box, Stack, useBreakpointValue, useTheme, Text, useToast } from 'native-base';
+import { Box, Stack, useBreakpointValue, useTheme, Text, useToast, Card } from 'native-base';
 import SubcourseData from '../subcourse/SubcourseData';
 import { Course, Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 import { useEffect, useMemo, useState } from 'react';
@@ -177,6 +177,19 @@ const SingleCourseScreener: React.FC = () => {
         },
     ];
 
+    const courseStatus = () => {
+        let s = '';
+
+        if (course?.courseState === Course_Coursestate_Enum.Allowed) s += t('screening.courses.allowed');
+        else if (course?.courseState === Course_Coursestate_Enum.Denied) s += t('screening.courses.denied');
+        else if (course?.courseState === Course_Coursestate_Enum.Submitted) s += t('screening.courses.submitted');
+        else if (course?.courseState === Course_Coursestate_Enum.Cancelled) s += t('screening.courses.cancelled');
+
+        s += ` & ${subcourse?.published ? t('screening.courses.published') : t('screening.courses.not_published')}`;
+
+        return s;
+    };
+
     return (
         <WithNavigation showBack>
             {loading ? (
@@ -184,6 +197,17 @@ const SingleCourseScreener: React.FC = () => {
             ) : (
                 <Stack space={sectionSpacing} paddingX={space['1.5']}>
                     <SubcourseData course={course as Course} subcourse={subcourse as Subcourse} isInPast={isInPast} />
+                    <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
+                        <Stack direction="row">
+                            <Text bold fontSize="md">
+                                {t('single.banner.state')}
+                            </Text>
+                            <Text ml="1" fontSize="md">
+                                {courseStatus()}
+                                {subcourse?.published}
+                            </Text>
+                        </Stack>
+                    </Card>
                     <ScreenerCourseButtons
                         courseState={course?.courseState}
                         subcourseId={subcourseId}

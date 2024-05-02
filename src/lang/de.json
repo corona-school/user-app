@@ -2046,6 +2046,8 @@
             "allowed": "Genehmigt",
             "denied": "Abgelehnt",
             "cancelled": "Abgesagt",
+            "published": "veröffentlicht",
+            "not_published": "nicht veröffentlicht",
             "allow_course": "Kurs freischalten",
             "deny_course": "Kurs ablehnen",
             "share_course": "Kurs als Vorlage markieren",
