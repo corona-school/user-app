@@ -90,7 +90,7 @@ const SingleCourseScreener: React.FC = () => {
         lg: space['4'],
     });
 
-    const { data, loading } = useQuery(subcourseQuery, { variables: { subcourseId: subcourseId } });
+    const { data, loading, refetch: refetchSubcourse } = useQuery(subcourseQuery, { variables: { subcourseId: subcourseId } });
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
 
@@ -117,7 +117,9 @@ const SingleCourseScreener: React.FC = () => {
         `),
         {
             variables: { subcourseId: subcourseId },
-            refetchQueries: [subcourseQuery],
+            onError: () => {
+                refetchSubcourse(); // necessary when allowCourse runs with errors (subcourse can't be published, but course will still get allowed)
+            },
         }
     );
 
@@ -129,7 +131,6 @@ const SingleCourseScreener: React.FC = () => {
         `),
         {
             variables: { subcourseId: subcourseId },
-            refetchQueries: [subcourseQuery],
         }
     );
 
@@ -138,14 +139,11 @@ const SingleCourseScreener: React.FC = () => {
             mutation shareCourse($courseId: Float!, $share: Boolean!) {
                 courseMarkShared(shared: $share, courseId: $courseId){shared}
             }
-        `),
-        {
-            refetchQueries: [subcourseQuery],
-        }
+        `)
     );
 
-    const shareCourse = (share: boolean) => {
-        shareCourseMutation({
+    const shareCourse = async (share: boolean) => {
+        await shareCourseMutation({
             variables: {
                 courseId: course?.id ?? -1,
                 share,
@@ -192,8 +190,9 @@ const SingleCourseScreener: React.FC = () => {
                         isShared={course?.shared}
                         onAllow={() => setShowAllowModal(true)}
                         onDeny={() => setShowDenyModal(true)}
-                        onShare={() => {
-                            if (subcourse) shareCourse(!course?.shared);
+                        onShare={async () => {
+                            await shareCourse(!course?.shared);
+                            refetchSubcourse();
                             toast.show({ description: t(`screening.courses.toast.${course?.shared ? 'unshared' : 'shared'}`), placement: 'top' });
                         }}
                     />
@@ -207,9 +206,10 @@ const SingleCourseScreener: React.FC = () => {
                 )}`}
                 isOpen={showAllowModal}
                 danger={course?.courseState === Course_Coursestate_Enum.Denied}
-                onConfirmed={() => {
-                    allowCourse();
+                onConfirmed={async () => {
                     setShowAllowModal(false);
+                    await allowCourse();
+                    refetchSubcourse();
                     toast.show({ description: t('screening.courses.toast.allowed'), placement: 'top' });
                 }}
                 onClose={() => setShowAllowModal(false)}
@@ -218,9 +218,10 @@ const SingleCourseScreener: React.FC = () => {
             <ConfirmModal
                 text={t('screening.courses.are_you_shure_deny')}
                 isOpen={showDenyModal}
-                onConfirmed={() => {
-                    denyCourse();
+                onConfirmed={async () => {
                     setShowDenyModal(false);
+                    await denyCourse();
+                    refetchSubcourse();
                     toast.show({ description: t('screening.courses.toast.denied'), placement: 'top' });
                 }}
                 onClose={() => setShowDenyModal(false)}
