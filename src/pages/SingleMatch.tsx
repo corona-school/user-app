@@ -43,6 +43,7 @@ query SingleMatch($matchId: Int! ) {
         lastname
         schooltype
         grade
+        gradeAsInt
         state
         subjectsFormatted {
             name

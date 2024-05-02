@@ -39,6 +39,7 @@ const query = gql(`
                         lastname
                         schooltype
                         grade
+                        gradeAsInt
                     }
                 }
                 canRequestMatch {

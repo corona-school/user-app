@@ -6,6 +6,7 @@ import { useUserType } from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import AlertMessage from '../../widgets/AlertMessage';
 import LearningPartner from '../../widgets/LearningPartner';
+import { getGradeLabel } from '../../Utility';
 
 type MatchesProps = {
     activeMatches: Match[];
@@ -46,7 +47,7 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
                         name={getMatchPartnerName(match)}
                         subjects={match?.subjectsFormatted}
                         schooltype={match?.pupil?.schooltype === Pupil_Schooltype_Enum.Other ? undefined : match?.pupil?.schooltype}
-                        grade={match?.pupil?.grade ? match?.pupil?.grade : ''}
+                        grade={match?.pupil?.gradeAsInt ? getGradeLabel(match.pupil.gradeAsInt) : undefined}
                         isDissolved={match?.dissolved}
                     />
                 </Box>
