@@ -11,6 +11,7 @@ import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
 import DisableableButton from '../../../components/DisablebleButton';
+import { GradeSelector, GradeTag } from '../../../components/GradeSelector';
 
 type Props = {
     schooltype: string;
@@ -59,11 +60,6 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
         switch (modalType) {
             case 'schooltypes':
                 return schooltypes;
-            case 'schoolclass':
-                return Array.from({ length: 13 }, (_, i) => ({
-                    label: `${i + 1}. Klasse`,
-                    key: `${i + 1}`,
-                }));
             case 'states':
                 return states;
             default:
@@ -75,9 +71,6 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
         switch (modalType) {
             case 'schooltypes':
                 return schooltype;
-
-            case 'schoolclass':
-                return `${gradeAsInt}`;
             case 'states':
                 return state;
             default:
@@ -160,13 +153,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                         {(gradeAsInt && (
                             <Column marginRight={3} mb={space['0.5']}>
                                 <CSSWrapper className="profil-tab-link">
-                                    <IconTagList
-                                        isDisabled
-                                        textIcon={`${gradeAsInt}`}
-                                        text={t('lernfair.schoolclass', {
-                                            class: gradeAsInt,
-                                        })}
-                                    />
+                                    <GradeTag grade={gradeAsInt} />
                                 </CSSWrapper>
                             </Column>
                         )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
@@ -218,17 +205,20 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                     <Modal.Header>{t('change')}</Modal.Header>
                     <Modal.Body>
                         <Row flexWrap="wrap">
-                            {listItems.map((item: { label: string; key: string }) => (
-                                <Column mb={space['1']} mr={space['1']}>
-                                    <IconTagList
-                                        initial={modalSelection === item.key}
-                                        text={item.label}
-                                        onPress={() => setModalSelection(item.key)}
-                                        iconPath={(modalType !== 'schoolclass' && `${modalType}/icon_${item.key}.svg`) || ''}
-                                        textIcon={(modalType === 'schoolclass' && `${item.key}`) || ''}
-                                    />
-                                </Column>
-                            ))}
+                            {modalType === 'schoolclass' ? (
+                                <GradeSelector grade={Number(modalSelection)} onGradeChange={(newGrade) => setModalSelection(`${newGrade}`)} />
+                            ) : (
+                                listItems.map((item: { label: string; key: string }) => (
+                                    <Column mb={space['1']} mr={space['1']}>
+                                        <IconTagList
+                                            initial={modalSelection === item.key}
+                                            text={item.label}
+                                            onPress={() => setModalSelection(item.key)}
+                                            iconPath={`${modalType}/icon_${item.key}.svg`}
+                                        />
+                                    </Column>
+                                ))
+                            )}
                         </Row>
                     </Modal.Body>
                     <Modal.Footer>

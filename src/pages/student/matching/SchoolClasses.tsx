@@ -11,6 +11,7 @@ import PartyIcon from '../../../assets/icons/lernfair/lf-party.svg';
 import { useTranslation } from 'react-i18next';
 import { Subject } from '../../../gql/graphql';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
+import { getGradeLabel } from '../../../Utility';
 
 type Props = {};
 
@@ -125,13 +126,13 @@ const SubjectGradeSlider = ({ subject, setSubject }: { subject: Subject; setSubj
             <VStack space={space['0.5']}>
                 <Heading fontSize="md">{t(`lernfair.subjects.${subject.name}` as unknown as TemplateStringsArray)}</Heading>
                 <Heading fontSize="md">
-                    {t('grade')} {subject.grade!.min}-{subject.grade!.max}
+                    {getGradeLabel(subject.grade!.min)} - {getGradeLabel(subject.grade!.max)}
                 </Heading>
 
                 <Slider
                     animateTransitions
                     minimumValue={1}
-                    maximumValue={13}
+                    maximumValue={14}
                     minimumTrackTintColor={colors['primary']['500']}
                     thumbTintColor={colors['primary']['900']}
                     value={[subject.grade!.min, subject.grade!.max]}

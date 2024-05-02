@@ -1,25 +1,40 @@
-import { Column, Row, useTheme } from 'native-base';
+import { Column, useTheme } from 'native-base';
 import IconTagList from '../widgets/IconTagList';
-import { useTranslation } from 'react-i18next';
+import { getGradeLabel } from '../Utility';
 
-export function GradeSelector({ grade, setGrade }: { grade: number; setGrade: (grade: number) => void }) {
+interface GradeTagProps {
+    grade: number;
+    isSelected?: boolean;
+    onSelect?: (grade: number) => void;
+}
+
+export const GradeTag = ({ grade, isSelected, onSelect }: GradeTagProps) => {
+    return (
+        <IconTagList initial={isSelected} textIcon={grade === 14 ? 'A' : `${grade}`} text={getGradeLabel(grade)} onPress={() => onSelect && onSelect(grade)} />
+    );
+};
+
+interface GradeSelectorProps {
+    grade?: number;
+    onGradeChange: (grade: number) => void;
+    omitGrades?: number[];
+}
+
+export function GradeSelector({ grade, onGradeChange, omitGrades = [] }: GradeSelectorProps) {
     const { space } = useTheme();
-    const { t } = useTranslation();
 
     return (
-        <Row flexWrap="wrap" w="100%" mt={space['1']} marginBottom={space['1']}>
-            {new Array(13).fill(0).map((_, i) => (
-                <Column mb={space['0.5']} mr={space['0.5']}>
-                    <IconTagList
-                        initial={grade === i + 1}
-                        textIcon={`${i + 1}`}
-                        text={t('lernfair.schoolclass', {
-                            class: i + 1,
-                        })}
-                        onPress={() => setGrade(i + 1)}
-                    />
-                </Column>
-            ))}
-        </Row>
+        <>
+            {new Array(14).fill(0).map((_, i) => {
+                const value = i + 1;
+                const isOmitted = omitGrades.includes(value);
+                if (isOmitted) return null;
+                return (
+                    <Column mb={space['0.5']} mr={space['0.5']}>
+                        <GradeTag grade={value} isSelected={grade === value} onSelect={onGradeChange} />
+                    </Column>
+                );
+            })}
+        </>
     );
 }

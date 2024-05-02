@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Heading, Image, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import useModal from '../hooks/useModal';
 import VerifyEmailModal from '../modals/VerifyEmailModal';
@@ -32,7 +32,7 @@ type RegistrationContextType = {
     passwordRepeat: string;
     setPasswordRepeat: Dispatch<SetStateAction<string>>;
     schoolClass: number;
-    setSchoolClass: Dispatch<SetStateAction<number>>;
+    setSchoolClass: (value: number) => void;
     schoolType: string;
     setSchoolType: Dispatch<SetStateAction<string>>;
     userState: string;
@@ -99,7 +99,7 @@ const Registration: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordRepeat, setPasswordRepeat] = useState<string>('');
-    const [schoolType, setSchoolType] = useState<string>('grundschule');
+    const [schoolType, setSchoolType] = useState<string>('');
     const [schoolClass, setSchoolClass] = useState<number>(1);
     const [userState, setUserState] = useState<string>('bw');
     const [newsletter, setNewsletter] = useState<boolean>(false);
