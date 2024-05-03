@@ -13,6 +13,8 @@ export type Role =
     | 'SCREENER'
     | 'TRUSTED_SCREENER'
     | 'COURSE_SCREENER'
+    | 'PUPIL_SCREENER'
+    | 'STUDENT_SCREENER'
     | 'PUPIL'
     | 'STUDENT'
     | 'WANNABE_TUTOR'
@@ -28,6 +30,8 @@ export const ERole = {
     SCREENER: 'SCREENER' as const,
     TRUSTED_SCREENER: 'TRUSTED_SCREENER' as const,
     COURSE_SCREENER: 'COURSE_SCREENER' as const,
+    PUPIL_SCREENER: 'PUPIL_SCREENER' as const,
+    STUDENT_SCREENER: 'STUDENT_SCREENER' as const,
     PUPIL: 'PUPIL' as const,
     STUDENT: 'STUDENT' as const,
     WANNABE_TUTOR: 'WANNABE_TUTOR' as const,
