@@ -67,6 +67,8 @@ import { datadogRum } from '@datadog/browser-rum';
 import ProgressPage from '../pages/Progress';
 import ConfirmCertificate from '../pages/ConfirmCertificate';
 import CertificateOfConduct from '../pages/CertificateOfConduct';
+import ScreenerGroup from '../pages/screening/ScreenerGroup';
+import SingleCourseScreener from '../pages/screening/SingleCourseScreener';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -107,8 +109,12 @@ export default function NavigatorLazy() {
                 path="/single-course/:id"
                 element={
                     <RequireAuth>
-                        <RequireRole roles={['STUDENT', 'PARTICIPANT']}>
-                            <SwitchUserType pupilComponent={<SingleCoursePupil />} studentComponent={<SingleCourseStudent />} />
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT', 'COURSE_SCREENER']}>
+                            <SwitchUserType
+                                pupilComponent={<SingleCoursePupil />}
+                                studentComponent={<SingleCourseStudent />}
+                                screenerComponent={<SingleCourseScreener />}
+                            />
                         </RequireRole>
                     </RequireAuth>
                 }
@@ -283,8 +289,8 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         {/* for helpers ('students') we do not require the INSTRUCTOR role, as we have a fallback page in place */}
-                        <RequireRole roles={['STUDENT', 'PARTICIPANT']}>
-                            <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} />
+                        <RequireRole roles={['STUDENT', 'PARTICIPANT', 'COURSE_SCREENER']}>
+                            <SwitchUserType pupilComponent={<PupilGroup />} studentComponent={<CoursePage />} screenerComponent={<ScreenerGroup />} />
                         </RequireRole>
                     </RequireAuth>
                 }

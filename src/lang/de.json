@@ -738,7 +738,8 @@
             "editCourse": "Kurs editieren",
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
-            "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden"
+            "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden",
+            "is_shared": "Dieser Kurs ist als Vorlage freigeben"
         },
         "card": {
             "expandCardButton": "Mehr Infos",
@@ -2049,14 +2050,42 @@
         "login_as_user": "Als Nutzer:in anmelden",
         "screen_as_instructor": "Als Kursleiter:in screenen",
         "screen_as_tutor": "Für 1:1 screenen",
-        "courses": "Kurse",
+        "their_courses": "Kurse",
         "successful_instructor_screening": "Erfolgreiches Kursleiterscreening",
         "rejected_instructor_screening": "Abgelehntes Kursleiterscreening",
         "successful_tutor_screening": "Erfolgreiches 1:1-Screening",
         "rejected_tutor_screening": "Abgelehntes 1:1-Screening",
         "decision": "Entscheidung",
         "screener": "Screener:in",
-        "dissolve_reason": "Grund: {{reason}}"
+        "dissolve_reason": "Grund: {{reason}}",
+        "courses": {
+            "header": "Screening Gruppenkurse",
+            "submitted_or_allowed": "Eingereichte & genehmigte Kurse",
+            "denied_or_cancelled": "Abgelehnte & abgesagte Kurse",
+            "submitted": "Eingereicht",
+            "allowed": "Genehmigt",
+            "denied": "Abgelehnt",
+            "cancelled": "Abgesagt",
+            "published": "veröffentlicht",
+            "not_published": "nicht veröffentlicht",
+            "allow_course": "Kurs freischalten",
+            "deny_course": "Kurs ablehnen",
+            "share_course": "Kurs als Vorlage markieren",
+            "unshare_course": "Markierung als Vorlage entfernen",
+            "are_you_sure_allow": "Bist du dir sicher, dass du diesen Kurs freischalten möchtest?",
+            "are_you_sure_deny": "Bist du dir sicher, dass du diesen Kurs ablehnen möchtest?",
+            "toast": {
+                "allowed": "Der Kurs wurde genehmigt",
+                "denied": "Der Kurs wurde abgelehnt",
+                "shared": "Der Kurs wurde als Vorlage markiert",
+                "unshared": "Der Kurs wurde als 'keine Vorlage mehr' markiert"
+            },
+            "already": {
+                "allowed": "Dieser Kurs wurde bereits genehmigt",
+                "denied": "Dieser Kurs wurde bereits abgelehnt",
+                "cancelled": "Dieser Kurs wurde abgesagt"
+            }
+        }
     },
     "achievement": {
         "header": "Deine Erfolge",
