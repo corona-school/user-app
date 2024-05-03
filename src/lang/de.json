@@ -2056,7 +2056,8 @@
         "rejected_tutor_screening": "Abgelehntes 1:1-Screening",
         "decision": "Entscheidung",
         "screener": "Screener:in",
-        "dissolve_reason": "Grund: {{reason}}"
+        "dissolve_reason": "Grund: {{reason}}",
+        "comment": "Kommentar"
     },
     "achievement": {
         "header": "Deine Erfolge",
