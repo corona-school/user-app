@@ -1,9 +1,8 @@
-import { Modal, Text, useTheme } from 'native-base';
+import { Modal, Row, Text, useTheme } from 'native-base';
 import { GradeSelector } from '../../components/GradeSelector';
 
 export function EditGradeModal({ grade, onClose, store }: { grade: number; onClose: () => void; store: (grade: number) => void }) {
     const { space } = useTheme();
-
     return (
         <Modal size="xl" isOpen onClose={onClose}>
             <Modal.Content>
@@ -12,13 +11,15 @@ export function EditGradeModal({ grade, onClose, store }: { grade: number; onClo
                     <Modal.CloseButton />
                 </Modal.Header>
                 <Modal.Body>
-                    <GradeSelector
-                        grade={grade}
-                        setGrade={(grade) => {
-                            store(grade);
-                            onClose();
-                        }}
-                    />
+                    <Row flexWrap="wrap" w="100%" mt={space['1']} marginBottom={space['1']}>
+                        <GradeSelector
+                            grade={grade}
+                            onGradeChange={(grade) => {
+                                store(grade);
+                                onClose();
+                            }}
+                        />
+                    </Row>
                 </Modal.Body>
             </Modal.Content>
         </Modal>

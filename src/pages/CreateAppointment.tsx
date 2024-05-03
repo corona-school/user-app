@@ -71,7 +71,7 @@ const CreateAppointment = () => {
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} showBack>
+            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} showBack previousFallbackRoute="/appointments">
                 <CreateAppointmentProvider>
                     <Box mx="4">
                         <View position="sticky" mb={2} overflow="hidden">

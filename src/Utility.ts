@@ -79,6 +79,11 @@ export const findMinMaxClassRange: (nums: number[]) => ClassRange = (nums: numbe
     return { min: minClass, max: maxClass } as ClassRange;
 };
 
+export const getGradeLabel = (grade: number) => {
+    if (grade === 14) return i18next.t('inTraining');
+    return i18next.t('lernfair.schoolclass', { class: grade });
+};
+
 export const formatDate: (date: Date, format?: Intl.DateTimeFormatOptions, locale?: string) => string = (
     date,
     format = DateTime.DATETIME_MED,

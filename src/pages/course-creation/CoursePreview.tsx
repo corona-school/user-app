@@ -11,9 +11,8 @@ import AppointmentList from '../../widgets/AppointmentList';
 import { SubjectSelector } from '../../widgets/SubjectSelector';
 import { CreateCourseContext } from '../CreateCourse';
 import { DateTime } from 'luxon';
-import { useQuery } from '@apollo/client';
-import { gql } from '../../gql';
 import DisableableButton from '../../components/DisablebleButton';
+import { getGradeLabel } from '../../Utility';
 
 type Props = {
     onBack: () => void;
@@ -175,7 +174,7 @@ const CoursePreview: React.FC<Props> = ({
                 </Heading>
 
                 <Text>
-                    {t('course.CourseDate.Preview.classHeadline')} {courseClasses && courseClasses[0]} - {courseClasses && courseClasses[1]}
+                    {courseClasses && getGradeLabel(courseClasses[0])} - {courseClasses && getGradeLabel(courseClasses[1])}
                 </Text>
             </Row>
 

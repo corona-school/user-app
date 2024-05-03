@@ -116,6 +116,7 @@ export function ScreeningDashboard() {
                     grade
                     gradeAsInt
                     openMatchRequestCount
+                    verifiedAt
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -131,6 +132,7 @@ export function ScreeningDashboard() {
                         invalidated
                         status
                         comment
+                        knowsCoronaSchoolFrom
                         createdAt
                         updatedAt
                         screeners { firstname lastname }
@@ -203,6 +205,7 @@ export function ScreeningDashboard() {
                     invalidated
                     status
                     comment
+                    knowsCoronaSchoolFrom
                     createdAt
                     updatedAt
                     screeners { firstname lastname }

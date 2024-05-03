@@ -81,6 +81,7 @@ const Progress = () => {
             children={
                 <WithNavigation
                     showBack
+                    previousFallbackRoute="/settings"
                     headerTitle="Progress"
                     headerLeft={
                         <Stack alignItems="center" direction="row">

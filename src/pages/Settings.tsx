@@ -39,11 +39,8 @@ const Settings: React.FC = () => {
             <WithNavigation
                 headerTitle={t('settings.header')}
                 hideMenu
-                headerRight={
-                    <Button variant="ghost" onPress={() => navigate(-1)}>
-                        <CloseIcon color="lightText" />
-                    </Button>
-                }
+                showBack
+                previousFallbackRoute="/start"
                 headerLeft={userType !== 'screener' && <NotificationAlert />}
             >
                 <VStack paddingBottom={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>

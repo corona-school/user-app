@@ -100,7 +100,7 @@ const CreateCourse: React.FC = () => {
     const [courseName, setCourseName] = useState<string>('');
     const [courseCategory, setCourseCategory] = useState<string>('');
     const [subject, setSubject] = useState<string | null>(null);
-    const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 13]);
+    const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 14]);
     const [description, setDescription] = useState<string>('');
     const [tags, setTags] = useState<LFTag[]>([]);
     const [maxParticipantCount, setMaxParticipantCount] = useState<string>('');
@@ -334,7 +334,7 @@ const CreateCourse: React.FC = () => {
         setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
         setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
         setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
-        setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 13]);
+        setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 14]);
         setCourseAppointments(prefillCourse.appointments ?? []);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
@@ -846,6 +846,7 @@ const CreateCourse: React.FC = () => {
             <WithNavigation
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
                 showBack
+                previousFallbackRoute="/group"
                 isLoading={loading || isLoading}
                 headerLeft={
                     <Stack alignItems="center" direction="row">

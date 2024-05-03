@@ -166,6 +166,15 @@ const Theme = extendTheme({
                     textDecorationColor: VAR_COLOR_PRIMARY,
                 },
             },
+            sizes: {
+                xs: {
+                    px: 2,
+                    py: 2,
+                    _text: {
+                        fontSize: 'sm',
+                    },
+                },
+            },
         },
         Input: {
             defaultProps: {

@@ -6,7 +6,7 @@ import { Course, Course_Tag, Instructor, Lecture, Subcourse } from '../../gql/gr
 import { useUserType } from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { TrafficStatus } from '../../types/lernfair/Course';
-import Utility, { getTrafficStatus } from '../../Utility';
+import Utility, { getGradeLabel, getTrafficStatus } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
@@ -69,7 +69,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                     )}
                     <Text maxWidth={sizes['imageHeaderWidth']}>
                         <Text bold>{t('single.courseInfo.grade')}</Text>
-                        {t('single.courseInfo.class', { minGrade: subcourse?.minGrade, maxGrade: subcourse?.maxGrade })}
+                        {t('single.courseInfo.class', { minGrade: getGradeLabel(subcourse?.minGrade), maxGrade: getGradeLabel(subcourse?.maxGrade) })}
                     </Text>
                     {!isInPast &&
                         !subcourse?.cancelled &&

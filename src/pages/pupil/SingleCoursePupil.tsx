@@ -28,10 +28,11 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
                     id
                     firstname
                     grade
+                    gradeAsInt
                 }
             }
 
-            me { pupil { firstname lastname schooltype grade }}
+            me { pupil { firstname lastname schooltype grade, gradeAsInt }}
         }
     `),
         { variables: { subcourseId } }
@@ -200,6 +201,7 @@ const SingleCoursePupil = () => {
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
             showBack
+            previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">

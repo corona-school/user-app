@@ -16,7 +16,7 @@ const Subjects: React.FC = () => {
             <Heading>{t('matching.wizard.student.subjects.subtitle')}</Heading>
             <SubjectSelector
                 subjects={matchRequest.subjects.map((it) => it.name)}
-                addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 13 } })}
+                addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 14 } })}
                 removeSubject={removeSubject}
                 includeDaz
             />

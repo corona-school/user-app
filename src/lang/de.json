@@ -226,6 +226,7 @@
     "not_found": "Nichts gefunden",
     "pupil": "Schüler:in",
     "required": "erforderlich",
+    "inTraining": "in Ausbildung",
     "grade": "Klasse",
     "since": "seit",
     "till": "bis",
@@ -359,12 +360,6 @@
     "registration": {
         "password_repeat": "Passwort wiederholen",
         "to_login": "Ich habe bereits einen Account",
-        "dsgvo": {
-            "accept": "Hiermit stimme ich der",
-            "datapolicy": "Datenschutzerklärung",
-            "lastword": "zu.",
-            "pleaseaccept": "Bitte akzeptiere unsere"
-        },
         "barrier": {
             "title": "Wichtig",
             "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
@@ -464,6 +459,30 @@
                 "failedAlert": "Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut."
             },
             "backToWelcomeButton": "Zum Login-Bereich"
+        },
+        "legal": {
+            "privacy": "Datenschutz",
+            "whatHappensWithData": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
+            "usageBullets": {
+                "1": "Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts",
+                "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",
+                "3": "Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können"
+            },
+            "accept": "Ich habe die Datenschutzbestimmungen zur Kenntnis genommen:",
+            "privacypolicy": "Datenschutzbestimmungen",
+            "accordionUsDataProcessors": {
+                "title": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
+                "body": "Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO."
+            },
+            "noInvestigation": "Ich versichere, nicht wegen einer in § 72a Abs. 1 Satz 1 SGB VII bezeichneten Straftat rechtskräftig verurteilt worden zu sein und dass derzeit kein Ermittlungsverfahren wegen einer solchen Straftat gegen mich läuft.",
+            "selfCommitment": "Selbstverpflichtungserklärung",
+            "newsletter": "Newsletter",
+            "newsletterAgreement": "Ich möchte von Lern-Fair über Angebote, Aktionen und weitere Unterstützungsmöglichkeiten per E-Mail informiert werden.",
+            "underageDisclaimer": "Hinweis: Für den Fall, dass die einwilligende Person das 18. Lebensjahr noch nicht vollendet hat, hat der Träger der elterlichen Verantwortung für die Person die Einwilligung zu erklären.",
+            "error": {
+                "confirmPolicy": "Bitte bestätige die Datenschutzbestimmungen.",
+                "confirmNoInvestigation": "Bitte bestätige diese Aussage."
+            }
         }
     },
     "helpcenter": {
@@ -715,7 +734,7 @@
         },
         "courseInfo": {
             "grade": "Jahrgangsstufe: ",
-            "class": "Klasse {{minGrade}} - {{maxGrade}}",
+            "class": "{{minGrade}} - {{maxGrade}}",
             "editCourse": "Kurs editieren",
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
@@ -1151,7 +1170,7 @@
             "buttons": ["Ja", "Nein"]
         },
         "kontaktSchüler": {
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
             "buttons": ["Lernpartner:in ansehen"]
@@ -1177,7 +1196,7 @@
             "actionDescription": "Alles zum Führungszeugnis"
         },
         "statusStudent": {
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "title": "Wir suchen nach einem:r Lernpartner:in für dich!",
             "content": "Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.",
             "buttons": ["Problem melden"]
@@ -1191,7 +1210,7 @@
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
             "buttons": ["Lernpartner:in ansehen"]
         },
@@ -1224,7 +1243,7 @@
             }
         },
         "studentNewMatch": {
-            "name": "Neue Lernuntersützung",
+            "name": "Neue Lernunterstützung",
             "subtitle": "Nachhilfe",
             "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
@@ -1238,7 +1257,7 @@
             }
         },
         "pupilNewMatch": {
-            "name": "Neue Lernuntersützung",
+            "name": "Neue Lernunterstützung",
             "subtitle": "Nachhilfe",
             "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
@@ -1343,7 +1362,7 @@
                 "noDissolvedMatches": "Du hast keine aufgelösten Lernpaare.",
                 "editRequestDescription": " Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.",
                 "noRequestsTutee": "Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.",
-                "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf 'Lernpaar bilden'-Button.",
+                "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf den 'Lernpaar bilden'-Button.",
                 "resolveMatch": "Das Lernpaar wurde aufgelöst"
             },
             "updateData": "Deine Daten wurden aktualisiert",
@@ -1430,11 +1449,11 @@
                 },
                 "modalSuccess": {
                     "heading": {
-                        "ver1": "Geschafft, du bist auf der Warteliste!",
+                        "ver1": "Neue Anfrage erstellt",
                         "ver2": "Geschafft, Änderungen gespeichert!"
                     },
                     "text": {
-                        "ver1": "Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.",
+                        "ver1": "Als Nächstes laden wir dich per E-Mail zu einem Gespräch ein. Dann besprechen wir alles weitere persönlich. - Schau doch so lange bei unseren Gruppen-Kursen vorbei.",
                         "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
                     },
                     "groupCourses": "Zu den Gruppen-Kursen"
@@ -1598,8 +1617,10 @@
         },
         "adHocMeeting": {
             "title": "Sofortbesprechung starten",
-            "infoText": "Wir legen automatisch einen Termin für dich an und informieren dein:e Schüler:in per E-Mail sobald du eine Sofortbesprechung startest. Prinzipiell kannst du Termine mit deinem:r Schüler:in auch vorab im User-Bereich planen und anlegen.",
-            "startMeeting": "Besprechung starten"
+            "infoText": " Wir informieren dein:e Schüler:in per Email, sobald du das Meeting startest.",
+            "startMeeting": "Besprechung starten",
+            "browser": "Im Browser fortfahren",
+            "zoomClient": "In Zoom öffnen"
         }
     },
     "course": {
@@ -1691,7 +1712,7 @@
                 "courseCategory": "Kategorie",
                 "categoryPlaceholder": "Bitte wähle eine Kategorie",
                 "revision": "Nachhilfe-Kurs",
-                "language": "Deutsch-Kurs",
+                "language": "Deutsch für Anfänger Kurs",
                 "focus": "Fokus-Kurs",
                 "courseSubjectLabel": "Fach",
                 "coursePhotoLabel": "Foto",
@@ -1709,7 +1730,7 @@
                 "tagsInfo": "Die einzelnen Tags müssen durch ein Komma (,) getrennt werden",
                 "detailsHeadline": "Details",
                 "detailsContent": "Für welche Klassen ist der Kurs geeignet?",
-                "classRange": "Klassen {{minRange}} - {{maxRange}}",
+                "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Max. Teilnehmer:innenzahl",
                 "maxMembersInfo": "Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.",
                 "otherHeadline": "Sonstiges",
@@ -1752,7 +1773,6 @@
                 "shortDesc": "Kurzbeschreibung",
                 "desc": "Beschreibung",
                 "tagHeadline": "Tags",
-                "classHeadline": "Klassen",
                 "image": "Bild",
                 "notags": "Es wurden keine Tags angegeben.",
                 "jahrgangsstufe": "Jahrgangsstufe",
@@ -1912,7 +1932,7 @@
         "oneOnOne": {
             "leftVideoChat": {
                 "title": "Du hast den Videochat verlassen",
-                "subtitle": "Wir hoffen die 1:1-Lernunterstützung hat dir gefallen!",
+                "subtitle": "Wir hoffen, die 1:1-Lernunterstützung hat dir gefallen!",
                 "button": "Zum Dashboard"
             }
         },

@@ -60,7 +60,7 @@ const ChangeEmail = () => {
     }, [newEmail]);
 
     return (
-        <WithNavigation showBack hideMenu>
+        <WithNavigation showBack previousFallbackRoute="/settings" hideMenu>
             {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (
