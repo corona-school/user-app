@@ -1,6 +1,6 @@
 import { Modal, Text, useTheme, Button, HStack, FormControl, Row, TextArea } from 'native-base';
 import { useState } from 'react';
-import { t } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface ScreeningFormData {
     comment?: string | null;
@@ -15,6 +15,7 @@ interface EditStudentScreeningModalProps {
 }
 
 export function EditStudentScreeningModal({ title, isOpen, onClose, onSubmit, defaultValues }: EditStudentScreeningModalProps) {
+    const { t } = useTranslation();
     const { space } = useTheme();
     const [comment, setComment] = useState(defaultValues.comment || '');
 
