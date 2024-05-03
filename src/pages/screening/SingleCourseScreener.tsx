@@ -178,16 +178,20 @@ const SingleCourseScreener: React.FC = () => {
     ];
 
     const courseStatus = () => {
-        let s = '';
-
-        if (course?.courseState === Course_Coursestate_Enum.Allowed) s += t('screening.courses.allowed');
-        else if (course?.courseState === Course_Coursestate_Enum.Denied) s += t('screening.courses.denied');
-        else if (course?.courseState === Course_Coursestate_Enum.Submitted) s += t('screening.courses.submitted');
-        else if (course?.courseState === Course_Coursestate_Enum.Cancelled) s += t('screening.courses.cancelled');
-
-        s += ` & ${subcourse?.published ? t('screening.courses.published') : t('screening.courses.not_published')}`;
-
-        return s;
+        return (
+            (() => {
+                switch (course?.courseState) {
+                    case Course_Coursestate_Enum.Allowed:
+                        return t('screening.courses.allowed');
+                    case Course_Coursestate_Enum.Denied:
+                        return t('screening.courses.denied');
+                    case Course_Coursestate_Enum.Submitted:
+                        return t('screening.courses.submitted');
+                    case Course_Coursestate_Enum.Cancelled:
+                        return t('screening.courses.cancelled');
+                }
+            })() + ` & ${subcourse?.published ? t('screening.courses.published') : t('screening.courses.not_published')}`
+        );
     };
 
     return (
