@@ -39,8 +39,7 @@ export function InfoCard({ title, message, children, icon, background, noMargin 
                 <Heading color="white" paddingBottom="10px">
                     {title}
                 </Heading>
-                {!children && message && <Text color="white">{message}</Text>}
-                {children && children}
+                {children ? children : <Text color="white">{message}</Text>}
             </VStack>
         </HStack>
     );
