@@ -52,7 +52,7 @@ export function StudentScreeningCard({ screening, onUpdate, screeningType }: Stu
                     </Text>
                     <HStack mt={2}>
                         <Button variant="subtle" marginLeft="1" marginTop="-1" onPress={handleOnEditModalOpen} rightIcon={<EditIcon />}>
-                            Edit
+                            {t('edit')}
                         </Button>
                     </HStack>
                 </Box>
