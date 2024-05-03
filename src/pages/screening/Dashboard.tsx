@@ -166,8 +166,8 @@ export function ScreeningDashboard() {
                         nextLecture { start duration }
                     }
 
-                    tutorScreenings { createdAt success comment screener { firstname lastname } }
-                    instructorScreenings { createdAt success comment screener { firstname lastname } }
+                    tutorScreenings { id createdAt success comment screener { firstname lastname } }
+                    instructorScreenings { id createdAt success comment screener { firstname lastname } }
                 }
             }
         }
