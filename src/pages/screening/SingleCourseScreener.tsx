@@ -225,7 +225,7 @@ const SingleCourseScreener: React.FC = () => {
             {/* ALLOW COURSE MODAL */}
             <ConfirmModal
                 text={`${course?.courseState === Course_Coursestate_Enum.Denied ? t('screening.courses.already.denied') + '.\n' : ''}${t(
-                    'screening.courses.are_you_shure_allow'
+                    'screening.courses.are_you_sure_allow'
                 )}`}
                 isOpen={showAllowModal}
                 danger={course?.courseState === Course_Coursestate_Enum.Denied}
@@ -239,7 +239,7 @@ const SingleCourseScreener: React.FC = () => {
             />
             {/* DENY COURSE MODAL */}
             <ConfirmModal
-                text={t('screening.courses.are_you_shure_deny')}
+                text={t('screening.courses.are_you_sure_deny')}
                 isOpen={showDenyModal}
                 onConfirmed={async () => {
                     setShowDenyModal(false);

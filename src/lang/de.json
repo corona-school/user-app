@@ -2052,8 +2052,8 @@
             "deny_course": "Kurs ablehnen",
             "share_course": "Kurs als Vorlage markieren",
             "unshare_course": "Markierung als Vorlage entfernen",
-            "are_you_shure_allow": "Bist du dir sicher, dass du diesen Kurs freischalten möchtest?",
-            "are_you_shure_deny": "Bist du dir sicher, dass du diesen Kurs ablehnen möchtest?",
+            "are_you_sure_allow": "Bist du dir sicher, dass du diesen Kurs freischalten möchtest?",
+            "are_you_sure_deny": "Bist du dir sicher, dass du diesen Kurs ablehnen möchtest?",
             "toast": {
                 "allowed": "Der Kurs wurde genehmigt",
                 "denied": "Der Kurs wurde abgelehnt",
