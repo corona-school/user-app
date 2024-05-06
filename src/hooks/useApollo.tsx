@@ -258,7 +258,10 @@ const useApolloInternal = () => {
         });
 
         return new ApolloClient({
-            cache: new InMemoryCache(),
+            // Allow the GraphQL Browser Addon to connect:
+            connectToDevTools: true,
+
+            cache: new InMemoryCache({}),
             defaultOptions: {
                 watchQuery: {
                     // Cache everything locally, when a query is executed,
@@ -388,6 +391,7 @@ const useApolloInternal = () => {
         }
       `),
             context: { skipAuthRetry: true },
+            fetchPolicy: 'network-only',
         });
         log('GraphQL', 'Determined User', me);
 
