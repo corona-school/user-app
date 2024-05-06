@@ -274,7 +274,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
 
             {student.subcoursesInstructing.length > 0 && (
                 <>
-                    <Heading fontSize="20px">{t('screening.courses')}</Heading>
+                    <Heading fontSize="20px">{t('screening.their_courses')}</Heading>
                     <VStack space={space['1']} display="flex" flexWrap="wrap">
                         {student.subcoursesInstructing.map((subcourse) => (
                             <SubcourseCard subcourse={subcourse} />
