@@ -259,6 +259,15 @@ const useApolloInternal = () => {
 
         return new ApolloClient({
             cache: new InMemoryCache(),
+            defaultOptions: {
+                watchQuery: {
+                    // Cache everything locally, when a query is executed,
+                    // first serve from cache, then update with live data
+                    // This should provide a smoother user experience
+                    // while keeping inconsistencies low
+                    fetchPolicy: 'cache-and-network',
+                },
+            },
             link: from([new RequestLoggerLink(), new RetryOnUnauthorizedLink(onMissingAuth), tokenLink, uriLink]),
         });
     }, [onMissingAuth]);
