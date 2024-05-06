@@ -183,8 +183,11 @@ const PupilGroup: React.FC<Props> = () => {
 
     const { data, loading, refetch: refetchOverview } = useQuery(query, { variables: { search: '' } });
     const { data: dataPast, refetch: refetchPast } = useQuery(queryPast, { variables: { search: '' } });
-    const { loading: allSubcoursesSearchLoading, data: dataPublic, refetch: refetchPublic } = useQuery(queryPublic, { variables: { search: '' } });
-
+    const {
+        loading: allSubcoursesSearchLoading,
+        data: dataPublic,
+        refetch: refetchPublic,
+    } = useQuery(queryPublic, { variables: { search: '' }, returnPartialData: true });
     const publicSubcourses = useMemo(() => dataPublic?.subcoursesPublic ?? [], [dataPublic]);
     const subcoursesJoinedOrWaiting = useMemo(() => data?.me?.pupil?.subcoursesJoined.concat(data?.me?.pupil?.subcoursesWaitingList) ?? [], [data]);
 
