@@ -2058,6 +2058,7 @@
         "decision": "Entscheidung",
         "screener": "Screener:in",
         "dissolve_reason": "Grund: {{reason}}",
+        "comment": "Kommentar",
         "courses": {
             "header": "Screening Gruppenkurse",
             "submitted_or_allowed": "Eingereichte & genehmigte Kurse",
