@@ -362,7 +362,7 @@
         "to_login": "Ich habe bereits einen Account",
         "barrier": {
             "title": "Wichtig",
-            "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
+            "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen / Azubi. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
             "point_0": "● Du brauchst Hilfe in der Schule",
             "point_1": "● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
             "point_2": "● Deine Familie kann keine Nachhilfe für dich bezahlen",
@@ -443,7 +443,7 @@
             }
         },
         "pupil": {
-            "label": "Schüler:in"
+            "label": "Schüler:in / Azubi"
         },
         "student": {
             "label": "Helfer:in"
