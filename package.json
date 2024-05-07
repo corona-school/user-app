@@ -27,6 +27,7 @@
         "@types/react-signature-canvas": "^1.0.2",
         "@types/ua-parser-js": "^0.7.36",
         "@types/validator": "^13.7.14",
+        "@zoomus/websdk": "2.15.2",
         "apollo-codegen": "^0.20.2",
         "babel-jest": "^27.4.2",
         "babel-loader": "^8.2.3",
@@ -97,18 +98,20 @@
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
-        "workbox-webpack-plugin": "^6.4.1",
-        "@zoomus/websdk": "2.15.2"
+        "workbox-webpack-plugin": "^6.4.1"
     },
     "optionalDependencies": {
-        "@storybook/addon-actions": "^6.5.14",
-        "@storybook/addon-essentials": "^6.5.14",
-        "@storybook/addon-interactions": "^6.5.14",
-        "@storybook/addon-links": "^6.5.14",
-        "@storybook/builder-webpack5": "^6.5.14",
-        "@storybook/manager-webpack5": "^6.5.14",
-        "@storybook/react": "^6.5.14",
-        "@storybook/testing-library": "^0.0.13",
+        "@storybook/addon-actions": "^8.0.10",
+        "@storybook/addon-webpack5-compiler-babel": "^3.0.3",
+        "@storybook/addon-essentials": "^8.0.10",
+        "@storybook/addon-interactions": "^8.0.10",
+        "@storybook/addon-links": "^8.0.10",
+        "@storybook/blocks": "^8.0.10",
+        "@storybook/builder-webpack5": "^8.0.10",
+        "@storybook/manager-webpack5": "^6.5.16",
+        "@storybook/react": "^8.0.10",
+        "@storybook/react-webpack5": "^8.0.10",
+        "@storybook/testing-library": "^0.2.2",
         "svg-react-loader": "^0.4.6"
     },
     "scripts": {
