@@ -11,7 +11,7 @@ To develop locally, install all dependencies with `npm ci`, then use `npm start`
 These Query Parameters can be supplied to any path of the User-App:
 
 **?temporary** opens the App in a temporary session where all credentials are stored in Session Storage instead of Local Storage and no Device Token is created.
- Thus each tab opened with this query parameter uses a different session and closing the tab invalidates the session. This is very useful for local testing and troubleshooting issues when logging in as a user.
+Thus each tab opened with this query parameter uses a different session and closing the tab invalidates the session. This is very useful for local testing and troubleshooting issues when logging in as a user.
 
 **?secret_token=authtokenP1** logs in the user using the "legacy authToken". There are some well known tokens for test users, i.e. `authtokenP1`, `P2`, ... for pupils and `authtokenS1`, `S2`, ... for students.
 
@@ -19,37 +19,32 @@ These Query Parameters can be supplied to any path of the User-App:
 
 Documentation about Components can be found in **[Storybook](https://corona-school.github.io/user-app/)**.
 
-To open the Storybook with documentation about components locally, install optional dependencies with `npm run dev-install`, 
- then storybook can be started with `npm run dev-storybook`. To add documentation, add [MDX Files](https://storybook.js.org/docs/react/api/mdx) into the source folder (named .stories.mdx!). React Components must always be wrapped in the `<Story>` Component. In case a story shows a white screen, check the browser debug logs like in any other React app.
-A basic MDX file looks like this:
+To open the Storybook with documentation about components locally, install optional dependencies with `npm run dev-install`,
+then storybook can be started with `npm run dev-storybook`. To add documentation, add [CSF files](https://storybook.js.org/docs/api/csf) into the source folder (named .stories.tsx).
+A basic CSJ file looks like this:
 
-```md
-import { Meta, Story } from '@storybook/addon-docs';
-import SomeComponent from "./SomeComponent";
+```tsx
+// @ts-nocheck
+import type { Meta, StoryObj } from '@storybook/react';
+import Component from './Component';
 
-<Meta title="Some Component" component={SomeComponent} />
+type Story = StoryObj<typeof Component>;
+const meta: Meta<typeof Component> = {
+    title: 'Atoms/Component',
+    component: Component,
+};
 
-# Example Component
+export const Base: Story = {
+    name: 'Component',
+    render: (props) => <Component {...props} />,
+};
 
-<Story name="Some Component used in some way">
-  <Component />
-</Story>
-
-# Example Component with State
-
-You can also use `useState` like this:
-
-<Story name="Some stateful Component">
-{() => {
-  const [active, setActive] = useState(false);
-  return <Component active={active} onSomething={() => setActive(true)} />
-}}
-</Story>
+export default meta;
 ```
 
 ## Structure
 
-This repository is set up as a React Native app although it is currently only shipped as a web app. 
+This repository is set up as a React Native app although it is currently only shipped as a web app.
 In the future it might be desirable to also offer native apps.
 
 ## Translations
@@ -64,11 +59,11 @@ With `npm run translate -- check` one can check whether all translations are mai
 
 To translate a new language, create a new language file `[ISO639-1 language code].json` with an empty object `{}` in it, then run the translation script and will pick it up and fill it. Include the file in `I18n.ts`.
 
-For manual translation, with `npm run translate -- export` one can generate a diff file that contains all the translations that were added or changed _between the current HEAD and the point where it branched of the last time from main_. For example to manually review all the changes that came in with `feat/something`, just checkout that branch and run the export command. 
+For manual translation, with `npm run translate -- export` one can generate a diff file that contains all the translations that were added or changed _between the current HEAD and the point where it branched of the last time from main_. For example to manually review all the changes that came in with `feat/something`, just checkout that branch and run the export command.
 As a result, a new file is written to the `src/lang` folder, which looks like this:
 
 ```
-# email    <- path in the translation file 
+# email    <- path in the translation file
 E-Mail     <- original german translation
 e-mail     <- current translation (i.e. from Weglot)
 
@@ -81,25 +76,25 @@ This file can then be shared with translators, which can just delete all entries
 
 Most configuration is done via `REACT_APP_` environment variables, which are inlined into the bundled version when the app is built. However as the app is only built once in Heroku and used for both staging and production and it is desirable to be able to change certain configuration without rebuilding the app, there is a separate mechanism for configuration: `RUNTIME_` variables added to the server (i.e. `RUNTIME_BACKEND_URL=https://example.com npm run serve`) are injected into `window.liveConfig`, where they can be read by frontend code. Changing these only requires the server process to restart, clients will then pick them up once the page is reloaded (while the bundle is still cached).
 
-A full list of environment variables can be found in [`src/types/react-app-env.d.ts`](src/types/react-app-env.d.ts). 
+A full list of environment variables can be found in [`src/types/react-app-env.d.ts`](src/types/react-app-env.d.ts).
 
 In local development environment you can use [`.env.template`](.env.template) as template for in your own .env file.
 
 ## Bundles and Lazy Loading
 
-The App is split into multiple bundles to reduce initial load time, as well as increasing caching during updates. To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser. 
+The App is split into multiple bundles to reduce initial load time, as well as increasing caching during updates. To analyze and optimize the bundle, run `npm run analyze-bundle`, then open `build/source-map.html` in a browser.
 
-The main bundle only contains the [`Navigator`](./src/routing/Navigator.tsx) component, 
- which only provides the GraphQL client library, the user context and the login and landing pages. Thus the bundle contains everything for the first load. Unauthenticated users can then already start to log in, whereas authenticated users and visitors of specific pages will instead see a loading spinner while the [`NavigatorLazy`](./src/routing/NavigatorLazy.tsx) is loaded. We assume that these users already opened the App before, and thus already have the page cached (thus the main bundle is optimized for first visitors).
+The main bundle only contains the [`Navigator`](./src/routing/Navigator.tsx) component,
+which only provides the GraphQL client library, the user context and the login and landing pages. Thus the bundle contains everything for the first load. Unauthenticated users can then already start to log in, whereas authenticated users and visitors of specific pages will instead see a loading spinner while the [`NavigatorLazy`](./src/routing/NavigatorLazy.tsx) is loaded. We assume that these users already opened the App before, and thus already have the page cached (thus the main bundle is optimized for first visitors).
 
 The same mechanism is used by `IconLoader` and `IconLoaderLazy` to lazily load icons - as the page usually also works without icons.
 
-Lazy Loading uses [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) with a custom wrapper around `React.lazy` called [`lazyWithRetry`](./src/lazy.ts) - which tries again in case a chunk failed to load due to network connectivity problems. 
+Lazy Loading uses [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) with a custom wrapper around `React.lazy` called [`lazyWithRetry`](./src/lazy.ts) - which tries again in case a chunk failed to load due to network connectivity problems.
 
 ## Further Resources
 
-- [Create React App Documentation](https://github.com/facebook/create-react-app)
-- [React documentation](https://reactjs.org/)
+-   [Create React App Documentation](https://github.com/facebook/create-react-app)
+-   [React documentation](https://reactjs.org/)
 
 ## Contributing
 
@@ -107,4 +102,4 @@ We're always happy and open about contributions, please [contact the HR team](ma
 
 ## Security Issues
 
-We follow the guidelines for responsible disclosure: If you find a vulnerability, we would encourage you to [contact Support](mailto:support@lern-fair.de) and gives us some time to tackle the issues, before publishing it. We take security very seriously and these issues are automatically highest priority for us. Since we are a non-profit organization with not much of a budget, we can't offer a bug bounty program. 
+We follow the guidelines for responsible disclosure: If you find a vulnerability, we would encourage you to [contact Support](mailto:support@lern-fair.de) and gives us some time to tackle the issues, before publishing it. We take security very seriously and these issues are automatically highest priority for us. Since we are a non-profit organization with not much of a budget, we can't offer a bug bounty program.
