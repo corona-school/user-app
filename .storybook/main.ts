@@ -1,63 +1,66 @@
 import type { StorybookConfig } from '@storybook/react-webpack5';
-// import getClientEnvironment from '../config/env';
-// import { DefinePlugin } from 'webpack';
+import getClientEnvironment from '../config/env';
+import { DefinePlugin } from 'webpack';
 
-// export const stories = [
-//     // Storybook Stories can also be written in .tsx, though I guess markdown is the preferred way of writing documentation
-//     // Thus we enforce a unified usage here:
-//     '../src/**/*.stories.mdx',
-//     '../src/**/*.stories.tsx',
-// ];
-// export const addons = ['@storybook/addon-links', '@storybook/addon-essentials', '@storybook/addon-interactions', 'storybook-react-i18next'];
-// export const framework = '@storybook/react';
-// export const core = {
-//     builder: '@storybook/builder-webpack5',
-// };
-// export function webpackFinal(storybookConfig) {
-//     const appConfig = require('./../config/webpack.config.js')('development');
-//     // This hacks in support for SCSS, Typescript and React Native module resolution into the Webpack configuration of Storybook
-//     // None of the documented ways of supporting those worked in our setup
-//     storybookConfig.resolve = appConfig.resolve;
-//     storybookConfig.module.rules.push({
-//         test: /\.scss$/i,
-//         use: ['style-loader', 'css-loader', 'postcss-loader'],
-//     });
+const webpackFinal = (storybookConfig) => {
+    const appConfig = require('./../config/webpack.config.js')('development');
+    // This hacks in support for SCSS, Typescript and React Native module resolution into the Webpack configuration of Storybook
+    // None of the documented ways of supporting those worked in our setup
+    storybookConfig.resolve = appConfig.resolve;
+    storybookConfig.module.rules.push({
+        test: /\.scss$/i,
+        use: ['style-loader', 'css-loader', 'postcss-loader'],
+    });
 
-//     // This was added to support svgs in Storybook by excluding svgs in the fileLoaderRule in the base config of Storybook
-//     const fileLoaderRule = storybookConfig.module.rules.find((rule) => !Array.isArray(rule.test) && rule.test.test('.svg'));
+    // This was added to support svgs in Storybook by excluding svgs in the fileLoaderRule in the base config of Storybook
+    const fileLoaderRule = storybookConfig.module.rules.find((rule) => !Array.isArray(rule.test) && rule.test.test('.svg'));
 
-//     fileLoaderRule.exclude = /\.svg$/;
+    fileLoaderRule.exclude = /\.svg$/;
 
-//     storybookConfig.module.rules.push({
-//         test: /\.svg$/,
-//         use: [
-//             {
-//                 loader: require.resolve('@svgr/webpack'),
-//                 options: {
-//                     prettier: true,
-//                     svgo: true,
-//                     titleProp: false,
-//                     ref: false,
-//                 },
-//             },
-//         ],
-//     });
-//     // Support for process.env.*
-//     storybookConfig.plugins.push(new DefinePlugin(getClientEnvironment('').stringified));
+    storybookConfig.module.rules.push({
+        test: /\.svg$/,
+        use: [
+            {
+                loader: require.resolve('@svgr/webpack'),
+                options: {
+                    prettier: true,
+                    svgo: true,
+                    titleProp: false,
+                    ref: false,
+                },
+            },
+        ],
+    });
+    // Support for process.env.*
+    storybookConfig.plugins.push(new DefinePlugin(getClientEnvironment('').stringified));
 
-//     return storybookConfig;
-// }
+    return storybookConfig;
+};
 
 const config: StorybookConfig = {
     framework: '@storybook/react-webpack5',
-    stories: ['../src/**/*.mdx', '../src/**/*.stories.tsx'],
+    stories: ['../src/**/*.stories.@(js|jsx|ts|tsx)'],
     addons: [
         '@storybook/addon-links',
         '@storybook/addon-essentials',
         '@storybook/addon-interactions',
         'storybook-react-i18next',
-        '@storybook/addon-webpack5-compiler-babel'
+        '@storybook/addon-webpack5-compiler-babel',
     ],
+    webpackFinal,
+    babel: async (options) => ({
+        ...options,
+        presets: [
+            ...(options.presets || []),
+            [
+                '@babel/preset-react',
+                {
+                    runtime: 'automatic',
+                },
+                'preset-react-jsx-transform',
+            ],
+        ],
+    }),
 };
 
 export default config;
