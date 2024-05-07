@@ -100,7 +100,6 @@
     "workbox-webpack-plugin": "^6.4.1"
   },
   "optionalDependencies": {
-    "storybook": "^8.0.10",
     "@storybook/addon-actions": "^8.0.10",
     "@storybook/addon-essentials": "^8.0.10",
     "@storybook/addon-interactions": "^8.0.10",
@@ -108,10 +107,13 @@
     "@storybook/addon-webpack5-compiler-babel": "^3.0.3",
     "@storybook/blocks": "^8.0.10",
     "@storybook/builder-webpack5": "^8.0.10",
+    "@storybook/manager-api": "^8.0.10",
     "@storybook/manager-webpack5": "^6.5.16",
     "@storybook/react": "^8.0.10",
     "@storybook/react-webpack5": "^8.0.10",
     "@storybook/testing-library": "^0.2.2",
+    "@storybook/theming": "^8.0.10",
+    "storybook": "^8.0.10",
     "storybook-react-i18next": "^3.0.1",
     "svg-react-loader": "^0.4.6"
   },
