@@ -47,6 +47,7 @@ const config: StorybookConfig = {
         'storybook-react-i18next',
         '@storybook/addon-webpack5-compiler-babel',
     ],
+    staticDirs: ['../public'],
     webpackFinal,
     babel: async (options) => ({
         ...options,
@@ -61,6 +62,9 @@ const config: StorybookConfig = {
             ],
         ],
     }),
+    docs: {
+        autodocs: 'tag',
+    },
 };
 
 export default config;
