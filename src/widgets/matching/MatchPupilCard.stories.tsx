@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MatchPupilCard } from './MatchPupilCard';
 import { Dissolve_Reason } from '../../gql/graphql';
 

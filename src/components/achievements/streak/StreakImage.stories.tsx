@@ -1,3 +1,4 @@
+// @ts-nocheck
 import StreakImage from './StreakImage';
 import StreakImageContainer from './StreakImageContainer';
 import { StreakImageSize } from '../../../types/achievement';

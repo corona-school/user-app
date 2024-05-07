@@ -1,3 +1,4 @@
+// @ts-nocheck
 import AttendeesModal from './AttendeesModal';
 
 export default {

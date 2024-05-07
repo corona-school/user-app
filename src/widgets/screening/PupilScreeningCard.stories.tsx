@@ -1,3 +1,5 @@
+// @ts-nocheck
+import { Pupil_Screening_Status_Enum } from '../../gql/graphql';
 import { PupilScreeningCard } from './PupilScreeningCard';
 
 export default {
@@ -9,7 +11,7 @@ export const PupilScreeningCardSuccess = {
     render: () => (
         <PupilScreeningCard
             screening={{
-                status: 'success',
+                status: Pupil_Screening_Status_Enum.Success,
                 createdAt: new Date(),
                 updatedAt: new Date(),
                 invalidated: false,

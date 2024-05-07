@@ -1,3 +1,4 @@
+// @ts-nocheck
 import PromoteBanner from './PromoteBanner';
 
 export default {

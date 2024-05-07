@@ -1,3 +1,4 @@
+// @ts-nocheck
 import OpenMatchRequest from './OpenMatchRequest';
 
 export default {

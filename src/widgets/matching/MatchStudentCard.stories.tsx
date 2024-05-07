@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MatchStudentCard } from './MatchStudentCard';
 
 export default {

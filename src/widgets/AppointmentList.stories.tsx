@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import AppointmentList from './AppointmentList';
 

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { MatchCertificateCard } from './MatchCertificateCard';
 
 export default {

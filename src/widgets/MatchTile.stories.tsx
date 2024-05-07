@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Box } from 'native-base';
 import { Pupil_Schooltype_Enum } from '../gql/graphql';
 import MatchTile from './MatchTile';

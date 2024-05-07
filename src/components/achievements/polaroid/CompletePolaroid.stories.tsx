@@ -7,6 +7,6 @@ export default {
 };
 
 export const CompletePolaroidImage = {
-    render: () => <CompletePolaroid image={KanufahrtDschungel} />,
+    render: () => <CompletePolaroid alternativeText="Text" image={KanufahrtDschungel} />,
     name: 'Complete Polaroid Image',
 };

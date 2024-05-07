@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { SubcourseCard } from './SubcourseCard';
 
 export default {

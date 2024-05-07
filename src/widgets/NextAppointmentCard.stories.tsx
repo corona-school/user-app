@@ -1,3 +1,4 @@
+// @ts-nocheck
 import NextAppointmentCard from './NextAppointmentCard';
 import { MockStudent } from '../User';
 

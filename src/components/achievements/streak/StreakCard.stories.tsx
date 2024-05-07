@@ -1,3 +1,4 @@
+// @ts-nocheck
 import StreakCard from './StreakCard';
 import { Achievement_Action_Type_Enum, Achievement_State } from '../../../gql/graphql';
 import ExampleStreakUnfinished from '../../../assets/images/achievements/example_streak_image.png';

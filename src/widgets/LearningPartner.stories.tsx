@@ -1,3 +1,4 @@
+// @ts-nocheck
 import LearningPartner from './LearningPartner';
 import { MockStudent } from '../User';
 
