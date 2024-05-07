@@ -3,7 +3,7 @@ import Button from './Button';
 
 type Story = StoryObj<typeof Button>;
 const meta: Meta<typeof Button> = {
-    title: 'Button',
+    title: 'Atoms/Button',
     component: Button,
     argTypes: {
         variant: {
@@ -23,6 +23,7 @@ const meta: Meta<typeof Button> = {
 };
 
 export const Base: Story = {
+    name: 'Button',
     render: (props) => (
         <Button {...props} variant={props.variant || 'solid'} width={200}>
             {props.label || 'Button'}

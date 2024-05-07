@@ -31,6 +31,9 @@ type AchievementModalProps = {
     showModal?: boolean;
 };
 
+/**
+ * An Achievement Modal is a User Interface that displays the user's achievements based on their successes.
+ */
 const AchievementModal: React.FC<AchievementModalProps> = ({
     title,
     tagline,

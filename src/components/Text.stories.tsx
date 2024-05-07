@@ -4,7 +4,7 @@ import { VStack } from 'native-base';
 
 type Story = StoryObj<typeof Text>;
 const meta: Meta<typeof Text> = {
-    title: 'Text',
+    title: 'Atoms/Text',
     component: Text,
     argTypes: {
         children: {
@@ -18,6 +18,7 @@ const meta: Meta<typeof Text> = {
 };
 
 export const Base: Story = {
+    name: 'Text',
     args: {
         fontWeight: 'normal',
     },

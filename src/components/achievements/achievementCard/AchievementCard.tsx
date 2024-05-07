@@ -25,6 +25,9 @@ type AchievementCardProps = {
     onClick?: () => void;
 };
 
+/**
+ * An Achievement Card is a card that displays the user"s achievements based on their successes.
+ */
 const AchievementCard: React.FC<AchievementCardProps> = ({
     achievementState,
     achievementType,
