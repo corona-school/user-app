@@ -1,7 +1,10 @@
 import {
+    ApolloCache,
     ApolloClient,
     ApolloLink,
     ApolloProvider,
+    Cache,
+    DataProxy,
     FetchResult,
     from,
     HttpLink,
@@ -10,6 +13,8 @@ import {
     NormalizedCacheObject,
     Observable,
     Operation,
+    Reference,
+    Transaction,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { ReactNode, useMemo, useState, createContext, useContext, useCallback, useEffect } from 'react';
@@ -22,6 +27,122 @@ import { debug, log } from '../log';
 import { gql } from '../gql';
 import { Role } from '../types/lernfair/User';
 import { datadogRum } from '@datadog/browser-rum';
+import { Kind } from 'graphql';
+
+interface FullResult {
+    data: any;
+    variables: string;
+    watchers: (() => void)[];
+}
+
+class FullResultCache extends ApolloCache<NormalizedCacheObject> {
+    cache: Map<string, FullResult> = new Map();
+
+    getQueryName(query: DataProxy.Query<any, any>): string | undefined {
+        if (query.query.definitions.length !== 1) {
+            return undefined;
+        }
+
+        const definition = query.query.definitions[0];
+        if (definition.kind !== Kind.OPERATION_DEFINITION) {
+            return undefined;
+        }
+
+        const name = definition.name?.value;
+        return name;
+    }
+
+    getEntry(query: DataProxy.Query<any, any>) {
+        const name = this.getQueryName(query);
+        if (!name) return undefined;
+        const entry = this.cache.get(name);
+
+        if (entry && JSON.stringify(query.variables) === entry.variables) {
+            return entry;
+        }
+
+        return undefined;
+    }
+
+    read<TData = any, TVariables = any>(query: Cache.ReadOptions<TVariables, TData>): TData | null {
+        const entry = this.getEntry(query);
+        return entry?.data;
+    }
+
+    write<TData = any, TVariables = any>(write: Cache.WriteOptions<TData, TVariables>): Reference | undefined {
+        const name = this.getQueryName(write);
+        if (!name) return undefined;
+
+        log('GraphQL Cache', `write ${name}`, write.result);
+
+        const existingEntry = this.getEntry(write);
+        if (!existingEntry) {
+            this.cache.set(name, {
+                data: write.result,
+                watchers: [],
+                variables: JSON.stringify(write.variables),
+            });
+        } else {
+            existingEntry.data = write.result;
+            existingEntry.watchers.forEach((it) => it());
+        }
+
+        return undefined;
+    }
+
+    diff<T>(query: Cache.DiffOptions<any, any>): DataProxy.DiffResult<T> {
+        const entry = this.getEntry(query);
+        if (entry) {
+            log('GraphQL Cache', `read ${this.getQueryName(query)} from cache`, entry);
+            return { complete: true, result: entry.data };
+        }
+
+        return {};
+    }
+
+    watch<TData = any, TVariables = any>(watch: Cache.WatchOptions<TData, TVariables>): () => void {
+        const entry = this.getEntry(watch);
+
+        const watcher = () => {
+            log('GraphQL Cache', 'fire watcher');
+            watch.callback(this.diff(watch));
+        };
+
+        if (entry) {
+            log('GraphQL Cache', 'immediately fire watcher');
+            watch.callback(this.diff(watch));
+
+            entry.watchers.push(watcher);
+            return () => {
+                entry.watchers = entry.watchers.filter((it) => it !== watcher);
+                log('GraphQL Cache', 'detach watcher');
+            };
+        }
+
+        return () => {};
+    }
+    reset(options?: Cache.ResetOptions | undefined): Promise<void> {
+        this.cache.clear();
+        return Promise.resolve();
+    }
+    evict(options: Cache.EvictOptions): boolean {
+        this.cache.clear();
+        return true;
+    }
+    restore(serializedState: NormalizedCacheObject): ApolloCache<NormalizedCacheObject> {
+        // throw new Error('Method not implemented.');
+        return this;
+    }
+    extract(optimistic?: boolean | undefined): NormalizedCacheObject {
+        throw new Error('Method not implemented.');
+    }
+    removeOptimistic(id: string): void {
+        // throw new Error('Method not implemented.');
+    }
+    performTransaction(transaction: Transaction<NormalizedCacheObject>, optimisticId?: string | null | undefined): void {
+        transaction(this);
+    }
+}
 
 interface UserType {
     userID: string;
@@ -261,7 +382,7 @@ const useApolloInternal = () => {
             // Allow the GraphQL Browser Addon to connect:
             connectToDevTools: true,
 
-            cache: new InMemoryCache({}),
+            cache: new FullResultCache(),
             defaultOptions: {
                 watchQuery: {
                     // Cache everything locally, when a query is executed,
