@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useEffect, useCallback } from 'react';
-import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button, Spinner } from 'native-base';
+import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../types/lernfair/Appointment';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -21,6 +21,7 @@ type Props = {
     isLoadingAppointments?: boolean;
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
+    height?: number;
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -43,6 +44,7 @@ const AppointmentList: React.FC<Props> = ({
     isLoadingAppointments,
     loadMoreAppointments,
     lastAppointmentId,
+    height = 100,
 }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -178,7 +180,7 @@ const AppointmentList: React.FC<Props> = ({
     return (
         <FlatList
             keyExtractor={(item) => item.id.toString()}
-            height={100}
+            height={height}
             maxW={maxListWidth}
             data={appointments}
             renderItem={renderItems}
