@@ -1,7 +1,10 @@
 import {
+    ApolloCache,
     ApolloClient,
     ApolloLink,
     ApolloProvider,
+    Cache,
+    DataProxy,
     FetchResult,
     from,
     HttpLink,
@@ -10,6 +13,8 @@ import {
     NormalizedCacheObject,
     Observable,
     Operation,
+    Reference,
+    Transaction,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { ReactNode, useMemo, useState, createContext, useContext, useCallback, useEffect } from 'react';
@@ -17,11 +22,162 @@ import Utility from '../Utility';
 import { createOperation } from '@apollo/client/link/utils';
 import { SubscriptionObserver } from 'zen-observable-ts';
 import userAgentParser from 'ua-parser-js';
-import { BACKEND_URL } from '../config';
+import { BACKEND_URL, RESULT_CACHE_ACTIVE } from '../config';
 import { debug, log } from '../log';
 import { gql } from '../gql';
 import { Role } from '../types/lernfair/User';
 import { datadogRum } from '@datadog/browser-rum';
+import { Kind } from 'graphql';
+
+// --------------- Caching -------------------------
+
+interface FullResult {
+    data: any;
+    variables: string;
+    watchers: (() => void)[];
+}
+
+// The Apollo InMemory cache is way too complex for our purpose
+// Thus we have our own cache implementation, that caches the full result of each query
+// When the query is executed a second time, we first serve the result from the cache,
+// and then directly fetch the latest state from the server and update both the page and the cache
+// with it. That way the App is (nearly) always consistent, but it also works smoothly in poor network conditions
+// (and even offline with a limited feature set)
+class FullResultCache extends ApolloCache<NormalizedCacheObject> {
+    // ----------- Cache -----------------
+
+    private cache: Map</* Query Name */ string, FullResult> = new Map();
+
+    /* Extracts the name of a Query - query <name> { ... }
+     * This should be unique anyways as it is also used to generate typescript types
+     */
+    private getQueryName(query: DataProxy.Query<any, any>): string | undefined {
+        if (query.query.definitions.length !== 1) {
+            return undefined;
+        }
+
+        const definition = query.query.definitions[0];
+        if (definition.kind !== Kind.OPERATION_DEFINITION) {
+            return undefined;
+        }
+
+        const name = definition.name?.value;
+        return name;
+    }
+
+    /* Reads an entry from the cache */
+    private getEntry(query: DataProxy.Query<any, any>) {
+        const name = this.getQueryName(query);
+        if (!name) return undefined;
+        const entry = this.cache.get(name);
+
+        if (entry && JSON.stringify(query.variables) === entry.variables) {
+            log('GraphQL Cache', `Read ${name} from cache`, entry);
+            return entry;
+        } else {
+            this.cache.delete(name);
+            log('GraphQL Cache', `Invalidating Cache entry for ${name} as variables changed`, entry);
+        }
+
+        return undefined;
+    }
+
+    /* Writes an entry to the cache */
+    private setEntry(query: DataProxy.Query<any, any>, result: any) {
+        const name = this.getQueryName(query);
+        if (!name) return;
+
+        const existingEntry = this.getEntry(result);
+        if (!existingEntry) {
+            this.cache.set(name, {
+                data: result,
+                watchers: [],
+                variables: JSON.stringify(query.variables),
+            });
+            log('GraphQL Cache', `Write ${name} to new Cache Entry`, result);
+        } else {
+            existingEntry.data = result;
+            existingEntry.watchers.forEach((it) => it());
+
+            log('GraphQL Cache', `Write ${name} to existing Cache Entry`, result);
+        }
+    }
+
+    // ----------- ApolloCache Interface --------------
+
+    read<TData = any, TVariables = any>(query: Cache.ReadOptions<TVariables, TData>): TData | null {
+        const entry = this.getEntry(query);
+        return entry?.data;
+    }
+
+    write<TData = any, TVariables = any>(write: Cache.WriteOptions<TData, TVariables>): Reference | undefined {
+        this.setEntry(write, write.result);
+        return undefined;
+    }
+
+    diff<T>(query: Cache.DiffOptions<any, any>): DataProxy.DiffResult<T> {
+        // As we only cache full results, diffing is easy:
+        // Either the full result is in the cache, or it is not
+
+        const entry = this.getEntry(query);
+        if (entry) {
+            return { complete: true, result: entry.data };
+        }
+
+        return {};
+    }
+
+    watch<TData = any, TVariables = any>(watch: Cache.WatchOptions<TData, TVariables>): () => void {
+        const entry = this.getEntry(watch);
+
+        const watcher = () => {
+            log('GraphQL Cache', 'fire watcher');
+            watch.callback(this.diff(watch));
+        };
+
+        if (entry) {
+            log('GraphQL Cache', 'immediately fire watcher');
+            watch.callback(this.diff(watch));
+
+            entry.watchers.push(watcher);
+            return () => {
+                entry.watchers = entry.watchers.filter((it) => it !== watcher);
+                log('GraphQL Cache', 'detach watcher');
+            };
+        }
+
+        return () => {};
+    }
+
+    reset(options?: Cache.ResetOptions | undefined): Promise<void> {
+        this.cache.clear();
+        return Promise.resolve();
+    }
+
+    // --------- Not Really Implemented -------
+
+    evict(options: Cache.EvictOptions): boolean {
+        this.cache.clear();
+        return true;
+    }
+
+    // Serialization of the Cache not supported (would be needed for persistence)
+    restore(serializedState: NormalizedCacheObject): ApolloCache<NormalizedCacheObject> {
+        throw new Error('Method not implemented.');
+    }
+
+    extract(optimistic?: boolean | undefined): NormalizedCacheObject {
+        throw new Error('Method not implemented.');
+    }
+
+    removeOptimistic(id: string): void {
+        // throw new Error('Method not implemented.');
+    }
+
+    performTransaction(transaction: Transaction<NormalizedCacheObject>, optimisticId?: string | null | undefined): void {
+        transaction(this);
+    }
+}
 
 interface UserType {
     userID: string;
@@ -257,8 +413,25 @@ const useApolloInternal = () => {
             uri: BACKEND_URL + '/apollo',
         });
 
+        const cacheConfig = RESULT_CACHE_ACTIVE
+            ? ({
+                  cache: new FullResultCache(),
+                  defaultOptions: {
+                      watchQuery: {
+                          // Cache everything locally, when a query is executed,
+                          // first serve from cache, then update with live data
+                          // This should provide a smoother user experience
+                          // while keeping inconsistencies low
+                          fetchPolicy: 'cache-and-network',
+                      },
+                  },
+              } as const)
+            : { cache: new InMemoryCache() };
+
         return new ApolloClient({
-            cache: new InMemoryCache(),
+            // Allow the GraphQL Browser Addon to connect:
+            connectToDevTools: true,
+            ...cacheConfig,
             link: from([new RequestLoggerLink(), new RetryOnUnauthorizedLink(onMissingAuth), tokenLink, uriLink]),
         });
     }, [onMissingAuth]);
@@ -379,6 +552,7 @@ const useApolloInternal = () => {
         }
       `),
             context: { skipAuthRetry: true },
+            fetchPolicy: 'network-only',
         });
         log('GraphQL', 'Determined User', me);
 
