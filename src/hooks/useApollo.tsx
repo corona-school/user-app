@@ -52,6 +52,10 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
      * This should be unique anyways as it is also used to generate typescript types
      */
     private getQueryName(query: DataProxy.Query<any, any>): string | undefined {
+        if (!query.query) {
+            return undefined;
+        }
+
         if (query.query.definitions.length !== 1) {
             return undefined;
         }
