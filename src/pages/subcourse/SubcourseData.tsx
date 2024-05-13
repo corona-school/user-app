@@ -11,7 +11,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
 type SubcourseDataProps = {
-    course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
+    course: Pick<Course, 'name' | 'image'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };
     subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published' | 'publishedAt'> &
         Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant' | 'canJoin'>> & {
             instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
