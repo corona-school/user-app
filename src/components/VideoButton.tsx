@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { useMutation } from '@apollo/client';
 import DisableableButton from './DisablebleButton';
 import { gql } from '../gql';
 import { Modal } from 'native-base';
@@ -38,28 +39,37 @@ const VideoButton: React.FC<VideoButtonProps> = ({
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
     const { data } = useQuery(
         gql(`
-query overrrideLink($appointmentId: Float!) {
-    appointment(appointmentId: $appointmentId) {
-        override_meeting_link
-        zoomMeetingUrl
-    }
-}
-`),
+        query overrrideLink($appointmentId: Float!) {
+            appointment(appointmentId: $appointmentId) {
+                override_meeting_link
+                zoomMeetingUrl
+            }
+        }
+        `),
         { variables: { appointmentId } }
     );
 
     const zoomUrl = data?.appointment?.zoomMeetingUrl;
 
+    const [trackJoinMeeting] = useMutation(
+        gql(`
+            mutation JoinMeeting($appointmentId: Float!) { 
+                appointmentTrackJoin(appointmentId: $appointmentId)
+            }
+        `)
+    );
     const openMeeting = async () => {
+        // Technically the user has not joined yet, but they tried, that should be good enough for now
+        await trackJoinMeeting({ variables: { appointmentId } });
+
         const overrideLink = data?.appointment?.override_meeting_link;
-        if (overrideLink == null) {
+        if (!overrideLink) {
             setIsOpenModal(true);
         } else {
             window.open(overrideLink, '_blank');
         }
     };
 
-    //
     const canStartMeeting = useMemo(
         () => canJoin ?? (startDateTime && duration && canJoinMeeting(startDateTime, duration, isInstructor ? 240 : 10, DateTime.now())),
         [canJoin, duration, isInstructor, startDateTime]

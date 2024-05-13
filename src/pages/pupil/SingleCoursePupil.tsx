@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs, { Tab } from '../../components/Tabs';
+import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
@@ -28,10 +28,11 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
                     id
                     firstname
                     grade
+                    gradeAsInt
                 }
             }
 
-            me { pupil { firstname lastname schooltype grade }}
+            me { pupil { firstname lastname schooltype grade, gradeAsInt }}
         }
     `),
         { variables: { subcourseId } }
@@ -200,6 +201,7 @@ const SingleCoursePupil = () => {
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
             showBack
+            previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
@@ -218,7 +220,7 @@ const SingleCoursePupil = () => {
                 )}
 
                 {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
-                <Tabs tabs={tabs} />
+                <NavigationTabs tabs={tabs} />
             </Stack>
         </WithNavigation>
     );

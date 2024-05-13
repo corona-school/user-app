@@ -85,7 +85,14 @@
             "emptyDateError": "Datum darf nicht leer sein",
             "wrongDateError": "Datum kann frühestens in einer Woche sein",
             "emptyTimeError": "Zeit darf nicht leer sein",
-            "courseImageAltText": "Kursbild"
+            "wrongVideoUrlError": "Bitte gebe einen gültigen Videolink ein.",
+            "courseImageAltText": "Kursbild",
+            "videoChatLabel": "Video-Chat",
+            "videoChatPlaceholder": "Hinterlege deinen eigenen Link zum Videochat",
+            "videoSelectOptions": {
+                "zoom": "          Zoom Meeting (automatisch generieren)",
+                "link": "Eigenen Meeting Link"
+            }
         },
         "detail": {
             "group": "Gruppentermin mit {{instructor}}",
@@ -102,6 +109,8 @@
             "cancelButton": "Termin absagen",
             "editButton": "Termin bearbeiten",
             "canceledToast": "Termin wurde abgesagt",
+            "zoomTooltipStudent": "Wenn du diesen Link aufrufst, trittst du dem Meeting als Teilnehmer:in bei. Um als Host dem Meeting beizutrteten nutze den Button \"Jetzt Videochat beitreten\".",
+            "zoomTooltipPupil": "Teile diesen Link niemals mit anderen Personen. Nur so können wir die Sicherheit der Plattform gewährleisten.",
             "reasonDisabled": {
                 "editBtn": {
                     "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."
@@ -141,7 +150,8 @@
             "dateMinOneWeek": "Datum kann frühestens in einer Woche sein",
             "timeNotInFiveMin": "Zeit kann frühestens in 5 Minuten sein",
             "time": "Zeit darf nicht leer sein",
-            "duration": "Dauer darf nicht leer sein"
+            "duration": "Dauer darf nicht leer sein",
+            "videoChat": "Videochat muss gewählt sein"
         }
     },
     "visitcourse": "zum Kurs",
@@ -216,6 +226,7 @@
     "not_found": "Nichts gefunden",
     "pupil": "Schüler:in",
     "required": "erforderlich",
+    "inTraining": "in Ausbildung",
     "grade": "Klasse",
     "since": "seit",
     "till": "bis",
@@ -349,15 +360,9 @@
     "registration": {
         "password_repeat": "Passwort wiederholen",
         "to_login": "Ich habe bereits einen Account",
-        "dsgvo": {
-            "accept": "Hiermit stimme ich der",
-            "datapolicy": "Datenschutzerklärung",
-            "lastword": "zu.",
-            "pleaseaccept": "Bitte akzeptiere unsere"
-        },
         "barrier": {
             "title": "Wichtig",
-            "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
+            "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen / Azubi. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
             "point_0": "● Du brauchst Hilfe in der Schule",
             "point_1": "● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
             "point_2": "● Deine Familie kann keine Nachhilfe für dich bezahlen",
@@ -438,7 +443,7 @@
             }
         },
         "pupil": {
-            "label": "Schüler:in"
+            "label": "Schüler:in / Azubi"
         },
         "student": {
             "label": "Helfer:in"
@@ -454,6 +459,30 @@
                 "failedAlert": "Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut."
             },
             "backToWelcomeButton": "Zum Login-Bereich"
+        },
+        "legal": {
+            "privacy": "Datenschutz",
+            "whatHappensWithData": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
+            "usageBullets": {
+                "1": "Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts",
+                "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",
+                "3": "Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können"
+            },
+            "accept": "Ich habe die Datenschutzbestimmungen zur Kenntnis genommen:",
+            "privacypolicy": "Datenschutzbestimmungen",
+            "accordionUsDataProcessors": {
+                "title": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
+                "body": "Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO."
+            },
+            "noInvestigation": "Ich versichere, nicht wegen einer in § 72a Abs. 1 Satz 1 SGB VII bezeichneten Straftat rechtskräftig verurteilt worden zu sein und dass derzeit kein Ermittlungsverfahren wegen einer solchen Straftat gegen mich läuft.",
+            "selfCommitment": "Selbstverpflichtungserklärung",
+            "newsletter": "Newsletter",
+            "newsletterAgreement": "Ich möchte von Lern-Fair über Angebote, Aktionen und weitere Unterstützungsmöglichkeiten per E-Mail informiert werden.",
+            "underageDisclaimer": "Hinweis: Für den Fall, dass die einwilligende Person das 18. Lebensjahr noch nicht vollendet hat, hat der Träger der elterlichen Verantwortung für die Person die Einwilligung zu erklären.",
+            "error": {
+                "confirmPolicy": "Bitte bestätige die Datenschutzbestimmungen.",
+                "confirmNoInvestigation": "Bitte bestätige diese Aussage."
+            }
         }
     },
     "helpcenter": {
@@ -705,11 +734,12 @@
         },
         "courseInfo": {
             "grade": "Jahrgangsstufe: ",
-            "class": "Klasse {{minGrade}} - {{maxGrade}}",
+            "class": "{{minGrade}} - {{maxGrade}}",
             "editCourse": "Kurs editieren",
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
-            "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden"
+            "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden",
+            "is_shared": "Dieser Kurs ist als Vorlage freigeben"
         },
         "card": {
             "expandCardButton": "Mehr Infos",
@@ -1058,12 +1088,24 @@
             "waitingTimeInfo": "Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in zu längeren Wartezeiten kommt. Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.",
             "removeRequest": "Anfrage zurücknehmen"
         },
+        "supportCategories": {
+            "all": "Alle",
+            "overview": "Übersicht",
+            "kurse": "Kurse",
+            "support": "1:1 Lernunterstützung",
+            "pedagogy": "Pädagogik",
+            "tools": "Digitale Tools",
+            "material": "Kostenlose Lehrmaterialien",
+            "daz": "Deutsch als Zweit- oder Fremdsprache",
+            "add_support": "Zusätzliche Unterstützung"
+        },
         "helpers": {
             "headlines": {
                 "course": "Meine Kurse",
                 "importantNews": "Wichtige Meldungen",
                 "myLearningPartner": "Meine Lernpartner:innen",
                 "openedRequests": "Suche nach Lernpartner:innen",
+                "support": "Unsere Hilfestellungen",
                 "recommend": "Empfiehl uns weiter",
                 "recommendFriends": "Empfiehl Lern-Fair deinen Freunden"
             },
@@ -1077,7 +1119,7 @@
                 "course": "Neuen Kurs eintragen",
                 "offer": "Wichtige Meldungen",
                 "requestMatchStudent": "Ein neues Lernpaar bilden",
-                "requestMatchPupil": "Auf die Warteliste setzen",
+                "requestMatchPupil": "Lernpartner:in erhalten",
                 "solveMatch": "Lernpaar auflösen",
                 "recommend": "Jetzt empfehlen"
             },
@@ -1121,7 +1163,7 @@
         "statusSchüler": {
             "title": "Du bist auf der Warteliste!",
             "subtitle": "Warteliste",
-            "content": "Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. Voraussichtlich musst du 3-6 Monate warten. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
+            "content": "Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Deine Anfrage wurde am {{date}} gestellt. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
             "buttons": ["Kurse ansehen", "Anfrage zurücknehmen"]
         },
         "interestconfirmation": {
@@ -1131,7 +1173,7 @@
             "buttons": ["Ja", "Nein"]
         },
         "kontaktSchüler": {
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
             "buttons": ["Lernpartner:in ansehen"]
@@ -1153,11 +1195,11 @@
             "subtitle": "Wichtig!",
             "title": "Erweitertes Führungszeugnis",
             "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "buttons": ["Führungszeugnis einreichen", "Vordruck herunterladen"],
+            "buttons": ["Führungszeugnis einreichen"],
             "actionDescription": "Alles zum Führungszeugnis"
         },
         "statusStudent": {
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "title": "Wir suchen nach einem:r Lernpartner:in für dich!",
             "content": "Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.",
             "buttons": ["Problem melden"]
@@ -1165,13 +1207,13 @@
         "statusStudent2": {
             "subtitle": "Weitere Engagement-Möglichkeiten",
             "title": "Lust auf mehr?",
-            "content": "Möchtest du weitere Schüler:innen un-terstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
+            "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
             "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
             "actionDescription": "Jetzt Möglichkeiten ansehen"
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
-            "subtitle": "1:1 Lernuntersützung",
+            "subtitle": "1:1 Lernunterstützung",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
             "buttons": ["Lernpartner:in ansehen"]
         },
@@ -1187,6 +1229,7 @@
         },
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
+            "subtitle": "Kennenlernen",
             "content": "Bevor wir dir eine:n Lernpartner:in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
             "buttons": ["Termin vereinbaren"]
         },
@@ -1203,9 +1246,9 @@
             }
         },
         "studentNewMatch": {
-            "name": "Neue Lernuntersützung",
+            "name": "Neue Lernunterstützung",
             "subtitle": "Nachhilfe",
-            "actionName": "Auf Zuordnung warten",
+            "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
             "description": "Es war großartig, dich besser kennenzulernen und freuen uns, dass du gemeinsam mit uns die Bildungschancen von Schüler:innen verbessern möchtest. Um dir eine:n passende:n Lernpartner:in zuzuweisen, bitten wir dich zunächst, eine Anfrage auf unserer Plattform zu stellen. Hier kannst du die Fächer und Jahrgangsstufe angeben, die für dich passend sind. Wir freuen uns auf den Start!",
             "stepname": {
@@ -1217,9 +1260,9 @@
             }
         },
         "pupilNewMatch": {
-            "name": "Neue Lernuntersützung",
+            "name": "Neue Lernunterstützung",
             "subtitle": "Nachhilfe",
-            "actionName": "Du bist auf der Warteliste",
+            "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
             "description": "Damit wir dir den:die perfekte:n Lernpartner:in zuweisen können, musst du zunächst eine Anfrage auf unserer Plattform stellen. Dort kannst du ganz einfach die Fächer angeben, die für dich wichtig sind und in denen wir dir helfen können. Wir freuen uns darauf, mit dir gemeinsam durchzustarten und die Lernreise zu beginnen!",
             "stepname": {
@@ -1232,6 +1275,7 @@
         },
         "pupilFirstScreening": {
             "title": "Wir möchten dich kennenlernen!",
+            "subtitle": "Kennenlernen",
             "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
             "buttons": ["Termin vereinbaren"]
         }
@@ -1253,6 +1297,7 @@
             "showMore": "Mehr anzeigen",
             "showLess": "Weniger anzeigen",
             "contactViaChat": "Per Chat kontaktieren",
+            "reportProblem": "Problem melden",
             "directCall": "Sofortbesprechung starten",
             "dissolveMatch": "Lernpaar auflösen",
             "dissolved": "Das Lernpaar wurde aufgelöst.",
@@ -1264,11 +1309,7 @@
         "blocker": {
             "header": "Lernunterstützung",
             "title": "Unterstützung anfragen",
-            "firstContent": "Du benötigst individuelle Unterstützung? Dann ist die Lernunterstützung genau richtig. Wir verbinden dich mit einem:r Helfer:in, der:die dich individuell beim Lernen unterstützt.",
-            "headlineContent": "Wichtig",
-            "contentBox1": "Es kommt bei der Lernunterstützung zu",
-            "contentBox2": "längeren Wartezeiten.",
-            "contentBox3": "Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.",
+            "firstContent": "In der Lernunterstützung vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft. Sie bekommt dafür kein Geld und freut sich sehr über dein Dankeschön.",
             "button": "Unterstützung anfragen",
             "ctaCardHeader": "Gruppen-Kurse",
             "ctaCardContent": "Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…",
@@ -1290,6 +1331,21 @@
                 }
             }
         },
+        "report": {
+            "modal": {
+                "title": "Problem mit {{firstName}} melden",
+                "pupil": {
+                    "description": "Hier kannst du sagen, dass du dich mich mit {{firstName}} unwohl fühlst. Wir kümmern uns darum."
+                },
+                "student": {
+                    "description": "Hier hast du die Möglichkeit uns ein Problem mit {{firstName}} mitzuteilen. Wir setzen uns anschließend mit dir in Verbindung, um das weitere Vorgehen zu besprechen."
+                },
+                "problemDescription": "Beschreibung des Problems",
+                "submitButton": "Meldung senden"
+            },
+            "success": "Deine Meldung wurde erfolgreich versendet",
+            "failure": "Ein Fehler ist aufgetreten"
+        },
         "request": {
             "check": {
                 "header": "Lernunterstützung",
@@ -1309,7 +1365,7 @@
                 "noDissolvedMatches": "Du hast keine aufgelösten Lernpaare.",
                 "editRequestDescription": " Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.",
                 "noRequestsTutee": "Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.",
-                "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf 'Lernpaar bilden'-Button.",
+                "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf den 'Lernpaar bilden'-Button.",
                 "resolveMatch": "Das Lernpaar wurde aufgelöst"
             },
             "updateData": "Deine Daten wurden aktualisiert",
@@ -1396,11 +1452,11 @@
                 },
                 "modalSuccess": {
                     "heading": {
-                        "ver1": "Geschafft, du bist auf der Warteliste!",
+                        "ver1": "Neue Anfrage erstellt",
                         "ver2": "Geschafft, Änderungen gespeichert!"
                     },
                     "text": {
-                        "ver1": "Du bist auf der Warteliste! Sobald du an der Reihe bist, werden wir dich per E-Mail informieren. Aktuell dauert es leider etwas länger, denn sehr viele Schüler:innen warten auf Unterstützung. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden.",
+                        "ver1": "Als Nächstes laden wir dich per E-Mail zu einem Gespräch ein. Dann besprechen wir alles weitere persönlich. - Schau doch so lange bei unseren Gruppen-Kursen vorbei.",
                         "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
                     },
                     "groupCourses": "Zu den Gruppen-Kursen"
@@ -1564,8 +1620,10 @@
         },
         "adHocMeeting": {
             "title": "Sofortbesprechung starten",
-            "infoText": "Wir legen automatisch einen Termin für dich an und informieren dein:e Schüler:in per E-Mail sobald du eine Sofortbesprechung startest. Prinzipiell kannst du Termine mit deinem:r Schüler:in auch vorab im User-Bereich planen und anlegen.",
-            "startMeeting": "Besprechung starten"
+            "infoText": " Wir informieren dein:e Schüler:in per Email, sobald du das Meeting startest.",
+            "startMeeting": "Besprechung starten",
+            "browser": "Im Browser fortfahren",
+            "zoomClient": "In Zoom öffnen"
         }
     },
     "course": {
@@ -1657,7 +1715,7 @@
                 "courseCategory": "Kategorie",
                 "categoryPlaceholder": "Bitte wähle eine Kategorie",
                 "revision": "Nachhilfe-Kurs",
-                "language": "Deutsch-Kurs",
+                "language": "Deutsch für Anfänger Kurs",
                 "focus": "Fokus-Kurs",
                 "courseSubjectLabel": "Fach",
                 "coursePhotoLabel": "Foto",
@@ -1675,7 +1733,7 @@
                 "tagsInfo": "Die einzelnen Tags müssen durch ein Komma (,) getrennt werden",
                 "detailsHeadline": "Details",
                 "detailsContent": "Für welche Klassen ist der Kurs geeignet?",
-                "classRange": "Klassen {{minRange}} - {{maxRange}}",
+                "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Max. Teilnehmer:innenzahl",
                 "maxMembersInfo": "Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.",
                 "otherHeadline": "Sonstiges",
@@ -1718,7 +1776,6 @@
                 "shortDesc": "Kurzbeschreibung",
                 "desc": "Beschreibung",
                 "tagHeadline": "Tags",
-                "classHeadline": "Klassen",
                 "image": "Bild",
                 "notags": "Es wurden keine Tags angegeben.",
                 "jahrgangsstufe": "Jahrgangsstufe",
@@ -1878,7 +1935,7 @@
         "oneOnOne": {
             "leftVideoChat": {
                 "title": "Du hast den Videochat verlassen",
-                "subtitle": "Wir hoffen die 1:1-Lernunterstützung hat dir gefallen!",
+                "subtitle": "Wir hoffen, die 1:1-Lernunterstützung hat dir gefallen!",
                 "button": "Zum Dashboard"
             }
         },
@@ -1996,16 +2053,46 @@
         "login_as_user": "Als Nutzer:in anmelden",
         "screen_as_instructor": "Als Kursleiter:in screenen",
         "screen_as_tutor": "Für 1:1 screenen",
-        "courses": "Kurse",
+        "their_courses": "Kurse",
         "successful_instructor_screening": "Erfolgreiches Kursleiterscreening",
         "rejected_instructor_screening": "Abgelehntes Kursleiterscreening",
         "successful_tutor_screening": "Erfolgreiches 1:1-Screening",
         "rejected_tutor_screening": "Abgelehntes 1:1-Screening",
         "decision": "Entscheidung",
         "screener": "Screener:in",
-        "dissolve_reason": "Grund: {{reason}}"
+        "dissolve_reason": "Grund: {{reason}}",
+        "comment": "Kommentar",
+        "courses": {
+            "header": "Screening Gruppenkurse",
+            "submitted_or_allowed": "Eingereichte & genehmigte Kurse",
+            "denied_or_cancelled": "Abgelehnte & abgesagte Kurse",
+            "submitted": "Eingereicht",
+            "allowed": "Genehmigt",
+            "denied": "Abgelehnt",
+            "cancelled": "Abgesagt",
+            "published": "veröffentlicht",
+            "not_published": "nicht veröffentlicht",
+            "allow_course": "Kurs freischalten",
+            "deny_course": "Kurs ablehnen",
+            "share_course": "Kurs als Vorlage markieren",
+            "unshare_course": "Markierung als Vorlage entfernen",
+            "are_you_sure_allow": "Bist du dir sicher, dass du diesen Kurs freischalten möchtest?",
+            "are_you_sure_deny": "Bist du dir sicher, dass du diesen Kurs ablehnen möchtest?",
+            "toast": {
+                "allowed": "Der Kurs wurde genehmigt",
+                "denied": "Der Kurs wurde abgelehnt",
+                "shared": "Der Kurs wurde als Vorlage markiert",
+                "unshared": "Der Kurs wurde als 'keine Vorlage mehr' markiert"
+            },
+            "already": {
+                "allowed": "Dieser Kurs wurde bereits genehmigt",
+                "denied": "Dieser Kurs wurde bereits abgelehnt",
+                "cancelled": "Dieser Kurs wurde abgesagt"
+            }
+        }
     },
     "achievement": {
+        "header": "Deine Erfolge",
         "empty_state": {
             "Completed": {
                 "title": "Sammle deinen ersten Erfolg!",
@@ -2013,22 +2100,11 @@
             }
         },
         "card": {
-            "isNewAchievement": "neuer Erfolg",
-            "finishedStepsInformation": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen"
-        },
-        "nextStepCard": {
-            "finishedSteps": "{{currentStep}} von {{maxSteps}} Schritten abgeschlossen."
+            "isNewAchievement": "neuer Erfolg"
         },
         "modal": {
             "close": "Schließen",
-            "achievements": "Zu den Erfolgen",
-            "streak": "Noch {{leftSteps}} mal pünktlich erscheinen, um den Rekord erneut zu brechen.",
-            "record": "Du warst bei {{record}} Terminen in Folge anwesend! Verpasse weiterhin keinen Termin, um den Rekord zu erhöhen."
-        },
-        "streak": {
-            "card": {
-                "info": "Du warst bei <strong>{{streak}} Termin(en)</strong> in Folge dabei!"
-            }
+            "achievements": "Zu den Erfolgen"
         },
         "progress": {
             "state": {
@@ -2107,9 +2183,10 @@
         "header": "Führungszeugnis einreichen",
         "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Um deinen Account aktiv zu halten, bitten wir dich, das erweiterte Führungszeugnis zeitnah zu beantragen und bis zur Frist bei uns einzureichen. Mithilfe der Bescheinigung kannst du das erweiterte Führungszeugnis kostenlos beantragen.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
-        "tooltip": "Nach diesem Datum wird dein Account bei uns automatisch deaktiviert. Solltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
+        "tooltip": "Nach diesem Datum wird dein Account bei uns automatisch deaktiviert. \nSolltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
         "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
         "download": "Vordruck herunterladen",
+        "reason_download_disabled": "Bitte warte kurz, der Download sollte gleich starten.",
         "upload": "Führungszeugnis einreichen",
         "request_header": "Wie beantrage ich ein erweitertes Führungszeugnis?",
         "general_info": "Allgemeine Informationen",
@@ -2155,20 +2232,32 @@
     },
     "requireScreening": {
         "contactSupport": "Support kontaktieren",
-
-        "noScreening": {
-            "title": "Wir möchten dich kennenlernen, {{firstname}}!",
-            "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin für ein Zoom-Gespräch.",
-            "makeAppointment": "Termin vereinbaren"
+        "pupil": {
+            "noScreening": {
+                "title": "Bitte buche dir einen Termin, {{firstname}}!",
+                "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
+                "makeAppointment": "Termin vereinbaren"
+            },
+            "hasScreening": {
+                "title": "Bitte warte ein bisschen",
+                "content": "Wir haben uns sehr gefreut dich kennenzulernen. Dein Account wurde noch nicht freigeschaltet. Wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
+                "makeAnotherAppointment": "Erneut Termin vereinbaren"
+            },
+            "rejectedScreening": {
+                "title": "Leider können wir dir nicht helfen, {{firstname}}",
+                "content": "Leider haben wir entschieden, dass wir dir das Angebot von Lern-Fair nicht zur Verfügung stellen können. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
+            }
         },
-        "hasScreening": {
-            "title": "Bitte warte ein bisschen",
-            "content": "Du wurdest noch nicht freigeschaltet. Bitte warte ein bisschen, wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
-            "makeAnotherAppointment": "Erneut Termin vereinbaren"
-        },
-        "rejectedScreening": {
-            "title": "Leider können wir dir nicht helfen, {{firstname}}",
-            "content": "Leider können wir dir das Angebot von Lern-Fair nicht zur Verfügung stellen."
+        "student": {
+            "noScreening": {
+                "title": "Bitte buche dir einen Termin, {{firstname}}!",
+                "content": "Bevor du mit dem Engagement bei Lern-Fair starten kannst, möchten wir dich in einem kurzem Gespräch kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
+                "makeAppointment": "Termin vereinbaren"
+            },
+            "rejectedScreening": {
+                "title": "Leider hat das nicht gepasst",
+                "content": "Leider haben wir entschieden, dass das Engagement bei Lern-Fair nicht zu dir passt. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
+            }
         }
     },
     "contactSupport": {
@@ -2180,7 +2269,8 @@
         "submit": "Anfrage senden",
         "disabled": "Bitte fülle das Formular aus",
         "success": "Deine Nachricht wurde erfolgreich versendet",
-        "failure": "Ein Fehler ist aufgetreten"
+        "failure": "Ein Fehler ist aufgetreten",
+        "legal": "Ich bin damit einverstanden, dass Lern-Fair die hier gemachten Angaben entsprechend meines Anliegens verarbeitet und nehme die Übermittlung an unsere Dienstleister in die USA und die <privacy>Datenschutzerklärung</privacy> zur Kenntnis."
     },
     "logout": "Abmelden"
 }

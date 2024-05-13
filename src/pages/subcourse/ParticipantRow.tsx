@@ -4,6 +4,7 @@ import NewChatIcon from '../../assets/icons/lernfair/ic_new_chat.svg';
 import RemovePupilIcon from '../../assets/icons/lernfair/cancel.svg';
 import { pupilIdToUserId } from '../../helper/chat-helper';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
+import { getGradeLabel } from '../../Utility';
 
 type RowProps = {
     participant: SubcourseParticipant;
@@ -23,7 +24,7 @@ const ParticipantRow: React.FC<RowProps> = ({ participant, isInstructor, contact
                 </Heading>
                 <Text>
                     {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
-                    {participant.grade}
+                    {getGradeLabel(participant.gradeAsInt)}
                 </Text>
             </VStack>
             <Spacer />

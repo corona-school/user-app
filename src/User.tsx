@@ -3,10 +3,10 @@ import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 import useApollo, { ExtendedApolloContext, LFApollo, useRoles } from './hooks/useApollo';
 import VerifyEmailModal from './modals/VerifyEmailModal';
 import { useApolloClient } from '@apollo/client';
-import { Role } from './types/lernfair/User';
+import { ERole, Role } from './types/lernfair/User';
 import { RequireScreeningModal } from './modals/RequireScreeningModal';
 
-export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element; isRetainPath?: boolean }) => {
+export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.Element; isRetainPath?: boolean }) => {
     const location = useLocation();
 
     const { sessionState, user, roles } = useApollo();
@@ -26,8 +26,8 @@ export const RequireAuth = ({ children, isRetainPath }: { children: JSX.Element;
         }
 
         // Require an initial screening for newly-registered pupils
-        // (maybe extend to students in the future)
-        if (user && user.pupil && !['TUTEE' as const, 'PARTICIPANT' as const].some((role) => roles.includes(role))) {
+        const requiresInitialScreening = ![ERole.TUTEE, ERole.PARTICIPANT, ERole.INSTRUCTOR, ERole.TUTOR].some((role) => roles.includes(role));
+        if (user && (user.pupil || user.student) && requiresInitialScreening) {
             return <RequireScreeningModal />;
         }
 
@@ -84,7 +84,6 @@ export function MockScreener({ children }: React.PropsWithChildren<{}>) {
     const context: LFApollo = {
         client: useApolloClient() as any,
         logout: () => Promise.resolve(),
-        onLogin: () => {},
         loginWithPassword: () => Promise.resolve({}),
         refreshUser: () => {},
         sessionState: 'logged-in',
@@ -97,6 +96,28 @@ export function MockScreener({ children }: React.PropsWithChildren<{}>) {
             userID: 'screener/1',
             pupil: null,
             student: null,
+        },
+    };
+
+    return <ExtendedApolloContext.Provider value={context} children={children} />;
+}
+
+export function MockStudent({ children }: React.PropsWithChildren<{}>) {
+    const context: LFApollo = {
+        client: useApolloClient() as any,
+        logout: () => Promise.resolve(),
+        loginWithPassword: () => Promise.resolve({}),
+        refreshUser: () => {},
+        sessionState: 'logged-in',
+        roles: ['STUDENT'],
+        user: {
+            email: 'test+student@lern-fair.de',
+            firstname: 'Max',
+            lastname: 'Musterstudent',
+            student: { id: 1, verifiedAt: new Date() },
+            userID: 'student/1',
+            pupil: null,
+            screener: null,
         },
     };
 

@@ -1,5 +1,5 @@
-import { useMutation } from '@apollo/client';
-import { Button, ChevronRightIcon, Heading, HStack, Modal, Radio, Stack, Text, TextArea, useTheme, VStack } from 'native-base';
+import { ApolloError, useMutation } from '@apollo/client';
+import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -14,12 +14,13 @@ import { MatchStudentCard } from '../matching/MatchStudentCard';
 import { PupilScreeningCard } from './PupilScreeningCard';
 import { ScreeningSuggestionCard } from './ScreeningSuggestionCard';
 import { useUser, useRoles } from '../../hooks/useApollo';
-import { SubjectSelector } from '../SubjectSelector';
 import { EditSubjectsModal } from './EditSubjectsModal';
 import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
 import { EditGradeModal } from './EditGradeModal';
 import { EditLanguagesModal } from './EditLanguagesModal';
 import DisableableButton from '../../components/DisablebleButton';
+import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
+import { getGradeLabel } from '../../Utility';
 
 const MISSED_SCREENING_QUERY = gql(
     `mutation MissedScreening($pupilScreeningId: Float!, $comment: String!) { pupilMissedScreening(pupilScreeningId: $pupilScreeningId, comment: $comment) }`
@@ -30,13 +31,25 @@ mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $p
 `);
 
 const UPDATE_SCREENING_QUERY = gql(`
-mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: PupilScreeningStatus!) {
+mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: PupilScreeningStatus, $knowsFrom: String!) {
     pupilUpdateScreening(pupilScreeningId: $id, data: {
         comment: $screeningComment,
         status: $status
+        knowsCoronaSchoolFrom: $knowsFrom
     })
 }
 `);
+
+const knowsFromSuggestions = [
+    'Persönliche Empfehlung: Familie & Freunde',
+    'Jugendzentrum',
+    'Schule / Lehrkraft',
+    'TikTok',
+    'Instagram',
+    'Print (Flyer, Poster etc.)',
+    'Suchmaschine (Google)',
+    'Website',
+];
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
     const isDispute = screening!.status! === Pupil_Screening_Status_Enum.Dispute;
@@ -46,6 +59,7 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     const { t } = useTranslation();
 
     const [screeningComment, setScreeningComment] = useState(screening!.comment!);
+    const [knowsFrom, setKnowsFrom] = useState(screening.knowsCoronaSchoolFrom ?? '');
 
     const [confirmRejection, setConfirmRejection] = useState(false);
     const [confirmSuccess, setConfirmSuccess] = useState(false);
@@ -59,17 +73,17 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
 
     function rejection() {
         setConfirmRejection(false);
-        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection } });
+        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection, knowsFrom } });
     }
 
     async function success() {
         setConfirmSuccess(false);
-        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Success } });
+        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Success, knowsFrom } });
     }
 
     function deactivate() {
         setConfirmDeactivation(false);
-        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection } });
+        storeEdit({ variables: { id: screening!.id!, screeningComment: '', status: PupilScreeningStatus.Rejection, knowsFrom } });
         deactivateAccount({ variables: { pupilId: pupil!.id! } });
     }
 
@@ -97,10 +111,21 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                 id: screening!.id!,
                 screeningComment: resultComment,
                 status: PupilScreeningStatus.Dispute,
+                knowsFrom,
             },
         });
         setScreeningComment(resultComment);
     }
+
+    const handleOnKnowsFromChanges = (value: string) => {
+        if (knowsFromSuggestions.includes(value.trim())) {
+            setKnowsFrom(value.replaceAll('Sonstiges: ', ''));
+        } else if (value) {
+            setKnowsFrom(value.includes('Sonstiges: ') ? value : `Sonstiges: ${value}`);
+        } else {
+            setKnowsFrom(value);
+        }
+    };
 
     return (
         <>
@@ -114,8 +139,19 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                 />
             )}
             <VStack flexGrow="1" space={space['1']}>
-                <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="500px" width="100%" autoCompleteType="" />
-
+                <FormControl width={['100%', '60%']}>
+                    <FormControl.Label>Kennt Lern-Fair durch:</FormControl.Label>
+                    <TextInputWithSuggestions value={knowsFrom} setValue={handleOnKnowsFromChanges} suggestions={knowsFromSuggestions} />
+                </FormControl>
+                <FormControl>
+                    <FormControl.Label>
+                        Interner Kommentar{' '}
+                        <Text>
+                            (Wird <Text underline>nach Entscheidung</Text> gelöscht)
+                        </Text>
+                    </FormControl.Label>
+                    <TextArea value={screeningComment} onChangeText={setScreeningComment} minH="200px" width="100%" autoCompleteType="" />
+                </FormControl>
                 <HStack space={space['1']} display="flex">
                     {(loading || loadingDeactivation || loadingMissedScreening) && <CenterLoadingSpinner />}
                     {(data || missedScreeningResult) && <InfoCard icon="yes" title="" message={t('screening.screening_saved')} />}
@@ -246,6 +282,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const { space } = useTheme();
     const { t } = useTranslation();
     const myRoles = useRoles();
+    const toast = useToast();
 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId, silent: true) }`));
 
@@ -266,9 +303,9 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [showEditLanguages, setShowEditLanguages] = useState(false);
     const [showEditGrade, setShowEditGrade] = useState(false);
 
-    const [mutationUpdateSubjects, {}] = useMutation(UPDATE_SUBJECTS_QUERY);
-    const [mutationUpdateGrade, {}] = useMutation(UPDATE_GRADE_QUERY);
-    const [mutationUpdateLanguages, {}] = useMutation(UPDATE_LANGUAGES_QUERY);
+    const [mutationUpdateSubjects] = useMutation(UPDATE_SUBJECTS_QUERY);
+    const [mutationUpdateGrade] = useMutation(UPDATE_GRADE_QUERY);
+    const [mutationUpdateLanguages] = useMutation(UPDATE_LANGUAGES_QUERY);
     const [requestMatch, { loading: loadingRequestMatch }] = useMutation(REQUEST_MATCH_QUERY);
     const [revokeMatchRequest, { loading: loadingRevokeMatchRequest }] = useMutation(REVOKE_MATCH_REQUEST_QUERY);
 
@@ -347,6 +384,28 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
         }
     };
 
+    const handleOnCreateScreening = async () => {
+        try {
+            await createScreening({ variables: { pupilId: pupil.id } });
+        } catch (error) {
+            toast.show({ description: `${t('error')} ${(error as ApolloError).message}` });
+            return;
+        }
+        refresh();
+    };
+
+    const getCanCreateScreening = () => {
+        if (!pupil.verifiedAt) {
+            return { can: false, reason: `Die E-Mail-Adresse von ${pupil.firstname} ${pupil.lastname} ist noch nicht verifiziert` };
+        }
+        if (!needsScreening) {
+            return { can: false, reason: `${pupil.firstname} ${pupil.lastname} wurde bereits gescreent` };
+        }
+        return { can: true, reason: '' };
+    };
+
+    const { can: canCreateScreening, reason: canCreateScreeningReason } = getCanCreateScreening();
+
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
@@ -354,14 +413,14 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             </Heading>
             <HStack flexWrap="wrap" space={space['1']}>
                 <Text fontSize="20px" lineHeight="50px">
-                    {pupil.grade} -{' '}
+                    {getGradeLabel(pupil.gradeAsInt)} -{' '}
                 </Text>
-                <Button variant="outline" onPress={() => setShowEditGrade(true)}>
-                    <EditIcon />
+                <Button variant="outline" onPress={() => setShowEditGrade(true)} rightIcon={<EditIcon />}>
+                    Klasse bearbeiten
                 </Button>
                 <LanguageTagList languages={pupil.languages} />
-                <Button variant="outline" onPress={() => setShowEditLanguages(true)}>
-                    <EditIcon />
+                <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
+                    Sprachen bearbeiten
                 </Button>
                 <Text fontSize="20px" lineHeight="50px">
                     {' '}
@@ -369,8 +428,8 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 </Text>
                 <Stack direction="row" space={space['1']}>
                     <SubjectTagList subjects={pupil.subjectsFormatted} />
-                    <Button variant="outline" onPress={() => setShowEditSubjects(true)}>
-                        <EditIcon />
+                    <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
+                        Fächer bearbeiten
                     </Button>
                 </Stack>
             </HStack>
@@ -393,41 +452,38 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             {!screeningToEdit && (
                 <>
                     {!needsScreening && <InfoCard icon="loki" title={t('screening.no_open_screening')} message={t('screening.no_open_screening_long')} />}
-                    {needsScreening && (
-                        <HStack space={space['1']}>
-                            <Button
-                                onPress={async () => {
-                                    await createScreening({ variables: { pupilId: pupil.id } });
-                                    refresh();
-                                }}
-                            >
-                                Screening anlegen
-                            </Button>
-                            {pupil.active && !loadingDeactivation && !deactivateResult && (
-                                <>
-                                    <Button onPress={() => setConfirmDeactivation(true)} variant="outline" borderColor="orange.900">
-                                        {t('screening.deactivate')}
-                                    </Button>
-                                    <ConfirmModal
-                                        danger
-                                        isOpen={confirmDeactivation}
-                                        onClose={() => setConfirmDeactivation(false)}
-                                        onConfirmed={deactivate}
-                                        text={t('screening.confirm_deactivate', {
-                                            firstname: pupil.firstname,
-                                            lastname: pupil.lastname,
-                                        })}
-                                    />
-                                </>
-                            )}
-                        </HStack>
-                    )}
+                    <HStack space={space['1']}>
+                        <DisableableButton isDisabled={!canCreateScreening} reasonDisabled={canCreateScreeningReason} onPress={handleOnCreateScreening}>
+                            Screening anlegen
+                        </DisableableButton>
+                        {needsScreening && pupil.active && !loadingDeactivation && !deactivateResult && (
+                            <>
+                                <Button onPress={() => setConfirmDeactivation(true)} variant="outline" borderColor="orange.900">
+                                    {t('screening.deactivate')}
+                                </Button>
+                                <ConfirmModal
+                                    danger
+                                    isOpen={confirmDeactivation}
+                                    onClose={() => setConfirmDeactivation(false)}
+                                    onConfirmed={deactivate}
+                                    text={t('screening.confirm_deactivate', {
+                                        firstname: pupil.firstname,
+                                        lastname: pupil.lastname,
+                                    })}
+                                />
+                            </>
+                        )}
+                    </HStack>
                 </>
             )}
             {screeningToEdit && <EditScreening pupil={pupil} screening={screeningToEdit} />}
             {screeningToEdit && <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} />}
             <HStack space={space['1']}>
-                <VStack padding={space['1']}>{pupil.openMatchRequestCount > 0 && <Text bold>{pupil.openMatchRequestCount} Matchanfragen</Text>}</VStack>
+                {pupil.openMatchRequestCount > 0 && (
+                    <VStack padding={space['1']}>
+                        <Text bold>{pupil.openMatchRequestCount} Matchanfragen</Text>
+                    </VStack>
+                )}
                 <DisableableButton
                     isDisabled={loadingRequestMatch || (needsScreening && !screeningToEdit)}
                     reasonDisabled="Zuerst muss ein Screening angelegt werden"

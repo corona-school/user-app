@@ -6,7 +6,7 @@ import MatchPartner from './match/MatchPartner';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { gql } from '../gql/gql';
+import { gql } from './../gql';
 import { useUserType } from '../hooks/useApollo';
 import { Dissolve_Reason, Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -22,6 +22,8 @@ import { pupilIdToUserId, studentIdToUserId } from '../helper/chat-helper';
 import AsNavigationItem from '../components/AsNavigationItem';
 import AdHocMeetingModal from '../modals/AdHocMeetingModal';
 import { DateTime } from 'luxon';
+import ReportMatchModal from '../modals/ReportMatchModal';
+import { ScrollDirection } from './Appointments';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -32,12 +34,16 @@ query SingleMatch($matchId: Int! ) {
     dissolved
     dissolvedAt
     dissolveReason
+    appointmentsCount
+    lastAppointmentId
+    firstAppointmentId
     pupil {
         id
         firstname
         lastname
         schooltype
         grade
+        gradeAsInt
         state
         subjectsFormatted {
             name
@@ -54,8 +60,15 @@ query SingleMatch($matchId: Int! ) {
         }
         aboutMe
     }
-    appointments {
-        id
+  }
+}
+`);
+
+const appointmentsQuery = gql(`
+query SingleMatchAppointments($matchId: Int!, $take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
+    match(matchId: $matchId) {
+        appointments(take: $take, skip: $skip, cursor: $cursor,  direction: $direction) {
+            id
             title
             description
             start
@@ -66,6 +79,7 @@ query SingleMatch($matchId: Int! ) {
             displayName
             isOrganizer
             isParticipant
+            override_meeting_link
             organizers(skip: 0, take: 5) {
                 id
                 firstname
@@ -76,8 +90,9 @@ query SingleMatch($matchId: Int! ) {
                 firstname
                 lastname
             }
+
         }
-  }
+    }
 }`);
 
 const matchChatMutation = gql(`
@@ -85,6 +100,8 @@ mutation createMatcheeChat($matcheeId: String!) {
   matchChatCreate(matcheeUserId: $matcheeId)
 }
 `);
+
+const take = 10;
 
 const SingleMatch = () => {
     const { trackEvent } = useMatomo();
@@ -98,12 +115,33 @@ const SingleMatch = () => {
     const toast = useToast();
     const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
     const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>(false);
+    const [showReportModal, setShowReportModal] = useState(false);
     const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
 
-    const { data, loading, error, refetch } = useQuery(singleMatchQuery, {
+    const {
+        data,
+        loading: isLoadingMatchData,
+        error,
+        refetch: refetchMatchData,
+    } = useQuery(singleMatchQuery, {
         variables: {
             matchId,
+        },
+    });
+    const {
+        data: matchAppointments,
+        loading: isLoadingAppointments,
+        error: appointmentsError,
+        refetch: refetchAppointments,
+        fetchMore: fetchMoreAppointments,
+    } = useQuery(appointmentsQuery, {
+        variables: {
+            matchId,
+            take,
+            skip: 0,
         },
     });
 
@@ -117,13 +155,11 @@ const SingleMatch = () => {
         `)
     );
 
-    const [createAdHocMeeting] = useMutation(
-        gql(`
-            mutation createAdHocMeeting($matchId: Int!){
-                matchCreateAdHocMeeting(matchId: $matchId)
-            }
-        `)
-    );
+    const refetch = useCallback(async () => {
+        await Promise.all([refetchMatchData(), refetchAppointments()]);
+    }, [refetchMatchData, refetchAppointments]);
+
+    const totalAppointmentsCount = data?.match.appointmentsCount || 0;
     const dissolve = useCallback(
         async (reasons: Dissolve_Reason[]) => {
             setShowDissolveModal(false);
@@ -144,7 +180,7 @@ const SingleMatch = () => {
         [dissolveMatch, matchId, refetch, trackEvent]
     );
 
-    const appointments = data?.match?.appointments ?? [];
+    const appointments = matchAppointments?.match.appointments ?? [];
 
     const goBackToMatch = async () => {
         await refetch();
@@ -158,18 +194,6 @@ const SingleMatch = () => {
         const conversation = await createMatcheeChat({ variables: { matcheeId: contactId } });
         navigate('/chat', { state: { conversationId: conversation?.data?.matchChatCreate } });
     };
-    const startAdHocMeeting = useCallback(async () => {
-        const meetingData = await createAdHocMeeting({ variables: { matchId: matchId } });
-        const appointmentId = meetingData && meetingData.data?.matchCreateAdHocMeeting.id;
-        const appointmentType = meetingData && meetingData.data?.matchCreateAdHocMeeting.appointmentType;
-        await refetch();
-
-        if (!appointmentId || !appointmentType) {
-            throw new Error('Couldnt start ad-hoc meeting, because no appointment was found.');
-        }
-
-        navigate(`/video-chat/${appointmentId}/${appointmentType}`);
-    }, [createAdHocMeeting, matchId, navigate, refetch]);
 
     const isActiveMatch = useMemo(() => {
         if (!data?.match.dissolved) return true;
@@ -179,26 +203,73 @@ const SingleMatch = () => {
         return !before;
     }, [data?.match.dissolved, data?.match.dissolvedAt]);
 
+    const overrideMeetingLink = useMemo(() => {
+        const lastAppointment = appointments[appointments.length - 1];
+        if (lastAppointment && lastAppointment.override_meeting_link !== null) {
+            return lastAppointment.override_meeting_link;
+        } else {
+            return undefined;
+        }
+    }, [appointments]);
+
     useEffect(() => {
         if (dissolveData?.matchDissolve && !toastShown) {
             setToastShown(true);
             toast.show({ description: t('matching.shared.dissolved'), placement: 'top' });
         }
-    }, [dissolveData?.matchDissolve, toast, toastShown]);
+    }, [dissolveData?.matchDissolve, toast, toastShown, t]);
+
+    const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
+        setIsFetchingMoreAppointments(true);
+        await fetchMoreAppointments({
+            variables: { take, skip, cursor, direction: scrollDirection },
+            updateQuery: (previousAppointments, { fetchMoreResult }) => {
+                const newAppointments = fetchMoreResult?.match?.appointments;
+                const prevAppointments = appointments;
+                if (scrollDirection === 'next') {
+                    if (!newAppointments || newAppointments.length === 0) {
+                        return previousAppointments;
+                    }
+                    return {
+                        match: {
+                            appointments: [...prevAppointments, ...newAppointments],
+                        },
+                    };
+                } else {
+                    if (!newAppointments || newAppointments.length === 0) {
+                        return previousAppointments;
+                    }
+                    toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
+                    return {
+                        match: {
+                            appointments: [...newAppointments, ...prevAppointments],
+                        },
+                    };
+                }
+            },
+        });
+        setIsFetchingMoreAppointments(false);
+    };
+
+    const hasMoreAppointments = appointments.length < totalAppointmentsCount;
+    const hasMoreOldAppointments = !appointments.some((e) => e.id === data?.match.firstAppointmentId);
+    const hasMoreNewAppointments = !appointments.some((e) => e.id === data?.match.lastAppointmentId);
 
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
                 headerTitle={''}
                 showBack={!createAppointment}
+                previousFallbackRoute="/matching"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <HelpNavigation />
                         <NotificationAlert />
                     </Stack>
                 }
+                isLoading={(isLoadingMatchData && isLoadingAppointments) || isLoading}
             >
-                {loading || !data ? (
+                {isLoadingMatchData || !data ? (
                     <CenterLoadingSpinner />
                 ) : (
                     !error && (
@@ -208,8 +279,10 @@ const SingleMatch = () => {
                                     back={() => setCreateAppointment(false)}
                                     courseOrMatchId={matchId}
                                     isCourse={false}
-                                    appointmentsTotal={appointments.length}
+                                    appointmentsTotal={totalAppointmentsCount}
                                     navigateToMatch={async () => await goBackToMatch()}
+                                    overrideMeetingLink={overrideMeetingLink}
+                                    setIsLoading={setIsLoading}
                                 />
                             ) : (
                                 <>
@@ -250,6 +323,11 @@ const SingleMatch = () => {
                                                 {t('matching.shared.dissolveMatch')}
                                             </Button>
                                         )}
+                                        {isActiveMatch && (
+                                            <Button variant="outline" onPress={() => setShowReportModal(true)} my={isMobile ? '0' : '1'}>
+                                                {t('matching.shared.reportProblem')}
+                                            </Button>
+                                        )}
                                     </Stack>
                                     <Divider thickness={1} mb={4} />
                                     <Stack space={space['1']}>
@@ -258,9 +336,14 @@ const SingleMatch = () => {
                                     <MatchAppointments
                                         appointments={appointments as Appointment[]}
                                         minimumHeight={'30vh'}
-                                        loading={loading}
-                                        error={error}
+                                        loading={isLoadingAppointments || isFetchingMoreAppointments}
+                                        error={appointmentsError}
                                         dissolved={data?.match?.dissolved}
+                                        loadMoreAppointments={loadMoreAppointments}
+                                        noNewAppointments={!hasMoreNewAppointments || !hasMoreAppointments}
+                                        noOldAppointments={!hasMoreOldAppointments || !hasMoreAppointments}
+                                        hasAppointments={hasMoreAppointments || !!appointments.length}
+                                        lastAppointmentId={data.match.lastAppointmentId}
                                     />
                                     {userType === 'student' && !data?.match?.dissolved && (
                                         <Box>
@@ -286,13 +369,17 @@ const SingleMatch = () => {
                     }}
                     onPressBack={() => setShowDissolveModal(false)}
                 />
-                <AdHocMeetingModal
-                    showAdHocModal={showAdHocMeetingModal}
-                    onPressAdHocMeeting={async () => {
-                        await startAdHocMeeting();
-                    }}
-                    onPressBack={() => setShowAdHocMeetingModal(false)}
-                />
+                {data?.match.id && (
+                    <AdHocMeetingModal showAdHocModal={showAdHocMeetingModal} matchId={data?.match.id} onPressBack={() => setShowAdHocMeetingModal(false)} />
+                )}
+                {data && data.match.pupil.firstname && data.match.student.firstname && (
+                    <ReportMatchModal
+                        matchName={userType === 'student' ? data.match.pupil.firstname : data.match.student.firstname}
+                        matchId={data.match.id}
+                        onClose={() => setShowReportModal(false)}
+                        isOpen={showReportModal}
+                    />
+                )}
             </WithNavigation>
         </AsNavigationItem>
     );

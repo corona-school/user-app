@@ -1,4 +1,4 @@
-import { Radio, VStack, Modal, Text, useTheme, Stack, Button, HStack } from 'native-base';
+import { Modal, Text, useTheme, Button, HStack } from 'native-base';
 import { Pupil_Languages_Enum } from '../../gql/graphql';
 import { LanguageTagList, allLanguages } from '../../components/LanguageTag';
 import { useState } from 'react';
@@ -19,7 +19,7 @@ export function EditLanguagesModal({
         <Modal size="xl" isOpen onClose={onClose}>
             <Modal.Content>
                 <Modal.Header>
-                    <Text>Fächer bearbeiten</Text>
+                    <Text>Sprachen bearbeiten</Text>
                     <Modal.CloseButton />
                 </Modal.Header>
                 <Modal.Body>

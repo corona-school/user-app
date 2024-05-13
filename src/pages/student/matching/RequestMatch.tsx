@@ -95,6 +95,7 @@ const RequestMatching: React.FC = () => {
         <AsNavigationItem path="matching">
             <WithNavigation
                 showBack
+                previousFallbackRoute="/matching"
                 isLoading={loading || isLoading}
                 headerLeft={
                     <Stack alignItems="center" direction="row">

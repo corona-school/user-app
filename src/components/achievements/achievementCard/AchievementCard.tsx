@@ -15,14 +15,19 @@ type AchievementCardProps = {
     image: string | undefined;
     alternativeText: string;
     isNewAchievement?: boolean;
-    subtitle?: string;
+    tagline?: string;
     title: string;
     maxSteps?: number;
     currentStep?: number;
-    progressDescription?: string;
+    progressDescription: string;
+    actionName?: string;
+    showProgressBar: boolean;
     onClick?: () => void;
 };
 
+/**
+ * An Achievement Card is a card that displays the user"s achievements based on their successes.
+ */
 const AchievementCard: React.FC<AchievementCardProps> = ({
     achievementState,
     achievementType,
@@ -30,11 +35,13 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     image,
     alternativeText,
     isNewAchievement,
-    subtitle,
+    tagline,
     title,
     maxSteps,
     currentStep,
     progressDescription,
+    actionName,
+    showProgressBar,
     onClick,
 }) => {
     const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
@@ -42,10 +49,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const shineOffsetTop = useBreakpointValue({ base: '-10px', md: '-10px' });
     const showInnerShadow = useBreakpointValue({ base: false, md: true });
     const cardFlexDirection = useBreakpointValue({ base: 'row', md: 'column' });
-    const justifyCardContentMobile = useBreakpointValue({ base: 'flex-end', md: 'center' });
-    const justifyCardContentUnfinished = useBreakpointValue({
+    const justifyCardContent = useBreakpointValue({
         base: 'flex-start',
-        md: achievementType === Achievement_Type_Enum.Sequential ? 'space-between' : justifyCardContentMobile,
+        md: achievementType === Achievement_Type_Enum.Sequential && achievementState === Achievement_State.Active ? 'space-between' : 'center',
     });
     const cardSpacing = useBreakpointValue({ base: 0, md: 2 });
     const width = useBreakpointValue({ base: '100%', md: '280px' });
@@ -56,6 +62,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const borderWidth = useBreakpointValue({ base: 'none', md: '1px' });
     const paddingX = useBreakpointValue({ base: '16px', md: '32px' });
     const bgColorIncomplete = useBreakpointValue({ base: 'white', md: 'gray.50' });
+    const commonCardImageSize = useBreakpointValue({ base: 'auto', md: '190px' });
     const polaroidImageSize = useBreakpointValue({
         base: { width: '64px', height: '84px' },
         md: { width: PolaroidImageSize.LARGE, height: PolaroidImageSize.LARGE },
@@ -63,15 +70,12 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const shineSize = useBreakpointValue({ base: ShineSize.XSMALL, md: ShineSize.MEDIUM });
     const textSpace = useBreakpointValue({ base: 2, md: 5 });
     const textPaddingLeft = useBreakpointValue({ base: '12px', md: '0' });
-    const indicatorTextSpace = useBreakpointValue({ base: 0, md: 2 });
-    const indicatorFirst = useBreakpointValue({ base: false, md: true });
-    const indicatorSecond = useBreakpointValue({ base: true, md: false });
-    const colorozeCard = useBreakpointValue({ base: true, md: false });
+    const progressBarLargeText = useBreakpointValue({ base: false, md: true });
     return (
         <Pressable disabled={achievementState === Achievement_State.Inactive} onPress={onClick}>
             <VStack width={width} height="fit-content" borderRadius="8px" alignItems={alignItems} justifyContent="center" overflow="visible">
                 {showInnerShadow && achievementState === Achievement_State.Inactive && <InnerShadow deviation={7.5} opacity={0.5} />}
-                {isNewAchievement && achievementState === Achievement_State.Completed && (
+                {isNewAchievement && (
                     <>
                         <AchievementBadge />
                         <VStack
@@ -91,7 +95,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 <Stack
                     direction={cardFlexDirection}
                     alignItems="center"
-                    justifyContent={achievementState !== Achievement_State.Completed ? 'space-between' : justifyCardContentUnfinished}
+                    justifyContent={justifyCardContent}
                     space={cardSpacing}
                     width={width}
                     height={cardHeight}
@@ -109,7 +113,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                             : bgColorIncomplete
                     }
                 >
-                    <Stack paddingY={achievementType === Achievement_Type_Enum.Sequential ? 4 : 0}>
+                    <Stack height={commonCardImageSize} paddingY={achievementType === Achievement_Type_Enum.Sequential ? 4 : 0}>
                         <AchievementImageContainer
                             image={achievementState !== Achievement_State.Completed && achievementType === Achievement_Type_Enum.Tiered ? undefined : image}
                             alternativeText={alternativeText}
@@ -125,7 +129,7 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                 width="100%"
                                 textAlign={textAlignment}
                             >
-                                {subtitle}
+                                {tagline}
                             </Text>
                             <Text
                                 width="100%"
@@ -140,13 +144,19 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                                 {title}
                             </Text>
                         </Stack>
-                        {achievementState !== Achievement_State.Completed && (
-                            <VStack space={indicatorTextSpace} width="100%">
-                                {indicatorFirst && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
-                                {progressDescription && (
-                                    <CardProgressDescription actionType={actionType} progressDescription={progressDescription} isColorized={colorozeCard} />
+                        {showProgressBar && (
+                            <VStack space="0" width="100%">
+                                {maxSteps && (
+                                    <IndicatorBar
+                                        maxSteps={maxSteps}
+                                        currentStep={currentStep}
+                                        progressDescription={progressDescription}
+                                        fullWidth
+                                        isCard
+                                        largeText={progressBarLargeText}
+                                    />
                                 )}
-                                {indicatorSecond && maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} centerText />}
+                                {actionName && <CardProgressDescription actionType={actionType} progressDescription={actionName} />}
                             </VStack>
                         )}
                     </VStack>

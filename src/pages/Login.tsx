@@ -35,7 +35,7 @@ import DisableableButton from '../components/DisablebleButton';
 
 export default function Login() {
     const { t } = useTranslation();
-    const { onLogin, sessionState, loginWithPassword } = useApollo();
+    const { sessionState, loginWithPassword } = useApollo();
     const { space, sizes } = useTheme();
     const [showNoAccountModal, setShowNoAccountModal] = useState(false);
     const [showAccountDeactivatedModal, setShowAccountDeactivatedModal] = useState(false);
@@ -92,7 +92,7 @@ export default function Login() {
     );
 
     useEffect(() => {
-        if (sessionState === 'logged-in') navigate(retainPath);
+        if (sessionState === 'logged-in') navigate(retainPath, { replace: true });
         if (error && error === 'token-invalid') {
             toast.show({
                 render: ({ id }) => {
@@ -168,7 +168,6 @@ export default function Login() {
     const attemptLogin = useCallback(async () => {
         loginButton();
         const res = await loginWithPassword(email!, password!);
-        onLogin(res);
         setLoginResult(res);
     }, [email, loginButton, password]);
 
@@ -400,9 +399,13 @@ export default function Login() {
 
                     <Box paddingTop={4} marginX="90px" display="block">
                         <DisableableButton
-                            isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading}
+                            isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading || (showPasswordField && !password)}
                             reasonDisabled={
-                                _sendToken.loading || _determineLoginOptions.loading ? t('reasonsDisabled.loading') : t('reasonsDisabled.invalidEMail')
+                                _sendToken.loading || _determineLoginOptions.loading
+                                    ? t('reasonsDisabled.loading')
+                                    : !email || email.length < 6
+                                    ? t('reasonsDisabled.invalidEMail')
+                                    : t('reasonsDisabled.formIncomplete')
                             }
                             onPress={showPasswordField ? attemptLogin : getLoginOption}
                             width={'100%'}

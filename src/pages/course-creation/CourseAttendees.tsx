@@ -4,6 +4,7 @@ import { useCallback, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
+import { getGradeLabel } from '../../Utility';
 
 type AttendeesProps = {
     onNext: () => void;
@@ -15,7 +16,7 @@ const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {
     const { t } = useTranslation();
     const { maxParticipantCount, setMaxParticipantCount, classRange, setClassRange } = useContext(CreateCourseContext);
 
-    const [courseClassRange, setCourseClassRange] = useState<[number, number]>(classRange || [1, 13]);
+    const [courseClassRange, setCourseClassRange] = useState<[number, number]>(classRange || [1, 14]);
     const [maxParticipants, setMaxParticipants] = useState<string>(maxParticipantCount || '');
 
     const ContentContainerWidth = useBreakpointValue({
@@ -42,15 +43,17 @@ const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {
                         {t('course.CourseDate.form.detailsContent')}
                     </FormControl.Label>
 
-                    <Text>{t('course.CourseDate.form.classRange', { minRange: courseClassRange[0], maxRange: courseClassRange[1] })}</Text>
+                    <Text>
+                        {t('course.CourseDate.form.classRange', { minRange: getGradeLabel(courseClassRange[0]), maxRange: getGradeLabel(courseClassRange[1]) })}
+                    </Text>
                     <Box>
                         <Slider
                             animateTransitions
                             minimumValue={1}
-                            maximumValue={13}
+                            maximumValue={14}
                             minimumTrackTintColor={colors['primary']['500']}
                             thumbTintColor={colors['primary']['900']}
-                            value={courseClassRange || [1, 13]}
+                            value={courseClassRange}
                             step={1}
                             onValueChange={(value: number | number[]) => {
                                 Array.isArray(value) && setCourseClassRange([value[0], value[1]]);

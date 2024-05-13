@@ -1,17 +1,17 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Button, Heading, useTheme, VStack, Row, Column, useBreakpointValue } from 'native-base';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 
 import WithNavigation from '../../components/WithNavigation';
 import AlertMessage from '../../widgets/AlertMessage';
-import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
+import { GradeSelector, GradeTag } from '../../components/GradeSelector';
 
 type Props = {};
 
@@ -19,9 +19,6 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
 
     const { t } = useTranslation();
-
-    const location = useLocation();
-    const { state } = location as { state: { userType: string } };
 
     const [showError, setShowError] = useState<boolean>();
 
@@ -48,22 +45,6 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
             meUpdate(update: { pupil: { gradeAsInt: $grade } })
         }
     `);
-
-    const schoolGrades = useMemo(() => {
-        return new Array(13).fill(0).map((_, i) => i + 1);
-
-        // if (!data?.me?.pupil?.schooltype) {
-        //   return new Array(8).fill(0).map((_, i) => i + 5)
-        // }
-
-        // if (data?.me?.pupil?.schooltype === 'grundschule') {
-        //   return new Array(4).fill(0).map((_, i) => i + 1)
-        // } else if (data?.me?.pupil?.schooltype === 'gymnasium') {
-        //   return new Array(8).fill(0).map((_, i) => i + 5)
-        // } else {
-        //   return new Array(6).fill(0).map((_, i) => i + 5)
-        // }
-    }, []);
 
     const [selectedGrade, setSelectedGrade] = useState<number>(1);
 
@@ -114,13 +95,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
                     <Row flexWrap="wrap" width="100%">
                         <Column marginRight={3} marginBottom={3} key={`selection-${selectedGrade}`}>
-                            <IconTagList
-                                isDisabled
-                                textIcon={`${selectedGrade}`}
-                                text={t('lernfair.schoolclass', {
-                                    class: selectedGrade,
-                                })}
-                            />
+                            <GradeTag grade={selectedGrade} />
                         </Column>
                     </Row>
                 </ProfileSettingItem>
@@ -130,20 +105,7 @@ const ChangeSettingSchoolClass: React.FC<Props> = () => {
                     <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
                         <VStack w="100%">
                             <Row flexWrap="wrap" width="100%">
-                                {schoolGrades?.map(
-                                    (subject, index) =>
-                                        selectedGrade !== subject && (
-                                            <Column marginRight={3} marginBottom={3} key={`offers-${index}`}>
-                                                <IconTagList
-                                                    textIcon={`${subject}`}
-                                                    text={t('lernfair.schoolclass', {
-                                                        class: subject,
-                                                    })}
-                                                    onPress={() => setSelectedGrade(subject)}
-                                                />
-                                            </Column>
-                                        )
-                                )}
+                                <GradeSelector onGradeChange={setSelectedGrade} omitGrades={[selectedGrade]} />
                             </Row>
                             {/* {selections.includes('Andere') && (
                 <Row>

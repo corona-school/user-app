@@ -1,5 +1,5 @@
 import React, { useMemo, useRef, useEffect, useCallback } from 'react';
-import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button, Spinner } from 'native-base';
+import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../types/lernfair/Appointment';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -21,6 +21,7 @@ type Props = {
     isLoadingAppointments?: boolean;
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
+    height?: number;
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -43,6 +44,7 @@ const AppointmentList: React.FC<Props> = ({
     isLoadingAppointments,
     loadMoreAppointments,
     lastAppointmentId,
+    height = 100,
 }) => {
     const navigate = useNavigate();
     const { t } = useTranslation();
@@ -94,8 +96,8 @@ const AppointmentList: React.FC<Props> = ({
         if (noOldAppointments) return null;
         return (
             <Box pb={10} justifyContent="center" alignItems="center">
-                <Button variant="outline" onPress={handleLoadPast}>
-                    {isLoadingAppointments ? <Spinner /> : t('appointment.loadPastAppointments')}
+                <Button variant="outline" onPress={handleLoadPast} isLoading={isLoadingAppointments}>
+                    {t('appointment.loadPastAppointments')}
                 </Button>
             </Box>
         );
@@ -126,7 +128,7 @@ const AppointmentList: React.FC<Props> = ({
         const weekDivider = showWeekDivider(appointment, previousAppointment);
         const monthDivider = showMonthDivider(appointment, previousAppointment);
 
-        if (isLoadingAppointments) return <CenterLoadingSpinner />;
+        if (isLoadingAppointments && !appointments.length) return <CenterLoadingSpinner />;
         return (
             <Box key={`${appointment.id + index}`} ml={isFullWidth ? 0 : 3}>
                 {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
@@ -174,15 +176,16 @@ const AppointmentList: React.FC<Props> = ({
         return handleScrollIntoView(scrollViewRef.current);
     }, [isReadOnlyList, scrollId]);
 
+    const canLoadMoreAppointments = !isReadOnlyList && !noNewAppointments && !isLoadingAppointments;
     return (
         <FlatList
             keyExtractor={(item) => item.id.toString()}
-            height={100}
+            height={height}
             maxW={maxListWidth}
             data={appointments}
             renderItem={renderItems}
-            onEndReached={!isReadOnlyList ? handleLoadMore : undefined}
-            onEndReachedThreshold={0.1}
+            onEndReached={canLoadMoreAppointments ? handleLoadMore : undefined}
+            onEndReachedThreshold={1}
             ListFooterComponent={!isReadOnlyList ? renderFooter : undefined}
             ListHeaderComponent={!isReadOnlyList ? renderHeader : undefined}
         />

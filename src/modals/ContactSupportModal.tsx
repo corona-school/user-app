@@ -1,5 +1,5 @@
-import { Button, Checkbox, FormControl, Heading, Input, Modal, Row, Text, TextArea, useTheme, useToast } from 'native-base';
-import { useTranslation } from 'react-i18next';
+import { Button, Checkbox, FormControl, Heading, Input, Link, Modal, Row, Text, TextArea, useTheme, useToast } from 'native-base';
+import { Trans, useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import useApollo from '../hooks/useApollo';
 import { useMutation } from '@apollo/client';
@@ -51,6 +51,9 @@ export const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen }) =
                 <Modal.Header>{t('contactSupport.title')}</Modal.Header>
                 <Modal.Body>
                     <Text paddingBottom={space['1.5']}>{t('contactSupport.content')}</Text>
+                    <Text italic paddingBottom={space['1.5']}>
+                        <Trans i18nKey="contactSupport.legal" components={{ privacy: <Link href="https://lern-fair.de/datenschutz" /> }} />
+                    </Text>
 
                     <FormControl>
                         <Row flexDirection="column" paddingY={space['0.5']}>

@@ -5,20 +5,33 @@ import { useCreateAppointment } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import InputSuffix from '../../widgets/InputSuffix';
-import { useCallback, useState } from 'react';
-import { FormErrors } from './AppointmentCreation';
+import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { FormErrors, VideoChatTypeEnum } from './AppointmentCreation';
 import { isDateToday } from '../../helper/appointment-helper';
 import { DateTime } from 'luxon';
 import CustomSelect from '../../components/CustomSelect';
+import CustomVideoInput from '../../widgets/CustomVideoInput';
 
 type FormProps = {
     errors: FormErrors;
     appointmentsCount: number;
+    overrideMeetingLink: string | undefined;
     onSetDate: () => void;
     onSetTime: () => void;
+    setVideoChatType: Dispatch<SetStateAction<VideoChatTypeEnum>>;
+    videoChatType: string;
     isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSetDate, onSetTime, isCourse }) => {
+const AppointmentForm: React.FC<FormProps> = ({
+    errors,
+    appointmentsCount,
+    onSetDate,
+    overrideMeetingLink,
+    onSetTime,
+    isCourse,
+    setVideoChatType,
+    videoChatType,
+}) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -31,6 +44,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
     const [time, setTime] = useState('');
+    const [meetingLink, setMeetingLink] = useState(overrideMeetingLink ?? undefined);
     const [isToday, setIsToday] = useState<boolean>(false);
 
     const handleTitleInput = (e: any) => {
@@ -60,6 +74,10 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
         onSetTime();
     };
 
+    const handleVideoInput = (e: any) => {
+        setMeetingLink(e.target.value);
+    };
+
     const getMinForDatePicker = useCallback((type: 'date' | 'time', isCourse: boolean, isToday: boolean) => {
         let date = DateTime.now();
         if (type === 'date') {
@@ -77,8 +95,8 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
     return (
         <Box>
             <VStack space={1} width="full">
+                {/* TITLE */}
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
-                    {/* TITLE */}
                     <FormControl width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
                         <InputSuffix
@@ -88,7 +106,6 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                             handleBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: title })}
                         />
                     </FormControl>
-
                     {/* DATE */}
                     <FormControl isInvalid={'date' in errors || 'dateNotInOneWeek' in errors} width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
@@ -110,7 +127,6 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                         )}
                     </FormControl>
                 </Stack>
-
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
                     {/* TIME */}
                     <FormControl isInvalid={'time' in errors || 'timeNotInFiveMin' in errors} width={inputWidth}>
@@ -157,18 +173,42 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, appointmentsCount, onSet
                     </FormControl>
                 </Stack>
 
-                {/* DESCRIPTION */}
-                <FormControl isInvalid={'description' in errors} width={inputWidth}>
-                    <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
-                    <TextArea
-                        value={description}
-                        onChangeText={(e) => handleDescriptionInput(e)}
-                        onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: description })}
-                        placeholder={t('appointment.create.descriptionPlaceholder')}
-                        autoCompleteType={'normal'}
-                        h="100"
-                    />
-                </FormControl>
+                <Stack direction={isMobile ? 'column' : 'row'} space={5}>
+                    <FormControl isInvalid={('invalidLink' || 'videoChat') in errors} width={inputWidth}>
+                        {/* VIDEO CHAT */}
+                        <FormControl.Label>{t('appointment.create.videoChatLabel')}</FormControl.Label>
+                        <CustomVideoInput
+                            inputValue={meetingLink}
+                            handleInput={handleVideoInput}
+                            handleBlur={() => {
+                                dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'meetingLink', value: meetingLink });
+                            }}
+                            overrideMeetingLink={overrideMeetingLink}
+                            setVideoChatType={setVideoChatType}
+                            videoChatType={videoChatType}
+                        />
+                        {'invalidLink' in errors && (
+                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
+                                {t('appointment.create.wrongVideoUrlError')}
+                            </FormControl.ErrorMessage>
+                        )}
+                    </FormControl>
+                </Stack>
+
+                <Stack direction={isMobile ? 'column' : 'row'} space={5}>
+                    {/* DESCRIPTION */}
+                    <FormControl isInvalid={'description' in errors} width={inputWidth}>
+                        <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
+                        <TextArea
+                            value={description}
+                            onChangeText={(e) => handleDescriptionInput(e)}
+                            onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: description })}
+                            placeholder={t('appointment.create.descriptionPlaceholder')}
+                            autoCompleteType={'normal'}
+                            h="100"
+                        />
+                    </FormControl>
+                </Stack>
             </VStack>
         </Box>
     );

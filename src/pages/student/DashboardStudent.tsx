@@ -11,7 +11,7 @@ import { useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import LearningPartner from '../../widgets/LearningPartner';
 import { DateTime } from 'luxon';
-import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
+import { getGradeLabel, getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -25,6 +25,7 @@ import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import useApollo from '../../hooks/useApollo';
+import SupportCategories from '../../widgets/SupportCategories';
 
 type Props = {};
 
@@ -51,6 +52,7 @@ const query = gql(`
                         firstname
                         lastname
                         grade
+                        gradeAsInt
                         subjectsFormatted {
                             name
                         }
@@ -258,6 +260,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                 return (
                                                     <AppointmentCard
                                                         key={index}
+                                                        subcourseId={sub.id}
                                                         description={sub.course.description}
                                                         tags={sub.course.tags}
                                                         dateNextLecture={sub?.nextLecture?.start ?? undefined}
@@ -329,7 +332,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                             name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
                                                             subjects={match?.pupil?.subjectsFormatted}
                                                             schooltype={match?.pupil?.schooltype || ''}
-                                                            grade={match?.pupil?.grade || ''}
+                                                            grade={getGradeLabel(match?.pupil?.gradeAsInt) || ''}
                                                         />
                                                     </Box>
                                                 );
@@ -350,6 +353,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                     )}
                                 </VStack>
                             )}
+                            <VStack marginBottom={space['1.5']}>
+                                <SupportCategories />
+                            </VStack>
                             <VStack marginBottom={space['1.5']}>
                                 <Heading marginBottom={space['1']}>{t('dashboard.helpers.headlines.recommend')}</Heading>
                                 <CTACard

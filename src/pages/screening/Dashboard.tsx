@@ -116,6 +116,7 @@ export function ScreeningDashboard() {
                     grade
                     gradeAsInt
                     openMatchRequestCount
+                    verifiedAt
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -131,6 +132,7 @@ export function ScreeningDashboard() {
                         invalidated
                         status
                         comment
+                        knowsCoronaSchoolFrom
                         createdAt
                         updatedAt
                         screeners { firstname lastname }
@@ -164,8 +166,8 @@ export function ScreeningDashboard() {
                         nextLecture { start duration }
                     }
 
-                    tutorScreenings { createdAt success comment screener { firstname lastname } }
-                    instructorScreenings { createdAt success comment screener { firstname lastname } }
+                    tutorScreenings { id createdAt success comment screener { firstname lastname } }
+                    instructorScreenings { id createdAt success comment screener { firstname lastname } }
                 }
             }
         }
@@ -203,6 +205,7 @@ export function ScreeningDashboard() {
                     invalidated
                     status
                     comment
+                    knowsCoronaSchoolFrom
                     createdAt
                     updatedAt
                     screeners { firstname lastname }

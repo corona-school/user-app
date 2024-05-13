@@ -14,21 +14,34 @@ export type MatchWithPupil = Opt<
     }
 >;
 
-export type PupilScreening = Opt<Pick<Pupil_Screening, 'id' | 'createdAt' | 'updatedAt' | 'comment' | 'status' | 'invalidated'>> & {
+export type PupilScreening = Opt<Pick<Pupil_Screening, 'id' | 'createdAt' | 'updatedAt' | 'comment' | 'status' | 'invalidated' | 'knowsCoronaSchoolFrom'>> & {
     screeners: Pick<Screener, 'firstname' | 'lastname'>[];
 };
 
 export type PupilForScreening = Pick<
     Pupil,
-    'active' | 'id' | 'firstname' | 'lastname' | 'email' | 'createdAt' | 'subjectsFormatted' | 'languages' | 'grade' | 'gradeAsInt' | 'openMatchRequestCount'
+    | 'active'
+    | 'id'
+    | 'firstname'
+    | 'lastname'
+    | 'email'
+    | 'createdAt'
+    | 'subjectsFormatted'
+    | 'languages'
+    | 'grade'
+    | 'gradeAsInt'
+    | 'openMatchRequestCount'
+    | 'verifiedAt'
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];
 };
 
-export type InstructorScreening = Pick<Instructor_Screening, 'success' | 'createdAt' | 'comment'> & { screener: Pick<Screener, 'firstname' | 'lastname'> };
+export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'success' | 'createdAt' | 'comment'> & {
+    screener: Pick<Screener, 'firstname' | 'lastname'>;
+};
 
-export type TutorScreening = Pick<Screening, 'createdAt' | 'success' | 'comment'> & { screener: Pick<Screener, 'firstname' | 'lastname'> };
+export type TutorScreening = Pick<Screening, 'id' | 'createdAt' | 'success' | 'comment'> & { screener: Pick<Screener, 'firstname' | 'lastname'> };
 
 export type SubcourseForScreening = Pick<Subcourse, 'id' | 'published'> & {
     course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };

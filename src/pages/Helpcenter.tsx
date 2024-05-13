@@ -15,7 +15,7 @@ import {
     Input,
     Stack,
 } from 'native-base';
-import Tabs from '../components/Tabs';
+import NavigationTabs from '../components/NavigationTabs';
 import WithNavigation from '../components/WithNavigation';
 import { useCallback, useEffect, useState } from 'react';
 import InfoScreen from '../widgets/InfoScreen';
@@ -176,7 +176,7 @@ const HelpCenter: React.FC = () => {
           </Box> */}
                 </Box>
                 <Box width="100%" maxWidth={ContainerWidth} marginX="auto">
-                    <Tabs
+                    <NavigationTabs
                         tabInset={space['1.5']}
                         tabs={[
                             {

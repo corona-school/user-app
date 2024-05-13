@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Box, Button, Modal, Stack, Text, VStack, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Button, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs, { Tab } from '../../components/Tabs';
+import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
@@ -48,6 +48,7 @@ function Participants({
                     lastname
                     schooltype
                     grade
+                    gradeAsInt
                 }
             }
         }
@@ -169,6 +170,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
             lastname
             schooltype
             grade
+            gradeAsInt
         }
         canEdit { allowed reason }
         canContactParticipants { allowed reason }
@@ -469,6 +471,7 @@ const SingleCourseStudent = () => {
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
             showBack
+            previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
@@ -519,7 +522,7 @@ const SingleCourseStudent = () => {
                             handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
                         />
                     )}
-                    <Tabs tabs={tabs} />
+                    <NavigationTabs tabs={tabs} />
                 </Stack>
             )}
             <Modal>

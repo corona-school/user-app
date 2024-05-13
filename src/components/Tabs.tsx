@@ -1,6 +1,5 @@
 import { Text, Row, VStack, Box, Pressable, useTheme, Badge, Stack } from 'native-base';
 import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
 export type Tab = {
     title: string;
@@ -8,32 +7,25 @@ export type Tab = {
     content: ReactNode | ReactNode[];
     hide?: boolean;
 };
-type Props = {
+
+type TabItemProps = {
+    tab: Tab;
+    active: boolean;
+    onPress: () => void;
+};
+
+export type TabsProps = {
     tabs: Tab[];
     removeSpace?: boolean;
     onPressTab?: (tab: Tab, index: number) => any;
     tabInset?: number | string;
+    currentTabIndex?: number;
 };
 
-const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset }) => {
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
+const TabItem = ({ tab, active, onPress }: TabItemProps) => {
     const { space } = useTheme();
-    const location = useLocation();
-    const tabIDState = location.state as { tabID: number };
-
-    useEffect(() => {
-        if (tabIDState?.tabID !== undefined) {
-            setCurrentIndex(tabIDState.tabID);
-        }
-    }, [tabIDState]);
-
-    const Tab = ({ tab, index, active }: { tab: Tab; index: number; active: boolean }) => (
-        <Pressable
-            onPress={() => {
-                setCurrentIndex(index);
-                onPressTab && onPressTab(tab, index);
-            }}
-        >
+    return (
+        <Pressable onPress={onPress}>
             <Stack
                 borderBottomWidth={(active && 3) || 1}
                 borderBottomColor={active ? 'primary.400' : 'transparent'}
@@ -53,14 +45,36 @@ const Tabs: React.FC<Props> = ({ tabs, removeSpace = false, onPressTab, tabInset
             </Stack>
         </Pressable>
     );
+};
+
+const Tabs: React.FC<TabsProps> = ({ tabs, removeSpace = false, onPressTab, tabInset, currentTabIndex: controlledTabIndex }) => {
+    const [currentIndex, setCurrentIndex] = useState(controlledTabIndex ?? 0);
+    const { space } = useTheme();
+
+    useEffect(() => {
+        if (controlledTabIndex !== undefined) {
+            setCurrentIndex(controlledTabIndex);
+        }
+    }, [controlledTabIndex]);
 
     const renderableTabs = useMemo(() => tabs.filter((tab: Tab) => !!tab && !tab.hide), [tabs]);
+
+    const handleOnPressTab = (pressedTabIndex: number) => {
+        // If the component is being controlled we don't need to update the state ourselves, the parent component
+        // should take care of it
+        const isControlled = controlledTabIndex !== undefined && onPressTab !== undefined;
+        if (!isControlled) {
+            setCurrentIndex(pressedTabIndex);
+        }
+
+        onPressTab && onPressTab(renderableTabs[pressedTabIndex], pressedTabIndex);
+    };
 
     return (
         <VStack>
             <Row overflowX="scroll" flexWrap="nowrap" width="100%" paddingX={tabInset} borderBottomColor="primary.grey" borderBottomWidth={1}>
                 {renderableTabs.map((tab: Tab, i) => (
-                    <Tab key={`tab-${i}`} tab={tab} index={i} active={i === currentIndex} />
+                    <TabItem key={`tab-${i}`} tab={tab} onPress={() => handleOnPressTab(i)} active={i === currentIndex} />
                 ))}
             </Row>
             <Box paddingX={removeSpace === false ? space['1'] : ''} paddingY={space['1.5']}>

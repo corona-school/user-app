@@ -9,6 +9,7 @@ import { useTranslation } from 'react-i18next';
 import AddPupilModal from '../../modals/AddPupilModal';
 import IncreaseMaxParticipantsModal from '../../modals/IncreaseMaxParticipantsModal';
 import AlertMessage from '../../widgets/AlertMessage';
+import { getGradeLabel } from '../../Utility';
 
 type WaitingListProps = {
     subcourseId: number;
@@ -95,7 +96,7 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
                                 </Heading>
                                 <Text>
                                     {pupil.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
-                                    {pupil.grade}
+                                    {getGradeLabel(pupil.gradeAsInt)}
                                 </Text>
                             </Column>
                             <Spacer />

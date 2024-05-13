@@ -1,4 +1,4 @@
-import { ReactElement, ReactNode, useMemo, useState } from 'react';
+import { ReactElement, ReactNode, useMemo, useState, useRef } from 'react';
 import {
     View,
     Text,
@@ -22,8 +22,7 @@ import {
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import CommunityUser from './CommunityUser';
-import { toTimerString } from '../Utility';
+import { getGradeLabel, toTimerString } from '../Utility';
 import useInterval from '../hooks/useInterval';
 import { TrafficStatus } from '../types/lernfair/Course';
 import { DateTime } from 'luxon';
@@ -37,11 +36,12 @@ import { useUserType } from '../hooks/useApollo';
 import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
-import { useNavigate } from 'react-router-dom';
 import { canJoinMeeting } from './AppointmentDay';
+import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 type Props = {
     appointmentId?: number;
+    subcourseId?: number;
     appointmentType?: Lecture_Appointmenttype_Enum;
     isOrganizer?: boolean;
     tags?: { name: string }[];
@@ -54,7 +54,6 @@ type Props = {
     publishedAt?: Date;
     minGrade?: number;
     maxGrade?: number;
-    child?: string;
     avatar?: ReactElement;
     avatarname?: string;
     button?: ReactNode;
@@ -81,6 +80,7 @@ type Props = {
 
 const AppointmentCard: React.FC<Props> = ({
     appointmentId,
+    subcourseId,
     appointmentType,
     tags,
     dateNextLecture: _dateNext,
@@ -94,7 +94,6 @@ const AppointmentCard: React.FC<Props> = ({
     publishedAt,
     minGrade,
     maxGrade,
-    child,
     variant = 'card',
     avatar,
     avatarname,
@@ -123,11 +122,20 @@ const AppointmentCard: React.FC<Props> = ({
     const userType = useUserType();
     const dateNextLecture = _dateNext && DateTime.fromISO(_dateNext);
 
-    const navigate = useNavigate();
-
     useInterval(() => {
         setCurrentTime(Date.now());
     }, 1000);
+
+    const rootRef = useRef<HTMLElement>();
+    const rememberScroll = useScrollRestoration({ ref: rootRef, scrollGroup: 'subcourse', scrollId: subcourseId + '' });
+
+    function onPress() {
+        if (subcourseId) {
+            rememberScroll();
+        }
+
+        onPressToCourse?.();
+    }
 
     let remainingTime: string | null = null;
     let ongoingTime: string | null = null;
@@ -214,10 +222,10 @@ const AppointmentCard: React.FC<Props> = ({
     const isCourseNewlyAdded = publishedAt?.getTime() ?? new Date(0).getTime() > aWeekAgo;
 
     return (
-        <View height={isFullHeight ? '100%' : 'auto'}>
+        <View ref={rootRef} height={isFullHeight ? '100%' : 'auto'}>
             {variant === 'card' ? (
                 <Card flexibleWidth={isTeaser || isGrid} width={isTeaser ? 'full' : '300px'} variant={isTeaser && isCurrent ? 'dark' : 'normal'}>
-                    <Pressable onPress={onPressToCourse}>
+                    <Pressable onPress={onPress}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
                             <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']} mt={isMatch ? '3' : 0}>
                                 {!isMatch && (
@@ -331,7 +339,8 @@ const AppointmentCard: React.FC<Props> = ({
                                 {showSchoolclass && (
                                     <Text maxWidth={sizes['imageHeaderWidth']}>
                                         <Text bold>{t('single.courseInfo.grade')}</Text>
-                                        {t('single.courseInfo.class', { minGrade: minGrade, maxGrade: maxGrade })}
+                                        {!!(minGrade && maxGrade) &&
+                                            t('single.courseInfo.class', { minGrade: getGradeLabel(minGrade), maxGrade: getGradeLabel(maxGrade) })}
                                     </Text>
                                 )}
 
@@ -362,8 +371,6 @@ const AppointmentCard: React.FC<Props> = ({
                                     </Row>
                                 )}
 
-                                {child && <CommunityUser name={child} />}
-
                                 {button && (
                                     <Link href={buttonlink}>
                                         <Button width={ButtonContainer} paddingTop={space['1.5']} paddingBottom={space['1.5']}>
@@ -383,7 +390,7 @@ const AppointmentCard: React.FC<Props> = ({
                                 marginBottom={buttonteaser}
                             >
                                 {isTeaser && (
-                                    <Button width="100%" onPress={onPressToCourse}>
+                                    <Button width="100%" onPress={onPress}>
                                         {t('single.card.expandCardButton')}
                                     </Button>
                                 )}
@@ -412,7 +419,7 @@ const AppointmentCard: React.FC<Props> = ({
                     </Pressable>
                 </Card>
             ) : (
-                <Pressable onPress={onPressToCourse} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
+                <Pressable onPress={onPress} width="100%" height="100%" backgroundColor="primary.100" borderRadius="15px">
                     <Flex flexDirection="row" height="100%" marginBottom={isSpaceMarginBottom ? space['1'] : '0'}>
                         {image && (
                             <Box width="26%" display="block" marginRight="3px" position={'relative'}>

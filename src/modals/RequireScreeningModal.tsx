@@ -1,15 +1,16 @@
-import { Button, Flex, HStack, Heading, Spacer, Text, VStack, useTheme } from 'native-base';
-import EventIcon from '../assets/icons/lernfair/ic_event.svg';
+import { Button, Flex, HStack, Heading, Link, Spacer, Text, VStack, useTheme } from 'native-base';
+import EventIcon from '../assets/icons/Icon_Einzel.svg';
 import TimeIcon from '../assets/icons/lernfair/lf-timer.svg';
 import LokiIcon from '../assets/icons/lernfair/avatar_pupil_120.svg';
 
 import { useTranslation } from 'react-i18next';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
-import useApollo from '../hooks/useApollo';
-import { useEffect, useState } from 'react';
-import { ContactSupportModal } from './ContactSupportModal';
+import useApollo, { useUserType } from '../hooks/useApollo';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import RequireScreeningSettingsDropdown from '../widgets/RequireScreeningSettingsDropdown';
+import { asTranslationKey } from '../helper/string-helper';
+import { createPupilScreeningLink, createStudentScreeningLink } from '../helper/screening-helper';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -20,101 +21,114 @@ const EXISTING_SCREENINGS_QUERY = gql(`
 
                 screenings { status }
             }
+            student {
+                tutorScreenings { success }
+                instructorScreenings { success }
+            }
         }
     }
 `);
 
 export function RequireScreeningModal() {
-    const { space, sizes } = useTheme();
+    const { space, sizes, colors } = useTheme();
     const { t } = useTranslation();
-    const [contactSupport, setContactSupport] = useState(false);
-    const { logout, user } = useApollo();
-
+    const { user } = useApollo();
     const { data } = useQuery(EXISTING_SCREENINGS_QUERY);
+    const userType = useUserType();
+    const isPupil = userType === 'pupil';
 
-    const wasScreened = data?.me.pupil?.screenings.some((it) => it.status === 'dispute');
-    const wasRejected = data?.me.pupil?.screenings.some((it) => it.status === 'rejection');
+    const pupilScreenings = data?.me.pupil?.screenings ?? [];
+    const needsPupilScreening = () => !pupilScreenings.length || pupilScreenings.some((e) => e.status === 'pending');
+    const wasPupilRejected = () => !needsPupilScreening() && pupilScreenings.some((it) => it.status === 'rejection');
+    const wasPupilScreened = () => !needsPupilScreening() && pupilScreenings.some((it) => it.status === 'dispute');
 
-    const calendlyLink =
-        process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL +
-        '?first_name=' +
-        encodeURIComponent(user?.firstname ?? '') +
-        '&last_name=' +
-        encodeURIComponent(user?.lastname ?? '') +
-        '&email=' +
-        encodeURIComponent(user?.email ?? '') +
-        '&a1=' +
-        encodeURIComponent(data?.me.pupil!.grade ?? '') +
-        '&a2=' +
-        encodeURIComponent(data?.me.pupil!.subjectsFormatted.map((it) => it.name).join(', ') ?? '');
+    const instructorScreenings = data?.me.student?.instructorScreenings ?? [];
+    const tutorScreenings = data?.me.student?.tutorScreenings ?? [];
+    const needsStudentScreening = () => !instructorScreenings.length && !tutorScreenings.length;
+    const wasStudentRejected = () => {
+        const rejectedForInstructor = instructorScreenings.some((e) => !e.success);
+        const rejectedForTutor = tutorScreenings.some((e) => !e.success);
+        return !needsStudentScreening() && (rejectedForInstructor || rejectedForTutor);
+    };
+
+    const calendlyLink = isPupil
+        ? createPupilScreeningLink({
+              isFirstScreening: true,
+              firstName: user?.firstname,
+              lastName: user?.lastname,
+              email: user?.email,
+              grade: data?.me.pupil?.grade,
+              subjects: data?.me.pupil?.subjectsFormatted,
+          })
+        : createStudentScreeningLink({
+              firstName: user?.firstname,
+              lastName: user?.lastname,
+              email: user?.email,
+          });
+
+    const needScreening = () => (isPupil ? needsPupilScreening() : needsStudentScreening());
+    const wasRejected = () => (isPupil ? wasPupilRejected() : wasStudentRejected());
 
     return (
         <Flex p={space['2']} flex="1" alignItems="center" justifyContent="center" bgColor="primary.900">
-            <ContactSupportModal isOpen={contactSupport} onClose={() => setContactSupport(false)} />
-            <HStack width="100%" space={space['1']}>
+            <HStack width="100%" space={space['1']} alignItems="center">
                 <Spacer />
-                <Button variant="outlinelight" onPress={() => setContactSupport(true)}>
-                    {t('requireScreening.contactSupport')}
-                </Button>
-                <Button variant="outlinelight" onPress={logout}>
-                    {t('logout')}
-                </Button>
+                <RequireScreeningSettingsDropdown />
             </HStack>
             {!data && <CenterLoadingSpinner />}
-            {data && !wasScreened && !wasRejected && (
+            {data && needScreening() && (
                 <VStack maxW={sizes['smallWidth']} space={space['1']} flex="1" alignItems="center">
                     <Spacer />
                     <EventIcon />
                     <Heading size="md" textAlign="center" color="lightText">
-                        {t('requireScreening.noScreening.title', { firstname: user?.firstname })}
+                        {t(asTranslationKey(`requireScreening.${userType}.noScreening.title`), { firstname: user?.firstname })}
                     </Heading>
                     <Text color="lightText" textAlign="center">
-                        {t('requireScreening.noScreening.content')}
+                        {t(asTranslationKey(`requireScreening.${userType}.noScreening.content`))}
                     </Text>
-                    <Button
-                        onPress={() => {
-                            window.open(calendlyLink, '_blank');
-                        }}
-                    >
-                        {t('requireScreening.noScreening.makeAppointment')}
+                    <Button onPress={() => window.open(calendlyLink, '_blank')}>
+                        {t(asTranslationKey(`requireScreening.${userType}.noScreening.makeAppointment`))}
                     </Button>
                     <Spacer />
                 </VStack>
             )}
-            {data && wasScreened && (
+            {data && isPupil && wasPupilScreened() && (
                 <VStack maxW={sizes['smallWidth']} space={space['1']} flex="1" alignItems="center">
                     <Spacer />
                     <TimeIcon />
                     <Heading size="md" textAlign="center" color="lightText">
-                        {t('requireScreening.hasScreening.title')}
+                        {t('requireScreening.pupil.hasScreening.title')}
                     </Heading>
                     <Text color="lightText" textAlign="center">
-                        {t('requireScreening.hasScreening.content')}
+                        {t('requireScreening.pupil.hasScreening.content')}
                     </Text>
-                    <Button
-                        variant="ghost"
-                        onPress={() => {
-                            window.open(calendlyLink, '_blank');
-                        }}
-                    >
-                        {t('requireScreening.hasScreening.makeAnotherAppointment')}
+                    <Button variant="ghost" onPress={() => window.open(calendlyLink, '_blank')}>
+                        {t('requireScreening.pupil.hasScreening.makeAnotherAppointment')}
                     </Button>
                     <Spacer />
                 </VStack>
             )}
-            {data && wasRejected && (
+            {data && wasRejected() && (
                 <VStack maxW={sizes['smallWidth']} space={space['1']} flex="1" alignItems="center">
                     <Spacer />
                     <LokiIcon />
                     <Heading size="md" textAlign="center" color="lightText">
-                        {t('requireScreening.rejectedScreening.title', { firstname: user?.firstname })}
+                        {t(asTranslationKey(`requireScreening.${userType}.rejectedScreening.title`), { firstname: user?.firstname })}
                     </Heading>
                     <Text color="lightText" textAlign="center">
-                        {t('requireScreening.rejectedScreening.content')}
+                        {t(asTranslationKey(`requireScreening.${userType}.rejectedScreening.content`))}
                     </Text>
                     <Spacer />
                 </VStack>
             )}
+            <HStack space={space['1']}>
+                <Text color={colors.white}>
+                    <Link onPress={() => window.open('/datenschutz', '_blank')}>{t('settings.legal.datapolicy')}</Link>
+                </Text>
+                <Text color={colors.white}>
+                    <Link onPress={() => window.open('/impressum', '_blank')}>{t('settings.legal.imprint')}</Link>
+                </Text>
+            </HStack>
         </Flex>
     );
 }
