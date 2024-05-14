@@ -158,6 +158,12 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         return Promise.resolve();
     }
 
+    extract(optimistic?: boolean | undefined): NormalizedCacheObject {
+        return {
+            queries: Object.fromEntries(this.cache.entries()),
+        };
+    }
+
     // --------- Not Really Implemented -------
 
     evict(options: Cache.EvictOptions): boolean {
@@ -167,10 +173,6 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
 
     // Serialization of the Cache not supported (would be needed for persistence)
     restore(serializedState: NormalizedCacheObject): ApolloCache<NormalizedCacheObject> {
-        throw new Error('Method not implemented.');
-    }
-
-    extract(optimistic?: boolean | undefined): NormalizedCacheObject {
         throw new Error('Method not implemented.');
     }
 
