@@ -1,4 +1,4 @@
-import { Box, useBreakpointValue, Stack } from 'native-base';
+import { Box, useBreakpointValue, Stack, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { NotificationCategories } from '../../../helper/notification-preferences';
 import { FC, useContext, useMemo } from 'react';
@@ -15,6 +15,7 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
     const { userPreferences, channels, updateUserPreferences } = useContext(NotificationPreferencesContext);
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
+    const toast = useToast();
 
     const boxWidth = useBreakpointValue({
         base: 340,
@@ -46,12 +47,14 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
     const allEnabled = useMemo(isAllEnabled, [userPreferences, notificationCategories]);
     const allDisabled = useMemo(isAllDisabled, [userPreferences, notificationCategories]);
 
-    const enableAll = () => {
-        updateUserPreferences(getAllPreferencesInCategorySetToValue(userPreferences, true, notificationCategories, channels));
+    const enableAll = async () => {
+        await updateUserPreferences(getAllPreferencesInCategorySetToValue(userPreferences, true, notificationCategories, channels));
+        toast.show({ description: t('notification.controlPanel.preference.allNewsletterEnabled') });
     };
 
-    const disableAll = () => {
-        updateUserPreferences(getAllPreferencesInCategorySetToValue(userPreferences, false, notificationCategories, channels));
+    const disableAll = async () => {
+        await updateUserPreferences(getAllPreferencesInCategorySetToValue(userPreferences, false, notificationCategories, channels));
+        toast.show({ description: t('notification.controlPanel.preference.allNewsletterDisabled') });
     };
 
     return (
