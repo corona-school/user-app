@@ -2,6 +2,7 @@ import { Text, Row, VStack, Box, Pressable, useTheme, Badge, Stack } from 'nativ
 import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
 
 export type Tab = {
+    id?: string;
     title: string;
     badge?: number;
     content: ReactNode | ReactNode[];
