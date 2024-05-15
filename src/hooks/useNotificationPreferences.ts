@@ -29,7 +29,7 @@ const useUserPreferences = () => {
     };
 
     const updateUserPreferences = (preferences: NotificationPreferences) => {
-        mutateUserPreferences({
+        return mutateUserPreferences({
             variables: {
                 preferences,
             },
