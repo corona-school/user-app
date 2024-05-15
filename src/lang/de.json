@@ -1844,6 +1844,8 @@
             "closeButton": "Schließen",
             "preference": {
                 "enableAll": "Alle Newsletter aktivieren",
+                "allNewsletterEnabled": "Alle Newsletter wurden aktiviert",
+                "allNewsletterDisabled": "Alle Newsletter wurden deaktiviert",
                 "disableAll": "Alle Newsletter deaktivieren",
                 "enableAllTooltip": "Du hast bereits alle Newsletter aktiviert.",
                 "disableAllTooltip": "Du hast bereits alle Newsletter deaktiviert.",
