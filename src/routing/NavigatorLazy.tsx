@@ -69,6 +69,8 @@ import ConfirmCertificate from '../pages/ConfirmCertificate';
 import CertificateOfConduct from '../pages/CertificateOfConduct';
 import ScreenerGroup from '../pages/screening/ScreenerGroup';
 import SingleCourseScreener from '../pages/screening/SingleCourseScreener';
+import { SystemNotifications } from '../components/notifications/preferences/SystemNotifications';
+import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -136,7 +138,11 @@ export default function NavigatorLazy() {
                         <NotficationControlPanel />
                     </RequireAuth>
                 }
-            />
+            >
+                <Route path="system" element={<SystemNotifications />} />
+                <Route path="newsletter" element={<MarketingNotifications />} />
+                <Route index element={<Navigate to="system" />} />
+            </Route>
 
             <Route
                 path="/settings"
