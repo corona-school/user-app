@@ -22,10 +22,16 @@ const ScreenerCourseButtons: React.FC<Props> = ({ courseState, isShared, subcour
     const { isMobile } = useLayoutHelper();
 
     const reasonBtnDisabled = () => {
-        if (courseState === Course_Coursestate_Enum.Cancelled) return t('screening.courses.already.cancelled');
-        else if (courseState === Course_Coursestate_Enum.Denied) return t('screening.courses.already.denied');
-        else if (courseState === Course_Coursestate_Enum.Allowed) return t('screening.courses.already.allowed');
-        else return '';
+        switch (courseState) {
+            case Course_Coursestate_Enum.Cancelled:
+                return t('screening.courses.already.cancelled');
+            case Course_Coursestate_Enum.Denied:
+                return t('screening.courses.already.denied');
+            case Course_Coursestate_Enum.Allowed:
+                return t('screening.courses.already.allowed');
+            default:
+                return '';
+        }
     };
 
     return (
