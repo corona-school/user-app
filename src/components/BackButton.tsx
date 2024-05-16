@@ -24,7 +24,7 @@ const BackButton: React.FC<Props> = ({ onPress, previousFallbackRoute: fallback 
         // -1 is the current one
         const previousRoute = navigationStack[navigationStack.length - 2]?.pathname;
         const isPreviousRouteValid = previousRoute && ![location.pathname, '/login', '/welcome', '/registration'].includes(previousRoute);
-        const shouldRouteAlwaysUseFallback = ['/settings'].includes(location.pathname);
+        const shouldRouteAlwaysUseFallback = ['/settings', '/notifications/system', '/notifications/newsletter'].includes(location.pathname);
         if ((isDefaultRoute || !isPreviousRouteValid || shouldRouteAlwaysUseFallback) && !!fallback) {
             navigate(fallback);
             popRoute();

@@ -1,4 +1,4 @@
-import { Box, HStack, VStack, Text, Pressable, Circle, Spacer, Switch, useBreakpointValue, Tooltip, Modal, useTheme } from 'native-base';
+import { Box, HStack, VStack, Text, Pressable, Circle, Spacer, Checkbox, useBreakpointValue, Tooltip, Modal, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { FC, useState } from 'react';
 import { NotificationCategoryDetails } from '../../../helper/notification-preferences';
@@ -80,7 +80,13 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
                 </VStack>
                 <Spacer />
                 <VStack>
-                    <Switch value={value} onToggle={() => handleToggle(!value)} />
+                    <Checkbox
+                        borderColor={'primary.500'}
+                        borderWidth={1}
+                        value={notificationTypeDetails.title}
+                        isChecked={value}
+                        onChange={() => handleToggle(!value)}
+                    />
                 </VStack>
             </HStack>
         </Box>
