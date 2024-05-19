@@ -1,5 +1,5 @@
 import { NativeBaseProvider } from 'native-base';
-import Theme from './Theme';
+import Theme, { theme } from './Theme';
 import Navigator from './routing/Navigator';
 
 import { LFApolloProvider } from './hooks/useApollo';
@@ -16,6 +16,7 @@ import { BrowserRouter } from 'react-router-dom';
 import { CreateAppointmentProvider } from './context/AppointmentContext';
 import { LFChatProvider } from './context/ChatContext';
 import NavigationStackProvider from './context/NavigationStackProvider';
+import { ChakraProvider } from '@chakra-ui/react';
 
 function App() {
     return (
@@ -24,20 +25,22 @@ function App() {
                 <LFModalProvider>
                     <LFApolloProvider>
                         <BrowserRouter>
-                            <NativeBaseProvider theme={Theme}>
-                                <IssueReporter>
-                                    <MatomoProvider value={matomo}>
-                                        <NotificationsProvider>
-                                            <LFChatProvider>
-                                                <NavigationStackProvider>
-                                                    <Navigator />
-                                                    <ToastNotifications />
-                                                </NavigationStackProvider>
-                                            </LFChatProvider>
-                                        </NotificationsProvider>
-                                    </MatomoProvider>
-                                </IssueReporter>
-                            </NativeBaseProvider>
+                            <ChakraProvider theme={theme}>
+                                <NativeBaseProvider theme={Theme}>
+                                    <IssueReporter>
+                                        <MatomoProvider value={matomo}>
+                                            <NotificationsProvider>
+                                                <LFChatProvider>
+                                                    <NavigationStackProvider>
+                                                        <Navigator />
+                                                        <ToastNotifications />
+                                                    </NavigationStackProvider>
+                                                </LFChatProvider>
+                                            </NotificationsProvider>
+                                        </MatomoProvider>
+                                    </IssueReporter>
+                                </NativeBaseProvider>
+                            </ChakraProvider>
                         </BrowserRouter>
                     </LFApolloProvider>
                 </LFModalProvider>

@@ -1,6 +1,8 @@
-import { Box, CloseIcon, Heading, Modal, Pressable, Text, Row, Button, useTheme } from 'native-base';
+import { Box, Heading, Text, Row, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { getIconForNotificationPreferenceModal, getNotificationCategoriesData } from '../../../helper/notification-helper';
+import { ModalOverlay, ModalContent, ModalBody, ModalCloseButton } from '@chakra-ui/react';
+import Button from '@components/atoms/Button';
 
 type Props = {
     onPressClose?: () => any;
@@ -17,13 +19,10 @@ const InformationModal: React.FC<Props> = ({ onPressClose, category }) => {
 
     return (
         <>
-            <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">
-                <Box position="absolute" zIndex="1" right="20px" top="14px">
-                    <Pressable onPress={onPressClose}>
-                        <CloseIcon color="white" />
-                    </Pressable>
-                </Box>
-                <Modal.Body background="primary.900" padding={space['1']}>
+            <ModalOverlay />
+            <ModalContent width="307px" marginY="auto" backgroundColor="transparent">
+                <ModalCloseButton color="white" />
+                <ModalBody background="primary.900" padding={space['1']}>
                     <Box alignItems="center" marginY={space['1']}>
                         <Icon />
                     </Box>
@@ -37,13 +36,13 @@ const InformationModal: React.FC<Props> = ({ onPressClose, category }) => {
                     </Box>
                     <Box paddingY={space['1']}>
                         <Row marginBottom={space['0.5']}>
-                            <Button onPress={onPressClose} width="100%">
+                            <Button colorScheme="hero" onClick={onPressClose} width="100%">
                                 {t('notification.controlPanel.closeButton')}
                             </Button>
                         </Row>
                     </Box>
-                </Modal.Body>
-            </Modal.Content>
+                </ModalBody>
+            </ModalContent>
         </>
     );
 };

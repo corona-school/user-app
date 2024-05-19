@@ -1,14 +1,11 @@
-import { Circle, Text, useBreakpointValue } from 'native-base';
+import { Circle, Text } from '@chakra-ui/react';
 
 const InformationBadge = () => {
-    const ml = useBreakpointValue({
-        base: 1,
-        lg: 2,
-    });
-
     return (
-        <Circle rounded="full" bg="danger.100" size={4} ml={ml}>
-            <Text color={'white'}>i</Text>
+        <Circle rounded="full" bg="primary.500" size={4}>
+            <Text color={'white'} margin={0}>
+                i
+            </Text>
         </Circle>
     );
 };

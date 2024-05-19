@@ -1,10 +1,12 @@
-import { Box, HStack, VStack, Text, Pressable, Circle, Spacer, Checkbox, useBreakpointValue, Tooltip, Modal, useTheme } from 'native-base';
+import { useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { FC, useState } from 'react';
 import { NotificationCategoryDetails } from '../../../helper/notification-preferences';
 import InformationModal from './InformationModal';
 import { getNotificationCategoriesData } from '../../../helper/notification-helper';
 import InformationBadge from './InformationBadge';
+import Checkbox from '@components/atoms/Checkbox';
+import { Tooltip, Box, HStack, VStack, Text, IconButton, Flex, Circle, Spacer, Modal } from '@chakra-ui/react';
 
 type PrefProps = {
     category: string;
@@ -43,50 +45,45 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
 
     return (
         <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={width}>
-            <HStack alignItems="center" space={1}>
+            <HStack alignItems="center" spacing={1}>
                 {notificationTypeDetails?.icon && (
                     <VStack>
                         <Icon />
                     </VStack>
                 )}
-                <VStack maxW={maxW}>
-                    <Text fontSize="md" mr="3" ellipsizeMode="tail" numberOfLines={2}>
+                <Flex maxW={maxW} alignItems="center">
+                    <Text margin={0} noOfLines={2}>
                         {t(notificationTypeDetails.title)}
-                        {isMobile ? (
-                            <Box>
-                                <Pressable ml={1} onPress={() => setIsModalOpen(true)}>
-                                    <InformationBadge />
-                                </Pressable>
-                                <Modal bg="modalbg" isOpen={isModalOpen}>
-                                    <InformationModal onPressClose={() => setIsModalOpen(false)} category={category} />
-                                </Modal>
-                            </Box>
-                        ) : (
-                            <Tooltip
-                                maxWidth={270}
-                                label={t(notificationPreferenceInfos.modal.body)}
-                                bg={colors['primary']['900']}
-                                _text={{ textAlign: 'center' }}
-                                p={3}
-                                hasArrow
-                                children={
-                                    <Circle rounded="full" bg="danger.100" size={4} ml={2}>
-                                        <Text color={'white'}>i</Text>
-                                    </Circle>
-                                }
-                            ></Tooltip>
-                        )}
                     </Text>
-                </VStack>
+                    {isMobile ? (
+                        <Box>
+                            <IconButton
+                                isRound
+                                size="xs"
+                                aria-label="Info"
+                                icon={<InformationBadge />}
+                                ml={1}
+                                onClick={() => setIsModalOpen(true)}
+                            ></IconButton>
+                            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
+                                <InformationModal onPressClose={() => setIsModalOpen(false)} category={category} />
+                            </Modal>
+                        </Box>
+                    ) : (
+                        <Tooltip maxWidth={270} label={t(notificationPreferenceInfos.modal.body)} bg={colors['primary']['900']} p={3} hasArrow>
+                            <Box as="span">
+                                <Circle rounded="full" bg="primary.500" size={4} ml={2}>
+                                    <Text color={'white'} margin={0}>
+                                        i
+                                    </Text>
+                                </Circle>
+                            </Box>
+                        </Tooltip>
+                    )}
+                </Flex>
                 <Spacer />
                 <VStack>
-                    <Checkbox
-                        borderColor={'primary.500'}
-                        borderWidth={1}
-                        value={notificationTypeDetails.title}
-                        isChecked={value}
-                        onChange={() => handleToggle(!value)}
-                    />
+                    <Checkbox size="lg" value={notificationTypeDetails.title} isChecked={value} onChange={() => handleToggle(!value)} />
                 </VStack>
             </HStack>
         </Box>

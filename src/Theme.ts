@@ -1,4 +1,6 @@
 import { extendTheme } from 'native-base';
+import { extendTheme as extendChakraTheme, defineStyleConfig, defineStyle, createMultiStyleConfigHelpers } from '@chakra-ui/react';
+import { checkboxAnatomy } from '@chakra-ui/anatomy';
 
 const VAR_COLOR_PRIMARY_LIGHT = '#EDF4F3';
 const VAR_COLOR_PRIMARY = '#82B1B0';
@@ -265,6 +267,92 @@ const Theme = extendTheme({
     },
     config: {
         initialColorMode: 'light',
+    },
+});
+
+const Switch = defineStyleConfig({
+    defaultProps: {
+        colorScheme: 'primary',
+    },
+});
+
+const { defineMultiStyleConfig: defineCheckboxMultiStyleConfig } = createMultiStyleConfigHelpers(checkboxAnatomy.keys);
+const Checkbox = defineCheckboxMultiStyleConfig({
+    defaultProps: {
+        colorScheme: 'primary',
+    },
+    baseStyle: (props) => ({
+        control: {
+            borderColor: props.colorScheme === 'primary' ? 'primary.500' : 'gray.400',
+        },
+    }),
+});
+
+const Button = defineStyleConfig({
+    defaultProps: {
+        colorScheme: 'primary',
+    },
+    variants: {
+        solid: (props) =>
+            defineStyle({
+                color: props.colorScheme === 'hero' ? 'primary.900' : 'blue.500',
+            }),
+    },
+    sizes: {
+        md: {
+            height: '40px',
+        },
+    },
+});
+
+const Tooltip = defineStyleConfig({
+    defaultProps: {
+        colorScheme: 'primary',
+    },
+    baseStyle: {
+        borderRadius: '8px',
+    },
+});
+
+export const theme = extendChakraTheme({
+    config: {
+        initialColorMode: 'light',
+        useSystemColorMode: false,
+    },
+    colors: {
+        hero: {
+            50: '#fffadc',
+            100: '#ffea96',
+            200: '#ffe273',
+            300: '#ffde62',
+            400: '#ffdc59',
+            500: '#feda50',
+            600: '#e7c74b',
+            700: '#dcbd48',
+            800: '#d0b345',
+            900: '#4d3c00',
+        },
+        primary: {
+            translucent: '#EDF4F316',
+            darkTranslucent: 'rgba(31,76, 82, .73)',
+            grey: VAR_COLOR_PRIMARY_GREY,
+            50: VAR_COLOR_PRIMARY_LIGHT,
+            100: '#d6e0df',
+            200: '#bacdc9',
+            300: '#9cb8b4',
+            400: '#7fa59f',
+            500: VAR_COLOR_PRIMARY,
+            600: '#74a7a6',
+            700: '#5a8d8c',
+            800: '#456e6d',
+            900: '#2f4f4e',
+        },
+    },
+    components: {
+        Switch,
+        Tooltip,
+        Button,
+        Checkbox,
     },
 });
 

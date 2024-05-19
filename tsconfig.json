@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "target": "es5",
     "lib": [
       "dom",
@@ -19,7 +20,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx",
-    
+    "paths": {
+      "@components/*": ["components/*"]
+    }
   },
   "include": [
     "src"

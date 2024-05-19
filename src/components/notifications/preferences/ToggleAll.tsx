@@ -5,7 +5,8 @@ import { FC, useContext, useMemo } from 'react';
 import { NotificationPreferencesContext } from '../../../pages/notification/NotficationControlPanel';
 import { getAllPreferencesInCategorySetToValue } from '../../../helper/notification-helper';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
-import DisableableButton from '../../DisablebleButton';
+import Button from '@components/atoms/Button';
+import { Button as ChakraButton } from '@chakra-ui/react';
 
 type PrefProps = {
     notificationCategories: NotificationCategories;
@@ -63,24 +64,24 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
         notificationCategories && (
             <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={boxWidth}>
                 <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
-                    <DisableableButton
+                    <Button
                         isDisabled={allEnabled}
                         reasonDisabled={t('notification.controlPanel.preference.enableAllTooltip')}
-                        onPress={enableAll}
+                        onClick={enableAll}
                         width={buttonWidth}
+                        colorScheme="hero"
                     >
                         {t('notification.controlPanel.preference.enableAll')}
-                    </DisableableButton>
-                    <DisableableButton
+                    </Button>
+                    <Button
                         isDisabled={allDisabled}
                         reasonDisabled={t('notification.controlPanel.preference.disableAllTooltip')}
-                        onPress={disableAll}
-                        _text={{ padding: '3px 5px' }}
-                        variant="outline"
+                        onClick={disableAll}
                         width={buttonWidth}
+                        variant="outline"
                     >
                         {t('notification.controlPanel.preference.disableAll')}
-                    </DisableableButton>
+                    </Button>
                 </Stack>
             </Box>
         )

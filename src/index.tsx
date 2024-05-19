@@ -1,12 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import App from './App';
 import './I18n';
 import { datadogRum } from '@datadog/browser-rum';
 import { APP_VERSION, DD_APP_ID, DD_CLIENT_TOKEN, DD_ENV } from './config';
 import { getSessionToken } from './hooks/useApollo';
+import { createRoot } from 'react-dom/client';
 
-const root = document.getElementById('root');
+const container = document.getElementById('root');
 
 console.log('LernFair Web App Version', APP_VERSION);
 
@@ -42,11 +42,11 @@ datadogRum.setGlobalContextProperty('sessionToken', getSessionToken());
 datadogRum.startSessionReplayRecording();
 console.log('Session Replay', datadogRum.getSessionReplayLink());
 
-ReactDOM.render(
+const root = createRoot(container!);
+root.render(
     <React.StrictMode>
         <App />
-    </React.StrictMode>,
-    root
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
