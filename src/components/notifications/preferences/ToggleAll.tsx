@@ -6,6 +6,7 @@ import { NotificationPreferencesContext } from '../../../pages/notification/Notf
 import { getAllPreferencesInCategorySetToValue } from '../../../helper/notification-helper';
 import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import DisableableButton from '../../DisablebleButton';
+import { Button } from '@components/atoms/Button';
 
 type PrefProps = {
     notificationCategories: NotificationCategories;
@@ -63,24 +64,24 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
         notificationCategories && (
             <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={boxWidth}>
                 <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
-                    <DisableableButton
-                        isDisabled={allEnabled}
+                    <Button
+                        className="w-full md:w-80"
+                        onClick={enableAll}
+                        disabled={allEnabled}
                         reasonDisabled={t('notification.controlPanel.preference.enableAllTooltip')}
-                        onPress={enableAll}
-                        width={buttonWidth}
+                        variant="secondary"
                     >
                         {t('notification.controlPanel.preference.enableAll')}
-                    </DisableableButton>
-                    <DisableableButton
-                        isDisabled={allDisabled}
+                    </Button>
+                    <Button
+                        className="w-full md:w-80"
+                        onClick={disableAll}
+                        disabled={allDisabled}
                         reasonDisabled={t('notification.controlPanel.preference.disableAllTooltip')}
-                        onPress={disableAll}
-                        _text={{ padding: '3px 5px' }}
                         variant="outline"
-                        width={buttonWidth}
                     >
                         {t('notification.controlPanel.preference.disableAll')}
-                    </DisableableButton>
+                    </Button>
                 </Stack>
             </Box>
         )

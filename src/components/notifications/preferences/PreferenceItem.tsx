@@ -1,10 +1,13 @@
-import { Box, HStack, VStack, Text, Pressable, Circle, Spacer, Checkbox, useBreakpointValue, Tooltip, Modal, useTheme } from 'native-base';
+import { Box, HStack, VStack, Text, Pressable, Circle, Spacer, useBreakpointValue, Modal } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { FC, useState } from 'react';
 import { NotificationCategoryDetails } from '../../../helper/notification-preferences';
 import InformationModal from './InformationModal';
 import { getNotificationCategoriesData } from '../../../helper/notification-helper';
 import InformationBadge from './InformationBadge';
+import { Checkbox } from '@components/atoms/Checkbox';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@components/atoms/Tooltip';
+import { Label } from '@components/atoms/Label';
 
 type PrefProps = {
     category: string;
@@ -15,7 +18,6 @@ type PrefProps = {
 
 const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails, value, onUpdate }) => {
     const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-    const { colors } = useTheme();
 
     const { t } = useTranslation();
 
@@ -50,7 +52,7 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
                     </VStack>
                 )}
                 <VStack maxW={maxW}>
-                    <Text fontSize="md" mr="3" ellipsizeMode="tail" numberOfLines={2}>
+                    <Label htmlFor={`label-${value}`}>
                         {t(notificationTypeDetails.title)}
                         {isMobile ? (
                             <Box>
@@ -62,31 +64,24 @@ const PreferenceItem: React.FC<PrefProps> = ({ category, notificationTypeDetails
                                 </Modal>
                             </Box>
                         ) : (
-                            <Tooltip
-                                maxWidth={270}
-                                label={t(notificationPreferenceInfos.modal.body)}
-                                bg={colors['primary']['900']}
-                                _text={{ textAlign: 'center' }}
-                                p={3}
-                                hasArrow
-                                children={
-                                    <Circle rounded="full" bg="danger.100" size={4} ml={2}>
-                                        <Text color={'white'}>i</Text>
-                                    </Circle>
-                                }
-                            ></Tooltip>
+                            <TooltipProvider>
+                                <Tooltip>
+                                    <TooltipTrigger>
+                                        <Circle rounded="full" bg="danger.100" size={4} ml={2}>
+                                            <Text color={'white'}>i</Text>
+                                        </Circle>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="w-80">
+                                        <p className="text-center">{t(notificationPreferenceInfos.modal.body)}</p>
+                                    </TooltipContent>
+                                </Tooltip>
+                            </TooltipProvider>
                         )}
-                    </Text>
+                    </Label>
                 </VStack>
                 <Spacer />
                 <VStack>
-                    <Checkbox
-                        borderColor={'primary.500'}
-                        borderWidth={1}
-                        value={notificationTypeDetails.title}
-                        isChecked={value}
-                        onChange={() => handleToggle(!value)}
-                    />
+                    <Checkbox id={`label-${value}`} value={notificationTypeDetails.title} checked={value} onCheckedChange={handleToggle} />
                 </VStack>
             </HStack>
         </Box>
