@@ -17,13 +17,15 @@ if (process.env.DOMAIN) {
     });
 }
 
-// Enforce HTTPS - The backend will reject requests from HTTP frontends anyways
-app.use((req, res, next) => {
-    if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
-        return res.redirect('https://' + req.get('host') + req.url);
-      }
-      next();
-});
+if (!process.env.INSECURE) {
+    // Enforce HTTPS - The backend will reject requests from HTTP frontends anyways
+    app.use((req, res, next) => {
+        if (!req.secure && req.get('x-forwarded-proto') !== 'https') {
+            return res.redirect('https://' + req.get('host') + req.url);
+        }
+        next();
+    });
+} else console.warn("Skipping HTTPS redirect!");
 
 
 // Provide environment variables from the process,
@@ -55,4 +57,5 @@ app.use(Express.static(__dirname + '/build', {
 app.use((req, res) => res.sendFile(__dirname + '/build/index.html', { headers: { 'Cache-Control': 'no-cache' } }));
 
 // Serve on the PORT Heroku wishes
-app.listen(process.env.PORT ?? 5000, () => console.info(`Express started and listening`));
+const port = process.env.PORT ?? 5000;
+app.listen(port, () => console.info(`Express started and listening on Port ${port}`));
