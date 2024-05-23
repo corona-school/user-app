@@ -11,9 +11,10 @@ type BannerProps = {
     seatsMax: number;
     courseStatus: TrafficStatus;
     onClick: () => void;
+    isPromoting?: boolean;
 };
 
-const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatus, seatsFull, seatsMax }) => {
+const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatus, seatsFull, seatsMax, isPromoting }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const isMobile = useBreakpointValue({
@@ -43,7 +44,13 @@ const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatu
                     </Stack>
                     <Spacer />
                     {!isPromoted && (
-                        <Button variant="outline" width={buttonContainer} onPress={onClick}>
+                        <Button
+                            isLoading={isPromoting}
+                            isLoadingText={t('single.buttonPromote.button')}
+                            variant="outline"
+                            width={buttonContainer}
+                            onPress={onClick}
+                        >
                             {t('single.buttonPromote.button')}
                         </Button>
                     )}

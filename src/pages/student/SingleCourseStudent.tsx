@@ -162,7 +162,8 @@ const instructorSubcourseQuery = gql(`
 query GetInstructorSubcourse($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         conversationId
-        alreadyPromoted
+        wasPromotedByInstructor
+        canPromote
         pupilsWaitingCount
         pupilsOnWaitinglist {
             id
@@ -189,6 +190,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
 `);
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
+    const [isPromoting, setIsPromoting] = useState(false);
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
@@ -407,6 +409,7 @@ const SingleCourseStudent = () => {
     );
 
     const doPromote = async () => {
+        setIsPromoting(true);
         await promote();
         if (error) {
             toast.show({ description: t('single.buttonPromote.toastFail'), placement: 'top' });
@@ -414,6 +417,7 @@ const SingleCourseStudent = () => {
             toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
         }
         refetchInstructorData();
+        setIsPromoting(false);
     };
 
     const isInPast = useMemo(
@@ -423,20 +427,13 @@ const SingleCourseStudent = () => {
         [subcourse]
     );
 
-    const isMatureForPromotion = (publishDate: string): boolean => {
-        const { daysDiff } = getTimeDifference(publishDate);
-        if (publishDate === null || daysDiff > 3) {
-            return true;
-        }
-        return false;
-    };
-
     const canPromoteCourse = useMemo(() => {
-        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || instructorSubcourse?.subcourse?.alreadyPromoted !== false)
+        if (loading || !subcourse || !instructorSubcourse?.subcourse?.canPromote) {
             return false;
-        const canPromote = subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
-        return canPromote;
-    }, [instructorSubcourse?.subcourse?.alreadyPromoted, loading, subcourse]);
+        }
+
+        return true;
+    }, [loading, subcourse, instructorSubcourse?.subcourse?.canPromote]);
 
     const getButtonClick = useMemo(() => {
         switch (course?.courseState) {
@@ -510,8 +507,9 @@ const SingleCourseStudent = () => {
                             onClick={doPromote}
                             seatsFull={subcourse?.participantsCount}
                             seatsMax={subcourse?.maxParticipants}
-                            isPromoted={instructorSubcourse?.subcourse?.alreadyPromoted || false}
+                            isPromoted={instructorSubcourse?.subcourse?.wasPromotedByInstructor || false}
                             courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                            isPromoting={isPromoting}
                         />
                     )}
                     {!isInPast && isInstructorOfSubcourse && (
