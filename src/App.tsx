@@ -17,6 +17,8 @@ import { CreateAppointmentProvider } from './context/AppointmentContext';
 import { LFChatProvider } from './context/ChatContext';
 import NavigationStackProvider from './context/NavigationStackProvider';
 
+import './service-worker-proxy';
+
 function App() {
     return (
         <LernfairProvider>
