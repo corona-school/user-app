@@ -71,6 +71,7 @@ import ScreenerGroup from '../pages/screening/ScreenerGroup';
 import SingleCourseScreener from '../pages/screening/SingleCourseScreener';
 import { SystemNotifications } from '../components/notifications/preferences/SystemNotifications';
 import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
+import { WebPush } from '../pages/WebPush';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -459,6 +460,15 @@ export default function NavigatorLazy() {
                     <WithNavigation showBack previousFallbackRoute="/start" headerTitle="Impressum" hideMenu>
                         <IFrame title="impressum" src="https://www.lern-fair.de/iframe/impressum" />
                     </WithNavigation>
+                }
+            />
+
+            <Route
+                path="/push"
+                element={
+                    <RequireAuth>
+                        <WebPush />
+                    </RequireAuth>
                 }
             />
 

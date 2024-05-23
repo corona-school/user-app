@@ -39,6 +39,7 @@ declare interface Window {
         readonly RUNTIME_TALKJS_APP_ID: string;
         readonly RUNTIME_GAMIFICATION_ACTIVE?: 'true' | 'false';
         readonly RUNTIME_RESULT_CACHE_ACTIVE?: 'true' | 'false';
+        readonly RUNTIME_SERVICE_WORKER_ACTIVE?: 'true' | 'false';
     };
 }
 
