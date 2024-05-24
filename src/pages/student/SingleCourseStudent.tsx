@@ -163,7 +163,9 @@ query GetInstructorSubcourse($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         conversationId
         wasPromotedByInstructor
-        canPromote
+        canPromote {
+            allowed
+        }
         pupilsWaitingCount
         pupilsOnWaitinglist {
             id
@@ -428,12 +430,12 @@ const SingleCourseStudent = () => {
     );
 
     const canPromoteCourse = useMemo(() => {
-        if (loading || !subcourse || !instructorSubcourse?.subcourse?.canPromote) {
+        if (loading || !subcourse || !instructorSubcourse?.subcourse?.canPromote.allowed) {
             return false;
         }
 
         return true;
-    }, [loading, subcourse, instructorSubcourse?.subcourse?.canPromote]);
+    }, [loading, subcourse, instructorSubcourse?.subcourse?.canPromote.allowed]);
 
     const getButtonClick = useMemo(() => {
         switch (course?.courseState) {
