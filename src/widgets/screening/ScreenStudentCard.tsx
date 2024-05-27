@@ -15,6 +15,7 @@ import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
 import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
+import { formatDate } from '../../Utility';
 
 type ScreeningInput = { success: boolean; comment: string; jobStatus: Screening_Jobstatus_Enum; knowsFrom: string };
 
@@ -213,6 +214,17 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                 </Text>
                 <SubjectTagList subjects={student.subjectsFormatted} />
             </HStack>
+            <VStack>
+                <Heading fontSize="20px">Certificate of Conduct</Heading>
+                <Text fontSize="15px" lineHeight="50px">
+                    {t(student.certificateOfConduct?.id ? 'screening.certificateOfConductWasProvided' : 'screening.certificateOfConductWasNotProvided')}
+                </Text>
+                {student.certificateOfConductDeactivationDate && (
+                    <Text fontSize="15px" lineHeight="50px" color={student.certificateOfConductDeactivationDate ? 'danger.500' : 'primary.900'}>
+                        {t('screening.deactivationDate')}: {formatDate(student.certificateOfConductDeactivationDate)}
+                    </Text>
+                )}
+            </VStack>
 
             {myRoles.includes('TRUSTED_SCREENER') && student.active && (
                 <HStack space={space['1']}>
