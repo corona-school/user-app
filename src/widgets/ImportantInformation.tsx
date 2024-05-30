@@ -120,6 +120,9 @@ query GetOnboardingInfos {
     nextStepAchievements {
         id
         name
+        title
+        tagline
+        footer
         subtitle
         description
         image
@@ -461,6 +464,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             title={achievement.subtitle || undefined}
                             name={achievement.name}
                             actionDescription={achievement.actionName || ''}
+                            description={achievement.description}
                             actionType={achievement.actionType || Achievement_Action_Type_Enum.Action}
                             maxSteps={achievement.maxSteps}
                             currentStep={achievement.currentStep}
