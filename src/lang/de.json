@@ -2062,6 +2062,7 @@
         "screener": "Screener:in",
         "dissolve_reason": "Grund: {{reason}}",
         "deactivationDate": "Deaktivierungsdatum",
+        "certificateOfConduct": "Führungszeugnis",
         "certificateOfConductWasProvided": "Führungszeugnis wurde eingereicht",
         "certificateOfConductWasNotProvided": "Führungszeugnis wurde noch nicht eingereicht",
         "comment": "Kommentar",

@@ -215,7 +215,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                 <SubjectTagList subjects={student.subjectsFormatted} />
             </HStack>
             <VStack>
-                <Heading fontSize="20px">Certificate of Conduct</Heading>
+                <Heading fontSize="20px">{t('screening.certificateOfConduct')}</Heading>
                 <Text fontSize="15px" lineHeight="50px">
                     {t(student.certificateOfConduct?.id ? 'screening.certificateOfConductWasProvided' : 'screening.certificateOfConductWasNotProvided')}
                 </Text>
