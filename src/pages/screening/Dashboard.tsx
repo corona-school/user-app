@@ -148,6 +148,10 @@ export function ScreeningDashboard() {
                     lastname
                     languages
                     subjectsFormatted { name grade { min max } }
+                    certificateOfConductDeactivationDate
+                    certificateOfConduct {
+                        id
+                    }
                     matches {
                         createdAt
                         pupil { firstname lastname }
