@@ -22,7 +22,7 @@ function bufferToBase64URL(buffer: ArrayBuffer): Promise<string> {
         reader.onload = (event) => {
             const dataUrl = event.target!.result as string;
             const [_, base64] = dataUrl.split(',');
-            const base64url = base64.replace(/+/g, '-').replace(/\//g, '_');
+            const base64url = base64.replace(/\+/g, '-').replace(/\//g, '_');
 
             resolve(base64url);
         };
