@@ -9,7 +9,7 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import { GAMIFICATION_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE, WEBPUSH_ACTIVE } from '../config';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -60,6 +60,11 @@ const Settings: React.FC = () => {
                             {GAMIFICATION_ACTIVE && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
+                                </Column>
+                            )}
+                            {WEBPUSH_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={'Push'} onPress={() => navigate('/push')} />
                                 </Column>
                             )}
                         </ProfileSettingRow>
