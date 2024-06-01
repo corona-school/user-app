@@ -6,9 +6,11 @@ import { useEffect, useState } from 'react';
 
 // ------------ Utilities --------------------
 
-async function base64ToUint8Array(base64: string) {
+async function base64ToUint8Array(base64url: string) {
+    // Convert Base64URL to Base64 encoding (c.f. https://datatracker.ietf.org/doc/html/rfc4648#section-5)
+    const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
+    // Decode it into an array buffer
     var dataUrl = 'data:application/octet-binary;base64,' + base64;
-
     return new Uint8Array(await (await fetch(dataUrl)).arrayBuffer());
 }
 
