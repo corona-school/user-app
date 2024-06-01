@@ -1,8 +1,9 @@
-import { useApolloClient, useQuery } from '@apollo/client';
+import { ApolloClient, useApolloClient, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { log } from '../log';
 import { getServiceWorker } from '../service-worker-proxy';
 import { useEffect, useState } from 'react';
+import { CreatePushSubscriptionInput } from '../gql/graphql';
 
 // ------------ Utilities --------------------
 
@@ -29,6 +30,21 @@ function bufferToBase64URL(buffer: ArrayBuffer): Promise<string> {
 
         reader.readAsDataURL(blob);
     });
+}
+
+export async function encodeSubscription(subscription: PushSubscription) {
+    const auth = await bufferToBase64URL(subscription.getKey('auth')!);
+    const p256dh = await bufferToBase64URL(subscription.getKey('p256dh')!);
+    log('WebPush', 'Encoded client key', { auth, p256dh });
+
+    return {
+        endpoint: subscription.endpoint,
+        expirationTime: (subscription as any).expirationTime,
+        keys: {
+            auth,
+            p256dh,
+        },
+    };
 }
 
 // ------------ WebPush Browser APIs --------------------
@@ -67,25 +83,66 @@ export async function subscribeUserToPush(serverKey: string) {
 
     log('WebPush', 'Received Push Subscription: ', pushSubscription);
 
-    const auth = await bufferToBase64URL(pushSubscription.getKey('auth')!);
-    const p256dh = await bufferToBase64URL(pushSubscription.getKey('p256dh')!);
-    log('WebPush', 'Encoded client key', { auth, p256dh });
+    return await encodeSubscription(pushSubscription);
+}
 
-    return {
-        endpoint: pushSubscription.endpoint,
-        expirationTime: (pushSubscription as any).expirationTime,
-        keys: {
-            auth,
-            p256dh,
-        },
-    };
+// ------------ Backend APIs ------------
+
+async function getServerPublicKey(client: ApolloClient<any>) {
+    const {
+        data: { pushPublicKey },
+    } = await client.query({
+        query: gql(`
+        query GetPushPublicKey {
+            pushPublicKey
+        }
+    `),
+    });
+
+    return pushPublicKey;
+}
+
+async function subsribeOnServer(client: ApolloClient<any>, subscription: CreatePushSubscriptionInput) {
+    await client.mutate({
+        mutation: gql(`
+            mutation AddSubscription($subscription: CreatePushSubscriptionInput!) {
+                userPushSubcriptionAdd(subscription: $subscription)
+            }
+        `),
+        variables: { subscription },
+    });
+}
+
+async function unsubsribeOnServer(client: ApolloClient<any>, id: number) {
+    await client.mutate({
+        mutation: gql(`
+            mutation RemoveSubscription($id: Int!) {
+                userPushSubcriptionRemove(subscriptionID: $id)
+            }
+        `),
+        variables: { id },
+    });
+}
+
+async function getServerSubscriptions(client: ApolloClient<any>): Promise<{ id: number; endpoint: string }[]> {
+    const result = await client.query({
+        query: gql(`
+            query GetPushSubs {
+                me { pushSubscriptions { id endpoint }}
+            }              
+        `),
+    });
+
+    return result.data!.me.pushSubscriptions;
 }
 
 // ------------ Hook --------------------
 
 export function useWebPush() {
     const client = useApolloClient();
-    const [status, setStatus] = useState<'loading' | 'not-supported' | 'user-denied' | 'ask-user' | 'not-subscribed' | 'subscribed'>('loading');
+    const [status, setStatus] = useState<'loading' | 'not-supported' | 'user-denied' | 'ask-user' | 'not-subscribed' | 'subscribed' | 'error'>('loading');
+    // The id of the subscription in the backend
+    const [subId, setSubId] = useState<number | null>(null);
 
     useEffect(() => {
         // Supported by browser?
@@ -122,7 +179,35 @@ export function useWebPush() {
                 return;
             }
 
-            setStatus('subscribed');
+            const serverSubs = await getServerSubscriptions(client);
+            const subscribedOnServer = serverSubs.find((it) => it.endpoint === subscription.endpoint);
+
+            if (!subscribedOnServer) {
+                // Apparently a previous setup was successful on the client, but failed to reach the server
+                log('WebPush', 'Resubsribe on server');
+
+                try {
+                    await subsribeOnServer(client, await encodeSubscription(subscription));
+
+                    const serverSubs = await getServerSubscriptions(client);
+                    const subscribedOnServer = serverSubs.find((it) => it.endpoint === subscription.endpoint);
+                    if (!subscribedOnServer) {
+                        log('WebPush', 'Failed to resubscribe');
+                        setStatus('error');
+                        return;
+                    }
+
+                    setSubId(subscribedOnServer.id);
+                    setStatus('subscribed');
+                } catch (error) {
+                    log('WebPush', 'Failed to resubscribe on server', error);
+                    setStatus('error');
+                    return;
+                }
+            } else {
+                setSubId(subscribedOnServer.id);
+                setStatus('subscribed');
+            }
         })();
     }, []);
 
@@ -132,37 +217,49 @@ export function useWebPush() {
         const granted = await userGrantsWebpushPermission();
         if (!granted) return;
 
-        const {
-            data: { pushPublicKey },
-        } = await client.query({
-            query: gql(`
-            query GetPushPublicKey {
-                pushPublicKey
-            }
-        `),
-        });
+        const pushPublicKey = await getServerPublicKey(client);
 
         if (!pushPublicKey) {
             log('WebPush', 'Missing Server Public Key');
+            setStatus('error');
             return;
         }
 
         const subscription = await subscribeUserToPush(pushPublicKey);
         if (!subscription) {
+            setStatus('error');
             return;
         }
 
-        await client.mutate({
-            mutation: gql(`
-                mutation AddSubscription($subscription: CreatePushSubscriptionInput!) {
-                    userPushSubcriptionAdd(subscription: $subscription)
-                }
-            `),
-            variables: { subscription },
-        });
+        try {
+            await subsribeOnServer(client, subscription);
+        } catch (error) {
+            log('WebPush', 'Failed to subscribe on server', error);
+            setStatus('error');
+            return;
+        }
 
         setStatus('subscribed');
     }
 
-    return { status, subscribe };
+    async function unsubscribe() {
+        if (subId === null) return;
+
+        try {
+            await unsubsribeOnServer(client, subId);
+            setSubId(null);
+
+            const sw = await getServiceWorker();
+            const subscription = await sw.pushManager.getSubscription();
+            await subscription?.unsubscribe();
+
+            setStatus('not-subscribed');
+            log('WebPush', 'Unsubscribed from WebPush');
+        } catch (error) {
+            log('WebPush', 'Failed to unsubscribe', error);
+            setStatus('error');
+        }
+    }
+
+    return { status, subscribe, unsubscribe };
 }
