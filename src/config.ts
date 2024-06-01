@@ -22,6 +22,7 @@ export const DD_ENV = window.liveConfig?.RUNTIME_DD_ENV ?? process.env.REACT_APP
 export const TALKJS_APP_ID = window.liveConfig?.RUNTIME_TALKJS_APP_ID ?? process.env.REACT_APP_TALKJS_APP_ID;
 
 export const GAMIFICATION_ACTIVE = (window.liveConfig?.RUNTIME_GAMIFICATION_ACTIVE ?? 'false') === 'true';
+export const WEBPUSH_ACTIVE = (window.liveConfig?.RUNTIME_WEBPUSH_ACTIVE ?? 'false') === 'true';
 
 export const RESULT_CACHE_ACTIVE = (window.liveConfig?.RUNTIME_RESULT_CACHE_ACTIVE ?? 'false') === 'true';
 export const SERVICE_WORKER_ACTIVE = (window.liveConfig?.RUNTIME_SERVICE_WORKER_ACTIVE ?? 'false') === 'true';
