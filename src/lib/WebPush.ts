@@ -6,12 +6,29 @@ import { useEffect, useState } from 'react';
 
 // ------------ Utilities --------------------
 
-async function base64ToUint8Array(base64url: string) {
+async function base64URLToUint8Array(base64url: string) {
     // Convert Base64URL to Base64 encoding (c.f. https://datatracker.ietf.org/doc/html/rfc4648#section-5)
     const base64 = base64url.replace(/-/g, '+').replace(/_/g, '/');
     // Decode it into an array buffer
     var dataUrl = 'data:application/octet-binary;base64,' + base64;
     return new Uint8Array(await (await fetch(dataUrl)).arrayBuffer());
+}
+
+function bufferToBase64URL(buffer: ArrayBuffer): Promise<string> {
+    return new Promise((resolve) => {
+        const blob = new Blob([buffer]);
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+            const dataUrl = event.target!.result as string;
+            const [_, base64] = dataUrl.split(',');
+            const base64url = base64.replace(/\+/g, '-').replace(/\//g, '_');
+
+            resolve(base64url);
+        };
+
+        reader.readAsDataURL(blob);
+    });
 }
 
 // ------------ WebPush Browser APIs --------------------
@@ -42,19 +59,24 @@ export async function subscribeUserToPush(serverKey: string) {
 
     const subscribeOptions = {
         userVisibleOnly: true,
-        applicationServerKey: await base64ToUint8Array(serverKey),
+        applicationServerKey: await base64URLToUint8Array(serverKey),
     };
 
     log('WebPush', 'Creating Push Subscription');
     const pushSubscription = await sw.pushManager.subscribe(subscribeOptions);
 
     log('WebPush', 'Received Push Subscription: ', pushSubscription);
+
+    const auth = await bufferToBase64URL(pushSubscription.getKey('auth')!);
+    const p256dh = await bufferToBase64URL(pushSubscription.getKey('p256dh')!);
+    log('WebPush', 'Encoded client key', { auth, p256dh });
+
     return {
         endpoint: pushSubscription.endpoint,
         expirationTime: (pushSubscription as any).expirationTime,
         keys: {
-            auth: pushSubscription.getKey('auth'),
-            p256dh: pushSubscription.getKey('p256dh'),
+            auth,
+            p256dh,
         },
     };
 }
