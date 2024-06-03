@@ -9,6 +9,7 @@ import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
 import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg';
 import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg';
 import LFChatIcon from '../assets/icons/lernfair/lf-chat.svg';
+import LFKnowledgeIcon from '../assets/icons/lernfair/lf-knowledge.svg';
 import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
@@ -64,6 +65,7 @@ const WithNavigation: React.FC<Props> = ({
         chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
         group: { label: t('navigation.label.group'), icon: LFGroupIcon },
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
+        'for-students': { label: t('navigation.label.forStudents'), icon: LFKnowledgeIcon },
     };
 
     const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
