@@ -485,6 +485,21 @@
             }
         }
     },
+    "forStudents": {
+        "title": "Für Helfer:innen",
+        "description": "Hier findest du alle unsere pädagogischen Hilfestellungen & Angebot für dich",
+        "tabs": {
+            "handbook": "Handbuch",
+            "onlineTraining": "Online-Fortbildungen"
+        }
+    },
+    "forPupils": {
+        "title": "Für Schüler:innen",
+        "description": "Hier findest du alle unsere pädagogischen Hilfestellungen & Angebot für dich",
+        "tabs": {
+            "learnMethods": "Lernmethoden"
+        }
+    },
     "helpcenter": {
         "title": "Du brauchst Hilfe?",
         "subtitle": {
@@ -498,9 +513,6 @@
         },
         "faq": {
             "tabName": "Häufige Fragen"
-        },
-        "assistance": {
-            "title": "Hilfestellungen"
         },
         "contact": {
             "tabName": "Kontakt",
@@ -2010,7 +2022,9 @@
             "group": "Kurse",
             "matching": "Nachhilfe",
             "appointments": "Termine",
-            "chat": "Chat"
+            "chat": "Chat",
+            "forStudents": "Für Helfer:innen",
+            "forPupils": "Für Schüler:innen"
         }
     },
     "screening": {

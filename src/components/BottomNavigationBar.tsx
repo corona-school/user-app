@@ -80,7 +80,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
                         const disabled =
                             _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
 
-                        const isHidden = key === 'for-students';
+                        const isHidden = ['for-students', 'for-pupils'].includes(key);
                         if (isHidden) return <></>;
 
                         return (

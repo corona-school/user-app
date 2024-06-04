@@ -49,9 +49,15 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
         return false;
     }, [data, userType]);
 
-    const hideKnowledgeCenter = useMemo(() => {
+    const hideForStudents = useMemo(() => {
         if (!data) return true;
         if (['screener', 'pupil'].includes(userType)) return true;
+        return false;
+    }, [data, userType]);
+
+    const hideForPupils = useMemo(() => {
+        if (!data) return true;
+        if (['screener', 'student'].includes(userType)) return true;
         return false;
     }, [data, userType]);
 
@@ -78,7 +84,8 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
                         const disabled =
                             _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
-                        const isHidden = key === 'for-students' && hideKnowledgeCenter;
+                        console.log('[DEBUG]', { key, hideForPupils, hideForStudents });
+                        const isHidden = (key === 'for-students' && hideForStudents) || (key === 'for-pupils' && hideForPupils);
                         if (isHidden) return <></>;
 
                         return (

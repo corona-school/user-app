@@ -66,6 +66,7 @@ const WithNavigation: React.FC<Props> = ({
         group: { label: t('navigation.label.group'), icon: LFGroupIcon },
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
         'for-students': { label: t('navigation.label.forStudents'), icon: LFKnowledgeIcon },
+        'for-pupils': { label: t('navigation.label.forPupils'), icon: LFKnowledgeIcon },
     };
 
     const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
