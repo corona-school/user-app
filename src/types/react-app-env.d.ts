@@ -41,6 +41,7 @@ declare interface Window {
         readonly RUNTIME_WEBPUSH_ACTIVE?: 'true' | 'false';
         readonly RUNTIME_RESULT_CACHE_ACTIVE?: 'true' | 'false';
         readonly RUNTIME_SERVICE_WORKER_ACTIVE?: 'true' | 'false';
+        readonly RUNTIME_LANGUAGE_SWITCHER_ACTIVE?: 'true' | 'false';
     };
 }
 

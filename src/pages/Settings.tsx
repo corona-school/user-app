@@ -10,7 +10,7 @@ import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE, WEBPUSH_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE, WEBPUSH_ACTIVE } from '../config';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -49,9 +49,11 @@ const Settings: React.FC = () => {
                     <HStack space={space['1']} alignItems="center">
                         <Heading>{user?.firstname}</Heading>
                     </HStack>
-                    <Column paddingY={space['1']} mb={tabspace}>
-                        <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
-                    </Column>
+                    {LANGUAGE_SWITCHER_ACTIVE && (
+                        <Column paddingY={space['1']} mb={tabspace}>
+                            <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
+                        </Column>
+                    )}
                 </VStack>
                 <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     {userType !== 'screener' && (
