@@ -9,7 +9,8 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import { GAMIFICATION_ACTIVE } from '../config';
+import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
+import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE, WEBPUSH_ACTIVE } from '../config';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -20,7 +21,8 @@ const Settings: React.FC = () => {
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
 
-    const [showDeactivate, setShowDeactivate] = useState<boolean>(false);
+    const [showDeactivate, setShowDeactivate] = useState(false);
+    const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
 
     useEffect(() => {
         trackPageView({
@@ -52,6 +54,11 @@ const Settings: React.FC = () => {
                     <HStack space={space['1']} alignItems="center">
                         <Heading>{user?.firstname}</Heading>
                     </HStack>
+                    {LANGUAGE_SWITCHER_ACTIVE && (
+                        <Column paddingY={space['1']} mb={tabspace}>
+                            <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
+                        </Column>
+                    )}
                 </VStack>
                 <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     {userType !== 'screener' && (
@@ -75,6 +82,11 @@ const Settings: React.FC = () => {
                             {userType === 'pupil' && isMobile && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/for-pupils')} />
+                                </Column>
+                            )}
+                            {WEBPUSH_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={'Push'} onPress={() => navigate('/push')} />
                                 </Column>
                             )}
                         </ProfileSettingRow>
@@ -116,6 +128,7 @@ const Settings: React.FC = () => {
                 </VStack>
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
+            <SwitchLanguageModal isOpen={showSwitchLanguage} onCloseModal={() => setShowSwitchLanguage(false)} />
         </>
     );
 };

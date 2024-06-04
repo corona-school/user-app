@@ -1,4 +1,4 @@
-import { Button, Flex, HStack, Heading, Modal, Text, VStack, useTheme } from 'native-base';
+import { Button, Column, Flex, HStack, Heading, Modal, Text, VStack, useTheme } from 'native-base';
 import { useWebPush } from '../lib/WebPush';
 import Icon from '../assets/icons/lernfair/ic_email.svg';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 export function WebPush() {
     const { space } = useTheme();
     const navigate = useNavigate();
-    const { status, subscribe } = useWebPush();
+    const { status, subscribe, unsubscribe } = useWebPush();
 
     return (
         <>
@@ -26,12 +26,18 @@ export function WebPush() {
                             <Text>Wir können dir leider keine Push-Benachrichtigungen senden, da du uns dazu keine Erlaubnis gegeben hast.</Text>
                         )}
                         {(status === 'ask-user' || status === 'not-subscribed') && (
-                            <>
+                            <HStack>
                                 <Text>Willst du, das wir dir Push-Benachrichtigungen senden?</Text>
                                 <Button onPress={subscribe}>Ja!</Button>
-                            </>
+                            </HStack>
                         )}
-                        {status === 'subscribed' && <Text>Push Benachrichtigungen eingerichtet!</Text>}
+                        {status === 'subscribed' && (
+                            <HStack>
+                                <Text>Push Benachrichtigungen eingerichtet!</Text>
+                                <Button onPress={unsubscribe}>Deaktivieren</Button>
+                            </HStack>
+                        )}
+                        {status === 'error' && <Text>Ein Fehler ist aufgetreten :/</Text>}
                     </Text>
                     <Button marginTop="20px" onPress={() => navigate('/')}>
                         Zurück zur App

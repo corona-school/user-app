@@ -263,7 +263,7 @@ const AppointmentCard: React.FC<Props> = ({
                                                         minute: '2-digit',
                                                     },
                                                     {
-                                                        locale: t('single.global.timeFormatLocale'),
+                                                        locale: 'de',
                                                     }
                                                 ) +
                                                     ' ' +

@@ -709,7 +709,6 @@
             "clockFrom": "Ab",
             "from": "aus",
             "clock": "Uhr",
-            "timeFormatLocale": "de",
             "category": "Kategorie",
             "participating": "Teilnehmer:innen",
             "quantity": "Anzahl",
@@ -2077,6 +2076,10 @@
         "decision": "Entscheidung",
         "screener": "Screener:in",
         "dissolve_reason": "Grund: {{reason}}",
+        "deactivationDate": "Deaktivierungsdatum",
+        "certificateOfConduct": "Führungszeugnis",
+        "certificateOfConductWasProvided": "Führungszeugnis wurde eingereicht",
+        "certificateOfConductWasNotProvided": "Führungszeugnis wurde noch nicht eingereicht",
         "comment": "Kommentar",
         "courses": {
             "header": "Screening Gruppenkurse",

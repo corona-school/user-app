@@ -25,10 +25,18 @@ console.log('Caching the following files', manifest);
 swSelf.addEventListener('push', (event) => {
     console.log('Triggering Push Event', event);
 
-    const notificationChain = swSelf.registration.showNotification('Neue Lern-Fair Benachrichtigung', {
+    const pushData = event.data!.json();
+    console.log('Got message', pushData);
+
+    const {
+        message: { headline, body, navigateTo },
+    } = pushData as { message: { headline: string; body: string; navigateTo: string } };
+
+    const notificationChain = swSelf.registration.showNotification(headline, {
         icon: './favicons/apple-touch-icon.png',
         badge: './favicons/apple-touch-icon.png',
-        body: 'Öffne die Lern-Fair App um die Benachrichtigung zu sehen',
+        body,
+        data: { navigateTo },
     });
 
     (event as any).waitUntil(notificationChain);
@@ -36,8 +44,10 @@ swSelf.addEventListener('push', (event) => {
 
 // Handle Notification Click
 swSelf.addEventListener('notificationclick', (event) => {
-    console.log('Notification clicked', event.notification.tag);
+    console.log('Notification clicked', event.notification.tag, event.notification.data);
     event.notification.close();
+
+    const { navigateTo } = event.notification.data;
 
     // This looks to see if the current is already open and
     // focuses if it is
@@ -48,9 +58,14 @@ swSelf.addEventListener('notificationclick', (event) => {
             })
             .then((clientList) => {
                 for (const client of clientList) {
-                    return client.focus();
+                    if ('focus' in client) {
+                        client.focus();
+                        client.navigate(navigateTo);
+                        return;
+                    }
                 }
-                return swSelf.clients.openWindow('/');
+
+                return swSelf.clients.openWindow(navigateTo);
             })
     );
 });
