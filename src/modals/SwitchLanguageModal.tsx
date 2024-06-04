@@ -46,7 +46,7 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) =
                             onCloseModal();
                         }}
                     >
-                        Arabisch
+                        اللغة العربية
                     </Button>
                     <Button
                         onPress={() => {
@@ -54,7 +54,7 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) =
                             onCloseModal();
                         }}
                     >
-                        Türkisch
+                        Türkçe
                     </Button>
                     <Button
                         onPress={() => {
@@ -62,7 +62,7 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) =
                             onCloseModal();
                         }}
                     >
-                        Ukrainisch
+                        Українська
                     </Button>
                     <Button
                         onPress={() => {
@@ -70,7 +70,7 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) =
                             onCloseModal();
                         }}
                     >
-                        Russisch
+                        Русский
                     </Button>
                 </VStack>
             </Modal.Content>
