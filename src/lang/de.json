@@ -881,7 +881,9 @@
             "languageVersion": "Sprachversion",
             "notifications": "E-Mail Benachrichtigungen",
             "onboarding": "Onboarding-Tour",
-            "progress": "Erfolge & Fortschritte"
+            "progress": "Erfolge & Fortschritte",
+            "forStudents": "Für Helfer:innen",
+            "forPupils": "Für Schüler:innen"
         },
         "account": {
             "title": "Konto",
