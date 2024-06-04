@@ -2,6 +2,7 @@ import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
 
 import de from './lang/de.json';
+import { LANGUAGE_SWITCHER_ACTIVE } from './config';
 
 // As users will rarely use the non-german version, lazily load these language files
 // on demand
@@ -42,10 +43,12 @@ export async function switchLanguage(language: string) {
     i18next.changeLanguage(language);
 }
 
-// When opening the App for the first time, switch to another language if needed
-const switchedLanguage = localStorage.getItem('lernfair-language');
-if (switchedLanguage) {
-    /* no await, switch lazily */ switchLanguage(switchedLanguage);
+if (LANGUAGE_SWITCHER_ACTIVE) {
+    // When opening the App for the first time, switch to another language if needed
+    const switchedLanguage = localStorage.getItem('lernfair-language');
+    if (switchedLanguage) {
+        /* no await, switch lazily */ switchLanguage(switchedLanguage);
+    }
 }
 
 export default i18next;
