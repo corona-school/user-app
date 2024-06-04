@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs from '../../components/Tabs';
+import NavigationTabs from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Match } from '../../gql/graphql';
 
@@ -39,8 +39,8 @@ const query = gql(`
                         lastname
                         schooltype
                         grade
+                        gradeAsInt
                     }
-                    pupilEmail
                 }
                 canRequestMatch {
                     allowed
@@ -155,7 +155,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                 />
                             )}
                         </VStack>
-                        <Tabs
+                        <NavigationTabs
                             tabs={[
                                 {
                                     title: t('matching.request.check.tabs.tab1'),

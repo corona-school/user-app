@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Box, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Button, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs, { Tab } from '../../components/Tabs';
+import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import { getTimeDifference } from '../../helper/notification-helper';
@@ -48,6 +48,7 @@ function Participants({
                     lastname
                     schooltype
                     grade
+                    gradeAsInt
                 }
             }
         }
@@ -111,6 +112,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             duration
         }
         instructors{
+            id
             firstname
             lastname
         }
@@ -160,7 +162,10 @@ const instructorSubcourseQuery = gql(`
 query GetInstructorSubcourse($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         conversationId
-        alreadyPromoted
+        wasPromotedByInstructor
+        canPromote {
+            allowed
+        }
         pupilsWaitingCount
         pupilsOnWaitinglist {
             id
@@ -168,6 +173,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
             lastname
             schooltype
             grade
+            gradeAsInt
         }
         canEdit { allowed reason }
         canContactParticipants { allowed reason }
@@ -186,6 +192,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
 `);
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
+    const [isPromoting, setIsPromoting] = useState(false);
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
@@ -307,6 +314,25 @@ const SingleCourseStudent = () => {
         refetchBasics();
     }, [canceldData]);
 
+    const [chatCreateAsProspect] = useMutation(
+        gql(`
+            mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
+                prospectChatCreate(subcourseId: $subcourseId, instructorUserId: $instructorUserId)
+            }       
+        `)
+    );
+
+    async function contactInstructorAsProspect() {
+        const conversation = await chatCreateAsProspect({
+            variables: { subcourseId: subcourse!.id, instructorUserId: `student/${subcourse!.instructors[0].id}` },
+        });
+        if (conversation) {
+            navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
+        } else {
+            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        }
+    }
+
     const tabs: Tab[] = [
         {
             title: t('single.tabs.lessons'),
@@ -314,7 +340,7 @@ const SingleCourseStudent = () => {
                 appointments.length > 0 ? (
                     <Box minH={300}>
                         <AppointmentList
-                            isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
+                            isReadOnlyList={!subcourse?.isInstructor}
                             disableScroll
                             appointments={appointments as Appointment[]}
                             noOldAppointments
@@ -385,6 +411,7 @@ const SingleCourseStudent = () => {
     );
 
     const doPromote = async () => {
+        setIsPromoting(true);
         await promote();
         if (error) {
             toast.show({ description: t('single.buttonPromote.toastFail'), placement: 'top' });
@@ -392,6 +419,7 @@ const SingleCourseStudent = () => {
             toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
         }
         refetchInstructorData();
+        setIsPromoting(false);
     };
 
     const isInPast = useMemo(
@@ -401,20 +429,13 @@ const SingleCourseStudent = () => {
         [subcourse]
     );
 
-    const isMatureForPromotion = (publishDate: string): boolean => {
-        const { daysDiff } = getTimeDifference(publishDate);
-        if (publishDate === null || daysDiff > 3) {
-            return true;
-        }
-        return false;
-    };
-
     const canPromoteCourse = useMemo(() => {
-        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || instructorSubcourse?.subcourse?.alreadyPromoted !== false)
+        if (loading || !subcourse || !instructorSubcourse?.subcourse?.canPromote.allowed) {
             return false;
-        const canPromote = subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
-        return canPromote;
-    }, [instructorSubcourse?.subcourse?.alreadyPromoted, loading, subcourse]);
+        }
+
+        return true;
+    }, [loading, subcourse, instructorSubcourse?.subcourse?.canPromote.allowed]);
 
     const getButtonClick = useMemo(() => {
         switch (course?.courseState) {
@@ -449,6 +470,7 @@ const SingleCourseStudent = () => {
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
             showBack
+            previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
@@ -475,13 +497,21 @@ const SingleCourseStudent = () => {
                             isActiveSubcourse={isActiveSubcourse}
                         />
                     )}
+                    {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
+                        <Stack direction="row">
+                            <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
+                                {t('single.actions.contactInstructor')}
+                            </Button>
+                        </Stack>
+                    )}
                     {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                         <PromoteBanner
                             onClick={doPromote}
                             seatsFull={subcourse?.participantsCount}
                             seatsMax={subcourse?.maxParticipants}
-                            isPromoted={instructorSubcourse?.subcourse?.alreadyPromoted || false}
+                            isPromoted={instructorSubcourse?.subcourse?.wasPromotedByInstructor || false}
                             courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                            isPromoting={isPromoting}
                         />
                     )}
                     {!isInPast && isInstructorOfSubcourse && (
@@ -492,7 +522,7 @@ const SingleCourseStudent = () => {
                             handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
                         />
                     )}
-                    <Tabs tabs={tabs} />
+                    <NavigationTabs tabs={tabs} />
                 </Stack>
             )}
             <Modal>

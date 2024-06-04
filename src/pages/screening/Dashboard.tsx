@@ -112,14 +112,17 @@ export function ScreeningDashboard() {
                     lastname
                     email
                     languages
-                    subjectsFormatted { name }
+                    subjectsFormatted { name mandatory }
                     grade
+                    gradeAsInt
+                    openMatchRequestCount
+                    verifiedAt
                     matches {
                         createdAt
                         student { firstname lastname }
                         dissolved
                         dissolvedAt
-                        dissolveReasonEnum
+                        dissolveReasons
                         dissolvedBy
                         pupilFirstMatchRequest
                         subjectsFormatted { name }
@@ -129,6 +132,7 @@ export function ScreeningDashboard() {
                         invalidated
                         status
                         comment
+                        knowsCoronaSchoolFrom
                         createdAt
                         updatedAt
                         screeners { firstname lastname }
@@ -144,12 +148,16 @@ export function ScreeningDashboard() {
                     lastname
                     languages
                     subjectsFormatted { name grade { min max } }
+                    certificateOfConductDeactivationDate
+                    certificateOfConduct {
+                        id
+                    }
                     matches {
                         createdAt
                         pupil { firstname lastname }
                         dissolved
                         dissolvedAt
-                        dissolveReasonEnum
+                        dissolveReasons
                         dissolvedBy
                         studentFirstMatchRequest
                         subjectsFormatted { name }
@@ -162,8 +170,8 @@ export function ScreeningDashboard() {
                         nextLecture { start duration }
                     }
 
-                    tutorScreenings { createdAt success comment screener { firstname lastname } }
-                    instructorScreenings { createdAt success comment screener { firstname lastname } }
+                    tutorScreenings { id createdAt success comment screener { firstname lastname } }
+                    instructorScreenings { id createdAt success comment screener { firstname lastname } }
                 }
             }
         }
@@ -184,12 +192,14 @@ export function ScreeningDashboard() {
                 languages
                 subjectsFormatted { name }
                 grade
+                gradeAsInt
+                openMatchRequestCount
                 matches {
                     createdAt
                     student { firstname lastname }
                     dissolved
                     dissolvedAt
-                    dissolveReasonEnum
+                    dissolveReasons
                     dissolvedBy
                     pupilFirstMatchRequest
                     subjectsFormatted { name }
@@ -199,6 +209,7 @@ export function ScreeningDashboard() {
                     invalidated
                     status
                     comment
+                    knowsCoronaSchoolFrom
                     createdAt
                     updatedAt
                     screeners { firstname lastname }

@@ -29,6 +29,7 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
         return (
             <AppointmentCard
                 key={index}
+                subcourseId={subcourse.id}
                 description={subcourse.course.description}
                 tags={subcourse.course.tags}
                 dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}

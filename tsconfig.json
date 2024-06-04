@@ -4,7 +4,8 @@
     "lib": [
       "dom",
       "dom.iterable",
-      "esnext"
+      "esnext",
+      "webworker"
     ],
     "allowJs": true,
     "skipLibCheck": true,
@@ -23,5 +24,6 @@
   },
   "include": [
     "src"
-  ]
+  ],
+  "exclude": ["**/*.stories.tsx"]
 }

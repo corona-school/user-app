@@ -150,7 +150,7 @@ const ChangeSettingState: React.FC<Props> = () => {
                                         <IconTagList
                                             initial={userState === s.key}
                                             iconPath={`states/icon_${s.key}.svg`}
-                                            text={s.label}
+                                            text={t(`lernfair.states.${s.key}` as unknown as TemplateStringsArray)}
                                             onPress={() => setUserState(s.key)}
                                         />
                                     </Column>

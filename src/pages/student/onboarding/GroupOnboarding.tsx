@@ -16,6 +16,7 @@ import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
 import { useUser } from '../../../hooks/useApollo';
+import { createStudentScreeningLink } from '../../../helper/screening-helper';
 
 type OnboardingProps = {
     // if student was screened, he can request role of TUTOR, if not screened, button does not appear
@@ -58,14 +59,11 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
         }
     }, [becomeInstructor, contactSupport, t, toast]);
 
-    const student_url =
-        process.env.REACT_APP_SCREENING_URL +
-        '?first_name=' +
-        encodeURIComponent(user.firstname ?? '') +
-        '&last_name=' +
-        encodeURIComponent(user.lastname ?? '') +
-        '&email=' +
-        encodeURIComponent(user.email ?? '');
+    const student_url = createStudentScreeningLink({
+        firstName: user.firstname,
+        lastName: user.lastname,
+        email: user.email,
+    });
 
     return (
         <AsNavigationItem path="group">

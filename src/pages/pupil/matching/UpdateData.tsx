@@ -1,6 +1,6 @@
 import { gql, useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
-import { Text, VStack, useTheme, Heading, Row, Column, Modal, Button, useToast } from 'native-base';
+import { Text, VStack, useTheme, Heading, Row, Column, Modal, useToast } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
@@ -10,6 +10,8 @@ import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext } from './RequestMatch';
+import DisableableButton from '../../../components/DisablebleButton';
+import { GradeSelector, GradeTag } from '../../../components/GradeSelector';
 
 type Props = {
     schooltype: string;
@@ -58,11 +60,6 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
         switch (modalType) {
             case 'schooltypes':
                 return schooltypes;
-            case 'schoolclass':
-                return Array.from({ length: 13 }, (_, i) => ({
-                    label: `${i + 1}. Klasse`,
-                    key: `${i + 1}`,
-                }));
             case 'states':
                 return states;
             default:
@@ -74,9 +71,6 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
         switch (modalType) {
             case 'schooltypes':
                 return schooltype;
-
-            case 'schoolclass':
-                return `${gradeAsInt}`;
             case 'states':
                 return state;
             default:
@@ -159,13 +153,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                         {(gradeAsInt && (
                             <Column marginRight={3} mb={space['0.5']}>
                                 <CSSWrapper className="profil-tab-link">
-                                    <IconTagList
-                                        isDisabled
-                                        textIcon={`${gradeAsInt}`}
-                                        text={t('lernfair.schoolclass', {
-                                            class: gradeAsInt,
-                                        })}
-                                    />
+                                    <GradeTag grade={gradeAsInt} />
                                 </CSSWrapper>
                             </Column>
                         )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
@@ -180,6 +168,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                     }}
                 >
                     <Row flexWrap="wrap" w="100%">
+                        <Text marginBottom={3}>{t('profile.State.weightingNote')}</Text>
                         {(state && (
                             <Column marginRight={3} mb={space['0.5']}>
                                 {(state && (
@@ -197,10 +186,10 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                 </ProfileSettingItem>
 
                 <NextPrevButtons
-                    isDisabledNext={isLoading}
+                    disablingNext={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
+                    disablingPrev={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
                     onPressNext={() => setCurrentIndex(2)}
                     onPressPrev={() => setCurrentIndex(0)}
-                    isDisabledPrev={isLoading}
                     onlyNext={isEdit}
                 />
             </VStack>
@@ -213,26 +202,33 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
             >
                 <Modal.Content>
                     <Modal.CloseButton />
-                    <Modal.Header>Ändern</Modal.Header>
+                    <Modal.Header>{t('change')}</Modal.Header>
                     <Modal.Body>
                         <Row flexWrap="wrap">
-                            {listItems.map((item: { label: string; key: string }) => (
-                                <Column mb={space['1']} mr={space['1']}>
-                                    <IconTagList
-                                        initial={modalSelection === item.key}
-                                        text={item.label}
-                                        onPress={() => setModalSelection(item.key)}
-                                        iconPath={(modalType !== 'schoolclass' && `${modalType}/icon_${item.key}.svg`) || ''}
-                                        textIcon={(modalType === 'schoolclass' && `${item.key}`) || ''}
-                                    />
-                                </Column>
-                            ))}
+                            {modalType === 'schoolclass' ? (
+                                <GradeSelector grade={Number(modalSelection)} onGradeChange={(newGrade) => setModalSelection(`${newGrade}`)} />
+                            ) : (
+                                listItems.map((item: { label: string; key: string }) => (
+                                    <Column mb={space['1']} mr={space['1']}>
+                                        <IconTagList
+                                            initial={modalSelection === item.key}
+                                            text={item.label}
+                                            onPress={() => setModalSelection(item.key)}
+                                            iconPath={`${modalType}/icon_${item.key}.svg`}
+                                        />
+                                    </Column>
+                                ))
+                            )}
                         </Row>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button isDisabled={data === modalSelection || isLoading} onPress={changeData}>
-                            Ändern
-                        </Button>
+                        <DisableableButton
+                            isDisabled={data === modalSelection || isLoading}
+                            reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
+                            onPress={changeData}
+                        >
+                            {t('change')}
+                        </DisableableButton>
                     </Modal.Footer>
                 </Modal.Content>
             </Modal>

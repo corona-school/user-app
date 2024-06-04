@@ -8,6 +8,7 @@ import { RequestMatchContext } from './RequestMatch';
 import AlternativeOffer from './AlternativeOffer';
 import BulletList from '../../../components/BulletList';
 
+const WAITING_TIME_FILTER = false; // whether to show "are you willing to wait 3-6 Months" filter
 const Filter: React.FC = () => {
     const { space } = useTheme();
     const navigate = useNavigate();
@@ -18,7 +19,7 @@ const Filter: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
 
     const next = useCallback(() => {
-        if (isFit !== 'yes' || isAcceptWaitingTime !== 'yes') {
+        if (isFit !== 'yes' || (isAcceptWaitingTime !== 'yes' && WAITING_TIME_FILTER)) {
             setCurrentIndex(1);
             return;
         }
@@ -47,19 +48,27 @@ const Filter: React.FC = () => {
                         align="left"
                     />
                     <br />
-                    <Heading>{t('matching.wizard.pupil.filter.subheading2')}</Heading>
-                    <Text>{t('matching.wizard.pupil.filter.text2')}</Text>
 
-                    <Heading fontSize="md">{t('matching.wizard.pupil.filter.question2')}</Heading>
-                    <YesNoSelector
-                        initialYes={isAcceptWaitingTime === 'yes'}
-                        initialNo={isAcceptWaitingTime === 'no'}
-                        onPressYes={() => setIsAcceptWaitingTime('yes')}
-                        onPressNo={() => setIsAcceptWaitingTime('no')}
-                        align="left"
-                    />
+                    {WAITING_TIME_FILTER && (
+                        <>
+                            <Heading>{t('matching.wizard.pupil.filter.subheading2')}</Heading>
+                            <Text>{t('matching.wizard.pupil.filter.text2')}</Text>
+                            <Heading fontSize="md">{t('matching.wizard.pupil.filter.question2')}</Heading>
+                            <YesNoSelector
+                                initialYes={isAcceptWaitingTime === 'yes'}
+                                initialNo={isAcceptWaitingTime === 'no'}
+                                onPressYes={() => setIsAcceptWaitingTime('yes')}
+                                onPressNo={() => setIsAcceptWaitingTime('no')}
+                                align="left"
+                            />
+                        </>
+                    )}
                     <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
-                    <NextPrevButtons isDisabledNext={!isFit || !isAcceptWaitingTime} onPressNext={next} onlyNext />
+                    <NextPrevButtons
+                        disablingNext={{ is: !isFit || (!isAcceptWaitingTime && WAITING_TIME_FILTER), reason: t('reasonsDisabled.questionsUnaswerd') }}
+                        onPressNext={next}
+                        onlyNext
+                    />
                 </VStack>
             )}
             {currentIndex === 1 && (

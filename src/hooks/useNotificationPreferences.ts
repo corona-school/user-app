@@ -25,11 +25,11 @@ const useUserPreferences = () => {
 
     const updateUserPreference = (category: string, channel: string, value: boolean) => {
         const preferences = { ...userPreferences, [category]: { [channel]: value } };
-        updateUserPreferences(preferences);
+        return updateUserPreferences(preferences);
     };
 
     const updateUserPreferences = (preferences: NotificationPreferences) => {
-        mutateUserPreferences({
+        return mutateUserPreferences({
             variables: {
                 preferences,
             },

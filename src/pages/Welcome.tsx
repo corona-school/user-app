@@ -30,9 +30,9 @@ const Welcome: React.FC = () => {
             title={t('welcome.title')}
             content={t('welcome.subtitle')}
             outlineButtonText={t('signin')}
-            outlinebuttonLink={() => navigate('/login', { state: { retainPath: retainPath } })}
+            outlinebuttonLink={() => navigate('/login', { replace: true, state: { retainPath: retainPath } })}
             defaultButtonText={t('signup')}
-            defaultbuttonLink={() => navigate('/registration', { state: { retainPath: retainPath } })}
+            defaultbuttonLink={() => navigate('/registration', { replace: true, state: { retainPath: retainPath } })}
             icon={<Logo />}
             extraContent={<>{deactivated && <AlertMessage content={t('welcome.deactivationAlert')} />}</>}
             footer={

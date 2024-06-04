@@ -16,6 +16,8 @@ const CreateAppointment = () => {
     const [courseOrMatchId, setCourseOrMatchId] = useState<number>(0);
     const [isCourse, setIsCourse] = useState<boolean>(false);
     const [appointmentsTotal, setAppointmentsTotal] = useState<number>(0);
+    const [overrideMeetingLink, setOverrideMeetingLink] = useState<string | undefined>(undefined);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const { t } = useTranslation();
 
@@ -47,6 +49,7 @@ const CreateAppointment = () => {
             }
             setCurrentIndex((prev) => prev + 2);
             setNoAppointments(true);
+            setOverrideMeetingLink(undefined);
         },
         [currentIndex]
     );
@@ -68,7 +71,7 @@ const CreateAppointment = () => {
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerLeft={<NotificationAlert />} showBack>
+            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} showBack previousFallbackRoute="/appointments">
                 <CreateAppointmentProvider>
                     <Box mx="4">
                         <View position="sticky" mb={2} overflow="hidden">
@@ -89,6 +92,7 @@ const CreateAppointment = () => {
                                 next={onNext}
                                 back={onBack}
                                 setAppointmentsTotal={setAppointmentsTotal}
+                                setOverrideMeetingLink={setOverrideMeetingLink}
                             />
                         )}
                         {currentIndex === 2 && (
@@ -98,6 +102,8 @@ const CreateAppointment = () => {
                                     courseOrMatchId={courseOrMatchId}
                                     isCourse={isCourse}
                                     appointmentsTotal={appointmentsTotal}
+                                    overrideMeetingLink={overrideMeetingLink}
+                                    setIsLoading={setIsLoading}
                                 />
                             </Box>
                         )}

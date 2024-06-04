@@ -1,9 +1,10 @@
-import { Heading, View, Text, FormControl, Row, Input, TextArea, Checkbox, Link, useTheme, useBreakpointValue, Button, useToast } from 'native-base';
-import { useCallback, useMemo, useState } from 'react';
+import { Heading, View, Text, FormControl, Row, Input, TextArea, Checkbox, Link, useTheme, useBreakpointValue } from 'native-base';
+import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AlertMessage from '../widgets/AlertMessage';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
+import DisableableButton from './DisablebleButton';
 
 type FormularProps = {};
 
@@ -49,9 +50,19 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
         }
     }, [contactSupport, message, subject]);
 
-    const isButtonDisabled = useMemo(() => {
+    const isButtonDisabled = () => {
         return !dsgvo || message?.length < 5 || subject?.length < 5;
-    }, [dsgvo, message?.length, subject?.length]);
+    };
+
+    const reasonDisabled = () => {
+        const reasons = t('helpcenter.btn.reasonDisabled', { returnObjects: true });
+
+        if (subject?.length < 5) return reasons[0];
+        if (message?.length < 5) return reasons[1];
+        if (!dsgvo) return reasons[2];
+
+        return '';
+    };
 
     return (
         <View paddingLeft={space['1.5']}>
@@ -99,9 +110,15 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
                 <Row flexDirection="column" paddingY={space['0.5']}>
                     {messageSent && <AlertMessage content={t('helpcenter.contact.success')} />}
                     {showError && <AlertMessage content={t('helpcenter.contact.error')} />}
-                    <Button marginX="auto" width={buttonWidth} isDisabled={isButtonDisabled} onPress={sendContactMessage}>
+                    <DisableableButton
+                        isDisabled={isButtonDisabled()}
+                        reasonDisabled={reasonDisabled()}
+                        marginX="auto"
+                        width={buttonWidth}
+                        onPress={sendContactMessage}
+                    >
                         {t('helpcenter.btn.formsubmit')}
-                    </Button>
+                    </DisableableButton>
                 </Row>
             </FormControl>
         </View>

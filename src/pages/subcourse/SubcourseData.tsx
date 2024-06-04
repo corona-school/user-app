@@ -6,12 +6,12 @@ import { Course, Course_Tag, Instructor, Lecture, Subcourse } from '../../gql/gr
 import { useUserType } from '../../hooks/useApollo';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { TrafficStatus } from '../../types/lernfair/Course';
-import Utility, { getTrafficStatus } from '../../Utility';
+import Utility, { getGradeLabel, getTrafficStatus } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
 type SubcourseDataProps = {
-    course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
+    course: Pick<Course, 'name' | 'image'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };
     subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published'> &
         Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant' | 'canJoin'>> & {
             instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
@@ -69,7 +69,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                     )}
                     <Text maxWidth={sizes['imageHeaderWidth']}>
                         <Text bold>{t('single.courseInfo.grade')}</Text>
-                        {t('single.courseInfo.class', { minGrade: subcourse?.minGrade, maxGrade: subcourse?.maxGrade })}
+                        {t('single.courseInfo.class', { minGrade: getGradeLabel(subcourse?.minGrade), maxGrade: getGradeLabel(subcourse?.maxGrade) })}
                     </Text>
                     {!isInPast &&
                         !subcourse?.cancelled &&
@@ -93,6 +93,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         Date.now() >= Date.parse(subcourse.lectures[0].start) &&
                         !isInPast &&
                         subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
+                    {userType === 'screener' && course?.shared && <Text>{t('single.courseInfo.is_shared')}</Text>}
                 </VStack>
                 <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
                     <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>

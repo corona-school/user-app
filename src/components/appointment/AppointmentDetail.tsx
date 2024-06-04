@@ -18,7 +18,6 @@ import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
-    matchId?: number;
     startMeeting?: boolean;
 };
 
@@ -28,7 +27,7 @@ type AppointmentDates = {
     endTime: string;
 };
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matchId }) => {
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) => {
     const { t } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
@@ -107,11 +106,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
         return appointment.organizers && appointment.participants ? [...appointment.organizers, ...appointment.participants] : [];
     }, [appointment.organizers, appointment.participants]);
 
-    const isAppointmentOver = useMemo(() => {
-        const end = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
-        return end < DateTime.now();
-    }, []);
-
     const isLastAppointment = useMemo(
         () => (appointment.appointmentType === Lecture_Appointmenttype_Enum.Group && appointment.total === 1 ? true : false),
         [appointment.total]
@@ -142,16 +136,16 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, matc
                     appointmentId={appointment.id}
                     appointmentType={appointment.appointmentType}
                     isOrganizer={appointment.isOrganizer}
+                    overrideMeetingLink={appointment.override_meeting_link}
+                    zoomMeetingUrl={appointment.zoomMeetingUrl}
                 />
                 <Description description={appointment.description} />
 
                 <Buttons
                     onPress={user?.student ? () => setShowDeleteModal(true) : () => setShowDeclineModal(true)}
                     onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
-                    canceled={canceled}
-                    declined={appointment.declinedBy?.includes(user?.userID ?? '') ?? false}
-                    canEdit={isPastAppointment}
-                    isOver={isAppointmentOver}
+                    canceled={(appointment.declinedBy?.includes(user?.userID ?? '') ?? false) || canceled}
+                    isOver={isPastAppointment}
                     isLast={isLastAppointment}
                 />
             </Box>

@@ -1,5 +1,5 @@
 import { Button, HStack, Heading, Text, TextArea, VStack, useTheme } from 'native-base';
-import { StudentForScreening } from '../../types';
+import { InstructorScreening, StudentForScreening, TutorScreening } from '../../types';
 import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
 import { SubjectTagList } from '../../components/SubjectTag';
@@ -8,14 +8,14 @@ import { useRoles } from '../../hooks/useApollo';
 import { gql } from '../../gql';
 import { useMutation } from '@apollo/client';
 import { MatchPupilCard } from '../matching/MatchPupilCard';
-import { InstructorScreeningCard } from './InstructorScreeningCard';
-import { TutorScreeningCard } from './TutorScreeningCard';
+import { StudentScreeningCard } from './StudentScreeningCard';
 import { SubcourseCard } from '../course/SubcourseCard';
 import { useState } from 'react';
 import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
 import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
+import { formatDate } from '../../Utility';
 
 type ScreeningInput = { success: boolean; comment: string; jobStatus: Screening_Jobstatus_Enum; knowsFrom: string };
 
@@ -111,9 +111,25 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
     const [openScreenAsTutor, setScreenAsTutor] = useState(false);
     const [openScreenAsInstructor, setScreenAsInstructor] = useState(false);
 
-    const [createLoginToken, { loading: loadingLoginToken, data: loginTokenResult }] = useMutation(
+    const [createLoginToken] = useMutation(
         gql(`
             mutation AdminAccessHelper($userId: String!) { tokenCreateAdmin(userId: $userId) }
+        `)
+    );
+
+    const [updateTutorScreening] = useMutation(
+        gql(`
+            mutation UpdateTutorScreening($screeningId: Float!, $comment: String) {
+                studentTutorScreeningUpdate(screeningId: $screeningId, data: { comment: $comment })
+            }
+        `)
+    );
+
+    const [updateInstructorScreening] = useMutation(
+        gql(`
+            mutation UpdateInstructorScreening($screeningId: Float!, $comment: String) {
+                studentInstructorScreeningUpdate(screeningId: $screeningId, data: { comment: $comment })
+            }
         `)
     );
 
@@ -175,6 +191,16 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
     const isTutor = student.tutorScreenings?.some((it) => it.success) ?? false;
     const isInstructor = student.instructorScreenings?.some((it) => it.success) ?? false;
 
+    const handleOnUpdateInstructorScreening = async (screeningId: number, updatedData: Pick<InstructorScreening, 'comment'>) => {
+        await updateInstructorScreening({ variables: { screeningId, comment: updatedData.comment } });
+        refresh();
+    };
+
+    const handleOnUpdateTutorScreening = async (screeningId: number, updatedData: Pick<TutorScreening, 'comment'>) => {
+        await updateTutorScreening({ variables: { screeningId, comment: updatedData.comment } });
+        refresh();
+    };
+
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
@@ -188,6 +214,17 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                 </Text>
                 <SubjectTagList subjects={student.subjectsFormatted} />
             </HStack>
+            <VStack>
+                <Heading fontSize="20px">{t('screening.certificateOfConduct')}</Heading>
+                <Text fontSize="15px" lineHeight="50px">
+                    {t(student.certificateOfConduct?.id ? 'screening.certificateOfConductWasProvided' : 'screening.certificateOfConductWasNotProvided')}
+                </Text>
+                {student.certificateOfConductDeactivationDate && (
+                    <Text fontSize="15px" lineHeight="50px" color={student.certificateOfConductDeactivationDate ? 'danger.500' : 'primary.900'}>
+                        {t('screening.deactivationDate')}: {formatDate(student.certificateOfConductDeactivationDate)}
+                    </Text>
+                )}
+            </VStack>
 
             {myRoles.includes('TRUSTED_SCREENER') && student.active && (
                 <HStack space={space['1']}>
@@ -230,10 +267,10 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                 <Heading fontSize="20px">{t('screening.previous_screenings')}</Heading>
             )}
             {student.tutorScreenings?.map((tutorScreening) => (
-                <TutorScreeningCard screening={tutorScreening} />
+                <StudentScreeningCard screeningType="tutor" onUpdate={handleOnUpdateTutorScreening} screening={tutorScreening} />
             ))}
             {student.instructorScreenings?.map((instructorScreening) => (
-                <InstructorScreeningCard screening={instructorScreening} />
+                <StudentScreeningCard screeningType="instructor" onUpdate={handleOnUpdateInstructorScreening} screening={instructorScreening} />
             ))}
 
             {student.matches.length > 0 && (
@@ -249,7 +286,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
 
             {student.subcoursesInstructing.length > 0 && (
                 <>
-                    <Heading fontSize="20px">{t('screening.courses')}</Heading>
+                    <Heading fontSize="20px">{t('screening.their_courses')}</Heading>
                     <VStack space={space['1']} display="flex" flexWrap="wrap">
                         {student.subcoursesInstructing.map((subcourse) => (
                             <SubcourseCard subcourse={subcourse} />

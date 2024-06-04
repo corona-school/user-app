@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import Tabs from '../../components/Tabs';
+import NavigationTabs from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Match } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
@@ -44,7 +44,6 @@ const query = gql(`
                         firstname
                         lastname
                     }
-                    studentEmail
                 }
                 canRequestMatch {
                     allowed
@@ -140,7 +139,7 @@ const Matching: React.FC<Props> = () => {
                 }
             >
                 {process.env.REACT_APP_HOMEWORKHELP !== '' && (
-                    <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                    <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth} marginBottom={space['1']}>
                         <Heading paddingBottom={space['0.5']}>{t('matching.homeworkhelp.title')}</Heading>
                         <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                             {t('matching.homeworkhelp.textpupil')}
@@ -154,7 +153,7 @@ const Matching: React.FC<Props> = () => {
                 )}
                 <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
                 <Box paddingX={space['1']}>
-                    <Tabs
+                    <NavigationTabs
                         tabs={[
                             {
                                 title: t('matching.request.check.tabs.tab1'),

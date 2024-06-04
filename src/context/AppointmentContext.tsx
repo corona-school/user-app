@@ -31,6 +31,7 @@ const createAppointmentFormReducer: Reducer<State, CreateAppointmentAction> = (s
                 date: '',
                 time: '',
                 duration: 0,
+                meetingLink: undefined,
                 isRecurring: false,
             };
         }
@@ -69,6 +70,7 @@ export const AppointmentContext = createContext<TAppointmentContext>({
         description: '',
         date: '',
         time: '',
+        meetingLink: undefined,
         duration: 0,
         isRecurring: false,
     },
@@ -90,6 +92,7 @@ export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ c
         date: '',
         time: '',
         duration: 0,
+        meetingLink: undefined,
         isRecurring: false,
     });
     const [weeklies, dispatchWeeklyAppointment] = useReducer(weeklyReducer, []);

@@ -177,13 +177,13 @@ const ProfileStudent: React.FC<Props> = () => {
             <WithNavigation
                 showBack
                 isLoading={loading}
-                onBack={() => navigate(-1)}
+                previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
                 headerContent={
                     <Flex
                         maxWidth={ContainerWidth}
                         marginX="auto"
-                        width="100%"
+                        width="85%"
                         bg={HeaderStyle.bgColor}
                         alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
                         justifyContent="center"

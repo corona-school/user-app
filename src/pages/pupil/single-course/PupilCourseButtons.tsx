@@ -1,5 +1,5 @@
 import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
-import { Button, Modal, Stack, useTheme, useToast, VStack } from 'native-base';
+import { Button, Modal, Stack, useTheme, useToast } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
@@ -9,11 +9,10 @@ import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import AlertMessage from '../../../widgets/AlertMessage';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
-import { canJoinMeeting } from '../../../widgets/AppointmentDay';
-import { DateTime } from 'luxon';
 import { gql } from '../../../gql';
 import VideoButton from '../../../components/VideoButton';
 import { useNavigate } from 'react-router-dom';
+import DisableableButton from '../../../components/DisablebleButton';
 
 type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
@@ -186,11 +185,11 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
     const appointment = subcourse.appointments[0];
     return (
         <>
-            <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
+            <Stack direction={isMobile ? 'column' : 'row'} mb="5" space={isMobile ? space['1'] : space['2']}>
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
-                    <Button onPress={() => setSignInModal(true)} isDisabled={loadingSubcourseJoined}>
+                    <DisableableButton isDisabled={loadingSubcourseJoined} reasonDisabled={t('reasonsDisabled.loading')} onPress={() => setSignInModal(true)}>
                         {t('signin')}
-                    </Button>
+                    </DisableableButton>
                 )}
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
                     <AlertMessage content={t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)} />
@@ -221,24 +220,34 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                         <VideoButton
                             appointmentId={appointment.id}
                             appointmentType={appointment.appointmentType}
-                            canJoinMeeting={canJoinMeeting(appointment.start, appointment.duration, 10, DateTime.now())}
+                            startDateTime={appointment.start}
+                            duration={appointment.duration}
                         />
-                        <Button onPress={() => setSignOutModal(true)} isDisabled={loadingSubcourseLeft}>
+                        <DisableableButton
+                            isDisabled={loadingSubcourseLeft}
+                            reasonDisabled={t('reasonsDisabled.loading')}
+                            onPress={() => setSignOutModal(true)}
+                        >
                             {t('single.actions.leaveSubcourse')}
-                        </Button>
+                        </DisableableButton>
                     </>
                 )}
                 {!subcourse.isParticipant && !subcourse.isOnWaitingList && !subcourse.canJoin.allowed && subcourse.canJoinWaitinglist.allowed && (
-                    <Button variant="outline" onPress={() => setJoinWaitinglistModal(true)} isDisabled={loadingJoinedWaitinglist}>
+                    <DisableableButton
+                        isDisabled={loadingJoinedWaitinglist}
+                        reasonDisabled={t('reasonsDisabled.loading')}
+                        variant="outline"
+                        onPress={() => setJoinWaitinglistModal(true)}
+                    >
                         {t('single.actions.joinWaitinglist')}
-                    </Button>
-                )}
-                {subcourse.isOnWaitingList && (
-                    <VStack space={space['0.5']} mb="5">
-                        <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingLeftWaitinglist} />
-                    </VStack>
+                    </DisableableButton>
                 )}
             </Stack>
+            {subcourse.isOnWaitingList && (
+                <Stack space={space['0.5']} mb="5">
+                    <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingLeftWaitinglist} />
+                </Stack>
+            )}
 
             <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>
                 <CourseConfirmationModal

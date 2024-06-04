@@ -13,6 +13,7 @@ export type Appointment = {
     total?: number;
     displayName?: string;
     meetingLink?: string | null;
+    override_meeting_link?: string | null;
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     isCanceled?: boolean;
@@ -21,6 +22,7 @@ export type Appointment = {
     isOrganizer?: boolean;
     isParticipant?: boolean;
     zoomMeetingId?: string;
+    zoomMeetingUrl?: string;
     subcourse?: {
         published?: boolean;
     };
@@ -34,7 +36,7 @@ export type CreateAppointmentInput = {
     duration: number;
     subcourseId?: number;
     matchId?: number;
-    meetingLink: string;
+    meetingLink: string | null;
     appointmentType: Lecture_Appointmenttype_Enum;
 };
 

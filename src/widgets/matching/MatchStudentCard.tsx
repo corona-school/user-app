@@ -82,9 +82,9 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
                             </Text>
                         )}
                         {match!.dissolvedBy && <Text>{t('screening.dissolved_by', { dissolver: labelForDissolver(match!.dissolvedBy) })}</Text>}
-                        {match!.dissolveReasonEnum && (
-                            <Text>{t('screening.dissolve_reason', { reason: reasonForDissolver(match!.dissolvedBy!, match!.dissolveReasonEnum) })}</Text>
-                        )}
+                        {match!.dissolveReasons?.map((reason) => (
+                            <Text>{t('screening.dissolve_reason', { reason: reasonForDissolver(match!.dissolvedBy!, reason) })}</Text>
+                        ))}
                     </VStack>
                 </HStack>
             </Pressable>

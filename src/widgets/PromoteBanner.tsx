@@ -1,6 +1,5 @@
-import { Box, Card, Divider, Spacer, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Box, Button, Card, Divider, Spacer, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
 import CourseTrafficLamp from './CourseTrafficLamp';
-import PromoteButton from './PromoteButton';
 import CheckIcon from '../assets/icons/lernfair/Icon_Done.svg';
 import CallIcon from '../assets/icons/lernfair/Icon_Call.svg';
 import { useTranslation } from 'react-i18next';
@@ -12,14 +11,19 @@ type BannerProps = {
     seatsMax: number;
     courseStatus: TrafficStatus;
     onClick: () => void;
+    isPromoting?: boolean;
 };
 
-const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatus, seatsFull, seatsMax }) => {
+const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatus, seatsFull, seatsMax, isPromoting }) => {
     const { t } = useTranslation();
     const { sizes } = useTheme();
     const isMobile = useBreakpointValue({
         base: true,
         lg: false,
+    });
+    const buttonContainer = useBreakpointValue({
+        base: '100%',
+        lg: sizes['desktopbuttonWidth'],
     });
 
     return (
@@ -39,7 +43,17 @@ const PromoteBanner: React.FC<BannerProps> = ({ isPromoted, onClick, courseStatu
                         </VStack>
                     </Stack>
                     <Spacer />
-                    {!isPromoted && <PromoteButton onClick={onClick} />}
+                    {!isPromoted && (
+                        <Button
+                            isLoading={isPromoting}
+                            isLoadingText={t('single.buttonPromote.button')}
+                            variant="outline"
+                            width={buttonContainer}
+                            onPress={onClick}
+                        >
+                            {t('single.buttonPromote.button')}
+                        </Button>
+                    )}
                 </Stack>
             </Card>
         </Box>

@@ -1,4 +1,4 @@
-import { Box, Button, Column, Heading, Row, useTheme, VStack } from 'native-base';
+import { Box, Button, Column, Heading, Row, useTheme, VStack, Text } from 'native-base';
 import { useContext } from 'react';
 import { RegistrationContext } from '../Registration';
 import IconTagList from '../../widgets/IconTagList';
@@ -14,12 +14,13 @@ const UserState: React.FC = () => {
     return (
         <VStack flex="1" marginTop={space['1']}>
             <Heading>{t(`registration.steps.4.subtitle`)}</Heading>
+            <Text>{t(`registration.steps.4.weightingNote`)}</Text>
             <Row flexWrap="wrap" w="100%" mt={space['1']} marginBottom={space['2']}>
                 {states.map((state, i) => (
                     <Column mb={space['0.5']} mr={space['0.5']}>
                         <IconTagList
                             initial={userState === state.key}
-                            text={state.label}
+                            text={t(`lernfair.states.${state.key}` as unknown as TemplateStringsArray)}
                             onPress={() => setUserState(state.key)}
                             iconPath={`states/icon_${state.key}.svg`}
                         />

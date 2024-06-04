@@ -15,7 +15,7 @@ const AppointmentDate: React.FC<Props> = ({ current, date, color, isReadOnly = f
                 {DateTime.fromISO(date).setLocale('de').toFormat('ccc')}.
             </Text>
             <Text fontSize="md" bold color={color ? color : 'black'}>
-                {DateTime.fromISO(date).setLocale('de').toFormat('dd')}
+                {DateTime.fromISO(date).setLocale('de').toFormat('dd.MM.')}
             </Text>
         </Box>
     );

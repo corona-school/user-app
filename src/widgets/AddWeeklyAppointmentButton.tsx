@@ -34,7 +34,7 @@ const AddWeeklyAppointmentButton: React.FC<ButtonProps> = ({ length, nextDate })
                 width={isMobile ? '86%' : '46%'}
                 onPress={() => handleAddLecture()}
             >
-                {t('appointment.create.add_lecture', { context: { position: length + 1 } })}
+                {t('appointment.create.add_lecture', { position: length + 1 })}
             </Button>
         </HStack>
     );

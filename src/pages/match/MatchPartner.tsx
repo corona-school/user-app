@@ -5,6 +5,7 @@ import PupilAvatar from '../../assets/icons/lernfair/avatar_pupil_120.svg';
 import StudentAvatar from '../../assets/icons/lernfair/avatar_student_120.svg';
 import Tag from '../../components/Tag';
 import { Pupil, Pupil_Schooltype_Enum, Student, Student_State_Enum } from '../../gql/graphql';
+import { getGradeLabel } from '../../Utility';
 
 type MatchPartnerProps = {
     partner: Pupil | Student;
@@ -28,7 +29,7 @@ const MatchPartner: React.FC<MatchPartnerProps> = ({ partner, isPupil = false })
     const matchPartnerInfos = useMemo(() => {
         let strings: string[] = [];
         if (school) strings.push(school);
-        if ('grade' in partner && partner.grade) strings.push(partner.grade);
+        if ('gradeAsInt' in partner && partner.gradeAsInt) strings.push(getGradeLabel(partner.gradeAsInt));
         if (state) strings.push(state);
         return strings.join(' • ');
     }, [partner, school, state]);

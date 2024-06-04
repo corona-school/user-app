@@ -1,9 +1,10 @@
-import { Box, Text, useBreakpointValue } from 'native-base';
+import { Box, Text, useBreakpointValue, useToast } from 'native-base';
 import PreferenceItem from './PreferenceItem';
 import { FC, useContext } from 'react';
 import { NotificationCategories } from '../../../helper/notification-preferences';
 import { NotificationPreferencesContext } from '../../../pages/notification/NotficationControlPanel';
 import { ToggleAll } from './ToggleAll';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     title: string;
@@ -13,6 +14,8 @@ type Props = {
 
 export const Preferences: FC<Props> = ({ title, notificationCategories, enableToggleAll }) => {
     const { userPreferences, updateUserPreference, channels } = useContext(NotificationPreferencesContext);
+    const { t } = useTranslation();
+    const toast = useToast();
 
     const marginLeft = useBreakpointValue({
         base: 0,
@@ -38,7 +41,11 @@ export const Preferences: FC<Props> = ({ title, notificationCategories, enableTo
                                 category={category}
                                 notificationTypeDetails={notificationCategories[category]}
                                 value={getCheckboxValue(category, channel)}
-                                onUpdate={(value: boolean) => updateUserPreference(category, channel, value)}
+                                onUpdate={(value: boolean) =>
+                                    updateUserPreference(category, channel, value).then(() => {
+                                        toast.show({ description: t('notification.controlPanel.preference.preferencesUpdated') });
+                                    })
+                                }
                             />
                         ))
                     )}
