@@ -26,3 +26,5 @@ export const WEBPUSH_ACTIVE = (window.liveConfig?.RUNTIME_WEBPUSH_ACTIVE ?? 'fal
 
 export const RESULT_CACHE_ACTIVE = (window.liveConfig?.RUNTIME_RESULT_CACHE_ACTIVE ?? 'false') === 'true';
 export const SERVICE_WORKER_ACTIVE = (window.liveConfig?.RUNTIME_SERVICE_WORKER_ACTIVE ?? 'false') === 'true';
+
+export const LANGUAGE_SWITCHER_ACTIVE = (window.liveConfig?.RUNTIME_LANGUAGE_SWITCHER_ACTIVE ?? 'false') === 'true';
