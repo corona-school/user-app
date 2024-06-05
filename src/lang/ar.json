@@ -446,9 +446,6 @@
         "faq": {
             "tabName": "أسئلة مكررة"
         },
-        "assistance": {
-            "title": "مدد"
-        },
         "contact": {
             "message": {
                 "placeholder": "رسالتك لنا",
@@ -811,7 +808,9 @@
             "languageVersion": "اللغة",
             "notifications": "إعلامات البريد الإلكتروني",
             "onboarding": "جولة على متن الطائرة",
-            "progress": "النجاحات والتقدم المحرز"
+            "progress": "النجاحات والتقدم المحرز",
+            "forStudents": "للمساعدين",
+            "forPupils": "للتلاميذ"
         },
         "account": {
             "title": "حساب",
@@ -1953,7 +1952,9 @@
             "group": "دورات تعليمية",
             "matching": "التدريس الخصوصي",
             "appointments": "التواريخ",
-            "chat": "حوار "
+            "chat": "حوار ",
+            "forStudents": "للمساعدين",
+            "forPupils": "للتلاميذ"
         }
     },
     "screening": {
@@ -2271,5 +2272,20 @@
     "grade": "فصل",
     "since": "منذ",
     "till": "حتى",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "forStudents": {
+        "tabs": {
+            "handbook": "يدوي",
+            "onlineTraining": "التدريب عبر الإنترنت"
+        },
+        "title": "للمساعدين",
+        "description": "هنا يمكنك العثور على كل ما نقدمه من دعم وعروض للمساعدين."
+    },
+    "forPupils": {
+        "tabs": {
+            "learnMethods": "طرق التعلم"
+        },
+        "title": "للتلاميذ",
+        "description": "هنا يمكنك العثور على كل ما نقدمه من دعم وعروض للطلاب."
+    }
 }

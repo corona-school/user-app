@@ -72,6 +72,8 @@ import SingleCourseScreener from '../pages/screening/SingleCourseScreener';
 import { SystemNotifications } from '../components/notifications/preferences/SystemNotifications';
 import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
 import { WebPush } from '../pages/WebPush';
+import ForStudents from '../pages/ForStudents';
+import ForPupils from '../pages/ForPupils';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -408,6 +410,33 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+            {/* Knowledge Center */}
+            <Route
+                path="/for-students"
+                element={
+                    <RequireAuth>
+                        <ForStudents />
+                    </RequireAuth>
+                }
+            >
+                <Route path="handbook" element={<IFrame height="500px" title="handbook" src="https://www.lern-fair.de/iframe/hilfestellungen" />} />
+                <Route path="online-training" element={<IFrame height="500px" title="online-training" src="https://www.lern-fair.de/iframe/fortbildungen" />} />
+                <Route index element={<Navigate to="handbook" />} />
+            </Route>
+            <Route
+                path="/for-pupils"
+                element={
+                    <RequireAuth>
+                        <ForPupils />
+                    </RequireAuth>
+                }
+            >
+                <Route
+                    path="learn-methods"
+                    element={<IFrame height="500px" title="learn-methods" src="https://www.lern-fair.de/iframe/hilfestellungen-sus" />}
+                />
+                <Route index element={<Navigate to="learn-methods" />} />
+            </Route>
             <Route
                 path="/progress"
                 element={

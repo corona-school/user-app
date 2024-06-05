@@ -25,7 +25,6 @@ import HelpNavigation from '../../components/HelpNavigation';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import useApollo from '../../hooks/useApollo';
-import SupportCategories from '../../widgets/SupportCategories';
 
 type Props = {};
 
@@ -353,9 +352,6 @@ const DashboardStudent: React.FC<Props> = () => {
                                     )}
                                 </VStack>
                             )}
-                            <VStack marginBottom={space['1.5']}>
-                                <SupportCategories />
-                            </VStack>
                             <VStack marginBottom={space['1.5']}>
                                 <Heading marginBottom={space['1']}>{t('dashboard.helpers.headlines.recommend')}</Heading>
                                 <CTACard
