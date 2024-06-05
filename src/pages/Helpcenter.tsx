@@ -190,11 +190,6 @@ const HelpCenter: React.FC = () => {
                                 content: <IFrame src="https://www.lern-fair.de/iframe/faq-huh" title="faq" width="100%" height="596px" />,
                             },
                             {
-                                hide: userType === 'pupil',
-                                title: t('helpcenter.assistance.title'),
-                                content: <IFrame src="https://www.lern-fair.de/iframe/hilfestellungen" title="hilfestellungen" width="100%" height="596px" />,
-                            },
-                            {
                                 title: t('helpcenter.contact.tabName'),
                                 content: <ContactSupportForm />,
                             },

@@ -485,6 +485,21 @@
             }
         }
     },
+    "forStudents": {
+        "title": "Für Helfer:innen",
+        "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Helfer:innen.",
+        "tabs": {
+            "handbook": "Handbuch",
+            "onlineTraining": "Online-Fortbildungen"
+        }
+    },
+    "forPupils": {
+        "title": "Für Schüler:innen",
+        "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Schüler:innen.",
+        "tabs": {
+            "learnMethods": "Lernmethoden"
+        }
+    },
     "helpcenter": {
         "title": "Du brauchst Hilfe?",
         "subtitle": {
@@ -498,9 +513,6 @@
         },
         "faq": {
             "tabName": "Häufige Fragen"
-        },
-        "assistance": {
-            "title": "Hilfestellungen"
         },
         "contact": {
             "tabName": "Kontakt",
@@ -868,7 +880,9 @@
             "languageVersion": "Sprachversion",
             "notifications": "E-Mail Benachrichtigungen",
             "onboarding": "Onboarding-Tour",
-            "progress": "Erfolge & Fortschritte"
+            "progress": "Erfolge & Fortschritte",
+            "forStudents": "Für Helfer:innen",
+            "forPupils": "Für Schüler:innen"
         },
         "account": {
             "title": "Konto",
@@ -2009,7 +2023,9 @@
             "group": "Kurse",
             "matching": "Nachhilfe",
             "appointments": "Termine",
-            "chat": "Chat"
+            "chat": "Chat",
+            "forStudents": "Für Helfer:innen",
+            "forPupils": "Für Schüler:innen"
         }
     },
     "screening": {

@@ -36,6 +36,11 @@ const Settings: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
+
     return (
         <>
             <WithNavigation
@@ -67,6 +72,16 @@ const Settings: React.FC = () => {
                             {GAMIFICATION_ACTIVE && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
+                                </Column>
+                            )}
+                            {userType === 'student' && isMobile && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/for-students')} />
+                                </Column>
+                            )}
+                            {userType === 'pupil' && isMobile && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/for-pupils')} />
                                 </Column>
                             )}
                             {WEBPUSH_ACTIVE && (
