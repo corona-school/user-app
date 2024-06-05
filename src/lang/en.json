@@ -446,9 +446,6 @@
         "faq": {
             "tabName": "Frequently asked questions"
         },
-        "assistance": {
-            "title": "Assistance"
-        },
         "contact": {
             "message": {
                 "placeholder": "Your message to us",
@@ -815,7 +812,9 @@
             "languageVersion": "Language version",
             "notifications": "E-mail notifications",
             "onboarding": "Onboarding tour",
-            "progress": "Successes & progress"
+            "progress": "Successes & progress",
+            "forStudents": "For volunteers",
+            "forPupils": "For pupils"
         },
         "account": {
             "title": "Account",
@@ -1953,7 +1952,9 @@
             "group": "Courses",
             "matching": "Tutoring",
             "appointments": "lectures",
-            "chat": "Chat"
+            "chat": "Chat",
+            "forStudents": "For volunteers",
+            "forPupils": "For pupils"
         }
     },
     "screening": {
@@ -2271,5 +2272,20 @@
     "grade": "Class",
     "since": "since",
     "till": "to",
-    "logout": "Log out"
+    "logout": "Log out",
+    "forStudents": {
+        "tabs": {
+            "handbook": "Manual",
+            "onlineTraining": "Online training"
+        },
+        "title": "For volunteers",
+        "description": "Here you can find all our help & offers for volunteers."
+    },
+    "forPupils": {
+        "tabs": {
+            "learnMethods": "Learning methods"
+        },
+        "title": "For pupils",
+        "description": "Here you can find all our help & offers for pupils."
+    }
 }
