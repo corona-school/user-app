@@ -1,6 +1,46 @@
 {
     "short_name": "Lern-Fair",
     "name": "Lern-Fair",
+    "description": "Lern-Fair e.V. bietet kostenlose, digitale Bildungs- und Förderangebote für bildungsbenachteiligte Schüler:innen, um Bildungsgerechtigkeit zu fördern.",
+    "lang": "de",
+    "screenshots": [
+        {
+            "src": "screenshots/desktop-1.png",
+            "sizes": "1280x676",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "screenshots/desktop-2.png",
+            "sizes": "1280x676",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "screenshots/desktop-3.png",
+            "sizes": "1280x676",
+            "type": "image/png",
+            "form_factor": "wide"
+        },
+        {
+            "src": "screenshots/mobile-1.png",
+            "sizes": "400x822",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "screenshots/mobile-2.png",
+            "sizes": "400x822",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "screenshots/mobile-3.png",
+            "sizes": "400x822",
+            "type": "image/png",
+            "form_factor": "narrow"
+        }
+    ],
     "icons": [
         {
             "src": "maskable/192.png",
