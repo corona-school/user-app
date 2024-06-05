@@ -28,7 +28,7 @@ const KnowledgeCenter = () => {
     const currentTabFromRoute = pathname.split('/').pop();
     const currentTabIndex = tabs.indexOf(currentTabFromRoute || 'handbook');
     return (
-        <AsNavigationItem path="for-students">
+        <AsNavigationItem path="knowledge-helper">
             <WithNavigation
                 showBack
                 previousFallbackRoute="/start"

@@ -65,8 +65,8 @@ const WithNavigation: React.FC<Props> = ({
         chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
         group: { label: t('navigation.label.group'), icon: LFGroupIcon },
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
-        'for-students': { label: t('navigation.label.forStudents'), icon: LFKnowledgeIcon },
-        'for-pupils': { label: t('navigation.label.forPupils'), icon: LFKnowledgeIcon },
+        'knowledge-helper': { label: t('navigation.label.forStudents'), icon: LFKnowledgeIcon },
+        'knowledge-pupil': { label: t('navigation.label.forPupils'), icon: LFKnowledgeIcon },
     };
 
     const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
