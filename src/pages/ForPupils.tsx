@@ -28,7 +28,7 @@ const ForPupils = () => {
     const currentTabFromRoute = pathname.split('/').pop();
     const currentTabIndex = tabs.indexOf(currentTabFromRoute || 'learn-methods');
     return (
-        <AsNavigationItem path="for-pupils">
+        <AsNavigationItem path="knowledge-pupil">
             <WithNavigation
                 showBack
                 previousFallbackRoute="/start"
