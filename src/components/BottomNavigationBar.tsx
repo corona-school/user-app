@@ -57,7 +57,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
 
     return (
         (show && (
-            <>
+            <Box pb="env(safe-area-inset-bottom)">
                 <Row
                     w="100%"
                     h={'54px'}
@@ -123,7 +123,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
                         );
                     })}
                 </Row>
-            </>
+            </Box>
         )) || <></>
     );
 };
