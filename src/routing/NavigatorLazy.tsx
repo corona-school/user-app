@@ -412,7 +412,7 @@ export default function NavigatorLazy() {
             />
             {/* Knowledge Center */}
             <Route
-                path="/for-students"
+                path="/knowledge-helper"
                 element={
                     <RequireAuth>
                         <ForStudents />
@@ -424,7 +424,7 @@ export default function NavigatorLazy() {
                 <Route index element={<Navigate to="handbook" />} />
             </Route>
             <Route
-                path="/for-pupils"
+                path="/knowledge-pupil"
                 element={
                     <RequireAuth>
                         <ForPupils />
