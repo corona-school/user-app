@@ -25,12 +25,17 @@ const ForPupils = () => {
         lg: sizes['contentContainerWidth'],
     });
 
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
+
     const currentTabFromRoute = pathname.split('/').pop();
     const currentTabIndex = tabs.indexOf(currentTabFromRoute || 'learn-methods');
     return (
         <AsNavigationItem path="knowledge-pupil">
             <WithNavigation
-                showBack
+                showBack={isMobile}
                 previousFallbackRoute="/start"
                 headerTitle={t('forPupils.title')}
                 headerLeft={
