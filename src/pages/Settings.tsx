@@ -76,12 +76,12 @@ const Settings: React.FC = () => {
                             )}
                             {userType === 'student' && isMobile && (
                                 <Column mb={tabspace}>
-                                    <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/for-students')} />
+                                    <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/knowledge-helper')} />
                                 </Column>
                             )}
                             {userType === 'pupil' && isMobile && (
                                 <Column mb={tabspace}>
-                                    <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/for-pupils')} />
+                                    <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
                             {WEBPUSH_ACTIVE && (

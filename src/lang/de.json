@@ -486,7 +486,7 @@
         }
     },
     "forStudents": {
-        "title": "Für Helfer:innen",
+        "title": "Wissen",
         "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Helfer:innen.",
         "tabs": {
             "handbook": "Handbuch",
@@ -494,7 +494,7 @@
         }
     },
     "forPupils": {
-        "title": "Für Schüler:innen",
+        "title": "Wissen",
         "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Schüler:innen.",
         "tabs": {
             "learnMethods": "Lernmethoden"
@@ -881,8 +881,8 @@
             "notifications": "E-Mail Benachrichtigungen",
             "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte",
-            "forStudents": "Für Helfer:innen",
-            "forPupils": "Für Schüler:innen"
+            "forStudents": "Wissen",
+            "forPupils": "Wissen"
         },
         "account": {
             "title": "Konto",
@@ -2024,8 +2024,8 @@
             "matching": "Nachhilfe",
             "appointments": "Termine",
             "chat": "Chat",
-            "forStudents": "Für Helfer:innen",
-            "forPupils": "Für Schüler:innen"
+            "forStudents": "Wissen",
+            "forPupils": "Wissen"
         }
     },
     "screening": {
