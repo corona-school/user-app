@@ -25,12 +25,17 @@ const KnowledgeCenter = () => {
         lg: sizes['contentContainerWidth'],
     });
 
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
+
     const currentTabFromRoute = pathname.split('/').pop();
     const currentTabIndex = tabs.indexOf(currentTabFromRoute || 'handbook');
     return (
         <AsNavigationItem path="knowledge-helper">
             <WithNavigation
-                showBack
+                showBack={isMobile}
                 previousFallbackRoute="/start"
                 headerTitle={t('forStudents.title')}
                 headerLeft={
