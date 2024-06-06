@@ -62,6 +62,8 @@ export type LFPupilsOnWaitinglist = PupilOnWaitinglist[] | undefined;
 
 export type PupilOnWaitinglist = Pick<Pupil, 'id' | 'firstname' | 'lastname' | 'schooltype' | 'grade' | 'gradeAsInt'>;
 
+export type SparseParticipant = Pick<Pupil, 'id' | 'firstname' | 'lastname'>;
+
 export type SubcourseParticipant = Pick<Participant, 'id' | 'firstname' | 'grade' | 'gradeAsInt'> & Partial<Pick<Participant, 'lastname' | 'schooltype'>>;
 
 export type TrafficStatus = 'full' | 'last' | 'free';

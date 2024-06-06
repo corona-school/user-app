@@ -25,6 +25,7 @@ import HelpNavigation from '../../components/HelpNavigation';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
 import RemoveParticipantFromCourseModal from '../../modals/RemoveParticipantFromCourseModal';
+import ProspectList from '../single-course/ProspectList';
 
 function Participants({
     subcourseId,
@@ -178,6 +179,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
         canEdit { allowed reason }
         canContactParticipants { allowed reason }
         canCancel { allowed reason }
+        prospectParticipants { id firstname lastname }
         appointments {
             participants(skip: 0, take: 50) {
                 id
@@ -391,6 +393,23 @@ const SingleCourseStudent = () => {
                         subcourseId={subcourseId}
                         maxParticipants={subcourse?.maxParticipants}
                         pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
+                        refetch={() => {
+                            refetchInstructorData();
+                            return refetchBasics();
+                        }}
+                    />
+                </>
+            ),
+        });
+
+        tabs.push({
+            title: t('single.tabs.prospectParticipants'),
+            badge: instructorSubcourse?.subcourse?.prospectParticipants.length,
+            content: (
+                <>
+                    <ProspectList
+                        subcourseId={subcourseId}
+                        prospects={instructorSubcourse.subcourse.prospectParticipants}
                         refetch={() => {
                             refetchInstructorData();
                             return refetchBasics();
