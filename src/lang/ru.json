@@ -674,7 +674,8 @@
             "description": "Описание",
             "lessons": "Уроки",
             "waitinglist": "Лист ожидания",
-            "participant": "участники"
+            "participant": "участники",
+            "prospectParticipants": "Заинтересованные стороны"
         },
         "courseInfo": {
             "grade": "Уровень года: ",
@@ -2180,7 +2181,8 @@
         "questionUnaswerd": "Пожалуйста, ответьте на вопрос.",
         "questionsUnaswerd": "Пожалуйста, ответьте на вопросы.",
         "newFieldSameAsOld": "Вы уже выбрали это.",
-        "missingSignature": "Подпись отсутствует."
+        "missingSignature": "Подпись отсутствует.",
+        "didNotChangeEmail": "Адрес электронной почты не изменился."
     },
     "requireScreening": {
         "pupil": {

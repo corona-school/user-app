@@ -670,7 +670,8 @@
             "description": "وصف",
             "lessons": "الدروس",
             "waitinglist": "قائمة الانتظار",
-            "participant": "المشاركون"
+            "participant": "المشاركون",
+            "prospectParticipants": "المهتمون"
         },
         "courseInfo": {
             "grade": "درجة: ",
@@ -2176,7 +2177,8 @@
         "questionUnaswerd": "يرجى الإجابة عن السؤال.",
         "questionsUnaswerd": "يرجى الإجابة عن الأسئلة.",
         "newFieldSameAsOld": "لقد قمت بتحديد هذا بالفعل.",
-        "missingSignature": "توقيع مفقود"
+        "missingSignature": "توقيع مفقود",
+        "didNotChangeEmail": "لم يتغير عنوان البريد الإلكتروني."
     },
     "requireScreening": {
         "pupil": {

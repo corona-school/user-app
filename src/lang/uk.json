@@ -674,7 +674,8 @@
             "description": "Опис проекту",
             "lessons": "Уроки",
             "waitinglist": "Список очікування",
-            "participant": "Учасники та учасниці"
+            "participant": "Учасники та учасниці",
+            "prospectParticipants": "Зацікавлені сторони"
         },
         "courseInfo": {
             "grade": "Рівень року: ",
@@ -2180,7 +2181,8 @@
         "questionUnaswerd": "Будь ласка, дайте відповідь на запитання.",
         "questionsUnaswerd": "Будь ласка, дайте відповідь на запитання.",
         "newFieldSameAsOld": "Ви вже вибрали це.",
-        "missingSignature": "Відсутній підпис."
+        "missingSignature": "Відсутній підпис.",
+        "didNotChangeEmail": "Адреса електронної пошти не змінилася."
     },
     "requireScreening": {
         "pupil": {

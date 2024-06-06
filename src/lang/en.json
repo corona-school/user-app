@@ -674,7 +674,8 @@
             "description": "Description",
             "lessons": "Lessons",
             "waitinglist": "Waiting list",
-            "participant": "Participants"
+            "participant": "Participants",
+            "prospectParticipants": "Prospects"
         },
         "courseInfo": {
             "grade": "School grade: ",
@@ -2176,7 +2177,8 @@
         "questionUnaswerd": "Please answer the question.",
         "questionsUnaswerd": "Please answer the questions.",
         "newFieldSameAsOld": "You have already selected this.",
-        "missingSignature": "A signature is missing."
+        "missingSignature": "A signature is missing.",
+        "didNotChangeEmail": "The e-mail address has not changed."
     },
     "requireScreening": {
         "pupil": {
