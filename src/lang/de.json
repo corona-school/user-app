@@ -12,6 +12,7 @@
     "change": "Ändern",
     "helper": "Helfer:in",
     "to": "An",
+    "or": "oder",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -2290,6 +2291,22 @@
         "success": "Deine Nachricht wurde erfolgreich versendet",
         "failure": "Ein Fehler ist aufgetreten",
         "legal": "Ich bin damit einverstanden, dass Lern-Fair die hier gemachten Angaben entsprechend meines Anliegens verarbeitet und nehme die Übermittlung an unsere Dienstleister in die USA und die <privacy>Datenschutzerklärung</privacy> zur Kenntnis."
+    },
+    "appFeedback": {
+        "giveFeedbackButton": "Feedback zur App",
+        "modal": {
+            "title": "Feedback zur User App",
+            "description": "Was können wir besser machen in der App? Welches Feature fehlt dir? Ist etwas kapott?",
+            "notesLabel": "Deine Anmerkung",
+            "notesPlaceholder": "z.B. Kritik, Ideen, Anmerkungen",
+            "screenshotLabel": "Screenshot (optional)",
+            "screenshotContent": "Hier Screenshot reinziehen",
+            "screenshotFromDevice": "vom Gerät hochladen",
+            "canWeContactPerMailLabel": "Dürfen wir uns per Email melden?",
+            "canWeContactPerMailHelperText": "Um Probleme / Ideen besser zu verstehen. Machen wir nur, wenn notwendig.",
+            "sendFeedback": "Feedback senden"
+        },
+        "feedbackSuccessfullySent": "Feedback erfolgreich gesendet"
     },
     "logout": "Abmelden"
 }
