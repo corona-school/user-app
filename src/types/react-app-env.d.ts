@@ -38,10 +38,11 @@ declare interface Window {
         readonly RUNTIME_DD_ENV: string;
         readonly RUNTIME_TALKJS_APP_ID: string;
         readonly RUNTIME_GAMIFICATION_ACTIVE?: 'true' | 'false';
-        readonly RUNTIME_WEBPUSH_ACTIVE?: 'true' | 'false';
         readonly RUNTIME_RESULT_CACHE_ACTIVE?: 'true' | 'false';
         readonly RUNTIME_SERVICE_WORKER_ACTIVE?: 'true' | 'false';
         readonly RUNTIME_LANGUAGE_SWITCHER_ACTIVE?: 'true' | 'false';
+
+        readonly RUNTIME_WEBPUSH_ROLLOUT_RATIO?: string;
     };
 }
 
