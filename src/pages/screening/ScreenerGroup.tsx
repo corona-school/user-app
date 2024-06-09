@@ -7,44 +7,11 @@ import SearchBar from '../../components/SearchBar';
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import Subcourses from './Subcourses';
-import { useCallback, useMemo } from 'react';
+import { useCallback } from 'react';
 import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 
 const ScreenerGroup: React.FC = () => {
-    const {
-        data,
-        loading,
-        refetch: refetchCourses,
-    } = useQuery(
-        gql(`
-            query Subcourses($search: String!) {
-                subcourseSearch(
-                    take: 40,
-                    search: $search
-                    courseStates: ["allowed", "denied", "submitted", "cancelled"]
-                ) {
-                id
-                published
-                course {
-                    name
-                    courseState
-                    tags {
-                    name
-                    }
-                    image
-                    category
-                }
-                minGrade
-                maxGrade
-                maxParticipants
-                participantsCount
-                }
-            }  
-        `),
-        { variables: { search: '' } }
-    );
-
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
 
@@ -58,31 +25,87 @@ const ScreenerGroup: React.FC = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const submitted = useMemo(
-        () => data?.subcourseSearch.filter((subcourse) => subcourse.course.courseState === Course_Coursestate_Enum.Submitted),
-        [data?.subcourseSearch]
-    );
+    const subcourseQuery = gql(`
+        query Subcourses($search: String!, $courseState: String!) {
+            subcourseSearch(
+                take: 10,
+                search: $search
+                courseStates: [$courseState],
+                orderDesc: true
+            ) {
+            id
+            published
+            course {
+                name
+                courseState
+                tags {
+                name
+                }
+                image
+                category
+            }
+            minGrade
+            maxGrade
+            maxParticipants
+            participantsCount
+            }
+        }  
+    `);
 
-    const allowed = useMemo(
-        () => data?.subcourseSearch.filter((subcourse) => subcourse.course.courseState === Course_Coursestate_Enum.Allowed),
-        [data?.subcourseSearch]
-    );
+    const {
+        data: allowed,
+        loading: loadingAllowed,
+        refetch: refetchAllowed,
+    } = useQuery(subcourseQuery, {
+        variables: {
+            search: '',
+            courseState: Course_Coursestate_Enum.Allowed,
+        },
+    });
 
-    const denied = useMemo(
-        () => data?.subcourseSearch.filter((subcourse) => subcourse.course.courseState === Course_Coursestate_Enum.Denied),
-        [data?.subcourseSearch]
-    );
+    const {
+        data: submitted,
+        loading: loadingSubmitted,
+        refetch: refetchSubmitted,
+    } = useQuery(subcourseQuery, {
+        variables: {
+            search: '',
+            courseState: Course_Coursestate_Enum.Submitted,
+        },
+    });
 
-    const cancelled = useMemo(
-        () => data?.subcourseSearch.filter((subcourse) => subcourse.course.courseState === Course_Coursestate_Enum.Cancelled),
-        [data?.subcourseSearch]
-    );
+    const {
+        data: denied,
+        loading: loadingDenied,
+        refetch: refetchDenied,
+    } = useQuery(subcourseQuery, {
+        variables: {
+            search: '',
+            courseState: Course_Coursestate_Enum.Denied,
+        },
+    });
+
+    const {
+        data: cancelled,
+        loading: loadingCancelled,
+        refetch: refetchCancelled,
+    } = useQuery(subcourseQuery, {
+        variables: {
+            search: '',
+            courseState: Course_Coursestate_Enum.Cancelled,
+        },
+    });
+
+    const loading = loadingAllowed || loadingSubmitted || loadingCancelled || loadingDenied;
 
     const search = useCallback(
         async (search: string) => {
-            refetchCourses({ search });
+            refetchAllowed({ search });
+            refetchSubmitted({ search });
+            refetchCancelled({ search });
+            refetchDenied({ search });
         },
-        [refetchCourses]
+        [refetchAllowed, refetchCancelled, refetchSubmitted, refetchDenied]
     );
 
     return (
@@ -106,7 +129,7 @@ const ScreenerGroup: React.FC = () => {
                                     title: t('screening.courses.submitted_or_allowed'),
                                     content: (
                                         <Subcourses
-                                            courseGroups={[submitted as Subcourse[], allowed as Subcourse[]]}
+                                            courseGroups={[submitted?.subcourseSearch as Subcourse[], allowed?.subcourseSearch as Subcourse[]]}
                                             titles={[t('screening.courses.submitted'), t('screening.courses.allowed')]}
                                         />
                                     ),
@@ -115,7 +138,7 @@ const ScreenerGroup: React.FC = () => {
                                     title: t('screening.courses.denied_or_cancelled'),
                                     content: (
                                         <Subcourses
-                                            courseGroups={[denied as Subcourse[], cancelled as Subcourse[]]}
+                                            courseGroups={[denied?.subcourseSearch as Subcourse[], cancelled?.subcourseSearch as Subcourse[]]}
                                             titles={[t('screening.courses.denied'), t('screening.courses.cancelled')]}
                                         />
                                     ),
