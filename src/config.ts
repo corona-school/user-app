@@ -1,3 +1,30 @@
+import { datadogRum } from '@datadog/browser-rum';
+
+// For each device that opens the App, pick a random number [0, 100) and store it in the local storage
+// If that number is smaller than the configured 'rollout ratio' the device is chosen to participate in the beta
+//
+// Thus:
+// - If a device was once picked to be in the beta, it stays in the beta (unless the rollout ratio is decreased)
+// - The rollout ratio can be gradually increased, i.e. from 10% to 20%
+// - A random set of users is chosen per feature toggle
+// - Feature toggles are per device, not per user (as doing this per user would be much more complicated)
+function betaRollout(name: string, rolloutRatioString: string | undefined) {
+    const key = 'lernfair-beta-rollout-' + name;
+    let randomString = localStorage.getItem(key);
+    if (!randomString) {
+        randomString = Math.floor(Math.random() * 100).toString();
+        localStorage.setItem(key, randomString);
+    }
+
+    let random = parseInt(randomString, 10);
+    let rolloutRatio = parseInt(rolloutRatioString ?? '0', 10);
+
+    const chosen = random < rolloutRatio;
+    datadogRum.addFeatureFlagEvaluation(name, chosen);
+
+    return chosen;
+}
+
 // These configurations can both be provided locally,
 // but in a server setup /config.js is loaded from the server each time
 // injecting a fresh set of RUNTIME_* variables
@@ -22,7 +49,7 @@ export const DD_ENV = window.liveConfig?.RUNTIME_DD_ENV ?? process.env.REACT_APP
 export const TALKJS_APP_ID = window.liveConfig?.RUNTIME_TALKJS_APP_ID ?? process.env.REACT_APP_TALKJS_APP_ID;
 
 export const GAMIFICATION_ACTIVE = (window.liveConfig?.RUNTIME_GAMIFICATION_ACTIVE ?? 'false') === 'true';
-export const WEBPUSH_ACTIVE = (window.liveConfig?.RUNTIME_WEBPUSH_ACTIVE ?? 'false') === 'true';
+export const WEBPUSH_ACTIVE = betaRollout('webpush', window.liveConfig?.RUNTIME_WEBPUSH_ROLLOUT_RATIO);
 
 export const RESULT_CACHE_ACTIVE = (window.liveConfig?.RUNTIME_RESULT_CACHE_ACTIVE ?? 'false') === 'true';
 export const SERVICE_WORKER_ACTIVE = (window.liveConfig?.RUNTIME_SERVICE_WORKER_ACTIVE ?? 'false') === 'true';
