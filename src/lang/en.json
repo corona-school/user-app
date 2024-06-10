@@ -2287,5 +2287,23 @@
         },
         "title": "For pupils",
         "description": "Here you can find all our help & offers for pupils."
-    }
+    },
+    "appFeedback": {
+        "modal": {
+            "title": "Feedback on the user app",
+            "description": "What can we do better in the app? What feature are you missing? Is something broken?",
+            "notesLabel": "Your comment",
+            "notesPlaceholder": "e.g. criticism, ideas, comments",
+            "screenshotLabel": "Screenshot (optional)",
+            "screenshotContent": "Pull in screenshot here",
+            "screenshotFromDevice": "Upload from device",
+            "canWeContactPerMailLabel": "May we contact you by email?",
+            "canWeContactPerMailHelperText": "To better understand problems / ideas. We only do this when necessary.",
+            "sendFeedback": "Send feedback"
+        },
+        "giveFeedbackButton": "Feedback on the app",
+        "feedbackSuccessfullySent": "Feedback sent successfully",
+        "screenshotShouldNotBeBiggerThan": "The screenshot cannot be larger than {{size}} MB"
+    },
+    "or": "or"
 }
