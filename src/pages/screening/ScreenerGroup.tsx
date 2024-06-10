@@ -31,7 +31,7 @@ const ScreenerGroup: React.FC = () => {
                 take: 10,
                 search: $search
                 courseStates: [$courseState],
-                orderDesc: true
+                orderBy: "last-update",
             ) {
             id
             published
