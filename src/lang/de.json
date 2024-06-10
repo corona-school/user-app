@@ -2306,7 +2306,8 @@
             "canWeContactPerMailHelperText": "Um Probleme / Ideen besser zu verstehen. Machen wir nur, wenn notwendig.",
             "sendFeedback": "Feedback senden"
         },
-        "feedbackSuccessfullySent": "Feedback erfolgreich gesendet"
+        "feedbackSuccessfullySent": "Feedback erfolgreich gesendet",
+        "screenshotShouldNotBeBiggerThan": "Der Screenshot kann nicht größer als {{size}} MB sein"
     },
     "logout": "Abmelden"
 }

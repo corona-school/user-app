@@ -2306,7 +2306,8 @@
             "sendFeedback": "Надіслати відгук"
         },
         "giveFeedbackButton": "Відгуки про додаток",
-        "feedbackSuccessfullySent": "Відгук успішно надіслано"
+        "feedbackSuccessfullySent": "Відгук успішно надіслано",
+        "screenshotShouldNotBeBiggerThan": "Скріншот не може бути більшим за {{size}} МБ"
     },
     "or": "або"
 }

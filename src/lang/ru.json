@@ -2306,7 +2306,8 @@
             "sendFeedback": "Отправить отзыв"
         },
         "giveFeedbackButton": "Отзывы о приложении",
-        "feedbackSuccessfullySent": "Обратная связь отправлена успешно"
+        "feedbackSuccessfullySent": "Обратная связь отправлена успешно",
+        "screenshotShouldNotBeBiggerThan": "Размер скриншота не может превышать {{size}} МБ"
     },
     "or": "или"
 }

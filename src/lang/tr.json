@@ -2306,7 +2306,8 @@
             "sendFeedback": "Geri bildirim gönderin"
         },
         "giveFeedbackButton": "Uygulama hakkında geri bildirim",
-        "feedbackSuccessfullySent": "Geri bildirim başarıyla gönderildi"
+        "feedbackSuccessfullySent": "Geri bildirim başarıyla gönderildi",
+        "screenshotShouldNotBeBiggerThan": "Ekran görüntüsü {{size}}'dan daha büyük olamaz MB"
     },
     "or": "veya"
 }

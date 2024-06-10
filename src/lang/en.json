@@ -2302,7 +2302,8 @@
             "sendFeedback": "Send feedback"
         },
         "giveFeedbackButton": "Feedback on the app",
-        "feedbackSuccessfullySent": "Feedback sent successfully"
+        "feedbackSuccessfullySent": "Feedback sent successfully",
+        "screenshotShouldNotBeBiggerThan": "The screenshot cannot be larger than {{size}} MB"
     },
     "or": "or"
 }

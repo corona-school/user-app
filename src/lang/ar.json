@@ -2302,7 +2302,8 @@
             "sendFeedback": "إرسال الملاحظات"
         },
         "giveFeedbackButton": "ملاحظات على التطبيق",
-        "feedbackSuccessfullySent": "تم إرسال الملاحظات بنجاح"
+        "feedbackSuccessfullySent": "تم إرسال الملاحظات بنجاح",
+        "screenshotShouldNotBeBiggerThan": "لا يمكن أن تكون لقطة الشاشة أكبر من {{size}} ميغابايت"
     },
     "or": "أو"
 }

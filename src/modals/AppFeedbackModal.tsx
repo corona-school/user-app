@@ -51,6 +51,12 @@ const AppFeedbackModal = ({ isOpen, onClose }: AddFeedbackModalProps) => {
         });
 
     const handleOnSubmit = async () => {
+        const MAX_FILE_SIZE = 15 * 1024 * 1024;
+        if (file?.size && file.size > MAX_FILE_SIZE) {
+            toast.show({ description: t('appFeedback.screenshotShouldNotBeBiggerThan', { size: '15' }) });
+            return;
+        }
+
         setIsSending(true);
         const base64 = file ? await toBase64(file) : null;
         await sendAppFeedback({
