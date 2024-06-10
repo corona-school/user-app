@@ -51,9 +51,9 @@ const AppFeedbackModal = ({ isOpen, onClose }: AddFeedbackModalProps) => {
         });
 
     const handleOnSubmit = async () => {
-        const MAX_FILE_SIZE = 15 * 1024 * 1024;
+        const MAX_FILE_SIZE = 2 * 1024 * 1024;
         if (file?.size && file.size > MAX_FILE_SIZE) {
-            toast.show({ description: t('appFeedback.screenshotShouldNotBeBiggerThan', { size: '15' }) });
+            toast.show({ description: t('appFeedback.screenshotShouldNotBeBiggerThan', { size: '2' }) });
             return;
         }
 
