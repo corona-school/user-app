@@ -2296,7 +2296,7 @@
         "giveFeedbackButton": "Feedback zur App",
         "modal": {
             "title": "Feedback zur User App",
-            "description": "Was können wir besser machen in der App? Welches Feature fehlt dir? Ist etwas kapott?",
+            "description": "Was können wir besser machen in der App? Welches Feature fehlt dir? Ist etwas kaputt?",
             "notesLabel": "Deine Anmerkung",
             "notesPlaceholder": "z.B. Kritik, Ideen, Anmerkungen",
             "screenshotLabel": "Screenshot (optional)",
