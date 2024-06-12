@@ -44,7 +44,7 @@ const WithNavigation: React.FC<Props> = ({
     previousFallbackRoute,
     onBack,
 }) => {
-    const { sizes, space } = useTheme();
+    const { sizes, space, colors } = useTheme();
     const isMobile = useBreakpointValue({
         base: true,
         lg: false,
@@ -65,8 +65,14 @@ const WithNavigation: React.FC<Props> = ({
         chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
         group: { label: t('navigation.label.group'), icon: LFGroupIcon },
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
-        'knowledge-helper': { label: t('navigation.label.forStudents'), icon: LFKnowledgeIcon },
-        'knowledge-pupil': { label: t('navigation.label.forPupils'), icon: LFKnowledgeIcon },
+        'knowledge-helper': {
+            label: t('navigation.label.forStudents'),
+            icon: ({ isActive }) => <LFKnowledgeIcon color={isActive ? 'white' : colors['primary']['900']} />,
+        },
+        'knowledge-pupil': {
+            label: t('navigation.label.forPupils'),
+            icon: ({ isActive }) => <LFKnowledgeIcon color={isActive ? 'white' : colors['primary']['900']} />,
+        },
     };
 
     const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
