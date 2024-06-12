@@ -118,6 +118,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
                                                         fill={
                                                             disabled ? colors['gray']['300'] : key === rootPath ? colors['lightText'] : colors['primary']['900']
                                                         }
+                                                        isActive={key === rootPath}
                                                     />
                                                 </CSSWrapper>
                                             </CSSWrapper>

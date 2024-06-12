@@ -487,7 +487,7 @@
         }
     },
     "forStudents": {
-        "title": "Wissen",
+        "title": "Fortbildung",
         "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Helfer:innen.",
         "tabs": {
             "handbook": "Handbuch",
@@ -495,7 +495,7 @@
         }
     },
     "forPupils": {
-        "title": "Wissen",
+        "title": "Lernhilfen",
         "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Schüler:innen.",
         "tabs": {
             "learnMethods": "Lernmethoden"
@@ -882,8 +882,8 @@
             "notifications": "E-Mail Benachrichtigungen",
             "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte",
-            "forStudents": "Wissen",
-            "forPupils": "Wissen"
+            "forStudents": "Fortbildung",
+            "forPupils": "Lernhilfen"
         },
         "account": {
             "title": "Konto",
@@ -2025,8 +2025,8 @@
             "matching": "Nachhilfe",
             "appointments": "Termine",
             "chat": "Chat",
-            "forStudents": "Wissen",
-            "forPupils": "Wissen"
+            "forStudents": "Fortbildung",
+            "forPupils": "Lernhilfen"
         }
     },
     "screening": {
