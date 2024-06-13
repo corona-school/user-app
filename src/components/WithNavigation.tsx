@@ -75,21 +75,9 @@ const WithNavigation: React.FC<Props> = ({
         },
     };
 
-    const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
     return (
         <View flex="1">
-            <View
-                flex="1"
-                display="flex"
-                flexDirection="column"
-                flexWrap="nowrap"
-                overflow="hidden"
-                w="100vw"
-                h="100%"
-                flexBasis="auto"
-                flexGrow="1"
-                flexShrink="1"
-            >
+            <View flex="1" display="flex" flexDirection="column" flexWrap="nowrap" overflow="hidden" w="100vw" h="100%" flexBasis="auto" flexGrow="1">
                 <HeaderCard
                     onBack={onBack}
                     showBack={showBack}
@@ -100,23 +88,17 @@ const WithNavigation: React.FC<Props> = ({
                 >
                     {!isMobile && headerContent}
                 </HeaderCard>
-                <View flex="1" overflowY={'scroll'}>
-                    <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden" flex="1">
+                <View flex={1}>
+                    <Row maxW="100%" flexWrap={'wrap'} overflow="hidden" flex="1" overflowY="scroll">
                         {!hideMenu && (
                             <Column>
                                 <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} unreadMessagesCount={unreadMessagesCount} />
                             </Column>
                         )}
-                        <Column flex="1" padding={innerPaddingContent}>
+                        <Column flex="1" padding={innerPaddingContent} height="100%">
                             {(!isLoading && (
                                 <>
-                                    {(isMobile && (
-                                        <>
-                                            <View h={`${headerHeight}px`}></View>
-                                            {headerContent}
-                                            <View h={`${headerHeight}px`}></View>
-                                        </>
-                                    )) || <View h={`${sizes['headerSizePx']}px`}></View>}
+                                    {isMobile && <>{headerContent}</>}
                                     {children}
                                 </>
                             )) || <CenterLoadingSpinner />}
