@@ -126,14 +126,14 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
     }, [appointments, isCourse, refetchCourseAppointments, refetchMatchAppointments, setAppointmentsTotal, setOverrideMeetingLink]);
 
     return (
-        <Box>
+        <Box flex={1}>
             {(loadingCourseAppointments || loadingMatchAppointments) && <CenterLoadingSpinner />}
             {isCourse ? (
-                <Box py={6}>
+                <Box py={4}>
                     <Text>{t('appointment.create.insightCourseHeader', { courseTitle: courseData?.subcourse?.course?.name })}</Text>
                 </Box>
             ) : (
-                <Stack direction="row" py={6}>
+                <Stack direction="row" py={4}>
                     <Text>
                         {t('appointment.create.insightMatchHeader', {
                             matchPartner: `${matchData?.match?.pupil?.firstname} ${matchData?.match?.pupil?.lastname}`,
@@ -141,19 +141,21 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
                     </Text>
                 </Stack>
             )}
-            {(!errorCourseAppointments || errorMatchAppointments) && (
-                <Box minH={isMobile ? 400 : 600} maxH={maxHeight} flex="1" mb="10">
-                    <AppointmentList isReadOnlyList={true} appointments={appointments as Appointment[]} />
-                </Box>
-            )}
-            <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
-                <Button onPress={next} width={buttonWidth}>
-                    {t('appointment.create.addAppointmentButton')}
-                </Button>
-                <Button variant="outline" onPress={back} width={buttonWidth}>
-                    {t('appointment.create.backButton')}
-                </Button>
-            </Stack>
+            <Box flex={1} display="flex" justifyContent="space-between">
+                {(!errorCourseAppointments || errorMatchAppointments) && (
+                    <Box maxH={maxHeight} flex="1" mb="10">
+                        <AppointmentList height="100%" isReadOnlyList={true} appointments={appointments as Appointment[]} />
+                    </Box>
+                )}
+                <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
+                    <Button variant="outline" onPress={back} width={buttonWidth}>
+                        {t('appointment.create.backButton')}
+                    </Button>
+                    <Button onPress={next} width={buttonWidth}>
+                        {t('appointment.create.addAppointmentButton')}
+                    </Button>
+                </Stack>
+            </Box>
         </Box>
     );
 };
