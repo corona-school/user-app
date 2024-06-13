@@ -50,7 +50,7 @@ const Settings: React.FC = () => {
                 previousFallbackRoute="/start"
                 headerLeft={userType !== 'screener' && <NotificationAlert />}
             >
-                <VStack paddingBottom={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                <VStack paddingY={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <HStack space={space['1']} alignItems="center">
                         <Heading>{user?.firstname}</Heading>
                     </HStack>
