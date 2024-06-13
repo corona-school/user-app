@@ -78,7 +78,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, removeSpace = false, onPressTab, tabI
                     <TabItem key={`tab-${i}`} tab={tab} onPress={() => handleOnPressTab(i)} active={i === currentIndex} />
                 ))}
             </Row>
-            <Box paddingX={removeSpace === false ? space['1'] : ''} paddingY={space['1.5']} flex={1}>
+            <Box paddingX={removeSpace === false ? space['1'] : ''} paddingY={removeSpace === false ? space['1.5'] : space['0.5']} flex={1}>
                 {renderableTabs.map((tab: Tab, i) => i === currentIndex && <Fragment key={`tabcontent-${i}`}>{tab.content}</Fragment>)}
             </Box>
         </VStack>
