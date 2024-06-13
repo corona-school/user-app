@@ -310,35 +310,37 @@ const AppointmentCreation: React.FC<Props> = ({
     };
 
     return (
-        <Box>
-            <AppointmentForm
-                errors={errors}
-                appointmentsCount={appointmentsTotal ? appointmentsTotal : 0}
-                onSetDate={() => {
-                    setDateSelected(true);
-                }}
-                onSetTime={() => {
-                    setTimeSelected(true);
-                }}
-                isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
-                overrideMeetingLink={overrideMeetingLink}
-                setVideoChatType={setVideoChatType}
-                videoChatType={videoChatType}
-            />
-            {dateSelected && timeSelected && (
-                <Box py="5">
-                    <Checkbox
-                        _checked={{ backgroundColor: 'danger.900' }}
-                        onChange={() => handleWeeklyCheck()}
-                        value={appointmentToCreate.isRecurring ? 'true' : 'false'}
-                    >
-                        {t('appointment.create.weeklyRepeat')}
-                    </Checkbox>
-                </Box>
-            )}
-            {appointmentToCreate.isRecurring && (
-                <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek(appointmentToCreate.date)} />
-            )}
+        <Box flex={1} display="flex" justifyContent="space-between">
+            <Box>
+                <AppointmentForm
+                    errors={errors}
+                    appointmentsCount={appointmentsTotal ? appointmentsTotal : 0}
+                    onSetDate={() => {
+                        setDateSelected(true);
+                    }}
+                    onSetTime={() => {
+                        setTimeSelected(true);
+                    }}
+                    isCourse={isCourse ? isCourse : isCourseCreation ? isCourseCreation : false}
+                    overrideMeetingLink={overrideMeetingLink}
+                    setVideoChatType={setVideoChatType}
+                    videoChatType={videoChatType}
+                />
+                {dateSelected && timeSelected && (
+                    <Box py="5">
+                        <Checkbox
+                            _checked={{ backgroundColor: 'danger.900' }}
+                            onChange={() => handleWeeklyCheck()}
+                            value={appointmentToCreate.isRecurring ? 'true' : 'false'}
+                        >
+                            {t('appointment.create.weeklyRepeat')}
+                        </Checkbox>
+                    </Box>
+                )}
+                {appointmentToCreate.isRecurring && (
+                    <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek(appointmentToCreate.date)} />
+                )}
+            </Box>
             <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
                 <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
                     {t('appointment.create.backButton')}

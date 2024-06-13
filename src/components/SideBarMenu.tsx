@@ -70,7 +70,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
 
     return (
         (show && (
-            <View w="240" h="100dvh">
+            <View w="240">
                 <VStack
                     paddingTop={paddingTop}
                     paddingBottom="6"
