@@ -25,12 +25,17 @@ const ForPupils = () => {
         lg: sizes['contentContainerWidth'],
     });
 
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
+
     const currentTabFromRoute = pathname.split('/').pop();
     const currentTabIndex = tabs.indexOf(currentTabFromRoute || 'learn-methods');
     return (
-        <AsNavigationItem path="for-pupils">
+        <AsNavigationItem path="knowledge-pupil">
             <WithNavigation
-                showBack
+                showBack={isMobile}
                 previousFallbackRoute="/start"
                 headerTitle={t('forPupils.title')}
                 headerLeft={
@@ -46,7 +51,7 @@ const ForPupils = () => {
                         <Text>{t('forPupils.description')}</Text>
                     </Box>
                 </Box>
-                <Box width="100%" maxWidth={containerWidth} marginX="auto">
+                <Box width="100%" maxWidth={containerWidth} marginX="auto" flex={1}>
                     <Tabs
                         currentTabIndex={currentTabIndex !== -1 ? currentTabIndex : 0}
                         onPressTab={(tab) => navigate(`${tab.id}`)}

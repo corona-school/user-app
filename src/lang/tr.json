@@ -2291,5 +2291,23 @@
         },
         "title": "Öğrenciler için",
         "description": "Burada öğrenciler için tüm destek ve tekliflerimizi bulabilirsiniz."
-    }
+    },
+    "appFeedback": {
+        "modal": {
+            "title": "Kullanıcı uygulaması hakkında geri bildirim",
+            "description": "Uygulamada neyi daha iyi yapabiliriz? Hangi özelliği kaçırıyorsunuz? Bozuk bir şey mi var?",
+            "notesLabel": "Sizin yorumunuz",
+            "notesPlaceholder": "örn. eleştiri, fikirler, yorumlar",
+            "screenshotLabel": "Ekran görüntüsü (isteğe bağlı)",
+            "screenshotContent": "Ekran görüntüsünü buraya çekin",
+            "screenshotFromDevice": "Cihazdan yükleme",
+            "canWeContactPerMailLabel": "Sizinle e-posta yoluyla iletişime geçebilir miyiz?",
+            "canWeContactPerMailHelperText": "Sorunları / fikirleri daha iyi anlamak için. Bunu sadece gerekli olduğunda yapıyoruz.",
+            "sendFeedback": "Geri bildirim gönderin"
+        },
+        "giveFeedbackButton": "Uygulama hakkında geri bildirim",
+        "feedbackSuccessfullySent": "Geri bildirim başarıyla gönderildi",
+        "screenshotShouldNotBeBiggerThan": "Ekran görüntüsü {{size}}'dan daha büyük olamaz MB"
+    },
+    "or": "veya"
 }

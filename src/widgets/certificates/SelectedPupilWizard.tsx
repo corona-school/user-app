@@ -50,7 +50,7 @@ const SelectedPupilWizard = ({
             ongoingLessons,
             hoursPerWeek: toValidNumber(hoursPerWeek)!,
             hoursTotal: toValidNumber(hoursTotal)!,
-            subjects: subjects.join(', '),
+            subjects: subjects.join(','),
         };
 
         setState((prev) => ({

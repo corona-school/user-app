@@ -25,12 +25,17 @@ const KnowledgeCenter = () => {
         lg: sizes['contentContainerWidth'],
     });
 
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
+
     const currentTabFromRoute = pathname.split('/').pop();
     const currentTabIndex = tabs.indexOf(currentTabFromRoute || 'handbook');
     return (
-        <AsNavigationItem path="for-students">
+        <AsNavigationItem path="knowledge-helper">
             <WithNavigation
-                showBack
+                showBack={isMobile}
                 previousFallbackRoute="/start"
                 headerTitle={t('forStudents.title')}
                 headerLeft={
@@ -40,14 +45,16 @@ const KnowledgeCenter = () => {
                     </Stack>
                 }
             >
-                <Box maxWidth={containerWidth} width="100%" marginX="auto">
+                <Box maxWidth={containerWidth} width="100%" marginX="auto" pt={6}>
                     <Box maxWidth={contentContainerWidth} paddingBottom={space['1.5']} paddingX={space['1.5']}>
                         <Heading paddingBottom={1.5}>{t('forStudents.title')}</Heading>
                         <Text>{t('forStudents.description')}</Text>
                     </Box>
                 </Box>
-                <Box width="100%" maxWidth={containerWidth} marginX="auto">
+                <Box width="100%" maxWidth={containerWidth} marginX="auto" flex={1}>
                     <Tabs
+                        removeSpace
+                        tabInset={0}
                         currentTabIndex={currentTabIndex !== -1 ? currentTabIndex : 0}
                         onPressTab={(tab) => navigate(`${tab.id}`)}
                         tabs={[
@@ -59,7 +66,11 @@ const KnowledgeCenter = () => {
                             {
                                 id: 'online-training',
                                 title: t('forStudents.tabs.onlineTraining'),
-                                content: <Outlet />,
+                                content: (
+                                    <Box flex={1} px={4}>
+                                        <Outlet />
+                                    </Box>
+                                ),
                             },
                         ]}
                     />

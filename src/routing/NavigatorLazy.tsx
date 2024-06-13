@@ -412,29 +412,26 @@ export default function NavigatorLazy() {
             />
             {/* Knowledge Center */}
             <Route
-                path="/for-students"
+                path="/knowledge-helper"
                 element={
                     <RequireAuth>
                         <ForStudents />
                     </RequireAuth>
                 }
             >
-                <Route path="handbook" element={<IFrame height="500px" title="handbook" src="https://www.lern-fair.de/iframe/hilfestellungen" />} />
-                <Route path="online-training" element={<IFrame height="500px" title="online-training" src="https://www.lern-fair.de/iframe/fortbildungen" />} />
+                <Route path="handbook" element={<IFrame title="handbook" src="https://www.lern-fair.de/iframe/hilfestellungen" />} />
+                <Route path="online-training" element={<IFrame title="online-training" src="https://www.lern-fair.de/iframe/fortbildungen" />} />
                 <Route index element={<Navigate to="handbook" />} />
             </Route>
             <Route
-                path="/for-pupils"
+                path="/knowledge-pupil"
                 element={
                     <RequireAuth>
                         <ForPupils />
                     </RequireAuth>
                 }
             >
-                <Route
-                    path="learn-methods"
-                    element={<IFrame height="500px" title="learn-methods" src="https://www.lern-fair.de/iframe/hilfestellungen-sus" />}
-                />
+                <Route path="learn-methods" element={<IFrame title="learn-methods" src="https://www.lern-fair.de/iframe/hilfestellungen-sus" />} />
                 <Route index element={<Navigate to="learn-methods" />} />
             </Route>
             <Route

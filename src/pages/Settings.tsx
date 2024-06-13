@@ -50,7 +50,7 @@ const Settings: React.FC = () => {
                 previousFallbackRoute="/start"
                 headerLeft={userType !== 'screener' && <NotificationAlert />}
             >
-                <VStack paddingBottom={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                <VStack paddingY={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <HStack space={space['1']} alignItems="center">
                         <Heading>{user?.firstname}</Heading>
                     </HStack>
@@ -76,12 +76,12 @@ const Settings: React.FC = () => {
                             )}
                             {userType === 'student' && isMobile && (
                                 <Column mb={tabspace}>
-                                    <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/for-students')} />
+                                    <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/knowledge-helper')} />
                                 </Column>
                             )}
                             {userType === 'pupil' && isMobile && (
                                 <Column mb={tabspace}>
-                                    <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/for-pupils')} />
+                                    <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
                             {WEBPUSH_ACTIVE && (

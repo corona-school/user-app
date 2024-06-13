@@ -31,9 +31,9 @@ const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightConten
     });
 
     return (
-        <Box bgColor="primary.900" paddingY={`${sizes['headerPaddingYPx']}px`} borderBottomRadius={8} zIndex={9999}>
+        <Box h={`${sizes['headerSizePx']}px`} bgColor="primary.900" paddingY={`${sizes['headerPaddingYPx']}px`} borderBottomRadius={8} zIndex={9999}>
             <Box h={`${sizes['headerSizePx']}px`} position="fixed" top="0" left="0" right="0" bgColor="primary.900" zIndex="1">
-                <Row alignItems="center" justifyContent="center" h="100%" padding={space[1]}>
+                <Row alignItems="center" justifyContent="center" h="100%" paddingX={space[1]}>
                     {showBack && (
                         <Box ml={space['2']} position="absolute" left="0" zIndex={5}>
                             <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />
