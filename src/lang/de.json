@@ -337,15 +337,15 @@
             "matching": {
                 "tutor": {
                     "not-screened": "Du kannst noch kein Lernpaar bilden. Bitte führe zuerst dein Kennenlerngespräch mit uns.",
-                    "not-tutor": "Du kannst kein Lernpaar bilden, da du nicht für die Lernunterstützung registriert bist.",
+                    "not-tutor": "Du kannst kein Lernpaar bilden, da du nicht für die Nachhilfe registriert bist.",
                     "max-requests": "Du hast die maximale Zahl an erlaubten Anfragen erreichst und kannst daher keine weitere stellen."
                 },
                 "pupil": {
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
-                    "not-tutee": "Du kannst kein Lernpaar anfordern, da du nicht für die Lernunterstützung registriert bist.",
+                    "not-tutee": "Du kannst kein Lernpaar anfordern, da du nicht für die Nachhilfe registriert bist.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
                     "max-matches": "Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.",
-                    "deactivated": "Die Registrierung für die 1:1-Lernunterstützung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Lernunterstützung gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
+                    "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
             }
@@ -950,8 +950,8 @@
                     }
                 },
                 "matching": {
-                    "title": "Lernunterstützung",
-                    "content": "Wenn du Einzel-Hilfe brauchst, dann ist die Lernunterstützung das Richtige für dich. Du bekommst von uns eine:n feste:n Helfer:in."
+                    "title": "Nachhilfe",
+                    "content": "Wenn du Einzel-Hilfe brauchst, dann ist die Nachhilfe das Richtige für dich. Du bekommst von uns eine:n feste:n Helfer:in."
                 },
                 "groupCourse": {
                     "title": "Nachhilfe-Kurse",
@@ -999,8 +999,8 @@
                     }
                 },
                 "matching": {
-                    "title": "Lernunterstützung",
-                    "content": "Die Lernunterstützung ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen. Unter diesem Punkt findest du deine Termine, deine Lernparter:innen, siehst deine angefragten Matches und kannst neue Matches anfordern."
+                    "title": "Nachhilfe",
+                    "content": "Die Nachhilfe ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen. Unter diesem Punkt findest du deine Termine, deine Lernparter:innen, siehst deine angefragten Matches und kannst neue Matches anfordern."
                 },
                 "groupCourse": {
                     "title": "Gruppen-Kurse",
@@ -1034,8 +1034,8 @@
             },
             "helperMatching": {
                 "welcome": {
-                    "title": "Onboarding-Tour Lernunterstützung",
-                    "content": "Wir zeigen dir hier alle wichtigen Informationen, die du über die Lernunterstützung wissen musst.",
+                    "title": "Onboarding-Tour Nachhilfe",
+                    "content": "Wir zeigen dir hier alle wichtigen Informationen, die du über die Nachhilfe wissen musst.",
                     "question": "Wie fordere ich eine:n Lernpartner:in an? Wie nehme ich Kontakt mit meinem:r Lernpartner:in auf? Wie kann ich ein Lernpaar auflösen?",
                     "answer": "Wir zeigen dir die wichtigsten Funktionen.",
                     "startTour": "Tour starten",
@@ -1071,7 +1071,7 @@
                 },
                 "finisher": {
                     "title": "Geschafft",
-                    "firstContent": "Glückwunsch, du hast die Onboarding-Tour zur Lernunterstützung abgeschlossen.",
+                    "firstContent": "Glückwunsch, du hast die Onboarding-Tour zur Nachhilfe abgeschlossen.",
                     "headlineContent": "Hast du alles verstanden?",
                     "answer": "Du kannst dir die Tour nochmal ansehen und in unserem Hilfebereich vorbeischauen. Hier findest du die wichtigsten Informationen und Hilfestellungen für dich als Helfer:in.",
                     "linkText": "Zum Hilfebereich",
@@ -1106,7 +1106,7 @@
             "all": "Alle",
             "overview": "Übersicht",
             "kurse": "Kurse",
-            "support": "1:1 Lernunterstützung",
+            "support": "1:1 Nachhilfe",
             "pedagogy": "Pädagogik",
             "tools": "Digitale Tools",
             "material": "Kostenlose Lehrmaterialien",
@@ -1167,9 +1167,9 @@
         "willkommen": {
             "title": "Willkommen 👋",
             "subtitle": "Schön, dass du hier bist!",
-            "content": "Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir Nachhilfe-Kurse zu verschiedenen Themen wie Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere Lernunterstützung setzen",
+            "content": "Wir freuen uns, dich bei Lern-Fair begrüßen zu dürfen! Wir bieten dir Nachhilfe-Kurse zu verschiedenen Themen wie Deutsch, Mathe und Englisch. Wenn du individuelle Hilfe brauchst, kannst du dich auch auf die Warteliste für unsere Nachhilfe setzen",
             "actionDescription": "Lernangebot ansehen",
-            "buttons": ["Kurse ansehen", "Lernunterstützung beantragen"]
+            "buttons": ["Kurse ansehen", "Nachhilfe beantragen"]
         },
         "statusSchüler": {
             "title": "Du bist auf der Warteliste!",
@@ -1184,7 +1184,7 @@
             "buttons": ["Ja", "Nein"]
         },
         "kontaktSchüler": {
-            "subtitle": "1:1 Lernunterstützung",
+            "subtitle": "1:1 Nachhilfe",
             "title": "Neue Lernpartner:in",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
             "buttons": ["Lernpartner:in ansehen"]
@@ -1192,7 +1192,7 @@
         "angeforderteBescheinigung": {
             "title": "Bestätigung",
             "subtitle": "Nachhilfe mit {{nameHelfer}} ",
-            "content": "{{nameHelfer}} hat uns um eine Bescheinigung für eure Lernunterstützung gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.",
+            "content": "{{nameHelfer}} hat uns um eine Bescheinigung für eure Nachhilfe gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.",
             "buttons": ["Angaben bestätigen"],
             "actionDescription": "Angaben bestätigen"
         },
@@ -1210,7 +1210,7 @@
             "actionDescription": "Alles zum Führungszeugnis"
         },
         "statusStudent": {
-            "subtitle": "1:1 Lernunterstützung",
+            "subtitle": "1:1 Nachhilfe",
             "title": "Wir suchen nach einem:r Lernpartner:in für dich!",
             "content": "Danke, dass du eine:n Schüler:in bei Lern-Fair unterstützen möchtest! Wir werden dir jemanden vermitteln, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. In der Regel melden wir uns bei dir per E-Mail innerhalb einer Woche mit einem:r passenden Schüler:in.",
             "buttons": ["Problem melden"]
@@ -1224,7 +1224,7 @@
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
-            "subtitle": "1:1 Lernunterstützung",
+            "subtitle": "1:1 Nachhilfe",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
             "buttons": ["Lernpartner:in ansehen"]
         },
@@ -1318,9 +1318,9 @@
             "createAppointment": "Termin erstellen"
         },
         "blocker": {
-            "header": "Lernunterstützung",
+            "header": "Nachhilfe",
             "title": "Unterstützung anfragen",
-            "firstContent": "In der Lernunterstützung vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft. Sie bekommt dafür kein Geld und freut sich sehr über dein Dankeschön.",
+            "firstContent": "In der Nachhilfe vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft. Sie bekommt dafür kein Geld und freut sich sehr über dein Dankeschön.",
             "button": "Unterstützung anfragen",
             "ctaCardHeader": "Gruppen-Kurse",
             "ctaCardContent": "Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…",
@@ -1359,9 +1359,9 @@
         },
         "request": {
             "check": {
-                "header": "Lernunterstützung",
-                "title": "Lernunterstützung",
-                "content": "In der Lernunterstützung hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden und wir würden uns freuen, wenn du im Rahmen deiner zeitlichen Möglichkeiten eine:n weitere:n Schüler:in unterstützen kannst. Wenn du eine Lernunterstützung nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.",
+                "header": "Nachhilfe",
+                "title": "Nachhilfe",
+                "content": "In der Nachhilfe hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden und wir würden uns freuen, wenn du im Rahmen deiner zeitlichen Möglichkeiten eine:n weitere:n Schüler:in unterstützen kannst. Wenn du eine Nachhilfe nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.",
                 "tabs": {
                     "tab1": "Lernpaare",
                     "tab2": "Anfragen"
@@ -1388,9 +1388,9 @@
         "wizard": {
             "pupil": {
                 "filter": {
-                    "heading": "Die 1:1-Lernunterstützung",
-                    "subheading1": "Für wen ist die 1:1-Lernunterstützung gedacht?",
-                    "text1": "Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Lernunterstützung bei uns beantragen:",
+                    "heading": "Die 1:1-Nachhilfe",
+                    "subheading1": "Für wen ist die 1:1-Nachhilfe gedacht?",
+                    "text1": "Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Nachhilfe bei uns beantragen:",
                     "bulletPoints": [
                         "Du brauchst Hilfe in der Schule",
                         "Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
@@ -1398,7 +1398,7 @@
                     ],
                     "question1": "Treffen diese Punkte auf dich zu?",
                     "subheading2": "Lange Wartezeit: 3-6 Monate",
-                    "text2": "Zur Zeit brauchen sehr viele Schüler:innen Lernunterstützung. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6 Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.",
+                    "text2": "Zur Zeit brauchen sehr viele Schüler:innen Nachhilfe. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6 Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.",
                     "question2": "Bist du bereit, 3-6 Monate zu warten?"
                 },
                 "alternatives": {
@@ -1570,7 +1570,7 @@
             },
             "warningModal": {
                 "title": "Bist du sicher?",
-                "body": "Manchmal dauert es etwas bis sich dein Gegenüber zurückmeldet. Wir haben mit allen Schüler:innen Kennenlerngespräche geführt und ihren Bedarf an Lernunterstützung geprüft. Wir empfehlen dir daher, mindestens 14 Tage auf Rückmeldung zu warten, bevor du das Lernpaar auflöst.",
+                "body": "Manchmal dauert es etwas bis sich dein Gegenüber zurückmeldet. Wir haben mit allen Schüler:innen Kennenlerngespräche geführt und ihren Bedarf an Nachhilfe geprüft. Wir empfehlen dir daher, mindestens 14 Tage auf Rückmeldung zu warten, bevor du das Lernpaar auflöst.",
                 "btn": "Trotzdem auflösen"
             },
             "newMatch": {
@@ -1607,7 +1607,7 @@
         },
         "certificate": {
             "titleRequest": "Bescheinigung bestätigen",
-            "title": "Lernunterstützung von {{firstname}}",
+            "title": "Nachhilfe von {{firstname}}",
             "from": "ab dem",
             "to": "bis zum",
             "approx": "ca.",
@@ -1949,7 +1949,7 @@
         "oneOnOne": {
             "leftVideoChat": {
                 "title": "Du hast den Videochat verlassen",
-                "subtitle": "Wir hoffen, die 1:1-Lernunterstützung hat dir gefallen!",
+                "subtitle": "Wir hoffen, die 1:1-Nachhilfe hat dir gefallen!",
                 "button": "Zum Dashboard"
             }
         },
@@ -1960,7 +1960,7 @@
     },
     "introduction": {
         "groupCourses": "Gruppenkurse",
-        "match": "1:1-Lernunterstützung",
+        "match": "1:1-Nachhilfe",
         "imageGroupText": "Gib dein Wissen weiter und leite Gruppen-Kurse.",
         "imageMatchText": "Mit nur 1-2 Stunden pro Woche gibst du einem bildungsbenachteiligten Kind die Chance auf eine bessere Zukunft.",
         "becomeAnInstructor": "Jetzt Kursleiter:in werden",
