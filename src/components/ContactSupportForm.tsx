@@ -65,7 +65,7 @@ const ContactSupportForm: React.FC<FormularProps> = () => {
     };
 
     return (
-        <View paddingLeft={space['1.5']}>
+        <View paddingX={space['1']}>
             <>
                 <Heading paddingBottom={space['0.5']}>{t('helpcenter.contact.title')}</Heading>
                 <Text paddingBottom={space['1.5']}>{t('helpcenter.contact.content')}</Text>
