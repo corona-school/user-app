@@ -1798,8 +1798,8 @@
                 "appointmentLabel": "Termin",
                 "appointmentDate": "Datum:",
                 "publishCourse": "Zur Prüfung freigeben",
-                "saveCourse": "Kurs erstellen und später freigeben",
-                "editCourse": "Daten bearbeiten",
+                "saveCourse": "Entwurf speichern",
+                "editCourse": "Bearbeiten",
                 "updateCourse": "Änderungen speichern"
             },
             "modal": {
