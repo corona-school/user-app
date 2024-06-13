@@ -21,7 +21,7 @@ type Props = {
     isLoadingAppointments?: boolean;
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
-    height?: number;
+    height?: number | string;
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {

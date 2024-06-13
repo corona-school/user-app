@@ -51,7 +51,7 @@ const ForPupils = () => {
                         <Text>{t('forPupils.description')}</Text>
                     </Box>
                 </Box>
-                <Box width="100%" maxWidth={containerWidth} marginX="auto">
+                <Box width="100%" maxWidth={containerWidth} marginX="auto" flex={1}>
                     <Tabs
                         currentTabIndex={currentTabIndex !== -1 ? currentTabIndex : 0}
                         onPressTab={(tab) => navigate(`${tab.id}`)}
