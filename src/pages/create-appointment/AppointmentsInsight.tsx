@@ -124,8 +124,11 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
             setOverrideMeetingLink(lastAppointment.override_meeting_link);
         }
         setAppointmentsTotal(appointments.length);
+    }, [appointments, setAppointmentsTotal, setOverrideMeetingLink]);
+
+    useEffect(() => {
         isCourse ? refetchCourseAppointments() : refetchMatchAppointments();
-    }, [appointments, isCourse, refetchCourseAppointments, refetchMatchAppointments, setAppointmentsTotal, setOverrideMeetingLink]);
+    }, [isCourse, refetchCourseAppointments, refetchMatchAppointments]);
 
     return (
         <Box flex={1}>
