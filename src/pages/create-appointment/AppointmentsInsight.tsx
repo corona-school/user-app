@@ -1,5 +1,5 @@
 import { Box, Button, Stack, useBreakpointValue, Text } from 'native-base';
-import React, { Dispatch, SetStateAction, useEffect } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gql } from './../../gql';
 import { useQuery } from '@apollo/client';
@@ -104,7 +104,9 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
 
-    const appointments = (isCourse ? courseData?.subcourse?.appointments : matchData?.match?.appointments) ?? [];
+    const appointments = useMemo(() => {
+        return (isCourse ? courseData?.subcourse?.appointments : matchData?.match?.appointments) ?? [];
+    }, [courseData?.subcourse?.appointments, isCourse, matchData?.match?.appointments]);
 
     const maxHeight = useBreakpointValue({
         base: 400,
