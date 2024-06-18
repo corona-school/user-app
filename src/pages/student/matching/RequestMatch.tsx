@@ -106,7 +106,7 @@ const RequestMatching: React.FC = () => {
             >
                 <RequestMatchContext.Provider value={{ matchRequest, setSubject, removeSubject, setCurrentIndex, isEdit }}>
                     {!loading && !isLoading && data && (
-                        <Box paddingX={space['1']} paddingBottom={space['1']}>
+                        <Box paddingX={space['1']} paddingBottom={space['1']} pt={6}>
                             {currentIndex === 0 && <UpdateData state={data.me.student!.state} refetchQuery={query} />}
                             {currentIndex === 1 && <Subjects />}
                             {currentIndex === 2 && <SchoolClasses />}

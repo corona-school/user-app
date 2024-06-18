@@ -419,8 +419,8 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                <Route path="handbook" element={<IFrame height="500px" title="handbook" src="https://www.lern-fair.de/iframe/hilfestellungen" />} />
-                <Route path="online-training" element={<IFrame height="500px" title="online-training" src="https://www.lern-fair.de/iframe/fortbildungen" />} />
+                <Route path="handbook" element={<IFrame title="handbook" src="https://www.lern-fair.de/iframe/hilfestellungen" />} />
+                <Route path="online-training" element={<IFrame title="online-training" src="https://www.lern-fair.de/iframe/fortbildungen" />} />
                 <Route index element={<Navigate to="handbook" />} />
             </Route>
             <Route
@@ -431,10 +431,7 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                <Route
-                    path="learn-methods"
-                    element={<IFrame height="500px" title="learn-methods" src="https://www.lern-fair.de/iframe/hilfestellungen-sus" />}
-                />
+                <Route path="learn-methods" element={<IFrame title="learn-methods" src="https://www.lern-fair.de/iframe/hilfestellungen-sus" />} />
                 <Route index element={<Navigate to="learn-methods" />} />
             </Route>
             <Route

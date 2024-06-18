@@ -32,6 +32,7 @@ datadogRum.init({
         }
         return true;
     },
+    enableExperimentalFeatures: ['feature_flags'],
 });
 
 // This will make sure that we are setting the session token for the user right in the beginning.

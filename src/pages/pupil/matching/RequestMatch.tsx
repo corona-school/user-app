@@ -155,7 +155,7 @@ const RequestMatch: React.FC = () => {
                     }}
                 >
                     {!loading && !isLoading && data && (
-                        <Box paddingX={space['1']} paddingBottom={space['1']}>
+                        <Box paddingX={space['1']} paddingBottom={space['1']} pt={6}>
                             {currentIndex === 0 && <Filter />}
                             {currentIndex === 1 && (
                                 <UpdateData

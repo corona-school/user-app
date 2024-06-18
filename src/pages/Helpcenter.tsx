@@ -175,19 +175,19 @@ const HelpCenter: React.FC = () => {
             </Button>
           </Box> */}
                 </Box>
-                <Box width="100%" maxWidth={ContainerWidth} marginX="auto">
+                <Box width="100%" maxWidth={ContainerWidth} marginX="auto" flex={1}>
                     <NavigationTabs
-                        tabInset={space['1.5']}
+                        removeSpace
                         tabs={[
                             {
                                 hide: userType === 'student',
                                 title: t('helpcenter.faq.tabName'),
-                                content: <IFrame src="https://www.lern-fair.de/iframe/faq-sus" title="faq" width="100%" height="596px" />,
+                                content: <IFrame src="https://www.lern-fair.de/iframe/faq-sus" title="faq" width="100%" />,
                             },
                             {
                                 hide: userType === 'pupil',
                                 title: t('helpcenter.faq.tabName'),
-                                content: <IFrame src="https://www.lern-fair.de/iframe/faq-huh" title="faq" width="100%" height="596px" />,
+                                content: <IFrame src="https://www.lern-fair.de/iframe/faq-huh" title="faq" width="100%" />,
                             },
                             {
                                 title: t('helpcenter.contact.tabName'),

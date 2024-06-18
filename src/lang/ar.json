@@ -2287,5 +2287,23 @@
         },
         "title": "للتلاميذ",
         "description": "هنا يمكنك العثور على كل ما نقدمه من دعم وعروض للطلاب."
-    }
+    },
+    "appFeedback": {
+        "modal": {
+            "title": "ملاحظات على تطبيق المستخدم",
+            "description": "ما الذي يمكننا تحسينه في التطبيق؟ ما الميزة التي تفتقدها؟ هل هناك شيء معطل؟",
+            "notesLabel": "تعليقك",
+            "notesPlaceholder": "مثل النقد والأفكار والتعليقات",
+            "screenshotLabel": "لقطة شاشة (اختياري)",
+            "screenshotContent": "اسحب لقطة شاشة هنا",
+            "screenshotFromDevice": "التحميل من الجهاز",
+            "canWeContactPerMailLabel": "هل يمكننا التواصل معك عبر البريد الإلكتروني؟",
+            "canWeContactPerMailHelperText": "لفهم المشاكل/الأفكار بشكل أفضل. نقوم بذلك فقط عند الضرورة.",
+            "sendFeedback": "إرسال الملاحظات"
+        },
+        "giveFeedbackButton": "ملاحظات على التطبيق",
+        "feedbackSuccessfullySent": "تم إرسال الملاحظات بنجاح",
+        "screenshotShouldNotBeBiggerThan": "لا يمكن أن تكون لقطة الشاشة أكبر من {{size}} ميغابايت"
+    },
+    "or": "أو"
 }
