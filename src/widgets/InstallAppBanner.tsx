@@ -4,9 +4,11 @@ import IconClose from '../assets/icons/ic_close.svg';
 import IconShare from '../assets/icons/icon_share.svg';
 import IconAdd from '../assets/icons/icon_add_square.svg';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { Trans, useTranslation } from 'react-i18next';
 
 export const NativeInstallAppBanner = () => {
     const { shouldPromote, promote, promotionType } = useInstallation();
+    const { t } = useTranslation();
     const [show, setShow] = useLocalStorage({ key: 'recommend-lern-fair-installation', initialValue: true });
     if (!shouldPromote || promotionType !== 'native' || !show) return null;
 
@@ -15,11 +17,11 @@ export const NativeInstallAppBanner = () => {
             <HStack space={1.5} px={2} height="100px" width="full" background="#fbefc6" display="flex" flexDirection="row" alignItems="center">
                 <IconButton icon={<IconClose />} size="sm" onPress={() => setShow(false)} />
                 <Text fontSize="sm">
-                    <strong style={{ display: 'block' }}>Lern Fair installieren</strong>
-                    <span>Für schnelleren Zugriff auf Chats und Termine ohne Einloggen.</span>
+                    <strong style={{ display: 'block' }}>{t('installation.native.installTitle')}</strong>
+                    <span>{t('installation.native.installDescription')}</span>
                 </Text>
                 <Button width="110px" size="xs" onPress={promote}>
-                    Installieren
+                    {t('installation.native.installButton')}
                 </Button>
             </HStack>
         );
@@ -55,20 +57,8 @@ export const IOSInstallAppBanner = ({ variant }: IOSInstallAppBannerProps) => {
             style={{ bottom: isIpad ? 'unset' : '15px', top: isIpad ? '15px' : 'unset' }}
             zIndex="99999"
         >
-            <Text
-                fontSize="sm"
-                textAlign="center"
-                width="100%"
-                display="flex"
-                alignItems="center"
-                justifyContent="center"
-                flexWrap="wrap"
-                mt={isIpad ? 0 : 3}
-                onPress={() => {
-                    window.navigator.share({});
-                }}
-            >
-                Auf <IconShare /> klicken und dann <IconAdd /> "Zum Home-Bildschrimm"
+            <Text fontSize="sm" textAlign="center" width="100%" display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" mt={isIpad ? 0 : 3}>
+                <Trans i18nKey="installation.iOS.installDescription" components={[<IconShare />, <IconAdd />]}></Trans>
             </Text>
             <IconButton icon={<IconClose />} size="sm" onPress={() => setShow(false)} style={isIpad ? {} : { position: 'absolute', top: 0, right: 0 }} />
             <div

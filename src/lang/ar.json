@@ -2305,5 +2305,15 @@
         "feedbackSuccessfullySent": "تم إرسال الملاحظات بنجاح",
         "screenshotShouldNotBeBiggerThan": "لا يمكن أن تكون لقطة الشاشة أكبر من {{size}} ميغابايت"
     },
-    "or": "أو"
+    "or": "أو",
+    "installation": {
+        "native": {
+            "installTitle": "Lern-Fair التثبيت",
+            "installDescription": "مواعيد للوصول بشكل أسرع إلى الدردشات وبدون تسجيل الدخول",
+            "installButton": "التثبيت"
+        },
+        "iOS": {
+            "installDescription": "اضغط على <0/> ثم <1/> \"إضافة إلى الشاشة الرئيسية\""
+        }
+    }
 }

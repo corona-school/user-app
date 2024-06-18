@@ -2309,5 +2309,15 @@
         "feedbackSuccessfullySent": "Feedback erfolgreich gesendet",
         "screenshotShouldNotBeBiggerThan": "Der Screenshot kann nicht größer als {{size}} MB sein"
     },
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "installation": {
+        "native": {
+            "installTitle": "Lern-Fair installieren",
+            "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
+            "installButton": "Installieren"
+        },
+        "iOS": {
+            "installDescription": "Auf <0/> klicken und dann <1/> \"Zum Home-Bildschrimm\""
+        }
+    }
 }

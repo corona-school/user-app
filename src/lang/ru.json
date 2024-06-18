@@ -2309,5 +2309,15 @@
         "feedbackSuccessfullySent": "Обратная связь отправлена успешно",
         "screenshotShouldNotBeBiggerThan": "Размер скриншота не может превышать {{size}} МБ"
     },
-    "or": "или"
+    "or": "или",
+    "installation": {
+        "native": {
+            "installTitle": "Lern-Fair Установите",
+            "installDescription": "Для быстрого доступа к чатам и встречам без входа в систему",
+            "installButton": "Установите"
+        },
+        "iOS": {
+            "installDescription": "Нажмите <0/>, затем <1/> \"Добавить на главный экран\""
+        }
+    }
 }

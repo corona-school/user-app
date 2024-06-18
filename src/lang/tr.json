@@ -2309,5 +2309,15 @@
         "feedbackSuccessfullySent": "Geri bildirim başarıyla gönderildi",
         "screenshotShouldNotBeBiggerThan": "Ekran görüntüsü {{size}}'dan daha büyük olamaz MB"
     },
-    "or": "veya"
+    "or": "veya",
+    "installation": {
+        "native": {
+            "installTitle": "Lern-Fair Kurulum",
+            "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
+            "installButton": "Kurulum"
+        },
+        "iOS": {
+            "installDescription": "<0/> üzerine tıklayın ve ardından <1/> \"Ana Ekrana Ekle\""
+        }
+    }
 }
