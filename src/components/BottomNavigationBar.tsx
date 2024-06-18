@@ -8,6 +8,7 @@ import useLernfair from '../hooks/useLernfair';
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
 import { useUserType } from '../hooks/useApollo';
+import { IOSInstallAppBanner } from '../widgets/InstallAppBanner';
 
 type Props = {
     show?: boolean;
@@ -58,6 +59,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
     return (
         (show && (
             <Box pb="env(safe-area-inset-bottom)">
+                <IOSInstallAppBanner variant="iPhone" />
                 <Row
                     w="100%"
                     h={'54px'}
