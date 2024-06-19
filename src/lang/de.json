@@ -883,7 +883,8 @@
             "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte",
             "forStudents": "Fortbildung",
-            "forPupils": "Lernhilfen"
+            "forPupils": "Lernhilfen",
+            "push": "App-Mitteilungen"
         },
         "account": {
             "title": "Konto",

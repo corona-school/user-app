@@ -810,7 +810,8 @@
             "onboarding": "جولة على متن الطائرة",
             "progress": "النجاحات والتقدم المحرز",
             "forStudents": "للمساعدين",
-            "forPupils": "للتلاميذ"
+            "forPupils": "للتلاميذ",
+            "push": "رسائل التطبيق"
         },
         "account": {
             "title": "حساب",

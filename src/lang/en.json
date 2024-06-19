@@ -814,7 +814,8 @@
             "onboarding": "Onboarding tour",
             "progress": "Successes & progress",
             "forStudents": "For volunteers",
-            "forPupils": "For pupils"
+            "forPupils": "For pupils",
+            "push": "App messages"
         },
         "account": {
             "title": "Account",
