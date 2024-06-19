@@ -16,7 +16,7 @@ import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { useChat } from '../context/ChatContext';
 import InstallAppBanner, { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
-import { PromotionType } from '../hooks/useInstallation';
+import { PromotionType } from '../context/InstallationProvider';
 
 type Props = {
     children?: ReactNode | ReactNode[];

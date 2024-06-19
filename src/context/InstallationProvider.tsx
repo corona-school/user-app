@@ -1,5 +1,5 @@
+import { createContext, useEffect, useState, useRef } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { useEffect, useRef, useState } from 'react';
 import { BeforeInstallPromptEvent } from '../types/window';
 
 export enum PromotionType {
@@ -9,7 +9,23 @@ export enum PromotionType {
     none = 'none',
 }
 
-const useInstallation = () => {
+interface InstallationContextValue {
+    shouldPromote: boolean;
+    promotionType: PromotionType;
+    install: () => Promise<void>;
+}
+
+export const InstallationContext = createContext<InstallationContextValue>({
+    install: async () => {},
+    promotionType: PromotionType.none,
+    shouldPromote: false,
+});
+
+interface InstallationProviderProps {
+    children: React.ReactNode;
+}
+
+const InstallationProvider = ({ children }: InstallationProviderProps) => {
     const { trackEvent } = useMatomo();
     const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
     const [promotionType, setPromotionType] = useState<PromotionType>(PromotionType.none);
@@ -65,7 +81,11 @@ const useInstallation = () => {
         }
     };
 
-    return { shouldPromote: promotionType !== PromotionType.none, promotionType, install };
+    return (
+        <InstallationContext.Provider value={{ install, promotionType, shouldPromote: promotionType !== PromotionType.none }}>
+            {children}
+        </InstallationContext.Provider>
+    );
 };
 
-export default useInstallation;
+export default InstallationProvider;

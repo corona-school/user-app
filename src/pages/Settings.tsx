@@ -1,6 +1,6 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useTheme, VStack, Column, useBreakpointValue } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
@@ -11,8 +11,8 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE, WEBPUSH_ACTIVE } from '../config';
-import useInstallation, { PromotionType } from '../hooks/useInstallation';
 import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
+import { InstallationContext, PromotionType } from '../context/InstallationProvider';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -22,7 +22,7 @@ const Settings: React.FC = () => {
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
-    const { promotionType, shouldPromote, install } = useInstallation();
+    const { promotionType, shouldPromote, install } = useContext(InstallationContext);
     const [showInstallInstructions, setShowInstallInstructions] = useState(false);
 
     const [showDeactivate, setShowDeactivate] = useState(false);
