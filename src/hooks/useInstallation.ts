@@ -2,17 +2,17 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect, useRef, useState } from 'react';
 import { BeforeInstallPromptEvent } from '../types/window';
 
-const PromotionType = {
-    native: 'native' as const,
-    iPhone: 'iPhone' as const,
-    iPad: 'iPad' as const,
-    none: 'none' as const,
-};
+export enum PromotionType {
+    native = 'native',
+    iPhone = 'iPhone',
+    iPad = 'iPad',
+    none = 'none',
+}
 
 const useInstallation = () => {
     const { trackEvent } = useMatomo();
     const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
-    const [promotionType, setPromotionType] = useState<keyof typeof PromotionType>(PromotionType.none);
+    const [promotionType, setPromotionType] = useState<PromotionType>(PromotionType.none);
 
     const isIphone = () => {
         const userAgent = window?.navigator?.userAgent?.toLowerCase();
@@ -51,7 +51,7 @@ const useInstallation = () => {
         };
     }, []);
 
-    const promote = async () => {
+    const install = async () => {
         if (deferredPromptRef.current) {
             deferredPromptRef.current.prompt();
             const choiceResult = await deferredPromptRef.current.userChoice;
@@ -65,7 +65,7 @@ const useInstallation = () => {
         }
     };
 
-    return { shouldPromote: promotionType !== PromotionType.none, promotionType, promote };
+    return { shouldPromote: promotionType !== PromotionType.none, promotionType, install };
 };
 
 export default useInstallation;

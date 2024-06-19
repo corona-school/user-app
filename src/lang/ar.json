@@ -2307,13 +2307,9 @@
     },
     "or": "أو",
     "installation": {
-        "native": {
-            "installTitle": "Lern-Fair التثبيت",
-            "installDescription": "مواعيد للوصول بشكل أسرع إلى الدردشات وبدون تسجيل الدخول",
-            "installButton": "التثبيت"
-        },
-        "iOS": {
-            "installDescription": "اضغط على <0/> ثم <1/> \"إضافة إلى الشاشة الرئيسية\""
-        }
+        "installTitle": "Lern-Fair التثبيت",
+        "installDescription": "مواعيد للوصول بشكل أسرع إلى الدردشات وبدون تسجيل الدخول",
+        "installButton": "التثبيت",
+        "iOSInstallInstructions": "اضغط على <0/> ثم <1/> 'إلى الشاشة الرئيسية'"
     }
 }

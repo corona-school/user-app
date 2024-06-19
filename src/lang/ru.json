@@ -2311,13 +2311,9 @@
     },
     "or": "или",
     "installation": {
-        "native": {
-            "installTitle": "Lern-Fair Установите",
-            "installDescription": "Для быстрого доступа к чатам и встречам без входа в систему",
-            "installButton": "Установите"
-        },
-        "iOS": {
-            "installDescription": "Нажмите <0/>, затем <1/> \"Добавить на главный экран\""
-        }
+        "installTitle": "Lern-Fair Установите",
+        "installDescription": "Для быстрого доступа к чатам и встречам без входа в систему",
+        "installButton": "Установите",
+        "iOSInstallInstructions": "Нажмите на <0/>, а затем <1/> \"На экран Домой\""
     }
 }

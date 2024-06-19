@@ -8,15 +8,19 @@ import useLernfair from '../hooks/useLernfair';
 import { gql } from './../gql';
 import { useQuery } from '@apollo/client';
 import { useUserType } from '../hooks/useApollo';
-import { IOSInstallAppBanner } from '../widgets/InstallAppBanner';
+import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
 
 type Props = {
     show?: boolean;
     navItems: NavigationItems;
     unreadMessagesCount?: number;
+    appInstallInstructions: {
+        show: boolean;
+        onClose: () => void;
+    };
 };
 
-const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMessagesCount }) => {
+const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMessagesCount, appInstallInstructions }) => {
     const { space, colors } = useTheme();
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
@@ -59,7 +63,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
     return (
         (show && (
             <Box pb="env(safe-area-inset-bottom)">
-                <IOSInstallAppBanner variant="iPhone" />
+                {appInstallInstructions.show && <IOSInstallAppInstructions onClose={appInstallInstructions.onClose} variant="iPhone" />}
                 <Row
                     w="100%"
                     h={'54px'}

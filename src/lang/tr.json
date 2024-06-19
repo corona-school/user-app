@@ -2311,13 +2311,9 @@
     },
     "or": "veya",
     "installation": {
-        "native": {
-            "installTitle": "Lern-Fair Kurulum",
-            "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
-            "installButton": "Kurulum"
-        },
-        "iOS": {
-            "installDescription": "<0/> üzerine tıklayın ve ardından <1/> \"Ana Ekrana Ekle\""
-        }
+        "installTitle": "Lern-Fair Kurulum",
+        "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
+        "installButton": "Kurulum",
+        "iOSInstallInstructions": "<0/> ve ardından <1/> \"Ana Ekrana Ekle\"ye dokunun"
     }
 }

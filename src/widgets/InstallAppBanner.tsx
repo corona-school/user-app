@@ -1,44 +1,49 @@
 import { HStack, Button, IconButton, Text } from 'native-base';
-import useInstallation from '../hooks/useInstallation';
+import useInstallation, { PromotionType } from '../hooks/useInstallation';
 import IconClose from '../assets/icons/ic_close.svg';
 import IconShare from '../assets/icons/icon_share.svg';
 import IconAdd from '../assets/icons/icon_add_square.svg';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { Trans, useTranslation } from 'react-i18next';
 
-export const NativeInstallAppBanner = () => {
-    const { shouldPromote, promote, promotionType } = useInstallation();
-    const { t } = useTranslation();
-    const [show, setShow] = useLocalStorage({ key: 'recommend-lern-fair-installation', initialValue: true });
-    if (!shouldPromote || promotionType !== 'native' || !show) return null;
-
-    if (promotionType === 'native') {
-        return (
-            <HStack space={1.5} px={2} height="100px" width="full" background="#fbefc6" display="flex" flexDirection="row" alignItems="center">
-                <IconButton icon={<IconClose />} size="sm" onPress={() => setShow(false)} />
-                <Text fontSize="sm">
-                    <strong style={{ display: 'block' }}>{t('installation.native.installTitle')}</strong>
-                    <span>{t('installation.native.installDescription')}</span>
-                </Text>
-                <Button width="110px" size="xs" onPress={promote}>
-                    {t('installation.native.installButton')}
-                </Button>
-            </HStack>
-        );
-    }
-    return null;
-};
-
-interface IOSInstallAppBannerProps {
-    variant: 'iPad' | 'iPhone';
+interface InstallAppBannerProps {
+    onInstall?: (promotionType: PromotionType) => void;
 }
 
-export const IOSInstallAppBanner = ({ variant }: IOSInstallAppBannerProps) => {
-    const { shouldPromote, promotionType } = useInstallation();
+const InstallAppBanner = ({ onInstall }: InstallAppBannerProps) => {
+    const { shouldPromote, install, promotionType } = useInstallation();
+    const { t } = useTranslation();
     const [show, setShow] = useLocalStorage({ key: 'recommend-lern-fair-installation', initialValue: true });
     if (!shouldPromote || !show) return null;
-    if (variant !== promotionType) return null;
 
+    const handleOnInstallClick = async () => {
+        if (promotionType === 'native') {
+            await install();
+            return;
+        }
+        onInstall && onInstall(promotionType);
+    };
+
+    return (
+        <HStack space={1.5} px={2} height="100px" width="full" background="#fbefc6" display="flex" flexDirection="row" alignItems="center">
+            <IconButton icon={<IconClose />} size="sm" onPress={() => setShow(false)} />
+            <Text fontSize="sm">
+                <strong style={{ display: 'block' }}>{t('installation.installTitle')}</strong>
+                <span>{t('installation.installDescription')}</span>
+            </Text>
+            <Button width="110px" size="xs" onPress={handleOnInstallClick}>
+                {t('installation.installButton')}
+            </Button>
+        </HStack>
+    );
+};
+
+interface IOSInstallAppInstructionsProps {
+    variant: 'iPad' | 'iPhone';
+    onClose: () => void;
+}
+
+export const IOSInstallAppInstructions = ({ variant, onClose }: IOSInstallAppInstructionsProps) => {
     const isIpad = variant === 'iPad';
 
     return (
@@ -58,9 +63,9 @@ export const IOSInstallAppBanner = ({ variant }: IOSInstallAppBannerProps) => {
             zIndex="99999"
         >
             <Text fontSize="sm" textAlign="center" width="100%" display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" mt={isIpad ? 0 : 3}>
-                <Trans i18nKey="installation.iOS.installDescription" components={[<IconShare />, <IconAdd />]}></Trans>
+                <Trans i18nKey="installation.iOSInstallInstructions" components={[<IconShare />, <IconAdd />]}></Trans>
             </Text>
-            <IconButton icon={<IconClose />} size="sm" onPress={() => setShow(false)} style={isIpad ? {} : { position: 'absolute', top: 0, right: 0 }} />
+            <IconButton icon={<IconClose />} size="sm" onPress={onClose} style={isIpad ? {} : { position: 'absolute', top: 0, right: 0 }} />
             <div
                 style={{
                     borderWidth: '10px',
@@ -75,3 +80,5 @@ export const IOSInstallAppBanner = ({ variant }: IOSInstallAppBannerProps) => {
         </HStack>
     );
 };
+
+export default InstallAppBanner;

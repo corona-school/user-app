@@ -2311,13 +2311,9 @@
     },
     "logout": "Abmelden",
     "installation": {
-        "native": {
-            "installTitle": "Lern-Fair installieren",
-            "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
-            "installButton": "Installieren"
-        },
-        "iOS": {
-            "installDescription": "Auf <0/> klicken und dann <1/> \"Zum Home-Bildschrimm\""
-        }
+        "installTitle": "Lern-Fair installieren",
+        "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
+        "installButton": "Installieren",
+        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken"
     }
 }
