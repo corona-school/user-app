@@ -31,27 +31,25 @@ export const Preferences: FC<Props> = ({ title, notificationCategories, enableTo
         userPreferences[category] && userPreferences[category].hasOwnProperty(channel) ? userPreferences[category][channel] : false;
 
     return (
-        <>
-            <Box ml={marginLeft}>
-                <Text mb={marginBottom}>{title}</Text>
-                <Box>
-                    {Object.keys(notificationCategories).map((category: string) =>
-                        channels.map((channel: string) => (
-                            <PreferenceItem
-                                category={category}
-                                notificationTypeDetails={notificationCategories[category]}
-                                value={getCheckboxValue(category, channel)}
-                                onUpdate={(value: boolean) =>
-                                    updateUserPreference(category, channel, value).then(() => {
-                                        toast.show({ description: t('notification.controlPanel.preference.preferencesUpdated') });
-                                    })
-                                }
-                            />
-                        ))
-                    )}
-                    {enableToggleAll && <ToggleAll notificationCategories={notificationCategories} />}
-                </Box>
+        <Box pt={3} px={3}>
+            <Text mb={marginBottom}>{title}</Text>
+            <Box>
+                {Object.keys(notificationCategories).map((category: string) =>
+                    channels.map((channel: string) => (
+                        <PreferenceItem
+                            category={category}
+                            notificationTypeDetails={notificationCategories[category]}
+                            value={getCheckboxValue(category, channel)}
+                            onUpdate={(value: boolean) =>
+                                updateUserPreference(category, channel, value).then(() => {
+                                    toast.show({ description: t('notification.controlPanel.preference.preferencesUpdated') });
+                                })
+                            }
+                        />
+                    ))
+                )}
+                {enableToggleAll && <ToggleAll notificationCategories={notificationCategories} />}
             </Box>
-        </>
+        </Box>
     );
 };

@@ -55,11 +55,6 @@ const NotificationControlPanel = () => {
         lg: false,
     });
 
-    const width = useBreakpointValue({
-        base: '90%',
-        lg: '90%',
-    });
-
     return (
         <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreferences, ...rest, channels }}>
             <WithNavigation
@@ -73,7 +68,7 @@ const NotificationControlPanel = () => {
                     </Stack>
                 }
             >
-                <View py={5} width={width}>
+                <View py={5}>
                     {!isMobile && (
                         <Column space={space['1']} marginBottom={space['2']} ml={3}>
                             <Heading>{t('notification.controlPanel.title')}</Heading>
@@ -83,8 +78,9 @@ const NotificationControlPanel = () => {
                             </Row>
                         </Column>
                     )}
-                    <VStack ml={3}>
+                    <VStack flex={1}>
                         <Tabs
+                            removeSpace
                             currentTabIndex={isNewsletter ? 1 : 0}
                             onPressTab={(tab) => navigate(`${tab.id}`)}
                             tabs={[
