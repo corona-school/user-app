@@ -167,7 +167,9 @@ const Dashboard: React.FC<Props> = () => {
     }, []);
 
     const isMobile = useBreakpointValue({ base: true, lg: false });
-    const isSummerVacation = new Date('2024-06-10') < new Date() && new Date('2024-08-31') > new Date();
+    const startSummerVacation = new Date('2024-06-10');
+    const endSummerVacation = new Date('2024-09-02');
+    const isSummerVacation = startSummerVacation <= new Date() && endSummerVacation >= new Date();
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -266,7 +268,9 @@ const Dashboard: React.FC<Props> = () => {
                                                         <BarrierIcon />
                                                     </Box>
                                                     <Text fontSize={'sm'} flexWrap={'wrap'}>
-                                                        {t('matching.homeworkhelp.buttonSummerVacation')}
+                                                        {t('matching.homeworkhelp.buttonSummerVacation', {
+                                                            endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
+                                                        })}
                                                     </Text>
                                                 </Row>
                                             ) : (

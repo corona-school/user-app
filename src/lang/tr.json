@@ -1299,7 +1299,7 @@
       "textpupil": "Her gün Pazartesi - Perşembe 16:00 - 17:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz.",
       "texthelper": "Ev ödevi yardiminda, öğrencilere bir rehberlik saatinde olduğu gibi anlık olarak ödevlerinde yardımcı olabilirsin. Ev ödevi yardimi, Pazartesi'den Perşembe'ye saat 16:00 ile 17:00 arasında gerçekleşmektedir. Kendi takdirine göre burada istediğin sıklıkta ve bağlayıcılık olmadan katılım gösterebilirsin.",
       "button": "Ev ödevi yardımı",
-      "buttonSummerVacation": "Yaz tatili boyunca Eylül ayına kadar ev ödevi yardımı sunulmayacaktır..."
+      "buttonSummerVacation": "Yaz tatilinin sona ereceği {{endSummerVacation}} tarihine kadar ev ödevi yardımı yapılmayacaktır..."
     },
     "pending": {
       "modal": {
