@@ -16,6 +16,7 @@ const ProspectList: React.FC<ProspectListProps> = ({ prospects, subcourseId, ref
     const { space } = useTheme();
     const { t } = useTranslation();
     const toast = useToast();
+    const [isFetching, setFetching] = useState(false);
     const isMobile = useBreakpointValue({
         base: true,
         lg: false,
@@ -38,12 +39,15 @@ const ProspectList: React.FC<ProspectListProps> = ({ prospects, subcourseId, ref
     const handleAddPupil = useCallback(
         async (pupilId: number) => {
             try {
+                setFetching(true);
                 await addProspect({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
                 setIsJoinPupilModalOpen(false);
                 toast.show({ description: t('single.waitinglist.toast'), placement: 'top' });
                 await refetch();
             } catch (error) {
                 toast.show({ description: t('single.waitinglist.error'), placement: 'top' });
+            } finally {
+                setFetching(false);
             }
         },
         [addProspect, refetch, subcourseId]
@@ -62,7 +66,7 @@ const ProspectList: React.FC<ProspectListProps> = ({ prospects, subcourseId, ref
                                 </Column>
                                 <Spacer />
                                 <Column>
-                                    <Button variant="outline" onPress={() => handleOpenModal(pupil)}>
+                                    <Button variant="outline" onPress={() => handleOpenModal(pupil)} disabled={isFetching}>
                                         <AddCircleIcon />
                                     </Button>
                                 </Column>
