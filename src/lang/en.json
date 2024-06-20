@@ -1263,7 +1263,8 @@
             "title": "Homework help",
             "textpupil": "Every day from Monday - Thursday 16h - 17h we offer homework help on Zoom. You can participate every day if you need help with your homework.",
             "texthelper": "In the homework help service, you can help pupils spontaneously with their homework, just like in a consultation hour. Homework help takes place Monday - Thursday 16h - 17h. You can get involved as often as you like without obligation.",
-            "button": "To the homework help"
+            "button": "To the homework help",
+            "buttonSummerVacation": "There will be no homework help until the end of the summer vacation on {{endSummerVacation}}"
         },
         "pending": {
             "modal": {
