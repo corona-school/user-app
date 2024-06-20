@@ -257,7 +257,7 @@ const Dashboard: React.FC<Props> = () => {
                                             isSummerVacation ? (
                                                 <Row
                                                     flexWrap={'wrap'}
-                                                    w="100%"
+                                                    minWidth="100%"
                                                     justifyContent={'flex-start'}
                                                     alignItems={'center'}
                                                     bg={'secondary.100'}
