@@ -21,16 +21,7 @@ type FormProps = {
     videoChatType: string;
     isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({
-    errors,
-    // appointmentsCount,
-    onSetDate,
-    overrideMeetingLink,
-    onSetTime,
-    isCourse,
-    setVideoChatType,
-    videoChatType,
-}) => {
+const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeetingLink, onSetTime, isCourse, setVideoChatType, videoChatType }) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
