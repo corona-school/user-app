@@ -814,7 +814,8 @@
             "onboarding": "Ознайомча екскурсія",
             "progress": "Успіхи та прогрес",
             "forStudents": "Для помічників",
-            "forPupils": "Для школярів"
+            "forPupils": "Для школярів",
+            "push": "Повідомлення у додатку"
         },
         "account": {
             "title": "Обліковий запис",
@@ -2309,5 +2310,11 @@
         "feedbackSuccessfullySent": "Відгук успішно надіслано",
         "screenshotShouldNotBeBiggerThan": "Скріншот не може бути більшим за {{size}} МБ"
     },
-    "or": "або"
+    "or": "або",
+    "installation": {
+        "installTitle": "Lern-Fair Встановити",
+        "installDescription": "Швидкий доступ до чатів і зустрічей без входу в систему",
+        "installButton": "Встановити",
+        "iOSInstallInstructions": "Натисніть на <0/>, а потім <1/> \"На головний екран\""
+    }
 }

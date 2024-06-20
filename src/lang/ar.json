@@ -810,7 +810,8 @@
             "onboarding": "جولة على متن الطائرة",
             "progress": "النجاحات والتقدم المحرز",
             "forStudents": "للمساعدين",
-            "forPupils": "للتلاميذ"
+            "forPupils": "للتلاميذ",
+            "push": "رسائل التطبيق"
         },
         "account": {
             "title": "حساب",
@@ -2305,5 +2306,11 @@
         "feedbackSuccessfullySent": "تم إرسال الملاحظات بنجاح",
         "screenshotShouldNotBeBiggerThan": "لا يمكن أن تكون لقطة الشاشة أكبر من {{size}} ميغابايت"
     },
-    "or": "أو"
+    "or": "أو",
+    "installation": {
+        "installTitle": "Lern-Fair التثبيت",
+        "installDescription": "مواعيد للوصول بشكل أسرع إلى الدردشات وبدون تسجيل الدخول",
+        "installButton": "التثبيت",
+        "iOSInstallInstructions": "اضغط على <0/> ثم <1/> 'إلى الشاشة الرئيسية'"
+    }
 }
