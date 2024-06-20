@@ -130,7 +130,7 @@ const Settings: React.FC = () => {
                                         name: 'Abmelden im Account',
                                         documentTitle: 'Logout',
                                     });
-                                    logout();
+                                    navigate('/logout');
                                 }}
                             />
                         </Column>
