@@ -1,6 +1,6 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Button } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useTheme, VStack, Column, useBreakpointValue } from 'native-base';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
@@ -11,6 +11,7 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE, WEBPUSH_ACTIVE } from '../config';
+import { InstallationContext } from '../context/InstallationProvider';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -20,6 +21,7 @@ const Settings: React.FC = () => {
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
+    const { canInstall, install } = useContext(InstallationContext);
 
     const [showDeactivate, setShowDeactivate] = useState(false);
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
@@ -41,6 +43,16 @@ const Settings: React.FC = () => {
         lg: false,
     });
 
+    const handleOnInstall = async () => {
+        trackEvent({
+            category: 'pwa',
+            action: 'click-event',
+            name: 'Lern-Fair installieren',
+            documentTitle: 'Einstellungen',
+        });
+        await install();
+    };
+
     return (
         <>
             <WithNavigation
@@ -50,28 +62,39 @@ const Settings: React.FC = () => {
                 previousFallbackRoute="/start"
                 headerLeft={userType !== 'screener' && <NotificationAlert />}
             >
-                <VStack paddingY={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                    <HStack space={space['1']} alignItems="center">
-                        <Heading>{user?.firstname}</Heading>
-                    </HStack>
-                    {LANGUAGE_SWITCHER_ACTIVE && (
-                        <Column paddingY={space['1']} mb={tabspace}>
-                            <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
-                        </Column>
-                    )}
-                </VStack>
-                <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                    {userType !== 'screener' && (
+                <VStack paddingX={space['1.5']} pt={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                    <>
+                        <ProfileSettingRow title={user?.firstname!} isSpace={false}>
+                            {userType !== 'screener' && (
+                                <>
+                                    <Column mb={tabspace}>
+                                        <ListItem label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
+                                    </Column>
+                                    <Column mb={tabspace}>
+                                        <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
+                                    </Column>
+                                    {WEBPUSH_ACTIVE && (
+                                        <Column mb={tabspace}>
+                                            <ListItem label={t('settings.general.push')} onPress={() => navigate('/push')} />
+                                        </Column>
+                                    )}
+                                </>
+                            )}
+                        </ProfileSettingRow>
                         <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
-                            <Column mb={tabspace}>
-                                <ListItem label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
-                            </Column>
-                            <Column mb={tabspace}>
-                                <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
-                            </Column>
                             {GAMIFICATION_ACTIVE && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
+                                </Column>
+                            )}
+                            {LANGUAGE_SWITCHER_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
+                                </Column>
+                            )}
+                            {canInstall && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />
                                 </Column>
                             )}
                             {userType === 'student' && isMobile && (
@@ -84,13 +107,8 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
-                            {WEBPUSH_ACTIVE && (
-                                <Column mb={tabspace}>
-                                    <ListItem label={'Push'} onPress={() => navigate('/push')} />
-                                </Column>
-                            )}
                         </ProfileSettingRow>
-                    )}
+                    </>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
                         <Column mb={tabspace}>
                             <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />

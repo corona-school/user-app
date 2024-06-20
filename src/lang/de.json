@@ -883,7 +883,8 @@
             "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte",
             "forStudents": "Fortbildung",
-            "forPupils": "Lernhilfen"
+            "forPupils": "Lernhilfen",
+            "push": "App-Mitteilungen"
         },
         "account": {
             "title": "Konto",
@@ -2310,5 +2311,11 @@
         "feedbackSuccessfullySent": "Feedback erfolgreich gesendet",
         "screenshotShouldNotBeBiggerThan": "Der Screenshot kann nicht größer als {{size}} MB sein"
     },
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "installation": {
+        "installTitle": "Lern-Fair installieren",
+        "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
+        "installButton": "Installieren",
+        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken"
+    }
 }

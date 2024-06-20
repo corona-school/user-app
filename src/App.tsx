@@ -18,6 +18,7 @@ import { LFChatProvider } from './context/ChatContext';
 import NavigationStackProvider from './context/NavigationStackProvider';
 
 import './service-worker-proxy';
+import InstallationProvider from './context/InstallationProvider';
 
 function App() {
     return (
@@ -32,7 +33,9 @@ function App() {
                                         <NotificationsProvider>
                                             <LFChatProvider>
                                                 <NavigationStackProvider>
-                                                    <Navigator />
+                                                    <InstallationProvider>
+                                                        <Navigator />
+                                                    </InstallationProvider>
                                                     <ToastNotifications />
                                                 </NavigationStackProvider>
                                             </LFChatProvider>

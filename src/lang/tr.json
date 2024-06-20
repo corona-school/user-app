@@ -814,7 +814,8 @@
             "onboarding": "Onboarding turu",
             "progress": "Başarılar ve ilerleme",
             "forStudents": "Yardımcılar için",
-            "forPupils": "Öğrenciler için"
+            "forPupils": "Öğrenciler için",
+            "push": "Uygulama mesajları"
         },
         "account": {
             "title": "Hesap",
@@ -2310,5 +2311,11 @@
         "feedbackSuccessfullySent": "Geri bildirim başarıyla gönderildi",
         "screenshotShouldNotBeBiggerThan": "Ekran görüntüsü {{size}}'dan daha büyük olamaz MB"
     },
-    "or": "veya"
+    "or": "veya",
+    "installation": {
+        "installTitle": "Lern-Fair Kurulum",
+        "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
+        "installButton": "Kurulum",
+        "iOSInstallInstructions": "<0/> ve ardından <1/> \"Ana Ekrana Ekle\"ye dokunun"
+    }
 }

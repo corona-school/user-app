@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import useLernfair from '../hooks/useLernfair';
 import { NavigationItems } from '../types/navigation';
 import CSSWrapper from './CSSWrapper';
-import { useUserType } from '../hooks/useApollo';
+import { useRoles, useUserType } from '../hooks/useApollo';
 import HalfStarIcon from '../assets/icons/icon_half_star_filled.svg';
 import { useTranslation } from 'react-i18next';
 import AppFeedbackModal from '../modals/AppFeedbackModal';
@@ -24,49 +24,35 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
     const { rootPath, setRootPath } = useLernfair();
     const navigate = useNavigate();
     const userType = useUserType();
+    const userRoles = useRoles();
     const [isOpen, setIsOpen] = useState(false);
 
-    const { data, loading } = useQuery(
-        gql(`
-            query GetRolesSidebar {
-                myRoles
-            }
-        `)
-    );
-
     const disableGroup: boolean = useMemo(() => {
-        if (!data) return true;
-        if (userType === 'screener') return !data?.myRoles.includes('COURSE_SCREENER');
-        if (userType === 'pupil') return !data?.myRoles.includes('PARTICIPANT');
+        if (userType === 'screener') return !userRoles.includes('COURSE_SCREENER');
+        if (userType === 'pupil') return !userRoles.includes('PARTICIPANT');
         return false;
-    }, [data, userType]);
+    }, [userRoles, userType]);
 
     const disableChat: boolean = useMemo(() => {
-        if (!data) return true;
         if (userType === 'screener') return true;
         return false;
-    }, [userType, data]);
+    }, [userType]);
 
     const disableMatching: boolean = useMemo(() => {
-        if (!data) return true;
         if (userType === 'screener') return true;
-        if (userType === 'pupil') return !data?.myRoles.includes('TUTEE');
+        if (userType === 'pupil') return !userRoles.includes('TUTEE');
         return false;
-    }, [data, userType]);
+    }, [userRoles, userType]);
 
     const hideForStudents = useMemo(() => {
-        if (!data) return true;
         if (['screener', 'pupil'].includes(userType)) return true;
         return false;
-    }, [data, userType]);
+    }, [userType]);
 
     const hideForPupils = useMemo(() => {
-        if (!data) return true;
         if (['screener', 'student'].includes(userType)) return true;
         return false;
-    }, [data, userType]);
-
-    if (loading) return <></>;
+    }, [userType]);
 
     return (
         (show && (

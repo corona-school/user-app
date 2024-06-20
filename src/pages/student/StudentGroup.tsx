@@ -187,7 +187,6 @@ const StudentGroup: React.FC = () => {
     return (
         <AsNavigationItem path="group">
             <WithNavigation
-                headerContent={<Hello />}
                 headerTitle={t('matching.group.helper.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">

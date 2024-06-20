@@ -166,7 +166,7 @@ const Dashboard: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const isMobile = useBreakpointValue({ base: true, lg: false });
+    const isMobile = useBreakpointValue({ base: true, md: false });
     const startSummerVacation = new Date('2024-06-10');
     const endSummerVacation = new Date('2024-09-02');
     const isSummerVacation = startSummerVacation <= new Date() && endSummerVacation >= new Date();
@@ -220,14 +220,9 @@ const Dashboard: React.FC<Props> = () => {
         <AsNavigationItem path="start">
             <WithNavigation
                 headerContent={
-                    !loading && (
-                        <HStack
-                            maxWidth={ContainerWidth}
-                            space={space['1']}
-                            alignItems="center"
-                            bgColor={isMobile ? 'primary.900' : 'transparent'}
-                            padding={isMobile ? space['1.5'] : space['0.5']}
-                        >
+                    !loading &&
+                    isMobile && (
+                        <HStack maxWidth={ContainerWidth} space={space['1']} alignItems="center" bgColor={'primary.900'} padding={space['1.5']}>
                             <Hello />
                         </HStack>
                     )
