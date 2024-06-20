@@ -33,7 +33,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
 
     const disableMatching: boolean = useMemo(() => {
         if (userType === 'screener') return true;
-        if (userType === 'pupil') return userRoles.includes('TUTEE');
+        if (userType === 'pupil') return !userRoles.includes('TUTEE');
         return false;
     }, [userType, userRoles]);
 
