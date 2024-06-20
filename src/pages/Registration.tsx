@@ -79,6 +79,8 @@ const mutStudent = gql(`
     }
 `);
 
+export const TRAINEE_GRADE = 14;
+
 const Registration: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
