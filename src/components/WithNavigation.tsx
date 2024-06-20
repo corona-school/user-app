@@ -2,7 +2,7 @@ import { View, useBreakpointValue, useTheme, Row, Column, Box } from 'native-bas
 import HeaderCard from './HeaderCard';
 import { NavigationItems } from '../types/navigation';
 import BottomNavigationBar from './BottomNavigationBar';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useContext, useState } from 'react';
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg';
 import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
@@ -15,8 +15,8 @@ import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { useChat } from '../context/ChatContext';
-import InstallAppBanner, { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
-import { PromotionType } from '../context/InstallationProvider';
+import InstallAppBanner from '../widgets/InstallAppBanner';
+import { InstallationContext } from '../context/InstallationProvider';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -46,7 +46,7 @@ const WithNavigation: React.FC<Props> = ({
     previousFallbackRoute,
     onBack,
 }) => {
-    const [promotionTypeToShow, setPromotionTypeToShow] = useState<PromotionType>(PromotionType.none);
+    const { showInstallInstructions } = useContext(InstallationContext);
     const { space, colors } = useTheme();
     const isMobile = useBreakpointValue({
         base: true,
@@ -83,14 +83,9 @@ const WithNavigation: React.FC<Props> = ({
         },
     };
 
-    const handleOnCloseInstallInstructions = () => {
-        setPromotionTypeToShow(PromotionType.none);
-    };
-
     return (
         <View flex="1">
             <View flex="1" display="flex" flexDirection="column" flexWrap="nowrap" overflow="hidden" w="100vw" h="100%" flexBasis="auto" flexGrow="1">
-                {promotionTypeToShow === PromotionType.iPad && <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant="iPad" />}
                 <HeaderCard
                     onBack={onBack}
                     showBack={showBack}
@@ -113,7 +108,7 @@ const WithNavigation: React.FC<Props> = ({
                                 <>
                                     <Box mb={4} position="static">
                                         {isMobile && <>{headerContent}</>}
-                                        {isMobileOrTablet && !hideMenu && <InstallAppBanner onInstall={setPromotionTypeToShow} />}
+                                        {isMobileOrTablet && !hideMenu && <InstallAppBanner onInstall={showInstallInstructions} />}
                                     </Box>
                                     {children}
                                 </>
@@ -122,14 +117,7 @@ const WithNavigation: React.FC<Props> = ({
                     </Row>
                 </Box>
             </View>
-            {!hideMenu && (
-                <BottomNavigationBar
-                    show={isMobile}
-                    navItems={navItems}
-                    unreadMessagesCount={unreadMessagesCount}
-                    appInstallInstructions={{ show: promotionTypeToShow === PromotionType.iPhone, onClose: handleOnCloseInstallInstructions }}
-                />
-            )}
+            {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
         </View>
     );
 };

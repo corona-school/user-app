@@ -11,7 +11,6 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE, WEBPUSH_ACTIVE } from '../config';
-import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
 import { InstallationContext, PromotionType } from '../context/InstallationProvider';
 
 const Settings: React.FC = () => {
@@ -22,8 +21,7 @@ const Settings: React.FC = () => {
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
-    const { promotionType, shouldPromote, install } = useContext(InstallationContext);
-    const [showInstallInstructions, setShowInstallInstructions] = useState(false);
+    const { promotionType, canInstall, install, showInstallInstructions } = useContext(InstallationContext);
 
     const [showDeactivate, setShowDeactivate] = useState(false);
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
@@ -56,12 +54,8 @@ const Settings: React.FC = () => {
             await install();
         }
         if ([PromotionType.iPad, PromotionType.iPhone].includes(promotionType)) {
-            setShowInstallInstructions(true);
+            showInstallInstructions();
         }
-    };
-
-    const handleOnCloseInstallInstructions = () => {
-        setShowInstallInstructions(false);
     };
 
     return (
@@ -73,9 +67,6 @@ const Settings: React.FC = () => {
                 previousFallbackRoute="/start"
                 headerLeft={userType !== 'screener' && <NotificationAlert />}
             >
-                {showInstallInstructions && promotionType === PromotionType.iPad && (
-                    <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPad'} />
-                )}
                 <VStack paddingX={space['1.5']} pt={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <>
                         <ProfileSettingRow title={user?.firstname!} isSpace={false}>
@@ -106,7 +97,7 @@ const Settings: React.FC = () => {
                                     <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
                                 </Column>
                             )}
-                            {shouldPromote && (
+                            {canInstall && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />
                                 </Column>
@@ -158,9 +149,6 @@ const Settings: React.FC = () => {
                         </Column>
                     </ProfileSettingRow>
                 </VStack>
-                {showInstallInstructions && promotionType === PromotionType.iPhone && (
-                    <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPhone'} />
-                )}
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
             <SwitchLanguageModal isOpen={showSwitchLanguage} onCloseModal={() => setShowSwitchLanguage(false)} />

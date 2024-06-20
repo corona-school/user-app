@@ -1,6 +1,8 @@
 import { createContext, useEffect, useState, useRef } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { BeforeInstallPromptEvent } from '../types/window';
+import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
+import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export enum PromotionType {
     native = 'native',
@@ -10,15 +12,21 @@ export enum PromotionType {
 }
 
 interface InstallationContextValue {
+    canInstall: boolean;
     shouldPromote: boolean;
     promotionType: PromotionType;
     install: () => Promise<void>;
+    showInstallInstructions: () => void;
+    stopPromoting: () => void;
 }
 
 export const InstallationContext = createContext<InstallationContextValue>({
-    install: async () => {},
-    promotionType: PromotionType.none,
+    canInstall: false,
     shouldPromote: false,
+    promotionType: PromotionType.none,
+    install: async () => {},
+    showInstallInstructions: () => {},
+    stopPromoting: () => {},
 });
 
 interface InstallationProviderProps {
@@ -28,7 +36,9 @@ interface InstallationProviderProps {
 const InstallationProvider = ({ children }: InstallationProviderProps) => {
     const { trackEvent } = useMatomo();
     const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
+    const [isInstructionsBannerVisible, setIsInstructionsBannerVisible] = useState(false);
     const [promotionType, setPromotionType] = useState<PromotionType>(PromotionType.none);
+    const [showPromotionBanner, setShowPromotionBanner] = useLocalStorage<boolean | null>({ key: 'recommend-lern-fair-installation', initialValue: null });
 
     const isIphone = () => {
         const userAgent = window?.navigator?.userAgent?.toLowerCase();
@@ -81,9 +91,36 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         }
     };
 
+    const handleOnCloseInstallInstructions = () => {
+        setIsInstructionsBannerVisible(false);
+    };
+
+    const showInstallInstructions = () => {
+        setIsInstructionsBannerVisible(true);
+    };
+
+    const stopPromoting = () => {
+        setShowPromotionBanner(false);
+    };
+
+    const canInstall = promotionType !== PromotionType.none;
+    const shouldPromote = canInstall && !!showPromotionBanner;
+
+    useEffect(() => {
+        if (canInstall && showPromotionBanner === null) {
+            setShowPromotionBanner(true);
+        }
+    }, [canInstall, showPromotionBanner]);
+
     return (
-        <InstallationContext.Provider value={{ install, promotionType, shouldPromote: promotionType !== PromotionType.none }}>
+        <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, showInstallInstructions, stopPromoting }}>
+            {isInstructionsBannerVisible && promotionType === PromotionType.iPad && (
+                <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPad'} />
+            )}
             {children}
+            {isInstructionsBannerVisible && promotionType === PromotionType.iPhone && (
+                <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPhone'} />
+            )}
         </InstallationContext.Provider>
     );
 };

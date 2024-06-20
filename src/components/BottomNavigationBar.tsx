@@ -6,19 +6,14 @@ import CSSWrapper from './CSSWrapper';
 import '../web/scss/components/BottomNavigationBar.scss';
 import useLernfair from '../hooks/useLernfair';
 import { useRoles, useUserType } from '../hooks/useApollo';
-import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
 
 type Props = {
     show?: boolean;
     navItems: NavigationItems;
     unreadMessagesCount?: number;
-    appInstallInstructions: {
-        show: boolean;
-        onClose: () => void;
-    };
 };
 
-const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMessagesCount, appInstallInstructions }) => {
+const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMessagesCount }) => {
     const { space, colors } = useTheme();
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
@@ -50,7 +45,6 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
     return (
         (show && (
             <Box pb="env(safe-area-inset-bottom)">
-                {appInstallInstructions.show && <IOSInstallAppInstructions onClose={appInstallInstructions.onClose} variant="iPhone" />}
                 <Row
                     w="100%"
                     h={'54px'}

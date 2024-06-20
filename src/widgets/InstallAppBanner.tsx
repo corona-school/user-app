@@ -2,7 +2,6 @@ import { HStack, Button, IconButton, Text } from 'native-base';
 import IconClose from '../assets/icons/ic_close.svg';
 import IconShare from '../assets/icons/icon_share.svg';
 import IconAdd from '../assets/icons/icon_add_square.svg';
-import { useLocalStorage } from '../hooks/useLocalStorage';
 import { Trans, useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { InstallationContext, PromotionType } from '../context/InstallationProvider';
@@ -12,10 +11,9 @@ interface InstallAppBannerProps {
 }
 
 const InstallAppBanner = ({ onInstall }: InstallAppBannerProps) => {
-    const { shouldPromote, install, promotionType } = useContext(InstallationContext);
+    const { shouldPromote, install, promotionType, stopPromoting } = useContext(InstallationContext);
     const { t } = useTranslation();
-    const [show, setShow] = useLocalStorage({ key: 'recommend-lern-fair-installation', initialValue: true });
-    if (!shouldPromote || !show) return null;
+    if (!shouldPromote) return null;
 
     const handleOnInstallClick = async () => {
         if (promotionType === 'native') {
@@ -27,7 +25,7 @@ const InstallAppBanner = ({ onInstall }: InstallAppBannerProps) => {
 
     return (
         <HStack space={1.5} px={2} height="100px" width="full" background="#fbefc6" display="flex" flexDirection="row" alignItems="center">
-            <IconButton icon={<IconClose />} size="sm" onPress={() => setShow(false)} />
+            <IconButton icon={<IconClose />} size="sm" onPress={stopPromoting} />
             <Text fontSize="sm">
                 <strong style={{ display: 'block' }}>{t('installation.installTitle')}</strong>
                 <span>{t('installation.installDescription')}</span>
