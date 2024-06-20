@@ -2,7 +2,7 @@ import { View, useBreakpointValue, useTheme, Row, Column, Box } from 'native-bas
 import HeaderCard from './HeaderCard';
 import { NavigationItems } from '../types/navigation';
 import BottomNavigationBar from './BottomNavigationBar';
-import { ReactNode, useContext, useState } from 'react';
+import { ReactNode } from 'react';
 
 import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg';
 import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
@@ -16,7 +16,6 @@ import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { useChat } from '../context/ChatContext';
 import InstallAppBanner from '../widgets/InstallAppBanner';
-import { InstallationContext } from '../context/InstallationProvider';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -46,7 +45,6 @@ const WithNavigation: React.FC<Props> = ({
     previousFallbackRoute,
     onBack,
 }) => {
-    const { showInstallInstructions } = useContext(InstallationContext);
     const { space, colors } = useTheme();
     const isMobile = useBreakpointValue({
         base: true,
@@ -108,7 +106,7 @@ const WithNavigation: React.FC<Props> = ({
                                 <>
                                     <Box mb={4} position="static">
                                         {isMobile && <>{headerContent}</>}
-                                        {isMobileOrTablet && !hideMenu && <InstallAppBanner onInstall={showInstallInstructions} />}
+                                        {isMobileOrTablet && !hideMenu && <InstallAppBanner />}
                                     </Box>
                                     {children}
                                 </>

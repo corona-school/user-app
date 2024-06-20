@@ -16,7 +16,6 @@ interface InstallationContextValue {
     shouldPromote: boolean;
     promotionType: PromotionType;
     install: () => Promise<void>;
-    showInstallInstructions: () => void;
     stopPromoting: () => void;
 }
 
@@ -25,7 +24,6 @@ export const InstallationContext = createContext<InstallationContextValue>({
     shouldPromote: false,
     promotionType: PromotionType.none,
     install: async () => {},
-    showInstallInstructions: () => {},
     stopPromoting: () => {},
 });
 
@@ -57,7 +55,7 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     const isInStandaloneMode = () => 'standalone' in window.navigator && (window.navigator as any)?.standalone;
 
     const install = async () => {
-        if (deferredPromptRef.current) {
+        if (promotionType === PromotionType.native && deferredPromptRef.current) {
             deferredPromptRef.current.prompt();
             const choiceResult = await deferredPromptRef.current.userChoice;
             trackEvent({
@@ -67,6 +65,8 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
             });
             deferredPromptRef.current = null;
             setPromotionType(PromotionType.none);
+        } else if ([PromotionType.iPad, PromotionType.iPhone].includes(promotionType)) {
+            setIsInstructionsBannerVisible(true);
         }
     };
 
@@ -74,11 +74,12 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         setIsInstructionsBannerVisible(false);
     };
 
-    const showInstallInstructions = () => {
-        setIsInstructionsBannerVisible(true);
-    };
-
     const stopPromoting = () => {
+        trackEvent({
+            category: 'pwa',
+            action: 'click-event',
+            name: 'App-Installations-Banner schließen',
+        });
         setShowPromotionBanner(false);
     };
 
@@ -112,7 +113,7 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     }, []);
 
     return (
-        <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, showInstallInstructions, stopPromoting }}>
+        <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting }}>
             {isInstructionsBannerVisible && promotionType === PromotionType.iPad && (
                 <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPad'} />
             )}

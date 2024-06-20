@@ -4,24 +4,13 @@ import IconShare from '../assets/icons/icon_share.svg';
 import IconAdd from '../assets/icons/icon_add_square.svg';
 import { Trans, useTranslation } from 'react-i18next';
 import { useContext } from 'react';
-import { InstallationContext, PromotionType } from '../context/InstallationProvider';
+import { InstallationContext } from '../context/InstallationProvider';
 
-interface InstallAppBannerProps {
-    onInstall?: (promotionType: PromotionType) => void;
-}
-
-const InstallAppBanner = ({ onInstall }: InstallAppBannerProps) => {
-    const { shouldPromote, install, promotionType, stopPromoting } = useContext(InstallationContext);
+const InstallAppBanner = () => {
+    const { install, stopPromoting, shouldPromote } = useContext(InstallationContext);
     const { t } = useTranslation();
-    if (!shouldPromote) return null;
 
-    const handleOnInstallClick = async () => {
-        if (promotionType === 'native') {
-            await install();
-            return;
-        }
-        onInstall && onInstall(promotionType);
-    };
+    if (!shouldPromote) return null;
 
     return (
         <HStack space={1.5} px={2} height="100px" width="full" background="#fbefc6" display="flex" flexDirection="row" alignItems="center">
@@ -30,7 +19,7 @@ const InstallAppBanner = ({ onInstall }: InstallAppBannerProps) => {
                 <strong style={{ display: 'block' }}>{t('installation.installTitle')}</strong>
                 <span>{t('installation.installDescription')}</span>
             </Text>
-            <Button width="110px" size="xs" onPress={handleOnInstallClick}>
+            <Button width="110px" size="xs" onPress={install}>
                 {t('installation.installButton')}
             </Button>
         </HStack>

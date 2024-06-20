@@ -11,7 +11,7 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE, WEBPUSH_ACTIVE } from '../config';
-import { InstallationContext, PromotionType } from '../context/InstallationProvider';
+import { InstallationContext } from '../context/InstallationProvider';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -21,7 +21,7 @@ const Settings: React.FC = () => {
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
-    const { promotionType, canInstall, install, showInstallInstructions } = useContext(InstallationContext);
+    const { canInstall, install } = useContext(InstallationContext);
 
     const [showDeactivate, setShowDeactivate] = useState(false);
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
@@ -50,12 +50,7 @@ const Settings: React.FC = () => {
             name: 'Lern-Fair installieren',
             documentTitle: 'Einstellungen',
         });
-        if (promotionType === PromotionType.native) {
-            await install();
-        }
-        if ([PromotionType.iPad, PromotionType.iPhone].includes(promotionType)) {
-            showInstallInstructions();
-        }
+        await install();
     };
 
     return (
