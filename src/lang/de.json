@@ -1853,7 +1853,7 @@
             }
         },
         "controlPanel": {
-            "title": "E-Mail-Benachrichtigungen",
+            "title": "Benachrichtigungen",
             "yourMail": "Deine E-Mail: ",
             "closeButton": "Schließen",
             "preference": {
@@ -1870,23 +1870,23 @@
                 },
                 "survey": {
                     "title": "Feedback & Befragungen",
-                    "modalBody": "Wir möchten, dass du zufrieden mit Lern Fair bist. Deshalb schicken wir dir gelegentlich Feedback-Fragebögen zu, um von deinen Erfahrungen zu hören. Wir freuen uns, wenn du Feedback, Ideen und Verbesserungsvorschläge auf diesem Wege an uns weiterleitest."
+                    "modalBody": "Gelegentliche Fragebögen, um dein Feedback, Ideen und Verbesserungsvorschläge zu erfahren."
                 },
                 "appointment": {
                     "title": "Terminhinweis",
-                    "modalBody": "Wir informieren dich über neue Termine mit deinen Lernpartner:innen und in Kursen. Zudem erinnern wir dich kurz vor Beginn des Termins nochmal an die Unterrichtsstunde."
+                    "modalBody": "Hinweise bei neuen Terminen und Erinnerungen vor Beginn der Unterrichtsstunde."
                 },
                 "advice": {
                     "title": "Lerntipps & Hilfestellungen",
-                    "modalBody": "Lernen muss gelernt sein. Wir helfen dir mit Schulungen und Materialien, dich auf die Unterrichtsstunden vorzubereiten und senden dir zugleich die besten Tipps für einen möglichst großen Lernfortschritt. Damit bleibt ihr motiviert und spart wertvolle Zeit."
+                    "modalBody": "Schulungen, Materialien und Tipps für deinen optimalen Lernfortschritt."
                 },
                 "suggestion": {
                     "title": "Kursvorschläge",
-                    "modalBody": "Auf unserer Plattform laden wir regelmäßig neue spannende Kurse hoch. Wenn ein passender Kurs für deine Jahrgangsstufe und deine Fächer angeboten wird, erhältst du von uns eine Benachrichtigung. Du kannst deine Fächer und damit deine Interessen im Profil jederzeit anpassen."
+                    "modalBody": "Beim Veröffentlichen neuer Kurse erhältst du eine Info - sofern dein Profil dazu passt."
                 },
                 "announcement": {
                     "title": "Wichtige Änderungen",
-                    "modalBody": "Wenn sich die Funktionsweise von Lern-Fair wesentlich ändert oder es neue Programme gibt, informieren wir dich über wichtige Änderungen."
+                    "modalBody": "Wir informieren dich über wesentliche Änderungen und neue Programme bei Lern-Fair."
                 },
                 "call": {
                     "title": "Aufruf zum Engagement",
