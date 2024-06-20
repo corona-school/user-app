@@ -49,8 +49,8 @@ export const IOSInstallAppInstructions = ({ variant, onClose }: IOSInstallAppIns
         <HStack
             space={1}
             px={2}
-            pt={2}
-            pb={4}
+            pt={isIpad ? 1 : 2}
+            pb={isIpad ? 2 : 4}
             width="full"
             background="#fbefc6"
             display="flex"
@@ -58,7 +58,7 @@ export const IOSInstallAppInstructions = ({ variant, onClose }: IOSInstallAppIns
             alignItems="center"
             justifyContent="center"
             position="absolute"
-            style={{ bottom: isIpad ? 'unset' : '15px', top: isIpad ? '15px' : 'unset' }}
+            style={{ bottom: isIpad ? 'unset' : '15px', top: isIpad ? '10px' : 'unset' }}
             zIndex="99999"
         >
             <Text fontSize="sm" textAlign="center" width="100%" display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" mt={isIpad ? 0 : 3}>
