@@ -12,7 +12,7 @@ import { Outlet, useNavigate, useMatch, useSearchParams } from 'react-router-dom
 import { getAllPreferencesInCategorySetToValue } from '../../helper/notification-helper';
 import { marketingNotificationCategories } from '../../helper/notification-preferences';
 
-const channels = ['email'];
+const channels = ['email', 'push'];
 
 type NotificationPreferencesContextType = ReturnType<typeof useUserPreferences> & { channels: typeof channels };
 export const NotificationPreferencesContext = createContext<NotificationPreferencesContextType>({} as NotificationPreferencesContextType);
