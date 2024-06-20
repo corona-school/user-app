@@ -884,7 +884,8 @@
             "progress": "Erfolge & Fortschritte",
             "forStudents": "Fortbildung",
             "forPupils": "Lernhilfen",
-            "push": "App-Mitteilungen"
+            "push": "App-Mitteilungen",
+            "manageSessions": "Geräte verwalten"
         },
         "account": {
             "title": "Konto",
@@ -1921,6 +1922,11 @@
                 }
             }
         }
+    },
+    "sessionManager": {
+        "title": "Geräte verwalten",
+        "description": "Hier kannst du alle Geräte sehen, die mit deinem Account verbunden sind. Du kannst Geräte entfernen, die du nicht mehr benutzt.",
+        "lastUsed": "Zuletzt benutzt:"
     },
     "chat": {
         "title": "Chat",
