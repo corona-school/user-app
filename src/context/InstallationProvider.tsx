@@ -39,6 +39,8 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     const [isInstructionsBannerVisible, setIsInstructionsBannerVisible] = useState(false);
     const [promotionType, setPromotionType] = useState<PromotionType>(PromotionType.none);
     const [showPromotionBanner, setShowPromotionBanner] = useLocalStorage<boolean | null>({ key: 'recommend-lern-fair-installation', initialValue: null });
+    const canInstall = promotionType !== PromotionType.none;
+    const shouldPromote = canInstall && !!showPromotionBanner;
 
     const isIphone = () => {
         const userAgent = window?.navigator?.userAgent?.toLowerCase();
@@ -53,29 +55,6 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     };
 
     const isInStandaloneMode = () => 'standalone' in window.navigator && (window.navigator as any)?.standalone;
-
-    useEffect(() => {
-        if (isIphone() && !isInStandaloneMode()) {
-            setPromotionType(PromotionType.iPhone);
-            return;
-        }
-        if (isIpad() && !isInStandaloneMode()) {
-            setPromotionType(PromotionType.iPad);
-            return;
-        }
-
-        const handleBeforeInstallPrompt = (e: Event) => {
-            e.preventDefault();
-            deferredPromptRef.current = e as BeforeInstallPromptEvent;
-            setPromotionType(PromotionType.native);
-        };
-
-        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-
-        return () => {
-            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
-        };
-    }, []);
 
     const install = async () => {
         if (deferredPromptRef.current) {
@@ -103,14 +82,34 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         setShowPromotionBanner(false);
     };
 
-    const canInstall = promotionType !== PromotionType.none;
-    const shouldPromote = canInstall && !!showPromotionBanner;
-
     useEffect(() => {
         if (canInstall && showPromotionBanner === null) {
             setShowPromotionBanner(true);
         }
     }, [canInstall, showPromotionBanner]);
+
+    useEffect(() => {
+        if (isIphone() && !isInStandaloneMode()) {
+            setPromotionType(PromotionType.iPhone);
+            return;
+        }
+        if (isIpad() && !isInStandaloneMode()) {
+            setPromotionType(PromotionType.iPad);
+            return;
+        }
+
+        const handleBeforeInstallPrompt = (e: Event) => {
+            e.preventDefault();
+            deferredPromptRef.current = e as BeforeInstallPromptEvent;
+            setPromotionType(PromotionType.native);
+        };
+
+        window.addEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+
+        return () => {
+            window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
+        };
+    }, []);
 
     return (
         <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, showInstallInstructions, stopPromoting }}>
