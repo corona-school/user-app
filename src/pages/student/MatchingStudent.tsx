@@ -129,7 +129,6 @@ const MatchingStudent: React.FC<Props> = () => {
         <AsNavigationItem path="matching">
             <WithNavigation
                 headerTitle={t('matching.request.check.header')}
-                headerContent={<Hello />}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <HelpNavigation />

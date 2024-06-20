@@ -5,9 +5,7 @@ import { NavigationItems } from '../types/navigation';
 import CSSWrapper from './CSSWrapper';
 import '../web/scss/components/BottomNavigationBar.scss';
 import useLernfair from '../hooks/useLernfair';
-import { gql } from './../gql';
-import { useQuery } from '@apollo/client';
-import { useRoles, useUser, useUserType } from '../hooks/useApollo';
+import { useRoles, useUserType } from '../hooks/useApollo';
 
 type Props = {
     show?: boolean;
