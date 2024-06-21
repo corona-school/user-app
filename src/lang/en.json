@@ -1833,7 +1833,13 @@
                 "allNewsletterDisabled": "All newsletters have been deactivated",
                 "disableAll": "Deactivate all newsletters",
                 "enableAllTooltip": "You have already activated all newsletters.",
-                "disableAllTooltip": "You have already deactivated all newsletters."
+                "disableAllTooltip": "You have already deactivated all newsletters.",
+                "channel": {
+                    "email": "e-mail",
+                    "push": "App message"
+                },
+                "pushNotifications": "App messages",
+                "pushNotificationTooltip": "App notifications inform you about important events or information even when the app is not open. You can individually select which messages you would like to receive as app notifications."
             },
             "tabs": {
                 "system": {
