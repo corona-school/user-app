@@ -314,7 +314,6 @@ const AppointmentCreation: React.FC<Props> = ({
             <Box>
                 <AppointmentForm
                     errors={errors}
-                    appointmentsCount={appointmentsTotal ? appointmentsTotal : 0}
                     onSetDate={() => {
                         setDateSelected(true);
                     }}

@@ -234,7 +234,6 @@ const PupilGroup: React.FC<Props> = () => {
     return (
         <AsNavigationItem path="group">
             <WithNavigation
-                headerContent={<Hello />}
                 headerTitle={t('matching.group.pupil.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">

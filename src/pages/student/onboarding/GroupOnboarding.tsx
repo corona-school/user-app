@@ -67,7 +67,7 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
 
     return (
         <AsNavigationItem path="group">
-            <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
+            <WithNavigation headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
                 {loading && <CenterLoadingSpinner />}
 
                 {!loading && (

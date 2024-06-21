@@ -814,7 +814,8 @@
             "onboarding": "Onboarding tour",
             "progress": "Successes & progress",
             "forStudents": "For volunteers",
-            "forPupils": "For pupils"
+            "forPupils": "For pupils",
+            "push": "App messages"
         },
         "account": {
             "title": "Account",
@@ -1262,7 +1263,8 @@
             "title": "Homework help",
             "textpupil": "Every day from Monday - Thursday 16h - 17h we offer homework help on Zoom. You can participate every day if you need help with your homework.",
             "texthelper": "In the homework help service, you can help pupils spontaneously with their homework, just like in a consultation hour. Homework help takes place Monday - Thursday 16h - 17h. You can get involved as often as you like without obligation.",
-            "button": "To the homework help"
+            "button": "To the homework help",
+            "buttonSummerVacation": "There will be no homework help until the end of the summer vacation on {{endSummerVacation}}"
         },
         "pending": {
             "modal": {
@@ -2305,5 +2307,11 @@
         "feedbackSuccessfullySent": "Feedback sent successfully",
         "screenshotShouldNotBeBiggerThan": "The screenshot cannot be larger than {{size}} MB"
     },
-    "or": "or"
+    "or": "or",
+    "installation": {
+        "installTitle": "Lern-Fair Install",
+        "installDescription": "For faster access to chats and lectures without logging in",
+        "installButton": "Install",
+        "iOSInstallInstructions": "Tap on <0/> and then <1/> \"Add to Home Screen\""
+    }
 }

@@ -883,7 +883,8 @@
             "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte",
             "forStudents": "Fortbildung",
-            "forPupils": "Lernhilfen"
+            "forPupils": "Lernhilfen",
+            "push": "App-Mitteilungen"
         },
         "account": {
             "title": "Konto",
@@ -1330,7 +1331,8 @@
             "title": "Hausaufgabenhilfe",
             "textpupil": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.",
             "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 16h - 17h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
-            "button": "Zur Hausaufgabenhilfe"
+            "button": "Zur Hausaufgabenhilfe",
+            "buttonSummerVacation": "Bis zum Ende der Sommerferien am {{endSummerVacation}} findet keine Hausaufgabenhilfe statt"
         },
         "pending": {
             "modal": {
@@ -2315,5 +2317,11 @@
         "feedbackSuccessfullySent": "Feedback erfolgreich gesendet",
         "screenshotShouldNotBeBiggerThan": "Der Screenshot kann nicht größer als {{size}} MB sein"
     },
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "installation": {
+        "installTitle": "Lern-Fair installieren",
+        "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
+        "installButton": "Installieren",
+        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken"
+    }
 }
