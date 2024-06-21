@@ -1194,7 +1194,7 @@
             "title": "Bestätigung",
             "subtitle": "Nachhilfe mit {{nameHelfer}} ",
             "content": "{{nameHelfer}} hat eine Bescheinigung über eure Zusammenanarbeit angefragt. Habt ihr gemeinsam gelernt?",
-            "buttons": ["Ja, ich bestätige hiermit"],
+            "buttons": ["Angaben überprüfen"],
             "actionDescription": "Weitere Informationen"
         },
         "kennenlernen": {
