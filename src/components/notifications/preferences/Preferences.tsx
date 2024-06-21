@@ -1,7 +1,7 @@
 import { Box, Flex, Text, useBreakpointValue, useToast } from 'native-base';
 import PreferenceItem from './PreferenceItem';
 import { FC, useContext } from 'react';
-import { NotificationCategories } from '../../../helper/notification-preferences';
+import { NotificationCategories, NotificationChannel } from '../../../helper/notification-preferences';
 import { NotificationPreferencesContext } from '../../../pages/notification/NotficationControlPanel';
 import { ToggleAll } from './ToggleAll';
 import { useTranslation } from 'react-i18next';
@@ -11,10 +11,11 @@ type Props = {
     title: string;
     notificationCategories: NotificationCategories;
     enableToggleAll?: boolean;
+    channels: NotificationChannel[];
 };
 
-export const Preferences: FC<Props> = ({ title, notificationCategories, enableToggleAll }) => {
-    const { userPreferences, updateUserPreference, channels } = useContext(NotificationPreferencesContext);
+export const Preferences: FC<Props> = ({ title, notificationCategories, enableToggleAll, channels }) => {
+    const { userPreferences, updateUserPreference } = useContext(NotificationPreferencesContext);
     const { t } = useTranslation();
     const toast = useToast();
 
@@ -42,20 +43,17 @@ export const Preferences: FC<Props> = ({ title, notificationCategories, enableTo
             <Box>
                 <Flex direction="row" justifyContent="space-between">
                     <Flex w={isMobile ? '60%' : '80%'} />
-                    <Flex direction="row" justifyContent="center" w={isMobile ? '20%' : '10%'}>
-                        <Text fontSize="sm" fontWeight="bold">
-                            Email
-                        </Text>
-                    </Flex>
-                    <Flex direction="row" justifyContent="center" w={isMobile ? '20%' : '10%'}>
-                        <Text fontSize="sm" fontWeight="bold" textAlign="center">
-                            App-Mitteilung
-                        </Text>
-                    </Flex>
+                    {channels.map((channel) => (
+                        <Flex key={channel.id} direction="row" justifyContent="center" w={isMobile ? '20%' : '10%'}>
+                            <Text fontSize="sm" fontWeight="bold" textAlign="center">
+                                {channel.label}
+                            </Text>
+                        </Flex>
+                    ))}
                 </Flex>
                 {Object.keys(notificationCategories).map((category: string) => (
                     <PreferenceItem
-                        channels={channels}
+                        channels={channels.map((e) => e.id)}
                         category={category}
                         notificationTypeDetails={notificationCategories[category]}
                         value={getCheckboxValue(category)}

@@ -9,6 +9,7 @@ export const MarketingNotifications = () => {
             title={t('notification.controlPanel.tabs.newsletter.description')}
             notificationCategories={marketingNotificationCategories}
             enableToggleAll={true}
+            channels={[{ id: 'email', label: t('notification.controlPanel.preference.channel.email') }]}
         />
     );
 };

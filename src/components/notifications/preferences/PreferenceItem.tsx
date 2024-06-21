@@ -45,7 +45,7 @@ const PreferenceItem = ({ category, channels, notificationTypeDetails, value, on
                         borderWidth={1}
                         value={notificationTypeDetails.title}
                         isChecked={value[channel]}
-                        onChange={() => onUpdate({ ...value, [channel]: !value })}
+                        onChange={() => onUpdate({ ...value, [channel]: !value[channel] })}
                     />
                 </Flex>
             ))}
