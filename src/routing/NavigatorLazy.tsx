@@ -74,6 +74,7 @@ import { MarketingNotifications } from '../components/notifications/preferences/
 import { WebPush } from '../pages/WebPush';
 import ForStudents from '../pages/ForStudents';
 import ForPupils from '../pages/ForPupils';
+import OnboardingVideo from '../pages/onboarding/student/OnboardingVideo';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -218,6 +219,7 @@ export default function NavigatorLazy() {
                 }
             >
                 <Route path="students" element={<OnBoardingStudentWelcome />} />
+                <Route path="video" element={<OnboardingVideo />} />
                 <Route path="helper" element={<OnBoardingHelperWelcome />} />
                 <Route path="helpermatching" element={<OnBoardingHelperMatchingWelcome />} />
             </Route>
