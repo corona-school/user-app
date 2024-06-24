@@ -102,7 +102,7 @@ async function getServerPublicKey(client: ApolloClient<any>) {
     return pushPublicKey;
 }
 
-async function subsribeOnServer(client: ApolloClient<any>, subscription: CreatePushSubscriptionInput) {
+async function subscribeOnServer(client: ApolloClient<any>, subscription: CreatePushSubscriptionInput) {
     await client.mutate({
         mutation: gql(`
             mutation AddSubscription($subscription: CreatePushSubscriptionInput!) {
@@ -113,7 +113,7 @@ async function subsribeOnServer(client: ApolloClient<any>, subscription: CreateP
     });
 }
 
-async function unsubsribeOnServer(client: ApolloClient<any>, id: number) {
+async function unsubscribeOnServer(client: ApolloClient<any>, id: number) {
     await client.mutate({
         mutation: gql(`
             mutation RemoveSubscription($id: Int!) {
@@ -187,7 +187,7 @@ export function useWebPush() {
                 log('WebPush', 'Resubsribe on server');
 
                 try {
-                    await subsribeOnServer(client, await encodeSubscription(subscription));
+                    await subscribeOnServer(client, await encodeSubscription(subscription));
 
                     const serverSubs = await getServerSubscriptions(client);
                     const subscribedOnServer = serverSubs.find((it) => it.endpoint === subscription.endpoint);
@@ -232,7 +232,7 @@ export function useWebPush() {
         }
 
         try {
-            await subsribeOnServer(client, subscription);
+            await subscribeOnServer(client, subscription);
         } catch (error) {
             log('WebPush', 'Failed to subscribe on server', error);
             setStatus('error');
@@ -246,7 +246,7 @@ export function useWebPush() {
         if (subId === null) return;
 
         try {
-            await unsubsribeOnServer(client, subId);
+            await unsubscribeOnServer(client, subId);
             setSubId(null);
 
             const sw = await getServiceWorker();
