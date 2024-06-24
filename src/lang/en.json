@@ -1839,7 +1839,12 @@
                     "push": "App message"
                 },
                 "pushNotifications": "App messages",
-                "pushNotificationTooltip": "App notifications inform you about important events or information even when the app is not open. You can individually select which messages you would like to receive as app notifications."
+                "pushNotificationTooltip": "App notifications inform you about important events or information even when the app is not open. You can individually select which messages you would like to receive as app notifications.",
+                "pushNotificationsStatus": {
+                    "not-supported": "Unfortunately, app notifications are not supported on this device",
+                    "user-denied": "Unfortunately, we cannot send you any app messages as you have not given us permission to do so",
+                    "error": "An error has occurred"
+                }
             },
             "tabs": {
                 "system": {
