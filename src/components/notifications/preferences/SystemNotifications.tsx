@@ -1,4 +1,4 @@
-import { Box, Flex, Switch, Text, Spinner, IconButton, Tooltip, InfoIcon, useBreakpointValue } from 'native-base';
+import { Box, Flex, Switch, Text, Spinner, IconButton, Tooltip, useBreakpointValue } from 'native-base';
 import { Preferences } from './Preferences';
 import { useTranslation } from 'react-i18next';
 import { systemNotificationCategories } from '../../../helper/notification-preferences';
@@ -16,36 +16,40 @@ export const SystemNotifications = () => {
         lg: false,
     });
 
-    const handleOnChange = (enableNotifications: boolean) => {
+    const handleOnChange = async (enableNotifications: boolean) => {
         if (enableNotifications) {
-            subscribe();
+            await subscribe();
         } else {
-            unsubscribe();
+            await unsubscribe();
         }
     };
 
     return (
         <Box>
-            <Flex direction="row" bg="primary.100" mx={2} my={1} py={3} px={4} borderRadius="sm" justifyContent="space-between">
-                <Flex direction="row" alignItems="center">
-                    <Text fontWeight="bold">{t('notification.controlPanel.preference.pushNotifications')}</Text>
-                    {isMobileOrTable ? (
-                        <IconButton onPress={() => setIsInfoModalOpen(true)} icon={<InformationBadge ml={0} bg="primary.900" />} />
-                    ) : (
-                        <Tooltip
-                            maxW={250}
-                            label={t('notification.controlPanel.preference.pushNotificationTooltip')}
-                            bg={'primary.900'}
-                            _text={{ textAlign: 'center' }}
-                            p={3}
-                            hasArrow
-                            children={
-                                <Box ml={2}>
-                                    <InformationBadge ml={0} bg="primary.900" />
-                                </Box>
-                            }
-                        ></Tooltip>
-                    )}
+            <Flex direction="row" bg={'primary.100'} mx={2} my={1} py={3} px={4} borderRadius="sm" justifyContent="space-between">
+                <Flex direction="row" alignItems="center" flexWrap="wrap">
+                    <Text fontWeight="bold" color={'primary.900'} fontSize="sm">
+                        {t(`notification.controlPanel.preference.pushNotifications`)}
+                    </Text>
+                    <>
+                        {isMobileOrTable ? (
+                            <IconButton onPress={() => setIsInfoModalOpen(true)} icon={<InformationBadge ml={0} bg="primary.900" />} />
+                        ) : (
+                            <Tooltip
+                                maxW={250}
+                                label={t('notification.controlPanel.preference.pushNotificationTooltip')}
+                                bg={'primary.900'}
+                                _text={{ textAlign: 'center' }}
+                                p={3}
+                                hasArrow
+                                children={
+                                    <Box ml={2}>
+                                        <InformationBadge ml={0} bg="primary.900" />
+                                    </Box>
+                                }
+                            ></Tooltip>
+                        )}
+                    </>
                 </Flex>
                 <Flex direction="row" alignItems="center">
                     {status === 'loading' && <Spinner mr={1} />}
