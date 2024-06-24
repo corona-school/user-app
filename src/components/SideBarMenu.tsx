@@ -28,8 +28,8 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
     const [isOpen, setIsOpen] = useState(false);
 
     const disableGroup: boolean = useMemo(() => {
-        if (userType === 'screener') return userRoles.includes('COURSE_SCREENER');
-        if (userType === 'pupil') return userRoles.includes('PARTICIPANT');
+        if (userType === 'screener') return !userRoles.includes('COURSE_SCREENER');
+        if (userType === 'pupil') return !userRoles.includes('PARTICIPANT');
         return false;
     }, [userRoles, userType]);
 

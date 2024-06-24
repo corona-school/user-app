@@ -121,7 +121,6 @@ const Appointments: React.FC = () => {
     return (
         <AsNavigationItem path="appointments">
             <WithNavigation
-                headerContent={<Hello />}
                 headerTitle={t('appointment.title')}
                 headerLeft={
                     userType !== 'screener' && (

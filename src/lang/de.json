@@ -883,7 +883,8 @@
             "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte",
             "forStudents": "Fortbildung",
-            "forPupils": "Lernhilfen"
+            "forPupils": "Lernhilfen",
+            "push": "App-Mitteilungen"
         },
         "account": {
             "title": "Konto",
@@ -1192,22 +1193,22 @@
         "angeforderteBescheinigung": {
             "title": "Bestätigung",
             "subtitle": "Nachhilfe mit {{nameHelfer}} ",
-            "content": "{{nameHelfer}} hat uns um eine Bescheinigung für eure Nachhilfe gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.",
-            "buttons": ["Angaben bestätigen"],
-            "actionDescription": "Angaben bestätigen"
+            "content": "{{nameHelfer}} hat eine Bescheinigung über eure Zusammenanarbeit angefragt. Habt ihr gemeinsam gelernt?",
+            "buttons": ["Angaben überprüfen"],
+            "actionDescription": "Weitere Informationen"
         },
         "kennenlernen": {
             "subtitle": "Kennenlernen",
             "title": "Wir möchten dich kennenlernen 👋!",
-            "content": "Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videokonferenzgespräch kennenlernen. Vereinbare einfach einen Termin mit uns.",
+            "content": "Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videotelefonat kennenlernen. Vereinbare einfach einen Termin mit uns.",
             "buttons": ["Termin vereinbaren"]
         },
         "zeugnis": {
             "subtitle": "Wichtig!",
             "title": "Erweitertes Führungszeugnis",
             "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "buttons": ["Informationen zum Führungszeugnis"],
-            "actionDescription": "Alles zum Führungszeugnis"
+            "buttons": ["Infos zu Beantragung & Einreichen"],
+            "actionDescription": "Weitere Informationen"
         },
         "statusStudent": {
             "subtitle": "1:1 Nachhilfe",
@@ -1220,7 +1221,7 @@
             "title": "Lust auf mehr?",
             "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
             "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
-            "actionDescription": "Jetzt Möglichkeiten ansehen"
+            "actionDescription": "Möglichkeiten ansehen"
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
@@ -1330,7 +1331,8 @@
             "title": "Hausaufgabenhilfe",
             "textpupil": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.",
             "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 16h - 17h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
-            "button": "Zur Hausaufgabenhilfe"
+            "button": "Zur Hausaufgabenhilfe",
+            "buttonSummerVacation": "Bis zum Ende der Sommerferien am {{endSummerVacation}} findet keine Hausaufgabenhilfe statt"
         },
         "pending": {
             "modal": {
@@ -2207,7 +2209,7 @@
         "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
         "download": "Vordruck herunterladen",
         "reason_download_disabled": "Bitte warte kurz, der Download sollte gleich starten.",
-        "upload": "Führungszeugnis einreichen",
+        "upload": "Per E-Mail einreichen",
         "request_header": "Wie beantrage ich ein erweitertes Führungszeugnis?",
         "general_info": "Allgemeine Informationen",
         "digital_request": "Digitale Beantragung"
@@ -2309,5 +2311,11 @@
         "feedbackSuccessfullySent": "Feedback erfolgreich gesendet",
         "screenshotShouldNotBeBiggerThan": "Der Screenshot kann nicht größer als {{size}} MB sein"
     },
-    "logout": "Abmelden"
+    "logout": "Abmelden",
+    "installation": {
+        "installTitle": "Lern-Fair installieren",
+        "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
+        "installButton": "Installieren",
+        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken"
+    }
 }
