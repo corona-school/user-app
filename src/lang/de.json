@@ -1193,22 +1193,22 @@
         "angeforderteBescheinigung": {
             "title": "Bestätigung",
             "subtitle": "Nachhilfe mit {{nameHelfer}} ",
-            "content": "{{nameHelfer}} hat uns um eine Bescheinigung für eure Nachhilfe gebeten. Nur wenn du dies bestätigst, können wir {{nameHelfer}} diesen Wunsch erfüllen.",
-            "buttons": ["Angaben bestätigen"],
-            "actionDescription": "Angaben bestätigen"
+            "content": "{{nameHelfer}} hat eine Bescheinigung über eure Zusammenanarbeit angefragt. Habt ihr gemeinsam gelernt?",
+            "buttons": ["Angaben überprüfen"],
+            "actionDescription": "Weitere Informationen"
         },
         "kennenlernen": {
             "subtitle": "Kennenlernen",
             "title": "Wir möchten dich kennenlernen 👋!",
-            "content": "Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videokonferenzgespräch kennenlernen. Vereinbare einfach einen Termin mit uns.",
+            "content": "Bevor du bei uns anfangen kannst, möchten wir dich in einem ca. 15-minütigen Videotelefonat kennenlernen. Vereinbare einfach einen Termin mit uns.",
             "buttons": ["Termin vereinbaren"]
         },
         "zeugnis": {
             "subtitle": "Wichtig!",
             "title": "Erweitertes Führungszeugnis",
             "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "buttons": ["Informationen zum Führungszeugnis"],
-            "actionDescription": "Alles zum Führungszeugnis"
+            "buttons": ["Infos zu Beantragung & Einreichen"],
+            "actionDescription": "Weitere Informationen"
         },
         "statusStudent": {
             "subtitle": "1:1 Nachhilfe",
@@ -1221,7 +1221,7 @@
             "title": "Lust auf mehr?",
             "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
             "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
-            "actionDescription": "Jetzt Möglichkeiten ansehen"
+            "actionDescription": "Möglichkeiten ansehen"
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in",
@@ -1855,7 +1855,7 @@
             }
         },
         "controlPanel": {
-            "title": "E-Mail-Benachrichtigungen",
+            "title": "Benachrichtigungen",
             "yourMail": "Deine E-Mail: ",
             "closeButton": "Schließen",
             "preference": {
@@ -1883,53 +1883,53 @@
                 },
                 "survey": {
                     "title": "Feedback & Befragungen",
-                    "modalBody": "Wir möchten, dass du zufrieden mit Lern Fair bist. Deshalb schicken wir dir gelegentlich Feedback-Fragebögen zu, um von deinen Erfahrungen zu hören. Wir freuen uns, wenn du Feedback, Ideen und Verbesserungsvorschläge auf diesem Wege an uns weiterleitest."
+                    "modalBody": "Gelegentliche Fragebögen, um dein Feedback, Ideen und Verbesserungsvorschläge zu erfahren."
                 },
                 "appointment": {
                     "title": "Terminhinweis",
-                    "modalBody": "Wir informieren dich über neue Termine mit deinen Lernpartner:innen und in Kursen. Zudem erinnern wir dich kurz vor Beginn des Termins nochmal an die Unterrichtsstunde."
+                    "modalBody": "Hinweise bei neuen Terminen und Erinnerungen vor Beginn der Unterrichtsstunde."
                 },
                 "advice": {
                     "title": "Lerntipps & Hilfestellungen",
-                    "modalBody": "Lernen muss gelernt sein. Wir helfen dir mit Schulungen und Materialien, dich auf die Unterrichtsstunden vorzubereiten und senden dir zugleich die besten Tipps für einen möglichst großen Lernfortschritt. Damit bleibt ihr motiviert und spart wertvolle Zeit."
+                    "modalBody": "Schulungen, Materialien und Tipps für deinen optimalen Lernfortschritt."
                 },
                 "suggestion": {
                     "title": "Kursvorschläge",
-                    "modalBody": "Auf unserer Plattform laden wir regelmäßig neue spannende Kurse hoch. Wenn ein passender Kurs für deine Jahrgangsstufe und deine Fächer angeboten wird, erhältst du von uns eine Benachrichtigung. Du kannst deine Fächer und damit deine Interessen im Profil jederzeit anpassen."
+                    "modalBody": "Beim Veröffentlichen neuer Kurse erhältst du eine Info - sofern dein Profil dazu passt."
                 },
                 "announcement": {
                     "title": "Wichtige Änderungen",
-                    "modalBody": "Wenn sich die Funktionsweise von Lern-Fair wesentlich ändert oder es neue Programme gibt, informieren wir dich über wichtige Änderungen."
+                    "modalBody": "Wir informieren dich über wesentliche Änderungen und neue Programme bei Lern-Fair."
                 },
                 "call": {
                     "title": "Aufruf zum Engagement",
-                    "modalBody": "Wir informieren dich, wenn es zu einem Zeitpunkt besonders viel Unterstützungsbedarf gibt und erklären dir, wie du dich am besten für mehr Bildungsgerechtigkeit bei uns einsetzen kannst."
+                    "modalBody": "Wir informieren dich bei hohem Unterstützungsbedarf und erklären, wie du dich engagieren kannst."
                 },
                 "news": {
                     "title": "Neuigkeiten von Lern-Fair",
-                    "modalBody": "Wir möchten dich gerne über neue Features und Funktionen informieren und dich auf Vorteile aufmerksam machen, die du über Lern-Fair erhalten kannst."
+                    "modalBody": "Wir informieren dich über neue Features und Vorteile bei Lern-Fair."
                 },
                 "event": {
                     "title": "Veranstaltungen",
-                    "modalBody": "Bei Lern-Fair organisieren wir regelmäßig coole Events und wertvolle Fortbildungen. Wir halten dich auf dem Laufenden und vernetzen dich mit anderen Nutzer:innen auf unserer Plattform."
+                    "modalBody": "Wir organisieren coole Events und Fortbildungen und vernetzen dich mit anderen Nutzern."
                 },
                 "request": {
                     "title": "Gesuch",
-                    "modalBody": "Für Interviews, Pressebeiträge oder lokale Aktionen suchen wir manchmal Helfer:innen und Schüler:innen, die bei Lern-Fair mitmachen und von ihren Erfahrungen berichten möchten. Darüber hinaus suchen wir Testpersonen für unsere App, unsere Website oder ein neues Programm von uns."
+                    "modalBody": "Für Interviews, Pressebeiträge oder lokale Aktionen - sowie als Tester:in für die App."
                 },
                 "alternative": {
                     "title": "Hinweise zu Alternativangeboten",
-                    "modalBody": "Lern-Fair ist eine super Unterstützungsmöglichkeit für Schüler:innen. Es gibt aber auch viele andere hilfreiche Programme, nützliche Apps oder soziale Organisationen. Falls wir etwas Passendes für dich finden, benachrichtigen wir dich und hoffen, dass du von dem Angebot profitieren kannst."
+                    "modalBody": "Wir informieren dich über andere hilfreiche Programme, Apps und soziale Organisationen."
                 }
             },
             "tabs": {
                 "system": {
                     "title": "System",
-                    "description": "Systembenachrichtigungen werden dir jeweils innerhalb der App (an der Glocke im Header) angezeigt. Hier kannst du einstellen, ob du zusätzlich per Mail benachrichtigt werden möchtest."
+                    "description": "Benachrichtigungen werden dir immer oben rechts - und optional als App-Mitteilung oder Email angezeigt."
                 },
                 "newsletter": {
                     "title": "Newsletter",
-                    "description": "Newsletter werden ausschließlich per Mail versendet.\nHier kannst du einstellen welche Arten von Mails du erhalten möchtest."
+                    "description": "Newsletter werden ausschließlich per Mail versendet."
                 }
             }
         }
@@ -2220,7 +2220,7 @@
         "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
         "download": "Vordruck herunterladen",
         "reason_download_disabled": "Bitte warte kurz, der Download sollte gleich starten.",
-        "upload": "Führungszeugnis einreichen",
+        "upload": "Per E-Mail einreichen",
         "request_header": "Wie beantrage ich ein erweitertes Führungszeugnis?",
         "general_info": "Allgemeine Informationen",
         "digital_request": "Digitale Beantragung"
