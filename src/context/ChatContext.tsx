@@ -6,6 +6,7 @@ import { useQuery } from '@apollo/client';
 import { UnreadConversation } from 'talkjs/all';
 import { userIdToTalkJsId } from '../helper/chat-helper';
 import { TALKJS_APP_ID } from '../config';
+import { useTranslation } from 'react-i18next';
 
 interface UserType {
     userID: string;
@@ -68,6 +69,7 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
     const [session, setSession] = useState<Talk.Session | null>(null);
     const [talkLoaded, markTalkLoaded] = useState<boolean>(false);
     const [unreadMessagesCount, setUnreadMessagesCount] = useState<number>(0);
+    const { i18n } = useTranslation();
 
     const { sessionState, user, userId } = useUserAuth();
 
@@ -95,12 +97,12 @@ export const LFChatProvider: React.FC<{ children: ReactNode }> = ({ children }) 
 
         // Wait for the User's Chat Signature to be fetched from the Backend:
         if (loading) return;
-
-        const me = {
+        const me: Talk.UserOptions = {
             id: userIdToTalkJsId(userId),
             name: getChatName(user),
             role: user?.pupil ? 'pupil' : 'student',
             email: user?.email,
+            locale: i18n.language,
         };
 
         const currentUser = new Talk.User(me);
