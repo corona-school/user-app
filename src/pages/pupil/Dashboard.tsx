@@ -1,4 +1,4 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading, Row } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -8,6 +8,7 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
+import BarrierIcon from '../../assets/icons/barrier-block_green.svg';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -166,6 +167,9 @@ const Dashboard: React.FC<Props> = () => {
     }, []);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const startSummerVacation = new Date('2024-06-10');
+    const endSummerVacation = new Date('2024-09-02');
+    const isSummerVacation = startSummerVacation <= new Date() && endSummerVacation >= new Date();
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -245,9 +249,30 @@ const Dashboard: React.FC<Props> = () => {
                                         closeable={false}
                                         content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
                                         button={
-                                            <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                                                {t('matching.homeworkhelp.button')}
-                                            </Button>
+                                            isSummerVacation ? (
+                                                <Row
+                                                    flexWrap={'wrap'}
+                                                    minWidth="100%"
+                                                    justifyContent={'flex-start'}
+                                                    alignItems={'center'}
+                                                    bg={'secondary.100'}
+                                                    borderRadius={4}
+                                                    padding={2}
+                                                >
+                                                    <Box mr={space['0.5']}>
+                                                        <BarrierIcon />
+                                                    </Box>
+                                                    <Text fontSize={'sm'} flexWrap={'wrap'}>
+                                                        {t('matching.homeworkhelp.buttonSummerVacation', {
+                                                            endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
+                                                        })}
+                                                    </Text>
+                                                </Row>
+                                            ) : (
+                                                <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                                    {t('matching.homeworkhelp.button')}
+                                                </Button>
+                                            )
                                         }
                                         icon={<BooksIcon />}
                                     />

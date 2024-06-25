@@ -14,7 +14,6 @@ import CustomVideoInput from '../../widgets/CustomVideoInput';
 
 type FormProps = {
     errors: FormErrors;
-    appointmentsCount: number;
     overrideMeetingLink: string | undefined;
     onSetDate: () => void;
     onSetTime: () => void;
@@ -22,16 +21,7 @@ type FormProps = {
     videoChatType: string;
     isCourse: boolean;
 };
-const AppointmentForm: React.FC<FormProps> = ({
-    errors,
-    appointmentsCount,
-    onSetDate,
-    overrideMeetingLink,
-    onSetTime,
-    isCourse,
-    setVideoChatType,
-    videoChatType,
-}) => {
+const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeetingLink, onSetTime, isCourse, setVideoChatType, videoChatType }) => {
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { t } = useTranslation();
     const { isMobile } = useLayoutHelper();
@@ -100,7 +90,6 @@ const AppointmentForm: React.FC<FormProps> = ({
                     <FormControl width={inputWidth}>
                         <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
                         <InputSuffix
-                            appointmentsCount={appointmentsCount + 1}
                             inputValue={title}
                             handleInput={handleTitleInput}
                             handleBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: title })}
