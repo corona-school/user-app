@@ -808,7 +808,7 @@
             "languageVersion": "اللغة",
             "notifications": "إعلامات البريد الإلكتروني",
             "onboarding": "جولة على متن الطائرة",
-            "progress": "النجاحات والتقدم المحرز",
+            "progress": "الإنجازات والتقدم المحرز",
             "forStudents": "للمساعدين",
             "forPupils": "للتلاميذ",
             "push": "رسائل التطبيق"
@@ -1953,7 +1953,7 @@
             "start": "بدء",
             "group": "دورات تعليمية",
             "matching": "التدريس الخصوصي",
-            "appointments": "التواريخ",
+            "appointments": "مواعيد",
             "chat": "حوار ",
             "forStudents": "للمساعدين",
             "forPupils": "للتلاميذ"
@@ -2250,7 +2250,7 @@
     "save": "أنقذ",
     "edit": "حرر",
     "signup": "سجل",
-    "signin": "أعلن",
+    "signin": "تسجيل دخول",
     "done": "جاهز",
     "saveSelection": "حفظ التحديد",
     "sendMessage": "ارسل رسالة",
