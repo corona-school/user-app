@@ -248,11 +248,12 @@ const Dashboard: React.FC<Props> = () => {
                                         title={t('dashboard.homeworkhelp.catcher')}
                                         closeable={false}
                                         content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                        buttonIsBanner={true}
                                         button={
                                             isSummerVacation ? (
                                                 <Row
-                                                    flexWrap={'wrap'}
-                                                    minWidth="100%"
+                                                    width="100%"
+                                                    flexWrap="wrap"
                                                     justifyContent={'flex-start'}
                                                     alignItems={'center'}
                                                     bg={'secondary.100'}
