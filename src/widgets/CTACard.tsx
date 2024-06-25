@@ -17,6 +17,7 @@ type Props = {
     width?: number | string;
     height?: number | string;
     isOnboardingCard?: boolean;
+    buttonIsBanner?: boolean;
 };
 
 const CTACard: React.FC<Props> = ({
@@ -32,6 +33,7 @@ const CTACard: React.FC<Props> = ({
     isOnboardingCard = false,
     onClose,
     marginBottom = 0,
+    buttonIsBanner = false,
 }) => {
     const { space } = useTheme();
 
@@ -57,29 +59,9 @@ const CTACard: React.FC<Props> = ({
         lg: 'row',
     });
 
-    const ButtonSpace = useBreakpointValue({
-        base: 0,
-        lg: '25px',
-    });
-
-    const ContentsDirection = useBreakpointValue({
-        base: 'flex-start',
-        lg: 'space-between',
-    });
-
-    const IconSpace = useBreakpointValue({
-        base: 0,
-        lg: space['2'],
-    });
-
     const IconSpaceBottom = useBreakpointValue({
         base: space['1'],
         lg: 0,
-    });
-
-    const ContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: '92%',
     });
 
     return (
@@ -136,6 +118,7 @@ const CTACard: React.FC<Props> = ({
                                         ? 'cta-card__item cta-card__item--button cta-card__item--button--onboarding'
                                         : 'cta-card__item cta-card__item--button'
                                 }
+                                style={buttonIsBanner ? { flexBasis: '100%' } : {}}
                             >
                                 <Column>{button && <Box marginTop={space['1']}>{button}</Box>}</Column>
                             </CSSWrapper>
