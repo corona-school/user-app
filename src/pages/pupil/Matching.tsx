@@ -12,10 +12,11 @@ import { Match } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches, { MatchCard } from '../match/Matches';
-import MatchingOnboarding from './MatchingOnboarding';
 import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 import { Heading, useBreakpointValue } from 'native-base';
+import DisableableButton from '../../components/DisablebleButton';
+import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 
 type Props = {};
 
@@ -127,7 +128,15 @@ const Matching: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
-    const matchRequestCount = data?.me?.pupil?.openMatchRequestCount;
+    const reasonDisabled = () => {
+        if (!data?.me?.pupil?.canRequestMatch?.allowed) {
+            return t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray);
+        }
+
+        return t('lernfair.reason.matching.pupil.deactivated_tooltip');
+    };
+
+    const matchRequestCount = data?.me?.pupil?.openMatchRequestCount ?? 0;
 
     return (
         <AsNavigationItem path="matching">
@@ -153,7 +162,12 @@ const Matching: React.FC<Props> = () => {
                         </VStack>
                     </VStack>
                 )}
-                <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
+                <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                    <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
+                    <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
+                        {t('matching.blocker.firstContent')}
+                    </Text>
+                </VStack>
                 <Box paddingX={space['1']}>
                     <NavigationTabs
                         tabs={[
@@ -164,8 +178,8 @@ const Matching: React.FC<Props> = () => {
                             {
                                 title: (
                                     <span style={{ display: 'flex' }}>
-                                        {t('matching.request.check.tabs.tab2')}{' '}
-                                        {matchRequestCount && matchRequestCount > 0 && (
+                                        {t('matching.request.check.tabs.tab2')}
+                                        {matchRequestCount > 0 && (
                                             <Circle bgColor="danger.500" size="5">
                                                 <Text fontSize="xs" color="white">
                                                     {matchRequestCount}
@@ -216,6 +230,22 @@ const Matching: React.FC<Props> = () => {
                             },
                         ]}
                     />
+                    <VStack marginTop={space['1.5']}>
+                        <DisableableButton
+                            isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
+                            reasonDisabled={reasonDisabled()}
+                            onPress={() => navigate('/request-match')}
+                            width={ButtonContainer}
+                        >
+                            {t('dashboard.helpers.buttons.requestMatchPupil')}
+                        </DisableableButton>
+                        {(!data?.me?.pupil?.canRequestMatch?.allowed && (
+                            <AlertMessage
+                                content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
+                            />
+                        )) ||
+                            (DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />)}
+                    </VStack>
                 </Box>
                 <Modal isOpen={showCancelModal}>
                     <Modal.Content>
