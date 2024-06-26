@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Flex, Heading, Modal, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Button, Circle, Flex, Heading, Modal, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -125,6 +125,8 @@ const MatchingStudent: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const matchRequestCount = data?.me?.student?.openMatchRequestCount;
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
@@ -161,13 +163,24 @@ const MatchingStudent: React.FC<Props> = () => {
                                     content: <Matches activeMatches={activeMatches as Match[]} inactiveMatches={inactiveMatches as Match[]} />,
                                 },
                                 {
-                                    title: t('matching.request.check.tabs.tab2'),
+                                    title: (
+                                        <span style={{ display: 'flex' }}>
+                                            {t('matching.request.check.tabs.tab2')}{' '}
+                                            {matchRequestCount && matchRequestCount > 0 && (
+                                                <Circle bgColor="danger.500" size="5">
+                                                    <Text fontSize="xs" color="white">
+                                                        {matchRequestCount}
+                                                    </Text>
+                                                </Circle>
+                                            )}
+                                        </span>
+                                    ),
                                     content: (
                                         <VStack space={space['1']}>
                                             <VStack space={space['0.5']}>
                                                 <Flex direction="row" flexWrap="wrap">
-                                                    {(data?.me?.student?.openMatchRequestCount &&
-                                                        new Array(data?.me?.student?.openMatchRequestCount).fill('').map((_, i) => (
+                                                    {(matchRequestCount &&
+                                                        new Array(matchRequestCount).fill('').map((_, i) => (
                                                             <OpenMatchRequest
                                                                 cancelLoading={cancelLoading}
                                                                 index={i}

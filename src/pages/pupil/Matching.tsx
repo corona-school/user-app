@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Button, Flex, Modal, Row, Stack, Text, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Circle, Flex, Modal, Row, Stack, Text, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -127,6 +127,8 @@ const Matching: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
+    const matchRequestCount = data?.me?.pupil?.openMatchRequestCount;
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
@@ -160,13 +162,24 @@ const Matching: React.FC<Props> = () => {
                                 content: <Matches activeMatches={activeMatches as Match[]} inactiveMatches={inactiveMatches as Match[]} />,
                             },
                             {
-                                title: t('matching.request.check.tabs.tab2'),
+                                title: (
+                                    <span style={{ display: 'flex' }}>
+                                        {t('matching.request.check.tabs.tab2')}{' '}
+                                        {matchRequestCount && matchRequestCount > 0 && (
+                                            <Circle bgColor="danger.500" size="5">
+                                                <Text fontSize="xs" color="white">
+                                                    {matchRequestCount}
+                                                </Text>
+                                            </Circle>
+                                        )}
+                                    </span>
+                                ),
                                 content: (
                                     <VStack space={space['1']}>
                                         <VStack space={space['0.5']}>
                                             <Flex direction="row" flexWrap="wrap">
-                                                {(data?.me?.pupil?.openMatchRequestCount &&
-                                                    new Array(data?.me?.pupil?.openMatchRequestCount)
+                                                {(matchRequestCount &&
+                                                    new Array(matchRequestCount)
                                                         .fill('')
                                                         .map((_, i) => (
                                                             <OpenMatchRequest
