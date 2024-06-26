@@ -22,7 +22,7 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
 
         // Require pupils and students to be verified
         if (user && !user.screener && !(user.pupil ?? user.student)!.verifiedAt) {
-            return <VerifyEmailModal email={user.email} />;
+            return <VerifyEmailModal email={user.email} userType={user.pupil ? 'pupil' : 'student'} />;
         }
 
         // Require an initial screening for newly-registered pupils

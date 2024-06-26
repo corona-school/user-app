@@ -7,10 +7,10 @@ import AlertMessage from '../../widgets/AlertMessage';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { gql, useMutation } from '@apollo/client';
 import { RegistrationContext } from '../Registration';
-import { useNavigate } from 'react-router-dom';
 import isEmail from 'validator/es/lib/isEmail';
 import { Cooperation } from '../../gql/graphql';
 import { InfoCard } from '../../components/InfoCard';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 export default function PersonalData({ cooperation }: { cooperation?: Cooperation }) {
     const {
@@ -27,9 +27,9 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
         passwordRepeat,
         setPasswordRepeat,
     } = useContext(RegistrationContext);
+    usePageTitle(`Lern-Fair - Registrierung: Persönliche Daten für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const { space } = useTheme();
     const { trackEvent } = useMatomo();
 

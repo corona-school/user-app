@@ -3,11 +3,13 @@ import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { RegistrationContext, TRAINEE_GRADE } from '../Registration';
 import { GradeSelector } from '../../components/GradeSelector';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const SchoolClass: React.FC = () => {
     const { schoolClass, setSchoolClass, schoolType, setSchoolType, setCurrentIndex } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { t } = useTranslation();
+    usePageTitle('Lern-Fair - Registrierung: Klasse');
 
     const handleOnSchoolClassChange = (newClass: number) => {
         setSchoolClass(newClass);
