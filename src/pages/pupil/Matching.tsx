@@ -11,7 +11,7 @@ import WithNavigation from '../../components/WithNavigation';
 import { Match } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
-import Matches from '../match/Matches';
+import Matches, { MatchCard } from '../match/Matches';
 import MatchingOnboarding from './MatchingOnboarding';
 import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
@@ -159,7 +159,7 @@ const Matching: React.FC<Props> = () => {
                         tabs={[
                             {
                                 title: t('matching.request.check.tabs.tab1'),
-                                content: <Matches activeMatches={activeMatches as Match[]} inactiveMatches={inactiveMatches as Match[]} />,
+                                content: <Matches activeMatches={activeMatches as Match[]} />,
                             },
                             {
                                 title: (
@@ -193,6 +193,24 @@ const Matching: React.FC<Props> = () => {
                                                         ))) || <AlertMessage content={t('matching.request.check.noRequestsTutee')} />}
                                             </Flex>
                                         </VStack>
+                                    </VStack>
+                                ),
+                            },
+                            {
+                                title: t('matching.request.check.tabs.tab3'),
+                                content: (
+                                    <VStack space={space['1.5']}>
+                                        <Flex direction="row" flexWrap="wrap">
+                                            {inactiveMatches && inactiveMatches.length > 0 ? (
+                                                <>
+                                                    {inactiveMatches.map((match) => (
+                                                        <MatchCard match={match as Match} key={match.id} />
+                                                    ))}
+                                                </>
+                                            ) : (
+                                                <AlertMessage content={t('matching.request.check.noDissolvedMatches')} />
+                                            )}
+                                        </Flex>
                                     </VStack>
                                 ),
                             },

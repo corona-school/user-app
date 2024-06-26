@@ -1304,7 +1304,6 @@
             "active": "aktiv",
             "inactive": "inaktiv",
             "activeMatches": "Aktive Lernpaare",
-            "inactiveMatches": "Aufgelöste Lernpaare",
             "schoolGrade": "{{schooltype}} • {{grade}} ",
             "showMore": "Mehr anzeigen",
             "showLess": "Weniger anzeigen",
@@ -1366,7 +1365,8 @@
                 "content": "In der Nachhilfe hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden und wir würden uns freuen, wenn du im Rahmen deiner zeitlichen Möglichkeiten eine:n weitere:n Schüler:in unterstützen kannst. Wenn du eine Nachhilfe nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.",
                 "tabs": {
                     "tab1": "Lernpaare",
-                    "tab2": "Anfragen"
+                    "tab2": "Anfragen",
+                    "tab3": "Aufgelöste Lernpaare"
                 },
                 "request": "Anfrage",
                 "removeRequest": "Anfrage zurücknehmen",
