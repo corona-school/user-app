@@ -3,6 +3,7 @@ import { ClassRange } from './types/lernfair/SchoolClass';
 import { DateTime } from 'luxon';
 import { Course_Coursestate_Enum } from './gql/graphql';
 import i18next from 'i18next';
+import { TRAINEE_GRADE } from './pages/Registration';
 
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000;
 export const TOKEN_LENGTH = 32;
@@ -80,7 +81,7 @@ export const findMinMaxClassRange: (nums: number[]) => ClassRange = (nums: numbe
 };
 
 export const getGradeLabel = (grade: number) => {
-    if (grade === 14) return i18next.t('inTraining');
+    if (grade === TRAINEE_GRADE) return i18next.t('inTraining');
     return i18next.t('lernfair.schoolclass', { class: grade });
 };
 

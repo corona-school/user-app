@@ -1,7 +1,7 @@
 import { Box, Button, Column, Heading, Row, useTheme, VStack } from 'native-base';
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { RegistrationContext } from '../Registration';
+import { RegistrationContext, TRAINEE_GRADE } from '../Registration';
 import { GradeSelector } from '../../components/GradeSelector';
 
 const SchoolClass: React.FC = () => {
@@ -12,7 +12,7 @@ const SchoolClass: React.FC = () => {
     const handleOnSchoolClassChange = (newClass: number) => {
         setSchoolClass(newClass);
         if (!schoolType) {
-            setSchoolType(newClass === 14 ? 'berufsschule' : 'grundschule');
+            setSchoolType(newClass === TRAINEE_GRADE ? 'berufsschule' : 'grundschule');
         }
     };
 
@@ -38,7 +38,7 @@ const SchoolClass: React.FC = () => {
                         </Button>
                     </Column>
                     <Column width="100%">
-                        <Button width="100%" onPress={() => setCurrentIndex(3)}>
+                        <Button width="100%" onPress={() => (schoolClass === TRAINEE_GRADE ? setCurrentIndex(4) : setCurrentIndex(3))}>
                             {t('next')}
                         </Button>
                     </Column>
