@@ -73,11 +73,6 @@ const Settings: React.FC = () => {
                                     <Column mb={tabspace}>
                                         <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
                                     </Column>
-                                    {WEBPUSH_ACTIVE && (
-                                        <Column mb={tabspace}>
-                                            <ListItem label={t('settings.general.push')} onPress={() => navigate('/push')} />
-                                        </Column>
-                                    )}
                                 </>
                             )}
                         </ProfileSettingRow>
