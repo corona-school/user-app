@@ -4,12 +4,12 @@ import { RegistrationContext } from '../Registration';
 import IconTagList from '../../widgets/IconTagList';
 import { schooltypes } from '../../types/lernfair/SchoolType';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const SchoolType: React.FC = () => {
     const { schoolType, setSchoolType, setCurrentIndex } = useContext(RegistrationContext);
     const { space } = useTheme();
-    const navigate = useNavigate();
+    usePageTitle('Lern-Fair - Registrierung: Schulform');
     const { t } = useTranslation();
 
     return (

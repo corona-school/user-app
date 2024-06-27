@@ -1,9 +1,9 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Button, Flex, Modal, Row, Stack, Text, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, Circle, Flex, Modal, Row, Stack, Text, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import NavigationTabs from '../../components/NavigationTabs';
@@ -11,11 +11,12 @@ import WithNavigation from '../../components/WithNavigation';
 import { Match } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
-import Matches from '../match/Matches';
-import MatchingOnboarding from './MatchingOnboarding';
+import Matches, { MatchCard } from '../match/Matches';
 import { gql } from '../../gql';
 import HelpNavigation from '../../components/HelpNavigation';
 import { Heading, useBreakpointValue } from 'native-base';
+import DisableableButton from '../../components/DisablebleButton';
+import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 
 type Props = {};
 
@@ -57,7 +58,7 @@ const query = gql(`
 
 const Matching: React.FC<Props> = () => {
     const { trackPageView, trackEvent } = useMatomo();
-    const { space, sizes } = useTheme();
+    const { space, sizes, colors } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const toast = useToast();
@@ -127,6 +128,16 @@ const Matching: React.FC<Props> = () => {
         lg: sizes['desktopbuttonWidth'],
     });
 
+    const reasonDisabled = () => {
+        if (!data?.me?.pupil?.canRequestMatch?.allowed) {
+            return t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray);
+        }
+
+        return t('lernfair.reason.matching.pupil.deactivated_tooltip');
+    };
+
+    const matchRequestCount = data?.me?.pupil?.openMatchRequestCount ?? 0;
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
@@ -151,22 +162,41 @@ const Matching: React.FC<Props> = () => {
                         </VStack>
                     </VStack>
                 )}
-                <MatchingOnboarding onRequestMatch={() => navigate('/request-match')} />
+                <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                    <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
+                    <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
+                        {t('matching.blocker.firstContent')}{' '}
+                        <Link style={{ color: colors.primary[900], textDecoration: 'underline' }} target="_blank" to="/hilfebereich">
+                            {t('moreInfoButton')}
+                        </Link>
+                    </Text>
+                </VStack>
                 <Box paddingX={space['1']}>
                     <NavigationTabs
                         tabs={[
                             {
                                 title: t('matching.request.check.tabs.tab1'),
-                                content: <Matches activeMatches={activeMatches as Match[]} inactiveMatches={inactiveMatches as Match[]} />,
+                                content: <Matches activeMatches={activeMatches as Match[]} />,
                             },
                             {
-                                title: t('matching.request.check.tabs.tab2'),
+                                title: (
+                                    <span style={{ display: 'flex' }}>
+                                        {t('matching.request.check.tabs.tab2')}
+                                        {matchRequestCount > 0 && (
+                                            <Circle bgColor="danger.500" size="5">
+                                                <Text fontSize="xs" color="white">
+                                                    {matchRequestCount}
+                                                </Text>
+                                            </Circle>
+                                        )}
+                                    </span>
+                                ),
                                 content: (
                                     <VStack space={space['1']}>
                                         <VStack space={space['0.5']}>
                                             <Flex direction="row" flexWrap="wrap">
-                                                {(data?.me?.pupil?.openMatchRequestCount &&
-                                                    new Array(data?.me?.pupil?.openMatchRequestCount)
+                                                {(matchRequestCount &&
+                                                    new Array(matchRequestCount)
                                                         .fill('')
                                                         .map((_, i) => (
                                                             <OpenMatchRequest
@@ -183,8 +213,44 @@ const Matching: React.FC<Props> = () => {
                                     </VStack>
                                 ),
                             },
+                            {
+                                title: t('matching.request.check.tabs.tab3'),
+                                content: (
+                                    <VStack space={space['1.5']}>
+                                        <Flex direction="row" flexWrap="wrap">
+                                            {inactiveMatches && inactiveMatches.length > 0 ? (
+                                                <>
+                                                    {inactiveMatches.map((match) => (
+                                                        <MatchCard match={match as Match} key={match.id} />
+                                                    ))}
+                                                </>
+                                            ) : (
+                                                <AlertMessage content={t('matching.request.check.noDissolvedMatches')} />
+                                            )}
+                                        </Flex>
+                                    </VStack>
+                                ),
+                            },
                         ]}
                     />
+                    <VStack marginTop={space['1.5']}>
+                        <DisableableButton
+                            isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
+                            reasonDisabled={reasonDisabled()}
+                            onPress={() => navigate('/request-match')}
+                            width={ButtonContainer}
+                        >
+                            {t(
+                                activeMatches?.length ? 'dashboard.helpers.buttons.requestMoreMatchesPupil' : 'dashboard.helpers.buttons.requestFirstMatchPupil'
+                            )}
+                        </DisableableButton>
+                        {(!data?.me?.pupil?.canRequestMatch?.allowed && (
+                            <AlertMessage
+                                content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
+                            />
+                        )) ||
+                            (DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />)}
+                    </VStack>
                 </Box>
                 <Modal isOpen={showCancelModal}>
                     <Modal.Content>

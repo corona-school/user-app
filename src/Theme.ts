@@ -4,9 +4,11 @@ const VAR_COLOR_PRIMARY_LIGHT = '#EDF4F3';
 const VAR_COLOR_PRIMARY = '#82B1B0';
 const VAR_COLOR_PRIMARY_DARK = '#2B4B51';
 const VAR_COLOR_YELLOW = '#FEDA50';
+const VAR_COLOR_YELLOW_LIGHT = '#FBEFC6';
 const VAR_COLOR_YELLOW_DARKEN = '#F4CC54';
 const VAR_COLOR_PRIMARY_GREY = '#95A5A8';
 const VAR_COLOR_DARKYELLOW = '#d0b345';
+const VAR_COLOR_SECONDARY_LIGHT = VAR_COLOR_YELLOW_LIGHT;
 const VAR_COLOR_SECONDARY = VAR_COLOR_YELLOW;
 const VAR_COLOR_BLUE = '#405B73';
 const VAR_COLOR_TERTIARY = VAR_COLOR_BLUE;
@@ -35,7 +37,7 @@ const Theme = extendTheme({
             900: VAR_COLOR_PRIMARY_DARK,
         },
         secondary: {
-            100: VAR_COLOR_SECONDARY,
+            100: VAR_COLOR_SECONDARY_LIGHT,
             200: VAR_COLOR_SECONDARY,
             300: VAR_COLOR_SECONDARY,
             400: VAR_COLOR_SECONDARY,
@@ -243,13 +245,13 @@ const Theme = extendTheme({
         },
         Switch: {
             defaultProps: {
-                onThumbColor: VAR_COLOR_RED,
+                onThumbColor: VAR_COLOR_PRIMARY_LIGHT,
+                onTrackColor: VAR_COLOR_PRIMARY_DARK,
                 offThumbColor: VAR_COLOR_LIGHT_GREY,
-                offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
-                onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+                offTrackColor: VAR_COLOR_PRIMARY_GREY,
                 _hover: {
-                    offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
-                    onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+                    offTrackColor: VAR_COLOR_PRIMARY_GREY,
+                    onTrackColor: VAR_COLOR_PRIMARY_DARK,
                 },
             },
         },

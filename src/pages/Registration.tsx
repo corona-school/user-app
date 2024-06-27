@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Image, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
@@ -78,6 +78,8 @@ const mutStudent = gql(`
         tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
 `);
+
+export const TRAINEE_GRADE = 14;
 
 const Registration: React.FC = () => {
     const { space } = useTheme();
@@ -160,7 +162,7 @@ const Registration: React.FC = () => {
                       });
 
             if (!result.errors) {
-                show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} />);
+                show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} userType={userType} />);
 
                 // Remove /registration from the URL so that a refresh of the page won't show the registration form again
                 window.history.replaceState({}, '', '/');

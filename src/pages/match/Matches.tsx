@@ -10,23 +10,17 @@ import { getGradeLabel } from '../../Utility';
 
 type MatchesProps = {
     activeMatches: Match[];
-    inactiveMatches: Match[];
 };
 
-const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => {
-    const { t } = useTranslation();
-    const userType = useUserType();
-    const { isMobile } = useLayoutHelper();
-    const { space } = useTheme();
+interface MatchCardProps {
+    match: Match;
+}
 
+export const MatchCard = ({ match }: MatchCardProps) => {
+    const userType = useUserType();
     const CardGrid = useBreakpointValue({
         base: '100%',
         lg: '50%',
-    });
-
-    const headingMarginTop = useBreakpointValue({
-        base: '10px',
-        lg: '30px',
     });
 
     const getMatchPartnerName = useCallback(
@@ -37,24 +31,24 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
         [userType]
     );
 
-    const renderMatch = useCallback(
-        (match: Match, index: number) => {
-            return (
-                <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
-                    <LearningPartner
-                        key={index}
-                        matchId={match.id}
-                        name={getMatchPartnerName(match)}
-                        subjects={match?.subjectsFormatted}
-                        schooltype={match?.pupil?.schooltype === Pupil_Schooltype_Enum.Other ? undefined : match?.pupil?.schooltype}
-                        grade={match?.pupil?.gradeAsInt ? getGradeLabel(match.pupil.gradeAsInt) : undefined}
-                        isDissolved={match?.dissolved}
-                    />
-                </Box>
-            );
-        },
-        [CardGrid, getMatchPartnerName]
+    return (
+        <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
+            <LearningPartner
+                matchId={match.id}
+                name={getMatchPartnerName(match)}
+                subjects={match?.subjectsFormatted}
+                schooltype={match?.pupil?.schooltype === Pupil_Schooltype_Enum.Other ? undefined : match?.pupil?.schooltype}
+                grade={match?.pupil?.gradeAsInt ? getGradeLabel(match.pupil.gradeAsInt) : undefined}
+                isDissolved={match?.dissolved}
+            />
+        </Box>
     );
+};
+
+const Matches: React.FC<MatchesProps> = ({ activeMatches }) => {
+    const { t } = useTranslation();
+    const { isMobile } = useLayoutHelper();
+    const { space } = useTheme();
 
     return (
         <>
@@ -63,20 +57,9 @@ const Matches: React.FC<MatchesProps> = ({ activeMatches, inactiveMatches }) => 
                     <Heading>{t('matching.shared.activeMatches')}</Heading>
                     <Flex direction={isMobile ? 'column' : 'row'} flexWrap="wrap">
                         {activeMatches?.length > 0 ? (
-                            activeMatches.map((match: Match, index: number) => renderMatch(match, index))
+                            activeMatches.map((match: Match) => <MatchCard key={match.id} match={match} />)
                         ) : (
                             <AlertMessage content={t('matching.request.check.noMatches')} />
-                        )}
-                    </Flex>
-                </VStack>
-                <VStack space={space['0.5']}>
-                    <Heading mt={headingMarginTop}>{t('matching.shared.inactiveMatches')}</Heading>
-
-                    <Flex direction="row" flexWrap="wrap">
-                        {inactiveMatches?.length > 0 ? (
-                            inactiveMatches.map((match: Match, index: number) => renderMatch(match, index))
-                        ) : (
-                            <AlertMessage content={t('matching.request.check.noDissolvedMatches')} />
                         )}
                     </Flex>
                 </VStack>

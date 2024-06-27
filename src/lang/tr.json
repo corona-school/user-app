@@ -814,7 +814,8 @@
             "onboarding": "Onboarding turu",
             "progress": "Başarılar ve ilerleme",
             "forStudents": "Yardımcılar için",
-            "forPupils": "Öğrenciler için"
+            "forPupils": "Öğrenciler için",
+            "push": "Uygulama mesajları"
         },
         "account": {
             "title": "Hesap",
@@ -1065,9 +1066,10 @@
                 "course": "Yeni bir kurs girin",
                 "offer": "Önemli bildirimler",
                 "requestMatchStudent": "Yeni bir öğrenme çifti oluşturun",
-                "requestMatchPupil": "Öğrenme ortağı: alındı",
                 "solveMatch": "Çifti iptal et",
-                "recommend": "Şimdi tavsiye et"
+                "recommend": "Şimdi tavsiye et",
+                "requestFirstMatchPupil": "Öğrenme ortağı: alındı",
+                "requestMoreMatchesPupil": "Daha fazla öğrenme ortağı edinin"
             },
             "channels": {
                 "whatsApp": "WhatsApp",
@@ -1235,7 +1237,6 @@
             "active": "aktif",
             "inactive": "aktif olmayan",
             "activeMatches": "Aktif öğrenme çiftleri",
-            "inactiveMatches": "Iptal edilmis öğrenme çiftleri",
             "schoolGrade": "{{schooltype}} - {{grade}} ",
             "showMore": "Daha fazla göster",
             "showLess": "Daha az göster",
@@ -1252,17 +1253,18 @@
         "blocker": {
             "header": "Öğrenme desteği",
             "title": "Destek talep edin",
-            "firstContent": "Öğrenme destek programında, boş zamanlarında size yardımcı olacak bir gönüllü ile sizi temasa geçireceğiz. Bunun için herhangi bir para almıyor ve teşekkürlerinizi almaktan çok mutlu oluyor.",
             "button": "Destek talep edin",
             "ctaCardHeader": "Grup kursları",
             "ctaCardContent": "Almanca, Matematik, İngilizce konularında çeşitli konularda kurslar ...",
-            "ctaCardButton": "Grup kurslarına dön"
+            "ctaCardButton": "Grup kurslarına dön",
+            "firstContent": "Özel derslerde, sizi boş zamanlarında size yardımcı olacak bir gönüllüyle eşleştiriyoruz."
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
             "textpupil": "Her gün Pazartesi - Perşembe 16:00 - 17:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz.",
             "texthelper": "Ev ödevi yardiminda, öğrencilere bir rehberlik saatinde olduğu gibi anlık olarak ödevlerinde yardımcı olabilirsin. Ev ödevi yardimi, Pazartesi'den Perşembe'ye saat 16:00 ile 17:00 arasında gerçekleşmektedir. Kendi takdirine göre burada istediğin sıklıkta ve bağlayıcılık olmadan katılım gösterebilirsin.",
-            "button": "Ev ödevi yardımı"
+            "button": "Ev ödevi yardımı",
+            "buttonSummerVacation": "Yaz tatilinin sona ereceği {{endSummerVacation}} tarihine kadar ev ödevi yardımı yapılmayacaktır"
         },
         "pending": {
             "modal": {
@@ -1293,7 +1295,8 @@
             "check": {
                 "tabs": {
                     "tab1": "Öğrenme çiftleri",
-                    "tab2": "Sorular"
+                    "tab2": "Sorular",
+                    "tab3": "Iptal edilmis öğrenme çiftleri"
                 },
                 "header": "Öğrenme desteği",
                 "title": "Öğrenme desteği",
@@ -1835,7 +1838,18 @@
                 "allNewsletterDisabled": "Tüm haber bültenleri devre dışı bırakıldı",
                 "disableAll": "Tüm haber bültenlerini devre dışı bırak",
                 "enableAllTooltip": "Tüm haber bültenlerini zaten etkinleştirdiniz.",
-                "disableAllTooltip": "Tüm haber bültenlerini zaten devre dışı bıraktınız."
+                "disableAllTooltip": "Tüm haber bültenlerini zaten devre dışı bıraktınız.",
+                "channel": {
+                    "email": "e-posta",
+                    "push": "Uygulama mesajı"
+                },
+                "pushNotifications": "Uygulama mesajları",
+                "pushNotificationTooltip": "Uygulama bildirimleri, uygulama açık değilken bile önemli olaylar veya bilgiler hakkında sizi bilgilendirir. Hangi mesajları uygulama bildirimi olarak almak istediğinizi ayrı ayrı seçebilirsiniz.",
+                "pushNotificationsStatus": {
+                    "not-supported": "Maalesef bu cihazda uygulama bildirimleri desteklenmiyor",
+                    "user-denied": "Maalesef, bize izin vermediğiniz için size herhangi bir uygulama mesajı gönderemiyoruz",
+                    "error": "Bir hata oluştu"
+                }
             },
             "tabs": {
                 "system": {
@@ -2309,5 +2323,11 @@
         "feedbackSuccessfullySent": "Geri bildirim başarıyla gönderildi",
         "screenshotShouldNotBeBiggerThan": "Ekran görüntüsü {{size}}'dan daha büyük olamaz MB"
     },
-    "or": "veya"
+    "or": "veya",
+    "installation": {
+        "installTitle": "Lern-Fair Kurulum",
+        "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
+        "installButton": "Kurulum",
+        "iOSInstallInstructions": "<0/> ve ardından <1/> \"Ana Ekrana Ekle\"ye dokunun"
+    }
 }

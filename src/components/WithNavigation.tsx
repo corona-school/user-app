@@ -1,4 +1,4 @@
-import { View, useBreakpointValue, useTheme, Row, Column } from 'native-base';
+import { View, useBreakpointValue, useTheme, Row, Column, Box } from 'native-base';
 import HeaderCard from './HeaderCard';
 import { NavigationItems } from '../types/navigation';
 import BottomNavigationBar from './BottomNavigationBar';
@@ -15,6 +15,7 @@ import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { useChat } from '../context/ChatContext';
+import InstallAppBanner from '../widgets/InstallAppBanner';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -44,8 +45,13 @@ const WithNavigation: React.FC<Props> = ({
     previousFallbackRoute,
     onBack,
 }) => {
-    const { sizes, space, colors } = useTheme();
+    const { space, colors } = useTheme();
     const isMobile = useBreakpointValue({
+        base: true,
+        md: false,
+    });
+
+    const isMobileOrTablet = useBreakpointValue({
         base: true,
         lg: false,
     });
@@ -88,23 +94,26 @@ const WithNavigation: React.FC<Props> = ({
                 >
                     {!isMobile && headerContent}
                 </HeaderCard>
-                <View flex={1}>
-                    <Row maxW="100%" flexWrap={'wrap'} overflow="hidden" flex="1" overflowY="scroll">
+                <Box flex={1} position="static">
+                    <Row maxW="100%" flexWrap={'wrap'} overflow="hidden" flex="1" overflowY="scroll" position="static">
                         {!hideMenu && (
                             <Column>
                                 <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} unreadMessagesCount={unreadMessagesCount} />
                             </Column>
                         )}
-                        <Column flex="1" padding={innerPaddingContent} height="100%">
+                        <Column flex="1" padding={innerPaddingContent} height="100%" position="static">
                             {(!isLoading && (
                                 <>
-                                    {isMobile && <>{headerContent}</>}
+                                    <Box mb={4} position="static">
+                                        {isMobile && <>{headerContent}</>}
+                                        {isMobileOrTablet && !hideMenu && <InstallAppBanner />}
+                                    </Box>
                                     {children}
                                 </>
                             )) || <CenterLoadingSpinner />}
                         </Column>
                     </Row>
-                </View>
+                </Box>
             </View>
             {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
         </View>

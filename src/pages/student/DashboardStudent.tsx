@@ -163,7 +163,8 @@ const DashboardStudent: React.FC<Props> = () => {
         navigate('/request-match');
     }, [navigate]);
 
-    const isMobile = useBreakpointValue({ base: true, lg: false });
+    const isMobile = useBreakpointValue({ base: true, md: false });
+    const isMobileOrTablet = useBreakpointValue({ base: true, lg: false });
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -214,12 +215,11 @@ const DashboardStudent: React.FC<Props> = () => {
             <WithNavigation
                 headerContent={
                     called &&
-                    !loading && (
-                        <HStack space={space['1']} alignItems="center" bgColor={isMobile ? 'primary.900' : 'transparent'} paddingX={space['1']}>
-                            <Box paddingY={space['1.5']}>
-                                <Hello />
-                            </Box>
-                        </HStack>
+                    !loading &&
+                    isMobile && (
+                        <Box bgColor={'primary.900'} alignItems="center" padding={space['1.5']}>
+                            <Hello />
+                        </Box>
                     )
                 }
                 headerLeft={
@@ -320,7 +320,7 @@ const DashboardStudent: React.FC<Props> = () => {
                             {activeMatches && (activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading mb={space['1']}>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
-                                    <Stack direction={isMobile ? 'column' : 'row'} flexWrap="wrap">
+                                    <Stack direction={isMobileOrTablet ? 'column' : 'row'} flexWrap="wrap">
                                         {(activeMatches?.length &&
                                             activeMatches.map((match, index) => {
                                                 return (

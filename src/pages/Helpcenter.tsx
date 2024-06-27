@@ -144,7 +144,6 @@ const HelpCenter: React.FC = () => {
         <AsNavigationItem path="hilfebereich">
             <WithNavigation
                 headerTitle="Hilfebereich"
-                headerContent={<Hello />}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <HelpNavigation />
