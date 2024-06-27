@@ -3,7 +3,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Box, Button, Circle, Flex, Modal, Row, Stack, Text, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import NavigationTabs from '../../components/NavigationTabs';
@@ -58,7 +58,7 @@ const query = gql(`
 
 const Matching: React.FC<Props> = () => {
     const { trackPageView, trackEvent } = useMatomo();
-    const { space, sizes } = useTheme();
+    const { space, sizes, colors } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const toast = useToast();
@@ -165,7 +165,10 @@ const Matching: React.FC<Props> = () => {
                 <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
                     <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
                     <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
-                        {t('matching.blocker.firstContent')}
+                        {t('matching.blocker.firstContent')}{' '}
+                        <Link style={{ color: colors.primary[900], textDecoration: 'underline' }} target="_blank" to="/hilfebereich">
+                            {t('moreInfoButton')}
+                        </Link>
                     </Text>
                 </VStack>
                 <Box paddingX={space['1']}>

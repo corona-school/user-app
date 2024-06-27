@@ -1253,11 +1253,11 @@
         "blocker": {
             "header": "Öğrenme desteği",
             "title": "Destek talep edin",
-            "firstContent": "Öğrenme destek programında, boş zamanlarında size yardımcı olacak bir gönüllü ile sizi temasa geçireceğiz. Bunun için herhangi bir para almıyor ve teşekkürlerinizi almaktan çok mutlu oluyor.",
             "button": "Destek talep edin",
             "ctaCardHeader": "Grup kursları",
             "ctaCardContent": "Almanca, Matematik, İngilizce konularında çeşitli konularda kurslar ...",
-            "ctaCardButton": "Grup kurslarına dön"
+            "ctaCardButton": "Grup kurslarına dön",
+            "firstContent": "Özel derslerde, sizi boş zamanlarında size yardımcı olacak bir gönüllüyle eşleştiriyoruz."
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",

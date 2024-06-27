@@ -1253,11 +1253,11 @@
         "blocker": {
             "header": "Learning support",
             "title": "Request support",
-            "firstContent": "In learning support, we will put you in touch with a volunteer who will help you in their free time. She does not receive any money for this and is very happy to receive your thanks.",
             "button": "Request support",
             "ctaCardHeader": "Group courses",
             "ctaCardContent": "Courses on various topics in the subjects German, math, English...",
-            "ctaCardButton": "To the group courses"
+            "ctaCardButton": "To the group courses",
+            "firstContent": "In tutoring, we match you with a volunteer who will help you in their free time."
         },
         "homeworkhelp": {
             "title": "Homework help",

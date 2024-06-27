@@ -1321,11 +1321,11 @@
         "blocker": {
             "header": "Nachhilfe",
             "title": "Unterstützung anfragen",
-            "firstContent": "In der Nachhilfe vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft. Sie bekommt dafür kein Geld und freut sich sehr über dein Dankeschön.",
             "button": "Unterstützung anfragen",
             "ctaCardHeader": "Gruppen-Kurse",
             "ctaCardContent": "Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…",
-            "ctaCardButton": "Zu den Gruppen-Kursen"
+            "ctaCardButton": "Zu den Gruppen-Kursen",
+            "firstContent": "In der Nachhilfe vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft."
         },
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
