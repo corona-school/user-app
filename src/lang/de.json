@@ -1867,6 +1867,17 @@
                 "disableAll": "Alle Newsletter deaktivieren",
                 "enableAllTooltip": "Du hast bereits alle Newsletter aktiviert.",
                 "disableAllTooltip": "Du hast bereits alle Newsletter deaktiviert.",
+                "pushNotifications": "App-Mitteilungen",
+                "pushNotificationsStatus": {
+                    "not-supported": "Leider werden auf diesem Gerät keine App-Mitteilungen unterstützt",
+                    "user-denied": "Wir können dir leider keine App-Mitteilungen senden, da du uns dazu keine Erlaubnis gegeben hast",
+                    "error": "Ein Fehler ist aufgetreten"
+                },
+                "pushNotificationTooltip": "App-Mitteilungen informieren dich über wichtige Ereignisse oder Infos auch wenn die App nicht geöffnet ist. Du kannst einzeln auswählen, welche Nachrichten du als App-Mitteilung erhalten möchtest.",
+                "channel": {
+                    "email": "E-Mail",
+                    "push": "App-Mitteilung"
+                },
                 "chat": {
                     "title": "Chat-Nachrichten",
                     "modalBody": "Wir schicken dir eine E-Mail für jede Chat-Nachricht, die du bekommst."

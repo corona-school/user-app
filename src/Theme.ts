@@ -245,13 +245,13 @@ const Theme = extendTheme({
         },
         Switch: {
             defaultProps: {
-                onThumbColor: VAR_COLOR_RED,
+                onThumbColor: VAR_COLOR_PRIMARY_LIGHT,
+                onTrackColor: VAR_COLOR_PRIMARY_DARK,
                 offThumbColor: VAR_COLOR_LIGHT_GREY,
-                offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
-                onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+                offTrackColor: VAR_COLOR_PRIMARY_GREY,
                 _hover: {
-                    offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
-                    onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+                    offTrackColor: VAR_COLOR_PRIMARY_GREY,
+                    onTrackColor: VAR_COLOR_PRIMARY_DARK,
                 },
             },
         },

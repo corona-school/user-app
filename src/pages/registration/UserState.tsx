@@ -4,11 +4,14 @@ import { RegistrationContext, TRAINEE_GRADE } from '../Registration';
 import IconTagList from '../../widgets/IconTagList';
 import { states } from '../../types/lernfair/State';
 import { useTranslation } from 'react-i18next';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const UserState: React.FC = () => {
     const { userState, setUserState, setCurrentIndex, schoolClass } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { t } = useTranslation();
+    usePageTitle('Lern-Fair - Registrierung: Schulort');
+
     return (
         <VStack flex="1" marginTop={space['1']}>
             <Heading>{t(`registration.steps.4.subtitle`)}</Heading>
