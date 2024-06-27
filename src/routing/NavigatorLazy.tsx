@@ -71,7 +71,6 @@ import ScreenerGroup from '../pages/screening/ScreenerGroup';
 import SingleCourseScreener from '../pages/screening/SingleCourseScreener';
 import { SystemNotifications } from '../components/notifications/preferences/SystemNotifications';
 import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
-import { WebPush } from '../pages/WebPush';
 import ForStudents from '../pages/ForStudents';
 import ForPupils from '../pages/ForPupils';
 
@@ -488,16 +487,6 @@ export default function NavigatorLazy() {
                     </WithNavigation>
                 }
             />
-
-            <Route
-                path="/push"
-                element={
-                    <RequireAuth>
-                        <WebPush />
-                    </RequireAuth>
-                }
-            />
-
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/start" />} />
         </Routes>
