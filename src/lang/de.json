@@ -1332,7 +1332,7 @@
             "textpupil": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.",
             "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 16h - 17h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
             "button": "Zur Hausaufgabenhilfe",
-            "buttonSummerVacation": "Bis zum Ende der Sommerferien am {{endSummerVacation}} findet keine Hausaufgabenhilfe statt"
+            "buttonSummerVacation": "Die Hausaufgabenhilfe ist in der Sommerpause. Ab dem {{endSummerVacation}} geht es weiter."
         },
         "pending": {
             "modal": {
