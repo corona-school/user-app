@@ -1,13 +1,15 @@
-import { Circle, Text, useBreakpointValue } from 'native-base';
+import { Circle, Text, useBreakpointValue, ICircleProps } from 'native-base';
 
-const InformationBadge = () => {
-    const ml = useBreakpointValue({
+interface InformationBadgeProps extends ICircleProps {}
+
+const InformationBadge = ({ bg = 'danger.100', size = 4, ml, ...rest }: InformationBadgeProps) => {
+    const defaultMl = useBreakpointValue({
         base: 1,
         lg: 2,
     });
 
     return (
-        <Circle rounded="full" bg="danger.100" size={4} ml={ml}>
+        <Circle rounded="full" bg={bg} size={4} ml={ml ?? defaultMl} {...rest}>
             <Text color={'white'}>i</Text>
         </Circle>
     );

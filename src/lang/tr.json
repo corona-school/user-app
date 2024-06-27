@@ -1837,7 +1837,18 @@
                 "allNewsletterDisabled": "Tüm haber bültenleri devre dışı bırakıldı",
                 "disableAll": "Tüm haber bültenlerini devre dışı bırak",
                 "enableAllTooltip": "Tüm haber bültenlerini zaten etkinleştirdiniz.",
-                "disableAllTooltip": "Tüm haber bültenlerini zaten devre dışı bıraktınız."
+                "disableAllTooltip": "Tüm haber bültenlerini zaten devre dışı bıraktınız.",
+                "channel": {
+                    "email": "e-posta",
+                    "push": "Uygulama mesajı"
+                },
+                "pushNotifications": "Uygulama mesajları",
+                "pushNotificationTooltip": "Uygulama bildirimleri, uygulama açık değilken bile önemli olaylar veya bilgiler hakkında sizi bilgilendirir. Hangi mesajları uygulama bildirimi olarak almak istediğinizi ayrı ayrı seçebilirsiniz.",
+                "pushNotificationsStatus": {
+                    "not-supported": "Maalesef bu cihazda uygulama bildirimleri desteklenmiyor",
+                    "user-denied": "Maalesef, bize izin vermediğiniz için size herhangi bir uygulama mesajı gönderemiyoruz",
+                    "error": "Bir hata oluştu"
+                }
             },
             "tabs": {
                 "system": {
