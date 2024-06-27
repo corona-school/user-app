@@ -241,14 +241,14 @@ const Dashboard: React.FC<Props> = () => {
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
 
-                            {process.env.REACT_APP_HOMEWORKHELP !== '' && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
+                            {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
                                     <CTACard
                                         title={t('dashboard.homeworkhelp.catcher')}
                                         closeable={false}
                                         content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                        buttonIsBanner={true}
+                                        buttonIsBanner={isSummerVacation}
                                         button={
                                             isSummerVacation ? (
                                                 <Row
@@ -315,7 +315,11 @@ const Dashboard: React.FC<Props> = () => {
                                                     navigate('/request-match');
                                                 }}
                                             >
-                                                {t('dashboard.helpers.buttons.requestMatchPupil')}
+                                                {t(
+                                                    activeMatches?.length
+                                                        ? 'dashboard.helpers.buttons.requestMoreMatchesPupil'
+                                                        : 'dashboard.helpers.buttons.requestFirstMatchPupil'
+                                                )}
                                             </Button>
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (

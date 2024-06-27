@@ -1134,7 +1134,8 @@
                 "course": "Neuen Kurs eintragen",
                 "offer": "Wichtige Meldungen",
                 "requestMatchStudent": "Ein neues Lernpaar bilden",
-                "requestMatchPupil": "Lernpartner:in erhalten",
+                "requestFirstMatchPupil": "Lernpartner:in erhalten",
+                "requestMoreMatchesPupil": "Weitere Lernpartner:in erhalten",
                 "solveMatch": "Lernpaar auflösen",
                 "recommend": "Jetzt empfehlen"
             },
@@ -1304,7 +1305,6 @@
             "active": "aktiv",
             "inactive": "inaktiv",
             "activeMatches": "Aktive Lernpaare",
-            "inactiveMatches": "Aufgelöste Lernpaare",
             "schoolGrade": "{{schooltype}} • {{grade}} ",
             "showMore": "Mehr anzeigen",
             "showLess": "Weniger anzeigen",
@@ -1321,11 +1321,11 @@
         "blocker": {
             "header": "Nachhilfe",
             "title": "Unterstützung anfragen",
-            "firstContent": "In der Nachhilfe vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft. Sie bekommt dafür kein Geld und freut sich sehr über dein Dankeschön.",
             "button": "Unterstützung anfragen",
             "ctaCardHeader": "Gruppen-Kurse",
             "ctaCardContent": "Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…",
-            "ctaCardButton": "Zu den Gruppen-Kursen"
+            "ctaCardButton": "Zu den Gruppen-Kursen",
+            "firstContent": "In der Nachhilfe vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft."
         },
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
@@ -1366,7 +1366,8 @@
                 "content": "In der Nachhilfe hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden und wir würden uns freuen, wenn du im Rahmen deiner zeitlichen Möglichkeiten eine:n weitere:n Schüler:in unterstützen kannst. Wenn du eine Nachhilfe nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.",
                 "tabs": {
                     "tab1": "Lernpaare",
-                    "tab2": "Anfragen"
+                    "tab2": "Anfragen",
+                    "tab3": "Aufgelöste Lernpaare"
                 },
                 "request": "Anfrage",
                 "removeRequest": "Anfrage zurücknehmen",

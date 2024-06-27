@@ -1066,9 +1066,10 @@
                 "course": "Yeni bir kurs girin",
                 "offer": "Önemli bildirimler",
                 "requestMatchStudent": "Yeni bir öğrenme çifti oluşturun",
-                "requestMatchPupil": "Öğrenme ortağı: alındı",
                 "solveMatch": "Çifti iptal et",
-                "recommend": "Şimdi tavsiye et"
+                "recommend": "Şimdi tavsiye et",
+                "requestFirstMatchPupil": "Öğrenme ortağı: alındı",
+                "requestMoreMatchesPupil": "Daha fazla öğrenme ortağı edinin"
             },
             "channels": {
                 "whatsApp": "WhatsApp",
@@ -1236,7 +1237,6 @@
             "active": "aktif",
             "inactive": "aktif olmayan",
             "activeMatches": "Aktif öğrenme çiftleri",
-            "inactiveMatches": "Iptal edilmis öğrenme çiftleri",
             "schoolGrade": "{{schooltype}} - {{grade}} ",
             "showMore": "Daha fazla göster",
             "showLess": "Daha az göster",
@@ -1253,11 +1253,11 @@
         "blocker": {
             "header": "Öğrenme desteği",
             "title": "Destek talep edin",
-            "firstContent": "Öğrenme destek programında, boş zamanlarında size yardımcı olacak bir gönüllü ile sizi temasa geçireceğiz. Bunun için herhangi bir para almıyor ve teşekkürlerinizi almaktan çok mutlu oluyor.",
             "button": "Destek talep edin",
             "ctaCardHeader": "Grup kursları",
             "ctaCardContent": "Almanca, Matematik, İngilizce konularında çeşitli konularda kurslar ...",
-            "ctaCardButton": "Grup kurslarına dön"
+            "ctaCardButton": "Grup kurslarına dön",
+            "firstContent": "Özel derslerde, sizi boş zamanlarında size yardımcı olacak bir gönüllüyle eşleştiriyoruz."
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
@@ -1295,7 +1295,8 @@
             "check": {
                 "tabs": {
                     "tab1": "Öğrenme çiftleri",
-                    "tab2": "Sorular"
+                    "tab2": "Sorular",
+                    "tab3": "Iptal edilmis öğrenme çiftleri"
                 },
                 "header": "Öğrenme desteği",
                 "title": "Öğrenme desteği",
