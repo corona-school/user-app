@@ -248,7 +248,7 @@ const Dashboard: React.FC<Props> = () => {
                                         title={t('dashboard.homeworkhelp.catcher')}
                                         closeable={false}
                                         content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                        buttonIsBanner={true}
+                                        buttonIsBanner={isSummerVacation}
                                         button={
                                             isSummerVacation ? (
                                                 <Row
