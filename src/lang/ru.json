@@ -1066,9 +1066,10 @@
                 "course": "Ввод нового курса",
                 "offer": "Важные сообщения",
                 "requestMatchStudent": "Сформировать новую учебную пару",
-                "requestMatchPupil": "партнёр по обучению получить",
                 "solveMatch": "Разогнать учебную пару",
-                "recommend": "Рекомендовать сейчас"
+                "recommend": "Рекомендовать сейчас",
+                "requestFirstMatchPupil": "партнёр по обучению получить",
+                "requestMoreMatchesPupil": "партнёр по обучению Получить больше"
             },
             "channels": {
                 "whatsApp": "WhatsApp",
@@ -1236,7 +1237,6 @@
             "active": "активная",
             "inactive": "неактивный",
             "activeMatches": "Активные учебные пары",
-            "inactiveMatches": "Решенные учебные пары",
             "schoolGrade": "{{schooltype}} - {{grade}} ",
             "showMore": "Показать еще",
             "showLess": "Показать меньше",
@@ -1295,7 +1295,8 @@
             "check": {
                 "tabs": {
                     "tab1": "Учебные пары",
-                    "tab2": "Запросы"
+                    "tab2": "Запросы",
+                    "tab3": "Решенные учебные пары"
                 },
                 "header": "Поддержка обучения",
                 "title": "Поддержка обучения",

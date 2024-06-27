@@ -1066,9 +1066,10 @@
                 "course": "Enter a new course",
                 "offer": "Important messages",
                 "requestMatchStudent": "Form a new learning pair",
-                "requestMatchPupil": "Learning partner:in receive",
                 "solveMatch": "Dissolve learning pair",
-                "recommend": "Recommend now"
+                "recommend": "Recommend now",
+                "requestFirstMatchPupil": "Learning partner:in receive",
+                "requestMoreMatchesPupil": "Receive further learning partners"
             },
             "channels": {
                 "whatsApp": "WhatsApp",
@@ -1236,7 +1237,6 @@
             "active": "active",
             "inactive": "inactive",
             "activeMatches": "Active learning pairs",
-            "inactiveMatches": "Resolved learning pairs",
             "schoolGrade": "{{schooltype}} - {{grade}} ",
             "showMore": "Show more",
             "showLess": "Show less",
@@ -1295,7 +1295,8 @@
             "check": {
                 "tabs": {
                     "tab1": "Learning pairs",
-                    "tab2": "Inquiries"
+                    "tab2": "Inquiries",
+                    "tab3": "Resolved learning pairs"
                 },
                 "header": "Learning support",
                 "title": "Learning support",

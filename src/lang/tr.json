@@ -1066,9 +1066,10 @@
                 "course": "Yeni bir kurs girin",
                 "offer": "Önemli bildirimler",
                 "requestMatchStudent": "Yeni bir öğrenme çifti oluşturun",
-                "requestMatchPupil": "Öğrenme ortağı: alındı",
                 "solveMatch": "Çifti iptal et",
-                "recommend": "Şimdi tavsiye et"
+                "recommend": "Şimdi tavsiye et",
+                "requestFirstMatchPupil": "Öğrenme ortağı: alındı",
+                "requestMoreMatchesPupil": "Daha fazla öğrenme ortağı edinin"
             },
             "channels": {
                 "whatsApp": "WhatsApp",
@@ -1236,7 +1237,6 @@
             "active": "aktif",
             "inactive": "aktif olmayan",
             "activeMatches": "Aktif öğrenme çiftleri",
-            "inactiveMatches": "Iptal edilmis öğrenme çiftleri",
             "schoolGrade": "{{schooltype}} - {{grade}} ",
             "showMore": "Daha fazla göster",
             "showLess": "Daha az göster",
@@ -1295,7 +1295,8 @@
             "check": {
                 "tabs": {
                     "tab1": "Öğrenme çiftleri",
-                    "tab2": "Sorular"
+                    "tab2": "Sorular",
+                    "tab3": "Iptal edilmis öğrenme çiftleri"
                 },
                 "header": "Öğrenme desteği",
                 "title": "Öğrenme desteği",

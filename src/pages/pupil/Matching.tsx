@@ -237,7 +237,9 @@ const Matching: React.FC<Props> = () => {
                             onPress={() => navigate('/request-match')}
                             width={ButtonContainer}
                         >
-                            {t('dashboard.helpers.buttons.requestMatchPupil')}
+                            {t(
+                                activeMatches?.length ? 'dashboard.helpers.buttons.requestMoreMatchesPupil' : 'dashboard.helpers.buttons.requestFirstMatchPupil'
+                            )}
                         </DisableableButton>
                         {(!data?.me?.pupil?.canRequestMatch?.allowed && (
                             <AlertMessage

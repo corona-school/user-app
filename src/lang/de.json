@@ -1134,7 +1134,8 @@
                 "course": "Neuen Kurs eintragen",
                 "offer": "Wichtige Meldungen",
                 "requestMatchStudent": "Ein neues Lernpaar bilden",
-                "requestMatchPupil": "Lernpartner:in erhalten",
+                "requestFirstMatchPupil": "Lernpartner:in erhalten",
+                "requestMoreMatchesPupil": "Weitere Lernpartner:in erhalten",
                 "solveMatch": "Lernpaar auflösen",
                 "recommend": "Jetzt empfehlen"
             },
