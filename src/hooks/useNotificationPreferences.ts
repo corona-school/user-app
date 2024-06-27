@@ -1,6 +1,6 @@
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
-import { NotificationPreferences } from '../types/lernfair/NotificationPreferences';
+import { NotificationPreferences, PreferencesType } from '../types/lernfair/NotificationPreferences';
 
 const notificationPreferencesQuery = gql`
     query GetNotificationPreferences {
@@ -23,8 +23,8 @@ const useUserPreferences = () => {
 
     const [mutateUserPreferences] = useMutation(notificationPreferencesMutation);
 
-    const updateUserPreference = (category: string, channel: string, value: boolean) => {
-        const preferences = { ...userPreferences, [category]: { [channel]: value } };
+    const updateUserPreference = (category: string, value: PreferencesType) => {
+        const preferences = { ...userPreferences, [category]: value };
         return updateUserPreferences(preferences);
     };
 
