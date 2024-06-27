@@ -57,6 +57,11 @@ export type NotificationCategories = {
     [category: string]: NotificationCategoryDetails;
 };
 
+export type NotificationChannel = {
+    id: string;
+    label: string;
+};
+
 export const systemNotificationCategories: NotificationCategories = {
     chat: {
         title: 'notification.controlPanel.preference.chat.title',
