@@ -154,9 +154,9 @@ const MatchingStudent: React.FC<Props> = () => {
                                 {
                                     title: (
                                         <span style={{ display: 'flex' }}>
-                                            {t('matching.request.check.tabs.tab2')}{' '}
+                                            {t('matching.request.check.tabs.tab2')}
                                             {matchRequestCount > 0 && (
-                                                <Circle bgColor="danger.500" size="5">
+                                                <Circle bgColor="danger.500" size="5" ml={2}>
                                                     <Text fontSize="xs" color="white">
                                                         {matchRequestCount}
                                                     </Text>
