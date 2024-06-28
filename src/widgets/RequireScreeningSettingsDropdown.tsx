@@ -6,13 +6,14 @@ import NotificationPreferencesModal from '../modals/NotificationPreferencesModal
 import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import { ContactSupportModal } from '../modals/ContactSupportModal';
 import useApollo from '../hooks/useApollo';
+import { useNavigate } from 'react-router-dom';
 
 const RequireScreeningSettingsDropdown = () => {
     const { t } = useTranslation();
     const [isNotificationPrefencesOpen, setIsNotificationPreferencesOpen] = useState(false);
     const [isDeactivateAccountOpen, setIsDeactivateAccountOpen] = useState(false);
     const [isContactSupportOpen, setIsContactSupportOpen] = useState(false);
-    const { logout } = useApollo();
+    const navigate = useNavigate();
     return (
         <>
             <Menu
@@ -30,7 +31,7 @@ const RequireScreeningSettingsDropdown = () => {
                 <Menu.Item onPress={() => setIsContactSupportOpen(true)}>{t('requireScreening.contactSupport')}</Menu.Item>
                 <Divider />
                 <Menu.Item onPress={() => setIsDeactivateAccountOpen(true)}>{t('settings.account.deactivateAccount')}</Menu.Item>
-                <Menu.Item onPress={() => logout()}>{t('logout')}</Menu.Item>
+                <Menu.Item onPress={() => navigate('/logout')}>{t('logout')}</Menu.Item>
             </Menu>
             <DeactivateAccountModal isOpen={isDeactivateAccountOpen} onCloseModal={() => setIsDeactivateAccountOpen(false)} />
             <NotificationPreferencesModal isOpen={isNotificationPrefencesOpen} onClose={() => setIsNotificationPreferencesOpen(false)} />
