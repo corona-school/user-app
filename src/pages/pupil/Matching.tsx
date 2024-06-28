@@ -162,7 +162,7 @@ const Matching: React.FC<Props> = () => {
                         </VStack>
                     </VStack>
                 )}
-                <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                <VStack space={space['0.5']} paddingX={space['1']} width="100%" maxWidth={ContainerWidth}>
                     <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
                     <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                         {t('matching.blocker.firstContent')}{' '}
