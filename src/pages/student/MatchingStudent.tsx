@@ -98,11 +98,8 @@ const MatchingStudent: React.FC<Props> = () => {
             name: 'Helfer Matching Anfrage löschen',
             documentTitle: 'Helfer Matching',
         });
-        const res = (await cancelMatchRequest()) as {
-            studentDeleteMatchRequest: boolean;
-        };
-
-        if (res.studentDeleteMatchRequest) {
+        const res = await cancelMatchRequest();
+        if (res.data?.studentDeleteMatchRequest) {
             toast.show({ description: t('matching.request.check.deleteSucess'), placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
