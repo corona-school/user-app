@@ -258,6 +258,7 @@
         },
         "subjects": {
             "Altgriechisch": "Altgriechisch",
+            "Arbeitslehre": "Arbeitslehre",
             "Biologie": "Biologie",
             "Chemie": "Chemie",
             "Chinesisch": "Chinesisch",
@@ -265,8 +266,10 @@
             "Deutsch als Zweitsprache": "Deutsch als Zweitsprache",
             "Englisch": "Englisch",
             "Erdkunde": "Erdkunde",
+            "Ethik": "Ethik",
             "Französisch": "Französisch",
             "Geschichte": "Geschichte",
+            "Gesundheit": "Gesundheit",
             "Informatik": "Informatik",
             "Italienisch": "Italienisch",
             "Kunst": "Kunst",
@@ -282,6 +285,7 @@
             "Russisch": "Russisch",
             "Sachkunde": "Sachkunde",
             "Spanisch": "Spanisch",
+            "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
             "Lernen lernen": "Lernen lernen"
         },
@@ -1480,7 +1484,19 @@
                 "subjects": {
                     "title": "Fachauswahl",
                     "subtitle": "In welchen Fächern möchtest du unterstützen?",
-                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus."
+                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
+                    "maincourse": {
+                        "title": "Hauptfächer",
+                        "explanation": "Am meisten nachgefragt."
+                    },
+                    "minorcourse": {
+                        "title": "Nebenfächer",
+                        "explanation": "Häufig nachgefragt."
+                    },
+                    "rarecourse": {
+                        "title": "Seltene Fächer",
+                        "explanation": "Selten nachgefragt."
+                    }
                 },
                 "profile": {
                     "title": "Profil aktualisieren",
