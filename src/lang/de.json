@@ -487,7 +487,7 @@
         }
     },
     "forStudents": {
-        "title": "Fortbildung",
+        "title": "Wissens-Center",
         "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Helfer:innen.",
         "tabs": {
             "handbook": "Handbuch",
@@ -882,7 +882,7 @@
             "notifications": "E-Mail Benachrichtigungen",
             "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte",
-            "forStudents": "Fortbildung",
+            "forStudents": "Wissens-Center",
             "forPupils": "Lernhilfen",
             "push": "App-Mitteilungen"
         },
@@ -1904,7 +1904,7 @@
                 },
                 "call": {
                     "title": "Aufruf zum Engagement",
-                    "modalBody": "Wir informieren dich bei hohem Unterstützungsbedarf und erklären, wie du dich engagieren kannst."
+                    "modalBody": "Bei hohem Unterstützungsbedarf melden wir uns und erklären, wie du dich engagieren kannst."
                 },
                 "news": {
                     "title": "Neuigkeiten von Lern-Fair",
