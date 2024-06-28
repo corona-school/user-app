@@ -149,7 +149,24 @@ const MatchingStudent: React.FC<Props> = () => {
                             tabs={[
                                 {
                                     title: t('matching.request.check.tabs.tab1'),
-                                    content: <Matches activeMatches={activeMatches as Match[]} />,
+                                    content: (
+                                        <VStack>
+                                            <Matches activeMatches={activeMatches as Match[]} />
+                                            <VStack space={['0.5']}>
+                                                {(data?.me?.student?.canRequestMatch.allowed && (
+                                                    <Button width={ButtonContainer} marginY={space['1.5']} onPress={() => navigate('/request-match')}>
+                                                        {t('dashboard.helpers.buttons.requestMatchStudent')}
+                                                    </Button>
+                                                )) || (
+                                                    <AlertMessage
+                                                        content={t(
+                                                            `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
+                                                        )}
+                                                    />
+                                                )}
+                                            </VStack>
+                                        </VStack>
+                                    ),
                                 },
                                 {
                                     title: (
@@ -207,19 +224,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                 },
                             ]}
                         />
-                        <VStack space={['0.5']}>
-                            {(data?.me?.student?.canRequestMatch.allowed && (
-                                <Button width={ButtonContainer} marginBottom={space['1.5']} onPress={() => navigate('/request-match')}>
-                                    {t('dashboard.helpers.buttons.requestMatchStudent')}
-                                </Button>
-                            )) || (
-                                <AlertMessage
-                                    content={t(
-                                        `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
-                                    )}
-                                />
-                            )}
-                        </VStack>
+
                         {process.env.REACT_APP_HOMEWORKHELP !== '' && (
                             <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
                                 <Heading paddingBottom={space['0.5']}>{t('matching.homeworkhelp.title')}</Heading>

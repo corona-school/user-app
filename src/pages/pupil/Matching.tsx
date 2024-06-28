@@ -175,7 +175,35 @@ const Matching: React.FC<Props> = () => {
                     tabs={[
                         {
                             title: t('matching.request.check.tabs.tab1'),
-                            content: <Matches activeMatches={activeMatches as Match[]} />,
+                            content: (
+                                <VStack>
+                                    <Matches activeMatches={activeMatches as Match[]} />
+                                    <VStack marginTop={space['1.5']}>
+                                        <DisableableButton
+                                            isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
+                                            reasonDisabled={reasonDisabled()}
+                                            onPress={() => navigate('/request-match')}
+                                            width={ButtonContainer}
+                                        >
+                                            {t(
+                                                activeMatches?.length
+                                                    ? 'dashboard.helpers.buttons.requestMoreMatchesPupil'
+                                                    : 'dashboard.helpers.buttons.requestFirstMatchPupil'
+                                            )}
+                                        </DisableableButton>
+                                        {(!data?.me?.pupil?.canRequestMatch?.allowed && (
+                                            <AlertMessage
+                                                content={t(
+                                                    `lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
+                                                )}
+                                            />
+                                        )) ||
+                                            (DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && (
+                                                <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />
+                                            ))}
+                                    </VStack>
+                                </VStack>
+                            ),
                         },
                         {
                             title: (
@@ -232,22 +260,6 @@ const Matching: React.FC<Props> = () => {
                         },
                     ]}
                 />
-                <VStack marginTop={space['1.5']}>
-                    <DisableableButton
-                        isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
-                        reasonDisabled={reasonDisabled()}
-                        onPress={() => navigate('/request-match')}
-                        width={ButtonContainer}
-                    >
-                        {t(activeMatches?.length ? 'dashboard.helpers.buttons.requestMoreMatchesPupil' : 'dashboard.helpers.buttons.requestFirstMatchPupil')}
-                    </DisableableButton>
-                    {(!data?.me?.pupil?.canRequestMatch?.allowed && (
-                        <AlertMessage
-                            content={t(`lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray)}
-                        />
-                    )) ||
-                        (DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true' && <AlertMessage content={t('lernfair.reason.matching.pupil.deactivated')} />)}
-                </VStack>
                 <Modal isOpen={showCancelModal}>
                     <Modal.Content>
                         <Modal.Header>{t('matching.request.check.deleteRequest')}</Modal.Header>
