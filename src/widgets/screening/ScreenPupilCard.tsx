@@ -1,5 +1,5 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack } from 'native-base';
+import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack, Select } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -20,6 +20,7 @@ import { EditGradeModal } from './EditGradeModal';
 import { EditLanguagesModal } from './EditLanguagesModal';
 import DisableableButton from '../../components/DisablebleButton';
 import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
+import { TextInputWithoutSuggestions } from '../../components/TextInputWithoutSuggestions';
 import { getGradeLabel } from '../../Utility';
 
 const MISSED_SCREENING_QUERY = gql(
@@ -43,12 +44,14 @@ mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: Pupil
 const knowsFromSuggestions = [
     'Persönliche Empfehlung: Familie & Freunde',
     'Jugendzentrum',
+    'Tafel',
     'Schule / Lehrkraft',
     'TikTok',
     'Instagram',
     'Print (Flyer, Poster etc.)',
     'Suchmaschine (Google)',
     'Website',
+    'Sonstiges',
 ];
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
@@ -60,6 +63,7 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
 
     const [screeningComment, setScreeningComment] = useState(screening!.comment!);
     const [knowsFrom, setKnowsFrom] = useState(screening.knowsCoronaSchoolFrom ?? '');
+    const [customKnowsFrom, setCustomKnowsFrom] = useState('');
 
     const [confirmRejection, setConfirmRejection] = useState(false);
     const [confirmSuccess, setConfirmSuccess] = useState(false);
@@ -106,25 +110,28 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
             resultComment += `[${screener.firstname} ${screener.lastname}]: Ablehnung empfehlen\n\n`;
         }
 
+        let knowsFromValue = knowsFrom;
+        if (knowsFrom === 'Sonstiges') {
+            knowsFromValue = customKnowsFrom;
+        }
+
         storeEdit({
             variables: {
                 id: screening!.id!,
                 screeningComment: resultComment,
                 status: PupilScreeningStatus.Dispute,
-                knowsFrom,
+                knowsFrom: knowsFromValue,
             },
         });
         setScreeningComment(resultComment);
     }
 
     const handleOnKnowsFromChanges = (value: string) => {
-        if (knowsFromSuggestions.includes(value.trim())) {
-            setKnowsFrom(value.replaceAll('Sonstiges: ', ''));
-        } else if (value) {
-            setKnowsFrom(value.includes('Sonstiges: ') ? value : `Sonstiges: ${value}`);
-        } else {
-            setKnowsFrom(value);
-        }
+        setKnowsFrom(value);
+    };
+
+    const handleOnCustomKnowsFromChanges = (value: string) => {
+        setCustomKnowsFrom(value);
     };
 
     return (
@@ -142,6 +149,20 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                 <FormControl width={['100%', '60%']}>
                     <FormControl.Label>Kennt Lern-Fair durch:</FormControl.Label>
                     <TextInputWithSuggestions value={knowsFrom} setValue={handleOnKnowsFromChanges} suggestions={knowsFromSuggestions} />
+                    <Select selectedValue={knowsFrom} onValueChange={(value) => handleOnKnowsFromChanges(value)} placeholder="Bitte wähle eine Antwort aus">
+                        {knowsFromSuggestions.map((option, index) => (
+                            <Select.Item key={index} label={option} value={option} />
+                        ))}
+                    </Select>
+
+                    {knowsFrom === 'Sonstiges' && (
+                        <TextInputWithoutSuggestions
+                            value={customKnowsFrom}
+                            setValue={handleOnCustomKnowsFromChanges}
+                            placeholder="Bitte gebe hier eine Antwort ein"
+                            maxLength={40}
+                        />
+                    )}
                 </FormControl>
                 <FormControl>
                     <FormControl.Label>
