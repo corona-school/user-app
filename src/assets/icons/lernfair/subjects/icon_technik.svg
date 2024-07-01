@@ -1,9 +1,27 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<svg width="30px" height="30px" viewBox="0 0 30 30" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
-    <title>Technik</title>
-    <g id="Icons" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
-        <g transform="translate(-896.000000, -1234.000000)" id="Technik">
-            <g transform="translate(896.000000, 1234.000000)" id="icon_vietnamesisch-copy"></g>
+<svg id="Group_16" data-name="Group 16" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30" viewBox="0 0 30 30">
+    <defs>
+        <clipPath id="clip-path">
+            <circle id="Oval" cx="15" cy="15" r="15" fill="#fff" />
+        </clipPath>
+    </defs>
+    <circle id="Oval-2" data-name="Oval" cx="15" cy="15" r="15" fill="#fff" />
+    <g id="Group_16-2" data-name="Group 16" clip-path="url(#clip-path)">
+        <g id="wissenschaft-und-technik" transform="translate(6 6)">
+            <path id="Path" d="M.788,0A.788.788,0,1,1,0,.788.788.788,0,0,1,.788,0Z" transform="translate(0 16.031)" fill="#f4cc54" />
+            <path id="Path-2" data-name="Path" d="M.591,0A.591.591,0,1,1,0,.591.591.591,0,0,1,.591,0Z" transform="translate(15.755 0.276)" fill="#f4cc54" />
+            <path id="Shape"
+                d="M8.084,17.882l-.572-2.558a6.526,6.526,0,0,1-2.073-.859l-2.217,1.4-1.211-1.21,1.4-2.217a6.456,6.456,0,0,1-.859-2.074L0,9.8V8.084l2.558-.572A6.493,6.493,0,0,1,3.416,5.44l-1.4-2.217L3.223,2.012,5.44,3.42a6.512,6.512,0,0,1,2.073-.862L8.084,0H9.8l.571,2.558a6.517,6.517,0,0,1,2.074.862l2.217-1.408,1.21,1.211-1.4,2.217a6.534,6.534,0,0,1,.859,2.073l2.558.572V9.8l-2.558.571a6.531,6.531,0,0,1-.859,2.074l1.4,2.217-1.21,1.21-2.217-1.4a6.5,6.5,0,0,1-2.074.859L9.8,17.882Z"
+                transform="translate(0.118)" fill="#405b73" />
+            <circle id="Oval-3" data-name="Oval" cx="3" cy="3" r="3" transform="translate(6 6)" fill="#f4cc54" />
+            <g id="Group" transform="translate(0.394 0.276)">
+                <path id="Path-3" data-name="Path" d="M.394,0A.394.394,0,1,1,0,.394.394.394,0,0,1,.394,0Z" transform="translate(16.149 15.755)" fill="#405b73" />
+                <path id="Path-4" data-name="Path" d="M.394,0A.394.394,0,1,1,0,.394.394.394,0,0,1,.394,0Z" transform="translate(11.028 0.394)" fill="#405b73" />
+                <path id="Path-5" data-name="Path" d="M.394,0A.394.394,0,1,1,0,.394.394.394,0,0,1,.394,0Z" transform="translate(5.514 16.149)" fill="#405b73" />
+                <path id="Path-6" data-name="Path" d="M.394,0A.394.394,0,1,1,0,.394.394.394,0,0,1,.394,0Z" transform="translate(2.757)" fill="#f4cc54" />
+                <path id="Path-7" data-name="Path" d="M.394,0A.394.394,0,1,1,0,.394.394.394,0,0,1,.394,0Z" transform="translate(0 3.545)" fill="#405b73" />
+                <path id="Path-8" data-name="Path" d="M.394,0A.394.394,0,1,1,0,.394.394.394,0,0,1,.394,0Z" transform="translate(0 12.21)" fill="#405b73" />
+            </g>
         </g>
     </g>
 </svg>
+  
