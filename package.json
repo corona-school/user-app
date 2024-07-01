@@ -129,14 +129,13 @@
         "dev-install": "npm ci --include=optional",
         "dev-storybook": "storybook dev -p 6006",
         "dev-storybook-build": "storybook build",
-        "prettier": "./prettier-commits.sh",
-        "prettier-all": "prettier --write \"./**.tsx\"",
         "linter": "eslint . --ext .tsx",
         "graphql-fetch-schema": "node scripts/fetch-graphql-schema.js",
         "graphql-watch": "graphql-codegen --config config/graphql-codegen.ts --watch",
         "graphql-build": "graphql-codegen --config config/graphql-codegen.ts",
         "heroku:release": "./scripts/dd-upload-source-maps.sh",
-        "translate": "node ./scripts/translate.js"
+        "translate": "node ./scripts/translate.js",
+        "lint-staged": "lint-staged"
     },
     "eslintConfig": {
         "extends": [
@@ -213,9 +212,16 @@
     },
     "dependencies": {
         "compression": "^1.7.4",
-        "express": "^4.18.2"
+        "express": "^4.18.2",
+        "lint-staged": "^15.2.7"
     },
     "pre-commit": [
-        "prettier"
-    ]
+        "lint-staged"
+    ],
+    "lint-staged": {
+        "*.ts": ["prettier --write"],
+        "*.tsx": ["prettier --write"],
+        "*.scss": ["prettier --write"],
+        "*.md": ["prettier --write"]
+    }
 }
