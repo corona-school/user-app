@@ -21,12 +21,14 @@ const WebPushProvider = ({ children }: { children: React.ReactNode }) => {
     const { sessionState } = useUserAuth();
     const { status, subscribe, unsubscribe } = useWebPush();
     useEffect(() => {
-        if (!WEBPUSH_ACTIVE) return;
-        if (sessionState === 'logged-out') {
-            unsubscribe();
-        } else if (sessionState === 'logged-in' && status === 'not-subscribed' && pushEnabled) {
-            subscribe();
-        }
+        (async () => {
+            if (!WEBPUSH_ACTIVE) return;
+            if (sessionState === 'logged-out') {
+                await unsubscribe();
+            } else if (sessionState === 'logged-in' && status === 'not-subscribed' && pushEnabled) {
+                await subscribe();
+            }
+        })();
     }, [sessionState]);
 
     return <WebPushContext.Provider value={{ status, subscribe, unsubscribe }}>{children}</WebPushContext.Provider>;
