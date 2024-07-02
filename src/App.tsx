@@ -19,6 +19,7 @@ import NavigationStackProvider from './context/NavigationStackProvider';
 
 import './service-worker-proxy';
 import InstallationProvider from './context/InstallationProvider';
+import WebPushProvider from './context/WebPushProvider';
 
 function App() {
     return (
@@ -33,9 +34,11 @@ function App() {
                                         <NotificationsProvider>
                                             <LFChatProvider>
                                                 <NavigationStackProvider>
-                                                    <InstallationProvider>
-                                                        <Navigator />
-                                                    </InstallationProvider>
+                                                    <WebPushProvider>
+                                                        <InstallationProvider>
+                                                            <Navigator />
+                                                        </InstallationProvider>
+                                                    </WebPushProvider>
                                                     <ToastNotifications />
                                                 </NavigationStackProvider>
                                             </LFChatProvider>
