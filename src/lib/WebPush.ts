@@ -138,9 +138,11 @@ async function getServerSubscriptions(client: ApolloClient<any>): Promise<{ id: 
 
 // ------------ Hook --------------------
 
+export type WebPushStatus = 'loading' | 'not-supported' | 'user-denied' | 'ask-user' | 'not-subscribed' | 'subscribed' | 'error';
+
 export function useWebPush() {
     const client = useApolloClient();
-    const [status, setStatus] = useState<'loading' | 'not-supported' | 'user-denied' | 'ask-user' | 'not-subscribed' | 'subscribed' | 'error'>('loading');
+    const [status, setStatus] = useState<WebPushStatus>('loading');
     // The id of the subscription in the backend
     const [subId, setSubId] = useState<number | null>(null);
 
@@ -243,12 +245,7 @@ export function useWebPush() {
     }
 
     async function unsubscribe() {
-        if (subId === null) return;
-
         try {
-            await unsubscribeOnServer(client, subId);
-            setSubId(null);
-
             const sw = await getServiceWorker();
             const subscription = await sw.pushManager.getSubscription();
             await subscription?.unsubscribe();
@@ -258,6 +255,18 @@ export function useWebPush() {
         } catch (error) {
             log('WebPush', 'Failed to unsubscribe', error);
             setStatus('error');
+        }
+
+        if (subId === null) return;
+
+        try {
+            await unsubscribeOnServer(client, subId);
+            setSubId(null);
+
+            setStatus('not-subscribed');
+            log('WebPush', 'WebPush subscription removed');
+        } catch (error) {
+            log('WebPush', 'Failed to remove subscription', error);
         }
     }
 
