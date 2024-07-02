@@ -17,7 +17,6 @@ const Subjects: React.FC = () => {
                 subjects={matchRequest.subjects.map((it) => it.name)}
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 14 } })}
                 removeSubject={removeSubject}
-                includeDaz
                 justifyContent={'flex-start'}
             />
             <NextPrevButtons

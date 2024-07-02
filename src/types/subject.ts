@@ -35,11 +35,13 @@ export const SUBJECTS = [
     'Lernen lernen',
 ] as const;
 
-export const SUBJECTS_MAIN = ['Deutsch', 'Deutsch als Zweitsprache', 'Englisch', 'Mathematik'];
+type SingleSubject = typeof SUBJECTS[number];
 
-export const SUBJECTS_MINOR = ['Französisch', 'Biologie', 'Physik', 'Chemie'];
+export const SUBJECTS_MAIN: SingleSubject[] = ['Deutsch', 'Deutsch als Zweitsprache', 'Englisch', 'Mathematik'];
 
-export const SUBJECTS_RARE = [
+export const SUBJECTS_MINOR: SingleSubject[] = ['Französisch', 'Biologie', 'Physik', 'Chemie'];
+
+export const SUBJECTS_RARE: SingleSubject[] = [
     'Erdkunde',
     'Geschichte',
     'Lernen lernen',
@@ -58,7 +60,7 @@ export const SUBJECTS_RARE = [
 ];
 
 // Unfortunately this mapping is necessary as paths need to be ASCII to work reliably in the build setup
-export const SUBJECT_TO_ICON: { [subject in typeof SUBJECTS[number]]: string } = {
+export const SUBJECT_TO_ICON: { [subject in SingleSubject]: string } = {
     'Deutsch als Zweitsprache': 'deutsch_als_zweitsprache',
     Deutsch: 'deutsch',
     Altgriechisch: 'altgriechisch',
@@ -93,7 +95,7 @@ export const SUBJECT_TO_ICON: { [subject in typeof SUBJECTS[number]]: string } =
 };
 
 // Unfortunately this mapping is necessary as our two ORMs have problems with non ASCII chars:
-export const SUBJECT_TO_COURSE_SUBJECT: { [subject in typeof SUBJECTS[number]]: Course_Subject_Enum } = {
+export const SUBJECT_TO_COURSE_SUBJECT: { [subject in SingleSubject]: Course_Subject_Enum } = {
     'Deutsch als Zweitsprache': Course_Subject_Enum.DeutschAlsZweitsprache,
     Deutsch: Course_Subject_Enum.Deutsch,
     Altgriechisch: Course_Subject_Enum.Altgriechisch,
