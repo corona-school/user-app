@@ -274,6 +274,5 @@ export function useWebPush() {
             logError('WebPush', 'Failed to remove subscription', error);
         }
     }
-    console.log({ subId });
     return { status, subscribe, unsubscribe };
 }
