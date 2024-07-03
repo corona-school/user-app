@@ -10,14 +10,16 @@ import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE, WEBPUSH_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
+import useLogout from '../hooks/useLogout';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { logout, user } = useApollo();
+    const { user } = useApollo();
+    const logout = useLogout();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
