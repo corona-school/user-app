@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { gql } from '../gql';
-import { Concrete_Notification } from '../gql/graphql';
+import { Concrete_Notification, Notification_Channel_Enum } from '../gql/graphql';
 import { isMessageValid } from '../helper/notification-helper';
 
 const userNotificationQuery = gql(`
@@ -17,6 +17,9 @@ const userNotificationQuery = gql(`
                     navigateTo
                 }
                 sentAt
+                notification {
+                    disabledChannels
+                }
             }
         }
     }
@@ -28,9 +31,13 @@ export const useConcreteNotifications = () => {
 
     useEffect(() => {
         if (!loading && !error) {
-            setUserNotifications(
-                data?.me?.concreteNotifications.filter((concreteNotification) => isMessageValid(concreteNotification.message)) as Concrete_Notification[]
-            );
+            const validNotifications = data?.me?.concreteNotifications.filter((concreteNotification) => {
+                return (
+                    isMessageValid(concreteNotification.message) &&
+                    !concreteNotification.notification.disabledChannels.includes(Notification_Channel_Enum.Inapp)
+                );
+            });
+            setUserNotifications(validNotifications as Concrete_Notification[]);
         }
     }, [loading, data, error]);
 
