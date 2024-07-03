@@ -5,8 +5,9 @@ import { Text, VStack, useTheme, useToast, Radio, Button, TextArea, Modal } from
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import useApollo, { useUserType } from '../hooks/useApollo';
+import { useUserType } from '../hooks/useApollo';
 import DisableableButton from '../components/DisablebleButton';
+import useLogout from '../hooks/useLogout';
 
 // corresponding dissolve reason ids in translation file
 // for now just loop through 0-5 and 0-6 (+1 in loop)
@@ -24,7 +25,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     const { space } = useTheme();
     const navigate = useNavigate();
     const { trackEvent } = useMatomo();
-    const { logout } = useApollo();
+    const logout = useLogout();
     const { t } = useTranslation();
 
     const userType = useUserType();
