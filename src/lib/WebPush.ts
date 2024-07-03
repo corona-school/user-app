@@ -1,6 +1,6 @@
 import { ApolloClient, useApolloClient, useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { log } from '../log';
+import { log, logError } from '../log';
 import { getServiceWorker } from '../service-worker-proxy';
 import { useEffect, useState } from 'react';
 import { CreatePushSubscriptionInput } from '../gql/graphql';
@@ -202,7 +202,7 @@ export function useWebPush() {
                     setSubId(subscribedOnServer.id);
                     setStatus('subscribed');
                 } catch (error) {
-                    log('WebPush', 'Failed to resubscribe on server', error);
+                    logError('WebPush', 'Failed to resubscribe on server', error);
                     setStatus('error');
                     return;
                 }
@@ -222,7 +222,7 @@ export function useWebPush() {
         const pushPublicKey = await getServerPublicKey(client);
 
         if (!pushPublicKey) {
-            log('WebPush', 'Missing Server Public Key');
+            logError('WebPush', 'Missing Server Public Key');
             setStatus('error');
             return;
         }
@@ -236,7 +236,7 @@ export function useWebPush() {
         try {
             await subscribeOnServer(client, subscription);
         } catch (error) {
-            log('WebPush', 'Failed to subscribe on server', error);
+            logError('WebPush', 'Failed to subscribe on server', error);
             setStatus('error');
             return;
         }
@@ -253,7 +253,7 @@ export function useWebPush() {
             setStatus('not-subscribed');
             log('WebPush', 'Unsubscribed from WebPush');
         } catch (error) {
-            log('WebPush', 'Failed to unsubscribe', error);
+            logError('WebPush', 'Failed to unsubscribe', error);
             setStatus('error');
         }
 
@@ -266,7 +266,7 @@ export function useWebPush() {
             setStatus('not-subscribed');
             log('WebPush', 'WebPush subscription removed');
         } catch (error) {
-            log('WebPush', 'Failed to remove subscription', error);
+            logError('WebPush', 'Failed to remove subscription', error);
         }
     }
 
