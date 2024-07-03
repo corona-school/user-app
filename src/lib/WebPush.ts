@@ -235,6 +235,11 @@ export function useWebPush() {
 
         try {
             await subscribeOnServer(client, subscription);
+            const serverSubs = await getServerSubscriptions(client);
+            const subscribedOnServer = serverSubs.find((it) => it.endpoint === subscription.endpoint);
+            if (subscribedOnServer) {
+                setSubId(subscribedOnServer.id);
+            }
         } catch (error) {
             logError('WebPush', 'Failed to subscribe on server', error);
             setStatus('error');
@@ -269,6 +274,6 @@ export function useWebPush() {
             logError('WebPush', 'Failed to remove subscription', error);
         }
     }
-
+    console.log({ subId });
     return { status, subscribe, unsubscribe };
 }
