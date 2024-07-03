@@ -23,9 +23,7 @@ const WebPushProvider = ({ children }: { children: React.ReactNode }) => {
     useEffect(() => {
         (async () => {
             if (!WEBPUSH_ACTIVE) return;
-            if (sessionState === 'logged-out') {
-                await unsubscribe();
-            } else if (sessionState === 'logged-in' && status === 'not-subscribed' && pushEnabled) {
+            if (sessionState === 'logged-in' && status === 'not-subscribed' && pushEnabled) {
                 await subscribe();
             }
         })();
