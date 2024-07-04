@@ -1,6 +1,6 @@
 import { ApolloClient, useApolloClient, useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { log } from '../log';
+import { log, logError } from '../log';
 import { getServiceWorker } from '../service-worker-proxy';
 import { useEffect, useState } from 'react';
 import { CreatePushSubscriptionInput } from '../gql/graphql';
@@ -138,9 +138,11 @@ async function getServerSubscriptions(client: ApolloClient<any>): Promise<{ id: 
 
 // ------------ Hook --------------------
 
+export type WebPushStatus = 'loading' | 'not-supported' | 'user-denied' | 'ask-user' | 'not-subscribed' | 'subscribed' | 'error';
+
 export function useWebPush() {
     const client = useApolloClient();
-    const [status, setStatus] = useState<'loading' | 'not-supported' | 'user-denied' | 'ask-user' | 'not-subscribed' | 'subscribed' | 'error'>('loading');
+    const [status, setStatus] = useState<WebPushStatus>('loading');
     // The id of the subscription in the backend
     const [subId, setSubId] = useState<number | null>(null);
 
@@ -200,7 +202,7 @@ export function useWebPush() {
                     setSubId(subscribedOnServer.id);
                     setStatus('subscribed');
                 } catch (error) {
-                    log('WebPush', 'Failed to resubscribe on server', error);
+                    logError('WebPush', 'Failed to resubscribe on server', error);
                     setStatus('error');
                     return;
                 }
@@ -220,7 +222,7 @@ export function useWebPush() {
         const pushPublicKey = await getServerPublicKey(client);
 
         if (!pushPublicKey) {
-            log('WebPush', 'Missing Server Public Key');
+            logError('WebPush', 'Missing Server Public Key');
             setStatus('error');
             return;
         }
@@ -233,8 +235,13 @@ export function useWebPush() {
 
         try {
             await subscribeOnServer(client, subscription);
+            const serverSubs = await getServerSubscriptions(client);
+            const subscribedOnServer = serverSubs.find((it) => it.endpoint === subscription.endpoint);
+            if (subscribedOnServer) {
+                setSubId(subscribedOnServer.id);
+            }
         } catch (error) {
-            log('WebPush', 'Failed to subscribe on server', error);
+            logError('WebPush', 'Failed to subscribe on server', error);
             setStatus('error');
             return;
         }
@@ -243,12 +250,7 @@ export function useWebPush() {
     }
 
     async function unsubscribe() {
-        if (subId === null) return;
-
         try {
-            await unsubscribeOnServer(client, subId);
-            setSubId(null);
-
             const sw = await getServiceWorker();
             const subscription = await sw.pushManager.getSubscription();
             await subscription?.unsubscribe();
@@ -256,10 +258,21 @@ export function useWebPush() {
             setStatus('not-subscribed');
             log('WebPush', 'Unsubscribed from WebPush');
         } catch (error) {
-            log('WebPush', 'Failed to unsubscribe', error);
+            logError('WebPush', 'Failed to unsubscribe', error);
             setStatus('error');
         }
-    }
 
+        if (subId === null) return;
+
+        try {
+            await unsubscribeOnServer(client, subId);
+            setSubId(null);
+
+            setStatus('not-subscribed');
+            log('WebPush', 'WebPush subscription removed');
+        } catch (error) {
+            logError('WebPush', 'Failed to remove subscription', error);
+        }
+    }
     return { status, subscribe, unsubscribe };
 }
