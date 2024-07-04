@@ -230,7 +230,11 @@
             "Sachkunde": "إمكان",
             "Spanisch": "الإسبانية",
             "Wirtschaft": "اقتصاد",
-            "Lernen lernen": "تعلّم كيف تتعلم"
+            "Lernen lernen": "تعلّم كيف تتعلم",
+            "Arbeitslehre": "نظرية العمل",
+            "Ethik": "الأخلاقيات",
+            "Gesundheit": "الصحة",
+            "Technik": "التكنولوجيا"
         },
         "states": {
             "bw": "بادن فورتمبيرغ",
@@ -1408,7 +1412,19 @@
                 "subjects": {
                     "title": "اختيار الموضوع",
                     "subtitle": "ما هي الموضوعات التي ترغب في دعمها؟",
-                    "reason_btn_disabled": "يُرجى اختيار موضوع أو أكثر."
+                    "reason_btn_disabled": "يُرجى اختيار موضوع أو أكثر.",
+                    "maincourse": {
+                        "title": "المقصورات الرئيسية",
+                        "explanation": "الأكثر طلباً"
+                    },
+                    "minorcourse": {
+                        "title": "المواد الثانوية",
+                        "explanation": "مطلوب بشكل متكرر."
+                    },
+                    "rarecourse": {
+                        "title": "مواضيع نادرة",
+                        "explanation": "نادراً ما يُسأل."
+                    }
                 },
                 "profile": {
                     "title": "تحديث ملف التعريف الخاص بك",

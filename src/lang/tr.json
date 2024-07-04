@@ -230,7 +230,11 @@
             "Sachkunde": "Fen Bilgisi",
             "Spanisch": "İspanyolca",
             "Wirtschaft": "Ekonomi",
-            "Lernen lernen": "Öğrenmeyi öğrenmek"
+            "Lernen lernen": "Öğrenmeyi öğrenmek",
+            "Arbeitslehre": "İşgücü teorisi",
+            "Ethik": "Etik",
+            "Gesundheit": "Sağlık",
+            "Technik": "Teknoloji"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -1412,7 +1416,19 @@
                 "subjects": {
                     "title": "Konu seçimi",
                     "subtitle": "Hangi konularda destek vermek istersiniz?",
-                    "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz."
+                    "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz.",
+                    "maincourse": {
+                        "title": "Ana bölmeler",
+                        "explanation": "En çok talep gören."
+                    },
+                    "minorcourse": {
+                        "title": "Küçük konular",
+                        "explanation": "Sıkça talep ediliyor."
+                    },
+                    "rarecourse": {
+                        "title": "Nadir konular",
+                        "explanation": "Nadiren sorulur."
+                    }
                 },
                 "profile": {
                     "title": "Profili güncelle",

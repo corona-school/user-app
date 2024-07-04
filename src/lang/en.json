@@ -230,7 +230,11 @@
             "Sachkunde": "Expertise",
             "Spanisch": "Spanish",
             "Wirtschaft": "Economy",
-            "Lernen lernen": "Learning to learn"
+            "Lernen lernen": "Learning to learn",
+            "Arbeitslehre": "Labor theory",
+            "Ethik": "Ethics",
+            "Gesundheit": "Health",
+            "Technik": "Technology"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -1408,7 +1412,19 @@
                 "subjects": {
                     "title": "Subject selection",
                     "subtitle": "In which subjects would you like to provide support?",
-                    "reason_btn_disabled": "Please select one or more subjects."
+                    "reason_btn_disabled": "Please select one or more subjects.",
+                    "maincourse": {
+                        "title": "Main compartments",
+                        "explanation": "Most in demand."
+                    },
+                    "minorcourse": {
+                        "title": "Minor subjects",
+                        "explanation": "Frequently requested."
+                    },
+                    "rarecourse": {
+                        "title": "Rare subjects",
+                        "explanation": "Rarely asked."
+                    }
                 },
                 "profile": {
                     "title": "Update profile",
