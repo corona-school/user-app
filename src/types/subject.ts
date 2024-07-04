@@ -35,7 +35,7 @@ export const SUBJECTS = [
     'Lernen lernen',
 ] as const;
 
-type SingleSubject = typeof SUBJECTS[number];
+export type SingleSubject = typeof SUBJECTS[number];
 
 export const SUBJECTS_MAIN: SingleSubject[] = ['Deutsch', 'Deutsch als Zweitsprache', 'Englisch', 'Mathematik'];
 

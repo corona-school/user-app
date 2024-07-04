@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { RequestMatchContext } from './RequestMatch';
 import { SubjectSelectorGrouped } from '../../../widgets/SubjectSelectorGrouped';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
+import { SingleSubject } from '../../../types/subject';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
@@ -14,7 +15,7 @@ const Subjects: React.FC = () => {
         <VStack paddingX={space['1']} space={space['0.5']}>
             <Heading fontSize="2xl">{t('matching.wizard.student.subjects.title')}</Heading>
             <SubjectSelectorGrouped
-                subjects={matchRequest.subjects.map((it) => it.name)}
+                subjects={matchRequest.subjects.map((it) => it.name) as SingleSubject[]}
                 addSubject={(it) => setSubject({ name: it, grade: { min: 1, max: 14 } })}
                 removeSubject={removeSubject}
                 justifyContent={'flex-start'}

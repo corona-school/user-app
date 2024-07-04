@@ -1,6 +1,6 @@
 import { Box, Heading, HStack, Row, Text, useTheme, useBreakpointValue } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { Subject } from '../gql/graphql';
+import { SingleSubject } from '../types/subject';
 import { SUBJECTS_MAIN, SUBJECTS_MINOR, SUBJECTS_RARE, SUBJECT_TO_ICON } from '../types/subject';
 import IconTagList from './IconTagList';
 import Flame from '../assets/icons/flame.svg';
@@ -17,12 +17,12 @@ const SingleSubjectSelector = ({
     variant,
     importance = 0,
 }: {
-    selectableSubjects: Subject['name'][];
+    selectableSubjects: SingleSubject[];
     group: string;
     groupWidth: string;
     justifyContent?: string;
     limit?: number;
-    chosenSubjects: Subject['name'][];
+    chosenSubjects: SingleSubject[];
     addSubject: (name: string) => void;
     removeSubject: (name: string) => void;
     variant?: 'normal' | 'selection';
@@ -79,7 +79,7 @@ export const SubjectSelectorGrouped = ({
     variant = 'selection',
     justifyContent,
 }: {
-    subjects: Subject['name'][];
+    subjects: SingleSubject[];
     addSubject: (name: string) => void;
     removeSubject: (name: string) => void;
     limit?: number;
