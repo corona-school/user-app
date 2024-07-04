@@ -1,6 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client';
 import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack, Select } from 'native-base';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
@@ -133,6 +133,14 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     const handleOnCustomKnowsFromChanges = (value: string) => {
         setCustomKnowsFrom(value);
     };
+
+    useEffect(() => {
+        const isCustom = !!screening.knowsCoronaSchoolFrom && !knowsFromSuggestions.includes(screening.knowsCoronaSchoolFrom);
+        if (isCustom) {
+            setKnowsFrom('Sonstiges');
+            setCustomKnowsFrom(screening.knowsCoronaSchoolFrom || '');
+        }
+    }, [screening.knowsCoronaSchoolFrom]);
 
     return (
         <>
