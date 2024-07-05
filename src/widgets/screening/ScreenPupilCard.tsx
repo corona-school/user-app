@@ -19,7 +19,6 @@ import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
 import { EditGradeModal } from './EditGradeModal';
 import { EditLanguagesModal } from './EditLanguagesModal';
 import DisableableButton from '../../components/DisablebleButton';
-import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
 import { TextInputWithoutSuggestions } from '../../components/TextInputWithoutSuggestions';
 import { getGradeLabel } from '../../Utility';
 
@@ -64,6 +63,7 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     const [screeningComment, setScreeningComment] = useState(screening!.comment!);
     const [knowsFrom, setKnowsFrom] = useState(screening.knowsCoronaSchoolFrom ?? '');
     const [customKnowsFrom, setCustomKnowsFrom] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [confirmRejection, setConfirmRejection] = useState(false);
     const [confirmSuccess, setConfirmSuccess] = useState(false);
@@ -131,6 +131,11 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     };
 
     const handleOnCustomKnowsFromChanges = (value: string) => {
+        if (value.length > 60) {
+            setErrorMessage('Bitte halte deine Antwort kürzer als 60 Zeichen');
+        } else {
+            setErrorMessage('');
+        }
         setCustomKnowsFrom(value);
     };
 
@@ -156,7 +161,6 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
             <VStack flexGrow="1" space={space['1']}>
                 <FormControl width={['100%', '60%']}>
                     <FormControl.Label>Kennt Lern-Fair durch:</FormControl.Label>
-                    <TextInputWithSuggestions value={knowsFrom} setValue={handleOnKnowsFromChanges} suggestions={knowsFromSuggestions} />
                     <Select selectedValue={knowsFrom} onValueChange={(value) => handleOnKnowsFromChanges(value)} placeholder="Bitte wähle eine Antwort aus">
                         {knowsFromSuggestions.map((option, index) => (
                             <Select.Item key={index} label={option} value={option} />
@@ -164,12 +168,15 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
                     </Select>
 
                     {knowsFrom === 'Sonstiges' && (
-                        <TextInputWithoutSuggestions
-                            value={customKnowsFrom}
-                            setValue={handleOnCustomKnowsFromChanges}
-                            placeholder="Bitte gebe hier eine Antwort ein"
-                            maxLength={40}
-                        />
+                        <>
+                            <TextInputWithoutSuggestions
+                                value={customKnowsFrom}
+                                setValue={handleOnCustomKnowsFromChanges}
+                                placeholder="Bitte gebe hier eine Antwort ein"
+                                maxLength={60}
+                            />
+                            {errorMessage && <Text color="red.500">{errorMessage}</Text>}
+                        </>
                     )}
                 </FormControl>
                 <FormControl>

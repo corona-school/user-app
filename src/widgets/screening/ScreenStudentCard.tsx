@@ -80,6 +80,7 @@ function CreateScreeningModal({
                         'Persönliche Empfehlung/Freund:innen',
                         'Ehrenamtsbörse',
                         'Instagram',
+                        'Tafel',
                         'LinkedIn',
                         'Suchmaschine',
                         'Print (Flyer, Poster,…)',
@@ -88,6 +89,7 @@ function CreateScreeningModal({
                         'Unternehmenskooperation',
                         'Universität',
                         'Von Schüler:in zu Helfer:in',
+                        'Sonstiges',
                     ]}
                 />
                 <HStack space={space['1']} paddingTop={space['1']}>
