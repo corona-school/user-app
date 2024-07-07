@@ -1,4 +1,4 @@
-import { VStack, useTheme, Button, Modal } from 'native-base';
+import { VStack, useTheme, Button, Modal, useBreakpointValue } from 'native-base';
 import { switchLanguage, languageList, languageComponents } from '../I18n';
 import { getLanguageSelection } from '../helper/getLanguageSelection';
 
@@ -9,8 +9,12 @@ type Props = {
 
 export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     const { space } = useTheme();
-
     const lang = getLanguageSelection();
+
+    const widthButtonText = useBreakpointValue({
+        base: '55%',
+        md: '35%',
+    });
 
     return (
         <Modal isOpen={isOpen} onClose={onCloseModal}>
@@ -28,7 +32,7 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) =
                                 isPressed={lang === button.short}
                                 variant={'outlinemiddle'}
                                 leftIcon={<Icon />}
-                                _stack={{ justifyContent: 'left', width: '35%' }}
+                                _stack={{ justifyContent: 'left', width: widthButtonText }}
                                 onPress={() => {
                                     switchLanguage(button.short);
                                     onCloseModal();
