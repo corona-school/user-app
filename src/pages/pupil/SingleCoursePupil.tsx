@@ -16,7 +16,7 @@ import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
-import HelpNavigation from '../../components/HelpNavigation';
+import LangNavigation from '../../components/LangNavigation';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -124,8 +124,6 @@ const SingleCoursePupil = () => {
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const { space, sizes } = useTheme();
-    const navigate = useNavigate();
-    const toast = useToast();
 
     const sectionSpacing = useBreakpointValue({
         base: space['1'],
@@ -205,7 +203,7 @@ const SingleCoursePupil = () => {
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <HelpNavigation />
+                    <LangNavigation />
                     <NotificationAlert />
                 </Stack>
             }

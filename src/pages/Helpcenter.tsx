@@ -1,20 +1,4 @@
-import {
-    Box,
-    Heading,
-    useTheme,
-    Text,
-    Link,
-    Row,
-    FormControl,
-    TextArea,
-    Checkbox,
-    Button,
-    InfoIcon,
-    useBreakpointValue,
-    View,
-    Input,
-    Stack,
-} from 'native-base';
+import { Box, Heading, useTheme, Text, InfoIcon, useBreakpointValue, Stack } from 'native-base';
 import NavigationTabs from '../components/NavigationTabs';
 import WithNavigation from '../components/WithNavigation';
 import { useCallback, useEffect, useState } from 'react';
@@ -27,20 +11,15 @@ import useModal from '../hooks/useModal';
 import IFrame from '../components/IFrame';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AsNavigationItem from '../components/AsNavigationItem';
-import Hello from '../widgets/Hello';
-import AlertMessage from '../widgets/AlertMessage';
 import { useUserType } from '../hooks/useApollo';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import HelpNavigation from '../components/HelpNavigation';
+import LangNavigation from '../components/LangNavigation';
 import { SwitchUserType } from '../User';
 import ContactSupportForm from '../components/ContactSupportForm';
-
-type MentorCategory = 'LANGUAGE' | 'SUBJECTS' | 'DIDACTIC' | 'TECH' | 'SELFORGA' | 'OTHER';
 
 const HelpCenter: React.FC = () => {
     const userType = useUserType();
     const { space, sizes } = useTheme();
-    const [dsgvo, setDSGVO] = useState<boolean>(false);
     const [subject, setSubject] = useState<string>('');
     const [message, setMessage] = useState<string>('');
 
@@ -146,7 +125,7 @@ const HelpCenter: React.FC = () => {
                 headerTitle="Hilfebereich"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <LangNavigation />
                         <NotificationAlert />
                     </Stack>
                 }
@@ -159,20 +138,6 @@ const HelpCenter: React.FC = () => {
                             studentComponent={<Text>{t('helpcenter.subtitle.student')}</Text>}
                         />
                     </Box>
-                    {/* <Box
-            maxWidth={ContentContainerWidth}
-            paddingBottom={space['2.5']}
-            paddingX={space['1.5']}>
-            <Heading paddingBottom={space['0.5']}>
-              {t('helpcenter.onboarding.title')}
-            </Heading>
-            <Text paddingBottom={space['1.5']}>
-              {t('helpcenter.onboarding.content')}
-            </Text>
-            <Button width={buttonWidth} onPress={() => onboardingCheck()}>
-              {t('helpcenter.onboarding.button')}
-            </Button>
-          </Box> */}
                 </Box>
                 <Box width="100%" maxWidth={ContainerWidth} marginX="auto" flex={1}>
                     <NavigationTabs

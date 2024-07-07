@@ -5,7 +5,7 @@ import { Box, Stack, useBreakpointValue } from 'native-base';
 import { useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import HelpNavigation from '../components/HelpNavigation';
+import LangNavigation from '../components/LangNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { Achievement } from '../gql/graphql';
 
@@ -85,7 +85,7 @@ const Progress = () => {
                     headerTitle="Progress"
                     headerLeft={
                         <Stack alignItems="center" direction="row">
-                            <HelpNavigation />
+                            <LangNavigation />
                             <NotificationAlert />
                         </Stack>
                     }

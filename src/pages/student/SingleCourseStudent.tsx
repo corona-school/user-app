@@ -10,7 +10,6 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
-import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
 import Banner from '../../widgets/CourseBanner';
@@ -21,7 +20,7 @@ import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
-import HelpNavigation from '../../components/HelpNavigation';
+import LangNavigation from '../../components/LangNavigation';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
 import RemoveParticipantFromCourseModal from '../../modals/RemoveParticipantFromCourseModal';
@@ -474,7 +473,7 @@ const SingleCourseStudent = () => {
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <HelpNavigation />
+                    <LangNavigation />
                     <NotificationAlert />
                 </Stack>
             }

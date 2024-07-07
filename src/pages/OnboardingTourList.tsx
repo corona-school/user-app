@@ -13,7 +13,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect } from 'react';
 import CSSWrapper from '../components/CSSWrapper';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import HelpNavigation from '../components/HelpNavigation';
+import LangNavigation from '../components/LangNavigation';
 
 type Props = {};
 
@@ -39,18 +39,13 @@ const OnboardingTourList: React.FC<Props> = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const CardGrid = useBreakpointValue({
-        base: '100%',
-        lg: '48%',
-    });
-
     return (
         <WithNavigation
             headerTitle={t('onboardingList.header')}
             showBack
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <HelpNavigation />
+                    <LangNavigation />
                     <NotificationAlert />
                 </Stack>
             }

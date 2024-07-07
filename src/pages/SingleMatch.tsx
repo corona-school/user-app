@@ -14,7 +14,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
-import HelpNavigation from '../components/HelpNavigation';
+import LangNavigation from '../components/LangNavigation';
 import MatchAppointments from '../widgets/MatchAppointments';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
@@ -263,7 +263,7 @@ const SingleMatch = () => {
                 previousFallbackRoute="/matching"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <LangNavigation />
                         <NotificationAlert />
                     </Stack>
                 }

@@ -1,6 +1,6 @@
 import { Text, Box, Heading, Stack, useBreakpointValue, useTheme } from 'native-base';
 import AsNavigationItem from '../components/AsNavigationItem';
-import HelpNavigation from '../components/HelpNavigation';
+import LangNavigation from '../components/LangNavigation';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +40,7 @@ const KnowledgeCenter = () => {
                 headerTitle={t('forStudents.title')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <LangNavigation />
                         <NotificationAlert />
                     </Stack>
                 }
