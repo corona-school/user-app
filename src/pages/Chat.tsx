@@ -123,8 +123,7 @@ const Chat: React.FC = () => {
                 onBack={() => handleBack()}
             >
                 {!isConverstationSelected && <FloatingActionButton handlePress={handleNewChatPress} place={'bottom-right'} icon={<LFAddChatIcon />} />}
-
-                <Box h="100%" pl={isMobile ? 2 : 0} pr={paddingRight} w={chatWidth} ref={inboxRef} />
+                <div style={{ height: '100%', width: chatWidth, paddingLeft: isMobile ? 4 : 0, paddingRight: paddingRight }} ref={inboxRef} />
                 <Modal isOpen={isContactModalOpen} onClose={onClose}>
                     <ChatContactsModal
                         onClose={onClose}
