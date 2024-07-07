@@ -89,6 +89,9 @@ const Settings: React.FC = () => {
                                     <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
                                 </Column>
                             )}
+                            <Column mb={tabspace}>
+                                <ListItem label={t('settings.general.faq')} onPress={() => navigate('/hilfebereich')} />
+                            </Column>
                             {canInstall && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />
