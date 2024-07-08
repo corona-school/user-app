@@ -28,7 +28,7 @@
         "@types/react-signature-canvas": "^1.0.2",
         "@types/ua-parser-js": "^0.7.36",
         "@types/validator": "^13.7.14",
-        "@zoomus/websdk": "2.15.2",
+        "@zoom/meetingsdk": "^3.8.0",
         "apollo-codegen": "^0.20.2",
         "babel-jest": "^27.4.2",
         "babel-loader": "^8.2.3",
