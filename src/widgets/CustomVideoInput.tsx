@@ -51,7 +51,6 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, overrid
             {videoChatType === VideoChatTypeEnum.LINK && (
                 <FormControl>
                     <Input
-                        name="customLink"
                         width={isMobile ? '60%' : '100%'}
                         onChange={(value) => handleInput(value)}
                         borderBottomRightRadius={5}

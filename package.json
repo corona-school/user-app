@@ -60,7 +60,7 @@
         "jsrsasign": "^10.8.1",
         "luxon": "^3.0.4",
         "mini-css-extract-plugin": "^2.6.1",
-        "native-base": "^3.4.7",
+        "native-base": "^3.4.19",
         "postcss": "^8.4.16",
         "postcss-flexbugs-fixes": "^5.0.2",
         "postcss-loader": "^7.0.1",
