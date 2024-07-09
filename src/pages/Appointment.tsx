@@ -1,6 +1,6 @@
 // eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useQuery } from '@apollo/client';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -85,6 +85,39 @@ export const PUPIL_APPOINTMENT = gql(`
     }
 `);
 
+export const COURSE_SCREENER_APPOINTMENT_VIEW = gql(`
+    query appointmentScreener($appointmentId: Float!) {
+        appointment(appointmentId: $appointmentId) {
+            id
+            start
+            duration
+            title
+            description
+            isCanceled
+            position
+            appointmentType
+            total
+            displayName
+            subcourseId
+            participants(skip: 0, take: 10) {
+                id
+                userID
+                firstname
+                lastname
+            }
+            organizers(skip: 0, take: 10) {
+                id
+                userID
+                firstname
+                lastname
+            }
+            subcourse {
+                published
+            }
+        }
+    }
+`);
+
 type AppointmentParams = {
     startMeeting?: boolean;
 };
@@ -93,20 +126,28 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     const userType = useUserType();
     const { id } = useParams();
     const appointmentId = parseFloat(id ? id : '');
+
     const {
         data: studentAppointment,
         loading: isLoadingStudentAppointment,
         error: studentAppointmentError,
-    } = useQuery(STUDENT_APPOINTMENT, { variables: { appointmentId }, skip: userType === 'pupil' });
+    } = useQuery(STUDENT_APPOINTMENT, { variables: { appointmentId }, skip: userType !== 'student' });
+
     const {
         data: pupilAppointment,
         loading: isLoadingpupilAppointment,
         error: pupilAppointmentError,
-    } = useQuery(PUPIL_APPOINTMENT, { variables: { appointmentId }, skip: userType === 'student' });
+    } = useQuery(PUPIL_APPOINTMENT, { variables: { appointmentId }, skip: userType !== 'pupil' });
 
-    const data = studentAppointment ?? pupilAppointment;
-    const loading = isLoadingStudentAppointment ?? isLoadingpupilAppointment;
-    const error = studentAppointmentError ?? pupilAppointmentError;
+    const {
+        data: screenerAppointment,
+        loading: isLoadingScreenerAppointment,
+        error: screenerAppointmentError,
+    } = useQuery(COURSE_SCREENER_APPOINTMENT_VIEW, { variables: { appointmentId }, skip: userType !== 'screener' });
+
+    const data = studentAppointment ?? pupilAppointment ?? screenerAppointment;
+    const loading = isLoadingStudentAppointment ?? isLoadingpupilAppointment ?? isLoadingScreenerAppointment;
+    const error = studentAppointmentError ?? pupilAppointmentError ?? screenerAppointmentError;
 
     const getDefaultPreviousPath = () => {
         const apppointmentType: Lecture_Appointmenttype_Enum = data?.appointment?.appointmentType;

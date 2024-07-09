@@ -14,6 +14,7 @@ import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
 import useInterval from '../../hooks/useInterval';
 import VideoButton from '../VideoButton';
+import { useUserType } from '../../hooks/useApollo';
 
 type MetaProps = {
     date: string;
@@ -55,6 +56,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     const [_, setCurrentTime] = useState(0);
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
+    const userType = useUserType();
 
     const buttonWidth = useBreakpointValue({
         base: 'full',
@@ -123,7 +125,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                 </HStack>
             )}
             <Spacer py={3} />
-            {appointmentId && appointmentType && (
+            {appointmentId && appointmentType && userType !== 'screener' && (
                 <>
                     <VideoButton
                         isInstructor={isOrganizer}
