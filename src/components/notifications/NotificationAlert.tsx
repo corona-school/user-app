@@ -1,6 +1,6 @@
 import { Button, Text, Circle, Popover, VStack, useBreakpointValue } from 'native-base';
 import { IButtonProps } from 'native-base/lib/typescript/components/primitives/Button/types';
-import { useContext, useEffect, useState } from 'react';
+import { MutableRefObject, useContext, useEffect, useState } from 'react';
 import BellIcon from '../../assets/icons/lernfair/lf-bell.svg';
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications';
 import { useConcreteNotifications } from '../../hooks/useConcreteNotifications';
@@ -37,7 +37,7 @@ const NotificationAlert: React.FC = () => {
         setCount(unreadNotifications.length);
     }, [lastTimeCheckedNotifications, userNotifications]);
 
-    const handleTrigger = ({ onPress, ref }: IButtonProps): React.ReactElement => {
+    const handleTrigger = ({ onPress, ref }: IButtonProps & { ref: MutableRefObject<any> }): React.ReactElement => {
         return (
             <VStack>
                 {!!count && (
