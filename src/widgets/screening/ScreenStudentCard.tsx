@@ -14,7 +14,6 @@ import { useState } from 'react';
 import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
-import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
 import { formatDate } from '../../Utility';
 import { TextInputWithoutSuggestions } from '../../components/TextInputWithoutSuggestions';
 
@@ -105,26 +104,6 @@ function CreateScreeningModal({
                 <Heading paddingTop="20px" fontSize="15px">
                     Kennt Lern-Fair durch:
                 </Heading>
-
-                {/* <TextInputWithSuggestions
-                    value={knowsFrom}
-                    setValue={setKnowsFrom}
-                    suggestions={[
-                        'Persönliche Empfehlung/Freund:innen',
-                        'Ehrenamtsbörse',
-                        'Instagram',
-                        'Tafel',
-                        'LinkedIn',
-                        'Suchmaschine',
-                        'Print (Flyer, Poster,…)',
-                        'Presse',
-                        'Stipendium',
-                        'Unternehmenskooperation',
-                        'Universität',
-                        'Von Schüler:in zu Helfer:in',
-                        'Sonstiges',
-                    ]}
-                /> */}
 
                 <Select selectedValue={knowsFrom} onValueChange={(value) => handleOnKnowsFromChanges(value)} placeholder="Bitte wähle eine Antwort aus">
                     {knowsFromSuggestions.map((option, index) => (
