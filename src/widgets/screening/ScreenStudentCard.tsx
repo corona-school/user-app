@@ -26,6 +26,7 @@ const knowsFromSuggestions = [
     'Tafel',
     'LinkedIn',
     'Suchmaschine',
+    'Jugendzentrum',
     'Print (Flyer, Poster,…)',
     'Presse',
     'Stipendium',
