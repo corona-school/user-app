@@ -20,7 +20,6 @@ const ResizableTextArea: React.FC<InputProps> = ({ value, placeholder, onChangeT
             value={value}
             onChangeText={onChangeText}
             style={{ height: Math.max(isMobile ? 100 : 300, height) }}
-            autoCompleteType={'normal'}
             onContentSizeChange={(e) => setHeight(e.nativeEvent.contentSize.height)}
             multiline
         />
