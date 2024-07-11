@@ -1,4 +1,4 @@
-import { Button, HStack, Heading, Text, TextArea, VStack, useTheme } from 'native-base';
+import { Button, HStack, Heading, Text, TextArea, VStack, useTheme, Select } from 'native-base';
 import { InstructorScreening, StudentForScreening, TutorScreening } from '../../types';
 import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
@@ -16,8 +16,25 @@ import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
 import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
 import { formatDate } from '../../Utility';
+import { TextInputWithoutSuggestions } from '../../components/TextInputWithoutSuggestions';
 
 type ScreeningInput = { success: boolean; comment: string; jobStatus: Screening_Jobstatus_Enum; knowsFrom: string };
+
+const knowsFromSuggestions = [
+    'Persönliche Empfehlung/Freund:innen',
+    'Ehrenamtsbörse',
+    'Instagram',
+    'Tafel',
+    'LinkedIn',
+    'Suchmaschine',
+    'Print (Flyer, Poster,…)',
+    'Presse',
+    'Stipendium',
+    'Unternehmenskooperation',
+    'Universität',
+    'Von Schüler:in zu Helfer:in',
+    'Sonstiges',
+];
 
 function CreateScreeningModal({
     student,
@@ -37,11 +54,27 @@ function CreateScreeningModal({
     const [comment, setComment] = useState('');
     const [jobStatus, setJobStatus] = useState<Screening_Jobstatus_Enum>(Screening_Jobstatus_Enum.Misc);
     const [knowsFrom, setKnowsFrom] = useState('');
+    const [customKnowsFrom, setCustomKnowsFrom] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const { space } = useTheme();
 
+    const handleOnKnowsFromChanges = (value: string) => {
+        setKnowsFrom(value);
+    };
+
+    const handleOnCustomKnowsFromChanges = (value: string) => {
+        if (value.length > 60) {
+            setErrorMessage('Bitte halte deine Antwort kürzer als 60 Zeichen');
+        } else {
+            setErrorMessage('');
+        }
+        setCustomKnowsFrom(value);
+    };
+
     function doScreen(success: boolean) {
-        screen({ success, comment, jobStatus, knowsFrom });
+        const finalKnowsFrom = knowsFrom === 'Sonstiges' ? customKnowsFrom : knowsFrom;
+        screen({ success, comment, jobStatus, knowsFrom: finalKnowsFrom });
     }
 
     return (
@@ -73,7 +106,7 @@ function CreateScreeningModal({
                     Kennt Lern-Fair durch:
                 </Heading>
 
-                <TextInputWithSuggestions
+                {/* <TextInputWithSuggestions
                     value={knowsFrom}
                     setValue={setKnowsFrom}
                     suggestions={[
@@ -91,7 +124,26 @@ function CreateScreeningModal({
                         'Von Schüler:in zu Helfer:in',
                         'Sonstiges',
                     ]}
-                />
+                /> */}
+
+                <Select selectedValue={knowsFrom} onValueChange={(value) => handleOnKnowsFromChanges(value)} placeholder="Bitte wähle eine Antwort aus">
+                    {knowsFromSuggestions.map((option, index) => (
+                        <Select.Item key={index} label={option} value={option} />
+                    ))}
+                </Select>
+
+                {knowsFrom === 'Sonstiges' && (
+                    <>
+                        <TextInputWithoutSuggestions
+                            value={customKnowsFrom}
+                            setValue={handleOnCustomKnowsFromChanges}
+                            placeholder="Bitte gebe hier eine Antwort ein"
+                            maxLength={60}
+                        />
+                        {errorMessage && <Text color="red.500">{errorMessage}</Text>}
+                    </>
+                )}
+
                 <HStack space={space['1']} paddingTop={space['1']}>
                     <Button isLoading={loading} onPress={() => doScreen(true)}>
                         Screening erfolgreich
