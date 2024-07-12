@@ -14,7 +14,7 @@ type Props = {
 const Legal: React.FC<Props> = ({ onRegister }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { userType, setNewsletter, setCurrentIndex } = useContext(RegistrationContext);
+    const { userType, setNewsletter, onPrev } = useContext(RegistrationContext);
     const [checks, setChecks] = useState<string[]>([]);
     const [errors, setErrors] = useState<{
         dsgvo: boolean;
@@ -41,14 +41,6 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
         }
     }, [checks, userType]);
 
-    const goBack = () => {
-        if (userType === 'pupil') {
-            setCurrentIndex(4);
-        } else {
-            setCurrentIndex(1);
-        }
-    };
-
     const next = useCallback(() => {
         if (isInputValid()) {
             onRegister();
@@ -57,7 +49,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
 
     return (
         <VStack marginTop="10px">
-            <Heading>{t(`registration.steps.5.subtitle`)}</Heading>
+            <Heading>{t(`registration.steps.legal.subtitle`)}</Heading>
 
             <Checkbox.Group onChange={(values) => setChecks(values || [])} value={checks} mt={space['1']}>
                 <VStack space={space['0.5']}>
@@ -110,7 +102,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                     <Box alignItems="center" marginTop={space['2']}>
                         <Row space={space['1']} justifyContent="center">
                             <Column width="100%">
-                                <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={goBack}>
+                                <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={onPrev}>
                                     {t('back')}
                                 </Button>
                             </Column>

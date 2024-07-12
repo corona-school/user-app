@@ -66,20 +66,20 @@ const UserType: React.FC = () => {
     usePageTitle('Lern-Fair: Nachhilfe für benachteiligte Schüler:innen - Registrierung: Jetzt kostenlos anmelden');
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { userType, setUserType, setCurrentIndex } = useContext(RegistrationContext);
+    const { userType, setUserType, onNext } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { show, hide } = useModal();
 
     const onBarrierSolved = useCallback(
         (isUserFit: boolean) => {
             if (isUserFit) {
-                setCurrentIndex(1);
+                onNext();
             } else {
                 navigate('/registration-rejected');
             }
             hide();
         },
-        [navigate, hide, setCurrentIndex]
+        [navigate, hide]
     );
 
     const showBarrier = useCallback(() => {
@@ -126,7 +126,7 @@ const UserType: React.FC = () => {
                             <Button
                                 width="100%"
                                 onPress={() => {
-                                    userType === 'pupil' ? showBarrier() : setCurrentIndex(1);
+                                    userType === 'pupil' ? showBarrier() : onNext();
                                 }}
                             >
                                 {t('next')}
