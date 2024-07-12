@@ -421,28 +421,28 @@
             }
         },
         "steps": {
-            "0": {
+            "userType": {
                 "title": "Deine Rolle",
                 "subtitle": "Ich bin"
             },
-            "1": {
+            "personalData": {
                 "title": "Persönliche Daten",
                 "subtitle": "Persönliche Daten"
             },
-            "2": {
+            "grade": {
                 "title": "Klasse",
                 "subtitle": "In welcher Klasse bist du?"
             },
-            "3": {
+            "schoolType": {
                 "title": "Schulform",
                 "subtitle": "Auf welche Schulform gehst du?"
             },
-            "4": {
+            "state": {
                 "title": "Schulort",
                 "subtitle": "Wo gehst du zur Schule?",
                 "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt."
             },
-            "5": {
+            "legal": {
                 "title": "Einwilligungen",
                 "subtitle": "Einwilligungen"
             }
