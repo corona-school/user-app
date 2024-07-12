@@ -13,8 +13,10 @@ const VAR_COLOR_SECONDARY = VAR_COLOR_YELLOW;
 const VAR_COLOR_BLUE = '#405B73';
 const VAR_COLOR_TERTIARY = VAR_COLOR_BLUE;
 const VAR_COLOR_RED = '#D45D3A';
+const VAR_COLOR_GREEN = '#9cc18f';
 const VAR_COLOR_DANGER = VAR_COLOR_RED;
 const VAR_COLOR_WARNING = VAR_COLOR_RED;
+const VAR_COLOR_SUCCCESS = VAR_COLOR_GREEN;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VAR_COLOR_TEXT_LIGHT = '#ffffff';
 const VAR_COLOR_MODAL_BG = '#edf4f3f2';
@@ -57,6 +59,17 @@ const Theme = extendTheme({
             700: VAR_COLOR_TERTIARY,
             800: VAR_COLOR_TERTIARY,
             900: VAR_COLOR_TERTIARY,
+        },
+        success: {
+            100: VAR_COLOR_SUCCCESS,
+            200: VAR_COLOR_SUCCCESS,
+            300: VAR_COLOR_SUCCCESS,
+            400: VAR_COLOR_SUCCCESS,
+            500: VAR_COLOR_SUCCCESS,
+            600: VAR_COLOR_SUCCCESS,
+            700: VAR_COLOR_SUCCCESS,
+            800: VAR_COLOR_SUCCCESS,
+            900: VAR_COLOR_SUCCCESS,
         },
         warning: {
             100: VAR_COLOR_WARNING,
