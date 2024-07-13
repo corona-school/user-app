@@ -1,11 +1,6 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-
 import de from './lang/de.json';
-import en from './lang/en.json';
-import ru from './lang/ru.json';
-import tr from './lang/tr.json';
-
 import { LANGUAGE_SWITCHER_ACTIVE } from './config';
 
 // As users will rarely use the non-german version, lazily load these language files
@@ -21,15 +16,6 @@ const lazyLanguages = {
 export const resources = {
     de: {
         translation: de,
-    },
-    en: {
-        translation: en,
-    },
-    ru: {
-        translation: ru,
-    },
-    tr: {
-        translation: tr,
     },
 } as const;
 
