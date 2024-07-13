@@ -24,23 +24,5 @@ jobs:
         run: npm run build
 
       - name: Check Bundle Size
-        run: echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
-      
-      - name: Check Bundle Size
-        uses: actions/github-script@v7
-        with:
-          script: |
-            github.rest.checks.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              head_sha: context.sha,
-            
-              name: "bundle-size-check",
-              status: "completed",
-              conclusion: "failure",
-              output: {
-                title: "Test",
-                summary: "Test",
-                text: "Test"
-              }
-            })
+        run: ./scripts/bundle-size.sh
+
