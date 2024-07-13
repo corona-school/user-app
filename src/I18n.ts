@@ -1,13 +1,7 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { getLanguageSelection } from './helper/getLanguageSelection';
 
 import de from './lang/de.json';
-import en from './lang/en.json';
-import ar from './lang/ar.json';
-import uk from './lang/uk.json';
-import tr from './lang/tr.json';
-import ru from './lang/ru.json';
 import IconDE from './assets/icons/icon_flag_de.svg';
 import IconEN from './assets/icons/icon_flag_en.svg';
 import IconUK from './assets/icons/icon_flag_uk.svg';
@@ -44,33 +38,19 @@ export const languageComponents = {
     ru: IconRU,
 };
 
-export const defaultLang = 'en';
+export const defaultLang = 'de';
 
 export const resources = {
     de: {
         translation: de,
-    },
-    en: {
-        translation: en,
-    },
-    ru: {
-        translation: ru,
-    },
-    tr: {
-        translation: tr,
-    },
-    uk: {
-        translation: uk,
-    },
-    ar: {
-        translation: ar,
     },
 } as const;
 
 i18next.use(initReactI18next).init({
     debug: false && process.env.NODE_ENV === 'development',
     resources,
-    lng: getLanguageSelection(),
+    // The app is shipped and opened in german by default, further languages are loaded on demand
+    lng: 'de',
     fallbackLng: defaultLang,
     interpolation: {
         escapeValue: false,
@@ -98,10 +78,11 @@ if (LANGUAGE_SWITCHER_ACTIVE) {
 }
 
 // check for pre-selected language coming from lern-fair.de
-const referrer = document.referrer
-    .split(/[:/.]/)
-    .filter((elm) => elm)
-    .slice(0, -1);
-languageList.map((abbr) => referrer.includes(abbr.short) && switchLanguage(abbr.short));
+const [subdomain, domain] = document.referrer.split('.');
+console.log('i18n.ts: ', subdomain, domain);
+if (domain === 'lern-fair') {
+    const lng = languageList.find((langItem) => subdomain.includes(langItem.short));
+    if (lng) switchLanguage(lng.short);
+}
 
 export default i18next;
