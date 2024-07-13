@@ -79,7 +79,6 @@ if (LANGUAGE_SWITCHER_ACTIVE) {
 
 // check for pre-selected language coming from lern-fair.de
 const [subdomain, domain] = document.referrer.split('.');
-console.log('i18n.ts: ', subdomain, domain);
 if (domain === 'lern-fair') {
     const lng = languageList.find((langItem) => subdomain.includes(langItem.short));
     if (lng) switchLanguage(lng.short);

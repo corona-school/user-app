@@ -4,7 +4,7 @@ import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { languageComponents } from '../I18n';
 import { getLanguageSelection } from '../helper/getLanguageSelection';
 
-const LangNavigation: React.FC = () => {
+const SwitchLanguageButton: React.FC = () => {
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
 
     const lang = getLanguageSelection();
@@ -21,4 +21,4 @@ const LangNavigation: React.FC = () => {
     );
 };
 
-export default LangNavigation;
+export default SwitchLanguageButton;
