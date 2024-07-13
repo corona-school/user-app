@@ -147,6 +147,9 @@ const Theme = extendTheme({
                     backgroundColor: VAR_COLOR_BLUE,
                 },
                 outline: {
+                    _text: {
+                        color: VAR_COLOR_PRIMARY_DARK,
+                    },
                     _light: {
                         borderColor: VAR_COLOR_PRIMARY,
                         _text: {

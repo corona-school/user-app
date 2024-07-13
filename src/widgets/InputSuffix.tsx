@@ -19,7 +19,6 @@ const InputSuffix: React.FC<InputProps> = ({ appointmentsCount, inputValue, hand
                 <Text>{t('appointment.create.lecture') + `${appointmentsCount ? ' #' : ''}${appointmentsCount ?? ''}`}</Text>
             </InputLeftAddon>
             <Input
-                name="title"
                 width={isMobile ? '60%' : '75%'}
                 onChange={handleInput}
                 borderBottomRightRadius={5}
