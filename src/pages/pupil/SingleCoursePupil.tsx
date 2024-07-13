@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { DateTime } from 'luxon';
-import { Box, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, Stack, Text, useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import NavigationTabs, { Tab } from '../../components/NavigationTabs';
@@ -16,7 +16,7 @@ import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -203,7 +203,7 @@ const SingleCoursePupil = () => {
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <LangNavigation />
+                    <SwitchLanguageButton />
                     <NotificationAlert />
                 </Stack>
             }

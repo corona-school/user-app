@@ -13,7 +13,7 @@ import { Match } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches, { MatchCard } from '../match/Matches';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
 
 type Props = {};
@@ -128,7 +128,7 @@ const MatchingStudent: React.FC<Props> = () => {
                 headerTitle={t('matching.request.check.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <LangNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

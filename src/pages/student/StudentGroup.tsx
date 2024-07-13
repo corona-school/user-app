@@ -19,7 +19,7 @@ import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import { Subcourse } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -189,7 +189,7 @@ const StudentGroup: React.FC = () => {
                 headerTitle={t('matching.group.helper.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <LangNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

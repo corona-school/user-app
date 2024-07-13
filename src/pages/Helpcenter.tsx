@@ -13,7 +13,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AsNavigationItem from '../components/AsNavigationItem';
 import { useUserType } from '../hooks/useApollo';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import LangNavigation from '../components/LangNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { SwitchUserType } from '../User';
 import ContactSupportForm from '../components/ContactSupportForm';
 
@@ -125,7 +125,7 @@ const HelpCenter: React.FC = () => {
                 headerTitle="Hilfebereich"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <LangNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

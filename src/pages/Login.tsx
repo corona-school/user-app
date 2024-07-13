@@ -31,7 +31,7 @@ import AlertMessage from '../widgets/AlertMessage';
 import { REDIRECT_PASSWORD } from '../Utility';
 import isEmail from 'validator/lib/isEmail';
 import DisableableButton from '../components/DisablebleButton';
-import LangNavigation from '../components/LangNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -440,7 +440,7 @@ export default function Login() {
                             >
                                 {t('settings.legal.imprint')}
                             </Button>
-                            <LangNavigation />
+                            <SwitchLanguageButton />
                         </Flex>
                     </Box>
                 </Row>

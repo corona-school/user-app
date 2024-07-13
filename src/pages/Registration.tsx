@@ -15,7 +15,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import LangNavigation from '../components/LangNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 type RegistrationContextType = {
     currentIndex: number;
@@ -247,7 +247,7 @@ const Registration: React.FC = () => {
                 />
                 <Logo viewBox="0 0 100 100" width={logoSize} height={logoSize} />
                 <Heading m={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
-                <LangNavigation />
+                <SwitchLanguageButton />
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider

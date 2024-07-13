@@ -20,7 +20,7 @@ import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import CTACard from '../../widgets/CTACard';
@@ -229,7 +229,7 @@ const Dashboard: React.FC<Props> = () => {
                 }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <LangNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

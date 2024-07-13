@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../widgets/AlertMessage';
 import { Button, Text, Flex } from 'native-base';
-import LangNavigation from '../components/LangNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 const Welcome: React.FC = () => {
     const navigate = useNavigate();
@@ -58,7 +58,7 @@ const Welcome: React.FC = () => {
                             <Button onPress={() => window.open('/impressum', '_blank')} variant={'link'} _text={{ color: 'white' }}>
                                 {t('settings.legal.imprint')}
                             </Button>
-                            <LangNavigation />
+                            <SwitchLanguageButton />
                         </Flex>
                     </Flex>
                 </>

@@ -20,7 +20,7 @@ import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
 import RemoveParticipantFromCourseModal from '../../modals/RemoveParticipantFromCourseModal';
@@ -473,7 +473,7 @@ const SingleCourseStudent = () => {
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <LangNavigation />
+                    <SwitchLanguageButton />
                     <NotificationAlert />
                 </Stack>
             }

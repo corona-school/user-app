@@ -13,7 +13,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 
 type Props = {};
 
@@ -96,7 +96,7 @@ const ChangeSettingSchoolType: React.FC<Props> = () => {
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <LangNavigation />
+                    <SwitchLanguageButton />
                     <NotificationAlert />
                 </Stack>
             }

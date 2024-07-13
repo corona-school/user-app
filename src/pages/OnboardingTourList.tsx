@@ -13,7 +13,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect } from 'react';
 import CSSWrapper from '../components/CSSWrapper';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import LangNavigation from '../components/LangNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 type Props = {};
 
@@ -45,7 +45,7 @@ const OnboardingTourList: React.FC<Props> = () => {
             showBack
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <LangNavigation />
+                    <SwitchLanguageButton />
                     <NotificationAlert />
                 </Stack>
             }

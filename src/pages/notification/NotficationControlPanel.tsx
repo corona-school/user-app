@@ -7,7 +7,7 @@ import { createContext, useEffect } from 'react';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql/gql';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Outlet, useNavigate, useMatch, useSearchParams } from 'react-router-dom';
 import { getAllPreferencesInCategorySetToValue } from '../../helper/notification-helper';
 import { marketingNotificationCategories } from '../../helper/notification-preferences';
@@ -63,7 +63,7 @@ const NotificationControlPanel = () => {
                 headerTitle={t('notification.controlPanel.title')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <LangNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

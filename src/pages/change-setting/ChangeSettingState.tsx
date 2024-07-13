@@ -14,7 +14,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 
 const queryPupil = gql(`
     query GetPupilState {
@@ -120,7 +120,7 @@ const ChangeSettingState: React.FC<Props> = () => {
             showBack
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <LangNavigation />
+                    <SwitchLanguageButton />
                     <NotificationAlert />
                 </Stack>
             }

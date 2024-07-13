@@ -13,7 +13,7 @@ import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/AppointmentList';
-import LangNavigation from '../components/LangNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 const getMyAppointments = gql(`
     query myAppointments($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
@@ -124,7 +124,7 @@ const Appointments: React.FC = () => {
                 headerLeft={
                     userType !== 'screener' && (
                         <Stack alignItems="center" direction="row">
-                            <LangNavigation />
+                            <SwitchLanguageButton />
                             <NotificationAlert />
                         </Stack>
                     )

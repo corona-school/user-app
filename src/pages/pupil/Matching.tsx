@@ -13,7 +13,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches, { MatchCard } from '../match/Matches';
 import { gql } from '../../gql';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Heading, useBreakpointValue } from 'native-base';
 import DisableableButton from '../../components/DisablebleButton';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
@@ -141,7 +141,7 @@ const Matching: React.FC<Props> = () => {
                 headerTitle={t('matching.request.check.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <LangNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

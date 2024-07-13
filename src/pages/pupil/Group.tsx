@@ -14,7 +14,7 @@ import { sortByDate } from '../../Utility';
 import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
-import LangNavigation from '../../components/LangNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 
 type Props = {};
 
@@ -236,7 +236,7 @@ const PupilGroup: React.FC<Props> = () => {
                 headerTitle={t('matching.group.pupil.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <LangNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }
