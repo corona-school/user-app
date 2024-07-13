@@ -24,9 +24,10 @@ for bundle in build/static/js/*.js; do
   output+="| $bundle | $compressed_size | $in_bounds |\n"
 done
 
-echo $output
 
 echo -e $output >> $GITHUB_STEP_SUMMARY
+echo "Take a look at the Action Summary for details"
+
 echo $commands
 
 if [ -n "$commands" ]; then
