@@ -129,7 +129,7 @@
         "dev-install": "npm ci --include=optional",
         "dev-storybook": "storybook dev -p 6006",
         "dev-storybook-build": "storybook build",
-        "prettier": "./prettier-commits.sh",
+        "prettier": "prettier-commits.sh",
         "prettier-all": "prettier --write \"./**.tsx\"",
         "linter": "eslint . --ext .tsx",
         "graphql-fetch-schema": "node scripts/fetch-graphql-schema.js",
