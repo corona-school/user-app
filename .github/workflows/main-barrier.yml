@@ -37,7 +37,7 @@ jobs:
             
               name: "bundle-size-check",
               status: "completed",
-              conclusion: "Everyting is awesome",
+              conclusion: "neutral",
               output: {
                 title: "Test",
                 summary: "Test",
