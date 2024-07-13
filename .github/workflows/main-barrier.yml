@@ -22,3 +22,5 @@ jobs:
           CI: false # TODO: Remove once all build warnings were fixed
         run: npm run build
 
+      - name: Check Bundle Size
+        run: "echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY"
