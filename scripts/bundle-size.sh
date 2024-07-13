@@ -22,5 +22,5 @@ done
 
 echo $output
 
-echo $output >> $GITHUB_STEP_SUMMARY
-echo $commands >> $GITHUB_STEP_SUMMARY
+echo -e $output >> $GITHUB_STEP_SUMMARY
+echo -e $commands >> $GITHUB_STEP_SUMMARY
