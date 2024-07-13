@@ -28,3 +28,7 @@ echo $output
 
 echo -e $output >> $GITHUB_STEP_SUMMARY
 echo $commands
+
+if [ -n "$commands" ]; then
+  exit 1
+fi
