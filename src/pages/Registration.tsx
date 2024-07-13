@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Image, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
@@ -15,6 +15,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import LangNavigation from '../components/LangNavigation';
 
 type RegistrationContextType = {
     currentIndex: number;
@@ -208,6 +209,7 @@ const Registration: React.FC = () => {
                 </VStack>
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolType, schoolClass, userState, space, t]);
 
     const logoSize = useBreakpointValue({
@@ -245,6 +247,7 @@ const Registration: React.FC = () => {
                 />
                 <Logo viewBox="0 0 100 100" width={logoSize} height={logoSize} />
                 <Heading m={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
+                <LangNavigation />
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider

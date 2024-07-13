@@ -97,4 +97,11 @@ if (LANGUAGE_SWITCHER_ACTIVE) {
     }
 }
 
+// check for pre-selected language coming from lern-fair.de
+const referrer = document.referrer
+    .split(/[:/.]/)
+    .filter((elm) => elm)
+    .slice(0, -1);
+languageList.map((abbr) => referrer.includes(abbr.short) && switchLanguage(abbr.short));
+
 export default i18next;

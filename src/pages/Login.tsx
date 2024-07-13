@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { gql } from '../gql';
 import { FetchResult, useMutation } from '@apollo/client';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
-
 import {
     Box,
     Button,
+    Flex,
     Heading,
     Image,
     Modal,
@@ -14,7 +14,6 @@ import {
     useBreakpointValue,
     useTheme,
     VStack,
-    Link,
     FormControl,
     Alert,
     HStack,
@@ -32,6 +31,7 @@ import AlertMessage from '../widgets/AlertMessage';
 import { REDIRECT_PASSWORD } from '../Utility';
 import isEmail from 'validator/lib/isEmail';
 import DisableableButton from '../components/DisablebleButton';
+import LangNavigation from '../components/LangNavigation';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -116,6 +116,7 @@ export default function Login() {
                 placement: 'bottom',
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate, sessionState]);
 
     useEffect(() => {
@@ -163,12 +164,14 @@ export default function Login() {
                 setShowEmailSent(true);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [email, sendToken]);
 
     const attemptLogin = useCallback(async () => {
         loginButton();
         const res = await loginWithPassword(email!, password!);
         setLoginResult(res);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [email, loginButton, password]);
 
     const getLoginOption = useCallback(async () => {
@@ -420,11 +423,25 @@ export default function Login() {
                         <Button onPress={loginRegisterLink} variant="link">
                             {t('login.signupNew')}
                         </Button>
-                        <Text textAlign="center" paddingTop="70px">
-                            <Link onPress={() => window.open('/datenschutz', '_blank')}>{t('settings.legal.datapolicy')}</Link>
-                            <Text>{'  '}</Text>
-                            <Link onPress={() => window.open('/impressum', '_blank')}>{t('settings.legal.imprint')}</Link>
-                        </Text>
+                        <Flex flexDirection="row" justifyContent="center" paddingTop="70px">
+                            <Button
+                                onPress={() => window.open('/datenschutz', '_blank')}
+                                variant={'link'}
+                                colorScheme={'primary.700'}
+                                _text={{ fontWeight: 'medium' }}
+                            >
+                                {t('settings.legal.datapolicy')}
+                            </Button>
+                            <Button
+                                onPress={() => window.open('/impressum', '_blank')}
+                                variant={'link'}
+                                colorScheme={'primary.700'}
+                                _text={{ fontWeight: 'medium' }}
+                            >
+                                {t('settings.legal.imprint')}
+                            </Button>
+                            <LangNavigation />
+                        </Flex>
                     </Box>
                 </Row>
             </VStack>
