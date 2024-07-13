@@ -29,7 +29,7 @@ export const languageList = [
     { short: 'ru', name: 'Русский' },
 ];
 
-export const languageComponents = {
+export const languageIcons = {
     de: IconDE,
     en: IconEN,
     ar: IconAR,

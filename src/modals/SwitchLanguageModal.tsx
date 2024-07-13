@@ -1,5 +1,5 @@
 import { VStack, useTheme, Button, Modal, useBreakpointValue } from 'native-base';
-import { switchLanguage, languageList, languageComponents } from '../I18n';
+import { switchLanguage, languageList, languageIcons } from '../I18n';
 import { getLanguageSelection } from '../helper/getLanguageSelection';
 
 type Props = {
@@ -25,7 +25,7 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) =
                 </VStack>
                 <VStack padding={space['1']} space={space['1']}>
                     {languageList.map((button, i) => {
-                        const Icon = languageComponents[button.short as keyof typeof languageComponents];
+                        const Icon = languageIcons[button.short as keyof typeof languageIcons];
 
                         return (
                             <Button

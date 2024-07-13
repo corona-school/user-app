@@ -1,7 +1,7 @@
 import { Button } from 'native-base';
 import React, { useState } from 'react';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { languageComponents } from '../I18n';
+import { languageIcons } from '../I18n';
 import { getLanguageSelection } from '../helper/getLanguageSelection';
 
 const SwitchLanguageButton: React.FC = () => {
@@ -9,7 +9,7 @@ const SwitchLanguageButton: React.FC = () => {
 
     const lang = getLanguageSelection();
 
-    const Icon = languageComponents[lang as keyof typeof languageComponents];
+    const Icon = languageIcons[lang as keyof typeof languageIcons];
 
     return (
         <>
