@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
-import { Stack, useBreakpointValue, Box, Modal } from 'native-base';
+import { Stack, useBreakpointValue, Modal } from 'native-base';
 import HelpNavigation from '../components/HelpNavigation';
 import FloatingActionButton from '../components/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
@@ -89,7 +89,7 @@ const Chat: React.FC = () => {
 
         const inbox = session.createInbox({
             showMobileBackButton: false,
-            messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
+            messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder'), enterSendsMessage: false },
         });
 
         inbox.mount(inboxRef.current);
