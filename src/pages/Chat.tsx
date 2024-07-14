@@ -89,7 +89,7 @@ const Chat: React.FC = () => {
 
         const inbox = session.createInbox({
             showMobileBackButton: false,
-            messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder') },
+            messageField: { visible: { access: ['==', 'ReadWrite'] }, placeholder: t('chat.placeholder'), enterSendsMessage: false },
         });
 
         inbox.mount(inboxRef.current);
