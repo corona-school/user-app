@@ -10,7 +10,7 @@ import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
 import useLogout from '../hooks/useLogout';
 
@@ -82,11 +82,6 @@ const Settings: React.FC = () => {
                             {GAMIFICATION_ACTIVE && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
-                                </Column>
-                            )}
-                            {LANGUAGE_SWITCHER_ACTIVE && (
-                                <Column mb={tabspace}>
-                                    <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
                                 </Column>
                             )}
                             <Column mb={tabspace}>

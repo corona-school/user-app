@@ -2,14 +2,13 @@ import { Button } from 'native-base';
 import React, { useState } from 'react';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { languageIcons } from '../I18n';
-import { getLanguageSelection } from '../helper/getLanguageSelection';
 
 const SwitchLanguageButton: React.FC = () => {
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
 
-    const lang = getLanguageSelection();
+    const storageLanguage = localStorage.getItem('lernfair-language');
 
-    const Icon = languageIcons[lang as keyof typeof languageIcons];
+    const Icon = languageIcons[storageLanguage as keyof typeof languageIcons];
 
     return (
         <>
