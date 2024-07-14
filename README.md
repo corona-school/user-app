@@ -102,6 +102,13 @@ npm run build # Builds the App and the SW into the /build folder
 RUNTIME_SERVICE_WORKER_ACTIVE=true PORT=300 INSECURE=true npm run serve # Starts the Server on Port 3000, skipping the HTTPS redirect
 ```
 
+## Upgrade DataDog Browser SDK fork
+
+To use the Datadog browser SDK in our application, we had to make some changes to the original repository.
+This was necessary to comply with GDPR and to ensure our users cannot be tracked across different pages.
+
+You can find the whole process in [here](./docs/upgrade-dd-browser-sdk-fork.md) file.
+
 ## Further Resources
 
 -   [Create React App Documentation](https://github.com/facebook/create-react-app)
