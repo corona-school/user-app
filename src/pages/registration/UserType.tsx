@@ -66,29 +66,29 @@ const UserType: React.FC = () => {
     usePageTitle('Lern-Fair: Nachhilfe für benachteiligte Schüler:innen - Registrierung: Jetzt kostenlos anmelden');
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { userType, setUserType, setCurrentIndex } = useContext(RegistrationContext);
+    const { userType, setUserType, onNext } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { show, hide } = useModal();
 
     const onBarrierSolved = useCallback(
         (isUserFit: boolean) => {
             if (isUserFit) {
-                setCurrentIndex(1);
+                onNext();
             } else {
                 navigate('/registration-rejected');
             }
             hide();
         },
-        [navigate, hide, setCurrentIndex]
+        [navigate, hide, onNext]
     );
 
     const showBarrier = useCallback(() => {
         show({ variant: 'dark' }, <BarrierModal onSelect={onBarrierSolved} />);
-    }, [onBarrierSolved, show, hide]);
+    }, [onBarrierSolved, show]);
 
     return (
         <VStack w="100%">
-            <Heading>Ich bin:</Heading>
+            <Heading>{t('registration.steps.userType.subtitle')}:</Heading>
 
             <Box>
                 <TwoColGrid>
@@ -102,7 +102,7 @@ const UserType: React.FC = () => {
                     <IconTagList
                         initial={userType === 'student'}
                         variant="selection"
-                        text="Helfer:in"
+                        text={t('helper')}
                         onPress={() => setUserType('student')}
                         iconPath={'ic_tutor.svg'}
                     />
@@ -126,7 +126,7 @@ const UserType: React.FC = () => {
                             <Button
                                 width="100%"
                                 onPress={() => {
-                                    userType === 'pupil' ? showBarrier() : setCurrentIndex(1);
+                                    userType === 'pupil' ? showBarrier() : onNext();
                                 }}
                             >
                                 {t('next')}
