@@ -88,7 +88,7 @@ const UserType: React.FC = () => {
 
     return (
         <VStack w="100%">
-            <Heading>Ich bin:</Heading>
+            <Heading>{t('registration.steps.userType.subtitle')}:</Heading>
 
             <Box>
                 <TwoColGrid>
@@ -102,7 +102,7 @@ const UserType: React.FC = () => {
                     <IconTagList
                         initial={userType === 'student'}
                         variant="selection"
-                        text="Helfer:in"
+                        text={t('helper')}
                         onPress={() => setUserType('student')}
                         iconPath={'ic_tutor.svg'}
                     />
