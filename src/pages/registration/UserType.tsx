@@ -79,12 +79,12 @@ const UserType: React.FC = () => {
             }
             hide();
         },
-        [navigate, hide]
+        [navigate, hide, onNext]
     );
 
     const showBarrier = useCallback(() => {
         show({ variant: 'dark' }, <BarrierModal onSelect={onBarrierSolved} />);
-    }, [onBarrierSolved, show, hide]);
+    }, [onBarrierSolved, show]);
 
     return (
         <VStack w="100%">
