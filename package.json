@@ -136,7 +136,8 @@
         "graphql-build": "graphql-codegen --config config/graphql-codegen.ts",
         "heroku:release": "./scripts/dd-upload-source-maps.sh",
         "translate": "node ./scripts/translate.js",
-        "lint-staged": "lint-staged"
+        "lint-staged": "lint-staged",
+        "prettier": "prettier"
     },
     "eslintConfig": {
         "extends": [
