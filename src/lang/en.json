@@ -366,28 +366,28 @@
             }
         },
         "steps": {
-            "0": {
+            "userType": {
                 "title": "Your role",
                 "subtitle": "I am"
             },
-            "1": {
+            "personalData": {
                 "title": "Personal data",
                 "subtitle": "Personal data"
             },
-            "2": {
+            "grade": {
                 "title": "Class",
                 "subtitle": "What grade are you in?"
             },
-            "3": {
+            "schoolType": {
                 "title": "Type of school",
                 "subtitle": "What type of school do you go to?"
             },
-            "4": {
+            "state": {
                 "title": "School location",
                 "subtitle": "Where do you go to school?",
                 "weightingNote": "We only consider the school location as an optional criterion when placing a learning partner. Depending on availability, your future learning partner may come from a different region."
             },
-            "5": {
+            "legal": {
                 "title": "Consents",
                 "subtitle": "Consents"
             }

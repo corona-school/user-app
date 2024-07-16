@@ -15,7 +15,6 @@ import { usePageTitle } from '../../hooks/usePageTitle';
 export default function PersonalData({ cooperation }: { cooperation?: Cooperation }) {
     const {
         userType,
-        setCurrentIndex,
         firstname,
         setFirstname,
         lastname,
@@ -26,6 +25,8 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
         setPassword,
         passwordRepeat,
         setPasswordRepeat,
+        onNext,
+        onPrev,
     } = useContext(RegistrationContext);
     usePageTitle(`Lern-Fair - Registrierung: Persönliche Daten für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
@@ -65,8 +66,7 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
                 name: 'Registrierung – Account Informationen – Bestätigung',
                 documentTitle: 'Registrierung – Seite 1',
             });
-
-            userType === 'pupil' ? setCurrentIndex(2) : setCurrentIndex(5);
+            onNext();
         }
         setShowEmailNotAvailable(!res.data?.isEmailAvailable);
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,15 +91,7 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
             <Box alignItems="center" marginTop={space['2']}>
                 <Row space={space['1']} justifyContent="center">
                     <Column width="100%">
-                        <Button
-                            width="100%"
-                            height="100%"
-                            variant="ghost"
-                            colorScheme="blueGray"
-                            onPress={() => {
-                                setCurrentIndex(0);
-                            }}
-                        >
+                        <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={onPrev}>
                             {t('back')}
                         </Button>
                     </Column>

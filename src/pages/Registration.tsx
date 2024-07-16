@@ -18,8 +18,6 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 type RegistrationContextType = {
-    currentIndex: number;
-    setCurrentIndex: Dispatch<SetStateAction<number>>;
     userType: 'pupil' | 'student';
     setUserType: Dispatch<SetStateAction<'pupil' | 'student'>>;
     firstname: string;
@@ -40,6 +38,9 @@ type RegistrationContextType = {
     setUserState: Dispatch<SetStateAction<string>>;
     newsletter: boolean;
     setNewsletter: Dispatch<SetStateAction<boolean>>;
+    currentStep: RegistrationStep;
+    onNext: () => void;
+    onPrev: () => void;
 };
 
 export const RegistrationContext = createContext<RegistrationContextType>({} as RegistrationContextType);
@@ -82,6 +83,15 @@ const mutStudent = gql(`
 
 export const TRAINEE_GRADE = 14;
 
+export enum RegistrationStep {
+    userType = 'userType',
+    personalData = 'personalData',
+    grade = 'grade',
+    schoolType = 'schoolType',
+    state = 'state',
+    legal = 'legal',
+}
+
 const Registration: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -91,8 +101,10 @@ const Registration: React.FC = () => {
     const locState = location.state as { retainPath?: string };
     const retainPath = locState?.retainPath ?? '/start';
 
-    const [currentIndex, setCurrentIndex] = useState<number>(
-        location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' || location?.pathname === '/registration/pupil' ? 1 : 0
+    const [currentStep, setCurrentStep] = useState<RegistrationStep>(
+        location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' || location?.pathname === '/registration/pupil'
+            ? RegistrationStep.personalData
+            : RegistrationStep.userType
     );
     const [userType, setUserType] = useState<'pupil' | 'student'>(
         location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' ? 'student' : 'pupil'
@@ -231,6 +243,38 @@ const Registration: React.FC = () => {
         return <CenterLoadingSpinner />;
     }
 
+    const studentFlow = [RegistrationStep.userType, RegistrationStep.personalData, RegistrationStep.legal];
+    const pupilFlow = [
+        RegistrationStep.userType,
+        RegistrationStep.personalData,
+        RegistrationStep.grade,
+        RegistrationStep.schoolType,
+        RegistrationStep.state,
+        RegistrationStep.legal,
+    ];
+
+    const flow = userType === 'pupil' ? pupilFlow : studentFlow;
+    const currentStepIndex = flow.indexOf(currentStep);
+    const handleOnNext = () => {
+        if (currentStepIndex === -1) return;
+
+        if (currentStep === RegistrationStep.grade) {
+            setCurrentStep(schoolClass === TRAINEE_GRADE ? RegistrationStep.state : RegistrationStep.schoolType);
+            return;
+        }
+
+        setCurrentStep(flow[currentStepIndex + 1]);
+    };
+    const handleOnPrev = () => {
+        if (currentStepIndex === -1) return;
+
+        if (currentStep === RegistrationStep.state) {
+            setCurrentStep(schoolClass === TRAINEE_GRADE ? RegistrationStep.grade : RegistrationStep.schoolType);
+            return;
+        }
+        setCurrentStep(flow[currentStepIndex - 1]);
+    };
+
     return (
         <Flex alignItems="center" w="100%" h="100dvh">
             <Box w="100%" display="flex" flexDirection={headerDirection} position="relative" padding={headerSpace} justifyContent="center" alignItems="center">
@@ -252,8 +296,6 @@ const Registration: React.FC = () => {
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider
                     value={{
-                        currentIndex,
-                        setCurrentIndex,
                         userType,
                         setUserType,
                         firstname,
@@ -274,15 +316,18 @@ const Registration: React.FC = () => {
                         setUserState,
                         newsletter,
                         setNewsletter,
+                        currentStep,
+                        onNext: handleOnNext,
+                        onPrev: handleOnPrev,
                     }}
                 >
                     <Box w="100%" maxW={'contentContainerWidth'}>
-                        {currentIndex === 0 && <UserType />}
-                        {currentIndex === 1 && <PersonalData cooperation={cooperation} />}
-                        {currentIndex === 2 && <SchoolClass />}
-                        {currentIndex === 3 && <SchoolTypeUI />}
-                        {currentIndex === 4 && <UserState />}
-                        {currentIndex === 5 && <Legal onRegister={attemptRegister} />}
+                        {currentStep === RegistrationStep.userType && <UserType />}
+                        {currentStep === RegistrationStep.personalData && <PersonalData cooperation={cooperation} />}
+                        {currentStep === RegistrationStep.grade && <SchoolClass />}
+                        {currentStep === RegistrationStep.schoolType && <SchoolTypeUI />}
+                        {currentStep === RegistrationStep.state && <UserState />}
+                        {currentStep === RegistrationStep.legal && <Legal onRegister={attemptRegister} />}
                     </Box>
                 </RegistrationContext.Provider>
             </Flex>

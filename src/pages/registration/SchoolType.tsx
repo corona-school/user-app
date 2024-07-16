@@ -7,14 +7,14 @@ import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
 
 const SchoolType: React.FC = () => {
-    const { schoolType, setSchoolType, setCurrentIndex } = useContext(RegistrationContext);
+    const { schoolType, setSchoolType, onPrev, onNext } = useContext(RegistrationContext);
     const { space } = useTheme();
     usePageTitle('Lern-Fair - Registrierung: Schulform');
     const { t } = useTranslation();
 
     return (
         <VStack flex="1" marginTop={space['1']}>
-            <Heading>{t(`registration.steps.3.subtitle`)}</Heading>
+            <Heading>{t(`registration.steps.schoolType.subtitle`)}</Heading>
             <Row flexWrap="wrap" w="100%" mt={space['1']} marginBottom={space['1']}>
                 {schooltypes.map((type, i) => (
                     <Column mb={space['0.5']} mr={space['0.5']}>
@@ -30,20 +30,12 @@ const SchoolType: React.FC = () => {
             <Box alignItems="center" marginTop={space['2']}>
                 <Row space={space['1']} justifyContent="center">
                     <Column width="100%">
-                        <Button
-                            width="100%"
-                            height="100%"
-                            variant="ghost"
-                            colorScheme="blueGray"
-                            onPress={() => {
-                                setCurrentIndex(2);
-                            }}
-                        >
+                        <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={onPrev}>
                             {t('back')}
                         </Button>
                     </Column>
                     <Column width="100%">
-                        <Button width="100%" onPress={() => setCurrentIndex(4)}>
+                        <Button width="100%" onPress={onNext}>
                             {t('next')}
                         </Button>
                     </Column>
