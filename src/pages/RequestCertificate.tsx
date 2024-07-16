@@ -13,7 +13,7 @@ import { Subcourse } from '../gql/graphql';
 import InstructionProgress from '../widgets/InstructionProgress';
 import RequestCertificateMatchingWizard from './certificates/RequestCertificateMatchingWizard';
 import RequestCertificateOverview from './certificates/RequestCertificateOverview';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 type Props = {};
 
@@ -138,7 +138,7 @@ const RequestCertificate: React.FC<Props> = () => {
                 previousFallbackRoute="/profile"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

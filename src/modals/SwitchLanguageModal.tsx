@@ -1,12 +1,5 @@
-import { gql } from './../gql';
-import { useMutation } from '@apollo/client';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, VStack, useTheme, useToast, Radio, Button, TextArea, Modal, HStack } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import useApollo, { useUserType } from '../hooks/useApollo';
-import { switchLanguage } from '../I18n';
+import { VStack, useTheme, Button, Modal, useBreakpointValue } from 'native-base';
+import { switchLanguage, languageList, languageIcons } from '../I18n';
 
 type Props = {
     isOpen: boolean;
@@ -15,6 +8,12 @@ type Props = {
 
 export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     const { space } = useTheme();
+    const storageLanguage = localStorage.getItem('lernfair-language');
+
+    const widthButtonText = useBreakpointValue({
+        base: '55%',
+        md: '35%',
+    });
 
     return (
         <Modal isOpen={isOpen} onClose={onCloseModal}>
@@ -24,54 +23,25 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) =
                     <Modal.Header>Sprache wechseln / Choose language</Modal.Header>
                 </VStack>
                 <VStack padding={space['1']} space={space['1']}>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('de');
-                            onCloseModal();
-                        }}
-                    >
-                        Deutsch
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('en');
-                            onCloseModal();
-                        }}
-                    >
-                        English
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('ar');
-                            onCloseModal();
-                        }}
-                    >
-                        اللغة العربية
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('tr');
-                            onCloseModal();
-                        }}
-                    >
-                        Türkçe
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('uk');
-                            onCloseModal();
-                        }}
-                    >
-                        Українська
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('ru');
-                            onCloseModal();
-                        }}
-                    >
-                        Русский
-                    </Button>
+                    {languageList.map((button, i) => {
+                        const Icon = languageIcons[button.short as keyof typeof languageIcons];
+
+                        return (
+                            <Button
+                                isPressed={storageLanguage === button.short}
+                                variant={'outlinemiddle'}
+                                leftIcon={<Icon />}
+                                _stack={{ justifyContent: 'left', width: widthButtonText }}
+                                onPress={() => {
+                                    switchLanguage(button.short);
+                                    onCloseModal();
+                                }}
+                                key={i}
+                            >
+                                {button.name}
+                            </Button>
+                        );
+                    })}
                 </VStack>
             </Modal.Content>
         </Modal>

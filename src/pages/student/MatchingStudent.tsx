@@ -10,12 +10,10 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import NavigationTabs from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Match } from '../../gql/graphql';
-
 import AlertMessage from '../../widgets/AlertMessage';
-import Hello from '../../widgets/Hello';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches, { MatchCard } from '../match/Matches';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
 
 type Props = {};
@@ -130,7 +128,7 @@ const MatchingStudent: React.FC<Props> = () => {
                 headerTitle={t('matching.request.check.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }
