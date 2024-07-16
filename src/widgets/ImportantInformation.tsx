@@ -125,8 +125,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { show, hide } = useModal();
+    const { show } = useModal();
 
     const { data } = useQuery(IMPORTANT_INFORMATION_QUERY);
 
@@ -237,7 +236,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Interest Confirmation -----------
-        var showInterestConfirmation = pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending';
+        const showInterestConfirmation = pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending';
         const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
         if (showInterestConfirmation)
             infos.push({
