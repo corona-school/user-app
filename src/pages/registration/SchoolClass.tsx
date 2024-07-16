@@ -6,7 +6,7 @@ import { GradeSelector } from '../../components/GradeSelector';
 import { usePageTitle } from '../../hooks/usePageTitle';
 
 const SchoolClass: React.FC = () => {
-    const { schoolClass, setSchoolClass, schoolType, setSchoolType, setCurrentIndex } = useContext(RegistrationContext);
+    const { schoolClass, setSchoolClass, schoolType, setSchoolType, onNext, onPrev } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { t } = useTranslation();
     usePageTitle('Lern-Fair - Registrierung: Klasse');
@@ -20,27 +20,19 @@ const SchoolClass: React.FC = () => {
 
     return (
         <VStack flex="1" marginTop={space['1']}>
-            <Heading>{t(`registration.steps.2.subtitle`)}</Heading>
+            <Heading>{t(`registration.steps.grade.subtitle`)}</Heading>
             <Row flexWrap="wrap" w="100%" mt={space['1']} marginBottom={space['1']}>
                 <GradeSelector grade={schoolClass} onGradeChange={handleOnSchoolClassChange} />
             </Row>
             <Box alignItems="center" marginTop={space['2']}>
                 <Row space={space['1']} justifyContent="center">
                     <Column width="100%">
-                        <Button
-                            width="100%"
-                            height="100%"
-                            variant="ghost"
-                            colorScheme="blueGray"
-                            onPress={() => {
-                                setCurrentIndex(1);
-                            }}
-                        >
+                        <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={onPrev}>
                             {t('back')}
                         </Button>
                     </Column>
                     <Column width="100%">
-                        <Button width="100%" onPress={() => (schoolClass === TRAINEE_GRADE ? setCurrentIndex(4) : setCurrentIndex(3))}>
+                        <Button width="100%" onPress={onNext}>
                             {t('next')}
                         </Button>
                     </Column>
