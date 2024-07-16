@@ -1,11 +1,11 @@
 import { Button, Modal, Text, Stack, useTheme, Heading, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { PupilOnWaitinglist } from '../types/lernfair/Course';
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType';
 import { getGradeLabel } from '../Utility';
+import { SparseParticipant } from '../types/lernfair/Course';
 
 type JoinPupilModalProps = {
-    pupil: PupilOnWaitinglist | undefined;
+    pupil: (SparseParticipant & { schooltype: string | undefined; gradeAsInt: number | undefined }) | undefined;
     addPupilToCourse: (pupilId: number) => void;
 };
 
@@ -24,10 +24,12 @@ const AddPupilModal: React.FC<JoinPupilModalProps> = ({ pupil, addPupilToCourse 
                             <Heading fontSize="md">
                                 {pupil.firstname} {pupil.lastname}
                             </Heading>
-                            <Text>
-                                {pupil.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
-                                {getGradeLabel(pupil.gradeAsInt)}
-                            </Text>
+                            {pupil?.schooltype && pupil?.gradeAsInt && (
+                                <Text>
+                                    {pupil?.schooltype && `${getSchoolTypeKey(pupil?.schooltype)}, `}
+                                    {getGradeLabel(pupil.gradeAsInt)}
+                                </Text>
+                            )}
                         </VStack>
                     )}
                     <Stack space={space['0.5']} direction="column" width="full" justifyContent="center">
