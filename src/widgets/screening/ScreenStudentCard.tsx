@@ -59,22 +59,23 @@ function CreateScreeningModal({
     const { space } = useTheme();
 
     const handleOnKnowsFromChanges = (value: string) => {
-        if (knowsFromSuggestions.includes(value.trim())) {
-            setKnowsFrom(value.replaceAll('Sonstiges: ', ''));
-        } else if (value) {
-            setKnowsFrom(value.includes('Sonstiges: ') ? value : `Sonstiges: ${value}`);
-        } else {
-            setKnowsFrom(value);
-        }
+        setKnowsFrom(value);
     };
 
     const handleOnCustomKnowsFromChanges = (value: string) => {
-        if (value.length > 60) {
+        let modifiedValue = value;
+
+        if (!modifiedValue.startsWith('Sonstiges: ')) {
+            modifiedValue = `Sonstiges: ${modifiedValue}`;
+        }
+
+        if (modifiedValue.length > 60) {
             setErrorMessage('Bitte halte deine Antwort kürzer als 60 Zeichen');
         } else {
             setErrorMessage('');
         }
-        setCustomKnowsFrom(value);
+
+        setCustomKnowsFrom(modifiedValue);
     };
 
     function doScreen(success: boolean) {
