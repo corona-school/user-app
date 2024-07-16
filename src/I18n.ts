@@ -79,8 +79,9 @@ if (localStorageLanguage) {
 } else {
     // check for pre-selected language coming from lern-fair.de
     const [subdomain, domain] = document.referrer.split('.');
+    let subdomainLanguage;
     if (domain === 'lern-fair') {
-        var subdomainLanguage = languageList.find((langItem) => subdomain.includes(langItem.short));
+        subdomainLanguage = languageList.find((langItem) => subdomain.includes(langItem.short));
     }
     if (subdomainLanguage) {
         switchLanguage(subdomainLanguage.short);
