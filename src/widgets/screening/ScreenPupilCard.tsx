@@ -1,5 +1,5 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack, Select } from 'native-base';
+import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack, Select, Input } from 'native-base';
 import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -19,7 +19,6 @@ import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
 import { EditGradeModal } from './EditGradeModal';
 import { EditLanguagesModal } from './EditLanguagesModal';
 import DisableableButton from '../../components/DisablebleButton';
-import { TextInputWithoutSuggestions } from '../../components/TextInputWithoutSuggestions';
 import { getGradeLabel } from '../../Utility';
 
 const MISSED_SCREENING_QUERY = gql(
@@ -127,7 +126,13 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
     }
 
     const handleOnKnowsFromChanges = (value: string) => {
-        setKnowsFrom(value);
+        if (knowsFromSuggestions.includes(value.trim())) {
+            setKnowsFrom(value.replaceAll('Sonstiges: ', ''));
+        } else if (value) {
+            setKnowsFrom(value.includes('Sonstiges: ') ? value : `Sonstiges: ${value}`);
+        } else {
+            setKnowsFrom(value);
+        }
     };
 
     const handleOnCustomKnowsFromChanges = (value: string) => {
@@ -161,7 +166,11 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
             <VStack flexGrow="1" space={space['1']}>
                 <FormControl width={['100%', '60%']}>
                     <FormControl.Label>Kennt Lern-Fair durch:</FormControl.Label>
-                    <Select selectedValue={knowsFrom} onValueChange={(value) => handleOnKnowsFromChanges(value)} placeholder="Bitte wähle eine Antwort aus">
+                    <Select
+                        selectedValue={knowsFrom}
+                        onValueChange={(value: string) => handleOnKnowsFromChanges(value)}
+                        placeholder="Bitte wähle eine Antwort aus"
+                    >
                         {knowsFromSuggestions.map((option, index) => (
                             <Select.Item key={index} label={option} value={option} />
                         ))}
@@ -169,9 +178,9 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
 
                     {knowsFrom === 'Sonstiges' && (
                         <>
-                            <TextInputWithoutSuggestions
+                            <Input
                                 value={customKnowsFrom}
-                                setValue={handleOnCustomKnowsFromChanges}
+                                onChangeText={handleOnCustomKnowsFromChanges}
                                 placeholder="Bitte gebe hier eine Antwort ein"
                                 maxLength={60}
                             />

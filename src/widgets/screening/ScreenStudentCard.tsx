@@ -1,4 +1,4 @@
-import { Button, HStack, Heading, Text, TextArea, VStack, useTheme, Select } from 'native-base';
+import { Button, HStack, Heading, Text, TextArea, VStack, useTheme, Select, Input } from 'native-base';
 import { InstructorScreening, StudentForScreening, TutorScreening } from '../../types';
 import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
@@ -15,7 +15,6 @@ import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
 import { formatDate } from '../../Utility';
-import { TextInputWithoutSuggestions } from '../../components/TextInputWithoutSuggestions';
 
 type ScreeningInput = { success: boolean; comment: string; jobStatus: Screening_Jobstatus_Enum; knowsFrom: string };
 
@@ -60,7 +59,13 @@ function CreateScreeningModal({
     const { space } = useTheme();
 
     const handleOnKnowsFromChanges = (value: string) => {
-        setKnowsFrom(value);
+        if (knowsFromSuggestions.includes(value.trim())) {
+            setKnowsFrom(value.replaceAll('Sonstiges: ', ''));
+        } else if (value) {
+            setKnowsFrom(value.includes('Sonstiges: ') ? value : `Sonstiges: ${value}`);
+        } else {
+            setKnowsFrom(value);
+        }
     };
 
     const handleOnCustomKnowsFromChanges = (value: string) => {
@@ -106,7 +111,7 @@ function CreateScreeningModal({
                     Kennt Lern-Fair durch:
                 </Heading>
 
-                <Select selectedValue={knowsFrom} onValueChange={(value) => handleOnKnowsFromChanges(value)} placeholder="Bitte wähle eine Antwort aus">
+                <Select selectedValue={knowsFrom} onValueChange={(value: string) => handleOnKnowsFromChanges(value)} placeholder="Bitte wähle eine Antwort aus">
                     {knowsFromSuggestions.map((option, index) => (
                         <Select.Item key={index} label={option} value={option} />
                     ))}
@@ -114,9 +119,9 @@ function CreateScreeningModal({
 
                 {knowsFrom === 'Sonstiges' && (
                     <>
-                        <TextInputWithoutSuggestions
+                        <Input
                             value={customKnowsFrom}
-                            setValue={handleOnCustomKnowsFromChanges}
+                            onChangeText={handleOnCustomKnowsFromChanges}
                             placeholder="Bitte gebe hier eine Antwort ein"
                             maxLength={60}
                         />
