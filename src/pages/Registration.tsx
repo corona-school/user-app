@@ -290,7 +290,7 @@ const Registration: React.FC = () => {
                     }}
                 />
                 <Logo viewBox="0 0 100 100" width={logoSize} height={logoSize} />
-                <Heading m={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
+                <Heading m={space['1']}>{t(`registration.steps.${currentStep}.title` as unknown as TemplateStringsArray)}</Heading>
                 <SwitchLanguageButton />
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
