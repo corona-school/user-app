@@ -1,6 +1,6 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack } from 'native-base';
-import { useMemo, useState } from 'react';
+import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack, Select, Input } from 'native-base';
+import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
@@ -19,7 +19,6 @@ import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
 import { EditGradeModal } from './EditGradeModal';
 import { EditLanguagesModal } from './EditLanguagesModal';
 import DisableableButton from '../../components/DisablebleButton';
-import { TextInputWithSuggestions } from '../../components/TextInputWithSuggestions';
 import { getGradeLabel } from '../../Utility';
 
 const MISSED_SCREENING_QUERY = gql(
@@ -43,12 +42,14 @@ mutation UpdateScreening($id: Float!, $screeningComment: String!, $status: Pupil
 const knowsFromSuggestions = [
     'Persönliche Empfehlung: Familie & Freunde',
     'Jugendzentrum',
+    'Tafel',
     'Schule / Lehrkraft',
     'TikTok',
     'Instagram',
     'Print (Flyer, Poster etc.)',
     'Suchmaschine (Google)',
     'Website',
+    'Sonstiges',
 ];
 
 function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screening: PupilScreening }) {
@@ -60,6 +61,8 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
 
     const [screeningComment, setScreeningComment] = useState(screening!.comment!);
     const [knowsFrom, setKnowsFrom] = useState(screening.knowsCoronaSchoolFrom ?? '');
+    const [customKnowsFrom, setCustomKnowsFrom] = useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
     const [confirmRejection, setConfirmRejection] = useState(false);
     const [confirmSuccess, setConfirmSuccess] = useState(false);
@@ -106,26 +109,49 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
             resultComment += `[${screener.firstname} ${screener.lastname}]: Ablehnung empfehlen\n\n`;
         }
 
+        let knowsFromValue = knowsFrom;
+        if (knowsFrom === 'Sonstiges') {
+            knowsFromValue = customKnowsFrom;
+        }
+
         storeEdit({
             variables: {
                 id: screening!.id!,
                 screeningComment: resultComment,
                 status: PupilScreeningStatus.Dispute,
-                knowsFrom,
+                knowsFrom: knowsFromValue,
             },
         });
         setScreeningComment(resultComment);
     }
 
     const handleOnKnowsFromChanges = (value: string) => {
-        if (knowsFromSuggestions.includes(value.trim())) {
-            setKnowsFrom(value.replaceAll('Sonstiges: ', ''));
-        } else if (value) {
-            setKnowsFrom(value.includes('Sonstiges: ') ? value : `Sonstiges: ${value}`);
-        } else {
-            setKnowsFrom(value);
-        }
+        setKnowsFrom(value);
     };
+
+    const handleOnCustomKnowsFromChanges = (value: string) => {
+        let modifiedValue = value;
+
+        if (!modifiedValue.startsWith('Sonstiges: ')) {
+            modifiedValue = `Sonstiges: ${modifiedValue}`;
+        }
+
+        if (modifiedValue.length > 60) {
+            setErrorMessage('Bitte halte deine Antwort kürzer als 60 Zeichen');
+        } else {
+            setErrorMessage('');
+        }
+
+        setCustomKnowsFrom(modifiedValue);
+    };
+
+    useEffect(() => {
+        const isCustom = !!screening.knowsCoronaSchoolFrom && !knowsFromSuggestions.includes(screening.knowsCoronaSchoolFrom);
+        if (isCustom) {
+            setKnowsFrom('Sonstiges');
+            setCustomKnowsFrom(screening.knowsCoronaSchoolFrom || '');
+        }
+    }, [screening.knowsCoronaSchoolFrom]);
 
     return (
         <>
@@ -141,7 +167,27 @@ function EditScreening({ pupil, screening }: { pupil: PupilForScreening; screeni
             <VStack flexGrow="1" space={space['1']}>
                 <FormControl width={['100%', '60%']}>
                     <FormControl.Label>Kennt Lern-Fair durch:</FormControl.Label>
-                    <TextInputWithSuggestions value={knowsFrom} setValue={handleOnKnowsFromChanges} suggestions={knowsFromSuggestions} />
+                    <Select
+                        selectedValue={knowsFrom}
+                        onValueChange={(value: string) => handleOnKnowsFromChanges(value)}
+                        placeholder="Bitte wähle eine Antwort aus"
+                    >
+                        {knowsFromSuggestions.map((option, index) => (
+                            <Select.Item key={index} label={option} value={option} />
+                        ))}
+                    </Select>
+
+                    {knowsFrom === 'Sonstiges' && (
+                        <>
+                            <Input
+                                value={customKnowsFrom}
+                                onChangeText={handleOnCustomKnowsFromChanges}
+                                placeholder="Bitte gebe hier eine Antwort ein"
+                                maxLength={60}
+                            />
+                            {errorMessage && <Text color="red.500">{errorMessage}</Text>}
+                        </>
+                    )}
                 </FormControl>
                 <FormControl>
                     <FormControl.Label>
