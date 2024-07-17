@@ -819,7 +819,8 @@
             "progress": "Successes & progress",
             "forStudents": "For volunteers",
             "forPupils": "For pupils",
-            "push": "App messages"
+            "push": "App messages",
+            "faq": "FAQ & Contact"
         },
         "account": {
             "title": "Account",

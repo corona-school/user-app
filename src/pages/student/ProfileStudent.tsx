@@ -1,20 +1,4 @@
-import {
-    Box,
-    Button,
-    Column,
-    Container,
-    Flex,
-    FormControl,
-    Heading,
-    Modal,
-    Row,
-    Stack,
-    Text,
-    TextArea,
-    useBreakpointValue,
-    useTheme,
-    VStack,
-} from 'native-base';
+import { Button, Column, Container, Flex, FormControl, Heading, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
@@ -31,7 +15,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 
 type Props = {};
 
@@ -197,7 +181,7 @@ const ProfileStudent: React.FC<Props> = () => {
                 }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

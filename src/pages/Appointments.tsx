@@ -6,7 +6,6 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import FloatingActionButton from '../components/FloatingActionButton';
-import Hello from '../widgets/Hello';
 import { useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
@@ -14,7 +13,7 @@ import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/AppointmentList';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 const getMyAppointments = gql(`
     query myAppointments($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
@@ -125,7 +124,7 @@ const Appointments: React.FC = () => {
                 headerLeft={
                     userType !== 'screener' && (
                         <Stack alignItems="center" direction="row">
-                            <HelpNavigation />
+                            <SwitchLanguageButton />
                             <NotificationAlert />
                         </Stack>
                     )
