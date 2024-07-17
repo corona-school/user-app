@@ -1,4 +1,4 @@
-# LernFair User App
+# LernFair User App 
 
 The user app provides a user interface for pupils and helpers and talks with the [backend](https://github.com/corona-school/backend) via GraphQL.
 
