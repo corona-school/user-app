@@ -15,6 +15,8 @@ import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import School from './registration/School';
+import { ISchool } from '../lib/Schools';
 
 type RegistrationContextType = {
     userType: 'pupil' | 'student';
@@ -29,6 +31,8 @@ type RegistrationContextType = {
     setPassword: Dispatch<SetStateAction<string>>;
     passwordRepeat: string;
     setPasswordRepeat: Dispatch<SetStateAction<string>>;
+    school?: ISchool;
+    setSchool: Dispatch<SetStateAction<ISchool | undefined>>;
     schoolClass: number;
     setSchoolClass: (value: number) => void;
     schoolType: string;
@@ -87,6 +91,7 @@ export enum RegistrationStep {
     personalData = 'personalData',
     grade = 'grade',
     schoolType = 'schoolType',
+    school = 'school',
     state = 'state',
     legal = 'legal',
 }
@@ -117,6 +122,7 @@ const Registration: React.FC = () => {
     const [schoolClass, setSchoolClass] = useState<number>(1);
     const [userState, setUserState] = useState<string>('bw');
     const [newsletter, setNewsletter] = useState<boolean>(false);
+    const [school, setSchool] = useState<ISchool>();
 
     const [registerPupil] = useMutation(mutPupil);
     const [registerStudent] = useMutation(mutStudent);
@@ -245,6 +251,7 @@ const Registration: React.FC = () => {
     const pupilFlow = [
         RegistrationStep.userType,
         RegistrationStep.personalData,
+        RegistrationStep.school,
         RegistrationStep.grade,
         RegistrationStep.schoolType,
         RegistrationStep.state,
@@ -253,24 +260,47 @@ const Registration: React.FC = () => {
 
     const flow = userType === 'pupil' ? pupilFlow : studentFlow;
     const currentStepIndex = flow.indexOf(currentStep);
+
     const handleOnNext = () => {
         if (currentStepIndex === -1) return;
 
-        if (currentStep === RegistrationStep.grade) {
-            setCurrentStep(schoolClass === TRAINEE_GRADE ? RegistrationStep.state : RegistrationStep.schoolType);
-            return;
+        const getNextStepFrom = (step: RegistrationStep) => {
+            const currentIndex = flow.indexOf(step);
+            return flow[currentIndex + 1];
+        };
+        let nextStep = getNextStepFrom(currentStep);
+
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || school?.hasValidSchoolType;
+        if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            nextStep = getNextStepFrom(nextStep); // skip
         }
 
-        setCurrentStep(flow[currentStepIndex + 1]);
+        const shouldSkipState = school?.hasValidSchoolState;
+        if (nextStep === RegistrationStep.state && shouldSkipState) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
+        setCurrentStep(nextStep);
     };
+
     const handleOnPrev = () => {
         if (currentStepIndex === -1) return;
 
-        if (currentStep === RegistrationStep.state) {
-            setCurrentStep(schoolClass === TRAINEE_GRADE ? RegistrationStep.grade : RegistrationStep.schoolType);
-            return;
+        const getPrevStepFrom = (step: RegistrationStep) => {
+            const currentIndex = flow.indexOf(step);
+            return flow[currentIndex - 1];
+        };
+        let prevStep = getPrevStepFrom(currentStep);
+
+        const shouldSkipState = school?.hasValidSchoolState;
+        if (prevStep === RegistrationStep.state && shouldSkipState) {
+            prevStep = getPrevStepFrom(prevStep); // skip
         }
-        setCurrentStep(flow[currentStepIndex - 1]);
+
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || school?.hasValidSchoolType;
+        if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
+        setCurrentStep(prevStep);
     };
 
     return (
@@ -305,6 +335,8 @@ const Registration: React.FC = () => {
                         setPassword,
                         passwordRepeat,
                         setPasswordRepeat,
+                        school,
+                        setSchool,
                         schoolClass,
                         setSchoolClass,
                         schoolType,
@@ -321,6 +353,7 @@ const Registration: React.FC = () => {
                     <Box w="100%" maxW={'contentContainerWidth'}>
                         {currentStep === RegistrationStep.userType && <UserType />}
                         {currentStep === RegistrationStep.personalData && <PersonalData cooperation={cooperation} />}
+                        {currentStep === RegistrationStep.school && <School />}
                         {currentStep === RegistrationStep.grade && <SchoolClass />}
                         {currentStep === RegistrationStep.schoolType && <SchoolTypeUI />}
                         {currentStep === RegistrationStep.state && <UserState />}
