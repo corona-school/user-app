@@ -1,6 +1,6 @@
 import { Text, Box, Heading, Stack, useBreakpointValue, useTheme } from 'native-base';
 import AsNavigationItem from '../components/AsNavigationItem';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
@@ -40,7 +40,7 @@ const ForPupils = () => {
                 headerTitle={t('forPupils.title')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

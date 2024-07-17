@@ -33,7 +33,7 @@ import { AppointmentCreateGroupInput } from '../gql/graphql';
 import { Appointment } from '../types/lernfair/Appointment';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import useApollo from '../hooks/useApollo';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
@@ -850,7 +850,7 @@ const CreateCourse: React.FC = () => {
                 isLoading={loading || isLoading}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

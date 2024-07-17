@@ -4,7 +4,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import { Stack, useBreakpointValue, Modal } from 'native-base';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import FloatingActionButton from '../components/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
 import { useChat } from '../context/ChatContext';
@@ -115,7 +115,7 @@ const Chat: React.FC = () => {
                 headerTitle={t('chat.title')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

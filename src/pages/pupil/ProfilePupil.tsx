@@ -15,7 +15,7 @@ import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { gql } from '../../gql';
 import useLernfair from '../../hooks/useLernfair';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { GradeTag } from '../../components/GradeSelector';
 
 type Props = {};
@@ -254,7 +254,7 @@ const ProfilePupil: React.FC<Props> = () => {
                 }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

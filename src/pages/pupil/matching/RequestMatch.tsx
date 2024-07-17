@@ -14,7 +14,7 @@ import German from './German';
 import Priority from './Priority';
 import Subjects from './Subjects';
 import UpdateData from './UpdateData';
-import HelpNavigation from '../../../components/HelpNavigation';
+import SwitchLanguageButton from '../../../components/SwitchLanguageButton';
 
 const query = gql(`
     query PupilMatchRequestInfo {
@@ -134,7 +134,7 @@ const RequestMatch: React.FC = () => {
                 isLoading={loading || isLoading}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

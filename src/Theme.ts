@@ -179,6 +179,16 @@ const Theme = extendTheme({
                         },
                     },
                 },
+                outlinemiddle: {
+                    borderColor: VAR_COLOR_PRIMARY,
+                    borderWidth: 1,
+                    _hover: {
+                        bg: `rgba(130,177,176,0.9)`,
+                    },
+                    _pressed: {
+                        bg: `rgba(130,177,176,0.2)`,
+                    },
+                },
                 link: {
                     textDecoration: 'underline',
                     textDecorationColor: VAR_COLOR_PRIMARY,

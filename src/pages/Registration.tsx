@@ -17,6 +17,7 @@ import { SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import School from './registration/School';
 import { ISchool } from '../lib/Schools';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 type RegistrationContextType = {
     userType: 'pupil' | 'student';
@@ -226,6 +227,7 @@ const Registration: React.FC = () => {
                 </VStack>
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolType, schoolClass, userState, space, t]);
 
     const logoSize = useBreakpointValue({
@@ -319,6 +321,7 @@ const Registration: React.FC = () => {
                 />
                 <Logo viewBox="0 0 100 100" width={logoSize} height={logoSize} />
                 <Heading m={space['1']}>{t(`registration.steps.${currentStep}.title` as unknown as TemplateStringsArray)}</Heading>
+                <SwitchLanguageButton />
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider
