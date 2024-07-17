@@ -390,6 +390,12 @@
             "legal": {
                 "title": "Consents",
                 "subtitle": "Consents"
+            },
+            "school": {
+                "title": "School location",
+                "subtitle": "What is the name of your school?",
+                "helperText": "We use the school details to determine your school type and location",
+                "schoolFound": "School found"
             }
         },
         "pupil": {

@@ -433,6 +433,12 @@
                 "title": "Klasse",
                 "subtitle": "In welcher Klasse bist du?"
             },
+            "school": {
+                "title": "Schulort",
+                "subtitle": "Wie heißt deine Schule?",
+                "helperText": "Wir nutzen die Angabe der Schule, um deine Schulform und den Schulort zu ermitteln",
+                "schoolFound": "Schule gefunden"
+            },
             "schoolType": {
                 "title": "Schulform",
                 "subtitle": "Auf welche Schulform gehst du?"
