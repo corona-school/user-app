@@ -36,7 +36,7 @@ const School = () => {
         onNext();
     };
 
-    const hasSelection = school && school.name === name;
+    const hasSelection = school?.id && school?.name === name;
 
     return (
         <VStack alignSelf="flex-start" w="100%" mt={5}>
@@ -56,7 +56,7 @@ const School = () => {
                     )}
                 </Flex>
             </HStack>
-            <VStack space={4} mt={4} h={{ base: '400px', md: '300px' }} overflowY="scroll">
+            <VStack space={4} mt={4} h={{ base: '400px', lg: '270px' }} overflowY="scroll">
                 {!hasSelection &&
                     name &&
                     schools.map((school) => (
