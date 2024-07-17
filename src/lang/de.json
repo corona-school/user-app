@@ -517,7 +517,7 @@
             "button": "zum Onboarding"
         },
         "faq": {
-            "tabName": "Häufige Fragen"
+            "tabName": "Häufige Fragen (FAQ)"
         },
         "contact": {
             "tabName": "Kontakt",
@@ -887,9 +887,9 @@
             "onboarding": "Onboarding-Tour",
             "progress": "Erfolge & Fortschritte",
             "forStudents": "Wissens-Center",
-            "forPupils": "Lernhilfen",
+            "forPupils": "Wissens-Center",
             "push": "App-Mitteilungen",
-            "faq": "FAQ & Kontakt"
+            "faq": "Häufige Fragen (FAQ) & Kontakt"
         },
         "account": {
             "title": "Konto",
@@ -1450,7 +1450,7 @@
                     }
                 },
                 "subjects": {
-                    "heading": "Fachauswahl",
+                    "heading": "Fächerauswahl",
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
                     "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
                     "reason_btn_disabled_DAZ": "Bitte wähle ein Fach aus.",
@@ -1483,20 +1483,20 @@
             },
             "student": {
                 "subjects": {
-                    "title": "Fachauswahl",
+                    "title": "Wähle Fächer aus",
                     "subtitle": "In welchen Fächern möchtest du unterstützen?",
                     "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
                     "maincourse": {
-                        "title": "Hauptfächer",
-                        "explanation": "Am meisten nachgefragt."
+                        "title": "Am meisten nachgefragt",
+                        "explanation": "Hier kannst du oft sehr schnell vermittelt werden."
                     },
                     "minorcourse": {
-                        "title": "Nebenfächer",
-                        "explanation": "Häufig nachgefragt."
+                        "title": "Häufig nachgefragt",
+                        "explanation": "Hier kann es mal schnell gehen, aber manchmal auch etwas dauern, bis du vermittelt wirst."
                     },
                     "rarecourse": {
-                        "title": "Seltene Fächer",
-                        "explanation": "Selten nachgefragt."
+                        "title": "Selten nachgefragt",
+                        "explanation": "Hier dauert es in der Regel deutlich länger, bis jemand das Fach nachfragt."
                     }
                 },
                 "profile": {
@@ -1884,16 +1884,16 @@
                 "disableAll": "Alle Newsletter deaktivieren",
                 "enableAllTooltip": "Du hast bereits alle Newsletter aktiviert.",
                 "disableAllTooltip": "Du hast bereits alle Newsletter deaktiviert.",
-                "pushNotifications": "App-Mitteilungen",
+                "pushNotifications": "Geräte-Mitteilungen",
                 "pushNotificationsStatus": {
-                    "not-supported": "Leider werden auf diesem Gerät keine App-Mitteilungen unterstützt",
-                    "user-denied": "Wir können dir leider keine App-Mitteilungen senden, da du uns dazu keine Erlaubnis gegeben hast",
+                    "not-supported": "Leider werden auf diesem Gerät keine Geräte-Mitteilungen unterstützt",
+                    "user-denied": "Wir können dir leider keine Geräte-Mitteilungen senden, da du uns dazu keine Erlaubnis gegeben hast",
                     "error": "Ein Fehler ist aufgetreten"
                 },
-                "pushNotificationTooltip": "App-Mitteilungen informieren dich über wichtige Ereignisse oder Infos auch wenn die App nicht geöffnet ist. Du kannst einzeln auswählen, welche Nachrichten du als App-Mitteilung erhalten möchtest.",
+                "pushNotificationTooltip": "Geräte-Mitteilungen informieren dich auch wenn die App nicht geöffnet ist. Du musst pro Gerät eine Freigabe erteilen, um dort die Mitteilungen zu erhalten.",
                 "channel": {
                     "email": "E-Mail",
-                    "push": "App-Mitteilung"
+                    "push": "Geräte-Mitteilung"
                 },
                 "chat": {
                     "title": "Chat-Nachrichten",
@@ -2056,8 +2056,8 @@
             "matching": "Nachhilfe",
             "appointments": "Termine",
             "chat": "Chat",
-            "forStudents": "Fortbildung",
-            "forPupils": "Lernhilfen"
+            "forStudents": "Wissens-Center",
+            "forPupils": "Wissens-Center"
         }
     },
     "screening": {
