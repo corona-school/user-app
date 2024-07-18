@@ -212,7 +212,7 @@ const Theme = extendTheme({
                 backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderRadius: 5,
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 500,
                 _hover: {
                     borderColor: VAR_COLOR_PRIMARY_LIGHT,
@@ -231,7 +231,7 @@ const Theme = extendTheme({
                 backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderRadius: 5,
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 500,
                 _hover: {
                     borderColor: VAR_COLOR_PRIMARY_LIGHT,
@@ -266,6 +266,7 @@ const Theme = extendTheme({
                 _text: {
                     fontWeight: 700,
                     color: VAR_COLOR_PRIMARY_DARK,
+                    fontSize: 14,
                 },
             },
         },
