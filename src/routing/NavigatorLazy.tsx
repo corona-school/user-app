@@ -73,6 +73,9 @@ import { SystemNotifications } from '../components/notifications/preferences/Sys
 import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
 import ForStudents from '../pages/ForStudents';
 import ForPupils from '../pages/ForPupils';
+import { LearningPupilPage } from '../pages/learning/LearningPage';
+import { LearningTopicPupilPage } from '../pages/learning/LearningTopicPage';
+import { LearningAssignmentPupilPage } from '../pages/learning/LearningAssignmentPage';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -441,6 +444,28 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+            <Route
+                path="/learning"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<LearningPupilPage />} />
+                    </RequireAuth>
+                } />
+            <Route
+                path="/learning/topic/:id"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<LearningTopicPupilPage />} />
+                    </RequireAuth>
+                } />
+            <Route
+                path="/learning/assignment/:id"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<LearningAssignmentPupilPage />} />
+                    </RequireAuth>
+                } />
+            
 
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/verify-email-change" element={<VerifyEmailChange />} />

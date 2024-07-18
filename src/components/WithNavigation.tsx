@@ -79,6 +79,10 @@ const WithNavigation: React.FC<Props> = ({
             label: t('navigation.label.forPupils'),
             icon: ({ isActive }) => <LFKnowledgeIcon color={isActive ? 'white' : colors['primary']['900']} />,
         },
+        'learning': {
+            label: t('navigation.label.learning'),
+            icon: LFKnowledgeIcon
+        }
     };
 
     return (

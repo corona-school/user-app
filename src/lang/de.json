@@ -2057,7 +2057,8 @@
             "appointments": "Termine",
             "chat": "Chat",
             "forStudents": "Wissens-Center",
-            "forPupils": "Wissens-Center"
+            "forPupils": "Wissens-Center",
+            "learning": "Lernen"
         }
     },
     "screening": {
