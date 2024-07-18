@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { RegistrationContext } from '../Registration';
 import useSchoolSearch, { getSchoolState, getSchoolType, ISchool } from '../../lib/Schools';
 
-const School = () => {
+const SchoolSearch = () => {
     const { t } = useTranslation();
 
     const { onNext, onPrev, school, setSchool, setUserState, setSchoolType } = useContext(RegistrationContext);
@@ -98,4 +98,4 @@ const School = () => {
     );
 };
 
-export default School;
+export default SchoolSearch;

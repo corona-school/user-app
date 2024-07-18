@@ -15,7 +15,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import School from './registration/School';
+import SchoolSearch from './registration/SchoolSearch';
 import { ISchool } from '../lib/Schools';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
@@ -356,7 +356,7 @@ const Registration: React.FC = () => {
                     <Box w="100%" maxW={'contentContainerWidth'}>
                         {currentStep === RegistrationStep.userType && <UserType />}
                         {currentStep === RegistrationStep.personalData && <PersonalData cooperation={cooperation} />}
-                        {currentStep === RegistrationStep.school && <School />}
+                        {currentStep === RegistrationStep.school && <SchoolSearch />}
                         {currentStep === RegistrationStep.grade && <SchoolClass />}
                         {currentStep === RegistrationStep.schoolType && <SchoolTypeUI />}
                         {currentStep === RegistrationStep.state && <UserState />}
