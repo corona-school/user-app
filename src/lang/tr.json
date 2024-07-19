@@ -329,6 +329,8 @@
             "alternatives": "Daha fazla bilgi alın"
         },
         "hint": {
+            "schoolClassSelectionMissing": "Lütfen bir okul sınıfı seçin.",
+            "userStateSelectionMissing": "Lütfen bir okul konumu seçin.",
             "password": {
                 "length": "Parola en az 6 karakter içermelidir.",
                 "nomatch": "Parolalar eşleşmiyor"

@@ -329,6 +329,8 @@
             "alternatives": "Get more information"
         },
         "hint": {
+            "schoolClassSelectionMissing": "Please select a school class.",
+            "userStateSelectionMissing": "Please select a school location.",
             "password": {
                 "length": "The password must contain at least 6 characters.",
                 "nomatch": "The passwords do not match"

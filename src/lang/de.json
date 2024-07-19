@@ -385,6 +385,8 @@
         },
         "hint": {
             "name": "Bitte gebe deinen vollen Namen an",
+            "schoolClassSelectionMissing": "Bitte wähle eine Klasse aus.",
+            "userStateSelectionMissing": "Bitte wähle einen Schulort aus.",
             "password": {
                 "length": "Das Passwort muss mindestens 6 Zeichen enthalten.",
                 "nomatch": "Die Passwörter stimmen nicht überein"
