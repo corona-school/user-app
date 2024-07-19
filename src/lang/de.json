@@ -437,7 +437,8 @@
                 "title": "Schulort",
                 "subtitle": "Wie heißt deine Schule?",
                 "helperText": "Wir nutzen die Angabe der Schule, um deine Schulform und den Schulort zu ermitteln",
-                "schoolFound": "Schule gefunden"
+                "schoolFound": "Schule gefunden",
+                "otherSchoolFound": "Sonstige Schule erkannt"
             },
             "schoolType": {
                 "title": "Schulform",
