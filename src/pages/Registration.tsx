@@ -16,8 +16,16 @@ import { gql } from '../gql';
 import { SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SchoolSearch from './registration/SchoolSearch';
-import { ISchool } from '../lib/Schools';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
+
+interface SelectedSchool {
+    name?: string;
+    city?: string;
+    zip?: string;
+    email?: string;
+    state?: State;
+    schoolType?: SchoolType;
+}
 
 type RegistrationContextType = {
     userType: 'pupil' | 'student';
@@ -32,14 +40,10 @@ type RegistrationContextType = {
     setPassword: Dispatch<SetStateAction<string>>;
     passwordRepeat: string;
     setPasswordRepeat: Dispatch<SetStateAction<string>>;
-    school?: ISchool;
-    setSchool: Dispatch<SetStateAction<ISchool | undefined>>;
+    school?: SelectedSchool;
+    setSchool: Dispatch<SetStateAction<SelectedSchool | undefined>>;
     schoolClass: number;
     setSchoolClass: (value: number) => void;
-    schoolType: string;
-    setSchoolType: Dispatch<SetStateAction<string>>;
-    userState: string;
-    setUserState: Dispatch<SetStateAction<string>>;
     newsletter: boolean;
     setNewsletter: Dispatch<SetStateAction<boolean>>;
     currentStep: RegistrationStep;
@@ -56,19 +60,18 @@ const mutPupil = gql(`
         $email: String!
         $password: String!
         $newsletter: Boolean!
-        $state: State!
         $grade: Int!
-        $schoolType: SchoolType!
         $retainPath: String!
+        $school: RegistrationSchool!
     ) {
         meRegisterPupil(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, state: $state }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, school: $school }
         ) {
             id
         }
         passwordCreate(password: $password)
-        meUpdate(update: { pupil: { gradeAsInt: $grade, schooltype: $schoolType } })
+        meUpdate(update: { pupil: { gradeAsInt: $grade } })
         tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
 `);
@@ -119,11 +122,9 @@ const Registration: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordRepeat, setPasswordRepeat] = useState<string>('');
-    const [schoolType, setSchoolType] = useState<string>('');
     const [schoolClass, setSchoolClass] = useState<number>(1);
-    const [userState, setUserState] = useState<string>('bw');
     const [newsletter, setNewsletter] = useState<boolean>(false);
-    const [school, setSchool] = useState<ISchool>();
+    const [school, setSchool] = useState<SelectedSchool>();
 
     const [registerPupil] = useMutation(mutPupil);
     const [registerStudent] = useMutation(mutStudent);
@@ -171,9 +172,15 @@ const Registration: React.FC = () => {
                     ? await registerPupil({
                           variables: {
                               ...basicData,
-                              schoolType: schoolType as SchoolType,
                               grade: schoolClass,
-                              state: userState as State,
+                              school: {
+                                  name: school?.name,
+                                  city: school?.city,
+                                  email: school?.email,
+                                  schooltype: school?.schoolType || SchoolType.Other,
+                                  state: school?.state || State.Other,
+                                  zip: school?.zip,
+                              },
                           },
                       })
                     : await registerStudent({
@@ -228,7 +235,7 @@ const Registration: React.FC = () => {
             );
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolType, schoolClass, userState, space, t]);
+    }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolClass, space, t, school]);
 
     const logoSize = useBreakpointValue({
         base: '50px',
@@ -272,12 +279,12 @@ const Registration: React.FC = () => {
         };
         let nextStep = getNextStepFrom(currentStep);
 
-        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || school?.hasValidSchoolType;
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.schoolType;
         if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
 
-        const shouldSkipState = school?.hasValidSchoolState;
+        const shouldSkipState = !!school?.state;
         if (nextStep === RegistrationStep.state && shouldSkipState) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
@@ -293,12 +300,12 @@ const Registration: React.FC = () => {
         };
         let prevStep = getPrevStepFrom(currentStep);
 
-        const shouldSkipState = school?.hasValidSchoolState;
+        const shouldSkipState = !!school?.state;
         if (prevStep === RegistrationStep.state && shouldSkipState) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
 
-        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || school?.hasValidSchoolType;
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.schoolType;
         if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
@@ -342,10 +349,6 @@ const Registration: React.FC = () => {
                         setSchool,
                         schoolClass,
                         setSchoolClass,
-                        schoolType,
-                        setSchoolType,
-                        userState,
-                        setUserState,
                         newsletter,
                         setNewsletter,
                         currentStep,

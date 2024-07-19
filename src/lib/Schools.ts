@@ -3,6 +3,7 @@ import useDebounce from '../hooks/useDebounce';
 import { log, logError } from '../log';
 import { states } from '../types/lernfair/State';
 import { schooltypes } from '../types/lernfair/SchoolType';
+import { SchoolType, State } from '../gql/graphql';
 
 const API = 'https://jedeschule.codefor.de';
 
@@ -10,17 +11,16 @@ interface UseSchoolSearchArgs {
     name: string;
 }
 
-export interface ISchool {
+export interface ExternalSchool {
     id: string;
     name: string;
     city: string;
     school_type: string;
     zip: string;
-    hasValidSchoolType: boolean;
-    hasValidSchoolState: boolean;
+    email?: string;
 }
 
-export const getSchoolState = (school?: ISchool) => {
+export const getSchoolState = (school?: ExternalSchool) => {
     const state = school?.id.substring(0, 2).toLowerCase();
     const isValid = states.some((e) => e.key === state);
     if (!isValid) {
@@ -29,14 +29,14 @@ export const getSchoolState = (school?: ISchool) => {
          * we need the heads up about that.
          */
         logError('jedeschule', 'Could not get state from school', school);
-        return null;
+        return;
     }
-    return state;
+    return state as State;
 };
 
-export const getSchoolType = (school?: ISchool) => {
+export const getSchoolType = (school?: ExternalSchool) => {
     const schoolType = school?.school_type?.toLowerCase();
-    if (!schoolType) return null;
+    if (!schoolType) return;
     const isValid = schooltypes.some((e) => e.key === schoolType);
     if (!isValid) {
         /**
@@ -44,14 +44,14 @@ export const getSchoolType = (school?: ISchool) => {
          * So it shouldn't be a big deal
          */
         log('jedeschule', 'Could not get school type from school', school);
-        return null;
+        return;
     }
-    return schoolType;
+    return schoolType as SchoolType;
 };
 
 const useSchoolSearch = ({ name }: UseSchoolSearchArgs) => {
     const debouncedName = useDebounce({ delay: 200, value: name });
-    const [schools, setSchools] = useState<ISchool[]>([]);
+    const [schools, setSchools] = useState<ExternalSchool[]>([]);
 
     useEffect(() => {
         if (debouncedName.length > 3) {

@@ -3,22 +3,20 @@ import { useContext, useState } from 'react';
 import Check from '../../assets/icons/check.svg';
 import { useTranslation } from 'react-i18next';
 import { RegistrationContext } from '../Registration';
-import useSchoolSearch, { getSchoolState, getSchoolType, ISchool } from '../../lib/Schools';
+import useSchoolSearch, { getSchoolState, getSchoolType, ExternalSchool } from '../../lib/Schools';
 
 const SchoolSearch = () => {
     const { t } = useTranslation();
 
-    const { onNext, onPrev, school, setSchool, setUserState, setSchoolType } = useContext(RegistrationContext);
+    const { onNext, onPrev, school, setSchool } = useContext(RegistrationContext);
     const [name, setName] = useState(school?.name ?? '');
     const { schools, resetResults } = useSchoolSearch({ name });
 
-    const handleOnSelect = (school: ISchool) => {
-        setName(school.name);
-        const schoolState = getSchoolState(school) ?? '';
-        const schoolType = getSchoolType(school) ?? '';
-        setSchool({ ...school, hasValidSchoolState: !!schoolState, hasValidSchoolType: !!schoolType });
-        setUserState(schoolState);
-        setSchoolType(schoolType);
+    const handleOnSelect = (school: ExternalSchool) => {
+        setName(school.name.trim());
+        const state = getSchoolState(school);
+        const schoolType = getSchoolType(school);
+        setSchool({ ...school, state, schoolType });
         resetResults();
     };
 
@@ -28,15 +26,13 @@ const SchoolSearch = () => {
     };
 
     const handleOnNext = () => {
-        if (!school) {
-            setSchool({ id: '', name, city: '', hasValidSchoolState: false, hasValidSchoolType: false, school_type: '', zip: '' });
-            setSchoolType('');
-            setUserState('');
+        if (!school && !!name.trim()) {
+            setSchool({ name: name.trim() });
         }
         onNext();
     };
 
-    const hasSelection = school?.id && school?.name === name;
+    const hasSelection = !!school?.name && school?.name === name;
 
     return (
         <VStack alignSelf="flex-start" w="100%" mt={5}>

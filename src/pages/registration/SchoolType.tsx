@@ -5,9 +5,10 @@ import IconTagList from '../../widgets/IconTagList';
 import { schooltypes } from '../../types/lernfair/SchoolType';
 import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import { SchoolType as SchoolTypeEnum } from '../../gql/graphql';
 
 const SchoolType: React.FC = () => {
-    const { schoolType, setSchoolType, onPrev, onNext } = useContext(RegistrationContext);
+    const { school, setSchool, onPrev, onNext } = useContext(RegistrationContext);
     const { space } = useTheme();
     usePageTitle('Lern-Fair - Registrierung: Schulform');
     const { t } = useTranslation();
@@ -19,9 +20,9 @@ const SchoolType: React.FC = () => {
                 {schooltypes.map((type, i) => (
                     <Column mb={space['0.5']} mr={space['0.5']}>
                         <IconTagList
-                            initial={schoolType === type.key}
+                            initial={school?.schoolType === type.key}
                             text={type.label}
-                            onPress={() => setSchoolType(type.key)}
+                            onPress={() => setSchool({ ...school, schoolType: type.key as SchoolTypeEnum })}
                             iconPath={`schooltypes/icon_${type.key}.svg`}
                         />
                     </Column>

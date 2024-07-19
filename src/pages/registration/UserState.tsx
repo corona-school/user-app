@@ -5,9 +5,10 @@ import IconTagList from '../../widgets/IconTagList';
 import { states } from '../../types/lernfair/State';
 import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import { State } from '../../gql/graphql';
 
 const UserState: React.FC = () => {
-    const { userState, setUserState, onPrev, onNext } = useContext(RegistrationContext);
+    const { school, setSchool, onPrev, onNext } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { t } = useTranslation();
     usePageTitle('Lern-Fair - Registrierung: Schulort');
@@ -20,9 +21,9 @@ const UserState: React.FC = () => {
                 {states.map((state, i) => (
                     <Column mb={space['0.5']} mr={space['0.5']}>
                         <IconTagList
-                            initial={userState === state.key}
+                            initial={school?.state === state.key}
                             text={t(`lernfair.states.${state.key}` as unknown as TemplateStringsArray)}
-                            onPress={() => setUserState(state.key)}
+                            onPress={() => setSchool({ ...school, state: state.key as State })}
                             iconPath={`states/icon_${state.key}.svg`}
                         />
                     </Column>
