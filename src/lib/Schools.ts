@@ -20,7 +20,7 @@ export interface ExternalSchool {
     email?: string;
 }
 
-export const getSchoolState = (school?: ExternalSchool) => {
+export const getExternalSchoolState = (school?: ExternalSchool) => {
     const state = school?.id.substring(0, 2).toLowerCase();
     const isValid = states.some((e) => e.key === state);
     if (!isValid) {
@@ -34,7 +34,7 @@ export const getSchoolState = (school?: ExternalSchool) => {
     return state as State;
 };
 
-export const getSchoolType = (school?: ExternalSchool) => {
+export const getExternalSchoolType = (school?: ExternalSchool) => {
     const schoolType = school?.school_type?.toLowerCase();
     if (!schoolType) return;
     const isValid = schooltypes.some((e) => e.key === schoolType);
@@ -50,11 +50,19 @@ export const getSchoolType = (school?: ExternalSchool) => {
 };
 
 const useSchoolSearch = ({ name }: UseSchoolSearchArgs) => {
-    const debouncedName = useDebounce({ delay: 200, value: name });
+    const debouncedName = useDebounce({ delay: 500, value: name });
     const [schools, setSchools] = useState<ExternalSchool[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (name && name.length > 3) {
+            setIsLoading(true);
+        }
+    }, [name]);
 
     useEffect(() => {
         if (debouncedName.length > 3) {
+            setIsLoading(true);
             fetch(`${API}/schools/?limit=20&include_raw=false&name=${debouncedName}`)
                 .then(async (response) => {
                     if (response.ok) {
@@ -69,7 +77,8 @@ const useSchoolSearch = ({ name }: UseSchoolSearchArgs) => {
                 })
                 .catch((error) => {
                     logError('jedeschule', `Error fetching schools`, error);
-                });
+                })
+                .finally(() => setIsLoading(false));
         } else {
             resetResults();
         }
@@ -79,7 +88,7 @@ const useSchoolSearch = ({ name }: UseSchoolSearchArgs) => {
         setSchools([]);
     };
 
-    return { schools, resetResults };
+    return { schools, resetResults, isLoading };
 };
 
 export default useSchoolSearch;
