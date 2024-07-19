@@ -31,6 +31,7 @@ function NotesUI({ notes, assignmentId, refetch }: { notes: Note[], assignmentId
             variables: { text, assignmentId }
         });
 
+        setText('');
         refetch();
     }
 
@@ -49,6 +50,7 @@ function NotesUI({ notes, assignmentId, refetch }: { notes: Note[], assignmentId
         });
 
         refetch();
+        setText('');
     }
 
     return <VStack>
@@ -65,9 +67,9 @@ function NotesUI({ notes, assignmentId, refetch }: { notes: Note[], assignmentId
 
 function NoteUI({ note }: { note: Note }) {
     const color = {
-        answer: 'lightgreen',
-        correct_answer: 'green',
-        wrong_answer: 'lightred',
+        answer: 'white',
+        correct_answer: '#98FF98',
+        wrong_answer: '#FFCCCB',
         question: 'lightblue',
         comment: 'white',
         task: 'lightorange'

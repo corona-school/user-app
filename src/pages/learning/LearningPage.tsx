@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import CenterLoadingSpinner from "../../components/CenterLoadingSpinner";
 import WithNavigation from "../../components/WithNavigation";
 import { gql } from "../../gql";
-import { Button, Column, FormControl, Heading, Input, Modal, Pressable, Row, Text, VStack } from "native-base";
+import { Button, Column, FormControl, HStack, Heading, Input, Modal, Pressable, Row, Text, VStack } from "native-base";
 import HSection from "../../widgets/HSection";
 import Card from "../../components/Card";
 import { Course_Subject_Enum, Match, Subject } from "../../gql/graphql";
@@ -13,7 +13,7 @@ import SubjectList from "../../widgets/SubjectList";
 import { SubjectSelector } from "../../widgets/SubjectSelector";
 import useApollo from "../../hooks/useApollo";
 
-function LearningTopicCard({ subject, title, onPress }: { title: string, subject?: Course_Subject_Enum, onPress: () => void }) {
+function LearningTopicCard({ subject, title, onPress, assignments }: { title: string, subject?: Course_Subject_Enum, onPress: () => void, assignments?: { open: number, finished: number } }) {
     const { t } = useTranslation();
 
     return (
@@ -26,6 +26,12 @@ function LearningTopicCard({ subject, title, onPress }: { title: string, subject
                     <Heading color="white" noOfLines={1}>
                         {title}
                     </Heading>
+                    {assignments && <VStack paddingTop="20px">
+                        <Text color="white">
+                            {assignments.open} offene Aufgaben
+                        </Text>
+                        <Text color="white">{assignments.finished} erledigte Aufgaben</Text>
+                    </VStack>}
                 </VStack>
             </VStack>
         </Pressable>
@@ -92,6 +98,8 @@ export function LearningPupilPage() {
                             id
                             name
                             subject
+                            openAssignmentsCount
+                            finishedAssignmentsCount
                         }
                     }
                 }
@@ -105,10 +113,15 @@ export function LearningPupilPage() {
     return <WithNavigation>
         <Column padding={'10px'}>
         {loading && <CenterLoadingSpinner />}
-        {!loading && data?.me.pupil?.matches.map(match => <HSection title={`Lerne mit ${match.student.firstname}`}>
-            {match.topics.map(topic => <LearningTopicCard onPress={() => navigate(`/learning/topic/${topic.id}`)} title={topic.name} subject={topic.subject} />)}
-            <LearningTopicCard onPress={() => setCreateTopicFor(match)} title="Neues Thema"/>
-        </HSection>)}
+        {!loading && data?.me.pupil?.matches.map(match => <>
+            <HSection title={`Lerne mit ${match.student.firstname}`}>
+                {match.topics.map(topic => <LearningTopicCard onPress={() => navigate(`/learning/topic/${topic.id}`)} title={topic.name} subject={topic.subject} assignments={{ finished: topic.finishedAssignmentsCount, open: topic.openAssignmentsCount }}/>)}
+            </HSection>
+            <HStack>
+                <Button variant="outline" onPress={() => setCreateTopicFor(match)}>Neues Thema</Button> 
+            </HStack>
+        </>)}
+        
         </Column>
 
         {createTopicFor && <CreateTopicModal match={createTopicFor} onClose={() => { setCreateTopicFor(undefined); refetch(); }} />}
