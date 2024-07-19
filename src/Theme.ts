@@ -61,6 +61,7 @@ const Theme = extendTheme({
             900: VAR_COLOR_TERTIARY,
         },
         success: {
+            translucent: '#ecfdf3',
             100: VAR_COLOR_SUCCESS,
             200: VAR_COLOR_SUCCESS,
             300: VAR_COLOR_SUCCESS,
