@@ -17,6 +17,7 @@ import { SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SchoolSearch from './registration/SchoolSearch';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import { SCHOOL_SEARCH_ACTIVE } from '../config';
 
 interface SelectedSchool {
     name?: string;
@@ -260,7 +261,7 @@ const Registration: React.FC = () => {
     const pupilFlow = [
         RegistrationStep.userType,
         RegistrationStep.personalData,
-        RegistrationStep.school,
+        ...(SCHOOL_SEARCH_ACTIVE ? [RegistrationStep.school] : []),
         RegistrationStep.grade,
         RegistrationStep.schoolType,
         RegistrationStep.state,
