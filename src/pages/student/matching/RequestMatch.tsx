@@ -11,7 +11,7 @@ import Subjects from './Subjects';
 import UpdateData from './UpdateData';
 import { gql } from '../../../gql';
 import { Subject } from '../../../gql/graphql';
-import HelpNavigation from '../../../components/HelpNavigation';
+import SwitchLanguageButton from '../../../components/SwitchLanguageButton';
 
 const query = gql(`
     query StudentMatchRequestCount {
@@ -99,7 +99,7 @@ const RequestMatching: React.FC = () => {
                 isLoading={loading || isLoading}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

@@ -366,28 +366,28 @@
             }
         },
         "steps": {
-            "0": {
+            "userType": {
                 "title": "Sizin rolünüz",
                 "subtitle": "Ben"
             },
-            "1": {
+            "personalData": {
                 "title": "Kişisel veriler",
                 "subtitle": "Kişisel veriler"
             },
-            "2": {
+            "grade": {
                 "title": "Sınıf",
                 "subtitle": "Hangi sınıftasın?"
             },
-            "3": {
+            "schoolType": {
                 "title": "Okul türü",
                 "subtitle": "Ne tür bir okula gidiyorsunuz?"
             },
-            "4": {
+            "state": {
                 "title": "Okul konumu",
                 "subtitle": "Hangi okula gidiyorsun?",
                 "weightingNote": "Bir öğrenim partneri yerleştirirken okulun bulunduğu yeri yalnızca isteğe bağlı bir kriter olarak değerlendiriyoruz. Müsaitlik durumuna bağlı olarak, gelecekteki öğrenim ortağınız farklı bir bölgeden gelebilir."
             },
-            "5": {
+            "legal": {
                 "title": "Onaylar",
                 "subtitle": "Onaylar"
             }
@@ -819,7 +819,8 @@
             "progress": "Başarılar ve ilerleme",
             "forStudents": "Yardımcılar için",
             "forPupils": "Öğrenciler için",
-            "push": "Uygulama mesajları"
+            "push": "Uygulama mesajları",
+            "faq": "SSS & İletişim"
         },
         "account": {
             "title": "Hesap",

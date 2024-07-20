@@ -147,6 +147,9 @@ const Theme = extendTheme({
                     backgroundColor: VAR_COLOR_BLUE,
                 },
                 outline: {
+                    _text: {
+                        color: VAR_COLOR_PRIMARY_DARK,
+                    },
                     _light: {
                         borderColor: VAR_COLOR_PRIMARY,
                         _text: {
@@ -161,6 +164,16 @@ const Theme = extendTheme({
                         _text: {
                             color: 'white',
                         },
+                    },
+                },
+                outlinemiddle: {
+                    borderColor: VAR_COLOR_PRIMARY,
+                    borderWidth: 1,
+                    _hover: {
+                        bg: `rgba(130,177,176,0.9)`,
+                    },
+                    _pressed: {
+                        bg: `rgba(130,177,176,0.2)`,
                     },
                 },
                 link: {
