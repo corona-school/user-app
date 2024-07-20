@@ -60,7 +60,7 @@ function CreateTopicModal({ onClose, match }: { onClose: () => void, match: Matc
         onClose();
     }
     return <Modal isOpen onClose={onClose}>
-        <Modal.Content height={"500px"} maxHeight="unset" width={"500px"} maxWidth="unset" padding={6} marginY={0} borderRadius={"5px"}>
+        <Modal.Content maxW={"500px"} padding={6} marginY={0} borderRadius={"5px"}>
                 <Modal.CloseButton />
                 <VStack height="100%" space={6}>
                     <Heading>Neues Thema mit {match.student.firstname}</Heading>

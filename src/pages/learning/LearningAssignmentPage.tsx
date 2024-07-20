@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router-dom";
 import WithNavigation from "../../components/WithNavigation";
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import CenterLoadingSpinner from "../../components/CenterLoadingSpinner";
 import { Button, HStack, Heading, Text, TextArea, VStack } from "native-base";
 import { useTranslation } from "react-i18next";
@@ -17,40 +17,23 @@ function NotesUI({ notes, assignmentId, refetch }: { notes: Note[], assignmentId
     const [text, setText] = useState('');
     const { client } = useApollo();
 
-    async function ask() {
-        await client.mutate({
-            mutation: gql(`
-                mutation Ask($assignmentId: Int!, $text: String!) {
-                    learningNoteCreate(note: {
-                        assignmentId: $assignmentId
-                        type: question
-                        text: $text
-                    }) { id }
-                }
-            `),
-            variables: { text, assignmentId }
-        });
+    const [ask, { loading, }] = useMutation(
+        gql(`
+        mutation Ask($assignmentId: Int!, $text: String!) {
+            learningNoteCreate(note: {
+                assignmentId: $assignmentId
+                type: comment
+                text: $text
+            }) { id }
+        }
+    `)
+    );
+
+    async function send() {
+        await ask({ variables: { text, assignmentId } });
 
         setText('');
         refetch();
-    }
-
-    async function addAnswer() {
-        await client.mutate({
-            mutation: gql(`
-                mutation AddAnswer($assignmentId: Int!, $text: String!) {
-                    learningNoteCreate(note: {
-                        assignmentId: $assignmentId
-                        type: answer
-                        text: $text
-                    }) { id }
-                }
-            `),
-            variables: { text, assignmentId }
-        });
-
-        refetch();
-        setText('');
     }
 
     return <VStack>
@@ -58,8 +41,7 @@ function NotesUI({ notes, assignmentId, refetch }: { notes: Note[], assignmentId
 
         <TextArea value={text} onChangeText={setText} autoCompleteType={""} />
         <HStack space={'10px'}>
-            <Button onPress={ask}>Frage stellen</Button>
-            <Button onPress={addAnswer}>Ich habs!</Button>
+            <Button disabled={loading} onPress={send}>Senden</Button>
         </HStack>
     </VStack>
 }

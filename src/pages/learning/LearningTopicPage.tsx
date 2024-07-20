@@ -67,7 +67,7 @@ function CreateAssignmentModal({ onClose, topic }: { onClose: () => void, topic:
     }
 
     return <Modal isOpen onClose={onClose}>
-        <Modal.Content height={"800px"} maxHeight="unset" width={"800px"} maxWidth="unset" padding={6} marginY={0} borderRadius={"5px"}>
+        <Modal.Content maxW={"800px"} padding={6} marginY={0} borderRadius={"5px"} overflowY="auto">
                 <Modal.CloseButton />
                 <VStack height="100%" space={6}>
                     <Heading>Neue Aufgabe für {topic.subject} / {topic.name}</Heading>
