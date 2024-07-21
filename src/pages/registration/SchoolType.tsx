@@ -20,9 +20,9 @@ const SchoolType: React.FC = () => {
                 {schooltypes.map((type, i) => (
                     <Column mb={space['0.5']} mr={space['0.5']}>
                         <IconTagList
-                            initial={school?.schoolType === type.key}
+                            initial={school?.schooltype === type.key}
                             text={type.label}
-                            onPress={() => setSchool({ ...school, schoolType: type.key as SchoolTypeEnum })}
+                            onPress={() => setSchool({ ...school, schooltype: type.key as SchoolTypeEnum })}
                             iconPath={`schooltypes/icon_${type.key}.svg`}
                         />
                     </Column>

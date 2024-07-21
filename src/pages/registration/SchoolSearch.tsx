@@ -5,7 +5,8 @@ import Search from '../../assets/icons/search.svg';
 import CheckOutlined from '../../assets/icons/check_outlined.svg';
 import { useTranslation } from 'react-i18next';
 import { RegistrationContext } from '../Registration';
-import useSchoolSearch, { getExternalSchoolState, getExternalSchoolType, ExternalSchool } from '../../lib/Schools';
+import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
+import { ExternalSchoolSearch } from '../../gql/graphql';
 
 const SchoolSearch = () => {
     const { t } = useTranslation();
@@ -15,10 +16,8 @@ const SchoolSearch = () => {
     const { schools, isLoading } = useSchoolSearch({ name });
     const [resultType, setResultType] = useState<'found' | 'not-found' | 'none'>('none');
 
-    const handleOnSelect = (school: ExternalSchool) => {
-        const state = getExternalSchoolState(school);
-        const schoolType = getExternalSchoolType(school);
-        setSchool({ ...school, state, schoolType });
+    const handleOnSelect = (school: ExternalSchoolSearch) => {
+        setSchool(school);
         setResultType('found');
     };
 
@@ -40,9 +39,9 @@ const SchoolSearch = () => {
 
     const showList = name && !isLoading;
 
-    const isSchoolSelected = (selected: ExternalSchool) => {
+    const isSchoolSelected = (selected: ExternalSchoolSearch) => {
         if (!school) return false;
-        return school.name === selected.name && school.city === selected.city && school.state === getExternalSchoolState(selected);
+        return school.name === selected.name && school.city === selected.city && school.state === selected.state;
     };
 
     return (

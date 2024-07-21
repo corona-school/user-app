@@ -13,20 +13,13 @@ import UserState from './registration/UserState';
 import Legal from './registration/Legal';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { SchoolType, State } from '../gql/graphql';
+import { ExternalSchoolSearch, SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SchoolSearch from './registration/SchoolSearch';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { SCHOOL_SEARCH_ACTIVE } from '../config';
 
-interface SelectedSchool {
-    name?: string;
-    city?: string;
-    zip?: string;
-    email?: string;
-    state?: State;
-    schoolType?: SchoolType;
-}
+interface SelectedSchool extends Partial<ExternalSchoolSearch> {}
 
 type RegistrationContextType = {
     userType: 'pupil' | 'student';
@@ -178,7 +171,7 @@ const Registration: React.FC = () => {
                                   name: school?.name,
                                   city: school?.city,
                                   email: school?.email,
-                                  schooltype: school?.schoolType || SchoolType.Other,
+                                  schooltype: school?.schooltype || SchoolType.Other,
                                   state: school?.state || State.Other,
                                   zip: school?.zip,
                               },
@@ -280,7 +273,7 @@ const Registration: React.FC = () => {
         };
         let nextStep = getNextStepFrom(currentStep);
 
-        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.schoolType;
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.schooltype;
         if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
@@ -306,7 +299,7 @@ const Registration: React.FC = () => {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
 
-        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.schoolType;
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.schooltype;
         if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }

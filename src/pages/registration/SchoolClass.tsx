@@ -14,8 +14,8 @@ const SchoolClass: React.FC = () => {
 
     const handleOnSchoolClassChange = (newClass: number) => {
         setSchoolClass(newClass);
-        if (!school?.schoolType) {
-            setSchool({ ...school, schoolType: newClass === TRAINEE_GRADE ? SchoolType.Berufsschule : undefined });
+        if (!school?.schooltype) {
+            setSchool({ ...school, schooltype: newClass === TRAINEE_GRADE ? SchoolType.Berufsschule : undefined });
         }
     };
 
