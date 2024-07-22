@@ -330,6 +330,7 @@
         },
         "hint": {
             "schoolClassSelectionMissing": "Please select a school class.",
+            "schoolTypeSelectionMissing": "Please select a school type.",
             "userStateSelectionMissing": "Please select a school location.",
             "password": {
                 "length": "The password must contain at least 6 characters.",

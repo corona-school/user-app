@@ -7,7 +7,7 @@ import { usePageTitle } from '../../hooks/usePageTitle';
 import AlertMessage from '../../widgets/AlertMessage';
 
 const SchoolClass: React.FC = () => {
-    const { schoolClass, setSchoolClass, schoolType, setSchoolType, onNext, onPrev } = useContext(RegistrationContext);
+    const { schoolClass, setSchoolClass, onNext, onPrev } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { t } = useTranslation();
     usePageTitle('Lern-Fair - Registrierung: Klasse');
@@ -16,9 +16,6 @@ const SchoolClass: React.FC = () => {
 
     const handleOnSchoolClassChange = (newClass: number) => {
         setSchoolClass(newClass);
-        if (!schoolType) {
-            setSchoolType(newClass === TRAINEE_GRADE ? 'berufsschule' : 'grundschule');
-        }
         if (newClass) {
             setShowClassMissing(false);
         }

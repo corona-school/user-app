@@ -330,6 +330,7 @@
         },
         "hint": {
             "schoolClassSelectionMissing": "Lütfen bir okul sınıfı seçin.",
+            "schoolTypeSelectionMissing": "Lütfen bir okul türü seçiniz.",
             "userStateSelectionMissing": "Lütfen bir okul konumu seçin.",
             "password": {
                 "length": "Parola en az 6 karakter içermelidir.",
