@@ -115,8 +115,8 @@ const Registration: React.FC = () => {
     const [password, setPassword] = useState<string>('');
     const [passwordRepeat, setPasswordRepeat] = useState<string>('');
     const [schoolType, setSchoolType] = useState<string>('');
-    const [schoolClass, setSchoolClass] = useState<number>(1);
-    const [userState, setUserState] = useState<string>('bw');
+    const [schoolClass, setSchoolClass] = useState<number>(0);
+    const [userState, setUserState] = useState<string>('');
     const [newsletter, setNewsletter] = useState<boolean>(false);
 
     const [registerPupil] = useMutation(mutPupil);
@@ -257,6 +257,14 @@ const Registration: React.FC = () => {
     const currentStepIndex = flow.indexOf(currentStep);
     const handleOnNext = () => {
         if (currentStepIndex === -1) return;
+
+        if (
+            (schoolType === '' && currentStep === RegistrationStep.schoolType) ||
+            (schoolClass === 0 && currentStep === RegistrationStep.grade) ||
+            (userState === '' && currentStep === RegistrationStep.state)
+        ) {
+            return;
+        }
 
         if (currentStep === RegistrationStep.grade) {
             setCurrentStep(schoolClass === TRAINEE_GRADE ? RegistrationStep.state : RegistrationStep.schoolType);
