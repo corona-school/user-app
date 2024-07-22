@@ -450,22 +450,24 @@ export default function NavigatorLazy() {
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<LearningPupilPage />} />
                     </RequireAuth>
-                } />
+                }
+            />
             <Route
                 path="/learning/topic/:id"
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<LearningTopicPupilPage />} />
                     </RequireAuth>
-                } />
+                }
+            />
             <Route
                 path="/learning/assignment/:id"
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<LearningAssignmentPupilPage />} />
                     </RequireAuth>
-                } />
-            
+                }
+            />
 
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/verify-email-change" element={<VerifyEmailChange />} />

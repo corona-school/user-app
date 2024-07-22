@@ -1,11 +1,10 @@
-import { useNavigate, useParams } from "react-router-dom";
-import WithNavigation from "../../components/WithNavigation";
-import { useQuery } from "@apollo/client";
-import CenterLoadingSpinner from "../../components/CenterLoadingSpinner";
-import { Heading } from "native-base";
-import { gql } from "../../gql";
-import { LearningNoteList } from "../../widgets/learning/LearningNoteList";
-
+import { useNavigate, useParams } from 'react-router-dom';
+import WithNavigation from '../../components/WithNavigation';
+import { useQuery } from '@apollo/client';
+import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import { Heading } from 'native-base';
+import { gql } from '../../gql';
+import { LearningNoteList } from '../../widgets/learning/LearningNoteList';
 
 export function LearningAssignmentPupilPage() {
     const { id: _assignmentID } = useParams();
@@ -13,7 +12,8 @@ export function LearningAssignmentPupilPage() {
 
     const navigate = useNavigate();
 
-    const { loading, data, refetch } = useQuery(gql(`
+    const { loading, data, refetch } = useQuery(
+        gql(`
         query GetAssignment($id: Int!) {
             learningAssignment(id: $id) {
                 task
@@ -26,13 +26,19 @@ export function LearningAssignmentPupilPage() {
                 }
             }
         }
-    `), { variables: { id: assignmentID }, pollInterval: 1000 });
+    `),
+        { variables: { id: assignmentID }, pollInterval: 1000 }
+    );
 
-    return <WithNavigation showBack>
-        {loading && <CenterLoadingSpinner />}
-        {!loading && <>
-            <Heading>{data?.learningAssignment.task}</Heading>
-            {data && <LearningNoteList refetch={refetch} assignmentId={assignmentID} notes={data.learningAssignment.notes} />}
-        </>}
-    </WithNavigation>
+    return (
+        <WithNavigation showBack>
+            {loading && <CenterLoadingSpinner />}
+            {!loading && (
+                <>
+                    <Heading>{data?.learningAssignment.task}</Heading>
+                    {data && <LearningNoteList refetch={refetch} assignmentId={assignmentID} notes={data.learningAssignment.notes} />}
+                </>
+            )}
+        </WithNavigation>
+    );
 }

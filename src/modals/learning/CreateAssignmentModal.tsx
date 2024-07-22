@@ -1,13 +1,13 @@
-import { gql } from "@apollo/client";
-import { VStack, Heading, FormControl, TextArea, Modal, Button } from "native-base";
-import { useState } from "react";
-import { Learning_Topic } from "../../gql/graphql";
-import useApollo from "../../hooks/useApollo";
+import { gql } from '@apollo/client';
+import { VStack, Heading, FormControl, TextArea, Modal, Button } from 'native-base';
+import { useState } from 'react';
+import { Learning_Topic } from '../../gql/graphql';
+import useApollo from '../../hooks/useApollo';
 
 type TopicInfo = Pick<Learning_Topic, 'id' | 'name' | 'subject'>;
 
-export function CreateAssignmentModal({ onClose, topic }: { onClose: () => void, topic: TopicInfo }) {
-    const [task, setTask] = useState("");
+export function CreateAssignmentModal({ onClose, topic }: { onClose: () => void; topic: TopicInfo }) {
+    const [task, setTask] = useState('');
 
     const { client } = useApollo();
 
@@ -20,15 +20,15 @@ export function CreateAssignmentModal({ onClose, topic }: { onClose: () => void,
             `),
             variables: {
                 topicId: topic.id,
-                task
-            }
-         });
+                task,
+            },
+        });
 
         onClose();
     }
 
     async function proposeAssignment() {
-        setTask("...");
+        setTask('...');
 
         const proposal = await client.mutate({
             mutation: gql(`
@@ -37,28 +37,35 @@ export function CreateAssignmentModal({ onClose, topic }: { onClose: () => void,
             }
             `),
             variables: {
-                topicId: topic.id
-            }
-         });
+                topicId: topic.id,
+            },
+        });
 
         setTask(proposal.data!.learningAssignmentPropose);
     }
 
-    return <Modal isOpen onClose={onClose}>
-        <Modal.Content maxW={"800px"} padding={6} marginY={0} borderRadius={"5px"} overflowY="auto">
+    return (
+        <Modal isOpen onClose={onClose}>
+            <Modal.Content maxW={'800px'} padding={6} marginY={0} borderRadius={'5px'} overflowY="auto">
                 <Modal.CloseButton />
                 <VStack height="100%" space={6}>
-                    <Heading>Neue Aufgabe für {topic.subject} / {topic.name}</Heading>
+                    <Heading>
+                        Neue Aufgabe für {topic.subject} / {topic.name}
+                    </Heading>
                     <FormControl>
                         <TextArea minHeight="400px" autoCompleteType="" value={task} onChangeText={setTask} />
 
                         <VStack>
-                            <Button variant="outline" onPress={proposeAssignment}>Vorschlag generieren</Button>
-                            <Button disabled={!task} onPress={createAssignment}>Aufgabe erstellen</Button>
+                            <Button variant="outline" onPress={proposeAssignment}>
+                                Vorschlag generieren
+                            </Button>
+                            <Button disabled={!task} onPress={createAssignment}>
+                                Aufgabe erstellen
+                            </Button>
                         </VStack>
-                        
                     </FormControl>
                 </VStack>
-        </Modal.Content>         
-    </Modal>
+            </Modal.Content>
+        </Modal>
+    );
 }
