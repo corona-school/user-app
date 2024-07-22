@@ -17,7 +17,7 @@ const SchoolSearch = () => {
     const [resultType, setResultType] = useState<'found' | 'not-found' | 'none'>('none');
 
     const handleOnSelect = (school: ExternalSchoolSearch) => {
-        setSchool(school);
+        setSchool({ ...school, hasPredefinedState: !!school.state, hasPredefinedType: !!school.schooltype });
         setResultType('found');
     };
 

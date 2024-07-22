@@ -19,7 +19,10 @@ import SchoolSearch from './registration/SchoolSearch';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { SCHOOL_SEARCH_ACTIVE } from '../config';
 
-interface SelectedSchool extends Partial<ExternalSchoolSearch> {}
+interface SelectedSchool extends Partial<ExternalSchoolSearch> {
+    hasPredefinedType?: boolean;
+    hasPredefinedState?: boolean;
+}
 
 type RegistrationContextType = {
     userType: 'pupil' | 'student';
@@ -116,7 +119,7 @@ const Registration: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordRepeat, setPasswordRepeat] = useState<string>('');
-    const [schoolClass, setSchoolClass] = useState<number>(1);
+    const [schoolClass, setSchoolClass] = useState<number>(0);
     const [newsletter, setNewsletter] = useState<boolean>(false);
     const [school, setSchool] = useState<SelectedSchool>();
 
@@ -267,18 +270,31 @@ const Registration: React.FC = () => {
     const handleOnNext = () => {
         if (currentStepIndex === -1) return;
 
+        if (
+            (!school?.schooltype && currentStep === RegistrationStep.schoolType) ||
+            (schoolClass === 0 && currentStep === RegistrationStep.grade) ||
+            (!school?.state && currentStep === RegistrationStep.state)
+        ) {
+            return;
+        }
+
         const getNextStepFrom = (step: RegistrationStep) => {
             const currentIndex = flow.indexOf(step);
             return flow[currentIndex + 1];
         };
         let nextStep = getNextStepFrom(currentStep);
 
-        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.schooltype;
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.hasPredefinedType;
         if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
 
-        const shouldSkipState = !!school?.state;
+        if (currentStep === RegistrationStep.grade) {
+            setCurrentStep(schoolClass === TRAINEE_GRADE ? RegistrationStep.state : RegistrationStep.schoolType);
+            return;
+        }
+
+        const shouldSkipState = !!school?.hasPredefinedState;
         if (nextStep === RegistrationStep.state && shouldSkipState) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
@@ -294,12 +310,12 @@ const Registration: React.FC = () => {
         };
         let prevStep = getPrevStepFrom(currentStep);
 
-        const shouldSkipState = !!school?.state;
+        const shouldSkipState = !!school?.hasPredefinedState;
         if (prevStep === RegistrationStep.state && shouldSkipState) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
 
-        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.schooltype;
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.hasPredefinedType;
         if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }

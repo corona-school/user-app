@@ -329,6 +329,9 @@
             "alternatives": "Отримайте більше інформації"
         },
         "hint": {
+            "schoolClassSelectionMissing": "Виберіть шкільний клас.",
+            "schoolTypeSelectionMissing": "Виберіть тип школи.",
+            "userStateSelectionMissing": "Будь ласка, виберіть місце розташування школи.",
             "password": {
                 "length": "Пароль повинен містити щонайменше 6 символів.",
                 "nomatch": "Паролі не збігаються"

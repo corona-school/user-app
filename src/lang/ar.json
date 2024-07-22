@@ -329,6 +329,9 @@
             "alternatives": "الحصول على مزيد من المعلومات"
         },
         "hint": {
+            "schoolClassSelectionMissing": "الرجاء تحديد فصل المدرسة.",
+            "schoolTypeSelectionMissing": "الرجاء اختيار نوع المدرسة.",
+            "userStateSelectionMissing": "الرجاء تحديد موقع المدرسة.",
             "password": {
                 "length": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل.",
                 "nomatch": "كلمات المرور غير متطابقة"
