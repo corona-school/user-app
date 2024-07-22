@@ -4,10 +4,11 @@ import { useTranslation } from 'react-i18next';
 import { RegistrationContext, TRAINEE_GRADE } from '../Registration';
 import { GradeSelector } from '../../components/GradeSelector';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import { SchoolType } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
 
 const SchoolClass: React.FC = () => {
-    const { schoolClass, setSchoolClass, onNext, onPrev } = useContext(RegistrationContext);
+    const { schoolClass, setSchoolClass, setSchool, school, onNext, onPrev } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { t } = useTranslation();
     usePageTitle('Lern-Fair - Registrierung: Klasse');
@@ -16,6 +17,9 @@ const SchoolClass: React.FC = () => {
 
     const handleOnSchoolClassChange = (newClass: number) => {
         setSchoolClass(newClass);
+        if (!school?.schooltype) {
+            setSchool({ ...school, schooltype: newClass === TRAINEE_GRADE ? SchoolType.Berufsschule : undefined });
+        }
         if (newClass) {
             setShowClassMissing(false);
         }

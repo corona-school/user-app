@@ -393,6 +393,13 @@
             "legal": {
                 "title": "Onaylar",
                 "subtitle": "Onaylar"
+            },
+            "school": {
+                "title": "Okul konumu",
+                "subtitle": "Okulunuzun adı nedir?",
+                "helperText": "Okul türünüzü ve okul konumunuzu belirlemek için okul bilgilerini kullanırız",
+                "schoolFound": "Okul bulundu",
+                "otherSchoolFound": "Tanınan diğer okullar"
             }
         },
         "pupil": {

@@ -5,10 +5,11 @@ import IconTagList from '../../widgets/IconTagList';
 import { schooltypes } from '../../types/lernfair/SchoolType';
 import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import { SchoolType as SchoolTypeEnum } from '../../gql/graphql';
 import AlertMessage from '../../widgets/AlertMessage';
 
 const SchoolType: React.FC = () => {
-    const { schoolType, setSchoolType, onPrev, onNext } = useContext(RegistrationContext);
+    const { school, setSchool, onPrev, onNext } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { t } = useTranslation();
     usePageTitle('Lern-Fair - Registrierung: Schulform');
@@ -16,7 +17,7 @@ const SchoolType: React.FC = () => {
     const [showTypeMissing, setShowTypeMissing] = useState<boolean>(false);
 
     const handleNext = () => {
-        if (!schoolType) {
+        if (!school?.schooltype) {
             setShowTypeMissing(true);
         } else {
             onNext();
@@ -30,10 +31,10 @@ const SchoolType: React.FC = () => {
                 {schooltypes.map((type, i) => (
                     <Column key={i} mb={space['0.5']} mr={space['0.5']}>
                         <IconTagList
-                            initial={schoolType === type.key}
+                            initial={school?.schooltype === type.key}
                             text={type.label}
                             onPress={() => {
-                                setSchoolType(type.key);
+                                setSchool({ ...school, schooltype: type.key as SchoolTypeEnum });
                                 if (showTypeMissing) {
                                     setShowTypeMissing(false);
                                 }
