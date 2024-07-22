@@ -23,17 +23,22 @@ const UserState: React.FC = () => {
         }
     };
 
+    const handleStateSelection = (stateKey: string) => {
+        setUserState(stateKey);
+        setShowStateMissing(false);
+    };
+
     return (
         <VStack flex="1" marginTop={space['1']}>
             <Heading>{t(`registration.steps.state.subtitle`)}</Heading>
             <Text>{t(`registration.steps.state.weightingNote`)}</Text>
             <Row flexWrap="wrap" w="100%" mt={space['1']} marginBottom={space['2']}>
                 {states.map((state, i) => (
-                    <Column mb={space['0.5']} mr={space['0.5']}>
+                    <Column key={i} mb={space['0.5']} mr={space['0.5']}>
                         <IconTagList
                             initial={userState === state.key}
                             text={t(`lernfair.states.${state.key}` as unknown as TemplateStringsArray)}
-                            onPress={() => setUserState(state.key)}
+                            onPress={() => handleStateSelection(state.key)}
                             iconPath={`states/icon_${state.key}.svg`}
                         />
                     </Column>
@@ -57,4 +62,5 @@ const UserState: React.FC = () => {
         </VStack>
     );
 };
+
 export default UserState;

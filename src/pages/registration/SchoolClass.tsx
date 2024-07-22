@@ -19,6 +19,9 @@ const SchoolClass: React.FC = () => {
         if (!schoolType) {
             setSchoolType(newClass === TRAINEE_GRADE ? 'berufsschule' : 'grundschule');
         }
+        if (newClass) {
+            setShowClassMissing(false);
+        }
     };
 
     const handleNext = () => {
