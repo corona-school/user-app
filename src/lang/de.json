@@ -385,6 +385,9 @@
         },
         "hint": {
             "name": "Bitte gebe deinen vollen Namen an",
+            "schoolClassSelectionMissing": "Bitte wähle eine Klasse aus.",
+            "schoolTypeSelectionMissing": "Bitte wähle eine Schulform aus.",
+            "userStateSelectionMissing": "Bitte wähle einen Schulort aus.",
             "password": {
                 "length": "Das Passwort muss mindestens 6 Zeichen enthalten.",
                 "nomatch": "Die Passwörter stimmen nicht überein"
@@ -432,6 +435,13 @@
             "grade": {
                 "title": "Klasse",
                 "subtitle": "In welcher Klasse bist du?"
+            },
+            "school": {
+                "title": "Schulort",
+                "subtitle": "Wie heißt deine Schule?",
+                "helperText": "Wir nutzen die Angabe der Schule, um deine Schulform und den Schulort zu ermitteln",
+                "schoolFound": "Schule gefunden",
+                "otherSchoolFound": "Sonstige Schule erkannt"
             },
             "schoolType": {
                 "title": "Schulform",
