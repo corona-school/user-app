@@ -31,22 +31,32 @@ const SingleSubjectSelector = ({
     const { t } = useTranslation();
     const { space } = useTheme();
 
+    const headingHeight = useBreakpointValue({
+        base: '0px',
+        xl: '56px',
+    });
+
+    const textHeight = useBreakpointValue({
+        base: '0px',
+        xl: '63px',
+    });
+
     return (
         <HStack w={groupWidth} mt={5} flexWrap="wrap" justifyContent={justifyContent ?? 'center'} alignItems={justifyContent ?? 'center'}>
             <Row w="100%" alignItems={'flex-start'}>
-                <Heading lineHeight={'28px'} mb={3}>
+                <Heading lineHeight={'28px'} mb={3} minH={headingHeight}>
                     {t(`matching.wizard.student.subjects.${group}.title` as unknown as TemplateStringsArray)}
                 </Heading>
                 {[...Array(importance)].map(() => (
                     <Flame stroke={'rgb(255,0,0)'} />
                 ))}
             </Row>
-            <Text w="100%" mb={4}>
+            <Text w="100%" mb={4} minH={textHeight}>
                 {t(`matching.wizard.student.subjects.${group}.explanation` as unknown as TemplateStringsArray)}
             </Text>
             {selectableSubjects.map((subject) => {
                 return (
-                    <Box margin={space['0.5']} maxW="250px" flexBasis="100px" flexGrow={1} alignSelf={'stretch'}>
+                    <Box margin={space['0.5']} height={'110px'} flex={'0 0 120px'}>
                         <IconTagList
                             key={subject}
                             initial={chosenSubjects.includes(subject)}
@@ -130,7 +140,6 @@ export const SubjectSelectorGrouped = ({
                     variant={variant}
                 />
             </HStack>
-            ;
         </>
     );
 };
