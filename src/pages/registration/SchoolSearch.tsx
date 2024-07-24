@@ -80,7 +80,7 @@ const SchoolSearch = () => {
                     )}
                 </Flex>
             </HStack>
-            <VStack space={4} mt={4} h={{ base: '400px', lg: '250px' }} overflowY="scroll">
+            <VStack space={4} mt={4} maxH={{ base: '420px', lg: '330px' }} overflowY="scroll">
                 {isLoading && <Spinner />}
                 {showList &&
                     schools.map((school) => (
