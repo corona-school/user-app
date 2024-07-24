@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { RegistrationContext } from '../Registration';
 import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
 import { ExternalSchoolSearch } from '../../gql/graphql';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 const SchoolSearch = () => {
     const { t } = useTranslation();
@@ -15,6 +16,7 @@ const SchoolSearch = () => {
     const [name, setName] = useState(school?.name ?? '');
     const { schools, isLoading } = useSchoolSearch({ name });
     const [resultType, setResultType] = useState<'found' | 'not-found' | 'none'>('none');
+    usePageTitle('Lern-Fair - Registrierung: Schulname');
 
     const handleOnSelect = (school: ExternalSchoolSearch) => {
         setSchool({ ...school, hasPredefinedState: !!school.state, hasPredefinedType: !!school.schooltype });
