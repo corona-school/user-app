@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { gql } from '../../gql';
 import { useNavigate } from 'react-router-dom';
 import { Chat_Type } from '../../gql/graphql';
-import { Button } from '@components/atoms/Button';
+import { Button } from '@/components/atoms/Button';
 import { toast } from 'sonner';
 
 type OpenSubcourseChatProps = {

@@ -20,7 +20,7 @@ import NavigationStackProvider from './context/NavigationStackProvider';
 import './service-worker-proxy';
 import InstallationProvider from './context/InstallationProvider';
 import WebPushProvider from './context/WebPushProvider';
-import { Toaster } from '@components/atoms/Toaster';
+import { Toaster } from '@/components/atoms/Toaster';
 
 function App() {
     return (

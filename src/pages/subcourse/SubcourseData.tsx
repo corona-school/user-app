@@ -7,7 +7,7 @@ import { TrafficStatus } from '../../types/lernfair/Course';
 import Utility, { getGradeLabel, getTrafficStatus } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
-import { Typography } from '@components/atoms/Typography';
+import { Typography } from '@/components/atoms/Typography';
 
 type SubcourseDataProps = {
     course: Pick<Course, 'name' | 'image'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };

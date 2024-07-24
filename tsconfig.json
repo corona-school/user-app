@@ -22,8 +22,9 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "paths": {
-      "@components/*": ["components/*"],
-      "@lib/*": ["lib/*"],
+      "@/components/*": ["components/*"],
+      "@/lib/*": ["lib/*"],
+      "@/gql": ["gql"],
     }
     
   },
