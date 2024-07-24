@@ -439,7 +439,7 @@
             "school": {
                 "title": "Schulort",
                 "subtitle": "Wie heißt deine Schule?",
-                "helperText": "Keine Schule gefunden? Ergänze den Ort oder teste Schulnamen mit bzw. ohne Bindestrich. Der Name wird in jedem Fall gespeichert.",
+                "helperText": "Schule nicht gefunden? Ergänze den Ort oder schreibe den Schulnamen mit bzw. ohne Bindestrich oder Leerstelle.",
                 "schoolFound": "Schule aus Liste gewählt",
                 "otherSchoolFound": "Schule selbst eingetragen"
             },
