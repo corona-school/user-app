@@ -1,14 +1,13 @@
-import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue } from 'native-base';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { Course, Course_Tag, Instructor, Lecture, Subcourse } from '../../gql/graphql';
 import { useUserType } from '../../hooks/useApollo';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { TrafficStatus } from '../../types/lernfair/Course';
 import Utility, { getGradeLabel, getTrafficStatus } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
+import { Typography } from '@components/atoms/Typography';
 
 type SubcourseDataProps = {
     course: Pick<Course, 'name' | 'image'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };
@@ -23,19 +22,7 @@ type SubcourseDataProps = {
 
 const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast, hideTrafficStatus = false }) => {
     const { t } = useTranslation();
-    const { sizes } = useTheme();
-    const { isMobile } = useLayoutHelper();
     const userType = useUserType();
-
-    const ImageHeight = useBreakpointValue({
-        base: '178px',
-        lg: '300px',
-    });
-
-    const ContainerWidth = useBreakpointValue({
-        base: 'full',
-        lg: '50%',
-    });
 
     const seatsLeft: number = useMemo(() => {
         return subcourse?.maxParticipants - subcourse?.participantsCount;
@@ -47,30 +34,30 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
 
     return (
         <>
-            <Stack direction={isMobile ? 'column-reverse' : 'row'}>
-                <VStack space="5" width={ContainerWidth}>
-                    <HStack space="3">
+            <div className="flex flex-col-reverse md:flex-row">
+                <div className="flex flex-col gap-y-5 w-full md:w-1/2">
+                    <div className="flex flex-row gap-x-3">
                         {course?.tags?.map(({ name }) => (
-                            <VStack>
-                                <Tag text={name} />
-                            </VStack>
+                            <Tag text={name} />
                         ))}
-                    </HStack>
+                    </div>
                     {subcourse?.lectures.length > 0 && (
-                        <Text>
+                        <Typography>
                             {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
-                        </Text>
+                        </Typography>
                     )}
-                    <Heading fontSize="3xl" maxW={isMobile ? 'full' : '80%'}>
+                    <Typography variant="h2" className="max-w-full md:max-w-[80%]">
                         {course?.name}
-                    </Heading>
+                    </Typography>
                     {subcourse?.instructors && subcourse?.instructors[0] && (
-                        <Heading fontSize="lg">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Heading>
+                        <Typography variant="h4">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Typography>
                     )}
-                    <Text maxWidth={sizes['imageHeaderWidth']}>
-                        <Text bold>{t('single.courseInfo.grade')}</Text>
+                    <Typography className="max-w-2xl">
+                        <Typography className="font-bold" as="span">
+                            {t('single.courseInfo.grade')}
+                        </Typography>
                         {t('single.courseInfo.class', { minGrade: getGradeLabel(subcourse?.minGrade), maxGrade: getGradeLabel(subcourse?.maxGrade) })}
-                    </Text>
+                    </Typography>
                     {!isInPast &&
                         !subcourse?.cancelled &&
                         subcourse?.published &&
@@ -93,24 +80,14 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         Date.now() >= Date.parse(subcourse.lectures[0].start) &&
                         !isInPast &&
                         subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
-                    {userType === 'screener' && course?.shared && <Text>{t('single.courseInfo.is_shared')}</Text>}
-                </VStack>
-                <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
-                    <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
-                        <Image
-                            alt={course?.name}
-                            borderRadius="8px"
-                            position="absolute"
-                            w="100%"
-                            height="100%"
-                            bgColor="gray.300"
-                            source={{
-                                uri: course?.image!,
-                            }}
-                        />
-                    </Box>
-                </Stack>
-            </Stack>
+                    {userType === 'screener' && course?.shared && <Typography>{t('single.courseInfo.is_shared')}</Typography>}
+                </div>
+                <div className="w-full mt-1 mb-3 md:w-1/2 md:mb-0">
+                    <div className="max-w-2xl h-[178px] md:h-[300px] relative">
+                        <img alt={course?.name} className="rounded-lg absolute w-full h-full object-cover" src={course?.image!} />
+                    </div>
+                </div>
+            </div>
         </>
     );
 };
