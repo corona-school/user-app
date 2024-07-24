@@ -1,21 +1,21 @@
 import { useMutation } from '@apollo/client';
 import { Button } from '@/components/atoms/Button';
-import { ModalFooter, ModalHeader, ModalTitle, Modal, type ModalProps } from '@/components/atoms/Modal';
+import { ModalFooter, ModalHeader, ModalTitle, Modal, type BaseModalProps } from '@/components/atoms/Modal';
 import { Typography } from '@/components/atoms/Typography';
 import { gql } from '@/gql';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-interface CancelSubCourseModalProps extends Pick<ModalProps, 'isOpen' | 'onOpenChange'> {
+interface CancelSubCourseModalProps extends BaseModalProps {
     subcourseId: number;
-    onCourseCancel?: () => void;
+    onCourseCanceled?: () => void;
 }
 
 const CANCEL_SUBCOURSE_MUTATION = gql(`mutation CancelSubcourse($subcourseId: Float!) {
     subcourseCancel(subcourseId: $subcourseId)
   }`);
 
-const CancelSubCourseModal = ({ isOpen, onOpenChange, subcourseId, onCourseCancel }: CancelSubCourseModalProps) => {
+const CancelSubCourseModal = ({ isOpen, onOpenChange, subcourseId, onCourseCanceled }: CancelSubCourseModalProps) => {
     const { t } = useTranslation();
     const [cancelSubcourse, { loading: isCanceling }] = useMutation(CANCEL_SUBCOURSE_MUTATION, { variables: { subcourseId } });
 
@@ -23,7 +23,7 @@ const CancelSubCourseModal = ({ isOpen, onOpenChange, subcourseId, onCourseCance
         try {
             await cancelSubcourse();
             toast.success(t('course.cancelation_success'));
-            if (onCourseCancel) onCourseCancel();
+            if (onCourseCanceled) onCourseCanceled();
         } catch (error) {
             toast.error(t('course.cancelation_error'));
         } finally {

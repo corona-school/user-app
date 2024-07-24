@@ -71,13 +71,16 @@ const ModalDescription = React.forwardRef<
 >(({ className, ...props }, ref) => <DialogPrimitive.Description ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />);
 ModalDescription.displayName = DialogPrimitive.Description.displayName;
 
-export interface ModalProps {
-    isOpen?: boolean;
+export interface BaseModalProps {
+    isOpen: boolean;
     onOpenChange: (isOpen: boolean) => void;
+}
+
+interface InternalModalProps extends BaseModalProps {
     children: React.ReactNode;
 }
 
-export const Modal = ({ isOpen, children, onOpenChange }: ModalProps) => {
+export const Modal = ({ isOpen, children, onOpenChange }: InternalModalProps) => {
     return (
         <Dialog open={!!isOpen} modal onOpenChange={onOpenChange}>
             <ModalContent>{children}</ModalContent>
