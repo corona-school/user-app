@@ -14,13 +14,14 @@ const SchoolSearch = () => {
     const { colors } = useTheme();
     const { onNext, onPrev, school, setSchool } = useContext(RegistrationContext);
     const [name, setName] = useState(school?.name ?? '');
-    const { schools, isLoading } = useSchoolSearch({ name });
+    const { schools, isLoading } = useSchoolSearch({ name, skip: school?.name === name });
     const [resultType, setResultType] = useState<'found' | 'not-found' | 'none'>('none');
     usePageTitle('Lern-Fair - Registrierung: Schulname');
 
     const handleOnSelect = (school: ExternalSchoolSearch) => {
         setSchool({ ...school, hasPredefinedState: !!school.state, hasPredefinedType: !!school.schooltype });
         setResultType('found');
+        setName(school.name);
     };
 
     const handleOnChangeText = (value: string) => {
@@ -36,15 +37,12 @@ const SchoolSearch = () => {
     };
 
     useEffect(() => {
-        setResultType(name.length > 3 && !isLoading && !schools.length ? 'not-found' : 'none');
-    }, [name, isLoading, schools]);
+        if (!school?.id) {
+            setResultType(name.length > 3 && !isLoading && !schools.length ? 'not-found' : 'none');
+        }
+    }, [name, isLoading, schools, school?.id]);
 
-    const showList = name && !isLoading;
-
-    const isSchoolSelected = (selected: ExternalSchoolSearch) => {
-        if (!school) return false;
-        return school.name === selected.name && school.city === selected.city && school.state === selected.state;
-    };
+    const showList = (name && !isLoading) || !!school?.id;
 
     return (
         <VStack alignSelf="flex-start" w="100%" mt={5}>
@@ -82,33 +80,30 @@ const SchoolSearch = () => {
                     )}
                 </Flex>
             </HStack>
-            <VStack space={4} mt={4} h={{ base: '400px', lg: '270px' }} overflowY="scroll">
+            <VStack space={4} mt={4} h={{ base: '400px', lg: '250px' }} overflowY="scroll">
                 {isLoading && <Spinner />}
                 {showList &&
-                    schools.map((school) => {
-                        const isSelected = isSchoolSelected(school);
-                        return (
-                            <Pressable
-                                key={school.id}
-                                w="100%"
-                                justifyItems="flex-start"
-                                borderWidth="0.5"
-                                borderColor={isSelected ? 'success.500' : 'primary.500'}
-                                background={isSelected ? 'success.translucent' : 'white'}
-                                _hover={{
-                                    backgroundColor: 'primary.100',
-                                    borderColor: 'primary.900',
-                                }}
-                                p={4}
-                                borderRadius={4}
-                                onPress={() => handleOnSelect(school)}
-                            >
-                                <Text color="primary.900">
-                                    {school.name}, {school.zip}, {school.city}
-                                </Text>
-                            </Pressable>
-                        );
-                    })}
+                    schools.map((school) => (
+                        <Pressable
+                            key={school.id}
+                            w="100%"
+                            justifyItems="flex-start"
+                            borderWidth="0.5"
+                            borderColor={'primary.500'}
+                            background={'white'}
+                            _hover={{
+                                backgroundColor: 'primary.100',
+                                borderColor: 'primary.900',
+                            }}
+                            p={4}
+                            borderRadius={4}
+                            onPress={() => handleOnSelect(school)}
+                        >
+                            <Text color="primary.900">
+                                {school.name}, {school.zip}, {school.city}
+                            </Text>
+                        </Pressable>
+                    ))}
             </VStack>
             <Box alignItems="center" marginTop={2}>
                 <Row space={1} justifyContent="center">
