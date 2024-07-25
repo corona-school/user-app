@@ -1,4 +1,4 @@
-import { VStack, Flex, Box, useTheme, Image, Heading, Row, Button, useBreakpointValue, Modal, Text } from 'native-base';
+import { VStack, Flex, Box, useTheme, Image, Heading, Row, Button, useBreakpointValue, Modal, Stack, Text } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
@@ -9,6 +9,9 @@ import { useMutation } from '@apollo/client';
 import useApollo from '../hooks/useApollo';
 import AlertMessage from '../widgets/AlertMessage';
 import { log } from '../log';
+import WithNavigation from '../components/WithNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 type Props = {
     layout: 'new-pw' | 'reset-pw';
@@ -46,6 +49,11 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
         lg: sizes['desktopbuttonWidth'],
     });
 
+    const isMobileSM = useBreakpointValue({
+        base: true,
+        sm: false,
+    });
+
     const resetPassword = useCallback(async () => {
         const passwordLengthCheck = password.length >= 6;
         const passwordMismatchCheck = password === passwordRepeat;
@@ -81,7 +89,19 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
     };
 
     return (
-        <>
+        <WithNavigation
+            showBack={isMobileSM ? true : false}
+            hideMenu={isMobileSM ? true : false}
+            previousFallbackRoute="/settings"
+            headerLeft={
+                !isMobileSM && (
+                    <Stack alignItems="center" direction="row">
+                        <SwitchLanguageButton />
+                        <NotificationAlert />
+                    </Stack>
+                )
+            }
+        >
             <Flex overflowY={'auto'} height="100dvh">
                 <>
                     {layout === 'new-pw' ? (
@@ -120,7 +140,7 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
                                     <Button
                                         width={buttonWidth}
                                         onPress={resetPassword}
-                                        isDisabled={!password.length || password.length != passwordRepeat.length}
+                                        isDisabled={!password.length || password.length !== passwordRepeat.length}
                                     >
                                         {t('set_password.change')}
                                     </Button>
@@ -159,7 +179,7 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
                     </Modal.Footer>
                 </Modal.Content>
             </Modal>
-        </>
+        </WithNavigation>
     );
 };
 export default ResetPassword;
