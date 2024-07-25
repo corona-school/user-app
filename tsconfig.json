@@ -1,35 +1,34 @@
 {
-  "compilerOptions": {
-    "baseUrl": "src",
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext",
-      "webworker"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx",
-    "paths": {
-      "@/components/*": ["components/*"],
-      "@/lib/*": ["lib/*"],
-      "@/gql": ["gql"],
-    }
-    
-  },
-  "include": [
-    "src"
-  ],
-  "exclude": ["**/*.stories.tsx"]
+    "compilerOptions": {
+        "baseUrl": "src",
+        "target": "es5",
+        "lib": ["dom", "dom.iterable", "esnext", "webworker"],
+        "allowJs": true,
+        "skipLibCheck": true,
+        "esModuleInterop": true,
+        "allowSyntheticDefaultImports": true,
+        "strict": true,
+        "forceConsistentCasingInFileNames": true,
+        "noFallthroughCasesInSwitch": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "resolveJsonModule": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "paths": {
+            "@/components/*": ["components/*"],
+            "@/lib/*": ["lib/*"],
+            "@/gql": ["gql"]
+        },
+        "plugins": [
+            {
+                "name": "ts-plugin-sort-import-suggestions",
+                "moveUpPatterns": ["@/", "\\.{1,2}/"],
+                "moveDownPatterns": ["native-base", "@radix-ui"]
+            }
+        ]
+    },
+    "include": ["src"],
+    "exclude": ["**/*.stories.tsx"]
 }
