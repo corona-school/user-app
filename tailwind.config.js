@@ -3,7 +3,7 @@ const { fontFamily } = require('tailwindcss/defaultTheme');
 /** @type {import('tailwindcss').Config} */
 module.exports = {
     darkMode: ['class'],
-    content: ['src/**/*.{ts,tsx}'],
+    content: ['./src/**/*.{ts,tsx}'],
     theme: {
         container: {
             center: true,
@@ -11,6 +11,28 @@ module.exports = {
             screens: {
                 '2xl': '1400px',
             },
+        },
+        fontSize: {
+            '4xl': '3.06rem',
+            '3xl': '2.4375rem',
+            '2xl': '1.953125rem',
+            xl: '1.5625rem',
+            lg: '1.25rem',
+            base: '1rem',
+            sm: '0.8rem',
+            xs: '0.64rem',
+        },
+        lineHeight: {
+            10: '3.38rem',
+            9: '2.8125rem',
+            8: '2.34375rem',
+            7: '2rem',
+            6: '1.75rem',
+            5: '1.625rem',
+            4: '1.5rem',
+            3: '1.35rem',
+            2: '1.25rem',
+            1: '0.875rem',
         },
         extend: {
             colors: {
@@ -57,6 +79,17 @@ module.exports = {
             },
             fontFamily: {
                 sans: ['var(--font-sans)', ...fontFamily.sans],
+            },
+            letterSpacing: {
+                tightest: '-0.005rem',
+                tighter: '-0.0075rem',
+                tight: '-0.012rem',
+            },
+            fontSize: {
+                form: ['0.875rem', { lineHeight: '0.875rem', letterSpacing: '0', fontWeight: '500' }],
+            },
+            lineHeight: {
+                'leading-3': '0.875rem',
             },
             keyframes: {
                 'accordion-down': {

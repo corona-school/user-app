@@ -16,15 +16,14 @@ const buttonVariants = cva(
                 secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 link: 'text-primary underline-offset-4 hover:underline',
+                none: 'text-primary',
             },
             size: {
-                default: 'h-10 px-6 py-6 text-base',
+                default: 'h-10 px-4 text-form font-medium',
                 sm: 'h-9 rounded-md px-3 text-sm',
                 lg: 'h-11 rounded-md px-8 text-base',
                 icon: 'h-10 w-10',
-            },
-            colorSchema: {
-                primary: '',
+                auto: 'h-auto w-auto',
             },
         },
         defaultVariants: {
@@ -47,7 +46,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         const Component = (
             <SlotContent className={cn(buttonVariants({ variant, size, className }))} ref={ref} disabled={disabled || isLoading} {...props}>
                 {disabled ? (
-                    disabledContent
+                    disabledContent || children
                 ) : (
                     <>
                         {isLoading && <IconLoader2 className="absolute h-4 w-4 animate-spin" />}
