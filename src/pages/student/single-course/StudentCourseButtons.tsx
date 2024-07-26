@@ -43,16 +43,6 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         refresh={refresh}
                     />
                 )}
-                {subcourse.published && appointment && isActiveSubcourse && (
-                    <VideoButton
-                        isInstructor
-                        appointmentId={appointment.id}
-                        appointmentType={appointment.appointmentType}
-                        startDateTime={appointment.start}
-                        duration={appointment.duration}
-                        className="w-full"
-                    />
-                )}
                 {subcourse.canEdit.allowed && (
                     <>
                         <Button
@@ -66,6 +56,16 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                             {t('single.courseInfo.editCourse')}
                         </Button>
                     </>
+                )}
+                {subcourse.published && appointment && isActiveSubcourse && (
+                    <VideoButton
+                        isInstructor
+                        appointmentId={appointment.id}
+                        appointmentType={appointment.appointmentType}
+                        startDateTime={appointment.start}
+                        duration={appointment.duration}
+                        className="w-full  md:w-fit"
+                    />
                 )}
             </div>
         </>
