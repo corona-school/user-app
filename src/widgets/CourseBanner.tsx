@@ -1,22 +1,20 @@
-import { Box, Button, Card, InfoIcon, Spacer, Stack, Text, Tooltip, useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Course_Coursestate_Enum } from '../gql/graphql';
 import { useMemo } from 'react';
+import { Button } from '@/components/atoms/Button';
+import { Typography } from '@/components/atoms/Typography';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/atoms/Tooltip';
+import { IconInfoCircleFilled } from '@tabler/icons-react';
 
-type BannerProps = {
+type CourseBannerProps = {
     courseState: Course_Coursestate_Enum;
     isCourseCancelled: boolean;
     isPublished: boolean;
     handleButtonClick: () => void;
 };
 
-const Banner: React.FC<BannerProps> = ({ courseState, isCourseCancelled, isPublished, handleButtonClick }) => {
+const CourseBanner: React.FC<CourseBannerProps> = ({ courseState, isCourseCancelled, isPublished, handleButtonClick }) => {
     const { t } = useTranslation();
-    const { sizes } = useTheme();
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
 
     const stateText = useMemo(() => {
         if (courseState === Course_Coursestate_Enum.Created) return t('single.banner.created.draft');
@@ -50,43 +48,35 @@ const Banner: React.FC<BannerProps> = ({ courseState, isCourseCancelled, isPubli
         }
     }, [courseState]);
 
+    if (isCourseCancelled) return null;
+
+    const isCourseAllowed = courseState === Course_Coursestate_Enum.Allowed;
+
     return (
-        <Box>
-            {!isCourseCancelled && (
-                <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
-                    <Stack direction={isMobile ? 'column' : 'row'} alignItems={isMobile ? 'flext-start' : 'center'}>
-                        <Stack direction="row" mb={isMobile ?? '3'}>
-                            <Text bold fontSize="md">
-                                {t('single.banner.state')}
-                            </Text>
-                            <Text ml="1" fontSize="md">
-                                {stateText}
-                            </Text>
+        <div className="flex flex-col items-start bg-white border border-gray-300 justify-between max-w-[650px] p-4 rounded-lg md:flex-row md:items-center">
+            <div className="flex mb-3 md:mb-0">
+                <Typography className="font-bold">{t('single.banner.state')}</Typography>
+                <Typography className="ml-1 mr-2">{stateText}</Typography>
 
-                            <Tooltip
-                                maxWidth={270}
-                                label={!isPublished ? stateTooltipText : t('single.banner.allowedAndPublished.info')}
-                                _text={{ textAlign: 'center' }}
-                                p={3}
-                                hasArrow
-                                children={<InfoIcon ml={3} size="5" color="danger.100" />}
-                            />
-                        </Stack>
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <Button variant="none" size="auto">
+                                <IconInfoCircleFilled />
+                            </Button>
+                        </TooltipTrigger>
+                        <TooltipContent className="w-80">{!isPublished ? stateTooltipText : t('single.banner.allowedAndPublished.info')}</TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            </div>
 
-                        <Spacer />
-
-                        <Stack w={isMobile ?? 'full'}>
-                            {courseState !== Course_Coursestate_Enum.Submitted && (
-                                <Button variant="outline" onPress={handleButtonClick}>
-                                    {stateButtonText}
-                                </Button>
-                            )}
-                        </Stack>
-                    </Stack>
-                </Card>
+            {courseState !== Course_Coursestate_Enum.Submitted && (
+                <Button className="w-full md:w-fit" variant={isCourseAllowed ? 'ghost' : 'outline'} onClick={handleButtonClick}>
+                    {stateButtonText}
+                </Button>
             )}
-        </Box>
+        </div>
     );
 };
 
-export default Banner;
+export default CourseBanner;
