@@ -468,8 +468,8 @@ export default function NavigatorLazy() {
                 path="/datenschutz"
                 element={
                     <WithNavigation
-                        showBack={isMobileSM ? true : false}
-                        hideMenu={isMobileSM ? true : false}
+                        showBack={isMobileSM}
+                        hideMenu={isMobileSM}
                         previousFallbackRoute="/settings"
                         headerLeft={
                             !isMobileSM && (
@@ -497,8 +497,8 @@ export default function NavigatorLazy() {
                 path="/impressum"
                 element={
                     <WithNavigation
-                        showBack={isMobileSM ? true : false}
-                        hideMenu={isMobileSM ? true : false}
+                        showBack={isMobileSM}
+                        hideMenu={isMobileSM}
                         previousFallbackRoute="/settings"
                         headerLeft={
                             !isMobileSM && (

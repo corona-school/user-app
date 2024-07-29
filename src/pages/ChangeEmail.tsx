@@ -70,8 +70,8 @@ const ChangeEmail = () => {
 
     return (
         <WithNavigation
-            showBack={isMobileSM ? true : false}
-            hideMenu={isMobileSM ? true : false}
+            showBack={isMobileSM}
+            hideMenu={isMobileSM}
             previousFallbackRoute="/settings"
             headerLeft={
                 !isMobileSM && (

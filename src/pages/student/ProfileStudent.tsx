@@ -163,8 +163,8 @@ const ProfileStudent: React.FC<Props> = () => {
     return (
         <>
             <WithNavigation
-                showBack={isMobileSM ? true : false}
-                hideMenu={isMobileSM ? true : false}
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 isLoading={loading}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}

@@ -35,8 +35,8 @@ const KnowledgeCenter = () => {
     return (
         <AsNavigationItem path="knowledge-helper">
             <WithNavigation
-                showBack={isMobileSM ? true : false}
-                hideMenu={isMobileSM ? true : false}
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('forStudents.title')}
                 headerLeft={

@@ -80,8 +80,8 @@ const HelpCenter: React.FC = () => {
     return (
         <AsNavigationItem path="hilfebereich">
             <WithNavigation
-                showBack={isMobileSM ? true : false}
-                hideMenu={isMobileSM ? true : false}
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle="Hilfebereich"
                 headerLeft={

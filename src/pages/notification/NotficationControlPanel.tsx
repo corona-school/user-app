@@ -64,8 +64,8 @@ const NotificationControlPanel = () => {
     return (
         <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreferences, ...rest, channels }}>
             <WithNavigation
-                showBack={isMobileSM ? true : false}
-                hideMenu={isMobileSM ? true : false}
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('notification.controlPanel.title')}
                 headerLeft={
