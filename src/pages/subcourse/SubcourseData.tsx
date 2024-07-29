@@ -33,7 +33,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
     }, [subcourse?.maxParticipants, subcourse?.participantsCount]);
 
     return (
-        <div className="flex flex-col-reverse md:flex-row justify-between">
+        <div className="flex flex-col-reverse md:flex-row justify-between pr-4">
             <div className="flex flex-col gap-y-4 w-full md:w-1/2">
                 <div className="flex flex-row gap-x-3">
                     {course?.tags?.map(({ name }) => (
