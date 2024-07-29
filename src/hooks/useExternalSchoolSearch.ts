@@ -4,6 +4,7 @@ import { gql } from '../gql';
 import { useEffect, useState } from 'react';
 interface UseSchoolSearchArgs {
     name: string;
+    skip?: boolean;
 }
 
 const ExternalSchoolSearchQuery = gql(`
@@ -24,14 +25,16 @@ const ExternalSchoolSearchQuery = gql(`
     }    
 `);
 
-const useSchoolSearch = ({ name }: UseSchoolSearchArgs) => {
+const useSchoolSearch = ({ name, skip }: UseSchoolSearchArgs) => {
     const debouncedName = useDebounce({ delay: 800, value: name });
     const [isLoading, setIsLoading] = useState(false);
-
-    const { data, loading: isFetching } = useQuery(ExternalSchoolSearchQuery, { variables: { name: debouncedName }, skip: debouncedName.length < 3 });
+    const { data, loading: isFetching } = useQuery(ExternalSchoolSearchQuery, {
+        variables: { name: debouncedName },
+        skip: debouncedName.length < 3 || name.length < 3 || skip,
+    });
     useEffect(() => {
-        setIsLoading(name.length >= 3 && name !== debouncedName);
-    }, [name, debouncedName]);
+        setIsLoading(name.length >= 3 && name !== debouncedName && !skip);
+    }, [name, debouncedName, skip]);
 
     return { schools: data?.externalSchoolSearch || [], isLoading: isFetching || isLoading };
 };
