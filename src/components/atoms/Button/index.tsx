@@ -38,21 +38,21 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
     reasonDisabled?: string;
     disabledContent?: React.ReactNode;
     isLoading?: boolean;
+    leftIcon?: React.ReactNode;
+    rightIcon?: React.ReactNode;
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, reasonDisabled, disabledContent, disabled, isLoading, children, ...props }, ref) => {
+    ({ className, variant, size, asChild = false, reasonDisabled, disabledContent, disabled, isLoading, children, leftIcon, rightIcon, ...props }, ref) => {
         const SlotContent = asChild ? Slot : 'button';
         const Component = (
             <SlotContent className={cn(buttonVariants({ variant, size, className }))} ref={ref} disabled={disabled || isLoading} {...props}>
-                {disabled ? (
-                    disabledContent || children
-                ) : (
-                    <>
-                        {isLoading && <IconLoader2 className="absolute h-4 w-4 animate-spin" />}
-                        {isLoading ? <span className="invisible">{children}</span> : children}
-                    </>
-                )}
+                <span className={`inline-flex gap-x-2 items-center justify-center ${isLoading ? 'invisible' : ''}`}>
+                    {leftIcon && leftIcon}
+                    {disabled && disabledContent ? disabledContent : children}
+                    {rightIcon && rightIcon}
+                </span>
+                {isLoading && <IconLoader2 className="absolute h-4 w-4 animate-spin" />}
             </SlotContent>
         );
 
