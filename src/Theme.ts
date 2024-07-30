@@ -220,7 +220,7 @@ const Theme = extendTheme({
                     backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 },
                 _light: {
-                    placeholderTextColor: VAR_COLOR_PRIMARY_DARK,
+                    placeholderTextColor: '#777777',
                 },
             },
         },
