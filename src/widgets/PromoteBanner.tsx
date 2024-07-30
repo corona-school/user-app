@@ -45,7 +45,7 @@ const PromoteBanner = ({ onPromoted, subcourse }: PromoteBannerProps) => {
     const status = getTrafficStatus(participantsCount, maxParticipants);
 
     return (
-        <div className="bg-primary-lighter max-w-2xl p-4 rounded-lg shadow-md">
+        <div className="bg-primary-lighter max-w-2xl p-4 pt-2 rounded-lg shadow-md">
             <CourseTrafficLamp showLastSeats seatsFull={participantsCount} seatsMax={maxParticipants} status={status} paddingY={3} />
             <Separator />
             <div className="flex flex-col justify-between py-4 pt-6 items-start gap-1 md:flex-row md:items-center">

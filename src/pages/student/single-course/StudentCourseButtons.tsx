@@ -5,6 +5,7 @@ import { Lecture, Subcourse } from '../../../gql/graphql';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import VideoButton from '@/components/VideoButton';
 import { Button } from '@/components/atoms/Button';
+import { IconPencil } from '@tabler/icons-react';
 
 type ActionButtonProps = {
     subcourse: Pick<
@@ -52,6 +53,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                                 });
                             }}
                             variant="outline"
+                            leftIcon={<IconPencil size={16} />}
                         >
                             {t('single.courseInfo.editCourse')}
                         </Button>
