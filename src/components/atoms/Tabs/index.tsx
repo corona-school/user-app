@@ -16,13 +16,14 @@ const TabsList = React.forwardRef<React.ElementRef<typeof TabsPrimitive.List>, R
 );
 TabsList.displayName = TabsPrimitive.List.displayName;
 
-const Badge = ({ content }: { content: number | string }) => (
-    <div className="flex items-center justify-center rounded-full bg-primary size-[18px] ml-2">
-        <Typography variant="sm" className="text-white text-[12px]">
-            {content}
-        </Typography>
-    </div>
-);
+const Badge = ({ content }: { content: number | string }) =>
+    content ? (
+        <div className="flex items-center justify-center rounded-full bg-primary size-[18px] ml-2">
+            <Typography variant="sm" className="text-white text-[12px]">
+                {content}
+            </Typography>
+        </div>
+    ) : null;
 
 interface TabsTriggerProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Trigger> {
     badge?: React.ReactNode;
