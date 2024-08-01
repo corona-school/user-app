@@ -26,7 +26,7 @@ module.exports = {
                     return;
                 }
 
-                if (importNode.source.value.endsWith('src/gql') || importNode.source.value.endsWith('./gql')) {
+                if (importNode.source.value.endsWith('src/gql') || importNode.source.value.endsWith('@/gql') || importNode.source.value.endsWith('./gql')) {
                     return;
                 }
 

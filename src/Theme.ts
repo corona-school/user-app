@@ -125,7 +125,7 @@ const Theme = extendTheme({
         Text: {
             defaultProps: {
                 fontSize: 'md',
-                fontWeight: 500,
+                fontWeight: 400,
                 color: VAR_COLOR_PRIMARY_DARK,
             },
         },
@@ -138,7 +138,7 @@ const Theme = extendTheme({
         Button: {
             defaultProps: {
                 _text: {
-                    fontWeight: 600,
+                    fontWeight: 500,
                     fontSize: 14,
                 },
                 _disabled: {
@@ -214,7 +214,7 @@ const Theme = extendTheme({
                 borderColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderRadius: 5,
                 fontSize: 14,
-                fontWeight: 500,
+                fontWeight: 400,
                 _hover: {
                     borderColor: VAR_COLOR_PRIMARY_LIGHT,
                     backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
@@ -233,7 +233,7 @@ const Theme = extendTheme({
                 borderColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderRadius: 5,
                 fontSize: 14,
-                fontWeight: 500,
+                fontWeight: 400,
                 _hover: {
                     borderColor: VAR_COLOR_PRIMARY_LIGHT,
                     backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
