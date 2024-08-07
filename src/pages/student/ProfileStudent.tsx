@@ -1,26 +1,8 @@
-import {
-    Box,
-    Button,
-    Column,
-    Container,
-    Flex,
-    FormControl,
-    Heading,
-    Modal,
-    Row,
-    Stack,
-    Text,
-    TextArea,
-    useBreakpointValue,
-    useTheme,
-    VStack,
-} from 'native-base';
-import NotificationAlert from '../../components/notifications/NotificationAlert';
+import { Button, Column, Container, Flex, FormControl, Heading, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
 import ProfileSettingRow from '../../widgets/ProfileSettingRow';
-
 import UserProgress from '../../widgets/UserProgress';
 import { useLocation, useNavigate } from 'react-router-dom';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -31,7 +13,8 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import NotificationAlert from '../../components/notifications/NotificationAlert';
 
 type Props = {};
 
@@ -71,7 +54,7 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
 
     const [changedAboutMe, setAboutMe] = useState<string>();
 
-    const [changeAboutMe, _changeAboutMe] = useMutation(
+    const [changeAboutMe] = useMutation(
         gql(`
         mutation changeAboutMe($aboutMe: String!) {
             meUpdate(update: { student: { aboutMe: $aboutMe } })
@@ -159,6 +142,11 @@ const ProfileStudent: React.FC<Props> = () => {
         },
     });
 
+    const isMobileSM = useBreakpointValue({
+        base: true,
+        sm: false,
+    });
+
     useEffect(() => {
         trackPageView({
             documentTitle: 'Helfer Matching',
@@ -175,7 +163,8 @@ const ProfileStudent: React.FC<Props> = () => {
     return (
         <>
             <WithNavigation
-                showBack
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 isLoading={loading}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
@@ -196,10 +185,12 @@ const ProfileStudent: React.FC<Props> = () => {
                     </Flex>
                 }
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
-                        <NotificationAlert />
-                    </Stack>
+                    !isMobileSM && (
+                        <Stack alignItems="center" direction="row">
+                            <SwitchLanguageButton />
+                            <NotificationAlert />
+                        </Stack>
+                    )
                 }
             >
                 {(showSuccessfulChangeAlert || userSettingChanged) && (

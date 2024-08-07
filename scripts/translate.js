@@ -16,7 +16,7 @@ function readLanguage(filename) {
 }
 
 function writeLanguage(filename, translationTree) {
-    const json = JSON.stringify(translationTree, null, 2);
+    const json = JSON.stringify(translationTree, null, 4);
     writeFileSync(path.resolve(__dirname, "../src/lang/", filename), json);
     console.log("Written language", filename);
 }

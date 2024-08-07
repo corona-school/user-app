@@ -230,7 +230,11 @@
             "Sachkunde": "Fen Bilgisi",
             "Spanisch": "İspanyolca",
             "Wirtschaft": "Ekonomi",
-            "Lernen lernen": "Öğrenmeyi öğrenmek"
+            "Lernen lernen": "Öğrenmeyi öğrenmek",
+            "Arbeitslehre": "İşgücü teorisi",
+            "Ethik": "Etik",
+            "Gesundheit": "Sağlık",
+            "Technik": "Teknoloji"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -325,6 +329,9 @@
             "alternatives": "Daha fazla bilgi alın"
         },
         "hint": {
+            "schoolClassSelectionMissing": "Lütfen bir okul sınıfı seçin.",
+            "schoolTypeSelectionMissing": "Lütfen bir okul türü seçiniz.",
+            "userStateSelectionMissing": "Lütfen bir okul konumu seçin.",
             "password": {
                 "length": "Parola en az 6 karakter içermelidir.",
                 "nomatch": "Parolalar eşleşmiyor"
@@ -362,30 +369,37 @@
             }
         },
         "steps": {
-            "0": {
+            "userType": {
                 "title": "Sizin rolünüz",
                 "subtitle": "Ben"
             },
-            "1": {
+            "personalData": {
                 "title": "Kişisel veriler",
                 "subtitle": "Kişisel veriler"
             },
-            "2": {
+            "grade": {
                 "title": "Sınıf",
                 "subtitle": "Hangi sınıftasın?"
             },
-            "3": {
+            "schoolType": {
                 "title": "Okul türü",
                 "subtitle": "Ne tür bir okula gidiyorsunuz?"
             },
-            "4": {
+            "state": {
                 "title": "Okul konumu",
                 "subtitle": "Hangi okula gidiyorsun?",
                 "weightingNote": "Bir öğrenim partneri yerleştirirken okulun bulunduğu yeri yalnızca isteğe bağlı bir kriter olarak değerlendiriyoruz. Müsaitlik durumuna bağlı olarak, gelecekteki öğrenim ortağınız farklı bir bölgeden gelebilir."
             },
-            "5": {
+            "legal": {
                 "title": "Onaylar",
                 "subtitle": "Onaylar"
+            },
+            "school": {
+                "title": "Okul konumu",
+                "subtitle": "Okulunuzun adı nedir?",
+                "helperText": "Okul türünüzü ve okul konumunuzu belirlemek için okul bilgilerini kullanırız",
+                "schoolFound": "Okul bulundu",
+                "otherSchoolFound": "Tanınan diğer okullar"
             }
         },
         "pupil": {
@@ -810,12 +824,13 @@
             "title": "Genel",
             "profile": "Profil",
             "languageVersion": "Dil versiyonu",
-            "notifications": "E-posta bildirimleri",
+            "notifications": "Bildirimleri",
             "onboarding": "Onboarding turu",
             "progress": "Başarılar ve ilerleme",
             "forStudents": "Yardımcılar için",
             "forPupils": "Öğrenciler için",
-            "push": "Uygulama mesajları"
+            "push": "Uygulama mesajları",
+            "faq": "SSS & İletişim"
         },
         "account": {
             "title": "Hesap",
@@ -1075,6 +1090,9 @@
                 "whatsApp": "WhatsApp",
                 "signal": "Sinyal",
                 "email": "e-posta"
+            },
+            "badges": {
+                "new": "YENİ"
             }
         },
         "homeworkhelp": {
@@ -1412,7 +1430,19 @@
                 "subjects": {
                     "title": "Konu seçimi",
                     "subtitle": "Hangi konularda destek vermek istersiniz?",
-                    "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz."
+                    "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz.",
+                    "maincourse": {
+                        "title": "Ana bölmeler",
+                        "explanation": "En çok talep gören."
+                    },
+                    "minorcourse": {
+                        "title": "Küçük konular",
+                        "explanation": "Sıkça talep ediliyor."
+                    },
+                    "rarecourse": {
+                        "title": "Nadir konular",
+                        "explanation": "Nadiren sorulur."
+                    }
                 },
                 "profile": {
                     "title": "Profili güncelle",

@@ -230,7 +230,11 @@
             "Sachkunde": "Expertise",
             "Spanisch": "Spanish",
             "Wirtschaft": "Economy",
-            "Lernen lernen": "Learning to learn"
+            "Lernen lernen": "Learning to learn",
+            "Arbeitslehre": "Labor theory",
+            "Ethik": "Ethics",
+            "Gesundheit": "Health",
+            "Technik": "Technology"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -325,6 +329,9 @@
             "alternatives": "Get more information"
         },
         "hint": {
+            "schoolClassSelectionMissing": "Please select a school class.",
+            "schoolTypeSelectionMissing": "Please select a school type.",
+            "userStateSelectionMissing": "Please select a school location.",
             "password": {
                 "length": "The password must contain at least 6 characters.",
                 "nomatch": "The passwords do not match"
@@ -362,30 +369,37 @@
             }
         },
         "steps": {
-            "0": {
+            "userType": {
                 "title": "Your role",
                 "subtitle": "I am"
             },
-            "1": {
+            "personalData": {
                 "title": "Personal data",
                 "subtitle": "Personal data"
             },
-            "2": {
+            "grade": {
                 "title": "Class",
                 "subtitle": "What grade are you in?"
             },
-            "3": {
+            "schoolType": {
                 "title": "Type of school",
                 "subtitle": "What type of school do you go to?"
             },
-            "4": {
+            "state": {
                 "title": "School location",
                 "subtitle": "Where do you go to school?",
                 "weightingNote": "We only consider the school location as an optional criterion when placing a learning partner. Depending on availability, your future learning partner may come from a different region."
             },
-            "5": {
+            "legal": {
                 "title": "Consents",
                 "subtitle": "Consents"
+            },
+            "school": {
+                "title": "School location",
+                "subtitle": "What is the name of your school?",
+                "helperText": "We use the school details to determine your school type and location",
+                "schoolFound": "School found",
+                "otherSchoolFound": "Other school recognized"
             }
         },
         "pupil": {
@@ -810,12 +824,13 @@
             "title": "General",
             "profile": "Profile",
             "languageVersion": "Language version",
-            "notifications": "E-mail notifications",
+            "notifications": "Notifications",
             "onboarding": "Onboarding tour",
             "progress": "Successes & progress",
             "forStudents": "For volunteers",
             "forPupils": "For pupils",
-            "push": "App messages"
+            "push": "App messages",
+            "faq": "FAQ & Contact"
         },
         "account": {
             "title": "Account",
@@ -1075,6 +1090,9 @@
                 "whatsApp": "WhatsApp",
                 "signal": "Signal",
                 "email": "e-mail"
+            },
+            "badges": {
+                "new": "NEW"
             }
         },
         "homeworkhelp": {
@@ -1408,7 +1426,19 @@
                 "subjects": {
                     "title": "Subject selection",
                     "subtitle": "In which subjects would you like to provide support?",
-                    "reason_btn_disabled": "Please select one or more subjects."
+                    "reason_btn_disabled": "Please select one or more subjects.",
+                    "maincourse": {
+                        "title": "Main compartments",
+                        "explanation": "Most in demand."
+                    },
+                    "minorcourse": {
+                        "title": "Minor subjects",
+                        "explanation": "Frequently requested."
+                    },
+                    "rarecourse": {
+                        "title": "Rare subjects",
+                        "explanation": "Rarely asked."
+                    }
                 },
                 "profile": {
                     "title": "Update profile",

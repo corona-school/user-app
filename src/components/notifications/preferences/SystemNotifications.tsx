@@ -2,15 +2,17 @@ import { Box, Flex, Switch, Text, Spinner, IconButton, Tooltip, useBreakpointVal
 import { Preferences } from './Preferences';
 import { useTranslation } from 'react-i18next';
 import { systemNotificationCategories } from '../../../helper/notification-preferences';
-import { useWebPush } from '../../../lib/WebPush';
 import InformationBadge from './InformationBadge';
-import { useMemo, useState } from 'react';
+import { useContext, useMemo, useState } from 'react';
 import InformationModal from '../../../modals/InformationModal';
 import { WEBPUSH_ACTIVE } from '../../../config';
+import { WebPushContext } from '../../../context/WebPushProvider';
+import { useLocalStorage } from '../../../hooks/useLocalStorage';
 
 export const SystemNotifications = () => {
+    const [, setPushEnabled] = useLocalStorage({ key: 'lern-fair-web-push-enabled', initialValue: false });
     const [isInfoModalOpen, setIsInfoModalOpen] = useState(false);
-    const { subscribe, unsubscribe, status } = useWebPush();
+    const { subscribe, unsubscribe, status } = useContext(WebPushContext);
     const { t } = useTranslation();
     const isMobileOrTable = useBreakpointValue({
         base: true,
@@ -18,6 +20,7 @@ export const SystemNotifications = () => {
     });
 
     const handleOnChange = async (enableNotifications: boolean) => {
+        setPushEnabled(enableNotifications);
         if (enableNotifications) {
             await subscribe();
         } else {

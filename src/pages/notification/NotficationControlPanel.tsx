@@ -6,8 +6,8 @@ import { useUserPreferences } from '../../hooks/useNotificationPreferences';
 import { createContext, useEffect } from 'react';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useQuery } from '@apollo/client';
-import { gql } from '../../gql/gql';
-import HelpNavigation from '../../components/HelpNavigation';
+import { gql } from '../../gql';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Outlet, useNavigate, useMatch, useSearchParams } from 'react-router-dom';
 import { getAllPreferencesInCategorySetToValue } from '../../helper/notification-helper';
 import { marketingNotificationCategories } from '../../helper/notification-preferences';
@@ -37,6 +37,7 @@ const NotificationControlPanel = () => {
                 });
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldUnsubscribe, userPreferences]);
 
     const { data } = useQuery(
@@ -55,17 +56,25 @@ const NotificationControlPanel = () => {
         lg: false,
     });
 
+    const isMobileSM = useBreakpointValue({
+        base: true,
+        sm: false,
+    });
+
     return (
         <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreferences, ...rest, channels }}>
             <WithNavigation
-                showBack
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('notification.controlPanel.title')}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
-                        <NotificationAlert />
-                    </Stack>
+                    !isMobileSM && (
+                        <Stack alignItems="center" direction="row">
+                            <SwitchLanguageButton />
+                            <NotificationAlert />
+                        </Stack>
+                    )
                 }
             >
                 <View py={5}>

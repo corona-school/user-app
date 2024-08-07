@@ -19,6 +19,7 @@ import NavigationStackProvider from './context/NavigationStackProvider';
 
 import './service-worker-proxy';
 import InstallationProvider from './context/InstallationProvider';
+import WebPushProvider from './context/WebPushProvider';
 
 function App() {
     return (
@@ -26,24 +27,26 @@ function App() {
             <CreateAppointmentProvider>
                 <LFModalProvider>
                     <LFApolloProvider>
-                        <BrowserRouter>
-                            <NativeBaseProvider theme={Theme}>
-                                <IssueReporter>
-                                    <MatomoProvider value={matomo}>
-                                        <NotificationsProvider>
-                                            <LFChatProvider>
-                                                <NavigationStackProvider>
-                                                    <InstallationProvider>
-                                                        <Navigator />
-                                                    </InstallationProvider>
-                                                    <ToastNotifications />
-                                                </NavigationStackProvider>
-                                            </LFChatProvider>
-                                        </NotificationsProvider>
-                                    </MatomoProvider>
-                                </IssueReporter>
-                            </NativeBaseProvider>
-                        </BrowserRouter>
+                        <WebPushProvider>
+                            <BrowserRouter>
+                                <NativeBaseProvider theme={Theme}>
+                                    <IssueReporter>
+                                        <MatomoProvider value={matomo}>
+                                            <NotificationsProvider>
+                                                <LFChatProvider>
+                                                    <NavigationStackProvider>
+                                                        <InstallationProvider>
+                                                            <Navigator />
+                                                        </InstallationProvider>
+                                                        <ToastNotifications />
+                                                    </NavigationStackProvider>
+                                                </LFChatProvider>
+                                            </NotificationsProvider>
+                                        </MatomoProvider>
+                                    </IssueReporter>
+                                </NativeBaseProvider>
+                            </BrowserRouter>
+                        </WebPushProvider>
                     </LFApolloProvider>
                 </LFModalProvider>
             </CreateAppointmentProvider>

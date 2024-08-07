@@ -8,16 +8,17 @@ import useApollo, { useUserType } from '../hooks/useApollo';
 import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
-import NotificationAlert from '../components/notifications/NotificationAlert';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE, LANGUAGE_SWITCHER_ACTIVE, WEBPUSH_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
+import useLogout from '../hooks/useLogout';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { logout, user } = useApollo();
+    const { user } = useApollo();
+    const logout = useLogout();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
@@ -55,13 +56,7 @@ const Settings: React.FC = () => {
 
     return (
         <>
-            <WithNavigation
-                headerTitle={t('settings.header')}
-                hideMenu
-                showBack
-                previousFallbackRoute="/start"
-                headerLeft={userType !== 'screener' && <NotificationAlert />}
-            >
+            <WithNavigation headerTitle={t('settings.header')} hideMenu showBack previousFallbackRoute="/start">
                 <VStack paddingX={space['1.5']} pt={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <>
                         <ProfileSettingRow title={user?.firstname!} isSpace={false}>
@@ -82,11 +77,9 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
                                 </Column>
                             )}
-                            {LANGUAGE_SWITCHER_ACTIVE && (
-                                <Column mb={tabspace}>
-                                    <ListItem label="Sprache wechseln / Switch language" onPress={() => setShowSwitchLanguage(true)} />
-                                </Column>
-                            )}
+                            <Column mb={tabspace}>
+                                <ListItem label={t('settings.general.faq')} onPress={() => navigate('/hilfebereich')} />
+                            </Column>
                             {canInstall && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />

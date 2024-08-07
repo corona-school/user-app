@@ -5,14 +5,14 @@ import { useTranslation } from 'react-i18next';
 import NotificationPreferencesModal from '../modals/NotificationPreferencesModal';
 import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import { ContactSupportModal } from '../modals/ContactSupportModal';
-import useApollo from '../hooks/useApollo';
+import useLogout from '../hooks/useLogout';
 
 const RequireScreeningSettingsDropdown = () => {
     const { t } = useTranslation();
     const [isNotificationPrefencesOpen, setIsNotificationPreferencesOpen] = useState(false);
     const [isDeactivateAccountOpen, setIsDeactivateAccountOpen] = useState(false);
     const [isContactSupportOpen, setIsContactSupportOpen] = useState(false);
-    const { logout } = useApollo();
+    const logout = useLogout();
     return (
         <>
             <Menu

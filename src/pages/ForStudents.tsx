@@ -1,6 +1,6 @@
 import { Text, Box, Heading, Stack, useBreakpointValue, useTheme } from 'native-base';
 import AsNavigationItem from '../components/AsNavigationItem';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
@@ -25,9 +25,9 @@ const KnowledgeCenter = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const isMobile = useBreakpointValue({
+    const isMobileSM = useBreakpointValue({
         base: true,
-        lg: false,
+        sm: false,
     });
 
     const currentTabFromRoute = pathname.split('/').pop();
@@ -35,14 +35,17 @@ const KnowledgeCenter = () => {
     return (
         <AsNavigationItem path="knowledge-helper">
             <WithNavigation
-                showBack={isMobile}
-                previousFallbackRoute="/start"
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
+                previousFallbackRoute="/settings"
                 headerTitle={t('forStudents.title')}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
-                        <NotificationAlert />
-                    </Stack>
+                    !isMobileSM && (
+                        <Stack alignItems="center" direction="row">
+                            <SwitchLanguageButton />
+                            <NotificationAlert />
+                        </Stack>
+                    )
                 }
             >
                 <Box maxWidth={containerWidth} width="100%" marginX="auto" pt={6}>

@@ -52,11 +52,11 @@ const MatchPartner: React.FC<MatchPartnerProps> = ({ partner, isPupil = false })
                 </VStack>
                 {partner.aboutMe.length > 500 &&
                     (!showMore ? (
-                        <Button variant="link" onPress={() => setShowMore(true)} bold>
+                        <Button variant="link" onPress={() => setShowMore(true)} fontWeight="bold">
                             {t('matching.shared.showMore')}
                         </Button>
                     ) : (
-                        <Button variant="link" onPress={() => setShowMore(false)} bold>
+                        <Button variant="link" onPress={() => setShowMore(false)} fontWeight="bold">
                             {t('matching.shared.showLess')}
                         </Button>
                     ))}

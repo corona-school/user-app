@@ -14,8 +14,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
 import { gql } from '../../gql';
-import useLernfair from '../../hooks/useLernfair';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { GradeTag } from '../../components/GradeSelector';
 
 type Props = {};
@@ -46,7 +45,7 @@ function PupilNameModal({ firstname, lastname, onSave, onClose }: { firstname: s
     const [changedFirstName, setFirstName] = useState<string>();
     const [changedLastName, setLastName] = useState<string>();
 
-    const [changeName, _changeName] = useMutation(
+    const [changeName] = useMutation(
         gql(`
             mutation changePupilName($firstname: String, $lastname: String) {
                 meUpdate(update: { firstname: $firstname, lastname: $lastname })
@@ -95,7 +94,7 @@ function PupilAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSa
 
     const [changedAboutMe, setAboutMe] = useState<string>();
 
-    const [changeAboutMe, _changeAboutMe] = useMutation(
+    const [changeAboutMe] = useMutation(
         gql(`
             mutation changeAboutMePupil($aboutMe: String!) {
                 meUpdate(update: { pupil: { aboutMe: $aboutMe } })
@@ -140,7 +139,6 @@ const ProfilePupil: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { rootPath } = useLernfair();
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
     const [nameModalVisible, setNameModalVisible] = useState<boolean>(false);
@@ -197,6 +195,11 @@ const ProfilePupil: React.FC<Props> = () => {
         },
     });
 
+    const isMobileSM = useBreakpointValue({
+        base: true,
+        sm: false,
+    });
+
     const { trackPageView } = useMatomo();
 
     useEffect(() => {
@@ -216,7 +219,8 @@ const ProfilePupil: React.FC<Props> = () => {
         <>
             <WithNavigation
                 isLoading={loading}
-                showBack
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
                 headerContent={
@@ -240,23 +244,19 @@ const ProfilePupil: React.FC<Props> = () => {
                             borderBottomRadius={16}
                         >
                             <Box position="relative" />
-                            <Heading
-                                // paddingTop={3}
-                                // paddingBottom={9}
-                                color={colors.white}
-                                bold
-                                fontSize="xl"
-                            >
+                            <Heading color={colors.white} bold fontSize="xl">
                                 {data?.me?.firstname}
                             </Heading>
                         </Box>
                     </Flex>
                 }
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
-                        <NotificationAlert />
-                    </Stack>
+                    !isMobileSM && (
+                        <Stack alignItems="center" direction="row">
+                            <SwitchLanguageButton />
+                            <NotificationAlert />
+                        </Stack>
+                    )
                 }
             >
                 {(showSuccessfulChangeAlert || userSettingChanged) && <AlertMessage content={t('profile.successmessage')} />}
