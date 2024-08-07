@@ -1086,6 +1086,9 @@
                 "whatsApp": "واتس اب",
                 "signal": "إشارة",
                 "email": "البريد الإلكتروني"
+            },
+            "badges": {
+                "new": "جديد"
             }
         },
         "homeworkhelp": {
