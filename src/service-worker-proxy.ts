@@ -7,8 +7,10 @@ import { log } from './log';
 // (thus lifecycle mangement is slightly more complex)
 const active = SERVICE_WORKER_ACTIVE && 'serviceWorker' in navigator;
 if (active) {
-    navigator.serviceWorker.register('/service-worker.js');
-    log('ServiceWorker', 'Service Worker registered');
+    window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/service-worker.js');
+        log('ServiceWorker', 'Service Worker registered');
+    });
 }
 
 // If a service worker is active, one can get it here
