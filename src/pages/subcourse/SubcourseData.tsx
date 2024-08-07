@@ -47,7 +47,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
 
     const today = new Date();
     const aWeekAgo = today.setDate(today.getDate() - 7);
-    const isCourseNewlyAdded = subcourse.publishedAt?.getTime() ?? new Date(0).getTime() > aWeekAgo;
+    const isCourseNewlyAdded = subcourse?.publishedAt?.getTime() ?? new Date(0).getTime() > aWeekAgo;
 
     return (
         <>
