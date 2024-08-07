@@ -1,6 +1,6 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Heading, useTheme, VStack, Column, HStack, useBreakpointValue, CloseIcon, Button } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useTheme, VStack, Column, useBreakpointValue } from 'native-base';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
@@ -8,19 +8,24 @@ import useApollo, { useUserType } from '../hooks/useApollo';
 import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
-import NotificationAlert from '../components/notifications/NotificationAlert';
+import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE } from '../config';
+import { InstallationContext } from '../context/InstallationProvider';
+import useLogout from '../hooks/useLogout';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { logout, user } = useApollo();
+    const { user } = useApollo();
+    const logout = useLogout();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
+    const { canInstall, install } = useContext(InstallationContext);
 
-    const [showDeactivate, setShowDeactivate] = useState<boolean>(false);
+    const [showDeactivate, setShowDeactivate] = useState(false);
+    const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
 
     useEffect(() => {
         trackPageView({
@@ -34,36 +39,64 @@ const Settings: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
+    const isMobile = useBreakpointValue({
+        base: true,
+        lg: false,
+    });
+
+    const handleOnInstall = async () => {
+        trackEvent({
+            category: 'pwa',
+            action: 'click-event',
+            name: 'Lern-Fair installieren',
+            documentTitle: 'Einstellungen',
+        });
+        await install();
+    };
+
     return (
         <>
-            <WithNavigation
-                headerTitle={t('settings.header')}
-                hideMenu
-                showBack
-                previousFallbackRoute="/start"
-                headerLeft={userType !== 'screener' && <NotificationAlert />}
-            >
-                <VStack paddingBottom={7} paddingX={space['1.5']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                    <HStack space={space['1']} alignItems="center">
-                        <Heading>{user?.firstname}</Heading>
-                    </HStack>
-                </VStack>
-                <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                    {userType !== 'screener' && (
+            <WithNavigation headerTitle={t('settings.header')} hideMenu showBack previousFallbackRoute="/start">
+                <VStack paddingX={space['1.5']} pt={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                    <>
+                        <ProfileSettingRow title={user?.firstname!} isSpace={false}>
+                            {userType !== 'screener' && (
+                                <>
+                                    <Column mb={tabspace}>
+                                        <ListItem label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
+                                    </Column>
+                                    <Column mb={tabspace}>
+                                        <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
+                                    </Column>
+                                </>
+                            )}
+                        </ProfileSettingRow>
                         <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
-                            <Column mb={tabspace}>
-                                <ListItem label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
-                            </Column>
-                            <Column mb={tabspace}>
-                                <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
-                            </Column>
                             {GAMIFICATION_ACTIVE && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
                                 </Column>
                             )}
+                            <Column mb={tabspace}>
+                                <ListItem label={t('settings.general.faq')} onPress={() => navigate('/hilfebereich')} />
+                            </Column>
+                            {canInstall && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />
+                                </Column>
+                            )}
+                            {userType === 'student' && isMobile && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/knowledge-helper')} />
+                                </Column>
+                            )}
+                            {userType === 'pupil' && isMobile && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
+                                </Column>
+                            )}
                         </ProfileSettingRow>
-                    )}
+                    </>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
                         <Column mb={tabspace}>
                             <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
@@ -101,6 +134,7 @@ const Settings: React.FC = () => {
                 </VStack>
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
+            <SwitchLanguageModal isOpen={showSwitchLanguage} onCloseModal={() => setShowSwitchLanguage(false)} />
         </>
     );
 };

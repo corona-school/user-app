@@ -1,4 +1,4 @@
-import { Text, Button, Heading, HStack, useTheme, VStack, useBreakpointValue, Box, Stack } from 'native-base';
+import { Text, Button, Heading, useTheme, VStack, useBreakpointValue, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -21,11 +21,10 @@ import AlertMessage from '../../widgets/AlertMessage';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import RecommendModal from '../../modals/RecommendModal';
 import { gql } from './../../gql';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import useApollo from '../../hooks/useApollo';
-import SupportCategories from '../../widgets/SupportCategories';
 
 type Props = {};
 
@@ -164,7 +163,8 @@ const DashboardStudent: React.FC<Props> = () => {
         navigate('/request-match');
     }, [navigate]);
 
-    const isMobile = useBreakpointValue({ base: true, lg: false });
+    const isMobile = useBreakpointValue({ base: true, md: false });
+    const isMobileOrTablet = useBreakpointValue({ base: true, lg: false });
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -215,17 +215,16 @@ const DashboardStudent: React.FC<Props> = () => {
             <WithNavigation
                 headerContent={
                     called &&
-                    !loading && (
-                        <HStack space={space['1']} alignItems="center" bgColor={isMobile ? 'primary.900' : 'transparent'} paddingX={space['1']}>
-                            <Box paddingY={space['1.5']}>
-                                <Hello />
-                            </Box>
-                        </HStack>
+                    !loading &&
+                    isMobile && (
+                        <Box bgColor={'primary.900'} alignItems="center" padding={space['1.5']}>
+                            <Hello />
+                        </Box>
                     )
                 }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }
@@ -321,7 +320,7 @@ const DashboardStudent: React.FC<Props> = () => {
                             {activeMatches && (activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading mb={space['1']}>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
-                                    <Stack direction={isMobile ? 'column' : 'row'} flexWrap="wrap">
+                                    <Stack direction={isMobileOrTablet ? 'column' : 'row'} flexWrap="wrap">
                                         {(activeMatches?.length &&
                                             activeMatches.map((match, index) => {
                                                 return (
@@ -353,9 +352,6 @@ const DashboardStudent: React.FC<Props> = () => {
                                     )}
                                 </VStack>
                             )}
-                            <VStack marginBottom={space['1.5']}>
-                                <SupportCategories />
-                            </VStack>
                             <VStack marginBottom={space['1.5']}>
                                 <Heading marginBottom={space['1']}>{t('dashboard.helpers.headlines.recommend')}</Heading>
                                 <CTACard

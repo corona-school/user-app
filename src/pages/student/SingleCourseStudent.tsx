@@ -10,7 +10,6 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
-import { getTimeDifference } from '../../helper/notification-helper';
 import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
 import { getTrafficStatus } from '../../Utility';
 import Banner from '../../widgets/CourseBanner';
@@ -21,7 +20,7 @@ import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
 import RemoveParticipantFromCourseModal from '../../modals/RemoveParticipantFromCourseModal';
@@ -162,7 +161,10 @@ const instructorSubcourseQuery = gql(`
 query GetInstructorSubcourse($subcourseId: Int!) {
     subcourse(subcourseId: $subcourseId){
         conversationId
-        alreadyPromoted
+        wasPromotedByInstructor
+        canPromote {
+            allowed
+        }
         pupilsWaitingCount
         pupilsOnWaitinglist {
             id
@@ -189,6 +191,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
 `);
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
+    const [isPromoting, setIsPromoting] = useState(false);
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
@@ -336,7 +339,7 @@ const SingleCourseStudent = () => {
                 appointments.length > 0 ? (
                     <Box minH={300}>
                         <AppointmentList
-                            isReadOnlyList={!subcourse?.isInstructor || !subcourse.published}
+                            isReadOnlyList={!subcourse?.isInstructor}
                             disableScroll
                             appointments={appointments as Appointment[]}
                             noOldAppointments
@@ -407,6 +410,7 @@ const SingleCourseStudent = () => {
     );
 
     const doPromote = async () => {
+        setIsPromoting(true);
         await promote();
         if (error) {
             toast.show({ description: t('single.buttonPromote.toastFail'), placement: 'top' });
@@ -414,6 +418,7 @@ const SingleCourseStudent = () => {
             toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
         }
         refetchInstructorData();
+        setIsPromoting(false);
     };
 
     const isInPast = useMemo(
@@ -423,20 +428,13 @@ const SingleCourseStudent = () => {
         [subcourse]
     );
 
-    const isMatureForPromotion = (publishDate: string): boolean => {
-        const { daysDiff } = getTimeDifference(publishDate);
-        if (publishDate === null || daysDiff > 3) {
-            return true;
-        }
-        return false;
-    };
-
     const canPromoteCourse = useMemo(() => {
-        if (loading || !subcourse || !subcourse.published || !subcourse?.isInstructor || instructorSubcourse?.subcourse?.alreadyPromoted !== false)
+        if (loading || !subcourse || !instructorSubcourse?.subcourse?.canPromote.allowed) {
             return false;
-        const canPromote = subcourse.capacity < 0.75 && isMatureForPromotion(subcourse.publishedAt);
-        return canPromote;
-    }, [instructorSubcourse?.subcourse?.alreadyPromoted, loading, subcourse]);
+        }
+
+        return true;
+    }, [loading, subcourse, instructorSubcourse?.subcourse?.canPromote.allowed]);
 
     const getButtonClick = useMemo(() => {
         switch (course?.courseState) {
@@ -475,7 +473,7 @@ const SingleCourseStudent = () => {
             isLoading={loading}
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <HelpNavigation />
+                    <SwitchLanguageButton />
                     <NotificationAlert />
                 </Stack>
             }
@@ -510,8 +508,9 @@ const SingleCourseStudent = () => {
                             onClick={doPromote}
                             seatsFull={subcourse?.participantsCount}
                             seatsMax={subcourse?.maxParticipants}
-                            isPromoted={instructorSubcourse?.subcourse?.alreadyPromoted || false}
+                            isPromoted={instructorSubcourse?.subcourse?.wasPromotedByInstructor || false}
                             courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                            isPromoting={isPromoting}
                         />
                     )}
                     {!isInPast && isInstructorOfSubcourse && (

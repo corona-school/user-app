@@ -91,6 +91,24 @@ The same mechanism is used by `IconLoader` and `IconLoaderLazy` to lazily load i
 
 Lazy Loading uses [Webpack Code Splitting](https://webpack.js.org/guides/code-splitting/) with a custom wrapper around `React.lazy` called [`lazyWithRetry`](./src/lazy.ts) - which tries again in case a chunk failed to load due to network connectivity problems.
 
+## Service Worker
+
+The app registers a service worker which runs in the background of the browser, and which handles caching and push notifications (for now). The service worker is built using [Workbox](https://developer.chrome.com/docs/workbox/what-is-workbox), when running `npm run build` a separate script is placed in `build/service-worker.js` that contains the service worker's code from `service-worker.ts`.
+
+To develop the service worker locally, one needs to manually build and serve the App (as the development server does not work well with the Service Worker):
+
+```
+npm run build # Builds the App and the SW into the /build folder
+RUNTIME_SERVICE_WORKER_ACTIVE=true PORT=300 INSECURE=true npm run serve # Starts the Server on Port 3000, skipping the HTTPS redirect
+```
+
+## Upgrade DataDog Browser SDK fork
+
+To use the Datadog browser SDK in our application, we had to make some changes to the original repository.
+This was necessary to comply with GDPR and to ensure our users cannot be tracked across different pages.
+
+You can find the whole process in [here](./docs/upgrade-dd-browser-sdk-fork.md) file.
+
 ## Further Resources
 
 -   [Create React App Documentation](https://github.com/facebook/create-react-app)

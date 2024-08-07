@@ -262,28 +262,26 @@ const AppointmentCard: React.FC<Props> = ({
                                                 {t('dashboard.helpers.badges.new')}
                                             </Badge>
                                         )}
-                                        <>
-                                            <Row paddingTop="4px" space={1}>
-                                                <Text color={textColor}>
-                                                    {dateNextLecture.toLocaleString(
-                                                        //check https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html#instance-method-toLocaleString for reference
-                                                        {
-                                                            weekday: 'long',
-                                                            month: '2-digit',
-                                                            year: 'numeric',
-                                                            day: '2-digit',
-                                                            hour: '2-digit',
-                                                            minute: '2-digit',
-                                                        },
-                                                        {
-                                                            locale: t('single.global.timeFormatLocale'),
-                                                        }
-                                                    ) +
-                                                        ' ' +
-                                                        t('single.global.clock')}
-                                                </Text>
-                                            </Row>
-                                        </>
+                                        <Row paddingTop="4px" space={1}>
+                                            <Text color={textColor}>
+                                                {dateNextLecture.toLocaleString(
+                                                    //check https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html#instance-method-toLocaleString for reference
+                                                    {
+                                                        weekday: 'long',
+                                                        month: '2-digit',
+                                                        year: 'numeric',
+                                                        day: '2-digit',
+                                                        hour: '2-digit',
+                                                        minute: '2-digit',
+                                                    },
+                                                    {
+                                                        locale: 'de',
+                                                    }
+                                                ) +
+                                                    ' ' +
+                                                    t('single.global.clock')}
+                                            </Text>
+                                        </Row>
                                     </>
                                 )}
                                 {dateNextLecture && isTeaser && (

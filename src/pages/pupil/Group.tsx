@@ -11,11 +11,10 @@ import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { sortByDate } from '../../Utility';
-import Hello from '../../widgets/Hello';
 import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 
 type Props = {};
 
@@ -234,11 +233,10 @@ const PupilGroup: React.FC<Props> = () => {
     return (
         <AsNavigationItem path="group">
             <WithNavigation
-                headerContent={<Hello />}
                 headerTitle={t('matching.group.pupil.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

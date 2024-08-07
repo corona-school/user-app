@@ -14,6 +14,7 @@
       "react-hooks/exhaustive-deps": "warn",
       "no-unused-expressions": "off",
       "lernfair-app-linter/typed-gql": "warn",
-      "unused-imports/no-unused-imports": "warn"
+      "unused-imports/no-unused-imports": "warn",
+      "no-restricted-globals": "off"
     }
   }

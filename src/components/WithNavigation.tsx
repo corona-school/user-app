@@ -1,4 +1,4 @@
-import { View, useBreakpointValue, useTheme, Row, Column } from 'native-base';
+import { View, useBreakpointValue, useTheme, Row, Column, Box } from 'native-base';
 import HeaderCard from './HeaderCard';
 import { NavigationItems } from '../types/navigation';
 import BottomNavigationBar from './BottomNavigationBar';
@@ -9,11 +9,13 @@ import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
 import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg';
 import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg';
 import LFChatIcon from '../assets/icons/lernfair/lf-chat.svg';
+import LFKnowledgeIcon from '../assets/icons/lernfair/lf-knowledge.svg';
 import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { useChat } from '../context/ChatContext';
+import InstallAppBanner from '../widgets/InstallAppBanner';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -43,8 +45,13 @@ const WithNavigation: React.FC<Props> = ({
     previousFallbackRoute,
     onBack,
 }) => {
-    const { sizes, space } = useTheme();
+    const { space, colors } = useTheme();
     const isMobile = useBreakpointValue({
+        base: true,
+        md: false,
+    });
+
+    const isMobileOrTablet = useBreakpointValue({
         base: true,
         lg: false,
     });
@@ -64,23 +71,19 @@ const WithNavigation: React.FC<Props> = ({
         chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
         group: { label: t('navigation.label.group'), icon: LFGroupIcon },
         matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
+        'knowledge-helper': {
+            label: t('navigation.label.forStudents'),
+            icon: ({ isActive }) => <LFKnowledgeIcon color={isActive ? 'white' : colors['primary']['900']} />,
+        },
+        'knowledge-pupil': {
+            label: t('navigation.label.forPupils'),
+            icon: ({ isActive }) => <LFKnowledgeIcon color={isActive ? 'white' : colors['primary']['900']} />,
+        },
     };
 
-    const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
     return (
         <View flex="1">
-            <View
-                flex="1"
-                display="flex"
-                flexDirection="column"
-                flexWrap="nowrap"
-                overflow="hidden"
-                w="100vw"
-                h="100%"
-                flexBasis="auto"
-                flexGrow="1"
-                flexShrink="1"
-            >
+            <View flex="1" display="flex" flexDirection="column" flexWrap="nowrap" overflow="hidden" w="100vw" h="100%" flexBasis="auto" flexGrow="1">
                 <HeaderCard
                     onBack={onBack}
                     showBack={showBack}
@@ -91,29 +94,26 @@ const WithNavigation: React.FC<Props> = ({
                 >
                     {!isMobile && headerContent}
                 </HeaderCard>
-                <View flex="1" overflowY={'scroll'}>
-                    <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden" flex="1">
+                <Box flex={1} position="static">
+                    <Row maxW="100%" flexWrap={'wrap'} overflow="hidden" flex="1" overflowY="scroll" position="static">
                         {!hideMenu && (
                             <Column>
                                 <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} unreadMessagesCount={unreadMessagesCount} />
                             </Column>
                         )}
-                        <Column flex="1" padding={innerPaddingContent}>
+                        <Column flex="1" padding={innerPaddingContent} height="100%" position="static">
                             {(!isLoading && (
                                 <>
-                                    {(isMobile && (
-                                        <>
-                                            <View h={`${headerHeight}px`}></View>
-                                            {headerContent}
-                                            <View h={`${headerHeight}px`}></View>
-                                        </>
-                                    )) || <View h={`${sizes['headerSizePx']}px`}></View>}
+                                    <Box mb={4} position="static">
+                                        {isMobile && <>{headerContent}</>}
+                                        {isMobileOrTablet && !hideMenu && <InstallAppBanner />}
+                                    </Box>
                                     {children}
                                 </>
                             )) || <CenterLoadingSpinner />}
                         </Column>
                     </Row>
-                </View>
+                </Box>
             </View>
             {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
         </View>

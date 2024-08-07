@@ -4,15 +4,19 @@ const VAR_COLOR_PRIMARY_LIGHT = '#EDF4F3';
 const VAR_COLOR_PRIMARY = '#82B1B0';
 const VAR_COLOR_PRIMARY_DARK = '#2B4B51';
 const VAR_COLOR_YELLOW = '#FEDA50';
+const VAR_COLOR_YELLOW_LIGHT = '#FBEFC6';
 const VAR_COLOR_YELLOW_DARKEN = '#F4CC54';
 const VAR_COLOR_PRIMARY_GREY = '#95A5A8';
 const VAR_COLOR_DARKYELLOW = '#d0b345';
+const VAR_COLOR_SECONDARY_LIGHT = VAR_COLOR_YELLOW_LIGHT;
 const VAR_COLOR_SECONDARY = VAR_COLOR_YELLOW;
 const VAR_COLOR_BLUE = '#405B73';
 const VAR_COLOR_TERTIARY = VAR_COLOR_BLUE;
 const VAR_COLOR_RED = '#D45D3A';
+const VAR_COLOR_GREEN = '#5BA54F';
 const VAR_COLOR_DANGER = VAR_COLOR_RED;
 const VAR_COLOR_WARNING = VAR_COLOR_RED;
+const VAR_COLOR_SUCCESS = VAR_COLOR_GREEN;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VAR_COLOR_TEXT_LIGHT = '#ffffff';
 const VAR_COLOR_MODAL_BG = '#edf4f3f2';
@@ -35,7 +39,7 @@ const Theme = extendTheme({
             900: VAR_COLOR_PRIMARY_DARK,
         },
         secondary: {
-            100: VAR_COLOR_SECONDARY,
+            100: VAR_COLOR_SECONDARY_LIGHT,
             200: VAR_COLOR_SECONDARY,
             300: VAR_COLOR_SECONDARY,
             400: VAR_COLOR_SECONDARY,
@@ -55,6 +59,18 @@ const Theme = extendTheme({
             700: VAR_COLOR_TERTIARY,
             800: VAR_COLOR_TERTIARY,
             900: VAR_COLOR_TERTIARY,
+        },
+        success: {
+            translucent: '#ecfdf3',
+            100: VAR_COLOR_SUCCESS,
+            200: VAR_COLOR_SUCCESS,
+            300: VAR_COLOR_SUCCESS,
+            400: VAR_COLOR_SUCCESS,
+            500: VAR_COLOR_SUCCESS,
+            600: VAR_COLOR_SUCCESS,
+            700: VAR_COLOR_SUCCESS,
+            800: VAR_COLOR_SUCCESS,
+            900: VAR_COLOR_SUCCESS,
         },
         warning: {
             100: VAR_COLOR_WARNING,
@@ -145,6 +161,9 @@ const Theme = extendTheme({
                     backgroundColor: VAR_COLOR_BLUE,
                 },
                 outline: {
+                    _text: {
+                        color: VAR_COLOR_PRIMARY_DARK,
+                    },
                     _light: {
                         borderColor: VAR_COLOR_PRIMARY,
                         _text: {
@@ -159,6 +178,16 @@ const Theme = extendTheme({
                         _text: {
                             color: 'white',
                         },
+                    },
+                },
+                outlinemiddle: {
+                    borderColor: VAR_COLOR_PRIMARY,
+                    borderWidth: 1,
+                    _hover: {
+                        bg: `rgba(130,177,176,0.9)`,
+                    },
+                    _pressed: {
+                        bg: `rgba(130,177,176,0.2)`,
                     },
                 },
                 link: {
@@ -184,14 +213,14 @@ const Theme = extendTheme({
                 backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderRadius: 5,
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 500,
                 _hover: {
                     borderColor: VAR_COLOR_PRIMARY_LIGHT,
                     backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 },
                 _light: {
-                    placeholderTextColor: VAR_COLOR_PRIMARY_DARK,
+                    placeholderTextColor: '#777777',
                 },
             },
         },
@@ -203,7 +232,7 @@ const Theme = extendTheme({
                 backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderRadius: 5,
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 500,
                 _hover: {
                     borderColor: VAR_COLOR_PRIMARY_LIGHT,
@@ -238,18 +267,19 @@ const Theme = extendTheme({
                 _text: {
                     fontWeight: 700,
                     color: VAR_COLOR_PRIMARY_DARK,
+                    fontSize: 14,
                 },
             },
         },
         Switch: {
             defaultProps: {
-                onThumbColor: VAR_COLOR_RED,
+                onThumbColor: VAR_COLOR_PRIMARY_LIGHT,
+                onTrackColor: VAR_COLOR_PRIMARY_DARK,
                 offThumbColor: VAR_COLOR_LIGHT_GREY,
-                offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
-                onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+                offTrackColor: VAR_COLOR_PRIMARY_GREY,
                 _hover: {
-                    offTrackColor: VAR_COLOR_PRIMARY_LIGHT,
-                    onTrackColor: VAR_COLOR_PRIMARY_LIGHT,
+                    offTrackColor: VAR_COLOR_PRIMARY_GREY,
+                    onTrackColor: VAR_COLOR_PRIMARY_DARK,
                 },
             },
         },

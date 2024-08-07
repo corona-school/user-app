@@ -91,7 +91,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
 
     return (
         <AsNavigationItem path="matching">
-            <WithNavigation headerContent={<Hello />} headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
+            <WithNavigation headerTitle={t('matching.group.helper.header')} headerLeft={<NotificationAlert />}>
                 {loading && <CenterLoadingSpinner />}
 
                 {!loading && (

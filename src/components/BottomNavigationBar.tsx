@@ -5,9 +5,7 @@ import { NavigationItems } from '../types/navigation';
 import CSSWrapper from './CSSWrapper';
 import '../web/scss/components/BottomNavigationBar.scss';
 import useLernfair from '../hooks/useLernfair';
-import { gql } from './../gql';
-import { useQuery } from '@apollo/client';
-import { useUserType } from '../hooks/useApollo';
+import { useRoles, useUserType } from '../hooks/useApollo';
 
 type Props = {
     show?: boolean;
@@ -20,44 +18,33 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
     const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
     const userType = useUserType();
+    const userRoles = useRoles();
 
-    const { data, loading } = useQuery(
-        gql(`
-            query GetRoles {
-                myRoles
-            }
-        `)
-    );
     const disableGroup: boolean = useMemo(() => {
-        if (!data) return true;
-        if (userType === 'screener') return !data?.myRoles.includes('COURSE_SCREENER');
-        if (userType === 'pupil') return !data?.myRoles.includes('PARTICIPANT');
+        if (userType === 'screener') return !userRoles.includes('COURSE_SCREENER');
+        if (userType === 'pupil') return !userRoles.includes('PARTICIPANT');
         return false;
-    }, [userType, data]);
+    }, [userType, userRoles]);
 
     const disableChat: boolean = useMemo(() => {
-        if (!data) return true;
         if (userType === 'screener') return true;
         return false;
-    }, [userType, data]);
+    }, [userType]);
 
     const disableMatching: boolean = useMemo(() => {
-        if (!data) return true;
         if (userType === 'screener') return true;
-        if (userType === 'pupil') return !data?.myRoles.includes('TUTEE');
+        if (userType === 'pupil') return !userRoles.includes('TUTEE');
         return false;
-    }, [userType, data]);
+    }, [userType, userRoles]);
 
     const badgeAlign = useBreakpointValue({
         base: 0,
         lg: 2,
     });
 
-    if (loading) return <></>;
-
     return (
         (show && (
-            <>
+            <Box pb="env(safe-area-inset-bottom)">
                 <Row
                     w="100%"
                     h={'54px'}
@@ -79,6 +66,9 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
                         const disabled =
                             _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
+
+                        const isHidden = ['knowledge-helper', 'knowledge-pupil'].includes(key);
+                        if (isHidden) return <></>;
 
                         return (
                             <Pressable
@@ -123,7 +113,7 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
                         );
                     })}
                 </Row>
-            </>
+            </Box>
         )) || <></>
     );
 };

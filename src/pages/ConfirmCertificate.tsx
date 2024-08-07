@@ -4,7 +4,7 @@ import { CertificateConfirmationBox } from '../widgets/certificates/CertificateC
 import { useParams } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
 import { Box, Stack } from 'native-base';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
 export const CERTIFICATE_QUERY = gql(`
@@ -43,7 +43,7 @@ const ConfirmCertificate: React.FC = () => {
                 previousFallbackRoute="/start"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

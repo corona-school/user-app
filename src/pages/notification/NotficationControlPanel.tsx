@@ -1,25 +1,44 @@
-import { Column, Heading, Row, Stack, Text, useBreakpointValue, useTheme, View, VStack } from 'native-base';
-import NavigationTabs from '../../components/NavigationTabs';
+import { Column, Heading, Row, Stack, Text, useBreakpointValue, useTheme, useToast, View, VStack } from 'native-base';
+import Tabs from '../../components/Tabs';
 import WithNavigation from '../../components/WithNavigation';
 import { useTranslation } from 'react-i18next';
-import { SystemNotifications } from '../../components/notifications/preferences/SystemNotifications';
-import { MarketingNotifications } from '../../components/notifications/preferences/MarketingNotifications';
 import { useUserPreferences } from '../../hooks/useNotificationPreferences';
-import { createContext } from 'react';
+import { createContext, useEffect } from 'react';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useQuery } from '@apollo/client';
-import { gql } from '../../gql/gql';
-import HelpNavigation from '../../components/HelpNavigation';
+import { gql } from '../../gql';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Outlet, useNavigate, useMatch, useSearchParams } from 'react-router-dom';
+import { getAllPreferencesInCategorySetToValue } from '../../helper/notification-helper';
+import { marketingNotificationCategories } from '../../helper/notification-preferences';
 
-const channels = ['email'];
+const channels = ['email', 'push'];
 
 type NotificationPreferencesContextType = ReturnType<typeof useUserPreferences> & { channels: typeof channels };
 export const NotificationPreferencesContext = createContext<NotificationPreferencesContextType>({} as NotificationPreferencesContextType);
 
-const NotficationControlPanel = () => {
+const NotificationControlPanel = () => {
     const { space } = useTheme();
+    const toast = useToast();
     const { t } = useTranslation();
-    const userPreferences = useUserPreferences();
+    const { userPreferences, updateUserPreferences, ...rest } = useUserPreferences();
+    const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
+    const isNewsletter = useMatch({ path: 'notifications/newsletter' });
+    const shouldUnsubscribe = searchParams.has('unsubscribe');
+
+    useEffect(() => {
+        const hasPreferences = Object.keys(userPreferences).length > 0;
+        if (shouldUnsubscribe && isNewsletter && hasPreferences) {
+            searchParams.delete('unsubscribe');
+            updateUserPreferences(getAllPreferencesInCategorySetToValue(userPreferences, false, marketingNotificationCategories, channels)).then(() => {
+                toast.show({
+                    description: t('notification.controlPanel.preference.allNewsletterDisabled'),
+                });
+            });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [shouldUnsubscribe, userPreferences]);
 
     const { data } = useQuery(
         gql(`
@@ -37,25 +56,28 @@ const NotficationControlPanel = () => {
         lg: false,
     });
 
-    const width = useBreakpointValue({
-        base: '90%',
-        lg: '90%',
+    const isMobileSM = useBreakpointValue({
+        base: true,
+        sm: false,
     });
 
     return (
-        <NotificationPreferencesContext.Provider value={{ ...userPreferences, channels }}>
+        <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreferences, ...rest, channels }}>
             <WithNavigation
-                showBack
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('notification.controlPanel.title')}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
-                        <NotificationAlert />
-                    </Stack>
+                    !isMobileSM && (
+                        <Stack alignItems="center" direction="row">
+                            <SwitchLanguageButton />
+                            <NotificationAlert />
+                        </Stack>
+                    )
                 }
             >
-                <View py={5} width={width}>
+                <View py={5}>
                     {!isMobile && (
                         <Column space={space['1']} marginBottom={space['2']} ml={3}>
                             <Heading>{t('notification.controlPanel.title')}</Heading>
@@ -65,16 +87,21 @@ const NotficationControlPanel = () => {
                             </Row>
                         </Column>
                     )}
-                    <VStack ml={3}>
-                        <NavigationTabs
+                    <VStack flex={1}>
+                        <Tabs
+                            removeSpace
+                            currentTabIndex={isNewsletter ? 1 : 0}
+                            onPressTab={(tab) => navigate(`${tab.id}`)}
                             tabs={[
                                 {
+                                    id: 'system',
                                     title: t('notification.controlPanel.tabs.system.title'),
-                                    content: <SystemNotifications />,
+                                    content: <Outlet />,
                                 },
                                 {
+                                    id: 'newsletter',
                                     title: t('notification.controlPanel.tabs.newsletter.title'),
-                                    content: <MarketingNotifications />,
+                                    content: <Outlet />,
                                 },
                             ]}
                         />
@@ -85,4 +112,4 @@ const NotficationControlPanel = () => {
     );
 };
 
-export default NotficationControlPanel;
+export default NotificationControlPanel;

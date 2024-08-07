@@ -73,7 +73,7 @@ const CreateAppointment = () => {
         <AsNavigationItem path="appointments">
             <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} showBack previousFallbackRoute="/appointments">
                 <CreateAppointmentProvider>
-                    <Box mx="4">
+                    <Box mx="4" pt={6} flex={1}>
                         <View position="sticky" mb={2} overflow="hidden">
                             <InstructionProgress
                                 currentIndex={currentIndex}
@@ -96,7 +96,7 @@ const CreateAppointment = () => {
                             />
                         )}
                         {currentIndex === 2 && (
-                            <Box mt="10">
+                            <Box mt="10" flex={1}>
                                 <AppointmentCreation
                                     back={noAppointments ? returnToStepOne : onBack}
                                     courseOrMatchId={courseOrMatchId}

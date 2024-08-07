@@ -1,4 +1,17 @@
-import { Course, Course_Tag, Instructor_Screening, Lecture, Match, Pupil, Pupil_Screening, Screener, Screening, Student, Subcourse } from '../gql/graphql';
+import {
+    Certificate_Of_Conduct,
+    Course,
+    Course_Tag,
+    Instructor_Screening,
+    Lecture,
+    Match,
+    Pupil,
+    Pupil_Screening,
+    Screener,
+    Screening,
+    Student,
+    Subcourse,
+} from '../gql/graphql';
 
 export type Opt<T> = T | null | undefined;
 
@@ -48,9 +61,13 @@ export type SubcourseForScreening = Pick<Subcourse, 'id' | 'published'> & {
     nextLecture?: Opt<Pick<Lecture, 'start' | 'duration'>>;
 };
 
-export type StudentForScreening = Pick<Student, 'active' | 'id' | 'email' | 'firstname' | 'lastname' | 'createdAt' | 'subjectsFormatted' | 'languages'> & {
+export type StudentForScreening = Pick<
+    Student,
+    'active' | 'id' | 'email' | 'firstname' | 'lastname' | 'createdAt' | 'subjectsFormatted' | 'languages' | 'certificateOfConductDeactivationDate'
+> & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];
     matches: MatchWithPupil[];
     subcoursesInstructing: SubcourseForScreening[];
+    certificateOfConduct?: Opt<Pick<Certificate_Of_Conduct, 'id'>>;
 };

@@ -11,7 +11,6 @@ import { sortByDate } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import Hello from '../../widgets/Hello';
 import AlertMessage from '../../widgets/AlertMessage';
 import { CreateCourseError } from '../CreateCourse';
 import { DateTime } from 'luxon';
@@ -20,7 +19,7 @@ import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import { Subcourse } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -187,11 +186,10 @@ const StudentGroup: React.FC = () => {
     return (
         <AsNavigationItem path="group">
             <WithNavigation
-                headerContent={<Hello />}
                 headerTitle={t('matching.group.helper.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

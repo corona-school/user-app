@@ -57,6 +57,11 @@ export type NotificationCategories = {
     [category: string]: NotificationCategoryDetails;
 };
 
+export type NotificationChannel = {
+    id: string;
+    label: string;
+};
+
 export const systemNotificationCategories: NotificationCategories = {
     chat: {
         title: 'notification.controlPanel.preference.chat.title',
@@ -64,14 +69,6 @@ export const systemNotificationCategories: NotificationCategories = {
         modal: {
             body: 'notification.controlPanel.preference.chat.modalBody',
             icon: IconChatModal,
-        },
-    },
-    survey: {
-        title: 'notification.controlPanel.preference.survey.title',
-        icon: SurveyIcon,
-        modal: {
-            body: 'notification.controlPanel.preference.survey.modalBody',
-            icon: IconSurveyModal,
         },
     },
     appointment: {
@@ -82,36 +79,12 @@ export const systemNotificationCategories: NotificationCategories = {
             icon: IconAppointmentModal,
         },
     },
-    advice: {
-        title: 'notification.controlPanel.preference.advice.title',
-        icon: AdviceIcon,
-        modal: {
-            body: 'notification.controlPanel.preference.advice.modalBody',
-            icon: IconAppointmentModal,
-        },
-    },
-    suggestion: {
-        title: 'notification.controlPanel.preference.suggestion.title',
-        icon: SuggestionIcon,
-        modal: {
-            body: 'notification.controlPanel.preference.suggestion.modalBody',
-            icon: IconSuggestionModal,
-        },
-    },
     announcement: {
         title: 'notification.controlPanel.preference.announcement.title',
         icon: AnnouncementIcon,
         modal: {
             body: 'notification.controlPanel.preference.announcement.modalBody',
             icon: IconAnnouncementModal,
-        },
-    },
-    call: {
-        title: 'notification.controlPanel.preference.call.title',
-        icon: CallIcon,
-        modal: {
-            body: 'notification.controlPanel.preference.call.modalBody',
-            icon: IconCallModal,
         },
     },
 };
@@ -141,6 +114,30 @@ export const marketingNotificationCategories: NotificationCategories = {
         title: 'notification.controlPanel.preference.alternative.title',
         modal: {
             body: 'notification.controlPanel.preference.alternative.modalBody',
+        },
+    },
+    suggestion: {
+        title: 'notification.controlPanel.preference.suggestion.title',
+        modal: {
+            body: 'notification.controlPanel.preference.suggestion.modalBody',
+        },
+    },
+    survey: {
+        title: 'notification.controlPanel.preference.survey.title',
+        modal: {
+            body: 'notification.controlPanel.preference.survey.modalBody',
+        },
+    },
+    advice: {
+        title: 'notification.controlPanel.preference.advice.title',
+        modal: {
+            body: 'notification.controlPanel.preference.advice.modalBody',
+        },
+    },
+    call: {
+        title: 'notification.controlPanel.preference.call.title',
+        modal: {
+            body: 'notification.controlPanel.preference.call.modalBody',
         },
     },
 };
