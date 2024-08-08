@@ -175,6 +175,11 @@ export function useWebPush() {
 
         (async function () {
             const sw = await getServiceWorker();
+            if (!sw) {
+                setStatus('not-subscribed');
+                return;
+            }
+
             const subscription = await sw.pushManager.getSubscription();
             if (!subscription) {
                 setStatus('not-subscribed');
@@ -252,8 +257,10 @@ export function useWebPush() {
     async function unsubscribe() {
         try {
             const sw = await getServiceWorker();
-            const subscription = await sw.pushManager.getSubscription();
-            await subscription?.unsubscribe();
+            if (sw) {
+                const subscription = await sw.pushManager.getSubscription();
+                await subscription?.unsubscribe();
+            }
 
             setStatus('not-subscribed');
             log('WebPush', 'Unsubscribed from WebPush');

@@ -99,6 +99,7 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
         isOnWaitingList
         cancelled
         published
+        publishedAt
         appointments {
               id
               appointmentType

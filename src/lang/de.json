@@ -1158,6 +1158,9 @@
                 "whatsApp": "WhatsApp",
                 "signal": "Signal",
                 "email": "E-Mail"
+            },
+            "badges": {
+                "new": "NEU"
             }
         },
         "homeworkhelp": {

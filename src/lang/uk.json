@@ -1090,6 +1090,9 @@
                 "whatsApp": "WhatsApp",
                 "signal": "Сигнал",
                 "email": "e-mail"
+            },
+            "badges": {
+                "new": "НОВИНКА"
             }
         },
         "homeworkhelp": {
