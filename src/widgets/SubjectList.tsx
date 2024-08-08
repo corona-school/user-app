@@ -8,12 +8,13 @@ const SubjectList = ({ subjects }: { subjects: Subject[] }) => {
     const { space } = useTheme();
 
     return (
-        <Row space={space['0.5']}>
+        <Row flexWrap="wrap" flexDirection="row">
             {subjects.map((sub) => (
                 <Tag
                     text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray) + (sub.mandatory ? ' (priorisiert)' : '')}
                     variant="secondary-light"
-                    marginBottom={0}
+                    marginRight={space['0.5']}
+                    marginBottom={space['1']}
                 />
             ))}
         </Row>
