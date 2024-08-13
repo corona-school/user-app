@@ -8,10 +8,11 @@ import Utility, { getGradeLabel, getTrafficStatus } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 import { Typography } from '@/components/atoms/Typography';
+import { Badge } from '@/components/atoms/Badge';
 
 type SubcourseDataProps = {
     course: Pick<Course, 'name' | 'image'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };
-    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published'> &
+    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published' | 'publishedAt'> &
         Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant' | 'canJoin'>> & {
             instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
             lectures: Pick<Lecture, 'start' | 'duration'>[];
@@ -32,6 +33,10 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
         return getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants);
     }, [subcourse?.maxParticipants, subcourse?.participantsCount]);
 
+    const today = new Date();
+    const aWeekAgo = today.setDate(today.getDate() - 7);
+    const isCourseNewlyAdded = subcourse?.publishedAt ? new Date(subcourse?.publishedAt).getTime() > aWeekAgo : false;
+
     return (
         <div className="flex flex-col-reverse md:flex-row justify-between pr-4">
             <div className="flex flex-col gap-y-4 w-full md:w-1/2">
@@ -48,6 +53,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
                     </Typography>
                 )}
+                {isCourseNewlyAdded && <Badge>{t('dashboard.helpers.badges.new')}</Badge>}
                 {subcourse?.instructors && subcourse?.instructors[0] && (
                     <Typography variant="h4">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Typography>
                 )}
