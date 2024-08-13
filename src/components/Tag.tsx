@@ -79,7 +79,6 @@ const Tag: React.FC<Props> = ({
             borderColor={borderColor || 'transparent'}
             flexBasis="auto"
             flexShrink={1}
-            flexGrow={1}
         >
             <Row space={space['0.5']} flexWrap="wrap" justifyContent="center" alignItems="center">
                 {beforeElement && <View testID="beforeElement">{beforeElement}</View>}
