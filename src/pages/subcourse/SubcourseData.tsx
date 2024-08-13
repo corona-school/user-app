@@ -47,7 +47,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
 
     const today = new Date();
     const aWeekAgo = today.setDate(today.getDate() - 7);
-    const isCourseNewlyAdded = subcourse?.publishedAt?.getTime() ?? new Date(0).getTime() > aWeekAgo;
+    const isCourseNewlyAdded = subcourse?.publishedAt ? new Date(subcourse?.publishedAt).getTime() > aWeekAgo : false;
 
     return (
         <>
@@ -66,7 +66,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         </Text>
                     )}
                     {isCourseNewlyAdded && (
-                        <Badge bgColor="danger.500" _text={{ color: 'white' }} rounded="full" style={{ maxWidth: '50px' }}>
+                        <Badge bgColor="primary.500" _text={{ color: 'white' }} rounded="full" style={{ maxWidth: '50px' }}>
                             {t('dashboard.helpers.badges.new')}
                         </Badge>
                     )}
