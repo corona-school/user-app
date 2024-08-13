@@ -361,7 +361,7 @@ const CreateCourse: React.FC = () => {
             if (errors.includes('course') || errors.includes('subcourse') || errors.includes('appointments')) {
                 setShowCourseError(true);
             } else {
-                navigate(`/single-course/${courseId}`, {
+                navigate(courseId ? `/single-course/${courseId}` : '/group', {
                     state: {
                         wasEdited: isEditing,
                         errors,
@@ -537,7 +537,7 @@ const CreateCourse: React.FC = () => {
              * Image upload
              */
             if (!pickedPhoto) {
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
             setImageLoading(true);
