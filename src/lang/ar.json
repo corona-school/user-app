@@ -329,6 +329,9 @@
             "alternatives": "الحصول على مزيد من المعلومات"
         },
         "hint": {
+            "schoolClassSelectionMissing": "الرجاء تحديد فصل المدرسة.",
+            "schoolTypeSelectionMissing": "الرجاء اختيار نوع المدرسة.",
+            "userStateSelectionMissing": "الرجاء تحديد موقع المدرسة.",
             "password": {
                 "length": "يجب أن تحتوي كلمة المرور على 6 أحرف على الأقل.",
                 "nomatch": "كلمات المرور غير متطابقة"
@@ -390,6 +393,13 @@
             "legal": {
                 "title": "موافقه",
                 "subtitle": "موافقه"
+            },
+            "school": {
+                "title": "موقع المدرسة",
+                "subtitle": "ما هو اسم مدرستك؟",
+                "helperText": "نحن نستخدم تفاصيل المدرسة لتحديد نوع المدرسة وموقعها",
+                "schoolFound": "تم العثور على المدرسة",
+                "otherSchoolFound": "المدارس الأخرى المعترف بها"
             }
         },
         "pupil": {
@@ -1076,6 +1086,9 @@
                 "whatsApp": "واتس اب",
                 "signal": "إشارة",
                 "email": "البريد الإلكتروني"
+            },
+            "badges": {
+                "new": "جديد"
             }
         },
         "homeworkhelp": {

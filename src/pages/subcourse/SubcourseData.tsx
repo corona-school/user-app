@@ -1,4 +1,4 @@
-import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue } from 'native-base';
+import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue, Badge } from 'native-base';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
@@ -12,7 +12,7 @@ import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
 
 type SubcourseDataProps = {
     course: Pick<Course, 'name' | 'image'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };
-    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published'> &
+    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published' | 'publishedAt'> &
         Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant' | 'canJoin'>> & {
             instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
             lectures: Pick<Lecture, 'start' | 'duration'>[];
@@ -45,6 +45,10 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
         return getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants);
     }, [subcourse?.maxParticipants, subcourse?.participantsCount]);
 
+    const today = new Date();
+    const aWeekAgo = today.setDate(today.getDate() - 7);
+    const isCourseNewlyAdded = subcourse?.publishedAt ? new Date(subcourse?.publishedAt).getTime() > aWeekAgo : false;
+
     return (
         <>
             <Stack direction={isMobile ? 'column-reverse' : 'row'}>
@@ -60,6 +64,11 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         <Text>
                             {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
                         </Text>
+                    )}
+                    {isCourseNewlyAdded && (
+                        <Badge bgColor="primary.500" _text={{ color: 'white' }} rounded="full" style={{ maxWidth: '50px' }}>
+                            {t('dashboard.helpers.badges.new')}
+                        </Badge>
                     )}
                     <Heading fontSize="3xl" maxW={isMobile ? 'full' : '80%'}>
                         {course?.name}

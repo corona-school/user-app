@@ -13,8 +13,10 @@ const VAR_COLOR_SECONDARY = VAR_COLOR_YELLOW;
 const VAR_COLOR_BLUE = '#405B73';
 const VAR_COLOR_TERTIARY = VAR_COLOR_BLUE;
 const VAR_COLOR_RED = '#D45D3A';
+const VAR_COLOR_GREEN = '#5BA54F';
 const VAR_COLOR_DANGER = VAR_COLOR_RED;
 const VAR_COLOR_WARNING = VAR_COLOR_RED;
+const VAR_COLOR_SUCCESS = VAR_COLOR_GREEN;
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const VAR_COLOR_TEXT_LIGHT = '#ffffff';
 const VAR_COLOR_MODAL_BG = '#edf4f3f2';
@@ -57,6 +59,18 @@ const Theme = extendTheme({
             700: VAR_COLOR_TERTIARY,
             800: VAR_COLOR_TERTIARY,
             900: VAR_COLOR_TERTIARY,
+        },
+        success: {
+            translucent: '#ecfdf3',
+            100: VAR_COLOR_SUCCESS,
+            200: VAR_COLOR_SUCCESS,
+            300: VAR_COLOR_SUCCESS,
+            400: VAR_COLOR_SUCCESS,
+            500: VAR_COLOR_SUCCESS,
+            600: VAR_COLOR_SUCCESS,
+            700: VAR_COLOR_SUCCESS,
+            800: VAR_COLOR_SUCCESS,
+            900: VAR_COLOR_SUCCESS,
         },
         warning: {
             100: VAR_COLOR_WARNING,
@@ -199,14 +213,14 @@ const Theme = extendTheme({
                 backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderRadius: 5,
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 500,
                 _hover: {
                     borderColor: VAR_COLOR_PRIMARY_LIGHT,
                     backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 },
                 _light: {
-                    placeholderTextColor: VAR_COLOR_PRIMARY_DARK,
+                    placeholderTextColor: '#777777',
                 },
             },
         },
@@ -218,7 +232,7 @@ const Theme = extendTheme({
                 backgroundColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderColor: VAR_COLOR_PRIMARY_LIGHT,
                 borderRadius: 5,
-                fontSize: 12,
+                fontSize: 14,
                 fontWeight: 500,
                 _hover: {
                     borderColor: VAR_COLOR_PRIMARY_LIGHT,
@@ -253,6 +267,7 @@ const Theme = extendTheme({
                 _text: {
                     fontWeight: 700,
                     color: VAR_COLOR_PRIMARY_DARK,
+                    fontSize: 14,
                 },
             },
         },

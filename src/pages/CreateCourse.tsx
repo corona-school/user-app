@@ -374,13 +374,13 @@ const CreateCourse: React.FC = () => {
     }, [prefillCourseId, queryCourse]);
 
     const finishCourseCreation = useCallback(
-        (errors: any[]) => {
+        (errors: any[], courseId?: string | number) => {
             setLoadingCourse(false);
 
             if (errors.includes('course') || errors.includes('subcourse') || errors.includes('appointments')) {
                 setShowCourseError(true);
             } else {
-                navigate('/group', {
+                navigate(courseId ? `/single-course/${courseId}` : '/group', {
                     state: {
                         wasEdited: isEditing,
                         errors,
@@ -555,7 +555,7 @@ const CreateCourse: React.FC = () => {
              * Image upload
              */
             if (!pickedPhoto) {
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
             setImageLoading(true);
@@ -603,7 +603,7 @@ const CreateCourse: React.FC = () => {
 
             setImageLoading(false);
 
-            finishCourseCreation(errors);
+            finishCourseCreation(errors, courseId);
         },
         [
             _getCourseData,
@@ -673,7 +673,7 @@ const CreateCourse: React.FC = () => {
                 errors.push('subcourse');
                 await resetEditSubcourse();
                 await resetEditCourse();
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 setLoadingCourse(false);
                 return;
             }
@@ -716,7 +716,7 @@ const CreateCourse: React.FC = () => {
                     await resetAppointments();
                     await resetSubcourse();
                     await resetCourse();
-                    finishCourseCreation(errors);
+                    finishCourseCreation(errors, courseId);
                     setLoadingCourse(false);
                     return;
                 }
@@ -728,7 +728,7 @@ const CreateCourse: React.FC = () => {
              */
             if (!pickedPhoto) {
                 setLoadingCourse(false);
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
             setImageLoading(true);
@@ -757,7 +757,7 @@ const CreateCourse: React.FC = () => {
             }
 
             if (!uploadFileId) {
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
 
@@ -776,7 +776,7 @@ const CreateCourse: React.FC = () => {
             }
 
             setImageLoading(false);
-            finishCourseCreation(errors);
+            finishCourseCreation(errors, _courseId);
         },
         [
             _getCourseData,
