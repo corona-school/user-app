@@ -816,7 +816,8 @@
         "removeParticipantFromCourseModal": {
             "header": "ученик Удалить из курса",
             "remove": "Удалить",
-            "success": "ученик успешно удалён"
+            "success": "ученик успешно удалён",
+            "error": "ученик не может быть удален"
         }
     },
     "settings": {
@@ -1794,7 +1795,8 @@
         "selectPlaceHolderDuration": "Выберите продолжительность",
         "cancelation_success": "Курс был успешно отменен",
         "select_participant": "участник выберите",
-        "all_participants": "все участники"
+        "all_participants": "все участники",
+        "cancelation_error": "Произошла ошибка. Курс не может быть отменен."
     },
     "notification": {
         "timedifference": {

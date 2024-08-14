@@ -816,7 +816,8 @@
         "removeParticipantFromCourseModal": {
             "header": "Öğrenciyi kurstan çıkarma",
             "remove": "Kaldırmak",
-            "success": "Başarılı bir şekilde öğrenci kaldırıldı"
+            "success": "Başarılı bir şekilde öğrenci kaldırıldı",
+            "error": "Öğrenci:in kaldırılamadı"
         }
     },
     "settings": {
@@ -1794,7 +1795,8 @@
         "selectPlaceHolderDuration": "Süre seçin",
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
-        "all_participants": "tüm katılımcılar"
+        "all_participants": "tüm katılımcılar",
+        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi."
     },
     "notification": {
         "timedifference": {

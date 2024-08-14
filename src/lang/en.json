@@ -816,7 +816,8 @@
         "removeParticipantFromCourseModal": {
             "header": "pupil Remove from course",
             "remove": "Remove",
-            "success": "pupil successfully removed"
+            "success": "pupil successfully removed",
+            "error": "pupil could not be removed"
         }
     },
     "settings": {
@@ -1790,7 +1791,8 @@
         "selectPlaceHolderDuration": "Select duration",
         "cancelation_success": "The course was successfully canceled",
         "select_participant": "Select participant",
-        "all_participants": "all participants"
+        "all_participants": "all participants",
+        "cancelation_error": "An error has occurred. The course could not be canceled."
     },
     "notification": {
         "timedifference": {
