@@ -1,9 +1,9 @@
 import { useTranslation } from 'react-i18next';
 import { Course_Coursestate_Enum } from '../gql/graphql';
 import { useMemo } from 'react';
-import { Button } from '@/components/atoms/Button';
-import { Typography } from '@/components/atoms/Typography';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/atoms/Tooltip';
+import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/Tooltip';
 import { IconInfoCircleFilled } from '@tabler/icons-react';
 
 type CourseBannerProps = {

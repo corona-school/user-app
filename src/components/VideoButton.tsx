@@ -8,7 +8,7 @@ import { useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { canJoinMeeting } from '../widgets/AppointmentDay';
 import { DateTime } from 'luxon';
-import { Button } from './atoms/Button';
+import { Button } from './Button';
 
 type VideoButtonProps = {
     isInstructor?: boolean;

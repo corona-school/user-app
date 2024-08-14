@@ -19,12 +19,12 @@ import { Appointment } from '../../types/lernfair/Appointment';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
-import { Button } from '@/components/atoms/Button';
+import { Button } from '@/components/Button';
 import { toast } from 'sonner';
 import RemoveParticipantFromCourseModal from '@/modals/RemoveParticipantFromCourseModal';
 import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
-import { Typography } from '@/components/atoms/Typography';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/Tabs';
+import { Typography } from '@/components/Typography';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
 
 function Participants({
     subcourseId,

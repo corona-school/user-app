@@ -1,7 +1,7 @@
 import { useMutation } from '@apollo/client';
-import { Button } from '@/components/atoms/Button';
-import { ModalFooter, ModalHeader, ModalTitle, Modal, type BaseModalProps } from '@/components/atoms/Modal';
-import { Typography } from '@/components/atoms/Typography';
+import { Button } from '@/components/Button';
+import { ModalFooter, ModalHeader, ModalTitle, Modal, type BaseModalProps } from '@/components/Modal';
+import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
