@@ -1,11 +1,10 @@
-import { Row, CircleIcon, useTheme, Center, Text, Box, Pressable, Flex, Circle, useBreakpointValue } from 'native-base';
 import { useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import { NavigationItems } from '../types/navigation';
-import CSSWrapper from './CSSWrapper';
-import '../web/scss/components/BottomNavigationBar.scss';
 import useLernfair from '../hooks/useLernfair';
 import { useRoles, useUserType } from '../hooks/useApollo';
+import { Typography } from './Typography';
+import { Badge } from './Badge';
 
 type Props = {
     show?: boolean;
@@ -14,8 +13,6 @@ type Props = {
 };
 
 const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMessagesCount }) => {
-    const { space, colors } = useTheme();
-    const navigate = useNavigate();
     const { rootPath, setRootPath } = useLernfair();
     const userType = useUserType();
     const userRoles = useRoles();
@@ -37,32 +34,10 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
         return false;
     }, [userType, userRoles]);
 
-    const badgeAlign = useBreakpointValue({
-        base: 0,
-        lg: 2,
-    });
-
     return (
         (show && (
-            <Box pb="env(safe-area-inset-bottom)">
-                <Row
-                    w="100%"
-                    h={'54px'}
-                    left="0"
-                    right="0"
-                    bottom="0"
-                    bgColor="lightText"
-                    justifyContent={'space-between'}
-                    alignItems={'center'}
-                    paddingX={space['1']}
-                    paddingY={space['2']}
-                    style={{
-                        shadowColor: '#000000',
-                        shadowOpacity: 0.12,
-                        shadowRadius: 2,
-                        shadowOffset: { width: -1, height: -3 },
-                    }}
-                >
+            <nav className="pb-[env(safe-area-inset-bottom)]">
+                <div className="flex w-full h-16 left-0 right-0 bottom-0 justify-between items-center px-4 bg-white shadow-bottomNavigation">
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
                         const disabled =
                             _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
@@ -71,49 +46,32 @@ const BottomNavigationBar: React.FC<Props> = ({ show = true, navItems, unreadMes
                         if (isHidden) return <></>;
 
                         return (
-                            <Pressable
-                                onPress={() => {
-                                    if (disabled) return;
-                                    setRootPath && setRootPath(`${key}`);
-                                    navigate(`/${key}`);
-                                }}
+                            <NavLink
+                                className={`flex flex-col items-center relative justify-between ${disabled ? 'opacity-20 pointer-events-none' : ''}`}
+                                onClick={() => setRootPath && setRootPath(`${key}`)}
+                                to={`/${key}`}
                                 key={key}
                             >
-                                {key === 'chat' && !!unreadMessagesCount && (
-                                    <Circle bgColor="danger.500" size="4" position="absolute" zIndex="1" mx="6">
-                                        <Text fontSize="xs" color="white">
-                                            {unreadMessagesCount}
-                                        </Text>
-                                    </Circle>
-                                )}
-                                <CSSWrapper className="navigation__item">
-                                    <Center>
-                                        <Box>
-                                            <CircleIcon size="35px" color={key === rootPath ? 'primary.900' : 'transparent'} />
-                                            <CSSWrapper className={`navigation__item__icon ${key === rootPath ? 'active' : ''}`}>
-                                                <Flex>
-                                                    <Icon
-                                                        fill={
-                                                            key === rootPath
-                                                                ? colors['lightText']
-                                                                : !disabled
-                                                                ? colors['primary']['900']
-                                                                : colors['gray']['300']
-                                                        }
-                                                    />
-                                                </Flex>
-                                            </CSSWrapper>
-                                        </Box>
-                                        <Text fontSize="xs" color={!disabled ? colors['primary']['900'] : colors['gray']['300']}>
+                                {({ isActive }) => (
+                                    <>
+                                        <div className={`p-1 ${isActive || key === rootPath ? 'bg-accent rounded-full' : ''}`}>
+                                            <Icon size={20} />
+                                        </div>
+                                        <Typography variant="sm" className="font-medium">
                                             {label}
-                                        </Text>
-                                    </Center>
-                                </CSSWrapper>
-                            </Pressable>
+                                        </Typography>
+                                        {key === 'chat' && !!unreadMessagesCount && (
+                                            <Badge variant="destructive" shape="rounded" className="absolute top-[-4px] right-[-5px] size-4">
+                                                {unreadMessagesCount}
+                                            </Badge>
+                                        )}
+                                    </>
+                                )}
+                            </NavLink>
                         );
                     })}
-                </Row>
-            </Box>
+                </div>
+            </nav>
         )) || <></>
     );
 };
