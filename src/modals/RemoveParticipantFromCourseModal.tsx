@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-import { SubcourseParticipant } from '../../../types/lernfair/Course';
-import { getSchoolTypeKey } from '../../../types/lernfair/SchoolType';
-import { getGradeLabel } from '../../../Utility';
+import { SubcourseParticipant } from '../types/lernfair/Course';
+import { getSchoolTypeKey } from '../types/lernfair/SchoolType';
+import { getGradeLabel } from '../Utility';
 import { type BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/atoms/Modal';
 import { Typography } from '@/components/atoms/Typography';
 import { Button } from '@/components/atoms/Button';

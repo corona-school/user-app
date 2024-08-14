@@ -21,8 +21,8 @@ import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
 import { Button } from '@/components/atoms/Button';
 import { toast } from 'sonner';
-import RemoveParticipantFromCourseModal from '@/components/organisms/modals/RemoveParticipantFromCourseModal';
-import CancelSubCourseModal from '@/components/organisms/modals/CancelSubCourseModal';
+import RemoveParticipantFromCourseModal from '@/modals/RemoveParticipantFromCourseModal';
+import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
 import { Typography } from '@/components/atoms/Typography';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/atoms/Tabs';
 
