@@ -24,7 +24,7 @@ import { toast } from 'sonner';
 import RemoveParticipantFromCourseModal from '@/modals/RemoveParticipantFromCourseModal';
 import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
 import { Typography } from '@/components/Typography';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Tabs';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 
 function Participants({
     subcourseId,
