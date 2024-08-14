@@ -52,16 +52,9 @@
 
 .tabler-icon {
     stroke-width: 1;
-    height: 18px;
-    width: 18px;
 }
 
 button .tabler-icon {
     height: 16px;
     width: 16px;
-}
-
-a .tabler-icon {
-    height: 22px;
-    width: 22px;
 }
