@@ -11,12 +11,11 @@ import { Badge } from './Badge';
 import { IconStarHalfFilled } from '@tabler/icons-react';
 
 type Props = {
-    show?: boolean;
     navItems: NavigationItems;
     unreadMessagesCount?: number;
 };
 
-const SideBarMenu: React.FC<Props> = ({ show, navItems, unreadMessagesCount }) => {
+const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
     const { t } = useTranslation();
     const { rootPath, setRootPath } = useLernfair();
     const userType = useUserType();
@@ -51,44 +50,42 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, unreadMessagesCount }) =
     }, [userType]);
 
     return (
-        (show && (
-            <>
-                <nav className="min-w-60 flex flex-col h-[calc(100dvh-56px)] sticky pt-9 pb-6 justify-between shadow-lg">
-                    <div className="flex flex-col gap-y-4 px-4">
-                        {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                            const disabled =
-                                _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
-                            const isHidden = (key === 'knowledge-helper' && hideForStudents) || (key === 'knowledge-pupil' && hideForPupils);
-                            if (isHidden) return <></>;
-                            return (
-                                <NavLink
-                                    className={({ isActive }) =>
-                                        `flex items-center px-2 py-2 rounded-md hover:outline-accent hover:outline
+        <>
+            <nav className="hidden md:flex min-w-60  flex-col h-[calc(100dvh-56px)] sticky pt-9 pb-6 justify-between shadow-lg">
+                <div className="flex flex-col gap-y-4 px-4">
+                    {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
+                        const disabled =
+                            _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
+                        const isHidden = (key === 'knowledge-helper' && hideForStudents) || (key === 'knowledge-pupil' && hideForPupils);
+                        if (isHidden) return <></>;
+                        return (
+                            <NavLink
+                                className={({ isActive }) =>
+                                    `flex items-center px-2 py-2 rounded-md hover:outline-accent hover:outline
                                             ${isActive || key === rootPath ? 'bg-accent' : ''}
                                             ${disabled ? 'opacity-20 pointer-events-none' : ''}`
-                                    }
-                                    onClick={() => setRootPath && setRootPath(`${key}`)}
-                                    to={`/${key}`}
-                                    key={key}
-                                >
-                                    <Icon />
-                                    <Typography className="pl-3 mr-auto font-medium">{label}</Typography>
-                                    {key === 'chat' && !!unreadMessagesCount && (
-                                        <Badge variant="destructive" shape="rounded" className="mr-2">
-                                            {unreadMessagesCount}
-                                        </Badge>
-                                    )}
-                                </NavLink>
-                            );
-                        })}
-                    </div>
-                    <Button variant="outline" className="w-4/5 self-center" leftIcon={<IconStarHalfFilled size={16} />} onClick={() => setIsOpen(true)}>
-                        {t('appFeedback.giveFeedbackButton')}
-                    </Button>
-                </nav>
-                <AppFeedbackModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-            </>
-        )) || <></>
+                                }
+                                onClick={() => setRootPath && setRootPath(`${key}`)}
+                                to={`/${key}`}
+                                key={key}
+                            >
+                                <Icon />
+                                <Typography className="pl-3 mr-auto font-medium">{label}</Typography>
+                                {key === 'chat' && !!unreadMessagesCount && (
+                                    <Badge variant="destructive" shape="rounded" className="mr-2">
+                                        {unreadMessagesCount}
+                                    </Badge>
+                                )}
+                            </NavLink>
+                        );
+                    })}
+                </div>
+                <Button variant="outline" className="w-4/5 self-center" leftIcon={<IconStarHalfFilled size={16} />} onClick={() => setIsOpen(true)}>
+                    {t('appFeedback.giveFeedbackButton')}
+                </Button>
+            </nav>
+            <AppFeedbackModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+        </>
     );
 };
 export default SideBarMenu;
