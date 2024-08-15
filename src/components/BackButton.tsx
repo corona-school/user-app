@@ -1,7 +1,7 @@
-import { ArrowBackIcon } from 'native-base';
-import { TouchableOpacity } from 'react-native';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useNavigationStack } from '../hooks/useNavigationStack';
+import { Button } from './Button';
+import { IconArrowLeft } from '@tabler/icons-react';
 
 type Props = {
     onPress?: () => any;
@@ -41,9 +41,9 @@ const BackButton: React.FC<Props> = ({ onPress, previousFallbackRoute: fallback 
         navigate(-1);
     };
     return (
-        <TouchableOpacity onPress={handleOnBack}>
-            <ArrowBackIcon size="xl" color="lightText" />
-        </TouchableOpacity>
+        <Button variant="none" size="icon" onClick={handleOnBack}>
+            <IconArrowLeft size={24} />
+        </Button>
     );
 };
 export default BackButton;
