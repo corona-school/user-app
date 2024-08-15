@@ -13,11 +13,10 @@ import { IconStarHalfFilled } from '@tabler/icons-react';
 type Props = {
     show?: boolean;
     navItems: NavigationItems;
-    paddingTop?: string | number;
     unreadMessagesCount?: number;
 };
 
-const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessagesCount }) => {
+const SideBarMenu: React.FC<Props> = ({ show, navItems, unreadMessagesCount }) => {
     const { t } = useTranslation();
     const { rootPath, setRootPath } = useLernfair();
     const userType = useUserType();
@@ -53,8 +52,8 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
 
     return (
         (show && (
-            <nav className="w-60">
-                <div className="w-60 top-0 bottom-0 left-0 fixed pt-12 mt-9 pb-6 flex flex-col justify-between shadow-lg">
+            <>
+                <nav className="min-w-60 flex flex-col h-[calc(100dvh-56px)] sticky pt-9 pb-6 justify-between shadow-lg">
                     <div className="flex flex-col gap-y-4 px-4">
                         {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
                             const disabled =
@@ -83,12 +82,12 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
                             );
                         })}
                     </div>
-                    <Button variant="outline" className="w-4/5 self-center" leftIcon={<IconStarHalfFilled />} onClick={() => setIsOpen(true)}>
+                    <Button variant="outline" className="w-4/5 self-center" leftIcon={<IconStarHalfFilled size={16} />} onClick={() => setIsOpen(true)}>
                         {t('appFeedback.giveFeedbackButton')}
                     </Button>
-                </div>
+                </nav>
                 <AppFeedbackModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-            </nav>
+            </>
         )) || <></>
     );
 };

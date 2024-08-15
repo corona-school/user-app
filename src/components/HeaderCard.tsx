@@ -19,8 +19,8 @@ type Props = {
  */
 const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightContent, onBack, showBack, previousFallbackRoute }) => {
     return (
-        <div className="h-auto">
-            <div className="h-14 bg-primary-light py-4 z-50 fixed top-0 left-0 right-0">
+        <div className="h-14">
+            <div className="h-14 bg-primary-light fixed py-4 z-50 top-0 left-0 right-0">
                 <div className="flex items-center justify-between h-full px-4">
                     <div>{showBack && <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />}</div>
                     <div className="flex flex-row items-center justify-between w-full lg:hidden">
