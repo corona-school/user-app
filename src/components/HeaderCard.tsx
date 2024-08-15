@@ -1,6 +1,6 @@
-import { Box, useTheme, Row, useBreakpointValue, Stack, Heading } from 'native-base';
 import { ReactNode } from 'react';
 import BackButton from './BackButton';
+import { Typography } from './Typography';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -18,59 +18,26 @@ type Props = {
  * - `showBack` / `onBack` to use navigation in here
  */
 const HeaderCard: React.FC<Props> = ({ children, title, leftContent, rightContent, onBack, showBack, previousFallbackRoute }) => {
-    const { space, sizes } = useTheme();
-
-    const headerTitleSize = useBreakpointValue({
-        base: 14,
-        lg: 19,
-    });
-
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
-
     return (
-        <Box h={`${sizes['headerSizePx']}px`} bgColor="primary.900" paddingY={`${sizes['headerPaddingYPx']}px`} borderBottomRadius={8} zIndex={9999}>
-            <Box h={`${sizes['headerSizePx']}px`} position="fixed" top="0" left="0" right="0" bgColor="primary.900" zIndex="1">
-                <Row alignItems="center" justifyContent="center" h="100%" paddingX={space[1]}>
-                    {showBack && (
-                        <Box ml={space['2']} position="absolute" left="0" zIndex={5}>
-                            <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />
-                        </Box>
-                    )}
-                    {(isMobile && (
-                        <Heading fontSize={headerTitleSize} color="lightText" flex="1" textAlign={'center'} position={'fixed'}>
+        <div className="h-auto">
+            <div className="h-14 bg-primary-light py-4 z-50 fixed top-0 left-0 right-0">
+                <div className="flex items-center justify-between h-full px-4">
+                    <div>{showBack && <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />}</div>
+                    <div className="flex flex-row items-center justify-between w-full lg:hidden">
+                        <div>{rightContent}</div>
+                        <Typography variant="body" className="text-primary font-semibold text-center lg:hidden">
                             {title}
-                        </Heading>
-                    )) || (
-                        <Box position={'relative'} flex="1">
-                            {children}
-                        </Box>
-                    )}
-                    {isMobile ? (
-                        <Stack alignItems="center" direction="row" width={'100%'} justifyContent={'space-between'}>
-                            <Box ml={showBack ? space[3] : 0}>{rightContent}</Box>
-                            <Stack alignItems="center" direction="row">
-                                <Box>{leftContent}</Box>
-                            </Stack>
-                        </Stack>
-                    ) : (
-                        <Stack>
-                            <Stack alignItems="center" direction="row">
-                                <Box>{leftContent}</Box>
-                                <Box>{rightContent}</Box>
-                            </Stack>
-                        </Stack>
-                    )}
-                </Row>
-            </Box>
-            {isMobile && children && (
-                <Box paddingX={space['1']} paddingTop={'56px'}>
-                    {children}
-                </Box>
-            )}
-        </Box>
+                        </Typography>
+                        <div className="flex flex-row items-center">{leftContent}</div>
+                    </div>
+                    <div className="flex-row justify-end hidden lg:flex">
+                        <div>{leftContent}</div>
+                        <div>{rightContent}</div>
+                    </div>
+                </div>
+            </div>
+            {children && <div className="px-4 pt-14 lg:hidden">{children}</div>}
+        </div>
     );
 };
 

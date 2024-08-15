@@ -1,12 +1,12 @@
-import { Button, Text, Circle, Popover, VStack, useBreakpointValue } from 'native-base';
-import { IButtonProps } from 'native-base/lib/typescript/components/primitives/Button/types';
+import { Text, Circle, Popover, VStack, useBreakpointValue } from 'native-base';
 import { MutableRefObject, useContext, useEffect, useState } from 'react';
-import BellIcon from '../../assets/icons/lernfair/lf-bell.svg';
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications';
 import { useConcreteNotifications } from '../../hooks/useConcreteNotifications';
 import NotificationPanel from './NotificationPanel';
 import { NotificationsContext } from '../../context/NotificationsProvider';
 import { getNewNotifications } from '../../helper/notification-helper';
+import { Button } from '../Button';
+import { IconBell } from '@tabler/icons-react';
 
 const NotificationAlert: React.FC = () => {
     const [count, setCount] = useState<number>(0);
@@ -37,7 +37,7 @@ const NotificationAlert: React.FC = () => {
         setCount(unreadNotifications.length);
     }, [lastTimeCheckedNotifications, userNotifications]);
 
-    const handleTrigger = ({ onPress, ref }: IButtonProps & { ref: MutableRefObject<any> }): React.ReactElement => {
+    const handleTrigger = ({ onPress, ref }: { onPress: () => void; ref: MutableRefObject<any> }): React.ReactElement => {
         return (
             <VStack>
                 {!!count && (
@@ -47,8 +47,8 @@ const NotificationAlert: React.FC = () => {
                         </Text>
                     </Circle>
                 )}
-                <Button onPress={onPress} ref={ref} variant="ghost">
-                    <BellIcon />
+                <Button onClick={onPress} ref={ref} variant="none" size="icon">
+                    <IconBell size={24} />
                 </Button>
             </VStack>
         );
