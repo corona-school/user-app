@@ -1,7 +1,7 @@
-import { Button } from 'native-base';
 import React, { useState } from 'react';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { languageIcons } from '../I18n';
+import { Button } from './Button';
 
 const SwitchLanguageButton: React.FC = () => {
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
@@ -12,7 +12,7 @@ const SwitchLanguageButton: React.FC = () => {
 
     return (
         <>
-            <Button onPress={() => setShowSwitchLanguage(true)} variant="ghost">
+            <Button onClick={() => setShowSwitchLanguage(true)} variant="none" size="icon">
                 <Icon />
             </Button>
             <SwitchLanguageModal isOpen={showSwitchLanguage} onCloseModal={() => setShowSwitchLanguage(false)} />
