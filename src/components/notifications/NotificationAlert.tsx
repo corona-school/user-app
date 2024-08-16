@@ -1,4 +1,4 @@
-import { Text, Circle, Popover, VStack, useBreakpointValue } from 'native-base';
+import { Popover } from 'native-base';
 import { MutableRefObject, useContext, useEffect, useState } from 'react';
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications';
 import { useConcreteNotifications } from '../../hooks/useConcreteNotifications';
@@ -7,6 +7,7 @@ import { NotificationsContext } from '../../context/NotificationsProvider';
 import { getNewNotifications } from '../../helper/notification-helper';
 import { Button } from '../Button';
 import { IconBell } from '@tabler/icons-react';
+import { Badge } from '../Badge';
 
 const NotificationAlert: React.FC = () => {
     const [count, setCount] = useState<number>(0);
@@ -15,11 +16,6 @@ const NotificationAlert: React.FC = () => {
     const { userNotifications, refetch, loading } = useConcreteNotifications();
 
     const { lastTimeCheckedNotifications, updateLastTimeChecked } = useLastTimeCheckedNotifications();
-
-    const badgeAlign = useBreakpointValue({
-        base: 0,
-        lg: 2,
-    });
 
     useEffect(() => {
         if (message?.id) {
@@ -39,18 +35,16 @@ const NotificationAlert: React.FC = () => {
 
     const handleTrigger = ({ onPress, ref }: { onPress: () => void; ref: MutableRefObject<any> }): React.ReactElement => {
         return (
-            <VStack>
+            <div className="flex flex-col relative">
                 {!!count && (
-                    <Circle position="absolute" my={3} mx={badgeAlign} alignSelf="flex-start" bgColor="danger.500" size="3.5" zIndex={1}>
-                        <Text fontSize="xs" color="white">
-                            {count}
-                        </Text>
-                    </Circle>
+                    <Badge className="absolute self-start size-4 top-[4px] right-[5px]" variant="destructive" shape="rounded">
+                        {count}
+                    </Badge>
                 )}
                 <Button onClick={onPress} ref={ref} variant="none" size="icon">
                     <IconBell size={24} />
                 </Button>
-            </VStack>
+            </div>
         );
     };
 
