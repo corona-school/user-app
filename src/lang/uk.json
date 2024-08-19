@@ -2324,6 +2324,7 @@
     "forStudents": {
         "tabs": {
             "handbook": "Посібник",
+            "mentoring": "Безкоштовна консультація",
             "onlineTraining": "Онлайн-тренінг"
         },
         "title": "Для помічників",
