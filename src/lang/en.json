@@ -2320,6 +2320,7 @@
     "forStudents": {
         "tabs": {
             "handbook": "Manual",
+            "mentoring": "Free consultation",
             "onlineTraining": "Online training"
         },
         "title": "For volunteers",
