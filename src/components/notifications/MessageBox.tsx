@@ -127,9 +127,11 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
                         {headline}
                     </Text>
                     <Tooltip maxW={300} label={body} _text={{ textAlign: 'center' }}>
-                        <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={isMobile ? 5 : 2}>
-                            {body}
-                        </Text>
+                        <Pressable onPress={navigateToLink}>
+                            <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={isMobile ? 5 : 2}>
+                                {body}
+                            </Text>
+                        </Pressable>
                     </Tooltip>
                 </VStack>
                 <Spacer />

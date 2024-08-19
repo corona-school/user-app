@@ -2322,6 +2322,7 @@
     "forStudents": {
         "tabs": {
             "handbook": "يدوي",
+            "mentoring": "نصيحة مجانية",
             "onlineTraining": "التدريب عبر الإنترنت"
         },
         "title": "للمساعدين",

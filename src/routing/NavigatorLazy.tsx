@@ -427,6 +427,7 @@ export default function NavigatorLazy() {
                 }
             >
                 <Route path="handbook" element={<IFrame title="handbook" src="https://www.lern-fair.de/iframe/hilfestellungen" />} />
+                <Route path="mentoring" element={<IFrame title="mentoring" src="https://www.lern-fair.de/iframe/mentoring-beratung" />} />
                 <Route path="online-training" element={<IFrame title="online-training" src="https://www.lern-fair.de/iframe/fortbildungen" />} />
                 <Route index element={<Navigate to="handbook" />} />
             </Route>

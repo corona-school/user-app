@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import Tabs from '../components/Tabs';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-const tabs = ['handbook', 'online-training'];
+const tabs = ['handbook', 'mentoring', 'online-training'];
 
 const KnowledgeCenter = () => {
     const { t } = useTranslation();
@@ -64,6 +64,11 @@ const KnowledgeCenter = () => {
                             {
                                 id: 'handbook',
                                 title: t('forStudents.tabs.handbook'),
+                                content: <Outlet />,
+                            },
+                            {
+                                id: 'mentoring',
+                                title: t('forStudents.tabs.mentoring'),
                                 content: <Outlet />,
                             },
                             {

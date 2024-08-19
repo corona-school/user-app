@@ -2326,6 +2326,7 @@
     "forStudents": {
         "tabs": {
             "handbook": "Manuel",
+            "mentoring": "Ücretsiz tavsiye",
             "onlineTraining": "Çevrimiçi eğitim"
         },
         "title": "Yardımcılar için",

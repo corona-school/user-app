@@ -505,6 +505,7 @@
         "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Helfer:innen.",
         "tabs": {
             "handbook": "Handbuch",
+            "mentoring": "Kostenlose Beratung",
             "onlineTraining": "Online-Fortbildungen"
         }
     },
