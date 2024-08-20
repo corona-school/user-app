@@ -5,6 +5,8 @@ import './I18n';
 import { datadogRum } from '@datadog/browser-rum';
 import { APP_VERSION, DD_APP_ID, DD_CLIENT_TOKEN, DD_ENV } from './config';
 import { getSessionToken } from './hooks/useApollo';
+import '@fontsource-variable/outfit';
+import './web/index.css';
 
 const root = document.getElementById('root');
 

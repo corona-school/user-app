@@ -812,7 +812,8 @@
         "removeParticipantFromCourseModal": {
             "header": "إزالة طالب من المقرر الدراسي",
             "remove": "أبعد",
-            "success": "تمت إزالة الطالب بنجاح"
+            "success": "تمت إزالة الطالب بنجاح",
+            "error": "الطالب: في لا يمكن إزالتها"
         }
     },
     "settings": {
@@ -1790,7 +1791,8 @@
         "selectPlaceHolderDuration": "اختر المدة",
         "cancelation_success": "تم إلغاء الدورة بنجاح",
         "select_participant": "حدد مشاركا",
-        "all_participants": "جميع المشاركين"
+        "all_participants": "جميع المشاركين",
+        "cancelation_error": "حدث خطأ. تعذر إلغاء الدورة التدريبية."
     },
     "notification": {
         "timedifference": {

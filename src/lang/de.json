@@ -885,7 +885,8 @@
         "removeParticipantFromCourseModal": {
             "header": "Schüler:in aus Kurs entfernen",
             "remove": "Entfernen",
-            "success": "Schüler:in erfolgreich entfernt"
+            "success": "Schüler:in erfolgreich entfernt",
+            "error": "Schüler:in konnte nicht entfernt werden"
         }
     },
     "settings": {
@@ -1678,6 +1679,7 @@
         "noticeDate": "Bitte fülle alle Felder korrekt aus",
         "selectPlaceHolderDuration": "Dauer auswählen",
         "cancelation_success": "Der Kurs wurde erfolgreich abgesagt",
+        "cancelation_error": "Es ist ein Fehler aufgetreten. Der Kurs konnte nicht abgesagt werden.",
         "selectOptions": {
             "_15minutes": "15 Minuten",
             "_30minutes": "30 Minuten",

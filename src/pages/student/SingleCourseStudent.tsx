@@ -1,17 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { Box, Button, Modal, Stack, Text, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useCallback, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
-import CancelSubCourseModal from '../../modals/CancelSubCourseModal';
-import { getTrafficStatus } from '../../Utility';
 import Banner from '../../widgets/CourseBanner';
 import PromoteBanner from '../../widgets/PromoteBanner';
 import Waitinglist from '../single-course/Waitinglist';
@@ -23,21 +19,26 @@ import { Appointment } from '../../types/lernfair/Appointment';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
-import RemoveParticipantFromCourseModal from '../../modals/RemoveParticipantFromCourseModal';
+import { Button } from '@/components/Button';
+import { toast } from 'sonner';
+import RemoveParticipantFromCourseModal from '@/modals/RemoveParticipantFromCourseModal';
+import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
+import { Typography } from '@/components/Typography';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 
 function Participants({
     subcourseId,
     contactParticipant,
-    removeParticipant,
     isInstructor,
+    onParticipantRemoved,
 }: {
     subcourseId: number;
     contactParticipant: (participantId: string) => void;
-    removeParticipant: (participantId: number) => Promise<void>;
     isInstructor: boolean;
+    onParticipantRemoved: () => void;
 }) {
     const { t } = useTranslation();
-    const { data, loading } = useQuery(
+    const { data, loading, refetch } = useQuery(
         gql(`
         query GetParticipants($subcourseId: Int!) {
             subcourse(subcourseId: $subcourseId){
@@ -61,17 +62,17 @@ function Participants({
         setIsRemoveParticipantModalOpen(true);
         setParticipantToRemove(participant);
     };
-    const handleRemoveParticipant = async (pupilId: number) => {
-        await removeParticipant(pupilId);
-        setIsRemoveParticipantModalOpen(false);
+    const handleOnParticipantRemoved = async () => {
         setParticipantToRemove(undefined);
+        onParticipantRemoved();
+        await refetch();
     };
 
     if (loading) return <CenterLoadingSpinner />;
 
     const participants = data?.subcourse?.participants ?? [];
 
-    if (participants.length === 0) return <Text>{t('single.global.noMembers')}</Text>;
+    if (participants.length === 0) return <p>{t('single.global.noMembers')}</p>;
 
     return (
         <>
@@ -83,9 +84,15 @@ function Participants({
                     removeParticipant={handleOpenModal}
                 />
             ))}
-            <Modal isOpen={isRemoveParticipantModalOpen} onClose={() => setIsRemoveParticipantModalOpen(false)} w="full">
-                <RemoveParticipantFromCourseModal participant={participantToRemove} removeParticipantFromCourse={handleRemoveParticipant} />
-            </Modal>
+            {participantToRemove && (
+                <RemoveParticipantFromCourseModal
+                    subcourseId={subcourseId}
+                    isOpen={isRemoveParticipantModalOpen}
+                    onOpenChange={setIsRemoveParticipantModalOpen}
+                    participant={participantToRemove}
+                    onParticipantRemoved={handleOnParticipantRemoved}
+                />
+            )}
         </>
     );
 }
@@ -191,18 +198,11 @@ query GetInstructorSubcourse($subcourseId: Int!) {
 `);
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
-    const [isPromoting, setIsPromoting] = useState(false);
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
-    const { space, sizes } = useTheme();
-    const toast = useToast();
-    const navigate = useNavigate();
 
-    const sectionSpacing = useBreakpointValue({
-        base: space['1'],
-        lg: space['4'],
-    });
+    const navigate = useNavigate();
 
     const {
         data,
@@ -258,7 +258,7 @@ const SingleCourseStudent = () => {
 
     const doPublish = useCallback(async () => {
         await publish();
-        toast.show({ description: 'Kurs veröffentlicht - Schüler können ihn jetzt sehen', placement: 'top' });
+        toast.success('Kurs veröffentlicht - Schüler können ihn jetzt sehen');
         refetchBasics();
     }, []);
 
@@ -273,7 +273,7 @@ const SingleCourseStudent = () => {
 
     const submitCourse = useCallback(async () => {
         await submit();
-        toast.show({ description: 'Kurs zur Prüfung freigegeben', placement: 'top' });
+        toast.success('Kurs zur Prüfung freigegeben');
         refetchBasics();
     }, []);
 
@@ -285,34 +285,6 @@ const SingleCourseStudent = () => {
         `)
     );
 
-    const [cancelSubcourse, { data: canceldData }] = useMutation(
-        gql(`mutation CancelSubcourse($subcourseId: Float!) {
-        subcourseCancel(subcourseId: $subcourseId)
-      }`),
-        { variables: { subcourseId: subcourseId } }
-    );
-
-    const [removeParticipant] = useMutation(
-        gql(`
-					mutation removeParticipantFromCourse($subcourseId: Float!, $pupilId: Float!) {
-						subcourseLeave(subcourseId: $subcourseId, pupilId: $pupilId)
-					}
-				`)
-    );
-
-    const doRemoveParticipant = async (pupilId: number) => {
-        await removeParticipant({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
-        toast.show({ description: t('single.removeParticipantFromCourseModal.success'), placement: 'top' });
-        refetchInstructorData();
-    };
-
-    const cancelCourse = useCallback(async () => {
-        setShowCancelModal(false);
-        await cancelSubcourse();
-        toast.show({ description: t('course.cancelation_success'), placement: 'top' });
-        refetchBasics();
-    }, [canceldData]);
-
     const [chatCreateAsProspect] = useMutation(
         gql(`
             mutation createProspectChat($subcourseId: Float!, $instructorUserId: String!) {
@@ -322,104 +294,15 @@ const SingleCourseStudent = () => {
     );
 
     async function contactInstructorAsProspect() {
-        const conversation = await chatCreateAsProspect({
-            variables: { subcourseId: subcourse!.id, instructorUserId: `student/${subcourse!.instructors[0].id}` },
-        });
-        if (conversation) {
+        try {
+            const conversation = await chatCreateAsProspect({
+                variables: { subcourseId: subcourse!.id, instructorUserId: `student/${subcourse!.instructors[0].id}` },
+            });
             navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
-        } else {
-            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        } catch (error) {
+            toast.error(t('chat.chatError'));
         }
     }
-
-    const tabs: Tab[] = [
-        {
-            title: t('single.tabs.lessons'),
-            content:
-                appointments.length > 0 ? (
-                    <Box minH={300}>
-                        <AppointmentList
-                            isReadOnlyList={!subcourse?.isInstructor}
-                            disableScroll
-                            appointments={appointments as Appointment[]}
-                            noOldAppointments
-                        />
-                    </Box>
-                ) : (
-                    <Box h={500} justifyContent="center">
-                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
-                    </Box>
-                ),
-        },
-        {
-            title: t('single.tabs.description'),
-            content: (
-                <>
-                    <Text maxWidth={sizes['imageHeaderWidth']} marginBottom={space['1']}>
-                        {course?.description}
-                    </Text>
-                </>
-            ),
-        },
-    ];
-
-    if (subcourse?.isInstructor) {
-        tabs.push({
-            title: t('single.tabs.participant'),
-            badge: subcourse?.participantsCount,
-            content: (
-                <>
-                    <Participants
-                        subcourseId={subcourseId}
-                        isInstructor={subcourse.isInstructor}
-                        contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
-                        removeParticipant={doRemoveParticipant}
-                    />
-                </>
-            ),
-        });
-    }
-
-    if (subcourse?.isInstructor && instructorSubcourse?.subcourse) {
-        tabs.push({
-            title: t('single.tabs.waitinglist'),
-            badge: instructorSubcourse.subcourse.pupilsWaitingCount,
-            content: (
-                <>
-                    <Waitinglist
-                        subcourseId={subcourseId}
-                        maxParticipants={subcourse?.maxParticipants}
-                        pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
-                        refetch={() => {
-                            refetchInstructorData();
-                            return refetchBasics();
-                        }}
-                    />
-                </>
-            ),
-        });
-    }
-
-    const [promote, { error }] = useMutation(
-        gql(`
-    mutation subcoursePromote($subcourseId: Float!) {
-        subcoursePromote(subcourseId: $subcourseId)
-    }
-`),
-        { variables: { subcourseId: subcourseId } }
-    );
-
-    const doPromote = async () => {
-        setIsPromoting(true);
-        await promote();
-        if (error) {
-            toast.show({ description: t('single.buttonPromote.toastFail'), placement: 'top' });
-        } else {
-            toast.show({ description: t('single.buttonPromote.toast'), placement: 'top' });
-        }
-        refetchInstructorData();
-        setIsPromoting(false);
-    };
 
     const isInPast = useMemo(
         () =>
@@ -454,6 +337,10 @@ const SingleCourseStudent = () => {
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     };
 
+    const handleOnPromoted = async () => {
+        await refetchInstructorData();
+    };
+
     const isActiveSubcourse = useMemo(() => {
         const today = DateTime.now().endOf('day');
         const isSubcourseCancelled = subcourse?.cancelled;
@@ -472,16 +359,16 @@ const SingleCourseStudent = () => {
             previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
-                <Stack alignItems="center" direction="row">
+                <div className="flex items-center flex-row">
                     <SwitchLanguageButton />
                     <NotificationAlert />
-                </Stack>
+                </div>
             }
         >
             {subLoading ? (
                 <CenterLoadingSpinner />
             ) : (
-                <Stack space={sectionSpacing} paddingX={space['1.5']}>
+                <div className="px-4 flex flex-col gap-y-11">
                     <SubcourseData
                         course={course!}
                         subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}
@@ -497,22 +384,29 @@ const SingleCourseStudent = () => {
                         />
                     )}
                     {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
-                        <Stack direction="row">
-                            <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
+                        <div>
+                            <Button variant="outline" onClick={contactInstructorAsProspect}>
                                 {t('single.actions.contactInstructor')}
                             </Button>
-                        </Stack>
+                        </div>
                     )}
-                    {subcourse && isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
-                        <PromoteBanner
-                            onClick={doPromote}
-                            seatsFull={subcourse?.participantsCount}
-                            seatsMax={subcourse?.maxParticipants}
-                            isPromoted={instructorSubcourse?.subcourse?.wasPromotedByInstructor || false}
-                            courseStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-                            isPromoting={isPromoting}
-                        />
-                    )}
+                    {subcourse &&
+                        instructorSubcourse?.subcourse &&
+                        isInstructorOfSubcourse &&
+                        subcourse.published &&
+                        !subLoading &&
+                        !isInPast &&
+                        canPromoteCourse && (
+                            <PromoteBanner
+                                onPromoted={handleOnPromoted}
+                                subcourse={{
+                                    id: subcourse.id,
+                                    maxParticipants: subcourse.maxParticipants,
+                                    participantsCount: subcourse.participantsCount,
+                                    wasPromotedByInstructor: instructorSubcourse.subcourse.wasPromotedByInstructor,
+                                }}
+                            />
+                        )}
                     {!isInPast && isInstructorOfSubcourse && (
                         <Banner
                             courseState={course!.courseState!}
@@ -521,12 +415,72 @@ const SingleCourseStudent = () => {
                             handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
                         />
                     )}
-                    <NavigationTabs tabs={tabs} />
-                </Stack>
+                    <Tabs defaultValue="lectures">
+                        <TabsList>
+                            <TabsTrigger value="lectures">{t('single.tabs.lessons')}</TabsTrigger>
+                            <TabsTrigger value="description">{t('single.tabs.description')}</TabsTrigger>
+                            {subcourse?.isInstructor && (
+                                <TabsTrigger badge={subcourse?.participantsCount} value="participants">
+                                    {t('single.tabs.participant')}
+                                </TabsTrigger>
+                            )}
+                            {subcourse?.isInstructor && instructorSubcourse?.subcourse && (
+                                <TabsTrigger badge={instructorSubcourse.subcourse.pupilsWaitingCount} value="waiting-list">
+                                    {t('single.tabs.waitinglist')}
+                                </TabsTrigger>
+                            )}
+                        </TabsList>
+                        <TabsContent value="lectures">
+                            {appointments.length > 0 ? (
+                                <AppointmentList
+                                    isReadOnlyList={!subcourse?.isInstructor}
+                                    disableScroll
+                                    appointments={appointments as Appointment[]}
+                                    noOldAppointments
+                                    height="340px"
+                                    isFullWidth
+                                />
+                            ) : (
+                                <div className="justify-center">
+                                    <AppointmentsEmptyState
+                                        title={t('appointment.empty.noAppointments')}
+                                        subtitle={t('appointment.empty.noAppointmentsDesc')}
+                                    />
+                                </div>
+                            )}
+                        </TabsContent>
+                        <TabsContent value="description">
+                            <Typography>{course?.description}</Typography>
+                        </TabsContent>
+                        <TabsContent value="participants">
+                            {subcourse && subcourse.isInstructor && (
+                                <Participants
+                                    subcourseId={subcourseId}
+                                    isInstructor={subcourse.isInstructor}
+                                    contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
+                                    onParticipantRemoved={refetchBasics}
+                                />
+                            )}
+                        </TabsContent>
+                        {subcourse?.isInstructor && instructorSubcourse?.subcourse && (
+                            <TabsContent value="waiting-list">
+                                <Waitinglist
+                                    subcourseId={subcourseId}
+                                    maxParticipants={subcourse?.maxParticipants}
+                                    pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
+                                    refetch={() => {
+                                        refetchInstructorData();
+                                        return refetchBasics();
+                                    }}
+                                />
+                            </TabsContent>
+                        )}
+                    </Tabs>
+                </div>
             )}
-            <Modal>
-                <CancelSubCourseModal isOpen={showCancelModal} onClose={() => setShowCancelModal(false)} onCourseCancel={cancelCourse} />
-            </Modal>
+            {subcourse?.id && (
+                <CancelSubCourseModal subcourseId={subcourse?.id} isOpen={showCancelModal} onOpenChange={setShowCancelModal} onCourseCanceled={refetchBasics} />
+            )}
         </WithNavigation>
     );
 };

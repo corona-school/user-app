@@ -816,7 +816,8 @@
         "removeParticipantFromCourseModal": {
             "header": "Видалити студента з курсу",
             "remove": "Видалити",
-            "success": "Student:in успішно видалено"
+            "success": "Student:in успішно видалено",
+            "error": "Student:in не вдалося видалити"
         }
     },
     "settings": {
@@ -1794,7 +1795,8 @@
         "selectPlaceHolderDuration": "Виберіть тривалість",
         "cancelation_success": "Курс успішно скасовано",
         "select_participant": "Виберіть учасника:в",
-        "all_participants": "всі учасники"
+        "all_participants": "всі учасники",
+        "cancelation_error": "Сталася помилка. Курс не може бути скасований."
     },
     "notification": {
         "timedifference": {
