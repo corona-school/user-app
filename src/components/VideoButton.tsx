@@ -9,6 +9,7 @@ import { useQuery } from '@apollo/client';
 import { canJoinMeeting } from '../widgets/AppointmentDay';
 import { DateTime } from 'luxon';
 import { Button } from './Button';
+import { IconVideo } from '@tabler/icons-react';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -86,6 +87,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
                 onClick={openMeeting}
                 className={className}
+                leftIcon={<IconVideo size={16} />}
             >
                 {buttonText ?? isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
             </Button>
