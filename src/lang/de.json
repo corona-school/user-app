@@ -13,6 +13,8 @@
     "helper": "Helfer:in",
     "to": "An",
     "or": "oder",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
