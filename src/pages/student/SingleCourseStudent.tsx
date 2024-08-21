@@ -368,7 +368,7 @@ const SingleCourseStudent = () => {
             {subLoading ? (
                 <CenterLoadingSpinner />
             ) : (
-                <div className="px-4 flex flex-col gap-y-11">
+                <div className="flex flex-col gap-y-11">
                     <SubcourseData
                         course={course!}
                         subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}
@@ -418,7 +418,6 @@ const SingleCourseStudent = () => {
                     <Tabs defaultValue="lectures">
                         <TabsList>
                             <TabsTrigger value="lectures">{t('single.tabs.lessons')}</TabsTrigger>
-                            <TabsTrigger value="description">{t('single.tabs.description')}</TabsTrigger>
                             {subcourse?.isInstructor && (
                                 <TabsTrigger badge={subcourse?.participantsCount} value="participants">
                                     {t('single.tabs.participant')}
@@ -448,9 +447,6 @@ const SingleCourseStudent = () => {
                                     />
                                 </div>
                             )}
-                        </TabsContent>
-                        <TabsContent value="description">
-                            <Typography>{course?.description}</Typography>
                         </TabsContent>
                         <TabsContent value="participants">
                             {subcourse && subcourse.isInstructor && (
