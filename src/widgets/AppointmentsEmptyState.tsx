@@ -1,21 +1,20 @@
-import { Text, Box, Heading } from 'native-base';
+import { Typography } from '@/components/Typography';
 import EmptyStateAppointments from '../assets/icons/lernfair/empty-state-appointments.svg';
 
-type Props = {
+type AppointmentsEmptyStateProps = {
     title: string;
     subtitle: string;
-    isEnd?: boolean;
 };
 
-const AppointmentsEmptyState: React.FC<Props> = ({ title, subtitle }) => {
+const AppointmentsEmptyState = ({ title, subtitle }: AppointmentsEmptyStateProps) => {
     return (
-        <Box alignItems="center" justifyContent="center">
+        <div className="flex flex-col items-center justify-center">
             <EmptyStateAppointments />
-            <Heading>{title}</Heading>
-            <Text maxW="300" textAlign="center" py="3">
-                {subtitle}
-            </Text>
-        </Box>
+            <Typography variant="h5" as="p">
+                {title}
+            </Typography>
+            <Typography className="max-w-80 text-center py-3">{subtitle}</Typography>
+        </div>
     );
 };
 export default AppointmentsEmptyState;

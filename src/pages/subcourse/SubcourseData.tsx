@@ -53,7 +53,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         </Badge>
                     )}
                     {course?.tags?.map(({ name }) => (
-                        <Badge>
+                        <Badge key={name}>
                             <Typography variant="sm" className="text-white">
                                 {name}
                             </Typography>
