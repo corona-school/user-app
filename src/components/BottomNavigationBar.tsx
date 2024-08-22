@@ -39,7 +39,7 @@ const BottomNavigationBar: React.FC<Props> = ({ navItems, unreadMessagesCount })
                 const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
 
                 const isHidden = ['knowledge-helper', 'knowledge-pupil'].includes(key);
-                if (isHidden) return <></>;
+                if (isHidden) return null;
 
                 return (
                     <NavLink

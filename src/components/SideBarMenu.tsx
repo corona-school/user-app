@@ -57,7 +57,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                         const disabled =
                             _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
                         const isHidden = (key === 'knowledge-helper' && hideForStudents) || (key === 'knowledge-pupil' && hideForPupils);
-                        if (isHidden) return <></>;
+                        if (isHidden) return null;
                         return (
                             <NavLink
                                 className={({ isActive }) =>
