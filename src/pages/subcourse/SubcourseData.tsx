@@ -42,8 +42,8 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
         !isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && !hideTrafficStatus && !subcourse?.isParticipant;
 
     return (
-        <div className="flex flex-col-reverse md:flex-row justify-between lg:pr-4">
-            <div className="flex flex-col gap-y-4 w-full md:w-1/2">
+        <div className="flex flex-col-reverse lg:flex-row justify-between">
+            <div className="flex flex-col gap-y-4 w-full lg:w-1/2">
                 <div className="flex flex-row gap-x-3 mt-4 lg:mt-0">
                     {isCourseNewlyAdded && (
                         <Badge>
@@ -121,7 +121,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
             </div>
 
             <div className="lg:ml-11">
-                <img alt={course?.name} className="w-[570px] h-56 rounded-lg object-cover" src={course?.image!} />
+                <img alt={course?.name} className="w-[460px] h-56 rounded-lg object-cover" src={course?.image!} />
             </div>
         </div>
     );

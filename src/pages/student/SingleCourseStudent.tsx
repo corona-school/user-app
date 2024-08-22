@@ -368,53 +368,55 @@ const SingleCourseStudent = () => {
             {subLoading ? (
                 <CenterLoadingSpinner />
             ) : (
-                <div className="flex flex-col gap-y-11">
+                <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
                     <SubcourseData
                         course={course!}
                         subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}
                         isInPast={isInPast}
                         hideTrafficStatus={canPromoteCourse}
                     />
-                    {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
-                        <StudentCourseButtons
-                            subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
-                            refresh={refetchBasics}
-                            appointment={myNextAppointment as Lecture}
-                            isActiveSubcourse={isActiveSubcourse}
-                        />
-                    )}
-                    {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
-                        <div>
-                            <Button variant="outline" onClick={contactInstructorAsProspect}>
-                                {t('single.actions.contactInstructor')}
-                            </Button>
+                    <div className="flex flex-col gap-y-11 justify-between xl:flex-row">
+                        <div className="flex flex-col gap-y-11 justify-between w-full">
+                            {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                                <StudentCourseButtons
+                                    subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
+                                    refresh={refetchBasics}
+                                    appointment={myNextAppointment as Lecture}
+                                    isActiveSubcourse={isActiveSubcourse}
+                                />
+                            )}
+                            {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
+                                <div>
+                                    <Button variant="outline" onClick={contactInstructorAsProspect}>
+                                        {t('single.actions.contactInstructor')}
+                                    </Button>
+                                </div>
+                            )}
+                            {!isInPast && isInstructorOfSubcourse && (
+                                <Banner
+                                    courseState={course!.courseState!}
+                                    isCourseCancelled={subcourse!.cancelled}
+                                    isPublished={subcourse!.published}
+                                    handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
+                                />
+                            )}
                         </div>
-                    )}
-                    {subcourse &&
-                        instructorSubcourse?.subcourse &&
-                        isInstructorOfSubcourse &&
-                        subcourse.published &&
-                        !subLoading &&
-                        !isInPast &&
-                        canPromoteCourse && (
-                            <PromoteBanner
-                                onPromoted={handleOnPromoted}
-                                subcourse={{
-                                    id: subcourse.id,
-                                    maxParticipants: subcourse.maxParticipants,
-                                    participantsCount: subcourse.participantsCount,
-                                    wasPromotedByInstructor: instructorSubcourse.subcourse.wasPromotedByInstructor,
-                                }}
-                            />
-                        )}
-                    {!isInPast && isInstructorOfSubcourse && (
-                        <Banner
-                            courseState={course!.courseState!}
-                            isCourseCancelled={subcourse!.cancelled}
-                            isPublished={subcourse!.published}
-                            handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
-                        />
-                    )}
+                        {subcourse &&
+                            instructorSubcourse?.subcourse &&
+                            isInstructorOfSubcourse &&
+                            subcourse.published &&
+                            !subLoading &&
+                            !isInPast &&
+                            canPromoteCourse && (
+                                <PromoteBanner
+                                    onPromoted={handleOnPromoted}
+                                    subcourse={{
+                                        id: subcourse.id,
+                                        wasPromotedByInstructor: instructorSubcourse.subcourse.wasPromotedByInstructor,
+                                    }}
+                                />
+                            )}
+                    </div>
                     <Tabs defaultValue="lectures">
                         <TabsList>
                             <TabsTrigger value="lectures">{t('single.tabs.lessons')}</TabsTrigger>
