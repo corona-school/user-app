@@ -1,8 +1,9 @@
-import { Text, Button, Heading, useTheme, VStack, useBreakpointValue, Box, Stack } from 'native-base';
+import { Text, Button, Heading, useTheme, VStack, useBreakpointValue, Box, Stack, Row } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import CTACard from '../../widgets/CTACard';
+import BarrierIcon from '../../assets/icons/barrier-block_green.svg';
 import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
@@ -165,6 +166,9 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const isMobile = useBreakpointValue({ base: true, md: false });
     const isMobileOrTablet = useBreakpointValue({ base: true, lg: false });
+    const startSummerVacation = new Date('2024-06-10');
+    const endSummerVacation = new Date('2024-09-02');
+    const isSummerVacation = startSummerVacation <= new Date() && endSummerVacation >= new Date();
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -240,6 +244,46 @@ const DashboardStudent: React.FC<Props> = () => {
                             <VStack marginBottom={space['1.5']}>
                                 <VStack space={space['1']}>
                                     <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
+
+                                    {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') &&
+                                        (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
+                                            <VStack marginBottom={space['1.5']}>
+                                                <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                                <CTACard
+                                                    title={t('dashboard.homeworkhelp.catcher')}
+                                                    closeable={false}
+                                                    content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                                    buttonIsBanner={isSummerVacation}
+                                                    button={
+                                                        isSummerVacation ? (
+                                                            <Row
+                                                                width="100%"
+                                                                flexWrap="wrap"
+                                                                justifyContent={'flex-start'}
+                                                                alignItems={'center'}
+                                                                bg={'secondary.100'}
+                                                                borderRadius={4}
+                                                                padding={2}
+                                                            >
+                                                                <Box mr={space['0.5']}>
+                                                                    <BarrierIcon />
+                                                                </Box>
+                                                                <Text fontSize={'sm'} flexWrap={'wrap'}>
+                                                                    {t('matching.homeworkhelp.buttonSummerVacation', {
+                                                                        endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
+                                                                    })}
+                                                                </Text>
+                                                            </Row>
+                                                        ) : (
+                                                            <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                                                {t('matching.homeworkhelp.button')}
+                                                            </Button>
+                                                        )
+                                                    }
+                                                    icon={<BooksIcon />}
+                                                />
+                                            </VStack>
+                                        )}
                                 </VStack>
                             </VStack>
 

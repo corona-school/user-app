@@ -241,7 +241,7 @@ const Dashboard: React.FC<Props> = () => {
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
 
-                            {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
+                            {/* {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
                                 <VStack marginBottom={space['1.5']}>
                                     <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
                                     <CTACard
@@ -278,7 +278,7 @@ const Dashboard: React.FC<Props> = () => {
                                         icon={<BooksIcon />}
                                     />
                                 </VStack>
-                            )}
+                            )} */}
 
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
