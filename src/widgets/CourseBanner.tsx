@@ -69,7 +69,7 @@ const CourseBanner: React.FC<CourseBannerProps> = ({ courseState, isCourseCancel
     if (isCourseCancelled) return null;
 
     return (
-        <div className="flex flex-col items-center bg-white border border-gray-300 justify-between max-w-[460px] p-4 rounded-lg md:flex-row">
+        <div className="flex flex-col items-center bg-white border border-gray-300 justify-between w-full max-w-[460px] p-4 rounded-lg md:flex-row">
             <div className="flex mb-3 md:mb-0">
                 <Typography className="font-bold">{t('single.banner.state')}</Typography>
                 <Typography className={`ml-1 mr-2 ${state.textColor}`}>{state.text}</Typography>
