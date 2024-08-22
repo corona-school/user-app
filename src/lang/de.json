@@ -890,7 +890,8 @@
             "remove": "Entfernen",
             "success": "Schüler:in erfolgreich entfernt",
             "error": "Schüler:in konnte nicht entfernt werden"
-        }
+        },
+        "removeFromCourse": "Aud dem Kurs entfernen"
     },
     "settings": {
         "header": "Einstellungen",
@@ -1973,6 +1974,7 @@
     },
     "chat": {
         "title": "Chat",
+        "openChat": "Chat öffnen",
         "openSubcourseChat": "Gruppen-Chat öffnen",
         "openAnnouncementChat": "Ankündigungschat öffnen",
         "hint": "Du kannst den Gruppen-Chat erst öffnen, wenn sich mindestens zwei Schüler:innen zu deinem Kurs angemeldet haben.",

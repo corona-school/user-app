@@ -74,14 +74,16 @@ function Participants({
 
     return (
         <>
-            {participants.map((participant) => (
-                <ParticipantRow
-                    participant={participant}
-                    isInstructor={isInstructor}
-                    contactParticipant={contactParticipant}
-                    removeParticipant={handleOpenModal}
-                />
-            ))}
+            <div className="flex flex-col gap-y-6 max-w-[980px] mt-14">
+                {participants.map((participant) => (
+                    <ParticipantRow
+                        participant={participant}
+                        isInstructor={isInstructor}
+                        contactParticipant={contactParticipant}
+                        removeParticipant={handleOpenModal}
+                    />
+                ))}
+            </div>
             {participantToRemove && (
                 <RemoveParticipantFromCourseModal
                     subcourseId={subcourseId}
