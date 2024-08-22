@@ -373,6 +373,12 @@ const SingleCourseStudent = () => {
         return !is30DaysBeforeToday;
     }, [appointments, subcourse?.cancelled]);
 
+    const showParticipantsTab = subcourse?.isInstructor;
+    const showWaitingListTab = subcourse?.isInstructor && instructorSubcourse?.subcourse;
+    const showLecturesTab = showParticipantsTab || showWaitingListTab;
+
+    const showTabsControls = showParticipantsTab || showWaitingListTab || showLecturesTab;
+
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
@@ -439,26 +445,28 @@ const SingleCourseStudent = () => {
                             )}
                     </div>
                     <Tabs defaultValue="lectures">
-                        <TabsList>
-                            <TabsTrigger value="lectures">{t('single.tabs.lessons')}</TabsTrigger>
-                            {subcourse?.isInstructor && (
-                                <TabsTrigger badge={subcourse?.participantsCount} value="participants">
-                                    {t('single.tabs.participant')}
-                                </TabsTrigger>
-                            )}
-                            {subcourse?.isInstructor && instructorSubcourse?.subcourse && (
-                                <TabsTrigger badge={instructorSubcourse.subcourse.pupilsWaitingCount} value="waiting-list">
-                                    {t('single.tabs.waitinglist')}
-                                </TabsTrigger>
-                            )}
-                        </TabsList>
+                        {showTabsControls && (
+                            <TabsList>
+                                {showLecturesTab && <TabsTrigger value="lectures">{t('single.tabs.lessons')}</TabsTrigger>}
+                                {showParticipantsTab && (
+                                    <TabsTrigger badge={subcourse?.participantsCount} value="participants">
+                                        {t('single.tabs.participant')}
+                                    </TabsTrigger>
+                                )}
+                                {showWaitingListTab && (
+                                    <TabsTrigger badge={instructorSubcourse.subcourse!.pupilsWaitingCount} value="waiting-list">
+                                        {t('single.tabs.waitinglist')}
+                                    </TabsTrigger>
+                                )}
+                            </TabsList>
+                        )}
                         <TabsContent value="lectures">
                             <div className="mt-8 max-h-80 overflow-y-scroll">
                                 <AppointmentList appointments={appointments} isReadOnly={!isInstructorOfSubcourse} disableScroll />
                             </div>
                         </TabsContent>
                         <TabsContent value="participants">
-                            {subcourse && subcourse.isInstructor && (
+                            {subcourse && showParticipantsTab && (
                                 <Participants
                                     subcourseId={subcourseId}
                                     isInstructor={subcourse.isInstructor}
@@ -467,12 +475,12 @@ const SingleCourseStudent = () => {
                                 />
                             )}
                         </TabsContent>
-                        {subcourse?.isInstructor && instructorSubcourse?.subcourse && (
+                        {showWaitingListTab && (
                             <TabsContent value="waiting-list">
                                 <Waitinglist
                                     subcourseId={subcourseId}
                                     maxParticipants={subcourse?.maxParticipants}
-                                    pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
+                                    pupilsOnWaitinglist={instructorSubcourse!.subcourse?.pupilsOnWaitinglist}
                                     refetch={() => {
                                         refetchInstructorData();
                                         return refetchBasics();
