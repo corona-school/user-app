@@ -18,7 +18,7 @@ interface AppointmentFactProps {
 }
 
 const AppointmentFact = ({ children, icon }: AppointmentFactProps) => (
-    <div className="flex gap-x-3 items-center">
+    <div className="flex gap-x-2 lg:gap-x-3 items-center">
         {icon}
         {children}
     </div>
@@ -44,7 +44,7 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
     const totalParticipants = appointment.participantIds?.length || 0;
     const declinedParticipants = appointment.declinedBy?.length || 0;
     return (
-        <div className="flex items-center h-[84px] max-w-[980px] py-4 pl-9 pr-7 border border-gray-300 rounded">
+        <div className="flex flex-col lg:flex-row items-center lg:h-[84px] max-w-[980px] py-4 px-4 lg:pl-9 lg:pr-7 border border-gray-300 rounded">
             <div className="flex flex-col">
                 <Typography variant="sm">{DateTime.fromISO(appointment.start).weekdayLong}</Typography>
                 <Typography variant="h4" as="p">
@@ -52,7 +52,7 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
                 </Typography>
             </div>
             <Separator orientation="vertical" decorative className="ml-6 mr-8" />
-            <div className="grid grid-cols-2 grid-rows-2 gap-x-10 gap-y-2">
+            <div className="grid grid-cols-2 grid-rows-2 lg:gap-x-10 gap-y-2 w-full">
                 <AppointmentFact icon={<IconClock size={18} />}>
                     <Typography variant="sm">{getAppointmentTimeText(appointment.start, appointment.duration)}</Typography>
                 </AppointmentFact>
@@ -78,7 +78,7 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
                     onClick={() => navigate(`/appointment/${appointment.id}`)}
                     variant="outline"
                     rightIcon={<IconChevronRight size={16} />}
-                    className="ml-auto"
+                    className="w-full mt-2 lg:mt-0 lg:w-fit ml-auto"
                 >
                     {t('show')}
                 </Button>
