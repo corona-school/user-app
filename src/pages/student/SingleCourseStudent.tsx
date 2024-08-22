@@ -14,17 +14,15 @@ import Waitinglist from '../single-course/Waitinglist';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
-import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
-import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
 import { Button } from '@/components/Button';
 import { toast } from 'sonner';
 import RemoveParticipantFromCourseModal from '@/modals/RemoveParticipantFromCourseModal';
 import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
-import { Typography } from '@/components/Typography';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
+import { AppointmentList } from '@/components/appointment/AppointmentsList';
 
 function Participants({
     subcourseId,
@@ -159,7 +157,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
               subcourse {
                 published
               }
-            }
+        }
     }
 }
 `);
@@ -185,6 +183,27 @@ query GetInstructorSubcourse($subcourseId: Int!) {
         canContactParticipants { allowed reason }
         canCancel { allowed reason }
         appointments {
+            id
+            appointmentType
+            title
+            description
+            start
+            duration
+            displayName
+            position
+            total
+            isOrganizer
+            isParticipant
+            organizers(skip: 0, take: 5) {
+                id
+                firstname
+                lastname
+            }
+            participantIds
+            declinedBy
+            subcourse {
+                published
+            }
             participants(skip: 0, take: 50) {
                 id
                 firstname
@@ -232,7 +251,9 @@ const SingleCourseStudent = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
-    const appointments = subcourse?.appointments ?? [];
+    const appointments = useMemo(() => {
+        return ((isInstructorOfSubcourse ? instructorSubcourse?.subcourse?.appointments : subcourse?.appointments) ?? []) as Appointment[];
+    }, [instructorSubcourse?.subcourse?.appointments, isInstructorOfSubcourse, subcourse?.appointments]);
     const myNextAppointment = useMemo(() => {
         const now = DateTime.now();
         const next = appointments.find((appointment) => {
@@ -432,23 +453,9 @@ const SingleCourseStudent = () => {
                             )}
                         </TabsList>
                         <TabsContent value="lectures">
-                            {appointments.length > 0 ? (
-                                <AppointmentList
-                                    isReadOnlyList={!subcourse?.isInstructor}
-                                    disableScroll
-                                    appointments={appointments as Appointment[]}
-                                    noOldAppointments
-                                    height="340px"
-                                    isFullWidth
-                                />
-                            ) : (
-                                <div className="justify-center">
-                                    <AppointmentsEmptyState
-                                        title={t('appointment.empty.noAppointments')}
-                                        subtitle={t('appointment.empty.noAppointmentsDesc')}
-                                    />
-                                </div>
-                            )}
+                            <div className="mt-8 max-h-80 overflow-y-scroll">
+                                <AppointmentList appointments={appointments} isReadOnly={!isInstructorOfSubcourse} disableScroll />
+                            </div>
                         </TabsContent>
                         <TabsContent value="participants">
                             {subcourse && subcourse.isInstructor && (
