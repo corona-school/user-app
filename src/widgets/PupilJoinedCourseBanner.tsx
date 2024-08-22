@@ -19,7 +19,7 @@ const PupilJoinedCourseBanner: React.FC<BannerProps> = ({ courseStatus, seatsLef
             <Divider mb="3" />
             <Stack direction="row" alignItems="center">
                 <Box pr="2">
-                    <CheckIcon />
+                    <CheckIcon width={54} />
                 </Box>
                 <Text ml="1" fontSize="md">
                     {t('single.card.alreadyRegistered')}
