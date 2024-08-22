@@ -70,9 +70,9 @@ const WithNavigation: React.FC<Props> = ({
             >
                 {headerContent}
             </HeaderCard>
-            <div className="flex flex-1 max-h-dvh">
+            <div className="flex flex-1">
                 {!hideMenu && <SideBarMenu navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
-                <div className="pb-[56px] overflow-auto flex-1">
+                <div className="overflow-x-auto overflow-y-hidden flex-1">
                     {(!isLoading && (
                         <>
                             <>
@@ -83,7 +83,7 @@ const WithNavigation: React.FC<Props> = ({
                                     </div>
                                 )}
                             </>
-                            <div className="p-4 lg:p-6">{children}</div>
+                            <div className="p-4 lg:p-6 h-full">{children}</div>
                         </>
                     )) || <CenterLoadingSpinner />}
                 </div>

@@ -50,8 +50,8 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
     }, [userType]);
 
     return (
-        <>
-            <nav className="hidden md:flex min-w-60  flex-col h-[calc(100dvh-56px)] sticky pt-9 pb-6 justify-between shadow-lg">
+        <div className="hidden md:block min-w-60">
+            <nav className="flex min-w-60 flex-col h-[calc(100dvh-56px)] fixed pt-9 pb-6 justify-between shadow-lg">
                 <div className="flex flex-col gap-y-4 px-4">
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
                         const disabled =
@@ -85,7 +85,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                 </Button>
             </nav>
             <AppFeedbackModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-        </>
+        </div>
     );
 };
 export default SideBarMenu;
