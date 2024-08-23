@@ -883,7 +883,8 @@
             "header": "Schüler:innen nachrücken",
             "add": "Hinzufügen",
             "amount": "Anzahl Schüler:innen",
-            "success": "Schüler:innen erfolgreich hinzugefügt"
+            "success": "Schüler:innen erfolgreich hinzugefügt",
+            "error": "Schüler:innen konnten nicht hinzugefügt werden"
         },
         "removeParticipantFromCourseModal": {
             "header": "Schüler:in aus Kurs entfernen",
@@ -891,7 +892,8 @@
             "success": "Schüler:in erfolgreich entfernt",
             "error": "Schüler:in konnte nicht entfernt werden"
         },
-        "removeFromCourse": "Aud dem Kurs entfernen"
+        "removeFromCourse": "Aus dem Kurs entfernen",
+        "addToCourse": "Zum Kurs hinzufügen"
     },
     "settings": {
         "header": "Einstellungen",

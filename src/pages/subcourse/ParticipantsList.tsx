@@ -57,6 +57,7 @@ export const ParticipantsList = ({ subcourseId, contactParticipant, isInstructor
             <div className="flex flex-col gap-y-6 max-w-[980px] mt-14">
                 {participants.map((participant) => (
                     <ParticipantRow
+                        key={participant.id}
                         participant={participant}
                         isInstructor={isInstructor}
                         contactParticipant={contactParticipant}
