@@ -11,91 +11,16 @@ import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import Banner from '../../widgets/CourseBanner';
 import PromoteBanner from '../../widgets/PromoteBanner';
 import Waitinglist from '../single-course/Waitinglist';
-import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
 import { Appointment } from '../../types/lernfair/Appointment';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
-import { SubcourseParticipant } from '../../types/lernfair/Course';
 import { Button } from '@/components/Button';
 import { toast } from 'sonner';
-import RemoveParticipantFromCourseModal from '@/modals/RemoveParticipantFromCourseModal';
 import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
-
-function Participants({
-    subcourseId,
-    contactParticipant,
-    isInstructor,
-    onParticipantRemoved,
-}: {
-    subcourseId: number;
-    contactParticipant: (participantId: string) => void;
-    isInstructor: boolean;
-    onParticipantRemoved: () => void;
-}) {
-    const { t } = useTranslation();
-    const { data, loading, refetch } = useQuery(
-        gql(`
-        query GetParticipants($subcourseId: Int!) {
-            subcourse(subcourseId: $subcourseId){
-                participants {
-                    id
-                    firstname
-                    lastname
-                    schooltype
-                    grade
-                    gradeAsInt
-                }
-            }
-        }
-    `),
-        { variables: { subcourseId } }
-    );
-    const [isRemoveParticipantModalOpen, setIsRemoveParticipantModalOpen] = useState(false);
-    const [participantToRemove, setParticipantToRemove] = useState<SubcourseParticipant>();
-
-    const handleOpenModal = (participant: SubcourseParticipant) => {
-        setIsRemoveParticipantModalOpen(true);
-        setParticipantToRemove(participant);
-    };
-    const handleOnParticipantRemoved = async () => {
-        setParticipantToRemove(undefined);
-        onParticipantRemoved();
-        await refetch();
-    };
-
-    if (loading) return <CenterLoadingSpinner />;
-
-    const participants = data?.subcourse?.participants ?? [];
-
-    if (participants.length === 0) return <p>{t('single.global.noMembers')}</p>;
-
-    return (
-        <>
-            <div className="flex flex-col gap-y-6 max-w-[980px] mt-14">
-                {participants.map((participant) => (
-                    <ParticipantRow
-                        participant={participant}
-                        isInstructor={isInstructor}
-                        contactParticipant={contactParticipant}
-                        removeParticipant={handleOpenModal}
-                    />
-                ))}
-            </div>
-            {participantToRemove && (
-                <RemoveParticipantFromCourseModal
-                    subcourseId={subcourseId}
-                    isOpen={isRemoveParticipantModalOpen}
-                    onOpenChange={setIsRemoveParticipantModalOpen}
-                    participant={participantToRemove}
-                    onParticipantRemoved={handleOnParticipantRemoved}
-                />
-            )}
-        </>
-    );
-}
+import { ParticipantsList } from '../subcourse/ParticipantsList';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -469,7 +394,7 @@ const SingleCourseStudent = () => {
                         </TabsContent>
                         <TabsContent value="participants">
                             {subcourse && showParticipantsTab && (
-                                <Participants
+                                <ParticipantsList
                                     subcourseId={subcourseId}
                                     isInstructor={subcourse.isInstructor}
                                     contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
