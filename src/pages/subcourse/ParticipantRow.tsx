@@ -26,8 +26,9 @@ interface ParticipantRowProps {
     isInstructor?: boolean;
     contactParticipant?: (participantId: string) => void;
     removeParticipant?: (participant: SubcourseParticipant) => void;
+    addParticipant?: (participant: SubcourseParticipant) => void;
 }
-const ParticipantRow = ({ participant, isInstructor, contactParticipant, removeParticipant }: ParticipantRowProps) => {
+const ParticipantRow = ({ participant, isInstructor, contactParticipant, removeParticipant, addParticipant }: ParticipantRowProps) => {
     const { t } = useTranslation();
     return (
         <div className="flex flex-col lg:flex-row items-center lg:h-[84px] max-w-[980px] py-4 px-4 lg:pl-9 lg:pr-7 border border-gray-300 rounded">
@@ -46,20 +47,25 @@ const ParticipantRow = ({ participant, isInstructor, contactParticipant, removeP
                     </Typography>
                 </ParticipantFact>
             </div>
-            <div className="flex flex-col gap-y-2 lg:flex-row ml-auto gap-x-4 w-full mt-4 lg:mt-0">
+            <div className="flex flex-col gap-y-2 lg:flex-row lg:justify-end ml-auto gap-x-4 w-full mt-4 lg:mt-0">
                 {isInstructor && contactParticipant && (
                     <Button
                         onClick={() => contactParticipant(pupilIdToUserId(participant.id))}
                         variant="outline"
                         leftIcon={<IconMessage size={16} />}
-                        className="w-full"
+                        className="w-full lg:w-fit"
                     >
                         {t('chat.openChat')}
                     </Button>
                 )}
                 {isInstructor && removeParticipant && (
-                    <Button variant="ghost" onClick={() => removeParticipant(participant)} className="w-full">
+                    <Button variant="ghost" onClick={() => removeParticipant(participant)} className="w-full lg:w-fit">
                         {t('single.removeFromCourse')}
+                    </Button>
+                )}
+                {isInstructor && addParticipant && (
+                    <Button onClick={() => addParticipant(participant)} className="w-full lg:w-fit">
+                        {t('single.addToCourse')}
                     </Button>
                 )}
             </div>

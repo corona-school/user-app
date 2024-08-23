@@ -10,7 +10,6 @@ import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import Banner from '../../widgets/CourseBanner';
 import PromoteBanner from '../../widgets/PromoteBanner';
-import Waitinglist from '../single-course/Waitinglist';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -21,6 +20,7 @@ import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { ParticipantsList } from '../subcourse/ParticipantsList';
+import Waitinglist from '../single-course/Waitinglist';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
