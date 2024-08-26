@@ -400,6 +400,7 @@ const useApolloInternal = () => {
     const [sessionState, setSessionState] = useState<LFApollo['sessionState']>('unknown');
     const [user, setUser] = useState<UserType | null>(null);
     const [roles, setRoles] = useState<Role[]>([]);
+    const [secretId, setSecretId] = useState<string | null>(null);
 
     log('GraphQL', 'Refresh', { sessionState, user, roles });
 

@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { Column, Flex, Heading, Row, Stack, Text, useBreakpointValue, useTheme, useToast, View, VStack } from 'native-base';
 import { gql } from '../gql';
 import { useTranslation } from 'react-i18next';
@@ -7,6 +7,7 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import SessionCard from '../components/SessionCard';
 import Info from '../../../assets/icons/icon_info_dk_green.svg';
+import { Secret_Type_Enum } from '../gql/graphql';
 
 const SessionManager: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -15,7 +16,15 @@ const SessionManager: React.FC = () => {
     const sessionQuery = useQuery(
         gql(`
         query session {
-            me { secrets { id type description } }
+            me { secrets { id type description lastUsed } }
+        }
+        `)
+    );
+
+    const [revokeQuery, { data, loading }] = useMutation(
+        gql(`
+        mutation revoke($id: Float!) {
+            tokenRevoke(id: $id)
         }
         `)
     );
@@ -27,8 +36,12 @@ const SessionManager: React.FC = () => {
 
     const width = useBreakpointValue({
         base: '90%',
-        lg: '90%',
+        lg: '100%',
     });
+
+    const revokeSecret = async (id: number) => {
+        await revokeQuery({ variables: { id: id } });
+    };
 
     return (
         <WithNavigation
@@ -55,9 +68,17 @@ const SessionManager: React.FC = () => {
                 </Column>
             </View>
             <Flex>
-                {sessionQuery.data?.me.secrets.map((secret: any) => (
-                    <SessionCard device={'Mobil'} userAgent={'userAgent'} lastLogin={'lastLogin'} logOut={() => console.log('dummy')} />
-                ))}
+                {sessionQuery.data?.me.secrets
+                    .filter((x) => x.type === Secret_Type_Enum.Token)
+                    .map((secret: any) => (
+                        <SessionCard
+                            device={'Mobil'}
+                            userAgent={secret.type + ', ' + secret.id + ', ' + secret.description}
+                            lastLogin={secret.lastUsed}
+                            logOut={() => revokeSecret(secret.id)}
+                            buttonDisabled={loading}
+                        />
+                    ))}
             </Flex>
         </WithNavigation>
     );
