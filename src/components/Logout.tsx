@@ -1,10 +1,36 @@
 import useApollo from '../hooks/useApollo';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useCallback, useContext } from 'react';
+import { WebPushContext } from '@/context/WebPushProvider';
+import { WEBPUSH_ACTIVE } from '@/config';
+import { logError } from '@/log';
 
 export default function Logout() {
     const navigate = useNavigate();
-    const { logout } = useApollo();
-    logout().then(() => navigate('/welcome'));
+    const location = useLocation();
+    const locState = location.state as { deactivated?: boolean };
+
+    const useLogout = () => {
+        const { logout } = useApollo();
+        const { unsubscribe } = useContext(WebPushContext);
+        return useCallback(async () => {
+            if (WEBPUSH_ACTIVE) {
+                try {
+                    await unsubscribe();
+                } catch (error) {
+                    logError('WebPush', 'Failed to unsubscribe', error);
+                }
+            }
+            try {
+                await logout();
+            } catch (error) {
+                logError('Authentication', 'Failed to logout', error);
+            }
+        }, []);
+    };
+
+    const logout = useLogout();
+    logout().then(() => navigate('/welcome', { state: locState }));
 
     return null;
 }
