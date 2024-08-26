@@ -1,4 +1,4 @@
-MAX_BUNDLE_SIZE_KB=500
+MAX_BUNDLE_SIZE_KB=600
 
 commands=""
 

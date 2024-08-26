@@ -148,6 +148,7 @@ const Appointments: React.FC = () => {
                         noNewAppointments={!hasMoreNewAppointments || !hasAppointments}
                         noOldAppointments={!hasMoreOldAppointments || !hasAppointments}
                         lastAppointmentId={hasAppointmentsResult?.me?.lastAppointmentId}
+                        height="100%"
                     />
                 )}
             </WithNavigation>
