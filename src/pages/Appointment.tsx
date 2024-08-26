@@ -155,7 +155,7 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     // Redirect course screeners if they landed on an appointment page that is not a group appointment
     useEffect(() => {
         if (data && data.appointment.appointmentType !== 'group' && userType === 'screener' &&
-            (!userRoles.includes('TRUSTED_SCREENER') || !userRoles.includes('PUPIL_SCREENER') || !userRoles.includes('STUDENT_SCREENER'))) {
+            !(userRoles.includes('TRUSTED_SCREENER') || userRoles.includes('PUPIL_SCREENER') || userRoles.includes('STUDENT_SCREENER'))) {
             navigate("/start");
         }
     }, [data]);
