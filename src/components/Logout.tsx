@@ -4,8 +4,7 @@ import { useNavigate } from 'react-router-dom';
 export default function Logout() {
     const navigate = useNavigate();
     const { logout } = useApollo();
-    logout();
-    navigate('/welcome');
+    logout().then(() => navigate('/welcome'));
 
     return null;
 }
