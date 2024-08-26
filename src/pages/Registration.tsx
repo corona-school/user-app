@@ -13,12 +13,18 @@ import UserState from './registration/UserState';
 import Legal from './registration/Legal';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { SchoolType, State } from '../gql/graphql';
+import { ExternalSchoolSearch, SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
+import SchoolSearch from './registration/SchoolSearch';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import { SCHOOL_SEARCH_ACTIVE } from '../config';
+
+interface SelectedSchool extends Partial<ExternalSchoolSearch> {
+    hasPredefinedType?: boolean;
+    hasPredefinedState?: boolean;
+}
 
 type RegistrationContextType = {
-    currentIndex: number;
-    setCurrentIndex: Dispatch<SetStateAction<number>>;
     userType: 'pupil' | 'student';
     setUserType: Dispatch<SetStateAction<'pupil' | 'student'>>;
     firstname: string;
@@ -31,14 +37,15 @@ type RegistrationContextType = {
     setPassword: Dispatch<SetStateAction<string>>;
     passwordRepeat: string;
     setPasswordRepeat: Dispatch<SetStateAction<string>>;
+    school?: SelectedSchool;
+    setSchool: Dispatch<SetStateAction<SelectedSchool | undefined>>;
     schoolClass: number;
     setSchoolClass: (value: number) => void;
-    schoolType: string;
-    setSchoolType: Dispatch<SetStateAction<string>>;
-    userState: string;
-    setUserState: Dispatch<SetStateAction<string>>;
     newsletter: boolean;
     setNewsletter: Dispatch<SetStateAction<boolean>>;
+    currentStep: RegistrationStep;
+    onNext: () => void;
+    onPrev: () => void;
 };
 
 export const RegistrationContext = createContext<RegistrationContextType>({} as RegistrationContextType);
@@ -50,19 +57,18 @@ const mutPupil = gql(`
         $email: String!
         $password: String!
         $newsletter: Boolean!
-        $state: State!
         $grade: Int!
-        $schoolType: SchoolType!
         $retainPath: String!
+        $school: RegistrationSchool!
     ) {
         meRegisterPupil(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, state: $state }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, school: $school }
         ) {
             id
         }
         passwordCreate(password: $password)
-        meUpdate(update: { pupil: { gradeAsInt: $grade, schooltype: $schoolType } })
+        meUpdate(update: { pupil: { gradeAsInt: $grade } })
         tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
 `);
@@ -79,6 +85,18 @@ const mutStudent = gql(`
     }
 `);
 
+export const TRAINEE_GRADE = 14;
+
+export enum RegistrationStep {
+    userType = 'userType',
+    personalData = 'personalData',
+    grade = 'grade',
+    schoolType = 'schoolType',
+    school = 'school',
+    state = 'state',
+    legal = 'legal',
+}
+
 const Registration: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
@@ -88,8 +106,10 @@ const Registration: React.FC = () => {
     const locState = location.state as { retainPath?: string };
     const retainPath = locState?.retainPath ?? '/start';
 
-    const [currentIndex, setCurrentIndex] = useState<number>(
-        location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' || location?.pathname === '/registration/pupil' ? 1 : 0
+    const [currentStep, setCurrentStep] = useState<RegistrationStep>(
+        location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' || location?.pathname === '/registration/pupil'
+            ? RegistrationStep.personalData
+            : RegistrationStep.userType
     );
     const [userType, setUserType] = useState<'pupil' | 'student'>(
         location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' ? 'student' : 'pupil'
@@ -99,10 +119,9 @@ const Registration: React.FC = () => {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
     const [passwordRepeat, setPasswordRepeat] = useState<string>('');
-    const [schoolType, setSchoolType] = useState<string>('');
-    const [schoolClass, setSchoolClass] = useState<number>(1);
-    const [userState, setUserState] = useState<string>('bw');
+    const [schoolClass, setSchoolClass] = useState<number>(0);
     const [newsletter, setNewsletter] = useState<boolean>(false);
+    const [school, setSchool] = useState<SelectedSchool>();
 
     const [registerPupil] = useMutation(mutPupil);
     const [registerStudent] = useMutation(mutStudent);
@@ -150,9 +169,15 @@ const Registration: React.FC = () => {
                     ? await registerPupil({
                           variables: {
                               ...basicData,
-                              schoolType: schoolType as SchoolType,
                               grade: schoolClass,
-                              state: userState as State,
+                              school: {
+                                  name: school?.name,
+                                  city: school?.city,
+                                  email: school?.email,
+                                  schooltype: school?.schooltype || SchoolType.Other,
+                                  state: school?.state || State.Other,
+                                  zip: school?.zip,
+                              },
                           },
                       })
                     : await registerStudent({
@@ -160,7 +185,7 @@ const Registration: React.FC = () => {
                       });
 
             if (!result.errors) {
-                show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} />);
+                show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} userType={userType} />);
 
                 // Remove /registration from the URL so that a refresh of the page won't show the registration form again
                 window.history.replaceState({}, '', '/');
@@ -206,7 +231,8 @@ const Registration: React.FC = () => {
                 </VStack>
             );
         }
-    }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolType, schoolClass, userState, space, t]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [show, hide, email, firstname, lastname, password, newsletter, userType, registerPupil, registerStudent, schoolClass, space, t, school]);
 
     const logoSize = useBreakpointValue({
         base: '50px',
@@ -227,6 +253,75 @@ const Registration: React.FC = () => {
         return <CenterLoadingSpinner />;
     }
 
+    const studentFlow = [RegistrationStep.userType, RegistrationStep.personalData, RegistrationStep.legal];
+    const pupilFlow = [
+        RegistrationStep.userType,
+        RegistrationStep.personalData,
+        ...(SCHOOL_SEARCH_ACTIVE ? [RegistrationStep.school] : []),
+        RegistrationStep.grade,
+        RegistrationStep.schoolType,
+        RegistrationStep.state,
+        RegistrationStep.legal,
+    ];
+
+    const flow = userType === 'pupil' ? pupilFlow : studentFlow;
+    const currentStepIndex = flow.indexOf(currentStep);
+
+    const handleOnNext = () => {
+        if (currentStepIndex === -1) return;
+
+        if (
+            (!school?.schooltype && currentStep === RegistrationStep.schoolType) ||
+            (schoolClass === 0 && currentStep === RegistrationStep.grade) ||
+            (!school?.state && currentStep === RegistrationStep.state)
+        ) {
+            return;
+        }
+
+        const getNextStepFrom = (step: RegistrationStep) => {
+            const currentIndex = flow.indexOf(step);
+            return flow[currentIndex + 1];
+        };
+        let nextStep = getNextStepFrom(currentStep);
+
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.hasPredefinedType;
+        if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
+
+        if (currentStep === RegistrationStep.grade) {
+            setCurrentStep(schoolClass === TRAINEE_GRADE ? RegistrationStep.state : RegistrationStep.schoolType);
+            return;
+        }
+
+        const shouldSkipState = !!school?.hasPredefinedState;
+        if (nextStep === RegistrationStep.state && shouldSkipState) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
+        setCurrentStep(nextStep);
+    };
+
+    const handleOnPrev = () => {
+        if (currentStepIndex === -1) return;
+
+        const getPrevStepFrom = (step: RegistrationStep) => {
+            const currentIndex = flow.indexOf(step);
+            return flow[currentIndex - 1];
+        };
+        let prevStep = getPrevStepFrom(currentStep);
+
+        const shouldSkipState = !!school?.hasPredefinedState;
+        if (prevStep === RegistrationStep.state && shouldSkipState) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
+
+        const shouldSkipSchoolType = schoolClass === TRAINEE_GRADE || !!school?.hasPredefinedType;
+        if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
+        setCurrentStep(prevStep);
+    };
+
     return (
         <Flex alignItems="center" w="100%" h="100dvh">
             <Box w="100%" display="flex" flexDirection={headerDirection} position="relative" padding={headerSpace} justifyContent="center" alignItems="center">
@@ -242,13 +337,12 @@ const Registration: React.FC = () => {
                     }}
                 />
                 <Logo viewBox="0 0 100 100" width={logoSize} height={logoSize} />
-                <Heading m={space['1']}>{t(`registration.steps.${currentIndex}.title` as unknown as TemplateStringsArray)}</Heading>
+                <Heading m={space['1']}>{t(`registration.steps.${currentStep}.title` as unknown as TemplateStringsArray)}</Heading>
+                <SwitchLanguageButton />
             </Box>
             <Flex flex="1" p={space['1']} w="100%" alignItems="center" overflowY={'scroll'}>
                 <RegistrationContext.Provider
                     value={{
-                        currentIndex,
-                        setCurrentIndex,
                         userType,
                         setUserType,
                         firstname,
@@ -261,23 +355,25 @@ const Registration: React.FC = () => {
                         setPassword,
                         passwordRepeat,
                         setPasswordRepeat,
+                        school,
+                        setSchool,
                         schoolClass,
                         setSchoolClass,
-                        schoolType,
-                        setSchoolType,
-                        userState,
-                        setUserState,
                         newsletter,
                         setNewsletter,
+                        currentStep,
+                        onNext: handleOnNext,
+                        onPrev: handleOnPrev,
                     }}
                 >
                     <Box w="100%" maxW={'contentContainerWidth'}>
-                        {currentIndex === 0 && <UserType />}
-                        {currentIndex === 1 && <PersonalData cooperation={cooperation} />}
-                        {currentIndex === 2 && <SchoolClass />}
-                        {currentIndex === 3 && <SchoolTypeUI />}
-                        {currentIndex === 4 && <UserState />}
-                        {currentIndex === 5 && <Legal onRegister={attemptRegister} />}
+                        {currentStep === RegistrationStep.userType && <UserType />}
+                        {currentStep === RegistrationStep.personalData && <PersonalData cooperation={cooperation} />}
+                        {currentStep === RegistrationStep.school && <SchoolSearch />}
+                        {currentStep === RegistrationStep.grade && <SchoolClass />}
+                        {currentStep === RegistrationStep.schoolType && <SchoolTypeUI />}
+                        {currentStep === RegistrationStep.state && <UserState />}
+                        {currentStep === RegistrationStep.legal && <Legal onRegister={attemptRegister} />}
                     </Box>
                 </RegistrationContext.Provider>
             </Flex>

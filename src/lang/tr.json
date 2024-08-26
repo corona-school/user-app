@@ -230,7 +230,11 @@
             "Sachkunde": "Fen Bilgisi",
             "Spanisch": "İspanyolca",
             "Wirtschaft": "Ekonomi",
-            "Lernen lernen": "Öğrenmeyi öğrenmek"
+            "Lernen lernen": "Öğrenmeyi öğrenmek",
+            "Arbeitslehre": "İşgücü teorisi",
+            "Ethik": "Etik",
+            "Gesundheit": "Sağlık",
+            "Technik": "Teknoloji"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -325,6 +329,9 @@
             "alternatives": "Daha fazla bilgi alın"
         },
         "hint": {
+            "schoolClassSelectionMissing": "Lütfen bir okul sınıfı seçin.",
+            "schoolTypeSelectionMissing": "Lütfen bir okul türü seçiniz.",
+            "userStateSelectionMissing": "Lütfen bir okul konumu seçin.",
             "password": {
                 "length": "Parola en az 6 karakter içermelidir.",
                 "nomatch": "Parolalar eşleşmiyor"
@@ -362,30 +369,37 @@
             }
         },
         "steps": {
-            "0": {
+            "userType": {
                 "title": "Sizin rolünüz",
                 "subtitle": "Ben"
             },
-            "1": {
+            "personalData": {
                 "title": "Kişisel veriler",
                 "subtitle": "Kişisel veriler"
             },
-            "2": {
+            "grade": {
                 "title": "Sınıf",
                 "subtitle": "Hangi sınıftasın?"
             },
-            "3": {
+            "schoolType": {
                 "title": "Okul türü",
                 "subtitle": "Ne tür bir okula gidiyorsunuz?"
             },
-            "4": {
+            "state": {
                 "title": "Okul konumu",
                 "subtitle": "Hangi okula gidiyorsun?",
                 "weightingNote": "Bir öğrenim partneri yerleştirirken okulun bulunduğu yeri yalnızca isteğe bağlı bir kriter olarak değerlendiriyoruz. Müsaitlik durumuna bağlı olarak, gelecekteki öğrenim ortağınız farklı bir bölgeden gelebilir."
             },
-            "5": {
+            "legal": {
                 "title": "Onaylar",
                 "subtitle": "Onaylar"
+            },
+            "school": {
+                "title": "Okul konumu",
+                "subtitle": "Okulunuzun adı nedir?",
+                "helperText": "Okul türünüzü ve okul konumunuzu belirlemek için okul bilgilerini kullanırız",
+                "schoolFound": "Okul bulundu",
+                "otherSchoolFound": "Tanınan diğer okullar"
             }
         },
         "pupil": {
@@ -802,7 +816,8 @@
         "removeParticipantFromCourseModal": {
             "header": "Öğrenciyi kurstan çıkarma",
             "remove": "Kaldırmak",
-            "success": "Başarılı bir şekilde öğrenci kaldırıldı"
+            "success": "Başarılı bir şekilde öğrenci kaldırıldı",
+            "error": "Öğrenci:in kaldırılamadı"
         }
     },
     "settings": {
@@ -810,12 +825,13 @@
             "title": "Genel",
             "profile": "Profil",
             "languageVersion": "Dil versiyonu",
-            "notifications": "E-posta bildirimleri",
+            "notifications": "Bildirimleri",
             "onboarding": "Onboarding turu",
             "progress": "Başarılar ve ilerleme",
             "forStudents": "Yardımcılar için",
             "forPupils": "Öğrenciler için",
-            "push": "Uygulama mesajları"
+            "push": "Uygulama mesajları",
+            "faq": "SSS & İletişim"
         },
         "account": {
             "title": "Hesap",
@@ -1066,14 +1082,18 @@
                 "course": "Yeni bir kurs girin",
                 "offer": "Önemli bildirimler",
                 "requestMatchStudent": "Yeni bir öğrenme çifti oluşturun",
-                "requestMatchPupil": "Öğrenme ortağı: alındı",
                 "solveMatch": "Çifti iptal et",
-                "recommend": "Şimdi tavsiye et"
+                "recommend": "Şimdi tavsiye et",
+                "requestFirstMatchPupil": "Öğrenme ortağı: alındı",
+                "requestMoreMatchesPupil": "Daha fazla öğrenme ortağı edinin"
             },
             "channels": {
                 "whatsApp": "WhatsApp",
                 "signal": "Sinyal",
                 "email": "e-posta"
+            },
+            "badges": {
+                "new": "YENİ"
             }
         },
         "homeworkhelp": {
@@ -1236,7 +1256,6 @@
             "active": "aktif",
             "inactive": "aktif olmayan",
             "activeMatches": "Aktif öğrenme çiftleri",
-            "inactiveMatches": "Iptal edilmis öğrenme çiftleri",
             "schoolGrade": "{{schooltype}} - {{grade}} ",
             "showMore": "Daha fazla göster",
             "showLess": "Daha az göster",
@@ -1253,17 +1272,18 @@
         "blocker": {
             "header": "Öğrenme desteği",
             "title": "Destek talep edin",
-            "firstContent": "Öğrenme destek programında, boş zamanlarında size yardımcı olacak bir gönüllü ile sizi temasa geçireceğiz. Bunun için herhangi bir para almıyor ve teşekkürlerinizi almaktan çok mutlu oluyor.",
             "button": "Destek talep edin",
             "ctaCardHeader": "Grup kursları",
             "ctaCardContent": "Almanca, Matematik, İngilizce konularında çeşitli konularda kurslar ...",
-            "ctaCardButton": "Grup kurslarına dön"
+            "ctaCardButton": "Grup kurslarına dön",
+            "firstContent": "Özel derslerde, sizi boş zamanlarında size yardımcı olacak bir gönüllüyle eşleştiriyoruz."
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
             "textpupil": "Her gün Pazartesi - Perşembe 16:00 - 17:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz.",
             "texthelper": "Ev ödevi yardiminda, öğrencilere bir rehberlik saatinde olduğu gibi anlık olarak ödevlerinde yardımcı olabilirsin. Ev ödevi yardimi, Pazartesi'den Perşembe'ye saat 16:00 ile 17:00 arasında gerçekleşmektedir. Kendi takdirine göre burada istediğin sıklıkta ve bağlayıcılık olmadan katılım gösterebilirsin.",
-            "button": "Ev ödevi yardımı"
+            "button": "Ev ödevi yardımı",
+            "buttonSummerVacation": "Yaz tatilinin sona ereceği {{endSummerVacation}} tarihine kadar ev ödevi yardımı yapılmayacaktır"
         },
         "pending": {
             "modal": {
@@ -1294,7 +1314,8 @@
             "check": {
                 "tabs": {
                     "tab1": "Öğrenme çiftleri",
-                    "tab2": "Sorular"
+                    "tab2": "Sorular",
+                    "tab3": "Iptal edilmis öğrenme çiftleri"
                 },
                 "header": "Öğrenme desteği",
                 "title": "Öğrenme desteği",
@@ -1410,7 +1431,19 @@
                 "subjects": {
                     "title": "Konu seçimi",
                     "subtitle": "Hangi konularda destek vermek istersiniz?",
-                    "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz."
+                    "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz.",
+                    "maincourse": {
+                        "title": "Ana bölmeler",
+                        "explanation": "En çok talep gören."
+                    },
+                    "minorcourse": {
+                        "title": "Küçük konular",
+                        "explanation": "Sıkça talep ediliyor."
+                    },
+                    "rarecourse": {
+                        "title": "Nadir konular",
+                        "explanation": "Nadiren sorulur."
+                    }
                 },
                 "profile": {
                     "title": "Profili güncelle",
@@ -1762,7 +1795,8 @@
         "selectPlaceHolderDuration": "Süre seçin",
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
-        "all_participants": "tüm katılımcılar"
+        "all_participants": "tüm katılımcılar",
+        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi."
     },
     "notification": {
         "timedifference": {
@@ -1836,7 +1870,18 @@
                 "allNewsletterDisabled": "Tüm haber bültenleri devre dışı bırakıldı",
                 "disableAll": "Tüm haber bültenlerini devre dışı bırak",
                 "enableAllTooltip": "Tüm haber bültenlerini zaten etkinleştirdiniz.",
-                "disableAllTooltip": "Tüm haber bültenlerini zaten devre dışı bıraktınız."
+                "disableAllTooltip": "Tüm haber bültenlerini zaten devre dışı bıraktınız.",
+                "channel": {
+                    "email": "e-posta",
+                    "push": "Uygulama mesajı"
+                },
+                "pushNotifications": "Uygulama mesajları",
+                "pushNotificationTooltip": "Uygulama bildirimleri, uygulama açık değilken bile önemli olaylar veya bilgiler hakkında sizi bilgilendirir. Hangi mesajları uygulama bildirimi olarak almak istediğinizi ayrı ayrı seçebilirsiniz.",
+                "pushNotificationsStatus": {
+                    "not-supported": "Maalesef bu cihazda uygulama bildirimleri desteklenmiyor",
+                    "user-denied": "Maalesef, bize izin vermediğiniz için size herhangi bir uygulama mesajı gönderemiyoruz",
+                    "error": "Bir hata oluştu"
+                }
             },
             "tabs": {
                 "system": {
@@ -2281,6 +2326,7 @@
     "forStudents": {
         "tabs": {
             "handbook": "Manuel",
+            "mentoring": "Ücretsiz tavsiye",
             "onlineTraining": "Çevrimiçi eğitim"
         },
         "title": "Yardımcılar için",

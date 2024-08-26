@@ -5,7 +5,6 @@ import { useTranslation } from 'react-i18next';
 import NotificationPreferencesModal from '../modals/NotificationPreferencesModal';
 import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import { ContactSupportModal } from '../modals/ContactSupportModal';
-import useApollo from '../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 
 const RequireScreeningSettingsDropdown = () => {

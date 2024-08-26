@@ -1,24 +1,23 @@
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
-import { Text, VStack, Heading, Button, useTheme, useBreakpointValue, Flex, Box } from 'native-base';
+import { Text, VStack, Heading, useTheme, useBreakpointValue, Flex, Box } from 'native-base';
 import { useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import Icon from '../assets/icons/lernfair/ic_email.svg';
 import AlertMessage from '../widgets/AlertMessage';
-import useModal from '../hooks/useModal';
 import DisableableButton from '../components/DisablebleButton';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 type Props = {
     email?: string;
     retainPath?: string;
+    userType?: string;
 };
 
-const VerifyEmailModal: React.FC<Props> = ({ email, retainPath }) => {
+const VerifyEmailModal: React.FC<Props> = ({ email, retainPath, userType }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { hide } = useModal();
+    usePageTitle(`Lern-Fair - Registrierung: Bitte Email bestätigen für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
 

@@ -11,6 +11,7 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import RequireScreeningSettingsDropdown from '../widgets/RequireScreeningSettingsDropdown';
 import { asTranslationKey } from '../helper/string-helper';
 import { createPupilScreeningLink, createStudentScreeningLink } from '../helper/screening-helper';
+import { usePageTitle } from '../hooks/usePageTitle';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -36,6 +37,7 @@ export function RequireScreeningModal() {
     const { data } = useQuery(EXISTING_SCREENINGS_QUERY);
     const userType = useUserType();
     const isPupil = userType === 'pupil';
+    usePageTitle(`Lern-Fair - Registrierung: Termin vereinbaren für ${isPupil ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const pupilScreenings = data?.me.pupil?.screenings ?? [];
     const needsPupilScreening = () => !pupilScreenings.length || pupilScreenings.some((e) => e.status === 'pending');

@@ -45,7 +45,23 @@ export default meta;
 ## Structure
 
 This repository is set up as a React Native app although it is currently only shipped as a web app.
-In the future it might be desirable to also offer native apps.
+We're in the process of moving to web only approach, this means we're removing all React Native related dependencies.
+
+### Components & Styles
+
+As of 13.08.2024 most of our components are build with / provided by Nativebase, which is a universal component library. As stated before, we're moving to a more web approach, and with this we're also adjusting how we build new components.
+
+We are now making use of RadixUI combined with TailwindCSS.
+
+**[RadixUI](https://www.radix-ui.com/primitives)**: RadixUI provides a set of headless components that offer fundamental building blocks for building accessible and customizable UI components. Since RadixUI components are unstyled by default, they give us the flexibility to implement our own styling.
+
+**[TailwindCSS](https://tailwindcss.com/)**: TailwindCSS is a utility-first CSS framework that allows for rapid and customizable design implementation. 
+
+### Theme
+
+On `src/web/index.css` we define our theme colors for later use in tailwind. The main theme file is `tailwind.config.css`, there we define our typography classes (`text-sm`, `text-xl`), color classes (`text-primary`, `text-destructive`, `bg-primary`, `bg-destructive`, etc..), animations, spacing, breakpoints, etc...
+
+[Here](https://tailwindcss.com/docs/theme) is all we can customize in our theme.
 
 ## Translations
 
@@ -101,6 +117,13 @@ To develop the service worker locally, one needs to manually build and serve the
 npm run build # Builds the App and the SW into the /build folder
 RUNTIME_SERVICE_WORKER_ACTIVE=true PORT=300 INSECURE=true npm run serve # Starts the Server on Port 3000, skipping the HTTPS redirect
 ```
+
+## Upgrade DataDog Browser SDK fork
+
+To use the Datadog browser SDK in our application, we had to make some changes to the original repository.
+This was necessary to comply with GDPR and to ensure our users cannot be tracked across different pages.
+
+You can find the whole process in [here](./docs/upgrade-dd-browser-sdk-fork.md) file.
 
 ## Further Resources
 

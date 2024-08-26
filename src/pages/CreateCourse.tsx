@@ -33,7 +33,7 @@ import { AppointmentCreateGroupInput } from '../gql/graphql';
 import { Appointment } from '../types/lernfair/Appointment';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import useApollo from '../hooks/useApollo';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
@@ -355,13 +355,13 @@ const CreateCourse: React.FC = () => {
     }, [prefillCourseId, queryCourse]);
 
     const finishCourseCreation = useCallback(
-        (errors: any[]) => {
+        (errors: any[], courseId?: string | number) => {
             setIsLoading(false);
 
             if (errors.includes('course') || errors.includes('subcourse') || errors.includes('appointments')) {
                 setShowCourseError(true);
             } else {
-                navigate('/group', {
+                navigate(courseId ? `/single-course/${courseId}` : '/group', {
                     state: {
                         wasEdited: isEditing,
                         errors,
@@ -537,7 +537,7 @@ const CreateCourse: React.FC = () => {
              * Image upload
              */
             if (!pickedPhoto) {
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
             setImageLoading(true);
@@ -585,7 +585,7 @@ const CreateCourse: React.FC = () => {
 
             setImageLoading(false);
 
-            finishCourseCreation(errors);
+            finishCourseCreation(errors, courseId);
         },
         [
             _getCourseData,
@@ -655,7 +655,7 @@ const CreateCourse: React.FC = () => {
                 errors.push('subcourse');
                 await resetEditSubcourse();
                 await resetEditCourse();
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 setIsLoading(false);
                 return;
             }
@@ -698,7 +698,7 @@ const CreateCourse: React.FC = () => {
                     await resetAppointments();
                     await resetSubcourse();
                     await resetCourse();
-                    finishCourseCreation(errors);
+                    finishCourseCreation(errors, courseId);
                     setIsLoading(false);
                     return;
                 }
@@ -710,7 +710,7 @@ const CreateCourse: React.FC = () => {
              */
             if (!pickedPhoto) {
                 setIsLoading(false);
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
             setImageLoading(true);
@@ -739,7 +739,7 @@ const CreateCourse: React.FC = () => {
             }
 
             if (!uploadFileId) {
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
 
@@ -758,7 +758,7 @@ const CreateCourse: React.FC = () => {
             }
 
             setImageLoading(false);
-            finishCourseCreation(errors);
+            finishCourseCreation(errors, _courseId);
         },
         [
             _getCourseData,
@@ -850,7 +850,7 @@ const CreateCourse: React.FC = () => {
                 isLoading={loading || isLoading}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

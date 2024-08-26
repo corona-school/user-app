@@ -1,11 +1,11 @@
-import { Box, Button, Checkbox, ChevronDownIcon, ChevronUpIcon, Column, Heading, Link, List, Row, Text, useTheme, VStack } from 'native-base';
+import { Box, Button, Checkbox, ChevronDownIcon, ChevronUpIcon, Column, Heading, Link, Row, Text, useTheme, VStack } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Pressable } from 'react-native';
-import { useNavigate } from 'react-router-dom';
 import AlertMessage from '../../widgets/AlertMessage';
 import { RegistrationContext } from '../Registration';
 import BulletList from '../../components/BulletList';
+import { usePageTitle } from '../../hooks/usePageTitle';
 
 type Props = {
     onRegister: () => any;
@@ -14,8 +14,7 @@ type Props = {
 const Legal: React.FC<Props> = ({ onRegister }) => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { userType, setNewsletter, setCurrentIndex } = useContext(RegistrationContext);
+    const { userType, setNewsletter, onPrev } = useContext(RegistrationContext);
     const [checks, setChecks] = useState<string[]>([]);
     const [errors, setErrors] = useState<{
         dsgvo: boolean;
@@ -24,6 +23,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
         dsgvo: false,
         straftaten: false,
     });
+    usePageTitle(`Lern-Fair - Registrierung: Einwilligungen für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const isInputValid = useCallback(() => {
         if (userType === 'pupil') {
@@ -41,14 +41,6 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
         }
     }, [checks, userType]);
 
-    const goBack = () => {
-        if (userType === 'pupil') {
-            setCurrentIndex(4);
-        } else {
-            setCurrentIndex(1);
-        }
-    };
-
     const next = useCallback(() => {
         if (isInputValid()) {
             onRegister();
@@ -57,7 +49,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
 
     return (
         <VStack marginTop="10px">
-            <Heading>{t(`registration.steps.5.subtitle`)}</Heading>
+            <Heading>{t(`registration.steps.legal.subtitle`)}</Heading>
 
             <Checkbox.Group onChange={(values) => setChecks(values || [])} value={checks} mt={space['1']}>
                 <VStack space={space['0.5']}>
@@ -110,7 +102,7 @@ const Legal: React.FC<Props> = ({ onRegister }) => {
                     <Box alignItems="center" marginTop={space['2']}>
                         <Row space={space['1']} justifyContent="center">
                             <Column width="100%">
-                                <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={goBack}>
+                                <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={onPrev}>
                                     {t('back')}
                                 </Button>
                             </Column>

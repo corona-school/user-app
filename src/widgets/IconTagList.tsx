@@ -58,7 +58,12 @@ const IconTagList: React.FC<IIconTagList> = ({ iconPath, textIcon, text, link, v
                     padding={variant === 'center' ? '30px 20px' : '10px 30px'}
                     height={variant === 'selection' ? '100%' : undefined}
                 >
-                    <Row flexDirection={variant === 'center' || variant === 'selection' ? 'column' : 'row'} alignItems="center">
+                    <Row
+                        flexDirection={variant === 'center' || variant === 'selection' ? 'column' : 'row'}
+                        alignItems="center"
+                        height="100%"
+                        justifyContent={'center'}
+                    >
                         <Column marginRight={variant !== 'selection' ? 2 : 0} marginBottom={variant === 'center' || variant === 'selection' ? 2 : ''}>
                             {(iconPath && renderIcon) || renderText}
                         </Column>
