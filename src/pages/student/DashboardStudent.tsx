@@ -251,9 +251,9 @@ const DashboardStudent: React.FC<Props> = () => {
                                         <VStack marginBottom={space['1.5']}>
                                             <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
                                             <CTACard
-                                                title={t('dashboard.homeworkhelp.catcher')}
+                                                title={t('dashboard.homeworkhelp.catcherHelper')}
                                                 closeable={false}
-                                                content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                                content={<Text>{t('matching.homeworkhelp.texthelper')}</Text>}
                                                 buttonIsBanner={isSummerVacation}
                                                 button={
                                                     isSummerVacation ? (
