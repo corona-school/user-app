@@ -26,6 +26,7 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import useApollo from '../../hooks/useApollo';
+import { useUserType } from '../../hooks/useApollo';
 
 type Props = {};
 
@@ -141,6 +142,7 @@ const DashboardStudent: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
 
     const { space, sizes } = useTheme();
+    const userType = useUserType();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
@@ -245,45 +247,44 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <VStack space={space['1']}>
                                     <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
 
-                                    {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') &&
-                                        (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
-                                            <VStack marginBottom={space['1.5']}>
-                                                <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
-                                                <CTACard
-                                                    title={t('dashboard.homeworkhelp.catcher')}
-                                                    closeable={false}
-                                                    content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                                    buttonIsBanner={isSummerVacation}
-                                                    button={
-                                                        isSummerVacation ? (
-                                                            <Row
-                                                                width="100%"
-                                                                flexWrap="wrap"
-                                                                justifyContent={'flex-start'}
-                                                                alignItems={'center'}
-                                                                bg={'secondary.100'}
-                                                                borderRadius={4}
-                                                                padding={2}
-                                                            >
-                                                                <Box mr={space['0.5']}>
-                                                                    <BarrierIcon />
-                                                                </Box>
-                                                                <Text fontSize={'sm'} flexWrap={'wrap'}>
-                                                                    {t('matching.homeworkhelp.buttonSummerVacation', {
-                                                                        endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
-                                                                    })}
-                                                                </Text>
-                                                            </Row>
-                                                        ) : (
-                                                            <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                                                                {t('matching.homeworkhelp.button')}
-                                                            </Button>
-                                                        )
-                                                    }
-                                                    icon={<BooksIcon />}
-                                                />
-                                            </VStack>
-                                        )}
+                                    {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') && userType === 'student' && (
+                                        <VStack marginBottom={space['1.5']}>
+                                            <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                            <CTACard
+                                                title={t('dashboard.homeworkhelp.catcher')}
+                                                closeable={false}
+                                                content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
+                                                buttonIsBanner={isSummerVacation}
+                                                button={
+                                                    isSummerVacation ? (
+                                                        <Row
+                                                            width="100%"
+                                                            flexWrap="wrap"
+                                                            justifyContent={'flex-start'}
+                                                            alignItems={'center'}
+                                                            bg={'secondary.100'}
+                                                            borderRadius={4}
+                                                            padding={2}
+                                                        >
+                                                            <Box mr={space['0.5']}>
+                                                                <BarrierIcon />
+                                                            </Box>
+                                                            <Text fontSize={'sm'} flexWrap={'wrap'}>
+                                                                {t('matching.homeworkhelp.buttonSummerVacation', {
+                                                                    endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
+                                                                })}
+                                                            </Text>
+                                                        </Row>
+                                                    ) : (
+                                                        <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                                            {t('matching.homeworkhelp.button')}
+                                                        </Button>
+                                                    )
+                                                }
+                                                icon={<BooksIcon />}
+                                            />
+                                        </VStack>
+                                    )}
                                 </VStack>
                             </VStack>
 
