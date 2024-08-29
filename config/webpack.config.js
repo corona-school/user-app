@@ -141,7 +141,9 @@ module.exports = function (webpackEnv) {
               // Adds PostCSS Normalize as the reset css with default options,
               // so that it honors browserslist config in package.json
               // which in turn let's users customize the target behavior as per their needs.
-              'postcss-normalize'
+              'postcss-normalize',
+              'tailwindcss',
+              'autoprefixer',
             ]
           },
           sourceMap: isEnvProduction ? shouldUseSourceMap : isEnvDevelopment
@@ -300,7 +302,8 @@ module.exports = function (webpackEnv) {
           'react-dom$': 'react-dom/profiling',
           'scheduler/tracing': 'scheduler/tracing-profiling'
         }),
-        ...(modules.webpackAliases || {})
+        ...(modules.webpackAliases || {}),
+        '@': path.resolve(__dirname, '../src'),
       },
       plugins: [
         // Prevents users from importing files from outside of src/ (or node_modules/).

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Flex, Heading, Modal, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Button, Circle, Flex, Heading, Modal, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -10,12 +10,10 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import NavigationTabs from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import { Match } from '../../gql/graphql';
-
 import AlertMessage from '../../widgets/AlertMessage';
-import Hello from '../../widgets/Hello';
 import OpenMatchRequest from '../../widgets/OpenMatchRequest';
-import Matches from '../match/Matches';
-import HelpNavigation from '../../components/HelpNavigation';
+import Matches, { MatchCard } from '../match/Matches';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
 
 type Props = {};
@@ -98,11 +96,8 @@ const MatchingStudent: React.FC<Props> = () => {
             name: 'Helfer Matching Anfrage löschen',
             documentTitle: 'Helfer Matching',
         });
-        const res = (await cancelMatchRequest()) as {
-            studentDeleteMatchRequest: boolean;
-        };
-
-        if (res.studentDeleteMatchRequest) {
+        const res = await cancelMatchRequest();
+        if (res.data?.studentDeleteMatchRequest) {
             toast.show({ description: t('matching.request.check.deleteSucess'), placement: 'top' });
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -125,13 +120,15 @@ const MatchingStudent: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const matchRequestCount = data?.me?.student?.openMatchRequestCount ?? 0;
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
                 headerTitle={t('matching.request.check.header')}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }
@@ -142,32 +139,49 @@ const MatchingStudent: React.FC<Props> = () => {
                         <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
                         <VStack space={space['0.5']}>
                             <Text paddingBottom={space['0.5']}>{t('matching.request.check.content')}</Text>
-                            {(data?.me?.student?.canRequestMatch.allowed && (
-                                <Button width={ButtonContainer} marginBottom={space['1.5']} onPress={() => navigate('/request-match')}>
-                                    {t('dashboard.helpers.buttons.requestMatchStudent')}
-                                </Button>
-                            )) || (
-                                <AlertMessage
-                                    content={t(
-                                        `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
-                                    )}
-                                />
-                            )}
                         </VStack>
                         <NavigationTabs
                             tabs={[
                                 {
                                     title: t('matching.request.check.tabs.tab1'),
-                                    content: <Matches activeMatches={activeMatches as Match[]} inactiveMatches={inactiveMatches as Match[]} />,
+                                    content: (
+                                        <VStack>
+                                            <Matches activeMatches={activeMatches as Match[]} />
+                                            <VStack space={['0.5']}>
+                                                {(data?.me?.student?.canRequestMatch.allowed && (
+                                                    <Button width={ButtonContainer} marginY={space['1.5']} onPress={() => navigate('/request-match')}>
+                                                        {t('dashboard.helpers.buttons.requestMatchStudent')}
+                                                    </Button>
+                                                )) || (
+                                                    <AlertMessage
+                                                        content={t(
+                                                            `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
+                                                        )}
+                                                    />
+                                                )}
+                                            </VStack>
+                                        </VStack>
+                                    ),
                                 },
                                 {
-                                    title: t('matching.request.check.tabs.tab2'),
+                                    title: (
+                                        <span style={{ display: 'flex' }}>
+                                            {t('matching.request.check.tabs.tab2')}
+                                            {matchRequestCount > 0 && (
+                                                <Circle bgColor="danger.500" size="5" ml={2}>
+                                                    <Text fontSize="xs" color="white">
+                                                        {matchRequestCount}
+                                                    </Text>
+                                                </Circle>
+                                            )}
+                                        </span>
+                                    ),
                                     content: (
                                         <VStack space={space['1']}>
                                             <VStack space={space['0.5']}>
                                                 <Flex direction="row" flexWrap="wrap">
-                                                    {(data?.me?.student?.openMatchRequestCount &&
-                                                        new Array(data?.me?.student?.openMatchRequestCount).fill('').map((_, i) => (
+                                                    {(matchRequestCount &&
+                                                        new Array(matchRequestCount).fill('').map((_, i) => (
                                                             <OpenMatchRequest
                                                                 cancelLoading={cancelLoading}
                                                                 index={i}
@@ -185,8 +199,27 @@ const MatchingStudent: React.FC<Props> = () => {
                                         </VStack>
                                     ),
                                 },
+                                {
+                                    title: t('matching.request.check.tabs.tab3'),
+                                    content: (
+                                        <VStack space={space['1.5']}>
+                                            <Flex direction="row" flexWrap="wrap">
+                                                {inactiveMatches && inactiveMatches.length > 0 ? (
+                                                    <>
+                                                        {inactiveMatches.map((match) => (
+                                                            <MatchCard match={match as Match} key={match.id} />
+                                                        ))}
+                                                    </>
+                                                ) : (
+                                                    <AlertMessage content={t('matching.request.check.noDissolvedMatches')} />
+                                                )}
+                                            </Flex>
+                                        </VStack>
+                                    ),
+                                },
                             ]}
                         />
+
                         {process.env.REACT_APP_HOMEWORKHELP !== '' && (
                             <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
                                 <Heading paddingBottom={space['0.5']}>{t('matching.homeworkhelp.title')}</Heading>

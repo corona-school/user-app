@@ -1,6 +1,6 @@
 import { Button, Circle, HStack, Heading, Stack, Text, Tooltip, useBreakpointValue, useTheme } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { gql } from '../gql';
 import { useMutation, useQuery } from '@apollo/client';
@@ -68,7 +68,7 @@ const CertificateOfConduct = () => {
             <WithNavigation
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }

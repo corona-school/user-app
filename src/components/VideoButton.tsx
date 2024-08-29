@@ -1,7 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useMutation } from '@apollo/client';
-import DisableableButton from './DisablebleButton';
 import { gql } from '../gql';
 import { Modal } from 'native-base';
 import ZoomMeetingModal from '../modals/ZoomMeetingModal';
@@ -9,6 +8,7 @@ import { useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { canJoinMeeting } from '../widgets/AppointmentDay';
 import { DateTime } from 'luxon';
+import { Button } from './Button';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -22,6 +22,7 @@ type VideoButtonProps = {
     buttonText?: string;
     isOver?: boolean;
     overrideLink?: string;
+    className?: string;
 };
 
 const VideoButton: React.FC<VideoButtonProps> = ({
@@ -31,8 +32,8 @@ const VideoButton: React.FC<VideoButtonProps> = ({
     startDateTime,
     duration,
     canJoin,
-    width,
     buttonText,
+    className,
     isOver = false,
 }) => {
     const { t } = useTranslation();
@@ -80,14 +81,15 @@ const VideoButton: React.FC<VideoButtonProps> = ({
             <Modal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}>
                 <ZoomMeetingModal appointmentId={appointmentId} appointmentType={appointmentType} zoomUrl={zoomUrl ?? undefined} />
             </Modal>
-            <DisableableButton
-                isDisabled={!canStartMeeting || isOver}
+            <Button
+                disabled={!canStartMeeting || isOver}
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
-                width={width ?? width}
-                onPress={() => openMeeting()}
+                onClick={openMeeting}
+                className={className}
+                variant="secondary"
             >
                 {buttonText ?? isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
-            </DisableableButton>
+            </Button>
         </>
     );
 };

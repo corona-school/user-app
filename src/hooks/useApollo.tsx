@@ -31,6 +31,12 @@ import { Kind } from 'graphql';
 
 // --------------- Caching -------------------------
 
+const LOGIN_WITH_DEVICE_TOKEN_MUTATION = gql(`
+    mutation LoginWithDeviceToken($deviceToken: String!) {
+      loginToken(token: $deviceToken)
+    }
+  `);
+
 interface FullResult {
     data: any;
     variables: string;
@@ -379,11 +385,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
             createOperation(
                 {},
                 {
-                    query: gql(`
-            mutation LoginWithDeviceToken($deviceToken: String!) {
-              loginToken(token: $deviceToken)
-            }
-          `),
+                    query: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
                     variables: { deviceToken: getDeviceToken() },
                 }
             )
@@ -484,11 +486,7 @@ const useApolloInternal = () => {
             log('GraphQL', 'device token present, trying to log in');
             try {
                 const res = await client.mutate({
-                    mutation: gql(`
-          mutation LoginWithDeviceToken($deviceToken: String!) {
-            loginToken(token: $deviceToken)
-          }
-        `),
+                    mutation: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
                     variables: { deviceToken },
                     context: { skipAuthRetry: true },
                 });
@@ -513,11 +511,7 @@ const useApolloInternal = () => {
             log('GraphQL', 'secret token present, trying to log in');
             try {
                 const res = await client.mutate({
-                    mutation: gql(`
-          mutation LoginWithDeviceToken($deviceToken: String!) {
-            loginToken(token: $deviceToken)
-          }
-        `),
+                    mutation: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
                     variables: { deviceToken: secretToken },
                     context: { skipAuthRetry: true },
                 });

@@ -1,4 +1,4 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading, Row } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -8,6 +8,7 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
+import BarrierIcon from '../../assets/icons/barrier-block_green.svg';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -19,7 +20,7 @@ import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import CTACard from '../../widgets/CTACard';
@@ -166,6 +167,9 @@ const Dashboard: React.FC<Props> = () => {
     }, []);
 
     const isMobile = useBreakpointValue({ base: true, md: false });
+    const startSummerVacation = new Date('2024-06-10');
+    const endSummerVacation = new Date('2024-09-02');
+    const isSummerVacation = startSummerVacation <= new Date() && endSummerVacation >= new Date();
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -225,7 +229,7 @@ const Dashboard: React.FC<Props> = () => {
                 }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }
@@ -236,24 +240,6 @@ const Dashboard: React.FC<Props> = () => {
                         <ImportantInformation variant="dark" />
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
-
-                            {process.env.REACT_APP_HOMEWORKHELP !== '' && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
-                                    <CTACard
-                                        title={t('dashboard.homeworkhelp.catcher')}
-                                        closeable={false}
-                                        content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                        button={
-                                            <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                                                {t('matching.homeworkhelp.button')}
-                                            </Button>
-                                        }
-                                        icon={<BooksIcon />}
-                                    />
-                                </VStack>
-                            )}
-
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 ||
@@ -289,7 +275,11 @@ const Dashboard: React.FC<Props> = () => {
                                                     navigate('/request-match');
                                                 }}
                                             >
-                                                {t('dashboard.helpers.buttons.requestMatchPupil')}
+                                                {t(
+                                                    activeMatches?.length
+                                                        ? 'dashboard.helpers.buttons.requestMoreMatchesPupil'
+                                                        : 'dashboard.helpers.buttons.requestFirstMatchPupil'
+                                                )}
                                             </Button>
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (

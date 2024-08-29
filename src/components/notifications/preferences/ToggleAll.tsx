@@ -17,14 +17,10 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
     const { t } = useTranslation();
     const toast = useToast();
 
-    const boxWidth = useBreakpointValue({
-        base: 340,
-        lg: '100%',
-    });
-
     const buttonWidth = useBreakpointValue({
         base: '100%',
-        lg: '25%',
+        md: '35%',
+        lg: '30%',
     });
 
     // use isEnabled=true to check if all preferences are enabled and isEnabled=false to check if all preferences are disabled
@@ -61,7 +57,7 @@ export const ToggleAll: FC<PrefProps> = ({ notificationCategories }) => {
         userPreferences &&
         channels &&
         notificationCategories && (
-            <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width={boxWidth}>
+            <Box borderBottomWidth={1} borderBottomColor={'gray.100'} py={3} width="100%">
                 <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
                     <DisableableButton
                         isDisabled={allEnabled}

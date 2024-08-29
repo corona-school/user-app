@@ -230,7 +230,11 @@
             "Sachkunde": "Expertise",
             "Spanisch": "Spanish",
             "Wirtschaft": "Economy",
-            "Lernen lernen": "Learning to learn"
+            "Lernen lernen": "Learning to learn",
+            "Arbeitslehre": "Labor theory",
+            "Ethik": "Ethics",
+            "Gesundheit": "Health",
+            "Technik": "Technology"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -325,6 +329,9 @@
             "alternatives": "Get more information"
         },
         "hint": {
+            "schoolClassSelectionMissing": "Please select a school class.",
+            "schoolTypeSelectionMissing": "Please select a school type.",
+            "userStateSelectionMissing": "Please select a school location.",
             "password": {
                 "length": "The password must contain at least 6 characters.",
                 "nomatch": "The passwords do not match"
@@ -362,30 +369,37 @@
             }
         },
         "steps": {
-            "0": {
+            "userType": {
                 "title": "Your role",
                 "subtitle": "I am"
             },
-            "1": {
+            "personalData": {
                 "title": "Personal data",
                 "subtitle": "Personal data"
             },
-            "2": {
+            "grade": {
                 "title": "Class",
                 "subtitle": "What grade are you in?"
             },
-            "3": {
+            "schoolType": {
                 "title": "Type of school",
                 "subtitle": "What type of school do you go to?"
             },
-            "4": {
+            "state": {
                 "title": "School location",
                 "subtitle": "Where do you go to school?",
                 "weightingNote": "We only consider the school location as an optional criterion when placing a learning partner. Depending on availability, your future learning partner may come from a different region."
             },
-            "5": {
+            "legal": {
                 "title": "Consents",
                 "subtitle": "Consents"
+            },
+            "school": {
+                "title": "School location",
+                "subtitle": "What is the name of your school?",
+                "helperText": "We use the school details to determine your school type and location",
+                "schoolFound": "School found",
+                "otherSchoolFound": "Other school recognized"
             }
         },
         "pupil": {
@@ -802,7 +816,8 @@
         "removeParticipantFromCourseModal": {
             "header": "pupil Remove from course",
             "remove": "Remove",
-            "success": "pupil successfully removed"
+            "success": "pupil successfully removed",
+            "error": "pupil could not be removed"
         }
     },
     "settings": {
@@ -810,12 +825,13 @@
             "title": "General",
             "profile": "Profile",
             "languageVersion": "Language version",
-            "notifications": "E-mail notifications",
+            "notifications": "Notifications",
             "onboarding": "Onboarding tour",
             "progress": "Successes & progress",
             "forStudents": "For volunteers",
             "forPupils": "For pupils",
-            "push": "App messages"
+            "push": "App messages",
+            "faq": "FAQ & Contact"
         },
         "account": {
             "title": "Account",
@@ -1066,20 +1082,25 @@
                 "course": "Enter a new course",
                 "offer": "Important messages",
                 "requestMatchStudent": "Form a new learning pair",
-                "requestMatchPupil": "Learning partner:in receive",
                 "solveMatch": "Dissolve learning pair",
-                "recommend": "Recommend now"
+                "recommend": "Recommend now",
+                "requestFirstMatchPupil": "Learning partner:in receive",
+                "requestMoreMatchesPupil": "Receive further learning partners"
             },
             "channels": {
                 "whatsApp": "WhatsApp",
                 "signal": "Signal",
                 "email": "e-mail"
+            },
+            "badges": {
+                "new": "NEW"
             }
         },
         "homeworkhelp": {
             "title": "Homework help",
             "catcher": "Do you need help with your homework?",
-            "text": "Every day from Monday - Thursday 16h - 17h we offer homework help on Zoom. You can participate every day if you need help with your homework."
+            "catcherHelper": "Would you like to help students with their homework?",
+            "text": "Every day from Monday - Thursday 17h - 18h we offer homework help on Zoom. You can participate every day if you need help with your homework."
         }
     },
     "helperwizard": {
@@ -1162,7 +1183,7 @@
         "homeworkHelpStudent": {
             "buttons": ["To the homework help\n(Zoom registration)"],
             "title": "Homework help",
-            "content": "With <b>homework help</b>, pupils get one-off, spontaneous, direct help with their homework. Do you think that sounds great? Then we'd love you to join us!<br/>Just come to the preliminary meeting <b>from Monday to Thursday at 15:50</b> and help pupils with their homework in your subjects for about 15 minutes each between <b>16:00 and 17</b>:00. Drop by, we look forward to seeing you!"
+            "content": "With <b>homework help</b>, pupils get one-off, spontaneous, direct help with their homework. Do you think that sounds great? Then we'd love you to join us!<br/>Just come to the preliminary meeting <b>from Monday to Thursday at 15:50</b> and help pupils with their homework in your subjects for about 15 minutes each between <b>17:00 and 18</b>:00. Drop by, we look forward to seeing you!"
         },
         "homeworkHelpPupil": {
             "buttons": ["To the homework help"],
@@ -1236,7 +1257,6 @@
             "active": "active",
             "inactive": "inactive",
             "activeMatches": "Active learning pairs",
-            "inactiveMatches": "Resolved learning pairs",
             "schoolGrade": "{{schooltype}} - {{grade}} ",
             "showMore": "Show more",
             "showLess": "Show less",
@@ -1253,17 +1273,18 @@
         "blocker": {
             "header": "Learning support",
             "title": "Request support",
-            "firstContent": "In learning support, we will put you in touch with a volunteer who will help you in their free time. She does not receive any money for this and is very happy to receive your thanks.",
             "button": "Request support",
             "ctaCardHeader": "Group courses",
             "ctaCardContent": "Courses on various topics in the subjects German, math, English...",
-            "ctaCardButton": "To the group courses"
+            "ctaCardButton": "To the group courses",
+            "firstContent": "In tutoring, we match you with a volunteer who will help you in their free time."
         },
         "homeworkhelp": {
             "title": "Homework help",
-            "textpupil": "Every day from Monday - Thursday 16h - 17h we offer homework help on Zoom. You can participate every day if you need help with your homework.",
-            "texthelper": "In the homework help service, you can help pupils spontaneously with their homework, just like in a consultation hour. Homework help takes place Monday - Thursday 16h - 17h. You can get involved as often as you like without obligation.",
-            "button": "To the homework help"
+            "textpupil": "Every day from Monday - Thursday 17h - 18h we offer homework help on Zoom. You can participate every day if you need help with your homework.",
+            "texthelper": "In the homework help service, you can help pupils spontaneously with their homework, just like in a consultation hour. Homework help takes place Monday - Thursday 17h - 18h. You can get involved as often as you like without obligation.",
+            "button": "To the homework help",
+            "buttonSummerVacation": "There will be no homework help until the end of the summer vacation on {{endSummerVacation}}"
         },
         "pending": {
             "modal": {
@@ -1294,7 +1315,8 @@
             "check": {
                 "tabs": {
                     "tab1": "Learning pairs",
-                    "tab2": "Inquiries"
+                    "tab2": "Inquiries",
+                    "tab3": "Resolved learning pairs"
                 },
                 "header": "Learning support",
                 "title": "Learning support",
@@ -1347,7 +1369,7 @@
                     },
                     "homeworkhelp": {
                         "heading": "Do you already know about our homework help?",
-                        "text": "Do you have a question about your homework? Between 16:00 and 17:00, we from the Lern-Fair team are on Zoom and can help you with your homework.",
+                        "text": "Do you have a question about your homework? Between 17:00 and 18:00, we from the Lern-Fair team are on Zoom and can help you with your homework.",
                         "button": "To the homework help"
                     },
                     "heading": "Alternative offers",
@@ -1406,7 +1428,19 @@
                 "subjects": {
                     "title": "Subject selection",
                     "subtitle": "In which subjects would you like to provide support?",
-                    "reason_btn_disabled": "Please select one or more subjects."
+                    "reason_btn_disabled": "Please select one or more subjects.",
+                    "maincourse": {
+                        "title": "Main compartments",
+                        "explanation": "Most in demand."
+                    },
+                    "minorcourse": {
+                        "title": "Minor subjects",
+                        "explanation": "Frequently requested."
+                    },
+                    "rarecourse": {
+                        "title": "Rare subjects",
+                        "explanation": "Rarely asked."
+                    }
                 },
                 "profile": {
                     "title": "Update profile",
@@ -1758,7 +1792,8 @@
         "selectPlaceHolderDuration": "Select duration",
         "cancelation_success": "The course was successfully canceled",
         "select_participant": "Select participant",
-        "all_participants": "all participants"
+        "all_participants": "all participants",
+        "cancelation_error": "An error has occurred. The course could not be canceled."
     },
     "notification": {
         "timedifference": {
@@ -1832,7 +1867,18 @@
                 "allNewsletterDisabled": "All newsletters have been deactivated",
                 "disableAll": "Deactivate all newsletters",
                 "enableAllTooltip": "You have already activated all newsletters.",
-                "disableAllTooltip": "You have already deactivated all newsletters."
+                "disableAllTooltip": "You have already deactivated all newsletters.",
+                "channel": {
+                    "email": "e-mail",
+                    "push": "App message"
+                },
+                "pushNotifications": "App messages",
+                "pushNotificationTooltip": "App notifications inform you about important events or information even when the app is not open. You can individually select which messages you would like to receive as app notifications.",
+                "pushNotificationsStatus": {
+                    "not-supported": "Unfortunately, app notifications are not supported on this device",
+                    "user-denied": "Unfortunately, we cannot send you any app messages as you have not given us permission to do so",
+                    "error": "An error has occurred"
+                }
             },
             "tabs": {
                 "system": {
@@ -2277,6 +2323,7 @@
     "forStudents": {
         "tabs": {
             "handbook": "Manual",
+            "mentoring": "Free consultation",
             "onlineTraining": "Online training"
         },
         "title": "For volunteers",

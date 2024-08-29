@@ -3,7 +3,7 @@ import { Fragment, ReactNode, useEffect, useMemo, useState } from 'react';
 
 export type Tab = {
     id?: string;
-    title: string;
+    title: ReactNode;
     badge?: number;
     content: ReactNode | ReactNode[];
     hide?: boolean;

@@ -1,12 +1,12 @@
 // eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql } from '../../src/gql';
-import { ZoomMtg } from '@zoomus/websdk';
+import { ZoomMtg } from '@zoom/meetingsdk';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useEffect } from 'react';
 import { ZOOM_MEETING_SDK_KEY } from '../config';
 import { useQuery } from '@apollo/client';
-import { log } from '../log';
+import { log, logError } from '../log';
 
 enum ZoomMeetingRole {
     Host = 1,
@@ -92,15 +92,16 @@ const ZoomMeeting: React.FC = () => {
     useEffect(() => {
         if (!zoomDataOrganizer && !zoomDataParticipant) return;
 
-        if (!meetingId) throw new Error('No meeting id provided');
+        if (!meetingId) {
+            logError('Zoom', 'No meeting id provided', { appointmentId });
+            throw new Error('No meeting id provided');
+        }
 
         document.getElementById('zmmtg-root')!.style.display = 'block';
 
-        ZoomMtg.setZoomJSLib('https://source.zoom.us/2.14.0/lib', '/av');
         ZoomMtg.preLoadWasm();
         ZoomMtg.prepareWebSDK();
         ZoomMtg.i18n.load('de-DE');
-        ZoomMtg.i18n.reload('de-DE');
 
         if (
             (appointmentMeetingData.appointment.isOrganizer && !zoomDataOrganizer?.me.zoomSDKJWT) ||
@@ -136,7 +137,7 @@ const ZoomMeeting: React.FC = () => {
                     userEmail: credentials.userEmail,
                     zak: credentials.zak,
                     success: () => log('Zoom', 'User joined Zoom meeting successfully'),
-                    error: (error: Error) => undefined,
+                    error: (error: unknown) => logError('Zoom', 'User could not join Zoom meeting', error),
                 });
             },
         });

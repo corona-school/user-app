@@ -3,6 +3,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { BeforeInstallPromptEvent } from '../types/window';
 import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
 import { useLocalStorage } from '../hooks/useLocalStorage';
+import { PROMOTE_APP_BANNER_ACTIVE } from '../config';
 
 export enum PromotionType {
     native = 'native',
@@ -90,6 +91,11 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     }, [canInstall, showPromotionBanner]);
 
     useEffect(() => {
+        if (!PROMOTE_APP_BANNER_ACTIVE) {
+            setPromotionType(PromotionType.none);
+            return;
+        }
+
         if (isIphone() && !isInStandaloneMode()) {
             setPromotionType(PromotionType.iPhone);
             return;
