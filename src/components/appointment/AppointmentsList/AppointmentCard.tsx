@@ -43,6 +43,9 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
 
     const totalParticipants = appointment.participantIds?.length || 0;
     const declinedParticipants = appointment.declinedBy?.length || 0;
+    const appointmentTitle =
+        t('appointment.appointmentTile.lecture', { position: appointment.position }) +
+        (appointment.title ? t('appointment.appointmentTile.title', { appointmentTitle: appointment.title }) : '');
     return (
         <div className="flex flex-col lg:flex-row items-center lg:h-[84px] max-w-[980px] py-4 px-4 lg:pl-9 lg:pr-7 border border-gray-300 rounded">
             <div className="flex flex-col">
@@ -57,7 +60,9 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
                     <Typography variant="sm">{getAppointmentTimeText(appointment.start, appointment.duration)}</Typography>
                 </AppointmentFact>
                 <AppointmentFact icon={<IconVideo size={18} />}>
-                    <Typography variant="sm">{appointment.displayName}</Typography>
+                    <Typography variant="sm" className="line-clamp-1" title={appointment.displayName}>
+                        {appointment.displayName}
+                    </Typography>
                 </AppointmentFact>
                 {appointment.participantIds && appointment.declinedBy && (
                     <AppointmentFact icon={<IconUsersGroup size={18} />}>
@@ -67,9 +72,8 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
                     </AppointmentFact>
                 )}
                 <AppointmentFact icon={<IconBook size={18} />}>
-                    <Typography variant="sm" className="">
-                        {t('appointment.appointmentTile.lecture', { position: appointment.position }) +
-                            (appointment.title ? t('appointment.appointmentTile.title', { appointmentTitle: appointment.title }) : '')}
+                    <Typography variant="sm" className="line-clamp-1" title={appointmentTitle}>
+                        {appointmentTitle}
                     </Typography>
                 </AppointmentFact>
             </div>
