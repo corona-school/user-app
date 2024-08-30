@@ -437,11 +437,11 @@
                 "subtitle": "In welcher Klasse bist du?"
             },
             "school": {
-                "title": "Schulort",
-                "subtitle": "Wie heißt deine Schule?",
-                "helperText": "Schule nicht gefunden? Ergänze den Ort oder schreibe den Schulnamen mit bzw. ohne Bindestrich oder Leerstelle.",
+                "title": "Schulname",
+                "subtitle": "Name deiner aktuellen oder letzten Schule (optional)",
+                "helperText": "Unsere Schulsuche enthält die meisten deutschen Schulen. Sollte deine nicht zu finden sein, schreib einfach den Schulnamen.",
                 "schoolFound": "Schule aus Liste gewählt",
-                "otherSchoolFound": "Schule selbst eingetragen"
+                "otherSchoolFound": "Schulname eingetragen"
             },
             "schoolType": {
                 "title": "Schulform",
