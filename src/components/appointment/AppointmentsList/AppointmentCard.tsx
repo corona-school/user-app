@@ -67,7 +67,7 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
                     </AppointmentFact>
                 )}
                 <AppointmentFact icon={<IconBook size={18} />}>
-                    <Typography variant="sm">
+                    <Typography variant="sm" className="">
                         {t('appointment.appointmentTile.lecture', { position: appointment.position }) +
                             (appointment.title ? t('appointment.appointmentTile.title', { appointmentTitle: appointment.title }) : '')}
                     </Typography>

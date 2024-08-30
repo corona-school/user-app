@@ -6,7 +6,7 @@ import { TrafficStatus } from '@/types/lernfair/Course';
 import Utility, { getGradeLabel, getTrafficLampColor, getTrafficLampText, getTrafficStatus } from '@/Utility';
 import { Typography } from '@/components/Typography';
 import { Badge } from '@/components/Badge';
-import TruncatedText from '@/components/TrucatedText';
+import TruncatedText from '@/components/TruncatedText';
 import { IconCalendarClock, IconInfoCircleFilled, IconSchool, IconTargetArrow, IconUsersGroup } from '@tabler/icons-react';
 import { Alert } from '@/components/Alert';
 
