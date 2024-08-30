@@ -46,32 +46,34 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
                         </Alert>
                     )}
                 </div>
-                {pupilsOnWaitinglist?.map((pupil) => {
-                    return (
-                        <ParticipantRow
-                            key={pupil.id}
-                            participant={{
-                                firstname: pupil.firstname!,
-                                lastname: pupil.lastname!,
-                                grade: pupil.grade!,
-                                gradeAsInt: pupil.gradeAsInt,
-                                id: pupil.id,
-                                schooltype: pupil.schooltype!,
-                            }}
-                            isInstructor
-                            addParticipant={(participant) =>
-                                handleOpenModal({
-                                    id: participant.id,
-                                    firstname: participant.firstname,
-                                    lastname: participant.lastname!,
-                                    gradeAsInt: participant.gradeAsInt,
-                                    grade: participant.grade,
-                                    schooltype: participant.schooltype!,
-                                })
-                            }
-                        />
-                    );
-                })}
+                <div className="flex flex-col gap-y-6 max-w-[980px]">
+                    {pupilsOnWaitinglist?.map((pupil) => {
+                        return (
+                            <ParticipantRow
+                                key={pupil.id}
+                                participant={{
+                                    firstname: pupil.firstname!,
+                                    lastname: pupil.lastname!,
+                                    grade: pupil.grade!,
+                                    gradeAsInt: pupil.gradeAsInt,
+                                    id: pupil.id,
+                                    schooltype: pupil.schooltype!,
+                                }}
+                                isInstructor
+                                addParticipant={(participant) =>
+                                    handleOpenModal({
+                                        id: participant.id,
+                                        firstname: participant.firstname,
+                                        lastname: participant.lastname!,
+                                        gradeAsInt: participant.gradeAsInt,
+                                        grade: participant.grade,
+                                        schooltype: participant.schooltype!,
+                                    })
+                                }
+                            />
+                        );
+                    })}
+                </div>
             </div>
             <AddPupilModal
                 pupil={pupilToAdd}
