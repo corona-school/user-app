@@ -17,7 +17,7 @@ import {
     Transaction,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { ReactNode, useMemo, useState, createContext, useContext, useCallback, useEffect } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Utility from '../Utility';
 import { createOperation } from '@apollo/client/link/utils';
 import { SubscriptionObserver } from 'zen-observable-ts';
@@ -395,7 +395,8 @@ class RetryOnUnauthorizedLink extends ApolloLink {
 
 function describeDevice() {
     const parsed = userAgentParser(window.navigator.userAgent);
-    return `${parsed.browser.name ?? 'Unbekannter Browser'} auf einem ${parsed.device.model ?? 'Unbekannten Gerät'}`;
+    const model = `einem ${parsed.device.model ?? 'unbekannten Gerät'}`;
+    return `${parsed.browser.name ?? 'Unbekannter Browser'} auf ${parsed.device.model ? model : parsed.os.name ?? model}`;
 }
 
 const useApolloInternal = () => {
@@ -630,7 +631,7 @@ const useApolloInternal = () => {
                 await client.mutate({
                     mutation: gql(`
           mutation RevokeToken($deviceToken: String!) {
-            tokenRevoke(token: $deviceToken)
+            tokenRevoke(token: $deviceToken, invalidateSessions: false)
           }
         `),
                     variables: { deviceToken: getDeviceToken()! },

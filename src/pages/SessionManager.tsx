@@ -6,17 +6,16 @@ import HelpNavigation from '../components/HelpNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import SessionCard from '../components/SessionCard';
-import Info from '../../../assets/icons/icon_info_dk_green.svg';
 import { Secret_Type_Enum } from '../gql/graphql';
 
 const SessionManager: React.FC = () => {
-    const { space, sizes } = useTheme();
+    const { space } = useTheme();
     const { t } = useTranslation();
 
     const sessionQuery = useQuery(
         gql(`
         query session {
-            me { secrets { id type description lastUsed } }
+            me { secrets { id type description lastUsed } myCurrentSecretID }
         }
         `)
     );
@@ -24,7 +23,7 @@ const SessionManager: React.FC = () => {
     const [revokeQuery, { data, loading }] = useMutation(
         gql(`
         mutation revoke($id: Float!) {
-            tokenRevoke(id: $id)
+            tokenRevoke(id: $id, invalidateSessions: true)
         }
         `)
     );
@@ -72,11 +71,11 @@ const SessionManager: React.FC = () => {
                     .filter((x) => x.type === Secret_Type_Enum.Token)
                     .map((secret: any) => (
                         <SessionCard
-                            device={'Mobil'}
                             userAgent={secret.type + ', ' + secret.id + ', ' + secret.description}
                             lastLogin={secret.lastUsed}
                             logOut={() => revokeSecret(secret.id)}
-                            buttonDisabled={loading}
+                            fetching={loading}
+                            isCurrentSession={sessionQuery.data?.me.myCurrentSecretID === secret.id}
                         />
                     ))}
             </Flex>
