@@ -816,7 +816,8 @@
         "removeParticipantFromCourseModal": {
             "header": "pupil Remove from course",
             "remove": "Remove",
-            "success": "pupil successfully removed"
+            "success": "pupil successfully removed",
+            "error": "pupil could not be removed"
         }
     },
     "settings": {
@@ -1098,7 +1099,8 @@
         "homeworkhelp": {
             "title": "Homework help",
             "catcher": "Do you need help with your homework?",
-            "text": "Every day from Monday - Thursday 16h - 17h we offer homework help on Zoom. You can participate every day if you need help with your homework."
+            "catcherHelper": "Would you like to help students with their homework?",
+            "text": "Every day from Monday - Thursday 17h - 18h we offer homework help on Zoom. You can participate every day if you need help with your homework."
         }
     },
     "helperwizard": {
@@ -1181,7 +1183,7 @@
         "homeworkHelpStudent": {
             "buttons": ["To the homework help\n(Zoom registration)"],
             "title": "Homework help",
-            "content": "With <b>homework help</b>, pupils get one-off, spontaneous, direct help with their homework. Do you think that sounds great? Then we'd love you to join us!<br/>Just come to the preliminary meeting <b>from Monday to Thursday at 15:50</b> and help pupils with their homework in your subjects for about 15 minutes each between <b>16:00 and 17</b>:00. Drop by, we look forward to seeing you!"
+            "content": "With <b>homework help</b>, pupils get one-off, spontaneous, direct help with their homework. Do you think that sounds great? Then we'd love you to join us!<br/>Just come to the preliminary meeting <b>from Monday to Thursday at 15:50</b> and help pupils with their homework in your subjects for about 15 minutes each between <b>17:00 and 18</b>:00. Drop by, we look forward to seeing you!"
         },
         "homeworkHelpPupil": {
             "buttons": ["To the homework help"],
@@ -1279,8 +1281,8 @@
         },
         "homeworkhelp": {
             "title": "Homework help",
-            "textpupil": "Every day from Monday - Thursday 16h - 17h we offer homework help on Zoom. You can participate every day if you need help with your homework.",
-            "texthelper": "In the homework help service, you can help pupils spontaneously with their homework, just like in a consultation hour. Homework help takes place Monday - Thursday 16h - 17h. You can get involved as often as you like without obligation.",
+            "textpupil": "Every day from Monday - Thursday 17h - 18h we offer homework help on Zoom. You can participate every day if you need help with your homework.",
+            "texthelper": "In the homework help service, you can help pupils spontaneously with their homework, just like in a consultation hour. Homework help takes place Monday - Thursday 17h - 18h. You can get involved as often as you like without obligation.",
             "button": "To the homework help",
             "buttonSummerVacation": "There will be no homework help until the end of the summer vacation on {{endSummerVacation}}"
         },
@@ -1367,7 +1369,7 @@
                     },
                     "homeworkhelp": {
                         "heading": "Do you already know about our homework help?",
-                        "text": "Do you have a question about your homework? Between 16:00 and 17:00, we from the Lern-Fair team are on Zoom and can help you with your homework.",
+                        "text": "Do you have a question about your homework? Between 17:00 and 18:00, we from the Lern-Fair team are on Zoom and can help you with your homework.",
                         "button": "To the homework help"
                     },
                     "heading": "Alternative offers",
@@ -1790,7 +1792,8 @@
         "selectPlaceHolderDuration": "Select duration",
         "cancelation_success": "The course was successfully canceled",
         "select_participant": "Select participant",
-        "all_participants": "all participants"
+        "all_participants": "all participants",
+        "cancelation_error": "An error has occurred. The course could not be canceled."
     },
     "notification": {
         "timedifference": {
@@ -2320,6 +2323,7 @@
     "forStudents": {
         "tabs": {
             "handbook": "Manual",
+            "mentoring": "Free consultation",
             "onlineTraining": "Online training"
         },
         "title": "For volunteers",

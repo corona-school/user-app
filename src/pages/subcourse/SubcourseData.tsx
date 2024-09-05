@@ -1,14 +1,14 @@
-import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue, Badge } from 'native-base';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Tag from '../../components/Tag';
 import { Course, Course_Tag, Instructor, Lecture, Subcourse } from '../../gql/graphql';
 import { useUserType } from '../../hooks/useApollo';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { TrafficStatus } from '../../types/lernfair/Course';
 import Utility, { getGradeLabel, getTrafficStatus } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
+import { Typography } from '@/components/Typography';
+import { Badge } from '@/components/Badge';
 
 type SubcourseDataProps = {
     course: Pick<Course, 'name' | 'image'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };
@@ -23,19 +23,7 @@ type SubcourseDataProps = {
 
 const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast, hideTrafficStatus = false }) => {
     const { t } = useTranslation();
-    const { sizes } = useTheme();
-    const { isMobile } = useLayoutHelper();
     const userType = useUserType();
-
-    const ImageHeight = useBreakpointValue({
-        base: '178px',
-        lg: '300px',
-    });
-
-    const ContainerWidth = useBreakpointValue({
-        base: 'full',
-        lg: '50%',
-    });
 
     const seatsLeft: number = useMemo(() => {
         return subcourse?.maxParticipants - subcourse?.participantsCount;
@@ -50,77 +38,60 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
     const isCourseNewlyAdded = subcourse?.publishedAt ? new Date(subcourse?.publishedAt).getTime() > aWeekAgo : false;
 
     return (
-        <>
-            <Stack direction={isMobile ? 'column-reverse' : 'row'}>
-                <VStack space="5" width={ContainerWidth}>
-                    <HStack space="3">
-                        {course?.tags?.map(({ name }) => (
-                            <VStack>
-                                <Tag text={name} />
-                            </VStack>
-                        ))}
-                    </HStack>
-                    {subcourse?.lectures.length > 0 && (
-                        <Text>
-                            {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
-                        </Text>
-                    )}
-                    {isCourseNewlyAdded && (
-                        <Badge bgColor="primary.500" _text={{ color: 'white' }} rounded="full" style={{ maxWidth: '50px' }}>
-                            {t('dashboard.helpers.badges.new')}
-                        </Badge>
-                    )}
-                    <Heading fontSize="3xl" maxW={isMobile ? 'full' : '80%'}>
-                        {course?.name}
-                    </Heading>
-                    {subcourse?.instructors && subcourse?.instructors[0] && (
-                        <Heading fontSize="lg">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Heading>
-                    )}
-                    <Text maxWidth={sizes['imageHeaderWidth']}>
-                        <Text bold>{t('single.courseInfo.grade')}</Text>
-                        {t('single.courseInfo.class', { minGrade: getGradeLabel(subcourse?.minGrade), maxGrade: getGradeLabel(subcourse?.maxGrade) })}
-                    </Text>
-                    {!isInPast &&
-                        !subcourse?.cancelled &&
-                        subcourse?.published &&
-                        !subcourse.isOnWaitingList &&
-                        !hideTrafficStatus &&
-                        !subcourse?.isParticipant && (
-                            <CourseTrafficLamp
-                                status={trafficStatus}
-                                showLastSeats={userType === 'student'}
-                                seatsLeft={seatsLeft}
-                                seatsFull={subcourse?.participantsCount}
-                                seatsMax={subcourse?.maxParticipants}
-                            />
-                        )}
-
-                    {!subcourse?.cancelled && isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
-                    {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
-                    {userType === 'pupil' &&
-                        !subcourse.isParticipant &&
-                        Date.now() >= Date.parse(subcourse.lectures[0].start) &&
-                        !isInPast &&
-                        subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
-                    {userType === 'screener' && course?.shared && <Text>{t('single.courseInfo.is_shared')}</Text>}
-                </VStack>
-                <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
-                    <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
-                        <Image
-                            alt={course?.name}
-                            borderRadius="8px"
-                            position="absolute"
-                            w="100%"
-                            height="100%"
-                            bgColor="gray.300"
-                            source={{
-                                uri: course?.image!,
-                            }}
+        <div className="flex flex-col-reverse md:flex-row justify-between pr-4">
+            <div className="flex flex-col gap-y-4 w-full md:w-1/2">
+                <div className="flex flex-row gap-x-3">
+                    {course?.tags?.map(({ name }) => (
+                        <Tag text={name} />
+                    ))}
+                </div>
+                <Typography variant="h2" className="max-w-full">
+                    {course?.name}
+                </Typography>
+                {subcourse?.lectures.length > 0 && (
+                    <Typography>
+                        {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
+                    </Typography>
+                )}
+                {isCourseNewlyAdded && <Badge>{t('dashboard.helpers.badges.new')}</Badge>}
+                {subcourse?.instructors && subcourse?.instructors[0] && (
+                    <Typography variant="h4">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Typography>
+                )}
+                <Typography className="max-w-2xl">
+                    <Typography className="font-bold" as="span">
+                        {t('single.courseInfo.grade')}
+                    </Typography>
+                    {t('single.courseInfo.class', { minGrade: getGradeLabel(subcourse?.minGrade), maxGrade: getGradeLabel(subcourse?.maxGrade) })}
+                </Typography>
+                {!isInPast &&
+                    !subcourse?.cancelled &&
+                    subcourse?.published &&
+                    !subcourse.isOnWaitingList &&
+                    !hideTrafficStatus &&
+                    !subcourse?.isParticipant && (
+                        <CourseTrafficLamp
+                            status={trafficStatus}
+                            showLastSeats={userType === 'student'}
+                            seatsLeft={seatsLeft}
+                            seatsFull={subcourse?.participantsCount}
+                            seatsMax={subcourse?.maxParticipants}
                         />
-                    </Box>
-                </Stack>
-            </Stack>
-        </>
+                    )}
+
+                {!subcourse?.cancelled && isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
+                {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
+                {userType === 'pupil' &&
+                    !subcourse.isParticipant &&
+                    Date.now() >= Date.parse(subcourse.lectures[0].start) &&
+                    !isInPast &&
+                    subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
+                {userType === 'screener' && course?.shared && <Typography>{t('single.courseInfo.is_shared')}</Typography>}
+            </div>
+
+            <div>
+                <img alt={course?.name} className="w-[570px] h-56 rounded-lg object-cover" src={course?.image!} />
+            </div>
+        </div>
     );
 };
 

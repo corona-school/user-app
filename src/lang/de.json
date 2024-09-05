@@ -505,6 +505,7 @@
         "description": "Hier findest du alle unsere Hilfestellungen & Angebote für Helfer:innen.",
         "tabs": {
             "handbook": "Handbuch",
+            "mentoring": "Kostenlose Beratung",
             "onlineTraining": "Online-Fortbildungen"
         }
     },
@@ -884,7 +885,8 @@
         "removeParticipantFromCourseModal": {
             "header": "Schüler:in aus Kurs entfernen",
             "remove": "Entfernen",
-            "success": "Schüler:in erfolgreich entfernt"
+            "success": "Schüler:in erfolgreich entfernt",
+            "error": "Schüler:in konnte nicht entfernt werden"
         }
     },
     "settings": {
@@ -1166,7 +1168,8 @@
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
             "catcher": "Du brauchst Hilfe bei deinen Hausaufgaben?",
-            "text": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst."
+            "catcherHelper": "Du möchtest Schüler:innen bei ihren Hausaufgaben helfen?",
+            "text": "Jeden Tag von Montag - Donnerstag 17h - 18h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst."
         }
     },
     "helperwizard": {
@@ -1250,12 +1253,12 @@
         },
         "homeworkHelpStudent": {
             "title": "Hausaufgabenhilfe",
-            "content": "Bei der <b>Hausaufgabenhilfe</b> bekommen Schüler:innen einmalig, spontane, direkte Hilfe bei ihrer Frage zu den Hausaufgaben. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür einfach <b>von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>16-17 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben. Schau vorbei, wir freuen uns auf dich!",
+            "content": "Bei der <b>Hausaufgabenhilfe</b> bekommen Schüler:innen einmalig, spontane, direkte Hilfe bei ihrer Frage zu den Hausaufgaben. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür einfach <b>von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>17-18 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben. Schau vorbei, wir freuen uns auf dich!",
             "buttons": ["Zur Hausaufgabenhilfe\n(Zoom-Registrierung)"]
         },
         "homeworkHelpPupil": {
             "title": "Hilfe bei deinen Hausaufgaben",
-            "content": "Du kommst bei deiner Hausaufgabe nicht weiter? Bei der <b>Hausaufgabenhilfe</b> helfen wir dir <b>von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deiner Frage. Wir freuen uns auf dich!",
+            "content": "Du kommst bei deiner Hausaufgabe nicht weiter? Bei der <b>Hausaufgabenhilfe</b> helfen wir dir <b>von Montag-Donnerstag zwischen 17-18 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deiner Frage. Wir freuen uns auf dich!",
             "buttons": ["Zur Hausaufgabenhilfe"]
         },
         "pupilScreening": {
@@ -1347,8 +1350,8 @@
         },
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
-            "textpupil": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.",
-            "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 16h - 17h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
+            "textpupil": "Jeden Tag von Montag - Donnerstag 17h - 18h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.",
+            "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 17h - 18h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
             "button": "Zur Hausaufgabenhilfe",
             "buttonSummerVacation": "Die Hausaufgabenhilfe ist in der Sommerpause. Ab dem {{endSummerVacation}} geht es weiter."
         },
@@ -1441,7 +1444,7 @@
                     },
                     "homeworkhelp": {
                         "heading": "Kennst du schon unsere Hausaufgabenhilfe?",
-                        "text": "Du hast eine Frage zu deinen Hausaufgaben? Zwischen 16:00 und 17:00 Uhr sind wir vom Lern-Fair Team auf Zoom und können dir bei deinen Hausaufgaben helfen.",
+                        "text": "Du hast eine Frage zu deinen Hausaufgaben? Zwischen 17:00 und 18:00 Uhr sind wir vom Lern-Fair Team auf Zoom und können dir bei deinen Hausaufgaben helfen.",
                         "button": "Zur Hausaufgabenhilfe"
                     }
                 },
@@ -1677,6 +1680,7 @@
         "noticeDate": "Bitte fülle alle Felder korrekt aus",
         "selectPlaceHolderDuration": "Dauer auswählen",
         "cancelation_success": "Der Kurs wurde erfolgreich abgesagt",
+        "cancelation_error": "Es ist ein Fehler aufgetreten. Der Kurs konnte nicht abgesagt werden.",
         "selectOptions": {
             "_15minutes": "15 Minuten",
             "_30minutes": "30 Minuten",

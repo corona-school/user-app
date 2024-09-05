@@ -1,42 +1,70 @@
-import { Button, Modal, Text, Stack, useTheme, Heading, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { SubcourseParticipant } from '../types/lernfair/Course';
 import { getSchoolTypeKey } from '../types/lernfair/SchoolType';
 import { getGradeLabel } from '../Utility';
+import { type BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Typography } from '@/components/Typography';
+import { Button } from '@/components/Button';
+import { gql } from '@/gql';
+import { useMutation } from '@apollo/client';
+import { toast } from 'sonner';
 
-type RemoveParticipantFromCourseModalProps = {
-    participant: SubcourseParticipant | undefined;
-    removeParticipantFromCourse: (pupilId: number) => void;
-};
+interface RemoveParticipantFromCourseModalProps extends BaseModalProps {
+    subcourseId: number;
+    participant: SubcourseParticipant;
+    onParticipantRemoved: () => Promise<void>;
+}
 
-const RemoveParticipantFromCourseModal: React.FC<RemoveParticipantFromCourseModalProps> = ({ participant, removeParticipantFromCourse }) => {
-    const { space } = useTheme();
+const REMOVE_PARTICIPANT_MUTATION = gql(`
+    mutation removeParticipantFromCourse($subcourseId: Float!, $pupilId: Float!) {
+        subcourseLeave(subcourseId: $subcourseId, pupilId: $pupilId)
+    }
+`);
+
+const RemoveParticipantFromCourseModal = ({ isOpen, onOpenChange, subcourseId, participant, onParticipantRemoved }: RemoveParticipantFromCourseModalProps) => {
     const { t } = useTranslation();
+    const [removeParticipant, { loading: isRemoving }] = useMutation(REMOVE_PARTICIPANT_MUTATION);
+
+    const handleOnRemoveParticipant = async () => {
+        try {
+            await removeParticipant({ variables: { subcourseId, pupilId: participant.id } });
+            toast.success(t('single.removeParticipantFromCourseModal.success'));
+            if (onParticipantRemoved) await onParticipantRemoved();
+        } catch (error) {
+            toast.error(t('single.removeParticipantFromCourseModal.error'));
+        } finally {
+            onOpenChange(false);
+        }
+    };
 
     return (
         <>
-            <Modal.Content>
-                <Modal.CloseButton />
-                <Modal.Header>{t('single.removeParticipantFromCourseModal.header')}</Modal.Header>
-                <Modal.Body>
-                    {participant && (
-                        <VStack marginBottom={space['1.5']} alignItems="left">
-                            <Heading fontSize="md">
+            <Modal onOpenChange={onOpenChange} isOpen={isOpen}>
+                <ModalHeader>
+                    <ModalTitle>{t('single.removeParticipantFromCourseModal.header')}</ModalTitle>
+                </ModalHeader>
+                {participant && (
+                    <div className="flex flex-col py-4">
+                        <Typography>
+                            <Typography as="span" className="block font-bold">
                                 {participant.firstname} {participant.lastname}
-                            </Heading>
-                            <Text>
-                                {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
-                                {getGradeLabel(participant.gradeAsInt)}
-                            </Text>
-                        </VStack>
-                    )}
-                    <Stack space={space['0.5']} direction="column" width="full" justifyContent="center">
-                        <Button onPress={() => removeParticipantFromCourse(participant?.id || -1)}>
+                            </Typography>
+                            {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
+                            {getGradeLabel(participant.gradeAsInt)}
+                        </Typography>
+                    </div>
+                )}
+                <ModalFooter>
+                    <div className="flex flex-row gap-4">
+                        <Button variant="destructive" isLoading={isRemoving} onClick={handleOnRemoveParticipant}>
                             {t('single.removeParticipantFromCourseModal.remove')}
                         </Button>
-                    </Stack>
-                </Modal.Body>
-            </Modal.Content>
+                        <Button variant="outline" onClick={() => onOpenChange(false)}>
+                            {t('cancel')}
+                        </Button>
+                    </div>
+                </ModalFooter>
+            </Modal>
         </>
     );
 };

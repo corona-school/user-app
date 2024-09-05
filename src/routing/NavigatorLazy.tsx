@@ -76,6 +76,7 @@ import ForPupils from '../pages/ForPupils';
 import { useBreakpointValue, Stack } from 'native-base';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import useApollo from '@/hooks/useApollo';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -95,6 +96,8 @@ export default function NavigatorLazy() {
         base: true,
         sm: false,
     });
+
+    const { sessionState } = useApollo();
 
     return (
         <Routes>
@@ -427,6 +430,7 @@ export default function NavigatorLazy() {
                 }
             >
                 <Route path="handbook" element={<IFrame title="handbook" src="https://www.lern-fair.de/iframe/hilfestellungen" />} />
+                <Route path="mentoring" element={<IFrame title="mentoring" src="https://www.lern-fair.de/iframe/mentoring-beratung" />} />
                 <Route path="online-training" element={<IFrame title="online-training" src="https://www.lern-fair.de/iframe/fortbildungen" />} />
                 <Route index element={<Navigate to="handbook" />} />
             </Route>
@@ -469,7 +473,7 @@ export default function NavigatorLazy() {
                 element={
                     <WithNavigation
                         showBack={isMobileSM}
-                        hideMenu={isMobileSM}
+                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
                         previousFallbackRoute="/settings"
                         headerLeft={
                             !isMobileSM && (
@@ -498,7 +502,7 @@ export default function NavigatorLazy() {
                 element={
                     <WithNavigation
                         showBack={isMobileSM}
-                        hideMenu={isMobileSM}
+                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
                         previousFallbackRoute="/settings"
                         headerLeft={
                             !isMobileSM && (

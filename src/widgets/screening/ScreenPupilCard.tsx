@@ -333,11 +333,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId, silent: true) }`));
 
     const [confirmDeactivation, setConfirmDeactivation] = useState(false);
-    const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(
-        gql(`
-            mutation ScreenerDeactivatePupil($pupilId: Float!) { pupilDeactivate(pupilId: $pupilId) }
-        `)
-    );
+    const [deactivateAccount, { loading: loadingDeactivation, data: deactivateResult }] = useMutation(DEACTIVATE_ACCOUNT_QUERY);
 
     const [createLoginToken] = useMutation(
         gql(`

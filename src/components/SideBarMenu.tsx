@@ -109,7 +109,7 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
                                                 </CSSWrapper>
                                             </CSSWrapper>
                                         </Center>
-                                        <Text fontSize="lg" fontWeight="500" color={disabled ? colors['gray']['300'] : undefined} marginLeft={space['0.5']}>
+                                        <Text fontSize="lg" fontWeight="400" color={disabled ? colors['gray']['300'] : undefined} marginLeft={space['0.5']}>
                                             {label}
                                         </Text>
 
