@@ -6,8 +6,8 @@ import MatchPartner from './match/MatchPartner';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
-import { gql } from './../gql';
-import { useUserType } from '../hooks/useApollo';
+import { gql, QueryResult } from './../gql';
+import useApollo, { useUserType } from '../hooks/useApollo';
 import { Dissolve_Reason, Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -120,6 +120,7 @@ const SingleMatch = () => {
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
+    const { client } = useApollo();
 
     const {
         data,
@@ -131,19 +132,32 @@ const SingleMatch = () => {
             matchId,
         },
     });
-    const {
-        data: matchAppointments,
-        loading: isLoadingAppointments,
-        error: appointmentsError,
-        refetch: refetchAppointments,
-        fetchMore: fetchMoreAppointments,
-    } = useQuery(appointmentsQuery, {
-        variables: {
-            matchId,
-            take,
-            skip: 0,
+
+    type Appointments = QueryResult<typeof appointmentsQuery>['match']['appointments'];
+
+    const [isLoadingAppointments, setIsLoadingAppointments] = useState(true);
+    const [appointments, setAppointments] = useState<Appointments>([]);
+
+    const loadMatchAppointments = useCallback(
+        async function loadMatchAppointments() {
+            setIsLoadingAppointments(true);
+            const result = await client.query({
+                query: appointmentsQuery,
+                variables: {
+                    matchId,
+                    take,
+                    skip: 0,
+                },
+            });
+            setAppointments(result.data.match.appointments);
+            setIsLoadingAppointments(false);
         },
-    });
+        [setIsLoadingAppointments, setAppointments, client, matchId]
+    );
+
+    useEffect(() => {
+        loadMatchAppointments();
+    }, [loadMatchAppointments]);
 
     const [createMatcheeChat] = useMutation(matchChatMutation);
 
@@ -156,8 +170,8 @@ const SingleMatch = () => {
     );
 
     const refetch = useCallback(async () => {
-        await Promise.all([refetchMatchData(), refetchAppointments()]);
-    }, [refetchMatchData, refetchAppointments]);
+        await Promise.all([refetchMatchData(), loadMatchAppointments()]);
+    }, [refetchMatchData, loadMatchAppointments]);
 
     const totalAppointmentsCount = data?.match.appointmentsCount || 0;
     const dissolve = useCallback(
@@ -179,8 +193,6 @@ const SingleMatch = () => {
         },
         [dissolveMatch, matchId, refetch, trackEvent]
     );
-
-    const appointments = matchAppointments?.match.appointments ?? [];
 
     const goBackToMatch = async () => {
         await refetch();
@@ -221,33 +233,20 @@ const SingleMatch = () => {
 
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         setIsFetchingMoreAppointments(true);
-        await fetchMoreAppointments({
-            variables: { take, skip, cursor, direction: scrollDirection },
-            updateQuery: (previousAppointments, { fetchMoreResult }) => {
-                const newAppointments = fetchMoreResult?.match?.appointments;
-                const prevAppointments = appointments;
-                if (scrollDirection === 'next') {
-                    if (!newAppointments || newAppointments.length === 0) {
-                        return previousAppointments;
-                    }
-                    return {
-                        match: {
-                            appointments: [...prevAppointments, ...newAppointments],
-                        },
-                    };
-                } else {
-                    if (!newAppointments || newAppointments.length === 0) {
-                        return previousAppointments;
-                    }
-                    toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
-                    return {
-                        match: {
-                            appointments: [...newAppointments, ...prevAppointments],
-                        },
-                    };
-                }
+        const {
+            data: {
+                match: { appointments },
             },
+        } = await client.query({
+            query: appointmentsQuery,
+            variables: { matchId, take, skip, cursor, direction: scrollDirection },
         });
+
+        if (scrollDirection === 'last') {
+            toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
+        }
+
+        setAppointments((prev) => (scrollDirection === 'next' ? [...prev, ...appointments] : [...appointments, ...prev]));
         setIsFetchingMoreAppointments(false);
     };
 
@@ -337,7 +336,6 @@ const SingleMatch = () => {
                                         appointments={appointments as Appointment[]}
                                         minimumHeight={'30vh'}
                                         loading={isLoadingAppointments || isFetchingMoreAppointments}
-                                        error={appointmentsError}
                                         dissolved={data?.match?.dissolved}
                                         loadMoreAppointments={loadMoreAppointments}
                                         noNewAppointments={!hasMoreNewAppointments || !hasMoreAppointments}
