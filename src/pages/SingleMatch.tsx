@@ -65,7 +65,7 @@ query SingleMatch($matchId: Int! ) {
 `);
 
 const appointmentsQuery = gql(`
-query SingleMatchAppointments($matchId: Int!, $take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
+query SingleMatchAppointments_NO_CACHE($matchId: Int!, $take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
     match(matchId: $matchId) {
         appointments(take: $take, skip: $skip, cursor: $cursor,  direction: $direction) {
             id

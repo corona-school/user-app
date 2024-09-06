@@ -16,7 +16,7 @@ import AppointmentList from '../widgets/AppointmentList';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 const getMyAppointments = gql(`
-    query myAppointments($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
+    query myAppointments_NO_CACHE($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
         me {
             appointments(take: $take, skip: $skip, cursor: $cursor,  direction: $direction) {
                 id

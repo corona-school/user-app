@@ -78,6 +78,10 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         }
 
         const name = definition.name?.value;
+        if (name?.includes('NO_CACHE')) {
+            return undefined;
+        }
+
         return name;
     }
 
