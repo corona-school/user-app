@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NavigationTabs, { Tab } from '../../components/NavigationTabs';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Box, Stack, useBreakpointValue, useTheme, Text, useToast, Card } from 'native-base';
 import SubcourseData from '../subcourse/SubcourseData';
 import { Course, Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
@@ -85,6 +85,11 @@ const SingleCourseScreener: React.FC = () => {
     const navigate = useNavigate();
     const { space, sizes } = useTheme();
 
+    const location = useLocation();
+    const locState = location?.state as {
+        wasEdited: boolean;
+    };
+
     const sectionSpacing = useBreakpointValue({
         base: space['1'],
         lg: space['4'],
@@ -108,6 +113,13 @@ const SingleCourseScreener: React.FC = () => {
             navigate('/start');
         }
     }, [course?.courseState]);
+
+    // For refetching the course query, if the course has just been edited by the screener
+    useEffect(() => {
+        if (locState?.wasEdited) {
+            refetchSubcourse();
+        }
+    }, [locState?.wasEdited]);
 
     const [allowCourse] = useMutation(
         gql(`
@@ -163,7 +175,7 @@ const SingleCourseScreener: React.FC = () => {
             title: t('single.tabs.lessons'),
             content: (
                 <Box minH={300}>
-                    <AppointmentList isReadOnlyList={false} disableScroll noOldAppointments appointments={subcourse?.appointments as Appointment[]} />
+                    <AppointmentList isReadOnlyList={true} disableScroll noOldAppointments appointments={subcourse?.appointments as Appointment[]} />
                 </Box>
             ),
         },

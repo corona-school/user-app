@@ -8,8 +8,15 @@ import { log } from './log';
 const active = SERVICE_WORKER_ACTIVE && 'serviceWorker' in navigator;
 if (active) {
     window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/service-worker.js');
-        log('ServiceWorker', 'Service Worker registered');
+        log('ServiceWorker', 'Starting registration');
+        navigator.serviceWorker.register('/service-worker.js').then(
+            () => {
+                log('ServiceWorker', 'Service Worker registered');
+            },
+            (reason) => {
+                log('ServiceWorker', 'Service Worker registration failed', reason);
+            }
+        );
     });
 }
 

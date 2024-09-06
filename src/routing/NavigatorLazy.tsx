@@ -295,7 +295,7 @@ export default function NavigatorLazy() {
                 path="/edit-course"
                 element={
                     <RequireAuth>
-                        <RequireRole roles={['INSTRUCTOR']}>
+                        <RequireRole roles={['INSTRUCTOR', 'COURSE_SCREENER']}>
                             <CreateCourse />
                         </RequireRole>
                     </RequireAuth>
