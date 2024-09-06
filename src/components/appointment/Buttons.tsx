@@ -24,7 +24,7 @@ const Buttons: React.FC<AvatarsProps> = ({ onPress, onEditPress, canceled, isOve
     return (
         <>
             <Stack direction={isMobile ? 'column' : 'row'} space={3}>
-                {(user?.student || user?.screener) && (
+                {user?.student && (
                     <>
                         <DisableableButton
                             isDisabled={isOver || isLast}

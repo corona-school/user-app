@@ -1,13 +1,12 @@
 // eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useQuery } from '@apollo/client';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import { useRoles, useUserType } from '../hooks/useApollo';
+import { useUserType } from '../hooks/useApollo';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
-import { useEffect } from 'react';
 
 export const STUDENT_APPOINTMENT = gql(`
     query appointmentStudent($appointmentId: Float!) {
@@ -86,39 +85,6 @@ export const PUPIL_APPOINTMENT = gql(`
     }
 `);
 
-export const COURSE_SCREENER_APPOINTMENT_VIEW = gql(`
-    query appointmentScreener($appointmentId: Float!) {
-        appointment(appointmentId: $appointmentId) {
-            id
-            start
-            duration
-            title
-            description
-            isCanceled
-            position
-            appointmentType
-            total
-            displayName
-            subcourseId
-            participants(skip: 0, take: 10) {
-                id
-                userID
-                firstname
-                lastname
-            }
-            organizers(skip: 0, take: 10) {
-                id
-                userID
-                firstname
-                lastname
-            }
-            subcourse {
-                published
-            }
-        }
-    }
-`);
-
 type AppointmentParams = {
     startMeeting?: boolean;
 };
@@ -127,8 +93,6 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     const userType = useUserType();
     const { id } = useParams();
     const appointmentId = parseFloat(id ? id : '');
-    const userRoles = useRoles();
-    const navigate = useNavigate();
 
     const {
         data: studentAppointment,
@@ -142,23 +106,9 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
         error: pupilAppointmentError,
     } = useQuery(PUPIL_APPOINTMENT, { variables: { appointmentId }, skip: userType !== 'pupil' });
 
-    const {
-        data: screenerAppointment,
-        loading: isLoadingScreenerAppointment,
-        error: screenerAppointmentError,
-    } = useQuery(COURSE_SCREENER_APPOINTMENT_VIEW, { variables: { appointmentId }, skip: userType !== 'screener' });
-
-    const data = studentAppointment ?? pupilAppointment ?? screenerAppointment;
-    const loading = isLoadingStudentAppointment ?? isLoadingpupilAppointment ?? isLoadingScreenerAppointment;
-    const error = studentAppointmentError ?? pupilAppointmentError ?? screenerAppointmentError;
-
-    // Redirect course screeners if they landed on an appointment page that is not a group appointment
-    useEffect(() => {
-        if (data && data.appointment.appointmentType !== 'group' && userType === 'screener' &&
-            !(userRoles.includes('TRUSTED_SCREENER') || userRoles.includes('PUPIL_SCREENER') || userRoles.includes('STUDENT_SCREENER'))) {
-            navigate("/start");
-        }
-    }, [data]);
+    const data = studentAppointment ?? pupilAppointment;
+    const loading = isLoadingStudentAppointment ?? isLoadingpupilAppointment;
+    const error = studentAppointmentError ?? pupilAppointmentError;
 
     const getDefaultPreviousPath = () => {
         const apppointmentType: Lecture_Appointmenttype_Enum = data?.appointment?.appointmentType;
