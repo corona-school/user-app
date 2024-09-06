@@ -363,7 +363,7 @@ export default function NavigatorLazy() {
                 path="/edit-appointment/:id"
                 element={
                     <RequireAuth>
-                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<EditAppointment />} screenerComponent={<EditAppointment />} />
+                        <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<EditAppointment />} />
                     </RequireAuth>
                 }
             />

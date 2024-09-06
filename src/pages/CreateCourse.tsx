@@ -127,10 +127,11 @@ const CreateCourse: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
 
+    // Not to be used when the user is a Screener
     const [loadingStudent, setLoadingStudent] = useState(userType === 'student');
     const [studentMyself, setStudentMyself] = useState<{ firstname: string; lastname: string }>();
     const [canCreateCourse, setCanCreateCourse] = useState<{ allowed: boolean; reason: string }>();
-    const [studentId, setStudentId] = useState<Number>();
+    const [studentId, setStudentId] = useState<number>();
 
     const [studentQuery] = useLazyQuery(
         gql(`
