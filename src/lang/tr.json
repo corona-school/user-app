@@ -329,6 +329,9 @@
             "alternatives": "Daha fazla bilgi alın"
         },
         "hint": {
+            "schoolClassSelectionMissing": "Lütfen bir okul sınıfı seçin.",
+            "schoolTypeSelectionMissing": "Lütfen bir okul türü seçiniz.",
+            "userStateSelectionMissing": "Lütfen bir okul konumu seçin.",
             "password": {
                 "length": "Parola en az 6 karakter içermelidir.",
                 "nomatch": "Parolalar eşleşmiyor"
@@ -390,6 +393,13 @@
             "legal": {
                 "title": "Onaylar",
                 "subtitle": "Onaylar"
+            },
+            "school": {
+                "title": "Okul konumu",
+                "subtitle": "Okulunuzun adı nedir?",
+                "helperText": "Okul türünüzü ve okul konumunuzu belirlemek için okul bilgilerini kullanırız",
+                "schoolFound": "Okul bulundu",
+                "otherSchoolFound": "Tanınan diğer okullar"
             }
         },
         "pupil": {
@@ -806,7 +816,8 @@
         "removeParticipantFromCourseModal": {
             "header": "Öğrenciyi kurstan çıkarma",
             "remove": "Kaldırmak",
-            "success": "Başarılı bir şekilde öğrenci kaldırıldı"
+            "success": "Başarılı bir şekilde öğrenci kaldırıldı",
+            "error": "Öğrenci:in kaldırılamadı"
         }
     },
     "settings": {
@@ -1080,12 +1091,16 @@
                 "whatsApp": "WhatsApp",
                 "signal": "Sinyal",
                 "email": "e-posta"
+            },
+            "badges": {
+                "new": "YENİ"
             }
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
             "catcher": "Ev ödeviniz için yardıma mı ihtiyacınız var?",
-            "text": "Her gün Pazartesi - Perşembe 16:00 - 17:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz."
+            "catcherHelper": "Öğrencilere ev ödevlerinde yardımcı olmak ister misiniz?",
+            "text": "Her gün Pazartesi - Perşembe 17:00 - 18:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz."
         }
     },
     "helperwizard": {
@@ -1168,12 +1183,12 @@
         "homeworkHelpStudent": {
             "buttons": ["Ev Ödevi Yardımı (Zoom Kaydı)"],
             "title": "Ev ödevi yardımı",
-            "content": "<b>Ev ödevi yardımı</b> ile öğrenciler ev ödevi soruları için bir kereye mahsus, spontane ve doğrudan yardım alırlar. Kulağa harika geldiğini mi düşünüyorsunuz? O zaman bize katılmanızı çok isteriz!<br/><b>Pazartesiden perşembeye 15:50</b> 'deki ön toplantıya gelin ve derslerinizdeki öğrencilere <b>16:00 ile 17:00</b> arasında yaklaşık 15'er dakika ev ödevlerinde destek olun. Uğrayın, sizi görmeyi dört gözle bekliyoruz!"
+            "content": "<b>Ev ödevi yardımı</b> ile öğrenciler ev ödevi soruları için bir kereye mahsus, spontane ve doğrudan yardım alırlar. Kulağa harika geldiğini mi düşünüyorsunuz? O zaman bize katılmanızı çok isteriz!<br/><b>Pazartesiden perşembeye 15:50</b> 'deki ön toplantıya gelin ve derslerinizdeki öğrencilere <b>17:00 ile 18:00</b> arasında yaklaşık 15'er dakika ev ödevlerinde destek olun. Uğrayın, sizi görmeyi dört gözle bekliyoruz!"
         },
         "homeworkHelpPupil": {
             "buttons": ["Ev ödevi yardımı"],
             "title": "Ödevleriniz için yardım",
-            "content": "Ev ödevinizde takıldınız mı? <b>Pazartesi'den Perşembe'ye saat 16:00 ile 17:00 arasında</b> 10 ila 15 dakika boyunca ev ödevlerinizde size hızlı ve kolay bir şekilde yardımcı olabiliriz. Sizi görmek için sabırsızlanıyoruz!"
+            "content": "Ev ödevinizde takıldınız mı? <b>Pazartesi'den Perşembe'ye saat 17:00 ile 18:00 arasında</b> 10 ila 15 dakika boyunca ev ödevlerinizde size hızlı ve kolay bir şekilde yardımcı olabiliriz. Sizi görmek için sabırsızlanıyoruz!"
         },
         "pupilScreening": {
             "buttons": ["Randevu alın"],
@@ -1266,8 +1281,8 @@
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
-            "textpupil": "Her gün Pazartesi - Perşembe 16:00 - 17:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz.",
-            "texthelper": "Ev ödevi yardiminda, öğrencilere bir rehberlik saatinde olduğu gibi anlık olarak ödevlerinde yardımcı olabilirsin. Ev ödevi yardimi, Pazartesi'den Perşembe'ye saat 16:00 ile 17:00 arasında gerçekleşmektedir. Kendi takdirine göre burada istediğin sıklıkta ve bağlayıcılık olmadan katılım gösterebilirsin.",
+            "textpupil": "Her gün Pazartesi - Perşembe 17:00 - 18:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz.",
+            "texthelper": "Ev ödevi yardiminda, öğrencilere bir rehberlik saatinde olduğu gibi anlık olarak ödevlerinde yardımcı olabilirsin. Ev ödevi yardimi, Pazartesi'den Perşembe'ye saat 17:00 ile 18:00 arasında gerçekleşmektedir. Kendi takdirine göre burada istediğin sıklıkta ve bağlayıcılık olmadan katılım gösterebilirsin.",
             "button": "Ev ödevi yardımı",
             "buttonSummerVacation": "Yaz tatilinin sona ereceği {{endSummerVacation}} tarihine kadar ev ödevi yardımı yapılmayacaktır"
         },
@@ -1358,7 +1373,7 @@
                     },
                     "homeworkhelp": {
                         "heading": "Ev ödevi yardımımızı zaten biliyor musunuz?",
-                        "text": "Ödevinizle ilgili bir sorunuz mu var? Lern-Fair Saat 16:00 ile 17:00 arasında ekipten bizler Zoom'dayız ve ödevlerinizde size yardımcı olabiliriz.",
+                        "text": "Ödevinizle ilgili bir sorunuz mu var? Lern-Fair Saat 17:00 ile 18:00 arasında ekipten bizler Zoom'dayız ve ödevlerinizde size yardımcı olabiliriz.",
                         "button": "Ev ödevi yardımı"
                     },
                     "heading": "Alternatif teklifler",
@@ -1781,7 +1796,8 @@
         "selectPlaceHolderDuration": "Süre seçin",
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
-        "all_participants": "tüm katılımcılar"
+        "all_participants": "tüm katılımcılar",
+        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi."
     },
     "notification": {
         "timedifference": {
@@ -2311,6 +2327,7 @@
     "forStudents": {
         "tabs": {
             "handbook": "Manuel",
+            "mentoring": "Ücretsiz tavsiye",
             "onlineTraining": "Çevrimiçi eğitim"
         },
         "title": "Yardımcılar için",

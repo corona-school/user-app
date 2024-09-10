@@ -1,5 +1,5 @@
 // eslint-disable-next-line lernfair-app-linter/typed-gql
-import { gql, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { gql, useLazyQuery, useMutation } from '@apollo/client';
 import { Box, Button, CloseIcon, Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -34,7 +34,7 @@ import { Appointment } from '../types/lernfair/Appointment';
 
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
-import useApollo from '../hooks/useApollo';
+import useApollo, { useUserType } from '../hooks/useApollo';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 export enum ChatType {
@@ -90,6 +90,8 @@ export const CreateCourseContext = createContext<ICreateCourseContext>({});
 const CreateCourse: React.FC = () => {
     const { roles } = useApollo();
 
+    const userType = useUserType();
+
     const toast = useToast();
 
     const location = useLocation();
@@ -116,7 +118,7 @@ const CreateCourse: React.FC = () => {
     const [image, setImage] = useState<string>('');
     const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
 
-    const [isLoading, setIsLoading] = useState<boolean>();
+    const [loadingCourse, setLoadingCourse] = useState<boolean>();
     const [showCourseError, setShowCourseError] = useState<boolean>();
 
     const [imageLoading, setImageLoading] = useState<boolean>(false);
@@ -125,7 +127,13 @@ const CreateCourse: React.FC = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
 
-    const { data: studentData, loading } = useQuery(
+    // Not to be used when the user is a Screener
+    const [loadingStudent, setLoadingStudent] = useState(userType === 'student');
+    const [studentMyself, setStudentMyself] = useState<{ firstname: string; lastname: string }>();
+    const [canCreateCourse, setCanCreateCourse] = useState<{ allowed: boolean; reason: string }>();
+    const [studentId, setStudentId] = useState<number>();
+
+    const [studentQuery] = useLazyQuery(
         gql(`
         query StudentCanCreateCourse {
             me {
@@ -295,10 +303,6 @@ const CreateCourse: React.FC = () => {
     const [showModal, setShowModal] = useState(false);
     const { show, hide } = useModal();
     const { trackPageView } = useMatomo();
-    const myself: LFInstructor = {
-        firstname: studentData?.me.student.firstname,
-        lastname: studentData?.me.student.lastname,
-    };
 
     useEffect(() => {
         trackPageView({
@@ -313,11 +317,27 @@ const CreateCourse: React.FC = () => {
         lg: sizes['contentContainerWidth'],
     });
 
+    const queryStudent = useCallback(async () => {
+        const { data } = await studentQuery();
+
+        setStudentMyself({
+            firstname: data.me.firstname,
+            lastname: data.me.lastname,
+        });
+        setCanCreateCourse(data.me.student.canCreateCourse);
+        setStudentId(data.me.student.id);
+        setLoadingStudent(false);
+    }, [studentQuery]);
+
+    useEffect(() => {
+        if (userType === 'student') queryStudent();
+    }, [queryStudent]);
+
     const queryCourse = useCallback(async () => {
         if (!prefillCourseId) return;
-        if (!studentData?.me.student.id) return;
+        if (userType === 'student' && !studentId) return;
 
-        setIsLoading(true);
+        setLoadingCourse(true);
         const {
             data: { subcourse: prefillCourse },
         } = (await courseQuery({
@@ -339,7 +359,7 @@ const CreateCourse: React.FC = () => {
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
-            const arr = prefillCourse.instructors.filter((instructor: LFInstructor) => instructor.id !== studentData.me.student.id);
+            const arr = prefillCourse.instructors.filter((instructor: LFInstructor) => instructor.id !== studentId);
             setAddedInstructors(arr);
         }
 
@@ -347,21 +367,21 @@ const CreateCourse: React.FC = () => {
             setTags(prefillCourse.course.tags);
         }
 
-        setIsLoading(false);
-    }, [courseQuery, prefillCourseId, studentData?.me.student.id]);
+        setLoadingCourse(false);
+    }, [courseQuery, prefillCourseId, studentId]);
 
     useEffect(() => {
         if (prefillCourseId != null) queryCourse();
     }, [prefillCourseId, queryCourse]);
 
     const finishCourseCreation = useCallback(
-        (errors: any[]) => {
-            setIsLoading(false);
+        (errors: any[], courseId?: string | number) => {
+            setLoadingCourse(false);
 
             if (errors.includes('course') || errors.includes('subcourse') || errors.includes('appointments')) {
                 setShowCourseError(true);
             } else {
-                navigate('/group', {
+                navigate(courseId ? `/single-course/${courseId}` : '/group', {
                     state: {
                         wasEdited: isEditing,
                         errors,
@@ -380,14 +400,13 @@ const CreateCourse: React.FC = () => {
     const _getCourseData = useCallback(
         () => ({
             description,
-            schooltype: studentData?.me?.student?.schooltype || 'other',
             outline: '', // keep empty for now, unused
             name: courseName,
             category: courseCategory,
             allowContact: false,
             ...(courseCategory !== Course_Category_Enum.Focus ? { subject: getSubject() } : {}),
         }),
-        [courseCategory, courseName, description, studentData?.me?.student?.schooltype, subject]
+        [courseCategory, courseName, description, subject]
     );
 
     const _getSubcourseData = useCallback(() => {
@@ -415,7 +434,7 @@ const CreateCourse: React.FC = () => {
 
     const finishCreation = useCallback(
         async (alsoSubmit: boolean) => {
-            setIsLoading(true);
+            setLoadingCourse(true);
             const errors: CreateCourseError[] = [];
             if (appointmentsToBeCreated.length === 0) {
                 errors.push('appointments');
@@ -446,7 +465,7 @@ const CreateCourse: React.FC = () => {
                 errors.push('course');
                 await resetCourse();
                 finishCourseCreation(errors);
-                setIsLoading(false);
+                setLoadingCourse(false);
                 return;
             }
             const tagIds = tags.map((t: LFTag) => t.id);
@@ -476,7 +495,7 @@ const CreateCourse: React.FC = () => {
                 await resetSubcourse();
                 await resetCourse();
                 finishCourseCreation(errors);
-                setIsLoading(false);
+                setLoadingCourse(false);
                 return;
             }
 
@@ -527,7 +546,7 @@ const CreateCourse: React.FC = () => {
                 await resetSubcourse();
                 await resetCourse();
                 finishCourseCreation(errors);
-                setIsLoading(false);
+                setLoadingCourse(false);
                 return;
             }
 
@@ -537,7 +556,7 @@ const CreateCourse: React.FC = () => {
              * Image upload
              */
             if (!pickedPhoto) {
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
             setImageLoading(true);
@@ -585,7 +604,7 @@ const CreateCourse: React.FC = () => {
 
             setImageLoading(false);
 
-            finishCourseCreation(errors);
+            finishCourseCreation(errors, courseId);
         },
         [
             _getCourseData,
@@ -607,7 +626,7 @@ const CreateCourse: React.FC = () => {
 
     const editCourse = useCallback(
         async (newAppointments?: AppointmentCreateGroupInput[]) => {
-            setIsLoading(true);
+            setLoadingCourse(true);
             const errors: CreateCourseError[] = [];
 
             const course = _getCourseData();
@@ -631,7 +650,7 @@ const CreateCourse: React.FC = () => {
                 errors.push('course');
                 await resetEditCourse();
                 finishCourseCreation(errors);
-                setIsLoading(false);
+                setLoadingCourse(false);
                 return;
             }
 
@@ -655,8 +674,8 @@ const CreateCourse: React.FC = () => {
                 errors.push('subcourse');
                 await resetEditSubcourse();
                 await resetEditCourse();
-                finishCourseCreation(errors);
-                setIsLoading(false);
+                finishCourseCreation(errors, courseId);
+                setLoadingCourse(false);
                 return;
             }
 
@@ -698,8 +717,8 @@ const CreateCourse: React.FC = () => {
                     await resetAppointments();
                     await resetSubcourse();
                     await resetCourse();
-                    finishCourseCreation(errors);
-                    setIsLoading(false);
+                    finishCourseCreation(errors, courseId);
+                    setLoadingCourse(false);
                     return;
                 }
 
@@ -709,8 +728,8 @@ const CreateCourse: React.FC = () => {
              * Image upload
              */
             if (!pickedPhoto) {
-                setIsLoading(false);
-                finishCourseCreation(errors);
+                setLoadingCourse(false);
+                finishCourseCreation(errors, courseId);
                 return;
             }
             setImageLoading(true);
@@ -739,7 +758,7 @@ const CreateCourse: React.FC = () => {
             }
 
             if (!uploadFileId) {
-                finishCourseCreation(errors);
+                finishCourseCreation(errors, courseId);
                 return;
             }
 
@@ -758,7 +777,7 @@ const CreateCourse: React.FC = () => {
             }
 
             setImageLoading(false);
-            finishCourseCreation(errors);
+            finishCourseCreation(errors, _courseId);
         },
         [
             _getCourseData,
@@ -847,7 +866,7 @@ const CreateCourse: React.FC = () => {
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
                 showBack
                 previousFallbackRoute="/group"
-                isLoading={loading || isLoading}
+                isLoading={loadingStudent || loadingCourse}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <SwitchLanguageButton />
@@ -888,10 +907,10 @@ const CreateCourse: React.FC = () => {
                         addedInstructors,
                         newInstructors,
                         image,
-                        myself,
+                        myself: studentMyself,
                     }}
                 >
-                    {(roles.includes('INSTRUCTOR') && studentData?.me?.student?.canCreateCourse?.allowed && (
+                    {(((roles.includes('INSTRUCTOR') && canCreateCourse?.allowed) || roles.includes('COURSE_SCREENER')) && (
                         <VStack space={space['1']} padding={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
                             <InstructionProgress
                                 isDark={false}
@@ -937,7 +956,7 @@ const CreateCourse: React.FC = () => {
                                         courseId={prefillCourseId}
                                         isEditing={isEditing}
                                         isError={showCourseError}
-                                        isDisabled={loading || isLoading || imageLoading}
+                                        isDisabled={loadingStudent || loadingCourse || imageLoading}
                                         reasonDisabled={t('reasonsDisabled.loading')}
                                         appointments={courseAppointments ?? []}
                                     />

@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import Tabs from '../components/Tabs';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 
-const tabs = ['handbook', 'online-training'];
+const tabs = ['handbook', 'mentoring', 'online-training'];
 
 const KnowledgeCenter = () => {
     const { t } = useTranslation();
@@ -25,9 +25,9 @@ const KnowledgeCenter = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const isMobile = useBreakpointValue({
+    const isMobileSM = useBreakpointValue({
         base: true,
-        lg: false,
+        sm: false,
     });
 
     const currentTabFromRoute = pathname.split('/').pop();
@@ -35,14 +35,17 @@ const KnowledgeCenter = () => {
     return (
         <AsNavigationItem path="knowledge-helper">
             <WithNavigation
-                showBack={isMobile}
-                previousFallbackRoute="/start"
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
+                previousFallbackRoute="/settings"
                 headerTitle={t('forStudents.title')}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <SwitchLanguageButton />
-                        <NotificationAlert />
-                    </Stack>
+                    !isMobileSM && (
+                        <Stack alignItems="center" direction="row">
+                            <SwitchLanguageButton />
+                            <NotificationAlert />
+                        </Stack>
+                    )
                 }
             >
                 <Box maxWidth={containerWidth} width="100%" marginX="auto" pt={6}>
@@ -61,6 +64,11 @@ const KnowledgeCenter = () => {
                             {
                                 id: 'handbook',
                                 title: t('forStudents.tabs.handbook'),
+                                content: <Outlet />,
+                            },
+                            {
+                                id: 'mentoring',
+                                title: t('forStudents.tabs.mentoring'),
                                 content: <Outlet />,
                             },
                             {

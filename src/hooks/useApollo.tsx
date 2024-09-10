@@ -15,6 +15,7 @@ import {
     Operation,
     Reference,
     Transaction,
+    TypedDocumentNode,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { ReactNode, useMemo, useState, createContext, useContext, useCallback, useEffect } from 'react';
@@ -29,7 +30,18 @@ import { Role } from '../types/lernfair/User';
 import { datadogRum } from '@datadog/browser-rum';
 import { Kind } from 'graphql';
 
+// Utility type to extract the query result:
+// const SomeQuery = gql(...);
+// type SomeQueryResult = QueryResult<typeof SomeQuery>;
+export type QueryResult<Q> = Q extends TypedDocumentNode<infer Data, any> ? Data : never;
+
 // --------------- Caching -------------------------
+
+const LOGIN_WITH_DEVICE_TOKEN_MUTATION = gql(`
+    mutation LoginWithDeviceToken($deviceToken: String!) {
+      loginToken(token: $deviceToken)
+    }
+  `);
 
 interface FullResult {
     data: any;
@@ -66,6 +78,10 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         }
 
         const name = definition.name?.value;
+        if (name?.includes('NO_CACHE')) {
+            return undefined;
+        }
+
         return name;
     }
 
@@ -379,11 +395,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
             createOperation(
                 {},
                 {
-                    query: gql(`
-            mutation LoginWithDeviceToken($deviceToken: String!) {
-              loginToken(token: $deviceToken)
-            }
-          `),
+                    query: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
                     variables: { deviceToken: getDeviceToken() },
                 }
             )
@@ -483,11 +495,7 @@ const useApolloInternal = () => {
             log('GraphQL', 'device token present, trying to log in');
             try {
                 const res = await client.mutate({
-                    mutation: gql(`
-          mutation LoginWithDeviceToken($deviceToken: String!) {
-            loginToken(token: $deviceToken)
-          }
-        `),
+                    mutation: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
                     variables: { deviceToken },
                     context: { skipAuthRetry: true },
                 });
@@ -512,11 +520,7 @@ const useApolloInternal = () => {
             log('GraphQL', 'secret token present, trying to log in');
             try {
                 const res = await client.mutate({
-                    mutation: gql(`
-          mutation LoginWithDeviceToken($deviceToken: String!) {
-            loginToken(token: $deviceToken)
-          }
-        `),
+                    mutation: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
                     variables: { deviceToken: secretToken },
                     context: { skipAuthRetry: true },
                 });

@@ -20,6 +20,7 @@ import NavigationStackProvider from './context/NavigationStackProvider';
 import './service-worker-proxy';
 import InstallationProvider from './context/InstallationProvider';
 import WebPushProvider from './context/WebPushProvider';
+import { Toaster } from '@/components/Toaster';
 
 function App() {
     return (
@@ -39,6 +40,7 @@ function App() {
                                                             <Navigator />
                                                         </InstallationProvider>
                                                         <ToastNotifications />
+                                                        <Toaster />
                                                     </NavigationStackProvider>
                                                 </LFChatProvider>
                                             </NotificationsProvider>

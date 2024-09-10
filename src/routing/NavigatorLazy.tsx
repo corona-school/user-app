@@ -76,6 +76,10 @@ import ForPupils from '../pages/ForPupils';
 import { LearningPupilPage } from '../pages/learning/LearningPage';
 import { LearningTopicPupilPage } from '../pages/learning/LearningTopicPage';
 import { LearningAssignmentPupilPage } from '../pages/learning/LearningAssignmentPage';
+import { useBreakpointValue, Stack } from 'native-base';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import NotificationAlert from '../components/notifications/NotificationAlert';
+import useApollo from '@/hooks/useApollo';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -91,6 +95,13 @@ const ZoomMeeting = lazyWithRetry(
 );
 
 export default function NavigatorLazy() {
+    const isMobileSM = useBreakpointValue({
+        base: true,
+        sm: false,
+    });
+
+    const { sessionState } = useApollo();
+
     return (
         <Routes>
             {/* Public */}
@@ -287,7 +298,7 @@ export default function NavigatorLazy() {
                 path="/edit-course"
                 element={
                     <RequireAuth>
-                        <RequireRole roles={['INSTRUCTOR']}>
+                        <RequireRole roles={['INSTRUCTOR', 'COURSE_SCREENER']}>
                             <CreateCourse />
                         </RequireRole>
                     </RequireAuth>
@@ -422,6 +433,7 @@ export default function NavigatorLazy() {
                 }
             >
                 <Route path="handbook" element={<IFrame title="handbook" src="https://www.lern-fair.de/iframe/hilfestellungen" />} />
+                <Route path="mentoring" element={<IFrame title="mentoring" src="https://www.lern-fair.de/iframe/mentoring-beratung" />} />
                 <Route path="online-training" element={<IFrame title="online-training" src="https://www.lern-fair.de/iframe/fortbildungen" />} />
                 <Route index element={<Navigate to="handbook" />} />
             </Route>
@@ -480,20 +492,26 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
-            <Route
-                path="/new-password"
-                element={
-                    <WithNavigation showBack previousFallbackRoute="/start" hideMenu>
-                        <ResetPassword layout="new-pw" />
-                    </WithNavigation>
-                }
-            />
+            <Route path="/new-password" element={<ResetPassword layout="new-pw" />} />
             <Route path="/reset-password" element={<ResetPassword layout="reset-pw" />} />
 
             <Route
                 path="/datenschutz"
                 element={
-                    <WithNavigation showBack previousFallbackRoute="/start" headerTitle="Datenschutz" hideMenu>
+                    <WithNavigation
+                        showBack={isMobileSM}
+                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
+                        previousFallbackRoute="/settings"
+                        headerLeft={
+                            !isMobileSM && (
+                                <Stack alignItems="center" direction="row">
+                                    <SwitchLanguageButton />
+                                    <NotificationAlert />
+                                </Stack>
+                            )
+                        }
+                        headerTitle="Datenschutz"
+                    >
                         <IFrame title="datenschutz" src="https://www.lern-fair.de/iframe/datenschutz" />
                     </WithNavigation>
                 }
@@ -509,7 +527,20 @@ export default function NavigatorLazy() {
             <Route
                 path="/impressum"
                 element={
-                    <WithNavigation showBack previousFallbackRoute="/start" headerTitle="Impressum" hideMenu>
+                    <WithNavigation
+                        showBack={isMobileSM}
+                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
+                        previousFallbackRoute="/settings"
+                        headerLeft={
+                            !isMobileSM && (
+                                <Stack alignItems="center" direction="row">
+                                    <SwitchLanguageButton />
+                                    <NotificationAlert />
+                                </Stack>
+                            )
+                        }
+                        headerTitle="Impressum"
+                    >
                         <IFrame title="impressum" src="https://www.lern-fair.de/iframe/impressum" />
                     </WithNavigation>
                 }
