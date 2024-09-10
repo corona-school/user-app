@@ -1,45 +1,75 @@
-import { Heading, useTheme, Text, Button, HStack, VStack, Spacer } from 'native-base';
 import { getSchoolTypeKey } from '../../types/lernfair/SchoolType';
-import NewChatIcon from '../../assets/icons/lernfair/ic_new_chat.svg';
-import RemovePupilIcon from '../../assets/icons/lernfair/cancel.svg';
 import { pupilIdToUserId } from '../../helper/chat-helper';
 import { SubcourseParticipant } from '../../types/lernfair/Course';
 import { getGradeLabel } from '../../Utility';
+import { Typography } from '@/components/Typography';
+import { Separator } from '@/components/Separator';
+import { Button } from '@/components/Button';
+import AvatarPupil from '@/assets/icons/lernfair/avatar_pupil.svg';
+import { IconBackpack, IconMessage, IconUser } from '@tabler/icons-react';
+import { useTranslation } from 'react-i18next';
 
-type RowProps = {
+interface ParticipantFactProps {
+    icon: React.ReactNode;
+    children: React.ReactNode;
+}
+
+const ParticipantFact = ({ children, icon }: ParticipantFactProps) => (
+    <div className="flex gap-x-2 lg:gap-x-3 items-center">
+        {icon}
+        {children}
+    </div>
+);
+
+interface ParticipantRowProps {
     participant: SubcourseParticipant;
     isInstructor?: boolean;
     contactParticipant?: (participantId: string) => void;
     removeParticipant?: (participant: SubcourseParticipant) => void;
-};
-const ParticipantRow: React.FC<RowProps> = ({ participant, isInstructor, contactParticipant, removeParticipant }) => {
-    const { space } = useTheme();
-
+    addParticipant?: (participant: SubcourseParticipant) => void;
+}
+const ParticipantRow = ({ participant, isInstructor, contactParticipant, removeParticipant, addParticipant }: ParticipantRowProps) => {
+    const { t } = useTranslation();
     return (
-        <HStack marginBottom={space['1.5']} alignItems="center" maxW="350">
-            <VStack marginRight={space['1']}></VStack>
-            <VStack>
-                <Heading fontSize="md">
-                    {participant.firstname} {participant.lastname ?? ''}
-                </Heading>
-                <Text>
-                    {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
-                    {getGradeLabel(participant.gradeAsInt)}
-                </Text>
-            </VStack>
-            <Spacer />
-            {isInstructor && contactParticipant && (
-                <Button variant="outlinelight" ml={space['3']} onPress={() => contactParticipant(pupilIdToUserId(participant.id))}>
-                    <NewChatIcon />
-                </Button>
-            )}
-            <Spacer />
-            {isInstructor && removeParticipant && (
-                <Button variant="outline" ml={space['3']} onPress={() => removeParticipant(participant)}>
-                    <RemovePupilIcon />
-                </Button>
-            )}
-        </HStack>
+        <div className="flex flex-col lg:flex-row items-center lg:h-[84px] max-w-[980px] py-4 px-4 lg:pl-9 lg:pr-7 border border-gray-300 rounded">
+            <AvatarPupil className="size-24" />
+            <Separator orientation="vertical" decorative className="ml-6 mr-8" />
+            <div className="flex justify-between px-5 lg:flex-col lg:gap-x-10 gap-y-2 w-full mt-4 lg:mt-0">
+                <ParticipantFact icon={<IconUser size={18} />}>
+                    <Typography variant="sm">
+                        {participant.firstname} {participant.lastname ?? ''}
+                    </Typography>
+                </ParticipantFact>
+                <ParticipantFact icon={<IconBackpack size={18} />}>
+                    <Typography variant="sm">
+                        {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
+                        {getGradeLabel(participant.gradeAsInt)}
+                    </Typography>
+                </ParticipantFact>
+            </div>
+            <div className="flex flex-col gap-y-2 lg:flex-row lg:justify-end ml-auto gap-x-4 w-full mt-4 lg:mt-0">
+                {isInstructor && contactParticipant && (
+                    <Button
+                        onClick={() => contactParticipant(pupilIdToUserId(participant.id))}
+                        variant="outline"
+                        leftIcon={<IconMessage size={16} />}
+                        className="w-full lg:w-fit"
+                    >
+                        {t('chat.openChat')}
+                    </Button>
+                )}
+                {isInstructor && removeParticipant && (
+                    <Button variant="ghost" onClick={() => removeParticipant(participant)} className="w-full lg:w-fit">
+                        {t('single.removeFromCourse')}
+                    </Button>
+                )}
+                {isInstructor && addParticipant && (
+                    <Button onClick={() => addParticipant(participant)} className="w-full lg:w-fit">
+                        {t('single.addToCourse')}
+                    </Button>
+                )}
+            </div>
+        </div>
     );
 };
 
