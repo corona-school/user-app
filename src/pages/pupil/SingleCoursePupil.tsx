@@ -171,6 +171,7 @@ const SingleCoursePupil = () => {
         >
             <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
                 {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
+                {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
                 {subcourse?.isParticipant && !isInPast && (
                     <PupilJoinedCourseBanner
                         courseStatus={getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants)}
@@ -178,7 +179,6 @@ const SingleCoursePupil = () => {
                     />
                 )}
 
-                {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
                 <Tabs defaultValue="lectures">
                     {showTabsControls && (
                         <TabsList>
