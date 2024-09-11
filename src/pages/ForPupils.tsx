@@ -7,12 +7,15 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Typography } from '@/components/Typography';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 
+const tabs = ['learn-methods'];
+
 const ForPupils = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    const currentTabFromRoute = pathname.split('/').pop();
+    const path = pathname.split('/').pop() || '';
+    const currentTabFromRoute = tabs.includes(path) ? path : tabs[0];
     return (
         <AsNavigationItem path="knowledge-pupil">
             <WithNavigation
@@ -33,7 +36,7 @@ const ForPupils = () => {
                         <Typography>{t('forPupils.description')}</Typography>
                     </div>
                     <div className="w-full mx-auto flex-1">
-                        <Tabs className="h-full" value={currentTabFromRoute || 'learn-methods'} onValueChange={(tabId) => navigate(tabId)}>
+                        <Tabs className="h-full" value={currentTabFromRoute} onValueChange={(tabId) => navigate(tabId)}>
                             <TabsList className="hidden">
                                 <TabsTrigger value="learn-methods">{t('forPupils.tabs.learnMethods')}</TabsTrigger>
                             </TabsList>

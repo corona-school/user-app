@@ -7,12 +7,15 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
 
+const tabs = ['handbook', 'mentoring', 'online-training'];
+
 const KnowledgeCenter = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    const currentTabFromRoute = pathname.split('/').pop();
+    const path = pathname.split('/').pop() || '';
+    const currentTabFromRoute = tabs.includes(path) ? path : tabs[0];
     return (
         <AsNavigationItem path="knowledge-helper">
             <WithNavigation
@@ -33,7 +36,7 @@ const KnowledgeCenter = () => {
                         <Typography>{t('forStudents.description')}</Typography>
                     </div>
                     <div className="w-full mx-auto flex-1">
-                        <Tabs className="h-full" value={currentTabFromRoute || 'handbook'} onValueChange={(tabId) => navigate(tabId)}>
+                        <Tabs className="h-full" value={currentTabFromRoute} onValueChange={(tabId) => navigate(tabId)}>
                             <TabsList>
                                 <TabsTrigger value="handbook">{t('forStudents.tabs.handbook')}</TabsTrigger>
                                 <TabsTrigger value="mentoring">{t('forStudents.tabs.mentoring')}</TabsTrigger>
