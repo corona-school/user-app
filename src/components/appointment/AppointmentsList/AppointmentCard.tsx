@@ -19,7 +19,7 @@ interface AppointmentFactProps {
 
 const AppointmentFact = ({ children, icon }: AppointmentFactProps) => (
     <div className="flex gap-x-2 lg:gap-x-3 items-center">
-        {icon}
+        <div>{icon}</div>
         {children}
     </div>
 );
