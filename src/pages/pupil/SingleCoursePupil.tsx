@@ -1,12 +1,10 @@
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { DateTime } from 'luxon';
-import { Box, Stack, Text, useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
-import NavigationTabs, { Tab } from '../../components/NavigationTabs';
 import WithNavigation from '../../components/WithNavigation';
 import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
@@ -14,9 +12,11 @@ import { useMemo } from 'react';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
-import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
+import { Typography } from '@/components/Typography';
+import { AppointmentList } from '@/components/appointment/AppointmentsList';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -42,15 +42,15 @@ function OtherParticipants({ subcourseId }: { subcourseId: number }) {
 
     const otherParticipants = data.subcourse!.otherParticipants;
 
-    if (otherParticipants.length === 0) return <Text>{t('single.global.noMembers')}</Text>;
+    if (otherParticipants.length === 0) return <Typography>{t('single.global.noMembers')}</Typography>;
 
     return (
-        <>
+        <div className="flex flex-col gap-y-6 max-w-[980px] mt-14">
             <ParticipantRow participant={data.me.pupil as any} />
             {otherParticipants.map((participant) => (
                 <ParticipantRow participant={participant} />
             ))}
-        </>
+        </div>
     );
 }
 
@@ -124,12 +124,6 @@ const SingleCoursePupil = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
-    const { space, sizes } = useTheme();
-
-    const sectionSpacing = useBreakpointValue({
-        base: space['1'],
-        lg: space['4'],
-    });
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
         variables: {
@@ -148,43 +142,6 @@ const SingleCoursePupil = () => {
         [subcourse]
     );
 
-    const tabs: Tab[] = [
-        {
-            title: t('single.tabs.lessons'),
-            content: (
-                <Box minH={300}>
-                    <AppointmentList
-                        isReadOnlyList={!subcourse?.isParticipant}
-                        disableScroll
-                        appointments={data?.subcourse?.appointments as Appointment[]}
-                        noOldAppointments
-                    />
-                </Box>
-            ),
-        },
-        {
-            title: t('single.tabs.description'),
-            content: (
-                <>
-                    <Text maxWidth={sizes['imageHeaderWidth']} marginBottom={space['1']}>
-                        {course?.description}
-                    </Text>
-                </>
-            ),
-        },
-    ];
-
-    if (subcourse?.isParticipant) {
-        tabs.push({
-            title: t('single.tabs.participant'),
-            content: (
-                <>
-                    <OtherParticipants subcourseId={subcourseId} />
-                </>
-            ),
-        });
-    }
-
     const isActiveSubcourse = useMemo(() => {
         const today = DateTime.now().endOf('day');
         const isSubcourseCancelled = subcourse?.cancelled;
@@ -196,6 +153,9 @@ const SingleCoursePupil = () => {
         return !is30DaysBeforeToday;
     }, [appointments, subcourse?.cancelled]);
 
+    const showParticipantsTab = subcourse?.isParticipant;
+    const showTabsControls = showParticipantsTab;
+
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
@@ -203,13 +163,13 @@ const SingleCoursePupil = () => {
             previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
-                <Stack alignItems="center" direction="row">
+                <div className="flex items-center flex-row">
                     <SwitchLanguageButton />
                     <NotificationAlert />
-                </Stack>
+                </div>
             }
         >
-            <Stack space={sectionSpacing} paddingX={space['1.5']}>
+            <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
                 {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
                 {subcourse?.isParticipant && !isInPast && (
                     <PupilJoinedCourseBanner
@@ -219,8 +179,21 @@ const SingleCoursePupil = () => {
                 )}
 
                 {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
-                <NavigationTabs tabs={tabs} />
-            </Stack>
+                <Tabs defaultValue="lectures">
+                    {showTabsControls && (
+                        <TabsList>
+                            <TabsTrigger value="lectures">{t('single.tabs.lessons')}</TabsTrigger>
+                            {showParticipantsTab && <TabsTrigger value="participants">{t('single.tabs.participant')}</TabsTrigger>}
+                        </TabsList>
+                    )}
+                    <TabsContent value="lectures">
+                        <div className="mt-8 max-h-80 overflow-y-scroll">
+                            <AppointmentList appointments={appointments as Appointment[]} isReadOnly={!subcourse?.isParticipant} disableScroll />
+                        </div>
+                    </TabsContent>
+                    <TabsContent value="participants">{subcourse && showParticipantsTab && <OtherParticipants subcourseId={subcourseId} />}</TabsContent>
+                </Tabs>
+            </div>
         </WithNavigation>
     );
 };
