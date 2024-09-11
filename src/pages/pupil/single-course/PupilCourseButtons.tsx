@@ -5,14 +5,14 @@ import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
 import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
-import AlertMessage from '../../../widgets/AlertMessage';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import { gql } from '../../../gql';
 import VideoButton from '../../../components/VideoButton';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/Button';
-import { IconMessage2 } from '@tabler/icons-react';
+import { IconMessage2, IconInfoCircleFilled } from '@tabler/icons-react';
 import { toast } from 'sonner';
+import { Alert } from '@/components/Alert';
 
 type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
@@ -182,7 +182,12 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
     const appointment = subcourse.appointments[0];
     return (
         <>
-            <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap lg:w-1/2">
+            {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
+                <Alert className="w-full md:w-fit" icon={<IconInfoCircleFilled />}>
+                    {t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)}
+                </Alert>
+            )}
+            <div className="flex flex-col items-center gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap lg:w-1/2">
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
                     <Button
                         disabled={loadingSubcourseJoined}
@@ -193,10 +198,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                         {t('signin')}
                     </Button>
                 )}
-                {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
-                    <AlertMessage content={t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)} />
-                )}
-
                 {subcourse.isParticipant && !loading && isActiveSubcourse && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
