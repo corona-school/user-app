@@ -88,6 +88,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
                 onClick={openMeeting}
                 className={className}
                 leftIcon={<IconVideo size={16} />}
+                variant="secondary"
             >
                 {buttonText ?? isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}
             </Button>

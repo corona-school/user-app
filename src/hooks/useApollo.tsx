@@ -15,6 +15,7 @@ import {
     Operation,
     Reference,
     Transaction,
+    TypedDocumentNode,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 import { ReactNode, useMemo, useState, createContext, useContext, useCallback, useEffect } from 'react';
@@ -28,6 +29,11 @@ import { gql } from '../gql';
 import { Role } from '../types/lernfair/User';
 import { datadogRum } from '@datadog/browser-rum';
 import { Kind } from 'graphql';
+
+// Utility type to extract the query result:
+// const SomeQuery = gql(...);
+// type SomeQueryResult = QueryResult<typeof SomeQuery>;
+export type QueryResult<Q> = Q extends TypedDocumentNode<infer Data, any> ? Data : never;
 
 // --------------- Caching -------------------------
 
@@ -72,6 +78,10 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         }
 
         const name = definition.name?.value;
+        if (name?.includes('NO_CACHE')) {
+            return undefined;
+        }
+
         return name;
     }
 
