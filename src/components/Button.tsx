@@ -59,7 +59,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         return (
             <TooltipProvider>
                 <Tooltip>
-                    <TooltipTrigger asChild>{disabled ? <span className="w-fit">{Component}</span> : <>{Component}</>}</TooltipTrigger>
+                    <TooltipTrigger asChild>{disabled ? <span className="contents">{Component}</span> : <>{Component}</>}</TooltipTrigger>
                     {disabled && reasonDisabled && <TooltipContent>{reasonDisabled}</TooltipContent>}
                 </Tooltip>
             </TooltipProvider>
