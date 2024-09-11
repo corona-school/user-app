@@ -13,6 +13,9 @@
     "helper": "Helfer:in",
     "to": "An",
     "or": "oder",
+    "show": "Anzeigen",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -880,14 +883,17 @@
             "header": "Schüler:innen nachrücken",
             "add": "Hinzufügen",
             "amount": "Anzahl Schüler:innen",
-            "success": "Schüler:innen erfolgreich hinzugefügt"
+            "success": "Schüler:innen erfolgreich hinzugefügt",
+            "error": "Schüler:innen konnten nicht hinzugefügt werden"
         },
         "removeParticipantFromCourseModal": {
             "header": "Schüler:in aus Kurs entfernen",
             "remove": "Entfernen",
             "success": "Schüler:in erfolgreich entfernt",
             "error": "Schüler:in konnte nicht entfernt werden"
-        }
+        },
+        "removeFromCourse": "Aus dem Kurs entfernen",
+        "addToCourse": "Zum Kurs hinzufügen"
     },
     "settings": {
         "header": "Einstellungen",
@@ -1971,6 +1977,7 @@
     },
     "chat": {
         "title": "Chat",
+        "openChat": "Chat öffnen",
         "openSubcourseChat": "Gruppen-Chat öffnen",
         "openAnnouncementChat": "Ankündigungschat öffnen",
         "hint": "Du kannst den Gruppen-Chat erst öffnen, wenn sich mindestens zwei Schüler:innen zu deinem Kurs angemeldet haben.",

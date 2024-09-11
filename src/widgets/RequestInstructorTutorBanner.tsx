@@ -17,7 +17,7 @@ const RequestInstructorTutorBanner: React.FC<BannerProps> = ({ headline }) => {
         <>
             <Stack direction="row" alignItems="center" mb="3">
                 <Box pr="2">
-                    <CheckIcon />
+                    <CheckIcon width={54} />
                 </Box>
                 <VStack w={isMobile ? '80%' : '90%'}>
                     <Heading fontSize="sm">{headline}</Heading>

@@ -53,6 +53,7 @@ module.exports = {
                 },
                 destructive: {
                     DEFAULT: 'hsl(var(--destructive))',
+                    lighter: 'hsl(var(--destructive-lighter))',
                     foreground: 'hsl(var(--destructive-foreground))',
                 },
                 muted: {
@@ -104,6 +105,9 @@ module.exports = {
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
+            },
+            boxShadow: {
+                bottomNavigation: '0px 4px 16px rgba(17,17,26,0.1), 0px 8px 24px rgba(17,17,26,0.1),0px 16px 56px rgba(17,17,26,0.1)',
             },
         },
     },

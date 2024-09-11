@@ -31,6 +31,7 @@
         --accent: var(--primary-lighter);
         --accent-foreground: var(--primary);
 
+        --destructive-lighter: 0 77% 93%;
         --destructive: 0 73.7% 41.8%;
         --destructive-foreground: 210 40% 98%;
 
@@ -48,4 +49,8 @@
         @apply bg-background text-foreground;
         font-feature-settings: 'rlig' 1, 'calt' 1;
     }
+}
+
+.tabler-icon {
+    stroke-width: 1;
 }

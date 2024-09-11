@@ -811,14 +811,17 @@
             "header": "Öğrencileri yedeklemek",
             "add": "Ekle",
             "amount": "Öğrenci sayısı",
-            "success": "Öğrenci başarıyla eklendi"
+            "success": "Öğrenci başarıyla eklendi",
+            "error": "Öğrenciler eklenemedi"
         },
         "removeParticipantFromCourseModal": {
             "header": "Öğrenciyi kurstan çıkarma",
             "remove": "Kaldırmak",
             "success": "Başarılı bir şekilde öğrenci kaldırıldı",
             "error": "Öğrenci:in kaldırılamadı"
-        }
+        },
+        "removeFromCourse": "Kurstan çıkarma",
+        "addToCourse": "Kursa ekle"
     },
     "settings": {
         "general": {
@@ -1935,7 +1938,8 @@
         "placeholder": "Bir şeyler yaz.",
         "chatError": "Sohbet açılamıyor.",
         "groupChatError": "Grup sohbeti açılamıyor.",
-        "announcementChatError": "Duyuru sohbeti açılamıyor."
+        "announcementChatError": "Duyuru sohbeti açılamıyor.",
+        "openChat": "Açık sohbet"
     },
     "introduction": {
         "courseTypes": {
@@ -2363,5 +2367,8 @@
         "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
         "installButton": "Kurulum",
         "iOSInstallInstructions": "<0/> ve ardından <1/> \"Ana Ekrana Ekle\"ye dokunun"
-    }
+    },
+    "show": "Ekran",
+    "showMore": "Daha fazla göster",
+    "showLess": "Daha az göster"
 }
