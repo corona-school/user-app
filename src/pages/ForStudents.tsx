@@ -1,88 +1,58 @@
-import { Text, Box, Heading, Stack, useBreakpointValue, useTheme } from 'native-base';
 import AsNavigationItem from '../components/AsNavigationItem';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
-import Tabs from '../components/Tabs';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
-
-const tabs = ['handbook', 'mentoring', 'online-training'];
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
+import { Typography } from '@/components/Typography';
 
 const KnowledgeCenter = () => {
     const { t } = useTranslation();
-    const { sizes, space } = useTheme();
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    const containerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
-    });
-
-    const contentContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['contentContainerWidth'],
-    });
-
-    const isMobileSM = useBreakpointValue({
-        base: true,
-        sm: false,
-    });
-
     const currentTabFromRoute = pathname.split('/').pop();
-    const currentTabIndex = tabs.indexOf(currentTabFromRoute || 'handbook');
     return (
         <AsNavigationItem path="knowledge-helper">
             <WithNavigation
-                showBack={isMobileSM}
-                hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('forStudents.title')}
                 headerLeft={
-                    !isMobileSM && (
-                        <Stack alignItems="center" direction="row">
-                            <SwitchLanguageButton />
-                            <NotificationAlert />
-                        </Stack>
-                    )
+                    <div className="flex items-center flex-row">
+                        <SwitchLanguageButton />
+                        <NotificationAlert />
+                    </div>
                 }
             >
-                <Box maxWidth={containerWidth} width="100%" marginX="auto" pt={6}>
-                    <Box maxWidth={contentContainerWidth} paddingBottom={space['1.5']} paddingX={space['1.5']}>
-                        <Heading paddingBottom={1.5}>{t('forStudents.title')}</Heading>
-                        <Text>{t('forStudents.description')}</Text>
-                    </Box>
-                </Box>
-                <Box width="100%" maxWidth={containerWidth} marginX="auto" flex={1}>
-                    <Tabs
-                        removeSpace
-                        tabInset={0}
-                        currentTabIndex={currentTabIndex !== -1 ? currentTabIndex : 0}
-                        onPressTab={(tab) => navigate(`${tab.id}`)}
-                        tabs={[
-                            {
-                                id: 'handbook',
-                                title: t('forStudents.tabs.handbook'),
-                                content: <Outlet />,
-                            },
-                            {
-                                id: 'mentoring',
-                                title: t('forStudents.tabs.mentoring'),
-                                content: <Outlet />,
-                            },
-                            {
-                                id: 'online-training',
-                                title: t('forStudents.tabs.onlineTraining'),
-                                content: (
-                                    <Box flex={1} px={4}>
-                                        <Outlet />
-                                    </Box>
-                                ),
-                            },
-                        ]}
-                    />
-                </Box>
+                <div className="h-full flex flex-col">
+                    <div className="w-full max-w-5xl pt-4 pb-3 px-1.5">
+                        <Typography variant="h4" className="mb-1.5">
+                            {t('forStudents.title')}
+                        </Typography>
+                        <Typography>{t('forStudents.description')}</Typography>
+                    </div>
+                    <div className="w-full mx-auto flex-1">
+                        <Tabs className="h-full" value={currentTabFromRoute || 'handbook'} onValueChange={(tabId) => navigate(tabId)}>
+                            <TabsList>
+                                <TabsTrigger value="handbook">{t('forStudents.tabs.handbook')}</TabsTrigger>
+                                <TabsTrigger value="mentoring">{t('forStudents.tabs.mentoring')}</TabsTrigger>
+                                <TabsTrigger value="online-training">{t('forStudents.tabs.onlineTraining')}</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="handbook" className="h-full">
+                                <Outlet />
+                            </TabsContent>
+                            <TabsContent value="mentoring" className="h-full">
+                                <Outlet />
+                            </TabsContent>
+                            <TabsContent value="online-training" className="h-full">
+                                <div className="px-4 h-full">
+                                    <Outlet />
+                                </div>
+                            </TabsContent>
+                        </Tabs>
+                    </div>
+                </div>
             </WithNavigation>
         </AsNavigationItem>
     );
