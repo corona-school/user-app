@@ -18,7 +18,7 @@ const WaitingListBanner = ({ courseStatus, loading, onLeaveWaitingList }: Waitin
     return (
         <div className="bg-primary-lighter w-full max-w-[460px] p-4 rounded-lg shadow-md">
             <div className="flex flex-col justify-between items-start gap-1">
-                <CourseTrafficLamp status={courseStatus} paddingY={3} />
+                <CourseTrafficLamp status={courseStatus} paddingY={1} />
                 <Separator className="mb-3" />
                 <div className="flex flex-col items-start md:flex-row md:items-center gap-y-1 w-full">
                     <div className="flex flex-row items-center mb-2">
