@@ -1,5 +1,4 @@
 import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
-import { useToast } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
@@ -13,6 +12,7 @@ import VideoButton from '../../../components/VideoButton';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/Button';
 import { IconMessage2 } from '@tabler/icons-react';
+import { toast } from 'sonner';
 
 type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
@@ -52,7 +52,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
     const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState(false);
 
     const { t } = useTranslation();
-    const toast = useToast();
     const navigate = useNavigate();
 
     const [joinSubcourse, { loading: loadingSubcourseJoined, data: joinedSubcourse }] = useMutation(
@@ -114,24 +113,24 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
     );
 
     async function contactInstructorAsParticipant() {
-        const conversation = await chatCreateForSubcourse({
-            variables: { subcourseId: subcourse.id, memberUserId: `student/${subcourse.instructors[0].id}` },
-        });
-        if (conversation) {
+        try {
+            const conversation = await chatCreateForSubcourse({
+                variables: { subcourseId: subcourse.id, memberUserId: `student/${subcourse.instructors[0].id}` },
+            });
             navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
-        } else {
-            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        } catch (error) {
+            toast.error(t('chat.chatError'));
         }
     }
 
     async function contactInstructorAsProspect() {
-        const conversation = await chatCreateAsProspect({
-            variables: { subcourseId: subcourse.id, instructorUserId: `student/${subcourse.instructors[0].id}` },
-        });
-        if (conversation) {
+        try {
+            const conversation = await chatCreateAsProspect({
+                variables: { subcourseId: subcourse.id, instructorUserId: `student/${subcourse.instructors[0].id}` },
+            });
             navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
-        } else {
-            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        } catch (error) {
+            toast.error(t('chat.chatError'));
         }
     }
 
@@ -145,28 +144,28 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
         setSignInModal(false);
         try {
             await joinSubcourse();
-            toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+            toast.success(t('single.signIn.toast'));
         } catch (e) {
-            toast.show({ description: t('single.signIn.error'), placement: 'top' });
+            toast.error(t('single.signIn.error'));
         }
     }, []);
 
     const handleCourseLeave = useCallback(async () => {
         setSignOutModal(false);
-        leaveSubcourse();
-        toast.show({ description: t('single.leave.toast'), placement: 'top' });
+        await leaveSubcourse();
+        toast.success(t('single.leave.toast'));
     }, []);
 
-    const handleJoinWaitinglist = useCallback(() => {
-        joinWaitinglist();
+    const handleJoinWaitinglist = useCallback(async () => {
+        await joinWaitinglist();
         setJoinWaitinglistModal(false);
-        toast.show({ description: t('single.joinWaitinglist.toast'), placement: 'top' });
+        toast.success(t('single.joinWaitinglist.toast'));
     }, []);
 
     const handleWaitinglistLeave = useCallback(async () => {
-        leaveWaitinglist();
+        await leaveWaitinglist();
         setLeaveWaitingslistModal(false);
-        toast.show({ description: t('single.leaveWaitinglist.toast'), placement: 'top' });
+        toast.success(t('single.leaveWaitinglist.toast'));
     }, []);
 
     const courseTrafficStatus = useMemo(
@@ -258,7 +257,11 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
             </div>
             {subcourse.isOnWaitingList && (
                 <div className="flex gap-0.5 mb-5">
-                    <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingLeftWaitinglist} />
+                    <WaitinglistBanner
+                        courseStatus={courseTrafficStatus}
+                        onLeaveWaitingList={() => setLeaveWaitingslistModal(true)}
+                        loading={loadingLeftWaitinglist}
+                    />
                 </div>
             )}
 
@@ -296,6 +299,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 onOpenChange={setLeaveWaitingslistModal}
                 isOpen={leaveWaitinglistModal}
                 onConfirm={handleWaitinglistLeave}
+                variant="destructive"
             />
         </>
     );
