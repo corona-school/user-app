@@ -811,14 +811,17 @@
             "header": "Учні просуваються вгору",
             "add": "Додати",
             "amount": "Кількість учнів",
-            "success": "Pupils:inside успішно додано"
+            "success": "Pupils:inside успішно додано",
+            "error": "Студенти не можуть бути додані"
         },
         "removeParticipantFromCourseModal": {
             "header": "Видалити студента з курсу",
             "remove": "Видалити",
             "success": "Student:in успішно видалено",
             "error": "Student:in не вдалося видалити"
-        }
+        },
+        "removeFromCourse": "Видалити з курсу",
+        "addToCourse": "Додати до курсу"
     },
     "settings": {
         "general": {
@@ -1935,7 +1938,8 @@
         "placeholder": "Напиши що-небудь...",
         "chatError": "Чат не відкривається.",
         "groupChatError": "Неможливо відкрити груповий чат.",
-        "announcementChatError": "Неможливо відкрити чат оголошень."
+        "announcementChatError": "Неможливо відкрити чат оголошень.",
+        "openChat": "Відкритий чат"
     },
     "introduction": {
         "courseTypes": {
@@ -2363,5 +2367,8 @@
         "installDescription": "Швидкий доступ до чатів і зустрічей без входу в систему",
         "installButton": "Встановити",
         "iOSInstallInstructions": "Натисніть на <0/>, а потім <1/> \"На головний екран\""
-    }
+    },
+    "show": "Дисплеї",
+    "showMore": "Показати більше",
+    "showLess": "Показати менше"
 }

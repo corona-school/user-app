@@ -811,14 +811,17 @@
             "header": "pupils move up",
             "add": "Add",
             "amount": "Quantity pupils",
-            "success": "pupils successfully added"
+            "success": "pupils successfully added",
+            "error": "pupils could not be added"
         },
         "removeParticipantFromCourseModal": {
             "header": "pupil Remove from course",
             "remove": "Remove",
             "success": "pupil successfully removed",
             "error": "pupil could not be removed"
-        }
+        },
+        "removeFromCourse": "Remove from the course",
+        "addToCourse": "Add to course"
     },
     "settings": {
         "general": {
@@ -1931,7 +1934,8 @@
         "placeholder": "Write something...",
         "chatError": "Chat cannot be opened.",
         "groupChatError": "Group chat cannot be opened.",
-        "announcementChatError": "Announcement chat cannot be opened."
+        "announcementChatError": "Announcement chat cannot be opened.",
+        "openChat": "Open chat"
     },
     "introduction": {
         "courseTypes": {
@@ -2359,5 +2363,8 @@
         "installDescription": "For faster access to chats and lectures without logging in",
         "installButton": "Install",
         "iOSInstallInstructions": "Tap on <0/> and then <1/> \"Add to Home Screen\""
-    }
+    },
+    "show": "Display",
+    "showMore": "Show more",
+    "showLess": "Show less"
 }

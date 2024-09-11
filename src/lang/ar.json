@@ -807,14 +807,17 @@
             "header": "التلاميذ يتحركون للأعلى",
             "add": "جمع",
             "amount": "عدد التلاميذ",
-            "success": "تمت إضافة الطلاب بنجاح"
+            "success": "تمت إضافة الطلاب بنجاح",
+            "error": "تلاميذ لا يمكن إضافتها"
         },
         "removeParticipantFromCourseModal": {
             "header": "إزالة طالب من المقرر الدراسي",
             "remove": "أبعد",
             "success": "تمت إزالة الطالب بنجاح",
             "error": "الطالب: في لا يمكن إزالتها"
-        }
+        },
+        "removeFromCourse": "الإزالة من المقرر الدراسي",
+        "addToCourse": "إضافة إلى المقرر الدراسي"
     },
     "settings": {
         "general": {
@@ -1931,7 +1934,8 @@
         "placeholder": "اكتب شيئا...",
         "chatError": "غير قادر على فتح المحادثة.",
         "groupChatError": "غير قادر على فتح المحادثة الجماعية.",
-        "announcementChatError": "لا يمكن فتح دردشة الإعلان."
+        "announcementChatError": "لا يمكن فتح دردشة الإعلان.",
+        "openChat": "دردشة مفتوحة"
     },
     "introduction": {
         "courseTypes": {
@@ -2359,5 +2363,8 @@
         "installDescription": "مواعيد للوصول بشكل أسرع إلى الدردشات وبدون تسجيل الدخول",
         "installButton": "التثبيت",
         "iOSInstallInstructions": "اضغط على <0/> ثم <1/> 'إلى الشاشة الرئيسية'"
-    }
+    },
+    "show": "شاشات العرض",
+    "showMore": "عرض المزيد",
+    "showLess": "عرض أقل"
 }
