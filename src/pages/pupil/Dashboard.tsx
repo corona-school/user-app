@@ -14,7 +14,6 @@ import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
-import Hello from '../../widgets/Hello';
 import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
@@ -219,14 +218,6 @@ const Dashboard: React.FC<Props> = () => {
     return (
         <AsNavigationItem path="start">
             <WithNavigation
-                headerContent={
-                    !loading &&
-                    isMobile && (
-                        <HStack maxWidth={ContainerWidth} space={space['1']} alignItems="center" bgColor={'primary.900'} padding={space['1.5']}>
-                            <Hello />
-                        </HStack>
-                    )
-                }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <SwitchLanguageButton />
