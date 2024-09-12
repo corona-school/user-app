@@ -1,69 +1,51 @@
-import { Text, Box, Heading, Stack, useBreakpointValue, useTheme } from 'native-base';
 import AsNavigationItem from '../components/AsNavigationItem';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
-import Tabs from '../components/Tabs';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
+import { Typography } from '@/components/Typography';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 
 const tabs = ['learn-methods'];
 
 const ForPupils = () => {
     const { t } = useTranslation();
-    const { sizes, space } = useTheme();
     const navigate = useNavigate();
     const { pathname } = useLocation();
 
-    const containerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
-    });
-
-    const contentContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['contentContainerWidth'],
-    });
-
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
-
-    const currentTabFromRoute = pathname.split('/').pop();
-    const currentTabIndex = tabs.indexOf(currentTabFromRoute || 'learn-methods');
+    const path = pathname.split('/').pop() || '';
+    const currentTabFromRoute = tabs.includes(path) ? path : tabs[0];
     return (
         <AsNavigationItem path="knowledge-pupil">
             <WithNavigation
-                showBack={isMobile}
                 previousFallbackRoute="/start"
                 headerTitle={t('forPupils.title')}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
+                    <div className="flex items-center flex-row">
                         <SwitchLanguageButton />
                         <NotificationAlert />
-                    </Stack>
+                    </div>
                 }
             >
-                <Box maxWidth={containerWidth} width="100%" marginX="auto">
-                    <Box maxWidth={contentContainerWidth} paddingBottom={space['1.5']} paddingX={space['1.5']}>
-                        <Heading paddingBottom={1.5}>{t('forPupils.title')}</Heading>
-                        <Text>{t('forPupils.description')}</Text>
-                    </Box>
-                </Box>
-                <Box width="100%" maxWidth={containerWidth} marginX="auto" flex={1}>
-                    <Tabs
-                        currentTabIndex={currentTabIndex !== -1 ? currentTabIndex : 0}
-                        onPressTab={(tab) => navigate(`${tab.id}`)}
-                        tabs={[
-                            {
-                                id: 'learn-methods',
-                                title: t('forPupils.tabs.learnMethods'),
-                                content: <Outlet />,
-                            },
-                        ]}
-                    />
-                </Box>
+                <div className="h-full flex flex-col">
+                    <div className="w-full max-w-5xl pt-4 pb-3 px-1.5">
+                        <Typography variant="h4" className="mb-1.5">
+                            {t('forPupils.title')}
+                        </Typography>
+                        <Typography>{t('forPupils.description')}</Typography>
+                    </div>
+                    <div className="w-full mx-auto flex-1">
+                        <Tabs className="h-full" value={currentTabFromRoute} onValueChange={(tabId) => navigate(tabId)}>
+                            <TabsList className="hidden">
+                                <TabsTrigger value="learn-methods">{t('forPupils.tabs.learnMethods')}</TabsTrigger>
+                            </TabsList>
+                            <TabsContent value="learn-methods" className="h-full">
+                                <Outlet />
+                            </TabsContent>
+                        </Tabs>
+                    </div>
+                </div>
             </WithNavigation>
         </AsNavigationItem>
     );
