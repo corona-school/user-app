@@ -453,28 +453,24 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             <Heading fontSize="30px">
                 {t('pupil')} / {pupil.firstname} {pupil.lastname}
             </Heading>
-            <HStack flexWrap="wrap" space={space['1']}>
+            <VStack space={space['2']}>
                 <Text fontSize="20px" lineHeight="50px">
-                    {getGradeLabel(pupil.gradeAsInt)} -{' '}
+                    {getGradeLabel(pupil.gradeAsInt)}
                 </Text>
                 <Button variant="outline" onPress={() => setShowEditGrade(true)} rightIcon={<EditIcon />}>
                     Klasse bearbeiten
                 </Button>
+
                 <LanguageTagList languages={pupil.languages} />
                 <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
                     Sprachen bearbeiten
                 </Button>
-                <Text fontSize="20px" lineHeight="50px">
-                    {' '}
-                    -{' '}
-                </Text>
-                <Stack direction="row" space={space['1']}>
-                    <SubjectTagList subjects={pupil.subjectsFormatted} />
-                    <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
-                        Fächer bearbeiten
-                    </Button>
-                </Stack>
-            </HStack>
+
+                <SubjectTagList subjects={pupil.subjectsFormatted} />
+                <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
+                    Fächer bearbeiten
+                </Button>
+            </VStack>
             {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
                 <HStack space={space['1']}>
                     <Button
