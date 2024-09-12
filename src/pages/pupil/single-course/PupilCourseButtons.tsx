@@ -157,14 +157,14 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
     }, []);
 
     const handleJoinWaitinglist = useCallback(async () => {
-        await joinWaitinglist();
         setJoinWaitinglistModal(false);
+        await joinWaitinglist();
         toast.success(t('single.joinWaitinglist.toast'));
     }, []);
 
     const handleWaitinglistLeave = useCallback(async () => {
-        await leaveWaitinglist();
         setLeaveWaitingslistModal(false);
+        await leaveWaitinglist();
         toast.success(t('single.leaveWaitinglist.toast'));
     }, []);
 
