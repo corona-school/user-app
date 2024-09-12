@@ -16,7 +16,6 @@ import { getGradeLabel, getTrafficStatus, getTrafficStatusText } from '../../Uti
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
-import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import ImportantInformation from '../../widgets/ImportantInformation';
@@ -219,15 +218,6 @@ const DashboardStudent: React.FC<Props> = () => {
     return (
         <AsNavigationItem path="start">
             <WithNavigation
-                headerContent={
-                    called &&
-                    !loading &&
-                    isMobile && (
-                        <Box bgColor={'primary.900'} alignItems="center" padding={space['1.5']}>
-                            <Hello />
-                        </Box>
-                    )
-                }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <SwitchLanguageButton />
