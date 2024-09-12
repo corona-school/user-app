@@ -11,6 +11,7 @@ interface CourseConfirmationModalProps extends BaseModalProps {
     description: ReactNode;
     onConfirm: () => void;
     variant?: 'default' | 'destructive';
+    isLoading?: boolean;
 }
 const CourseConfirmationModal = ({
     headline,
@@ -20,6 +21,7 @@ const CourseConfirmationModal = ({
     isOpen,
     onOpenChange,
     variant = 'default',
+    isLoading,
 }: CourseConfirmationModalProps) => {
     const { t } = useTranslation();
 
@@ -36,7 +38,7 @@ const CourseConfirmationModal = ({
                     <Button variant="outline" onClick={() => onOpenChange(false)}>
                         {t('cancel')}
                     </Button>
-                    <Button variant={variant} onClick={onConfirm}>
+                    <Button variant={variant} onClick={onConfirm} isLoading={isLoading}>
                         {confirmButtonText}
                     </Button>
                 </div>

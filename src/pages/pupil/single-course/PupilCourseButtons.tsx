@@ -273,6 +273,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 onOpenChange={setSignInModal}
                 isOpen={signInModal}
                 onConfirm={handleSignInCourse}
+                isLoading={loadingSubcourseJoined}
             />
 
             <CourseConfirmationModal
@@ -283,6 +284,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 isOpen={signOutModal}
                 onConfirm={() => handleCourseLeave()}
                 variant="destructive"
+                isLoading={loadingSubcourseLeft}
             />
 
             <CourseConfirmationModal
@@ -292,6 +294,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 onOpenChange={setJoinWaitinglistModal}
                 isOpen={joinWaitinglistModal}
                 onConfirm={handleJoinWaitinglist}
+                isLoading={loadingJoinedWaitinglist}
             />
             <CourseConfirmationModal
                 headline={t('deregistrationTitle')}
@@ -301,6 +304,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 isOpen={leaveWaitinglistModal}
                 onConfirm={handleWaitinglistLeave}
                 variant="destructive"
+                isLoading={loadingLeftWaitinglist}
             />
         </>
     );
