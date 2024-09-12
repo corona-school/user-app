@@ -16,7 +16,7 @@ interface ParticipantFactProps {
 
 const ParticipantFact = ({ children, icon }: ParticipantFactProps) => (
     <div className="flex gap-x-2 lg:gap-x-3 items-center">
-        {icon}
+        <div className="shrink-0">{icon}</div>
         {children}
     </div>
 );
@@ -32,9 +32,11 @@ const ParticipantRow = ({ participant, isInstructor, contactParticipant, removeP
     const { t } = useTranslation();
     return (
         <div className="flex flex-col lg:flex-row items-center lg:h-[84px] max-w-[980px] py-4 px-4 lg:pl-9 lg:pr-7 border border-gray-300 rounded">
-            <AvatarPupil className="size-24" />
+            <div className="h-auto w-auto">
+                <AvatarPupil className="size-20 lg:size-10" />
+            </div>
             <Separator orientation="vertical" decorative className="ml-6 mr-8" />
-            <div className="flex justify-between px-5 lg:flex-col lg:gap-x-10 gap-y-2 w-full mt-4 lg:mt-0">
+            <div className="flex justify-between px-0 lg:px-5 lg:flex-col lg:gap-x-10 gap-y-2 w-full mt-4 lg:mt-0">
                 <ParticipantFact icon={<IconUser size={18} />}>
                     <Typography variant="sm">
                         {participant.firstname} {participant.lastname ?? ''}
@@ -47,28 +49,30 @@ const ParticipantRow = ({ participant, isInstructor, contactParticipant, removeP
                     </Typography>
                 </ParticipantFact>
             </div>
-            <div className="flex flex-col gap-y-2 lg:flex-row lg:justify-end ml-auto gap-x-4 w-full mt-4 lg:mt-0">
-                {isInstructor && contactParticipant && (
-                    <Button
-                        onClick={() => contactParticipant(pupilIdToUserId(participant.id))}
-                        variant="outline"
-                        leftIcon={<IconMessage size={16} />}
-                        className="w-full lg:w-fit"
-                    >
-                        {t('chat.openChat')}
-                    </Button>
-                )}
-                {isInstructor && removeParticipant && (
-                    <Button variant="ghost" onClick={() => removeParticipant(participant)} className="w-full lg:w-fit">
-                        {t('single.removeFromCourse')}
-                    </Button>
-                )}
-                {isInstructor && addParticipant && (
-                    <Button onClick={() => addParticipant(participant)} className="w-full lg:w-fit">
-                        {t('single.addToCourse')}
-                    </Button>
-                )}
-            </div>
+            {isInstructor && (
+                <div className="flex flex-col gap-y-2 lg:flex-row lg:justify-end ml-auto gap-x-4 w-full mt-4 lg:mt-0">
+                    {!!contactParticipant && (
+                        <Button
+                            onClick={() => contactParticipant(pupilIdToUserId(participant.id))}
+                            variant="outline"
+                            leftIcon={<IconMessage size={16} />}
+                            className="w-full lg:w-fit"
+                        >
+                            {t('chat.openChat')}
+                        </Button>
+                    )}
+                    {!!removeParticipant && (
+                        <Button variant="ghost" onClick={() => removeParticipant(participant)} className="w-full lg:w-fit">
+                            {t('single.removeFromCourse')}
+                        </Button>
+                    )}
+                    {!!addParticipant && (
+                        <Button onClick={() => addParticipant(participant)} className="w-full lg:w-fit">
+                            {t('single.addToCourse')}
+                        </Button>
+                    )}
+                </div>
+            )}
         </div>
     );
 };

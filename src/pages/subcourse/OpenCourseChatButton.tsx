@@ -16,6 +16,7 @@ type OpenSubcourseChatProps = {
     isParticipant?: boolean;
     isInstructor?: boolean;
     refresh: () => void;
+    className?: string;
 };
 
 const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
@@ -26,6 +27,7 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
     isParticipant,
     participantsCount,
     refresh,
+    className,
 }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -73,6 +75,7 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
             disabled={disableButton}
             reasonDisabled={t('chat.hint')}
             onClick={openSubcourseGroupChat}
+            className={className}
         >
             {groupChatType === Chat_Type.Announcement ? t('chat.openAnnouncementChat') : t('chat.openSubcourseChat')}
         </Button>
