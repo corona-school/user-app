@@ -15,7 +15,7 @@ const SwitchLanguageButton: React.FC = () => {
             <Button onClick={() => setShowSwitchLanguage(true)} variant="none" size="icon">
                 <Icon />
             </Button>
-            <SwitchLanguageModal isOpen={showSwitchLanguage} onCloseModal={() => setShowSwitchLanguage(false)} />
+            <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
         </>
     );
 };
