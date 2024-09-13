@@ -33,7 +33,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
 
     return (
         <>
-            <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4">
+            <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap">
                 {subcourse.published && isActiveSubcourse && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
@@ -42,6 +42,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         participantsCount={subcourse.participantsCount}
                         isInstructor={subcourse.isInstructor}
                         refresh={refresh}
+                        className="w-full  md:w-fit"
                     />
                 )}
                 {subcourse.canEdit.allowed && (
@@ -54,6 +55,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                             }}
                             variant="outline"
                             leftIcon={<IconPencil size={16} />}
+                            className="w-full  md:w-fit"
                         >
                             {t('single.courseInfo.editCourse')}
                         </Button>
