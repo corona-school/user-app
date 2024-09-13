@@ -3,7 +3,7 @@ import { Course_Coursestate_Enum } from '../gql/graphql';
 import { useMemo } from 'react';
 import { Button, ButtonProps } from '@/components/Button';
 import { Typography } from '@/components/Typography';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/Tooltip';
+import { TooltipButton } from '@/components/Tooltip';
 import { IconInfoCircleFilled } from '@tabler/icons-react';
 
 type CourseBannerProps = {
@@ -74,16 +74,9 @@ const CourseBanner: React.FC<CourseBannerProps> = ({ courseState, isCourseCancel
                 <Typography className="font-bold">{t('single.banner.state')}</Typography>
                 <Typography className={`ml-1 mr-2 ${state.textColor}`}>{state.text}</Typography>
 
-                <TooltipProvider>
-                    <Tooltip>
-                        <TooltipTrigger asChild>
-                            <Button variant="none" size="auto">
-                                <IconInfoCircleFilled />
-                            </Button>
-                        </TooltipTrigger>
-                        <TooltipContent className="w-80">{!isPublished ? state.tooltipText : t('single.banner.allowedAndPublished.info')}</TooltipContent>
-                    </Tooltip>
-                </TooltipProvider>
+                <TooltipButton className="w-80" tooltipContent={!isPublished ? state.tooltipText : t('single.banner.allowedAndPublished.info')}>
+                    <IconInfoCircleFilled />
+                </TooltipButton>
             </div>
 
             {courseState !== Course_Coursestate_Enum.Submitted && (

@@ -45,6 +45,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, size, asChild = false, reasonDisabled, disabledContent, disabled, isLoading, children, leftIcon, rightIcon, ...props }, ref) => {
         const SlotContent = asChild ? Slot : 'button';
+        const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
         const Component = (
             <SlotContent className={cn(buttonVariants({ variant, size, className }))} ref={ref} disabled={disabled || isLoading} {...props}>
                 <span className={`inline-flex gap-x-2 items-center justify-center ${isLoading ? 'invisible' : ''}`}>
@@ -56,14 +57,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             </SlotContent>
         );
 
-        return (
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger asChild>{disabled ? <span className="w-fit">{Component}</span> : <>{Component}</>}</TooltipTrigger>
-                    {disabled && reasonDisabled && <TooltipContent>{reasonDisabled}</TooltipContent>}
-                </Tooltip>
-            </TooltipProvider>
-        );
+        if (disabled && reasonDisabled) {
+            return (
+                <TooltipProvider>
+                    <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+                        <TooltipTrigger asChild>
+                            <span onClick={() => setIsTooltipOpen(true)}>{Component}</span>
+                        </TooltipTrigger>
+                        <TooltipContent>{reasonDisabled}</TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            );
+        }
+
+        return <>{Component}</>;
     }
 );
 Button.displayName = 'Button';
