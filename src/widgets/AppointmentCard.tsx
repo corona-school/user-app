@@ -402,6 +402,7 @@ const AppointmentCard: React.FC<Props> = ({
                                             duration={duration}
                                             isInstructor={isOrganizer}
                                             canJoin={isCurrent}
+                                            className="w-full h-[47px] rounded-[4px]"
                                         />
                                     </VStack>
                                 )}
