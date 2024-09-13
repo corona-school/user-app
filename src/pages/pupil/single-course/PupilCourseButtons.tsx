@@ -187,7 +187,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                     {t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)}
                 </Alert>
             )}
-            <div className="flex flex-col items-center gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap lg:w-1/2">
+            <div className="flex flex-col items-stretch lg:items-center gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap lg:w-1/2">
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
                     <Button
                         disabled={loadingSubcourseJoined}

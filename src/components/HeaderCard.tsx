@@ -1,5 +1,6 @@
 import { ReactNode } from 'react';
 import BackButton from './BackButton';
+import { NavLink } from 'react-router-dom';
 import Loki from '../assets/icons/loki.svg';
 
 type Props = {
@@ -23,17 +24,19 @@ const HeaderCard: React.FC<Props> = ({ children, leftContent, rightContent, onBa
             <div className="h-14 bg-primary-light fixed py-4 z-50 top-0 left-0 right-0">
                 <div className="flex items-center justify-between h-full px-4">
                     <div className="flex items-center">
-                        {showBack && <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />}
-                        <Loki className="hidden lg:block" />
-                    </div>
-                    <div className="flex flex-row items-center justify-between w-full lg:hidden">
-                        <div className="flex items-center">
-                            {rightContent}
-                            {!showBack && <Loki className="lg:hidden" />}
+                        <div className={showBack ? '' : 'invisible'}>
+                            <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />
                         </div>
-                        <div className="flex flex-row items-center">{leftContent}</div>
+                        <NavLink to="/start" className="ml-1">
+                            <Loki className="w-[106px] h-[34px] lg:w-[125px] lg:h-[40px]" />
+                        </NavLink>
                     </div>
-                    <div className="flex-row justify-end hidden lg:flex">
+                    <div className="flex flex-row items-center justify-end w-full md:hidden">
+                        <div className="flex flex-row items-center">
+                            {leftContent} {rightContent}
+                        </div>
+                    </div>
+                    <div className="flex-row justify-end hidden md:flex">
                         <div>{leftContent}</div>
                         <div>{rightContent}</div>
                     </div>

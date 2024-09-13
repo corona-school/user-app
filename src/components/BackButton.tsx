@@ -42,7 +42,7 @@ const BackButton: React.FC<Props> = ({ onPress, previousFallbackRoute: fallback 
     };
     return (
         <Button variant="none" size="icon" onClick={handleOnBack}>
-            <IconArrowLeft size={24} />
+            <IconArrowLeft size={26} style={{ strokeWidth: '1.5px' }} />
         </Button>
     );
 };
