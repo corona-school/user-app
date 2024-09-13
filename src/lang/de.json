@@ -2369,6 +2369,27 @@
         "installTitle": "Lern-Fair installieren",
         "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
         "installButton": "Installieren",
-        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken"
+        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken",
+        "page": {
+            "title": "Die Lern-Fair App",
+            "description": "Lade dir die Lern-Fair App auf alle deine Geräte, um jederzeit auf Chats und Termine Zugriff zu haben.",
+            "install": "App installieren",
+            "not-supported": "Leider wird die Installation der App auf diesem Gerät nicht unterstützt.",
+            "pros": {
+                "title": "Vorteile",
+                "list": [
+                    "Die App lädt schneller, spart Daten und schickt dir Benachrichtigungen direkt auf dein Gerät. So verpasst du keinen Chat oder Termin - und musst dich auch nicht mehr jedes Mal neu einloggen.",
+                    "Du kannst die App auf verschiedenen Geräten installieren, so dass sowohl Eltern als auch Schüler:innen auf den Chat und Terminerinnerungen Zugriff haben."
+                ]
+            },
+            "installationDetails": {
+                "title": "Installation",
+                "list": [
+                    "Die App kann ohne App Store direkt aus diesem Browser installiert werden.",
+                    "Folgende Browser werden unterstützt: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) sowie macOS (Chrome).",
+                    "Klicke auf den “App installieren” Button und folge den Anweisungen."
+                ]
+            }
+        }
     }
 }
