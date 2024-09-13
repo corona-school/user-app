@@ -24,4 +24,26 @@ const TooltipContent = React.forwardRef<React.ElementRef<typeof TooltipPrimitive
 );
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 
+interface TooltipButtonProps {
+    tooltipContent: React.ReactNode;
+    children: React.ReactNode;
+    className?: string;
+}
+
+/**
+ * Headless button that shows a tooltip onHover and onClick (ideal for mobile devices)
+ * For more granularity in usage, please use the composable pieces.
+ */
+export const TooltipButton = ({ children, tooltipContent, className }: TooltipButtonProps) => {
+    const [isOpen, setIsOpen] = React.useState(false);
+    return (
+        <TooltipProvider>
+            <Tooltip open={isOpen} onOpenChange={setIsOpen}>
+                <TooltipTrigger onClick={() => setIsOpen(true)}>{children}</TooltipTrigger>
+                <TooltipContent className={className}>{tooltipContent}</TooltipContent>
+            </Tooltip>
+        </TooltipProvider>
+    );
+};
+
 export { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider };
