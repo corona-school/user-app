@@ -1,18 +1,23 @@
+import { Button } from '@/components/Button';
+import { Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
 import { useMutation } from '@apollo/client';
-import { useTheme, Row, Button, Modal, Text, FormControl, TextArea, Heading, Radio, Box, useToast } from 'native-base';
 import { ChangeEventHandler, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { gql } from '../gql';
+import { toast } from 'sonner';
+import { Label } from '@/components/Label';
+import { TextArea } from '@/components/TextArea';
+import { Input } from '@/components/Input';
+import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
+import { Typography } from '@/components/Typography';
 
 interface AddFeedbackModalProps {
-    isOpen?: boolean;
-    onClose: () => any;
+    isOpen: boolean;
+    onIsOpenChange: (value: boolean) => any;
 }
 
-const AppFeedbackModal = ({ isOpen, onClose }: AddFeedbackModalProps) => {
-    const { space } = useTheme();
+const AppFeedbackModal = ({ isOpen, onIsOpenChange }: AddFeedbackModalProps) => {
     const { t } = useTranslation();
-    const toast = useToast();
     const [notes, setNotes] = useState('');
     const [isSending, setIsSending] = useState(false);
 
@@ -53,7 +58,7 @@ const AppFeedbackModal = ({ isOpen, onClose }: AddFeedbackModalProps) => {
     const handleOnSubmit = async () => {
         const MAX_FILE_SIZE = 2 * 1024 * 1024;
         if (file?.size && file.size > MAX_FILE_SIZE) {
-            toast.show({ description: t('appFeedback.screenshotShouldNotBeBiggerThan', { size: '2' }) });
+            toast.error(t('appFeedback.screenshotShouldNotBeBiggerThan', { size: '2' }));
             return;
         }
 
@@ -73,68 +78,61 @@ const AppFeedbackModal = ({ isOpen, onClose }: AddFeedbackModalProps) => {
                         : undefined,
             },
         });
-        toast.show({ description: t('appFeedback.feedbackSuccessfullySent') });
-        onClose();
+
+        toast.success(t('appFeedback.feedbackSuccessfullySent'));
+        onIsOpenChange(false);
         setIsSending(false);
     };
 
     return (
-        <Modal onClose={onClose} isOpen={isOpen} size="lg">
-            <Modal.Content>
-                <Modal.CloseButton />
-                <Modal.Header>
-                    <Heading fontSize="lg">{`💬 ${t('appFeedback.modal.title')}`}</Heading>
-                </Modal.Header>
-                <Modal.Body>
-                    <Text fontSize="sm">{t('appFeedback.modal.description')}</Text>
-                    <FormControl>
-                        <Row flexDirection="column" paddingY={space['0.5']}>
-                            <FormControl.Label _text={{ color: 'primary.900' }}>{t('appFeedback.modal.notesLabel')}*</FormControl.Label>
-                            <TextArea
-                                value={notes}
-                                onChangeText={setNotes}
-                                h={20}
-                                placeholder={t('appFeedback.modal.notesPlaceholder')}
-                                autoCompleteType={{}}
-                            />
-                        </Row>
-                    </FormControl>
-                    <Row flexDirection="column" paddingY={space['0.5']}>
-                        <FormControl.Label _text={{ color: 'primary.900' }}>{t('appFeedback.modal.screenshotLabel')}*</FormControl.Label>
-                        <input type="file" accept="image/*" onChange={handleOnChangeFile} />
-                    </Row>
-                    <Row flexDirection="column" paddingY={space['0.5']}>
-                        <FormControl.Label _text={{ color: 'primary.900' }}>{t('appFeedback.modal.canWeContactPerMailLabel')}*</FormControl.Label>
-                        <Text fontSize="sm" mb="4">
-                            {t('appFeedback.modal.canWeContactPerMailHelperText')}
-                        </Text>
-                        <Radio.Group
-                            name="allowContact"
-                            accessibilityLabel={t('appFeedback.modal.canWeContactPerMailLabel')}
-                            value={allowContact.toString()}
-                            onChange={(nextValue) => {
-                                setAllowContact(nextValue === 'true');
-                            }}
-                        >
-                            <Row>
-                                <Box mr="4">
-                                    <Radio value="false">{t('no')}</Radio>
-                                </Box>
-                                <Box>
-                                    <Radio value="true">{t('yes')}</Radio>
-                                </Box>
-                            </Row>
-                        </Radio.Group>
-                    </Row>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Row space={space['1']}>
-                        <Button isDisabled={!notes} isLoading={isSending} isLoadingText={t('appFeedback.modal.sendFeedback')} onPress={handleOnSubmit}>
-                            {t('appFeedback.modal.sendFeedback')}
-                        </Button>
-                    </Row>
-                </Modal.Footer>
-            </Modal.Content>
+        <Modal onOpenChange={onIsOpenChange} isOpen={isOpen}>
+            <ModalHeader>
+                <ModalTitle>{`💬 ${t('appFeedback.modal.title')}`}</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col gap-y-4">
+                <Typography className="text-pretty max-w-[95%]">{t('appFeedback.modal.description')}</Typography>
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="description">{t('appFeedback.modal.notesLabel')}*</Label>
+                    <TextArea
+                        className="resize-none h-20 w-full"
+                        id="description"
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        placeholder={t('appFeedback.modal.notesPlaceholder')}
+                    />
+                </div>
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="screenshot">{t('appFeedback.modal.screenshotLabel')}</Label>
+                    <Input className="w-full" id="screenshot" type="file" accept="image/*" onChange={handleOnChangeFile} />
+                </div>
+                <div className="flex flex-col gap-y-1">
+                    <div className="mb-2">
+                        <Label>{t('appFeedback.modal.canWeContactPerMailLabel')}</Label>
+                        <Typography variant="sm">{t('appFeedback.modal.canWeContactPerMailHelperText')}</Typography>
+                    </div>
+                    <RadioGroup
+                        value={allowContact.toString()}
+                        onValueChange={(nextValue) => {
+                            setAllowContact(nextValue === 'true');
+                        }}
+                        className="flex flex-row gap-x-4"
+                    >
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="no" value="false" />
+                            <Label htmlFor="no">{t('no')}</Label>
+                        </div>
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="yes" value="true" />
+                            <Label htmlFor="yes">{t('yes')}</Label>
+                        </div>
+                    </RadioGroup>
+                </div>
+                <ModalFooter>
+                    <Button disabled={!notes.trim()} isLoading={isSending} onClick={handleOnSubmit}>
+                        {t('appFeedback.modal.sendFeedback')}
+                    </Button>
+                </ModalFooter>
+            </div>
         </Modal>
     );
 };
