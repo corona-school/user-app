@@ -53,14 +53,12 @@ const AddPupilModal = ({ isOpen, onOpenChange, subcourseId, pupil, onPupilAdded 
                 </div>
             )}
             <ModalFooter>
-                <div className="flex flex-row gap-4">
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        {t('cancel')}
-                    </Button>
-                    <Button isLoading={isAdding} onClick={handleOnAddPupil}>
-                        {t('single.joinPupilModal.add')}
-                    </Button>
-                </div>
+                <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                    {t('cancel')}
+                </Button>
+                <Button className="w-full lg:w-fit" isLoading={isAdding} onClick={handleOnAddPupil}>
+                    {t('single.joinPupilModal.add')}
+                </Button>
             </ModalFooter>
         </Modal>
     );
