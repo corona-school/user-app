@@ -57,12 +57,10 @@ const IncreaseMaxParticipantsModal = ({ isOpen, onOpenChange, subcourseId, onPar
                 <StepperInput value={participantsAmountToBeAdded} increment={increment} decrement={decrement} />
             </div>
             <ModalFooter>
-                <div className="flex flex-row gap-4">
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        {t('cancel')}
-                    </Button>
-                </div>
-                <Button onClick={handleOnIncreaseAmount} isLoading={isIncreasing}>
+                <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                    {t('cancel')}
+                </Button>
+                <Button className="w-full lg:w-fit" onClick={handleOnIncreaseAmount} isLoading={isIncreasing}>
                     {t('single.joinPupilModal.add')}
                 </Button>
             </ModalFooter>

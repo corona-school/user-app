@@ -87,6 +87,7 @@ module.exports = {
                 tight: '-0.012rem',
             },
             fontSize: {
+                detail: '0.875rem',
                 form: ['0.875rem', { lineHeight: '0.875rem', letterSpacing: '0', fontWeight: '500' }],
             },
             lineHeight: {

@@ -128,7 +128,7 @@ const AppFeedbackModal = ({ isOpen, onIsOpenChange }: AddFeedbackModalProps) => 
                     </RadioGroup>
                 </div>
                 <ModalFooter>
-                    <Button disabled={!notes.trim()} isLoading={isSending} onClick={handleOnSubmit}>
+                    <Button className="w-full lg:w-fit" disabled={!notes.trim()} isLoading={isSending} onClick={handleOnSubmit}>
                         {t('appFeedback.modal.sendFeedback')}
                     </Button>
                 </ModalFooter>
