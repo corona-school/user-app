@@ -19,7 +19,7 @@ const RecommendModal = ({ isOpen, onOpenChange }: RecommendModalProps) => {
     const handleCopyClick = () => {
         copyTextToClipboard(t('dashboard.helpers.contents.recommendText'));
         setCopied(true);
-        toast.info('dashboard.helpers.contents.toast');
+        toast.info(t('dashboard.helpers.contents.toast'));
     };
 
     useEffect(() => {
