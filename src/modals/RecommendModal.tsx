@@ -1,17 +1,14 @@
-import { Button, Modal, Stack, TextArea, useToast, VStack } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { BaseModalProps, Modal, ModalHeader, ModalTitle } from '@/components/Modal';
+import { TextArea } from '@/components/TextArea';
+import { Button } from '@/components/Button';
+import { IconCopy, IconBrandWhatsapp, IconAt } from '@tabler/icons-react';
 
-import WhatsappIcon from '../assets/icons/icon_whatsapp.svg';
-import CopyToClipboardIcon from '../assets/icons/icon_copy_to_clipboard.svg';
-import EmailIcon from '../assets/icons/icon_email.svg';
+interface RecommendModalProps extends BaseModalProps {}
 
-type ModalProps = {
-    showRecommendModal: boolean;
-    onClose: () => void;
-};
-const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) => {
-    const toast = useToast();
+const RecommendModal = ({ isOpen, onOpenChange }: RecommendModalProps) => {
     const { t } = useTranslation();
     const [copied, setCopied] = useState<boolean>();
 
@@ -22,10 +19,7 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
     const handleCopyClick = () => {
         copyTextToClipboard(t('dashboard.helpers.contents.recommendText'));
         setCopied(true);
-        toast.show({
-            description: t('dashboard.helpers.contents.toast'),
-            placement: 'top',
-        });
+        toast.info('dashboard.helpers.contents.toast');
     };
 
     useEffect(() => {
@@ -38,63 +32,45 @@ const RecommendModal: React.FC<ModalProps> = ({ showRecommendModal, onClose }) =
         return () => clearInterval(id);
     }, [copied]);
 
+    useEffect(() => {
+        if (!isOpen) {
+            setCopied(false);
+        }
+    }, [isOpen]);
+
     return (
-        <Modal
-            isOpen={showRecommendModal}
-            onClose={() => {
-                onClose();
-                setCopied(false);
-            }}
-        >
-            <Modal.Content>
-                <Modal.CloseButton />
-                <Modal.Header>{t('dashboard.helpers.headlines.recommend')}</Modal.Header>
-                <Modal.Body>
-                    <VStack space="3">
-                        <TextArea h="180" value={t('dashboard.helpers.contents.recommendText')} isReadOnly autoCompleteType="" />
-                        <Button onPress={() => handleCopyClick()}>
-                            <Stack space="2" direction={'row'} alignItems="center">
-                                <CopyToClipboardIcon />
-                                {copied ? t('copied_text') : t('copy_text')}
-                            </Stack>
-                        </Button>
-                        <Button
-                            variant="outline"
-                            onPress={() => window.open(`https://wa.me/?text=${encodeURIComponent(t('dashboard.helpers.contents.recommendText'))}`, '_blank')}
-                        >
-                            <Stack space="2" direction={'row'} alignItems="center">
-                                <WhatsappIcon />
-                                {t('dashboard.helpers.channels.whatsApp')}
-                            </Stack>
-                        </Button>
-                        {/* <Button
-                            variant="outline"
-                            onPress={() =>
-                                window.open(`https://signal.me/?text=${encodeURIComponent(t('dashboard.helpers.contents.recommendText'))}`, '_blank')
-                            }
-                        >
-                            <Stack space="2" direction={'row'} alignItems="center">
-                                <SignalIcon />
-                                {t('dashboard.helpers.channels.signal')}
-                            </Stack>
-                        </Button> */}
-                        <Button
-                            onPress={() =>
-                                (window.location.href = `mailto:?subject=${encodeURIComponent(
-                                    t('dashboard.helpers.contents.recommendSubject')
-                                )}&body=${encodeURIComponent(t('dashboard.helpers.contents.recommendText'))}`)
-                            }
-                            variant="outline"
-                            textAlign="center"
-                        >
-                            <Stack space="2" direction={'row'} alignItems="center">
-                                <EmailIcon />
-                                {t('dashboard.helpers.channels.email')}
-                            </Stack>
-                        </Button>
-                    </VStack>
-                </Modal.Body>
-            </Modal.Content>
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen}>
+            <ModalHeader>
+                <ModalTitle>{t('dashboard.helpers.headlines.recommend')}</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col">
+                <TextArea className="h-44 mb-2" value={t('dashboard.helpers.contents.recommendText')} readOnly />
+                <div className="flex flex-col gap-y-2">
+                    <Button className="w-full" onClick={handleCopyClick} leftIcon={<IconCopy />}>
+                        {copied ? t('copied_text') : t('copy_text')}
+                    </Button>
+                    <Button
+                        className="w-full"
+                        variant="outline"
+                        onClick={() => window.open(`https://wa.me/?text=${encodeURIComponent(t('dashboard.helpers.contents.recommendText'))}`, '_blank')}
+                        leftIcon={<IconBrandWhatsapp />}
+                    >
+                        {t('dashboard.helpers.channels.whatsApp')}
+                    </Button>
+                    <Button
+                        className="w-full"
+                        onClick={() =>
+                            (window.location.href = `mailto:?subject=${encodeURIComponent(
+                                t('dashboard.helpers.contents.recommendSubject')
+                            )}&body=${encodeURIComponent(t('dashboard.helpers.contents.recommendText'))}`)
+                        }
+                        variant="outline"
+                        leftIcon={<IconAt />}
+                    >
+                        {t('dashboard.helpers.channels.email')}
+                    </Button>
+                </div>
+            </div>
         </Modal>
     );
 };
