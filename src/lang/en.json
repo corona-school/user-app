@@ -2362,7 +2362,28 @@
         "installTitle": "Lern-Fair Install",
         "installDescription": "For faster access to chats and lectures without logging in",
         "installButton": "Install",
-        "iOSInstallInstructions": "Tap on <0/> and then <1/> \"Add to Home Screen\""
+        "iOSInstallInstructions": "Tap on <0/> and then <1/> \"Add to Home Screen\"",
+        "page": {
+            "pros": {
+                "list": [
+                    "The app loads faster, saves data and sends notifications directly to your device. This means you never miss a chat or lecture - and you no longer have to log in every time.",
+                    "You can install the app on different devices so that both parents and pupils have access to the chat and appointment reminders."
+                ],
+                "title": "Advantages"
+            },
+            "installationDetails": {
+                "list": [
+                    "The app can be installed directly from this browser without the App Store.",
+                    "The following browsers are supported: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) and macOS (Chrome).",
+                    "Click on the \"Install app\" button and follow the instructions."
+                ],
+                "title": "Installation"
+            },
+            "title": "The Lern-Fair app",
+            "description": "Download the Lern-Fair app on all your devices to access chats and lectures at any time.",
+            "install": "Install app",
+            "not-supported": "Unfortunately, the installation of the app on this device is not supported."
+        }
     },
     "show": "Display",
     "showMore": "Show more",

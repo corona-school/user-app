@@ -34,7 +34,7 @@ const BottomNavigationBar: React.FC<Props> = ({ navItems, unreadMessagesCount })
     }, [userType, userRoles]);
 
     return (
-        <nav className="md:hidden pb-[env(safe-area-inset-bottom)] sticky flex w-full h-16 left-0 right-0 bottom-0 justify-between items-center px-4 bg-white shadow-bottomNavigation">
+        <nav className="md:hidden pb-[calc(env(safe-area-inset-bottom)/2)] pt-[calc(env(safe-area-inset-bottom)/3)] sticky flex w-full min-h-16 left-0 right-0 bottom-0 justify-between items-center px-8 bg-white shadow-bottomNavigation">
             {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
                 const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
 
