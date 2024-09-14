@@ -23,7 +23,6 @@ const ModalOverlay = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Ov
         />
     )
 );
-ModalOverlay.displayName = DialogPrimitive.Overlay.displayName;
 
 const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Content>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>>(
     ({ className, children, ...props }, ref) => (
@@ -52,30 +51,29 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
         </ModalPortal>
     )
 );
-ModalContent.displayName = DialogPrimitive.Content.displayName;
 
 const ModalHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
     <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
 );
-ModalHeader.displayName = 'ModalHeader';
 
-const ModalFooter = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className={cn('flex flex-row lg:justify-end gap-x-2', className)} {...props} />
+interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
+    variant?: 'default' | 'destructive';
+}
+
+const ModalFooter = ({ className, variant = 'default', ...props }: ModalFooterProps) => (
+    <div className={cn('flex gap-x-2', variant === 'default' ? 'flex-row lg:justify-end' : 'flex-row-reverse lg:justify-start', className)} {...props} />
 );
-ModalFooter.displayName = 'ModalFooter';
 
 const ModalTitle = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Title>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>>(
     ({ className, ...props }, ref) => (
         <DialogPrimitive.Title ref={ref} className={cn('text-lg font-semibold leading-none tracking-tight', className)} {...props} />
     )
 );
-ModalTitle.displayName = DialogPrimitive.Title.displayName;
 
 const ModalDescription = React.forwardRef<
     React.ElementRef<typeof DialogPrimitive.Description>,
     React.ComponentPropsWithoutRef<typeof DialogPrimitive.Description>
 >(({ className, ...props }, ref) => <DialogPrimitive.Description ref={ref} className={cn('text-sm text-muted-foreground', className)} {...props} />);
-ModalDescription.displayName = DialogPrimitive.Description.displayName;
 
 export interface BaseModalProps {
     isOpen: boolean;
