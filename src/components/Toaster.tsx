@@ -1,19 +1,20 @@
+import { createPortal } from 'react-dom';
 import { Toaster as Sonner } from 'sonner';
 
 type ToasterProps = React.ComponentProps<typeof Sonner>;
 
 const Toaster = ({ ...props }: ToasterProps) => {
-    return (
+    return createPortal(
         <Sonner
             richColors
-            className="toaster group"
+            className="toaster group pointer-events-auto"
             theme="light"
             visibleToasts={4}
             toastOptions={{
                 closeButton: true,
                 duration: 5000,
                 classNames: {
-                    toast: 'text-base',
+                    toast: 'toast text-base',
                     description: 'group-[.toast]:text-muted-foreground',
                     closeButton: 'left-auto right-[-10px] group-[.toast-info]:!bg-white group-[.toast-info]:!text-primary',
                     actionButton: 'group-[.toast]:bg-primary group-[.toast]:text-primary-foreground',
@@ -25,7 +26,8 @@ const Toaster = ({ ...props }: ToasterProps) => {
                 },
             }}
             {...props}
-        />
+        />,
+        document.body
     );
 };
 
