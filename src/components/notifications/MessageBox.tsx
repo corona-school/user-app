@@ -1,11 +1,10 @@
-import { Modal } from 'native-base';
 import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import LeavePageModal from '../../modals/LeavePageModal';
 import { Concrete_Notification } from '../../gql/graphql';
-import AppointmentCancelledModal from './NotificationModal';
+import NotificationModal from './NotificationModal';
 import AchievementMessageModal from '../../modals/AchievementMessageModal';
 import { Typography } from '../Typography';
 import { cn } from '@/lib/Tailwind';
@@ -30,7 +29,6 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
     const { headline, body, type, navigateTo, modalText } = userNotification.message;
 
     const navigateToLink = () => {
-        console.log({ modalText, navigateTo, headline, type });
         if (modalText) {
             setNotificationModalOpen(true);
         }
@@ -56,7 +54,6 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
     const navigateExternal = () => (navigateTo ? window.open(navigateTo, '_blank') : null);
 
     const Icon = getIconForMessageType(type);
-
     const LinkedBox = ({ children, ...rest }: React.HTMLAttributes<HTMLDivElement>) => {
         const Component = () => <div {...rest}>{children}</div>;
         if (typeof navigateTo === 'string') {
@@ -83,14 +80,13 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
                     <div onClick={navigateToLink}>
                         <Component />
                     </div>
-                    <Modal isOpen={notificationModalOpen}>
-                        <AppointmentCancelledModal
-                            messageType={type}
-                            onClose={() => setNotificationModalOpen(false)}
-                            modalText={modalText}
-                            headline={headline}
-                        />
-                    </Modal>
+                    <NotificationModal
+                        messageType={type}
+                        isOpen={notificationModalOpen}
+                        onOpenChange={setNotificationModalOpen}
+                        modalText={modalText}
+                        headline={headline}
+                    />
                 </>
             );
         }
