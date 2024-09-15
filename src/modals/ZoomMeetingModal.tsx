@@ -32,7 +32,7 @@ export const ZoomInfoOptions = () => {
     return (
         <div className="flex flex-col gap-y-2">
             {zoomInfos.map((info) => (
-                <div className="flex items-center gap-x-1">
+                <div className="flex items-center gap-x-1" key={info.label}>
                     <div className="flex flex-col">
                         <div className="pr-3 lg:pr-4">{info.icon === ZoomInfoIconEnum.CHECK ? <CheckBadge /> : <CameraIcon />}</div>
                     </div>
