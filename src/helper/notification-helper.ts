@@ -8,12 +8,12 @@ import {
     NotificationCategories,
     systemNotificationCategories,
 } from './notification-preferences';
-import { FC } from 'react';
+import { FC, HTMLAttributes } from 'react';
 import { NotificationPreferences } from '../types/lernfair/NotificationPreferences';
 import { Concrete_Notification, NotificationMessage } from '../gql/graphql';
 
 const getIconForMessageType = (messageType: string): FC => (messageIcons.hasOwnProperty(messageType) ? messageIcons[messageType] : () => null);
-const getIconForNotificationPreferenceModal = (messageType: string): FC => {
+const getIconForNotificationPreferenceModal = (messageType: string): FC<HTMLAttributes<HTMLOrSVGElement>> => {
     return modalIcons.hasOwnProperty(messageType) ? modalIcons[messageType] : () => null;
 };
 

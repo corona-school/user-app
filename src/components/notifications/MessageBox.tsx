@@ -65,9 +65,13 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
                     <div onClick={navigateToLink}>
                         <Component />
                     </div>
-                    <Modal isOpen={leavePageModalOpen}>
-                        <LeavePageModal url={navigateTo} messageType={type} onClose={() => setLeavePageModalOpen(false)} navigateTo={navigateExternal} />
-                    </Modal>
+                    <LeavePageModal
+                        isOpen={leavePageModalOpen}
+                        url={navigateTo}
+                        messageType={type}
+                        onOpenChange={setLeavePageModalOpen}
+                        navigateTo={navigateExternal}
+                    />
                     {achievementModalForId !== null && (
                         <AchievementMessageModal achievementId={achievementModalForId} isOpenModal={true} onClose={() => setAchievementModalForId(null)} />
                     )}
