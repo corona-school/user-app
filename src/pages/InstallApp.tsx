@@ -14,14 +14,14 @@ import { Button } from '@/components/Button';
 import { IconDownload } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useContext, useEffect } from 'react';
-import { InstallationContext, PromotionType } from '@/context/InstallationProvider';
+import { InstallationContext } from '@/context/InstallationProvider';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 const InstallApp = () => {
     const { t } = useTranslation();
     const { sessionState } = useApollo();
     const { trackPageView, trackEvent } = useMatomo();
-    const { canInstall, promotionType, isInstalled, install } = useContext(InstallationContext);
+    const { canInstall, isInstalled, install } = useContext(InstallationContext);
     const isLoggedIn = sessionState === 'logged-in';
     const props = t('installation.page.pros.list', { returnObjects: true });
     const installationDetails = t('installation.page.installationDetails.list', { returnObjects: true });
@@ -45,7 +45,7 @@ const InstallApp = () => {
 
     return (
         <WithNavigation
-            hideMenu={!isLoggedIn}
+            hideMenu
             previousFallbackRoute="/start"
             showBack
             headerLeft={
@@ -76,9 +76,6 @@ const InstallApp = () => {
                     </Button>
                 )}
                 {isInstalled && <Typography className="text-green-600">{t('installation.page.installed')}</Typography>}
-                {!canInstall && !isInstalled && promotionType !== PromotionType.unknown && (
-                    <Typography className="text-destructive">{t('installation.page.not-supported')}</Typography>
-                )}
                 <div className="flex overflow-x-scroll">
                     <img src={Image1} alt="App preview" className="w-[200px]" />
                     <img src={Image2} alt="App preview" className="w-[200px]" />
