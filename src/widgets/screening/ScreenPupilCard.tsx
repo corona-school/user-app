@@ -1,5 +1,5 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack, Select, Input } from 'native-base';
+import { Button, FormControl, Divider, Heading, HStack, Text, TextArea, useTheme, useToast, VStack, Select, Input } from 'native-base';
 import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -337,17 +337,17 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     useEffect(() => {
         if (!pupil.languages || pupil.languages.length === 0) {
-            setLanguageError('Please select at least 1 language');
+            setLanguageError('Bitte ergännze mind. 1 Sprache.');
         } else {
             setLanguageError('');
         }
         if (pupil.grade === null || pupil.grade === undefined) {
-            setGradeError('Please select a grade');
+            setGradeError('Bitte wähle eine Klasse aus.');
         } else {
             setGradeError('');
         }
         if (!pupil.subjectsFormatted || pupil.subjectsFormatted.length === 0) {
-            setSubjectError('Please select at least 1 subject');
+            setSubjectError('Bitte ergännze mind. 1 Fach.');
         } else {
             setSubjectError('');
         }
@@ -376,7 +376,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     function updateSubjects(newSubjects: Subject[]) {
         if (newSubjects.length === 0) {
-            setSubjectError('Please select at least 1 subject');
+            setSubjectError('Bitte ergännze mind. 1 Fach.');
         } else {
             setSubjectError('');
         }
@@ -390,7 +390,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     function updateGrade(grade: number | null) {
         if (grade === null) {
-            setGradeError('Please select a grade');
+            setGradeError('Bitte wähle eine Klasse aus.');
         } else {
             setGradeError('');
         }
@@ -404,7 +404,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     function updateLanguages(languages: Pupil_Languages_Enum[]) {
         if (languages.length === 0) {
-            setLanguageError('Please select at least 1 language');
+            setLanguageError('Bitte ergännze mind. 1 Sprache.');
         } else {
             setLanguageError('');
         }
@@ -512,6 +512,8 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
                 {gradeError && <Text color={colors.error[500]}>{gradeError}</Text>}
 
+                <Divider my="1" />
+
                 <LanguageTagList languages={pupil.languages} />
                 <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
                     Sprachen bearbeiten
@@ -519,12 +521,16 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
                 {languageError && <Text color={colors.error[500]}>{languageError}</Text>}
 
+                <Divider my="1" />
+
                 <SubjectTagList subjects={pupil.subjectsFormatted} />
                 <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
                     Fächer bearbeiten
                 </Button>
 
                 {subjectError && <Text color={colors.error[500]}>{subjectError}</Text>}
+
+                <Divider my="1" />
             </VStack>
             {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
                 <HStack space={space['1']}>
