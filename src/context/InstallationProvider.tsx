@@ -64,7 +64,7 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
             const choiceResult = await deferredPromptRef.current.userChoice;
             trackEvent({
                 category: 'pwa',
-                action: 'click-event',
+                action: 'app-installation',
                 name: choiceResult.outcome === 'accepted' ? 'App-Installation abgeschlossen' : 'App-Installation abgebrochen',
             });
             deferredPromptRef.current = null;
@@ -125,6 +125,22 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         const UA = navigator.userAgent;
         return !!(isInStandaloneMode() || ((isIphone() || isIpad()) && !UA.match(/Safari/)));
     }, []);
+
+    const [loggedInstallation, setLoggedInstallation] = useLocalStorage<boolean | null>({ key: 'logged-lern-fair-app-installation', initialValue: null });
+
+    useEffect(() => {
+        if (!isInstalled || navigator.userAgent.match(/Android/i)) return;
+        if (loggedInstallation === null) {
+            setLoggedInstallation(false);
+        } else if (loggedInstallation === false) {
+            trackEvent({
+                category: 'pwa',
+                action: 'app-installation',
+                name: 'App-Installation abgeschlossen',
+            });
+            setLoggedInstallation(true);
+        }
+    }, [isInstalled, loggedInstallation, promotionType]);
 
     return (
         <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting, isInstalled }}>
