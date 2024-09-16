@@ -2382,7 +2382,8 @@
             "title": "The Lern-Fair app",
             "description": "Download the Lern-Fair app on all your devices to access chats and lectures at any time.",
             "install": "Install app",
-            "not-supported": "Unfortunately, the installation of the app on this device is not supported."
+            "not-supported": "Unfortunately, the installation of the app on this device is not supported.",
+            "installed": "The app is already installed."
         }
     },
     "show": "Display",

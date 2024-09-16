@@ -21,7 +21,7 @@ const InstallApp = () => {
     const { t } = useTranslation();
     const { sessionState } = useApollo();
     const { trackPageView, trackEvent } = useMatomo();
-    const { canInstall, install } = useContext(InstallationContext);
+    const { canInstall, isInstalled, install } = useContext(InstallationContext);
     const isLoggedIn = sessionState === 'logged-in';
     const props = t('installation.page.pros.list', { returnObjects: true });
     const installationDetails = t('installation.page.installationDetails.list', { returnObjects: true });
@@ -45,7 +45,9 @@ const InstallApp = () => {
 
     return (
         <WithNavigation
-            hideMenu={!isLoggedIn}
+            hideMenu
+            previousFallbackRoute="/start"
+            showBack
             headerLeft={
                 <div className="flex items-center">
                     <SwitchLanguageButton />
@@ -68,13 +70,12 @@ const InstallApp = () => {
                         <img src={IOS} alt="iOS Logo" className="w-16" />
                     </div>
                 </div>
-                {canInstall ? (
+                {canInstall && !isInstalled && (
                     <Button onClick={handleOnInstall} className="w-full md:min-[200px] md:w-fit mt-4" variant="secondary" leftIcon={<IconDownload />}>
                         {t('installation.page.install')}
                     </Button>
-                ) : (
-                    <Typography className="text-destructive">{t('installation.page.not-supported')}</Typography>
                 )}
+                {isInstalled && <Typography className="text-green-600">{t('installation.page.installed')}</Typography>}
                 <div className="flex overflow-x-scroll">
                     <img src={Image1} alt="App preview" className="w-[200px]" />
                     <img src={Image2} alt="App preview" className="w-[200px]" />

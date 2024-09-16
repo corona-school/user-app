@@ -1,4 +1,4 @@
-import { createContext, useEffect, useState, useRef } from 'react';
+import { createContext, useEffect, useState, useRef, useMemo } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { BeforeInstallPromptEvent } from '../types/window';
 import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
@@ -9,6 +9,7 @@ export enum PromotionType {
     native = 'native',
     iPhone = 'iPhone',
     iPad = 'iPad',
+    unknown = 'unknown',
     none = 'none',
 }
 
@@ -18,14 +19,16 @@ interface InstallationContextValue {
     promotionType: PromotionType;
     install: () => Promise<void>;
     stopPromoting: () => void;
+    isInstalled: boolean;
 }
 
 export const InstallationContext = createContext<InstallationContextValue>({
     canInstall: false,
     shouldPromote: false,
-    promotionType: PromotionType.none,
+    promotionType: PromotionType.unknown,
     install: async () => {},
     stopPromoting: () => {},
+    isInstalled: true,
 });
 
 interface InstallationProviderProps {
@@ -36,9 +39,9 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     const { trackEvent } = useMatomo();
     const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
     const [isInstructionsBannerVisible, setIsInstructionsBannerVisible] = useState(false);
-    const [promotionType, setPromotionType] = useState<PromotionType>(PromotionType.none);
+    const [promotionType, setPromotionType] = useState<PromotionType>(PromotionType.unknown);
     const [showPromotionBanner, setShowPromotionBanner] = useLocalStorage<boolean | null>({ key: 'recommend-lern-fair-installation', initialValue: null });
-    const canInstall = promotionType !== PromotionType.none;
+    const canInstall = ![PromotionType.none, PromotionType.unknown].includes(promotionType);
     const shouldPromote = canInstall && !!showPromotionBanner;
 
     const isIphone = () => {
@@ -53,8 +56,8 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         return iPad || (isMac && navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
     };
 
-    const isInStandaloneMode = () => 'standalone' in window.navigator && (window.navigator as any)?.standalone;
-
+    const isInStandaloneMode = () =>
+        ('standalone' in window.navigator && (window.navigator as any)?.standalone) || window.matchMedia('(display-mode: standalone)').matches;
     const install = async () => {
         if (promotionType === PromotionType.native && deferredPromptRef.current) {
             deferredPromptRef.current.prompt();
@@ -118,8 +121,13 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         };
     }, []);
 
+    const isInstalled = useMemo(() => {
+        const UA = navigator.userAgent;
+        return !!(isInStandaloneMode() || ((isIphone() || isIpad()) && !UA.match(/Safari/)));
+    }, []);
+
     return (
-        <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting }}>
+        <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting, isInstalled }}>
             {isInstructionsBannerVisible && promotionType === PromotionType.iPad && (
                 <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPad'} />
             )}

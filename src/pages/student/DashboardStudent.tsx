@@ -405,7 +405,7 @@ const DashboardStudent: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <RecommendModal showRecommendModal={showRecommendModal} onClose={() => setShowRecommendModal(false)} />
+            <RecommendModal isOpen={showRecommendModal} onOpenChange={setShowRecommendModal} />
         </AsNavigationItem>
     );
 };

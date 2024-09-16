@@ -2386,7 +2386,8 @@
             "title": "Lern-Fair Uygulama",
             "description": "Lern-Fair Sohbetlere ve randevulara her zaman erişebilmek için uygulamayı tüm cihazlarınıza indirin.",
             "install": "Uygulamayı yükleyin",
-            "not-supported": "Ne yazık ki, uygulamanın bu cihaza yüklenmesi desteklenmiyor."
+            "not-supported": "Ne yazık ki, uygulamanın bu cihaza yüklenmesi desteklenmiyor.",
+            "installed": "Uygulama zaten yüklü."
         }
     },
     "show": "Ekran",

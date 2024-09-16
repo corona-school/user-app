@@ -367,9 +367,7 @@ const SingleMatch = () => {
                     }}
                     onPressBack={() => setShowDissolveModal(false)}
                 />
-                {data?.match.id && (
-                    <AdHocMeetingModal showAdHocModal={showAdHocMeetingModal} matchId={data?.match.id} onPressBack={() => setShowAdHocMeetingModal(false)} />
-                )}
+                {data?.match.id && <AdHocMeetingModal onOpenChange={setShowAdHocMeetingModal} isOpen={showAdHocMeetingModal} matchId={data?.match.id} />}
                 {data && data.match.pupil.firstname && data.match.student.firstname && (
                     <ReportMatchModal
                         matchName={userType === 'student' ? data.match.pupil.firstname : data.match.student.firstname}

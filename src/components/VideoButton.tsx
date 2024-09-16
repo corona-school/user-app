@@ -2,7 +2,6 @@ import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
-import { Modal } from 'native-base';
 import ZoomMeetingModal from '../modals/ZoomMeetingModal';
 import { useMemo, useState } from 'react';
 import { useQuery } from '@apollo/client';
@@ -79,9 +78,13 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 
     return (
         <>
-            <Modal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}>
-                <ZoomMeetingModal appointmentId={appointmentId} appointmentType={appointmentType} zoomUrl={zoomUrl ?? undefined} />
-            </Modal>
+            <ZoomMeetingModal
+                isOpen={isOpenModal}
+                onOpenChange={setIsOpenModal}
+                appointmentId={appointmentId}
+                appointmentType={appointmentType}
+                zoomUrl={zoomUrl ?? undefined}
+            />
             <Button
                 disabled={!canStartMeeting || isOver}
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
