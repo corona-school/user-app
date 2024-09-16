@@ -2375,6 +2375,7 @@
             "description": "Lade dir die Lern-Fair App auf alle deine Geräte, um jederzeit auf Chats und Termine Zugriff zu haben.",
             "install": "App installieren",
             "not-supported": "Leider wird die Installation der App auf diesem Gerät nicht unterstützt.",
+            "installed": "Die App ist bereits installiert.",
             "pros": {
                 "title": "Vorteile",
                 "list": [

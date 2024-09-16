@@ -14,14 +14,14 @@ import { Button } from '@/components/Button';
 import { IconDownload } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useContext, useEffect } from 'react';
-import { InstallationContext } from '@/context/InstallationProvider';
+import { InstallationContext, PromotionType } from '@/context/InstallationProvider';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 const InstallApp = () => {
     const { t } = useTranslation();
     const { sessionState } = useApollo();
     const { trackPageView, trackEvent } = useMatomo();
-    const { canInstall, install } = useContext(InstallationContext);
+    const { canInstall, promotionType, isInstalled, install } = useContext(InstallationContext);
     const isLoggedIn = sessionState === 'logged-in';
     const props = t('installation.page.pros.list', { returnObjects: true });
     const installationDetails = t('installation.page.installationDetails.list', { returnObjects: true });
@@ -46,6 +46,8 @@ const InstallApp = () => {
     return (
         <WithNavigation
             hideMenu={!isLoggedIn}
+            previousFallbackRoute="/start"
+            showBack
             headerLeft={
                 <div className="flex items-center">
                     <SwitchLanguageButton />
@@ -68,11 +70,13 @@ const InstallApp = () => {
                         <img src={IOS} alt="iOS Logo" className="w-16" />
                     </div>
                 </div>
-                {canInstall ? (
+                {canInstall && !isInstalled && (
                     <Button onClick={handleOnInstall} className="w-full md:min-[200px] md:w-fit mt-4" variant="secondary" leftIcon={<IconDownload />}>
                         {t('installation.page.install')}
                     </Button>
-                ) : (
+                )}
+                {isInstalled && <Typography className="text-green-600">{t('installation.page.installed')}</Typography>}
+                {!canInstall && !isInstalled && promotionType !== PromotionType.unknown && (
                     <Typography className="text-destructive">{t('installation.page.not-supported')}</Typography>
                 )}
                 <div className="flex overflow-x-scroll">
