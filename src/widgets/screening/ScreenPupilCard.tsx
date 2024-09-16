@@ -329,6 +329,29 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const { t } = useTranslation();
     const myRoles = useRoles();
     const toast = useToast();
+    const { colors } = useTheme();
+
+    const [languageError, setLanguageError] = useState('');
+    const [gradeError, setGradeError] = useState('');
+    const [subjectError, setSubjectError] = useState('');
+
+    useEffect(() => {
+        if (!pupil.languages || pupil.languages.length === 0) {
+            setLanguageError('Please select at least 1 language');
+        } else {
+            setLanguageError('');
+        }
+        if (pupil.grade === null || pupil.grade === undefined) {
+            setGradeError('Please select a grade');
+        } else {
+            setGradeError('');
+        }
+        if (!pupil.subjectsFormatted || pupil.subjectsFormatted.length === 0) {
+            setSubjectError('Please select at least 1 subject');
+        } else {
+            setSubjectError('');
+        }
+    }, [pupil]);
 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId, silent: true) }`));
 
@@ -352,30 +375,45 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [revokeMatchRequest, { loading: loadingRevokeMatchRequest }] = useMutation(REVOKE_MATCH_REQUEST_QUERY);
 
     function updateSubjects(newSubjects: Subject[]) {
+        if (newSubjects.length === 0) {
+            setSubjectError('Please select at least 1 subject');
+        } else {
+            setSubjectError('');
+        }
         mutationUpdateSubjects({
             variables: {
-                pupilId: pupil!.id,
+                pupilId: pupil?.id ?? 0,
                 data: { subjects: newSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })) },
             },
-        }).then(refresh);
+        }).then(() => refresh());
     }
 
-    function updateGrade(grade: number) {
+    function updateGrade(grade: number | null) {
+        if (grade === null) {
+            setGradeError('Please select a grade');
+        } else {
+            setGradeError('');
+        }
         mutationUpdateGrade({
             variables: {
-                pupilId: pupil.id,
-                gradeAsInt: grade,
+                pupilId: pupil?.id ?? 0,
+                gradeAsInt: grade ?? 0,
             },
-        }).then(refresh);
+        }).then(() => refresh());
     }
 
     function updateLanguages(languages: Pupil_Languages_Enum[]) {
+        if (languages.length === 0) {
+            setLanguageError('Please select at least 1 language');
+        } else {
+            setLanguageError('');
+        }
         mutationUpdateLanguages({
             variables: {
-                pupilId: pupil.id,
+                pupilId: pupil?.id ?? 0,
                 languages: languages as any,
             },
-        }).then(refresh);
+        }).then(() => refresh());
     }
 
     function deactivate() {
@@ -443,6 +481,17 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
         if (!needsScreening) {
             return { can: false, reason: `${pupil.firstname} ${pupil.lastname} wurde bereits gescreent` };
         }
+        if (languageError) {
+            return { can: false, reason: languageError };
+        }
+
+        if (gradeError) {
+            return { can: false, reason: gradeError };
+        }
+
+        if (subjectError) {
+            return { can: false, reason: subjectError };
+        }
         return { can: true, reason: '' };
     };
 
@@ -461,15 +510,21 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                     Klasse bearbeiten
                 </Button>
 
+                {gradeError && <Text color={colors.error[500]}>{gradeError}</Text>}
+
                 <LanguageTagList languages={pupil.languages} />
                 <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
                     Sprachen bearbeiten
                 </Button>
 
+                {languageError && <Text color={colors.error[500]}>{languageError}</Text>}
+
                 <SubjectTagList subjects={pupil.subjectsFormatted} />
                 <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
                     Fächer bearbeiten
                 </Button>
+
+                {subjectError && <Text color={colors.error[500]}>{subjectError}</Text>}
             </VStack>
             {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
                 <HStack space={space['1']}>
