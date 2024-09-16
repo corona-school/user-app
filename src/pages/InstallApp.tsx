@@ -46,6 +46,8 @@ const InstallApp = () => {
     return (
         <WithNavigation
             hideMenu={!isLoggedIn}
+            previousFallbackRoute="/start"
+            showBack
             headerLeft={
                 <div className="flex items-center">
                     <SwitchLanguageButton />
