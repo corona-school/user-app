@@ -39,6 +39,24 @@
             "sizes": "400x822",
             "type": "image/png",
             "form_factor": "narrow"
+        },
+        {
+            "src": "screenshots/mobile-4.png",
+            "sizes": "400x822",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "screenshots/mobile-5.png",
+            "sizes": "400x822",
+            "type": "image/png",
+            "form_factor": "narrow"
+        },
+        {
+            "src": "screenshots/mobile-6.png",
+            "sizes": "400x822",
+            "type": "image/png",
+            "form_factor": "narrow"
         }
     ],
     "icons": [
