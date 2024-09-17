@@ -1,6 +1,5 @@
 import { Trans, useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
-import { useNavigate } from 'react-router-dom';
 import CheckBadge from '../assets/icons/check-badge.svg';
 import CameraIcon from '../assets/icons/camera-icon.svg';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
@@ -50,7 +49,10 @@ export const ZoomInfoOptions = () => {
 
 const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ isOpen, onOpenChange, appointmentId, appointmentType, zoomUrl }) => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
+
+    const handleOnContinueInBrowser = () => {
+        window.open(`/video-chat/${appointmentId}/${appointmentType}`);
+    };
 
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen}>
@@ -61,7 +63,7 @@ const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ isOpen, onOpenChang
                 <ZoomInfoOptions />
             </div>
             <ModalFooter>
-                <Button className="w-full" variant="outline" onClick={() => navigate(`/video-chat/${appointmentId}/${appointmentType}`)}>
+                <Button className="w-full" variant="outline" onClick={handleOnContinueInBrowser}>
                     {t('appointment.zoomModal.browser')}
                 </Button>
                 <Button className="w-full" disabled={!zoomUrl} onClick={() => window.open(zoomUrl, '_self')}>
