@@ -20,7 +20,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 const InstallApp = () => {
     const { t } = useTranslation();
     const { sessionState } = useApollo();
-    const { trackPageView } = useMatomo();
+    const { trackPageView, trackEvent } = useMatomo();
     const { canInstall, isInstalled, install } = useContext(InstallationContext);
     const isLoggedIn = sessionState === 'logged-in';
     const props = t('installation.page.pros.list', { returnObjects: true });
@@ -34,6 +34,11 @@ const InstallApp = () => {
     }, []);
 
     const handleOnInstall = async () => {
+        trackEvent({
+            category: 'pwa',
+            action: 'install-button-is-clicked',
+            name: 'install-page',
+        });
         await install();
     };
 
