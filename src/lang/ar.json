@@ -2387,8 +2387,8 @@
         "iOSInstallInstructions": {
             "title": "تثبيت التطبيق",
             "steps": {
-                "first": "Klicke auf <0/> oben oder unten im Browser",
-                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+                "first": "انقر على <0/> في أعلى أو أسفل المتصفح",
+                "second": "حدد <0/> \"الانتقال إلى الشاشة الرئيسية\""
             }
         }
     },

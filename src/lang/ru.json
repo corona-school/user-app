@@ -2391,8 +2391,8 @@
         "iOSInstallInstructions": {
             "title": "Установите приложение",
             "steps": {
-                "first": "Klicke auf <0/> oben oder unten im Browser",
-                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+                "first": "Нажмите на <0/> в верхней или нижней части браузера",
+                "second": "Выберите <0/> \"Перейти на главный экран\"."
             }
         }
     },

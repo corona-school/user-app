@@ -2391,8 +2391,8 @@
         "iOSInstallInstructions": {
             "title": "Встановити додаток",
             "steps": {
-                "first": "Klicke auf <0/> oben oder unten im Browser",
-                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+                "first": "Натисніть на <0/> у верхній або нижній частині браузера",
+                "second": "Виберіть <0/> \"Перейти на головний екран\""
             }
         }
     },

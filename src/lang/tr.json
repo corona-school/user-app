@@ -2391,8 +2391,8 @@
         "iOSInstallInstructions": {
             "title": "Uygulamayı yükleyin",
             "steps": {
-                "first": "Klicke auf <0/> oben oder unten im Browser",
-                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+                "first": "Tarayıcının üst veya alt kısmındaki <0/>'ya tıklayın",
+                "second": "<0/>'yı seçin \"Ana ekrana git\""
             }
         }
     },

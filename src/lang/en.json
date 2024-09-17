@@ -2387,8 +2387,8 @@
         "iOSInstallInstructions": {
             "title": "Install app",
             "steps": {
-                "first": "Klicke auf <0/> oben oder unten im Browser",
-                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+                "first": "Click on <0/> at the top or bottom of the browser",
+                "second": "Select <0/> \"Go to home screen\""
             }
         }
     },
