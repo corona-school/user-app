@@ -20,7 +20,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 const InstallApp = () => {
     const { t } = useTranslation();
     const { sessionState } = useApollo();
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackPageView } = useMatomo();
     const { canInstall, isInstalled, install } = useContext(InstallationContext);
     const isLoggedIn = sessionState === 'logged-in';
     const props = t('installation.page.pros.list', { returnObjects: true });
@@ -34,12 +34,6 @@ const InstallApp = () => {
     }, []);
 
     const handleOnInstall = async () => {
-        trackEvent({
-            category: 'pwa',
-            action: 'click-event',
-            name: 'Lern-Fair installieren',
-            documentTitle: 'Installieren',
-        });
         await install();
     };
 
