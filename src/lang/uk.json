@@ -2366,7 +2366,6 @@
         "installTitle": "Lern-Fair Встановити",
         "installDescription": "Швидкий доступ до чатів і зустрічей без входу в систему",
         "installButton": "Встановити",
-        "iOSInstallInstructions": "Натисніть на <0/>, а потім <1/> \"На головний екран\"",
         "page": {
             "pros": {
                 "list": [
@@ -2388,6 +2387,13 @@
             "install": "Встановити додаток",
             "not-supported": "На жаль, встановлення програми на цей пристрій не підтримується.",
             "installed": "Додаток вже встановлено."
+        },
+        "iOSInstallInstructions": {
+            "title": "Встановити додаток",
+            "steps": {
+                "first": "Klicke auf <0/> oben oder unten im Browser",
+                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+            }
         }
     },
     "show": "Дисплеї",
