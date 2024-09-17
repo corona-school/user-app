@@ -83,11 +83,6 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     };
 
     const stopPromoting = () => {
-        trackEvent({
-            category: 'pwa',
-            action: 'click-event',
-            name: 'App-Installations-Banner schließen',
-        });
         setShowPromotionBanner(false);
     };
 
