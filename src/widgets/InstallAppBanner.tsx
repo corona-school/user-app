@@ -3,23 +3,53 @@ import IconClose from '../assets/icons/ic_close.svg';
 import IconShare from '../assets/icons/icon_share.svg';
 import IconAdd from '../assets/icons/icon_add_square.svg';
 import { Trans, useTranslation } from 'react-i18next';
-import { useContext } from 'react';
+import { useContext, useEffect } from 'react';
 import { InstallationContext } from '../context/InstallationProvider';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 const InstallAppBanner = () => {
     const { install, stopPromoting, shouldPromote } = useContext(InstallationContext);
+    const { trackEvent } = useMatomo();
     const { t } = useTranslation();
+
+    useEffect(() => {
+        if (shouldPromote) {
+            trackEvent({
+                category: 'pwa',
+                action: 'install-banner-is-shown',
+                name: '',
+            });
+        }
+    }, [shouldPromote]);
+
+    const handleOnInstallClick = async () => {
+        trackEvent({
+            category: 'pwa',
+            action: 'install-button-is-clicked',
+            name: 'install-banner',
+        });
+        await install();
+    };
+
+    const handleOnCloseClick = () => {
+        trackEvent({
+            category: 'pwa',
+            action: 'install-banner-is-closed',
+            name: '',
+        });
+        stopPromoting();
+    };
 
     if (!shouldPromote) return null;
 
     return (
         <HStack space={1.5} px={2} height="100px" width="full" background="#fbefc6" display="flex" flexDirection="row" alignItems="center">
-            <IconButton icon={<IconClose />} size="sm" onPress={stopPromoting} />
+            <IconButton icon={<IconClose />} size="sm" onPress={handleOnCloseClick} />
             <Text fontSize="sm">
                 <strong style={{ display: 'block' }}>{t('installation.installTitle')}</strong>
                 <span>{t('installation.installDescription')}</span>
             </Text>
-            <Button width="110px" size="xs" onPress={install}>
+            <Button width="110px" size="xs" onPress={handleOnInstallClick}>
                 {t('installation.installButton')}
             </Button>
         </HStack>
