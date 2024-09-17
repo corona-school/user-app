@@ -6,6 +6,8 @@ import { Trans, useTranslation } from 'react-i18next';
 import { useContext, useEffect } from 'react';
 import { InstallationContext } from '../context/InstallationProvider';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { BaseModalProps, Modal, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Typography } from '@/components/Typography';
 
 const InstallAppBanner = () => {
     const { install, stopPromoting, shouldPromote } = useContext(InstallationContext);
@@ -56,46 +58,22 @@ const InstallAppBanner = () => {
     );
 };
 
-interface IOSInstallAppInstructionsProps {
-    variant: 'iPad' | 'iPhone';
-    onClose: () => void;
-}
-
-export const IOSInstallAppInstructions = ({ variant, onClose }: IOSInstallAppInstructionsProps) => {
-    const isIpad = variant === 'iPad';
-
+export const InstallInstructionsModal = ({ isOpen, onOpenChange }: BaseModalProps) => {
+    const { t } = useTranslation();
     return (
-        <HStack
-            space={1}
-            px={2}
-            pt={isIpad ? 1 : 2}
-            pb={isIpad ? 2 : 4}
-            width="full"
-            background="#fbefc6"
-            display="flex"
-            flexDirection={isIpad ? 'row' : 'column'}
-            alignItems="center"
-            justifyContent="center"
-            position="absolute"
-            style={{ bottom: isIpad ? 'unset' : '15px', top: isIpad ? '10px' : 'unset' }}
-            zIndex="99999"
-        >
-            <Text fontSize="sm" textAlign="center" width="100%" display="flex" alignItems="center" justifyContent="center" flexWrap="wrap" mt={isIpad ? 0 : 3}>
-                <Trans i18nKey="installation.iOSInstallInstructions" components={[<IconShare />, <IconAdd />]}></Trans>
-            </Text>
-            <IconButton icon={<IconClose />} size="sm" onPress={onClose} style={isIpad ? {} : { position: 'absolute', top: 0, right: 0 }} />
-            <div
-                style={{
-                    borderWidth: '10px',
-                    borderStyle: 'solid',
-                    borderColor: isIpad ? 'transparent transparent #fbefc6' : '#fbefc6 transparent transparent',
-                    position: 'absolute',
-                    bottom: isIpad ? 'unset' : -20,
-                    top: isIpad ? -20 : 'unset',
-                    right: isIpad ? '115px' : '50%',
-                }}
-            ></div>
-        </HStack>
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="w-[90%] lg:w-full">
+            <ModalHeader>
+                <ModalTitle>{t('installation.iOSInstallInstructions.title')}</ModalTitle>
+            </ModalHeader>
+            <div>
+                <Typography>
+                    1. <Trans i18nKey="installation.iOSInstallInstructions.steps.first" components={[<IconShare className="inline" />]}></Trans>
+                </Typography>
+                <Typography>
+                    2. <Trans i18nKey="installation.iOSInstallInstructions.steps.second" components={[<IconAdd className="inline" />]}></Trans>
+                </Typography>
+            </div>
+        </Modal>
     );
 };
 

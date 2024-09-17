@@ -2362,7 +2362,6 @@
         "installTitle": "Lern-Fair Install",
         "installDescription": "For faster access to chats and lectures without logging in",
         "installButton": "Install",
-        "iOSInstallInstructions": "Tap on <0/> and then <1/> \"Add to Home Screen\"",
         "page": {
             "pros": {
                 "list": [
@@ -2384,6 +2383,13 @@
             "install": "Install app",
             "not-supported": "Unfortunately, the installation of the app on this device is not supported.",
             "installed": "The app is already installed."
+        },
+        "iOSInstallInstructions": {
+            "title": "Install app",
+            "steps": {
+                "first": "Click on <0/> at the top or bottom of the browser",
+                "second": "Select <0/> \"Go to home screen\""
+            }
         }
     },
     "show": "Display",

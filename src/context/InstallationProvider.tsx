@@ -1,7 +1,7 @@
 import { createContext, useEffect, useState, useRef, useMemo } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { BeforeInstallPromptEvent } from '../types/window';
-import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
+import { InstallInstructionsModal } from '../widgets/InstallAppBanner';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { PROMOTE_APP_BANNER_ACTIVE } from '../config';
 
@@ -141,13 +141,8 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     }, [isInstalled, loggedInstallation, promotionType, setLoggedInstallation]);
     return (
         <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting, isInstalled }}>
-            {isInstructionsBannerVisible && promotionType === PromotionType.iPad && (
-                <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPad'} />
-            )}
+            <InstallInstructionsModal isOpen={isInstructionsBannerVisible} onOpenChange={handleOnCloseInstallInstructions} />
             {children}
-            {isInstructionsBannerVisible && promotionType === PromotionType.iPhone && (
-                <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPhone'} />
-            )}
         </InstallationContext.Provider>
     );
 };

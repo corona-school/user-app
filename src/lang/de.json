@@ -2369,7 +2369,13 @@
         "installTitle": "Lern-Fair installieren",
         "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
         "installButton": "Installieren",
-        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken",
+        "iOSInstallInstructions": {
+            "title": "App Installieren",
+            "steps": {
+                "first": "Klicke auf <0/> oben oder unten im Browser",
+                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+            }
+        },
         "page": {
             "title": "Die Lern-Fair App",
             "description": "Lade dir die Lern-Fair App auf alle deine Geräte, um jederzeit auf Chats und Termine Zugriff zu haben.",
