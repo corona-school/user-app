@@ -130,18 +130,16 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
 
     useEffect(() => {
         if (!isInstalled || navigator.userAgent.match(/Android/i)) return;
-        if (loggedInstallation === null) {
-            setLoggedInstallation(false);
-        } else if (loggedInstallation === false) {
+        if (!loggedInstallation) {
             trackEvent({
                 category: 'pwa',
                 action: 'app-installation',
                 name: 'App-Installation abgeschlossen',
             });
+            alert('Tracked');
             setLoggedInstallation(true);
         }
-    }, [isInstalled, loggedInstallation, promotionType]);
-
+    }, [isInstalled, loggedInstallation, promotionType, setLoggedInstallation]);
     return (
         <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting, isInstalled }}>
             {isInstructionsBannerVisible && promotionType === PromotionType.iPad && (
