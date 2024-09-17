@@ -28,7 +28,7 @@ const InstallApp = () => {
 
     useEffect(() => {
         trackPageView({
-            documentTitle: 'Installieren',
+            documentTitle: 'App installieren',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
