@@ -82,12 +82,13 @@ export interface BaseModalProps {
 
 interface InternalModalProps extends BaseModalProps {
     children: React.ReactNode;
+    className?: string;
 }
 
-export const Modal = ({ isOpen, children, onOpenChange }: InternalModalProps) => {
+export const Modal = ({ isOpen, children, className, onOpenChange }: InternalModalProps) => {
     return (
         <Dialog open={!!isOpen} modal onOpenChange={onOpenChange}>
-            <ModalContent>{children}</ModalContent>
+            <ModalContent className={className}>{children}</ModalContent>
         </Dialog>
     );
 };
