@@ -28,7 +28,7 @@ const InstallApp = () => {
 
     useEffect(() => {
         trackPageView({
-            documentTitle: 'Installieren',
+            documentTitle: 'App installieren',
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -36,9 +36,8 @@ const InstallApp = () => {
     const handleOnInstall = async () => {
         trackEvent({
             category: 'pwa',
-            action: 'click-event',
-            name: 'Lern-Fair installieren',
-            documentTitle: 'Installieren',
+            action: 'install-button-is-clicked',
+            name: 'install-page',
         });
         await install();
     };
