@@ -128,7 +128,6 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     const [loggedInstallation, setLoggedInstallation] = useLocalStorage<boolean | null>({ key: 'logged-lern-fair-app-installation', initialValue: null });
 
     useEffect(() => {
-        console.log(promotionType);
         if (promotionType === PromotionType.unknown) return;
         // App is not installed
         if (!isInstalled) {
