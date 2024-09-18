@@ -62,11 +62,15 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         if (promotionType === PromotionType.native && deferredPromptRef.current) {
             deferredPromptRef.current.prompt();
             const choiceResult = await deferredPromptRef.current.userChoice;
-            trackEvent({
-                category: 'pwa',
-                action: 'click-event',
-                name: choiceResult.outcome === 'accepted' ? 'App-Installation abgeschlossen' : 'App-Installation abgebrochen',
-            });
+            if (choiceResult.outcome === 'accepted') {
+                // Valid only for Android/Desktop (devices that allow native installations)
+                trackEvent({
+                    category: 'pwa',
+                    action: 'app-installation',
+                    name: 'Via Dialog',
+                });
+                setLoggedInstallation(true);
+            }
             deferredPromptRef.current = null;
             setPromotionType(PromotionType.none);
         } else if ([PromotionType.iPad, PromotionType.iPhone].includes(promotionType)) {
@@ -79,11 +83,6 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     };
 
     const stopPromoting = () => {
-        trackEvent({
-            category: 'pwa',
-            action: 'click-event',
-            name: 'App-Installations-Banner schließen',
-        });
         setShowPromotionBanner(false);
     };
 
@@ -119,13 +118,27 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         return () => {
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
         };
-    }, []);
+    }, [promotionType]);
 
     const isInstalled = useMemo(() => {
         const UA = navigator.userAgent;
         return !!(isInStandaloneMode() || ((isIphone() || isIpad()) && !UA.match(/Safari/)));
     }, []);
 
+    const [loggedInstallation, setLoggedInstallation] = useLocalStorage<boolean | null>({ key: 'logged-lern-fair-app-installation', initialValue: null });
+
+    useEffect(() => {
+        if (!isInstalled || navigator.userAgent.match(/Android/i)) return;
+        if (!loggedInstallation) {
+            // iOS (Opening the app via shortcut for the first time / Devices that don't allow native installation)
+            trackEvent({
+                category: 'pwa',
+                action: 'app-installation',
+                name: 'Opening via shortcut for the first time',
+            });
+            setLoggedInstallation(true);
+        }
+    }, [isInstalled, loggedInstallation, promotionType, setLoggedInstallation]);
     return (
         <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting, isInstalled }}>
             <InstallInstructionsModal isOpen={isInstructionsBannerVisible} onOpenChange={handleOnCloseInstallInstructions} />
