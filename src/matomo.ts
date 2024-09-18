@@ -7,7 +7,7 @@ export default createInstance({
     disabled: process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test' || DISABLE_MATOMO === 'true',
     configurations: {
         setCookieDomain: ['*.lern-fair.de'],
-        setDomains: ['*.lern-fair.de', '*.app.lern-fair.de'],
+        setDomains: ['user-app-testing-matomo-vmsbpu.herokuapp.com'],
         enableCrossDomainLinking: true,
         setExcludedQueryParams: ['token', 'secret_token', 'legacyToken', 'redirectTo'],
         disableCookies: true,
