@@ -53,7 +53,7 @@ const AdHocMeetingModal = ({ isOpen, onOpenChange, matchId }: ModalProps) => {
         setIsBrowserMeeting(true);
         const response = await createMeeting();
         if (response) {
-            navigate(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
+            window.open(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
         }
     };
 
@@ -63,7 +63,7 @@ const AdHocMeetingModal = ({ isOpen, onOpenChange, matchId }: ModalProps) => {
         if (response.zoomUrl) {
             window.open(response.zoomUrl, '_self');
         } else {
-            navigate(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
+            window.open(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
         }
     };
 
