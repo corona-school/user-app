@@ -337,21 +337,21 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     useEffect(() => {
         if (!pupil.languages || pupil.languages.length === 0) {
-            setLanguageError('Bitte ergännze mind. 1 Sprache.');
+            setLanguageError(t('screening.errors.language_missing'));
         } else {
             setLanguageError('');
         }
         if (pupil.grade === null || pupil.grade === undefined) {
-            setGradeError('Bitte wähle eine Klasse aus.');
+            setGradeError(t('screening.errors.grade_missing'));
         } else {
             setGradeError('');
         }
         if (!pupil.subjectsFormatted || pupil.subjectsFormatted.length === 0) {
-            setSubjectError('Bitte ergännze mind. 1 Fach.');
+            setSubjectError(t('screening.errors.subjects_missing'));
         } else {
             setSubjectError('');
         }
-    }, [pupil]);
+    }, [pupil, t]);
 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId, silent: true) }`));
 
@@ -376,7 +376,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     function updateSubjects(newSubjects: Subject[]) {
         if (newSubjects.length === 0) {
-            setSubjectError('Bitte ergännze mind. 1 Fach.');
+            setSubjectError(t('screening.errors.subjects_missing'));
         } else {
             setSubjectError('');
         }
@@ -390,7 +390,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     function updateGrade(grade: number | null) {
         if (grade === null) {
-            setGradeError('Bitte wähle eine Klasse aus.');
+            setGradeError(t('screening.errors.grade_missing'));
         } else {
             setGradeError('');
         }
@@ -404,7 +404,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
 
     function updateLanguages(languages: Pupil_Languages_Enum[]) {
         if (languages.length === 0) {
-            setLanguageError('Bitte ergännze mind. 1 Sprache.');
+            setLanguageError(t('screening.errors.language_missing'));
         } else {
             setLanguageError('');
         }
