@@ -44,6 +44,7 @@ const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
                     noNewAppointments={noNewAppointments}
                     noOldAppointments={noOldAppointments}
                     lastAppointmentId={lastAppointmentId}
+                    height="100%"
                 />
             ) : (
                 <Box justifyContent="center">
