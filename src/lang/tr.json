@@ -2366,7 +2366,6 @@
         "installTitle": "Lern-Fair Kurulum",
         "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
         "installButton": "Kurulum",
-        "iOSInstallInstructions": "<0/> ve ardından <1/> \"Ana Ekrana Ekle\"ye dokunun",
         "page": {
             "pros": {
                 "list": [
@@ -2388,6 +2387,13 @@
             "install": "Uygulamayı yükleyin",
             "not-supported": "Ne yazık ki, uygulamanın bu cihaza yüklenmesi desteklenmiyor.",
             "installed": "Uygulama zaten yüklü."
+        },
+        "iOSInstallInstructions": {
+            "title": "Uygulamayı yükleyin",
+            "steps": {
+                "first": "Tarayıcının üst veya alt kısmındaki <0/>'ya tıklayın",
+                "second": "<0/>'yı seçin \"Ana ekrana git\""
+            }
         }
     },
     "show": "Ekran",

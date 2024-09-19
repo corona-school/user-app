@@ -45,12 +45,6 @@ const Settings: React.FC = () => {
     });
 
     const handleOnInstall = () => {
-        trackEvent({
-            category: 'pwa',
-            action: 'click-event',
-            name: 'Lern-Fair installieren',
-            documentTitle: 'Einstellungen',
-        });
         navigate('/install');
     };
 
