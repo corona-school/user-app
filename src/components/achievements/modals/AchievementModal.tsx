@@ -8,7 +8,7 @@ import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import { Achievement_State, Achievement_Type_Enum, Step } from '../../../gql/graphql';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Linking } from 'react-native';
-import { Modal } from '@/components/Modal';
+import { Modal, ModalTitle } from '@/components/Modal';
 import { cn } from '@/lib/Tailwind';
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
@@ -106,9 +106,9 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
                                 {isNewAchievement && <AchievementBadge isInline />}
                                 <Typography className={cn(textColor)}>{tagline}</Typography>
                             </div>
-                            <Typography className={cn('font-bold text-xl lg:text-[36px] leading-5 lg:leading-8 text-center lg:text-left', textColor)}>
+                            <ModalTitle className={cn('font-bold text-xl lg:text-[36px] leading-5 lg:leading-8 text-center lg:text-left', textColor)}>
                                 {title}
-                            </Typography>
+                            </ModalTitle>
                             <Typography className={cn(textColor, 'hidden lg:block')}>{description}</Typography>
                         </div>
                         <div className="flex flex-col w-full items-center gap-8 lg:hidden">
