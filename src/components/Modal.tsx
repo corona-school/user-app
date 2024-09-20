@@ -24,8 +24,14 @@ const ModalOverlay = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Ov
     )
 );
 
-const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Content>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>>(
-    ({ className, children, ...props }, ref) => (
+interface ModalContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
+    classes?: {
+        closeIcon?: string;
+    };
+}
+
+const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Content>, ModalContentProps>(
+    ({ className, classes, children, ...props }, ref) => (
         <ModalPortal>
             <ModalOverlay />
             <DialogPrimitive.Content
@@ -43,7 +49,12 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
                 }}
             >
                 {children}
-                <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                <DialogPrimitive.Close
+                    className={cn(
+                        'absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground',
+                        classes?.closeIcon
+                    )}
+                >
                     <IconX className="h-4 w-4" />
                     <span className="sr-only">Close</span>
                 </DialogPrimitive.Close>
@@ -83,12 +94,15 @@ export interface BaseModalProps {
 interface InternalModalProps extends BaseModalProps {
     children: React.ReactNode;
     className?: string;
+    classes?: ModalContentProps['classes'];
 }
 
-export const Modal = ({ isOpen, children, className, onOpenChange }: InternalModalProps) => {
+export const Modal = ({ isOpen, children, className, classes, onOpenChange }: InternalModalProps) => {
     return (
         <Dialog open={!!isOpen} modal onOpenChange={onOpenChange}>
-            <ModalContent className={className}>{children}</ModalContent>
+            <ModalContent className={className} classes={classes}>
+                {children}
+            </ModalContent>
         </Dialog>
     );
 };
