@@ -29,7 +29,7 @@ const KnowledgeCenter = () => {
                 }
             >
                 <div className="h-full flex flex-col">
-                    <div className="w-full max-w-5xl pt-4 pb-3 px-1.5">
+                    <div className="w-full max-w-5xl pb-3 px-1.5">
                         <Typography variant="h4" className="mb-1.5">
                             {t('forStudents.title')}
                         </Typography>

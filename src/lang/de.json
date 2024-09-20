@@ -2366,7 +2366,7 @@
     },
     "logout": "Abmelden",
     "installation": {
-        "installTitle": "Lern-Fair installieren",
+        "installTitle": "Die Lern-Fair App",
         "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
         "installButton": "Installieren",
         "iOSInstallInstructions": {

@@ -65,7 +65,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                 </Typography>
                 <div className="mb-6">
                     <TruncatedText asChild maxLines={3}>
-                        <Typography>{course.description}</Typography>
+                        <Typography className="whitespace-break-spaces">{course.description}</Typography>
                     </TruncatedText>
                 </div>
                 <div className="flex flex-col gap-y-4">
