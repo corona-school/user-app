@@ -4,7 +4,6 @@ import AchievementBadge from '../AchievementBadge';
 import NewAchievementShine from '../cosmetics/NewAchievementShine';
 import IndicatorBar from '../progressIndicators/IndicatorBar';
 import CardProgressDescription from './CardProgressDescription';
-import { PolaroidImageSize, ShineSize } from '../../../types/achievement';
 import InnerShadow from '../cosmetics/InnerShadow';
 import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../../../gql/graphql';
 
@@ -45,8 +44,6 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     onClick,
 }) => {
     const alignItems = useBreakpointValue({ base: 'flex-start', md: 'center' });
-    const shineOffsetLeft = useBreakpointValue({ base: '15px', md: 'none' });
-    const shineOffsetTop = useBreakpointValue({ base: '-10px', md: '-10px' });
     const showInnerShadow = useBreakpointValue({ base: false, md: true });
     const cardFlexDirection = useBreakpointValue({ base: 'row', md: 'column' });
     const justifyCardContent = useBreakpointValue({
@@ -63,11 +60,6 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
     const paddingX = useBreakpointValue({ base: '16px', md: '32px' });
     const bgColorIncomplete = useBreakpointValue({ base: 'white', md: 'gray.50' });
     const commonCardImageSize = useBreakpointValue({ base: 'auto', md: '190px' });
-    const polaroidImageSize = useBreakpointValue({
-        base: { width: '64px', height: '84px' },
-        md: { width: PolaroidImageSize.LARGE, height: PolaroidImageSize.LARGE },
-    });
-    const shineSize = useBreakpointValue({ base: ShineSize.XSMALL, md: ShineSize.MEDIUM });
     const textSpace = useBreakpointValue({ base: 2, md: 5 });
     const textPaddingLeft = useBreakpointValue({ base: '12px', md: '0' });
     const progressBarLargeText = useBreakpointValue({ base: false, md: true });
@@ -78,18 +70,9 @@ const AchievementCard: React.FC<AchievementCardProps> = ({
                 {isNewAchievement && (
                     <>
                         <AchievementBadge />
-                        <VStack
-                            position="absolute"
-                            zIndex={1}
-                            justifyContent="center"
-                            alignItems="center"
-                            left={shineOffsetLeft}
-                            top={shineOffsetTop}
-                            width={polaroidImageSize.width}
-                            height={polaroidImageSize.height}
-                        >
-                            <NewAchievementShine size={shineSize} />
-                        </VStack>
+                        <div className="absolute inset-0 z-10">
+                            <NewAchievementShine />
+                        </div>
                     </>
                 )}
                 <Stack
