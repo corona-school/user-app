@@ -102,10 +102,16 @@ module.exports = {
                     from: { height: 'var(--radix-accordion-content-height)' },
                     to: { height: '0' },
                 },
+                'shine': {
+                    '0%': { transform: 'translateY(0)', opacity: '0' },
+                    '10%': { opacity: '1' },
+                    '100%': { transform: 'translateY(-200px)', opacity: '0' },
+                }
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
+                'shine': 'shine 2s infinite',
             },
             boxShadow: {
                 bottomNavigation: '0px 4px 16px rgba(17,17,26,0.1), 0px 8px 24px rgba(17,17,26,0.1),0px 16px 56px rgba(17,17,26,0.1)',
