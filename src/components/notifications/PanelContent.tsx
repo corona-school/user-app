@@ -1,8 +1,9 @@
-import { Box, Button, ScrollView, Text } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { isNewNotification } from '../../helper/notification-helper';
 import MessageBox from './MessageBox';
 import { Concrete_Notification } from '../../gql/graphql';
+import { Button } from '../Button';
+import { Typography } from '../Typography';
 
 type NewProps = {
     notificationsToShow: Concrete_Notification[];
@@ -16,23 +17,19 @@ const NewNotifications: React.FC<NewProps> = ({ notificationsToShow, lastTimeChe
 
     return (
         <>
-            <ScrollView>
-                <Box>
-                    {notificationsToShow.map(
-                        (notification) =>
-                            notification.message && (
-                                <MessageBox
-                                    key={notification.id}
-                                    userNotification={notification}
-                                    isRead={isNewNotification(notification.sentAt, lastTimeChecked)}
-                                    updateLastTimeChecked={() => updateLastTimeChecked()}
-                                />
-                            )
-                    )}
-                </Box>
-            </ScrollView>
-            <Button onPress={handleClick} variant={'outline'}>
-                <Text fontSize="xs">{t('notification.panel.button.text')}</Text>
+            {notificationsToShow.map(
+                (notification) =>
+                    notification.message && (
+                        <MessageBox
+                            key={notification.id}
+                            userNotification={notification}
+                            isRead={isNewNotification(notification.sentAt, lastTimeChecked)}
+                            updateLastTimeChecked={() => updateLastTimeChecked()}
+                        />
+                    )
+            )}
+            <Button className="w-full mt-2" onClick={handleClick} variant="outline" size="sm">
+                {t('notification.panel.button.text')}
             </Button>
         </>
     );
@@ -46,18 +43,12 @@ type AllProps = {
 const AllNotifications: React.FC<AllProps> = ({ userNotifications, lastTimeChecked }) => {
     return (
         <>
-            <ScrollView>
-                {userNotifications.map(
-                    (notification: Concrete_Notification) =>
-                        notification.message && (
-                            <MessageBox
-                                key={notification.id}
-                                userNotification={notification}
-                                isRead={isNewNotification(notification.sentAt, lastTimeChecked)}
-                            />
-                        )
-                )}
-            </ScrollView>
+            {userNotifications.map(
+                (notification: Concrete_Notification) =>
+                    notification.message && (
+                        <MessageBox key={notification.id} userNotification={notification} isRead={isNewNotification(notification.sentAt, lastTimeChecked)} />
+                    )
+            )}
         </>
     );
 };
@@ -65,9 +56,9 @@ const AllNotifications: React.FC<AllProps> = ({ userNotifications, lastTimeCheck
 const NoNotifications = () => {
     const { t } = useTranslation();
     return (
-        <Box>
-            <Text>{t('notification.panel.noNotifications')}</Text>
-        </Box>
+        <div>
+            <Typography>{t('notification.panel.noNotifications')}</Typography>
+        </div>
     );
 };
 
