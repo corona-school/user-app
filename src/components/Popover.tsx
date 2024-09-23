@@ -8,6 +8,10 @@ const PopoverTrigger = PopoverPrimitive.Trigger;
 
 const PopoverAnchor = PopoverPrimitive.Anchor;
 
+const PopoverArrow = PopoverPrimitive.Arrow;
+
+const PopoverClose = PopoverPrimitive.Close;
+
 const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive.Content>, React.ComponentPropsWithoutRef<typeof PopoverPrimitive.Content>>(
     ({ className, align = 'center', sideOffset = 4, ...props }, ref) => (
         <PopoverPrimitive.Portal>
@@ -25,4 +29,4 @@ const PopoverContent = React.forwardRef<React.ElementRef<typeof PopoverPrimitive
     )
 );
 
-export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor };
+export { Popover, PopoverTrigger, PopoverContent, PopoverAnchor, PopoverArrow, PopoverClose };
