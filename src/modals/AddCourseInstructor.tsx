@@ -44,7 +44,7 @@ const AddCourseInstructor: React.FC<Props> = ({ onClose, addedInstructors, onIns
     if (loading) return <CenterLoadingSpinner />;
 
     return (
-        <View flex="1">
+        <View flex="1" pt="60px">
             <Row w="100%" paddingX={space['1']} paddingY={space['0.5']}>
                 <Button padding={space['1']} onPress={onClose}>
                     <ArrowBackIcon />
