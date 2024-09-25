@@ -1,6 +1,6 @@
 import { Box, useToast } from 'native-base';
 import { useCallback, useState } from 'react';
-import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
+import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import OnboardingCard from '../../../widgets/OnboardingCard';
 import IconGroup from '../../../assets/icons/Icon_Gruppe.svg';
@@ -89,7 +89,7 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                     </Box>
                 )}
 
-                <CourseConfirmationModal
+                <ConfirmationModal
                     headline={t('introduction.modal.headline')}
                     confirmButtonText={t('introduction.modal.buttonInstructor')}
                     description={t('introduction.modal.desc')}

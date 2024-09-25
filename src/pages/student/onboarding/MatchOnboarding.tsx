@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import OnboardingCard from '../../../widgets/OnboardingCard';
 import { Box, Circle, FlatList, HStack, Text, useTheme, useToast } from 'native-base';
-import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
+import ConfirmationModal from '../../../modals/ConfirmationModal';
 import MatchIcon from '../../../assets/icons/Icon_Einzel.svg';
 import OneToOneImage from '../../../assets/images/matching/1-1-onboarding.png';
 import OneToOneMobileImage from '../../../assets/images/matching/1-1-onboarding-mobile.png';
@@ -112,7 +112,7 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                         />
                     </Box>
                 )}
-                <CourseConfirmationModal
+                <ConfirmationModal
                     headline={t('introduction.modal.headline')}
                     confirmButtonText={t('introduction.modal.buttonTutor')}
                     description={t('introduction.modal.desc')}
