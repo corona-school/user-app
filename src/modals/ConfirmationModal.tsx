@@ -4,7 +4,7 @@ import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/c
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 
-interface CourseConfirmationModalProps extends BaseModalProps {
+interface ConfirmationModalProps extends BaseModalProps {
     headline: string;
     confirmButtonText: string;
     description: ReactNode;
@@ -12,7 +12,7 @@ interface CourseConfirmationModalProps extends BaseModalProps {
     variant?: 'default' | 'destructive';
     isLoading?: boolean;
 }
-const CourseConfirmationModal = ({
+const ConfirmationModal = ({
     headline,
     confirmButtonText,
     description,
@@ -21,7 +21,7 @@ const CourseConfirmationModal = ({
     onOpenChange,
     variant = 'default',
     isLoading,
-}: CourseConfirmationModalProps) => {
+}: ConfirmationModalProps) => {
     const { t } = useTranslation();
 
     return (
@@ -44,4 +44,4 @@ const CourseConfirmationModal = ({
     );
 };
 
-export default CourseConfirmationModal;
+export default ConfirmationModal;
