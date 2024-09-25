@@ -1,26 +1,28 @@
-import { Box, Heading, Modal } from 'native-base';
+import { Button } from '@/components/Button';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { useTranslation } from 'react-i18next';
 
-type InformationModalProps = {
-    title: React.ReactNode;
+interface InformationModalProps extends BaseModalProps {
+    headline: React.ReactNode;
     children: React.ReactNode;
-    isOpen: boolean;
-    onClose: () => void;
-};
+    showCloseButton?: boolean;
+}
 
-const InformationModal = ({ title, children, isOpen, onClose }: InformationModalProps) => {
+const InformationModal = ({ headline, children, isOpen, onOpenChange, showCloseButton }: InformationModalProps) => {
+    const { t } = useTranslation();
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">
-                <Modal.Header borderBottomWidth={0} backgroundColor="white">
-                    <Modal.CloseButton />
-                    <Heading maxWidth="330px" marginX="auto" fontSize="md" textAlign="center" color="primary.900">
-                        {title}
-                    </Heading>
-                </Modal.Header>
-                <Modal.Body background="white">
-                    <Box>{children}</Box>
-                </Modal.Body>
-            </Modal.Content>
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen}>
+            <ModalHeader>
+                <ModalTitle>{headline}</ModalTitle>
+            </ModalHeader>
+            <div>{children}</div>
+            {showCloseButton && (
+                <ModalFooter>
+                    <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                        {t('back')}
+                    </Button>
+                </ModalFooter>
+            )}
         </Modal>
     );
 };

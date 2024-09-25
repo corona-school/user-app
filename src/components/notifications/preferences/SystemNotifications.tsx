@@ -8,6 +8,7 @@ import InformationModal from '../../../modals/InformationModal';
 import { WEBPUSH_ACTIVE } from '../../../config';
 import { WebPushContext } from '../../../context/WebPushProvider';
 import { useLocalStorage } from '../../../hooks/useLocalStorage';
+import { Typography } from '@/components/Typography';
 
 export const SystemNotifications = () => {
     const [, setPushEnabled] = useLocalStorage({ key: 'lern-fair-web-push-enabled', initialValue: false });
@@ -78,12 +79,8 @@ export const SystemNotifications = () => {
                 notificationCategories={systemNotificationCategories}
                 channels={channels}
             />
-            <InformationModal
-                title={t('notification.controlPanel.preference.pushNotifications')}
-                isOpen={isInfoModalOpen}
-                onClose={() => setIsInfoModalOpen(false)}
-            >
-                <Text>{t('notification.controlPanel.preference.pushNotificationTooltip')}</Text>
+            <InformationModal headline={t('notification.controlPanel.preference.pushNotifications')} isOpen={isInfoModalOpen} onOpenChange={setIsInfoModalOpen}>
+                <Typography className="text-pretty text-center">{t('notification.controlPanel.preference.pushNotificationTooltip')}</Typography>
             </InformationModal>
         </Box>
     );
