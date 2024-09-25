@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Circle, Flex, Modal, Row, Stack, Text, useTheme, useToast, VStack } from 'native-base';
+import { Circle, Flex, Stack, Text, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Heading, useBreakpointValue } from 'native-base';
 import DisableableButton from '../../components/DisablebleButton';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
+import ConfirmationModal from '@/modals/ConfirmationModal';
 
 type Props = {};
 
@@ -244,44 +245,27 @@ const Matching: React.FC<Props> = () => {
                         },
                     ]}
                 />
-                <Modal isOpen={showCancelModal}>
-                    <Modal.Content>
-                        <Modal.Header>{t('matching.request.check.deleteRequest')}</Modal.Header>
-                        <Modal.CloseButton onPress={() => setShowCancelModal(false)} />
-                        <Modal.Body>{t('matching.request.check.areyousuretodelete')}</Modal.Body>
-                        <Modal.Footer>
-                            <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
-                                {t('cancel')}
-                            </Button>
-                            <Button onPress={cancelRequest}>{t('matching.request.check.deleteRequest')}</Button>
-                        </Modal.Footer>
-                    </Modal.Content>
-                </Modal>
-                <Modal isOpen={showEditModal}>
-                    <Modal.Content>
-                        <Modal.CloseButton />
-                        <Modal.Header>{t('matching.request.check.editRequest')}</Modal.Header>
-                        <Modal.Body>
-                            <Text>{t('matching.request.check.editRequestDescription')}</Text>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Row>
-                                <Button onPress={() => setShowEditModal(false)} variant={'secondary-light'}>
-                                    {t('cancel')}
-                                </Button>
-                                <Button
-                                    onPress={() =>
-                                        navigate('/request-match', {
-                                            state: { edit: true },
-                                        })
-                                    }
-                                >
-                                    {t('edit')}
-                                </Button>
-                            </Row>
-                        </Modal.Footer>
-                    </Modal.Content>
-                </Modal>
+                <ConfirmationModal
+                    isOpen={!!showCancelModal}
+                    onOpenChange={setShowCancelModal}
+                    confirmButtonText={t('matching.request.check.deleteRequest')}
+                    headline={t('matching.request.check.deleteRequest')}
+                    description={t('matching.request.check.areyousuretodelete')}
+                    onConfirm={cancelRequest}
+                    variant="destructive"
+                />
+                <ConfirmationModal
+                    isOpen={!!showEditModal}
+                    onOpenChange={setShowEditModal}
+                    confirmButtonText={t('edit')}
+                    headline={t('matching.request.check.editRequest')}
+                    description={t('matching.request.check.editRequestDescription')}
+                    onConfirm={() =>
+                        navigate('/request-match', {
+                            state: { edit: true },
+                        })
+                    }
+                />
             </WithNavigation>
         </AsNavigationItem>
     );

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Circle, Flex, Heading, Modal, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Button, Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +15,7 @@ import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches, { MatchCard } from '../match/Matches';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
+import ConfirmationModal from '@/modals/ConfirmationModal';
 
 type Props = {};
 const query = gql(`
@@ -236,19 +237,15 @@ const MatchingStudent: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <Modal isOpen={showCancelModal}>
-                <Modal.Content>
-                    <Modal.Header>{t('matching.request.check.deleteRequest')}</Modal.Header>
-                    <Modal.CloseButton onPress={() => setShowCancelModal(false)} />
-                    <Modal.Body>{t('matching.request.check.areyousuretodelete')}</Modal.Body>
-                    <Modal.Footer>
-                        <Button variant="ghost" onPress={() => setShowCancelModal(false)}>
-                            {t('cancel')}
-                        </Button>
-                        <Button onPress={cancelRequest}>{t('matching.request.check.deleteRequest')}</Button>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
+            <ConfirmationModal
+                isOpen={!!showCancelModal}
+                onOpenChange={setShowCancelModal}
+                confirmButtonText={t('matching.request.check.deleteRequest')}
+                headline={t('matching.request.check.deleteRequest')}
+                description={t('matching.request.check.areyousuretodelete')}
+                onConfirm={cancelRequest}
+                variant="destructive"
+            />
         </AsNavigationItem>
     );
 };
