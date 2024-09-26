@@ -17,7 +17,7 @@ type BasicProps = {
 const CourseBasics: React.FC<BasicProps> = ({ onCancel, onNext }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
-    const { courseName, setCourseName, description, setDescription, pickedPhoto, setPickedPhoto } = useContext(CreateCourseContext);
+    const { image, courseName, setCourseName, description, setDescription, pickedPhoto, setPickedPhoto } = useContext(CreateCourseContext);
 
     const [name, setName] = useState<string>(courseName || '');
     const [courseDescription, setCourseDescription] = useState<string>(description || '');
@@ -67,7 +67,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onCancel, onNext }) => {
             <FormControl marginBottom={space['0.5']}>
                 <FormControl.Label _text={{ color: 'primary.900' }}>{t('course.CourseDate.form.coursePhotoLabel')}</FormControl.Label>
                 <Box paddingY={space['1']}>
-                    <ImageWidget photo={pickedPhoto} onShowUnsplash={() => setShowUnsplashModal(true)} onDeletePhoto={deletePhoto} />
+                    <ImageWidget photo={pickedPhoto} prefill={image} onShowUnsplash={() => setShowUnsplashModal(true)} onDeletePhoto={deletePhoto} />
                 </Box>
             </FormControl>
             <FormControl marginBottom={space['0.5']}>
@@ -81,7 +81,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onCancel, onNext }) => {
                 />
             </FormControl>
             <ButtonRow isDisabled={!isValidInput} onNext={onNextStep} onCancel={onCancel} />
-            <Unsplash showUnsplashModal={showUnsplashModal} onPhotoSelected={pickPhoto} onClose={() => setShowUnsplashModal(false)} />
+            <Unsplash isOpen={showUnsplashModal} onPhotoSelected={pickPhoto} onOpenChange={setShowUnsplashModal} />
         </VStack>
     );
 };
