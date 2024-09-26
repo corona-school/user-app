@@ -65,6 +65,7 @@ const UnsplashModal = ({ isOpen, onOpenChange, onPhotoSelected }: UnsplashModalP
                                 setSearch(value);
                             }}
                             autoSubmit
+                            isLoading={isLoading}
                         />
                     </div>
                 </div>
