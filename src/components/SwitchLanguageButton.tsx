@@ -1,9 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { languageIcons } from '../I18n';
 import { Button } from './Button';
+import { cn } from '@/lib/Tailwind';
 
-const SwitchLanguageButton: React.FC = () => {
+interface SwitchLanguageButtonProps {
+    className?: string;
+}
+
+const SwitchLanguageButton = ({ className }: SwitchLanguageButtonProps) => {
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
 
     const storageLanguage = localStorage.getItem('lernfair-language');
@@ -13,7 +18,7 @@ const SwitchLanguageButton: React.FC = () => {
     return (
         <>
             <Button
-                className="group rounded-full hover:bg-primary-light hover:brightness-105"
+                className={cn('group rounded-full hover:bg-primary-light hover:brightness-105', className)}
                 onClick={() => setShowSwitchLanguage(true)}
                 variant="none"
                 size="icon"
