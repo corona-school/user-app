@@ -6,14 +6,16 @@ interface InformationModalProps extends BaseModalProps {
     headline: React.ReactNode;
     children: React.ReactNode;
     showCloseButton?: boolean;
+    variant?: 'default' | 'destructive';
+    className?: string;
 }
 
-const InformationModal = ({ headline, children, isOpen, onOpenChange, showCloseButton }: InformationModalProps) => {
+const InformationModal = ({ headline, children, isOpen, onOpenChange, showCloseButton, className, variant = 'default' }: InformationModalProps) => {
     const { t } = useTranslation();
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen}>
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className={className}>
             <ModalHeader>
-                <ModalTitle>{headline}</ModalTitle>
+                <ModalTitle className={variant === 'default' ? 'text-primary' : 'text-destructive'}>{headline}</ModalTitle>
             </ModalHeader>
             <div>{children}</div>
             {showCloseButton && (
