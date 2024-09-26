@@ -1,6 +1,8 @@
-import { HStack, Button, ChevronLeftIcon, ChevronRightIcon } from 'native-base';
+import { cn } from '@/lib/Tailwind';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useCallback, useMemo } from 'react';
 import { usePagination } from '../hooks/usePagination';
+import { Button } from './Button';
 
 type Props = {
     currentIndex: number;
@@ -22,10 +24,10 @@ const UnsplashPagination: React.FC<Props> = ({ currentIndex, totalPagesCount, on
     const lastPage = useMemo(() => paginationRange && paginationRange[paginationRange.length - 1], [paginationRange]);
 
     return (
-        <HStack justifyContent={'center'}>
+        <div className="flex justify-center gap-2">
             {currentIndex > 1 && (
-                <Button onPress={onPrevious}>
-                    <ChevronLeftIcon />
+                <Button onClick={onPrevious} size="icon">
+                    <IconChevronLeft />
                 </Button>
             )}
             {paginationRange &&
@@ -33,8 +35,9 @@ const UnsplashPagination: React.FC<Props> = ({ currentIndex, totalPagesCount, on
                     return (
                         <Button
                             variant="ghost"
-                            _text={{ color: pageNumber === currentIndex ? 'primary.900' : 'primary.500' }}
-                            onPress={() => {
+                            size="icon"
+                            className={cn(pageNumber === currentIndex ? 'text-primary' : 'text-primary-light')}
+                            onClick={() => {
                                 if (typeof pageNumber === 'number') onPageChange(pageNumber);
                             }}
                         >
@@ -43,11 +46,11 @@ const UnsplashPagination: React.FC<Props> = ({ currentIndex, totalPagesCount, on
                     );
                 })}
             {currentIndex !== lastPage && (
-                <Button onPress={onNext}>
-                    <ChevronRightIcon />
+                <Button onClick={onNext} size="icon">
+                    <IconChevronRight />
                 </Button>
             )}
-        </HStack>
+        </div>
     );
 };
 export default UnsplashPagination;
