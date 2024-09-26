@@ -52,8 +52,8 @@ const NotificationAlert: React.FC = () => {
                                 {count}
                             </Badge>
                         )}
-                        <Button variant="none" size="icon">
-                            <IconBell size={24} />
+                        <Button className="group rounded-full hover:bg-primary-light hover:brightness-105" variant="none" size="icon">
+                            <IconBell className="group-hover:animate-bell-ring" size={24} />
                         </Button>
                     </div>
                 </PopoverTrigger>

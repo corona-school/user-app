@@ -12,7 +12,12 @@ const SwitchLanguageButton: React.FC = () => {
 
     return (
         <>
-            <Button onClick={() => setShowSwitchLanguage(true)} variant="none" size="icon">
+            <Button
+                className="group rounded-full hover:bg-primary-light hover:brightness-105"
+                onClick={() => setShowSwitchLanguage(true)}
+                variant="none"
+                size="icon"
+            >
                 <Icon />
             </Button>
             <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
