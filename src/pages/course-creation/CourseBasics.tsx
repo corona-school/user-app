@@ -81,7 +81,7 @@ const CourseBasics: React.FC<BasicProps> = ({ onCancel, onNext }) => {
                 />
             </FormControl>
             <ButtonRow isDisabled={!isValidInput} onNext={onNextStep} onCancel={onCancel} />
-            <Unsplash showUnsplashModal={showUnsplashModal} onPhotoSelected={pickPhoto} onClose={() => setShowUnsplashModal(false)} />
+            <Unsplash isOpen={showUnsplashModal} onPhotoSelected={pickPhoto} onOpenChange={setShowUnsplashModal} />
         </VStack>
     );
 };
