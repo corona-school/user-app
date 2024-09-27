@@ -15,9 +15,10 @@ interface MessageBoxProps {
     isStandalone?: boolean;
     isRead?: boolean;
     updateLastTimeChecked?: () => void;
+    className?: string;
 }
 
-const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChecked }: MessageBoxProps) => {
+const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChecked, className }: MessageBoxProps) => {
     const [leavePageModalOpen, setLeavePageModalOpen] = useState<boolean>(false);
     const [achievementModalForId, setAchievementModalForId] = useState<number | null>(null);
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
@@ -98,7 +99,8 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
             className={cn(
                 'cursor-pointer rounded-md mb-2 py-2 h-full max-h-[500px] hover:bg-primary-lighter',
                 isRead ? 'bg-white' : 'bg-primary-lighter',
-                !isStandalone ? 'w-full' : 'w-[270px]'
+                !isStandalone ? 'w-full' : 'w-[270px]',
+                className
             )}
         >
             <div className="flex items-center gap-x-1">
