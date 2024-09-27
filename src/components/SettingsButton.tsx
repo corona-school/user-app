@@ -7,7 +7,7 @@ type Props = {};
 const SettingsButton: React.FC<Props> = () => {
     const navigate = useNavigate();
     return (
-        <Button variant="none" onClick={() => navigate('/settings')} size="icon">
+        <Button className="rounded-full hover:bg-primary-light hover:brightness-105" variant="none" onClick={() => navigate('/settings')} size="icon">
             <IconMenu2 size={24} />
         </Button>
     );
