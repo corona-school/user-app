@@ -1,14 +1,13 @@
 import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
-import { useState } from 'react';
-import LeavePageModal from '../../modals/LeavePageModal';
+import { useContext, useState } from 'react';
 import { Concrete_Notification } from '../../gql/graphql';
 import NotificationModal from './NotificationModal';
-import AchievementMessageModal from '../../modals/AchievementMessageModal';
 import { Typography } from '../Typography';
 import { cn } from '@/lib/Tailwind';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../Tooltip';
+import { GlobalModalsContext } from '@/context/GlobalModalsProvider';
 
 interface MessageBoxProps {
     userNotification: Concrete_Notification;
@@ -19,10 +18,9 @@ interface MessageBoxProps {
 }
 
 const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChecked, className }: MessageBoxProps) => {
-    const [leavePageModalOpen, setLeavePageModalOpen] = useState<boolean>(false);
-    const [achievementModalForId, setAchievementModalForId] = useState<number | null>(null);
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
+    const { openLeavePageModal, openAchievementModal } = useContext(GlobalModalsContext);
 
     if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
 
@@ -42,13 +40,16 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
             if (navigateTo.startsWith('/achievement')) {
                 // With the special link /achievement/{id} we open the Achievement Modal instead
                 const achievementId = navigateTo.split('/')[2];
-                setAchievementModalForId(parseInt(achievementId, 10));
+                openAchievementModal({ isOpen: true, options: { achievementId: parseInt(achievementId, 10) } });
             } else {
                 return navigate(navigateTo);
             }
         } else {
             // Otherwise we treat it as an external link and warn the user:
-            setLeavePageModalOpen(true);
+            openLeavePageModal({
+                isOpen: true,
+                options: { url: navigateTo || 'www.google.com', messageType: type, navigateTo: navigateExternal },
+            });
         }
     };
 
@@ -59,21 +60,9 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
         const Component = () => <div {...rest}>{children}</div>;
         if (typeof navigateTo === 'string') {
             return (
-                <>
-                    <div onClick={navigateToLink}>
-                        <Component />
-                    </div>
-                    <LeavePageModal
-                        isOpen={leavePageModalOpen}
-                        url={navigateTo}
-                        messageType={type}
-                        onOpenChange={setLeavePageModalOpen}
-                        navigateTo={navigateExternal}
-                    />
-                    {achievementModalForId !== null && (
-                        <AchievementMessageModal achievementId={achievementModalForId} isOpenModal={true} onClose={() => setAchievementModalForId(null)} />
-                    )}
-                </>
+                <div onClick={navigateToLink}>
+                    <Component />
+                </div>
             );
         } else if (modalText) {
             return (

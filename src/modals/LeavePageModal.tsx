@@ -4,7 +4,7 @@ import { Typography } from '@/components/Typography';
 import { useTranslation } from 'react-i18next';
 import { getIconForNotificationPreferenceModal } from '../helper/notification-helper';
 
-interface LeavePageModalProps extends BaseModalProps {
+export interface LeavePageModalProps extends BaseModalProps {
     url: string;
     messageType: string;
     navigateTo: () => void | Window | null;
@@ -18,9 +18,9 @@ const LeavePageModal = ({ isOpen, onOpenChange, url, messageType, navigateTo }: 
             <ModalHeader>
                 <ModalTitle>{t('notification.panel.leavePageModal.text')}</ModalTitle>
             </ModalHeader>
-            <div className="flex flex-col items-center">
+            <div className="flex flex-col">
                 <Icon className="scale-[0.5]" />
-                <Typography className="font-semibold mb-1">{t('notification.panel.leavePageModal.description')}</Typography>
+                <Typography className="mb-1">{t('notification.panel.leavePageModal.description')}:</Typography>
                 <Typography className="italic">{url}</Typography>
             </div>
             <ModalFooter>
