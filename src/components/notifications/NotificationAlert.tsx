@@ -46,13 +46,13 @@ const NotificationAlert: React.FC = () => {
         <>
             <Popover onOpenChange={handleOnOpenChange}>
                 <PopoverTrigger asChild>
-                    <div className="flex flex-col relative">
+                    <div className="group flex flex-col relative">
                         {!!count && (
-                            <Badge className="absolute self-start size-4 top-[4px] right-[5px]" variant="destructive" shape="rounded">
+                            <Badge className="z-10 absolute self-start size-4 top-[4px] right-[5px]" variant="destructive" shape="rounded">
                                 {count}
                             </Badge>
                         )}
-                        <Button className="group rounded-full hover:bg-primary-light hover:brightness-105" variant="none" size="icon">
+                        <Button className="rounded-full hover:bg-primary-light hover:brightness-105" variant="none" size="icon">
                             <IconBell className="group-hover:animate-bell-ring" size={24} />
                         </Button>
                     </div>
