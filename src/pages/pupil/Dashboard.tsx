@@ -240,46 +240,6 @@ const Dashboard: React.FC<Props> = () => {
                         <ImportantInformation variant="dark" />
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
-
-                            {/* {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
-                                    <CTACard
-                                        title={t('dashboard.homeworkhelp.catcher')}
-                                        closeable={false}
-                                        content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                        buttonIsBanner={isSummerVacation}
-                                        button={
-                                            isSummerVacation ? (
-                                                <Row
-                                                    width="100%"
-                                                    flexWrap="wrap"
-                                                    justifyContent={'flex-start'}
-                                                    alignItems={'center'}
-                                                    bg={'secondary.100'}
-                                                    borderRadius={4}
-                                                    padding={2}
-                                                >
-                                                    <Box mr={space['0.5']}>
-                                                        <BarrierIcon />
-                                                    </Box>
-                                                    <Text fontSize={'sm'} flexWrap={'wrap'}>
-                                                        {t('matching.homeworkhelp.buttonSummerVacation', {
-                                                            endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
-                                                        })}
-                                                    </Text>
-                                                </Row>
-                                            ) : (
-                                                <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                                                    {t('matching.homeworkhelp.button')}
-                                                </Button>
-                                            )
-                                        }
-                                        icon={<BooksIcon />}
-                                    />
-                                </VStack>
-                            )} */}
-
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 ||
