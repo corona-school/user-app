@@ -117,7 +117,7 @@ const AppointmentTile: React.FC<Props> = ({
                                 <div className="flex gap-x-1 items-center pt-1">
                                     <IconInfoCircle className="text-red-600" size={17} />
                                     <Typography variant="sm" className="text-red-600">
-                                        Abgesagt durch {displayName}
+                                        {t('appointment.appointmentTile.cancelledBy', { name: displayName })}
                                     </Typography>
                                 </div>
                             )}

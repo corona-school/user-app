@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "Lesson #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "Canceled by {{name}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -101,7 +102,8 @@
             "editButton": "Edit lecture",
             "canceledToast": "Lecture was canceled",
             "zoomTooltipStudent": "If you click on this link, you will join the meeting as a participant. To join the meeting as a host, use the \"Join video chat now\" button.",
-            "zoomTooltipPupil": "Never share this link with other people. This is the only way we can guarantee the security of the platform."
+            "zoomTooltipPupil": "Never share this link with other people. This is the only way we can guarantee the security of the platform.",
+            "cancelledBy": "{{name}} has canceled this lecture "
         },
         "zoomModal": {
             "useZoomApp": {

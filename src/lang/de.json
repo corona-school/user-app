@@ -59,7 +59,8 @@
         },
         "appointmentTile": {
             "lecture": "Lektion #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "Abgesagt von {{name}}"
         },
         "create": {
             "assignmentHeader": "Für welches Lernangebot soll dieser Termin erstellt werden?",
@@ -127,7 +128,8 @@
                     "isOver": "Du kannst diesen Termin nicht absagen, da er bereits vorbei ist.",
                     "isCancelled": "Du hast diesen Termin bereits abgesagt."
                 }
-            }
+            },
+            "cancelledBy": "{{name}} hat diesen Termin abgesagt"
         },
         "zoomModal": {
             "header": "Hinweise zum Videochat",
