@@ -103,7 +103,9 @@
             "canceledToast": "Lecture was canceled",
             "zoomTooltipStudent": "If you click on this link, you will join the meeting as a participant. To join the meeting as a host, use the \"Join video chat now\" button.",
             "zoomTooltipPupil": "Never share this link with other people. This is the only way we can guarantee the security of the platform.",
-            "cancelledBy": "{{name}} has canceled this lecture "
+            "cancelledBy": "{{name}} has canceled this lecture ",
+            "rescheduleButton": "lecture shift",
+            "rescheduleDescription": "If you move the lecture , {{name}} will be loaded again."
         },
         "zoomModal": {
             "useZoomApp": {
