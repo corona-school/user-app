@@ -7,6 +7,8 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import SessionCard from '../components/SessionCard';
 import { Secret_Type_Enum } from '../gql/graphql';
+import { getDeviceId } from '@/hooks/useApollo';
+import { useEffect } from 'react';
 
 const SessionManager: React.FC = () => {
     const { space } = useTheme();
@@ -15,7 +17,7 @@ const SessionManager: React.FC = () => {
     const sessionQuery = useQuery(
         gql(`
         query session {
-            me { secrets { id type description lastUsed } myCurrentSecretID }
+            me { secrets { id type description lastUsed deviceId } }
         }
         `)
     );
@@ -75,7 +77,8 @@ const SessionManager: React.FC = () => {
                             lastLogin={secret.lastUsed}
                             logOut={() => revokeSecret(secret.id)}
                             fetching={loading}
-                            isCurrentSession={sessionQuery.data?.me.myCurrentSecretID === secret.id}
+                            isCurrentSession={secret.deviceId && getDeviceId() === secret.deviceId}
+                            key={secret.id}
                         />
                     ))}
             </Flex>

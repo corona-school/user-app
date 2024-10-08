@@ -20,7 +20,7 @@ import {
     useToast,
     CloseIcon,
 } from 'native-base';
-import useApollo from '../hooks/useApollo';
+import useApollo, { getOrCreateDeviceId } from '../hooks/useApollo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
 import { useTranslation } from 'react-i18next';
@@ -169,7 +169,7 @@ export default function Login() {
 
     const attemptLogin = useCallback(async () => {
         loginButton();
-        const res = await loginWithPassword(email!, password!);
+        const res = await loginWithPassword(email!, password!, getOrCreateDeviceId());
         setLoginResult(res);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [email, loginButton, password]);
