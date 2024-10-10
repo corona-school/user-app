@@ -1979,7 +1979,8 @@
     "sessionManager": {
         "title": "Geräte verwalten",
         "description": "Hier kannst du alle Geräte sehen, die mit deinem Account verbunden sind. Du kannst Geräte entfernen, die du nicht mehr benutzt.",
-        "lastUsed": "Zuletzt benutzt:"
+        "lastUsed": "Zuletzt benutzt:",
+        "toast": "Gerät erfolgreich entfernt"
     },
     "chat": {
         "title": "Chat",

@@ -8,11 +8,11 @@ import WithNavigation from '../components/WithNavigation';
 import SessionCard from '../components/SessionCard';
 import { Secret_Type_Enum } from '../gql/graphql';
 import { getDeviceId } from '@/hooks/useApollo';
-import { useEffect } from 'react';
 
 const SessionManager: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
+    const toast = useToast();
 
     const sessionQuery = useQuery(
         gql(`
@@ -42,6 +42,8 @@ const SessionManager: React.FC = () => {
 
     const revokeSecret = async (id: number) => {
         await revokeQuery({ variables: { id: id } });
+        toast.show({ description: t('sessionManager.toast'), placement: 'top' });
+        await sessionQuery.refetch();
     };
 
     return (
