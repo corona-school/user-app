@@ -420,8 +420,13 @@ class RetryOnUnauthorizedLink extends ApolloLink {
 
 function describeDevice() {
     const parsed = userAgentParser(window.navigator.userAgent);
-    const model = `einem ${parsed.device.model ?? 'unbekannten Gerät'}`;
-    return `${parsed.browser.name ?? 'Unbekannter Browser'} auf ${parsed.device.model ? model : parsed.os.name ?? model}`;
+    let type = 'desktop';
+    if (window.innerWidth <= 768) {
+        type = 'mobile';
+    } else if (window.innerWidth <= 1024) {
+        type = 'tablet';
+    }
+    return JSON.stringify({ browser: parsed.browser, device: parsed.device, os: parsed.os, type });
 }
 
 const useApolloInternal = () => {

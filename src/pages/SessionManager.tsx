@@ -1,45 +1,35 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { Column, Flex, Heading, Row, Stack, Text, useBreakpointValue, useTheme, useToast, View, VStack } from 'native-base';
-import { gql } from '../gql';
+import { Spacer, Stack, useToast } from 'native-base';
+import { gql } from '@/gql';
 import { useTranslation } from 'react-i18next';
-import HelpNavigation from '../components/HelpNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import SessionCard from '../components/SessionCard';
-import { Secret_Type_Enum } from '../gql/graphql';
+import { Secret_Type_Enum } from '@/gql/graphql';
 import { getDeviceId } from '@/hooks/useApollo';
+import { Typography } from '@/components/Typography';
+import SwitchLanguageButton from '@/components/SwitchLanguageButton';
+import React from 'react';
 
 const SessionManager: React.FC = () => {
-    const { space } = useTheme();
     const { t } = useTranslation();
     const toast = useToast();
 
     const sessionQuery = useQuery(
         gql(`
         query session {
-            me { secrets { id type description lastUsed deviceId } }
+            me { secrets { id type description lastUsed lastUsedDeviceId } }
         }
         `)
     );
 
-    const [revokeQuery, { data, loading }] = useMutation(
+    const [revokeQuery, { loading }] = useMutation(
         gql(`
         mutation revoke($id: Float!) {
             tokenRevoke(id: $id, invalidateSessions: true)
         }
         `)
     );
-
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
-
-    const width = useBreakpointValue({
-        base: '90%',
-        lg: '100%',
-    });
-
     const revokeSecret = async (id: number) => {
         await revokeQuery({ variables: { id: id } });
         toast.show({ description: t('sessionManager.toast'), placement: 'top' });
@@ -53,37 +43,52 @@ const SessionManager: React.FC = () => {
             headerTitle={t('sessionManager.title')}
             headerLeft={
                 <Stack alignItems="center" direction="row">
-                    <HelpNavigation />
+                    <SwitchLanguageButton />
                     <NotificationAlert />
                 </Stack>
             }
         >
-            <View py={5} width={width}>
-                {!isMobile && (
-                    <Column space={space['1']} marginBottom={space['2']} ml={3}>
-                        <Heading>{t('sessionManager.title')}</Heading>
-                    </Column>
-                )}
-                <Column space={space['1']} marginBottom={space['2']} ml={3}>
-                    <Row>
-                        <Text>{t('sessionManager.description')}</Text>
-                    </Row>
-                </Column>
-            </View>
-            <Flex>
+            <Typography variant="h2" className="mb-4">
+                {t('sessionManager.title')}
+            </Typography>
+            <Typography>{t('sessionManager.description')}</Typography>
+            <Spacer h={5} />
+            <div className="p-10 flex flex-col gap-10 w-full">
                 {sessionQuery.data?.me.secrets
                     .filter((x) => x.type === Secret_Type_Enum.Token)
-                    .map((secret: any) => (
+                    .map((secret) => {
+                        const description = secret.description;
+                        let device = {
+                            type: undefined,
+                            description,
+                            lastUsedDeviceId: secret.lastUsedDeviceId,
+                            lastUsed: secret.lastUsed,
+                            secretId: secret.id,
+                        };
+                        // try to parse the description as JSON
+                        try {
+                            const parsed = JSON.parse(description!);
+                            device.type = parsed.type;
+                            device.description =
+                                (parsed.device?.model ?? parsed.browser?.name ?? t('sessionManager.unknownDevice')) +
+                                (parsed.os?.name ? ` ${t('sessionManager.deviceOnOs')} ` + parsed.os?.name : '');
+                        } catch (e) {
+                            // ignore
+                        }
+                        return device;
+                    })
+                    .map((device: any) => (
                         <SessionCard
-                            userAgent={secret.type + ', ' + secret.id + ', ' + secret.description}
-                            lastLogin={secret.lastUsed}
-                            logOut={() => revokeSecret(secret.id)}
+                            userAgent={device.description}
+                            deviceType={device.type}
+                            lastLogin={device.lastUsed}
+                            logOut={() => revokeSecret(device.secretId)}
                             fetching={loading}
-                            isCurrentSession={secret.deviceId && getDeviceId() === secret.deviceId}
-                            key={secret.id}
+                            isCurrentSession={device.lastUsedDeviceId && getDeviceId() === device.lastUsedDeviceId}
+                            key={device.secretId}
                         />
                     ))}
-            </Flex>
+            </div>
         </WithNavigation>
     );
 };

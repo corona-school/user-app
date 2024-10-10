@@ -2400,6 +2400,9 @@
         "title": "Manage devices",
         "description": "Here you can see all the devices that are connected to your account. You can remove devices that you no longer use.",
         "lastUsed": "Last used:",
-        "toast": "Device successfully removed"
+        "toast": "Device successfully removed",
+        "thisDevice": "This device",
+        "unknownDevice": "Unknown device",
+        "deviceOnOs": "on"
     }
 }

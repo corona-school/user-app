@@ -2404,6 +2404,9 @@
         "title": "Cihazları yönetme",
         "description": "Burada hesabınıza bağlı olan tüm cihazları görebilirsiniz. Artık kullanmadığınız cihazları kaldırabilirsiniz.",
         "lastUsed": "Son kullanılan:",
-        "toast": "Cihaz başarıyla kaldırıldı"
+        "toast": "Cihaz başarıyla kaldırıldı",
+        "thisDevice": "Bu cihaz",
+        "unknownDevice": "Bilinmeyen cihaz",
+        "deviceOnOs": "üzerinde"
     }
 }
