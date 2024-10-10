@@ -24,6 +24,7 @@ type Props = {
     displayName: Appointment['displayName'];
     appointmentId: Appointment['id'];
     canJoinVideochat?: boolean;
+    declinedBy: Appointment['declinedBy'];
 };
 
 export const canJoinMeeting = (start: string, duration: number, joinBeforeMinutes: number, now: DateTime): boolean => {
@@ -49,6 +50,7 @@ const AppointmentDay: React.FC<Props> = ({
     displayName,
     appointmentId,
     canJoinVideochat,
+    declinedBy,
 }) => {
     const isCurrentMonth = useCallback((start: string): boolean => {
         const now = DateTime.now();
@@ -81,6 +83,8 @@ const AppointmentDay: React.FC<Props> = ({
         lg: '100%',
     });
 
+    const wasRejected = !!participants?.every((e) => declinedBy?.includes(e.userID!));
+
     return (
         <>
             {!isReadOnly && organizers && participants ? (
@@ -103,6 +107,8 @@ const AppointmentDay: React.FC<Props> = ({
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
                                 appointmentId={appointmentId}
+                                wasRejected={wasRejected}
+                                declinedBy={declinedBy}
                             />
                         </HStack>
                     </Box>
@@ -124,6 +130,8 @@ const AppointmentDay: React.FC<Props> = ({
                                 displayName={displayName}
                                 isReadOnly={isReadOnly}
                                 appointmentId={appointmentId}
+                                wasRejected={wasRejected}
+                                declinedBy={declinedBy}
                             />
                         </HStack>
                     </Box>
