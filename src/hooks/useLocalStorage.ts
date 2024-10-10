@@ -31,7 +31,7 @@ export function useLocalStorage<T>({ key, initialValue }: UseLocalStorageArgs<T>
         }
     }, [initialValue, key, deserialize]);
 
-    const [storedValue, setStoredValue] = useState(initialValue);
+    const [storedValue, setStoredValue] = useState(readValue());
 
     const setValue = useCallback(
         (value: T) => {

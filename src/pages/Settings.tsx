@@ -20,7 +20,7 @@ const Settings: React.FC = () => {
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
-    const { canInstall, install } = useContext(InstallationContext);
+    const { canInstall } = useContext(InstallationContext);
 
     const [showDeactivate, setShowDeactivate] = useState(false);
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
@@ -42,14 +42,8 @@ const Settings: React.FC = () => {
         lg: false,
     });
 
-    const handleOnInstall = async () => {
-        trackEvent({
-            category: 'pwa',
-            action: 'click-event',
-            name: 'Lern-Fair installieren',
-            documentTitle: 'Einstellungen',
-        });
-        await install();
+    const handleOnInstall = () => {
+        navigate('/install');
     };
 
     return (
@@ -132,7 +126,7 @@ const Settings: React.FC = () => {
                 </VStack>
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
-            <SwitchLanguageModal isOpen={showSwitchLanguage} onCloseModal={() => setShowSwitchLanguage(false)} />
+            <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
         </>
     );
 };

@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import OnboardingCard from '../../../widgets/OnboardingCard';
-import { Box, Circle, FlatList, HStack, Modal, Text, useTheme, useToast } from 'native-base';
-import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
+import { Box, Circle, FlatList, HStack, Text, useTheme, useToast } from 'native-base';
+import ConfirmationModal from '../../../modals/ConfirmationModal';
 import MatchIcon from '../../../assets/icons/Icon_Einzel.svg';
 import OneToOneImage from '../../../assets/images/matching/1-1-onboarding.png';
 import OneToOneMobileImage from '../../../assets/images/matching/1-1-onboarding-mobile.png';
@@ -11,7 +11,6 @@ import { useMutation } from '@apollo/client';
 import { gql } from './../../../gql';
 import AsNavigationItem from '../../../components/AsNavigationItem';
 import WithNavigation from '../../../components/WithNavigation';
-import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
 import { useUser } from '../../../hooks/useApollo';
@@ -113,15 +112,14 @@ const MatchOnboarding: React.FC<MatchProps> = ({ canRequest = false, waitForSupp
                         />
                     </Box>
                 )}
-                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <CourseConfirmationModal
-                        headline={t('introduction.modal.headline')}
-                        confirmButtonText={t('introduction.modal.buttonTutor')}
-                        description={t('introduction.modal.desc')}
-                        onClose={() => setIsModalOpen(false)}
-                        onConfirm={() => sendMessage()}
-                    />
-                </Modal>
+                <ConfirmationModal
+                    headline={t('introduction.modal.headline')}
+                    confirmButtonText={t('introduction.modal.buttonTutor')}
+                    description={t('introduction.modal.desc')}
+                    onOpenChange={setIsModalOpen}
+                    isOpen={isModalOpen}
+                    onConfirm={() => sendMessage()}
+                />
             </WithNavigation>
         </AsNavigationItem>
     );

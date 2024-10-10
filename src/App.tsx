@@ -21,6 +21,7 @@ import './service-worker-proxy';
 import InstallationProvider from './context/InstallationProvider';
 import WebPushProvider from './context/WebPushProvider';
 import { Toaster } from '@/components/Toaster';
+import { GlobalModalsProvider } from './context/GlobalModalsProvider';
 
 function App() {
     return (
@@ -33,17 +34,19 @@ function App() {
                                 <NativeBaseProvider theme={Theme}>
                                     <IssueReporter>
                                         <MatomoProvider value={matomo}>
-                                            <NotificationsProvider>
-                                                <LFChatProvider>
-                                                    <NavigationStackProvider>
-                                                        <InstallationProvider>
-                                                            <Navigator />
-                                                        </InstallationProvider>
-                                                        <ToastNotifications />
-                                                        <Toaster />
-                                                    </NavigationStackProvider>
-                                                </LFChatProvider>
-                                            </NotificationsProvider>
+                                            <GlobalModalsProvider>
+                                                <NotificationsProvider>
+                                                    <LFChatProvider>
+                                                        <NavigationStackProvider>
+                                                            <InstallationProvider>
+                                                                <Navigator />
+                                                            </InstallationProvider>
+                                                            <ToastNotifications />
+                                                            <Toaster />
+                                                        </NavigationStackProvider>
+                                                    </LFChatProvider>
+                                                </NotificationsProvider>
+                                            </GlobalModalsProvider>
                                         </MatomoProvider>
                                     </IssueReporter>
                                 </NativeBaseProvider>

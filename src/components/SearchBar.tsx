@@ -1,20 +1,19 @@
-import { useTheme, Row, Button, Input, SearchIcon } from 'native-base';
-import { useEffect, useRef, useState } from 'react';
-import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
+import { IconSearch } from '@tabler/icons-react';
+import { ChangeEventHandler, KeyboardEventHandler, useEffect, useRef, useState } from 'react';
+import { Button } from './Button';
+import { Input } from './Input';
 
 type Props = {
     placeholder?: string;
     onSearch: (searchString: string) => any;
-    showBack?: boolean;
-    onBack?: () => any;
     value?: string;
     onChangeText?: (text: string) => any;
     inputRef?: React.MutableRefObject<HTMLInputElement | undefined>;
     autoSubmit?: true;
+    isLoading?: boolean;
 };
 
-const SearchBar: React.FC<Props> = ({ placeholder, onSearch, showBack, onBack, value, onChangeText, inputRef, autoSubmit }) => {
-    const { space } = useTheme();
+const SearchBar: React.FC<Props> = ({ placeholder, onSearch, value, onChangeText, autoSubmit, inputRef, isLoading }) => {
     const [searchString, setSearchString] = useState<string>('');
     const searchStringRef = useRef<{ value?: string }>({});
 
@@ -36,26 +35,31 @@ const SearchBar: React.FC<Props> = ({ placeholder, onSearch, showBack, onBack, v
             return () => clearTimeout(timer);
         }
     }, [autoSubmit, onSearch, searchString]);
-    const handleKeyPress = (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
+
+    const handleKeyPress: KeyboardEventHandler<HTMLInputElement> = (e) => {
         if (e.nativeEvent.key === 'Enter') {
             onSearch(searchString);
         }
     };
 
+    const handleOnChange: ChangeEventHandler<HTMLInputElement> = (e) => {
+        if (onChangeText) onChangeText(e.target.value);
+        else setSearchString(e.target.value);
+    };
+
     return (
-        <Row flex="1">
+        <div className="flex flex-row flex-1 px-1 gap-x-2">
             <Input
-                ref={inputRef}
-                flex="1"
+                className="flex-1"
                 value={value || searchString}
-                onChangeText={onChangeText || setSearchString}
+                onChange={handleOnChange}
                 placeholder={placeholder || 'Suchbegriff eingeben'}
-                onKeyPress={handleKeyPress}
+                onKeyDown={handleKeyPress}
             />
-            <Button onPress={() => onSearch(searchString)} padding={space['1']}>
-                <SearchIcon />
+            <Button className="p-1" onClick={() => onSearch(searchString)} size="icon" isLoading={isLoading}>
+                <IconSearch />
             </Button>
-        </Row>
+        </div>
     );
 };
 export default SearchBar;

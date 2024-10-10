@@ -811,14 +811,17 @@
             "header": "pupils move up",
             "add": "Add",
             "amount": "Quantity pupils",
-            "success": "pupils successfully added"
+            "success": "pupils successfully added",
+            "error": "pupils could not be added"
         },
         "removeParticipantFromCourseModal": {
             "header": "pupil Remove from course",
             "remove": "Remove",
             "success": "pupil successfully removed",
             "error": "pupil could not be removed"
-        }
+        },
+        "removeFromCourse": "Remove from the course",
+        "addToCourse": "Add to course"
     },
     "settings": {
         "general": {
@@ -1099,7 +1102,8 @@
         "homeworkhelp": {
             "title": "Homework help",
             "catcher": "Do you need help with your homework?",
-            "text": "Every day from Monday - Thursday 16h - 17h we offer homework help on Zoom. You can participate every day if you need help with your homework."
+            "catcherHelper": "Would you like to help students with their homework?",
+            "text": "Every day from Monday - Thursday 17h - 18h we offer homework help on Zoom. You can participate every day if you need help with your homework."
         }
     },
     "helperwizard": {
@@ -1182,7 +1186,7 @@
         "homeworkHelpStudent": {
             "buttons": ["To the homework help\n(Zoom registration)"],
             "title": "Homework help",
-            "content": "With <b>homework help</b>, pupils get one-off, spontaneous, direct help with their homework. Do you think that sounds great? Then we'd love you to join us!<br/>Just come to the preliminary meeting <b>from Monday to Thursday at 15:50</b> and help pupils with their homework in your subjects for about 15 minutes each between <b>16:00 and 17</b>:00. Drop by, we look forward to seeing you!"
+            "content": "With <b>homework help</b>, pupils get one-off, spontaneous, direct help with their homework. Do you think that sounds great? Then we'd love you to join us!<br/>Just come to the preliminary meeting <b>from Monday to Thursday at 15:50</b> and help pupils with their homework in your subjects for about 15 minutes each between <b>17:00 and 18</b>:00. Drop by, we look forward to seeing you!"
         },
         "homeworkHelpPupil": {
             "buttons": ["To the homework help"],
@@ -1280,8 +1284,8 @@
         },
         "homeworkhelp": {
             "title": "Homework help",
-            "textpupil": "Every day from Monday - Thursday 16h - 17h we offer homework help on Zoom. You can participate every day if you need help with your homework.",
-            "texthelper": "In the homework help service, you can help pupils spontaneously with their homework, just like in a consultation hour. Homework help takes place Monday - Thursday 16h - 17h. You can get involved as often as you like without obligation.",
+            "textpupil": "Every day from Monday - Thursday 17h - 18h we offer homework help on Zoom. You can participate every day if you need help with your homework.",
+            "texthelper": "In the homework help service, you can help pupils spontaneously with their homework, just like in a consultation hour. Homework help takes place Monday - Thursday 17h - 18h. You can get involved as often as you like without obligation.",
             "button": "To the homework help",
             "buttonSummerVacation": "There will be no homework help until the end of the summer vacation on {{endSummerVacation}}"
         },
@@ -1368,7 +1372,7 @@
                     },
                     "homeworkhelp": {
                         "heading": "Do you already know about our homework help?",
-                        "text": "Do you have a question about your homework? Between 16:00 and 17:00, we from the Lern-Fair team are on Zoom and can help you with your homework.",
+                        "text": "Do you have a question about your homework? Between 17:00 and 18:00, we from the Lern-Fair team are on Zoom and can help you with your homework.",
                         "button": "To the homework help"
                     },
                     "heading": "Alternative offers",
@@ -1930,7 +1934,8 @@
         "placeholder": "Write something...",
         "chatError": "Chat cannot be opened.",
         "groupChatError": "Group chat cannot be opened.",
-        "announcementChatError": "Announcement chat cannot be opened."
+        "announcementChatError": "Announcement chat cannot be opened.",
+        "openChat": "Open chat"
     },
     "introduction": {
         "courseTypes": {
@@ -2357,6 +2362,37 @@
         "installTitle": "Lern-Fair Install",
         "installDescription": "For faster access to chats and lectures without logging in",
         "installButton": "Install",
-        "iOSInstallInstructions": "Tap on <0/> and then <1/> \"Add to Home Screen\""
-    }
+        "page": {
+            "pros": {
+                "list": [
+                    "The app loads faster, saves data and sends notifications directly to your device. This means you never miss a chat or lecture - and you no longer have to log in every time.",
+                    "You can install the app on different devices so that both parents and pupils have access to the chat and appointment reminders."
+                ],
+                "title": "Advantages"
+            },
+            "installationDetails": {
+                "list": [
+                    "The app can be installed directly from this browser without the App Store.",
+                    "The following browsers are supported: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) and macOS (Chrome).",
+                    "Click on the \"Install app\" button and follow the instructions."
+                ],
+                "title": "Installation"
+            },
+            "title": "The Lern-Fair app",
+            "description": "Download the Lern-Fair app on all your devices to access chats and lectures at any time.",
+            "install": "Install app",
+            "not-supported": "Unfortunately, the installation of the app on this device is not supported.",
+            "installed": "The app is already installed."
+        },
+        "iOSInstallInstructions": {
+            "title": "Install app",
+            "steps": {
+                "first": "Click on <0/> at the top or bottom of the browser",
+                "second": "Select <0/> \"Go to home screen\""
+            }
+        }
+    },
+    "show": "Display",
+    "showMore": "Show more",
+    "showLess": "Show less"
 }

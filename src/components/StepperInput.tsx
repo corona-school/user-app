@@ -1,25 +1,23 @@
-import { Button, HStack, Input, useTheme } from 'native-base';
-import AddIcon from '../assets/icons/ic_add_circle.svg';
-import RemoveIcon from '../assets/icons/ic_remove_circle.svg';
+import { IconCircleMinus, IconCirclePlus } from '@tabler/icons-react';
+import { Input } from 'native-base';
+import { Button } from './Button';
 
 type StepperProps = {
     value: number;
     increment: () => void;
     decrement: () => void;
 };
-const StepperInput: React.FC<StepperProps> = ({ value, increment, decrement }) => {
-    const { space } = useTheme();
-
+const StepperInput = ({ value, increment, decrement }: StepperProps) => {
     return (
-        <HStack space={space['0.5']}>
-            <Button variant="outline" onPress={() => decrement()}>
-                <RemoveIcon />
+        <div className="flex gap-x-2">
+            <Button variant="outline" size="icon" onClick={() => decrement()}>
+                <IconCircleMinus />
             </Button>
-            <Input keyboardType="numeric" value={value.toString()} isReadOnly flex="auto" />
-            <Button variant="outline" onPress={() => increment()}>
-                <AddIcon />
+            <Input keyboardType="numeric" value={value.toString()} isReadOnly flex="auto" h="40px" />
+            <Button variant="outline" size="icon" onClick={() => increment()}>
+                <IconCirclePlus />
             </Button>
-        </HStack>
+        </div>
     );
 };
 

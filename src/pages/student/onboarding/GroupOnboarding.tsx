@@ -1,6 +1,6 @@
-import { Box, Modal, useToast } from 'native-base';
+import { Box, useToast } from 'native-base';
 import { useCallback, useState } from 'react';
-import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
+import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { useTranslation } from 'react-i18next';
 import OnboardingCard from '../../../widgets/OnboardingCard';
 import IconGroup from '../../../assets/icons/Icon_Gruppe.svg';
@@ -12,7 +12,6 @@ import GroupRequestedInfos from './GroupRequestedInfos';
 import GroupOnboardingInfos from './GroupOnboardingInfos';
 import WithNavigation from '../../../components/WithNavigation';
 import AsNavigationItem from '../../../components/AsNavigationItem';
-import Hello from '../../../widgets/Hello';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import CenterLoadingSpinner from '../../../components/CenterLoadingSpinner';
 import { useUser } from '../../../hooks/useApollo';
@@ -90,15 +89,14 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                     </Box>
                 )}
 
-                <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                    <CourseConfirmationModal
-                        headline={t('introduction.modal.headline')}
-                        confirmButtonText={t('introduction.modal.buttonInstructor')}
-                        description={t('introduction.modal.desc')}
-                        onClose={() => setIsModalOpen(false)}
-                        onConfirm={() => sendMessage()}
-                    />
-                </Modal>
+                <ConfirmationModal
+                    headline={t('introduction.modal.headline')}
+                    confirmButtonText={t('introduction.modal.buttonInstructor')}
+                    description={t('introduction.modal.desc')}
+                    onOpenChange={setIsModalOpen}
+                    isOpen={isModalOpen}
+                    onConfirm={() => sendMessage()}
+                />
             </WithNavigation>
         </AsNavigationItem>
     );

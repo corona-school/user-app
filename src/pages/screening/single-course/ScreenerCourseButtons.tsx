@@ -55,7 +55,7 @@ const ScreenerCourseButtons: React.FC<Props> = ({ courseState, isShared, subcour
                 {t(`screening.courses.${isShared ? 'unshare_course' : 'share_course'}`)}
             </Button>
             {/* EDIT COURSE */}
-            {/* <Button
+            <Button
                 onPress={() => {
                     navigate('/edit-course', {
                         state: { courseId: subcourseId },
@@ -64,7 +64,7 @@ const ScreenerCourseButtons: React.FC<Props> = ({ courseState, isShared, subcour
                 variant="outline"
             >
                 {t('single.courseInfo.editCourse')}
-            </Button> */}
+            </Button>
         </Stack>
     );
 };

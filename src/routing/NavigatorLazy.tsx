@@ -76,6 +76,8 @@ import ForPupils from '../pages/ForPupils';
 import { useBreakpointValue, Stack } from 'native-base';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import useApollo from '@/hooks/useApollo';
+import InstallApp from '@/pages/InstallApp';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -95,6 +97,8 @@ export default function NavigatorLazy() {
         base: true,
         sm: false,
     });
+
+    const { sessionState } = useApollo();
 
     return (
         <Routes>
@@ -292,7 +296,7 @@ export default function NavigatorLazy() {
                 path="/edit-course"
                 element={
                     <RequireAuth>
-                        <RequireRole roles={['INSTRUCTOR']}>
+                        <RequireRole roles={['INSTRUCTOR', 'COURSE_SCREENER']}>
                             <CreateCourse />
                         </RequireRole>
                     </RequireAuth>
@@ -465,12 +469,14 @@ export default function NavigatorLazy() {
             <Route path="/new-password" element={<ResetPassword layout="new-pw" />} />
             <Route path="/reset-password" element={<ResetPassword layout="reset-pw" />} />
 
+            <Route path="/install" element={<InstallApp />} />
+
             <Route
                 path="/datenschutz"
                 element={
                     <WithNavigation
                         showBack={isMobileSM}
-                        hideMenu={isMobileSM}
+                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
                         previousFallbackRoute="/settings"
                         headerLeft={
                             !isMobileSM && (
@@ -499,7 +505,7 @@ export default function NavigatorLazy() {
                 element={
                     <WithNavigation
                         showBack={isMobileSM}
-                        hideMenu={isMobileSM}
+                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
                         previousFallbackRoute="/settings"
                         headerLeft={
                             !isMobileSM && (

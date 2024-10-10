@@ -1,7 +1,7 @@
-import { createContext, useEffect, useState, useRef } from 'react';
+import { createContext, useEffect, useState, useRef, useMemo } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { BeforeInstallPromptEvent } from '../types/window';
-import { IOSInstallAppInstructions } from '../widgets/InstallAppBanner';
+import { InstallInstructionsModal } from '../widgets/InstallAppBanner';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 import { PROMOTE_APP_BANNER_ACTIVE } from '../config';
 
@@ -9,6 +9,7 @@ export enum PromotionType {
     native = 'native',
     iPhone = 'iPhone',
     iPad = 'iPad',
+    unknown = 'unknown',
     none = 'none',
 }
 
@@ -18,14 +19,16 @@ interface InstallationContextValue {
     promotionType: PromotionType;
     install: () => Promise<void>;
     stopPromoting: () => void;
+    isInstalled: boolean;
 }
 
 export const InstallationContext = createContext<InstallationContextValue>({
     canInstall: false,
     shouldPromote: false,
-    promotionType: PromotionType.none,
+    promotionType: PromotionType.unknown,
     install: async () => {},
     stopPromoting: () => {},
+    isInstalled: true,
 });
 
 interface InstallationProviderProps {
@@ -36,9 +39,9 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     const { trackEvent } = useMatomo();
     const deferredPromptRef = useRef<BeforeInstallPromptEvent | null>(null);
     const [isInstructionsBannerVisible, setIsInstructionsBannerVisible] = useState(false);
-    const [promotionType, setPromotionType] = useState<PromotionType>(PromotionType.none);
+    const [promotionType, setPromotionType] = useState<PromotionType>(PromotionType.unknown);
     const [showPromotionBanner, setShowPromotionBanner] = useLocalStorage<boolean | null>({ key: 'recommend-lern-fair-installation', initialValue: null });
-    const canInstall = promotionType !== PromotionType.none;
+    const canInstall = ![PromotionType.none, PromotionType.unknown].includes(promotionType);
     const shouldPromote = canInstall && !!showPromotionBanner;
 
     const isIphone = () => {
@@ -53,17 +56,21 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         return iPad || (isMac && navigator.maxTouchPoints && navigator.maxTouchPoints > 2);
     };
 
-    const isInStandaloneMode = () => 'standalone' in window.navigator && (window.navigator as any)?.standalone;
-
+    const isInStandaloneMode = () =>
+        ('standalone' in window.navigator && (window.navigator as any)?.standalone) || window.matchMedia('(display-mode: standalone)').matches;
     const install = async () => {
         if (promotionType === PromotionType.native && deferredPromptRef.current) {
             deferredPromptRef.current.prompt();
             const choiceResult = await deferredPromptRef.current.userChoice;
-            trackEvent({
-                category: 'pwa',
-                action: 'click-event',
-                name: choiceResult.outcome === 'accepted' ? 'App-Installation abgeschlossen' : 'App-Installation abgebrochen',
-            });
+            if (choiceResult.outcome === 'accepted') {
+                // Valid only for Android/Desktop (devices that allow native installations)
+                trackEvent({
+                    category: 'pwa',
+                    action: 'app-installation',
+                    name: 'Via Dialog',
+                });
+                setLoggedInstallation(true);
+            }
             deferredPromptRef.current = null;
             setPromotionType(PromotionType.none);
         } else if ([PromotionType.iPad, PromotionType.iPhone].includes(promotionType)) {
@@ -76,13 +83,13 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     };
 
     const stopPromoting = () => {
-        trackEvent({
-            category: 'pwa',
-            action: 'click-event',
-            name: 'App-Installations-Banner schließen',
-        });
         setShowPromotionBanner(false);
     };
+
+    const isInstalled = useMemo(() => {
+        const UA = navigator.userAgent;
+        return !!(isInStandaloneMode() || ((isIphone() || isIpad()) && !UA.match(/Safari/)));
+    }, []);
 
     useEffect(() => {
         if (canInstall && showPromotionBanner === null) {
@@ -91,7 +98,7 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
     }, [canInstall, showPromotionBanner]);
 
     useEffect(() => {
-        if (!PROMOTE_APP_BANNER_ACTIVE) {
+        if (!PROMOTE_APP_BANNER_ACTIVE || isInstalled) {
             setPromotionType(PromotionType.none);
             return;
         }
@@ -116,17 +123,52 @@ const InstallationProvider = ({ children }: InstallationProviderProps) => {
         return () => {
             window.removeEventListener('beforeinstallprompt', handleBeforeInstallPrompt);
         };
-    }, []);
+    }, [promotionType, isInstalled]);
 
+    const [loggedInstallation, setLoggedInstallation] = useLocalStorage<boolean | null>({ key: 'logged-lern-fair-app-installation', initialValue: null });
+
+    useEffect(() => {
+        if (promotionType === PromotionType.unknown) return;
+        // App is not installed
+        if (!isInstalled) {
+            trackEvent({
+                category: 'opening',
+                action: 'app-opened',
+                name: 'browser',
+            });
+            return;
+        }
+        const isAndroid = navigator.userAgent.match(/Android/i);
+        // App is installed and we haven't tracked the installation (Exclude android devices)
+        if (!loggedInstallation && !isAndroid) {
+            // iOS (Opening the app via shortcut for the first time / Devices that don't allow native installation)
+            trackEvent({
+                category: 'pwa',
+                action: 'app-installation',
+                name: 'Opening via shortcut for the first time',
+            });
+            setLoggedInstallation(true);
+            return;
+        }
+        // This is not the first time a user access the app
+        if (loggedInstallation) {
+            let device = 'desktop';
+            if (isIpad() || isIphone()) {
+                device = 'ios';
+            } else if (isAndroid) {
+                device = 'android';
+            }
+            trackEvent({
+                category: 'opening',
+                action: 'pwa-opened-via-shortcut',
+                name: device,
+            });
+        }
+    }, [isInstalled, loggedInstallation, promotionType, setLoggedInstallation]);
     return (
-        <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting }}>
-            {isInstructionsBannerVisible && promotionType === PromotionType.iPad && (
-                <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPad'} />
-            )}
+        <InstallationContext.Provider value={{ install, promotionType, canInstall, shouldPromote, stopPromoting, isInstalled }}>
+            <InstallInstructionsModal isOpen={isInstructionsBannerVisible} onOpenChange={handleOnCloseInstallInstructions} />
             {children}
-            {isInstructionsBannerVisible && promotionType === PromotionType.iPhone && (
-                <IOSInstallAppInstructions onClose={handleOnCloseInstallInstructions} variant={'iPhone'} />
-            )}
         </InstallationContext.Provider>
     );
 };

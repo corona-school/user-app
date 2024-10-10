@@ -13,6 +13,9 @@
     "helper": "Helfer:in",
     "to": "An",
     "or": "oder",
+    "show": "Anzeigen",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -346,7 +349,7 @@
                 },
                 "pupil": {
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
-                    "not-tutee": "Du kannst kein Lernpaar anfordern, da du nicht für die Nachhilfe registriert bist.",
+                    "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
                     "max-matches": "Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
@@ -880,14 +883,17 @@
             "header": "Schüler:innen nachrücken",
             "add": "Hinzufügen",
             "amount": "Anzahl Schüler:innen",
-            "success": "Schüler:innen erfolgreich hinzugefügt"
+            "success": "Schüler:innen erfolgreich hinzugefügt",
+            "error": "Schüler:innen konnten nicht hinzugefügt werden"
         },
         "removeParticipantFromCourseModal": {
             "header": "Schüler:in aus Kurs entfernen",
             "remove": "Entfernen",
             "success": "Schüler:in erfolgreich entfernt",
             "error": "Schüler:in konnte nicht entfernt werden"
-        }
+        },
+        "removeFromCourse": "Aus dem Kurs entfernen",
+        "addToCourse": "Zum Kurs hinzufügen"
     },
     "settings": {
         "header": "Einstellungen",
@@ -1168,7 +1174,8 @@
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
             "catcher": "Du brauchst Hilfe bei deinen Hausaufgaben?",
-            "text": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst."
+            "catcherHelper": "Du möchtest Schüler:innen bei ihren Hausaufgaben helfen?",
+            "text": "Jeden Tag von Montag - Donnerstag 17h - 18h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst."
         }
     },
     "helperwizard": {
@@ -1252,12 +1259,12 @@
         },
         "homeworkHelpStudent": {
             "title": "Hausaufgabenhilfe",
-            "content": "Bei der <b>Hausaufgabenhilfe</b> bekommen Schüler:innen einmalig, spontane, direkte Hilfe bei ihrer Frage zu den Hausaufgaben. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür einfach <b>von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>16-17 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben. Schau vorbei, wir freuen uns auf dich!",
+            "content": "Bei der <b>Hausaufgabenhilfe</b> bekommen Schüler:innen einmalig, spontane, direkte Hilfe bei ihrer Frage zu den Hausaufgaben. Du findest, das klingt super? Dann freuen wir uns, wenn du mitmachst!<br>Komme dafür einfach <b>von Montag-Donnerstag um 15:50</b> in die Vorbesprechung und unterstütze zwischen <b>17-18 Uhr</b> Schüler:innen in deinen Fächern für je ca. 15 Minuten bei ihren Hausaufgaben. Schau vorbei, wir freuen uns auf dich!",
             "buttons": ["Zur Hausaufgabenhilfe\n(Zoom-Registrierung)"]
         },
         "homeworkHelpPupil": {
             "title": "Hilfe bei deinen Hausaufgaben",
-            "content": "Du kommst bei deiner Hausaufgabe nicht weiter? Bei der <b>Hausaufgabenhilfe</b> helfen wir dir <b>von Montag-Donnerstag zwischen 16-17 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deiner Frage. Wir freuen uns auf dich!",
+            "content": "Du kommst bei deiner Hausaufgabe nicht weiter? Bei der <b>Hausaufgabenhilfe</b> helfen wir dir <b>von Montag-Donnerstag zwischen 17-18 Uhr</b> schnell und unkompliziert für 10 bis 15 Minuten Hilfe bei deiner Frage. Wir freuen uns auf dich!",
             "buttons": ["Zur Hausaufgabenhilfe"]
         },
         "pupilScreening": {
@@ -1349,8 +1356,8 @@
         },
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
-            "textpupil": "Jeden Tag von Montag - Donnerstag 16h - 17h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.",
-            "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 16h - 17h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
+            "textpupil": "Jeden Tag von Montag - Donnerstag 17h - 18h bieten wir eine Hausaufgabenhilfe auf Zoom an. Du kannst jeden Tag teilnehmen, wenn du Hilfe bei deinen Hausaufgaben brauchst.",
+            "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 17h - 18h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
             "button": "Zur Hausaufgabenhilfe",
             "buttonSummerVacation": "Die Hausaufgabenhilfe ist in der Sommerpause. Ab dem {{endSummerVacation}} geht es weiter."
         },
@@ -1443,7 +1450,7 @@
                     },
                     "homeworkhelp": {
                         "heading": "Kennst du schon unsere Hausaufgabenhilfe?",
-                        "text": "Du hast eine Frage zu deinen Hausaufgaben? Zwischen 16:00 und 17:00 Uhr sind wir vom Lern-Fair Team auf Zoom und können dir bei deinen Hausaufgaben helfen.",
+                        "text": "Du hast eine Frage zu deinen Hausaufgaben? Zwischen 17:00 und 18:00 Uhr sind wir vom Lern-Fair Team auf Zoom und können dir bei deinen Hausaufgaben helfen.",
                         "button": "Zur Hausaufgabenhilfe"
                     }
                 },
@@ -1970,6 +1977,7 @@
     },
     "chat": {
         "title": "Chat",
+        "openChat": "Chat öffnen",
         "openSubcourseChat": "Gruppen-Chat öffnen",
         "openAnnouncementChat": "Ankündigungschat öffnen",
         "hint": "Du kannst den Gruppen-Chat erst öffnen, wenn sich mindestens zwei Schüler:innen zu deinem Kurs angemeldet haben.",
@@ -2358,9 +2366,37 @@
     },
     "logout": "Abmelden",
     "installation": {
-        "installTitle": "Lern-Fair installieren",
+        "installTitle": "Die Lern-Fair App",
         "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
         "installButton": "Installieren",
-        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken"
+        "iOSInstallInstructions": {
+            "title": "App Installieren",
+            "steps": {
+                "first": "Klicke auf <0/> oben oder unten im Browser",
+                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+            }
+        },
+        "page": {
+            "title": "Die Lern-Fair App",
+            "description": "Lade dir die Lern-Fair App auf alle deine Geräte, um jederzeit auf Chats und Termine Zugriff zu haben.",
+            "install": "App installieren",
+            "not-supported": "Leider wird die Installation der App auf diesem Gerät nicht unterstützt.",
+            "installed": "Die App ist bereits installiert.",
+            "pros": {
+                "title": "Vorteile",
+                "list": [
+                    "Die App lädt schneller, spart Daten und schickt dir Benachrichtigungen direkt auf dein Gerät. So verpasst du keinen Chat oder Termin - und musst dich auch nicht mehr jedes Mal neu einloggen.",
+                    "Du kannst die App auf verschiedenen Geräten installieren, so dass sowohl Eltern als auch Schüler:innen auf den Chat und Terminerinnerungen Zugriff haben."
+                ]
+            },
+            "installationDetails": {
+                "title": "Installation",
+                "list": [
+                    "Die App kann ohne App Store direkt aus diesem Browser installiert werden.",
+                    "Folgende Browser werden unterstützt: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) sowie macOS (Chrome).",
+                    "Klicke auf den “App installieren” Button und folge den Anweisungen."
+                ]
+            }
+        }
     }
 }

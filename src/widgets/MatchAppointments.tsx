@@ -1,7 +1,6 @@
 import { Box, Stack } from 'native-base';
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ApolloError } from '@apollo/client';
 import AppointmentsEmptyState from './AppointmentsEmptyState';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from './AppointmentList';
@@ -11,7 +10,6 @@ import { ScrollDirection } from '../pages/Appointments';
 type MatchAppointmentsProps = {
     appointments: Appointment[];
     loading: boolean;
-    error: ApolloError | undefined;
     minimumHeight: string;
     dissolved: boolean;
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
@@ -24,7 +22,6 @@ type MatchAppointmentsProps = {
 const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
     appointments,
     loading,
-    error,
     minimumHeight,
     dissolved,
     loadMoreAppointments,
@@ -37,7 +34,7 @@ const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
 
     return (
         <Stack minH={minimumHeight}>
-            {!error && hasAppointments ? (
+            {hasAppointments ? (
                 <AppointmentList
                     appointments={appointments as Appointment[]}
                     isLoadingAppointments={loading}
@@ -47,6 +44,7 @@ const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
                     noNewAppointments={noNewAppointments}
                     noOldAppointments={noOldAppointments}
                     lastAppointmentId={lastAppointmentId}
+                    height="100%"
                 />
             ) : (
                 <Box justifyContent="center">

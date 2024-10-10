@@ -15,6 +15,7 @@ export type Appointment = {
     meetingLink?: string | null;
     override_meeting_link?: string | null;
     organizers?: Organizer[];
+    participantIds?: string[];
     participants?: AppointmentParticipant[];
     isCanceled?: boolean;
     declinedBy?: string[];

@@ -1,8 +1,9 @@
-import { Text, Button, Heading, useTheme, VStack, useBreakpointValue, Box, Stack } from 'native-base';
+import { Text, Button, Heading, useTheme, VStack, useBreakpointValue, Box, Stack, Row } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import CTACard from '../../widgets/CTACard';
+import BarrierIcon from '../../assets/icons/barrier-block_green.svg';
 import WithNavigation from '../../components/WithNavigation';
 import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
@@ -15,7 +16,6 @@ import { getGradeLabel, getTrafficStatus, getTrafficStatusText } from '../../Uti
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
-import Hello from '../../widgets/Hello';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import ImportantInformation from '../../widgets/ImportantInformation';
@@ -25,6 +25,7 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import useApollo from '../../hooks/useApollo';
+import { useUserType } from '../../hooks/useApollo';
 
 type Props = {};
 
@@ -140,6 +141,7 @@ const DashboardStudent: React.FC<Props> = () => {
     const { data, loading, called } = useQuery(query);
 
     const { space, sizes } = useTheme();
+    const userType = useUserType();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
@@ -165,6 +167,9 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const isMobile = useBreakpointValue({ base: true, md: false });
     const isMobileOrTablet = useBreakpointValue({ base: true, lg: false });
+    const startSummerVacation = new Date('2024-06-10');
+    const endSummerVacation = new Date('2024-09-02');
+    const isSummerVacation = startSummerVacation <= new Date() && endSummerVacation >= new Date();
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -213,15 +218,6 @@ const DashboardStudent: React.FC<Props> = () => {
     return (
         <AsNavigationItem path="start">
             <WithNavigation
-                headerContent={
-                    called &&
-                    !loading &&
-                    isMobile && (
-                        <Box bgColor={'primary.900'} alignItems="center" padding={space['1.5']}>
-                            <Hello />
-                        </Box>
-                    )
-                }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <SwitchLanguageButton />
@@ -240,6 +236,45 @@ const DashboardStudent: React.FC<Props> = () => {
                             <VStack marginBottom={space['1.5']}>
                                 <VStack space={space['1']}>
                                     <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
+
+                                    {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') && userType === 'student' && (
+                                        <VStack marginBottom={space['1.5']}>
+                                            <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                            <CTACard
+                                                title={t('dashboard.homeworkhelp.catcherHelper')}
+                                                closeable={false}
+                                                content={<Text>{t('matching.homeworkhelp.texthelper')}</Text>}
+                                                buttonIsBanner={isSummerVacation}
+                                                button={
+                                                    isSummerVacation ? (
+                                                        <Row
+                                                            width="100%"
+                                                            flexWrap="wrap"
+                                                            justifyContent={'flex-start'}
+                                                            alignItems={'center'}
+                                                            bg={'secondary.100'}
+                                                            borderRadius={4}
+                                                            padding={2}
+                                                        >
+                                                            <Box mr={space['0.5']}>
+                                                                <BarrierIcon />
+                                                            </Box>
+                                                            <Text fontSize={'sm'} flexWrap={'wrap'}>
+                                                                {t('matching.homeworkhelp.buttonSummerVacation', {
+                                                                    endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
+                                                                })}
+                                                            </Text>
+                                                        </Row>
+                                                    ) : (
+                                                        <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                                            {t('matching.homeworkhelp.button')}
+                                                        </Button>
+                                                    )
+                                                }
+                                                icon={<BooksIcon />}
+                                            />
+                                        </VStack>
+                                    )}
                                 </VStack>
                             </VStack>
 
@@ -370,7 +405,7 @@ const DashboardStudent: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <RecommendModal showRecommendModal={showRecommendModal} onClose={() => setShowRecommendModal(false)} />
+            <RecommendModal isOpen={showRecommendModal} onOpenChange={setShowRecommendModal} />
         </AsNavigationItem>
     );
 };

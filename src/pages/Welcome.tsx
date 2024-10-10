@@ -58,7 +58,7 @@ const Welcome: React.FC = () => {
                             <Button onPress={() => window.open('/impressum', '_blank')} variant={'link'} _text={{ color: 'white' }}>
                                 {t('settings.legal.imprint')}
                             </Button>
-                            <SwitchLanguageButton />
+                            <SwitchLanguageButton className="hover:bg-primary" />
                         </Flex>
                     </Flex>
                 </>
