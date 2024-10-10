@@ -1,20 +1,14 @@
-import { View, useBreakpointValue, useTheme, Row, Column } from 'native-base';
 import HeaderCard from './HeaderCard';
 import { NavigationItems } from '../types/navigation';
 import BottomNavigationBar from './BottomNavigationBar';
 import { ReactNode } from 'react';
-
-import LFHomeIcon from '../assets/icons/lernfair/lf-home.svg';
-import LFAppointmentIcon from '../assets/icons/lernfair/lf-calendar.svg';
-import LFMatchingIcon from '../assets/icons/lernfair/lf-1-1.svg';
-import LFGroupIcon from '../assets/icons/lernfair/lf-course.svg';
-import LFChatIcon from '../assets/icons/lernfair/lf-chat.svg';
-import LFKnowledgeIcon from '../assets/icons/lernfair/lf-knowledge.svg';
 import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { useChat } from '../context/ChatContext';
+import InstallAppBanner from '../widgets/InstallAppBanner';
+import { IconHome2, IconCalendarClock, IconMessage, IconUsersGroup, IconUsers, IconBook2 } from '@tabler/icons-react';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -44,82 +38,58 @@ const WithNavigation: React.FC<Props> = ({
     previousFallbackRoute,
     onBack,
 }) => {
-    const { sizes, space } = useTheme();
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
-
-    const innerPaddingContent = useBreakpointValue({
-        base: 0,
-        lg: space['1'],
-    });
-
     const { unreadMessagesCount } = useChat();
 
     const { t } = useTranslation();
 
     const navItems: NavigationItems = {
-        start: { label: t('navigation.label.start'), icon: LFHomeIcon },
-        appointments: { label: t('navigation.label.appointments'), icon: LFAppointmentIcon },
-        chat: { label: t('navigation.label.chat'), icon: LFChatIcon },
-        group: { label: t('navigation.label.group'), icon: LFGroupIcon },
-        matching: { label: t('navigation.label.matching'), icon: LFMatchingIcon },
-        'knowledge-helper': { label: t('navigation.label.forStudents'), icon: LFKnowledgeIcon },
-        'knowledge-pupil': { label: t('navigation.label.forPupils'), icon: LFKnowledgeIcon },
+        start: { label: t('navigation.label.start'), icon: IconHome2 },
+        appointments: { label: t('navigation.label.appointments'), icon: IconCalendarClock },
+        chat: { label: t('navigation.label.chat'), icon: IconMessage },
+        group: { label: t('navigation.label.group'), icon: IconUsersGroup },
+        matching: { label: t('navigation.label.matching'), icon: IconUsers },
+        'knowledge-helper': {
+            label: t('navigation.label.forStudents'),
+            icon: IconBook2,
+        },
+        'knowledge-pupil': {
+            label: t('navigation.label.forPupils'),
+            icon: IconBook2,
+        },
     };
 
-    const headerHeight = sizes['headerSizePx'] - sizes['headerPaddingYPx'] * 2;
     return (
-        <View flex="1">
-            <View
-                flex="1"
-                display="flex"
-                flexDirection="column"
-                flexWrap="nowrap"
-                overflow="hidden"
-                w="100vw"
-                h="100%"
-                flexBasis="auto"
-                flexGrow="1"
-                flexShrink="1"
+        <div className="flex flex-col flex-1">
+            <HeaderCard
+                onBack={onBack}
+                showBack={showBack}
+                leftContent={headerLeft}
+                rightContent={headerRight || (isSidebarMenu && !hideMenu ? <SettingsButton /> : '')}
+                title={headerTitle}
+                previousFallbackRoute={previousFallbackRoute}
             >
-                <HeaderCard
-                    onBack={onBack}
-                    showBack={showBack}
-                    leftContent={headerLeft}
-                    rightContent={headerRight || (isSidebarMenu && !hideMenu ? <SettingsButton /> : '')}
-                    title={headerTitle}
-                    previousFallbackRoute={previousFallbackRoute}
-                >
-                    {!isMobile && headerContent}
-                </HeaderCard>
-                <View flex="1" overflowY={'scroll'}>
-                    <Row maxW="100%" flexWrap={'wrap'} overflowX="hidden" flex="1">
-                        {!hideMenu && (
-                            <Column>
-                                <SideBarMenu show={!isMobile} navItems={navItems} paddingTop={'72px'} unreadMessagesCount={unreadMessagesCount} />
-                            </Column>
-                        )}
-                        <Column flex="1" padding={innerPaddingContent}>
-                            {(!isLoading && (
-                                <>
-                                    {(isMobile && (
-                                        <>
-                                            <View h={`${headerHeight}px`}></View>
-                                            {headerContent}
-                                            <View h={`${headerHeight}px`}></View>
-                                        </>
-                                    )) || <View h={`${sizes['headerSizePx']}px`}></View>}
-                                    {children}
-                                </>
-                            )) || <CenterLoadingSpinner />}
-                        </Column>
-                    </Row>
-                </View>
-            </View>
-            {!hideMenu && <BottomNavigationBar show={isMobile} navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
-        </View>
+                {headerContent}
+            </HeaderCard>
+            <div className="flex flex-1">
+                {!hideMenu && <SideBarMenu navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
+                <div className="overflow-x-auto overflow-y-hidden flex-1">
+                    {(!isLoading && (
+                        <>
+                            <>
+                                <div className="lg:hidden">{headerContent}</div>
+                                {!hideMenu && (
+                                    <div className="lg:hidden">
+                                        <InstallAppBanner />
+                                    </div>
+                                )}
+                            </>
+                            <div className="p-4 lg:p-6 h-full">{children}</div>
+                        </>
+                    )) || <CenterLoadingSpinner />}
+                </div>
+            </div>
+            {!hideMenu && <BottomNavigationBar navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
+        </div>
     );
 };
 export default WithNavigation;

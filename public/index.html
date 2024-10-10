@@ -189,9 +189,6 @@
             media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)"
         />
 
-        <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.14.0/css/bootstrap.css" />
-        <link type="text/css" rel="stylesheet" href="https://source.zoom.us/2.14.0/css/react-select.css" />
-
         <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
 
         <!-- Dynamically inject a new configuration each time the app is reloaded -->
@@ -202,7 +199,7 @@
 
     <body>
         <noscript>You need to enable JavaScript to run this app.</noscript>
-        <div id="root" style="width: 100vw; overflow: hidden"></div>
+        <div id="root" style="width: 100vw; min-height: 100dvh; overflow-x: hidden;"></div>
         <div id="zmmtg-root" class="dd-privacy-hidden" style="display: none"></div>
         <!-- <div id="aria-notify-area"></div> -->
     </body>

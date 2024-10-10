@@ -1,12 +1,13 @@
-import { Button, Text, Circle, Popover, VStack, useBreakpointValue } from 'native-base';
-import { IButtonProps } from 'native-base/lib/typescript/components/primitives/Button/types';
 import { useContext, useEffect, useState } from 'react';
-import BellIcon from '../../assets/icons/lernfair/lf-bell.svg';
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications';
 import { useConcreteNotifications } from '../../hooks/useConcreteNotifications';
 import NotificationPanel from './NotificationPanel';
 import { NotificationsContext } from '../../context/NotificationsProvider';
 import { getNewNotifications } from '../../helper/notification-helper';
+import { Button } from '../Button';
+import { IconBell, IconX } from '@tabler/icons-react';
+import { Badge } from '../Badge';
+import { Popover, PopoverArrow, PopoverClose, PopoverContent, PopoverTrigger } from '../Popover';
 
 const NotificationAlert: React.FC = () => {
     const [count, setCount] = useState<number>(0);
@@ -15,11 +16,6 @@ const NotificationAlert: React.FC = () => {
     const { userNotifications, refetch, loading } = useConcreteNotifications();
 
     const { lastTimeCheckedNotifications, updateLastTimeChecked } = useLastTimeCheckedNotifications();
-
-    const badgeAlign = useBreakpointValue({
-        base: 0,
-        lg: 2,
-    });
 
     useEffect(() => {
         if (message?.id) {
@@ -37,42 +33,44 @@ const NotificationAlert: React.FC = () => {
         setCount(unreadNotifications.length);
     }, [lastTimeCheckedNotifications, userNotifications]);
 
-    const handleTrigger = ({ onPress, ref }: IButtonProps): React.ReactElement => {
-        return (
-            <VStack>
-                {!!count && (
-                    <Circle position="absolute" my={3} mx={badgeAlign} alignSelf="flex-start" bgColor="danger.500" size="3.5" zIndex={1}>
-                        <Text fontSize="xs" color="white">
-                            {count}
-                        </Text>
-                    </Circle>
-                )}
-                <Button onPress={onPress} ref={ref} variant="ghost">
-                    <BellIcon />
-                </Button>
-            </VStack>
-        );
-    };
-
-    const onOpen = () => {
-        refetch();
-        setIsOpen(true);
-    };
-
-    const onClose = () => {
-        updateLastTimeChecked();
-        setIsOpen(false);
+    const handleOnOpenChange = (value: boolean) => {
+        setIsOpen(value);
+        if (value) {
+            refetch();
+        } else {
+            updateLastTimeChecked();
+        }
     };
 
     return (
         <>
-            <Popover placement="bottom" trigger={(triggerprops) => handleTrigger(triggerprops)} onClose={onClose} onOpen={onOpen}>
-                <NotificationPanel
-                    loading={loading}
-                    userNotifications={userNotifications || []}
-                    lastTimeCheckedNotifications={lastTimeCheckedNotifications}
-                    updateLastTimeChecked={() => updateLastTimeChecked()}
-                />
+            <Popover onOpenChange={handleOnOpenChange}>
+                <PopoverTrigger asChild>
+                    <div className="group flex flex-col relative">
+                        {!!count && (
+                            <Badge className="z-10 absolute self-start size-4 top-[4px] right-[5px]" variant="destructive" shape="rounded">
+                                {count}
+                            </Badge>
+                        )}
+                        <Button className="rounded-full hover:bg-primary-light hover:brightness-105" variant="none" size="icon">
+                            <IconBell className="group-hover:animate-bell-ring" size={24} />
+                        </Button>
+                    </div>
+                </PopoverTrigger>
+                <PopoverContent align="end" side="bottom" className="min-w-[350px] max-h-[500px] px-0 border-t-transparent">
+                    <div className="px-4">
+                        <PopoverArrow className="fill-white" />
+                        <PopoverClose className="ml-auto block mb-2">
+                            <IconX size={18} />
+                        </PopoverClose>
+                    </div>
+                    <NotificationPanel
+                        loading={loading}
+                        userNotifications={userNotifications || []}
+                        lastTimeCheckedNotifications={lastTimeCheckedNotifications}
+                        updateLastTimeChecked={() => updateLastTimeChecked()}
+                    />
+                </PopoverContent>
             </Popover>
         </>
     );

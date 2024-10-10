@@ -1,92 +1,91 @@
-import { Box, Button, Card, InfoIcon, Spacer, Stack, Text, Tooltip, useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Course_Coursestate_Enum } from '../gql/graphql';
 import { useMemo } from 'react';
+import { Button, ButtonProps } from '@/components/Button';
+import { Typography } from '@/components/Typography';
+import { TooltipButton } from '@/components/Tooltip';
+import { IconInfoCircleFilled } from '@tabler/icons-react';
 
-type BannerProps = {
+type CourseBannerProps = {
     courseState: Course_Coursestate_Enum;
     isCourseCancelled: boolean;
     isPublished: boolean;
     handleButtonClick: () => void;
 };
 
-const Banner: React.FC<BannerProps> = ({ courseState, isCourseCancelled, isPublished, handleButtonClick }) => {
+interface State {
+    text?: string;
+    tooltipText?: string;
+    buttonText?: string;
+    buttonVariant?: ButtonProps['variant'];
+    textColor?: string;
+}
+
+const CourseBanner: React.FC<CourseBannerProps> = ({ courseState, isCourseCancelled, isPublished, handleButtonClick }) => {
     const { t } = useTranslation();
-    const { sizes } = useTheme();
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
 
-    const stateText = useMemo(() => {
-        if (courseState === Course_Coursestate_Enum.Created) return t('single.banner.created.draft');
-        if (courseState === Course_Coursestate_Enum.Submitted) return t('single.banner.submitted.isChecked');
-        if (courseState === Course_Coursestate_Enum.Allowed && !isPublished) return t('single.banner.allowedNotPublished.checked');
-        if (courseState === Course_Coursestate_Enum.Allowed && isPublished) return t('single.banner.allowedAndPublished.published');
-        if (courseState === Course_Coursestate_Enum.Denied) return t('single.banner.rejected.state');
-        return 'default';
+    const state = useMemo<State>(() => {
+        if (courseState === Course_Coursestate_Enum.Created)
+            return {
+                text: t('single.banner.created.draft'),
+                tooltipText: t('single.banner.created.info'),
+                buttonText: t('single.banner.created.button'),
+                buttonVariant: 'default',
+                textColor: 'text-primary',
+            };
+        if (courseState === Course_Coursestate_Enum.Submitted)
+            return {
+                text: t('single.banner.submitted.isChecked'),
+                tooltipText: t('single.banner.submitted.info'),
+                textColor: 'text-primary',
+            };
+        if (courseState === Course_Coursestate_Enum.Allowed && !isPublished)
+            return {
+                text: t('single.banner.allowedNotPublished.checked'),
+                tooltipText: t('single.banner.allowedNotPublished.info'),
+                buttonText: t('single.banner.allowedNotPublished.button'),
+                buttonVariant: 'ghost',
+                textColor: 'text-green-700',
+            };
+        if (courseState === Course_Coursestate_Enum.Allowed && isPublished)
+            return {
+                text: t('single.banner.allowedAndPublished.published'),
+                tooltipText: t('single.banner.allowedAndPublished.info'),
+                buttonText: t('single.banner.allowedAndPublished.button'),
+                buttonVariant: 'ghost',
+                textColor: 'text-green-700',
+            };
+        if (courseState === Course_Coursestate_Enum.Denied)
+            return {
+                text: t('single.banner.rejected.state'),
+                tooltipText: t('single.banner.rejected.info'),
+                buttonText: t('single.banner.rejected.button'),
+                buttonVariant: 'outline',
+                textColor: 'text-destructive',
+            };
+        return {};
     }, [courseState, isPublished]);
 
-    const stateButtonText = useMemo(() => {
-        if (courseState === Course_Coursestate_Enum.Created) return t('single.banner.created.button');
-        if (courseState === Course_Coursestate_Enum.Allowed && isPublished) return t('single.banner.allowedAndPublished.button');
-        if (courseState === Course_Coursestate_Enum.Allowed && !isPublished) return t('single.banner.allowedNotPublished.button');
-        if (courseState === Course_Coursestate_Enum.Denied) return t('single.banner.rejected.button');
-        return 'default';
-    }, [courseState, isPublished]);
-
-    const stateTooltipText = useMemo(() => {
-        switch (courseState) {
-            case Course_Coursestate_Enum.Created:
-                return t('single.banner.created.info');
-            case Course_Coursestate_Enum.Submitted:
-                return t('single.banner.submitted.info');
-            case Course_Coursestate_Enum.Allowed:
-                return t('single.banner.allowedNotPublished.info');
-            case Course_Coursestate_Enum.Denied:
-                return t('single.banner.rejected.info');
-            default:
-                return 'Test';
-        }
-    }, [courseState]);
+    if (isCourseCancelled) return null;
 
     return (
-        <Box>
-            {!isCourseCancelled && (
-                <Card bg="primary.100" maxWidth={sizes['imageHeaderWidth']}>
-                    <Stack direction={isMobile ? 'column' : 'row'} alignItems={isMobile ? 'flext-start' : 'center'}>
-                        <Stack direction="row" mb={isMobile ?? '3'}>
-                            <Text bold fontSize="md">
-                                {t('single.banner.state')}
-                            </Text>
-                            <Text ml="1" fontSize="md">
-                                {stateText}
-                            </Text>
+        <div className="flex flex-col items-center bg-white border border-gray-300 justify-between w-full max-w-[460px] p-4 rounded-lg md:flex-row">
+            <div className="flex mb-3 md:mb-0">
+                <Typography className="font-bold">{t('single.banner.state')}</Typography>
+                <Typography className={`ml-1 mr-2 ${state.textColor}`}>{state.text}</Typography>
 
-                            <Tooltip
-                                maxWidth={270}
-                                label={!isPublished ? stateTooltipText : t('single.banner.allowedAndPublished.info')}
-                                _text={{ textAlign: 'center' }}
-                                p={3}
-                                hasArrow
-                                children={<InfoIcon ml={3} size="5" color="danger.100" />}
-                            />
-                        </Stack>
+                <TooltipButton className="w-80" tooltipContent={!isPublished ? state.tooltipText : t('single.banner.allowedAndPublished.info')}>
+                    <IconInfoCircleFilled />
+                </TooltipButton>
+            </div>
 
-                        <Spacer />
-
-                        <Stack w={isMobile ?? 'full'}>
-                            {courseState !== Course_Coursestate_Enum.Submitted && (
-                                <Button variant="outline" onPress={handleButtonClick}>
-                                    {stateButtonText}
-                                </Button>
-                            )}
-                        </Stack>
-                    </Stack>
-                </Card>
+            {courseState !== Course_Coursestate_Enum.Submitted && (
+                <Button className="w-full md:w-fit" variant={state.buttonVariant} onClick={handleButtonClick}>
+                    {state.buttonText}
+                </Button>
             )}
-        </Box>
+        </div>
     );
 };
 
-export default Banner;
+export default CourseBanner;

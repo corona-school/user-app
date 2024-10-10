@@ -6,13 +6,13 @@ import { useUserPreferences } from '../../hooks/useNotificationPreferences';
 import { createContext, useEffect } from 'react';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useQuery } from '@apollo/client';
-import { gql } from '../../gql/gql';
-import HelpNavigation from '../../components/HelpNavigation';
+import { gql } from '../../gql';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Outlet, useNavigate, useMatch, useSearchParams } from 'react-router-dom';
 import { getAllPreferencesInCategorySetToValue } from '../../helper/notification-helper';
 import { marketingNotificationCategories } from '../../helper/notification-preferences';
 
-const channels = ['email'];
+const channels = ['email', 'push'];
 
 type NotificationPreferencesContextType = ReturnType<typeof useUserPreferences> & { channels: typeof channels };
 export const NotificationPreferencesContext = createContext<NotificationPreferencesContextType>({} as NotificationPreferencesContextType);
@@ -37,6 +37,7 @@ const NotificationControlPanel = () => {
                 });
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [shouldUnsubscribe, userPreferences]);
 
     const { data } = useQuery(
@@ -55,25 +56,28 @@ const NotificationControlPanel = () => {
         lg: false,
     });
 
-    const width = useBreakpointValue({
-        base: '90%',
-        lg: '90%',
+    const isMobileSM = useBreakpointValue({
+        base: true,
+        sm: false,
     });
 
     return (
         <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreferences, ...rest, channels }}>
             <WithNavigation
-                showBack
+                showBack={isMobileSM}
+                hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('notification.controlPanel.title')}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
-                        <NotificationAlert />
-                    </Stack>
+                    !isMobileSM && (
+                        <Stack alignItems="center" direction="row">
+                            <SwitchLanguageButton />
+                            <NotificationAlert />
+                        </Stack>
+                    )
                 }
             >
-                <View py={5} width={width}>
+                <View py={5}>
                     {!isMobile && (
                         <Column space={space['1']} marginBottom={space['2']} ml={3}>
                             <Heading>{t('notification.controlPanel.title')}</Heading>
@@ -83,8 +87,9 @@ const NotificationControlPanel = () => {
                             </Row>
                         </Column>
                     )}
-                    <VStack ml={3}>
+                    <VStack flex={1}>
                         <Tabs
+                            removeSpace
                             currentTabIndex={isNewsletter ? 1 : 0}
                             onPressTab={(tab) => navigate(`${tab.id}`)}
                             tabs={[

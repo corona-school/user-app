@@ -1,18 +1,20 @@
-import { HStack, Stack, VStack, Text, Heading, Box, Image, useTheme, useBreakpointValue } from 'native-base';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import Tag from '../../components/Tag';
-import { Course, Course_Tag, Instructor, Lecture, Subcourse } from '../../gql/graphql';
-import { useUserType } from '../../hooks/useApollo';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import { TrafficStatus } from '../../types/lernfair/Course';
-import Utility, { getGradeLabel, getTrafficStatus } from '../../Utility';
-import AlertMessage from '../../widgets/AlertMessage';
-import CourseTrafficLamp from '../../widgets/CourseTrafficLamp';
+import { Course, Course_Tag, Instructor, Lecture, Subcourse } from '@/gql/graphql';
+import { useUserType } from '@/hooks/useApollo';
+import { TrafficStatus } from '@/types/lernfair/Course';
+import Utility, { getGradeLabel, getTrafficLampColor, getTrafficLampText, getTrafficStatus } from '@/Utility';
+import { Typography } from '@/components/Typography';
+import { Badge } from '@/components/Badge';
+import TruncatedText from '@/components/TruncatedText';
+import { IconCalendarClock, IconInfoCircleFilled, IconSchool, IconTargetArrow, IconUsersGroup } from '@tabler/icons-react';
+import { Alert } from '@/components/Alert';
+
+const SubcourseFactRow = ({ children }: { children: React.ReactNode }) => <div className="flex gap-x-4">{children}</div>;
 
 type SubcourseDataProps = {
-    course: Pick<Course, 'name' | 'image'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };
-    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published'> &
+    course: Pick<Course, 'name' | 'image' | 'description'> & { shared?: boolean; tags: Pick<Course_Tag, 'name'>[] };
+    subcourse: Pick<Subcourse, 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'cancelled' | 'published' | 'publishedAt'> &
         Partial<Pick<Subcourse, 'isOnWaitingList' | 'isParticipant' | 'canJoin'>> & {
             instructors: Pick<Instructor, 'firstname' | 'lastname'>[];
             lectures: Pick<Lecture, 'start' | 'duration'>[];
@@ -23,19 +25,7 @@ type SubcourseDataProps = {
 
 const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast, hideTrafficStatus = false }) => {
     const { t } = useTranslation();
-    const { sizes } = useTheme();
-    const { isMobile } = useLayoutHelper();
     const userType = useUserType();
-
-    const ImageHeight = useBreakpointValue({
-        base: '178px',
-        lg: '300px',
-    });
-
-    const ContainerWidth = useBreakpointValue({
-        base: 'full',
-        lg: '50%',
-    });
 
     const seatsLeft: number = useMemo(() => {
         return subcourse?.maxParticipants - subcourse?.participantsCount;
@@ -45,73 +35,95 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
         return getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants);
     }, [subcourse?.maxParticipants, subcourse?.participantsCount]);
 
-    return (
-        <>
-            <Stack direction={isMobile ? 'column-reverse' : 'row'}>
-                <VStack space="5" width={ContainerWidth}>
-                    <HStack space="3">
-                        {course?.tags?.map(({ name }) => (
-                            <VStack>
-                                <Tag text={name} />
-                            </VStack>
-                        ))}
-                    </HStack>
-                    {subcourse?.lectures.length > 0 && (
-                        <Text>
-                            {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
-                        </Text>
-                    )}
-                    <Heading fontSize="3xl" maxW={isMobile ? 'full' : '80%'}>
-                        {course?.name}
-                    </Heading>
-                    {subcourse?.instructors && subcourse?.instructors[0] && (
-                        <Heading fontSize="lg">{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Heading>
-                    )}
-                    <Text maxWidth={sizes['imageHeaderWidth']}>
-                        <Text bold>{t('single.courseInfo.grade')}</Text>
-                        {t('single.courseInfo.class', { minGrade: getGradeLabel(subcourse?.minGrade), maxGrade: getGradeLabel(subcourse?.maxGrade) })}
-                    </Text>
-                    {!isInPast &&
-                        !subcourse?.cancelled &&
-                        subcourse?.published &&
-                        !subcourse.isOnWaitingList &&
-                        !hideTrafficStatus &&
-                        !subcourse?.isParticipant && (
-                            <CourseTrafficLamp
-                                status={trafficStatus}
-                                showLastSeats={userType === 'student'}
-                                seatsLeft={seatsLeft}
-                                seatsFull={subcourse?.participantsCount}
-                                seatsMax={subcourse?.maxParticipants}
-                            />
-                        )}
+    const today = new Date();
+    const aWeekAgo = today.setDate(today.getDate() - 7);
+    const isCourseNewlyAdded = subcourse?.publishedAt ? new Date(subcourse?.publishedAt).getTime() > aWeekAgo : false;
+    const showTrafficStatus =
+        !isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && !hideTrafficStatus && !subcourse?.isParticipant;
 
-                    {!subcourse?.cancelled && isInPast && <AlertMessage content={t('single.courseInfo.courseInPast')} />}
-                    {subcourse?.cancelled && <AlertMessage content={t('single.courseInfo.courseCancelled')} />}
-                    {userType === 'pupil' &&
-                        !subcourse.isParticipant &&
-                        Date.now() >= Date.parse(subcourse.lectures[0].start) &&
-                        !isInPast &&
-                        subcourse?.canJoin?.allowed && <AlertMessage content={t('single.courseInfo.courseStartedButJoinable')} />}
-                    {userType === 'screener' && course?.shared && <Text>{t('single.courseInfo.is_shared')}</Text>}
-                </VStack>
-                <Stack width={ContainerWidth} mt="1" mb={isMobile ? '3' : '0'}>
-                    <Box maxWidth={sizes['imageHeaderWidth']} height={ImageHeight}>
-                        <Image
-                            alt={course?.name}
-                            borderRadius="8px"
-                            position="absolute"
-                            w="100%"
-                            height="100%"
-                            bgColor="gray.300"
-                            source={{
-                                uri: course?.image!,
-                            }}
-                        />
-                    </Box>
-                </Stack>
-            </Stack>
-        </>
+    return (
+        <div className="flex flex-col-reverse lg:flex-row justify-between">
+            <div className="flex flex-col gap-y-4 w-full lg:w-1/2">
+                <div className="flex flex-row gap-x-3 mt-4 lg:mt-0">
+                    {isCourseNewlyAdded && (
+                        <Badge>
+                            <Typography variant="sm" className="text-white">
+                                {t('dashboard.helpers.badges.new')}
+                            </Typography>
+                        </Badge>
+                    )}
+                    {course?.tags?.map(({ name }) => (
+                        <Badge key={name}>
+                            <Typography variant="sm" className="text-white">
+                                {name}
+                            </Typography>
+                        </Badge>
+                    ))}
+                </div>
+                <Typography variant="h2" className="max-w-full">
+                    {course?.name}
+                </Typography>
+                <div className="mb-6">
+                    <TruncatedText asChild maxLines={3}>
+                        <Typography className="whitespace-break-spaces">{course.description}</Typography>
+                    </TruncatedText>
+                </div>
+                <div className="flex flex-col gap-y-4">
+                    {subcourse?.lectures.length > 0 && (
+                        <SubcourseFactRow>
+                            <IconCalendarClock />
+                            <Typography>
+                                {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
+                            </Typography>
+                        </SubcourseFactRow>
+                    )}
+                    {subcourse?.instructors && subcourse?.instructors[0] && (
+                        <SubcourseFactRow>
+                            <IconSchool />
+                            <Typography>{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Typography>
+                        </SubcourseFactRow>
+                    )}
+                    <SubcourseFactRow>
+                        <IconTargetArrow />
+                        <Typography>
+                            <span>{t('single.courseInfo.grade')}</span>
+                            <span className="font-bold">
+                                {t('single.courseInfo.class', { minGrade: getGradeLabel(subcourse?.minGrade), maxGrade: getGradeLabel(subcourse?.maxGrade) })}
+                            </span>
+                        </Typography>
+                    </SubcourseFactRow>
+                    {showTrafficStatus && (
+                        <SubcourseFactRow>
+                            <IconUsersGroup />
+                            <div className="flex items-center gap-x-2">
+                                {getTrafficLampText(trafficStatus, userType === 'student', subcourse?.maxParticipants, subcourse?.participantsCount, seatsLeft)}
+                                <div className={`size-3 rounded-full ${getTrafficLampColor(trafficStatus)}`} />
+                            </div>
+                        </SubcourseFactRow>
+                    )}
+                </div>
+                {(subcourse?.cancelled || isInPast) && (
+                    <Alert className="w-full lg:w-fit mt-4" icon={<IconInfoCircleFilled />}>
+                        {!subcourse?.cancelled && isInPast && t('single.courseInfo.courseInPast')}
+                        {subcourse.cancelled && t('single.courseInfo.courseCancelled')}
+                    </Alert>
+                )}
+                {userType === 'pupil' &&
+                    !subcourse.isParticipant &&
+                    Date.now() >= Date.parse(subcourse.lectures[0].start) &&
+                    !isInPast &&
+                    subcourse?.canJoin?.allowed && (
+                        <Alert className="w-full lg:w-fit mt-4" icon={<IconInfoCircleFilled />}>
+                            {t('single.courseInfo.courseStartedButJoinable')}
+                        </Alert>
+                    )}
+                {userType === 'screener' && course?.shared && <Typography>{t('single.courseInfo.is_shared')}</Typography>}
+            </div>
+
+            <div className="lg:ml-11">
+                <img alt={course?.name} className="w-[460px] h-56 rounded-lg object-cover" src={course?.image!} />
+            </div>
+        </div>
     );
 };
 

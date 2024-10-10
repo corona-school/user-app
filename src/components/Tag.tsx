@@ -13,6 +13,7 @@ type Props = {
     afterElement?: ReactNode | ReactNode[];
     isReview?: boolean;
     marginBottom?: number;
+    marginRight?: number;
 };
 
 const Tag: React.FC<Props> = ({
@@ -27,6 +28,7 @@ const Tag: React.FC<Props> = ({
     afterElement,
     isReview,
     marginBottom,
+    marginRight,
 }) => {
     const { colors, space } = useTheme();
 
@@ -70,14 +72,17 @@ const Tag: React.FC<Props> = ({
             paddingX={pad[0]}
             paddingY={pad[1]}
             marginBottom={marginBottom !== undefined ? marginBottom : space['0.5']}
+            marginRight={marginRight !== undefined ? marginRight : space['0.5']}
             bg={bg}
             borderRadius={borderRadius || 4}
             borderWidth={1}
             borderColor={borderColor || 'transparent'}
+            flexBasis="auto"
+            flexShrink={1}
         >
-            <Row space={space['0.5']}>
+            <Row space={space['0.5']} flexWrap="wrap" justifyContent="center" alignItems="center">
                 {beforeElement && <View testID="beforeElement">{beforeElement}</View>}
-                <Text fontSize={'xs'} color={color} bold={isReview ? true : false}>
+                <Text fontSize={'xs'} color={color} bold={isReview ? true : false} textAlign="center" flexShrink={1}>
                     {text}
                 </Text>
                 {afterElement && <View testID="afterElement">{afterElement}</View>}

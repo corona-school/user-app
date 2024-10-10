@@ -1,4 +1,4 @@
-import { Box, Flex, Heading, useBreakpointValue, useTheme, VStack, Row, FormControl, Button, HStack, Text } from 'native-base';
+import { Box, Flex, Heading, useBreakpointValue, useTheme, VStack, Row, FormControl, Stack } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import { useTranslation } from 'react-i18next';
@@ -10,6 +10,8 @@ import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import DisableableButton from '../components/DisablebleButton';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import NotificationAlert from '../components/notifications/NotificationAlert';
 
 const ChangeEmail = () => {
     const [newEmail, setNewEmail] = useState<string>();
@@ -46,6 +48,12 @@ const ChangeEmail = () => {
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
     });
+
+    const isMobileSM = useBreakpointValue({
+        base: true,
+        sm: false,
+    });
+
     const canChange = useMemo(() => {
         if (newEmail) {
             return isEmail(newEmail);
@@ -57,10 +65,23 @@ const ChangeEmail = () => {
             const res = await changeEmail({ variables: { email: newEmail } });
             if (res) setShowEmailSent(true);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [newEmail]);
 
     return (
-        <WithNavigation showBack previousFallbackRoute="/settings" hideMenu>
+        <WithNavigation
+            showBack={isMobileSM}
+            hideMenu={isMobileSM}
+            previousFallbackRoute="/settings"
+            headerLeft={
+                !isMobileSM && (
+                    <Stack alignItems="center" direction="row">
+                        <SwitchLanguageButton />
+                        <NotificationAlert />
+                    </Stack>
+                )
+            }
+        >
             {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (

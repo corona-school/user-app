@@ -1,6 +1,6 @@
 // eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useQuery } from '@apollo/client';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -93,16 +93,18 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     const userType = useUserType();
     const { id } = useParams();
     const appointmentId = parseFloat(id ? id : '');
+
     const {
         data: studentAppointment,
         loading: isLoadingStudentAppointment,
         error: studentAppointmentError,
-    } = useQuery(STUDENT_APPOINTMENT, { variables: { appointmentId }, skip: userType === 'pupil' });
+    } = useQuery(STUDENT_APPOINTMENT, { variables: { appointmentId }, skip: userType !== 'student' });
+
     const {
         data: pupilAppointment,
         loading: isLoadingpupilAppointment,
         error: pupilAppointmentError,
-    } = useQuery(PUPIL_APPOINTMENT, { variables: { appointmentId }, skip: userType === 'student' });
+    } = useQuery(PUPIL_APPOINTMENT, { variables: { appointmentId }, skip: userType !== 'pupil' });
 
     const data = studentAppointment ?? pupilAppointment;
     const loading = isLoadingStudentAppointment ?? isLoadingpupilAppointment;

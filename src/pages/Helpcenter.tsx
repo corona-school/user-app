@@ -1,137 +1,24 @@
-import {
-    Box,
-    Heading,
-    useTheme,
-    Text,
-    Link,
-    Row,
-    FormControl,
-    TextArea,
-    Checkbox,
-    Button,
-    InfoIcon,
-    useBreakpointValue,
-    View,
-    Input,
-    Stack,
-} from 'native-base';
-import NavigationTabs from '../components/NavigationTabs';
 import WithNavigation from '../components/WithNavigation';
-import { useCallback, useEffect, useState } from 'react';
-import InfoScreen from '../widgets/InfoScreen';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { gql } from './../gql';
-import { useMutation } from '@apollo/client';
-import useModal from '../hooks/useModal';
 import IFrame from '../components/IFrame';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AsNavigationItem from '../components/AsNavigationItem';
-import Hello from '../widgets/Hello';
-import AlertMessage from '../widgets/AlertMessage';
 import { useUserType } from '../hooks/useApollo';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { SwitchUserType } from '../User';
 import ContactSupportForm from '../components/ContactSupportForm';
-
-type MentorCategory = 'LANGUAGE' | 'SUBJECTS' | 'DIDACTIC' | 'TECH' | 'SELFORGA' | 'OTHER';
+import { Typography } from '@/components/Typography';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 
 const HelpCenter: React.FC = () => {
     const userType = useUserType();
-    const { space, sizes } = useTheme();
-    const [dsgvo, setDSGVO] = useState<boolean>(false);
-    const [subject, setSubject] = useState<string>('');
-    const [message, setMessage] = useState<string>('');
 
-    const [messageSent, setMessageSent] = useState<boolean>();
-    const [showError, setShowError] = useState<boolean>();
-
-    const { show, hide } = useModal();
-    const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const [contactSupport, { data }] = useMutation(
-        gql(`
-        mutation ContactSupport($subject: String! $message: String!) { 
-	        userContactSupport(message: { subject: $subject message: $message })
-        }
-    `)
-    );
-
-    const sendContactMessage = useCallback(async () => {
-        const res = await contactSupport({
-            variables: {
-                subject,
-                message,
-            },
-        });
-
-        if (res.data?.userContactSupport) {
-            setMessageSent(true);
-        } else {
-            setShowError(true);
-        }
-    }, [contactSupport, message, subject]);
-
-    useEffect(() => {
-        if (data) {
-            show(
-                { variant: 'light' },
-                <InfoScreen
-                    title={t('helpcenter.contact.popupTitle')}
-                    icon={<InfoIcon />}
-                    content={t('helpcenter.contact.popupContent')}
-                    defaultButtonText={t('helpcenter.contact.popupBtn')}
-                    defaultbuttonLink={() => {
-                        hide();
-                        navigate('/start');
-                    }}
-                />
-            );
-        }
-    }, [data, show, hide, t, navigate]);
-
-    // Breakpoints
-    const ContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
-    });
-
-    const ContentContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['contentContainerWidth'],
-    });
-
-    const buttonWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
-    });
-
-    const backArrow = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
-
-    // const formControlWidth = useBreakpointValue({
-    //   base: '100%',
-    //   lg: sizes['containerWidth']
-    // })
-
-    const { trackEvent, trackPageView } = useMatomo();
-
-    const onboardingCheck = useCallback(() => {
-        navigate('/onboarding-list');
-
-        trackEvent({
-            category: 'hilfebereich',
-            action: 'click-event',
-            name: 'Hilebereich',
-            documentTitle: 'Hilfebereich',
-            href: '/onboarding-list',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate]);
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { trackPageView } = useMatomo();
 
     useEffect(() => {
         trackPageView({
@@ -140,62 +27,54 @@ const HelpCenter: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const isStudent = userType === 'student';
+    const isPupil = userType === 'pupil';
+
+    const defaultValue = useMemo(() => {
+        if (isPupil) return 'faq-sus';
+        if (isStudent) return 'faq-huh';
+        return 'contact';
+    }, [isStudent, isPupil]);
+
     return (
         <AsNavigationItem path="hilfebereich">
             <WithNavigation
+                previousFallbackRoute="/settings"
                 headerTitle="Hilfebereich"
-                headerContent={<Hello />}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                    <div className="flex items-center flex-row">
+                        <SwitchLanguageButton />
                         <NotificationAlert />
-                    </Stack>
+                    </div>
                 }
             >
-                <Box maxWidth={ContainerWidth} width="100%" marginX="auto">
-                    <Box maxWidth={ContentContainerWidth} paddingBottom={space['1.5']} paddingX={space['1.5']}>
-                        <Heading paddingBottom={1.5}>{t('helpcenter.title')}</Heading>
+                <div className="h-full flex flex-col">
+                    <div className="w-full max-w-5xl pt-4 pb-3 px-1.5">
+                        <Typography variant="h4" className="mb-1.5">
+                            {t('helpcenter.title')}
+                        </Typography>
                         <SwitchUserType
-                            pupilComponent={<Text>{t('helpcenter.subtitle.pupil')}</Text>}
-                            studentComponent={<Text>{t('helpcenter.subtitle.student')}</Text>}
+                            pupilComponent={<Typography>{t('helpcenter.subtitle.pupil')}</Typography>}
+                            studentComponent={<Typography>{t('helpcenter.subtitle.student')}</Typography>}
                         />
-                    </Box>
-                    {/* <Box
-            maxWidth={ContentContainerWidth}
-            paddingBottom={space['2.5']}
-            paddingX={space['1.5']}>
-            <Heading paddingBottom={space['0.5']}>
-              {t('helpcenter.onboarding.title')}
-            </Heading>
-            <Text paddingBottom={space['1.5']}>
-              {t('helpcenter.onboarding.content')}
-            </Text>
-            <Button width={buttonWidth} onPress={() => onboardingCheck()}>
-              {t('helpcenter.onboarding.button')}
-            </Button>
-          </Box> */}
-                </Box>
-                <Box width="100%" maxWidth={ContainerWidth} marginX="auto">
-                    <NavigationTabs
-                        tabInset={space['1.5']}
-                        tabs={[
-                            {
-                                hide: userType === 'student',
-                                title: t('helpcenter.faq.tabName'),
-                                content: <IFrame src="https://www.lern-fair.de/iframe/faq-sus" title="faq" width="100%" height="596px" />,
-                            },
-                            {
-                                hide: userType === 'pupil',
-                                title: t('helpcenter.faq.tabName'),
-                                content: <IFrame src="https://www.lern-fair.de/iframe/faq-huh" title="faq" width="100%" height="596px" />,
-                            },
-                            {
-                                title: t('helpcenter.contact.tabName'),
-                                content: <ContactSupportForm />,
-                            },
-                        ]}
-                    />
-                </Box>
+                    </div>
+                    <Tabs className="h-full" defaultValue={defaultValue}>
+                        <TabsList>
+                            {isPupil && <TabsTrigger value="faq-sus">{t('helpcenter.faq.tabName')}</TabsTrigger>}
+                            {isStudent && <TabsTrigger value="faq-huh">{t('helpcenter.faq.tabName')}</TabsTrigger>}
+                            <TabsTrigger value="contact">{t('helpcenter.contact.tabName')}</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="faq-sus" className="h-full">
+                            <IFrame src="https://www.lern-fair.de/iframe/faq-sus" title="faq" width="100%" />
+                        </TabsContent>
+                        <TabsContent value="faq-huh" className="h-full">
+                            <IFrame src="https://www.lern-fair.de/iframe/faq-huh" title="faq" width="100%" />
+                        </TabsContent>
+                        <TabsContent value="contact" className="h-full pt-4">
+                            <ContactSupportForm />
+                        </TabsContent>
+                    </Tabs>
+                </div>
             </WithNavigation>
         </AsNavigationItem>
     );

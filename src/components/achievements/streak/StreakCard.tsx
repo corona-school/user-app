@@ -1,6 +1,5 @@
 import { HStack, VStack, Text, useBreakpointValue, Box, Pressable } from 'native-base';
 import AchievementImageContainer from '../AchievementImageContainer';
-import { ShineSize } from '../../../types/achievement';
 import { Achievement_Action_Type_Enum, Achievement_State, Achievement_Type_Enum } from '../../../gql/graphql';
 import { Trans } from 'react-i18next';
 import CardProgressDescription from '../achievementCard/CardProgressDescription';
@@ -38,11 +37,20 @@ const StreakCard: React.FC<StreakCardProps> = ({
     const maxTextWidth = useBreakpointValue({ base: 'calc(100% - 90px - 16px)', md: '215px' });
     return (
         <Pressable onPress={onClick}>
-            <HStack backgroundColor="primary.900" width={width} height="128px" padding="16px" alignItems="center" borderRadius={8} space={2}>
+            <HStack overflow="hidden" backgroundColor="primary.900" width={width} height="128px" padding="16px" alignItems="center" borderRadius={8} space={2}>
                 <VStack alignItems="center" width="90px" justifyContent="center">
                     {isNewAchievement && (
-                        <VStack zIndex={1} position="absolute" width="90px" height="80px" alignItems="center" justifyContent="center" alignSelf="center">
-                            <NewAchievementShine size={ShineSize.XSMALL} />
+                        <VStack
+                            zIndex={1}
+                            bottom="-40px"
+                            position="absolute"
+                            width="90px"
+                            height="80px"
+                            alignItems="center"
+                            justifyContent="center"
+                            alignSelf="center"
+                        >
+                            <NewAchievementShine />
                         </VStack>
                     )}
                     <AchievementImageContainer

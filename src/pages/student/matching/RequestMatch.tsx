@@ -11,7 +11,7 @@ import Subjects from './Subjects';
 import UpdateData from './UpdateData';
 import { gql } from '../../../gql';
 import { Subject } from '../../../gql/graphql';
-import HelpNavigation from '../../../components/HelpNavigation';
+import SwitchLanguageButton from '../../../components/SwitchLanguageButton';
 
 const query = gql(`
     query StudentMatchRequestCount {
@@ -99,14 +99,14 @@ const RequestMatching: React.FC = () => {
                 isLoading={loading || isLoading}
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }
             >
                 <RequestMatchContext.Provider value={{ matchRequest, setSubject, removeSubject, setCurrentIndex, isEdit }}>
                     {!loading && !isLoading && data && (
-                        <Box paddingX={space['1']} paddingBottom={space['1']}>
+                        <Box paddingX={space['1']} paddingBottom={space['1']} pt={6}>
                             {currentIndex === 0 && <UpdateData state={data.me.student!.state} refetchQuery={query} />}
                             {currentIndex === 1 && <Subjects />}
                             {currentIndex === 2 && <SchoolClasses />}

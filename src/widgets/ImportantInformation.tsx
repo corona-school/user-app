@@ -1,5 +1,5 @@
 import { useTranslation, getI18n } from 'react-i18next';
-import { Box, useTheme } from 'native-base';
+import { Box } from 'native-base';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
 import { useNavigate } from 'react-router-dom';
@@ -122,12 +122,10 @@ query GetOnboardingInfos {
 `);
 
 const ImportantInformation: React.FC<Props> = ({ variant }) => {
-    const { space } = useTheme();
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
-    const textColor = variant === 'dark' ? 'lightText' : 'darkText';
 
-    const { show, hide } = useModal();
+    const { show } = useModal();
 
     const { data } = useQuery(IMPORTANT_INFORMATION_QUERY);
 
@@ -138,7 +136,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const student = data?.me?.student;
     const email = data?.me?.email;
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const roles = data?.myRoles ?? [];
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const importantInformations = data?.important_informations ?? [];
 
     const [sendMail] = useMutation(
@@ -237,17 +237,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- Interest Confirmation -----------
         const showInterestConfirmation = pupil?.tutoringInterestConfirmation?.status && pupil?.tutoringInterestConfirmation?.status === 'pending';
-        // TODO: Browser Support?
-        // const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
+        const formatter = new Intl.ListFormat(getI18n().language, { style: 'long', type: 'conjunction' });
         if (showInterestConfirmation)
             infos.push({
                 label: NextStepLabelType.INTEREST_CONFIRMATION,
                 btnfn: [confirmInterest, refuseInterest],
                 lang: {
-                    subjectSchüler:
-                        /* formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach') */ pupil?.subjectsFormatted
-                            .map((it) => it.name)
-                            .join(', '),
+                    subjectSchüler: formatter.format(pupil?.subjectsFormatted.map((subject: any) => subject.name) || 'in keinem Fach'),
                 },
             });
 
@@ -279,9 +275,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     btnfn: [() => navigate('/matching')],
                     lang: {
                         nameHelfer: match.student.firstname,
-                        subjectHelfer: match.subjectsFormatted
-                            .map((it) => it.name)
-                            .join(', ') /* formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)) */,
+                        subjectHelfer: formatter.format(match.subjectsFormatted.map((subject: any) => subject.name)),
                     },
                 });
         });
@@ -376,7 +370,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     isOpen={selectedInformation !== undefined}
                     label={selectedInformation.label}
-                    onClose={() => setSelectedInformation(undefined)}
+                    onOpenChange={() => setSelectedInformation(undefined)}
                     buttons={
                         selectedInformation.btnfn?.length > 0
                             ? selectedInformation.btntxt?.map((txt, index) => ({

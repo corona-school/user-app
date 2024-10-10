@@ -1,48 +1,31 @@
-import { Box, HStack, Modal, Pressable, Spacer, Text, Tooltip, VStack, useBreakpointValue } from 'native-base';
 import { getIconForMessageType, isMessageValid } from '../../helper/notification-helper';
 import TimeIndicator from './TimeIndicator';
 import { useNavigate } from 'react-router-dom';
-import { FC, useState } from 'react';
-import { InterfaceBoxProps } from 'native-base/lib/typescript/components/primitives/Box';
-import LeavePageModal from '../../modals/LeavePageModal';
+import { useContext, useState } from 'react';
 import { Concrete_Notification } from '../../gql/graphql';
-import AppointmentCancelledModal from './NotificationModal';
-import AchievementMessageModal from '../../modals/AchievementMessageModal';
+import NotificationModal from './NotificationModal';
+import { Typography } from '../Typography';
+import { cn } from '@/lib/Tailwind';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../Tooltip';
+import { GlobalModalsContext } from '@/context/GlobalModalsProvider';
 
-type Props = {
+interface MessageBoxProps {
     userNotification: Concrete_Notification;
     isStandalone?: boolean;
     isRead?: boolean;
     updateLastTimeChecked?: () => void;
-};
+    className?: string;
+}
 
-const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateLastTimeChecked }) => {
-    const [leavePageModalOpen, setLeavePageModalOpen] = useState<boolean>(false);
-    const [achievementModalForId, setAchievementModalForId] = useState<number | null>(null);
+const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChecked, className }: MessageBoxProps) => {
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
+    const { openLeavePageModal, openAchievementModal } = useContext(GlobalModalsContext);
 
     if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
 
     const { sentAt } = userNotification || { sentAt: '' };
     const { headline, body, type, navigateTo, modalText } = userNotification.message;
-    const boxProps = {
-        mb: 2,
-        height: '100%',
-        fullWidth: 320,
-        width: 270,
-        borderRadius: 10,
-        maxHeight: 500,
-    };
-
-    const vStackProps = {
-        mt: 2,
-        maxW: 200,
-    };
 
     const navigateToLink = () => {
         if (modalText) {
@@ -57,50 +40,43 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
             if (navigateTo.startsWith('/achievement')) {
                 // With the special link /achievement/{id} we open the Achievement Modal instead
                 const achievementId = navigateTo.split('/')[2];
-                setAchievementModalForId(parseInt(achievementId, 10));
+                openAchievementModal({ isOpen: true, options: { achievementId: parseInt(achievementId, 10) } });
             } else {
                 return navigate(navigateTo);
             }
         } else {
             // Otherwise we treat it as an external link and warn the user:
-            setLeavePageModalOpen(true);
+            openLeavePageModal({
+                isOpen: true,
+                options: { url: navigateTo || 'www.google.com', messageType: type, navigateTo: navigateExternal },
+            });
         }
     };
 
     const navigateExternal = () => (navigateTo ? window.open(navigateTo, '_blank') : null);
 
     const Icon = getIconForMessageType(type);
-
-    const LinkedBox: FC<InterfaceBoxProps> = ({ children, ...boxProps }) => {
-        const Component = () => <Box {...boxProps}>{children}</Box>;
+    const LinkedBox = ({ children, ...rest }: React.HTMLAttributes<HTMLDivElement>) => {
+        const Component = () => <div {...rest}>{children}</div>;
         if (typeof navigateTo === 'string') {
             return (
-                <>
-                    <Pressable onPress={navigateToLink}>
-                        <Component />
-                    </Pressable>
-                    <Modal isOpen={leavePageModalOpen}>
-                        <LeavePageModal url={navigateTo} messageType={type} onClose={() => setLeavePageModalOpen(false)} navigateTo={navigateExternal} />
-                    </Modal>
-                    {achievementModalForId !== null && (
-                        <AchievementMessageModal achievementId={achievementModalForId} isOpenModal={true} onClose={() => setAchievementModalForId(null)} />
-                    )}
-                </>
+                <div onClick={navigateToLink}>
+                    <Component />
+                </div>
             );
         } else if (modalText) {
             return (
                 <>
-                    <Pressable onPress={navigateToLink}>
+                    <div onClick={navigateToLink}>
                         <Component />
-                    </Pressable>
-                    <Modal isOpen={notificationModalOpen}>
-                        <AppointmentCancelledModal
-                            messageType={type}
-                            onClose={() => setNotificationModalOpen(false)}
-                            modalText={modalText}
-                            headline={headline}
-                        />
-                    </Modal>
+                    </div>
+                    <NotificationModal
+                        messageType={type}
+                        isOpen={notificationModalOpen}
+                        onOpenChange={setNotificationModalOpen}
+                        modalText={modalText}
+                        headline={headline}
+                    />
                 </>
             );
         }
@@ -109,36 +85,47 @@ const MessageBox: FC<Props> = ({ userNotification, isStandalone, isRead, updateL
 
     return (
         <LinkedBox
-            borderRadius={boxProps.borderRadius}
-            bgColor={isRead ? 'ghost' : 'primary.100'}
-            mb={boxProps.mb}
-            h={boxProps.height}
-            w={!isStandalone ? boxProps.fullWidth : boxProps.width}
-            maxH={boxProps.maxHeight}
+            className={cn(
+                'cursor-pointer rounded-md mb-2 py-2 h-full max-h-[500px] hover:bg-primary-lighter',
+                isRead ? 'bg-white' : 'bg-primary-lighter',
+                !isStandalone ? 'w-full' : 'w-[270px]',
+                className
+            )}
         >
-            <HStack alignItems="center" space={1}>
-                <VStack>
-                    <Box px="1.5">
-                        <Icon />
-                    </Box>
-                </VStack>
-                <VStack mt={vStackProps.mt} maxW={vStackProps.maxW}>
-                    <Text bold fontSize="md" ellipsizeMode="tail" numberOfLines={1}>
-                        {headline}
-                    </Text>
-                    <Tooltip maxW={300} label={body} _text={{ textAlign: 'center' }}>
-                        <Text fontSize="sm" ellipsizeMode="tail" numberOfLines={isMobile ? 5 : 2}>
-                            {body}
-                        </Text>
-                    </Tooltip>
-                </VStack>
-                <Spacer />
+            <div className="flex items-center gap-x-1">
+                <div className="flex flex-col px-1.5">
+                    <Icon />
+                </div>
+                <div className="flex flex-col max-w-[200px]">
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Typography className="font-semibold line-clamp-2 leading-3">{headline}</Typography>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="bg-primary text-primary-foreground border-transparent max-w-80">
+                                {headline}
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                    <TooltipProvider>
+                        <Tooltip>
+                            <TooltipTrigger asChild>
+                                <Typography className="line-clamp-5 lg:line-clamp-2" variant="sm">
+                                    {body}
+                                </Typography>
+                            </TooltipTrigger>
+                            <TooltipContent side="bottom" className="bg-primary text-primary-foreground border-transparent max-w-80">
+                                {body}
+                            </TooltipContent>
+                        </Tooltip>
+                    </TooltipProvider>
+                </div>
                 {!isStandalone && (
-                    <VStack>
+                    <div className="ml-auto">
                         <TimeIndicator sentAt={sentAt} />
-                    </VStack>
+                    </div>
                 )}
-            </HStack>
+            </div>
         </LinkedBox>
     );
 };

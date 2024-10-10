@@ -1,11 +1,12 @@
+import { useMemo } from 'react';
 import { useMutation } from '@apollo/client';
-import { useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { gql } from '../../gql';
 import { useNavigate } from 'react-router-dom';
 import { Chat_Type } from '../../gql/graphql';
-import { useMemo } from 'react';
-import DisableableButton from '../../components/DisablebleButton';
+import { Button } from '@/components/Button';
+import { toast } from 'sonner';
+import { IconMessage2 } from '@tabler/icons-react';
 
 type OpenSubcourseChatProps = {
     groupChatType: Chat_Type;
@@ -15,6 +16,7 @@ type OpenSubcourseChatProps = {
     isParticipant?: boolean;
     isInstructor?: boolean;
     refresh: () => void;
+    className?: string;
 };
 
 const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
@@ -25,10 +27,10 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
     isParticipant,
     participantsCount,
     refresh,
+    className,
 }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const toast = useToast();
 
     const [createSubcourseGroupChat] = useMutation(
         gql(`
@@ -51,10 +53,7 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
             if (conversation) {
                 navigate('/chat', { state: { conversationId: conversation?.data?.subcourseGroupChatCreate } });
             } else {
-                toast.show({
-                    description: groupChatType === Chat_Type.Announcement ? t('chat.announcementChatError') : t('chat.groupChatError'),
-                    placement: 'top',
-                });
+                toast.error(groupChatType === Chat_Type.Announcement ? t('chat.announcementChatError') : t('chat.groupChatError'));
             }
         }
     };
@@ -70,9 +69,16 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
     }, [conversationId, isInstructor, isParticipant, participantsCount]);
 
     return (
-        <DisableableButton isDisabled={disableButton} reasonDisabled={t('chat.hint')} onPress={openSubcourseGroupChat}>
+        <Button
+            leftIcon={<IconMessage2 size={16} />}
+            variant="outline"
+            disabled={disableButton}
+            reasonDisabled={t('chat.hint')}
+            onClick={openSubcourseGroupChat}
+            className={className}
+        >
             {groupChatType === Chat_Type.Announcement ? t('chat.openAnnouncementChat') : t('chat.openSubcourseChat')}
-        </DisableableButton>
+        </Button>
     );
 };
 

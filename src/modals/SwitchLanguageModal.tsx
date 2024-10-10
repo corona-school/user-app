@@ -1,79 +1,40 @@
-import { gql } from './../gql';
-import { useMutation } from '@apollo/client';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, VStack, useTheme, useToast, Radio, Button, TextArea, Modal, HStack } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import useApollo, { useUserType } from '../hooks/useApollo';
-import { switchLanguage } from '../I18n';
+import { Modal, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Toggle } from '@/components/Toggle';
+import { switchLanguage, languageList, languageIcons } from '../I18n';
 
 type Props = {
     isOpen: boolean;
-    onCloseModal: () => any;
+    onIsOpenChange: (value: boolean) => void;
 };
 
-export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
-    const { space } = useTheme();
-
+export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onIsOpenChange }) => {
+    const storageLanguage = localStorage.getItem('lernfair-language');
     return (
-        <Modal isOpen={isOpen} onClose={onCloseModal}>
-            <Modal.Content>
-                <VStack>
-                    <Modal.CloseButton />
-                    <Modal.Header>Sprache wechseln / Choose language</Modal.Header>
-                </VStack>
-                <VStack padding={space['1']} space={space['1']}>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('de');
-                            onCloseModal();
-                        }}
-                    >
-                        Deutsch
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('en');
-                            onCloseModal();
-                        }}
-                    >
-                        English
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('ar');
-                            onCloseModal();
-                        }}
-                    >
-                        اللغة العربية
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('tr');
-                            onCloseModal();
-                        }}
-                    >
-                        Türkçe
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('uk');
-                            onCloseModal();
-                        }}
-                    >
-                        Українська
-                    </Button>
-                    <Button
-                        onPress={() => {
-                            switchLanguage('ru');
-                            onCloseModal();
-                        }}
-                    >
-                        Русский
-                    </Button>
-                </VStack>
-            </Modal.Content>
+        <Modal onOpenChange={onIsOpenChange} isOpen={isOpen}>
+            <ModalHeader>
+                <ModalTitle>Sprache wechseln / Choose language</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col py-4 gap-y-4">
+                {languageList.map((button, i) => {
+                    const Icon = languageIcons[button.short as keyof typeof languageIcons];
+
+                    return (
+                        <Toggle
+                            pressed={storageLanguage === button.short}
+                            variant="outline"
+                            size="lg"
+                            onPressedChange={() => {
+                                switchLanguage(button.short);
+                                onIsOpenChange(false);
+                            }}
+                            key={i}
+                            className="justify-center pl-[5%]"
+                        >
+                            <Icon className="mr-2" /> <span className="min-w-[15%] text-left">{button.name}</span>
+                        </Toggle>
+                    );
+                })}
+            </div>
         </Modal>
     );
 };

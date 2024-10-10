@@ -1,14 +1,14 @@
-import { Button } from 'native-base';
 import { useNavigate } from 'react-router-dom';
-import SettingsIcon from '../assets/icons/icon_settings.svg';
+import { Button } from './Button';
+import { IconMenu2 } from '@tabler/icons-react';
 
 type Props = {};
 
 const SettingsButton: React.FC<Props> = () => {
     const navigate = useNavigate();
     return (
-        <Button variant={'ghost'} onPress={() => navigate('/settings')}>
-            <SettingsIcon />
+        <Button className="rounded-full hover:bg-primary-light hover:brightness-105" variant="none" onClick={() => navigate('/settings')} size="icon">
+            <IconMenu2 size={24} />
         </Button>
     );
 };

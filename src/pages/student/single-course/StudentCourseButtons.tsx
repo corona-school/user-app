@@ -1,11 +1,11 @@
 import { ApolloQueryResult } from '@apollo/client';
-import { Button, Stack, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { Lecture, Subcourse } from '../../../gql/graphql';
-import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
-import VideoButton from '../../../components/VideoButton';
+import VideoButton from '@/components/VideoButton';
+import { Button } from '@/components/Button';
+import { IconPencil } from '@tabler/icons-react';
 
 type ActionButtonProps = {
     subcourse: Pick<
@@ -29,13 +29,11 @@ type ActionButtonProps = {
 
 const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, appointment, isActiveSubcourse }) => {
     const { t } = useTranslation();
-    const { space } = useTheme();
-    const { isMobile } = useLayoutHelper();
     const navigate = useNavigate();
 
     return (
         <>
-            <Stack direction={isMobile ? 'column' : 'row'} space={isMobile ? space['1'] : space['2']}>
+            <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap">
                 {subcourse.published && isActiveSubcourse && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
@@ -44,7 +42,24 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         participantsCount={subcourse.participantsCount}
                         isInstructor={subcourse.isInstructor}
                         refresh={refresh}
+                        className="w-full  md:w-fit"
                     />
+                )}
+                {subcourse.canEdit.allowed && (
+                    <>
+                        <Button
+                            onClick={() => {
+                                navigate('/edit-course', {
+                                    state: { courseId: subcourse.id },
+                                });
+                            }}
+                            variant="outline"
+                            leftIcon={<IconPencil size={16} />}
+                            className="w-full  md:w-fit"
+                        >
+                            {t('single.courseInfo.editCourse')}
+                        </Button>
+                    </>
                 )}
                 {subcourse.published && appointment && isActiveSubcourse && (
                     <VideoButton
@@ -53,23 +68,10 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         appointmentType={appointment.appointmentType}
                         startDateTime={appointment.start}
                         duration={appointment.duration}
+                        className="w-full  md:w-fit"
                     />
                 )}
-                {subcourse.canEdit.allowed && (
-                    <>
-                        <Button
-                            onPress={() => {
-                                navigate('/edit-course', {
-                                    state: { courseId: subcourse.id },
-                                });
-                            }}
-                            variant="outline"
-                        >
-                            {t('single.courseInfo.editCourse')}
-                        </Button>
-                    </>
-                )}
-            </Stack>
+            </div>
         </>
     );
 };

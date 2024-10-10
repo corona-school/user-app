@@ -2,10 +2,10 @@ import { useCallback, useEffect, useState } from 'react';
 import { gql } from '../gql';
 import { FetchResult, useMutation } from '@apollo/client';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
-
 import {
     Box,
     Button,
+    Flex,
     Heading,
     Image,
     Modal,
@@ -14,7 +14,6 @@ import {
     useBreakpointValue,
     useTheme,
     VStack,
-    Link,
     FormControl,
     Alert,
     HStack,
@@ -32,6 +31,10 @@ import AlertMessage from '../widgets/AlertMessage';
 import { REDIRECT_PASSWORD } from '../Utility';
 import isEmail from 'validator/lib/isEmail';
 import DisableableButton from '../components/DisablebleButton';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import InformationModal from '@/modals/InformationModal';
+import { Typography } from '@/components/Typography';
+import ConfirmationModal from '@/modals/ConfirmationModal';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -116,6 +119,7 @@ export default function Login() {
                 placement: 'bottom',
             });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [navigate, sessionState]);
 
     useEffect(() => {
@@ -163,12 +167,14 @@ export default function Login() {
                 setShowEmailSent(true);
             }
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [email, sendToken]);
 
     const attemptLogin = useCallback(async () => {
         loginButton();
         const res = await loginWithPassword(email!, password!);
         setLoginResult(res);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [email, loginButton, password]);
 
     const getLoginOption = useCallback(async () => {
@@ -236,30 +242,17 @@ export default function Login() {
         }
     };
 
-    const PasswordModal: React.FC<{ showModal: boolean; email: string }> = ({ showModal, email }) => {
-        const [pwEmail] = useState<string>(email);
+    const PasswordModal: React.FC<{ showModal: boolean; email: string }> = ({ showModal, email: pwEmail }) => {
         return (
-            <Modal isOpen={showModal} onClose={() => setShowPasswordModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Body>
-                        <VStack space={space['0.5']}>
-                            <Text>{t('login.passwordReset.description', { email: pwEmail })}</Text>
-                        </VStack>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Row space={space['0.5']}>
-                            <DisableableButton
-                                isDisabled={pwEmail.length < 6 || _resetPW?.loading}
-                                reasonDisabled={_resetPW?.loading ? t('reasonsDisabled.loading') : t('registration.hint.password.length')}
-                                onPress={() => resetPassword(pwEmail)}
-                            >
-                                {t('login.passwordReset.btn')}
-                            </DisableableButton>
-                        </Row>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
+            <ConfirmationModal
+                isOpen={showModal}
+                onOpenChange={setShowPasswordModal}
+                headline={t('login.passwordReset.btn')}
+                description={t('login.passwordReset.description', { email: pwEmail })}
+                confirmButtonText={t('login.passwordReset.btn')}
+                onConfirm={() => resetPassword(pwEmail)}
+                isLoading={_resetPW?.loading}
+            />
         );
     };
 
@@ -268,22 +261,14 @@ export default function Login() {
         showModal: boolean;
     }> = ({ email, showModal }) => {
         return (
-            <Modal isOpen={showModal} onClose={() => setShowNoAccountModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('login.accountNotFound.title')}</Modal.Header>
-                    <Modal.Body>
-                        <VStack space={space['0.5']}>
-                            <Text>{t('login.accountNotFound.alert_html', { email: email })}</Text>
-                        </VStack>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Row space={space['0.5']}>
-                            <Button onPress={() => setShowNoAccountModal(false)}>{t('back')}</Button>
-                        </Row>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
+            <InformationModal
+                variant="destructive"
+                isOpen={showModal}
+                onOpenChange={setShowNoAccountModal}
+                headline={<span className="block text-center">{t('login.accountNotFound.title')}</span>}
+            >
+                <Typography className="text-pretty text-center">{t('login.accountNotFound.alert_html', { email: email })}</Typography>
+            </InformationModal>
         );
     };
 
@@ -291,22 +276,14 @@ export default function Login() {
         showModal: boolean;
     }> = ({ showModal }) => {
         return (
-            <Modal isOpen={showModal} onClose={() => setShowAccountDeactivatedModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('login.accountDeactivated.title')}</Modal.Header>
-                    <Modal.Body>
-                        <VStack space={space['0.5']}>
-                            <Text>{t('login.accountDeactivated.alert_html')}</Text>
-                        </VStack>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Row space={space['0.5']}>
-                            <Button onPress={() => setShowAccountDeactivatedModal(false)}>{t('back')}</Button>
-                        </Row>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
+            <InformationModal
+                variant="destructive"
+                isOpen={showModal}
+                onOpenChange={setShowAccountDeactivatedModal}
+                headline={<span className="block text-center">{t('login.accountDeactivated.title')}</span>}
+            >
+                <Typography className="text-pretty text-center">{t('login.accountDeactivated.alert_html')}</Typography>
+            </InformationModal>
         );
     };
 
@@ -420,11 +397,25 @@ export default function Login() {
                         <Button onPress={loginRegisterLink} variant="link">
                             {t('login.signupNew')}
                         </Button>
-                        <Text textAlign="center" paddingTop="70px">
-                            <Link onPress={() => window.open('/datenschutz', '_blank')}>{t('settings.legal.datapolicy')}</Link>
-                            <Text>{'  '}</Text>
-                            <Link onPress={() => window.open('/impressum', '_blank')}>{t('settings.legal.imprint')}</Link>
-                        </Text>
+                        <Flex flexDirection="row" justifyContent="center" paddingTop="70px">
+                            <Button
+                                onPress={() => window.open('/datenschutz', '_blank')}
+                                variant={'link'}
+                                colorScheme={'primary.700'}
+                                _text={{ fontWeight: 'medium' }}
+                            >
+                                {t('settings.legal.datapolicy')}
+                            </Button>
+                            <Button
+                                onPress={() => window.open('/impressum', '_blank')}
+                                variant={'link'}
+                                colorScheme={'primary.700'}
+                                _text={{ fontWeight: 'medium' }}
+                            >
+                                {t('settings.legal.imprint')}
+                            </Button>
+                            <SwitchLanguageButton />
+                        </Flex>
                     </Box>
                 </Row>
             </VStack>

@@ -1,23 +1,22 @@
 import { Box, Stack, useBreakpointValue, useToast } from 'native-base';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import FloatingActionButton from '../components/FloatingActionButton';
-import Hello from '../widgets/Hello';
-import { useUserType } from '../hooks/useApollo';
+import useApollo, { QueryResult, useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
 import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/AppointmentList';
-import HelpNavigation from '../components/HelpNavigation';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 const getMyAppointments = gql(`
-    query myAppointments($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
+    query myAppointments_NO_CACHE($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
         me {
             appointments(take: $take, skip: $skip, cursor: $cursor,  direction: $direction) {
                 id
@@ -71,8 +70,28 @@ const Appointments: React.FC = () => {
     const { t } = useTranslation();
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const navigate = useNavigate();
+    const { client } = useApollo();
 
-    const { data: myAppointments, loading: loadingMyAppointments, error, fetchMore } = useQuery(getMyAppointments, { variables: { take, skip: 0 } });
+    type Appointments = Exclude<QueryResult<typeof getMyAppointments>['me']['appointments'], null | undefined>;
+    const [appointments, setAppointments] = useState<Appointments>([]);
+
+    const [loadingMyAppointments, setLoadingMyAppointments] = useState(true);
+
+    useEffect(() => {
+        (async function () {
+            const {
+                data: {
+                    me: { appointments },
+                },
+            } = await client.query({
+                query: getMyAppointments,
+                variables: { take, skip: 0 },
+            });
+            setAppointments(appointments!);
+            setLoadingMyAppointments(false);
+        })();
+    }, [client]);
+
     const { data: hasAppointmentsResult, loading: isLoadingHasAppointments } = useQuery(APPOINTMENTS_META_DATA);
 
     const buttonPlace = useBreakpointValue({
@@ -80,37 +99,22 @@ const Appointments: React.FC = () => {
         lg: 'bottom-right',
     });
 
-    const appointments = myAppointments?.me?.appointments ?? [];
-
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         setIsFetchingMoreAppointments(true);
-        await fetchMore({
-            variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
-            updateQuery: (previousAppointments, { fetchMoreResult }) => {
-                const newAppointments = fetchMoreResult?.me?.appointments;
-                const prevAppointments = appointments;
-                if (scrollDirection === 'next') {
-                    if (!newAppointments || newAppointments.length === 0) {
-                        return previousAppointments;
-                    }
-                    return {
-                        me: {
-                            appointments: [...prevAppointments, ...newAppointments],
-                        },
-                    };
-                } else {
-                    if (!newAppointments || newAppointments.length === 0) {
-                        return previousAppointments;
-                    }
-                    toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
-                    return {
-                        me: {
-                            appointments: [...newAppointments, ...prevAppointments],
-                        },
-                    };
-                }
+        const {
+            data: {
+                me: { appointments },
             },
+        } = await client.query({
+            query: getMyAppointments,
+            variables: { take: take, skip: skip, cursor: cursor, direction: scrollDirection },
         });
+
+        if (scrollDirection === 'last') {
+            toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
+        }
+
+        setAppointments((prev) => (scrollDirection === 'last' ? [...appointments!, ...prev] : [...prev, ...appointments!]));
         setIsFetchingMoreAppointments(false);
     };
 
@@ -121,18 +125,17 @@ const Appointments: React.FC = () => {
     return (
         <AsNavigationItem path="appointments">
             <WithNavigation
-                headerContent={<Hello />}
                 headerTitle={t('appointment.title')}
                 headerLeft={
                     userType !== 'screener' && (
                         <Stack alignItems="center" direction="row">
-                            <HelpNavigation />
+                            <SwitchLanguageButton />
                             <NotificationAlert />
                         </Stack>
                     )
                 }
             >
-                {((loadingMyAppointments && !myAppointments) || isLoadingHasAppointments) && <CenterLoadingSpinner />}
+                {(loadingMyAppointments || isLoadingHasAppointments) && <CenterLoadingSpinner />}
                 {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
 
                 {!hasAppointments && (
@@ -141,7 +144,7 @@ const Appointments: React.FC = () => {
                     </Box>
                 )}
 
-                {!error && hasAppointments && (
+                {hasAppointments && (
                     <AppointmentList
                         appointments={appointments as Appointment[]}
                         isLoadingAppointments={loadingMyAppointments || isFetchingMoreAppointments}
@@ -150,6 +153,7 @@ const Appointments: React.FC = () => {
                         noNewAppointments={!hasMoreNewAppointments || !hasAppointments}
                         noOldAppointments={!hasMoreOldAppointments || !hasAppointments}
                         lastAppointmentId={hasAppointmentsResult?.me?.lastAppointmentId}
+                        height="100%"
                     />
                 )}
             </WithNavigation>

@@ -5,7 +5,7 @@ import { Text, VStack, useTheme, useToast, Radio, Button, TextArea, Modal } from
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import useApollo, { useUserType } from '../hooks/useApollo';
+import { useUserType } from '../hooks/useApollo';
 import DisableableButton from '../components/DisablebleButton';
 
 // corresponding dissolve reason ids in translation file
@@ -24,7 +24,6 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     const { space } = useTheme();
     const navigate = useNavigate();
     const { trackEvent } = useMatomo();
-    const { logout } = useApollo();
     const { t } = useTranslation();
 
     const userType = useUserType();
@@ -75,15 +74,14 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
                     name: 'Account deaktivieren',
                     documentTitle: 'Deactivate',
                 });
-                logout();
-                navigate('/welcome', { state: { deactivated: true } });
+                navigate('/logout', { state: { deactivated: true } });
             } else {
                 showError();
             }
         } catch (e) {
             showError();
         }
-    }, [reason, deactivateAccount, isOther, t, userType, other, onCloseModal, trackEvent, logout, navigate, toast]);
+    }, [reason, deactivateAccount, isOther, t, userType, other, onCloseModal, trackEvent, navigate, toast]);
 
     const isValidInput = useMemo(() => {
         if (!reason) return false;

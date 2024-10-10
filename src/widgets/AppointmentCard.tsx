@@ -18,6 +18,7 @@ import {
     HStack,
     VStack,
     Stack,
+    Badge,
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
@@ -50,6 +51,7 @@ type Props = {
     description: string;
     maxParticipants?: number;
     participantsCount?: number;
+    publishedAt?: Date;
     minGrade?: number;
     maxGrade?: number;
     avatar?: ReactElement;
@@ -89,6 +91,7 @@ const AppointmentCard: React.FC<Props> = ({
     description,
     maxParticipants,
     participantsCount,
+    publishedAt,
     minGrade,
     maxGrade,
     variant = 'card',
@@ -214,6 +217,10 @@ const AppointmentCard: React.FC<Props> = ({
         lg: '32px',
     });
 
+    const today = new Date();
+    const aWeekAgo = today.setDate(today.getDate() - 7);
+    const isCourseNewlyAdded = publishedAt?.getTime() ?? new Date(0).getTime() > aWeekAgo;
+
     return (
         <View ref={rootRef} height={isFullHeight ? '100%' : 'auto'}>
             {variant === 'card' ? (
@@ -250,6 +257,11 @@ const AppointmentCard: React.FC<Props> = ({
                             <Stack padding={isTeaser ? CardMobilePadding : space['1']} maxWidth="731px" space="2">
                                 {!isTeaser && dateNextLecture && (
                                     <>
+                                        {isCourseNewlyAdded && (
+                                            <Badge bgColor="danger.500" _text={{ color: 'white' }} rounded="full" style={{ maxWidth: '50px' }}>
+                                                {t('dashboard.helpers.badges.new')}
+                                            </Badge>
+                                        )}
                                         <Row paddingTop="4px" space={1}>
                                             <Text color={textColor}>
                                                 {dateNextLecture.toLocaleString(
@@ -390,6 +402,7 @@ const AppointmentCard: React.FC<Props> = ({
                                             duration={duration}
                                             isInstructor={isOrganizer}
                                             canJoin={isCurrent}
+                                            className="w-full h-[47px] rounded-[4px]"
                                         />
                                     </VStack>
                                 )}

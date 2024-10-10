@@ -2,10 +2,11 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import InfoScreen from '../widgets/InfoScreen';
 import Logo from '../assets/icons/lernfair/lf-party.svg';
 import React, { useEffect } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../widgets/AlertMessage';
-import { Button, Text, Link, Flex } from 'native-base';
+import { Button, Text, Flex } from 'native-base';
+import SwitchLanguageButton from '../components/SwitchLanguageButton';
 
 const Welcome: React.FC = () => {
     const navigate = useNavigate();
@@ -50,11 +51,15 @@ const Welcome: React.FC = () => {
                         >
                             {t('welcome.contactSupport')}
                         </Button>
-                        <Text textAlign="center" paddingTop="20px" display="flex" color="white">
-                            <Link onPress={() => window.open('/datenschutz', '_blank')}>{t('settings.legal.datapolicy')}</Link>
-                            <Text>{'  '}</Text>
-                            <Link onPress={() => window.open('/impressum', '_blank')}>{t('settings.legal.imprint')}</Link>
-                        </Text>
+                        <Flex textAlign="center" paddingTop="20px" flexDirection={'row'}>
+                            <Button onPress={() => window.open('/datenschutz', '_blank')} variant={'link'} _text={{ color: 'white' }}>
+                                {t('settings.legal.datapolicy')}
+                            </Button>
+                            <Button onPress={() => window.open('/impressum', '_blank')} variant={'link'} _text={{ color: 'white' }}>
+                                {t('settings.legal.imprint')}
+                            </Button>
+                            <SwitchLanguageButton className="hover:bg-primary" />
+                        </Flex>
                     </Flex>
                 </>
             }

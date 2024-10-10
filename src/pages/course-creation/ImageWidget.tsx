@@ -1,36 +1,30 @@
-import { Column, Pressable, Image, useTheme, Link, Button } from 'native-base';
+import { Button } from '@/components/Button';
 import { useTranslation } from 'react-i18next';
 import ImagePlaceHolder from '../../assets/images/globals/image-placeholder.png';
 
-type WidgetProps = {
+interface ImageWidgetProps {
     photo: string | undefined;
     onShowUnsplash: () => void;
     onDeletePhoto?: () => void;
     prefill?: string;
-};
+}
 
-const ImageWidget: React.FC<WidgetProps> = ({ photo, onShowUnsplash, onDeletePhoto, prefill }) => {
-    const { space } = useTheme();
+const ImageWidget = ({ photo, onShowUnsplash, onDeletePhoto, prefill }: ImageWidgetProps) => {
     const { t } = useTranslation();
     return (
         <>
-            <Pressable onPress={onShowUnsplash} flexDirection="row" alignItems="center">
-                <Column marginRight={space['1']}>
-                    <Image
-                        width="90px"
-                        height="90px"
-                        alt="Image Placeholder"
-                        source={{
-                            uri: photo || prefill || ImagePlaceHolder,
-                        }}
-                    />
-                </Column>
-                <Column>
-                    <Link>{t('course.CourseDate.form.changeImage')}</Link>
-                </Column>
-            </Pressable>
+            <div className="flex flex-row items-center">
+                <div className="mr-1">
+                    <img className="size-32 object-cover rounded-md" alt="Placeholder" src={photo || prefill || ImagePlaceHolder} />
+                </div>
+                <div>
+                    <Button className="underline" variant="link" onClick={onShowUnsplash}>
+                        {t('course.CourseDate.form.changeImage')}
+                    </Button>
+                </div>
+            </div>
             {photo && (
-                <Button variant="link" justifyContent="flex-start" pl="0" onPress={onDeletePhoto}>
+                <Button className="underline" variant="link" onClick={onDeletePhoto}>
                     {prefill ? t('course.CourseDate.Image.resetPhoto') : t('course.CourseDate.Image.deletePhoto')}
                 </Button>
             )}

@@ -1,4 +1,4 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -7,24 +7,21 @@ import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
-import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
-import Hello from '../../widgets/Hello';
-import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
 import { gql } from '../../gql';
-import HelpNavigation from '../../components/HelpNavigation';
+import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
-import CTACard from '../../widgets/CTACard';
 import DisableableButton from '../../components/DisablebleButton';
 import { useRoles } from '../../hooks/useApollo';
+import ConfirmationModal from '@/modals/ConfirmationModal';
 
 type Props = {};
 
@@ -165,8 +162,6 @@ const Dashboard: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const isMobile = useBreakpointValue({ base: true, lg: false });
-
     const ContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['containerWidth'],
@@ -194,7 +189,7 @@ const Dashboard: React.FC<Props> = () => {
     );
 
     const cancelMatchRequestReaction = useCallback(
-        (shareFeedback: boolean, feedback?: string) => {
+        () => {
             trackEvent({
                 category: 'Schüler',
                 action: 'Match Request zurückgezogen',
@@ -215,22 +210,9 @@ const Dashboard: React.FC<Props> = () => {
     return (
         <AsNavigationItem path="start">
             <WithNavigation
-                headerContent={
-                    !loading && (
-                        <HStack
-                            maxWidth={ContainerWidth}
-                            space={space['1']}
-                            alignItems="center"
-                            bgColor={isMobile ? 'primary.900' : 'transparent'}
-                            padding={isMobile ? space['1.5'] : space['0.5']}
-                        >
-                            <Hello />
-                        </HStack>
-                    )
-                }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
-                        <HelpNavigation />
+                        <SwitchLanguageButton />
                         <NotificationAlert />
                     </Stack>
                 }
@@ -241,24 +223,6 @@ const Dashboard: React.FC<Props> = () => {
                         <ImportantInformation variant="dark" />
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
-
-                            {process.env.REACT_APP_HOMEWORKHELP !== '' && (roles.includes('PARTICIPANT') || roles.includes('TUTEE')) && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
-                                    <CTACard
-                                        title={t('dashboard.homeworkhelp.catcher')}
-                                        closeable={false}
-                                        content={<Text>{t('dashboard.homeworkhelp.text')}</Text>}
-                                        button={
-                                            <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
-                                                {t('matching.homeworkhelp.button')}
-                                            </Button>
-                                        }
-                                        icon={<BooksIcon />}
-                                    />
-                                </VStack>
-                            )}
-
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 ||
@@ -294,7 +258,11 @@ const Dashboard: React.FC<Props> = () => {
                                                     navigate('/request-match');
                                                 }}
                                             >
-                                                {t('dashboard.helpers.buttons.requestMatchPupil')}
+                                                {t(
+                                                    activeMatches?.length
+                                                        ? 'dashboard.helpers.buttons.requestMoreMatchesPupil'
+                                                        : 'dashboard.helpers.buttons.requestFirstMatchPupil'
+                                                )}
                                             </Button>
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
@@ -369,11 +337,14 @@ const Dashboard: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <CancelMatchRequestModal
-                showModal={showCancelModal}
-                onClose={() => setShowCancelModal(false)}
-                onShareFeedback={(feedback) => cancelMatchRequestReaction(true, feedback)}
-                onSkipShareFeedback={() => cancelMatchRequestReaction(false)}
+            <ConfirmationModal
+                isOpen={showCancelModal}
+                onOpenChange={setShowCancelModal}
+                onConfirm={cancelMatchRequestReaction}
+                headline={t('matching.pending.modal.title')}
+                description={t('matching.pending.modal.description')}
+                confirmButtonText={t('matching.pending.modal.buttons.dissolve')}
+                variant="destructive"
             />
         </AsNavigationItem>
     );

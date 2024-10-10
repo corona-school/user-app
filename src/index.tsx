@@ -1,10 +1,12 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import App from './App';
 import './I18n';
 import { datadogRum } from '@datadog/browser-rum';
 import { APP_VERSION, DD_APP_ID, DD_CLIENT_TOKEN, DD_ENV } from './config';
 import { getSessionToken } from './hooks/useApollo';
+import '@fontsource-variable/outfit';
+import './web/index.css';
 
 const root = document.getElementById('root');
 
@@ -32,6 +34,7 @@ datadogRum.init({
         }
         return true;
     },
+    enableExperimentalFeatures: ['feature_flags'],
 });
 
 // This will make sure that we are setting the session token for the user right in the beginning.
@@ -42,11 +45,10 @@ datadogRum.setGlobalContextProperty('sessionToken', getSessionToken());
 datadogRum.startSessionReplayRecording();
 console.log('Session Replay', datadogRum.getSessionReplayLink());
 
-ReactDOM.render(
+createRoot(root!).render(
     <React.StrictMode>
         <App />
-    </React.StrictMode>,
-    root
+    </React.StrictMode>
 );
 
 // If you want to start measuring performance in your app, pass a function
