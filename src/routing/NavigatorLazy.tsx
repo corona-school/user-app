@@ -76,6 +76,7 @@ import ForPupils from '../pages/ForPupils';
 import { useBreakpointValue, Stack } from 'native-base';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
 
@@ -471,6 +472,14 @@ export default function NavigatorLazy() {
 
             <Route path="/install" element={<InstallApp />} />
 
+            <Route
+                path="/manage-sessions"
+                element={
+                    <RequireAuth>
+                        <SessionManager />
+                    </RequireAuth>
+                }
+            />
             <Route
                 path="/datenschutz"
                 element={
