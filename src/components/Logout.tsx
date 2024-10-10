@@ -4,6 +4,7 @@ import { useCallback, useContext } from 'react';
 import { WebPushContext } from '@/context/WebPushProvider';
 import { WEBPUSH_ACTIVE } from '@/config';
 import { logError } from '@/log';
+import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 
 export default function Logout() {
     const navigate = useNavigate();
@@ -32,5 +33,5 @@ export default function Logout() {
     const logout = useLogout();
     logout().then(() => navigate('/welcome', { state: locState }));
 
-    return null;
+    return <CenterLoadingSpinner />;
 }
