@@ -13,6 +13,7 @@ const buttonVariants = cva(
                 default: 'bg-primary text-primary-foreground hover:bg-primary/90',
                 destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
                 outline: 'border border-primary text-primary bg-transparent hover:bg-accent hover:text-accent-foreground',
+                'outline-light': 'border border-primary-light text-primary-light bg-transparent hover:bg-primary-lighter hover:text-primary',
                 secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
                 link: 'text-primary underline-offset-4 hover:underline',
@@ -45,6 +46,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ({ className, variant, size, asChild = false, reasonDisabled, disabledContent, disabled, isLoading, children, leftIcon, rightIcon, ...props }, ref) => {
         const SlotContent = asChild ? Slot : 'button';
+        const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
         const Component = (
             <SlotContent className={cn(buttonVariants({ variant, size, className }))} ref={ref} disabled={disabled || isLoading} {...props}>
                 <span className={`inline-flex gap-x-2 items-center justify-center ${isLoading ? 'invisible' : ''}`}>
@@ -56,14 +58,20 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             </SlotContent>
         );
 
-        return (
-            <TooltipProvider>
-                <Tooltip>
-                    <TooltipTrigger asChild>{disabled ? <span className="w-fit">{Component}</span> : <>{Component}</>}</TooltipTrigger>
-                    {disabled && reasonDisabled && <TooltipContent>{reasonDisabled}</TooltipContent>}
-                </Tooltip>
-            </TooltipProvider>
-        );
+        if (disabled && reasonDisabled) {
+            return (
+                <TooltipProvider>
+                    <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
+                        <TooltipTrigger asChild>
+                            <span onClick={() => setIsTooltipOpen(true)}>{Component}</span>
+                        </TooltipTrigger>
+                        <TooltipContent>{reasonDisabled}</TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            );
+        }
+
+        return <>{Component}</>;
     }
 );
 Button.displayName = 'Button';

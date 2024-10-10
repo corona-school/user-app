@@ -32,6 +32,9 @@ import { REDIRECT_PASSWORD } from '../Utility';
 import isEmail from 'validator/lib/isEmail';
 import DisableableButton from '../components/DisablebleButton';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import InformationModal from '@/modals/InformationModal';
+import { Typography } from '@/components/Typography';
+import ConfirmationModal from '@/modals/ConfirmationModal';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -239,30 +242,17 @@ export default function Login() {
         }
     };
 
-    const PasswordModal: React.FC<{ showModal: boolean; email: string }> = ({ showModal, email }) => {
-        const [pwEmail] = useState<string>(email);
+    const PasswordModal: React.FC<{ showModal: boolean; email: string }> = ({ showModal, email: pwEmail }) => {
         return (
-            <Modal isOpen={showModal} onClose={() => setShowPasswordModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Body>
-                        <VStack space={space['0.5']}>
-                            <Text>{t('login.passwordReset.description', { email: pwEmail })}</Text>
-                        </VStack>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Row space={space['0.5']}>
-                            <DisableableButton
-                                isDisabled={pwEmail.length < 6 || _resetPW?.loading}
-                                reasonDisabled={_resetPW?.loading ? t('reasonsDisabled.loading') : t('registration.hint.password.length')}
-                                onPress={() => resetPassword(pwEmail)}
-                            >
-                                {t('login.passwordReset.btn')}
-                            </DisableableButton>
-                        </Row>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
+            <ConfirmationModal
+                isOpen={showModal}
+                onOpenChange={setShowPasswordModal}
+                headline={t('login.passwordReset.btn')}
+                description={t('login.passwordReset.description', { email: pwEmail })}
+                confirmButtonText={t('login.passwordReset.btn')}
+                onConfirm={() => resetPassword(pwEmail)}
+                isLoading={_resetPW?.loading}
+            />
         );
     };
 
@@ -271,22 +261,14 @@ export default function Login() {
         showModal: boolean;
     }> = ({ email, showModal }) => {
         return (
-            <Modal isOpen={showModal} onClose={() => setShowNoAccountModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('login.accountNotFound.title')}</Modal.Header>
-                    <Modal.Body>
-                        <VStack space={space['0.5']}>
-                            <Text>{t('login.accountNotFound.alert_html', { email: email })}</Text>
-                        </VStack>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Row space={space['0.5']}>
-                            <Button onPress={() => setShowNoAccountModal(false)}>{t('back')}</Button>
-                        </Row>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
+            <InformationModal
+                variant="destructive"
+                isOpen={showModal}
+                onOpenChange={setShowNoAccountModal}
+                headline={<span className="block text-center">{t('login.accountNotFound.title')}</span>}
+            >
+                <Typography className="text-pretty text-center">{t('login.accountNotFound.alert_html', { email: email })}</Typography>
+            </InformationModal>
         );
     };
 
@@ -294,22 +276,14 @@ export default function Login() {
         showModal: boolean;
     }> = ({ showModal }) => {
         return (
-            <Modal isOpen={showModal} onClose={() => setShowAccountDeactivatedModal(false)}>
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('login.accountDeactivated.title')}</Modal.Header>
-                    <Modal.Body>
-                        <VStack space={space['0.5']}>
-                            <Text>{t('login.accountDeactivated.alert_html')}</Text>
-                        </VStack>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Row space={space['0.5']}>
-                            <Button onPress={() => setShowAccountDeactivatedModal(false)}>{t('back')}</Button>
-                        </Row>
-                    </Modal.Footer>
-                </Modal.Content>
-            </Modal>
+            <InformationModal
+                variant="destructive"
+                isOpen={showModal}
+                onOpenChange={setShowAccountDeactivatedModal}
+                headline={<span className="block text-center">{t('login.accountDeactivated.title')}</span>}
+            >
+                <Typography className="text-pretty text-center">{t('login.accountDeactivated.alert_html')}</Typography>
+            </InformationModal>
         );
     };
 

@@ -811,14 +811,17 @@
             "header": "Öğrencileri yedeklemek",
             "add": "Ekle",
             "amount": "Öğrenci sayısı",
-            "success": "Öğrenci başarıyla eklendi"
+            "success": "Öğrenci başarıyla eklendi",
+            "error": "Öğrenciler eklenemedi"
         },
         "removeParticipantFromCourseModal": {
             "header": "Öğrenciyi kurstan çıkarma",
             "remove": "Kaldırmak",
             "success": "Başarılı bir şekilde öğrenci kaldırıldı",
             "error": "Öğrenci:in kaldırılamadı"
-        }
+        },
+        "removeFromCourse": "Kurstan çıkarma",
+        "addToCourse": "Kursa ekle"
     },
     "settings": {
         "general": {
@@ -1935,7 +1938,8 @@
         "placeholder": "Bir şeyler yaz.",
         "chatError": "Sohbet açılamıyor.",
         "groupChatError": "Grup sohbeti açılamıyor.",
-        "announcementChatError": "Duyuru sohbeti açılamıyor."
+        "announcementChatError": "Duyuru sohbeti açılamıyor.",
+        "openChat": "Açık sohbet"
     },
     "introduction": {
         "courseTypes": {
@@ -2362,6 +2366,37 @@
         "installTitle": "Lern-Fair Kurulum",
         "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
         "installButton": "Kurulum",
-        "iOSInstallInstructions": "<0/> ve ardından <1/> \"Ana Ekrana Ekle\"ye dokunun"
-    }
+        "page": {
+            "pros": {
+                "list": [
+                    "Uygulama daha hızlı yüklenir, verileri kaydeder ve bildirimleri doğrudan cihazınıza gönderir. Böylece hiçbir sohbeti veya randevuyu kaçırmazsınız ve artık her seferinde oturum açmanız gerekmez.",
+                    "Uygulamayı farklı cihazlara yükleyebilirsiniz, böylece hem ebeveynler hem de öğrenciler sohbet ve randevu hatırlatıcılarına erişebilir."
+                ],
+                "title": "Avantajlar"
+            },
+            "installationDetails": {
+                "list": [
+                    "Uygulama, App Store olmadan doğrudan bu tarayıcıdan yüklenebilir.",
+                    "Aşağıdaki tarayıcılar desteklenmektedir: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) ve macOS (Chrome).",
+                    "\"Uygulamayı yükle\" düğmesine tıklayın ve talimatları izleyin."
+                ],
+                "title": "Kurulum"
+            },
+            "title": "Lern-Fair Uygulama",
+            "description": "Lern-Fair Sohbetlere ve randevulara her zaman erişebilmek için uygulamayı tüm cihazlarınıza indirin.",
+            "install": "Uygulamayı yükleyin",
+            "not-supported": "Ne yazık ki, uygulamanın bu cihaza yüklenmesi desteklenmiyor.",
+            "installed": "Uygulama zaten yüklü."
+        },
+        "iOSInstallInstructions": {
+            "title": "Uygulamayı yükleyin",
+            "steps": {
+                "first": "Tarayıcının üst veya alt kısmındaki <0/>'ya tıklayın",
+                "second": "<0/>'yı seçin \"Ana ekrana git\""
+            }
+        }
+    },
+    "show": "Ekran",
+    "showMore": "Daha fazla göster",
+    "showLess": "Daha az göster"
 }

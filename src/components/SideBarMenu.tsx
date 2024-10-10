@@ -1,28 +1,23 @@
-import { gql } from './../gql';
-import { useQuery } from '@apollo/client';
-import { View, Text, VStack, Center, CircleIcon, Row, useTheme, Pressable, Badge, Spacer, Button } from 'native-base';
 import { useMemo, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 import useLernfair from '../hooks/useLernfair';
 import { NavigationItems } from '../types/navigation';
-import CSSWrapper from './CSSWrapper';
 import { useRoles, useUserType } from '../hooks/useApollo';
-import HalfStarIcon from '../assets/icons/icon_half_star_filled.svg';
 import { useTranslation } from 'react-i18next';
 import AppFeedbackModal from '../modals/AppFeedbackModal';
+import { Button } from './Button';
+import { Typography } from './Typography';
+import { Badge } from './Badge';
+import { IconStarHalfFilled } from '@tabler/icons-react';
 
 type Props = {
-    show?: boolean;
     navItems: NavigationItems;
-    paddingTop?: string | number;
     unreadMessagesCount?: number;
 };
 
-const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessagesCount }) => {
+const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
     const { t } = useTranslation();
-    const { space, colors } = useTheme();
     const { rootPath, setRootPath } = useLernfair();
-    const navigate = useNavigate();
     const userType = useUserType();
     const userRoles = useRoles();
     const [isOpen, setIsOpen] = useState(false);
@@ -55,90 +50,42 @@ const SideBarMenu: React.FC<Props> = ({ show, navItems, paddingTop, unreadMessag
     }, [userType]);
 
     return (
-        (show && (
-            <View w="240">
-                <VStack
-                    paddingTop={paddingTop}
-                    paddingBottom="6"
-                    position="fixed"
-                    bgColor={'lightText'}
-                    display="flex"
-                    flexDirection="column"
-                    justifyContent="space-between"
-                    style={{
-                        shadowColor: '#000000',
-                        shadowOpacity: 0.1,
-                        shadowRadius: 30,
-                        shadowOffset: { width: 2, height: 2 },
-                    }}
-                    w="240"
-                    top="0"
-                    left="0"
-                    bottom="0"
-                >
-                    <VStack>
-                        {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
-                            const disabled =
-                                _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
-                            const isHidden = (key === 'knowledge-helper' && hideForStudents) || (key === 'knowledge-pupil' && hideForPupils);
-                            if (isHidden) return <></>;
-
-                            return (
-                                <Pressable
-                                    onPress={
-                                        disabled
-                                            ? undefined
-                                            : () => {
-                                                  setRootPath && setRootPath(`${key}`);
-                                                  navigate(`/${key}`);
-                                              }
-                                    }
-                                    key={key}
-                                >
-                                    <Row alignItems={'center'} paddingX={space['1']} paddingY="15px">
-                                        <Center>
-                                            <CSSWrapper className="navigation__item">
-                                                <CircleIcon size="35px" color={disabled ? 'transparent' : key === rootPath ? 'primary.900' : 'transparent'} />
-                                                <CSSWrapper className="navigation__item__icon">
-                                                    <Icon
-                                                        fill={
-                                                            disabled ? colors['gray']['300'] : key === rootPath ? colors['lightText'] : colors['primary']['900']
-                                                        }
-                                                        isActive={key === rootPath}
-                                                    />
-                                                </CSSWrapper>
-                                            </CSSWrapper>
-                                        </Center>
-                                        <Text fontSize="lg" fontWeight="400" color={disabled ? colors['gray']['300'] : undefined} marginLeft={space['0.5']}>
-                                            {label}
-                                        </Text>
-
-                                        {key === 'chat' && !!unreadMessagesCount && (
-                                            <>
-                                                <Spacer />
-                                                <Badge bgColor="danger.500" _text={{ color: 'white' }} rounded="full">
-                                                    {unreadMessagesCount}
-                                                </Badge>
-                                            </>
-                                        )}
-                                    </Row>
-                                </Pressable>
-                            );
-                        })}
-                    </VStack>
-                    <Button
-                        variant="outline"
-                        width="80%"
-                        alignSelf="center"
-                        leftIcon={<HalfStarIcon color={colors.primary[900]} />}
-                        onPress={() => setIsOpen(true)}
-                    >
-                        {t('appFeedback.giveFeedbackButton')}
-                    </Button>
-                </VStack>
-                <AppFeedbackModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
-            </View>
-        )) || <></>
+        <div className="hidden md:block min-w-60">
+            <nav className="flex min-w-60 flex-col h-[calc(100dvh-56px)] fixed pt-9 pb-6 justify-between shadow-lg">
+                <div className="flex flex-col gap-y-4 px-4">
+                    {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
+                        const disabled =
+                            _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
+                        const isHidden = (key === 'knowledge-helper' && hideForStudents) || (key === 'knowledge-pupil' && hideForPupils);
+                        if (isHidden) return null;
+                        return (
+                            <NavLink
+                                className={({ isActive }) =>
+                                    `flex items-center px-2 py-2 rounded-md hover:outline-accent hover:outline
+                                            ${isActive || key === rootPath ? 'bg-accent' : ''}
+                                            ${disabled ? 'opacity-20 pointer-events-none' : ''}`
+                                }
+                                onClick={() => setRootPath && setRootPath(`${key}`)}
+                                to={`/${key}`}
+                                key={key}
+                            >
+                                <Icon />
+                                <Typography className="pl-3 mr-auto font-medium">{label}</Typography>
+                                {key === 'chat' && !!unreadMessagesCount && (
+                                    <Badge variant="destructive" shape="rounded" className="mr-2">
+                                        {unreadMessagesCount}
+                                    </Badge>
+                                )}
+                            </NavLink>
+                        );
+                    })}
+                </div>
+                <Button variant="outline" className="w-4/5 self-center" leftIcon={<IconStarHalfFilled size={16} />} onClick={() => setIsOpen(true)}>
+                    {t('appFeedback.giveFeedbackButton')}
+                </Button>
+            </nav>
+            <AppFeedbackModal isOpen={isOpen} onIsOpenChange={setIsOpen} />
+        </div>
     );
 };
 export default SideBarMenu;

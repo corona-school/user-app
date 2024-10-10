@@ -138,6 +138,15 @@ export const getTrafficLampText = (status: TrafficStatus, isStudent: boolean, se
     return i18next.t('single.global.status.full');
 };
 
+export const getTrafficLampColor = (status: TrafficStatus) => {
+    const colors = {
+        free: 'bg-primary',
+        last: 'bg-secondary',
+        full: 'bg-orange-500',
+    };
+    return colors[status];
+};
+
 export const sortByDate = <Subcourse extends { firstLecture?: { start: any } | null }>(arr: Subcourse[] | undefined) => {
     if (!arr) return [];
     return arr.sort((a, b) => {

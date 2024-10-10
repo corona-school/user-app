@@ -1,5 +1,5 @@
 import { useMutation } from '@apollo/client';
-import { useTheme, Card, VStack, Row, Box, Heading, Text, useToast, Modal, Button } from 'native-base';
+import { useTheme, Card, VStack, Row, Box, Heading, Text, useToast } from 'native-base';
 import { useState, useCallback } from 'react';
 import { BACKEND_URL } from '../../config';
 import { gql } from '../../gql';
@@ -9,6 +9,8 @@ import { useTranslation } from 'react-i18next';
 import DisableableButton from '../../components/DisablebleButton';
 import { ProgressSpinnerModal } from '../../components/ProgressSpinnerModal';
 import { downloadFile } from '../../helper/download-file';
+import { Modal, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
 
 type Certificate = Pick<
     Participation_Certificate,
@@ -59,10 +61,20 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
     return (
         <>
             {downloadStep === 'create' && (
-                <ProgressSpinnerModal title={t('certificate.download.download_certificate')} description={t('certificate.download.create')} />
+                <ProgressSpinnerModal
+                    isOpen
+                    onOpenChange={() => {}}
+                    title={t('certificate.download.download_certificate')}
+                    description={t('certificate.download.create')}
+                />
             )}
             {downloadStep === 'download' && (
-                <ProgressSpinnerModal title={t('certificate.download.download_certificate')} description={t('certificate.download.download_browser')} />
+                <ProgressSpinnerModal
+                    isOpen
+                    onOpenChange={() => {}}
+                    title={t('certificate.download.download_certificate')}
+                    description={t('certificate.download.download_browser')}
+                />
             )}
             <Card padding={space['1']} marginBottom={space['1']} marginRight={space['1']} minWidth="300px">
                 <VStack>
@@ -98,25 +110,18 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
                     </DisableableButton>
                 </VStack>
             </Card>
-            <Modal
-                isOpen={showSelectPDFLanguageModal}
-                onClose={() => {
-                    setShowSelectPDFLanguageModal(false);
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Body>
-                        <VStack space={space['0.5']}>
-                            <Heading>{t('certificate.download.download_certificate')}</Heading>
-
-                            <>
-                                <Button onPress={() => downloadCertificate('de')}>{t('certificate.download.german_version')}</Button>
-                                <Button onPress={() => downloadCertificate('en')}>{t('certificate.download.english_version')}</Button>
-                            </>
-                        </VStack>
-                    </Modal.Body>
-                </Modal.Content>
+            <Modal isOpen={showSelectPDFLanguageModal} onOpenChange={setShowSelectPDFLanguageModal} className="w-[400px]">
+                <ModalHeader>
+                    <ModalTitle>{t('certificate.download.download_certificate')}</ModalTitle>
+                </ModalHeader>
+                <div className="flex flex-col gap-2">
+                    <Button className="w-full" onClick={() => downloadCertificate('de')}>
+                        {t('certificate.download.german_version')}
+                    </Button>
+                    <Button className="w-full" onClick={() => downloadCertificate('en')}>
+                        {t('certificate.download.english_version')}
+                    </Button>
+                </div>
             </Modal>
         </>
     );

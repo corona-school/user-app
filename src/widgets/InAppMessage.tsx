@@ -1,18 +1,24 @@
-import { Box, Toast } from 'native-base';
 import MessageBox from '../components/notifications/MessageBox';
 import { Concrete_Notification } from '../gql/graphql';
+import { toast } from 'sonner';
 
-export const showInAppMessage = (notification: Concrete_Notification, isMobile: boolean) => {
+export const showInAppMessage = (notification: Concrete_Notification) => {
     if (!notification || !notification.message) return null;
 
-    return Toast.show({
-        placement: isMobile ? 'top' : 'top-right',
-        render: () => {
-            return (
-                <Box mr={5}>
-                    <MessageBox key={notification.id} isStandalone={true} userNotification={notification} />
-                </Box>
-            );
-        },
-    });
+    const handleOnClickNotification = () => {
+        toast.dismiss(notification.id);
+    };
+
+    toast.custom(
+        () => (
+            <div className="w-fit" onClick={handleOnClickNotification}>
+                <MessageBox className="mb-0" key={notification.id} isStandalone={true} userNotification={notification} />
+            </div>
+        ),
+        {
+            position: 'top-right',
+            className: 'top-4 right-0 flex justify-center lg:justify-end',
+            id: notification.id,
+        }
+    );
 };
