@@ -1489,9 +1489,9 @@
                     "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "details": {
-                    "heading": "Details",
-                    "subheading": "Möchtest du noch etwas an deine:n zuküftigen Lernpartner:in loswerden?",
-                    "text": "Hier kannst du weitere Angaben zu dir oder deiner aktuellen Situation machen, z.B. hast du ein spezielles Thema bei dem du Hilfe benötigst oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte? Wir leiten diesen Text an deine:n zukünftige:n Lernpartner:in weiter.",
+                    "heading": "Deine aktuelle Situation",
+                    "subheading": "Diese Angabe wird an deine:n Lernpartner:in weitergeleitet.",
+                    "text": "Gibt es ein spezielles Thema bei dem du Hilfe benötigst? Oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte?",
                     "additionalInfo": "Deine Angaben",
                     "placeholder": "Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?"
                 },
