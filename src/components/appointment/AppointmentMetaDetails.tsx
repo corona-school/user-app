@@ -123,21 +123,24 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                 </HStack>
             )}
             <Spacer py={3} />
-            {appointmentId && appointmentType && (
-                <>
-                    <VideoButton
-                        isInstructor={isOrganizer}
-                        appointmentId={appointmentId}
-                        appointmentType={appointmentType}
-                        startDateTime={startDateTime}
-                        duration={duration}
-                        buttonText={t('appointment.detail.videochatButton')}
-                        width={buttonWidth}
-                        isOver={isAppointmentOver}
-                        overrideLink={overrideMeetingLink ?? undefined}
-                    />
-                </>
-            )}
+            <div className="flex flex-col items-stretch md:items-start">
+                {appointmentId && appointmentType && (
+                    <>
+                        <VideoButton
+                            isInstructor={isOrganizer}
+                            appointmentId={appointmentId}
+                            appointmentType={appointmentType}
+                            startDateTime={startDateTime}
+                            duration={duration}
+                            buttonText={t('appointment.detail.videochatButton')}
+                            width={buttonWidth}
+                            isOver={isAppointmentOver}
+                            overrideLink={overrideMeetingLink ?? undefined}
+                            className="w-full md:w-fit"
+                        />
+                    </>
+                )}
+            </div>
         </>
     );
 };

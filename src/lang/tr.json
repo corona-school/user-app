@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "Ders #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "{{name}} tarafından iptal edildi"
         },
         "create": {
             "videoSelectOptions": {
@@ -101,7 +102,10 @@
             "editButton": "Randevu düzenleme",
             "canceledToast": "Randevu iptal edildi",
             "zoomTooltipStudent": "Bu bağlantıya tıklarsanız, toplantıya katılımcı olarak katılırsınız. Toplantıya ev sahibi olarak katılmak için \"Video sohbete şimdi katıl\" düğmesini kullanın.",
-            "zoomTooltipPupil": "Bu bağlantıyı asla başkalarıyla paylaşmayın. Platformun güvenliğini ancak bu şekilde garanti edebiliriz."
+            "zoomTooltipPupil": "Bu bağlantıyı asla başkalarıyla paylaşmayın. Platformun güvenliğini ancak bu şekilde garanti edebiliriz.",
+            "cancelledBy": "{{name}} bu randevuyu iptal etti",
+            "rescheduleButton": "Randevuyu ertele",
+            "rescheduleDescription": "Randevuyu ertelerseniz, {{name}} tekrar davet edilecektir."
         },
         "zoomModal": {
             "useZoomApp": {

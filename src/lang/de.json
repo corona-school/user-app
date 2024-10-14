@@ -59,7 +59,8 @@
         },
         "appointmentTile": {
             "lecture": "Lektion #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "Abgesagt von {{name}}"
         },
         "create": {
             "assignmentHeader": "Für welches Lernangebot soll dieser Termin erstellt werden?",
@@ -112,6 +113,7 @@
             "deleteButton": "Termin löschen",
             "cancelButton": "Termin absagen",
             "editButton": "Termin bearbeiten",
+            "rescheduleButton": "Termin verschieben",
             "canceledToast": "Termin wurde abgesagt",
             "zoomTooltipStudent": "Wenn du diesen Link aufrufst, trittst du dem Meeting als Teilnehmer:in bei. Um als Host dem Meeting beizutrteten nutze den Button \"Jetzt Videochat beitreten\".",
             "zoomTooltipPupil": "Teile diesen Link niemals mit anderen Personen. Nur so können wir die Sicherheit der Plattform gewährleisten.",
@@ -127,7 +129,9 @@
                     "isOver": "Du kannst diesen Termin nicht absagen, da er bereits vorbei ist.",
                     "isCancelled": "Du hast diesen Termin bereits abgesagt."
                 }
-            }
+            },
+            "cancelledBy": "{{name}} hat diesen Termin abgesagt",
+            "rescheduleDescription": "Wenn du den Termin verschiebst, wird {{name}} wieder eingeladen."
         },
         "zoomModal": {
             "header": "Hinweise zum Videochat",
