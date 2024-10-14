@@ -168,22 +168,6 @@ const ProfileStudent: React.FC<Props> = () => {
                 isLoading={loading}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
-                headerContent={
-                    <Flex
-                        maxWidth={ContainerWidth}
-                        marginX="auto"
-                        width="85%"
-                        bg={HeaderStyle.bgColor}
-                        alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
-                        justifyContent="center"
-                        paddingY={HeaderStyle.paddingY}
-                        borderBottomRadius={16}
-                    >
-                        <Heading color={colors.white} bold fontSize="xl">
-                            {data?.me?.firstname}
-                        </Heading>
-                    </Flex>
-                }
                 headerLeft={
                     !isMobileSM && (
                         <Stack alignItems="center" direction="row">
