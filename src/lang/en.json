@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "Lesson #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "Canceled by {{name}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -109,7 +110,10 @@
                 "bp2": "Chat and send files directly from your smartphone",
                 "bp3": "Receive notifications on the device",
                 "footer": "Simply scan the QR code with your smartphone"
-            }
+            },
+            "cancelledBy": "{{name}} has canceled this lecture ",
+            "rescheduleButton": "Reschedule appointment",
+            "rescheduleDescription": "If you reschedule the lecture, {{name}} will be invited again."
         },
         "zoomModal": {
             "useZoomApp": {

@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "Ders #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "{{name}} tarafından iptal edildi"
         },
         "create": {
             "videoSelectOptions": {
@@ -109,7 +110,10 @@
                 "bp2": "Doğrudan akıllı telefonunuzdan sohbet edin ve dosya gönderin",
                 "bp3": "Cihaz üzerinden bildirim alma",
                 "footer": "QR kodunu akıllı telefonunuzla taramanız yeterli"
-            }
+            },
+            "cancelledBy": "{{name}} bu randevuyu iptal etti",
+            "rescheduleButton": "Randevuyu ertele",
+            "rescheduleDescription": "Randevuyu ertelerseniz, {{name}} tekrar davet edilecektir."
         },
         "zoomModal": {
             "useZoomApp": {

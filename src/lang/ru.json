@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "Урок #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "Отменено {{name}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -109,7 +110,10 @@
                 "bp2": "Общайтесь и отправляйте файлы прямо со смартфона",
                 "bp3": "Получайте уведомления на устройство",
                 "footer": "Просто отсканируйте QR-код с помощью своего смартфона"
-            }
+            },
+            "cancelledBy": "{{name}} отменил эту встречу",
+            "rescheduleButton": "Отложить встречу",
+            "rescheduleDescription": "Если вы отложите встречу, {{name}} будет приглашен снова."
         },
         "zoomModal": {
             "useZoomApp": {
