@@ -35,6 +35,8 @@ import { Appointment } from '../types/lernfair/Appointment';
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import useApollo, { useUserType } from '../hooks/useApollo';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 export enum ChatType {
@@ -117,7 +119,7 @@ const CreateCourse: React.FC = () => {
     const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
     const [image, setImage] = useState<string>('');
     const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
-
+    const breadcrumb = useBreadcrumbItems();
     const [loadingCourse, setLoadingCourse] = useState<boolean>();
     const [showCourseError, setShowCourseError] = useState<boolean>();
 
@@ -864,7 +866,6 @@ const CreateCourse: React.FC = () => {
         <AsNavigationItem path="group">
             <WithNavigation
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
-                showBack
                 previousFallbackRoute="/group"
                 isLoading={loadingStudent || loadingCourse}
                 headerLeft={
@@ -910,6 +911,7 @@ const CreateCourse: React.FC = () => {
                         myself: studentMyself,
                     }}
                 >
+                    <Breadcrumb items={[breadcrumb.COURSES, breadcrumb.CREATE_COURSE]} className="px-4" />
                     {(((roles.includes('INSTRUCTOR') && canCreateCourse?.allowed) || roles.includes('COURSE_SCREENER')) && (
                         <VStack space={space['1']} padding={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
                             <InstructionProgress

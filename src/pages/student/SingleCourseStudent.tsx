@@ -21,6 +21,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { ParticipantsList } from '../subcourse/ParticipantsList';
 import Waitinglist from '../single-course/Waitinglist';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -147,6 +149,7 @@ const SingleCourseStudent = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
+    const breadcrumb = useBreadcrumbItems();
 
     const navigate = useNavigate();
 
@@ -309,7 +312,6 @@ const SingleCourseStudent = () => {
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
-            showBack
             previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
@@ -323,6 +325,7 @@ const SingleCourseStudent = () => {
                 <CenterLoadingSpinner />
             ) : (
                 <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
+                    <Breadcrumb items={[breadcrumb.COURSES, { label: course?.name! }]} />
                     <SubcourseData
                         course={course!}
                         subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}

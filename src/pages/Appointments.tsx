@@ -14,6 +14,8 @@ import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/AppointmentList';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 const getMyAppointments = gql(`
     query myAppointments_NO_CACHE($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
@@ -71,6 +73,7 @@ const Appointments: React.FC = () => {
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const navigate = useNavigate();
     const { client } = useApollo();
+    const breadcrumb = useBreadcrumbItems();
 
     type Appointments = Exclude<QueryResult<typeof getMyAppointments>['me']['appointments'], null | undefined>;
     const [appointments, setAppointments] = useState<Appointments>([]);
@@ -135,6 +138,7 @@ const Appointments: React.FC = () => {
                     )
                 }
             >
+                <Breadcrumb className="px-4" items={[breadcrumb.APPOINTMENTS]} />
                 {(loadingMyAppointments || isLoadingHasAppointments) && <CenterLoadingSpinner />}
                 {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
 
@@ -154,6 +158,7 @@ const Appointments: React.FC = () => {
                         noOldAppointments={!hasMoreOldAppointments || !hasAppointments}
                         lastAppointmentId={hasAppointmentsResult?.me?.lastAppointmentId}
                         height="100%"
+                        disableScroll
                     />
                 )}
             </WithNavigation>

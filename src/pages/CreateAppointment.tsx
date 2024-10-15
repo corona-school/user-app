@@ -9,6 +9,8 @@ import AppointmentAssignment from './create-appointment/AppointmentAssignment';
 import AppointmentsInsight from './create-appointment/AppointmentsInsight';
 import { CreateAppointmentProvider } from '../context/AppointmentContext';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 const CreateAppointment = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -18,6 +20,7 @@ const CreateAppointment = () => {
     const [appointmentsTotal, setAppointmentsTotal] = useState<number>(0);
     const [overrideMeetingLink, setOverrideMeetingLink] = useState<string | undefined>(undefined);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const breadcrumb = useBreadcrumbItems();
 
     const { t } = useTranslation();
 
@@ -71,8 +74,9 @@ const CreateAppointment = () => {
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} showBack previousFallbackRoute="/appointments">
+            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} previousFallbackRoute="/appointments">
                 <CreateAppointmentProvider>
+                    <Breadcrumb items={[breadcrumb.APPOINTMENTS, breadcrumb.CREATE_APPOINTMENT]} />
                     <Box mx="4" pt={6} flex={1}>
                         <View position="sticky" mb={2} overflow="hidden">
                             <InstructionProgress

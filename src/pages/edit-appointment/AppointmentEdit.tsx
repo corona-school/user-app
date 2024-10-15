@@ -10,6 +10,8 @@ import AppointmentEditForm from './AppointmentEditForm';
 import { convertStartDate, formatStart } from '../../helper/appointment-helper';
 import { PUPIL_APPOINTMENT, STUDENT_APPOINTMENT } from '../Appointment';
 import { DateTime } from 'luxon';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 type FormErrors = {
     title?: string;
@@ -42,6 +44,7 @@ query getAppointmentById($appointmentId: Float!) {
         title
         description
         position
+        displayName
     }
 }`);
 
@@ -61,6 +64,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
     const navigate = useNavigate();
     const toast = useToast();
     const { isMobile } = useLayoutHelper();
+    const breadcrumbItems = useBreadcrumbItems();
 
     const isInputValid = () => {
         if (!updatedAppointment.date) {
@@ -125,6 +129,14 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
 
     return (
         <>
+            <Breadcrumb
+                items={[
+                    breadcrumbItems.APPOINTMENTS,
+                    { label: data?.appointment.displayName!, route: `${breadcrumbItems.APPOINTMENT.route}/${appointmentId}` },
+                    breadcrumbItems.EDIT_APPOINTMENT,
+                ]}
+                className="mb-4"
+            />
             <AppointmentEditForm
                 errors={errors}
                 appointmentsCount={data?.appointment.position ?? 0}

@@ -7,6 +7,8 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useUserType } from '../hooks/useApollo';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 export const STUDENT_APPOINTMENT = gql(`
     query appointmentStudent($appointmentId: Float!) {
@@ -93,6 +95,7 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     const userType = useUserType();
     const { id } = useParams();
     const appointmentId = parseFloat(id ? id : '');
+    const breadcrumb = useBreadcrumbItems();
 
     const {
         data: studentAppointment,
@@ -121,7 +124,8 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     };
 
     return (
-        <WithNavigation showBack previousFallbackRoute={getDefaultPreviousPath()} headerLeft={<NotificationAlert />}>
+        <WithNavigation previousFallbackRoute={getDefaultPreviousPath()} headerLeft={<NotificationAlert />}>
+            <Breadcrumb className="mx-4" items={[breadcrumb.APPOINTMENTS, { label: data?.appointment?.displayName }]} />
             {loading && <CenterLoadingSpinner />}
             {!error && data?.appointment && <AppointmentDetail appointment={data?.appointment} startMeeting={startMeeting} />}
         </WithNavigation>

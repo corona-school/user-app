@@ -17,6 +17,8 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -124,6 +126,7 @@ const SingleCoursePupil = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
+    const breadcrumb = useBreadcrumbItems();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
         variables: {
@@ -159,7 +162,6 @@ const SingleCoursePupil = () => {
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
-            showBack
             previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
@@ -170,6 +172,7 @@ const SingleCoursePupil = () => {
             }
         >
             <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
+                <Breadcrumb items={[breadcrumb.COURSES, { label: course?.name! }]} />
                 {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
                 {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
                 {subcourse?.isParticipant && !isInPast && (
