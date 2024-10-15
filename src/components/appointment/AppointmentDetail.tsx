@@ -117,7 +117,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
     );
 
     useEffect(() => {
-        console.log('AppointDetail/useEffect');
         createShortTimeLoginData();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -170,7 +169,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
                     qrCodeLink={loginHref}
                 />
-                {loginHref}
                 <Description description={appointment.description} />
 
                 <Buttons
