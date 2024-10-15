@@ -43,10 +43,11 @@ const LOGIN_WITH_DEVICE_TOKEN_MUTATION = gql(`
     }
   `);
 
+type Watcher = () => void;
+
 interface FullResult {
     data: any;
     variables: string;
-    watchers: (() => void)[];
 }
 
 // The Apollo InMemory cache is way too complex for our purpose
@@ -59,6 +60,7 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
     // ----------- Cache -----------------
 
     private cache: Map</* Query Name */ string, FullResult> = new Map();
+    private watchers = new Map</* Query Name */ string, Watcher[]>();
 
     /* Extracts the name of a Query - query <name> { ... }
      * This should be unique anyways as it is also used to generate typescript types
@@ -91,7 +93,9 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         if (!name) return undefined;
         const entry = this.cache.get(name);
 
-        if (entry && JSON.stringify(query.variables) === entry.variables) {
+        if (!entry) return undefined;
+
+        if (JSON.stringify(query.variables) === entry.variables) {
             log('GraphQL Cache', `Read ${name} from cache`, entry);
             return entry;
         } else {
@@ -107,20 +111,18 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         const name = this.getQueryName(query);
         if (!name) return;
 
-        const existingEntry = this.getEntry(result);
+        const existingEntry = this.getEntry(query);
         if (!existingEntry) {
             this.cache.set(name, {
                 data: result,
-                watchers: [],
-                variables: JSON.stringify(query.variables),
+                variables: JSON.stringify(query.variables ?? {}),
             });
             log('GraphQL Cache', `Write ${name} to new Cache Entry`, result);
         } else {
             existingEntry.data = result;
-            existingEntry.watchers.forEach((it) => it());
-
             log('GraphQL Cache', `Write ${name} to existing Cache Entry`, result);
         }
+        this.watchers.get(name)?.forEach((watcher) => watcher());
     }
 
     // ----------- ApolloCache Interface --------------
@@ -149,19 +151,24 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
 
     watch<TData = any, TVariables = any>(watch: Cache.WatchOptions<TData, TVariables>): () => void {
         const entry = this.getEntry(watch);
+        const name = this.getQueryName(watch);
 
         const watcher = () => {
             log('GraphQL Cache', 'fire watcher');
             watch.callback(this.diff(watch));
         };
 
-        if (entry) {
+        if (name) {
+            log('GraphQL Cache', 'store watcher');
+            this.watchers.set(name, this.watchers.get(name)?.concat(watcher) ?? []);
+        }
+
+        if (entry && name) {
             log('GraphQL Cache', 'immediately fire watcher');
             watch.callback(this.diff(watch));
-
-            entry.watchers.push(watcher);
             return () => {
-                entry.watchers = entry.watchers.filter((it) => it !== watcher);
+                const updatedWatchers = this.watchers.get(name)?.filter((it) => it !== watcher) ?? [];
+                this.watchers.set(name, updatedWatchers);
                 log('GraphQL Cache', 'detach watcher');
             };
         }
