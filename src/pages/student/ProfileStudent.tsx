@@ -15,6 +15,8 @@ import CSSWrapper from '../../components/CSSWrapper';
 import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
+import { Input } from '@/components/Input';
+import { Button as NewButton } from '@/components/Button';
 
 type Props = {};
 
@@ -28,6 +30,7 @@ const query = gql(`
                 state
                 aboutMe
                 languages
+                zipCode
                 subjectsFormatted {
                     name
                 }
@@ -100,6 +103,8 @@ const ProfileStudent: React.FC<Props> = () => {
     const { trackPageView } = useMatomo();
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
+    const [editZipCode, setEditZipCode] = useState<boolean>(false);
+    const [zipCodeInput, setInputZipCode] = useState<string>();
 
     const [userSettingChanged, setUserSettings] = useState<boolean>(false);
     const onSave = useCallback(() => setUserSettings(true), [setUserSettings]);
@@ -160,6 +165,11 @@ const ProfileStudent: React.FC<Props> = () => {
         }
     }, [showSuccessfulChangeAlert, userSettingChanged]);
 
+    /* Fill in the users zipCode if they want to edit it*/
+    useEffect(() => {
+        if (editZipCode) setInputZipCode(`${data?.me?.student?.zipCode ?? ''}`);
+    }, [editZipCode]);
+
     return (
         <>
             <WithNavigation
@@ -209,16 +219,19 @@ const ProfileStudent: React.FC<Props> = () => {
                     )}
                     <VStack paddingX={space['1.5']} space={space['1']}>
                         <ProfileSettingRow title={t('profile.PersonalData')}>
+                            {/* NAME */}
                             <ProfileSettingItem title={t('profile.UserName.label.title')} isIcon={false}>
                                 <Text>
                                     {data?.me?.firstname} {data?.me?.lastname}
                                 </Text>
                             </ProfileSettingItem>
 
+                            {/* E-MAIL */}
                             <ProfileSettingItem title={t('profile.UserName.label.email')} isIcon={false}>
                                 <Text>{data?.me?.email}</Text>
                             </ProfileSettingItem>
 
+                            {/* ABOUT ME */}
                             <ProfileSettingItem
                                 title={t('profile.AboutMe.label')}
                                 href={() => {
@@ -231,6 +244,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                 <StudentAboutMeModal aboutMe={data.me.student!.aboutMe} onSave={onSave} onClose={() => setAboutMeModalVisible(false)} />
                             )}
 
+                            {/* LANGUAGES */}
                             <ProfileSettingItem title={t('profile.FluentLanguagenalData.label')} href={() => navigate('/change-setting/language')}>
                                 {(data?.me?.student?.languages?.length && (
                                     <Row flexWrap="wrap" w="100%">
@@ -249,6 +263,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                 )) || <Text>{t('profile.Notice.noLanguage')}</Text>}
                             </ProfileSettingItem>
 
+                            {/* SCHOOL LOCATION */}
                             <ProfileSettingItem
                                 title={t('profile.State.label')}
                                 href={() =>
@@ -272,6 +287,43 @@ const ProfileStudent: React.FC<Props> = () => {
                                         </Column>
                                     )) || <Text>{t('profile.State.empty')}</Text>}
                                 </Row>
+                            </ProfileSettingItem>
+
+                            {/* ZIPCODE */}
+                            <ProfileSettingItem
+                                title="Postleitzahl" /* TBD: Put in translation */
+                                href={() => {
+                                    setEditZipCode(!editZipCode);
+                                }}
+                            >
+                                {!editZipCode ? (
+                                    data?.me?.student?.zipCode ?? '-'
+                                ) : (
+                                    /* TBD: Move this into its own component, so that this page doesn't rerender all the time */
+                                    /* TBD: Open number field keyboard on mobile. (Is this possible?) */
+                                    /* TBD: Refactor this Component (or at least all legacy Button uses) to use the new components */
+                                    <form
+                                        onSubmit={(e) => {
+                                            e.preventDefault();
+                                            setEditZipCode(false);
+                                            console.info(Number(zipCodeInput));
+                                        }}
+                                    >
+                                        <Row>
+                                            <Input
+                                                maxLength={5} /* TBD: make this (and min?) conditional dependig on Location */
+                                                type="text"
+                                                autoFocus
+                                                value={zipCodeInput}
+                                                onChange={(e) => setInputZipCode(e.target.value.replace(/\D/g, ''))} //Ensures that only numbers can pe typed in
+                                                size={8}
+                                            />
+                                            <NewButton className="mx-1" type="submit">
+                                                {t('save')}
+                                            </NewButton>
+                                        </Row>
+                                    </form>
+                                )}
                             </ProfileSettingItem>
                         </ProfileSettingRow>
                         <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
