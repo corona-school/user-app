@@ -880,6 +880,11 @@
                 "cancel": "Abbrechen"
             }
         },
+        "prospectList": {
+            "toast": "Schüler wurde dem Kurs hinzugefügt.",
+            "error": "Schüler:in konnte nicht hinzugefügt werden.",
+            "noProspects": "Keine Interessent:innen."
+        },
         "joinPupilModal": {
             "header": "Schüler:innen nachrücken",
             "add": "Hinzufügen",

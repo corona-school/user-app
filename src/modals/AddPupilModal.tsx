@@ -13,6 +13,7 @@ interface AddPupilModalProps extends BaseModalProps {
     subcourseId: number;
     pupil?: PupilOnWaitinglist;
     onPupilAdded: () => Promise<void>;
+    type: 'waitinglist' | 'prospectlist';
 }
 // type JoinPupilModalProps = {
 //     pupil: (SparseParticipant & { schooltype: string | undefined; gradeAsInt: number | undefined }) | undefined;
@@ -23,18 +24,24 @@ const ADD_PUPIL_FROM_WAITING_LIST_MUTATION = gql(`mutation JoinFromWaitinglist($
     subcourseJoinFromWaitinglist(subcourseId: $subcourseId, pupilId: $pupilId) 
 }`);
 
-const AddPupilModal = ({ isOpen, onOpenChange, subcourseId, pupil, onPupilAdded }: AddPupilModalProps) => {
+const ADD_PUPIL_FROM_PROSPECT_LIST_MUTATION = gql(`mutation JoinFromProspectList($subcourseId: Float!, $pupilId: Float!) {
+    subcourseJoinFromProspects(subcourseId: $subcourseId, pupilId: $pupilId) 
+}`);
+
+const AddPupilModal = ({ isOpen, onOpenChange, subcourseId, pupil, onPupilAdded, type }: AddPupilModalProps) => {
     const { t } = useTranslation();
-    const [addPupil, { loading: isAdding }] = useMutation(ADD_PUPIL_FROM_WAITING_LIST_MUTATION);
+    const [addPupil, { loading: isAdding }] = useMutation(
+        type === 'waitinglist' ? ADD_PUPIL_FROM_WAITING_LIST_MUTATION : ADD_PUPIL_FROM_PROSPECT_LIST_MUTATION
+    );
 
     const handleOnAddPupil = async () => {
         if (!pupil) return;
         try {
             await addPupil({ variables: { subcourseId, pupilId: pupil.id } });
-            toast.success(t('single.waitinglist.toast'));
+            toast.success(t(type === 'waitinglist' ? 'single.waitinglist.toast' : 'single.prospectList.toast'));
             if (onPupilAdded) await onPupilAdded();
         } catch (error) {
-            toast.error(t('single.waitinglist.error'));
+            toast.error(t(type === 'waitinglist' ? 'single.waitinglist.error' : 'single.prospectList.error'));
         } finally {
             onOpenChange(false);
         }

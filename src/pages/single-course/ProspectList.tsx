@@ -1,83 +1,95 @@
-import { Box, Button, Column, Heading, Modal, Row, Spacer, useBreakpointValue, useTheme, useToast } from 'native-base';
-import AddCircleIcon from '../../assets/icons/ic_add_circle.svg';
-import AddPupilModal from '../../modals/AddPupilModal';
+import { ApolloQueryResult } from '@apollo/client';
 import { useCallback, useState } from 'react';
-import { SparseParticipant } from '../../gql/graphql';
-import { ApolloQueryResult, useMutation } from '@apollo/client';
-import { gql } from '../../gql';
+import { LFPupilsOnWaitinglist, PupilOnWaitinglist, SparseParticipant } from '@/types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
+import AddPupilModal from '@/modals/AddPupilModal';
+import IncreaseMaxParticipantsModal from '@/modals/IncreaseMaxParticipantsModal';
+import ParticipantRow from '../subcourse/ParticipantRow';
+import { Button } from '@/components/Button';
+import { Alert } from '@/components/Alert';
+import { IconCircleCheckFilled } from '@tabler/icons-react';
 
 type ProspectListProps = {
     subcourseId: number;
     prospects: SparseParticipant[];
+    maxParticipants: number;
     refetch: () => Promise<ApolloQueryResult<any>>;
 };
-const ProspectList: React.FC<ProspectListProps> = ({ prospects, subcourseId, refetch }) => {
-    const { space } = useTheme();
-    const { t } = useTranslation();
-    const toast = useToast();
-    const [isFetching, setFetching] = useState(false);
-    const isMobile = useBreakpointValue({
-        base: true,
-        lg: false,
-    });
 
+const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, maxParticipants, refetch }) => {
     const [isJoinPupilModalOpen, setIsJoinPupilModalOpen] = useState(false);
-    const [pupilToAdd, setPupilToAdd] = useState<undefined | SparseParticipant>();
+    const [isIncreaseMaxParticipantsModalOpen, setIsIncreaseMaxParticipantsModalOpen] = useState(false);
+    const [pupilToAdd, setPupilToAdd] = useState<PupilOnWaitinglist>();
 
-    const [addProspect] = useMutation(
-        gql(`mutation JoinProspect($subcourseId: Float!, $pupilId: Float!) { 
-            subcourseJoinFromProspects(subcourseId: $subcourseId, pupilId: $pupilId) 
-        }`)
-    );
+    const { t } = useTranslation();
 
-    const handleOpenModal = (prospect: SparseParticipant) => {
+    const handleOpenModal = (pupilOnWaitinglist: PupilOnWaitinglist) => {
         setIsJoinPupilModalOpen(true);
-        setPupilToAdd(prospect);
+        setPupilToAdd(pupilOnWaitinglist);
     };
 
-    const handleAddPupil = useCallback(
-        async (pupilId: number) => {
-            try {
-                setFetching(true);
-                await addProspect({ variables: { subcourseId: subcourseId, pupilId: pupilId } });
-                setIsJoinPupilModalOpen(false);
-                toast.show({ description: t('single.waitinglist.toast'), placement: 'top' });
-                await refetch();
-            } catch (error) {
-                toast.show({ description: t('single.waitinglist.error'), placement: 'top' });
-            } finally {
-                setFetching(false);
-            }
-        },
-        [addProspect, refetch, subcourseId]
-    );
+    const handleOnFinish = useCallback(async () => {
+        refetch();
+    }, [refetch]);
+
     return (
         <>
-            {prospects?.map((pupil) => {
-                return (
-                    <>
-                        <Box width={isMobile ? 'full' : '350'}>
-                            <Row marginBottom={space['1.5']} alignItems="center">
-                                <Column>
-                                    <Heading fontSize="md">
-                                        {pupil.firstname} {pupil.lastname}
-                                    </Heading>
-                                </Column>
-                                <Spacer />
-                                <Column>
-                                    <Button variant="outline" onPress={() => handleOpenModal(pupil)} disabled={isFetching}>
-                                        <AddCircleIcon />
-                                    </Button>
-                                </Column>
-                            </Row>
-                            <Modal isOpen={isJoinPupilModalOpen} onClose={() => setIsJoinPupilModalOpen(false)} w="full">
-                                <AddPupilModal pupil={{ ...pupilToAdd!, schooltype: undefined, gradeAsInt: undefined }} addPupilToCourse={handleAddPupil} />
-                            </Modal>
-                        </Box>
-                    </>
-                );
-            })}
+            <div className="w-full">
+                <div className="mb-2">
+                    {pupilsOnWaitinglist && pupilsOnWaitinglist?.length > 0 ? (
+                        <Button className="w-fit" onClick={() => setIsIncreaseMaxParticipantsModalOpen(true)}>
+                            {t('single.joinPupilModal.header')}
+                        </Button>
+                    ) : (
+                        <Alert className="w-full lg:w-fit mt-4" icon={<IconCircleCheckFilled />}>
+                            {t('single.waitinglist.noPupilsOnWaitinglist')}
+                        </Alert>
+                    )}
+                </div>
+                <div className="flex flex-col gap-y-6 max-w-[980px]">
+                    {prospects.map((pupil) => {
+                        return (
+                            <ParticipantRow
+                                key={pupil.id}
+                                participant={{
+                                    firstname: pupil.firstname!,
+                                    lastname: pupil.lastname!,
+                                    grade: null,
+                                    gradeAsInt: pupil.gradeAsInt,
+                                    id: pupil.id,
+                                    schooltype: pupil.schooltype!,
+                                }}
+                                isInstructor
+                                addParticipant={(participant) =>
+                                    handleOpenModal({
+                                        id: participant.id,
+                                        firstname: participant.firstname,
+                                        lastname: participant.lastname!,
+                                        gradeAsInt: participant.gradeAsInt,
+                                        grade: participant.grade,
+                                        schooltype: participant.schooltype!,
+                                    })
+                                }
+                            />
+                        );
+                    })}
+                </div>
+            </div>
+            <AddPupilModal
+                pupil={pupilToAdd}
+                isOpen={isJoinPupilModalOpen}
+                onOpenChange={setIsJoinPupilModalOpen}
+                subcourseId={subcourseId}
+                onPupilAdded={handleOnFinish}
+                type="prospectlist"
+            />
+            <IncreaseMaxParticipantsModal
+                isOpen={isIncreaseMaxParticipantsModalOpen}
+                onOpenChange={setIsIncreaseMaxParticipantsModalOpen}
+                onParticipantsIncreased={handleOnFinish}
+                maxParticipants={maxParticipants}
+                subcourseId={subcourseId}
+            />
         </>
     );
 };
