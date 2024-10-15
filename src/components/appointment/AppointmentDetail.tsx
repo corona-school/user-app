@@ -1,6 +1,6 @@
 import { Box, Modal, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState, useEffect } from 'react';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentMetaDetails from './AppointmentMetaDetails';
 import Header from './Header';
@@ -35,6 +35,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
     const [canceled, setCanceled] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [showDeclineModal, setShowDeclineModal] = useState<boolean>(false);
+    const [loginHref, setLoginHref] = useState<string>('empty');
     const navigate = useNavigate();
 
     const containerWidth = useBreakpointValue({
@@ -82,6 +83,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         return participants + organizers;
     }, [appointment.organizers, appointment.participants]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
 
     const isPastAppointment = useMemo(() => {
@@ -93,6 +95,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         setCanceled(true);
         cancelAppointment({ variables: { appointmentId: appointment.id } });
         navigate(-1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleDeclineClick = useCallback(() => {
@@ -100,6 +103,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         setCanceled(true);
         declineAppointment({ variables: { appointmentId: appointment.id } });
         setShowDeclineModal(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const attendees = useMemo(() => {
@@ -108,8 +112,34 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
 
     const isLastAppointment = useMemo(
         () => (appointment.appointmentType === Lecture_Appointmenttype_Enum.Group && appointment.total === 1 ? true : false),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [appointment.total]
     );
+
+    useEffect(() => {
+        console.log('AppointDetail/useEffect');
+        createShortTimeLoginData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const [createShortTimeLoginToken] = useMutation(
+        gql(`
+            mutation ShortTimeAccessHelper($expiresAt: DateTime!, $description: String!) { tokenCreate(expiresAt: $expiresAt, description: $description) }
+        `)
+    );
+
+    const createShortTimeLoginData = async () => {
+        const expiresAt = DateTime.now().plus({ hours: 1 });
+        const res = await createShortTimeLoginToken({ variables: { expiresAt: expiresAt, description: `` } });
+        const token = res?.data?.tokenCreate;
+
+        setLoginHref(
+            process.env.NODE_ENV === 'production'
+                ? `https://app.lern-fair.de/login-token?secret_token=${token}&temporary`
+                : `http://localhost:3000/login-token?secret_token=${token}`
+        );
+    };
+
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
@@ -138,7 +168,9 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     isOrganizer={appointment.isOrganizer}
                     overrideMeetingLink={appointment.override_meeting_link}
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
+                    qrCodeLink={loginHref}
                 />
+                {loginHref}
                 <Description description={appointment.description} />
 
                 <Buttons
