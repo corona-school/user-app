@@ -136,6 +136,15 @@ function ZipCodeInput({
         if (editZipCode) setInputZipCode(`${currentZipCode ?? ''}`);
     }, [editZipCode]);
 
+    const [changeZipCode] = useMutation(
+        gql(`
+            mutation changeZipCode($zipCode: Float!) {
+                meUpdate(update: { student: { zipCode: $zipCode } })
+            }
+        `),
+        { refetchQueries: [query] }
+    );
+
     return (
         /* TBD: Open number field keyboard on mobile. (Is this possible?) */
         /* TBD: Look out for "Änderungen wurden erfolgreich gespeichert." - Toast on profile page... */
@@ -147,9 +156,8 @@ function ZipCodeInput({
                 if (zipCodeLength && zipCodeInput?.length !== zipCodeLength) {
                     setShowWarning(true);
                 } else {
+                    changeZipCode({ variables: { zipCode: Number(zipCodeInput) } });
                     hideInput();
-                    console.info(Number(zipCodeInput));
-                    /* Mutate student's zipCode */
                 }
             }}
         >
@@ -169,7 +177,7 @@ function ZipCodeInput({
             {showWarning ? (
                 <Row>
                     <WarningIcon m={1} color="danger.100" />
-                    <Text color="danger.100">Die Postleitzahl muss {zipCodeLength} Ziffern haben.</Text>
+                    <Text color="danger.100">{t('profile.ZipCode.requiredLength', { length: zipCodeLength })}</Text>
                 </Row>
             ) : (
                 <></>
@@ -379,7 +387,7 @@ const ProfileStudent: React.FC<Props> = () => {
 
                             {/* ZIPCODE */}
                             <ProfileSettingItem
-                                title="Postleitzahl" /* TBD: Put in translation */
+                                title={t('profile.ZipCode.zipCode')}
                                 href={() => {
                                     setEditZipCode(!editZipCode);
                                 }}
