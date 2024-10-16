@@ -20,6 +20,8 @@ import { Course_Category_Enum } from '../../gql/graphql';
 import { Subcourse } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -106,6 +108,7 @@ const StudentGroup: React.FC = () => {
     const navigate = useNavigate();
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
+    const breadcrumb = useBreadcrumbItems();
 
     const location = useLocation();
     const locState = location?.state as {
@@ -199,6 +202,7 @@ const StudentGroup: React.FC = () => {
 
                     {!loading && (
                         <VStack space={space['1']}>
+                            <Breadcrumb items={[breadcrumb.COURSES]} />
                             <VStack space={space['0.5']}>
                                 <Heading>{t('matching.group.helper.title')}</Heading>
                                 <Text>{t('matching.group.helper.content')}</Text>

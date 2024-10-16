@@ -18,6 +18,8 @@ import { Heading, useBreakpointValue } from 'native-base';
 import DisableableButton from '../../components/DisablebleButton';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -64,6 +66,7 @@ const Matching: React.FC<Props> = () => {
     const { t } = useTranslation();
     const toast = useToast();
     const { data } = useQuery(query);
+    const breadcrumb = useBreadcrumbItems();
 
     const [showEditModal, setShowEditModal] = useState<boolean>(false);
     const [showCancelModal, setShowCancelModal] = useState<boolean>();
@@ -148,6 +151,7 @@ const Matching: React.FC<Props> = () => {
                 }
             >
                 <VStack space={space['0.5']} paddingX={space['1']} width="100%" maxWidth={ContainerWidth}>
+                    <Breadcrumb items={[breadcrumb.MATCHING]} />
                     <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
                     <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                         {t('matching.blocker.firstContent')}{' '}

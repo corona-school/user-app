@@ -15,6 +15,8 @@ import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -183,6 +185,7 @@ const PupilGroup: React.FC<Props> = () => {
     const { data, loading, refetch: refetchOverview } = useQuery(query, { variables: { search: '' } });
     const { data: dataPast, refetch: refetchPast } = useQuery(queryPast, { variables: { search: '' } });
     const { loading: allSubcoursesSearchLoading, data: dataPublic, refetch: refetchPublic } = useQuery(queryPublic, { variables: { search: '' } });
+    const breadcrumb = useBreadcrumbItems();
 
     const publicSubcourses = useMemo(() => dataPublic?.subcoursesPublic ?? [], [dataPublic]);
     const subcoursesJoinedOrWaiting = useMemo(() => data?.me?.pupil?.subcoursesJoined.concat(data?.me?.pupil?.subcoursesWaitingList) ?? [], [data]);
@@ -241,6 +244,7 @@ const PupilGroup: React.FC<Props> = () => {
                     </Stack>
                 }
             >
+                <Breadcrumb items={[breadcrumb.COURSES]} />
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
