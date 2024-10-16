@@ -96,6 +96,51 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
     );
 }
 
+function ZipCodeInput({ hideInput, currentZipCode, editZipCode }: { hideInput: () => void; currentZipCode: number | null | undefined; editZipCode: boolean }) {
+    /* Extracted so that the whole profile page component doesn't rerender on every keystroke here */
+
+    const { t } = useTranslation();
+
+    const [zipCodeInput, setInputZipCode] = useState<string>();
+
+    /* Fill in the users zipCode if they want to edit it*/
+    useEffect(() => {
+        if (editZipCode) setInputZipCode(`${currentZipCode ?? ''}`);
+    }, [editZipCode]);
+
+    return (
+        /* TBD: Open number field keyboard on mobile. (Is this possible?) */
+        /* TBD: Refactor this Component (or at least all legacy Button uses) to use the new components */
+
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+
+                if (zipCodeInput?.length !== 5) {
+                    /* DO SOMETHING */
+                }
+
+                hideInput();
+                console.info(Number(zipCodeInput));
+            }}
+        >
+            <Row>
+                <Input
+                    maxLength={5} /* TBD: make this (and min?) conditional dependig on Location */
+                    type="text"
+                    autoFocus
+                    value={zipCodeInput}
+                    onChange={(e) => setInputZipCode(e.target.value.replace(/\D/g, ''))} //Ensures that only numbers can pe typed in
+                    size={8}
+                />
+                <NewButton className="mx-1" type="submit">
+                    {t('save')}
+                </NewButton>
+            </Row>
+        </form>
+    );
+}
+
 const ProfileStudent: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
@@ -104,7 +149,6 @@ const ProfileStudent: React.FC<Props> = () => {
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
     const [editZipCode, setEditZipCode] = useState<boolean>(false);
-    const [zipCodeInput, setInputZipCode] = useState<string>();
 
     const [userSettingChanged, setUserSettings] = useState<boolean>(false);
     const onSave = useCallback(() => setUserSettings(true), [setUserSettings]);
@@ -164,11 +208,6 @@ const ProfileStudent: React.FC<Props> = () => {
             window.scrollTo({ top: 0 });
         }
     }, [showSuccessfulChangeAlert, userSettingChanged]);
-
-    /* Fill in the users zipCode if they want to edit it*/
-    useEffect(() => {
-        if (editZipCode) setInputZipCode(`${data?.me?.student?.zipCode ?? ''}`);
-    }, [editZipCode]);
 
     return (
         <>
@@ -299,30 +338,11 @@ const ProfileStudent: React.FC<Props> = () => {
                                 {!editZipCode ? (
                                     data?.me?.student?.zipCode ?? '-'
                                 ) : (
-                                    /* TBD: Move this into its own component, so that this page doesn't rerender all the time */
-                                    /* TBD: Open number field keyboard on mobile. (Is this possible?) */
-                                    /* TBD: Refactor this Component (or at least all legacy Button uses) to use the new components */
-                                    <form
-                                        onSubmit={(e) => {
-                                            e.preventDefault();
-                                            setEditZipCode(false);
-                                            console.info(Number(zipCodeInput));
-                                        }}
-                                    >
-                                        <Row>
-                                            <Input
-                                                maxLength={5} /* TBD: make this (and min?) conditional dependig on Location */
-                                                type="text"
-                                                autoFocus
-                                                value={zipCodeInput}
-                                                onChange={(e) => setInputZipCode(e.target.value.replace(/\D/g, ''))} //Ensures that only numbers can pe typed in
-                                                size={8}
-                                            />
-                                            <NewButton className="mx-1" type="submit">
-                                                {t('save')}
-                                            </NewButton>
-                                        </Row>
-                                    </form>
+                                    <ZipCodeInput
+                                        hideInput={() => setEditZipCode(false)}
+                                        currentZipCode={data?.me?.student?.zipCode}
+                                        editZipCode={editZipCode}
+                                    />
                                 )}
                             </ProfileSettingItem>
                         </ProfileSettingRow>
