@@ -1,4 +1,20 @@
-import { Button, Column, Container, Flex, FormControl, Heading, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
+import {
+    Button,
+    Column,
+    Container,
+    Flex,
+    FormControl,
+    Heading,
+    Modal,
+    Row,
+    Stack,
+    Text,
+    TextArea,
+    useBreakpointValue,
+    useTheme,
+    VStack,
+    WarningIcon,
+} from 'native-base';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
@@ -17,6 +33,7 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { Input } from '@/components/Input';
 import { Button as NewButton } from '@/components/Button';
+import { Student_State_Enum } from '@/gql/graphql';
 
 type Props = {};
 
@@ -96,12 +113,23 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
     );
 }
 
-function ZipCodeInput({ hideInput, currentZipCode, editZipCode }: { hideInput: () => void; currentZipCode: number | null | undefined; editZipCode: boolean }) {
+function ZipCodeInput({
+    hideInput,
+    currentZipCode,
+    editZipCode,
+    zipCodeLength,
+}: {
+    hideInput: () => void;
+    currentZipCode: number | null | undefined;
+    editZipCode: boolean;
+    zipCodeLength: number | null;
+}) {
     /* Extracted so that the whole profile page component doesn't rerender on every keystroke here */
 
     const { t } = useTranslation();
 
     const [zipCodeInput, setInputZipCode] = useState<string>();
+    const [showWarning, setShowWarning] = useState<boolean>(false);
 
     /* Fill in the users zipCode if they want to edit it*/
     useEffect(() => {
@@ -110,33 +138,42 @@ function ZipCodeInput({ hideInput, currentZipCode, editZipCode }: { hideInput: (
 
     return (
         /* TBD: Open number field keyboard on mobile. (Is this possible?) */
-        /* TBD: Refactor this Component (or at least all legacy Button uses) to use the new components */
+        /* TBD: Look out for "Änderungen wurden erfolgreich gespeichert." - Toast on profile page... */
 
         <form
             onSubmit={(e) => {
                 e.preventDefault();
 
-                if (zipCodeInput?.length !== 5) {
-                    /* DO SOMETHING */
+                if (zipCodeLength && zipCodeInput?.length !== zipCodeLength) {
+                    setShowWarning(true);
+                } else {
+                    hideInput();
+                    console.info(Number(zipCodeInput));
+                    /* Mutate student's zipCode */
                 }
-
-                hideInput();
-                console.info(Number(zipCodeInput));
             }}
         >
             <Row>
                 <Input
-                    maxLength={5} /* TBD: make this (and min?) conditional dependig on Location */
+                    maxLength={zipCodeLength ?? undefined}
                     type="text"
                     autoFocus
                     value={zipCodeInput}
-                    onChange={(e) => setInputZipCode(e.target.value.replace(/\D/g, ''))} //Ensures that only numbers can pe typed in
+                    onChange={(e) => setInputZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only numbers can pe typed in
                     size={8}
                 />
                 <NewButton className="mx-1" type="submit">
                     {t('save')}
                 </NewButton>
             </Row>
+            {showWarning ? (
+                <Row>
+                    <WarningIcon m={1} color="danger.100" />
+                    <Text color="danger.100">Die Postleitzahl muss {zipCodeLength} Ziffern haben.</Text>
+                </Row>
+            ) : (
+                <></>
+            )}
         </form>
     );
 }
@@ -208,6 +245,18 @@ const ProfileStudent: React.FC<Props> = () => {
             window.scrollTo({ top: 0 });
         }
     }, [showSuccessfulChangeAlert, userSettingChanged]);
+
+    const zipCodeLength = () => {
+        switch (data?.me?.student?.state) {
+            case Student_State_Enum.At:
+            case Student_State_Enum.Ch:
+                return 4;
+            case Student_State_Enum.Other:
+                return null;
+            default:
+                return 5;
+        }
+    };
 
     return (
         <>
@@ -342,6 +391,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                         hideInput={() => setEditZipCode(false)}
                                         currentZipCode={data?.me?.student?.zipCode}
                                         editZipCode={editZipCode}
+                                        zipCodeLength={zipCodeLength()}
                                     />
                                 )}
                             </ProfileSettingItem>
