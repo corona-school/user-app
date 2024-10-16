@@ -6,7 +6,6 @@ import AppointmentMetaDetails from './AppointmentMetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
 import Description from './Description';
-import Buttons from './Buttons';
 import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
@@ -15,6 +14,9 @@ import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointme
 import { gql } from '../../gql';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
+import { Typography } from '../Typography';
+import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/icons-react';
+import { Button } from '../Button';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -138,6 +140,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                 : `http://localhost:3000/login-token?secret_token=${token}`
         );
     };
+    const wasRejected = !!appointment.participants?.every((e) => appointment.declinedBy?.includes(e.userID!));
+    const byMatch = !appointment.declinedBy?.includes(user?.userID!);
+    const wasRejectedByMe = appointment.declinedBy?.includes(user?.userID!);
+    const wasRejectedByMatch = appointment.appointmentType === 'match' && wasRejected && byMatch;
 
     return (
         <>
@@ -169,15 +175,61 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
                     qrCodeLink={loginHref}
                 />
+                {wasRejectedByMatch && (
+                    <>
+                        <div className="flex gap-x-1 items-center mt-4">
+                            <IconInfoCircle className="text-red-600" size={18} />
+                            <Typography className="text-red-600">{t('appointment.detail.cancelledBy', { name: appointment.displayName })}</Typography>
+                        </div>
+                        <Typography>{t('appointment.detail.rescheduleDescription', { name: appointment.displayName })}</Typography>
+                    </>
+                )}
                 <Description description={appointment.description} />
-
-                <Buttons
-                    onPress={user?.pupil ? () => setShowDeclineModal(true) : () => setShowDeleteModal(true)}
-                    onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
-                    canceled={(appointment.declinedBy?.includes(user?.userID ?? '') ?? false) || canceled}
-                    isOver={isPastAppointment}
-                    isLast={isLastAppointment}
-                />
+                <div className="flex flex-col md:flex-row gap-3">
+                    {user?.student && (
+                        <>
+                            <Button
+                                disabled={isPastAppointment}
+                                reasonDisabled={t('appointment.detail.reasonDisabled.editBtn.isOver')}
+                                variant={wasRejectedByMatch ? 'default' : 'outline'}
+                                onClick={() => navigate(`/edit-appointment/${appointment.id}`)}
+                                className="w-full lg:w-[300px]"
+                                leftIcon={wasRejectedByMatch ? <IconClockEdit /> : <IconPencil />}
+                            >
+                                {wasRejectedByMatch ? t('appointment.detail.rescheduleButton') : t('appointment.detail.editButton')}
+                            </Button>
+                            <Button
+                                disabled={isPastAppointment || isLastAppointment}
+                                reasonDisabled={
+                                    isPastAppointment
+                                        ? t('appointment.detail.reasonDisabled.deleteBtn.isOver')
+                                        : t('appointment.detail.reasonDisabled.deleteBtn.isLast')
+                                }
+                                onClick={() => setShowDeleteModal(true)}
+                                variant="destructive"
+                                className="w-full lg:w-[300px]"
+                                leftIcon={<IconTrash />}
+                            >
+                                {t('appointment.detail.deleteButton')}
+                            </Button>
+                        </>
+                    )}
+                    {user?.pupil && (
+                        <Button
+                            disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
+                            reasonDisabled={
+                                isPastAppointment
+                                    ? t('appointment.detail.reasonDisabled.cancelBtn.isOver')
+                                    : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
+                            }
+                            onClick={() => setShowDeclineModal(true)}
+                            variant="destructive"
+                            className="w-full lg:w-[300px]"
+                        >
+                            {t('appointment.detail.cancelButton')}
+                        </Button>
+                    )}
+                </div>
             </Box>
         </>
     );

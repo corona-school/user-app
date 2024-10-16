@@ -11,14 +11,12 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
-import useLogout from '../hooks/useLogout';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { user } = useApollo();
-    const logout = useLogout();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
@@ -112,7 +110,7 @@ const Settings: React.FC = () => {
                                         name: 'Abmelden im Account',
                                         documentTitle: 'Logout',
                                     });
-                                    logout();
+                                    navigate('/logout');
                                 }}
                             />
                         </Column>

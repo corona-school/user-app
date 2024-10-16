@@ -223,33 +223,6 @@ const ProfilePupil: React.FC<Props> = () => {
                 hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
-                headerContent={
-                    <Flex
-                        marginX="auto"
-                        width="100%"
-                        maxWidth={ContainerWidth}
-                        bg={HeaderStyle.bgColor}
-                        alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
-                        justifyContent="center"
-                        paddingY={HeaderStyle.paddingY}
-                        borderBottomRadius={16}
-                    >
-                        <Box
-                            marginX="auto"
-                            width="100%"
-                            maxWidth={ContainerWidth}
-                            bg={HeaderStyle.bgColor}
-                            alignItems="center"
-                            paddingY={space['2']}
-                            borderBottomRadius={16}
-                        >
-                            <Box position="relative" />
-                            <Heading color={colors.white} bold fontSize="xl">
-                                {data?.me?.firstname}
-                            </Heading>
-                        </Box>
-                    </Flex>
-                }
                 headerLeft={
                     !isMobileSM && (
                         <Stack alignItems="center" direction="row">

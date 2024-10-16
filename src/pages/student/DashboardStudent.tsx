@@ -26,6 +26,7 @@ import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
 import useApollo from '../../hooks/useApollo';
 import { useUserType } from '../../hooks/useApollo';
+import { Typography } from '@/components/Typography';
 
 type Props = {};
 
@@ -228,6 +229,11 @@ const DashboardStudent: React.FC<Props> = () => {
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <div>
+                            <Typography variant="h3" as="p">
+                                {t('hallo')} {data?.me.firstname}&nbsp;&nbsp;👋
+                            </Typography>
+                        </div>
                         <VStack>
                             <VStack marginBottom={space['1.5']}>
                                 <ImportantInformation variant="normal" />

@@ -10,6 +10,7 @@ import LoginToken from '../pages/LoginToken';
 import { RequireAuth } from '../User';
 import FullPageModal from '../modals/FullPageModal';
 import { lazyWithRetry } from '../lazy';
+import Logout from '../components/Logout';
 
 // All other pages load lazy:
 const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: true });
@@ -25,7 +26,7 @@ export default function Navigator() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/login-token" element={<LoginToken />} />
-
+                <Route path="/logout" element={<Logout />} />
                 <Route path="/welcome" element={<Welcome />} />
 
                 <Route

@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "الدرس #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "تم إلغاؤه بواسطة {{name}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -109,7 +110,10 @@
                 "bp2": "الدردشة وإرسال الملفات مباشرةً من هاتفك الذكي",
                 "bp3": "تلقي إشعارات على الجهاز",
                 "footer": "ما عليك سوى مسح رمز الاستجابة السريعة ضوئياً باستخدام هاتفك الذكي"
-            }
+            },
+            "cancelledBy": "موعد {{name}} ألغيت هذه",
+            "rescheduleButton": "موعد المناوبة",
+            "rescheduleDescription": "موعد إذا قمت بتحريك، سيتم تحميل {{name}}} مرة أخرى."
         },
         "zoomModal": {
             "useZoomApp": {
