@@ -2009,7 +2009,11 @@
             "appointments": "Lectures",
             "chat": "Chat",
             "forStudents": "For volunteers",
-            "forPupils": "For pupils"
+            "forPupils": "For pupils",
+            "requestMatch": "Form a new learning pair",
+            "createCourse": "Create courses",
+            "createAppointment": "Create lecture",
+            "editAppointment": "Edit lecture"
         }
     },
     "screening": {

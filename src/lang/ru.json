@@ -2013,7 +2013,11 @@
             "appointments": "Даты",
             "chat": "Чат",
             "forStudents": "Для помощников",
-            "forPupils": "Для учеников"
+            "forPupils": "Для учеников",
+            "requestMatch": "Сформировать новую учебную пару",
+            "createCourse": "Создание курсов",
+            "createAppointment": "Назначить встречу",
+            "editAppointment": "Редактировать назначение"
         }
     },
     "screening": {

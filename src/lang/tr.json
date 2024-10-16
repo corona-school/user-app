@@ -2013,7 +2013,11 @@
             "appointments": "Tarihler",
             "chat": "sohbet",
             "forStudents": "Yardımcılar için",
-            "forPupils": "Öğrenciler için"
+            "forPupils": "Öğrenciler için",
+            "requestMatch": "Yeni bir öğrenme çifti oluşturun",
+            "createCourse": "Kurslar oluşturun",
+            "createAppointment": "Randevu oluştur",
+            "editAppointment": "Randevu düzenleme"
         }
     },
     "screening": {
