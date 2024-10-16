@@ -158,14 +158,14 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
             watch.callback(this.diff(watch));
         };
 
+        if (entry) {
+            log('GraphQL Cache', 'immediately fire watcher');
+            watch.callback(this.diff(watch));
+        }
+
         if (name) {
             log('GraphQL Cache', 'store watcher');
             this.watchers.set(name, this.watchers.get(name)?.concat(watcher) ?? []);
-        }
-
-        if (entry && name) {
-            log('GraphQL Cache', 'immediately fire watcher');
-            watch.callback(this.diff(watch));
             return () => {
                 const updatedWatchers = this.watchers.get(name)?.filter((it) => it !== watcher) ?? [];
                 this.watchers.set(name, updatedWatchers);
