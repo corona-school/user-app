@@ -8,7 +8,8 @@ import CamerIcon from '../../assets/icons/lf-camera-icon.svg';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
+import { useMutation } from '@apollo/client';
 import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
@@ -17,6 +18,7 @@ import VideoButton from '../VideoButton';
 import { IconDeviceMobileMessage, IconPointFilled, IconArrowNarrowRight } from '@tabler/icons-react';
 import { canJoinMeeting } from '../../widgets/AppointmentDay';
 import { QRCodeSVG } from 'qrcode.react';
+import { gql } from '../../gql';
 
 type MetaProps = {
     date: string;
@@ -35,7 +37,6 @@ type MetaProps = {
     isOrganizer?: Appointment['isOrganizer'];
     overrideMeetingLink?: Appointment['override_meeting_link'];
     zoomMeetingUrl?: Appointment['zoomMeetingUrl'];
-    qrCodeLink: string;
 };
 const AppointmentMetaDetails: React.FC<MetaProps> = ({
     date,
@@ -54,9 +55,9 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     isOrganizer,
     overrideMeetingLink,
     zoomMeetingUrl,
-    qrCodeLink,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [loginURL, setLoginURL] = useState<string>('empty');
     const [, setCurrentTime] = useState(0);
     const { isMobile } = useLayoutHelper();
     const isMobilePhone = useBreakpointValue({
@@ -84,6 +85,29 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         () => canJoin ?? (startDateTime && duration && canJoinMeeting(startDateTime, duration, isOrganizer ? 240 : 10, DateTime.now())),
         [canJoin, duration, isOrganizer, startDateTime]
     );
+
+    useEffect(() => {
+        canStartMeeting && createShortTimeLoginData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const [createShortTimeLoginToken] = useMutation(
+        gql(`
+            mutation LoginTokenForSecondDevice($expiresAt: DateTime!, $description: String!) { tokenCreate(expiresAt: $expiresAt, description: $description) }
+        `)
+    );
+
+    const createShortTimeLoginData = async () => {
+        const expiresAt = DateTime.now().plus({ hours: 1 });
+        const res = await createShortTimeLoginToken({ variables: { expiresAt: expiresAt, description: `` } });
+        const token = res?.data?.tokenCreate;
+
+        setLoginURL(
+            process.env.NODE_ENV === 'production'
+                ? `https://app.lern-fair.de/login-token?secret_token=${token}&temporary`
+                : `http://localhost:3000/login-token?secret_token=${token}`
+        );
+    };
 
     return (
         <>
@@ -186,7 +210,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                             </HStack>
                         </VStack>
                         <VStack>
-                            <QRCodeSVG value={qrCodeLink} />
+                            <QRCodeSVG value={loginURL} />
                         </VStack>
                     </HStack>
                 )}

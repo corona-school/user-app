@@ -1,6 +1,6 @@
 import { Box, Modal, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useCallback, useMemo, useState, useEffect } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentMetaDetails from './AppointmentMetaDetails';
 import Header from './Header';
@@ -37,7 +37,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
     const [canceled, setCanceled] = useState<boolean>(false);
     const [showDeleteModal, setShowDeleteModal] = useState<boolean>(false);
     const [showDeclineModal, setShowDeclineModal] = useState<boolean>(false);
-    const [loginHref, setLoginHref] = useState<string>('empty');
     const navigate = useNavigate();
 
     const containerWidth = useBreakpointValue({
@@ -118,28 +117,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         [appointment.total]
     );
 
-    useEffect(() => {
-        createShortTimeLoginData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const [createShortTimeLoginToken] = useMutation(
-        gql(`
-            mutation ShortTimeAccessHelper($expiresAt: DateTime!, $description: String!) { tokenCreate(expiresAt: $expiresAt, description: $description) }
-        `)
-    );
-
-    const createShortTimeLoginData = async () => {
-        const expiresAt = DateTime.now().plus({ hours: 1 });
-        const res = await createShortTimeLoginToken({ variables: { expiresAt: expiresAt, description: `` } });
-        const token = res?.data?.tokenCreate;
-
-        setLoginHref(
-            process.env.NODE_ENV === 'production'
-                ? `https://app.lern-fair.de/login-token?secret_token=${token}&temporary`
-                : `http://localhost:3000/login-token?secret_token=${token}`
-        );
-    };
     const wasRejected = !!appointment.participants?.every((e) => appointment.declinedBy?.includes(e.userID!));
     const byMatch = !appointment.declinedBy?.includes(user?.userID!);
     const wasRejectedByMe = appointment.declinedBy?.includes(user?.userID!);
@@ -173,7 +150,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     isOrganizer={appointment.isOrganizer}
                     overrideMeetingLink={appointment.override_meeting_link}
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
-                    qrCodeLink={loginHref}
                 />
                 {wasRejectedByMatch && (
                     <>
