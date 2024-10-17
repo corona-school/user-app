@@ -76,6 +76,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
             default:
                 return schooltype;
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [modalType, gradeAsInt, schooltype, state]);
 
     useEffect(() => {
@@ -168,7 +169,9 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                     }}
                 >
                     <Row flexWrap="wrap" w="100%">
-                        <Text marginBottom={3}>{t('profile.State.weightingNote')}</Text>
+                        <Text marginBottom={3} flexBasis={'100%'}>
+                            {t('profile.State.weightingNote')}
+                        </Text>
                         {(state && (
                             <Column marginRight={3} mb={space['0.5']}>
                                 {(state && (
