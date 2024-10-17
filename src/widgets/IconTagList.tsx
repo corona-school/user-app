@@ -30,8 +30,8 @@ const IconTagList: React.FC<IIconTagList> = ({ iconPath, textIcon, text, link, v
         if (iconPath) return;
 
         return (
-            <Box size={'8'} position={'relative'} justifyContent="center" alignItems="center">
-                <CircleIcon color="lightText" position="absolute" size={'8'} top="0" left="0" zIndex="-1" />
+            <Box size={'10'} position={'relative'} justifyContent="center" alignItems="center">
+                <CircleIcon color="lightText" position="absolute" size={'10'} top="0" left="0" zIndex="-1" />
                 <Text bold fontSize="20px" textAlign={'center'}>
                     {textIcon}
                 </Text>
