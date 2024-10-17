@@ -127,12 +127,14 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
         isInputValid,
     ]);
 
+    const appointmentTile = data?.appointment?.title || t('appointment.appointmentTile.lecture', { position: data?.appointment?.position });
+
     return (
         <>
             <Breadcrumb
                 items={[
                     breadcrumbItems.APPOINTMENTS,
-                    { label: data?.appointment.displayName!, route: `${breadcrumbItems.APPOINTMENT.route}/${appointmentId}` },
+                    { label: appointmentTile, route: `${breadcrumbItems.APPOINTMENT.route}/${appointmentId}` },
                     breadcrumbItems.EDIT_APPOINTMENT,
                 ]}
                 className="mb-4"

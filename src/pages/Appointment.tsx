@@ -9,6 +9,7 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
+import { useTranslation } from 'react-i18next';
 
 export const STUDENT_APPOINTMENT = gql(`
     query appointmentStudent($appointmentId: Float!) {
@@ -96,6 +97,7 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     const { id } = useParams();
     const appointmentId = parseFloat(id ? id : '');
     const breadcrumb = useBreadcrumbItems();
+    const { t } = useTranslation();
 
     const {
         data: studentAppointment,
@@ -123,9 +125,11 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
         return '/appointments';
     };
 
+    const appointmentTile = data?.appointment?.title || t('appointment.appointmentTile.lecture', { position: data?.appointment?.position });
+    console.log({ appointmentTile });
     return (
         <WithNavigation previousFallbackRoute={getDefaultPreviousPath()} headerLeft={<NotificationAlert />}>
-            <Breadcrumb className="mx-4" items={[breadcrumb.APPOINTMENTS, { label: data?.appointment?.displayName }]} />
+            <Breadcrumb className="mx-4" items={[breadcrumb.APPOINTMENTS, { label: appointmentTile }]} />
             {loading && <CenterLoadingSpinner />}
             {!error && data?.appointment && <AppointmentDetail appointment={data?.appointment} startMeeting={startMeeting} />}
         </WithNavigation>
