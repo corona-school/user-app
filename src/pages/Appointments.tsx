@@ -138,7 +138,7 @@ const Appointments: React.FC = () => {
                     )
                 }
             >
-                <Breadcrumb className="px-4" items={[breadcrumb.APPOINTMENTS]} />
+                <Breadcrumb className="px-4 mb-4" items={[breadcrumb.APPOINTMENTS]} />
                 {(loadingMyAppointments || isLoadingHasAppointments) && <CenterLoadingSpinner />}
                 {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
 

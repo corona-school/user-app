@@ -202,7 +202,7 @@ const StudentGroup: React.FC = () => {
 
                     {!loading && (
                         <VStack space={space['1']}>
-                            <Breadcrumb items={[breadcrumb.COURSES]} />
+                            <Breadcrumb items={[breadcrumb.COURSES]} className="mb-2" />
                             <VStack space={space['0.5']}>
                                 <Heading>{t('matching.group.helper.title')}</Heading>
                                 <Text>{t('matching.group.helper.content')}</Text>

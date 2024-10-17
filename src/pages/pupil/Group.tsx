@@ -244,39 +244,37 @@ const PupilGroup: React.FC<Props> = () => {
                     </Stack>
                 }
             >
-                <Breadcrumb items={[breadcrumb.COURSES]} />
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                        <VStack space={space['1']}>
-                            <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
-                                <Heading>{t('matching.group.pupil.title')}</Heading>
-                                <Text marginBottom={space['0.5']}>{t('matching.group.pupil.content')}</Text>
-                            </VStack>
-
-                            <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-                                <SearchBar autoSubmit onSearch={search} />
-                            </VStack>
-
-                            <NavigationTabs
-                                tabs={[
-                                    {
-                                        title: t('matching.group.pupil.tabs.tab2.title'),
-                                        content: <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />,
-                                    },
-                                    {
-                                        title: t('matching.group.pupil.tabs.tab1.title'),
-                                        content: (
-                                            <MySubcourses
-                                                currentCourses={subcoursesJoinedOrWaiting}
-                                                pastCourses={dataPast?.me?.pupil?.subcoursesJoined ?? []}
-                                                loading={allSubcoursesSearchLoading}
-                                            />
-                                        ),
-                                    },
-                                ]}
-                            />
+                        <Breadcrumb items={[breadcrumb.COURSES]} className="mb-4" />
+                        <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+                            <Heading>{t('matching.group.pupil.title')}</Heading>
+                            <Text marginBottom={space['0.5']}>{t('matching.group.pupil.content')}</Text>
                         </VStack>
+
+                        <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
+                            <SearchBar autoSubmit onSearch={search} />
+                        </VStack>
+
+                        <NavigationTabs
+                            tabs={[
+                                {
+                                    title: t('matching.group.pupil.tabs.tab2.title'),
+                                    content: <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />,
+                                },
+                                {
+                                    title: t('matching.group.pupil.tabs.tab1.title'),
+                                    content: (
+                                        <MySubcourses
+                                            currentCourses={subcoursesJoinedOrWaiting}
+                                            pastCourses={dataPast?.me?.pupil?.subcoursesJoined ?? []}
+                                            loading={allSubcoursesSearchLoading}
+                                        />
+                                    ),
+                                },
+                            ]}
+                        />
                     </VStack>
                 )}
             </WithNavigation>

@@ -151,7 +151,7 @@ const Matching: React.FC<Props> = () => {
                 }
             >
                 <VStack space={space['0.5']} paddingX={space['1']} width="100%" maxWidth={ContainerWidth}>
-                    <Breadcrumb items={[breadcrumb.MATCHING]} />
+                    <Breadcrumb items={[breadcrumb.MATCHING]} className="mb-4" />
                     <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
                     <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                         {t('matching.blocker.firstContent')}{' '}
