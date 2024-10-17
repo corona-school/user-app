@@ -2085,7 +2085,11 @@
             "appointments": "Termine",
             "chat": "Chat",
             "forStudents": "Wissens-Center",
-            "forPupils": "Wissens-Center"
+            "forPupils": "Wissens-Center",
+            "requestMatch": "Ein neues Lernpaar bilden",
+            "createCourse": "Kurse anlegen",
+            "createAppointment": "Termin erstellen",
+            "editAppointment": "Termin bearbeiten"
         }
     },
     "screening": {

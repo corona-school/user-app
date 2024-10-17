@@ -4,7 +4,7 @@ import { extendTailwindMerge } from 'tailwind-merge';
 const customMerge = extendTailwindMerge({
     extend: {
         classGroups: {
-            'font-size': ['text-form'],
+            'font-size': ['text-form', 'text-detail'],
         },
     },
 });

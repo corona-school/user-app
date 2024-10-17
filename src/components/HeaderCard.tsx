@@ -24,7 +24,7 @@ const HeaderCard: React.FC<Props> = ({ children, leftContent, rightContent, onBa
             <div className="h-14 bg-primary-light fixed py-4 z-50 top-0 left-0 right-0">
                 <div className="flex items-center justify-between h-full px-4">
                     <div className="flex items-center">
-                        <div className={showBack ? '' : 'invisible'}>
+                        <div className={showBack ? '' : 'invisible hidden'}>
                             <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />
                         </div>
                         <NavLink to="/start" className="ml-1">

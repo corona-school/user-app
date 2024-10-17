@@ -12,6 +12,8 @@ import UpdateData from './UpdateData';
 import { gql } from '../../../gql';
 import { Subject } from '../../../gql/graphql';
 import SwitchLanguageButton from '../../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 const query = gql(`
     query StudentMatchRequestCount {
@@ -46,6 +48,7 @@ export const RequestMatchContext = createContext<RequestMatchContextType>({
 
 const RequestMatching: React.FC = () => {
     const { space } = useTheme();
+    const breadcrumb = useBreadcrumbItems();
     const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [matchRequest, setMatchRequest] = useState<MatchRequest>({
@@ -94,7 +97,6 @@ const RequestMatching: React.FC = () => {
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
-                showBack
                 previousFallbackRoute="/matching"
                 isLoading={loading || isLoading}
                 headerLeft={
@@ -105,6 +107,7 @@ const RequestMatching: React.FC = () => {
                 }
             >
                 <RequestMatchContext.Provider value={{ matchRequest, setSubject, removeSubject, setCurrentIndex, isEdit }}>
+                    <Breadcrumb items={[breadcrumb.MATCHING, breadcrumb.REQUEST_MATCH]} className="px-4" />
                     {!loading && !isLoading && data && (
                         <Box paddingX={space['1']} paddingBottom={space['1']} pt={6}>
                             {currentIndex === 0 && <UpdateData state={data.me.student!.state} refetchQuery={query} />}

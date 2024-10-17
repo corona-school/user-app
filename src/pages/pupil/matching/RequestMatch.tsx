@@ -15,6 +15,8 @@ import Priority from './Priority';
 import Subjects from './Subjects';
 import UpdateData from './UpdateData';
 import SwitchLanguageButton from '../../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 const query = gql(`
     query PupilMatchRequestInfo {
@@ -72,6 +74,7 @@ const RequestMatch: React.FC = () => {
         subjects: [],
         message: '',
     });
+    const breadcrumb = useBreadcrumbItems();
     const setSubject = useCallback(
         (subject: Subject) =>
             setMatchRequest((prev) => {
@@ -129,7 +132,6 @@ const RequestMatch: React.FC = () => {
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
-                showBack
                 previousFallbackRoute="/matching"
                 isLoading={loading || isLoading}
                 headerLeft={
@@ -154,6 +156,7 @@ const RequestMatch: React.FC = () => {
                         setSubjectPriority,
                     }}
                 >
+                    <Breadcrumb items={[breadcrumb.MATCHING, breadcrumb.REQUEST_MATCH]} className="px-4" />
                     {!loading && !isLoading && data && (
                         <Box paddingX={space['1']} paddingBottom={space['1']} pt={6}>
                             {currentIndex === 0 && <Filter />}
