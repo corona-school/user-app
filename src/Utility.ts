@@ -160,6 +160,11 @@ export const sortByDate = <Subcourse extends { firstLecture?: { start: any } | n
     });
 };
 
+export const renderTextWithEmailLinks = (text: string) => {
+    const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+    return text.replace(emailRegex, '<a class="underline" href="mailto:$1">$1</a>');
+};
+
 const Utility = {
     createToken,
     toTimerString,
@@ -170,5 +175,6 @@ const Utility = {
     handleDateString,
     getTrafficStatus,
     sortByDate,
+    renderTextWithEmailLinks,
 };
 export default Utility;

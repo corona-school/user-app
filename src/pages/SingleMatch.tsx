@@ -80,12 +80,14 @@ query SingleMatchAppointments_NO_CACHE($matchId: Int!, $take: Float!, $skip: Flo
             isOrganizer
             isParticipant
             override_meeting_link
+            declinedBy
             organizers(skip: 0, take: 5) {
                 id
                 firstname
                 lastname
             }
             participants(skip: 0, take: 10) {
+                userID
                 id
                 firstname
                 lastname

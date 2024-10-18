@@ -11,6 +11,8 @@ import isEmail from 'validator/es/lib/isEmail';
 import { Cooperation } from '../../gql/graphql';
 import { InfoCard } from '../../components/InfoCard';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import { Typography } from '@/components/Typography';
+import { renderTextWithEmailLinks } from '@/Utility';
 
 export default function PersonalData({ cooperation }: { cooperation?: Cooperation }) {
     const {
@@ -74,7 +76,13 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
 
     return (
         <VStack w="100%" space={space['1']} marginTop={space['1']}>
-            {cooperation && <InfoCard icon="loki" title={cooperation.welcomeTitle} message={cooperation.welcomeMessage} />}
+            {cooperation && (
+                <InfoCard icon="loki" title={cooperation.welcomeTitle}>
+                    <Typography className="text-white">
+                        <span dangerouslySetInnerHTML={{ __html: renderTextWithEmailLinks(cooperation.welcomeMessage) }} />
+                    </Typography>
+                </InfoCard>
+            )}
 
             <TextInput value={firstname} placeholder={t('firstname')} onChangeText={setFirstname} />
             <TextInput value={lastname} placeholder={t('lastname')} onChangeText={setLastname} />
