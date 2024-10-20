@@ -120,7 +120,7 @@ function ZipCodeInput({
     zipCodeLength,
 }: {
     hideInput: () => void;
-    currentZipCode: number | null | undefined;
+    currentZipCode: string | null | undefined;
     editZipCode: boolean;
     zipCodeLength: number | null;
 }) {
@@ -128,17 +128,17 @@ function ZipCodeInput({
 
     const { t } = useTranslation();
 
-    const [zipCodeInput, setInputZipCode] = useState<string>();
+    const [zipCodeInput, setInputZipCode] = useState<string>('');
     const [showWarning, setShowWarning] = useState<boolean>(false);
 
     /* Fill in the users zipCode if they want to edit it*/
     useEffect(() => {
-        if (editZipCode) setInputZipCode(`${currentZipCode ?? ''}`);
+        if (editZipCode) setInputZipCode(`${currentZipCode ?? ''}`); // TBD: This check is unnecessary, as it will always be true if this component is displayed
     }, [editZipCode]);
 
     const [changeZipCode] = useMutation(
         gql(`
-            mutation changeZipCode($zipCode: Float!) {
+            mutation changeZipCode($zipCode: String!) {
                 meUpdate(update: { student: { zipCode: $zipCode } })
             }
         `),
@@ -146,8 +146,7 @@ function ZipCodeInput({
     );
 
     return (
-        /* TBD: Open number field keyboard on mobile. (Is this possible?) */
-        /* TBD: Look out for "Änderungen wurden erfolgreich gespeichert." - Toast on profile page... */
+        /* TBD: Look out for "Änderungen wurden erfolgreich gespeichert." */
 
         <form
             onSubmit={(e) => {
@@ -156,7 +155,7 @@ function ZipCodeInput({
                 if (zipCodeLength && zipCodeInput?.length !== zipCodeLength) {
                     setShowWarning(true);
                 } else {
-                    changeZipCode({ variables: { zipCode: Number(zipCodeInput) } });
+                    changeZipCode({ variables: { zipCode: zipCodeInput } });
                     hideInput();
                 }
             }}
@@ -167,7 +166,7 @@ function ZipCodeInput({
                     type="text"
                     autoFocus
                     value={zipCodeInput}
-                    onChange={(e) => setInputZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only numbers can pe typed in
+                    onChange={(e) => setInputZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only digits can pe typed in
                     size={8}
                 />
                 <NewButton className="mx-1" type="submit">
