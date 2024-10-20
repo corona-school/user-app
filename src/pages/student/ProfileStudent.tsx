@@ -116,12 +116,10 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
 function ZipCodeInput({
     hideInput,
     currentZipCode,
-    editZipCode,
     zipCodeLength,
 }: {
     hideInput: () => void;
     currentZipCode: string | null | undefined;
-    editZipCode: boolean;
     zipCodeLength: number | null;
 }) {
     /* Extracted so that the whole profile page component doesn't rerender on every keystroke here */
@@ -131,10 +129,10 @@ function ZipCodeInput({
     const [zipCodeInput, setInputZipCode] = useState<string>('');
     const [showWarning, setShowWarning] = useState<boolean>(false);
 
-    /* Fill in the users zipCode if they want to edit it*/
+    /* Fill in the users current zipCode*/
     useEffect(() => {
-        if (editZipCode) setInputZipCode(`${currentZipCode ?? ''}`); // TBD: This check is unnecessary, as it will always be true if this component is displayed
-    }, [editZipCode]);
+        setInputZipCode(`${currentZipCode ?? ''}`);
+    }, []);
 
     const [changeZipCode] = useMutation(
         gql(`
@@ -397,7 +395,6 @@ const ProfileStudent: React.FC<Props> = () => {
                                     <ZipCodeInput
                                         hideInput={() => setEditZipCode(false)}
                                         currentZipCode={data?.me?.student?.zipCode}
-                                        editZipCode={editZipCode}
                                         zipCodeLength={zipCodeLength()}
                                     />
                                 )}
