@@ -117,10 +117,12 @@ function ZipCodeInput({
     hideInput,
     currentZipCode,
     zipCodeLength,
+    onSave,
 }: {
     hideInput: () => void;
     currentZipCode: string | null | undefined;
     zipCodeLength: number | null;
+    onSave: () => void;
 }) {
     /* Extracted so that the whole profile page component doesn't rerender on every keystroke here */
 
@@ -129,7 +131,7 @@ function ZipCodeInput({
     const [zipCodeInput, setInputZipCode] = useState<string>('');
     const [showWarning, setShowWarning] = useState<boolean>(false);
 
-    /* Fill in the users current zipCode*/
+    /* Fill in the users current zipCode */
     useEffect(() => {
         setInputZipCode(`${currentZipCode ?? ''}`);
     }, []);
@@ -144,8 +146,6 @@ function ZipCodeInput({
     );
 
     return (
-        /* TBD: Look out for "Änderungen wurden erfolgreich gespeichert." */
-
         <form
             onSubmit={(e) => {
                 e.preventDefault();
@@ -153,7 +153,7 @@ function ZipCodeInput({
                 if (zipCodeLength && zipCodeInput?.length !== zipCodeLength) {
                     setShowWarning(true);
                 } else {
-                    changeZipCode({ variables: { zipCode: zipCodeInput } });
+                    changeZipCode({ variables: { zipCode: zipCodeInput } }).then(onSave);
                     hideInput();
                 }
             }}
@@ -396,6 +396,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                         hideInput={() => setEditZipCode(false)}
                                         currentZipCode={data?.me?.student?.zipCode}
                                         zipCodeLength={zipCodeLength()}
+                                        onSave={onSave}
                                     />
                                 )}
                             </ProfileSettingItem>
