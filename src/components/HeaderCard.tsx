@@ -27,9 +27,11 @@ const HeaderCard: React.FC<Props> = ({ children, leftContent, rightContent, onBa
                         <div className={showBack ? '' : 'invisible hidden'}>
                             <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />
                         </div>
-                        <NavLink to="/start" className="ml-1">
-                            <Loki className="w-[106px] h-[34px] lg:w-[125px] lg:h-[40px]" />
-                        </NavLink>
+                        {!showBack && (
+                            <NavLink to="/start" className="ml-1">
+                                <Loki className="w-[106px] h-[34px] lg:w-[125px] lg:h-[40px]" />
+                            </NavLink>
+                        )}
                     </div>
                     <div className="flex flex-row items-center justify-end w-full md:hidden">
                         <div className="flex flex-row items-center">

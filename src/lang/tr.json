@@ -2020,7 +2020,8 @@
             "editAppointment": "Randevu düzenleme",
             "settings": "Ayarlar",
             "systemNotifications": "Sistem bildirimleri",
-            "newsletterNotifications": "Bülten bildirimleri"
+            "newsletterNotifications": "Bülten bildirimleri",
+            "profile": "Profil"
         }
     },
     "screening": {

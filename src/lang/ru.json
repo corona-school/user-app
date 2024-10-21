@@ -2020,7 +2020,8 @@
             "editAppointment": "Редактировать назначение",
             "settings": "Настройки",
             "systemNotifications": "Системные уведомления",
-            "newsletterNotifications": "Уведомления о новостях"
+            "newsletterNotifications": "Уведомления о новостях",
+            "profile": "Профиль"
         }
     },
     "screening": {

@@ -2020,7 +2020,8 @@
             "editAppointment": "Редагувати зустріч",
             "settings": "Налаштування",
             "systemNotifications": "Системні сповіщення",
-            "newsletterNotifications": "Сповіщення про розсилку новин"
+            "newsletterNotifications": "Сповіщення про розсилку новин",
+            "profile": "Профіль"
         }
     },
     "screening": {

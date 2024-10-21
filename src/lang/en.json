@@ -2016,7 +2016,8 @@
             "editAppointment": "Edit lecture",
             "settings": "Settings",
             "systemNotifications": "System notifications",
-            "newsletterNotifications": "Newsletter notifications"
+            "newsletterNotifications": "Newsletter notifications",
+            "profile": "Profile"
         }
     },
     "screening": {

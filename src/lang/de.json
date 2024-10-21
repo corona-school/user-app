@@ -2092,7 +2092,8 @@
             "editAppointment": "Termin bearbeiten",
             "settings": "Einstellungen",
             "systemNotifications": "System Benachrichtigungen",
-            "newsletterNotifications": "Newsletter Benachrichtigungen"
+            "newsletterNotifications": "Newsletter Benachrichtigungen",
+            "profile": "Profil"
         }
     },
     "screening": {

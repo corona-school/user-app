@@ -17,6 +17,10 @@ export const useBreadcrumbItems = () => {
             SETTINGS: { label: t('navigation.label.settings'), route: '/settings' },
             SYSTEM_NOTIFICATIONS: { label: t('navigation.label.systemNotifications'), route: '/notifications/system' },
             NEWSLETTER_NOTIFICATIONS: { label: t('navigation.label.newsletterNotifications'), route: '/notifications/newsletter' },
+            CHAT: { label: t('navigation.label.chat'), route: '/chat' },
+            KNOWLEDGE_CENTER_STUDENTS: { label: t('navigation.label.forStudents'), route: '/knowledge-helper' },
+            KNOWLEDGE_CENTER_PUPILS: { label: t('navigation.label.forPupils'), route: '/knowledge-pupil' },
+            PROFILE: { label: t('navigation.label.profile'), route: '/profile' },
         } as const;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [localStorageLanguage, t]);

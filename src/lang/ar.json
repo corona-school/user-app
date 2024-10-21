@@ -2016,7 +2016,8 @@
             "editAppointment": "موعد تعديل",
             "settings": "اعدادات",
             "systemNotifications": "إشعارات النظام",
-            "newsletterNotifications": "إشعارات الرسائل الإخبارية"
+            "newsletterNotifications": "إشعارات الرسائل الإخبارية",
+            "profile": "ملف تعريف"
         }
     },
     "screening": {
