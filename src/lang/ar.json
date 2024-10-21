@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "الدرس #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "تم إلغاؤه بواسطة {{name}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -101,7 +102,10 @@
             "editButton": "تعديل الموعد",
             "canceledToast": "تم إلغاء الموعد",
             "zoomTooltipStudent": "إذا قمت بالنقر على هذا الرابط، ستنضم إلى الاجتماع كمشارك. للانضمام إلى الاجتماع كمضيف، استخدم زر \"الانضمام إلى دردشة الفيديو الآن\".",
-            "zoomTooltipPupil": "لا تشارك هذا الرابط مع أشخاص آخرين. هذه هي الطريقة الوحيدة التي يمكننا من خلالها ضمان أمن المنصة."
+            "zoomTooltipPupil": "لا تشارك هذا الرابط مع أشخاص آخرين. هذه هي الطريقة الوحيدة التي يمكننا من خلالها ضمان أمن المنصة.",
+            "cancelledBy": "موعد {{name}} ألغيت هذه",
+            "rescheduleButton": "موعد المناوبة",
+            "rescheduleDescription": "موعد إذا قمت بتحريك، سيتم تحميل {{name}}} مرة أخرى."
         },
         "zoomModal": {
             "useZoomApp": {

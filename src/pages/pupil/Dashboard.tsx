@@ -22,6 +22,7 @@ import { Lecture } from '../../gql/graphql';
 import DisableableButton from '../../components/DisablebleButton';
 import { useRoles } from '../../hooks/useApollo';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { Typography } from '@/components/Typography';
 
 type Props = {};
 
@@ -220,6 +221,11 @@ const Dashboard: React.FC<Props> = () => {
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <div>
+                            <Typography className="mb-4" variant="h3" as="p">
+                                {t('hallo')} {data?.me.firstname}&nbsp;&nbsp;👋
+                            </Typography>
+                        </div>
                         <ImportantInformation variant="dark" />
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
