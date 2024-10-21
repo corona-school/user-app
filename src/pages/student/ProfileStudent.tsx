@@ -15,6 +15,8 @@ import CSSWrapper from '../../components/CSSWrapper';
 import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 type Props = {};
 
@@ -98,6 +100,7 @@ const ProfileStudent: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
+    const breadcrumb = useBreadcrumbItems();
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
 
@@ -163,7 +166,6 @@ const ProfileStudent: React.FC<Props> = () => {
     return (
         <>
             <WithNavigation
-                showBack={isMobileSM}
                 hideMenu={isMobileSM}
                 isLoading={loading}
                 previousFallbackRoute="/settings"
@@ -182,8 +184,8 @@ const ProfileStudent: React.FC<Props> = () => {
                         <AlertMessage content={t('profile.successmessage')} />
                     </Container>
                 )}
-
                 <VStack space={space['1']} maxWidth={ContainerWidth} marginX="auto" width="100%">
+                    <Breadcrumb className="mx-6" items={[breadcrumb.SETTINGS, breadcrumb.PROFILE]} />
                     {profileCompleteness !== 100 && (
                         <VStack paddingX={space['1.5']} space={space['1']}>
                             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>

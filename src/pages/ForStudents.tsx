@@ -6,6 +6,8 @@ import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 const tabs = ['handbook', 'mentoring', 'online-training'];
 
@@ -13,6 +15,7 @@ const KnowledgeCenter = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    const breadcrumb = useBreadcrumbItems();
 
     const path = pathname.split('/').pop() || '';
     const currentTabFromRoute = tabs.includes(path) ? path : tabs[0];
@@ -29,7 +32,8 @@ const KnowledgeCenter = () => {
                 }
             >
                 <div className="h-full flex flex-col">
-                    <div className="w-full max-w-5xl pb-3 px-1.5">
+                    <Breadcrumb className="mb-4" items={[breadcrumb.KNOWLEDGE_CENTER_STUDENTS]} />
+                    <div className="w-full max-w-5xl pb-3">
                         <Typography variant="h4" className="mb-1.5">
                             {t('forStudents.title')}
                         </Typography>

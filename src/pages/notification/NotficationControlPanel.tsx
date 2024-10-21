@@ -11,6 +11,8 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Outlet, useNavigate, useMatch, useSearchParams } from 'react-router-dom';
 import { getAllPreferencesInCategorySetToValue } from '../../helper/notification-helper';
 import { marketingNotificationCategories } from '../../helper/notification-preferences';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const channels = ['email', 'push'];
 
@@ -21,6 +23,7 @@ const NotificationControlPanel = () => {
     const { space } = useTheme();
     const toast = useToast();
     const { t } = useTranslation();
+    const breadcrumb = useBreadcrumbItems();
     const { userPreferences, updateUserPreferences, ...rest } = useUserPreferences();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
@@ -64,7 +67,6 @@ const NotificationControlPanel = () => {
     return (
         <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreferences, ...rest, channels }}>
             <WithNavigation
-                showBack={isMobileSM}
                 hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('notification.controlPanel.title')}
@@ -77,6 +79,10 @@ const NotificationControlPanel = () => {
                     )
                 }
             >
+                <Breadcrumb
+                    className="mx-4"
+                    items={[breadcrumb.SETTINGS, isNewsletter ? breadcrumb.NEWSLETTER_NOTIFICATIONS : breadcrumb.SYSTEM_NOTIFICATIONS]}
+                />
                 <View py={5}>
                     {!isMobile && (
                         <Column space={space['1']} marginBottom={space['2']} ml={3}>

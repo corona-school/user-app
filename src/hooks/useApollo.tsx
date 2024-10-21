@@ -646,7 +646,7 @@ const useApolloInternal = () => {
                 await client.mutate({
                     mutation: gql(`
           mutation RevokeToken($deviceToken: String!) {
-            tokenRevoke(token: $deviceToken)
+            tokenRevoke(token: $deviceToken, invalidateSessions: false)
           }
         `),
                     variables: { deviceToken: getDeviceToken()! },

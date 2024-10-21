@@ -15,6 +15,8 @@ import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -183,6 +185,7 @@ const PupilGroup: React.FC<Props> = () => {
     const { data, loading, refetch: refetchOverview } = useQuery(query, { variables: { search: '' } });
     const { data: dataPast, refetch: refetchPast } = useQuery(queryPast, { variables: { search: '' } });
     const { loading: allSubcoursesSearchLoading, data: dataPublic, refetch: refetchPublic } = useQuery(queryPublic, { variables: { search: '' } });
+    const breadcrumb = useBreadcrumbItems();
 
     const publicSubcourses = useMemo(() => dataPublic?.subcoursesPublic ?? [], [dataPublic]);
     const subcoursesJoinedOrWaiting = useMemo(() => data?.me?.pupil?.subcoursesJoined.concat(data?.me?.pupil?.subcoursesWaitingList) ?? [], [data]);
@@ -244,35 +247,34 @@ const PupilGroup: React.FC<Props> = () => {
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                        <VStack space={space['1']}>
-                            <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
-                                <Heading>{t('matching.group.pupil.title')}</Heading>
-                                <Text marginBottom={space['0.5']}>{t('matching.group.pupil.content')}</Text>
-                            </VStack>
-
-                            <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-                                <SearchBar autoSubmit onSearch={search} />
-                            </VStack>
-
-                            <NavigationTabs
-                                tabs={[
-                                    {
-                                        title: t('matching.group.pupil.tabs.tab2.title'),
-                                        content: <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />,
-                                    },
-                                    {
-                                        title: t('matching.group.pupil.tabs.tab1.title'),
-                                        content: (
-                                            <MySubcourses
-                                                currentCourses={subcoursesJoinedOrWaiting}
-                                                pastCourses={dataPast?.me?.pupil?.subcoursesJoined ?? []}
-                                                loading={allSubcoursesSearchLoading}
-                                            />
-                                        ),
-                                    },
-                                ]}
-                            />
+                        <Breadcrumb items={[breadcrumb.COURSES]} className="mb-4" />
+                        <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+                            <Heading>{t('matching.group.pupil.title')}</Heading>
+                            <Text marginBottom={space['0.5']}>{t('matching.group.pupil.content')}</Text>
                         </VStack>
+
+                        <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
+                            <SearchBar autoSubmit onSearch={search} />
+                        </VStack>
+
+                        <NavigationTabs
+                            tabs={[
+                                {
+                                    title: t('matching.group.pupil.tabs.tab2.title'),
+                                    content: <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />,
+                                },
+                                {
+                                    title: t('matching.group.pupil.tabs.tab1.title'),
+                                    content: (
+                                        <MySubcourses
+                                            currentCourses={subcoursesJoinedOrWaiting}
+                                            pastCourses={dataPast?.me?.pupil?.subcoursesJoined ?? []}
+                                            loading={allSubcoursesSearchLoading}
+                                        />
+                                    ),
+                                },
+                            ]}
+                        />
                     </VStack>
                 )}
             </WithNavigation>

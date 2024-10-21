@@ -2013,7 +2013,15 @@
             "appointments": "Дати",
             "chat": "Чат",
             "forStudents": "Для помічників",
-            "forPupils": "Для школярів"
+            "forPupils": "Для школярів",
+            "requestMatch": "Сформуйте нову навчальну пару",
+            "createCourse": "Створюйте курси",
+            "createAppointment": "Створити зустріч",
+            "editAppointment": "Редагувати зустріч",
+            "settings": "Налаштування",
+            "systemNotifications": "Системні сповіщення",
+            "newsletterNotifications": "Сповіщення про розсилку новин",
+            "profile": "Профіль"
         }
     },
     "screening": {

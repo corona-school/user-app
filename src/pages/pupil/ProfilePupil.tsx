@@ -16,6 +16,8 @@ import CSSWrapper from '../../components/CSSWrapper';
 import { gql } from '../../gql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { GradeTag } from '../../components/GradeSelector';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 type Props = {};
 
@@ -139,6 +141,7 @@ const ProfilePupil: React.FC<Props> = () => {
     const { colors, space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const breadcrumb = useBreadcrumbItems();
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
     const [nameModalVisible, setNameModalVisible] = useState<boolean>(false);
@@ -219,7 +222,6 @@ const ProfilePupil: React.FC<Props> = () => {
         <>
             <WithNavigation
                 isLoading={loading}
-                showBack={isMobileSM}
                 hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
@@ -235,6 +237,7 @@ const ProfilePupil: React.FC<Props> = () => {
                 {(showSuccessfulChangeAlert || userSettingChanged) && <AlertMessage content={t('profile.successmessage')} />}
 
                 <VStack space={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                    <Breadcrumb className="mx-6" items={[breadcrumb.SETTINGS, breadcrumb.PROFILE]} />
                     {profileCompleteness !== 100 && (
                         <VStack paddingX={space['1.5']} space={space['1']}>
                             <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
