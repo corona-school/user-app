@@ -8,9 +8,10 @@ type Props = {
     isFullHeight?: boolean;
     width?: number | string;
     padding?: number | string;
+    margin?: number | string;
 };
 
-const Card: React.FC<Props> = ({ children, flexibleWidth = false, variant = 'normal', isFullHeight = true, width, padding }) => {
+const Card: React.FC<Props> = ({ children, flexibleWidth = false, variant = 'normal', isFullHeight = true, width, padding, margin }) => {
     const p: { flex?: number } = {};
 
     if (isFullHeight) {
@@ -24,6 +25,7 @@ const Card: React.FC<Props> = ({ children, flexibleWidth = false, variant = 'nor
             borderRadius={8}
             padding={padding ? padding : 0}
             w={width ? width : flexibleWidth ? 'auto' : '250'}
+            margin={margin ? margin : 0}
             {...p}
         >
             {children}
