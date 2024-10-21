@@ -36,7 +36,7 @@ const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, max
         <>
             <div className="w-full">
                 <div className="mb-2">
-                    {pupilsOnWaitinglist && pupilsOnWaitinglist?.length > 0 ? (
+                    {prospects.length > 0 ? (
                         <Button className="w-fit" onClick={() => setIsIncreaseMaxParticipantsModalOpen(true)}>
                             {t('single.joinPupilModal.header')}
                         </Button>
