@@ -2017,7 +2017,10 @@
             "requestMatch": "Yeni bir öğrenme çifti oluşturun",
             "createCourse": "Kurslar oluşturun",
             "createAppointment": "Randevu oluştur",
-            "editAppointment": "Randevu düzenleme"
+            "editAppointment": "Randevu düzenleme",
+            "settings": "Ayarlar",
+            "systemNotifications": "Sistem bildirimleri",
+            "newsletterNotifications": "Bülten bildirimleri"
         }
     },
     "screening": {

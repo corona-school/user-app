@@ -2017,7 +2017,10 @@
             "requestMatch": "Сформуйте нову навчальну пару",
             "createCourse": "Створюйте курси",
             "createAppointment": "Створити зустріч",
-            "editAppointment": "Редагувати зустріч"
+            "editAppointment": "Редагувати зустріч",
+            "settings": "Налаштування",
+            "systemNotifications": "Системні сповіщення",
+            "newsletterNotifications": "Сповіщення про розсилку новин"
         }
     },
     "screening": {

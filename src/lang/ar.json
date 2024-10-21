@@ -2013,7 +2013,10 @@
             "requestMatch": "شراكة تعلم تشكيل",
             "createCourse": "إنشاء مقررات دراسية",
             "createAppointment": "موعد إنشاء",
-            "editAppointment": "موعد تعديل"
+            "editAppointment": "موعد تعديل",
+            "settings": "اعدادات",
+            "systemNotifications": "إشعارات النظام",
+            "newsletterNotifications": "إشعارات الرسائل الإخبارية"
         }
     },
     "screening": {

@@ -2089,7 +2089,10 @@
             "requestMatch": "Ein neues Lernpaar bilden",
             "createCourse": "Kurse anlegen",
             "createAppointment": "Termin erstellen",
-            "editAppointment": "Termin bearbeiten"
+            "editAppointment": "Termin bearbeiten",
+            "settings": "Einstellungen",
+            "systemNotifications": "System Benachrichtigungen",
+            "newsletterNotifications": "Newsletter Benachrichtigungen"
         }
     },
     "screening": {

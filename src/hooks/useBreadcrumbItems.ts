@@ -14,6 +14,9 @@ export const useBreadcrumbItems = () => {
             CREATE_COURSE: { label: t('navigation.label.createCourse'), route: '/create-course' },
             MATCHING: { label: t('navigation.label.matching'), route: '/matching' },
             REQUEST_MATCH: { label: t('navigation.label.requestMatch'), route: '/request-match' },
+            SETTINGS: { label: t('navigation.label.settings'), route: '/settings' },
+            SYSTEM_NOTIFICATIONS: { label: t('navigation.label.systemNotifications'), route: '/notifications/system' },
+            NEWSLETTER_NOTIFICATIONS: { label: t('navigation.label.newsletterNotifications'), route: '/notifications/newsletter' },
         } as const;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [localStorageLanguage, t]);

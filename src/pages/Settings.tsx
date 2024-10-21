@@ -11,6 +11,8 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbItems } from '@/hooks/useBreadcrumbItems';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -21,6 +23,7 @@ const Settings: React.FC = () => {
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
     const { canInstall } = useContext(InstallationContext);
+    const breadcrumb = useBreadcrumbItems();
 
     const [showDeactivate, setShowDeactivate] = useState(false);
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
@@ -48,7 +51,8 @@ const Settings: React.FC = () => {
 
     return (
         <>
-            <WithNavigation headerTitle={t('settings.header')} hideMenu showBack previousFallbackRoute="/start">
+            <WithNavigation headerTitle={t('settings.header')} hideMenu previousFallbackRoute="/start">
+                <Breadcrumb className="mx-6" items={[breadcrumb.SETTINGS]} />
                 <VStack paddingX={space['1.5']} pt={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <>
                         <ProfileSettingRow title={user?.firstname!} isSpace={false}>
