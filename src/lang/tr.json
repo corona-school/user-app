@@ -692,7 +692,8 @@
             "description": "Açıklama",
             "lessons": "Dersler",
             "waitinglist": "Bekleme listesi",
-            "participant": "Katılımcılar"
+            "participant": "Katılımcılar",
+            "prospectParticipants": "İlgilenenler"
         },
         "courseInfo": {
             "grade": "Sınıf seviyesi ",
@@ -2235,7 +2236,8 @@
         "questionUnaswerd": "Lütfen soruya cevap verin.",
         "questionsUnaswerd": "Lütfen soruları yanıtlayın.",
         "newFieldSameAsOld": "Bunu zaten seçtiniz.",
-        "missingSignature": "Bir imza eksik."
+        "missingSignature": "Bir imza eksik.",
+        "didNotChangeEmail": "E-posta adresi değişmemiştir."
     },
     "requireScreening": {
         "pupil": {
