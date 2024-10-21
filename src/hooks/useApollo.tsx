@@ -418,7 +418,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
                 {},
                 {
                     query: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
-                    variables: { deviceToken: getDeviceToken() },
+                    variables: { deviceToken: getDeviceToken(), deviceId: getOrCreateDeviceId() },
                 }
             )
         ).subscribe(observer);
