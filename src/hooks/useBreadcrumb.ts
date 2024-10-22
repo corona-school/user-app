@@ -3,12 +3,10 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 
-export const useBreadcrumb = () => {
-    const { t } = useTranslation();
-    const location = useLocation();
+export const useBreadcrumbRoutes = () => {
     const localStorageLanguage = localStorage.getItem('lernfair-language');
-
-    const routes = useMemo(() => {
+    const { t } = useTranslation();
+    return useMemo(() => {
         return {
             APPOINTMENTS: { label: t('navigation.label.appointments'), route: '/appointments' },
             APPOINTMENT: { label: '', route: '/appointment' },
@@ -27,6 +25,12 @@ export const useBreadcrumb = () => {
         } as const;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [localStorageLanguage, t]);
+};
+
+export const useBreadcrumb = () => {
+    const routes = useBreadcrumbRoutes();
+    const location = useLocation();
+    const localStorageLanguage = localStorage.getItem('lernfair-language');
 
     const items = useMemo(() => {
         const map = new Map<RegExp, BreadcrumbItem[]>();
