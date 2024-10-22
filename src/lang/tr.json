@@ -838,7 +838,8 @@
             "forStudents": "Yardımcılar için",
             "forPupils": "Öğrenciler için",
             "push": "Uygulama mesajları",
-            "faq": "SSS & İletişim"
+            "faq": "SSS & İletişim",
+            "manageSessions": "Cihazları yönetme"
         },
         "account": {
             "title": "Hesap",
@@ -2410,5 +2411,14 @@
     },
     "show": "Ekran",
     "showMore": "Daha fazla göster",
-    "showLess": "Daha az göster"
+    "showLess": "Daha az göster",
+    "sessionManager": {
+        "title": "Cihazları yönetme",
+        "description": "Burada hesabınıza bağlı olan tüm cihazları görebilirsiniz. Artık kullanmadığınız cihazları kaldırabilirsiniz.",
+        "lastUsed": "Son kullanılan:",
+        "toast": "Cihaz başarıyla kaldırıldı",
+        "thisDevice": "Bu cihaz",
+        "unknownDevice": "Bilinmeyen cihaz",
+        "deviceOnOs": "üzerinde"
+    }
 }

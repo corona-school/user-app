@@ -911,7 +911,8 @@
             "forStudents": "Wissens-Center",
             "forPupils": "Wissens-Center",
             "push": "App-Mitteilungen",
-            "faq": "Häufige Fragen (FAQ) & Kontakt"
+            "faq": "Häufige Fragen (FAQ) & Kontakt",
+            "manageSessions": "Geräte verwalten"
         },
         "account": {
             "title": "Konto",
@@ -1978,6 +1979,15 @@
                 }
             }
         }
+    },
+    "sessionManager": {
+        "title": "Geräte verwalten",
+        "description": "Hier kannst du alle Geräte sehen, die mit deinem Account verbunden sind. Du kannst Geräte entfernen, die du nicht mehr benutzt.",
+        "lastUsed": "Zuletzt benutzt:",
+        "toast": "Gerät erfolgreich entfernt",
+        "thisDevice": "Dieses Gerät",
+        "unknownDevice": "Unbekanntes Gerät",
+        "deviceOnOs": "auf"
     },
     "chat": {
         "title": "Chat",

@@ -77,6 +77,9 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />
                                 </Column>
                             )}
+                            <Column mb={tabspace}>
+                                <ListItem label={t('settings.general.manageSessions')} onPress={() => navigate('/manage-sessions')} />
+                            </Column>
                             {userType === 'student' && isMobile && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/knowledge-helper')} />
