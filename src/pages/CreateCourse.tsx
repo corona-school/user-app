@@ -35,6 +35,7 @@ import { Appointment } from '../types/lernfair/Appointment';
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import useApollo, { useUserType } from '../hooks/useApollo';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 export enum ChatType {
@@ -864,7 +865,6 @@ const CreateCourse: React.FC = () => {
         <AsNavigationItem path="group">
             <WithNavigation
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
-                showBack
                 previousFallbackRoute="/group"
                 isLoading={loadingStudent || loadingCourse}
                 headerLeft={
@@ -912,6 +912,7 @@ const CreateCourse: React.FC = () => {
                 >
                     {(((roles.includes('INSTRUCTOR') && canCreateCourse?.allowed) || roles.includes('COURSE_SCREENER')) && (
                         <VStack space={space['1']} padding={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
+                            <Breadcrumb />
                             <InstructionProgress
                                 isDark={false}
                                 currentIndex={currentIndex}
