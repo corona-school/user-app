@@ -838,7 +838,8 @@
             "forStudents": "Yardımcılar için",
             "forPupils": "Öğrenciler için",
             "push": "Uygulama mesajları",
-            "faq": "SSS & İletişim"
+            "faq": "SSS & İletişim",
+            "manageSessions": "Cihazları yönetme"
         },
         "account": {
             "title": "Hesap",
@@ -2404,16 +2405,25 @@
     "show": "Ekran",
     "showMore": "Daha fazla göster",
     "showLess": "Daha az göster",
-    "referral": {
-        "title": "Referral program",
-        "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
-        "share": {
-            "title": "Share your unique link",
-            "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
-        },
-        "social": {
-            "title": "Share on LinkedIn or Instagram",
-            "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+    "sessionManager": {
+        "title": "Cihazları yönetme",
+        "description": "Burada hesabınıza bağlı olan tüm cihazları görebilirsiniz. Artık kullanmadığınız cihazları kaldırabilirsiniz.",
+        "lastUsed": "Son kullanılan:",
+        "toast": "Cihaz başarıyla kaldırıldı",
+        "thisDevice": "Bu cihaz",
+        "unknownDevice": "Bilinmeyen cihaz",
+        "deviceOnOs": "üzerinde",
+        "referral": {
+            "title": "Referral program",
+            "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
+            "share": {
+                "title": "Share your unique link",
+                "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
+            },
+            "social": {
+                "title": "Share on LinkedIn or Instagram",
+                "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+            }
         }
     }
 }

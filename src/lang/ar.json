@@ -834,7 +834,8 @@
             "forStudents": "للمساعدين",
             "forPupils": "للتلاميذ",
             "push": "رسائل التطبيق",
-            "faq": "الأسئلة الشائعة والاتصال"
+            "faq": "الأسئلة الشائعة والاتصال",
+            "manageSessions": "إدارة الأجهزة"
         },
         "account": {
             "title": "حساب",
@@ -2400,16 +2401,25 @@
     "show": "شاشات العرض",
     "showMore": "عرض المزيد",
     "showLess": "عرض أقل",
-    "referral": {
-        "title": "Referral program",
-        "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
-        "share": {
-            "title": "Share your unique link",
-            "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
-        },
-        "social": {
-            "title": "Share on LinkedIn or Instagram",
-            "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+    "sessionManager": {
+        "title": "إدارة الأجهزة",
+        "description": "هنا يمكنك رؤية جميع الأجهزة المتصلة بحسابك. يمكنك إزالة الأجهزة التي لم تعد تستخدمها.",
+        "lastUsed": "آخر استخدام:",
+        "toast": "تمت إزالة الجهاز بنجاح",
+        "thisDevice": "هذا الجهاز",
+        "unknownDevice": "جهاز غير معروف",
+        "deviceOnOs": "على",
+        "referral": {
+            "title": "Referral program",
+            "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
+            "share": {
+                "title": "Share your unique link",
+                "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
+            },
+            "social": {
+                "title": "Share on LinkedIn or Instagram",
+                "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+            }
         }
     }
 }

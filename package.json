@@ -73,7 +73,7 @@
         "jest-resolve": "^27.4.2",
         "jest-watch-typeahead": "^1.0.0",
         "jsrsasign": "^10.8.1",
-        "luxon": "^3.0.4",
+        "luxon": "^3.2.1",
         "mini-css-extract-plugin": "^2.6.1",
         "native-base": "^3.4.19",
         "postcss": "^8.4.16",

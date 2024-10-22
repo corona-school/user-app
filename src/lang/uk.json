@@ -838,7 +838,8 @@
             "forStudents": "Для помічників",
             "forPupils": "Для школярів",
             "push": "Повідомлення у додатку",
-            "faq": "Часті запитання та контакти"
+            "faq": "Часті запитання та контакти",
+            "manageSessions": "Керування пристроями"
         },
         "account": {
             "title": "Обліковий запис",
@@ -2404,16 +2405,25 @@
     "show": "Дисплеї",
     "showMore": "Показати більше",
     "showLess": "Показати менше",
-    "referral": {
-        "title": "Referral program",
-        "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
-        "share": {
-            "title": "Share your unique link",
-            "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
-        },
-        "social": {
-            "title": "Share on LinkedIn or Instagram",
-            "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+    "sessionManager": {
+        "title": "Керування пристроями",
+        "description": "Тут ви можете побачити всі пристрої, які підключені до вашого акаунта. Ви можете видалити пристрої, які ви більше не використовуєте.",
+        "lastUsed": "Останній раз використовувався:",
+        "toast": "Пристрій успішно вилучено",
+        "thisDevice": "Цей пристрій",
+        "unknownDevice": "Невідомий пристрій",
+        "deviceOnOs": "на",
+        "referral": {
+            "title": "Referral program",
+            "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
+            "share": {
+                "title": "Share your unique link",
+                "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
+            },
+            "social": {
+                "title": "Share on LinkedIn or Instagram",
+                "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+            }
         }
     }
 }

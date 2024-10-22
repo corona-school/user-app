@@ -838,7 +838,8 @@
             "forStudents": "For volunteers",
             "forPupils": "For pupils",
             "push": "App messages",
-            "faq": "FAQ & Contact"
+            "faq": "FAQ & Contact",
+            "manageSessions": "Manage devices"
         },
         "account": {
             "title": "Account",
@@ -2400,18 +2401,25 @@
     "show": "Display",
     "showMore": "Show more",
     "showLess": "Show less",
-    "referral": {
-        "title": "Referral program",
-        "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
-        "share": {
-            "title": "Share your unique link",
-            "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms.",
-            "label": "Share unique invitation link",
-            "button": "Copy Link"
-        },
-        "social": {
-            "title": "Share on LinkedIn or Instagram",
-            "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+    "sessionManager": {
+        "title": "Manage devices",
+        "description": "Here you can see all the devices that are connected to your account. You can remove devices that you no longer use.",
+        "lastUsed": "Last used:",
+        "toast": "Device successfully removed",
+        "thisDevice": "This device",
+        "unknownDevice": "Unknown device",
+        "deviceOnOs": "on",
+        "referral": {
+            "title": "Referral program",
+            "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
+            "share": {
+                "title": "Share your unique link",
+                "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
+            },
+            "social": {
+                "title": "Share on LinkedIn or Instagram",
+                "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+            }
         }
     }
 }
