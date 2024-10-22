@@ -1,6 +1,6 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { useCallback, useState } from 'react';
-import { LFPupilsOnWaitinglist, PupilOnWaitinglist, SparseParticipant } from '@/types/lernfair/Course';
+import { PupilOnWaitinglist } from '@/types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import AddPupilModal from '@/modals/AddPupilModal';
 import IncreaseMaxParticipantsModal from '@/modals/IncreaseMaxParticipantsModal';
@@ -11,7 +11,7 @@ import { IconCircleCheckFilled } from '@tabler/icons-react';
 
 type ProspectListProps = {
     subcourseId: number;
-    prospects: SparseParticipant[];
+    prospects: PupilOnWaitinglist[];
     maxParticipants: number;
     refetch: () => Promise<ApolloQueryResult<any>>;
 };
@@ -38,11 +38,11 @@ const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, max
                 <div className="mb-2">
                     {prospects.length > 0 ? (
                         <Button className="w-fit" onClick={() => setIsIncreaseMaxParticipantsModalOpen(true)}>
-                            {t('single.joinPupilModal.header')}
+                            {t('single.increaseMaxParticipantsModal.header')}
                         </Button>
                     ) : (
                         <Alert className="w-full lg:w-fit mt-4" icon={<IconCircleCheckFilled />}>
-                            {t('single.waitinglist.noPupilsOnWaitinglist')}
+                            {t('single.prospectList.noProspects')}
                         </Alert>
                     )}
                 </div>
@@ -54,7 +54,7 @@ const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, max
                                 participant={{
                                     firstname: pupil.firstname!,
                                     lastname: pupil.lastname!,
-                                    grade: null,
+                                    grade: pupil.grade!,
                                     gradeAsInt: pupil.gradeAsInt,
                                     id: pupil.id,
                                     schooltype: pupil.schooltype!,

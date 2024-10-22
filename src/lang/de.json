@@ -887,14 +887,18 @@
         "prospectList": {
             "toast": "Schüler wurde dem Kurs hinzugefügt.",
             "error": "Schüler:in konnte nicht hinzugefügt werden.",
-            "noProspects": "Keine Interessent:innen."
+            "noProspects": "Keine Interessent:innen, die dich per Chat kontaktiert haben."
         },
         "joinPupilModal": {
             "header": "Schüler:innen nachrücken",
-            "add": "Hinzufügen",
+            "add": "Hinzufügen"
+        },
+        "increaseMaxParticipantsModal": {
+            "header": "Kursplätze erhöhen",
             "amount": "Anzahl Schüler:innen",
             "success": "Schüler:innen erfolgreich hinzugefügt",
-            "error": "Schüler:innen konnten nicht hinzugefügt werden"
+            "error": "Schüler:innen konnten nicht hinzugefügt werden",
+            "add": "Hinzufügen"
         },
         "removeParticipantFromCourseModal": {
             "header": "Schüler:in aus Kurs entfernen",

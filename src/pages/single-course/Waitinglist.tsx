@@ -81,6 +81,7 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
                 onOpenChange={setIsJoinPupilModalOpen}
                 subcourseId={subcourseId}
                 onPupilAdded={handleOnFinish}
+                type="waitinglist"
             />
             <IncreaseMaxParticipantsModal
                 isOpen={isIncreaseMaxParticipantsModalOpen}

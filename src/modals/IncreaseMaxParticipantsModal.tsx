@@ -38,10 +38,10 @@ const IncreaseMaxParticipantsModal = ({ isOpen, onOpenChange, subcourseId, onPar
     const handleOnIncreaseAmount = async () => {
         try {
             await increaseMaxParticipants({ variables: { maxParticipants: maxParticipants + participantsAmountToBeAdded, subcourseId: subcourseId } });
-            toast.success(t('single.joinPupilModal.success'));
+            toast.success(t('single.increaseMaxParticipantsModal.success'));
             if (onParticipantsIncreased) await onParticipantsIncreased();
         } catch (error) {
-            toast.error(t('single.joinPupilModal.error'));
+            toast.error(t('single.increaseMaxParticipantsModal.error'));
         } finally {
             onOpenChange(false);
         }
@@ -50,10 +50,10 @@ const IncreaseMaxParticipantsModal = ({ isOpen, onOpenChange, subcourseId, onPar
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen}>
             <ModalHeader>
-                <ModalTitle>{t('single.joinPupilModal.header')}</ModalTitle>
+                <ModalTitle>{t('single.increaseMaxParticipantsModal.header')}</ModalTitle>
             </ModalHeader>
             <div className="flex flex-col gap-y-2">
-                <Typography>{t('single.joinPupilModal.amount')}</Typography>
+                <Typography>{t('single.increaseMaxParticipantsModal.amount')}</Typography>
                 <StepperInput value={participantsAmountToBeAdded} increment={increment} decrement={decrement} />
             </div>
             <ModalFooter>
@@ -61,7 +61,7 @@ const IncreaseMaxParticipantsModal = ({ isOpen, onOpenChange, subcourseId, onPar
                     {t('cancel')}
                 </Button>
                 <Button className="w-full lg:w-fit" onClick={handleOnIncreaseAmount} isLoading={isIncreasing}>
-                    {t('single.joinPupilModal.add')}
+                    {t('single.increaseMaxParticipantsModal.add')}
                 </Button>
             </ModalFooter>
         </Modal>

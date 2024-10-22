@@ -15,10 +15,6 @@ interface AddPupilModalProps extends BaseModalProps {
     onPupilAdded: () => Promise<void>;
     type: 'waitinglist' | 'prospectlist';
 }
-// type JoinPupilModalProps = {
-//     pupil: (SparseParticipant & { schooltype: string | undefined; gradeAsInt: number | undefined }) | undefined;
-//     addPupilToCourse: (pupilId: number) => void;
-// };
 
 const ADD_PUPIL_FROM_WAITING_LIST_MUTATION = gql(`mutation JoinFromWaitinglist($subcourseId: Float!, $pupilId: Float!) { 
     subcourseJoinFromWaitinglist(subcourseId: $subcourseId, pupilId: $pupilId) 

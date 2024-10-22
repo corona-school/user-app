@@ -21,6 +21,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { ParticipantsList } from '../subcourse/ParticipantsList';
 import Waitinglist from '../single-course/Waitinglist';
+import ProspectList from '@/pages/single-course/ProspectList';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -138,6 +139,14 @@ query GetInstructorSubcourse($subcourseId: Int!) {
                 isPupil
                 isStudent
             }
+        }
+        prospectParticipants {
+            id
+            firstname
+            lastname
+            schooltype
+            grade
+            gradeAsInt
         }
     }
 }
@@ -385,6 +394,11 @@ const SingleCourseStudent = () => {
                                         {t('single.tabs.waitinglist')}
                                     </TabsTrigger>
                                 )}
+                                {showWaitingListTab && (
+                                    <TabsTrigger badge={instructorSubcourse.subcourse!.prospectParticipants.length} value="prospect-list">
+                                        {t('single.tabs.prospectParticipants')}
+                                    </TabsTrigger>
+                                )}
                             </TabsList>
                         )}
                         <TabsContent value="lectures">
@@ -408,6 +422,19 @@ const SingleCourseStudent = () => {
                                     subcourseId={subcourseId}
                                     maxParticipants={subcourse?.maxParticipants}
                                     pupilsOnWaitinglist={instructorSubcourse!.subcourse?.pupilsOnWaitinglist}
+                                    refetch={() => {
+                                        refetchInstructorData();
+                                        return refetchBasics();
+                                    }}
+                                />
+                            </TabsContent>
+                        )}
+                        {showWaitingListTab && (
+                            <TabsContent value="prospect-list">
+                                <ProspectList
+                                    subcourseId={subcourseId}
+                                    prospects={instructorSubcourse!.subcourse!.prospectParticipants}
+                                    maxParticipants={subcourse?.maxParticipants}
                                     refetch={() => {
                                         refetchInstructorData();
                                         return refetchBasics();
