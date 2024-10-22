@@ -1,0 +1,51 @@
+import { useTranslation } from 'react-i18next';
+import { DateTime } from 'luxon';
+import { IconDeviceMobile, IconDeviceIpadHorizontal, IconDeviceLaptop, IconInfoCircle } from '@tabler/icons-react';
+import { Typography } from '@/components/Typography';
+import { Button } from './Button';
+
+interface Props {
+    deviceType: 'mobile' | 'tablet' | 'desktop';
+    userAgent: string;
+    lastLogin: string;
+    logOut: () => void;
+    fetching: boolean;
+    isCurrentSession: boolean;
+}
+
+const SessionCard: React.FC<Props> = ({ userAgent, deviceType, lastLogin, logOut, isCurrentSession, fetching }) => {
+    const { t } = useTranslation();
+    let icon = <IconInfoCircle size={32} />;
+    if (deviceType === 'mobile') {
+        icon = <IconDeviceMobile size={32} />;
+    }
+    if (deviceType === 'tablet') {
+        icon = <IconDeviceIpadHorizontal size={32} />;
+    }
+    if (deviceType === 'desktop') {
+        icon = <IconDeviceLaptop size={32} />;
+    }
+
+    return (
+        <div className="flex justify-between items-center rounded-lg px-4 py-3 bg-primary-lighter text-foreground gap-5 flex-grow flex-shrink-0 max-w-xl min-h-20">
+            <div className="pt-1">{icon}</div>
+            <div className="flex flex-col items-center ">
+                <Typography className="font-bold">{userAgent ?? t('sessionManager.unknownDevice')}</Typography>
+                {lastLogin && (
+                    <Typography className="text-form font-normal [&_p]:leading-relaxed">
+                        {t('sessionManager.lastUsed')} {DateTime.fromJSDate(new Date(lastLogin)).toRelative()}
+                    </Typography>
+                )}
+            </div>
+            {!isCurrentSession ? (
+                <Button variant="secondary" onClick={logOut} disabled={fetching}>
+                    {t('logout')}
+                </Button>
+            ) : (
+                <Typography className="font-medium">{t('sessionManager.thisDevice')}</Typography>
+            )}
+        </div>
+    );
+};
+
+export default SessionCard;
