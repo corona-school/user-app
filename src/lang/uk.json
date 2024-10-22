@@ -814,10 +814,7 @@
         },
         "joinPupilModal": {
             "header": "Учні просуваються вгору",
-            "add": "Додати",
-            "amount": "Кількість учнів",
-            "success": "Pupils:inside успішно додано",
-            "error": "Студенти не можуть бути додані"
+            "add": "Додати"
         },
         "removeParticipantFromCourseModal": {
             "header": "Видалити студента з курсу",
@@ -826,7 +823,19 @@
             "error": "Student:in не вдалося видалити"
         },
         "removeFromCourse": "Видалити з курсу",
-        "addToCourse": "Додати до курсу"
+        "addToCourse": "Додати до курсу",
+        "prospectList": {
+            "toast": "Студента додано до курсу.",
+            "error": "Не вдалося додати Student:in.",
+            "noProspects": "Немає зацікавлених осіб, які зв'язалися з вами через чат."
+        },
+        "increaseMaxParticipantsModal": {
+            "header": "Збільшити кількість місць на курсах",
+            "amount": "Кількість учнів",
+            "success": "Pupils:inside успішно додано",
+            "error": "Студенти не можуть бути додані",
+            "add": "Додати"
+        }
     },
     "settings": {
         "general": {
