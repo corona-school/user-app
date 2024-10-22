@@ -18,6 +18,7 @@ import { Heading, useBreakpointValue } from 'native-base';
 import DisableableButton from '../../components/DisablebleButton';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -148,6 +149,7 @@ const Matching: React.FC<Props> = () => {
                 }
             >
                 <VStack space={space['0.5']} paddingX={space['1']} width="100%" maxWidth={ContainerWidth}>
+                    <Breadcrumb />
                     <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
                     <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                         {t('matching.blocker.firstContent')}{' '}

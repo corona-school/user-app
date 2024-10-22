@@ -11,7 +11,7 @@ const EditAppointment = () => {
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerLeft={<NotificationAlert />} showBack previousFallbackRoute={`/appointment/${appointmentId}`}>
+            <WithNavigation headerLeft={<NotificationAlert />} previousFallbackRoute={`/appointment/${appointmentId}`}>
                 <Box mx="4">
                     <AppointmentEdit appointmentId={appointmentId} />
                 </Box>

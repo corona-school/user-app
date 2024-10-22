@@ -15,6 +15,7 @@ import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -244,6 +245,7 @@ const PupilGroup: React.FC<Props> = () => {
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <Breadcrumb />
                         <VStack space={space['1']}>
                             <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
                                 <Heading>{t('matching.group.pupil.title')}</Heading>

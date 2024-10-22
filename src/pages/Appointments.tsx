@@ -14,6 +14,7 @@ import { gql } from './../gql';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/AppointmentList';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const getMyAppointments = gql(`
     query myAppointments_NO_CACHE($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
@@ -135,6 +136,7 @@ const Appointments: React.FC = () => {
                     )
                 }
             >
+                <Breadcrumb />
                 {(loadingMyAppointments || isLoadingHasAppointments) && <CenterLoadingSpinner />}
                 {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
 

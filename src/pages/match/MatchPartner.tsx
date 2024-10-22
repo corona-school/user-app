@@ -1,3 +1,5 @@
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import { Box, Button, Heading, HStack, Stack, Text, useTheme, VStack } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -13,6 +15,7 @@ type MatchPartnerProps = {
 };
 const MatchPartner: React.FC<MatchPartnerProps> = ({ partner, isPupil = false }) => {
     const [showMore, setShowMore] = useState<boolean>(false);
+    const breadcrumbRoutes = useBreadcrumbRoutes();
     const { space } = useTheme();
     const { t } = useTranslation();
 
@@ -34,10 +37,13 @@ const MatchPartner: React.FC<MatchPartnerProps> = ({ partner, isPupil = false })
         return strings.join(' • ');
     }, [partner, school, state]);
 
+    const partnerName = `${partner.firstname} ${partner.lastname}`;
+
     return (
         <Stack space={space['1']} justifyContent="center" alignItems="center">
+            <Breadcrumb items={[breadcrumbRoutes.MATCHING, { label: partnerName }]} className="self-start" />
             {isPupil ? <PupilAvatar /> : <StudentAvatar />}
-            <Heading>{`${partner.firstname} ${partner.lastname}`}</Heading>
+            <Heading>{partnerName}</Heading>
             <Text>{matchPartnerInfos}</Text>
             <HStack space={space['1']}>
                 {partner.subjectsFormatted.map((subject) => (

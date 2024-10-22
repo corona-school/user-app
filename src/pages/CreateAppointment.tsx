@@ -9,6 +9,7 @@ import AppointmentAssignment from './create-appointment/AppointmentAssignment';
 import AppointmentsInsight from './create-appointment/AppointmentsInsight';
 import { CreateAppointmentProvider } from '../context/AppointmentContext';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const CreateAppointment = () => {
     const [currentIndex, setCurrentIndex] = useState<number>(0);
@@ -71,9 +72,10 @@ const CreateAppointment = () => {
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} showBack previousFallbackRoute="/appointments">
+            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} previousFallbackRoute="/appointments">
                 <CreateAppointmentProvider>
-                    <Box mx="4" pt={6} flex={1}>
+                    <Box mx="4" flex={1}>
+                        <Breadcrumb />
                         <View position="sticky" mb={2} overflow="hidden">
                             <InstructionProgress
                                 currentIndex={currentIndex}

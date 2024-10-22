@@ -16,6 +16,7 @@ import Matches, { MatchCard } from '../match/Matches';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 const query = gql(`
@@ -137,6 +138,7 @@ const MatchingStudent: React.FC<Props> = () => {
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">
+                        <Breadcrumb />
                         <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
                         <VStack space={space['0.5']}>
                             <Text paddingBottom={space['0.5']}>{t('matching.request.check.content')}</Text>
