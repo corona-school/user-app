@@ -2018,7 +2018,8 @@
             "settings": "Settings",
             "systemNotifications": "System notifications",
             "newsletterNotifications": "Newsletter notifications",
-            "profile": "Profile"
+            "profile": "Profile",
+            "notifications": "Notifications"
         }
     },
     "screening": {

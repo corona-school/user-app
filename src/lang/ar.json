@@ -2018,7 +2018,8 @@
             "settings": "اعدادات",
             "systemNotifications": "إشعارات النظام",
             "newsletterNotifications": "إشعارات الرسائل الإخبارية",
-            "profile": "ملف تعريف"
+            "profile": "ملف تعريف",
+            "notifications": "الإشعارات"
         }
     },
     "screening": {

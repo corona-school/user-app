@@ -2022,7 +2022,8 @@
             "settings": "Ayarlar",
             "systemNotifications": "Sistem bildirimleri",
             "newsletterNotifications": "Bülten bildirimleri",
-            "profile": "Profil"
+            "profile": "Profil",
+            "notifications": "Bildirimler"
         }
     },
     "screening": {

@@ -2022,7 +2022,8 @@
             "settings": "Настройки",
             "systemNotifications": "Системные уведомления",
             "newsletterNotifications": "Уведомления о новостях",
-            "profile": "Профиль"
+            "profile": "Профиль",
+            "notifications": "Уведомления"
         }
     },
     "screening": {
