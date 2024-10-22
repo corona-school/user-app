@@ -27,7 +27,6 @@ const SessionCard: React.FC<Props> = ({ userAgent, deviceType, lastLogin, logOut
         icon = <IconDeviceLaptop size={32} />;
     }
 
-    // rewrite the component at the very top (native-base) in tailwind:
     return (
         <div className="flex justify-between items-center rounded-lg px-4 py-3 bg-primary-lighter text-foreground gap-5 flex-grow flex-shrink-0 max-w-xl min-h-20">
             <div className="pt-1">{icon}</div>
