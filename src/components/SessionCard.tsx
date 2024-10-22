@@ -1,5 +1,4 @@
 import { useTranslation } from 'react-i18next';
-import { toTimerString } from '@/Utility';
 import { DateTime } from 'luxon';
 import { IconDeviceMobile, IconDeviceIpadHorizontal, IconDeviceLaptop, IconInfoCircle } from '@tabler/icons-react';
 import { Typography } from '@/components/Typography';
@@ -34,7 +33,7 @@ const SessionCard: React.FC<Props> = ({ userAgent, deviceType, lastLogin, logOut
                 <Typography className="font-bold">{userAgent ?? t('sessionManager.unknownDevice')}</Typography>
                 {lastLogin && (
                     <Typography className="text-form font-normal [&_p]:leading-relaxed">
-                        {t('sessionManager.lastUsed')} {toTimerString(DateTime.now(), DateTime.fromJSDate(new Date(lastLogin)))}
+                        {t('sessionManager.lastUsed')} {DateTime.fromJSDate(new Date(lastLogin)).toRelative()}
                     </Typography>
                 )}
             </div>
