@@ -13,7 +13,7 @@ interface Props {
     isCurrentSession: boolean;
 }
 
-const SessionCard: React.FC<Props> = ({ userAgent, deviceType, lastLogin, logOut, isCurrentSession }) => {
+const SessionCard: React.FC<Props> = ({ userAgent, deviceType, lastLogin, logOut, isCurrentSession, fetching }) => {
     const { t } = useTranslation();
     let icon = <IconInfoCircle size={32} />;
     if (deviceType === 'mobile') {
@@ -38,7 +38,7 @@ const SessionCard: React.FC<Props> = ({ userAgent, deviceType, lastLogin, logOut
                 )}
             </div>
             {!isCurrentSession ? (
-                <Button variant="secondary" onClick={logOut}>
+                <Button variant="secondary" onClick={logOut} disabled={fetching}>
                     {t('logout')}
                 </Button>
             ) : (
