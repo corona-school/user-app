@@ -1,5 +1,4 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { Spacer, Stack, useToast } from 'native-base';
 import { gql } from '@/gql';
 import { useTranslation } from 'react-i18next';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -10,10 +9,10 @@ import { getDeviceId } from '@/hooks/useApollo';
 import { Typography } from '@/components/Typography';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import React from 'react';
+import { toast } from 'sonner';
 
 const SessionManager: React.FC = () => {
     const { t } = useTranslation();
-    const toast = useToast();
 
     const sessionQuery = useQuery(
         gql(`
@@ -32,7 +31,7 @@ const SessionManager: React.FC = () => {
     );
     const revokeSecret = async (id: number) => {
         await revokeQuery({ variables: { id: id } });
-        toast.show({ description: t('sessionManager.toast'), placement: 'top' });
+        toast.success(t('sessionManager.toast'));
         await sessionQuery.refetch();
     };
 
@@ -42,17 +41,16 @@ const SessionManager: React.FC = () => {
             previousFallbackRoute="/settings"
             headerTitle={t('sessionManager.title')}
             headerLeft={
-                <Stack alignItems="center" direction="row">
+                <div className="flex items-center flex-row">
                     <SwitchLanguageButton />
                     <NotificationAlert />
-                </Stack>
+                </div>
             }
         >
             <Typography variant="h2" className="mb-4">
                 {t('sessionManager.title')}
             </Typography>
             <Typography>{t('sessionManager.description')}</Typography>
-            <Spacer h={5} />
             <div className="p-10 flex flex-col gap-10 w-full">
                 {sessionQuery.data?.me.secrets
                     .filter((x) => x.type === Secret_Type_Enum.Token)
