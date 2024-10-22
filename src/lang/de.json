@@ -355,7 +355,7 @@
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
                     "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
-                    "max-matches": "Aktuell kannst du nur bis zu 2 Lernpaare gleichzeitig haben. Du solltest inaktive Lernpaare daher immer in der App auflösen.",
+                    "max-matches": "Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
@@ -2085,7 +2085,16 @@
             "appointments": "Termine",
             "chat": "Chat",
             "forStudents": "Wissens-Center",
-            "forPupils": "Wissens-Center"
+            "forPupils": "Wissens-Center",
+            "requestMatch": "Ein neues Lernpaar bilden",
+            "createCourse": "Kurse anlegen",
+            "createAppointment": "Termin erstellen",
+            "editAppointment": "Termin bearbeiten",
+            "settings": "Einstellungen",
+            "notifications": "Benachrichtigungen",
+            "systemNotifications": "System Benachrichtigungen",
+            "newsletterNotifications": "Newsletter Benachrichtigungen",
+            "profile": "Profil"
         }
     },
     "screening": {
