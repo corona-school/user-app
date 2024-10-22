@@ -126,7 +126,6 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     };
 
     const appointmentTile = data?.appointment?.title || t('appointment.appointmentTile.lecture', { position: data?.appointment?.position });
-    console.log({ appointmentTile });
     return (
         <WithNavigation previousFallbackRoute={getDefaultPreviousPath()} headerLeft={<NotificationAlert />}>
             <Breadcrumb className="mx-4" items={[breadcrumbRoutes.APPOINTMENTS, { label: appointmentTile }]} />

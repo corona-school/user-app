@@ -90,7 +90,7 @@ export const Breadcrumb = ({ className, includeHome = true, items = [] }: Breadc
                         </BreadcrumbSeparator>
                     </>
                 )}
-                {(breadcrumb || items).map((item, index) => {
+                {breadcrumb.map((item, index) => {
                     const isLast = index === breadcrumb.length - 1;
                     return (
                         <>
