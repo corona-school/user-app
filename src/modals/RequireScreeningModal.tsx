@@ -12,6 +12,7 @@ import RequireScreeningSettingsDropdown from '../widgets/RequireScreeningSetting
 import { asTranslationKey } from '../helper/string-helper';
 import { createPupilScreeningLink, createStudentScreeningLink } from '../helper/screening-helper';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -38,6 +39,7 @@ export function RequireScreeningModal() {
     const userType = useUserType();
     const isPupil = userType === 'pupil';
     usePageTitle(`Lern-Fair - Registrierung: Termin vereinbaren für ${isPupil ? 'Schüler:innen' : 'Helfer:innen'}`);
+    const { trackEvent } = useMatomo();
 
     const pupilScreenings = data?.me.pupil?.screenings ?? [];
     const needsPupilScreening = () => !pupilScreenings.length || pupilScreenings.some((e) => e.status === 'pending');
@@ -71,6 +73,15 @@ export function RequireScreeningModal() {
     const needScreening = () => (isPupil ? needsPupilScreening() : needsStudentScreening());
     const wasRejected = () => (isPupil ? wasPupilRejected() : wasStudentRejected());
 
+    const handleOnOpenCalendly = () => {
+        window.open(calendlyLink, '_blank');
+        trackEvent({
+            category: 'Book Appointment Page in Registration',
+            action: 'Click Button “Book Appointment”',
+            name: `${isPupil ? 'SuS' : 'HuH'} - Book Appointment`,
+        });
+    };
+
     return (
         <Flex p={space['2']} flex="1" alignItems="center" justifyContent="center" bgColor="primary.900">
             <HStack width="100%" space={space['1']} alignItems="center">
@@ -88,9 +99,7 @@ export function RequireScreeningModal() {
                     <Text color="lightText" textAlign="center">
                         {t(asTranslationKey(`requireScreening.${userType}.noScreening.content`))}
                     </Text>
-                    <Button onPress={() => window.open(calendlyLink, '_blank')}>
-                        {t(asTranslationKey(`requireScreening.${userType}.noScreening.makeAppointment`))}
-                    </Button>
+                    <Button onPress={handleOnOpenCalendly}>{t(asTranslationKey(`requireScreening.${userType}.noScreening.makeAppointment`))}</Button>
                     <Spacer />
                 </VStack>
             )}
