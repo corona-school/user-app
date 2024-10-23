@@ -216,6 +216,15 @@ const DashboardStudent: React.FC<Props> = () => {
 
     const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
+    const handleOnRecommendClick = () => {
+        setShowRecommendModal(true);
+        trackEvent({
+            category: 'Recommend Section on Start Page',
+            action: 'Click Button “Recommend Now”',
+            name: 'huh',
+        });
+    };
+
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -400,7 +409,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     closeable={false}
                                     content={<Text>{t('dashboard.helpers.contents.recommendFriends')}</Text>}
                                     button={
-                                        <Button variant="outline" onPress={() => setShowRecommendModal(true)}>
+                                        <Button variant="outline" onPress={handleOnRecommendClick}>
                                             {t('dashboard.helpers.buttons.recommend')}
                                         </Button>
                                     }
