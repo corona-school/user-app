@@ -2104,7 +2104,13 @@
             "notifications": "Benachrichtigungen",
             "systemNotifications": "System-Benachrichtigungen",
             "newsletterNotifications": "Newsletter-Benachrichtigungen",
-            "profile": "Profil"
+            "profile": "Profil",
+            "manageSessions": "Geräte verwalten",
+            "helpCenter": "Hilfebereich",
+            "newEmail": "E-Mail ändern",
+            "newPassword": "Passwort ändern",
+            "install": "Die Lern-Fair App",
+            "progress": "Erfolge & Fortschritte"
         }
     },
     "screening": {

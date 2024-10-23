@@ -2019,7 +2019,13 @@
             "systemNotifications": "System notifications",
             "newsletterNotifications": "Newsletter notifications",
             "profile": "Profile",
-            "notifications": "Notifications"
+            "notifications": "Notifications",
+            "manageSessions": "Manage devices",
+            "helpCenter": "Help center",
+            "newEmail": "Change e-mail",
+            "newPassword": "Change password",
+            "install": "The Lern-Fair app",
+            "progress": "Successes & progress"
         }
     },
     "screening": {

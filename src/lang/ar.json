@@ -2019,7 +2019,13 @@
             "systemNotifications": "إشعارات النظام",
             "newsletterNotifications": "إشعارات الرسائل الإخبارية",
             "profile": "ملف تعريف",
-            "notifications": "الإشعارات"
+            "notifications": "الإشعارات",
+            "manageSessions": "إدارة الأجهزة",
+            "helpCenter": "مركز المساعدة",
+            "newEmail": "تغيير البريد الإلكتروني",
+            "newPassword": "تغيير كلمة المرور",
+            "install": "Lern-Fair التطبيق",
+            "progress": "إنجازات والتقدم"
         }
     },
     "screening": {

@@ -2023,7 +2023,13 @@
             "systemNotifications": "Sistem bildirimleri",
             "newsletterNotifications": "Bülten bildirimleri",
             "profile": "Profil",
-            "notifications": "Bildirimler"
+            "notifications": "Bildirimler",
+            "manageSessions": "Cihazları yönetme",
+            "helpCenter": "Yardım alanı",
+            "newEmail": "E-posta değiştir",
+            "newPassword": "Şifre değiştirme",
+            "install": "Lern-Fair Uygulama",
+            "progress": "Başarılar ve ilerleme"
         }
     },
     "screening": {
