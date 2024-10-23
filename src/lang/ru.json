@@ -2023,7 +2023,13 @@
             "systemNotifications": "Системные уведомления",
             "newsletterNotifications": "Уведомления о новостях",
             "profile": "Профиль",
-            "notifications": "Уведомления"
+            "notifications": "Уведомления",
+            "manageSessions": "Управление устройствами",
+            "helpCenter": "Зона помощи",
+            "newEmail": "Изменить электронную почту",
+            "newPassword": "Изменить пароль",
+            "install": "Lern-Fair Приложение",
+            "progress": "Успехи и прогресс"
         }
     },
     "screening": {

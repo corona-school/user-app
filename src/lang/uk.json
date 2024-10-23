@@ -2023,7 +2023,13 @@
             "systemNotifications": "Системні сповіщення",
             "newsletterNotifications": "Сповіщення про розсилку новин",
             "profile": "Профіль",
-            "notifications": "Сповіщення"
+            "notifications": "Сповіщення",
+            "manageSessions": "Керування пристроями",
+            "helpCenter": "Довідкова зона",
+            "newEmail": "Змінити електронну пошту",
+            "newPassword": "Змінити пароль",
+            "install": "Lern-Fair Додаток",
+            "progress": "Успіхи та прогрес"
         }
     },
     "screening": {
