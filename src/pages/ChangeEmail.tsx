@@ -12,6 +12,7 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import DisableableButton from '../components/DisablebleButton';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const ChangeEmail = () => {
     const [newEmail, setNewEmail] = useState<string>();
@@ -70,7 +71,6 @@ const ChangeEmail = () => {
 
     return (
         <WithNavigation
-            showBack={isMobileSM}
             hideMenu={isMobileSM}
             previousFallbackRoute="/settings"
             headerLeft={
@@ -86,6 +86,7 @@ const ChangeEmail = () => {
                 <CenterLoadingSpinner />
             ) : (
                 <Flex overflowY="auto" height="100dvh">
+                    <Breadcrumb />
                     <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
                         <Logo />
                         <Heading mt={space['1']}>{t('login.setNewEmail')}</Heading>

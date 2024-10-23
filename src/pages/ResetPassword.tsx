@@ -12,6 +12,7 @@ import { log } from '../log';
 import WithNavigation from '../components/WithNavigation';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {
     layout: 'new-pw' | 'reset-pw';
@@ -90,7 +91,6 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
 
     return (
         <WithNavigation
-            showBack={isMobileSM}
             hideMenu={isMobileSM}
             previousFallbackRoute="/settings"
             headerLeft={
@@ -105,10 +105,13 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
             <Flex overflowY={'auto'} height="100dvh">
                 <>
                     {layout === 'new-pw' ? (
-                        <Box paddingY={space['2']} justifyContent="center" alignItems="center">
-                            <Logo />
-                            <Heading mt={space['1']}>{t('set_password.title')}</Heading>
-                        </Box>
+                        <>
+                            <Breadcrumb />
+                            <Box paddingY={space['2']} justifyContent="center" alignItems="center">
+                                <Logo />
+                                <Heading mt={space['1']}>{t('set_password.title')}</Heading>
+                            </Box>
+                        </>
                     ) : (
                         <Box position="relative" paddingY={space['2']} mb={space['3']} justifyContent="center" alignItems="center">
                             <Image

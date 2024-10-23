@@ -22,6 +22,12 @@ export const useBreadcrumbRoutes = () => {
             KNOWLEDGE_CENTER_STUDENTS: { label: t('navigation.label.forStudents'), route: '/knowledge-helper' },
             KNOWLEDGE_CENTER_PUPILS: { label: t('navigation.label.forPupils'), route: '/knowledge-pupil' },
             PROFILE: { label: t('navigation.label.profile'), route: '/profile' },
+            MANAGE_SESSIONS: { label: t('navigation.label.manageSessions'), route: '/manage-sessions' },
+            HELP_CENTER: { label: t('navigation.label.helpCenter'), route: '/hilfebereich' },
+            NEW_EMAIL: { label: t('navigation.label.newEmail'), route: '/new-email' },
+            NEW_PASSWORD: { label: t('navigation.label.newPassword'), route: '/new-password' },
+            INSTALL: { label: t('navigation.label.install'), route: '/install' },
+            PROGRESS: { label: t('navigation.label.progress'), route: '/progress' },
         } as const;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [localStorageLanguage, t]);
@@ -45,6 +51,12 @@ export const useBreadcrumb = () => {
         map.set(/knowledge-helper*/, [routes.KNOWLEDGE_CENTER_STUDENTS]);
         map.set(/knowledge-pupil*/, [routes.KNOWLEDGE_CENTER_PUPILS]);
         map.set(/notifications*/, [routes.SETTINGS, routes.NOTIFICATIONS]);
+        map.set(/hilfebereich/, [routes.SETTINGS, routes.HELP_CENTER]);
+        map.set(/manage-sessions/, [routes.SETTINGS, routes.MANAGE_SESSIONS]);
+        map.set(/new-email/, [routes.SETTINGS, routes.NEW_EMAIL]);
+        map.set(/new-password/, [routes.SETTINGS, routes.NEW_PASSWORD]);
+        map.set(/install/, [routes.SETTINGS, routes.INSTALL]);
+        map.set(/progress/, [routes.SETTINGS, routes.PROGRESS]);
         return Array.from(map.entries());
     }, [localStorageLanguage]);
 

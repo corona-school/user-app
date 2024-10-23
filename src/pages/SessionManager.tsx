@@ -11,6 +11,7 @@ import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import React from 'react';
 import { toast } from 'sonner';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const SessionManager: React.FC = () => {
     const { t } = useTranslation();
@@ -44,7 +45,6 @@ const SessionManager: React.FC = () => {
 
     return (
         <WithNavigation
-            showBack
             previousFallbackRoute="/settings"
             headerTitle={t('sessionManager.title')}
             headerLeft={
@@ -54,6 +54,7 @@ const SessionManager: React.FC = () => {
                 </div>
             }
         >
+            <Breadcrumb />
             <Typography variant="h2" className="mb-4">
                 {t('sessionManager.title')}
             </Typography>

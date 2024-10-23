@@ -16,6 +16,7 @@ import { useTranslation } from 'react-i18next';
 import { useContext, useEffect } from 'react';
 import { InstallationContext } from '@/context/InstallationProvider';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const InstallApp = () => {
     const { t } = useTranslation();
@@ -46,7 +47,6 @@ const InstallApp = () => {
         <WithNavigation
             hideMenu
             previousFallbackRoute="/start"
-            showBack
             headerLeft={
                 <div className="flex items-center">
                     <SwitchLanguageButton />
@@ -56,6 +56,7 @@ const InstallApp = () => {
         >
             <div className="flex flex-col max-w-5xl mx-auto gap-y-7">
                 <div>
+                    <Breadcrumb />
                     <Typography variant="h2" className="mb-4">
                         {t('installation.page.title')}
                     </Typography>
