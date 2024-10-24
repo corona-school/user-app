@@ -919,7 +919,8 @@
             "forStudents": "Wissens-Center",
             "forPupils": "Wissens-Center",
             "push": "App-Mitteilungen",
-            "faq": "Häufige Fragen (FAQ) & Kontakt"
+            "faq": "Häufige Fragen (FAQ) & Kontakt",
+            "manageSessions": "Geräte verwalten"
         },
         "account": {
             "title": "Konto",
@@ -1497,9 +1498,9 @@
                     "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "details": {
-                    "heading": "Details",
-                    "subheading": "Möchtest du noch etwas an deine:n zuküftigen Lernpartner:in loswerden?",
-                    "text": "Hier kannst du weitere Angaben zu dir oder deiner aktuellen Situation machen, z.B. hast du ein spezielles Thema bei dem du Hilfe benötigst oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte? Wir leiten diesen Text an deine:n zukünftige:n Lernpartner:in weiter.",
+                    "heading": "Deine aktuelle Situation",
+                    "subheading": "Diese Angabe wird an deine:n Lernpartner:in weitergeleitet.",
+                    "text": "Gibt es ein spezielles Thema bei dem du Hilfe benötigst? Oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte?",
                     "additionalInfo": "Deine Angaben",
                     "placeholder": "Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?"
                 },
@@ -1987,6 +1988,15 @@
             }
         }
     },
+    "sessionManager": {
+        "title": "Geräte verwalten",
+        "description": "Hier kannst du alle Geräte sehen, die mit deinem Account verbunden sind. Du kannst Geräte entfernen, die du nicht mehr benutzt.",
+        "lastUsed": "Zuletzt benutzt:",
+        "toast": "Gerät erfolgreich entfernt",
+        "thisDevice": "Dieses Gerät",
+        "unknownDevice": "Unbekanntes Gerät",
+        "deviceOnOs": "auf"
+    },
     "chat": {
         "title": "Chat",
         "openChat": "Chat öffnen",
@@ -2093,7 +2103,22 @@
             "appointments": "Termine",
             "chat": "Chat",
             "forStudents": "Wissens-Center",
-            "forPupils": "Wissens-Center"
+            "forPupils": "Wissens-Center",
+            "requestMatch": "Ein neues Lernpaar bilden",
+            "createCourse": "Kurse anlegen",
+            "createAppointment": "Termin erstellen",
+            "editAppointment": "Termin bearbeiten",
+            "settings": "Einstellungen",
+            "notifications": "Benachrichtigungen",
+            "systemNotifications": "System-Benachrichtigungen",
+            "newsletterNotifications": "Newsletter-Benachrichtigungen",
+            "profile": "Profil",
+            "manageSessions": "Geräte verwalten",
+            "helpCenter": "Hilfebereich",
+            "newEmail": "E-Mail ändern",
+            "newPassword": "Passwort ändern",
+            "install": "Die Lern-Fair App",
+            "progress": "Erfolge & Fortschritte"
         }
     },
     "screening": {
