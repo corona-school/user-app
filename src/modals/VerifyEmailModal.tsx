@@ -1,30 +1,26 @@
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
-import { Text, VStack, Heading, useTheme, useBreakpointValue, Flex, Box } from 'native-base';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../assets/icons/lernfair/ic_email.svg';
-import AlertMessage from '../widgets/AlertMessage';
-import DisableableButton from '../components/DisablebleButton';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { Typography } from '@/components/Typography';
+import { Button } from '@/components/Button';
+import { Alert } from '@/components/Alert';
+import { IconInfoCircleFilled } from '@tabler/icons-react';
+import { PublicFooter } from '@/components/PublicFooter';
 
-type Props = {
+interface VerifyEmailModalProps {
     email?: string;
     retainPath?: string;
     userType?: string;
-};
+}
 
-const VerifyEmailModal: React.FC<Props> = ({ email, retainPath, userType }) => {
-    const { space, sizes } = useTheme();
+const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps) => {
     const { t } = useTranslation();
     usePageTitle(`Lern-Fair - Registrierung: Bitte Email bestätigen für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
-
-    const ContentContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['contentContainerWidth'],
-    });
 
     const [sendVerification, _sendVerification] = useMutation(
         gql(`
@@ -46,48 +42,47 @@ const VerifyEmailModal: React.FC<Props> = ({ email, retainPath, userType }) => {
     }, [email, sendVerification]);
 
     return (
-        <Flex p={space['1']} flex="1" alignItems="center" justifyContent="center" bgColor="primary.900">
-            <VStack w={ContentContainerWidth} space={space['1']} flex="1" alignItems="center">
-                <Icon />
-                <Heading size="md" textAlign="center" color="lightText">
-                    {t('registration.verifyemail.title')}
-                </Heading>
+        <div className="flex flex-col flex-1 items-center justify-center bg-primary p-4">
+            <div className="flex flex-col flex-1 w-full lg:max-w-2xl items-center justify-center gap-y-6">
+                <Icon className="size-16" />
+                <Typography variant="h4" className="text-center text-white">
+                    {t('registration.verifyemail.title')} ✉️
+                </Typography>
                 {email && (
                     <>
-                        <Text color="lightText">
+                        <Typography className="text-white text-center">
                             {t('registration.verifyemail.mailsendto', {
                                 email: email,
                             })}
-                        </Text>
+                        </Typography>
                     </>
                 )}
-                <Text color="lightText" textAlign={'center'}>
-                    {t('registration.verifyemail.description')}
-                </Text>
-                <Text bold color="lightText">
-                    {t('registration.verifyemail.notreceived')}
-                </Text>
-                <DisableableButton
-                    isDisabled={_sendVerification?.loading}
+                <Typography className="text-white text-center">{t('registration.verifyemail.description')}</Typography>
+                <Typography className="text-white text-center font-bold">{t('registration.verifyemail.notreceived')}</Typography>
+                <Button
+                    disabled={_sendVerification?.loading}
+                    isLoading={_sendVerification?.loading}
                     reasonDisabled={t('reasonsDisabled.loading')}
-                    onPress={requestEmailVerification}
+                    onClick={requestEmailVerification}
                     variant="link"
+                    className="text-primary-light"
                 >
                     {t('registration.verifyemail.resend.button')}
-                </DisableableButton>
+                </Button>
                 {showSendEmailResult && (
-                    <Box width="100%">
-                        <AlertMessage
-                            content={
-                                showSendEmailResult === 'success'
-                                    ? t('registration.verifyemail.resend.successAlert')
-                                    : t('registration.verifyemail.resend.failedAlert')
-                            }
-                        />
-                    </Box>
+                    <div className="w-full max-w-[500px]">
+                        <Alert title={showSendEmailResult === 'success' ? t('done') : t('error')} icon={<IconInfoCircleFilled />}>
+                            {showSendEmailResult === 'success'
+                                ? t('registration.verifyemail.resend.successAlert')
+                                : t('registration.verifyemail.resend.failedAlert')}
+                        </Alert>
+                    </div>
                 )}
-            </VStack>
-        </Flex>
+            </div>
+            <div className="mt-4">
+                <PublicFooter />
+            </div>
+        </div>
     );
 };
 export default VerifyEmailModal;

@@ -287,7 +287,7 @@ const AppointmentCard: React.FC<Props> = ({
                                 {dateNextLecture && isTeaser && (
                                     <Row marginBottom={space['1']} alignItems="center">
                                         <Column marginRight="10px">
-                                            <Text>{<LFTimerIcon />}</Text>
+                                            <Text>{<LFTimerIcon className="size-7" />}</Text>
                                         </Column>
                                         <Column>
                                             {remainingTime && (
