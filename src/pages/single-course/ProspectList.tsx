@@ -18,7 +18,6 @@ type ProspectListProps = {
 
 const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, maxParticipants, refetch }) => {
     const [isJoinPupilModalOpen, setIsJoinPupilModalOpen] = useState(false);
-    const [isIncreaseMaxParticipantsModalOpen, setIsIncreaseMaxParticipantsModalOpen] = useState(false);
     const [pupilToAdd, setPupilToAdd] = useState<PupilOnWaitinglist>();
 
     const { t } = useTranslation();
@@ -36,11 +35,7 @@ const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, max
         <>
             <div className="w-full">
                 <div className="mb-2">
-                    {prospects.length > 0 ? (
-                        <Button className="w-fit" onClick={() => setIsIncreaseMaxParticipantsModalOpen(true)}>
-                            {t('single.increaseMaxParticipantsModal.header')}
-                        </Button>
-                    ) : (
+                    {prospects.length === 0 && (
                         <Alert className="w-full lg:w-fit mt-4" icon={<IconCircleCheckFilled />}>
                             {t('single.prospectList.noProspects')}
                         </Alert>
@@ -82,13 +77,6 @@ const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, max
                 subcourseId={subcourseId}
                 onPupilAdded={handleOnFinish}
                 type="prospectlist"
-            />
-            <IncreaseMaxParticipantsModal
-                isOpen={isIncreaseMaxParticipantsModalOpen}
-                onOpenChange={setIsIncreaseMaxParticipantsModalOpen}
-                onParticipantsIncreased={handleOnFinish}
-                maxParticipants={maxParticipants}
-                subcourseId={subcourseId}
             />
         </>
     );
