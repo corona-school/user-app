@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Typography } from '@/components/Typography';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const tabs = ['learn-methods'];
 
@@ -30,6 +31,7 @@ const ForPupils = () => {
             >
                 <div className="h-full flex flex-col">
                     <div className="w-full max-w-5xl pb-3 px-1.5">
+                        <Breadcrumb />
                         <Typography variant="h4" className="mb-1.5">
                             {t('forPupils.title')}
                         </Typography>

@@ -298,9 +298,9 @@
                     "max-dissolved-matches": "You cannot request a learning pair because you have already had too many learning pairs.",
                     "not-tutee": "You cannot request a learning pair as you are not registered for learning support.",
                     "max-requests": "You are already on the waiting list.",
+                    "max-matches": "Due to high demand, you can only have one learning partner at a time. If you are no longer working with your learning partner, please cancel the connection.",
                     "deactivated": "Registration for 1on1 learning support is temporarily closed due to high demand. If you have already submitted a request for learning support, we will contact you by email in the near future to discuss the next steps. In the meantime, please feel free to take advantage of our other offers. ",
-                    "deactivated_tooltip": "Registration is temporarily closed due to high demand.",
-                    "max-matches": "You can currently only have up to 2 learning pairs at the same time. You should therefore always dissolve inactive learning pairs in the app."
+                    "deactivated_tooltip": "Registration is temporarily closed due to high demand."
                 }
             }
         },
@@ -2020,7 +2020,22 @@
             "appointments": "Lectures",
             "chat": "Chat",
             "forStudents": "For volunteers",
-            "forPupils": "For pupils"
+            "forPupils": "For pupils",
+            "requestMatch": "Form a new learning pair",
+            "createCourse": "Create courses",
+            "createAppointment": "Create lecture",
+            "editAppointment": "Edit lecture",
+            "settings": "Settings",
+            "systemNotifications": "System notifications",
+            "newsletterNotifications": "Newsletter notifications",
+            "profile": "Profile",
+            "notifications": "Notifications",
+            "manageSessions": "Manage devices",
+            "helpCenter": "Help center",
+            "newEmail": "Change e-mail",
+            "newPassword": "Change password",
+            "install": "The Lern-Fair app",
+            "progress": "Successes & progress"
         }
     },
     "screening": {

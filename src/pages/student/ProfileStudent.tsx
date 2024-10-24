@@ -15,6 +15,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -163,7 +164,6 @@ const ProfileStudent: React.FC<Props> = () => {
     return (
         <>
             <WithNavigation
-                showBack={isMobileSM}
                 hideMenu={isMobileSM}
                 isLoading={loading}
                 previousFallbackRoute="/settings"
@@ -177,6 +177,9 @@ const ProfileStudent: React.FC<Props> = () => {
                     )
                 }
             >
+                <Container maxWidth={ContainerWidth} paddingX={space['1']}>
+                    <Breadcrumb />
+                </Container>
                 {(showSuccessfulChangeAlert || userSettingChanged) && (
                     <Container maxWidth={ContainerWidth} paddingX={space['1']}>
                         <AlertMessage content={t('profile.successmessage')} />

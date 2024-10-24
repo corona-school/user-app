@@ -16,6 +16,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import { gql } from '../../gql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { GradeTag } from '../../components/GradeSelector';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -219,7 +220,6 @@ const ProfilePupil: React.FC<Props> = () => {
         <>
             <WithNavigation
                 isLoading={loading}
-                showBack={isMobileSM}
                 hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
@@ -232,8 +232,10 @@ const ProfilePupil: React.FC<Props> = () => {
                     )
                 }
             >
+                <VStack maxWidth={ContainerWidth} paddingX={space['1']}>
+                    <Breadcrumb />
+                </VStack>
                 {(showSuccessfulChangeAlert || userSettingChanged) && <AlertMessage content={t('profile.successmessage')} />}
-
                 <VStack space={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
                     {profileCompleteness !== 100 && (
                         <VStack paddingX={space['1.5']} space={space['1']}>

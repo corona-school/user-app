@@ -20,6 +20,7 @@ import { Course_Category_Enum } from '../../gql/graphql';
 import { Subcourse } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -195,6 +196,7 @@ const StudentGroup: React.FC = () => {
                 }
             >
                 <VStack paddingX={space['1']} marginX="auto" marginBottom={space['1']} maxWidth={ContainerWidth} width="100%">
+                    <Breadcrumb />
                     {loading && <CenterLoadingSpinner />}
 
                     {!loading && (
