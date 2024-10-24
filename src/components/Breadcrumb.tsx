@@ -34,7 +34,16 @@ const BreadcrumbLink = React.forwardRef<
 >(({ asChild, className, ...props }, ref) => {
     const Comp = asChild ? Slot : Link;
 
-    return <Comp ref={ref} className={cn('text-detail underline transition-colors hover:text-primary line-clamp-1', className)} {...props} />;
+    return (
+        <Comp
+            ref={ref}
+            className={cn(
+                'text-detail underline transition-colors hover:text-primary w-max max-w-[100px] lg:max-w-full overflow-hidden whitespace-nowrap text-ellipsis',
+                className
+            )}
+            {...props}
+        />
+    );
 });
 
 const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWithoutRef<'span'>>(({ className, ...props }, ref) => (
@@ -44,7 +53,7 @@ const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWit
         role="link"
         aria-disabled="true"
         aria-current="page"
-        className={cn('font-normal text-primary text-detail line-clamp-1', className)}
+        className={cn('font-normal text-primary text-detail w-max max-w-[70px] lg:max-w-full overflow-hidden whitespace-nowrap text-ellipsis', className)}
         {...props}
     />
 ));
@@ -93,10 +102,10 @@ export const Breadcrumb = ({ className, includeHome = true, items = [] }: Breadc
                 {breadcrumb.map((item, index) => {
                     const isLast = index === breadcrumb.length - 1;
                     return (
-                        <>
+                        <React.Fragment key={item.label + index}>
                             {isLast ? (
                                 <BreadcrumbPath>
-                                    <BreadcrumbPage className="max-w-80">{item.label}</BreadcrumbPage>
+                                    <BreadcrumbPage>{item.label}</BreadcrumbPage>
                                 </BreadcrumbPath>
                             ) : (
                                 <BreadcrumbPath>
@@ -108,7 +117,7 @@ export const Breadcrumb = ({ className, includeHome = true, items = [] }: Breadc
                                     <IconSlash />
                                 </BreadcrumbSeparator>
                             )}
-                        </>
+                        </React.Fragment>
                     );
                 })}
             </BreadcrumbList>
