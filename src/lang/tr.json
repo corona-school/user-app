@@ -830,7 +830,8 @@
         "prospectList": {
             "toast": "Öğrenci kursa eklenmiştir.",
             "error": "Öğrenci eklenemedi.",
-            "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok."
+            "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok.",
+            "description": "Burada, sohbet yoluyla sizinle iletişime geçen ilgili tarafları görebilirsiniz."
         }
     },
     "settings": {

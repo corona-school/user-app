@@ -830,7 +830,8 @@
         "prospectList": {
             "toast": "Student has been added to the course.",
             "error": "Pupil could not be added.",
-            "noProspects": "No interested parties who have contacted you via chat."
+            "noProspects": "No interested parties who have contacted you via chat.",
+            "description": "Here you can see interested parties who have contacted you via chat."
         }
     },
     "settings": {
