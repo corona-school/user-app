@@ -16,7 +16,7 @@ import { DateTime } from 'luxon';
 import useInterval from '../../hooks/useInterval';
 import VideoButton from '../VideoButton';
 import { IconDeviceMobileMessage, IconPointFilled, IconArrowNarrowRight } from '@tabler/icons-react';
-import { canJoinMeeting } from '../../widgets/AppointmentDay';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { QRCodeSVG } from 'qrcode.react';
 import { gql } from '../../gql';
 
@@ -80,11 +80,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const canJoin = null;
-    const canStartMeeting = useMemo(
-        () => canJoin ?? (startDateTime && duration && canJoinMeeting(startDateTime, duration, isOrganizer ? 240 : 10, DateTime.now())),
-        [canJoin, duration, isOrganizer, startDateTime]
-    );
+    const canStartMeeting = useCanJoinMeeting(startDateTime, duration, isOrganizer ? 240 : 10, DateTime.now());
 
     useEffect(() => {
         canStartMeeting && createShortTimeLoginData();
