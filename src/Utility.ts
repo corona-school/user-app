@@ -11,20 +11,25 @@ export const TOKEN_LENGTH = 32;
 export const REDIRECT_PASSWORD = `/login`;
 
 export const toTimerString = (referenceDate: DateTime, theDate: DateTime) => {
-    const days = theDate.startOf('day').diff(referenceDate.startOf('day'), 'days').days;
+    const inPast = theDate < referenceDate;
+    let prefix = 'In';
+    if (inPast) {
+        prefix = 'Vor';
+    }
+    const days = Math.abs(theDate.startOf('day').diff(referenceDate.startOf('day'), 'days').days);
 
-    if (days > 1 && days <= 14) return `In ${days} Tagen`;
+    if (days > 1 && days <= 14) return `${prefix} ${days} Tagen`;
     if (days > 14) return theDate.toLocaleString();
 
     if (days === 1) {
-        return `Morgen`;
+        return inPast ? 'Gestern' : `Morgen`;
     }
 
     const diff = Math.abs(theDate.toUnixInteger() - referenceDate.toUnixInteger());
     const hrs = Math.floor((diff / (60 * 60)) % 24);
     const mins = Math.floor((diff / 60) % 60);
 
-    return `In ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
+    return `${prefix} ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
 };
 
 export const createToken = () => {

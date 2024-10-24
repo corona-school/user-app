@@ -8,6 +8,7 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { Achievement } from '../gql/graphql';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const achievementsQuery = gql(`
     query achievements {
@@ -80,7 +81,6 @@ const Progress = () => {
             path="/progress"
             children={
                 <WithNavigation
-                    showBack
                     previousFallbackRoute="/settings"
                     headerTitle="Progress"
                     headerLeft={
@@ -91,6 +91,7 @@ const Progress = () => {
                     }
                 >
                     <Box mx={margin}>
+                        <Breadcrumb />
                         <AchievementProgress achievements={achievements} inactiveAchievements={foundFurtherAchievements} />
                     </Box>
                 </WithNavigation>
