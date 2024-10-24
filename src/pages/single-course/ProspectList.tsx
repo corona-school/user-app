@@ -1,24 +1,20 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { useCallback, useState } from 'react';
-import { LFPupilsOnWaitinglist, PupilOnWaitinglist } from '@/types/lernfair/Course';
+import { PupilOnWaitinglist } from '@/types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import AddPupilModal from '@/modals/AddPupilModal';
-import IncreaseMaxParticipantsModal from '@/modals/IncreaseMaxParticipantsModal';
 import ParticipantRow from '../subcourse/ParticipantRow';
-import { Button } from '@/components/Button';
 import { Alert } from '@/components/Alert';
-import { IconCircleCheckFilled } from '@tabler/icons-react';
+import { IconCircleCheckFilled, IconInfoCircleFilled } from '@tabler/icons-react';
 
-type WaitingListProps = {
+type ProspectListProps = {
     subcourseId: number;
-    pupilsOnWaitinglist: LFPupilsOnWaitinglist;
-    maxParticipants: number;
+    prospects: PupilOnWaitinglist[];
     refetch: () => Promise<ApolloQueryResult<any>>;
 };
 
-const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitinglist, maxParticipants, refetch }) => {
+const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, refetch }) => {
     const [isJoinPupilModalOpen, setIsJoinPupilModalOpen] = useState(false);
-    const [isIncreaseMaxParticipantsModalOpen, setIsIncreaseMaxParticipantsModalOpen] = useState(false);
     const [pupilToAdd, setPupilToAdd] = useState<PupilOnWaitinglist>();
 
     const { t } = useTranslation();
@@ -36,18 +32,18 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
         <>
             <div className="w-full">
                 <div className="mb-2">
-                    {pupilsOnWaitinglist && pupilsOnWaitinglist?.length > 0 ? (
-                        <Button className="w-fit" onClick={() => setIsIncreaseMaxParticipantsModalOpen(true)}>
-                            {t('single.joinPupilModal.header')}
-                        </Button>
-                    ) : (
+                    {prospects.length === 0 ? (
                         <Alert className="w-full lg:w-fit mt-4" icon={<IconCircleCheckFilled />}>
-                            {t('single.waitinglist.noPupilsOnWaitinglist')}
+                            {t('single.prospectList.noProspects')}
+                        </Alert>
+                    ) : (
+                        <Alert className="w-full lg:w-fit mt-4" icon={<IconInfoCircleFilled />}>
+                            {t('single.prospectList.description')}
                         </Alert>
                     )}
                 </div>
                 <div className="flex flex-col gap-y-6 max-w-[980px]">
-                    {pupilsOnWaitinglist?.map((pupil) => {
+                    {prospects.map((pupil) => {
                         return (
                             <ParticipantRow
                                 key={pupil.id}
@@ -81,17 +77,10 @@ const Waitinglist: React.FC<WaitingListProps> = ({ subcourseId, pupilsOnWaitingl
                 onOpenChange={setIsJoinPupilModalOpen}
                 subcourseId={subcourseId}
                 onPupilAdded={handleOnFinish}
-                type="waitinglist"
-            />
-            <IncreaseMaxParticipantsModal
-                isOpen={isIncreaseMaxParticipantsModalOpen}
-                onOpenChange={setIsIncreaseMaxParticipantsModalOpen}
-                onParticipantsIncreased={handleOnFinish}
-                maxParticipants={maxParticipants}
-                subcourseId={subcourseId}
+                type="prospectlist"
             />
         </>
     );
 };
 
-export default Waitinglist;
+export default ProspectList;

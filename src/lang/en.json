@@ -692,7 +692,8 @@
             "description": "Description",
             "lessons": "Lessons",
             "waitinglist": "Waiting list",
-            "participant": "Participants"
+            "participant": "Participants",
+            "prospectParticipants": "Prospects"
         },
         "courseInfo": {
             "grade": "School grade: ",
@@ -814,8 +815,8 @@
         "joinPupilModal": {
             "header": "pupils move up",
             "add": "Add",
-            "amount": "Quantity pupils",
-            "success": "pupils successfully added",
+            "amount": "Number of pupils",
+            "success": "Pupils successfully added",
             "error": "pupils could not be added"
         },
         "removeParticipantFromCourseModal": {
@@ -825,7 +826,13 @@
             "error": "pupil could not be removed"
         },
         "removeFromCourse": "Remove from the course",
-        "addToCourse": "Add to course"
+        "addToCourse": "Add to course",
+        "prospectList": {
+            "toast": "Student has been added to the course.",
+            "error": "Pupil could not be added.",
+            "noProspects": "No interested parties who have contacted you via chat.",
+            "description": "Here you can see interested parties who have contacted you via chat."
+        }
     },
     "settings": {
         "general": {
@@ -2247,7 +2254,8 @@
         "questionUnaswerd": "Please answer the question.",
         "questionsUnaswerd": "Please answer the questions.",
         "newFieldSameAsOld": "You have already selected this.",
-        "missingSignature": "A signature is missing."
+        "missingSignature": "A signature is missing.",
+        "didNotChangeEmail": "The e-mail address has not changed."
     },
     "requireScreening": {
         "pupil": {
