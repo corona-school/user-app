@@ -3,22 +3,18 @@ import { useCallback, useState } from 'react';
 import { PupilOnWaitinglist } from '@/types/lernfair/Course';
 import { useTranslation } from 'react-i18next';
 import AddPupilModal from '@/modals/AddPupilModal';
-import IncreaseMaxParticipantsModal from '@/modals/IncreaseMaxParticipantsModal';
 import ParticipantRow from '../subcourse/ParticipantRow';
-import { Button } from '@/components/Button';
 import { Alert } from '@/components/Alert';
 import { IconCircleCheckFilled } from '@tabler/icons-react';
 
 type ProspectListProps = {
     subcourseId: number;
     prospects: PupilOnWaitinglist[];
-    maxParticipants: number;
     refetch: () => Promise<ApolloQueryResult<any>>;
 };
 
-const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, maxParticipants, refetch }) => {
+const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, refetch }) => {
     const [isJoinPupilModalOpen, setIsJoinPupilModalOpen] = useState(false);
-    const [isIncreaseMaxParticipantsModalOpen, setIsIncreaseMaxParticipantsModalOpen] = useState(false);
     const [pupilToAdd, setPupilToAdd] = useState<PupilOnWaitinglist>();
 
     const { t } = useTranslation();
@@ -36,11 +32,7 @@ const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, max
         <>
             <div className="w-full">
                 <div className="mb-2">
-                    {prospects.length > 0 ? (
-                        <Button className="w-fit" onClick={() => setIsIncreaseMaxParticipantsModalOpen(true)}>
-                            {t('single.increaseMaxParticipantsModal.header')}
-                        </Button>
-                    ) : (
+                    {prospects.length === 0 && (
                         <Alert className="w-full lg:w-fit mt-4" icon={<IconCircleCheckFilled />}>
                             {t('single.prospectList.noProspects')}
                         </Alert>
@@ -82,13 +74,6 @@ const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, max
                 subcourseId={subcourseId}
                 onPupilAdded={handleOnFinish}
                 type="prospectlist"
-            />
-            <IncreaseMaxParticipantsModal
-                isOpen={isIncreaseMaxParticipantsModalOpen}
-                onOpenChange={setIsIncreaseMaxParticipantsModalOpen}
-                onParticipantsIncreased={handleOnFinish}
-                maxParticipants={maxParticipants}
-                subcourseId={subcourseId}
             />
         </>
     );

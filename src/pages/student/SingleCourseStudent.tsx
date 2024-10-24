@@ -439,7 +439,6 @@ const SingleCourseStudent = () => {
                                 <ProspectList
                                     subcourseId={subcourseId}
                                     prospects={instructorSubcourse!.subcourse!.prospectParticipants}
-                                    maxParticipants={subcourse?.maxParticipants}
                                     refetch={() => {
                                         refetchInstructorData();
                                         return refetchBasics();
