@@ -814,7 +814,10 @@
         },
         "joinPupilModal": {
             "header": "pupils move up",
-            "add": "Add"
+            "add": "Add",
+            "amount": "Number of pupils",
+            "success": "Pupils successfully added",
+            "error": "pupils could not be added"
         },
         "removeParticipantFromCourseModal": {
             "header": "pupil Remove from course",
@@ -828,13 +831,6 @@
             "toast": "Student has been added to the course.",
             "error": "Pupil could not be added.",
             "noProspects": "No interested parties who have contacted you via chat."
-        },
-        "increaseMaxParticipantsModal": {
-            "header": "Increase course places",
-            "amount": "Number of pupils",
-            "success": "Pupils successfully added",
-            "error": "Pupils could not be added",
-            "add": "Add"
         }
     },
     "settings": {

@@ -814,7 +814,10 @@
         },
         "joinPupilModal": {
             "header": "Öğrencileri yedeklemek",
-            "add": "Ekle"
+            "add": "Ekle",
+            "amount": "Öğrenci sayısı",
+            "success": "Öğrenci başarıyla eklendi",
+            "error": "Öğrenciler eklenemedi"
         },
         "removeParticipantFromCourseModal": {
             "header": "Öğrenciyi kurstan çıkarma",
@@ -828,13 +831,6 @@
             "toast": "Öğrenci kursa eklenmiştir.",
             "error": "Öğrenci eklenemedi.",
             "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok."
-        },
-        "increaseMaxParticipantsModal": {
-            "header": "Kurs yerlerini artırın",
-            "amount": "Öğrenci sayısı",
-            "success": "Öğrenci başarıyla eklendi",
-            "error": "Öğrenciler eklenemedi",
-            "add": "Ekle"
         }
     },
     "settings": {
