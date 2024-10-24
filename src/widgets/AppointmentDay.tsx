@@ -6,6 +6,7 @@ import { AppointmentParticipant, Organizer } from '../gql/graphql';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 import { Appointment } from '../types/lernfair/Appointment';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 
 type Props = {
     start: string;
@@ -25,12 +26,6 @@ type Props = {
     appointmentId: Appointment['id'];
     canJoinVideochat?: boolean;
     declinedBy: Appointment['declinedBy'];
-};
-
-export const canJoinMeeting = (start: string, duration: number, joinBeforeMinutes: number, now: DateTime): boolean => {
-    const startDate = DateTime.fromISO(start).minus({ minutes: joinBeforeMinutes });
-    const end = DateTime.fromISO(start).plus({ minutes: duration });
-    return now.toUnixInteger() >= startDate.toUnixInteger() && now.toUnixInteger() <= end.toUnixInteger();
 };
 
 const AppointmentDay: React.FC<Props> = ({
@@ -75,7 +70,7 @@ const AppointmentDay: React.FC<Props> = ({
         return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
     };
 
-    const isCurrent = canJoinMeeting(start, duration, isOrganizer ? 240 : 10, DateTime.now());
+    const isCurrent = useCanJoinMeeting(start, duration, isOrganizer ? 240 : 10, DateTime.now());
     const currentMonth = isCurrentMonth(start);
 
     const width = useBreakpointValue({

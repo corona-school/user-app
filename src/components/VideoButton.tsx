@@ -3,12 +3,12 @@ import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import ZoomMeetingModal from '../modals/ZoomMeetingModal';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { canJoinMeeting } from '../widgets/AppointmentDay';
 import { DateTime } from 'luxon';
 import { Button } from './Button';
 import { IconVideo } from '@tabler/icons-react';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -71,10 +71,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         }
     };
 
-    const canStartMeeting = useMemo(
-        () => canJoin ?? (startDateTime && duration && canJoinMeeting(startDateTime, duration, isInstructor ? 240 : 10, DateTime.now())),
-        [canJoin, duration, isInstructor, startDateTime]
-    );
+    const canStartMeeting = useCanJoinMeeting(startDateTime!, duration!, isInstructor ? 240 : 10, DateTime.now(), canJoin);
 
     return (
         <>
