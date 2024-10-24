@@ -887,7 +887,8 @@
         "prospectList": {
             "toast": "Schüler wurde dem Kurs hinzugefügt.",
             "error": "Schüler:in konnte nicht hinzugefügt werden.",
-            "noProspects": "Keine Interessent:innen."
+            "description": "Hier siehst du Interessent:innen, die dich per Chat kontaktiert haben.",
+            "noProspects": "Keine Interessent:innen, die dich per Chat kontaktiert haben."
         },
         "joinPupilModal": {
             "header": "Schüler:innen nachrücken",

@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import AddPupilModal from '@/modals/AddPupilModal';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import { Alert } from '@/components/Alert';
-import { IconCircleCheckFilled } from '@tabler/icons-react';
+import { IconCircleCheckFilled, IconInfoCircleFilled } from '@tabler/icons-react';
 
 type ProspectListProps = {
     subcourseId: number;
@@ -32,9 +32,13 @@ const ProspectList: React.FC<ProspectListProps> = ({ subcourseId, prospects, ref
         <>
             <div className="w-full">
                 <div className="mb-2">
-                    {prospects.length === 0 && (
+                    {prospects.length === 0 ? (
                         <Alert className="w-full lg:w-fit mt-4" icon={<IconCircleCheckFilled />}>
                             {t('single.prospectList.noProspects')}
+                        </Alert>
+                    ) : (
+                        <Alert className="w-full lg:w-fit mt-4" icon={<IconInfoCircleFilled />}>
+                            {t('single.prospectList.description')}
                         </Alert>
                     )}
                 </div>
