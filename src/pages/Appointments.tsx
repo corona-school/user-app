@@ -136,28 +136,30 @@ const Appointments: React.FC = () => {
                     )
                 }
             >
-                <Breadcrumb />
-                {(loadingMyAppointments || isLoadingHasAppointments) && <CenterLoadingSpinner />}
-                {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
+                <div className="flex flex-col flex-1 h-full max-w-5xl mx-auto items-center">
+                    <Breadcrumb className="self-baseline" />
+                    {(loadingMyAppointments || isLoadingHasAppointments) && <CenterLoadingSpinner />}
+                    {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
 
-                {!hasAppointments && (
-                    <Box h={500} justifyContent="center">
-                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
-                    </Box>
-                )}
+                    {!hasAppointments && (
+                        <Box h={500} justifyContent="center">
+                            <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
+                        </Box>
+                    )}
 
-                {hasAppointments && (
-                    <AppointmentList
-                        appointments={appointments as Appointment[]}
-                        isLoadingAppointments={loadingMyAppointments || isFetchingMoreAppointments}
-                        isReadOnlyList={false}
-                        loadMoreAppointments={loadMoreAppointments}
-                        noNewAppointments={!hasMoreNewAppointments || !hasAppointments}
-                        noOldAppointments={!hasMoreOldAppointments || !hasAppointments}
-                        lastAppointmentId={hasAppointmentsResult?.me?.lastAppointmentId}
-                        height="100%"
-                    />
-                )}
+                    {hasAppointments && (
+                        <AppointmentList
+                            appointments={appointments as Appointment[]}
+                            isLoadingAppointments={loadingMyAppointments || isFetchingMoreAppointments}
+                            isReadOnlyList={false}
+                            loadMoreAppointments={loadMoreAppointments}
+                            noNewAppointments={!hasMoreNewAppointments || !hasAppointments}
+                            noOldAppointments={!hasMoreOldAppointments || !hasAppointments}
+                            lastAppointmentId={hasAppointmentsResult?.me?.lastAppointmentId}
+                            height="100%"
+                        />
+                    )}
+                </div>
             </WithNavigation>
         </AsNavigationItem>
     );
