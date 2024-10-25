@@ -81,9 +81,9 @@ const AppointmentTile: React.FC<Props> = ({
                             <div className="flex">
                                 {avatars?.map((type, i) =>
                                     type === 'student' ? (
-                                        <StudentAvatar className="size-5" key={`student-${i}`} />
+                                        <StudentAvatar className="size-5 mx-[-3px]" key={`student-${i}`} />
                                     ) : (
-                                        <PupilAvatar className="size-5" key={`pupil-${i}`} />
+                                        <PupilAvatar className="size-5 mx-[-3px]" key={`pupil-${i}`} />
                                     )
                                 )}
                             </div>
