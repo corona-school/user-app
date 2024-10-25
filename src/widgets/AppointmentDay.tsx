@@ -83,7 +83,7 @@ const AppointmentDay: React.FC<Props> = ({
         <>
             {!isReadOnly && organizers && participants ? (
                 <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 50 : 100 }}>
-                    <div className="w-[80%] lg:w-full mt-6">
+                    <div className="w-full mt-6">
                         <div className="flex">
                             <AppointmentDate current={isCurrent} date={start} />
                             <AppointmentTile
@@ -109,7 +109,7 @@ const AppointmentDay: React.FC<Props> = ({
                 </div>
             ) : (
                 <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 100 }}>
-                    <div className="w-[80%] lg:w-full mt-6">
+                    <div className="w-full mt-6">
                         <div className="flex">
                             <AppointmentDate current={isCurrent} date={start} isReadOnly={isReadOnly} />
 
