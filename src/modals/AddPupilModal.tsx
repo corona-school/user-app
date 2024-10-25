@@ -54,12 +54,8 @@ const AddPupilModal = ({ isOpen, onOpenChange, subcourseId, pupil, onPupilAdded,
                         <Typography as="span" className="block font-bold">
                             {pupil.firstname} {pupil.lastname}
                         </Typography>
-                        {pupil?.schooltype && pupil?.gradeAsInt && (
-                            <Typography>
-                                {pupil?.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
-                                {getGradeLabel(pupil.gradeAsInt)}
-                            </Typography>
-                        )}
+                        {pupil.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
+                        {getGradeLabel(pupil.gradeAsInt)}
                     </Typography>
                 </div>
             )}
