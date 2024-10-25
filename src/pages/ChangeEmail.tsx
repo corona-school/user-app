@@ -106,11 +106,7 @@ const ChangeEmail = () => {
                         <Row justifyContent="center">
                             <DisableableButton
                                 isDisabled={!canChange}
-                                reasonDisabled={
-                                    data?.me?.email.toLowerCase().trim() === newEmail?.toLowerCase().trim()
-                                        ? t('reasonsDisabled.didNotChangeEmail')
-                                        : t('reasonsDisabled.invalidEMail')
-                                }
+                                reasonDisabled={t('reasonsDisabled.invalidEMail')}
                                 width={buttonWidth}
                                 onPress={resetEmail}
                             >
