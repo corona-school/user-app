@@ -2258,8 +2258,7 @@
         "questionUnaswerd": "Lütfen soruya cevap verin.",
         "questionsUnaswerd": "Lütfen soruları yanıtlayın.",
         "newFieldSameAsOld": "Bunu zaten seçtiniz.",
-        "missingSignature": "Bir imza eksik.",
-        "didNotChangeEmail": "E-posta adresi değişmemiştir."
+        "missingSignature": "Bir imza eksik."
     },
     "requireScreening": {
         "pupil": {

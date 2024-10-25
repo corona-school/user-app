@@ -2258,8 +2258,7 @@
         "questionUnaswerd": "Пожалуйста, ответьте на вопрос.",
         "questionsUnaswerd": "Пожалуйста, ответьте на вопросы.",
         "newFieldSameAsOld": "Вы уже выбрали это.",
-        "missingSignature": "Подпись отсутствует.",
-        "didNotChangeEmail": "Адрес электронной почты не изменился."
+        "missingSignature": "Подпись отсутствует."
     },
     "requireScreening": {
         "pupil": {

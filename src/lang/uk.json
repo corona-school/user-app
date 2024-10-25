@@ -2258,8 +2258,7 @@
         "questionUnaswerd": "Будь ласка, дайте відповідь на запитання.",
         "questionsUnaswerd": "Будь ласка, дайте відповідь на запитання.",
         "newFieldSameAsOld": "Ви вже вибрали це.",
-        "missingSignature": "Відсутній підпис.",
-        "didNotChangeEmail": "Адреса електронної пошти не змінилася."
+        "missingSignature": "Відсутній підпис."
     },
     "requireScreening": {
         "pupil": {
