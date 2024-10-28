@@ -14,6 +14,7 @@ export const useBreadcrumbRoutes = () => {
             EDIT_APPOINTMENT: { label: t('navigation.label.editAppointment'), route: '/edit-appointment' },
             COURSES: { label: t('navigation.label.group'), route: '/group' },
             CREATE_COURSE: { label: t('navigation.label.createCourse'), route: '/create-course' },
+            EDIT_COURSE: { label: t('navigation.label.editCourse'), route: '/edit-course' },
             MATCHING: { label: t('navigation.label.matching'), route: '/matching' },
             REQUEST_MATCH: { label: t('navigation.label.requestMatch'), route: '/request-match' },
             SETTINGS: { label: t('navigation.label.settings'), route: '/settings' },

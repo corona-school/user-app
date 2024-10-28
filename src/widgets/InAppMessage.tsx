@@ -12,7 +12,7 @@ export const showInAppMessage = (notification: Concrete_Notification) => {
     toast.custom(
         () => (
             <div className="w-fit" onClick={handleOnClickNotification}>
-                <MessageBox className="mb-0" key={notification.id} isStandalone={true} userNotification={notification} />
+                <MessageBox className="mb-0" key={notification.id} isStandalone={true} userNotification={notification} onClose={handleOnClickNotification} />
             </div>
         ),
         {
