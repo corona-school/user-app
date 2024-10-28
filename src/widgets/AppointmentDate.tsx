@@ -1,5 +1,6 @@
+import { Typography } from '@/components/Typography';
+import { cn } from '@/lib/Tailwind';
 import { DateTime } from 'luxon';
-import { Text, Box } from 'native-base';
 
 type Props = {
     current: boolean;
@@ -10,14 +11,14 @@ type Props = {
 
 const AppointmentDate: React.FC<Props> = ({ current, date, color, isReadOnly = false }) => {
     return (
-        <Box bg={!isReadOnly && current ? 'primary.100' : 'none'} p={2} borderRadius={5} alignItems="center" height="50%" mr="2">
-            <Text fontSize="xs" color={color ? color : 'black'}>
+        <div className={cn('flex flex-col h-[50%] mr-4 p-4 rounded-md items-center', !isReadOnly && current ? 'bg-primary' : 'bg-transparent')}>
+            <Typography className={cn(current ? 'text-white' : 'text-primary')} variant="xs">
                 {DateTime.fromISO(date).setLocale('de').toFormat('ccc')}.
-            </Text>
-            <Text fontSize="md" bold color={color ? color : 'black'}>
+            </Typography>
+            <Typography className={cn('font-bold', current ? 'text-white' : 'text-primary')}>
                 {DateTime.fromISO(date).setLocale('de').toFormat('dd.MM.')}
-            </Text>
-        </Box>
+            </Typography>
+        </div>
     );
 };
 
