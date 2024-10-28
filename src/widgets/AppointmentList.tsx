@@ -1,5 +1,4 @@
 import React, { useMemo, useRef, useEffect, useCallback } from 'react';
-import { FlatList } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentDay from './AppointmentDay';
@@ -12,7 +11,9 @@ import useInterval from '../hooks/useInterval';
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
 import { Separator } from '@/components/Separator';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import { cn } from '@/lib/Tailwind';
+import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 
 interface HeaderProps {
     hasMoreOldAppointments: boolean;
@@ -149,7 +150,7 @@ const AppointmentList = ({
     isLoadingAppointments,
     loadMoreAppointments,
     lastAppointmentId,
-    height = '100%',
+    height = 100,
 }: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
 
@@ -193,23 +194,29 @@ const AppointmentList = ({
             style={{ height: height }}
             className={cn('flex flex-col overflow-scroll w-full lg:max-w-full', isFullHeight ? 'flex-1 basis-0 max-h-full' : '')}
         >
-            <FlatList
-                keyExtractor={(item) => item.id.toString()}
-                height={height}
-                maxW="100%"
-                data={appointments}
-                renderItem={(e) => (
-                    <AppointmentItem index={e.index} appointment={e.item} previousAppointment={appointments[e.index - 1]} isReadOnly={isReadOnlyList} />
-                )}
-                onEndReached={canLoadMoreAppointments ? handleLoadMore : undefined}
-                onEndReachedThreshold={1}
-                ListFooterComponent={!isReadOnlyList ? <Footer hasMoreAppointments={!noNewAppointments} isLoading={!!isLoadingAppointments} /> : undefined}
-                ListHeaderComponent={
-                    !isReadOnlyList ? (
-                        <Header hasMoreOldAppointments={!noOldAppointments} isLoading={!!isLoadingAppointments} onLoadMoreOldAppointments={handleLoadPast} />
-                    ) : undefined
+            <InfiniteScroll
+                scrollableTarget="scrollable"
+                dataLength={appointments.length}
+                next={handleLoadMore}
+                hasMore={canLoadMoreAppointments}
+                loader={
+                    <div className="my-4">
+                        <CenterLoadingSpinner />
+                    </div>
                 }
-            />
+                endMessage={<Footer hasMoreAppointments={!noNewAppointments} isLoading={!!isLoadingAppointments} />}
+            >
+                <Header hasMoreOldAppointments={!noOldAppointments} isLoading={!!isLoadingAppointments} onLoadMoreOldAppointments={handleLoadPast} />
+                {appointments.map((appointment, index) => (
+                    <AppointmentItem
+                        key={appointment.id}
+                        appointment={appointment}
+                        previousAppointment={appointments[index - 1]}
+                        index={index}
+                        isReadOnly={isReadOnlyList}
+                    />
+                ))}
+            </InfiniteScroll>
         </div>
     );
 };
