@@ -44,11 +44,28 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 }
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-    ({ className, variant, size, asChild = false, reasonDisabled, disabledContent, disabled, isLoading, children, leftIcon, rightIcon, ...props }, ref) => {
+    (
+        { className, variant, size, asChild = false, reasonDisabled, disabledContent, disabled, isLoading, children, leftIcon, rightIcon, onClick, ...props },
+        ref
+    ) => {
         const SlotContent = asChild ? Slot : 'button';
         const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
+
+        const handleOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            if (onClick) {
+                e.stopPropagation();
+                onClick(e);
+            }
+        };
+
         const Component = (
-            <SlotContent className={cn(buttonVariants({ variant, size, className }))} ref={ref} disabled={disabled || isLoading} {...props}>
+            <SlotContent
+                onClick={handleOnClick}
+                className={cn(buttonVariants({ variant, size, className }))}
+                ref={ref}
+                disabled={disabled || isLoading}
+                {...props}
+            >
                 <span className={`inline-flex gap-x-2 items-center justify-center ${isLoading ? 'invisible' : ''}`}>
                     {leftIcon && leftIcon}
                     {disabled && disabledContent ? disabledContent : children}
