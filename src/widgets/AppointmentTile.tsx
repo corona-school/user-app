@@ -93,7 +93,7 @@ const AppointmentTile: React.FC<Props> = ({
                         <Typography className={cn('font-bold', isHighlighted ? 'text-white' : 'text-primary')}>{displayName}</Typography>
 
                         {position && (
-                            <Typography variant="xs" className={cn('mt-1', isHighlighted ? 'text-white' : 'text-primary')}>
+                            <Typography variant="sm" className={cn('mt-1', isHighlighted ? 'text-white' : 'text-primary')}>
                                 {t('appointment.appointmentTile.lecture', { position: position }) +
                                     (title ? t('appointment.appointmentTile.title', { appointmentTitle: title }) : '')}
                             </Typography>

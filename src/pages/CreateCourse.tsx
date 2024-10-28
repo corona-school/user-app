@@ -36,6 +36,7 @@ import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import useApollo, { useUserType } from '../hooks/useApollo';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 export enum ChatType {
@@ -98,6 +99,7 @@ const CreateCourse: React.FC = () => {
     const location = useLocation();
     const state = location.state as { courseId?: number; currentStep?: number };
     const prefillCourseId = state?.courseId;
+    const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const [courseId, setCourseId] = useState<string>('');
     const [courseName, setCourseName] = useState<string>('');
@@ -911,8 +913,14 @@ const CreateCourse: React.FC = () => {
                     }}
                 >
                     {(((roles.includes('INSTRUCTOR') && canCreateCourse?.allowed) || roles.includes('COURSE_SCREENER')) && (
-                        <VStack space={space['1']} padding={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
-                            <Breadcrumb />
+                        <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
+                            {isEditing ? (
+                                <Breadcrumb
+                                    items={[breadcrumbRoutes.COURSES, { label: courseName, route: `single-course/${courseId}` }, breadcrumbRoutes.EDIT_COURSE]}
+                                />
+                            ) : (
+                                <Breadcrumb />
+                            )}
                             <InstructionProgress
                                 isDark={false}
                                 currentIndex={currentIndex}
