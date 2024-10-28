@@ -2029,7 +2029,8 @@
             "newEmail": "Изменить электронную почту",
             "newPassword": "Изменить пароль",
             "install": "Lern-Fair Приложение",
-            "progress": "Успехи и прогресс"
+            "progress": "Успехи и прогресс",
+            "editCourse": "Редактировать курс"
         }
     },
     "screening": {

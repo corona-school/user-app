@@ -2029,7 +2029,8 @@
             "newEmail": "E-posta değiştir",
             "newPassword": "Şifre değiştirme",
             "install": "Lern-Fair Uygulama",
-            "progress": "Başarılar ve ilerleme"
+            "progress": "Başarılar ve ilerleme",
+            "editCourse": "Kursu düzenle"
         }
     },
     "screening": {

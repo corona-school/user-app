@@ -2029,7 +2029,8 @@
             "newEmail": "Змінити електронну пошту",
             "newPassword": "Змінити пароль",
             "install": "Lern-Fair Додаток",
-            "progress": "Успіхи та прогрес"
+            "progress": "Успіхи та прогрес",
+            "editCourse": "Редагувати курс"
         }
     },
     "screening": {
