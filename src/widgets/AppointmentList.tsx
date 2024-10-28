@@ -1,8 +1,6 @@
 import React, { useMemo, useRef, useEffect, useCallback } from 'react';
-import { Box, Center, Divider, Text, useBreakpointValue, FlatList, Button } from 'native-base';
 import { DateTime } from 'luxon';
 import { Appointment } from '../types/lernfair/Appointment';
-import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentDay from './AppointmentDay';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -10,8 +8,116 @@ import AppointmentsEmptyState from './AppointmentsEmptyState';
 import { ScrollDirection } from '../pages/Appointments';
 import { isAppointmentNow } from '../helper/appointment-helper';
 import useInterval from '../hooks/useInterval';
+import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
+import { Separator } from '@/components/Separator';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import { cn } from '@/lib/Tailwind';
+import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 
-type Props = {
+interface HeaderProps {
+    hasMoreOldAppointments: boolean;
+    isLoading: boolean;
+    onLoadMoreOldAppointments: () => void;
+}
+
+const Header = ({ hasMoreOldAppointments, isLoading, onLoadMoreOldAppointments }: HeaderProps) => {
+    const { t } = useTranslation();
+    if (!hasMoreOldAppointments) return null;
+    return (
+        <div className="flex pb-10 justify-center items-center">
+            <Button variant="outline" onClick={onLoadMoreOldAppointments} isLoading={isLoading}>
+                {t('appointment.loadPastAppointments')}
+            </Button>
+        </div>
+    );
+};
+
+interface FooterProps {
+    hasMoreAppointments: boolean;
+    isLoading: boolean;
+}
+
+const Footer = ({ hasMoreAppointments, isLoading }: FooterProps) => {
+    const { t } = useTranslation();
+    if (!hasMoreAppointments && !isLoading)
+        return (
+            <div className="flex justify-center py-5">
+                <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
+            </div>
+        );
+    return null;
+};
+
+interface AppointmentItemProps {
+    appointment: Appointment;
+    previousAppointment?: Appointment;
+    index: number;
+    isReadOnly: boolean;
+}
+
+const AppointmentItem = React.memo(({ appointment, previousAppointment, index, isReadOnly }: AppointmentItemProps) => {
+    const navigate = useNavigate();
+    const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
+        if (!previousAppointment) {
+            return false;
+        }
+
+        const currentDate = DateTime.fromISO(currentAppointment.start);
+        const previousDate = DateTime.fromISO(previousAppointment.start);
+        return currentDate.year !== previousDate.year || currentDate.weekNumber !== previousDate.weekNumber;
+    };
+
+    const showMonthDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
+        if (!previousAppointment) {
+            return true;
+        }
+
+        const currentDate = DateTime.fromISO(currentAppointment.start);
+        const previousDate = DateTime.fromISO(previousAppointment.start);
+        return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
+    };
+
+    const weekDivider = showWeekDivider(appointment, previousAppointment);
+    const monthDivider = showMonthDivider(appointment, previousAppointment);
+    return (
+        <div key={`${appointment.id + index}`}>
+            {!monthDivider && weekDivider && <Separator className="my-3 w-[95%]" />}
+            {monthDivider && (
+                <>
+                    <div className="flex items-center justify-center mt-3">
+                        <Typography>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
+                            DateTime.fromISO(appointment.start).year
+                        }`}</Typography>
+                    </div>
+                    <Separator className="my-3 w-full" />
+                </>
+            )}
+            <div>
+                <AppointmentDay
+                    key={appointment.id}
+                    start={appointment.start}
+                    duration={appointment.duration}
+                    title={appointment.title}
+                    organizers={appointment.organizers}
+                    participants={appointment.participants}
+                    onPress={() => navigate(`/appointment/${appointment.id}`)}
+                    isReadOnly={isReadOnly}
+                    isFullWidth
+                    appointmentType={appointment.appointmentType}
+                    position={appointment.position}
+                    total={appointment.total}
+                    isOrganizer={appointment.isOrganizer}
+                    displayName={appointment.displayName}
+                    appointmentId={appointment.id}
+                    declinedBy={appointment.declinedBy}
+                />
+            </div>
+        </div>
+    );
+});
+
+type AppointmentListProps = {
     appointments: Appointment[];
     isReadOnlyList: boolean;
     disableScroll?: boolean;
@@ -34,7 +140,7 @@ const getScrollToId = (appointments: Appointment[]): number => {
 
     return currentId || nextId;
 };
-const AppointmentList: React.FC<Props> = ({
+const AppointmentList = ({
     appointments,
     isReadOnlyList,
     disableScroll = false,
@@ -45,15 +151,8 @@ const AppointmentList: React.FC<Props> = ({
     loadMoreAppointments,
     lastAppointmentId,
     height = 100,
-}) => {
-    const navigate = useNavigate();
-    const { t } = useTranslation();
+}: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
-
-    const maxListWidth = useBreakpointValue({
-        base: 'full',
-        lg: isReadOnlyList || isFullWidth ? 'full' : '90%',
-    });
 
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
@@ -75,96 +174,6 @@ const AppointmentList: React.FC<Props> = ({
         }
     }, [appointments, loadMoreAppointments, lastAppointmentId]);
 
-    const renderFooter = () => {
-        if (noNewAppointments || appointments.length === 0)
-            return (
-                <Box py={5} justifyContent="center">
-                    <AppointmentsEmptyState title={t('appointment.empty.noFurtherAppointments')} subtitle={t('appointment.empty.noFurtherDesc')} />
-                </Box>
-            );
-        if (isLoadingAppointments) {
-            return (
-                <Box h={50} justifyContent="center">
-                    <CenterLoadingSpinner />
-                </Box>
-            );
-        }
-        return null;
-    };
-
-    const renderHeader = () => {
-        if (noOldAppointments) return null;
-        return (
-            <Box pb={10} justifyContent="center" alignItems="center">
-                <Button variant="outline" onPress={handleLoadPast} isLoading={isLoadingAppointments}>
-                    {t('appointment.loadPastAppointments')}
-                </Button>
-            </Box>
-        );
-    };
-
-    const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
-        if (!previousAppointment) {
-            return false;
-        }
-
-        const currentDate = DateTime.fromISO(currentAppointment.start);
-        const previousDate = DateTime.fromISO(previousAppointment.start);
-        return currentDate.year !== previousDate.year || currentDate.weekNumber !== previousDate.weekNumber;
-    };
-
-    const showMonthDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
-        if (!previousAppointment) {
-            return true;
-        }
-
-        const currentDate = DateTime.fromISO(currentAppointment.start);
-        const previousDate = DateTime.fromISO(previousAppointment.start);
-        return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
-    };
-
-    const renderItems = ({ item: appointment, index }: { item: Appointment; index: number }) => {
-        const previousAppointment = appointments[index - 1];
-        const weekDivider = showWeekDivider(appointment, previousAppointment);
-        const monthDivider = showMonthDivider(appointment, previousAppointment);
-
-        if (isLoadingAppointments && !appointments.length) return <CenterLoadingSpinner />;
-        return (
-            <Box key={`${appointment.id + index}`} ml={isFullWidth ? 0 : 3}>
-                {!monthDivider && weekDivider && <Divider my={3} width="95%" />}
-                {monthDivider && (
-                    <>
-                        <Center mt="3">
-                            <Text>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${DateTime.fromISO(appointment.start).year}`}</Text>
-                        </Center>
-                        <Divider my={3} width={isFullWidth ? '100%' : '95%'} />
-                    </>
-                )}
-                <Box ml={5}>
-                    <AppointmentDay
-                        key={appointment.id}
-                        start={appointment.start}
-                        duration={appointment.duration}
-                        title={appointment.title}
-                        organizers={appointment.organizers}
-                        participants={appointment.participants}
-                        onPress={() => navigate(`/appointment/${appointment.id}`)}
-                        scrollToRef={appointment.id === scrollId ? scrollViewRef : null}
-                        isReadOnly={isReadOnlyList}
-                        isFullWidth={isFullWidth}
-                        appointmentType={appointment.appointmentType}
-                        position={appointment.position}
-                        total={appointment.total}
-                        isOrganizer={appointment.isOrganizer}
-                        displayName={appointment.displayName}
-                        appointmentId={appointment.id}
-                        declinedBy={appointment.declinedBy}
-                    />
-                </Box>
-            </Box>
-        );
-    };
-
     const [_, setRefresh] = React.useState(0);
 
     useInterval(() => {
@@ -178,18 +187,37 @@ const AppointmentList: React.FC<Props> = ({
     }, [isReadOnlyList, scrollId]);
 
     const canLoadMoreAppointments = !isReadOnlyList && !noNewAppointments && !isLoadingAppointments;
+    const isFullHeight = height === '100%';
     return (
-        <FlatList
-            keyExtractor={(item) => item.id.toString()}
-            height={height}
-            maxW={maxListWidth}
-            data={appointments}
-            renderItem={renderItems}
-            onEndReached={canLoadMoreAppointments ? handleLoadMore : undefined}
-            onEndReachedThreshold={1}
-            ListFooterComponent={!isReadOnlyList ? renderFooter : undefined}
-            ListHeaderComponent={!isReadOnlyList ? renderHeader : undefined}
-        />
+        <div
+            id="scrollable"
+            style={{ height: height }}
+            className={cn('flex flex-col overflow-scroll w-full lg:max-w-full', isFullHeight ? 'flex-1 basis-0 max-h-full' : '')}
+        >
+            <InfiniteScroll
+                scrollableTarget="scrollable"
+                dataLength={appointments.length}
+                next={handleLoadMore}
+                hasMore={canLoadMoreAppointments}
+                loader={
+                    <div className="my-4">
+                        <CenterLoadingSpinner />
+                    </div>
+                }
+                endMessage={<Footer hasMoreAppointments={!noNewAppointments} isLoading={!!isLoadingAppointments} />}
+            >
+                <Header hasMoreOldAppointments={!noOldAppointments} isLoading={!!isLoadingAppointments} onLoadMoreOldAppointments={handleLoadPast} />
+                {appointments.map((appointment, index) => (
+                    <AppointmentItem
+                        key={appointment.id}
+                        appointment={appointment}
+                        previousAppointment={appointments[index - 1]}
+                        index={index}
+                        isReadOnly={isReadOnlyList}
+                    />
+                ))}
+            </InfiniteScroll>
+        </div>
     );
 };
 
