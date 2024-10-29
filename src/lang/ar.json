@@ -2073,7 +2073,8 @@
             "newEmail": "تغيير البريد الإلكتروني",
             "newPassword": "تغيير كلمة المرور",
             "install": "Lern-Fair التطبيق",
-            "progress": "إنجازات والتقدم"
+            "progress": "إنجازات والتقدم",
+            "editCourse": "تحرير الدورة التدريبية"
         }
     },
     "screening": {

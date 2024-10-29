@@ -2073,7 +2073,8 @@
             "newEmail": "Change e-mail",
             "newPassword": "Change password",
             "install": "The Lern-Fair app",
-            "progress": "Successes & progress"
+            "progress": "Successes & progress",
+            "editCourse": "Edit course"
         }
     },
     "screening": {

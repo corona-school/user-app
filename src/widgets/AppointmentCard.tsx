@@ -387,12 +387,6 @@ const AppointmentCard: React.FC<Props> = ({
                                 paddingRight={buttonteaserSpace}
                                 marginBottom={buttonteaser}
                             >
-                                {isTeaser && (
-                                    <Button width="100%" onPress={onPress}>
-                                        {t('single.card.expandCardButton')}
-                                    </Button>
-                                )}
-
                                 {isTeaser && hasVideoButton && appointmentId && _dateNext && duration && appointmentType && (
                                     <VStack w="100%" space={space['0.5']} marginTop={space[1]}>
                                         <VideoButton

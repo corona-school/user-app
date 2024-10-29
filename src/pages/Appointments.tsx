@@ -1,4 +1,3 @@
-import { Box, Stack, useBreakpointValue, useToast } from 'native-base';
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -15,6 +14,7 @@ import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentList from '../widgets/AppointmentList';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { toast } from 'sonner';
 
 const getMyAppointments = gql(`
     query myAppointments_NO_CACHE($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
@@ -67,7 +67,6 @@ const take = 10;
 
 const Appointments: React.FC = () => {
     const userType = useUserType();
-    const toast = useToast();
     const { t } = useTranslation();
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const navigate = useNavigate();
@@ -95,11 +94,6 @@ const Appointments: React.FC = () => {
 
     const { data: hasAppointmentsResult, loading: isLoadingHasAppointments } = useQuery(APPOINTMENTS_META_DATA);
 
-    const buttonPlace = useBreakpointValue({
-        base: 'bottom-right',
-        lg: 'bottom-right',
-    });
-
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         setIsFetchingMoreAppointments(true);
         const {
@@ -112,7 +106,7 @@ const Appointments: React.FC = () => {
         });
 
         if (scrollDirection === 'last') {
-            toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
+            toast.info(t('appointment.loadedPastAppointments'), { duration: 2000 });
         }
 
         setAppointments((prev) => (scrollDirection === 'last' ? [...appointments!, ...prev] : [...prev, ...appointments!]));
@@ -129,35 +123,37 @@ const Appointments: React.FC = () => {
                 headerTitle={t('appointment.title')}
                 headerLeft={
                     userType !== 'screener' && (
-                        <Stack alignItems="center" direction="row">
+                        <div className="flex items-center">
                             <SwitchLanguageButton />
                             <NotificationAlert />
-                        </Stack>
+                        </div>
                     )
                 }
             >
-                <Breadcrumb />
-                {(loadingMyAppointments || isLoadingHasAppointments) && <CenterLoadingSpinner />}
-                {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place={buttonPlace} />}
+                <div className="flex flex-col flex-1 h-full max-w-5xl mx-auto items-center">
+                    <Breadcrumb className="self-baseline" />
+                    {(loadingMyAppointments || isLoadingHasAppointments) && <CenterLoadingSpinner />}
+                    {userType === 'student' && <FloatingActionButton handlePress={() => navigate('/create-appointment')} place="bottom-right" />}
 
-                {!hasAppointments && (
-                    <Box h={500} justifyContent="center">
-                        <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
-                    </Box>
-                )}
+                    {!hasAppointments && (
+                        <div className="flex h-full items-center justify-center">
+                            <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.noAppointmentsDesc')} />
+                        </div>
+                    )}
 
-                {hasAppointments && (
-                    <AppointmentList
-                        appointments={appointments as Appointment[]}
-                        isLoadingAppointments={loadingMyAppointments || isFetchingMoreAppointments}
-                        isReadOnlyList={false}
-                        loadMoreAppointments={loadMoreAppointments}
-                        noNewAppointments={!hasMoreNewAppointments || !hasAppointments}
-                        noOldAppointments={!hasMoreOldAppointments || !hasAppointments}
-                        lastAppointmentId={hasAppointmentsResult?.me?.lastAppointmentId}
-                        height="100%"
-                    />
-                )}
+                    {hasAppointments && (
+                        <AppointmentList
+                            appointments={appointments as Appointment[]}
+                            isLoadingAppointments={loadingMyAppointments || isFetchingMoreAppointments}
+                            isReadOnlyList={false}
+                            loadMoreAppointments={loadMoreAppointments}
+                            noNewAppointments={!hasMoreNewAppointments || !hasAppointments}
+                            noOldAppointments={!hasMoreOldAppointments || !hasAppointments}
+                            lastAppointmentId={hasAppointmentsResult?.me?.lastAppointmentId}
+                            height="100%"
+                        />
+                    )}
+                </div>
             </WithNavigation>
         </AsNavigationItem>
     );
