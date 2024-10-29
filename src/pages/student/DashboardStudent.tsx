@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, useBreakpointValue, Box, Stack, Row } from 'native-base';
+import { Text, Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
 import { useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -26,6 +26,7 @@ import { Lecture } from '../../gql/graphql';
 import { useUserType } from '../../hooks/useApollo';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
+import TruncatedText from '@/components/TruncatedText';
 
 type Props = {};
 
@@ -218,42 +219,46 @@ const DashboardStudent: React.FC<Props> = () => {
                                     <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
 
                                     {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') && userType === 'student' && (
-                                        <VStack marginBottom={space['1.5']}>
-                                            <Heading marginBottom={space['1']}>{t('dashboard.homeworkhelp.title')}</Heading>
+                                        <div className="flex flex-col ">
+                                            <Typography variant="h4" className="mb-2">
+                                                {t('dashboard.homeworkhelp.title')}
+                                            </Typography>
                                             <CTACard
                                                 title={t('dashboard.homeworkhelp.catcherHelper')}
-                                                closeable={false}
-                                                content={<Text>{t('matching.homeworkhelp.texthelper')}</Text>}
-                                                buttonIsBanner={isSummerVacation}
+                                                icon={<BooksIcon className="size-10" />}
                                                 button={
-                                                    isSummerVacation ? (
-                                                        <Row
-                                                            width="100%"
-                                                            flexWrap="wrap"
-                                                            justifyContent={'flex-start'}
-                                                            alignItems={'center'}
-                                                            bg={'secondary.100'}
-                                                            borderRadius={4}
-                                                            padding={2}
+                                                    !isSummerVacation && (
+                                                        <Button
+                                                            className="w-full lg:w-fit"
+                                                            variant="outline"
+                                                            onClick={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}
                                                         >
-                                                            <Box mr={space['0.5']}>
-                                                                <BarrierIcon />
-                                                            </Box>
-                                                            <Text fontSize={'sm'} flexWrap={'wrap'}>
-                                                                {t('matching.homeworkhelp.buttonSummerVacation', {
-                                                                    endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
-                                                                })}
-                                                            </Text>
-                                                        </Row>
-                                                    ) : (
-                                                        <Button variant="outline" onClick={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
                                                             {t('matching.homeworkhelp.button')}
                                                         </Button>
                                                     )
                                                 }
-                                                icon={<BooksIcon />}
-                                            />
-                                        </VStack>
+                                            >
+                                                <div>
+                                                    <TruncatedText asChild maxLines={4}>
+                                                        <Typography className="whitespace-break-spaces text-pretty w-full">
+                                                            {t('matching.homeworkhelp.texthelper')}
+                                                        </Typography>
+                                                    </TruncatedText>
+                                                    {isSummerVacation && (
+                                                        <div className="mt-4 flex gap-x-2 lg:gap-y-4 bg-secondary/30 p-2 rounded-md">
+                                                            <div>
+                                                                <BarrierIcon />
+                                                            </div>
+                                                            <Typography>
+                                                                {t('matching.homeworkhelp.buttonSummerVacation', {
+                                                                    endSummerVacation: endSummerVacation.toLocaleDateString('de-DE'),
+                                                                })}
+                                                            </Typography>
+                                                        </div>
+                                                    )}
+                                                </div>
+                                            </CTACard>
+                                        </div>
                                     )}
                                 </VStack>
                             </VStack>
@@ -322,15 +327,21 @@ const DashboardStudent: React.FC<Props> = () => {
                                 <Heading marginBottom={space['1']}>{t('dashboard.helpers.headlines.recommend')}</Heading>
                                 <CTACard
                                     title={t('dashboard.helpers.headlines.recommendFriends')}
-                                    closeable={false}
-                                    content={<Text>{t('dashboard.helpers.contents.recommendFriends')}</Text>}
                                     button={
-                                        <Button variant="outline" className="w-full" onClick={handleOnRecommendClick}>
+                                        <Button variant="outline" className="w-full lg:w-fit" onClick={handleOnRecommendClick}>
                                             {t('dashboard.helpers.buttons.recommend')}
                                         </Button>
                                     }
-                                    icon={<BooksIcon />}
-                                />
+                                    icon={<BooksIcon className="size-10" />}
+                                >
+                                    <div>
+                                        <TruncatedText asChild maxLines={4}>
+                                            <Typography className="whitespace-break-spaces text-pretty w-full">
+                                                {t('dashboard.helpers.contents.recommendFriends')}
+                                            </Typography>
+                                        </TruncatedText>
+                                    </div>
+                                </CTACard>
                             </VStack>
                         </VStack>
                     </VStack>
