@@ -1,7 +1,7 @@
 import { Box, HStack, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Subject } from '../gql/graphql';
-import { DAZ, SUBJECTS, SUBJECT_TO_ICON } from '../types/subject';
+import { DAZ, SUBJECT_TO_ICON, SUBJECTS_MAIN, SUBJECTS_MINOR, SUBJECTS_RARE } from '../types/subject';
 import IconTagList from './IconTagList';
 
 export const SubjectSelector = ({
@@ -25,11 +25,12 @@ export const SubjectSelector = ({
 }) => {
     const { t } = useTranslation();
     const { space } = useTheme();
+    const SUBJECTS = [...SUBJECTS_MAIN, ...SUBJECTS_MINOR, ...SUBJECTS_RARE];
 
     return (
         <HStack w="100%" flexWrap="wrap" justifyContent={justifyContent ?? 'center'} alignItems={justifyContent ?? 'center'}>
             {((selectable ?? (includeDaz ? SUBJECTS : SUBJECTS.filter((it) => it !== DAZ))) as string[]).map((subject) => (
-                <Box margin={space['0.5']} maxW="250px" flexBasis="100px" flexGrow={1}>
+                <Box margin={space['0.5']} maxW="250px" flexBasis="100px" flexGrow={1} key={subject}>
                     <IconTagList
                         key={subject}
                         initial={subjects.includes(subject)}
