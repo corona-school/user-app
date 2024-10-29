@@ -53,7 +53,7 @@ const BreadcrumbPage = React.forwardRef<HTMLSpanElement, React.ComponentPropsWit
         role="link"
         aria-disabled="true"
         aria-current="page"
-        className={cn('font-normal text-primary text-detail w-max max-w-[70px] lg:max-w-full overflow-hidden whitespace-nowrap text-ellipsis', className)}
+        className={cn('font-normal text-primary text-detail w-max max-w-full lg:max-w-full overflow-hidden whitespace-nowrap text-ellipsis', className)}
         {...props}
     />
 ));
