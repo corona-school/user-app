@@ -1,5 +1,5 @@
-import { Text, Button, Heading, useTheme, VStack, useBreakpointValue, Box, Stack, Row } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Text, Heading, useTheme, VStack, useBreakpointValue, Box, Stack, Row } from 'native-base';
+import { useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import CTACard from '../../widgets/CTACard';
@@ -10,9 +10,8 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import { useTranslation } from 'react-i18next';
 import { useQuery } from '@apollo/client';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
-import LearningPartner from '../../widgets/LearningPartner';
 import { DateTime } from 'luxon';
-import { getGradeLabel, getTrafficStatus, getTrafficStatusText } from '../../Utility';
+import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -24,9 +23,9 @@ import { gql } from './../../gql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
-import useApollo from '../../hooks/useApollo';
 import { useUserType } from '../../hooks/useApollo';
 import { Typography } from '@/components/Typography';
+import { Button } from '@/components/Button';
 
 type Props = {};
 
@@ -44,21 +43,6 @@ const query = gql(`
                 canCreateCourse {
                     allowed
                     reason
-                }
-                matches {
-                    id
-                    uuid
-                    dissolved
-                    pupil {
-                        firstname
-                        lastname
-                        grade
-                        gradeAsInt
-                        subjectsFormatted {
-                            name
-                        }
-                        schooltype
-                    }
                 }
                 subcoursesInstructing {
                     id
@@ -138,7 +122,6 @@ const query = gql(`
 `);
 
 const DashboardStudent: React.FC<Props> = () => {
-    const { roles } = useApollo();
     const { data, loading, called } = useQuery(query);
 
     const { space, sizes } = useTheme();
@@ -150,11 +133,6 @@ const DashboardStudent: React.FC<Props> = () => {
     const [showRecommendModal, setShowRecommendModal] = useState<boolean>(false);
     const { trackPageView, trackEvent } = useMatomo();
 
-    const CardGrid = useBreakpointValue({
-        base: '100%',
-        lg: '50%',
-    });
-
     useEffect(() => {
         trackPageView({
             documentTitle: 'Helfer Dashboard',
@@ -162,12 +140,6 @@ const DashboardStudent: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const requestMatch = useCallback(async () => {
-        navigate('/request-match');
-    }, [navigate]);
-
-    const isMobile = useBreakpointValue({ base: true, md: false });
-    const isMobileOrTablet = useBreakpointValue({ base: true, lg: false });
     const startSummerVacation = new Date('2024-06-10');
     const endSummerVacation = new Date('2024-09-02');
     const isSummerVacation = startSummerVacation <= new Date() && endSummerVacation >= new Date();
@@ -175,11 +147,6 @@ const DashboardStudent: React.FC<Props> = () => {
     const ContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['containerWidth'],
-    });
-
-    const ButtonContainer = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
     });
 
     const publishedSubcourses = useMemo(
@@ -213,8 +180,6 @@ const DashboardStudent: React.FC<Props> = () => {
 
         return courses;
     }, [publishedSubcourses]);
-
-    const activeMatches = useMemo(() => data?.me?.student?.matches.filter((match) => !match.dissolved), [data?.me?.student?.matches]);
 
     const handleOnRecommendClick = () => {
         setShowRecommendModal(true);
@@ -281,7 +246,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                                             </Text>
                                                         </Row>
                                                     ) : (
-                                                        <Button onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                                        <Button variant="outline" onClick={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
                                                             {t('matching.homeworkhelp.button')}
                                                         </Button>
                                                     )
@@ -342,65 +307,16 @@ const DashboardStudent: React.FC<Props> = () => {
                                             <AlertMessage content={t('course.empty.nocourses')} />
                                         )}
                                     </CSSWrapper>
-                                    {roles.includes('INSTRUCTOR') && data?.me?.student?.canCreateCourse?.allowed ? (
-                                        <Button
-                                            marginTop={space['1']}
-                                            width={ButtonContainer}
-                                            onPress={() => {
-                                                trackEvent({
-                                                    category: 'dashboard',
-                                                    action: 'click-event',
-                                                    name: 'Helfer Dashboard Kurse-Erstellen Button',
-                                                    documentTitle: 'Helfer Dashboard – Kurs Button klick',
-                                                });
-                                                navigate('/create-course');
-                                            }}
-                                        >
-                                            {t('dashboard.helpers.buttons.course')}
-                                        </Button>
-                                    ) : (
-                                        <AlertMessage
-                                            content={t(
-                                                `lernfair.reason.course.instructor.${data?.me?.student?.canCreateCourse?.reason}` as unknown as TemplateStringsArray
-                                            )}
-                                        />
-                                    )}
                                 </HSection>
                             )}
-                            {activeMatches && (activeMatches.length > 0 || data?.me?.student?.canRequestMatch?.allowed) && (
-                                <VStack marginBottom={space['1.5']}>
-                                    <Heading mb={space['1']}>{t('dashboard.helpers.headlines.myLearningPartner')}</Heading>
-                                    <Stack direction={isMobileOrTablet ? 'column' : 'row'} flexWrap="wrap">
-                                        {(activeMatches?.length &&
-                                            activeMatches.map((match, index) => {
-                                                return (
-                                                    <Box width={CardGrid} paddingRight="10px" marginBottom="10px" key={match.id}>
-                                                        <LearningPartner
-                                                            key={index}
-                                                            matchId={match.id}
-                                                            name={`${match?.pupil?.firstname} ${match?.pupil?.lastname}` || ''}
-                                                            subjects={match?.pupil?.subjectsFormatted}
-                                                            schooltype={match?.pupil?.schooltype || ''}
-                                                            grade={getGradeLabel(match?.pupil?.gradeAsInt) || ''}
-                                                        />
-                                                    </Box>
-                                                );
-                                            })) ||
-                                            (data?.me?.student?.canRequestMatch?.allowed ? <AlertMessage content={t('dashboard.offers.noMatching')} /> : '')}
-                                    </Stack>
-
-                                    {data?.me?.student?.canRequestMatch?.allowed ? (
-                                        <Button marginTop={space['1']} width={ButtonContainer} marginY={space['1']} onPress={requestMatch}>
-                                            {t('dashboard.helpers.buttons.requestMatchStudent')}
-                                        </Button>
-                                    ) : (
-                                        <AlertMessage
-                                            content={t(
-                                                `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
-                                            )}
-                                        />
-                                    )}
-                                </VStack>
+                            {!data?.me?.student?.canRequestMatch?.allowed && data?.me?.student?.canRequestMatch?.reason && (
+                                <div className="mb-2">
+                                    <AlertMessage
+                                        content={t(
+                                            `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
+                                        )}
+                                    />
+                                </div>
                             )}
                             <VStack marginBottom={space['1.5']}>
                                 <Heading marginBottom={space['1']}>{t('dashboard.helpers.headlines.recommend')}</Heading>
@@ -409,7 +325,7 @@ const DashboardStudent: React.FC<Props> = () => {
                                     closeable={false}
                                     content={<Text>{t('dashboard.helpers.contents.recommendFriends')}</Text>}
                                     button={
-                                        <Button variant="outline" onPress={handleOnRecommendClick}>
+                                        <Button variant="outline" className="w-full" onClick={handleOnRecommendClick}>
                                             {t('dashboard.helpers.buttons.recommend')}
                                         </Button>
                                     }
