@@ -62,13 +62,13 @@ const CourseBlocker: React.FC<Props> = () => {
             </Container>
             <Container maxWidth={ContainerWidth} width="100%" marginX="auto" paddingX={space['1.5']} marginBottom={space['1.5']} alignItems="stretch">
                 <CTACard
-                    width="100%"
-                    variant="dark"
+                    className="w-full"
                     title={t('course.blocker.student.cta.title')}
-                    content={t('course.blocker.student.cta.content')}
                     icon={<LFIconBook />}
                     button={<Button onPress={() => navigate('/onboarding-list')}>{t('course.blocker.student.cta.button')}</Button>}
-                />
+                >
+                    {t('course.blocker.student.cta.content')}
+                </CTACard>
             </Container>
         </>
     );

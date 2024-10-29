@@ -68,17 +68,11 @@ const OnboardingTourList: React.FC<Props> = () => {
                         {new Array(5).fill(0).map(({}, index) => (
                             <CSSWrapper className="onboarding__item">
                                 <CTACard
-                                    height="100%"
-                                    isOnboardingCard
+                                    className="h-full mb-2"
                                     key={`card-${index}`}
-                                    marginBottom={space['1']}
-                                    variant="dark"
                                     title={t(`onboardingList.cards.card${index}.title` as unknown as TemplateStringsArray)}
-                                    closeable={false}
-                                    content={<Text>{t(`onboardingList.cards.card${index}.content` as unknown as TemplateStringsArray)}</Text>}
                                     button={
                                         <Button
-                                            width="100%"
                                             onPress={() => {
                                                 trackEvent({
                                                     category: 'onboarding',
@@ -109,7 +103,9 @@ const OnboardingTourList: React.FC<Props> = () => {
                                             ''
                                         )
                                     }
-                                />
+                                >
+                                    <Text>{t(`onboardingList.cards.card${index}.content` as unknown as TemplateStringsArray)}</Text>
+                                </CTACard>
                             </CSSWrapper>
                         ))}
                     </CSSWrapper>
