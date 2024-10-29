@@ -159,7 +159,7 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = useCanJoinMeeting(_dateNext!, duration!, isOrganizer ? 240 : 10, DateTime.now());
+    const isCurrent = useCanJoinMeeting(_dateNext!, duration!, isOrganizer ? 240 : 10);
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({

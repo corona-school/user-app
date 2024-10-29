@@ -69,7 +69,7 @@ const AppointmentDay: React.FC<Props> = ({
         return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
     };
 
-    const isCurrent = useCanJoinMeeting(start, duration, isOrganizer ? 240 : 10, DateTime.now());
+    const isCurrent = useCanJoinMeeting(start, duration, isOrganizer ? 240 : 10);
     const currentMonth = isCurrentMonth(start);
 
     const wasRejected = !!participants?.every((e) => declinedBy?.includes(e.userID!));

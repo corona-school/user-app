@@ -80,7 +80,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const canStartMeeting = useCanJoinMeeting(startDateTime, duration, isOrganizer ? 240 : 10, DateTime.now());
+    const canStartMeeting = useCanJoinMeeting(startDateTime, duration, isOrganizer ? 240 : 10);
 
     useEffect(() => {
         canStartMeeting && createShortTimeLoginData();

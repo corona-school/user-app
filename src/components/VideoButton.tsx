@@ -5,7 +5,6 @@ import { gql } from '../gql';
 import ZoomMeetingModal from '../modals/ZoomMeetingModal';
 import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { DateTime } from 'luxon';
 import { Button } from './Button';
 import { IconVideo } from '@tabler/icons-react';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
@@ -71,7 +70,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         }
     };
 
-    const canStartMeeting = useCanJoinMeeting(startDateTime!, duration!, isInstructor ? 240 : 10, DateTime.now(), canJoin);
+    const canStartMeeting = useCanJoinMeeting(startDateTime!, duration!, isInstructor ? 240 : 10);
 
     return (
         <>
@@ -83,7 +82,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
                 zoomUrl={zoomUrl ?? undefined}
             />
             <Button
-                disabled={!canStartMeeting || isOver}
+                disabled={!(canJoin ?? canStartMeeting) || isOver}
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
                 onClick={openMeeting}
                 className={className}
