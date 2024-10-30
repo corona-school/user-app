@@ -70,7 +70,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         }
     };
 
-    const canStartMeeting = useCanJoinMeeting(startDateTime!, duration!, isInstructor ? 240 : 10);
+    const canStartMeeting = useCanJoinMeeting(isInstructor ? 240 : 10, startDateTime, duration);
 
     return (
         <>
