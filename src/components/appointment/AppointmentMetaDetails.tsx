@@ -98,11 +98,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         const res = await createShortTimeLoginToken({ variables: { expiresAt: expiresAt, description: `` } });
         const token = res?.data?.tokenCreate;
 
-        setLoginURL(
-            process.env.NODE_ENV === 'production'
-                ? `https://app.lern-fair.de/login-token?secret_token=${token}&temporary`
-                : `http://localhost:3000/login-token?secret_token=${token}`
-        );
+        setLoginURL(`${window.location.host === 'localhost:3000' ? 'http' : 'https'}://${window.location.host}/login-token?secret_token=${token}&temporary`);
     };
 
     return (
