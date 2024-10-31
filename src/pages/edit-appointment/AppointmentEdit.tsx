@@ -16,7 +16,7 @@ import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
 import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
-import { AppointmentUpdateInput } from '@/gql/graphql';
+import { AppointmentUpdateInput, Lecture_Appointmenttype_Enum } from '@/gql/graphql';
 import { convertStartDate } from '@/helper/appointment-helper';
 
 type FormErrors = {
@@ -51,6 +51,9 @@ query getAppointmentById($appointmentId: Float!) {
         description
         position
         displayName
+        appointmentType
+        matchId
+        subcourseId
     }
 }`);
 
@@ -135,6 +138,17 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
             }
         }
     };
+
+    const getDefaultPreviousPath = () => {
+        const apppointmentType = data?.appointment?.appointmentType;
+        if (apppointmentType === Lecture_Appointmenttype_Enum.Match && data?.appointment?.matchId) {
+            return `/match/${data?.appointment?.matchId}`;
+        } else if (apppointmentType === Lecture_Appointmenttype_Enum.Group && data?.appointment?.subcourseId) {
+            return `/single-course/${data?.appointment?.subcourseId}`;
+        }
+        return '/appointments';
+    };
+
     const lectureNumber = t('appointment.appointmentTile.lecture', { position: data?.appointment?.position });
     const appointmentTile = data?.appointment?.title || lectureNumber;
 
@@ -143,6 +157,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
             <Breadcrumb
                 items={[
                     breadcrumbRoutes.APPOINTMENTS,
+                    { label: data?.appointment?.displayName ?? '', route: getDefaultPreviousPath() },
                     { label: appointmentTile, route: `${breadcrumbRoutes.APPOINTMENT.route}/${appointmentId}` },
                     breadcrumbRoutes.EDIT_APPOINTMENT,
                 ]}
