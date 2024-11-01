@@ -94,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Saat ({{duration}} dakika)",
             "repeatDate": "{{appointmentCount}}. toplam {{appointmentsTotal}} üzerinden randevular",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "Görüntülü sohbete şimdi katılın",
             "descriptionHeader": "Açıklama",
             "deleteButton": "Randevu sil",
@@ -105,7 +104,8 @@
             "zoomTooltipPupil": "Bu bağlantıyı asla başkalarıyla paylaşmayın. Platformun güvenliğini ancak bu şekilde garanti edebiliriz.",
             "cancelledBy": "{{name}} bu randevuyu iptal etti",
             "rescheduleButton": "Randevuyu ertele",
-            "rescheduleDescription": "Randevuyu ertelerseniz, {{name}} tekrar davet edilecektir."
+            "rescheduleDescription": "Randevuyu ertelerseniz, {{name}} tekrar davet edilecektir.",
+            "participants": "{{participantsTotal}} Katılımcılar"
         },
         "zoomModal": {
             "useZoomApp": {
