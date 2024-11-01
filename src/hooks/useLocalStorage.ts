@@ -16,7 +16,7 @@ export function useLocalStorage<T>({ key, initialValue }: UseLocalStorageArgs<T>
                 const parsed = JSON.parse(value);
                 return parsed;
             } catch (error) {
-                return initialValue;
+                return value;
             }
         },
         [initialValue]
