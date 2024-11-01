@@ -94,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} ساعة ({{duration}} دقيقة)",
             "repeatDate": "{{appointmentCount}}. من إجمالي أحداث {{appointmentsTotal}}",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "انضم إلى دردشة الفيديو الآن",
             "descriptionHeader": "وصف",
             "deleteButton": "حذف موعد",
@@ -105,7 +104,8 @@
             "zoomTooltipPupil": "لا تشارك هذا الرابط مع أشخاص آخرين. هذه هي الطريقة الوحيدة التي يمكننا من خلالها ضمان أمن المنصة.",
             "cancelledBy": "موعد {{name}} ألغيت هذه",
             "rescheduleButton": "موعد المناوبة",
-            "rescheduleDescription": "موعد إذا قمت بتحريك، سيتم تحميل {{name}}} مرة أخرى."
+            "rescheduleDescription": "موعد إذا قمت بتحريك، سيتم تحميل {{name}}} مرة أخرى.",
+            "participants": "{{participantsTotal}} المشاركون"
         },
         "zoomModal": {
             "useZoomApp": {
@@ -2025,7 +2025,8 @@
             "newEmail": "تغيير البريد الإلكتروني",
             "newPassword": "تغيير كلمة المرور",
             "install": "Lern-Fair التطبيق",
-            "progress": "إنجازات والتقدم"
+            "progress": "إنجازات والتقدم",
+            "editCourse": "تحرير الدورة التدريبية"
         }
     },
     "screening": {

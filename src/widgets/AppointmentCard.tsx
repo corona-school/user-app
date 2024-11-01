@@ -117,7 +117,7 @@ const AppointmentCard: React.FC<Props> = ({
     isOrganizer,
 }) => {
     const { space, sizes } = useTheme();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
     const userType = useUserType();
     const dateNextLecture = _dateNext && DateTime.fromISO(_dateNext);
@@ -266,16 +266,9 @@ const AppointmentCard: React.FC<Props> = ({
                                             <Text color={textColor}>
                                                 {dateNextLecture.toLocaleString(
                                                     //check https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html#instance-method-toLocaleString for reference
+                                                    DateTime.DATETIME_MED,
                                                     {
-                                                        weekday: 'long',
-                                                        month: '2-digit',
-                                                        year: 'numeric',
-                                                        day: '2-digit',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                    },
-                                                    {
-                                                        locale: 'de',
+                                                        locale: i18n.language,
                                                     }
                                                 ) +
                                                     ' ' +
@@ -387,12 +380,6 @@ const AppointmentCard: React.FC<Props> = ({
                                 paddingRight={buttonteaserSpace}
                                 marginBottom={buttonteaser}
                             >
-                                {isTeaser && (
-                                    <Button width="100%" onPress={onPress}>
-                                        {t('single.card.expandCardButton')}
-                                    </Button>
-                                )}
-
                                 {isTeaser && hasVideoButton && appointmentId && _dateNext && duration && appointmentType && (
                                     <VStack w="100%" space={space['0.5']} marginTop={space[1]}>
                                         <VideoButton
