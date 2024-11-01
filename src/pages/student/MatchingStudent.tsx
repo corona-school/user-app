@@ -17,6 +17,8 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import TruncatedText from '@/components/TruncatedText';
+import { Typography } from '@/components/Typography';
 
 type Props = {};
 const query = gql(`
@@ -140,8 +142,10 @@ const MatchingStudent: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">
                         <Breadcrumb />
                         <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
-                        <VStack space={space['0.5']}>
-                            <Text paddingBottom={space['0.5']}>{t('matching.request.check.content')}</Text>
+                        <VStack space={space['0.5']} paddingBottom={space['0.5']} alignItems={'flex-start'}>
+                            <TruncatedText asChild maxLines={2}>
+                                <Typography>{t('matching.request.check.content')}</Typography>
+                            </TruncatedText>
                         </VStack>
                         <NavigationTabs
                             tabs={[
