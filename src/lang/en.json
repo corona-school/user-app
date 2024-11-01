@@ -94,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Clock ({{duration}} minutes)",
             "repeatDate": "{{appointmentCount}}. out of a total of {{appointmentsTotal}} appointments",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "Join video chat now",
             "descriptionHeader": "Description",
             "deleteButton": "Delete lecture",
@@ -105,7 +104,8 @@
             "zoomTooltipPupil": "Never share this link with other people. This is the only way we can guarantee the security of the platform.",
             "cancelledBy": "{{name}} has canceled this lecture ",
             "rescheduleButton": "Reschedule appointment",
-            "rescheduleDescription": "If you reschedule the lecture, {{name}} will be invited again."
+            "rescheduleDescription": "If you reschedule the lecture, {{name}} will be invited again.",
+            "participants": "{{participantsTotal}} participants"
         },
         "zoomModal": {
             "useZoomApp": {
@@ -140,7 +140,7 @@
         "editSuccess": "Lecture successfully changed",
         "deleteAppointment": "Delete lecture",
         "goBack": "To the previous page",
-        "loadPastAppointments": "Download past lectures ",
+        "loadPastAppointments": "Load past lectures ",
         "loadedPastAppointments": "Past lectures loaded",
         "courseNotPublished": "The course associated with this lecture has not yet been released for review.",
         "noNextAppointment": "No next lecture."
