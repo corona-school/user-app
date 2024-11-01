@@ -58,6 +58,7 @@ interface AppointmentItemProps {
 
 const AppointmentItem = React.memo(({ appointment, previousAppointment, index, isReadOnly }: AppointmentItemProps) => {
     const navigate = useNavigate();
+    const { i18n } = useTranslation();
     const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
         if (!previousAppointment) {
             return false;
@@ -81,12 +82,12 @@ const AppointmentItem = React.memo(({ appointment, previousAppointment, index, i
     const weekDivider = showWeekDivider(appointment, previousAppointment);
     const monthDivider = showMonthDivider(appointment, previousAppointment);
     return (
-        <div key={`${appointment.id + index}`}>
+        <div>
             {!monthDivider && weekDivider && <Separator className="my-3 w-[95%]" />}
             {monthDivider && (
                 <>
                     <div className="flex items-center justify-center mt-3">
-                        <Typography>{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
+                        <Typography>{`${DateTime.fromISO(appointment.start).setLocale(i18n.language).monthLong} ${
                             DateTime.fromISO(appointment.start).year
                         }`}</Typography>
                     </div>
@@ -95,7 +96,6 @@ const AppointmentItem = React.memo(({ appointment, previousAppointment, index, i
             )}
             <div>
                 <AppointmentDay
-                    key={appointment.id}
                     start={appointment.start}
                     duration={appointment.duration}
                     title={appointment.title}

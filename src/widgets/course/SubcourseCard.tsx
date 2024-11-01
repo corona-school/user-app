@@ -6,7 +6,7 @@ import { SubcourseForScreening } from '../../types';
 
 export function SubcourseCard({ subcourse, onClick }: { subcourse: SubcourseForScreening; onClick?: () => void }) {
     const { space } = useTheme();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
 
     const containerWidth = useBreakpointValue({
         base: 100,
@@ -47,8 +47,8 @@ export function SubcourseCard({ subcourse, onClick }: { subcourse: SubcourseForS
                             <Text>
                                 {subcourse.nextLecture
                                     ? t('appointment.create.date', {
-                                          date: DateTime.fromISO(subcourse.nextLecture.start).toFormat('dd.MM.yy'),
-                                          time: DateTime.fromISO(subcourse.nextLecture.start).toFormat('HH:mm'),
+                                          date: DateTime.fromISO(subcourse.nextLecture.start).setLocale(i18n.language).toFormat('dd.MM.yy'),
+                                          time: DateTime.fromISO(subcourse.nextLecture.start).setLocale(i18n.language).toFormat('HH:mm'),
                                       })
                                     : t('appointment.create.noAppointments')}
                             </Text>

@@ -2,6 +2,7 @@ import { Separator } from '@/components/Separator';
 import { Typography } from '@/components/Typography';
 import { Appointment } from '@/types/lernfair/Appointment';
 import { DateTime } from 'luxon';
+import { useTranslation } from 'react-i18next';
 
 interface AppointmentDividerProps {
     index: number;
@@ -9,6 +10,7 @@ interface AppointmentDividerProps {
 }
 
 export const AppointmentDivider = ({ appointments, index }: AppointmentDividerProps) => {
+    const { i18n } = useTranslation();
     const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
         if (!previousAppointment) {
             return false;
@@ -37,7 +39,7 @@ export const AppointmentDivider = ({ appointments, index }: AppointmentDividerPr
     }
     if (monthDivider) {
         return (
-            <Typography variant="h4" as="p" className="text-center mb-3">{`${DateTime.fromISO(appointment.start).setLocale('de').monthLong} ${
+            <Typography variant="h4" as="p" className="text-center mb-3">{`${DateTime.fromISO(appointment.start).setLocale(i18n.language).monthLong} ${
                 DateTime.fromISO(appointment.start).year
             }`}</Typography>
         );

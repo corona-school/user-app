@@ -25,15 +25,15 @@ const AppointmentFact = ({ children, icon }: AppointmentFactProps) => (
 );
 
 export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProps) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const getAppointmentTimeText = (start: string, duration: number): string => {
         const now = DateTime.now();
         const startDate = DateTime.fromISO(start);
         const end = startDate.plus({ minutes: duration });
 
-        const startTime = startDate.setLocale('de-DE').toFormat('T');
-        const endTime = end.setLocale('de-DE').toFormat('T');
+        const startTime = startDate.setLocale(i18n.language).toFormat('T');
+        const endTime = end.setLocale(i18n.language).toFormat('T');
 
         if (startDate <= now && now <= end) {
             return t('appointment.clock.nowToEnd', { end: endTime });
@@ -49,7 +49,7 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
     return (
         <div className="flex flex-col lg:flex-row items-center lg:h-[84px] max-w-[980px] py-4 px-4 lg:pl-9 lg:pr-7 border border-gray-300 rounded">
             <div className="flex flex-col">
-                <Typography variant="sm">{DateTime.fromISO(appointment.start).weekdayLong}</Typography>
+                <Typography variant="sm">{DateTime.fromISO(appointment.start).setLocale(i18n.language).weekdayLong}</Typography>
                 <Typography variant="h4" as="p">
                     {DateTime.fromISO(appointment.start).toFormat('d.L.')}
                 </Typography>

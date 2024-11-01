@@ -8,6 +8,7 @@ import IconUK from './assets/icons/icon_flag_uk.svg';
 import IconTR from './assets/icons/icon_flag_tr.svg';
 import IconRU from './assets/icons/icon_flag_ru.svg';
 import IconAR from './assets/icons/icon_flag_ar.svg';
+import { Settings } from 'luxon';
 
 // As users will rarely use the non-german version, lazily load these language files
 // on demand
@@ -63,6 +64,7 @@ export async function switchLanguage(language: string) {
 
     if (language in lazyLanguages) {
         i18next.addResourceBundle(language, 'translation', await lazyLanguages[language as keyof typeof lazyLanguages](), true, true);
+        Settings.defaultLocale = language;
     }
 
     i18next.changeLanguage(language);
