@@ -4,8 +4,8 @@ import { Button, buttonVariants } from '@/components/Button';
 import { cn } from '@/lib/Tailwind';
 import { IconChevronDown, IconChevronLeft, IconChevronRight, IconChevronUp } from '@tabler/icons-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './Select';
-import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>;
 
@@ -38,7 +38,7 @@ const CalendarDropdowns = ({ value, onChange, name, className, options, 'aria-la
 };
 
 const Calendar = ({ className, classNames, showOutsideDays = true, captionLayout = 'dropdown', ...props }: CalendarProps) => {
-    const [language] = useLocalStorage({ key: 'lernfair-language', initialValue: 'de' });
+    const { i18n } = useTranslation();
     const locale = useMemo(() => {
         const locales: Record<string, Locale> = {
             de,
@@ -48,8 +48,8 @@ const Calendar = ({ className, classNames, showOutsideDays = true, captionLayout
             ru,
             ar,
         };
-        return locales[language];
-    }, [language]);
+        return locales[i18n.language];
+    }, [i18n.language]);
     return (
         <DayPicker
             showOutsideDays={showOutsideDays}

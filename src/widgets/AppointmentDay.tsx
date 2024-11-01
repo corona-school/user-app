@@ -1,10 +1,10 @@
 import { DateTime } from 'luxon';
 import { useCallback } from 'react';
-import { getI18n } from 'react-i18next';
 import { AppointmentParticipant, Organizer } from '../gql/graphql';
 import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 import { Appointment } from '../types/lernfair/Appointment';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     start: string;
@@ -51,6 +51,7 @@ const AppointmentDay: React.FC<Props> = ({
     canJoinVideochat,
     declinedBy,
 }) => {
+    const { t } = useTranslation();
     const isCurrentMonth = useCallback((start: string): boolean => {
         const now = DateTime.now();
         const startDate = DateTime.fromISO(start);
@@ -64,14 +65,13 @@ const AppointmentDay: React.FC<Props> = ({
         const startDate = DateTime.fromISO(start);
         const end = startDate.plus({ minutes: duration });
 
-        const startTime = startDate.setLocale('de-DE').toFormat('T');
-        const endTime = end.setLocale('de-DE').toFormat('T');
-        const i18n = getI18n();
+        const startTime = startDate.toFormat('T');
+        const endTime = end.toFormat('T');
 
         if (startDate <= now && now <= end) {
-            return i18n.t('appointment.clock.nowToEnd', { end: endTime });
+            return t('appointment.clock.nowToEnd', { end: endTime });
         }
-        return i18n.t('appointment.clock.startToEnd', { start: startTime, end: endTime });
+        return t('appointment.clock.startToEnd', { start: startTime, end: endTime });
     };
 
     const isCurrent = canJoinMeeting(start, duration, isOrganizer ? 240 : 10, DateTime.now());

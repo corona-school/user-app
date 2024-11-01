@@ -90,14 +90,10 @@ export const getGradeLabel = (grade: number) => {
     return i18next.t('lernfair.schoolclass', { class: grade });
 };
 
-export const formatDate: (date: Date, format?: Intl.DateTimeFormatOptions, locale?: string) => string = (
-    date,
-    format = DateTime.DATETIME_MED,
-    locale = 'de'
-) => {
+export const formatDate: (date: Date, format?: Intl.DateTimeFormatOptions, locale?: string) => string = (date, format = DateTime.DATETIME_MED, locale) => {
     if (!date) return '';
 
-    return DateTime.fromISO(date.toString()).toLocaleString(format, { locale });
+    return DateTime.fromISO(date.toString()).toLocaleString(format, { locale: locale ?? i18next.language });
 };
 
 export const handleDateString: (datetime: string, format: string, locale?: string, outputFormat?: Intl.DateTimeFormatOptions) => string = (
