@@ -233,13 +233,24 @@ const MatchingStudent: React.FC<Props> = () => {
                                 <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                                     {t('matching.homeworkhelp.texthelper')}
                                 </Text>
-                                <VStack marginBottom={space['1.5']}>
+                                <VStack marginBottom={space['2.5']}>
                                     <Button width={ButtonContainer} onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
                                         {t('matching.homeworkhelp.button')}
                                     </Button>
                                 </VStack>
                             </VStack>
                         )}
+                        <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                            <Heading paddingBottom={space['0.5']}>{t('matching.volunteering.title')}</Heading>
+                            <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
+                                {t('matching.volunteering.text')}
+                            </Text>
+                            <VStack marginBottom={space['2.5']}>
+                                <Button width={ButtonContainer} onPress={() => navigate('/profile')}>
+                                    {t('matching.volunteering.button')}
+                                </Button>
+                            </VStack>
+                        </VStack>
                     </VStack>
                 )}
             </WithNavigation>
