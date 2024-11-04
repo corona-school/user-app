@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,7 @@ import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
+import { Button } from '@/components/Button';
 
 type Props = {};
 const query = gql(`
@@ -67,11 +68,6 @@ const MatchingStudent: React.FC<Props> = () => {
     const ContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['containerWidth'],
-    });
-
-    const ButtonContainer = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
     });
 
     const ContentContainerWidth = useBreakpointValue({
@@ -154,9 +150,9 @@ const MatchingStudent: React.FC<Props> = () => {
                                     content: (
                                         <VStack>
                                             <Matches activeMatches={activeMatches as Match[]} />
-                                            <VStack space={['0.5']}>
+                                            <VStack marginY={['2.5']}>
                                                 {(data?.me?.student?.canRequestMatch.allowed && (
-                                                    <Button width={ButtonContainer} marginY={space['1.5']} onPress={() => navigate('/request-match')}>
+                                                    <Button className={'w-full md:w-fit'} variant={'secondary'} onClick={() => navigate('/request-match')}>
                                                         {t('dashboard.helpers.buttons.requestMatchStudent')}
                                                     </Button>
                                                 )) || (
@@ -199,6 +195,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                                                         state: { edit: true },
                                                                     })
                                                                 }
+                                                                key={i}
                                                             />
                                                         ))) || <AlertMessage content={t('matching.request.check.noRequestsTutor')} />}
                                                 </Flex>
@@ -234,7 +231,11 @@ const MatchingStudent: React.FC<Props> = () => {
                                     {t('matching.homeworkhelp.texthelper')}
                                 </Text>
                                 <VStack marginBottom={space['2.5']}>
-                                    <Button width={ButtonContainer} onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                    <Button
+                                        className={'w-full md:w-fit'}
+                                        onClick={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}
+                                        variant={'outline'}
+                                    >
                                         {t('matching.homeworkhelp.button')}
                                     </Button>
                                 </VStack>
@@ -246,7 +247,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                 {t('matching.volunteering.text')}
                             </Text>
                             <VStack marginBottom={space['2.5']}>
-                                <Button width={ButtonContainer} onPress={() => navigate('/profile')}>
+                                <Button className={'w-full md:w-fit'} onClick={() => navigate('/profile#profileStudentMyCertificates')} variant={'outline'}>
                                     {t('matching.volunteering.button')}
                                 </Button>
                             </VStack>
