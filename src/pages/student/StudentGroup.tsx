@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, Stack, Button, useBreakpointValue } from 'native-base';
+import { Heading, useTheme, VStack, Stack, Button, useBreakpointValue } from 'native-base';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
@@ -21,6 +21,8 @@ import { Subcourse } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import TruncatedText from '@/components/TruncatedText';
+import { Typography } from '@/components/Typography';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -119,6 +121,11 @@ const StudentGroup: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
+    const ContentContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['contentContainerWidth'],
+    });
+
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
@@ -201,9 +208,11 @@ const StudentGroup: React.FC = () => {
 
                     {!loading && (
                         <VStack space={space['1']}>
-                            <VStack space={space['0.5']}>
+                            <VStack space={space['0.5']} alignItems={'flex-start'} maxWidth={ContentContainerWidth}>
                                 <Heading>{t('matching.group.helper.title')}</Heading>
-                                <Text>{t('matching.group.helper.content')}</Text>
+                                <TruncatedText asChild maxLines={2}>
+                                    <Typography>{t('matching.group.helper.content')}</Typography>
+                                </TruncatedText>
                             </VStack>
                             <VStack>
                                 {locState && Object.keys(locState).length > 0 && (

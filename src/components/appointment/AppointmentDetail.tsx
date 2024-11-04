@@ -23,14 +23,8 @@ type AppointmentDetailProps = {
     startMeeting?: boolean;
 };
 
-type AppointmentDates = {
-    date: string;
-    startTime: string;
-    endTime: string;
-};
-
 const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
     const { user } = useApollo();
@@ -63,20 +57,14 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         }
     );
 
-    const getAppointmentDateTime = useCallback((appointmentStart: string, duration?: number): AppointmentDates => {
-        const start = DateTime.fromISO(appointmentStart).setLocale('de');
-        const date = start.setLocale('de').toFormat('cccc, dd. LLLL yyyy');
-        const startTime = start.setLocale('de').toFormat('HH:mm');
-        const end = start.plus({ minutes: duration });
-        const endTime = end.setLocale('de').toFormat('HH:mm');
-
+    const { date, startTime, endTime } = useMemo(() => {
+        const start = DateTime.fromISO(appointment.start).setLocale(i18n.language);
+        const date = start.toFormat('cccc, dd. LLLL yyyy');
+        const startTime = start.toFormat('HH:mm');
+        const end = start.plus({ minutes: appointment.duration });
+        const endTime = end.toFormat('HH:mm');
         return { date, startTime, endTime };
-    }, []);
-
-    const { date, startTime, endTime } = useMemo(
-        () => getAppointmentDateTime(appointment.start, appointment.duration),
-        [appointment.duration, appointment.start, getAppointmentDateTime]
-    );
+    }, [appointment.duration, appointment.start, i18n.language]);
 
     const countAttendees = useCallback(() => {
         const participants = appointment.participants ? appointment.participants.length : 0;

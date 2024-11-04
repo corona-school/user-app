@@ -94,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Часы ({{duration}} минут)",
             "repeatDate": "{{appointmentCount}}. из общего числа {{appointmentsTotal}} назначений",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "Присоединяйтесь к видеочату прямо сейчас",
             "descriptionHeader": "Описание",
             "deleteButton": "Удалить назначение",
@@ -113,7 +112,8 @@
             },
             "cancelledBy": "{{name}} отменил эту встречу",
             "rescheduleButton": "Отложить встречу",
-            "rescheduleDescription": "Если вы отложите встречу, {{name}} будет приглашен снова."
+            "rescheduleDescription": "Если вы отложите встречу, {{name}} будет приглашен снова.",
+            "participants": "{{participantsTotal}} участники"
         },
         "zoomModal": {
             "useZoomApp": {
