@@ -98,7 +98,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         const res = await createShortTimeLoginToken({ variables: { expiresAt: expiresAt, description: `` } });
         const token = res?.data?.tokenCreate;
 
-        setLoginURL(`${window.location.origin}/login-token?secret_token=${token}&temporary`);
+        setLoginURL(`${window.location.origin}/login-token?secret_token=${token}&referrer=qr_code`);
     };
 
     return (
