@@ -36,7 +36,7 @@ import { useUserType } from '../hooks/useApollo';
 import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
-import { canJoinMeeting } from './AppointmentDay';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 type Props = {
@@ -159,7 +159,7 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = _dateNext && duration ? canJoinMeeting(_dateNext, duration, isOrganizer ? 240 : 10, DateTime.now()) : false;
+    const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, _dateNext, duration);
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({

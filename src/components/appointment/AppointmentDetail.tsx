@@ -72,6 +72,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         return participants + organizers;
     }, [appointment.organizers, appointment.participants]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
 
     const isPastAppointment = useMemo(() => {
@@ -83,6 +84,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         setCanceled(true);
         cancelAppointment({ variables: { appointmentId: appointment.id } });
         navigate(-1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleDeclineClick = useCallback(() => {
@@ -90,6 +92,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         setCanceled(true);
         declineAppointment({ variables: { appointmentId: appointment.id } });
         setShowDeclineModal(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const attendees = useMemo(() => {
@@ -98,6 +101,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
 
     const isLastAppointment = useMemo(
         () => (appointment.appointmentType === Lecture_Appointmenttype_Enum.Group && appointment.total === 1 ? true : false),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [appointment.total]
     );
 
