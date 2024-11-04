@@ -142,7 +142,7 @@ const MatchingStudent: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">
                         <Breadcrumb />
                         <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
-                        <VStack space={space['0.5']} paddingBottom={space['0.5']} alignItems={'flex-start'}>
+                        <VStack space={space['0.5']} paddingBottom={space['0.5']} alignItems={'flex-start'} maxWidth={ContentContainerWidth}>
                             <TruncatedText asChild maxLines={2}>
                                 <Typography>{t('matching.request.check.content')}</Typography>
                             </TruncatedText>
@@ -199,6 +199,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                                                         state: { edit: true },
                                                                     })
                                                                 }
+                                                                key={i}
                                                             />
                                                         ))) || <AlertMessage content={t('matching.request.check.noRequestsTutor')} />}
                                                 </Flex>

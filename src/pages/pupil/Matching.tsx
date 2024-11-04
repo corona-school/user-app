@@ -19,6 +19,8 @@ import DisableableButton from '../../components/DisablebleButton';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import TruncatedText from '@/components/TruncatedText';
+import { Typography } from '@/components/Typography';
 
 type Props = {};
 
@@ -112,11 +114,6 @@ const Matching: React.FC<Props> = () => {
         return data?.me?.pupil?.matches.filter((match) => match.dissolved === true);
     }, [data?.me?.pupil?.matches]);
 
-    const ContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
-    });
-
     const ContentContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['contentContainerWidth'],
@@ -148,15 +145,25 @@ const Matching: React.FC<Props> = () => {
                     </Stack>
                 }
             >
-                <VStack space={space['0.5']} paddingX={space['1']} width="100%" maxWidth={ContainerWidth}>
+                <VStack
+                    space={space['0.5']}
+                    paddingX={space['1']}
+                    width="100%"
+                    maxWidth={ContentContainerWidth}
+                    alignItems={'flex-start'}
+                    paddingBottom={space['0.5']}
+                >
                     <Breadcrumb />
                     <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
-                    <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
-                        {t('matching.blocker.firstContent')}{' '}
-                        <Link style={{ color: colors.primary[900], textDecoration: 'underline' }} target="_blank" to="/hilfebereich">
-                            {t('moreInfoButton')}
-                        </Link>
-                    </Text>
+                    <TruncatedText asChild maxLines={2}>
+                        <Typography>
+                            {t('matching.blocker.firstContent')}
+                            <br />
+                            <Link style={{ color: colors.primary[900], textDecoration: 'underline' }} target="_blank" to="/hilfebereich">
+                                {t('moreInfoButton')}
+                            </Link>
+                        </Typography>
+                    </TruncatedText>
                 </VStack>
                 <NavigationTabs
                     tabs={[
