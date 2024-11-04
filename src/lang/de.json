@@ -130,6 +130,14 @@
                     "isCancelled": "Du hast diesen Termin bereits abgesagt."
                 }
             },
+            "qrcode": {
+                "title": "Mit Smartphone einloggen",
+                "header": "Deine Vorteile",
+                "bp1": "Fotos von Notizen, Lehrbuch oder Arbeitsblättern machen",
+                "bp2": "Direkt vom Smartphone chatten und Dateien senden",
+                "bp3": "Benachrichtigungen auf das Gerät erhalten",
+                "footer": "Einfach QR Code mit Smartphone scannen"
+            },
             "cancelledBy": "{{name}} hat diesen Termin abgesagt",
             "rescheduleDescription": "Wenn du den Termin verschiebst, wird {{name}} wieder eingeladen."
         },
