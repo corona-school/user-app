@@ -121,6 +121,11 @@ const StudentGroup: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
+    const ContentContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['contentContainerWidth'],
+    });
+
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
@@ -203,7 +208,7 @@ const StudentGroup: React.FC = () => {
 
                     {!loading && (
                         <VStack space={space['1']}>
-                            <VStack space={space['0.5']} alignItems={'flex-start'}>
+                            <VStack space={space['0.5']} alignItems={'flex-start'} maxWidth={ContentContainerWidth}>
                                 <Heading>{t('matching.group.helper.title')}</Heading>
                                 <TruncatedText asChild maxLines={2}>
                                     <Typography>{t('matching.group.helper.content')}</Typography>
