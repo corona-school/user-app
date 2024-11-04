@@ -94,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Годинник ({{duration}} хвилин)",
             "repeatDate": "{{appointmentCount}}. із загальної кількості {{appointmentsTotal}} зустрічей",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "Приєднуйтесь до відеочату зараз",
             "descriptionHeader": "Опис проекту",
             "deleteButton": "Видалити зустріч",
@@ -113,7 +112,8 @@
             },
             "cancelledBy": "{{name}} скасував цю зустріч",
             "rescheduleButton": "Перенести дату",
-            "rescheduleDescription": "Якщо ви відкладете зустріч, {{name}} буде запрошено знову."
+            "rescheduleDescription": "Якщо ви відкладете зустріч, {{name}} буде запрошено знову.",
+            "participants": "{{participantsTotal}} Учасники та учасниці"
         },
         "zoomModal": {
             "useZoomApp": {

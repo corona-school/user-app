@@ -94,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} ساعة ({{duration}} دقيقة)",
             "repeatDate": "{{appointmentCount}}. من إجمالي أحداث {{appointmentsTotal}}",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "انضم إلى دردشة الفيديو الآن",
             "descriptionHeader": "وصف",
             "deleteButton": "حذف موعد",
@@ -113,7 +112,8 @@
             },
             "cancelledBy": "موعد {{name}} ألغيت هذه",
             "rescheduleButton": "موعد المناوبة",
-            "rescheduleDescription": "موعد إذا قمت بتحريك، سيتم تحميل {{name}}} مرة أخرى."
+            "rescheduleDescription": "موعد إذا قمت بتحريك، سيتم تحميل {{name}}} مرة أخرى.",
+            "participants": "{{participantsTotal}} المشاركون"
         },
         "zoomModal": {
             "useZoomApp": {
