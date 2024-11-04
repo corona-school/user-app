@@ -63,7 +63,7 @@
             "cancelledBy": "Abgesagt von {{name}}"
         },
         "create": {
-            "assignmentHeader": "Für welches Lernangebot soll dieser Termin erstellt werden?",
+            "assignmentHeader": "Für welches Lern soll dieser Termin erstellt werden?",
             "insightMatchHeader": "Deine bestehenden Termine mit {{matchPartner}}.",
             "insightCourseHeader": "Deine bestehenden Termine für {{courseTitle}}.",
             "noAppointments": "Keine Termine vorhanden",
@@ -1562,8 +1562,8 @@
             },
             "pupil": {
                 "header": "Gruppen-Kurse",
-                "title": "Angebote",
-                "content": "Auf dieser Seite findest du deine Kurse, Empfehlungen für dich und weitere Angebote. Du suchst etwas Spezielles? Dann nutze doch unsere Suchfunktion.",
+                "title": "Gruppen-Kurse",
+                "content": "Hier findest du unsere Kurse: Neben den Themen Nachhilfe und Deutsch für Anfänger gibt es die Fokuskurse mit Themen von mentaler Gesundheit bis zu Lerntipps.",
                 "tabs": {
                     "tab1": {
                         "title": "Meine Kurse"
