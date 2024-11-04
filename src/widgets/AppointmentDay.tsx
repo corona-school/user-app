@@ -5,6 +5,7 @@ import AppointmentDate from './AppointmentDate';
 import AppointmentTile from './AppointmentTile';
 import { Appointment } from '../types/lernfair/Appointment';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     start: string;
