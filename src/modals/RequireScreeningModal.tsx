@@ -76,23 +76,36 @@ export function RequireScreeningModal() {
               email: user?.email,
           });
 
+    const eventCategory = `${isPupil ? 'SuS' : 'HuH'} Registration`;
+
     const needScreening = () => (isPupil ? needsPupilScreening() : needsStudentScreening()) && !showCalendar;
     const wasRejected = () => (isPupil ? wasPupilRejected() : wasStudentRejected()) && !showCalendar;
 
     const handleOnOpenCalendly = () => {
         setShowCalendar(true);
         trackEvent({
-            category: 'Book Appointment Page in Registration',
-            action: 'Click Button “Book Appointment”',
-            name: `${isPupil ? 'SuS' : 'HuH'} - Book Appointment`,
+            category: eventCategory,
+            action: 'Button Click',
+            name: 'CTA TERMIN BUCHEN geklickt, und Calendly Widget geöffnet',
         });
     };
 
     useCalendlyEventListener({
-        onDateAndTimeSelected: () => alert('Datum und Uhrzeit ausgewählt'),
-        onEventScheduled: (e) => alert('Termin gebucht'),
+        onDateAndTimeSelected: () => {
+            trackEvent({
+                category: eventCategory,
+                action: 'Button Click',
+                name: 'Termin ausgewählt in Calendly Widget',
+            });
+        },
+        onEventScheduled: () => {
+            trackEvent({
+                category: eventCategory,
+                action: 'Button Click',
+                name: 'Termin bestätigt in Calendly Widget',
+            });
+        },
         onEventTypeViewed: () => {
-            alert('Calendly angezeigt');
             setIsLoadingCalendar(false);
         },
     });
