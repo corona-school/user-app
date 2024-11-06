@@ -15,6 +15,9 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { PublicFooter } from '@/components/PublicFooter';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
+import { InlineWidget, useCalendlyEventListener } from 'react-calendly';
+import { useState } from 'react';
+import { cn } from '@/lib/Tailwind';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -41,6 +44,8 @@ export function RequireScreeningModal() {
     const isPupil = userType === 'pupil';
     usePageTitle(`Lern-Fair - Registrierung: Termin vereinbaren für ${isPupil ? 'Schüler:innen' : 'Helfer:innen'}`);
     const { trackEvent } = useMatomo();
+    const [showCalendar, setShowCalendar] = useState(false);
+    const [isLoadingCalendar, setIsLoadingCalendar] = useState(true);
 
     const pupilScreenings = data?.me.pupil?.screenings ?? [];
     const needsPupilScreening = () => !pupilScreenings.length || pupilScreenings.some((e) => e.status === 'pending');
@@ -71,25 +76,68 @@ export function RequireScreeningModal() {
               email: user?.email,
           });
 
-    const needScreening = () => (isPupil ? needsPupilScreening() : needsStudentScreening());
-    const wasRejected = () => (isPupil ? wasPupilRejected() : wasStudentRejected());
+    const eventCategory = `${isPupil ? 'SuS' : 'HuH'} Registration`;
+
+    const needScreening = () => (isPupil ? needsPupilScreening() : needsStudentScreening()) && !showCalendar;
+    const wasRejected = () => (isPupil ? wasPupilRejected() : wasStudentRejected()) && !showCalendar;
 
     const handleOnOpenCalendly = () => {
-        window.open(calendlyLink, '_blank');
+        setShowCalendar(true);
         trackEvent({
-            category: 'Book Appointment Page in Registration',
-            action: 'Click Button “Book Appointment”',
-            name: `${isPupil ? 'SuS' : 'HuH'} - Book Appointment`,
+            category: eventCategory,
+            action: 'Button Click',
+            name: 'CTA TERMIN BUCHEN geklickt, und Calendly Widget geöffnet',
         });
     };
 
+    useCalendlyEventListener({
+        onDateAndTimeSelected: () => {
+            trackEvent({
+                category: eventCategory,
+                action: 'Button Click',
+                name: 'Termin ausgewählt in Calendly Widget',
+            });
+        },
+        onEventScheduled: () => {
+            trackEvent({
+                category: eventCategory,
+                action: 'Button Click',
+                name: 'Termin bestätigt in Calendly Widget',
+            });
+        },
+        onEventTypeViewed: () => {
+            setIsLoadingCalendar(false);
+        },
+    });
+
     return (
         <div className="flex flex-col flex-1 items-center justify-center bg-primary p-4">
-            <div className="flex w-full gap-2 items-center justify-end px-4 pt-2">
+            <div className="flex w-full gap-2 items-center justify-end px-4 pt-2 z-50">
                 <RequireScreeningSettingsDropdown />
             </div>
-            <div className="flex flex-col flex-1 w-full lg:max-w-2xl items-center justify-center gap-y-6">
+            <div
+                className={cn(
+                    'flex flex-col flex-1 w-full lg:max-w-2xl items-center justify-center gap-y-6 relative',
+                    showCalendar && 'lg:max-w-full lg:-mt-16'
+                )}
+            >
                 {!data && <CenterLoadingSpinner />}
+                {data && showCalendar && (
+                    <div className="h-full w-full mt-2 lg:mt-0 lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center ">
+                        {isLoadingCalendar && (
+                            <div className="absolute">
+                                <CenterLoadingSpinner className="text-white" />
+                            </div>
+                        )}
+                        <InlineWidget
+                            pageSettings={{ primaryColor: '#2A4A50', textColor: '#000000' }}
+                            prefill={{ name: `${user?.firstname} ${user?.lastname}` }}
+                            styles={{ width: '100%', height: '100%', opacity: isLoadingCalendar ? 0 : 1 }}
+                            url={calendlyLink}
+                            iframeTitle={t(asTranslationKey(`requireScreening.${userType}.noScreening.title`), { firstname: user?.firstname })}
+                        />
+                    </div>
+                )}
                 {data && needScreening() && (
                     <div className="flex flex-col max-w-[450px] gap-y-4 flex-1 items-center justify-center">
                         <EventIcon />
@@ -125,9 +173,11 @@ export function RequireScreeningModal() {
                         </Typography>
                     </div>
                 )}
-            </div>
-            <div className="mt-4">
-                <PublicFooter />
+                {!showCalendar && (
+                    <div className="mt-4">
+                        <PublicFooter />
+                    </div>
+                )}
             </div>
         </div>
     );
