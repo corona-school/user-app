@@ -56,6 +56,7 @@ const WithNavigation: React.FC<Props> = ({
             label: t('navigation.label.forPupils'),
             icon: IconBook2,
         },
+        referral: { label: t('navigation.label.referral'), icon: IconUsers },
     };
 
     return (
