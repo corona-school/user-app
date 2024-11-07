@@ -104,7 +104,6 @@ const Referrals: React.FC<{}> = () => {
                                                         Post a message in your timeline including a description and image for you to use.
                                                     </Typography>
                                                     <Typography className="underline font-bold my-3">Show Preview of Instagram Post</Typography>
-
                                                     <Button variant="secondary" className="w-full py-2 lg:w-fit" onClick={handleButtonClick}>
                                                         Instagram
                                                     </Button>

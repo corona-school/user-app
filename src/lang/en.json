@@ -2024,7 +2024,6 @@
             "chat": "Chat",
             "forStudents": "For volunteers",
             "forPupils": "For pupils",
-            "referral": "Referral",
             "requestMatch": "Form a new learning pair",
             "createCourse": "Create courses",
             "createAppointment": "Create lecture",
@@ -2040,7 +2039,8 @@
             "newPassword": "Change password",
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
-            "editCourse": "Edit course"
+            "editCourse": "Edit course",
+            "referral": "Referral"
         }
     },
     "screening": {
@@ -2438,18 +2438,6 @@
         "toast": "Device successfully removed",
         "thisDevice": "This device",
         "unknownDevice": "Unknown device",
-        "deviceOnOs": "on",
-        "referral": {
-            "title": "Referral program",
-            "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
-            "share": {
-                "title": "Share your unique link",
-                "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
-            },
-            "social": {
-                "title": "Share on LinkedIn or Instagram",
-                "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
-            }
-        }
+        "deviceOnOs": "on"
     }
 }
