@@ -125,7 +125,8 @@
         "webpack": "^5.64.4",
         "webpack-dev-server": "^4.6.0",
         "webpack-manifest-plugin": "^4.0.2",
-        "workbox-webpack-plugin": "^6.4.1"
+        "workbox-webpack-plugin": "^6.4.1",
+        "react-share": "^5.1.0"
     },
     "optionalDependencies": {
         "@storybook/addon-actions": "^8.0.10",
