@@ -1654,6 +1654,11 @@
             "startMeeting": "Start meeting",
             "browser": "Continue in the browser",
             "zoomClient": "Open in Zoom"
+        },
+        "volunteering": {
+            "title": "Proof of honorary office",
+            "text": "You can have your activity confirmed at any time and then download the certificate.",
+            "button": "About the certificates"
         }
     },
     "course": {
