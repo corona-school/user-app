@@ -79,6 +79,7 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
+import Lesson from '@/pages/Lesson';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -422,6 +423,17 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            {/* Lesson Plan Generator */}
+            <Route
+                path="lesson"
+                element={
+                    <RequireAuth>
+                        <Lesson />
+                    </RequireAuth>
+                }
+            />
+
             {/* Knowledge Center */}
             <Route
                 path="/knowledge-helper"
