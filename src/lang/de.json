@@ -1374,6 +1374,11 @@
             "button": "Zur Hausaufgabenhilfe",
             "buttonSummerVacation": "Die Hausaufgabenhilfe ist in der Sommerpause. Ab dem {{endSummerVacation}} geht es weiter."
         },
+        "volunteering": {
+            "title": "Ehrenamtsnachweis",
+            "text": "Du kannst dir jederzeit deine Tätigkeit bestätigen lassen und die Bescheinigung dann runterladen.",
+            "button": "Zu den Bescheinigungen"
+        },
         "pending": {
             "modal": {
                 "title": "Anfrage zurücknehmen",

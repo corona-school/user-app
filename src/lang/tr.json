@@ -1654,6 +1654,11 @@
             "startMeeting": "Toplantıya başlayın",
             "browser": "Tarayıcıda devam et",
             "zoomClient": "Yakınlaştırmada Aç"
+        },
+        "volunteering": {
+            "title": "Onur kanıtı",
+            "text": "Faaliyetinizi istediğiniz zaman onaylatabilir ve ardından sertifikayı indirebilirsiniz.",
+            "button": "Sertifikalara"
         }
     },
     "course": {
