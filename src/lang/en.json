@@ -2271,9 +2271,10 @@
     "requireScreening": {
         "pupil": {
             "noScreening": {
-                "title": "Please book a lecture, {{firstname}}!",
-                "content": "We would like to get to know you before you can use the services offered by Lern-Fair . Please book a lecture for a Zoom call.",
-                "makeAppointment": "lecture agree"
+                "makeAppointment": "lecture agree",
+                "title": "Welcome, {{firstname}}! 👋 We'll get to know each other soon 🤗",
+                "content": "So that we can put you, {{firstname}}, in touch with a suitable helper now, we would like to have a 15-minute video call with you. The call will be conducted in German.\n You can choose an appointment in the calendar and will receive an email to {{email}} after the appointment has been confirmed. You can change or cancel the appointment at any time. - During the call, we will talk about your current challenges and explain Lern-Fair to you. You can come alone or with your parents. Don't worry if your German is not good, we can still have the call. If you don't want to make a video call under any circumstances, please get in touch and we will find another solution.",
+                "footer": "Don't have the confidence? Don't speak German? Or do you have other questions? Then get in touch with us"
             },
             "hasScreening": {
                 "title": "Please wait a bit",

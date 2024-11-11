@@ -2275,9 +2275,10 @@
     "requireScreening": {
         "pupil": {
             "noScreening": {
-                "title": "Lütfen randevu alın, {{firstname}}!",
-                "content": "Lern-Fair tarafından sunulan hizmetleri kullanmadan önce sizi tanımak isteriz. Zoom görüşmesi için lütfen randevu alın.",
-                "makeAppointment": "Randevu alın"
+                "makeAppointment": "Randevu alın",
+                "title": "Hoş geldin, {{firstname}}! 👋 Yakında birbirimizi tanıyacağız 🤗",
+                "content": "Sizi, {{firstname}}, uygun bir yardımcı ile şimdi temasa geçirebilmemiz için, sizinle 15 dakikalık bir video görüşmesi yapmak istiyoruz. Görüşme Almanca dilinde yapılacaktır.\n Takvimden bir randevu seçebilirsiniz ve randevu onaylandıktan sonra {{email}} adresine bir e-posta alacaksınız. Randevuyu istediğiniz zaman değiştirebilir veya iptal edebilirsiniz. Lern-Fair- Telefon görüşmesi sırasında, mevcut zorluklarınız hakkında konuşacağız ve açıklayacağız. Yalnız veya ebeveynlerinizle gelebilirsiniz. Almancanız iyi değilse endişelenmeyin, yine de telefon görüşmesi yapabiliriz. Hiçbir koşulda görüntülü arama yapmak istemiyorsanız, lütfen iletişime geçin ve başka bir çözüm bulalım.",
+                "footer": "Kendinize güveniniz yok mu? Almanca bilmiyor musunuz? Ya da başka sorularınız mı var? O zaman bizimle iletişime geçin"
             },
             "hasScreening": {
                 "title": "Lütfen biraz bekleyin",
