@@ -2,7 +2,7 @@ import EventIcon from '../assets/icons/Icon_Einzel.svg';
 import TimeIcon from '../assets/icons/lernfair/lf-timer.svg';
 import LokiIcon from '../assets/icons/lernfair/avatar_pupil.svg';
 
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 import useApollo, { useUserType } from '../hooks/useApollo';
@@ -18,6 +18,7 @@ import { Button } from '@/components/Button';
 import { InlineWidget, useCalendlyEventListener } from 'react-calendly';
 import { useState } from 'react';
 import { cn } from '@/lib/Tailwind';
+import TruncatedText from '@/components/TruncatedText';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -139,12 +140,25 @@ export function RequireScreeningModal() {
                     </div>
                 )}
                 {data && needScreening() && (
-                    <div className="flex flex-col max-w-[450px] gap-y-4 flex-1 items-center justify-center">
+                    <div className="flex flex-col max-w-[450px] lg:max-w-[500px] gap-y-4 flex-1 items-center justify-center">
                         <EventIcon />
                         <Typography variant="h4" className="text-center text-white text-pretty">
                             {t(asTranslationKey(`requireScreening.${userType}.noScreening.title`), { firstname: user?.firstname })}
                         </Typography>
-                        <Typography className="text-white text-center">{t(asTranslationKey(`requireScreening.${userType}.noScreening.content`))}</Typography>
+                        <div className="flex flex-col items-center justify-center">
+                            <TruncatedText asChild buttonClasses="text-white" maxLines={4}>
+                                <Typography className="text-white text-balance text-center whitespace-break-spaces">
+                                    <Trans
+                                        i18nKey={`requireScreening.${userType}.noScreening.content` as any}
+                                        values={{
+                                            firstname: user?.firstname,
+                                            email: `<b>${user?.email}</b>`,
+                                        }}
+                                        components={{ b: <b /> }}
+                                    />
+                                </Typography>
+                            </TruncatedText>
+                        </div>
                         <Button variant="secondary" onClick={handleOnOpenCalendly}>
                             {t(asTranslationKey(`requireScreening.${userType}.noScreening.makeAppointment`))}
                         </Button>
@@ -175,7 +189,9 @@ export function RequireScreeningModal() {
                 )}
                 {!showCalendar && (
                     <div className="mt-4">
-                        <PublicFooter />
+                        <PublicFooter
+                            helpText={data && isPupil && needScreening() ? t(asTranslationKey(`requireScreening.pupil.noScreening.footer`)) : undefined}
+                        />
                     </div>
                 )}
             </div>

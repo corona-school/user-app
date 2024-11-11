@@ -9,6 +9,7 @@ interface TruncatedTextProps {
     children: React.ReactNode;
     asChild?: boolean;
     maxLines: 1 | 2 | 3 | 4;
+    buttonClasses?: string;
 }
 
 // So tailwind knows that we're using this classes and should not be removed from the css output
@@ -21,7 +22,7 @@ const classes = {
     6: 'line-clamp-6',
 };
 
-const TruncatedText = ({ children, asChild, maxLines }: TruncatedTextProps) => {
+const TruncatedText = ({ children, asChild, maxLines, buttonClasses }: TruncatedTextProps) => {
     const { t } = useTranslation();
     const ref = useRef<HTMLElement>(null);
     const [showMore, setShowMore] = useState(true);
@@ -42,12 +43,12 @@ const TruncatedText = ({ children, asChild, maxLines }: TruncatedTextProps) => {
                 {children}
             </SlotContent>
             {showControls && showMore && (
-                <Button className="inline-flex p-0 underline font-bold" size="auto" variant="none" onClick={handleOnShowMore}>
+                <Button className={cn('inline-flex p-0 underline font-bold', buttonClasses)} size="auto" variant="none" onClick={handleOnShowMore}>
                     {t('showMore')}
                 </Button>
             )}
             {showControls && !showMore && (
-                <Button className="inline-flex p-0 underline font-bold" size="auto" variant="none" onClick={handleOnShowLess}>
+                <Button className={cn('inline-flex p-0 underline font-bold', buttonClasses)} size="auto" variant="none" onClick={handleOnShowLess}>
                     {t('showLess')}
                 </Button>
             )}

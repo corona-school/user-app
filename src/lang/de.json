@@ -2353,8 +2353,9 @@
         "contactSupport": "Support kontaktieren",
         "pupil": {
             "noScreening": {
-                "title": "Bitte buche dir einen Termin, {{firstname}}!",
-                "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
+                "title": "Willkommen, {{firstname}}! 👋 Bald lernen wir uns kennen 🤗",
+                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine Email an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
+                "footer": "Du traust dich nicht? Sprichst kein Deutsch? Oder hast andere Fragen? Dann melde dich bei uns",
                 "makeAppointment": "Termin vereinbaren"
             },
             "hasScreening": {
