@@ -175,7 +175,13 @@ const SingleCourseScreener: React.FC = () => {
             title: t('single.tabs.lessons'),
             content: (
                 <Box minH={300}>
-                    <AppointmentList isReadOnlyList={true} disableScroll noOldAppointments appointments={subcourse?.appointments as Appointment[]} />
+                    <AppointmentList
+                        height="100%"
+                        isReadOnlyList={true}
+                        disableScroll
+                        noOldAppointments
+                        appointments={subcourse?.appointments as Appointment[]}
+                    />
                 </Box>
             ),
         },
