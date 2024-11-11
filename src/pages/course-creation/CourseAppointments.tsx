@@ -106,7 +106,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointmen
                         </Box>
                     ) : (
                         <Box minH={400}>
-                            <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
+                            <AppointmentList height="100%" isReadOnlyList={true} appointments={allAppointmentsToShow} />
                         </Box>
                     )}
                 </Box>
