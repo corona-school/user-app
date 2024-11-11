@@ -17,6 +17,8 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -124,6 +126,7 @@ const SingleCoursePupil = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
+    const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
         variables: {
@@ -159,7 +162,6 @@ const SingleCoursePupil = () => {
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
-            showBack
             previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
@@ -170,7 +172,10 @@ const SingleCoursePupil = () => {
             }
         >
             <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
-                {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
+                <div>
+                    <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name! }]} />
+                    {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
+                </div>
                 {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
                 {subcourse?.isParticipant && !isInPast && (
                     <PupilJoinedCourseBanner
@@ -187,7 +192,7 @@ const SingleCoursePupil = () => {
                         </TabsList>
                     )}
                     <TabsContent value="lectures">
-                        <div className="mt-8 max-h-80 overflow-y-scroll">
+                        <div className="mt-8 max-h-full overflow-y-scroll">
                             <AppointmentList appointments={appointments as Appointment[]} isReadOnly={!subcourse?.isParticipant} disableScroll />
                         </div>
                     </TabsContent>

@@ -11,18 +11,17 @@ import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
-import useLogout from '../hooks/useLogout';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { user } = useApollo();
-    const logout = useLogout();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
-    const { canInstall, install } = useContext(InstallationContext);
+    const { canInstall } = useContext(InstallationContext);
 
     const [showDeactivate, setShowDeactivate] = useState(false);
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
@@ -44,20 +43,15 @@ const Settings: React.FC = () => {
         lg: false,
     });
 
-    const handleOnInstall = async () => {
-        trackEvent({
-            category: 'pwa',
-            action: 'click-event',
-            name: 'Lern-Fair installieren',
-            documentTitle: 'Einstellungen',
-        });
-        await install();
+    const handleOnInstall = () => {
+        navigate('/install');
     };
 
     return (
         <>
-            <WithNavigation headerTitle={t('settings.header')} hideMenu showBack previousFallbackRoute="/start">
-                <VStack paddingX={space['1.5']} pt={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+            <WithNavigation headerTitle={t('settings.header')} hideMenu previousFallbackRoute="/start">
+                <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                    <Breadcrumb />
                     <>
                         <ProfileSettingRow title={user?.firstname!} isSpace={false}>
                             {userType !== 'screener' && (
@@ -85,6 +79,9 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />
                                 </Column>
                             )}
+                            <Column mb={tabspace}>
+                                <ListItem label={t('settings.general.manageSessions')} onPress={() => navigate('/manage-sessions')} />
+                            </Column>
                             {userType === 'student' && isMobile && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/knowledge-helper')} />
@@ -118,7 +115,7 @@ const Settings: React.FC = () => {
                                         name: 'Abmelden im Account',
                                         documentTitle: 'Logout',
                                     });
-                                    logout();
+                                    navigate('/logout');
                                 }}
                             />
                         </Column>
@@ -134,7 +131,7 @@ const Settings: React.FC = () => {
                 </VStack>
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
-            <SwitchLanguageModal isOpen={showSwitchLanguage} onCloseModal={() => setShowSwitchLanguage(false)} />
+            <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
         </>
     );
 };

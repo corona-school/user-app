@@ -13,8 +13,6 @@ declare namespace NodeJS {
         // Matomo API Key
         readonly REACT_APP_MATOMO_URL: string;
         readonly REACT_APP_DISABLE_MATOMO?: 'true';
-        // Unsplash API Key
-        readonly REACT_APP_UNSPLASH: string;
         // URL for student screenings
         readonly REACT_APP_SCREENING_URL: string;
         // URL for pupil screenings

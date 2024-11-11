@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
+import { Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
@@ -15,6 +15,9 @@ import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import TruncatedText from '@/components/TruncatedText';
+import { Typography } from '@/components/Typography';
 
 type Props = {};
 
@@ -244,10 +247,13 @@ const PupilGroup: React.FC<Props> = () => {
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <Breadcrumb />
                         <VStack space={space['1']}>
-                            <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+                            <VStack space={space['0.5']} maxWidth={ContentContainerWidth} alignItems={'flex-start'} marginBottom={space['0.5']}>
                                 <Heading>{t('matching.group.pupil.title')}</Heading>
-                                <Text marginBottom={space['0.5']}>{t('matching.group.pupil.content')}</Text>
+                                <TruncatedText asChild maxLines={2}>
+                                    <Typography>{t('matching.group.pupil.content')}</Typography>
+                                </TruncatedText>
                             </VStack>
 
                             <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>

@@ -18,7 +18,7 @@ import {
     TypedDocumentNode,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { ReactNode, useMemo, useState, createContext, useContext, useCallback, useEffect } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Utility from '../Utility';
 import { createOperation } from '@apollo/client/link/utils';
 import { SubscriptionObserver } from 'zen-observable-ts';
@@ -38,15 +38,16 @@ export type QueryResult<Q> = Q extends TypedDocumentNode<infer Data, any> ? Data
 // --------------- Caching -------------------------
 
 const LOGIN_WITH_DEVICE_TOKEN_MUTATION = gql(`
-    mutation LoginWithDeviceToken($deviceToken: String!) {
-      loginToken(token: $deviceToken)
+    mutation LoginWithDeviceToken($deviceToken: String!, $deviceId: String!) {
+      loginToken(token: $deviceToken, deviceId: $deviceId)
     }
   `);
+
+type Watcher = () => void;
 
 interface FullResult {
     data: any;
     variables: string;
-    watchers: (() => void)[];
 }
 
 // The Apollo InMemory cache is way too complex for our purpose
@@ -59,6 +60,7 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
     // ----------- Cache -----------------
 
     private cache: Map</* Query Name */ string, FullResult> = new Map();
+    private watchers = new Map</* Query Name */ string, Watcher[]>();
 
     /* Extracts the name of a Query - query <name> { ... }
      * This should be unique anyways as it is also used to generate typescript types
@@ -91,7 +93,9 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         if (!name) return undefined;
         const entry = this.cache.get(name);
 
-        if (entry && JSON.stringify(query.variables) === entry.variables) {
+        if (!entry) return undefined;
+
+        if (JSON.stringify(query.variables) === entry.variables) {
             log('GraphQL Cache', `Read ${name} from cache`, entry);
             return entry;
         } else {
@@ -107,20 +111,18 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         const name = this.getQueryName(query);
         if (!name) return;
 
-        const existingEntry = this.getEntry(result);
+        const existingEntry = this.getEntry(query);
         if (!existingEntry) {
             this.cache.set(name, {
                 data: result,
-                watchers: [],
-                variables: JSON.stringify(query.variables),
+                variables: JSON.stringify(query.variables ?? {}),
             });
             log('GraphQL Cache', `Write ${name} to new Cache Entry`, result);
         } else {
             existingEntry.data = result;
-            existingEntry.watchers.forEach((it) => it());
-
             log('GraphQL Cache', `Write ${name} to existing Cache Entry`, result);
         }
+        this.watchers.get(name)?.forEach((watcher) => watcher());
     }
 
     // ----------- ApolloCache Interface --------------
@@ -149,6 +151,7 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
 
     watch<TData = any, TVariables = any>(watch: Cache.WatchOptions<TData, TVariables>): () => void {
         const entry = this.getEntry(watch);
+        const name = this.getQueryName(watch);
 
         const watcher = () => {
             log('GraphQL Cache', 'fire watcher');
@@ -158,10 +161,14 @@ class FullResultCache extends ApolloCache<NormalizedCacheObject> {
         if (entry) {
             log('GraphQL Cache', 'immediately fire watcher');
             watch.callback(this.diff(watch));
+        }
 
-            entry.watchers.push(watcher);
+        if (name) {
+            log('GraphQL Cache', 'store watcher');
+            this.watchers.set(name, this.watchers.get(name)?.concat(watcher) ?? []);
             return () => {
-                entry.watchers = entry.watchers.filter((it) => it !== watcher);
+                const updatedWatchers = this.watchers.get(name)?.filter((it) => it !== watcher) ?? [];
+                this.watchers.set(name, updatedWatchers);
                 log('GraphQL Cache', 'detach watcher');
             };
         }
@@ -227,7 +234,7 @@ export type LFApollo = {
     // If we suspect that a backend mutation caused a change in user data or roles, we might want to refresh:
     refreshUser: () => void;
 
-    loginWithPassword: (email: string, password: string) => Promise<FetchResult>;
+    loginWithPassword: (email: string, password: string, deviceId: string) => Promise<FetchResult>;
 
     sessionState: 'unknown' | 'logged-out' | 'logged-in' | 'error';
     // Once the session is 'logged-in', a query will be issued to determine the user session
@@ -290,6 +297,21 @@ const clearSessionToken = () => {
 const getDeviceToken = () => STORAGE.getItem('lernfair:device-token');
 const setDeviceToken = (token: string) => STORAGE.setItem('lernfair:device-token', token);
 const clearDeviceToken = () => STORAGE.removeItem('lernfair:device-token');
+
+// ----- Device ID --------------------------
+// The device ID is a permanent identifier for a device, it is used to identify
+//  the device across sessions and to revoke all sessions created by a device
+export const getDeviceId = () => STORAGE.getItem('lernfair:device-id');
+const setDeviceId = (id: string) => STORAGE.setItem('lernfair:device-id', id);
+export const getOrCreateDeviceId = () => {
+    const existing = getDeviceId();
+    if (existing) return existing;
+
+    const deviceId = crypto.randomUUID();
+    setDeviceId(deviceId);
+    log('GraphQL', 'created device id');
+    return deviceId;
+};
 
 // ---------------- Custom ApolloLink For Request Logging -------
 class RequestLoggerLink extends ApolloLink {
@@ -396,7 +418,7 @@ class RetryOnUnauthorizedLink extends ApolloLink {
                 {},
                 {
                     query: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
-                    variables: { deviceToken: getDeviceToken() },
+                    variables: { deviceToken: getDeviceToken(), deviceId: getOrCreateDeviceId() },
                 }
             )
         ).subscribe(observer);
@@ -405,7 +427,13 @@ class RetryOnUnauthorizedLink extends ApolloLink {
 
 function describeDevice() {
     const parsed = userAgentParser(window.navigator.userAgent);
-    return `${parsed.browser.name ?? 'Unbekannter Browser'} auf einem ${parsed.device.model ?? 'Unbekannten Gerät'}`;
+    let type = 'desktop';
+    if (window.innerWidth <= 768) {
+        type = 'mobile';
+    } else if (window.innerWidth <= 1024) {
+        type = 'tablet';
+    }
+    return JSON.stringify({ browser: parsed.browser, device: parsed.device, os: parsed.os, type });
 }
 
 const useApolloInternal = () => {
@@ -460,43 +488,46 @@ const useApolloInternal = () => {
     //  and no device token, then it makes sense to create one,
     //  so that when the session is invalidated, we can log in
     //  again using the device token
-    const createDeviceToken = useCallback(async () => {
-        if (getDeviceToken()) return;
+    const createDeviceToken = useCallback(
+        async (deviceId: string) => {
+            if (getDeviceToken()) return;
 
-        const { searchParams } = new URL(window.location.href);
-        if (TEMPORARY_LOGIN) {
-            log('GraphQL', 'Device token was not created as disabled via query parameter');
-            return;
-        }
+            const { searchParams } = new URL(window.location.href);
+            if (TEMPORARY_LOGIN) {
+                log('GraphQL', 'Device token was not created as disabled via query parameter');
+                return;
+            }
 
-        log('GraphQL', 'Creating device token with description: ' + describeDevice());
-        const result = await client.mutate({
-            mutation: gql(`
-        mutation CreateDeviceToken($description: String!) {
-          tokenCreate(description: $description)
+            log('GraphQL', 'Creating device token with description: ' + describeDevice());
+            const result = await client.mutate({
+                mutation: gql(`
+        mutation CreateDeviceToken($description: String!, $deviceId: String!) {
+          tokenCreate(description: $description, deviceId: $deviceId)
         }
       `),
-            variables: { description: describeDevice() },
-            context: { skipAuthRetry: true },
-        });
+                variables: { description: describeDevice(), deviceId },
+                context: { skipAuthRetry: true },
+            });
 
-        if (result.errors?.length) {
-            throw new Error(`Errors during device token creation`);
-        }
+            if (result.errors?.length) {
+                throw new Error(`Errors during device token creation`);
+            }
 
-        const deviceToken = result.data!.tokenCreate;
-        setDeviceToken(deviceToken);
-        log('GraphQL', 'created device token');
-        return deviceToken;
-    }, [client]);
+            const deviceToken = result.data!.tokenCreate;
+            setDeviceToken(deviceToken);
+            log('GraphQL', 'created device token');
+            return deviceToken;
+        },
+        [client]
+    );
 
     const loginWithDeviceToken = useCallback(
-        async (deviceToken: string) => {
+        async (deviceToken: string, deviceId: string) => {
             log('GraphQL', 'device token present, trying to log in');
             try {
                 const res = await client.mutate({
                     mutation: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
-                    variables: { deviceToken },
+                    variables: { deviceToken, deviceId },
                     context: { skipAuthRetry: true },
                 });
 
@@ -516,19 +547,19 @@ const useApolloInternal = () => {
 
     // ---------- Secret Token --------------------
     const loginWithSecretToken = useCallback(
-        async (secretToken: string) => {
+        async (secretToken: string, deviceId: string) => {
             log('GraphQL', 'secret token present, trying to log in');
             try {
                 const res = await client.mutate({
                     mutation: LOGIN_WITH_DEVICE_TOKEN_MUTATION,
-                    variables: { deviceToken: secretToken },
+                    variables: { deviceToken: secretToken, deviceId },
                     context: { skipAuthRetry: true },
                 });
 
                 log('GraphQL', 'successfully logged in with secret token');
                 setSessionState('logged-in');
                 setUser(null); // refresh user information
-                createDeviceToken(); // fire and forget
+                createDeviceToken(deviceId); // fire and forget
                 return res;
             } catch (error) {
                 log('GraphQL', 'Failed to log in with secret token', error);
@@ -601,7 +632,7 @@ const useApolloInternal = () => {
                 }
 
                 log('GraphQL', 'User visits email verification, forcing the usage of secret token');
-                await loginWithSecretToken(secretToken);
+                await loginWithSecretToken(secretToken, getOrCreateDeviceId());
                 return;
             }
 
@@ -616,12 +647,12 @@ const useApolloInternal = () => {
 
             // If not, log in using the various methods
             if (deviceToken) {
-                await loginWithDeviceToken(deviceToken);
+                await loginWithDeviceToken(deviceToken, getOrCreateDeviceId());
                 return;
             }
 
             if (secretToken) {
-                await loginWithSecretToken(secretToken);
+                await loginWithSecretToken(secretToken, getOrCreateDeviceId());
                 return;
             }
 
@@ -639,7 +670,7 @@ const useApolloInternal = () => {
                 await client.mutate({
                     mutation: gql(`
           mutation RevokeToken($deviceToken: String!) {
-            tokenRevoke(token: $deviceToken)
+            tokenRevoke(token: $deviceToken, invalidateSessions: false)
           }
         `),
                     variables: { deviceToken: getDeviceToken()! },
@@ -672,14 +703,17 @@ const useApolloInternal = () => {
 
     // ------------ Login with password -------------
     const loginWithPassword = useCallback(
-        async (email: string, password: string): Promise<FetchResult> => {
+        async (email: string, password: string, deviceId: string): Promise<FetchResult> => {
             log('GraphQL', 'Logging in with email and password');
 
             const result = await client.mutate({
-                mutation: gql(`mutation login($password: String!, $email: String!) { loginPassword(password: $password, email: $email) }`),
+                mutation: gql(
+                    `mutation login($password: String!, $email: String!, $deviceId: String!) { loginPassword(password: $password, email: $email, deviceId: $deviceId) }`
+                ),
                 variables: {
                     email: email,
                     password: password,
+                    deviceId,
                 },
                 errorPolicy: 'all',
                 context: { skipAuthRetry: true },
@@ -690,7 +724,7 @@ const useApolloInternal = () => {
                 log('GraphQL', 'Logged in successfully');
                 setSessionState('logged-in');
                 setUser(null); // refresh user information
-                createDeviceToken(); // fire and forget
+                createDeviceToken(deviceId); // fire and forget
             }
 
             return result;

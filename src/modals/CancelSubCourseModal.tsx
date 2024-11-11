@@ -38,14 +38,12 @@ const CancelSubCourseModal = ({ isOpen, onOpenChange, subcourseId, onCourseCance
             </ModalHeader>
             <Typography className="py-4">{t('course.cancel.description')}</Typography>
             <ModalFooter>
-                <div className="flex flex-row gap-4">
-                    <Button variant="destructive" onClick={handleOnCourseCancel} isLoading={isCanceling}>
-                        {t('course.cancel.header')}
-                    </Button>
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        {t('cancel')}
-                    </Button>
-                </div>
+                <Button className="w-full lg:w-fit" variant="destructive" onClick={handleOnCourseCancel} isLoading={isCanceling}>
+                    {t('course.cancel.header')}
+                </Button>
+                <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                    {t('cancel')}
+                </Button>
             </ModalFooter>
         </Modal>
     );

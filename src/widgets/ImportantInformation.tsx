@@ -370,7 +370,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     isOpen={selectedInformation !== undefined}
                     label={selectedInformation.label}
-                    onClose={() => setSelectedInformation(undefined)}
+                    onOpenChange={() => setSelectedInformation(undefined)}
                     buttons={
                         selectedInformation.btnfn?.length > 0
                             ? selectedInformation.btntxt?.map((txt, index) => ({

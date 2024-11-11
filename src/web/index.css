@@ -20,7 +20,7 @@
         --card-foreground: var(--foreground);
 
         --primary-lighter: 171 24% 94%;
-        --primary-light: 178.72 23.15% 60.2%;
+        --primary-light: 187.14 23.6% 65.1%;
         --primary: 189 31% 24%;
         --primary-dark: 189 28% 18%;
         --primary-foreground: 210 40% 98%;
@@ -48,6 +48,11 @@
     body {
         @apply bg-background text-foreground;
         font-feature-settings: 'rlig' 1, 'calt' 1;
+    }
+    input[type='time']::-webkit-calendar-picker-indicator {
+        position: absolute;
+        right: 10px;
+        opacity: 0.3;
     }
 }
 

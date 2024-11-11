@@ -1,4 +1,4 @@
-import { Button, Column, Container, Flex, FormControl, Heading, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Button, Column, Container, FormControl, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
@@ -15,6 +15,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -94,10 +95,11 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
 }
 
 const ProfileStudent: React.FC<Props> = () => {
-    const { colors, space, sizes } = useTheme();
+    const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { trackPageView } = useMatomo();
+    const [divRef, setDivRef] = useState<Element | null>(null);
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
 
@@ -129,19 +131,6 @@ const ProfileStudent: React.FC<Props> = () => {
         lg: sizes['containerWidth'],
     });
 
-    const HeaderStyle = useBreakpointValue({
-        base: {
-            isMobile: true,
-            bgColor: 'primary.700',
-            paddingY: space['2'],
-        },
-        lg: {
-            isMobile: false,
-            bgColor: 'transparent',
-            paddingY: 0,
-        },
-    });
-
     const isMobileSM = useBreakpointValue({
         base: true,
         sm: false,
@@ -154,36 +143,28 @@ const ProfileStudent: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    const goToRef = () => {
+        const href = window.location.href.substring(window.location.href.lastIndexOf('#') + 1);
+        if (href === 'profileStudentMyCertificates' && divRef) {
+            divRef.scrollIntoView({ behavior: 'smooth' });
+        }
+    };
+
     useEffect(() => {
         if (showSuccessfulChangeAlert || userSettingChanged) {
             window.scrollTo({ top: 0 });
         }
     }, [showSuccessfulChangeAlert, userSettingChanged]);
 
+    if (divRef) goToRef();
+
     return (
         <>
             <WithNavigation
-                showBack={isMobileSM}
                 hideMenu={isMobileSM}
                 isLoading={loading}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
-                headerContent={
-                    <Flex
-                        maxWidth={ContainerWidth}
-                        marginX="auto"
-                        width="85%"
-                        bg={HeaderStyle.bgColor}
-                        alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
-                        justifyContent="center"
-                        paddingY={HeaderStyle.paddingY}
-                        borderBottomRadius={16}
-                    >
-                        <Heading color={colors.white} bold fontSize="xl">
-                            {data?.me?.firstname}
-                        </Heading>
-                    </Flex>
-                }
                 headerLeft={
                     !isMobileSM && (
                         <Stack alignItems="center" direction="row">
@@ -193,6 +174,9 @@ const ProfileStudent: React.FC<Props> = () => {
                     )
                 }
             >
+                <Container maxWidth={ContainerWidth} paddingX={space['1']}>
+                    <Breadcrumb />
+                </Container>
                 {(showSuccessfulChangeAlert || userSettingChanged) && (
                     <Container maxWidth={ContainerWidth} paddingX={space['1']}>
                         <AlertMessage content={t('profile.successmessage')} />
@@ -234,8 +218,8 @@ const ProfileStudent: React.FC<Props> = () => {
                             <ProfileSettingItem title={t('profile.FluentLanguagenalData.label')} href={() => navigate('/change-setting/language')}>
                                 {(data?.me?.student?.languages?.length && (
                                     <Row flexWrap="wrap" w="100%">
-                                        {data?.me?.student?.languages.map((lang: string) => (
-                                            <Column marginRight={3} mb={space['0.5']}>
+                                        {data?.me?.student?.languages.map((lang: string, i: number) => (
+                                            <Column marginRight={3} mb={space['0.5']} key={i}>
                                                 <CSSWrapper className="profil-tab-link">
                                                     <IconTagList
                                                         isDisabled
@@ -275,12 +259,13 @@ const ProfileStudent: React.FC<Props> = () => {
                             </ProfileSettingItem>
                         </ProfileSettingRow>
                         <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
+                            <div ref={(el) => setDivRef(el)}></div>
                             <Button marginY={space['1']} onPress={() => navigate('/request-certificate')} maxWidth="300px">
                                 {t('profile.Helper.certificate.button')}
                             </Button>
                             <VStack display="flex" flexDirection="row" flexWrap="wrap">
-                                {data?.me.student?.participationCertificates.map((certificate) => (
-                                    <MatchCertificateCard certificate={certificate} />
+                                {data?.me.student?.participationCertificates.map((certificate, i) => (
+                                    <MatchCertificateCard certificate={certificate} key={i} />
                                 ))}
                             </VStack>
                         </ProfileSettingRow>

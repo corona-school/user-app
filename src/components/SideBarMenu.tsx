@@ -84,7 +84,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                     {t('appFeedback.giveFeedbackButton')}
                 </Button>
             </nav>
-            <AppFeedbackModal isOpen={isOpen} onClose={() => setIsOpen(false)} />
+            <AppFeedbackModal isOpen={isOpen} onIsOpenChange={setIsOpen} />
         </div>
     );
 };

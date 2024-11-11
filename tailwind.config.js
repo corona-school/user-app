@@ -65,8 +65,8 @@ module.exports = {
                     foreground: 'hsl(var(--accent-foreground))',
                 },
                 popover: {
-                    DEFAULT: 'hsl(var(--popover))',
-                    foreground: 'hsl(var(--popover-foreground))',
+                    DEFAULT: 'hsl(var(--background))',
+                    foreground: 'hsl(var(--foreground))',
                 },
                 card: {
                     DEFAULT: 'hsl(var(--card))',
@@ -87,6 +87,7 @@ module.exports = {
                 tight: '-0.012rem',
             },
             fontSize: {
+                detail: '0.875rem',
                 form: ['0.875rem', { lineHeight: '0.875rem', letterSpacing: '0', fontWeight: '500' }],
             },
             lineHeight: {
@@ -101,10 +102,24 @@ module.exports = {
                     from: { height: 'var(--radix-accordion-content-height)' },
                     to: { height: '0' },
                 },
+                'shine': {
+                    '0%': { transform: 'translateY(0)', opacity: '0' },
+                    '10%': { opacity: '1' },
+                    '100%': { transform: 'translateY(-200px)', opacity: '0' },
+                },
+                'bell-ring': {
+                    '0%': { transform: 'scaleX(1)' },
+                    '10%, 5%': { transform: 'scale3d(.9,.9,.9) rotate(-5deg)' },
+                    '15%, 25%, 35%, 45%': { transform: 'scale3d(1.1,1.1,1.1) rotate(5deg)' },
+                    '20%, 30%, 40%': { transform: 'scale3d(1.1,1.1,1.1) rotate(-5deg)' },
+                    '50%': { transform: 'scale3d(1.1,1.1,1.1) rotate(-5deg)' },
+                }
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
+                'shine': 'shine 2s infinite',
+                'bell-ring': 'bell-ring 2s infinite',
             },
             boxShadow: {
                 bottomNavigation: '0px 4px 16px rgba(17,17,26,0.1), 0px 8px 24px rgba(17,17,26,0.1),0px 16px 56px rgba(17,17,26,0.1)',

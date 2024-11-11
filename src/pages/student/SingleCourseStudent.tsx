@@ -21,6 +21,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { ParticipantsList } from '../subcourse/ParticipantsList';
 import Waitinglist from '../single-course/Waitinglist';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -147,6 +149,7 @@ const SingleCourseStudent = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
+    const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const navigate = useNavigate();
 
@@ -309,7 +312,6 @@ const SingleCourseStudent = () => {
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
-            showBack
             previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
@@ -319,21 +321,26 @@ const SingleCourseStudent = () => {
                 </div>
             }
         >
-            {subLoading ? (
+            {subLoading || !course || !subcourse || !instructorSubcourse?.subcourse ? (
                 <CenterLoadingSpinner />
             ) : (
                 <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
-                    <SubcourseData
-                        course={course!}
-                        subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}
-                        isInPast={isInPast}
-                        hideTrafficStatus={canPromoteCourse}
-                    />
+                    <div>
+                        <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name }]} />
+                        {instructorSubcourse && (
+                            <SubcourseData
+                                course={course}
+                                subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse.subcourse } : subcourse}
+                                isInPast={isInPast}
+                                hideTrafficStatus={canPromoteCourse}
+                            />
+                        )}
+                    </div>
                     <div className="flex flex-col gap-y-11 justify-between xl:flex-row">
                         <div className="flex flex-col gap-y-11 justify-between w-full">
                             {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
                                 <StudentCourseButtons
-                                    subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
+                                    subcourse={{ ...subcourse, ...instructorSubcourse.subcourse }}
                                     refresh={refetchBasics}
                                     appointment={myNextAppointment as Lecture}
                                     isActiveSubcourse={isActiveSubcourse}
@@ -348,28 +355,22 @@ const SingleCourseStudent = () => {
                             )}
                             {!isInPast && isInstructorOfSubcourse && (
                                 <Banner
-                                    courseState={course!.courseState!}
-                                    isCourseCancelled={subcourse!.cancelled}
-                                    isPublished={subcourse!.published}
+                                    courseState={course.courseState}
+                                    isCourseCancelled={subcourse.cancelled}
+                                    isPublished={subcourse.published}
                                     handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
                                 />
                             )}
                         </div>
-                        {subcourse &&
-                            instructorSubcourse?.subcourse &&
-                            isInstructorOfSubcourse &&
-                            subcourse.published &&
-                            !subLoading &&
-                            !isInPast &&
-                            canPromoteCourse && (
-                                <PromoteBanner
-                                    onPromoted={handleOnPromoted}
-                                    subcourse={{
-                                        id: subcourse.id,
-                                        wasPromotedByInstructor: instructorSubcourse.subcourse.wasPromotedByInstructor,
-                                    }}
-                                />
-                            )}
+                        {isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
+                            <PromoteBanner
+                                onPromoted={handleOnPromoted}
+                                subcourse={{
+                                    id: subcourse.id,
+                                    wasPromotedByInstructor: instructorSubcourse.subcourse.wasPromotedByInstructor,
+                                }}
+                            />
+                        )}
                     </div>
                     <Tabs defaultValue="lectures">
                         {showTabsControls && (
@@ -388,12 +389,12 @@ const SingleCourseStudent = () => {
                             </TabsList>
                         )}
                         <TabsContent value="lectures">
-                            <div className="mt-8 max-h-80 overflow-y-scroll">
+                            <div className="mt-8 max-h-full overflow-y-scroll">
                                 <AppointmentList appointments={appointments} isReadOnly={!isInstructorOfSubcourse} disableScroll />
                             </div>
                         </TabsContent>
                         <TabsContent value="participants">
-                            {subcourse && showParticipantsTab && (
+                            {showParticipantsTab && (
                                 <ParticipantsList
                                     subcourseId={subcourseId}
                                     isInstructor={subcourse.isInstructor}

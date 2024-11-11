@@ -11,6 +11,7 @@ import { SwitchUserType } from '../User';
 import ContactSupportForm from '../components/ContactSupportForm';
 import { Typography } from '@/components/Typography';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const HelpCenter: React.FC = () => {
     const userType = useUserType();
@@ -49,7 +50,8 @@ const HelpCenter: React.FC = () => {
                 }
             >
                 <div className="h-full flex flex-col">
-                    <div className="w-full max-w-5xl pt-4 pb-3 px-1.5">
+                    <div className="w-full max-w-5xl pb-3 px-1.5">
+                        <Breadcrumb />
                         <Typography variant="h4" className="mb-1.5">
                             {t('helpcenter.title')}
                         </Typography>

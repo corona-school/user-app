@@ -30,7 +30,7 @@ query achievementById($achievementId: Float!) {
   }`);
 
 const AchievementMessageModal: React.FC<{ achievementId: number; isOpenModal: boolean; onClose: () => void }> = ({ achievementId, isOpenModal, onClose }) => {
-    const { data } = useQuery(ACHIEVMENT_BY_ID_QUERY, { variables: { achievementId } });
+    const { data } = useQuery(ACHIEVMENT_BY_ID_QUERY, { variables: { achievementId }, skip: !achievementId });
     const achievement = data?.me.achievement;
 
     if (achievement) {

@@ -6,7 +6,6 @@ import AppointmentMetaDetails from './AppointmentMetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
 import Description from './Description';
-import Buttons from './Buttons';
 import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
@@ -15,20 +14,17 @@ import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointme
 import { gql } from '../../gql';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
+import { Typography } from '../Typography';
+import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/icons-react';
+import { Button } from '../Button';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
     startMeeting?: boolean;
 };
 
-type AppointmentDates = {
-    date: string;
-    startTime: string;
-    endTime: string;
-};
-
 const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
     const { user } = useApollo();
@@ -61,20 +57,14 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         }
     );
 
-    const getAppointmentDateTime = useCallback((appointmentStart: string, duration?: number): AppointmentDates => {
-        const start = DateTime.fromISO(appointmentStart).setLocale('de');
-        const date = start.setLocale('de').toFormat('cccc, dd. LLLL yyyy');
-        const startTime = start.setLocale('de').toFormat('HH:mm');
-        const end = start.plus({ minutes: duration });
-        const endTime = end.setLocale('de').toFormat('HH:mm');
-
+    const { date, startTime, endTime } = useMemo(() => {
+        const start = DateTime.fromISO(appointment.start).setLocale(i18n.language);
+        const date = start.toFormat('cccc, dd. LLLL yyyy');
+        const startTime = start.toFormat('HH:mm');
+        const end = start.plus({ minutes: appointment.duration });
+        const endTime = end.toFormat('HH:mm');
         return { date, startTime, endTime };
-    }, []);
-
-    const { date, startTime, endTime } = useMemo(
-        () => getAppointmentDateTime(appointment.start, appointment.duration),
-        [appointment.duration, appointment.start, getAppointmentDateTime]
-    );
+    }, [appointment.duration, appointment.start, i18n.language]);
 
     const countAttendees = useCallback(() => {
         const participants = appointment.participants ? appointment.participants.length : 0;
@@ -82,6 +72,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         return participants + organizers;
     }, [appointment.organizers, appointment.participants]);
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const attendeesCount = useMemo(() => countAttendees(), [appointment.participants, appointment.organizers]);
 
     const isPastAppointment = useMemo(() => {
@@ -93,6 +84,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         setCanceled(true);
         cancelAppointment({ variables: { appointmentId: appointment.id } });
         navigate(-1);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleDeclineClick = useCallback(() => {
@@ -100,6 +92,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         setCanceled(true);
         declineAppointment({ variables: { appointmentId: appointment.id } });
         setShowDeclineModal(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const attendees = useMemo(() => {
@@ -108,8 +101,15 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
 
     const isLastAppointment = useMemo(
         () => (appointment.appointmentType === Lecture_Appointmenttype_Enum.Group && appointment.total === 1 ? true : false),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [appointment.total]
     );
+
+    const wasRejected = !!appointment.participants?.every((e) => appointment.declinedBy?.includes(e.userID!));
+    const byMatch = !appointment.declinedBy?.includes(user?.userID!);
+    const wasRejectedByMe = appointment.declinedBy?.includes(user?.userID!);
+    const wasRejectedByMatch = appointment.appointmentType === 'match' && wasRejected && byMatch;
+
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
@@ -139,15 +139,61 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     overrideMeetingLink={appointment.override_meeting_link}
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
                 />
+                {wasRejectedByMatch && (
+                    <>
+                        <div className="flex gap-x-1 items-center mt-4">
+                            <IconInfoCircle className="text-red-600" size={18} />
+                            <Typography className="text-red-600">{t('appointment.detail.cancelledBy', { name: appointment.displayName })}</Typography>
+                        </div>
+                        <Typography>{t('appointment.detail.rescheduleDescription', { name: appointment.displayName })}</Typography>
+                    </>
+                )}
                 <Description description={appointment.description} />
-
-                <Buttons
-                    onPress={user?.pupil ? () => setShowDeclineModal(true) : () => setShowDeleteModal(true)}
-                    onEditPress={() => navigate(`/edit-appointment/${appointment.id}`)}
-                    canceled={(appointment.declinedBy?.includes(user?.userID ?? '') ?? false) || canceled}
-                    isOver={isPastAppointment}
-                    isLast={isLastAppointment}
-                />
+                <div className="flex flex-col md:flex-row gap-3">
+                    {user?.student && (
+                        <>
+                            <Button
+                                disabled={isPastAppointment}
+                                reasonDisabled={t('appointment.detail.reasonDisabled.editBtn.isOver')}
+                                variant={wasRejectedByMatch ? 'default' : 'outline'}
+                                onClick={() => navigate(`/edit-appointment/${appointment.id}`)}
+                                className="w-full lg:w-[300px]"
+                                leftIcon={wasRejectedByMatch ? <IconClockEdit /> : <IconPencil />}
+                            >
+                                {wasRejectedByMatch ? t('appointment.detail.rescheduleButton') : t('appointment.detail.editButton')}
+                            </Button>
+                            <Button
+                                disabled={isPastAppointment || isLastAppointment}
+                                reasonDisabled={
+                                    isPastAppointment
+                                        ? t('appointment.detail.reasonDisabled.deleteBtn.isOver')
+                                        : t('appointment.detail.reasonDisabled.deleteBtn.isLast')
+                                }
+                                onClick={() => setShowDeleteModal(true)}
+                                variant="destructive"
+                                className="w-full lg:w-[300px]"
+                                leftIcon={<IconTrash />}
+                            >
+                                {t('appointment.detail.deleteButton')}
+                            </Button>
+                        </>
+                    )}
+                    {user?.pupil && (
+                        <Button
+                            disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
+                            reasonDisabled={
+                                isPastAppointment
+                                    ? t('appointment.detail.reasonDisabled.cancelBtn.isOver')
+                                    : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
+                            }
+                            onClick={() => setShowDeclineModal(true)}
+                            variant="destructive"
+                            className="w-full lg:w-[300px]"
+                        >
+                            {t('appointment.detail.cancelButton')}
+                        </Button>
+                    )}
+                </div>
             </Box>
         </>
     );

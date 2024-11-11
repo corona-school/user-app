@@ -59,7 +59,8 @@
         },
         "appointmentTile": {
             "lecture": "Lektion #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "Abgesagt von {{name}}"
         },
         "create": {
             "assignmentHeader": "Für welches Lernangebot soll dieser Termin erstellt werden?",
@@ -112,6 +113,7 @@
             "deleteButton": "Termin löschen",
             "cancelButton": "Termin absagen",
             "editButton": "Termin bearbeiten",
+            "rescheduleButton": "Termin verschieben",
             "canceledToast": "Termin wurde abgesagt",
             "zoomTooltipStudent": "Wenn du diesen Link aufrufst, trittst du dem Meeting als Teilnehmer:in bei. Um als Host dem Meeting beizutrteten nutze den Button \"Jetzt Videochat beitreten\".",
             "zoomTooltipPupil": "Teile diesen Link niemals mit anderen Personen. Nur so können wir die Sicherheit der Plattform gewährleisten.",
@@ -127,7 +129,17 @@
                     "isOver": "Du kannst diesen Termin nicht absagen, da er bereits vorbei ist.",
                     "isCancelled": "Du hast diesen Termin bereits abgesagt."
                 }
-            }
+            },
+            "qrcode": {
+                "title": "Mit Smartphone einloggen",
+                "header": "Deine Vorteile",
+                "bp1": "Fotos von Notizen, Lehrbuch oder Arbeitsblättern machen",
+                "bp2": "Direkt vom Smartphone chatten und Dateien senden",
+                "bp3": "Benachrichtigungen auf das Gerät erhalten",
+                "footer": "Einfach QR Code mit Smartphone scannen"
+            },
+            "cancelledBy": "{{name}} hat diesen Termin abgesagt",
+            "rescheduleDescription": "Wenn du den Termin verschiebst, wird {{name}} wieder eingeladen."
         },
         "zoomModal": {
             "header": "Hinweise zum Videochat",
@@ -907,7 +919,8 @@
             "forStudents": "Wissens-Center",
             "forPupils": "Wissens-Center",
             "push": "App-Mitteilungen",
-            "faq": "Häufige Fragen (FAQ) & Kontakt"
+            "faq": "Häufige Fragen (FAQ) & Kontakt",
+            "manageSessions": "Geräte verwalten"
         },
         "account": {
             "title": "Konto",
@@ -1361,6 +1374,11 @@
             "button": "Zur Hausaufgabenhilfe",
             "buttonSummerVacation": "Die Hausaufgabenhilfe ist in der Sommerpause. Ab dem {{endSummerVacation}} geht es weiter."
         },
+        "volunteering": {
+            "title": "Ehrenamtsnachweis",
+            "text": "Du kannst dir jederzeit deine Tätigkeit bestätigen lassen und die Bescheinigung dann runterladen.",
+            "button": "Zu den Bescheinigungen"
+        },
         "pending": {
             "modal": {
                 "title": "Anfrage zurücknehmen",
@@ -1485,9 +1503,9 @@
                     "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "details": {
-                    "heading": "Details",
-                    "subheading": "Möchtest du noch etwas an deine:n zuküftigen Lernpartner:in loswerden?",
-                    "text": "Hier kannst du weitere Angaben zu dir oder deiner aktuellen Situation machen, z.B. hast du ein spezielles Thema bei dem du Hilfe benötigst oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte? Wir leiten diesen Text an deine:n zukünftige:n Lernpartner:in weiter.",
+                    "heading": "Deine aktuelle Situation",
+                    "subheading": "Diese Angabe wird an deine:n Lernpartner:in weitergeleitet.",
+                    "text": "Gibt es ein spezielles Thema bei dem du Hilfe benötigst? Oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte?",
                     "additionalInfo": "Deine Angaben",
                     "placeholder": "Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?"
                 },
@@ -1975,6 +1993,15 @@
             }
         }
     },
+    "sessionManager": {
+        "title": "Geräte verwalten",
+        "description": "Hier kannst du alle Geräte sehen, die mit deinem Account verbunden sind. Du kannst Geräte entfernen, die du nicht mehr benutzt.",
+        "lastUsed": "Zuletzt benutzt:",
+        "toast": "Gerät erfolgreich entfernt",
+        "thisDevice": "Dieses Gerät",
+        "unknownDevice": "Unbekanntes Gerät",
+        "deviceOnOs": "auf"
+    },
     "chat": {
         "title": "Chat",
         "openChat": "Chat öffnen",
@@ -2081,7 +2108,23 @@
             "appointments": "Termine",
             "chat": "Chat",
             "forStudents": "Wissens-Center",
-            "forPupils": "Wissens-Center"
+            "forPupils": "Wissens-Center",
+            "requestMatch": "Ein neues Lernpaar bilden",
+            "createCourse": "Kurse anlegen",
+            "editCourse": "Kurs editieren",
+            "createAppointment": "Termin erstellen",
+            "editAppointment": "Termin bearbeiten",
+            "settings": "Einstellungen",
+            "notifications": "Benachrichtigungen",
+            "systemNotifications": "System-Benachrichtigungen",
+            "newsletterNotifications": "Newsletter-Benachrichtigungen",
+            "profile": "Profil",
+            "manageSessions": "Geräte verwalten",
+            "helpCenter": "Hilfebereich",
+            "newEmail": "E-Mail ändern",
+            "newPassword": "Passwort ändern",
+            "install": "Die Lern-Fair App",
+            "progress": "Erfolge & Fortschritte"
         }
     },
     "screening": {
@@ -2371,9 +2414,37 @@
     },
     "logout": "Abmelden",
     "installation": {
-        "installTitle": "Lern-Fair installieren",
+        "installTitle": "Die Lern-Fair App",
         "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
         "installButton": "Installieren",
-        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken"
+        "iOSInstallInstructions": {
+            "title": "App Installieren",
+            "steps": {
+                "first": "Klicke auf <0/> oben oder unten im Browser",
+                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+            }
+        },
+        "page": {
+            "title": "Die Lern-Fair App",
+            "description": "Lade dir die Lern-Fair App auf alle deine Geräte, um jederzeit auf Chats und Termine Zugriff zu haben.",
+            "install": "App installieren",
+            "not-supported": "Leider wird die Installation der App auf diesem Gerät nicht unterstützt.",
+            "installed": "Die App ist bereits installiert.",
+            "pros": {
+                "title": "Vorteile",
+                "list": [
+                    "Die App lädt schneller, spart Daten und schickt dir Benachrichtigungen direkt auf dein Gerät. So verpasst du keinen Chat oder Termin - und musst dich auch nicht mehr jedes Mal neu einloggen.",
+                    "Du kannst die App auf verschiedenen Geräten installieren, so dass sowohl Eltern als auch Schüler:innen auf den Chat und Terminerinnerungen Zugriff haben."
+                ]
+            },
+            "installationDetails": {
+                "title": "Installation",
+                "list": [
+                    "Die App kann ohne App Store direkt aus diesem Browser installiert werden.",
+                    "Folgende Browser werden unterstützt: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) sowie macOS (Chrome).",
+                    "Klicke auf den “App installieren” Button und folge den Anweisungen."
+                ]
+            }
+        }
     }
 }

@@ -76,7 +76,9 @@ import ForPupils from '../pages/ForPupils';
 import { useBreakpointValue, Stack } from 'native-base';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
+import InstallApp from '@/pages/InstallApp';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -468,6 +470,16 @@ export default function NavigatorLazy() {
             <Route path="/new-password" element={<ResetPassword layout="new-pw" />} />
             <Route path="/reset-password" element={<ResetPassword layout="reset-pw" />} />
 
+            <Route path="/install" element={<InstallApp />} />
+
+            <Route
+                path="/manage-sessions"
+                element={
+                    <RequireAuth>
+                        <SessionManager />
+                    </RequireAuth>
+                }
+            />
             <Route
                 path="/datenschutz"
                 element={

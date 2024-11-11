@@ -2,7 +2,7 @@ import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
-import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
+import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
@@ -187,7 +187,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                     {t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)}
                 </Alert>
             )}
-            <div className="flex flex-col items-center gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap lg:w-1/2">
+            <div className="flex flex-col items-stretch lg:items-center gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap lg:w-1/2">
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
                     <Button
                         disabled={loadingSubcourseJoined}
@@ -266,7 +266,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 </div>
             )}
 
-            <CourseConfirmationModal
+            <ConfirmationModal
                 headline={t('registrationTitle')}
                 confirmButtonText={t('single.signIn.button')}
                 description={<Trans i18nKey="single.signIn.description" components={{ b: <b />, br: <br /> }} />}
@@ -276,7 +276,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 isLoading={loadingSubcourseJoined}
             />
 
-            <CourseConfirmationModal
+            <ConfirmationModal
                 headline={t('deregistrationTitle')}
                 confirmButtonText={t('single.leave.signOut')}
                 description={t('single.leave.description')}
@@ -287,7 +287,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 isLoading={loadingSubcourseLeft}
             />
 
-            <CourseConfirmationModal
+            <ConfirmationModal
                 headline={t('registrationTitle')}
                 confirmButtonText={t('single.joinWaitinglist.button')}
                 description={t('single.joinWaitinglist.description')}
@@ -296,7 +296,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 onConfirm={handleJoinWaitinglist}
                 isLoading={loadingJoinedWaitinglist}
             />
-            <CourseConfirmationModal
+            <ConfirmationModal
                 headline={t('deregistrationTitle')}
                 confirmButtonText={t('single.leaveWaitinglist.button')}
                 description={t('single.leaveWaitinglist.description')}

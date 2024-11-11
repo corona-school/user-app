@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "Lesson #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "Canceled by {{name}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -93,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Clock ({{duration}} minutes)",
             "repeatDate": "{{appointmentCount}}. out of a total of {{appointmentsTotal}} appointments",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "Join video chat now",
             "descriptionHeader": "Description",
             "deleteButton": "Delete lecture",
@@ -101,7 +101,19 @@
             "editButton": "Edit lecture",
             "canceledToast": "Lecture was canceled",
             "zoomTooltipStudent": "If you click on this link, you will join the meeting as a participant. To join the meeting as a host, use the \"Join video chat now\" button.",
-            "zoomTooltipPupil": "Never share this link with other people. This is the only way we can guarantee the security of the platform."
+            "zoomTooltipPupil": "Never share this link with other people. This is the only way we can guarantee the security of the platform.",
+            "qrcode": {
+                "title": "Log in with your smartphone",
+                "header": "Your advantages",
+                "bp1": "Take photos of notes, textbook or worksheets",
+                "bp2": "Chat and send files directly from your smartphone",
+                "bp3": "Receive notifications on the device",
+                "footer": "Simply scan the QR code with your smartphone"
+            },
+            "cancelledBy": "{{name}} has canceled this lecture ",
+            "rescheduleButton": "Reschedule appointment",
+            "rescheduleDescription": "If you reschedule the lecture, {{name}} will be invited again.",
+            "participants": "{{participantsTotal}} participants"
         },
         "zoomModal": {
             "useZoomApp": {
@@ -136,7 +148,7 @@
         "editSuccess": "Lecture successfully changed",
         "deleteAppointment": "Delete lecture",
         "goBack": "To the previous page",
-        "loadPastAppointments": "Download past lectures ",
+        "loadPastAppointments": "Load past lectures ",
         "loadedPastAppointments": "Past lectures loaded",
         "courseNotPublished": "The course associated with this lecture has not yet been released for review.",
         "noNextAppointment": "No next lecture."
@@ -834,7 +846,8 @@
             "forStudents": "For volunteers",
             "forPupils": "For pupils",
             "push": "App messages",
-            "faq": "FAQ & Contact"
+            "faq": "FAQ & Contact",
+            "manageSessions": "Manage devices"
         },
         "account": {
             "title": "Account",
@@ -1601,6 +1614,11 @@
             "startMeeting": "Start meeting",
             "browser": "Continue in the browser",
             "zoomClient": "Open in Zoom"
+        },
+        "volunteering": {
+            "title": "Proof of honorary office",
+            "text": "You can have your activity confirmed at any time and then download the certificate.",
+            "button": "About the certificates"
         }
     },
     "course": {
@@ -2005,7 +2023,23 @@
             "appointments": "Lectures",
             "chat": "Chat",
             "forStudents": "For volunteers",
-            "forPupils": "For pupils"
+            "forPupils": "For pupils",
+            "requestMatch": "Form a new learning pair",
+            "createCourse": "Create courses",
+            "createAppointment": "Create lecture",
+            "editAppointment": "Edit lecture",
+            "settings": "Settings",
+            "notifications": "Notifications",
+            "systemNotifications": "System notifications",
+            "newsletterNotifications": "Newsletter notifications",
+            "profile": "Profile",
+            "manageSessions": "Manage devices",
+            "helpCenter": "Help area",
+            "newEmail": "Change e-mail",
+            "newPassword": "Change password",
+            "install": "The Lern-Fair app",
+            "progress": "Successes & progress",
+            "editCourse": "Edit course"
         }
     },
     "screening": {
@@ -2367,9 +2401,46 @@
         "installTitle": "Lern-Fair Install",
         "installDescription": "For faster access to chats and lectures without logging in",
         "installButton": "Install",
-        "iOSInstallInstructions": "Tap on <0/> and then <1/> \"Add to Home Screen\""
+        "page": {
+            "pros": {
+                "list": [
+                    "The app loads faster, saves data and sends notifications directly to your device. This means you never miss a chat or lecture - and you no longer have to log in every time.",
+                    "You can install the app on different devices so that both parents and pupils have access to the chat and appointment reminders."
+                ],
+                "title": "Advantages"
+            },
+            "installationDetails": {
+                "list": [
+                    "The app can be installed directly from this browser without the App Store.",
+                    "The following browsers are supported: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) and macOS (Chrome).",
+                    "Click on the \"Install app\" button and follow the instructions."
+                ],
+                "title": "Installation"
+            },
+            "title": "The Lern-Fair app",
+            "description": "Download the Lern-Fair app on all your devices to access chats and lectures at any time.",
+            "install": "Install app",
+            "not-supported": "Unfortunately, the installation of the app on this device is not supported.",
+            "installed": "The app is already installed."
+        },
+        "iOSInstallInstructions": {
+            "title": "Install app",
+            "steps": {
+                "first": "Click on <0/> at the top or bottom of the browser",
+                "second": "Select <0/> \"Go to home screen\""
+            }
+        }
     },
     "show": "Display",
     "showMore": "Show more",
-    "showLess": "Show less"
+    "showLess": "Show less",
+    "sessionManager": {
+        "title": "Manage devices",
+        "description": "Here you can see all the devices that are connected to your account. You can remove devices that you no longer use.",
+        "lastUsed": "Last used:",
+        "toast": "Device successfully removed",
+        "thisDevice": "This device",
+        "unknownDevice": "Unknown device",
+        "deviceOnOs": "on"
+    }
 }

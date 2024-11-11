@@ -1,4 +1,4 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading, Row } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -7,15 +7,11 @@ import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
-import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
-import BarrierIcon from '../../assets/icons/barrier-block_green.svg';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
-import Hello from '../../widgets/Hello';
-import CancelMatchRequestModal from '../../modals/CancelMatchRequestModal';
 import { getTrafficStatus } from '../../Utility';
 import LearningPartner from '../../widgets/LearningPartner';
 import ImportantInformation from '../../widgets/ImportantInformation';
@@ -23,9 +19,10 @@ import { gql } from '../../gql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
-import CTACard from '../../widgets/CTACard';
 import DisableableButton from '../../components/DisablebleButton';
 import { useRoles } from '../../hooks/useApollo';
+import ConfirmationModal from '@/modals/ConfirmationModal';
+import { Typography } from '@/components/Typography';
 
 type Props = {};
 
@@ -166,11 +163,6 @@ const Dashboard: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const isMobile = useBreakpointValue({ base: true, md: false });
-    const startSummerVacation = new Date('2024-06-10');
-    const endSummerVacation = new Date('2024-09-02');
-    const isSummerVacation = startSummerVacation <= new Date() && endSummerVacation >= new Date();
-
     const ContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['containerWidth'],
@@ -198,7 +190,7 @@ const Dashboard: React.FC<Props> = () => {
     );
 
     const cancelMatchRequestReaction = useCallback(
-        (shareFeedback: boolean, feedback?: string) => {
+        () => {
             trackEvent({
                 category: 'Schüler',
                 action: 'Match Request zurückgezogen',
@@ -219,14 +211,6 @@ const Dashboard: React.FC<Props> = () => {
     return (
         <AsNavigationItem path="start">
             <WithNavigation
-                headerContent={
-                    !loading &&
-                    isMobile && (
-                        <HStack maxWidth={ContainerWidth} space={space['1']} alignItems="center" bgColor={'primary.900'} padding={space['1.5']}>
-                            <Hello />
-                        </HStack>
-                    )
-                }
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <SwitchLanguageButton />
@@ -237,6 +221,11 @@ const Dashboard: React.FC<Props> = () => {
                 {!called || (loading && <CenterLoadingSpinner />)}
                 {called && !loading && (
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <div>
+                            <Typography className="mb-4" variant="h3" as="p">
+                                {t('hallo')} {data?.me.firstname}&nbsp;&nbsp;👋
+                            </Typography>
+                        </div>
                         <ImportantInformation variant="dark" />
                         <VStack>
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
@@ -354,11 +343,14 @@ const Dashboard: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <CancelMatchRequestModal
-                showModal={showCancelModal}
-                onClose={() => setShowCancelModal(false)}
-                onShareFeedback={(feedback) => cancelMatchRequestReaction(true, feedback)}
-                onSkipShareFeedback={() => cancelMatchRequestReaction(false)}
+            <ConfirmationModal
+                isOpen={showCancelModal}
+                onOpenChange={setShowCancelModal}
+                onConfirm={cancelMatchRequestReaction}
+                headline={t('matching.pending.modal.title')}
+                description={t('matching.pending.modal.description')}
+                confirmButtonText={t('matching.pending.modal.buttons.dissolve')}
+                variant="destructive"
             />
         </AsNavigationItem>
     );

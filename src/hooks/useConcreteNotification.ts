@@ -13,6 +13,7 @@ const concreteNotificationQuery = gql(`
                 body
                 modalText
                 type
+                navigateTo
             }
             sentAt
         }

@@ -3,9 +3,8 @@ import { ReactNode } from 'react';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
-import { cn } from '@/lib/Tailwind';
 
-interface CourseConfirmationModalProps extends BaseModalProps {
+interface ConfirmationModalProps extends BaseModalProps {
     headline: string;
     confirmButtonText: string;
     description: ReactNode;
@@ -13,7 +12,7 @@ interface CourseConfirmationModalProps extends BaseModalProps {
     variant?: 'default' | 'destructive';
     isLoading?: boolean;
 }
-const CourseConfirmationModal = ({
+const ConfirmationModal = ({
     headline,
     confirmButtonText,
     description,
@@ -22,7 +21,7 @@ const CourseConfirmationModal = ({
     onOpenChange,
     variant = 'default',
     isLoading,
-}: CourseConfirmationModalProps) => {
+}: ConfirmationModalProps) => {
     const { t } = useTranslation();
 
     return (
@@ -33,18 +32,16 @@ const CourseConfirmationModal = ({
             <div>
                 <Typography className="mb-1">{description}</Typography>
             </div>
-            <ModalFooter>
-                <div className={cn('flex gap-4', variant === 'default' ? 'flex-row' : 'flex-row-reverse')}>
-                    <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        {t('cancel')}
-                    </Button>
-                    <Button variant={variant} onClick={onConfirm} isLoading={isLoading}>
-                        {confirmButtonText}
-                    </Button>
-                </div>
+            <ModalFooter variant={variant}>
+                <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                    {t('cancel')}
+                </Button>
+                <Button className="w-full lg:w-fit" variant={variant} onClick={onConfirm} isLoading={isLoading}>
+                    {confirmButtonText}
+                </Button>
             </ModalFooter>
         </Modal>
     );
 };
 
-export default CourseConfirmationModal;
+export default ConfirmationModal;
