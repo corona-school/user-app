@@ -1,4 +1,4 @@
-import { Button, HStack, Heading, Text, TextArea, VStack, useTheme, Select, Input } from 'native-base';
+import { Button, Divider, HStack, Heading, Text, TextArea, VStack, useTheme, Select, Input } from 'native-base';
 import { InstructorScreening, StudentForScreening, TutorScreening } from '../../types';
 import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
@@ -10,7 +10,7 @@ import { useMutation } from '@apollo/client';
 import { MatchPupilCard } from '../matching/MatchPupilCard';
 import { StudentScreeningCard } from './StudentScreeningCard';
 import { SubcourseCard } from '../course/SubcourseCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
@@ -147,6 +147,23 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
     const { space } = useTheme();
     const { t } = useTranslation();
     const myRoles = useRoles();
+    const { colors } = useTheme();
+
+    const [languageError, setLanguageError] = useState('');
+    const [subjectError, setSubjectError] = useState('');
+
+    useEffect(() => {
+        if (!student.languages || student.languages.length === 0) {
+            setLanguageError(t('screening.errors.language_missing'));
+        } else {
+            setLanguageError('');
+        }
+        if (!student.subjectsFormatted || student.subjectsFormatted.length === 0) {
+            setSubjectError(t('screening.errors.subjects_missing'));
+        } else {
+            setSubjectError('');
+        }
+    }, [student, t]);
 
     const [openScreenAsTutor, setScreenAsTutor] = useState(false);
     const [openScreenAsInstructor, setScreenAsInstructor] = useState(false);
@@ -246,14 +263,14 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
             <Heading fontSize="30px">
                 {t('helper')} / {student.firstname} {student.lastname}
             </Heading>
-            <HStack>
+            <VStack space={space['2']}>
                 <LanguageTagList languages={student.languages} />
-                <Text fontSize="20px" lineHeight="50px">
-                    {' '}
-                    -{' '}
-                </Text>
+                {languageError && <Text color={colors.error[500]}>{languageError}</Text>}
+                <Divider my="1" />
                 <SubjectTagList subjects={student.subjectsFormatted} />
-            </HStack>
+                {subjectError && <Text color={colors.error[500]}>{subjectError}</Text>}
+            </VStack>
+            <Divider my="1" />
             <VStack>
                 <Heading fontSize="20px">{t('screening.certificateOfConduct')}</Heading>
                 <Text fontSize="15px" lineHeight="50px">
