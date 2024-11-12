@@ -3,12 +3,11 @@ import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
 import { Button } from '../components/Button';
 import { Input } from '../components/Input';
-import { HStack, Stack, VStack, Box, Image } from 'native-base';
+import { HStack, Stack, VStack, Box, useTheme } from 'native-base';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import NavigationTabs from '../components/NavigationTabs';
-import { useLocation, useNavigate } from 'react-router-dom';
 import BGLGICON from '../assets/icons/lernfair/referral/bg_lg.svg';
 import BGSMICON from '../assets/icons/lernfair/referral/bg_sm.svg';
 import MEDAL from '../assets/icons/lernfair/referral/medal.svg';
@@ -16,23 +15,22 @@ import MOBILE1 from '../assets/icons/lernfair/referral/hands_mobile1.svg';
 import MOBILE2 from '../assets/icons/lernfair/referral/hands_mobile2.svg';
 import CELEBRATE from '../assets/icons/lernfair/referral/celebrate.svg';
 
-const tabs = ['Instagram', 'Linkedin'];
+import { WhatsappShareButton, WhatsappIcon } from 'react-share';
 
 const Referrals: React.FC<{}> = () => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { pathname } = useLocation();
+    const { colors } = useTheme();
 
     const [inputValue, setInputValue] = useState('');
     const [submittedValue, setSubmittedValue] = useState('');
-
-    const path = pathname.split('/').pop() || '';
-    const currentTabFromRoute = tabs.includes(path) ? path : tabs[0];
 
     const handleButtonClick = () => {
         setSubmittedValue(inputValue);
         console.log('Submitted value:', inputValue);
     };
+
+    const shareUrl = 'https://www.lern-fair.de/';
+    const message = 'Check out this awesome referral link!';
 
     return (
         <WithNavigation
@@ -52,6 +50,8 @@ const Referrals: React.FC<{}> = () => {
                     transition: 'transform 0.3s ease',
                 }}
             ></BGSMICON> */}
+
+            {/* Desktop View */}
             <Box display={{ base: 'none', md: 'block' }}>
                 <VStack flex="1" alignItems="center" padding="5">
                     <HStack w="100%" maxW="5xl" justifyContent="space-between">
@@ -69,16 +69,18 @@ const Referrals: React.FC<{}> = () => {
                                 {t('referral.share.description')}
                             </Typography>
 
-                            <VStack space="2">
-                                <label className="block text-sm font-bold"> {t('referral.share.title')}</label>
-                                <HStack space="2">
-                                    <Input
-                                        value={inputValue}
-                                        onChange={(e) => setInputValue(e.target.value)}
-                                        className="w-full font-bold"
-                                        placeholder="Enter link"
-                                    />
-                                    <Button variant="default" className="w-full py-2 px-3 ml-2 lg:mt-0 lg:w-fit ml-auto" onClick={handleButtonClick}>
+                            <VStack space={2}>
+                                <label className="block"> {t('referral.share.title')}</label>
+                                <Input value={inputValue} onChange={(e) => setInputValue(e.target.value)} className="w-full" placeholder="Enter link" />
+
+                                <HStack space={4}>
+                                    <Button variant="success" className="w-full py-2">
+                                        <WhatsappShareButton url={shareUrl} title={message}>
+                                            WhatsApp
+                                        </WhatsappShareButton>
+                                    </Button>
+
+                                    <Button variant="default" className="w-full py-2" onClick={handleButtonClick}>
                                         Copy Link
                                     </Button>
                                 </HStack>
@@ -102,6 +104,7 @@ const Referrals: React.FC<{}> = () => {
                                                         Post a message in your timeline including a description and image for you to use.
                                                     </Typography>
                                                     <Typography className="underline font-bold my-3">Show Preview of Instagram Post</Typography>
+
                                                     <Button variant="secondary" className="w-full py-2 lg:w-fit" onClick={handleButtonClick}>
                                                         Instagram
                                                     </Button>
@@ -145,19 +148,23 @@ const Referrals: React.FC<{}> = () => {
                                 </Typography>
                                 <VStack space={4} alignItems="center">
                                     <HStack space={8} justifyContent="center">
-                                        <VStack alignItems="center">
+                                        <VStack alignItems="center" position="relative">
                                             <Typography variant="h5" className="mb-4 font-bold underline">
                                                 Registered Users
                                             </Typography>
-                                            <Typography variant="h2">6</Typography>
+                                            <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
+                                                6
+                                            </Typography>
                                             <MOBILE1></MOBILE1>
                                         </VStack>
 
-                                        <VStack alignItems="center">
+                                        <VStack alignItems="center" position="relative">
                                             <Typography variant="h5" className="mb-4 font-bold underline">
                                                 Hours Supported
                                             </Typography>
-                                            <Typography variant="h2">25</Typography>
+                                            <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
+                                                25
+                                            </Typography>
                                             <MOBILE2></MOBILE2>
                                         </VStack>
                                     </HStack>
@@ -177,6 +184,8 @@ const Referrals: React.FC<{}> = () => {
                     </HStack>
                 </VStack>
             </Box>
+
+            {/* Mobile View */}
             <Box display={{ base: 'block', md: 'none' }}>
                 <Typography variant="h4" className="font-bold mb-3">
                     {t('referral.title')}
@@ -202,7 +211,7 @@ const Referrals: React.FC<{}> = () => {
                             <Typography variant="h6" className="font-bold mb-3">
                                 Registered Users
                             </Typography>
-                            <Typography variant="h5" className="font-bold mb-3">
+                            <Typography variant="h5" className="font-bold mb-3" style={{ color: colors.primary[400] }}>
                                 6
                             </Typography>
                         </HStack>
@@ -210,7 +219,7 @@ const Referrals: React.FC<{}> = () => {
                             <Typography variant="h6" className="font-bold">
                                 Hours Supported
                             </Typography>
-                            <Typography variant="h5" className="font-bold">
+                            <Typography variant="h5" className="font-bold" style={{ color: colors.primary[400] }}>
                                 25
                             </Typography>
                         </HStack>
@@ -222,7 +231,9 @@ const Referrals: React.FC<{}> = () => {
 
                             <HStack space={4}>
                                 <Button variant="success" className="w-full py-2" onClick={handleButtonClick}>
-                                    WhatsApp
+                                    <WhatsappShareButton url={shareUrl} title={message}>
+                                        WhatsApp
+                                    </WhatsappShareButton>
                                 </Button>
                                 <Button variant="default" className="w-full py-2" onClick={handleButtonClick}>
                                     Copy Link
@@ -230,7 +241,7 @@ const Referrals: React.FC<{}> = () => {
                             </HStack>
                         </VStack>
                     </Box>
-                    <Box w="85%" h="250px" backgroundColor="white" borderRadius="md" shadow={4} padding="5">
+                    <Box w="85%" minH="250px" maxH="320px" backgroundColor="white" borderRadius="md" shadow={4} padding="5">
                         <label className="block mb-2"> {t('referral.social.title')}</label>
 
                         <NavigationTabs
