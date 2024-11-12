@@ -321,24 +321,24 @@ const SingleCourseStudent = () => {
                 </div>
             }
         >
-            {subLoading || !course || !subcourse || !instructorSubcourse?.subcourse ? (
+            {subLoading || !course || !subcourse ? (
                 <CenterLoadingSpinner />
             ) : (
                 <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
                     <div>
                         <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name }]} />
-                        {instructorSubcourse && (
-                            <SubcourseData
-                                course={course}
-                                subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse.subcourse } : subcourse}
-                                isInPast={isInPast}
-                                hideTrafficStatus={canPromoteCourse}
-                            />
-                        )}
+                        <SubcourseData
+                            course={course}
+                            subcourse={
+                                isInstructorOfSubcourse && instructorSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse.subcourse } : subcourse
+                            }
+                            isInPast={isInPast}
+                            hideTrafficStatus={canPromoteCourse}
+                        />
                     </div>
                     <div className="flex flex-col gap-y-11 justify-between xl:flex-row">
                         <div className="flex flex-col gap-y-11 justify-between w-full">
-                            {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                            {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && instructorSubcourse?.subcourse && (
                                 <StudentCourseButtons
                                     subcourse={{ ...subcourse, ...instructorSubcourse.subcourse }}
                                     refresh={refetchBasics}
@@ -362,7 +362,7 @@ const SingleCourseStudent = () => {
                                 />
                             )}
                         </div>
-                        {isInstructorOfSubcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
+                        {isInstructorOfSubcourse && instructorSubcourse?.subcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                             <PromoteBanner
                                 onPromoted={handleOnPromoted}
                                 subcourse={{
