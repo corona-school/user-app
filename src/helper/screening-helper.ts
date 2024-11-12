@@ -1,3 +1,5 @@
+import { PUPIL_FIRST_SCREENING_URL, PUPIL_SCREENING_URL, SCREENING_URL } from '@/config';
+
 interface CreatePupilScreeningLinkArgs {
     isFirstScreening: boolean;
     firstName?: string;
@@ -8,7 +10,7 @@ interface CreatePupilScreeningLinkArgs {
 }
 
 export const createPupilScreeningLink = (data: CreatePupilScreeningLinkArgs) => {
-    const baseUrl = data.isFirstScreening ? process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL : process.env.REACT_APP_PUPIL_SCREENING_URL;
+    const baseUrl = data.isFirstScreening ? PUPIL_FIRST_SCREENING_URL : PUPIL_SCREENING_URL;
     const params =
         'first_name=' +
         encodeURIComponent(data.firstName ?? '') +
@@ -38,5 +40,5 @@ export const createStudentScreeningLink = (data: CreateStudentScreeningLinkArgs)
         encodeURIComponent(data.lastName ?? '') +
         '&email=' +
         encodeURIComponent(data.email ?? '');
-    return `${process.env.REACT_APP_SCREENING_URL}?${params}`;
+    return `${SCREENING_URL}?${params}`;
 };
