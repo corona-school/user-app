@@ -15,6 +15,8 @@ import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
 import { formatDate } from '../../Utility';
+import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
+import { EditLanguagesModal } from './EditLanguagesModal';
 
 type ScreeningInput = { success: boolean; comment: string; jobStatus: Screening_Jobstatus_Enum; knowsFrom: string };
 
@@ -258,6 +260,9 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
         refresh();
     };
 
+    const [showEditSubjects, setShowEditSubjects] = useState(false);
+    const [showEditLanguages, setShowEditLanguages] = useState(false);
+
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
@@ -265,12 +270,26 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
             </Heading>
             <VStack space={space['2']}>
                 <LanguageTagList languages={student.languages} />
+
+                <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
+                    Sprachen bearbeiten
+                </Button>
+
                 {languageError && <Text color={colors.error[500]}>{languageError}</Text>}
+
                 <Divider my="1" />
+
                 <SubjectTagList subjects={student.subjectsFormatted} />
+
+                <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
+                    Fächer bearbeiten
+                </Button>
+
                 {subjectError && <Text color={colors.error[500]}>{subjectError}</Text>}
             </VStack>
+
             <Divider my="1" />
+
             <VStack>
                 <Heading fontSize="20px">{t('screening.certificateOfConduct')}</Heading>
                 <Text fontSize="15px" lineHeight="50px">
