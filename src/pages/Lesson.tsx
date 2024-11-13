@@ -254,22 +254,28 @@ const Lesson: React.FC = () => {
                                             )}
                                         </VStack>
                                     ))}
+
+                                    {/* Divider */}
+                                    <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
+
+                                    {/* Copy Output Button */}
+                                    <VStack alignItems="stretch" style={{ width: '100%', alignItems: 'flex-end' }}>
+                                        {generatedPlan && (
+                                            <Button
+                                                variant="default"
+                                                size="default"
+                                                className="bg-[#F7DB4D] hover:bg-[#F7DB4D] text-[#2A4A50]"
+                                                onClick={copyOutputToClipboard}
+                                            >
+                                                Copy Output
+                                            </Button>
+                                        )}
+                                    </VStack>
                                 </VStack>
                             )}
                         </Box>
                     </HStack>
-                    {generatedPlan && (
-                        <Button
-                            variant="default"
-                            size="default"
-                            className="bg-[#F7DB4D] hover:bg-[#F7DB4D] text-[#2A4A50] font-medium text-sm absolute bottom-4 right-4"
-                            onClick={copyOutputToClipboard}
-                        >
-                            Copy Output
-                        </Button>
-                    )}
                 </ScrollView>
-                {/* Copy Output Button */}
             </Box>
         </WithNavigation>
     );
