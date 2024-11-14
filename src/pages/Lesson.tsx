@@ -97,6 +97,25 @@ const Lesson: React.FC = () => {
         ],
     };
 
+    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+    const [selectedSubject, setSelectedSubject] = useState('');
+    const [prompt, setPrompt] = useState('');
+
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.files) {
+            const files = Array.from(e.target.files);
+            // limit to 3
+            const newFiles = [...uploadedFiles, ...files].slice(0, 3);
+            setUploadedFiles(newFiles);
+        }
+    };
+
+    const resetForm = () => {
+        setSelectedSubject('');
+        setPrompt('');
+        setUploadedFiles([]);
+    };
+
     return (
         <WithNavigation>
             <Box position="relative" minH="100vh">
@@ -133,7 +152,12 @@ const Lesson: React.FC = () => {
                                     <Text fontSize="sm" color="#2a4a50" mb={1}>
                                         Select Subject<Text color="red.500">*</Text>
                                     </Text>
-                                    <Select placeholder="Select a subject" borderColor="gray.300">
+                                    <Select
+                                        placeholder="Select a subject"
+                                        borderColor="gray.300"
+                                        selectedValue={selectedSubject}
+                                        onValueChange={(value) => setSelectedSubject(value)}
+                                    >
                                         <Select.Item label="Science" value="science" />
                                         <Select.Item label="Mathematics" value="mathematics" />
                                         <Select.Item label="English" value="english" />
@@ -150,6 +174,8 @@ const Lesson: React.FC = () => {
                                         placeholder="Describe your lesson by adding more context for the AI"
                                         borderColor="gray.300"
                                         autoCompleteType={undefined}
+                                        value={prompt}
+                                        onChangeText={(text: string) => setPrompt(text)}
                                     />
                                 </Box>
 
@@ -164,32 +190,49 @@ const Lesson: React.FC = () => {
                                             <Text color="gray.400" fontSize="sm">
                                                 Upload documents here
                                             </Text>
-                                            <Button color="white" onClick={() => document.getElementById('file-upload')?.click()}>
+
+                                            <Button variant="default" onClick={() => document.getElementById('file-upload')?.click()}>
                                                 Browse
                                             </Button>
-                                            <input id="file-upload" type="file" hidden multiple onChange={(e) => console.log(e.target.files)} />
+                                            <input id="file-upload" type="file" hidden multiple onChange={handleFileChange} />
                                         </VStack>
                                     </Box>
 
                                     {/* Uploaded Files */}
-                                    <Box flex={1}>
+                                    <Box flex={1} mt={4}>
                                         <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                            Uploaded Files
+                                            Uploaded Files (Max 3)
                                         </Text>
                                         <VStack space={2}>
-                                            {/* Example file */}
-                                            <HStack p={2} borderWidth={2} borderColor="gray.300" borderRadius="lg" alignItems="center" space={2}>
-                                                <Text fontSize="xs">SolarSystem_L1.pdf</Text>
-                                                <Text fontSize="xs" color="gray.500">
-                                                    5.2 MB
-                                                </Text>
-                                            </HStack>
+                                            {uploadedFiles.map((file, index) => (
+                                                <HStack
+                                                    key={index}
+                                                    p={2}
+                                                    borderWidth={2}
+                                                    borderColor="gray.300"
+                                                    borderRadius="lg"
+                                                    alignItems="center"
+                                                    space={2}
+                                                >
+                                                    <Text fontSize="xs">{file.name}</Text>
+                                                    <Text fontSize="xs" color="gray.500">
+                                                        {(file.size / (1024 * 1024)).toFixed(2)} MB
+                                                    </Text>
+                                                </HStack>
+                                            ))}
                                         </VStack>
                                     </Box>
                                 </HStack>
 
                                 {/* Generate Button */}
-                                <Button onClick={() => console.log('Generate clicked')}>Generate Lesson Plan</Button>
+                                <HStack space="4" justifyContent="flex-end">
+                                    <Button variant="outline" onClick={resetForm}>
+                                        Reset
+                                    </Button>
+                                    <Button variant="default" onClick={() => console.log('Generate clicked')}>
+                                        Generate Lesson Plan
+                                    </Button>
+                                </HStack>
                             </VStack>
                         </Box>
 
