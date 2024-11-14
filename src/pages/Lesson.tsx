@@ -229,7 +229,7 @@ const Lesson: React.FC = () => {
                                     <Button variant="outline" onClick={resetForm}>
                                         Reset
                                     </Button>
-                                    <Button variant="default" onClick={() => console.log('Generate clicked')}>
+                                    <Button variant="secondary" onClick={() => console.log('Generate clicked')}>
                                         Generate Lesson Plan
                                     </Button>
                                 </HStack>
