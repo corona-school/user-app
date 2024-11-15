@@ -36,6 +36,8 @@ const SchoolClasses: React.FC<Props> = () => {
     `)
     );
 
+    const [isLoading, setIsLoading] = useState(false);
+
     const [createMatchRequest] = useMutation(
         gql(`
         mutation StudentCreateMatchRequest {
@@ -76,6 +78,7 @@ const SchoolClasses: React.FC<Props> = () => {
     }, [buttonWidth, navigate, show, hide, space]);
 
     const submit = useCallback(async () => {
+        setIsLoading(true);
         const resSubs = await updateSubjects({ variables: { subjects: matchRequest.subjects } });
         if (resSubs.data && !resSubs.errors) {
             if (!isEdit) {
@@ -92,6 +95,7 @@ const SchoolClasses: React.FC<Props> = () => {
         } else {
             toast.show({ description: t('error'), placement: 'top' });
         }
+        setIsLoading(false);
     }, [createMatchRequest, isEdit, matchRequest, showModal, toast, updateSubjects]);
 
     return (
@@ -104,7 +108,7 @@ const SchoolClasses: React.FC<Props> = () => {
                     <SubjectGradeSlider subject={subject} setSubject={setSubject} />
                 ))}
             </VStack>
-            <NextPrevButtons onPressPrev={() => setCurrentIndex(1)} onPressNext={submit} />
+            <NextPrevButtons isLoading={isLoading} onPressPrev={() => setCurrentIndex(1)} onPressNext={submit} />
         </VStack>
     );
 };

@@ -1,7 +1,7 @@
 import { gql } from '../../../gql';
 import { useMutation } from '@apollo/client';
 import { Text, VStack, Heading, Button, useTheme, TextArea, useToast, useBreakpointValue } from 'native-base';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useModal from '../../../hooks/useModal';
 import { RequestMatchContext } from './RequestMatch';
@@ -18,6 +18,7 @@ const Details: React.FC<Props> = () => {
     const { matchRequest, setMessage, setCurrentIndex, isEdit, skippedSubjectPriority, skippedSubjectList } = useContext(RequestMatchContext);
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const [isLoading, setIsLoading] = useState(false);
 
     const [update, _update] = useMutation(
         gql(`
@@ -77,6 +78,7 @@ const Details: React.FC<Props> = () => {
     }, [buttonWidth, navigate, show, hide, space]);
 
     const requestMatch = useCallback(async () => {
+        setIsLoading(true);
         const resSubs = await update({ variables: { subjects: matchRequest.subjects } });
 
         if (resSubs.data && !resSubs.errors) {
@@ -93,6 +95,7 @@ const Details: React.FC<Props> = () => {
         } else {
             toast.show({ description: t('error'), placement: 'top' });
         }
+        setIsLoading(false);
     }, [createMatchRequest, matchRequest.subjects, showModal, toast, update, isEdit]);
 
     return (
@@ -115,6 +118,7 @@ const Details: React.FC<Props> = () => {
                 disablingNext={{ is: _update.loading, reason: t('reasonsDisabled.loading') }}
                 onPressNext={requestMatch}
                 onPressPrev={() => setCurrentIndex(skippedSubjectPriority ? (skippedSubjectList ? 2 : 3) : 4)}
+                isLoading={isLoading}
             />
         </VStack>
     );
