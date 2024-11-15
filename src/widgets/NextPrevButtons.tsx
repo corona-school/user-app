@@ -1,6 +1,5 @@
-import { Box, Row, useTheme } from 'native-base';
+import { Button } from '@/components/Button';
 import { useTranslation } from 'react-i18next';
-import DisableableButton from '../components/DisablebleButton';
 
 export const NextPrevButtons = ({
     disablingPrev,
@@ -10,6 +9,7 @@ export const NextPrevButtons = ({
     onlyNext,
     altNextText,
     altPrevText,
+    isLoading,
 }: {
     disablingNext?: { is: boolean; reason: string };
     disablingPrev?: { is: boolean; reason: string };
@@ -18,39 +18,35 @@ export const NextPrevButtons = ({
     onlyNext?: boolean;
     altNextText?: string;
     altPrevText?: string;
+    isLoading?: boolean;
 }) => {
     const { t } = useTranslation();
-    const { space } = useTheme();
 
     return (
-        <>
-            {/*<Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />*/}
-            <Box alignItems="center" marginTop={space['0.5']}>
-                <Row w="100%" space={space['1']} justifyContent="center">
-                    {!onlyNext && (
-                        <DisableableButton
-                            isDisabled={disablingPrev?.is ?? false}
-                            reasonDisabled={disablingPrev?.reason ?? ''}
-                            maxW="220px"
-                            flex={1}
-                            h="100%"
-                            variant="outline"
-                            onPress={onPressPrev}
-                        >
-                            {altPrevText ?? t('back')}
-                        </DisableableButton>
-                    )}
-                    <DisableableButton
-                        isDisabled={disablingNext?.is ?? false}
-                        reasonDisabled={disablingNext?.reason ?? ''}
-                        maxW="220px"
-                        flex={1}
-                        onPress={onPressNext}
+        <div className="flex items-center mt-2">
+            <div className="flex w-full gap-2 justify-center items-stretch">
+                {!onlyNext && (
+                    <Button
+                        disabled={disablingPrev?.is ?? false}
+                        reasonDisabled={disablingPrev?.reason ?? ''}
+                        className="w-full max-w-[220px]"
+                        variant="outline"
+                        onClick={onPressPrev}
+                        isLoading={isLoading}
                     >
-                        {altNextText ?? t('next')}
-                    </DisableableButton>
-                </Row>
-            </Box>
-        </>
+                        {altPrevText ?? t('back')}
+                    </Button>
+                )}
+                <Button
+                    disabled={disablingNext?.is ?? false}
+                    reasonDisabled={disablingNext?.reason ?? ''}
+                    className="w-full max-w-[220px]"
+                    onClick={onPressNext}
+                    isLoading={isLoading}
+                >
+                    {altNextText ?? t('next')}
+                </Button>
+            </div>
+        </div>
     );
 };
