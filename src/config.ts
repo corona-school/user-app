@@ -55,3 +55,7 @@ export const PROMOTE_APP_BANNER_ACTIVE = (window.liveConfig?.RUNTIME_PROMOTE_APP
 export const RESULT_CACHE_ACTIVE = (window.liveConfig?.RUNTIME_RESULT_CACHE_ACTIVE ?? 'false') === 'true';
 export const SERVICE_WORKER_ACTIVE = (window.liveConfig?.RUNTIME_SERVICE_WORKER_ACTIVE ?? 'false') === 'true';
 export const SCHOOL_SEARCH_ACTIVE = (window.liveConfig?.RUNTIME_SCHOOL_SEARCH_ACTIVE ?? 'false') === 'true';
+
+export const PUPIL_FIRST_SCREENING_URL = window.liveConfig?.RUNTIME_PUPIL_FIRST_SCREENING_URL ?? process.env.REACT_APP_PUPIL_FIRST_SCREENING_URL;
+export const PUPIL_SCREENING_URL = window.liveConfig?.RUNTIME_PUPIL_SCREENING_URL ?? process.env.REACT_APP_PUPIL_SCREENING_URL;
+export const SCREENING_URL = window.liveConfig?.RUNTIME_SCREENING_URL ?? process.env.REACT_APP_SCREENING_URL;

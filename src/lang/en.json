@@ -94,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Clock ({{duration}} minutes)",
             "repeatDate": "{{appointmentCount}}. out of a total of {{appointmentsTotal}} appointments",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "Join video chat now",
             "descriptionHeader": "Description",
             "deleteButton": "Delete lecture",
@@ -103,9 +102,18 @@
             "canceledToast": "Lecture was canceled",
             "zoomTooltipStudent": "If you click on this link, you will join the meeting as a participant. To join the meeting as a host, use the \"Join video chat now\" button.",
             "zoomTooltipPupil": "Never share this link with other people. This is the only way we can guarantee the security of the platform.",
+            "qrcode": {
+                "title": "Log in with your smartphone",
+                "header": "Your advantages",
+                "bp1": "Take photos of notes, textbook or worksheets",
+                "bp2": "Chat and send files directly from your smartphone",
+                "bp3": "Receive notifications on the device",
+                "footer": "Simply scan the QR code with your smartphone"
+            },
             "cancelledBy": "{{name}} has canceled this lecture ",
             "rescheduleButton": "Reschedule appointment",
-            "rescheduleDescription": "If you reschedule the lecture, {{name}} will be invited again."
+            "rescheduleDescription": "If you reschedule the lecture, {{name}} will be invited again.",
+            "participants": "{{participantsTotal}} participants"
         },
         "zoomModal": {
             "useZoomApp": {
@@ -140,7 +148,7 @@
         "editSuccess": "Lecture successfully changed",
         "deleteAppointment": "Delete lecture",
         "goBack": "To the previous page",
-        "loadPastAppointments": "Download past lectures ",
+        "loadPastAppointments": "Load past lectures ",
         "loadedPastAppointments": "Past lectures loaded",
         "courseNotPublished": "The course associated with this lecture has not yet been released for review.",
         "noNextAppointment": "No next lecture."
@@ -298,9 +306,9 @@
                     "max-dissolved-matches": "You cannot request a learning pair because you have already had too many learning pairs.",
                     "not-tutee": "You cannot request a learning pair as you are not registered for learning support.",
                     "max-requests": "You are already on the waiting list.",
-                    "max-matches": "Due to high demand, you can only have one learning partner at a time. If you are no longer working with your learning partner, please cancel the connection.",
                     "deactivated": "Registration for 1on1 learning support is temporarily closed due to high demand. If you have already submitted a request for learning support, we will contact you by email in the near future to discuss the next steps. In the meantime, please feel free to take advantage of our other offers. ",
-                    "deactivated_tooltip": "Registration is temporarily closed due to high demand."
+                    "deactivated_tooltip": "Registration is temporarily closed due to high demand.",
+                    "max-matches": "You can currently have a maximum of 2 learning partners at the same time. If you are no longer actively working with all learning partners, it is best to dissolve the learning pair."
                 }
             }
         },
@@ -1164,7 +1172,7 @@
             "actionDescription": "Confirm information"
         },
         "kennenlernen": {
-            "buttons": ["lecture agree"],
+            "buttons": ["Select Date"],
             "subtitle": "Get to know",
             "title": "We want to get to know you 👋!",
             "content": "Before you can start with us, we would like to get to know you in a 15-minute video conference call. Simply arrange a lecture with us."
@@ -1206,7 +1214,7 @@
             "content": "Are you stuck with your homework? We can help you with your <b>homework</b> quickly and easily for 10 to 15 minutes from <b>Monday to Thursday between 4pm and 5pm</b>. We look forward to seeing you!"
         },
         "pupilScreening": {
-            "buttons": ["lecture agree"],
+            "buttons": ["Select Date"],
             "title": "We would like to get to know you!",
             "subtitle": "Get to know",
             "content": "Before we can find you a learning partner, we would like to get to know you. Please book a lecture for this purpose."
@@ -1252,7 +1260,7 @@
             "description": "In order for us to assign you the perfect learning partner, you must first submit a request on our platform. There you can easily specify the subjects that are important to you and in which we can help you. We look forward to getting started with you and beginning your learning journey together!"
         },
         "pupilFirstScreening": {
-            "buttons": ["lecture agree"],
+            "buttons": ["Select Date"],
             "title": "We would like to get to know you!",
             "subtitle": "Get to know",
             "content": "We would like to get to know you before you can use the services offered by Lern-Fair . Please book a lecture for a Zoom call."
@@ -1292,7 +1300,7 @@
             "ctaCardHeader": "Group courses",
             "ctaCardContent": "Courses on various topics in the subjects German, math, English...",
             "ctaCardButton": "To the group courses",
-            "firstContent": "In tutoring, we match you with a volunteer who will help you in their free time."
+            "firstContent": "We offer two types of tutoring: Daily, open homework help and 1:1 learning support. With 1:1 learning support, a person helps you free of charge in their free time with homework, exam preparation and anything else you want to discuss."
         },
         "homeworkhelp": {
             "title": "Homework help",
@@ -1613,6 +1621,11 @@
             "startMeeting": "Start meeting",
             "browser": "Continue in the browser",
             "zoomClient": "Open in Zoom"
+        },
+        "volunteering": {
+            "title": "Proof of honorary office",
+            "text": "You can have your activity confirmed at any time and then download the certificate.",
+            "button": "About the certificates"
         }
     },
     "course": {
@@ -2023,16 +2036,17 @@
             "createAppointment": "Create lecture",
             "editAppointment": "Edit lecture",
             "settings": "Settings",
+            "notifications": "Notifications",
             "systemNotifications": "System notifications",
             "newsletterNotifications": "Newsletter notifications",
             "profile": "Profile",
-            "notifications": "Notifications",
             "manageSessions": "Manage devices",
-            "helpCenter": "Help center",
+            "helpCenter": "Help area",
             "newEmail": "Change e-mail",
             "newPassword": "Change password",
             "install": "The Lern-Fair app",
-            "progress": "Successes & progress"
+            "progress": "Successes & progress",
+            "editCourse": "Edit course"
         }
     },
     "screening": {
@@ -2259,9 +2273,10 @@
     "requireScreening": {
         "pupil": {
             "noScreening": {
-                "title": "Please book a lecture, {{firstname}}!",
-                "content": "We would like to get to know you before you can use the services offered by Lern-Fair . Please book a lecture for a Zoom call.",
-                "makeAppointment": "lecture agree"
+                "makeAppointment": "Select Date",
+                "title": "Welcome, {{firstname}}! 👋 We'll get to know each other soon 🤗",
+                "content": "So that we can put you, {{firstname}}, in touch with a suitable helper now, we would like to have a 15-minute video call with you. The call will be conducted in German.\n You can choose an appointment in the calendar and will receive an email to {{email}} after the appointment has been confirmed. You can change or cancel the appointment at any time. - During the call, we will talk about your current challenges and explain Lern-Fair to you. You can come alone or with your parents. Don't worry if your German is not good, we can still have the call. If you don't want to make a video call under any circumstances, please get in touch and we will find another solution.",
+                "footer": "Don't have the confidence? Don't speak German? Or do you have other questions? Then get in touch with us"
             },
             "hasScreening": {
                 "title": "Please wait a bit",
@@ -2277,7 +2292,7 @@
             "noScreening": {
                 "title": "Please book a lecture, {{firstname}}!",
                 "content": "Before you can start working at Lern-Fair , we would like to get to know you in a short interview. Please book a lecture for a Zoom call.",
-                "makeAppointment": "lecture agree"
+                "makeAppointment": "Select Date"
             },
             "rejectedScreening": {
                 "title": "Unfortunately, it didn't fit",

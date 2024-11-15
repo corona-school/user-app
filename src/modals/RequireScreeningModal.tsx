@@ -2,7 +2,7 @@ import EventIcon from '../assets/icons/Icon_Einzel.svg';
 import TimeIcon from '../assets/icons/lernfair/lf-timer.svg';
 import LokiIcon from '../assets/icons/lernfair/avatar_pupil.svg';
 
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 import useApollo, { useUserType } from '../hooks/useApollo';
@@ -15,6 +15,10 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { PublicFooter } from '@/components/PublicFooter';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
+import { InlineWidget, useCalendlyEventListener } from 'react-calendly';
+import { useState } from 'react';
+import { cn } from '@/lib/Tailwind';
+import TruncatedText from '@/components/TruncatedText';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -41,6 +45,8 @@ export function RequireScreeningModal() {
     const isPupil = userType === 'pupil';
     usePageTitle(`Lern-Fair - Registrierung: Termin vereinbaren für ${isPupil ? 'Schüler:innen' : 'Helfer:innen'}`);
     const { trackEvent } = useMatomo();
+    const [showCalendar, setShowCalendar] = useState(false);
+    const [isLoadingCalendar, setIsLoadingCalendar] = useState(true);
 
     const pupilScreenings = data?.me.pupil?.screenings ?? [];
     const needsPupilScreening = () => !pupilScreenings.length || pupilScreenings.some((e) => e.status === 'pending');
@@ -71,32 +77,88 @@ export function RequireScreeningModal() {
               email: user?.email,
           });
 
-    const needScreening = () => (isPupil ? needsPupilScreening() : needsStudentScreening());
-    const wasRejected = () => (isPupil ? wasPupilRejected() : wasStudentRejected());
+    const eventCategory = `${isPupil ? 'SuS' : 'HuH'} Registration`;
+
+    const needScreening = () => (isPupil ? needsPupilScreening() : needsStudentScreening()) && !showCalendar;
+    const wasRejected = () => (isPupil ? wasPupilRejected() : wasStudentRejected()) && !showCalendar;
 
     const handleOnOpenCalendly = () => {
-        window.open(calendlyLink, '_blank');
+        setShowCalendar(true);
         trackEvent({
-            category: 'Book Appointment Page in Registration',
-            action: 'Click Button “Book Appointment”',
-            name: `${isPupil ? 'SuS' : 'HuH'} - Book Appointment`,
+            category: eventCategory,
+            action: 'Button Click',
+            name: 'CTA TERMIN BUCHEN geklickt, und Calendly Widget geöffnet',
         });
     };
 
+    useCalendlyEventListener({
+        onDateAndTimeSelected: () => {
+            trackEvent({
+                category: eventCategory,
+                action: 'Button Click',
+                name: 'Termin ausgewählt in Calendly Widget',
+            });
+        },
+        onEventScheduled: () => {
+            trackEvent({
+                category: eventCategory,
+                action: 'Button Click',
+                name: 'Termin bestätigt in Calendly Widget',
+            });
+        },
+        onEventTypeViewed: () => {
+            setIsLoadingCalendar(false);
+        },
+    });
+
     return (
         <div className="flex flex-col flex-1 items-center justify-center bg-primary p-4">
-            <div className="flex w-full gap-2 items-center justify-end px-4 pt-2">
+            <div className="flex w-full gap-2 items-center justify-end px-4 pt-2 z-50">
                 <RequireScreeningSettingsDropdown />
             </div>
-            <div className="flex flex-col flex-1 w-full lg:max-w-2xl items-center justify-center gap-y-6">
+            <div
+                className={cn(
+                    'flex flex-col flex-1 w-full lg:max-w-2xl items-center justify-center gap-y-6 relative',
+                    showCalendar && 'lg:max-w-full lg:-mt-16'
+                )}
+            >
                 {!data && <CenterLoadingSpinner />}
+                {data && showCalendar && (
+                    <div className="h-full w-full mt-2 lg:mt-0 lg:absolute lg:inset-0 lg:flex lg:items-center lg:justify-center ">
+                        {isLoadingCalendar && (
+                            <div className="absolute">
+                                <CenterLoadingSpinner className="text-white" />
+                            </div>
+                        )}
+                        <InlineWidget
+                            pageSettings={{ primaryColor: '#2A4A50', textColor: '#000000' }}
+                            prefill={{ name: `${user?.firstname} ${user?.lastname}` }}
+                            styles={{ width: '100%', height: '100%', opacity: isLoadingCalendar ? 0 : 1 }}
+                            url={calendlyLink}
+                            iframeTitle={t(asTranslationKey(`requireScreening.${userType}.noScreening.title`), { firstname: user?.firstname })}
+                        />
+                    </div>
+                )}
                 {data && needScreening() && (
-                    <div className="flex flex-col max-w-[450px] gap-y-4 flex-1 items-center justify-center">
+                    <div className="flex flex-col max-w-[450px] lg:max-w-[500px] gap-y-4 flex-1 items-center justify-center">
                         <EventIcon />
                         <Typography variant="h4" className="text-center text-white text-pretty">
                             {t(asTranslationKey(`requireScreening.${userType}.noScreening.title`), { firstname: user?.firstname })}
                         </Typography>
-                        <Typography className="text-white text-center">{t(asTranslationKey(`requireScreening.${userType}.noScreening.content`))}</Typography>
+                        <div className="flex flex-col items-center justify-center">
+                            <TruncatedText asChild buttonClasses="text-white" maxLines={4}>
+                                <Typography className="text-white text-balance text-center whitespace-break-spaces">
+                                    <Trans
+                                        i18nKey={`requireScreening.${userType}.noScreening.content` as any}
+                                        values={{
+                                            firstname: user?.firstname,
+                                            email: `<b>${user?.email}</b>`,
+                                        }}
+                                        components={{ b: <b /> }}
+                                    />
+                                </Typography>
+                            </TruncatedText>
+                        </div>
                         <Button variant="secondary" onClick={handleOnOpenCalendly}>
                             {t(asTranslationKey(`requireScreening.${userType}.noScreening.makeAppointment`))}
                         </Button>
@@ -125,9 +187,13 @@ export function RequireScreeningModal() {
                         </Typography>
                     </div>
                 )}
-            </div>
-            <div className="mt-4">
-                <PublicFooter />
+                {!showCalendar && (
+                    <div className="mt-4">
+                        <PublicFooter
+                            helpText={data && isPupil && needScreening() ? t(asTranslationKey(`requireScreening.pupil.noScreening.footer`)) : undefined}
+                        />
+                    </div>
+                )}
             </div>
         </div>
     );

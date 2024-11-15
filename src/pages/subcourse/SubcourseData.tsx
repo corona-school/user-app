@@ -24,7 +24,7 @@ type SubcourseDataProps = {
 };
 
 const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPast, hideTrafficStatus = false }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const userType = useUserType();
 
     const seatsLeft: number = useMemo(() => {
@@ -65,7 +65,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                 </Typography>
                 <div className="mb-6">
                     <TruncatedText asChild maxLines={3}>
-                        <Typography className="whitespace-break-spaces">{course.description}</Typography>
+                        <Typography className="whitespace-break-spaces">{course?.description}</Typography>
                     </TruncatedText>
                 </div>
                 <div className="flex flex-col gap-y-4">
@@ -73,7 +73,8 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         <SubcourseFactRow>
                             <IconCalendarClock />
                             <Typography>
-                                {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start)} {t('single.global.clock')}
+                                {t('single.global.clockFrom')} {Utility.formatDate(subcourse?.lectures[0]?.start, undefined, i18n.language)}{' '}
+                                {t('single.global.clock')}
                             </Typography>
                         </SubcourseFactRow>
                     )}

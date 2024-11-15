@@ -94,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Saat ({{duration}} dakika)",
             "repeatDate": "{{appointmentCount}}. toplam {{appointmentsTotal}} üzerinden randevular",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "Görüntülü sohbete şimdi katılın",
             "descriptionHeader": "Açıklama",
             "deleteButton": "Randevu sil",
@@ -103,9 +102,18 @@
             "canceledToast": "Randevu iptal edildi",
             "zoomTooltipStudent": "Bu bağlantıya tıklarsanız, toplantıya katılımcı olarak katılırsınız. Toplantıya ev sahibi olarak katılmak için \"Video sohbete şimdi katıl\" düğmesini kullanın.",
             "zoomTooltipPupil": "Bu bağlantıyı asla başkalarıyla paylaşmayın. Platformun güvenliğini ancak bu şekilde garanti edebiliriz.",
+            "qrcode": {
+                "title": "Akıllı telefonunuzla giriş yapın",
+                "header": "Avantajlarınız",
+                "bp1": "Notların, ders kitabının veya çalışma sayfalarının fotoğraflarını çekin",
+                "bp2": "Doğrudan akıllı telefonunuzdan sohbet edin ve dosya gönderin",
+                "bp3": "Cihaz üzerinden bildirim alma",
+                "footer": "QR kodunu akıllı telefonunuzla taramanız yeterli"
+            },
             "cancelledBy": "{{name}} bu randevuyu iptal etti",
             "rescheduleButton": "Randevuyu ertele",
-            "rescheduleDescription": "Randevuyu ertelerseniz, {{name}} tekrar davet edilecektir."
+            "rescheduleDescription": "Randevuyu ertelerseniz, {{name}} tekrar davet edilecektir.",
+            "participants": "{{participantsTotal}} Katılımcılar"
         },
         "zoomModal": {
             "useZoomApp": {
@@ -298,9 +306,9 @@
                     "max-dissolved-matches": "Bir öğrenim çifti talep edemezsiniz çünkü zaten çok fazla öğrenim çiftiniz olmuştur.",
                     "not-tutee": "Öğrenme desteği için kayıtlı olmadığınız için bir öğrenme çifti talep edemezsiniz.",
                     "max-requests": "Zaten bekleme listesindesiniz.",
-                    "max-matches": "Yüksek talep nedeniyle, aynı anda yalnızca bir öğrenim ortağınız olabilir. Öğrenim ortağınızla artık çalışmıyorsanız lütfen bağlantıyı iptal edin.",
                     "deactivated": "Bire bir öğrenme desteği için kayıtlar yoğun talep nedeniyle geçici olarak kapatılmıştır. Öğrenme desteği için daha önce talepte bulunduysanız, sonraki adımları görüşmek üzere yakın gelecekte sizinle e-posta yoluyla iletişime geçeceğiz. Bu arada, lütfen diğer tekliflerimizden yararlanmaktan çekinmeyin. ",
-                    "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır."
+                    "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır.",
+                    "max-matches": "Şu anda aynı anda en fazla 2 öğrenim ortağınız olabilir. Artık tüm öğrenim ortaklarıyla aktif olarak çalışmıyorsanız, en iyisi öğrenim çiftini feshetmektir."
                 }
             }
         },
@@ -1292,7 +1300,7 @@
             "ctaCardHeader": "Grup kursları",
             "ctaCardContent": "Almanca, Matematik, İngilizce konularında çeşitli konularda kurslar ...",
             "ctaCardButton": "Grup kurslarına dön",
-            "firstContent": "Özel derslerde, sizi boş zamanlarında size yardımcı olacak bir gönüllüyle eşleştiriyoruz."
+            "firstContent": "İki tür özel ders sunuyoruz: Günlük, açık ev ödevi yardımı ve 1:1 öğrenme desteği. 1:1 öğrenme desteğinde, bir kişi boş zamanlarında ev ödevi, sınav hazırlığı ve tartışmak istediğiniz diğer her konuda size ücretsiz olarak yardımcı olur."
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
@@ -1617,6 +1625,11 @@
             "startMeeting": "Toplantıya başlayın",
             "browser": "Tarayıcıda devam et",
             "zoomClient": "Yakınlaştırmada Aç"
+        },
+        "volunteering": {
+            "title": "Onur kanıtı",
+            "text": "Faaliyetinizi istediğiniz zaman onaylatabilir ve ardından sertifikayı indirebilirsiniz.",
+            "button": "Sertifikalara"
         }
     },
     "course": {
@@ -2027,16 +2040,17 @@
             "createAppointment": "Randevu oluştur",
             "editAppointment": "Randevu düzenleme",
             "settings": "Ayarlar",
+            "notifications": "Bildirimler",
             "systemNotifications": "Sistem bildirimleri",
             "newsletterNotifications": "Bülten bildirimleri",
             "profile": "Profil",
-            "notifications": "Bildirimler",
             "manageSessions": "Cihazları yönetme",
             "helpCenter": "Yardım alanı",
             "newEmail": "E-posta değiştir",
             "newPassword": "Şifre değiştirme",
             "install": "Lern-Fair Uygulama",
-            "progress": "Başarılar ve ilerleme"
+            "progress": "Başarılar ve ilerleme",
+            "editCourse": "Kursu düzenle"
         }
     },
     "screening": {
@@ -2263,9 +2277,10 @@
     "requireScreening": {
         "pupil": {
             "noScreening": {
-                "title": "Lütfen randevu alın, {{firstname}}!",
-                "content": "Lern-Fair tarafından sunulan hizmetleri kullanmadan önce sizi tanımak isteriz. Zoom görüşmesi için lütfen randevu alın.",
-                "makeAppointment": "Randevu alın"
+                "makeAppointment": "Randevu alın",
+                "title": "Hoş geldin, {{firstname}}! 👋 Yakında birbirimizi tanıyacağız 🤗",
+                "content": "Sizi, {{firstname}}, uygun bir yardımcı ile şimdi temasa geçirebilmemiz için, sizinle 15 dakikalık bir video görüşmesi yapmak istiyoruz. Görüşme Almanca dilinde yapılacaktır.\n Takvimden bir randevu seçebilirsiniz ve randevu onaylandıktan sonra {{email}} adresine bir e-posta alacaksınız. Randevuyu istediğiniz zaman değiştirebilir veya iptal edebilirsiniz. Lern-Fair- Telefon görüşmesi sırasında, mevcut zorluklarınız hakkında konuşacağız ve açıklayacağız. Yalnız veya ebeveynlerinizle gelebilirsiniz. Almancanız iyi değilse endişelenmeyin, yine de telefon görüşmesi yapabiliriz. Hiçbir koşulda görüntülü arama yapmak istemiyorsanız, lütfen iletişime geçin ve başka bir çözüm bulalım.",
+                "footer": "Kendinize güveniniz yok mu? Almanca bilmiyor musunuz? Ya da başka sorularınız mı var? O zaman bizimle iletişime geçin"
             },
             "hasScreening": {
                 "title": "Lütfen biraz bekleyin",

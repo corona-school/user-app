@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Button, Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
+import { Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,9 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import TruncatedText from '@/components/TruncatedText';
+import { Typography } from '@/components/Typography';
+import { Button } from '@/components/Button';
 
 type Props = {};
 const query = gql(`
@@ -65,11 +68,6 @@ const MatchingStudent: React.FC<Props> = () => {
     const ContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['containerWidth'],
-    });
-
-    const ButtonContainer = useBreakpointValue({
-        base: '100%',
-        lg: sizes['desktopbuttonWidth'],
     });
 
     const ContentContainerWidth = useBreakpointValue({
@@ -140,8 +138,10 @@ const MatchingStudent: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} maxWidth={ContainerWidth} width="100%" marginX="auto">
                         <Breadcrumb />
                         <Heading paddingBottom={space['0.5']}>{t('matching.request.check.title')}</Heading>
-                        <VStack space={space['0.5']}>
-                            <Text paddingBottom={space['0.5']}>{t('matching.request.check.content')}</Text>
+                        <VStack space={space['0.5']} paddingBottom={space['0.5']} alignItems={'flex-start'} maxWidth={ContentContainerWidth}>
+                            <TruncatedText asChild maxLines={2}>
+                                <Typography>{t('matching.request.check.content')}</Typography>
+                            </TruncatedText>
                         </VStack>
                         <NavigationTabs
                             tabs={[
@@ -150,9 +150,9 @@ const MatchingStudent: React.FC<Props> = () => {
                                     content: (
                                         <VStack>
                                             <Matches activeMatches={activeMatches as Match[]} />
-                                            <VStack space={['0.5']}>
+                                            <VStack marginY={['2.5']}>
                                                 {(data?.me?.student?.canRequestMatch.allowed && (
-                                                    <Button width={ButtonContainer} marginY={space['1.5']} onPress={() => navigate('/request-match')}>
+                                                    <Button className={'w-full md:w-fit'} variant={'secondary'} onClick={() => navigate('/request-match')}>
                                                         {t('dashboard.helpers.buttons.requestMatchStudent')}
                                                     </Button>
                                                 )) || (
@@ -195,6 +195,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                                                         state: { edit: true },
                                                                     })
                                                                 }
+                                                                key={i}
                                                             />
                                                         ))) || <AlertMessage content={t('matching.request.check.noRequestsTutor')} />}
                                                 </Flex>
@@ -229,13 +230,28 @@ const MatchingStudent: React.FC<Props> = () => {
                                 <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
                                     {t('matching.homeworkhelp.texthelper')}
                                 </Text>
-                                <VStack marginBottom={space['1.5']}>
-                                    <Button width={ButtonContainer} onPress={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}>
+                                <VStack marginBottom={space['2.5']}>
+                                    <Button
+                                        className={'w-full md:w-fit'}
+                                        onClick={() => window.open(process.env.REACT_APP_HOMEWORKHELP, '_blank')}
+                                        variant={'outline'}
+                                    >
                                         {t('matching.homeworkhelp.button')}
                                     </Button>
                                 </VStack>
                             </VStack>
                         )}
+                        <VStack space={space['0.5']} paddingX={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                            <Heading paddingBottom={space['0.5']}>{t('matching.volunteering.title')}</Heading>
+                            <Text maxWidth={ContentContainerWidth} paddingBottom={space['0.5']}>
+                                {t('matching.volunteering.text')}
+                            </Text>
+                            <VStack marginBottom={space['2.5']}>
+                                <Button className={'w-full md:w-fit'} onClick={() => navigate('/profile#profileStudentMyCertificates')} variant={'outline'}>
+                                    {t('matching.volunteering.button')}
+                                </Button>
+                            </VStack>
+                        </VStack>
                     </VStack>
                 )}
             </WithNavigation>

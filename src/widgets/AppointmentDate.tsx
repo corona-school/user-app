@@ -1,5 +1,7 @@
+import { Typography } from '@/components/Typography';
+import { cn } from '@/lib/Tailwind';
 import { DateTime } from 'luxon';
-import { Text, Box } from 'native-base';
+import { useTranslation } from 'react-i18next';
 
 type Props = {
     current: boolean;
@@ -9,15 +11,16 @@ type Props = {
 };
 
 const AppointmentDate: React.FC<Props> = ({ current, date, color, isReadOnly = false }) => {
+    const { i18n } = useTranslation();
     return (
-        <Box bg={!isReadOnly && current ? 'primary.100' : 'none'} p={2} borderRadius={5} alignItems="center" height="50%" mr="2">
-            <Text fontSize="xs" color={color ? color : 'black'}>
-                {DateTime.fromISO(date).setLocale('de').toFormat('ccc')}.
-            </Text>
-            <Text fontSize="md" bold color={color ? color : 'black'}>
-                {DateTime.fromISO(date).setLocale('de').toFormat('dd.MM.')}
-            </Text>
-        </Box>
+        <div className={cn('flex flex-col h-[50%] mr-4 p-4 rounded-md items-center', !isReadOnly && current ? 'bg-primary' : 'bg-transparent')}>
+            <Typography className={cn(current ? 'text-white' : 'text-primary')} variant="xs">
+                {DateTime.fromISO(date).setLocale(i18n.language).toFormat('ccc')}.
+            </Typography>
+            <Typography className={cn('font-bold', current ? 'text-white' : 'text-primary')}>
+                {DateTime.fromISO(date).setLocale(i18n.language).toFormat('dd.MM.')}
+            </Typography>
+        </div>
     );
 };
 

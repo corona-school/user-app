@@ -130,6 +130,14 @@
                     "isCancelled": "Du hast diesen Termin bereits abgesagt."
                 }
             },
+            "qrcode": {
+                "title": "Mit Smartphone einloggen",
+                "header": "Deine Vorteile",
+                "bp1": "Fotos von Notizen, Lehrbuch oder Arbeitsblättern machen",
+                "bp2": "Direkt vom Smartphone chatten und Dateien senden",
+                "bp3": "Benachrichtigungen auf das Gerät erhalten",
+                "footer": "Einfach QR Code mit Smartphone scannen"
+            },
             "cancelledBy": "{{name}} hat diesen Termin abgesagt",
             "rescheduleDescription": "Wenn du den Termin verschiebst, wird {{name}} wieder eingeladen."
         },
@@ -355,7 +363,7 @@
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
                     "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
-                    "max-matches": "Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.",
+                    "max-matches": "Aktuell kannst du maximal 2 Lernpartner:innen gleichzeitig haben. Solltest du nicht mehr mit allen Lernpartner:innen aktiv arbeiten, löse am besten das Lernpaar auf.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
@@ -1364,7 +1372,7 @@
             "ctaCardHeader": "Gruppen-Kurse",
             "ctaCardContent": "Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…",
             "ctaCardButton": "Zu den Gruppen-Kursen",
-            "firstContent": "In der Nachhilfe vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft."
+            "firstContent": "Wir bieten zwei Arten von Nachhilfe an: Die tägliche, offene Hausaufgabenhilfe und die 1:1-Lernunterstützung. Bei der 1:1-Lernunterstützung hilft dir eine Person kostenlos in ihrer Freizeit bei Hausaufgaben, Prüfungsvorbereitung und allem, was du besprechen möchtest."
         },
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
@@ -1372,6 +1380,11 @@
             "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 17h - 18h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
             "button": "Zur Hausaufgabenhilfe",
             "buttonSummerVacation": "Die Hausaufgabenhilfe ist in der Sommerpause. Ab dem {{endSummerVacation}} geht es weiter."
+        },
+        "volunteering": {
+            "title": "Ehrenamtsnachweis",
+            "text": "Du kannst dir jederzeit deine Tätigkeit bestätigen lassen und die Bescheinigung dann runterladen.",
+            "button": "Zu den Bescheinigungen"
         },
         "pending": {
             "modal": {
@@ -2105,6 +2118,7 @@
             "forPupils": "Wissens-Center",
             "requestMatch": "Ein neues Lernpaar bilden",
             "createCourse": "Kurse anlegen",
+            "editCourse": "Kurs editieren",
             "createAppointment": "Termin erstellen",
             "editAppointment": "Termin bearbeiten",
             "settings": "Einstellungen",
@@ -2345,8 +2359,9 @@
         "contactSupport": "Support kontaktieren",
         "pupil": {
             "noScreening": {
-                "title": "Bitte buche dir einen Termin, {{firstname}}!",
-                "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
+                "title": "Willkommen, {{firstname}}! 👋 Bald lernen wir uns kennen 🤗",
+                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine Email an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
+                "footer": "Du traust dich nicht? Sprichst kein Deutsch? Oder hast andere Fragen? Dann melde dich bei uns",
                 "makeAppointment": "Termin vereinbaren"
             },
             "hasScreening": {

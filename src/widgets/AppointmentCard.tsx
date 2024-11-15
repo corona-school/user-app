@@ -36,7 +36,7 @@ import { useUserType } from '../hooks/useApollo';
 import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
-import { canJoinMeeting } from './AppointmentDay';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
 
 type Props = {
@@ -117,7 +117,7 @@ const AppointmentCard: React.FC<Props> = ({
     isOrganizer,
 }) => {
     const { space, sizes } = useTheme();
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const [currentTime, setCurrentTime] = useState(Date.now());
     const userType = useUserType();
     const dateNextLecture = _dateNext && DateTime.fromISO(_dateNext);
@@ -159,7 +159,7 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = _dateNext && duration ? canJoinMeeting(_dateNext, duration, isOrganizer ? 240 : 10, DateTime.now()) : false;
+    const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, _dateNext, duration);
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({
@@ -266,16 +266,9 @@ const AppointmentCard: React.FC<Props> = ({
                                             <Text color={textColor}>
                                                 {dateNextLecture.toLocaleString(
                                                     //check https://moment.github.io/luxon/docs/class/src/datetime.js~DateTime.html#instance-method-toLocaleString for reference
+                                                    DateTime.DATETIME_MED,
                                                     {
-                                                        weekday: 'long',
-                                                        month: '2-digit',
-                                                        year: 'numeric',
-                                                        day: '2-digit',
-                                                        hour: '2-digit',
-                                                        minute: '2-digit',
-                                                    },
-                                                    {
-                                                        locale: 'de',
+                                                        locale: i18n.language,
                                                     }
                                                 ) +
                                                     ' ' +
@@ -387,12 +380,6 @@ const AppointmentCard: React.FC<Props> = ({
                                 paddingRight={buttonteaserSpace}
                                 marginBottom={buttonteaser}
                             >
-                                {isTeaser && (
-                                    <Button width="100%" onPress={onPress}>
-                                        {t('single.card.expandCardButton')}
-                                    </Button>
-                                )}
-
                                 {isTeaser && hasVideoButton && appointmentId && _dateNext && duration && appointmentType && (
                                     <VStack w="100%" space={space['0.5']} marginTop={space[1]}>
                                         <VideoButton
