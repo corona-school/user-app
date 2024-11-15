@@ -54,6 +54,17 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
 
         const handleOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+            if (disabled && !reasonDisabled) {
+                e.stopPropagation();
+                return;
+            }
+
+            if (disabled && reasonDisabled) {
+                setIsTooltipOpen(true);
+                e.stopPropagation();
+                return;
+            }
+
             if (onClick) {
                 e.stopPropagation();
                 onClick(e);
@@ -63,9 +74,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
         const Component = (
             <SlotContent
                 onClick={handleOnClick}
-                className={cn(buttonVariants({ variant, size, className }))}
+                className={cn(
+                    buttonVariants({ variant, size, className }),
+                    disabled ? 'opacity-50 cursor-auto' : '',
+                    disabled && variant === 'input' ? 'cursor-auto pointer-events-none' : ''
+                )}
                 ref={ref}
-                disabled={disabled || isLoading}
+                aria-disabled={disabled || isLoading}
+                disabled={(disabled && !reasonDisabled) || isLoading}
                 {...props}
             >
                 <span className={`inline-flex gap-x-2 items-center justify-center ${isLoading ? 'invisible' : ''}`}>
@@ -81,9 +97,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             return (
                 <TooltipProvider>
                     <Tooltip open={isTooltipOpen} onOpenChange={setIsTooltipOpen}>
-                        <TooltipTrigger asChild>
-                            <span onClick={() => setIsTooltipOpen(true)}>{Component}</span>
-                        </TooltipTrigger>
+                        <TooltipTrigger asChild>{Component}</TooltipTrigger>
                         <TooltipContent>{reasonDisabled}</TooltipContent>
                     </Tooltip>
                 </TooltipProvider>
