@@ -9,34 +9,29 @@ import { Checkbox } from '@/components/Checkbox';
 
 type Props = {};
 
-function Page({ screenIndex, paragraphs }: { screenIndex: number; paragraphs: number }): JSX.Element {
+function Page({ screenIndex }: { screenIndex: number }): JSX.Element {
     const { t } = useTranslation();
 
-    /* TBD: Fix scrolling with Bottom Navbar above (Maybe with small arrow pointing down to clarify that user has to scroll) */
+    /* TBD: Reset Scroll Position on new Page */
     return (
-        <Center mx={4}>
-            {[...Array(paragraphs)].map((v, i) => (
-                <>
-                    {paragraphs > 1 ? (
-                        <Heading textAlign="center" color="primary.1000">
-                            {t(`onboardingList.Wizard.ethics.screen${screenIndex}.header${i + 1}` as unknown as TemplateStringsArray)}
-                        </Heading>
-                    ) : (
-                        <></>
-                    )}
+        <Center mx={4} mb={60}>
+            <Heading textAlign="center" color="primary.1000">
+                {t(`onboardingList.Wizard.ethics.screen${screenIndex}.header1` as unknown as TemplateStringsArray)}
+            </Heading>
+            <Text fontSize="lg" color="primary.1000" textAlign="center" py={2}>
+                {t(`onboardingList.Wizard.ethics.screen${screenIndex}.content1` as unknown as TemplateStringsArray)}
+            </Text>
 
-                    <Text fontSize="lg" color="primary.1000" textAlign="center" py={2}>
-                        {t(`onboardingList.Wizard.ethics.screen${screenIndex}.content${i + 1}` as unknown as TemplateStringsArray)}
-                    </Text>
-                </>
-            ))}
+            <Heading textAlign="center" color="primary.1000">
+                {t(`onboardingList.Wizard.ethics.screen${screenIndex}.header2` as unknown as TemplateStringsArray)}
+            </Heading>
+            <Text fontSize="lg" color="primary.1000" textAlign="center" py={2}>
+                {t(`onboardingList.Wizard.ethics.screen${screenIndex}.content2` as unknown as TemplateStringsArray)}
+            </Text>
         </Center>
     );
 }
 
-/* TBD: Fix Back Button on Slide 1 not going to Onboarding Welcome Page
-    Maybe change navigation to be via URL? Would have other benefits too...
-*/
 const OnBoardingStudentSlides: React.FC<Props> = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -54,23 +49,20 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
         <Container backgroundColor="primary.100" maxWidth="100%" height="100%" overflowY="scroll" alignItems="stretch">
             <View flex={1}>
                 {/* TBD: Clarify whether screens with multiple paragraphs should have a genereal 'h1' title above (to keep it consistent) */}
-                <ViewPager onFinish={() => navigate('/onboarding/ethics/finish')}>
-                    {/* SCREEN 1 */}
-                    <OnboardingView title={t('onboardingList.Wizard.ethics.screen1.title')} alternativeContent={<Page screenIndex={1} paragraphs={2} />} />
-                    {/* SCREEN 2 */}
-                    <OnboardingView title={t('onboardingList.Wizard.ethics.screen2.title')} alternativeContent={<Page screenIndex={2} paragraphs={2} />} />
-                    {/* SCREEN 3 */}
-                    <OnboardingView title={t('onboardingList.Wizard.ethics.screen3.title')} alternativeContent={<Page screenIndex={3} paragraphs={2} />} />
-                    {/* SCREEN 4 */}
-                    <OnboardingView title={t('onboardingList.Wizard.ethics.screen4.title')} alternativeContent={<Page screenIndex={4} paragraphs={2} />} />
-                    {/* SCREEN 5 */}
+                <ViewPager onPrev={(i) => (i === 0 ? navigate('onboarding/ethics/welcome') : undefined)} hideNextOnLast>
+                    <OnboardingView title={t('onboardingList.Wizard.ethics.screen1.title')} alternativeContent={<Page screenIndex={1} />} />
+                    <OnboardingView title={t('onboardingList.Wizard.ethics.screen2.title')} alternativeContent={<Page screenIndex={2} />} />
+                    <OnboardingView title={t('onboardingList.Wizard.ethics.screen3.title')} alternativeContent={<Page screenIndex={3} />} />
+                    <OnboardingView title={t('onboardingList.Wizard.ethics.screen4.title')} alternativeContent={<Page screenIndex={4} />} />
                     <OnboardingView
                         title={t('onboardingList.Wizard.ethics.screen5.title')}
                         alternativeContent={
                             <>
-                                <Page screenIndex={5} paragraphs={1} />
-                                <Row space={2} justifyContent="center" m={4}>
-                                    <Checkbox />
+                                <Text fontSize="lg" color="primary.1000" textAlign="center" py={2} mx={4}>
+                                    {t(`onboardingList.Wizard.ethics.screen5.content1`)}
+                                </Text>
+                                <Row space={2} justifyContent="center" alignItems="center" m={4} mb={60}>
+                                    <Checkbox onCheckedChange={() => alert('u just got checked 😎')} />
                                     <Text fontSize="lg" color="primary.1000">
                                         {t('onboardingList.Wizard.ethics.screen5.checkboxText')}
                                     </Text>
