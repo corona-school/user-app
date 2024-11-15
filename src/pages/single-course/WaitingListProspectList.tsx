@@ -8,6 +8,7 @@ import ParticipantRow from '../subcourse/ParticipantRow';
 import { Button } from '@/components/Button';
 import { Alert } from '@/components/Alert';
 import { IconCircleCheckFilled, IconInfoCircleFilled } from '@tabler/icons-react';
+import { useNavigate } from 'react-router-dom';
 
 type WaitingListProps = {
     subcourseId: number;
@@ -21,6 +22,7 @@ const WaitingListProspectList: React.FC<WaitingListProps> = ({ subcourseId, pupi
     const [isJoinPupilModalOpen, setIsJoinPupilModalOpen] = useState(false);
     const [isIncreaseMaxParticipantsModalOpen, setIsIncreaseMaxParticipantsModalOpen] = useState(false);
     const [pupilToAdd, setPupilToAdd] = useState<PupilOnWaitinglist>();
+    const navigate = useNavigate();
 
     const { t } = useTranslation();
 
@@ -67,6 +69,13 @@ const WaitingListProspectList: React.FC<WaitingListProps> = ({ subcourseId, pupi
                                     schooltype: pupil.schooltype!,
                                 }}
                                 isInstructor
+                                contactProspect={
+                                    pupil.conversationId
+                                        ? () => {
+                                              navigate('/chat', { state: { conversationId: pupil.conversationId } });
+                                          }
+                                        : undefined
+                                }
                                 addParticipant={(participant) =>
                                     handleOpenModal({
                                         id: participant.id,

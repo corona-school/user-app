@@ -148,6 +148,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
             schooltype
             grade
             gradeAsInt
+            conversationId
         }
     }
 }
