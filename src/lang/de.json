@@ -1116,6 +1116,46 @@
                     "buttonText": "Tour beenden",
                     "buttonLinkText": "Tour nochmal ansehen"
                 }
+            },
+            "ethics": {
+                "welcome": {
+                    "title": "Ethische Standards",
+                    "content": "Dieser Ethik-Leitfaden bietet einen Überblick über die Mindestanforderungen für verantwortungsvolles Handeln bei Lern-Fair und regt zur selbstkritischen Reflexion im Umgang mit Schüler:innen an.\nBitte lies die folgenden Punkte sorgfältig und beachte sie bei deiner Arbeit.",
+                    "startTour": "Tour starten"
+                },
+                "screen1": {
+                    "title": "Zwischenmenschlicher Umgang",
+                    "header1": "Allgemeiner Umgang und Akzeptanz",
+                    "content1": "Die Grundhaltung bei Lern-Fair sollte durch Zuverlässigkeit, Respekt und Wertschätzung gekennzeichnet sein. Dies beinhaltet die Akzeptanz jeder Person als gleichberechtigt, unabhängig von deren Alter, Geschlecht, ethnischer oder sozialer Herkunft, Kultur, Status, sexueller Orientierung, Weltanschauung oder Religion.",
+                    "header2": "Zurückhaltung",
+                    "content2": "Als Helfer:in respektiere ich unterschiedliche politische und religiöse Meinungen. Ich werde in politischen Fragen zurückhaltend sein, damit die Lernenden sich ihre eigene Meinung bilden können, ohne dass ich sie bewusst in eine bestimmte Richtung lenke. Trotzdem stehe ich immer zu unseren Gesetzen und demokratischen Werten und setze mich für Toleranz und gegen Diskriminierung ein."
+                },
+                "screen2": {
+                    "title": "...",
+                    "header1": "Arbeit mit Minderjährigen",
+                    "content1": "Das Wohl von Minderjährigen hat höchste Priorität. Als Helfer:in achte ich stets die persönlichen Grenzen der mir anvertrauten Minderjährigen. Ich wahre die Distanz, respektiere die Privatsphäre und begegne den Schüler:innen mit Sensibilität und Respekt. Jede Art von Verhalten, das als übergriffig empfunden werden könnte, wird vermieden, um eine vertrauensvolle und sichere Umgebung zu gewährleisten. Bei einem Verdacht auf soziale Vernachlässigung oder häusliche Gewalt findest du Beratungsstellen auf unserer Website.",
+                    "header2": "Privatsphäre und Datenschutz",
+                    "content2": "Die Arbeit bei Lern-Fair unterliegt den allgemeinen Datenschutzbestimmungen. Alle Nutzer:innen von Lern-Fair müssen die ihnen zugänglichen Daten und Informationen vertraulich behandeln.\nPersonenbezogene Daten dürfen nicht an Dritte weitergegeben werden und die Privatsphäre muss sowohl bei Supervisionen als auch im Austausch im Familien- oder Freundeskreis gewahrt werden.\nDarüber hinaus dürfen keine Zugangsdaten zu User-Bereichen oder Links von Videochats mit Dritten geteilt werden."
+                },
+                "screen3": {
+                    "title": "Verhaltensrichtlinien",
+                    "header1": "Selbstfürsorge",
+                    "content1": "Jede:r ehrenamtliche Helfer:in sollte die Möglichkeiten seines Engagements realistisch einschätzen und die Grenzen der eigenen Belastbarkeit rechtzeitig erkennen und akzeptieren. Bei Anzeichen von Überlastung bzw. Überforderung sollte der Arbeitsaufwand angepasst bzw. reduziert werden, wobei das Lern-Fair Team beratend unterstützen kann.",
+                    "header2": "Freiwilligkeit",
+                    "content2": "Alle Beteiligten unterliegen dem Prinzip der Freiwilligkeit, d.h. die Zusammenarbeit kann jederzeit beendet, verändert oder situativ angepasst werden."
+                },
+                "screen4": {
+                    "title": "...",
+                    "header1": "Pädagogische und fachliche Kompetenz",
+                    "content1": "Wir wünschen uns, dass du das eigene Handeln in der Unterstützung der Schüler:innen vor Beginn und während der Tätigkeit bei Lern-Fair bewusst reflektierst. Fach- und Methodenkompetenz sind wichtig, um die Potenziale der Schüler:innen zu erkennen und zu fördern. Auf unserer Website/Userbereich findest du hilfreiche Tipps und pädagogische Unterstützung.",
+                    "header2": "Information und Aufklärung",
+                    "content2": "Um Klarheit und Transparenz zu schaffen, sollten Schüler:innen und Helfer:innen über die Art und den Umfang der angebotenen Unterstützung kommunizieren. Kann eine vereinbarte Unterstützung aus zeitlichen, fachlichen oder anderen Gründen nicht bzw. nicht weiterhin angeboten werden, sollte dies der beteiligten Person mitgeteilt und begründet werden."
+                },
+                "screen5": {
+                    "title": "Vorgehen bei Anfragen, Beschwerden und Verstößen gegen den Ethik-Leitfaden",
+                    "content1": "Über eventuell notwendige Maßnahmen bei einem Verstoß gegen die oben aufgeführten Richtlinien, entscheidet der Vorstand des Lern-Fair e.V. Das bedeutet insbesondere, dass unter gewissen Umständen Teilnehmer:innen vom Projekt ausgeschlossen werden können. Bei einem Ausschluss ist dem:r Beteiligten eine Begründung mitzuteilen. Sollten Anfragen, Beschwerden oder Verstöße gegen die ethischen Standards auftreten, können diese per E-Mail an support@lern-fair.de gerichtet werden.",
+                    "checkboxText": "Ich habe den Ethik-Leitfaden gründlich gelesen und erkläre mich mit ihm einverstanden."
+                }
             }
         }
     },
