@@ -6,6 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import ViewPager from '../../../components/ViewPager';
 import OnboardingView from '../../../widgets/OnboardingView';
 import { Checkbox } from '@/components/Checkbox';
+import { useMutation } from '@apollo/client';
+import { gql } from '@/gql';
 
 type Props = {};
 
@@ -18,14 +20,14 @@ function Page({ screenIndex }: { screenIndex: number }): JSX.Element {
             <Heading textAlign="center" color="primary.1000">
                 {t(`onboardingList.Wizard.ethics.screen${screenIndex}.header1` as unknown as TemplateStringsArray)}
             </Heading>
-            <Text fontSize="lg" color="primary.1000" textAlign="center" py={2}>
+            <Text fontSize="lg" color="primary.1000" textAlign="center" py={2} maxWidth={800}>
                 {t(`onboardingList.Wizard.ethics.screen${screenIndex}.content1` as unknown as TemplateStringsArray)}
             </Text>
 
             <Heading textAlign="center" color="primary.1000">
                 {t(`onboardingList.Wizard.ethics.screen${screenIndex}.header2` as unknown as TemplateStringsArray)}
             </Heading>
-            <Text fontSize="lg" color="primary.1000" textAlign="center" py={2}>
+            <Text fontSize="lg" color="primary.1000" textAlign="center" py={2} maxWidth={800}>
                 {t(`onboardingList.Wizard.ethics.screen${screenIndex}.content2` as unknown as TemplateStringsArray)}
             </Text>
         </Center>
@@ -41,9 +43,22 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
     /* TBD: Hier auf Namen für documentTitle einigen */
     useEffect(() => {
         trackPageView({
-            documentTitle: 'Ethische Standards Onboarding Slider',
+            documentTitle: 'Ethische Standards Onboarding Slides',
         });
     }, []);
+
+    const [setOnboardingDoneTrue] = useMutation(
+        gql(`
+            mutation updateHasDoneEthicsOnboarding {
+                studentUpdate(data: {hasDoneEthicsOnboarding: true})
+            }
+        `)
+    );
+
+    const onFinish = async () => {
+        await setOnboardingDoneTrue();
+        navigate('/start');
+    };
 
     return (
         <Container backgroundColor="primary.100" maxWidth="100%" height="100%" overflowY="scroll" alignItems="stretch">
@@ -58,11 +73,13 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
                         title={t('onboardingList.Wizard.ethics.screen5.title')}
                         alternativeContent={
                             <>
-                                <Text fontSize="lg" color="primary.1000" textAlign="center" py={2} mx={4}>
-                                    {t(`onboardingList.Wizard.ethics.screen5.content1`)}
-                                </Text>
+                                <Center>
+                                    <Text fontSize="lg" color="primary.1000" textAlign="center" py={2} mx={4} maxWidth={800}>
+                                        {t(`onboardingList.Wizard.ethics.screen5.content1`)}
+                                    </Text>
+                                </Center>
                                 <Row space={2} justifyContent="center" alignItems="center" m={4} mb={60}>
-                                    <Checkbox onCheckedChange={() => alert('u just got checked 😎')} />
+                                    <Checkbox onCheckedChange={onFinish} />
                                     <Text fontSize="lg" color="primary.1000">
                                         {t('onboardingList.Wizard.ethics.screen5.checkboxText')}
                                     </Text>
