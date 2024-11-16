@@ -1,6 +1,6 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { View, Container, Text, Center, Heading, Row } from 'native-base';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import ViewPager from '../../../components/ViewPager';
@@ -40,6 +40,8 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
 
     const { trackPageView } = useMatomo();
 
+    const [checkboxChecked, setCheckboxChecked] = useState(false);
+
     /* TBD: Hier auf Namen für documentTitle einigen */
     useEffect(() => {
         trackPageView({
@@ -56,6 +58,7 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
     );
 
     const onFinish = async () => {
+        setCheckboxChecked(true);
         await setOnboardingDoneTrue();
         navigate('/start');
     };
@@ -79,7 +82,7 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
                                     </Text>
                                 </Center>
                                 <Row space={2} justifyContent="center" alignItems="center" m={4} mb={60}>
-                                    <Checkbox onCheckedChange={onFinish} />
+                                    <Checkbox checked={checkboxChecked} disabled={checkboxChecked} onCheckedChange={onFinish} />
                                     <Text fontSize="lg" color="primary.1000">
                                         {t('onboardingList.Wizard.ethics.screen5.checkboxText')}
                                     </Text>
