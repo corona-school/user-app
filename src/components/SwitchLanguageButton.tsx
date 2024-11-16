@@ -23,7 +23,7 @@ const SwitchLanguageButton = ({ className }: SwitchLanguageButtonProps) => {
                 variant="none"
                 size="icon"
             >
-                <Icon />
+                <span className={`fi ${Icon} bg-center bg-cover rounded-full h-7 w-7`}></span>
             </Button>
             <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
         </>

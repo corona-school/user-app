@@ -63,6 +63,7 @@
         "eslint-plugin-lernfair-app-linter": "./linter/",
         "eslint-plugin-unused-imports": "^2.0.0",
         "eslint-webpack-plugin": "^3.1.1",
+        "flag-icons": "^7.2.3",
         "fs-extra": "^10.0.0",
         "graphql": "^16.5.0",
         "html-webpack-plugin": "^5.5.0",
