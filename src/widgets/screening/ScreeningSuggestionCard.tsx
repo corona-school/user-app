@@ -34,7 +34,10 @@ export function ScreeningSuggestionCard({ userID }: { userID: string }) {
     // After one second, show the suggestions again
     useEffect(() => {
         if (sendDone) {
-            const timer = setTimeout(reset, 5000);
+            const timer = setTimeout(() => {
+                reset();
+                setChosenSuggestion(0);
+            }, 5000);
             return () => clearTimeout(timer);
         }
     }, [sendDone, reset]);
