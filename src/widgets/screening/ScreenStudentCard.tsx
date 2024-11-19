@@ -147,13 +147,13 @@ function CreateScreeningModal({
     );
 }
 
-// const UPDATE_SUBJECTS_QUERY = gql(`
-//     mutation StudentUpdateSubjects($studentId: Float!, $data: StudentUpdateInput!) { studentUpdateSubjects(studentId: $studentId, data: $data) }
-//     `);
+const UPDATE_SUBJECTS_QUERY = gql(`
+    mutation StudentUpdateSubjects($studentId: Float!, $data: StudentUpdateInput!) { studentUpdate(studentId: $studentId, data: $data) }
+    `);
 
-// const UPDATE_LANGUAGES_QUERY = gql(`
-//         mutation StudentUpdateLanguages($studentId: Float!, $languages: [Language!]) { studentUpdate(studentId: $studentId, data: { languages: $languages }) }
-//     `);
+const UPDATE_LANGUAGES_QUERY = gql(`
+        mutation StudentUpdateLanguages($studentId: Float!, $languages: [StudentLanguage!]) { studentUpdate(studentId: $studentId, data: { languages: $languages }) }
+    `);
 
 export function ScreenStudentCard({ student, refresh }: { student: StudentForScreening; refresh: () => void }) {
     const { space } = useTheme();
@@ -273,35 +273,35 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
     const [showEditSubjects, setShowEditSubjects] = useState(false);
     const [showEditLanguages, setShowEditLanguages] = useState(false);
 
-    // const [mutationUpdateSubjects] = useMutation(UPDATE_SUBJECTS_QUERY);
-    // const [mutationUpdateLanguages] = useMutation(UPDATE_LANGUAGES_QUERY);
+    const [mutationUpdateSubjects] = useMutation(UPDATE_SUBJECTS_QUERY);
+    const [mutationUpdateLanguages] = useMutation(UPDATE_LANGUAGES_QUERY);
 
-    // function updateSubjects(newSubjects: Subject[]) {
-    //     if (newSubjects.length === 0) {
-    //         setSubjectError(t('screening.errors.subjects_missing'));
-    //     } else {
-    //         setSubjectError('');
-    //     }
-    //     mutationUpdateSubjects({
-    //         variables: {
-    //             studentId: student?.id ?? 0,
-    //             data: { subjects: newSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })) },
-    //         },
-    //     }).then(() => refresh());
-
-    // function updateLanguages(languages: Student_Languages_Enum[]) {
-    //     if (languages.length === 0) {
-    //         setLanguageError(t('screening.errors.language_missing'));
-    //     } else {
-    //         setLanguageError('');
-    //     }
-    //     mutationUpdateLanguages({
-    //         variables: {
-    //             studentId: student?.id ?? 0,
-    //             languages: languages as any,
-    //         },
-    //     }).then(() => refresh());
-    // }
+    function updateSubjects(newSubjects: Subject[]) {
+        if (newSubjects.length === 0) {
+            setSubjectError(t('screening.errors.subjects_missing'));
+        } else {
+            setSubjectError('');
+        }
+        mutationUpdateSubjects({
+            variables: {
+                studentId: student?.id ?? 0,
+                data: { subjects: newSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })) },
+            },
+        }).then(() => refresh());
+    }
+    function updateLanguages(languages: Student_Languages_Enum[]) {
+        if (languages.length === 0) {
+            setLanguageError(t('screening.errors.language_missing'));
+        } else {
+            setLanguageError('');
+        }
+        mutationUpdateLanguages({
+            variables: {
+                studentId: student?.id ?? 0,
+                languages: languages as any,
+            },
+        }).then(() => refresh());
+    }
 
     return (
         <VStack paddingTop="20px" space={space['2']}>
@@ -328,10 +328,8 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
                 {subjectError && <Text color={colors.error[500]}>{subjectError}</Text>}
             </VStack>
 
-            {/* {showEditSubjects && (
-                    <EditSubjectsModal onClose={() => setShowEditSubjects(false)} subjects={student.subjectsFormatted} store={updateSubjects} />
-                )}
-                {showEditLanguages && <EditLanguagesModal languages={student.languages} store={updateLanguages} onClose={() => setShowEditLanguages(false)} />} */}
+            {showEditSubjects && <EditSubjectsModal onClose={() => setShowEditSubjects(false)} subjects={student.subjectsFormatted} store={updateSubjects} />}
+            {showEditLanguages && <EditLanguagesModal languages={student.languages} store={updateLanguages} onClose={() => setShowEditLanguages(false)} />}
 
             <Divider my="1" />
 
