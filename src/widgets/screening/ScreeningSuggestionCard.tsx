@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { Button, HStack, Select, VStack, useTheme } from 'native-base';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
 import DisableableButton from '../../components/DisablebleButton';
@@ -23,13 +23,21 @@ export function ScreeningSuggestionCard({ userID }: { userID: string }) {
     const suggestions = suggesionsData?.notifications;
 
     const [chosenSuggestion, setChosenSuggestion] = useState<number>(0);
-    const [send, { loading, data: sendDone }] = useMutation(
+    const [send, { loading, data: sendDone, reset }] = useMutation(
         gql(`
                     mutation SendSuggestion($userID: String!, $suggestion: Int!) {
                         screenerSuggest(userID: $userID, suggestionNotificationId: $suggestion)
                     }
                 `)
     );
+
+    // After one second, show the suggestions again
+    useEffect(() => {
+        if (sendDone) {
+            const timer = setTimeout(reset, 5000);
+            return () => clearTimeout(timer);
+        }
+    }, [sendDone, reset]);
 
     if (!suggestions || suggestions.length === 0) return null;
     if (loading) return <CenterLoadingSpinner />;
