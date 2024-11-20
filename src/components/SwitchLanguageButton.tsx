@@ -3,11 +3,16 @@ import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { languageIcons } from '../I18n';
 import { Button } from './Button';
 import { cn } from '@/lib/Tailwind';
+//import '/node_modules/flag-icons/css/flag-icons.min.css';
+import { DE } from 'country-flag-icons/react/3x2';
+import { DE as DEPath } from 'country-flag-icons/string/3x2';
+import IconDE from '../assets/icons/icon_flag_de.svg';
 
 interface SwitchLanguageButtonProps {
     className?: string;
 }
 
+console.log('Path: ', DEPath);
 const SwitchLanguageButton = ({ className }: SwitchLanguageButtonProps) => {
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
 
@@ -23,7 +28,7 @@ const SwitchLanguageButton = ({ className }: SwitchLanguageButtonProps) => {
                 variant="none"
                 size="icon"
             >
-                <span className={`fi ${Icon} bg-center bg-cover rounded-full h-7 w-7`}></span>
+                <DE className={cn(`rounded-full h-6 w-6 border`)} />
             </Button>
             <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
         </>
