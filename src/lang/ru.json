@@ -2126,7 +2126,12 @@
         "certificateOfConduct": "Свидетельство о хорошем поведении",
         "certificateOfConductWasProvided": "Свидетельство о хорошем поведении представлено",
         "certificateOfConductWasNotProvided": "Свидетельство о хорошем поведении еще не представлено",
-        "comment": "Комментарий"
+        "comment": "Комментарий",
+        "errors": {
+            "grade_missing": "Пожалуйста, выберите класс школы.",
+            "language_missing": "Пожалуйста, добавьте хотя бы 1 язык.",
+            "subjects_missing": "Пожалуйста, добавьте хотя бы 1 школьный предмет."
+        }
     },
     "achievement": {
         "empty_state": {

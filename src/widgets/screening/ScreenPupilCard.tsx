@@ -1,5 +1,5 @@
 import { ApolloError, useMutation } from '@apollo/client';
-import { Box, Button, FormControl, Heading, HStack, Stack, Text, TextArea, useTheme, useToast, VStack, Select, Input } from 'native-base';
+import { Button, FormControl, Divider, Heading, HStack, Text, TextArea, useTheme, useToast, VStack, Select, Input } from 'native-base';
 import { useMemo, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -329,6 +329,29 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const { t } = useTranslation();
     const myRoles = useRoles();
     const toast = useToast();
+    const { colors } = useTheme();
+
+    const [languageError, setLanguageError] = useState('');
+    const [gradeError, setGradeError] = useState('');
+    const [subjectError, setSubjectError] = useState('');
+
+    useEffect(() => {
+        if (!pupil.languages || pupil.languages.length === 0) {
+            setLanguageError(t('screening.errors.language_missing'));
+        } else {
+            setLanguageError('');
+        }
+        if (pupil.grade === null || pupil.grade === undefined) {
+            setGradeError(t('screening.errors.grade_missing'));
+        } else {
+            setGradeError('');
+        }
+        if (!pupil.subjectsFormatted || pupil.subjectsFormatted.length === 0) {
+            setSubjectError(t('screening.errors.subjects_missing'));
+        } else {
+            setSubjectError('');
+        }
+    }, [pupil, t]);
 
     const [createScreening] = useMutation(gql(`mutation CreateScreening($pupilId: Float!) { pupilCreateScreening(pupilId: $pupilId, silent: true) }`));
 
@@ -352,30 +375,45 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [revokeMatchRequest, { loading: loadingRevokeMatchRequest }] = useMutation(REVOKE_MATCH_REQUEST_QUERY);
 
     function updateSubjects(newSubjects: Subject[]) {
+        if (newSubjects.length === 0) {
+            setSubjectError(t('screening.errors.subjects_missing'));
+        } else {
+            setSubjectError('');
+        }
         mutationUpdateSubjects({
             variables: {
-                pupilId: pupil!.id,
+                pupilId: pupil?.id ?? 0,
                 data: { subjects: newSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })) },
             },
-        }).then(refresh);
+        }).then(() => refresh());
     }
 
-    function updateGrade(grade: number) {
+    function updateGrade(grade: number | null) {
+        if (grade === null) {
+            setGradeError(t('screening.errors.grade_missing'));
+        } else {
+            setGradeError('');
+        }
         mutationUpdateGrade({
             variables: {
-                pupilId: pupil.id,
-                gradeAsInt: grade,
+                pupilId: pupil?.id ?? 0,
+                gradeAsInt: grade ?? 0,
             },
-        }).then(refresh);
+        }).then(() => refresh());
     }
 
     function updateLanguages(languages: Pupil_Languages_Enum[]) {
+        if (languages.length === 0) {
+            setLanguageError(t('screening.errors.language_missing'));
+        } else {
+            setLanguageError('');
+        }
         mutationUpdateLanguages({
             variables: {
-                pupilId: pupil.id,
+                pupilId: pupil?.id ?? 0,
                 languages: languages as any,
             },
-        }).then(refresh);
+        }).then(() => refresh());
     }
 
     function deactivate() {
@@ -443,6 +481,17 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
         if (!needsScreening) {
             return { can: false, reason: `${pupil.firstname} ${pupil.lastname} wurde bereits gescreent` };
         }
+        if (languageError) {
+            return { can: false, reason: languageError };
+        }
+
+        if (gradeError) {
+            return { can: false, reason: gradeError };
+        }
+
+        if (subjectError) {
+            return { can: false, reason: subjectError };
+        }
         return { can: true, reason: '' };
     };
 
@@ -453,28 +502,36 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
             <Heading fontSize="30px">
                 {t('pupil')} / {pupil.firstname} {pupil.lastname}
             </Heading>
-            <HStack flexWrap="wrap" space={space['1']}>
+            <VStack space={space['2']}>
                 <Text fontSize="20px" lineHeight="50px">
-                    {getGradeLabel(pupil.gradeAsInt)} -{' '}
+                    {getGradeLabel(pupil.gradeAsInt)}
                 </Text>
                 <Button variant="outline" onPress={() => setShowEditGrade(true)} rightIcon={<EditIcon />}>
                     Klasse bearbeiten
                 </Button>
+
+                {gradeError && <Text color={colors.error[500]}>{gradeError}</Text>}
+
+                <Divider my="1" />
+
                 <LanguageTagList languages={pupil.languages} />
                 <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
                     Sprachen bearbeiten
                 </Button>
-                <Text fontSize="20px" lineHeight="50px">
-                    {' '}
-                    -{' '}
-                </Text>
-                <Stack direction="row" space={space['1']}>
-                    <SubjectTagList subjects={pupil.subjectsFormatted} />
-                    <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
-                        Fächer bearbeiten
-                    </Button>
-                </Stack>
-            </HStack>
+
+                {languageError && <Text color={colors.error[500]}>{languageError}</Text>}
+
+                <Divider my="1" />
+
+                <SubjectTagList subjects={pupil.subjectsFormatted} />
+                <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
+                    Fächer bearbeiten
+                </Button>
+
+                {subjectError && <Text color={colors.error[500]}>{subjectError}</Text>}
+
+                <Divider my="1" />
+            </VStack>
             {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
                 <HStack space={space['1']}>
                     <Button

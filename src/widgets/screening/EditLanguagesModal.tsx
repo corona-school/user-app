@@ -1,19 +1,21 @@
 import { Modal, Text, useTheme, Button, HStack } from 'native-base';
-import { Pupil_Languages_Enum } from '../../gql/graphql';
+import { Pupil_Languages_Enum, Student_Languages_Enum } from '../../gql/graphql';
 import { LanguageTagList, allLanguages } from '../../components/LanguageTag';
 import { useState } from 'react';
 
-export function EditLanguagesModal({
+type Language = Pupil_Languages_Enum | Student_Languages_Enum;
+
+export function EditLanguagesModal<T extends Language>({
     languages,
     onClose,
     store,
 }: {
-    languages: Pupil_Languages_Enum[];
+    languages: T[];
     onClose: () => void;
-    store: (languages: Pupil_Languages_Enum[]) => void;
+    store: (languages: T[]) => void;
 }) {
     const { space } = useTheme();
-    const [selectedLanguages, setSelectedLanguages] = useState<string[]>(languages);
+    const [selectedLanguages, setSelectedLanguages] = useState<T[]>(languages);
 
     return (
         <Modal size="xl" isOpen onClose={onClose}>
@@ -25,8 +27,8 @@ export function EditLanguagesModal({
                 <Modal.Body>
                     <Text paddingY={space['1']}>Verfügbare Sprachen:</Text>
                     <LanguageTagList
-                        languages={allLanguages.filter((it) => !selectedLanguages.includes(it))}
-                        onPress={(it) => setSelectedLanguages((prev) => [...prev, it])}
+                        languages={allLanguages.filter((it) => !selectedLanguages.includes(it as T))}
+                        onPress={(it) => setSelectedLanguages((prev) => [...prev, it as T])}
                     />
 
                     <Text paddingY={space['1']}>Ausgewählte Sprachen:</Text>
@@ -35,7 +37,7 @@ export function EditLanguagesModal({
                     <HStack paddingTop={space['2']} space={space['1']}>
                         <Button
                             onPress={() => {
-                                store(selectedLanguages as Pupil_Languages_Enum[]);
+                                store(selectedLanguages);
                                 onClose();
                             }}
                         >

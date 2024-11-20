@@ -1,4 +1,4 @@
-import { Button, HStack, Heading, Text, TextArea, VStack, useTheme, Select, Input } from 'native-base';
+import { Button, Divider, HStack, Heading, Text, TextArea, VStack, useTheme, Select, Input } from 'native-base';
 import { InstructorScreening, StudentForScreening, TutorScreening } from '../../types';
 import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
@@ -7,14 +7,18 @@ import { useTranslation } from 'react-i18next';
 import { useRoles } from '../../hooks/useApollo';
 import { gql } from '../../gql';
 import { useMutation } from '@apollo/client';
+import { Student_Languages_Enum, Subject, StudentLanguage } from '../../gql/graphql';
 import { MatchPupilCard } from '../matching/MatchPupilCard';
 import { StudentScreeningCard } from './StudentScreeningCard';
 import { SubcourseCard } from '../course/SubcourseCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
 import { formatDate } from '../../Utility';
+import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
+import { EditLanguagesModal } from './EditLanguagesModal';
+import { EditSubjectsModal } from './EditSubjectsModal';
 
 type ScreeningInput = { success: boolean; comment: string; jobStatus: Screening_Jobstatus_Enum; knowsFrom: string };
 
@@ -143,10 +147,35 @@ function CreateScreeningModal({
     );
 }
 
+const UPDATE_SUBJECTS_QUERY = gql(`
+    mutation StudentUpdateSubjects($studentId: Float!, $subjects: [SubjectInput!]) { studentUpdate(studentId: $studentId, data: { subjects: $subjects }) }
+    `);
+
+const UPDATE_LANGUAGES_QUERY = gql(`
+        mutation StudentUpdateLanguages($studentId: Float!, $languages: [StudentLanguage!]) { studentUpdate(studentId: $studentId, data: { languages: $languages }) }
+    `);
+
 export function ScreenStudentCard({ student, refresh }: { student: StudentForScreening; refresh: () => void }) {
     const { space } = useTheme();
     const { t } = useTranslation();
     const myRoles = useRoles();
+    const { colors } = useTheme();
+
+    const [languageError, setLanguageError] = useState('');
+    const [subjectError, setSubjectError] = useState('');
+
+    useEffect(() => {
+        if (!student.languages || student.languages.length === 0) {
+            setLanguageError(t('screening.errors.language_missing'));
+        } else {
+            setLanguageError('');
+        }
+        if (!student.subjectsFormatted || student.subjectsFormatted.length === 0) {
+            setSubjectError(t('screening.errors.subjects_missing'));
+        } else {
+            setSubjectError('');
+        }
+    }, [student, t]);
 
     const [openScreenAsTutor, setScreenAsTutor] = useState(false);
     const [openScreenAsInstructor, setScreenAsInstructor] = useState(false);
@@ -241,19 +270,69 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
         refresh();
     };
 
+    const [showEditSubjects, setShowEditSubjects] = useState(false);
+    const [showEditLanguages, setShowEditLanguages] = useState(false);
+
+    const [mutationUpdateSubjects] = useMutation(UPDATE_SUBJECTS_QUERY);
+    const [mutationUpdateLanguages] = useMutation(UPDATE_LANGUAGES_QUERY);
+
+    function updateSubjects(newSubjects: Subject[]) {
+        if (newSubjects.length === 0) {
+            setSubjectError(t('screening.errors.subjects_missing'));
+        } else {
+            setSubjectError('');
+        }
+        mutationUpdateSubjects({
+            variables: {
+                studentId: student?.id ?? 0,
+                subjects: newSubjects.map((it) => ({ name: it.name })),
+            },
+        }).then(() => refresh());
+    }
+    function updateLanguages(languages: Student_Languages_Enum[]) {
+        if (languages.length === 0) {
+            setLanguageError(t('screening.errors.language_missing'));
+        } else {
+            setLanguageError('');
+        }
+        mutationUpdateLanguages({
+            variables: {
+                studentId: student?.id ?? 0,
+                languages: languages as any,
+            },
+        }).then(() => refresh());
+    }
+
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
                 {t('helper')} / {student.firstname} {student.lastname}
             </Heading>
-            <HStack>
+            <VStack space={space['2']}>
                 <LanguageTagList languages={student.languages} />
-                <Text fontSize="20px" lineHeight="50px">
-                    {' '}
-                    -{' '}
-                </Text>
+
+                <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
+                    Sprachen bearbeiten
+                </Button>
+
+                {languageError && <Text color={colors.error[500]}>{languageError}</Text>}
+
+                <Divider my="1" />
+
                 <SubjectTagList subjects={student.subjectsFormatted} />
-            </HStack>
+
+                <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
+                    Fächer bearbeiten
+                </Button>
+
+                {subjectError && <Text color={colors.error[500]}>{subjectError}</Text>}
+            </VStack>
+
+            {showEditSubjects && <EditSubjectsModal onClose={() => setShowEditSubjects(false)} subjects={student.subjectsFormatted} store={updateSubjects} />}
+            {showEditLanguages && <EditLanguagesModal languages={student.languages} store={updateLanguages} onClose={() => setShowEditLanguages(false)} />}
+
+            <Divider my="1" />
+
             <VStack>
                 <Heading fontSize="20px">{t('screening.certificateOfConduct')}</Heading>
                 <Text fontSize="15px" lineHeight="50px">
