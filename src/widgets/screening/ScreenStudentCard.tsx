@@ -148,7 +148,7 @@ function CreateScreeningModal({
 }
 
 const UPDATE_SUBJECTS_QUERY = gql(`
-    mutation StudentUpdateSubjects($studentId: Float!, $data: StudentUpdateInput!) { studentUpdate(studentId: $studentId, data: $data) }
+    mutation StudentUpdateSubjects($studentId: Float!, $subjects: [SubjectInput!]) { studentUpdate(studentId: $studentId, data: { subjects: $subjects }) }
     `);
 
 const UPDATE_LANGUAGES_QUERY = gql(`
@@ -285,7 +285,7 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
         mutationUpdateSubjects({
             variables: {
                 studentId: student?.id ?? 0,
-                data: { subjects: newSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })) },
+                subjects: newSubjects.map((it) => ({ name: it.name })),
             },
         }).then(() => refresh());
     }
