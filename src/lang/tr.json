@@ -2447,5 +2447,6 @@
         "thisDevice": "Bu cihaz",
         "unknownDevice": "Bilinmeyen cihaz",
         "deviceOnOs": "üzerinde"
-    }
+    },
+    "changesWereSaved": "Değişiklikler kaydedildi"
 }

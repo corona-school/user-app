@@ -22,7 +22,7 @@ const Toaster = ({ ...props }: ToasterProps) => {
                     error: 'group toast-error group-[.toaster]:!bg-red group-[.toaster]:!text-red-600 group-[.toaster]:shadow-lg',
                     success: 'group toast-success group-[.toaster]:!bg-green group-[.toaster]:!text-green-600 group-[.toaster]:shadow-lg',
                     warning: 'group toast-warning group-[.toaster]:!bg-yellow group-[.toaster]:!text-yellow-600 group-[.toaster]:shadow-lg',
-                    info: 'group toast-info group-[.toaster]:!bg-white group-[.toaster]:!text-primary group-[.toaster]:shadow-lg group-[.toaster]:shadow-lg',
+                    info: 'group toast-info group-[.toaster]:!bg-white group-[.toaster]:!border-none group-[.toaster]:!text-primary group-[.toaster]:shadow-lg group-[.toaster]:shadow-lg',
                 },
             }}
             {...props}

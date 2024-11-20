@@ -189,6 +189,14 @@ export function ScreeningDashboard() {
 
     const searchbarRef = useRef<HTMLInputElement>();
 
+    const handleOnRefreshPupils = async () => {
+        await Promise.all([refetchDisputedScreenings(), refetchUserSearch()]);
+    };
+
+    const handleOnRefreshStudents = async () => {
+        await refetchUserSearch();
+    };
+
     useShortcut('KeyF', () => searchbarRef.current?.focus(), [searchbarRef]);
 
     return (
@@ -224,23 +232,8 @@ export function ScreeningDashboard() {
                             ))}
                     </div>
                 )}
-                {selectedPupil && (
-                    <ScreenPupilCard
-                        pupil={selectedPupil}
-                        refresh={() => {
-                            refetchDisputedScreenings();
-                            refetchUserSearch();
-                        }}
-                    />
-                )}
-                {selectedStudent && (
-                    <ScreenStudentCard
-                        student={selectedStudent}
-                        refresh={() => {
-                            refetchUserSearch();
-                        }}
-                    />
-                )}
+                {selectedPupil && <ScreenPupilCard pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
+                {selectedStudent && <ScreenStudentCard student={selectedStudent} refresh={handleOnRefreshStudents} />}
 
                 {!searchQuery && !selectedPupil && !selectedStudent && (
                     <>
