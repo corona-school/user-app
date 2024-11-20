@@ -519,7 +519,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 </>
             )}
             {screeningToEdit && <EditScreening pupil={pupil} screening={screeningToEdit} />}
-            {screeningToEdit && <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} />}
+            <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} />
             <HStack space={space['1']}>
                 {pupil.openMatchRequestCount > 0 && (
                     <VStack padding={space['1']}>
