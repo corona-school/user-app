@@ -7,7 +7,7 @@ import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
 import { SubjectTagList } from '../../components/SubjectTag';
 import { gql } from '../../gql';
-import { PupilScreeningStatus, Pupil_Languages_Enum, Pupil_Screening_Status_Enum, Subject } from '../../gql/graphql';
+import { PupilScreeningStatus, Pupil_Languages_Enum, Pupil_Screening_Status_Enum } from '../../gql/graphql';
 import { ConfirmModal } from '../../modals/ConfirmModal';
 import { PupilForScreening, PupilScreening } from '../../types';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
@@ -304,10 +304,6 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
     );
 }
 
-const UPDATE_SUBJECTS_QUERY = gql(`
-mutation PupilUpdateSubjects($pupilId: Float!, $data: PupilUpdateSubjectsInput!) { pupilUpdateSubjects(pupilId: $pupilId, data: $data) }
-`);
-
 const UPDATE_LANGUAGES_QUERY = gql(`
     mutation PupilUpdateLanguages($pupilId: Float!, $languages: [Language!]) { pupilUpdate(pupilId: $pupilId, data: { languages: $languages }) }
 `);
@@ -364,24 +360,9 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [showEditLanguages, setShowEditLanguages] = useState(false);
     const [showEditGrade, setShowEditGrade] = useState(false);
 
-    const [mutationUpdateSubjects] = useMutation(UPDATE_SUBJECTS_QUERY);
     const [mutationUpdateLanguages] = useMutation(UPDATE_LANGUAGES_QUERY);
     const [requestMatch, { loading: loadingRequestMatch }] = useMutation(REQUEST_MATCH_QUERY);
     const [revokeMatchRequest, { loading: loadingRevokeMatchRequest }] = useMutation(REVOKE_MATCH_REQUEST_QUERY);
-
-    function updateSubjects(newSubjects: Subject[]) {
-        if (newSubjects.length === 0) {
-            setSubjectError(t('screening.errors.subjects_missing'));
-        } else {
-            setSubjectError('');
-        }
-        mutationUpdateSubjects({
-            variables: {
-                pupilId: pupil?.id ?? 0,
-                data: { subjects: newSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })) },
-            },
-        }).then(() => refresh());
-    }
 
     function updateLanguages(languages: Pupil_Languages_Enum[]) {
         if (languages.length === 0) {
@@ -524,7 +505,14 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                     </Button>
                 </HStack>
             )}
-            {showEditSubjects && <EditSubjectsModal onClose={() => setShowEditSubjects(false)} subjects={pupil.subjectsFormatted} store={updateSubjects} />}
+            <EditSubjectsModal
+                type="pupil"
+                pupilOrStudentId={pupil.id}
+                subjects={pupil.subjectsFormatted}
+                onOpenChange={setShowEditSubjects}
+                isOpen={showEditSubjects}
+                onSubjectsUpdated={refresh}
+            />
             <EditGradeModal pupilId={pupil.id} grade={pupil.gradeAsInt} onGradeUpdated={refresh} onOpenChange={setShowEditGrade} isOpen={showEditGrade} />
             {showEditLanguages && <EditLanguagesModal languages={pupil.languages} store={updateLanguages} onClose={() => setShowEditLanguages(false)} />}
 
