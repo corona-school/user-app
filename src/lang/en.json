@@ -2122,7 +2122,12 @@
         "certificateOfConduct": "Certificate of good conduct",
         "certificateOfConductWasProvided": "Certificate of good conduct has been submitted",
         "certificateOfConductWasNotProvided": "Certificate of good conduct has not yet been submitted",
-        "comment": "Comment"
+        "comment": "Comment",
+        "errors": {
+            "grade_missing": "Please select a grade.",
+            "language_missing": "Please add at least one language.",
+            "subjects_missing": "Please add at least one subject."
+        }
     },
     "achievement": {
         "empty_state": {
@@ -2438,5 +2443,6 @@
         "thisDevice": "This device",
         "unknownDevice": "Unknown device",
         "deviceOnOs": "on"
-    }
+    },
+    "changesWereSaved": "Changes have been saved"
 }

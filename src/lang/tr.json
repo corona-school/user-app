@@ -2126,7 +2126,12 @@
         "certificateOfConduct": "İyi hal belgesi",
         "certificateOfConductWasProvided": "İyi hal belgesi ibraz edilmiştir",
         "certificateOfConductWasNotProvided": "İyi hal belgesi henüz teslim edilmemiştir",
-        "comment": "Yorum"
+        "comment": "Yorum",
+        "errors": {
+            "grade_missing": "Lütfen bir okul sınıfı seçin.",
+            "language_missing": "Lütfen en az 1 dil ekleyin.",
+            "subjects_missing": "Lütfen en az 1 okul dersi ekleyin."
+        }
     },
     "achievement": {
         "empty_state": {
@@ -2442,5 +2447,6 @@
         "thisDevice": "Bu cihaz",
         "unknownDevice": "Bilinmeyen cihaz",
         "deviceOnOs": "üzerinde"
-    }
+    },
+    "changesWereSaved": "Değişiklikler kaydedildi"
 }
