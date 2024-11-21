@@ -2122,7 +2122,12 @@
         "certificateOfConduct": "شهادة حسن السيرة والسلوك",
         "certificateOfConductWasProvided": "تم تقديم شهادة حسن السيرة والسلوك",
         "certificateOfConductWasNotProvided": "لم يتم تقديم شهادة حسن السيرة والسلوك بعد",
-        "comment": "تعليق"
+        "comment": "تعليق",
+        "errors": {
+            "grade_missing": "يُرجى اختيار فصل دراسي.",
+            "language_missing": "يُرجى إضافة لغة واحدة على الأقل.",
+            "subjects_missing": "يُرجى إضافة مادة دراسية واحدة على الأقل."
+        }
     },
     "achievement": {
         "empty_state": {
@@ -2438,5 +2443,6 @@
         "thisDevice": "هذا الجهاز",
         "unknownDevice": "جهاز غير معروف",
         "deviceOnOs": "على"
-    }
+    },
+    "changesWereSaved": "تم حفظ التغييرات"
 }

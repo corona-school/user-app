@@ -220,6 +220,7 @@
     "skip": "Überspringen",
     "send": "Senden",
     "save": "Speichern",
+    "changesWereSaved": "Änderungen wurden gespeichert",
     "edit": "Bearbeiten",
     "signup": "Registrieren",
     "signin": "Anmelden",
@@ -2180,6 +2181,11 @@
         "certificateOfConductWasProvided": "Führungszeugnis wurde eingereicht",
         "certificateOfConductWasNotProvided": "Führungszeugnis wurde noch nicht eingereicht",
         "comment": "Kommentar",
+        "errors": {
+            "grade_missing": "Bitte wähle eine Klasse aus.",
+            "language_missing": "Bitte ergänze mind. 1 Sprache.",
+            "subjects_missing": "Bitte ergänze mind. 1 Fach."
+        },
         "courses": {
             "header": "Screening Gruppenkurse",
             "submitted_or_allowed": "Eingereichte & genehmigte Kurse",
