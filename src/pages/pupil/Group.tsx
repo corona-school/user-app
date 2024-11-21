@@ -144,7 +144,7 @@ const queryPast = gql(`
 
 const queryPublic = gql(`
 query GetAllSubcourses($search: String) {
-    subcoursesPublic(search: $search, take: 20, excludeKnown: false) {
+    subcoursesPublic(search: $search, take: 50, excludeKnown: false) {
         cancelled
         published
         isParticipant

@@ -2126,7 +2126,12 @@
         "certificateOfConduct": "Довідка про несудимість",
         "certificateOfConductWasProvided": "Подано довідку про несудимість",
         "certificateOfConductWasNotProvided": "Довідка про несудимість ще не подана",
-        "comment": "Коментар"
+        "comment": "Коментар",
+        "errors": {
+            "grade_missing": "Будь ласка, оберіть шкільний клас.",
+            "language_missing": "Будь ласка, додайте принаймні 1 мову.",
+            "subjects_missing": "Будь ласка, додайте принаймні 1 шкільний предмет."
+        }
     },
     "achievement": {
         "empty_state": {
@@ -2442,5 +2447,6 @@
         "thisDevice": "Цей пристрій",
         "unknownDevice": "Невідомий пристрій",
         "deviceOnOs": "на"
-    }
+    },
+    "changesWereSaved": "Зміни збережено"
 }
