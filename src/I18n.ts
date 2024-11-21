@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-
+import { DE, GB, SA, TR, UA, RU } from 'country-flag-icons/react/1x1';
 import de from './lang/de.json';
 import { Settings } from 'luxon';
 
@@ -24,12 +24,12 @@ export const languageList = [
 ];
 
 export const languageIcons = {
-    de: 'fi-de',
-    en: 'fi-gb',
-    ar: 'fi-sa',
-    tr: 'fi-tr',
-    uk: 'fi-ua',
-    ru: 'fi-ru',
+    de: DE,
+    en: GB,
+    ar: SA,
+    tr: TR,
+    uk: UA,
+    ru: RU,
 };
 
 export const defaultLang = 'de';
