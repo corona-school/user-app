@@ -2447,5 +2447,6 @@
         "thisDevice": "Это устройство",
         "unknownDevice": "Неизвестное устройство",
         "deviceOnOs": "на"
-    }
+    },
+    "changesWereSaved": "Изменения сохранены"
 }

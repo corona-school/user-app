@@ -2443,5 +2443,6 @@
         "thisDevice": "This device",
         "unknownDevice": "Unknown device",
         "deviceOnOs": "on"
-    }
+    },
+    "changesWereSaved": "Changes have been saved"
 }

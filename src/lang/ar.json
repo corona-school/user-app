@@ -2443,5 +2443,6 @@
         "thisDevice": "هذا الجهاز",
         "unknownDevice": "جهاز غير معروف",
         "deviceOnOs": "على"
-    }
+    },
+    "changesWereSaved": "تم حفظ التغييرات"
 }
