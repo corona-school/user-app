@@ -514,7 +514,14 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
                 onSubjectsUpdated={refresh}
             />
             <EditGradeModal pupilId={pupil.id} grade={pupil.gradeAsInt} onGradeUpdated={refresh} onOpenChange={setShowEditGrade} isOpen={showEditGrade} />
-            {showEditLanguages && <EditLanguagesModal languages={pupil.languages} store={updateLanguages} onClose={() => setShowEditLanguages(false)} />}
+            <EditLanguagesModal
+                type="pupil"
+                pupilOrStudentId={pupil.id}
+                languages={pupil.languages}
+                onLanguagesUpdated={refresh}
+                onOpenChange={setShowEditLanguages}
+                isOpen={showEditLanguages}
+            />
 
             {!pupil.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
             {!screeningToEdit && (
