@@ -42,13 +42,6 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
 
     const [checkboxChecked, setCheckboxChecked] = useState(false);
 
-    /* TBD: Hier auf Namen für documentTitle einigen */
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Ethische Standards Onboarding Slides',
-        });
-    }, []);
-
     const [setOnboardingDoneTrue] = useMutation(
         gql(`
             mutation updateHasDoneEthicsOnboarding {
@@ -66,7 +59,6 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
     return (
         <Container backgroundColor="primary.100" maxWidth="100%" height="100%" overflowY="scroll" alignItems="stretch">
             <View flex={1}>
-                {/* TBD: Clarify whether screens with multiple paragraphs should have a genereal 'h1' title above (to keep it consistent) */}
                 <ViewPager onPrev={(i) => (i === 0 ? navigate('onboarding/ethics/welcome') : undefined)} hideNextOnLast>
                     <OnboardingView title={t('onboardingList.Wizard.ethics.screen1.title')} alternativeContent={<Page screenIndex={1} />} />
                     <OnboardingView title={t('onboardingList.Wizard.ethics.screen2.title')} alternativeContent={<Page screenIndex={2} />} />
