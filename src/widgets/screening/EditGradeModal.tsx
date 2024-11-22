@@ -5,7 +5,6 @@ import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-
 import { GradeSelector } from '../../components/GradeSelector';
 
 interface EditGradeModalProps extends BaseModalProps {
@@ -45,9 +44,7 @@ export function EditGradeModal({ grade, onOpenChange, isOpen, pupilId, onGradeUp
                 <ModalTitle>Klasse bearbeiten</ModalTitle>
             </ModalHeader>
             <div className="flex flex-col gap-y-4">
-                <div className="grid grid-cols-5">
-                    <GradeSelector grade={selectedGrade} onGradeChange={setSelectedGrade} />
-                </div>
+                <GradeSelector className="grid grid-cols-5" grade={selectedGrade} onGradeChange={setSelectedGrade} />
             </div>
             <ModalFooter>
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
