@@ -18,6 +18,7 @@ export function EditLocationModal<T extends State>({ state, onOpenChange, isOpen
 
     const handleOnSave = async () => {
         onSave(selectedValue);
+        onOpenChange(false);
     };
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">

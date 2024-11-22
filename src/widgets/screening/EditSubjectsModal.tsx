@@ -22,6 +22,7 @@ export const EditSubjectsModal = ({ subjects, onOpenChange, isOpen, type, onSave
         } else {
             onSave(editedSubjects.map((it) => ({ name: it.name })));
         }
+        onOpenChange(false);
     };
 
     return (

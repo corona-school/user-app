@@ -15,6 +15,7 @@ export function EditGradeModal({ grade, onOpenChange, isOpen, onSave }: EditGrad
 
     const handleOnSave = async () => {
         onSave(selectedGrade);
+        onOpenChange(false);
     };
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">

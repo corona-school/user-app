@@ -19,6 +19,7 @@ export function EditLanguagesModal<T extends Language>({ languages, onOpenChange
 
     const handleOnSave = async () => {
         onSave(selectedLanguages);
+        onOpenChange(false);
     };
 
     return (
