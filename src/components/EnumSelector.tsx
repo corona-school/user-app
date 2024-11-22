@@ -1,6 +1,8 @@
-import { Button, HStack, useTheme } from 'native-base';
+import { cn } from '@/lib/Tailwind';
+import { ReactNode } from 'react';
 import { TFuncKey, useTranslation } from 'react-i18next';
 import { asTranslationKey } from '../helper/string-helper';
+import { Toggle } from './Toggle';
 
 // Given an enum:
 //  enum SomeEnum { A = "A", B = "B" }
@@ -9,22 +11,39 @@ import { asTranslationKey } from '../helper/string-helper';
 //
 // One can easily implement a selector:
 // const SomeEnumSelector = EnumSelector(SomeEnum, it => `someEnum.${it}`);
+
+interface SelectorProps<Enum> {
+    value?: Enum | null;
+    setValue: (it: Enum) => any;
+    className?: string;
+}
+
 export function EnumSelector<EnumValue extends Record<string, string>, Enum extends string = EnumValue[keyof EnumValue]>(
     values: EnumValue,
-    getTranslationKey: (it: Enum) => TFuncKey
+    getTranslationKey: (it: Enum) => TFuncKey,
+    getIcon?: (it: Enum) => ReactNode
 ) {
-    return function Selector({ value, setValue }: { value: Enum | null; setValue: (it: Enum) => any }) {
-        const { space } = useTheme();
+    return function Selector({ value, setValue, className }: SelectorProps<Enum>) {
         const { t } = useTranslation();
 
         return (
-            <HStack display="flex" flexWrap="wrap">
+            <div className={cn('flex flex-wrap gap-2', className)}>
                 {Object.values(values).map((it) => (
-                    <Button margin={space['0.5']} onPress={() => setValue(it as Enum)} variant={it === value ? 'solid' : 'outline'}>
+                    <Toggle
+                        pressed={it === value}
+                        variant="outline"
+                        onPressedChange={() => {
+                            setValue(it as Enum);
+                        }}
+                        key={it}
+                        size="lg"
+                        className="justify-center gap-2"
+                    >
+                        {getIcon && getIcon(it as Enum)}
                         {t(asTranslationKey(getTranslationKey(it as Enum)))}
-                    </Button>
+                    </Toggle>
                 ))}
-            </HStack>
+            </div>
         );
     };
 }
