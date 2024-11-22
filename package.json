@@ -53,6 +53,7 @@
         "case-sensitive-paths-webpack-plugin": "^2.4.0",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
+        "cmdk": "^1.0.4",
         "concurrently": "^7.6.0",
         "country-flag-icons": "^1.5.13",
         "css-loader": "^6.7.1",
