@@ -1,6 +1,7 @@
-import { Column, useTheme } from 'native-base';
 import IconTagList from '../widgets/IconTagList';
 import { getGradeLabel } from '../Utility';
+import { EnumSelector } from './EnumSelector';
+import { Typography } from './Typography';
 
 interface GradeTagProps {
     grade: number;
@@ -18,23 +19,28 @@ interface GradeSelectorProps {
     grade?: number;
     onGradeChange: (grade: number) => void;
     omitGrades?: number[];
+    className?: string;
 }
 
-export function GradeSelector({ grade, onGradeChange, omitGrades = [] }: GradeSelectorProps) {
-    const { space } = useTheme();
+const gradesLabelsMap = new Array(14).fill(0).reduce((map, _, i) => {
+    const grade = i + 1;
+    return { ...map, [`${grade}`]: grade };
+}, {});
+const gradesIconsMap = new Array(14).fill(0).reduce((map, _, i) => {
+    const grade = i + 1;
+    return { ...map, [`${grade}`]: grade === 14 ? 'A' : `${grade}` };
+}, {});
 
-    return (
-        <>
-            {new Array(14).fill(0).map((_, i) => {
-                const value = i + 1;
-                const isOmitted = omitGrades.includes(value);
-                if (isOmitted) return null;
-                return (
-                    <Column mb={space['0.5']} mr={space['0.5']}>
-                        <GradeTag grade={value} isSelected={grade === value} onSelect={onGradeChange} />
-                    </Column>
-                );
-            })}
-        </>
-    );
+export const Selector = EnumSelector(
+    gradesLabelsMap,
+    (k) => (Number(k) < 14 ? ['lernfair.schoolclass', { class: k }] : 'inTraining'),
+    (k) => (
+        <div className="flex items-center justify-center size-8 rounded-full bg-white border-[0.5px] border-gray-100">
+            <Typography className="text-base font-bold text-center">{gradesIconsMap[k]}</Typography>
+        </div>
+    )
+);
+
+export function GradeSelector({ grade, onGradeChange, omitGrades = [], className }: GradeSelectorProps) {
+    return <Selector value={grade} setValue={onGradeChange} className={className} />;
 }
