@@ -1,42 +1,20 @@
 import { Button } from '@/components/Button';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
-import { gql } from '@/gql';
-import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
 import { GradeSelector } from '../../components/GradeSelector';
 
 interface EditGradeModalProps extends BaseModalProps {
-    pupilId: number;
     grade: number;
-    onGradeUpdated: () => Promise<void>;
+    onSave: (grade: number) => void;
 }
 
-const UPDATE_GRADE_MUTATION = gql(`
-    mutation PupilUpdateGrade($pupilId: Float!, $gradeAsInt: Int!) { pupilUpdate(pupilId: $pupilId, data: { gradeAsInt: $gradeAsInt }) }
-`);
-
-export function EditGradeModal({ grade, onOpenChange, isOpen, pupilId, onGradeUpdated }: EditGradeModalProps) {
+export function EditGradeModal({ grade, onOpenChange, isOpen, onSave }: EditGradeModalProps) {
     const [selectedGrade, setSelectedGrade] = useState(grade);
-    const [mutationUpdateGrade, { loading: isLoading }] = useMutation(UPDATE_GRADE_MUTATION);
     const { t } = useTranslation();
 
-    const onSave = async () => {
-        try {
-            await mutationUpdateGrade({
-                variables: {
-                    pupilId,
-                    gradeAsInt: selectedGrade,
-                },
-            });
-            toast.success(t('changesWereSaved'));
-        } catch (error) {
-            toast.error(t('error'));
-        } finally {
-            onOpenChange(false);
-        }
-        onGradeUpdated();
+    const handleOnSave = async () => {
+        onSave(selectedGrade);
     };
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
@@ -50,7 +28,7 @@ export function EditGradeModal({ grade, onOpenChange, isOpen, pupilId, onGradeUp
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
                     {t('cancel')}
                 </Button>
-                <Button className="w-full lg:w-fit" isLoading={isLoading} onClick={onSave}>
+                <Button className="w-full lg:w-fit" onClick={handleOnSave}>
                     {t('select')}
                 </Button>
             </ModalFooter>
