@@ -1,4 +1,5 @@
 import { cn } from '@/lib/Tailwind';
+import { StringMap, TOptions } from 'i18next';
 import { ReactNode } from 'react';
 import { TFuncKey, useTranslation } from 'react-i18next';
 import { asTranslationKey } from '../helper/string-helper';
@@ -20,7 +21,7 @@ interface SelectorProps<Enum> {
 
 export function EnumSelector<EnumValue extends Record<string, string>, Enum extends string = EnumValue[keyof EnumValue]>(
     values: EnumValue,
-    getTranslationKey: (it: Enum) => TFuncKey,
+    getTranslation: (it: Enum) => TFuncKey | [TFuncKey, TOptions<StringMap>],
     getIcon?: (it: Enum) => ReactNode
 ) {
     return function Selector({ value, setValue, className }: SelectorProps<Enum>) {
@@ -28,21 +29,26 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
 
         return (
             <div className={cn('flex flex-wrap gap-2', className)}>
-                {Object.values(values).map((it) => (
-                    <Toggle
-                        pressed={it === value}
-                        variant="outline"
-                        onPressedChange={() => {
-                            setValue(it as Enum);
-                        }}
-                        key={it}
-                        size="lg"
-                        className="justify-center gap-2"
-                    >
-                        {getIcon && getIcon(it as Enum)}
-                        {t(asTranslationKey(getTranslationKey(it as Enum)))}
-                    </Toggle>
-                ))}
+                {Object.values(values).map((it) => {
+                    const translation = getTranslation(it as Enum);
+                    return (
+                        <Toggle
+                            pressed={it === value}
+                            variant="outline"
+                            onPressedChange={() => {
+                                setValue(it as Enum);
+                            }}
+                            key={it}
+                            size="lg"
+                            className="justify-center gap-2"
+                        >
+                            <>
+                                {getIcon && getIcon(it as Enum)}
+                                {Array.isArray(translation) ? t(...translation) : t(asTranslationKey(translation))}
+                            </>
+                        </Toggle>
+                    );
+                })}
             </div>
         );
     };
