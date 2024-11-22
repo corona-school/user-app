@@ -31,9 +31,9 @@ const gradesIconsMap = new Array(14).fill(0).reduce((map, _, i) => {
     return { ...map, [`${grade}`]: grade === 14 ? 'A' : `${grade}` };
 }, {});
 
-export const Selector = EnumSelector(
+const Selector = EnumSelector(
     gradesLabelsMap,
-    (k) => (Number(k) < 14 ? ['lernfair.schoolclass', { class: k }] : 'inTraining'),
+    (grade) => (grade < 14 ? ['lernfair.schoolclass', { class: grade }] : 'inTraining'),
     (k) => (
         <div className="flex items-center justify-center size-8 rounded-full bg-white border-[0.5px] border-gray-100">
             <Typography className="text-base font-bold text-center">{gradesIconsMap[k]}</Typography>
