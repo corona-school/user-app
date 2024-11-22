@@ -16,6 +16,7 @@ export function EditSchoolTypeModal({ schoolType, onOpenChange, onSave, isOpen }
 
     const handleOnSave = async () => {
         onSave(selectedValue);
+        onOpenChange(false);
     };
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
