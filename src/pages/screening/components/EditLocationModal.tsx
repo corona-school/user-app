@@ -1,28 +1,31 @@
 import { Button } from '@/components/Button';
+import { LocationSelector } from '@/components/LocationSelector';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Pupil_State_Enum, Student_State_Enum } from '@/gql/graphql';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GradeSelector } from '../../components/GradeSelector';
 
-interface EditGradeModalProps extends BaseModalProps {
-    grade: number;
-    onSave: (grade: number) => void;
+type State = Pupil_State_Enum | Student_State_Enum;
+
+interface EditLocationModalProps<T> extends BaseModalProps {
+    state: T;
+    onSave: (state: T) => void;
 }
 
-export function EditGradeModal({ grade, onOpenChange, isOpen, onSave }: EditGradeModalProps) {
-    const [selectedGrade, setSelectedGrade] = useState(grade);
+export function EditLocationModal<T extends State>({ state, onOpenChange, isOpen, onSave }: EditLocationModalProps<T>) {
+    const [selectedValue, setSelectedValue] = useState(state);
     const { t } = useTranslation();
 
     const handleOnSave = async () => {
-        onSave(selectedGrade);
+        onSave(selectedValue);
     };
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
             <ModalHeader>
-                <ModalTitle>Klasse bearbeiten</ModalTitle>
+                <ModalTitle>Ort bearbeiten</ModalTitle>
             </ModalHeader>
             <div className="flex flex-col gap-y-4">
-                <GradeSelector className="grid grid-cols-5" grade={selectedGrade} onGradeChange={setSelectedGrade} />
+                <LocationSelector className="grid grid-cols-4" value={selectedValue as any} setValue={setSelectedValue as any} />
             </div>
             <ModalFooter>
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>

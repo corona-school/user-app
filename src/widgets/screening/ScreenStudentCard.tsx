@@ -307,19 +307,20 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
 
             <EditSubjectsModal
                 type="student"
-                pupilOrStudentId={student.id}
                 subjects={student.subjectsFormatted}
                 onOpenChange={setShowEditSubjects}
                 isOpen={showEditSubjects}
-                onSubjectsUpdated={refresh}
+                onSave={() => {
+                    /** TODO */
+                }}
             />
             <EditLanguagesModal
-                type="student"
-                pupilOrStudentId={student.id}
                 languages={student.languages}
-                onLanguagesUpdated={refresh}
                 onOpenChange={setShowEditLanguages}
                 isOpen={showEditLanguages}
+                onSave={() => {
+                    /** TODO */
+                }}
             />
             <Divider my="1" />
 

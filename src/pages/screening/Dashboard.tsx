@@ -227,7 +227,7 @@ export function ScreeningDashboard() {
                         {searchResult?.usersSearch
                             .filter((it) => it.student)
                             .map((it, id) => (
-                                <UserCard key={`pupil/${it.student?.id}`} onClick={() => setSelectedStudent(it.student!)} type="student" user={it.student!} />
+                                <UserCard key={`student/${it.student?.id}`} onClick={() => setSelectedStudent(it.student!)} type="student" user={it.student!} />
                             ))}
                     </div>
                 )}
