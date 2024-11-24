@@ -52,6 +52,9 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
 
     const onFinish = async () => {
         setCheckboxChecked(true);
+        /* TBD: Fix "timing" here (right after onboarding done user still gets redirected, altough they have done the onboarding)
+            Probably has to do with the session still saving the wrong value... Maybe just reload the page?
+        */
         await setOnboardingDoneTrue();
         navigate('/start');
     };

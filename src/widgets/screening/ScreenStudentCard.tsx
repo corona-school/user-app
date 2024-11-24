@@ -81,6 +81,10 @@ function CreateScreeningModal({
     function doScreen(success: boolean) {
         const finalKnowsFrom = knowsFrom === 'Sonstiges' ? customKnowsFrom : knowsFrom;
         screen({ success, comment, jobStatus, knowsFrom: finalKnowsFrom });
+
+        // Show student ethics onboarding, if they haven't yet & got screened after this feature was added
+        if (success) {
+        }
     }
 
     return (

@@ -238,7 +238,14 @@ export default function NavigatorLazy() {
             </Route>
 
             {/* Ethics Onboarding for HuHs */}
-            <Route path="/onboarding/ethics">
+            <Route
+                path="/onboarding/ethics"
+                element={
+                    <RequireAuth>
+                        <Outlet />
+                    </RequireAuth>
+                }
+            >
                 <Route path="welcome" element={<EthicsOnboardingWelcome />} />
                 <Route path="wizard" element={<EthicsOnboardingSlides />} />
                 <Route path="*" element={<EthicsOnboardingWelcome />} />

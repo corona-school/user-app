@@ -15,12 +15,6 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
 
     const { trackPageView } = useMatomo();
 
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Ethische Standards Onboarding',
-        });
-    }, []);
-
     return (
         <View>
             <InfoScreen

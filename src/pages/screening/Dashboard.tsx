@@ -163,6 +163,7 @@ export function ScreeningDashboard() {
                         subjectsFormatted { name }
                     }
                     
+                    hasDoneEthicsOnboarding
                     subcoursesInstructing {
                         id
                         published
