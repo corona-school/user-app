@@ -14,7 +14,6 @@ type Props = {};
 function Page({ screenIndex }: { screenIndex: number }): JSX.Element {
     const { t } = useTranslation();
 
-    /* TBD: Reset Scroll Position on new Page */
     return (
         <Center mx={4} mb={60}>
             <Heading textAlign="center" color="primary.1000">

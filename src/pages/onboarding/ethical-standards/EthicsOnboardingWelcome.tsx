@@ -21,11 +21,9 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
                 variant="dark"
                 title={t('onboardingList.Wizard.ethics.welcome.title')}
                 content={
-                    <>
-                        <Text color="lightText" paddingBottom={space['1.5']}>
-                            {t('onboardingList.Wizard.ethics.welcome.content')}
-                        </Text>
-                    </>
+                    <Text color="lightText" paddingBottom={space['1.5']}>
+                        {t('onboardingList.Wizard.ethics.welcome.content')}
+                    </Text>
                 }
                 defaultButtonText={t('onboardingList.Wizard.ethics.welcome.startTour')}
                 defaultbuttonLink={() => navigate('/onboarding/ethics/wizard')}

@@ -36,7 +36,7 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
             !location.pathname.startsWith('/onboarding/ethics/') &&
             user &&
             user.student &&
-            user.student.hasDoneEthicsOnboarding === false /* Important to write it like this as we don't want a null value to trigger this redirect */
+            user.student.hasDoneEthicsOnboarding === false /* Important to write it like this, as a null value must not to trigger this redirect */
         ) {
             return <Navigate to="/onboarding/ethics/welcome" replace />;
         }

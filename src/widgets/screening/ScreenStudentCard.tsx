@@ -58,6 +58,14 @@ function CreateScreeningModal({
 
     const { space } = useTheme();
 
+    const [requireStudentOnboarding] = useMutation(
+        gql(`
+            mutation requireStudentOnboarding($studentId: Float!) {
+                studentRequireOnboarding(studentId: $studentId)
+            }
+        `)
+    );
+
     const handleOnKnowsFromChanges = (value: string) => {
         setKnowsFrom(value);
     };
@@ -82,8 +90,8 @@ function CreateScreeningModal({
         const finalKnowsFrom = knowsFrom === 'Sonstiges' ? customKnowsFrom : knowsFrom;
         screen({ success, comment, jobStatus, knowsFrom: finalKnowsFrom });
 
-        // Show student ethics onboarding, if they haven't yet & got screened after this feature was added
-        if (success) {
+        if (success && student.hasDoneEthicsOnboarding === null) {
+            requireStudentOnboarding({ variables: { studentId: student.id } });
         }
     }
 
