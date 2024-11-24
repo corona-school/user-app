@@ -8,7 +8,7 @@ interface SchoolSearchInputProps {
     className?: string;
 }
 
-const SchoolSearchInput = ({ className }: SchoolSearchInputProps) => {
+export const SchoolSearchInput = ({ className }: SchoolSearchInputProps) => {
     const [search, setSearch] = useState('');
     const [value, setValue] = useState('');
     const { schools, isLoading } = useSchoolSearch({ name: search });
@@ -23,11 +23,8 @@ const SchoolSearchInput = ({ className }: SchoolSearchInputProps) => {
                 onSelect={setValue}
                 className={cn('w-[500px]', className)}
                 isLoading={isLoading}
-                placeholder="Schule"
                 searchPlaceholder="z.B Erich-Kästner-Schule"
             />
         </div>
     );
 };
-
-export default SchoolSearchInput;
