@@ -1,6 +1,6 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { View, Container, Text, Center, Heading, Row } from 'native-base';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import ViewPager from '../../../components/ViewPager';
@@ -51,6 +51,9 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
 
     const onFinish = async () => {
         setCheckboxChecked(true);
+        trackPageView({
+            documentTitle: 'Ethikonboarding abgeschlossen',
+        });
         /* TBD: Fix "timing" here (right after onboarding done user still gets redirected, altough they have done the onboarding)
             Probably has to do with the session still saving the wrong value... Maybe just reload the page?
         */

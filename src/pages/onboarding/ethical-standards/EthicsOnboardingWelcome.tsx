@@ -2,7 +2,6 @@ import { useTheme, Text, View } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import Logo from '../../../assets/icons/lernfair/lf-logo.svg';
-import { useEffect } from 'react';
 import InfoScreen from '../../../widgets/InfoScreen';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
@@ -15,6 +14,14 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
 
     const { trackPageView } = useMatomo();
 
+    const startOnboarding = () => {
+        trackPageView({
+            documentTitle: 'Ethikonboarding gestartet',
+        });
+
+        navigate('/onboarding/ethics/wizard');
+    };
+
     return (
         <View>
             <InfoScreen
@@ -26,7 +33,7 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
                     </Text>
                 }
                 defaultButtonText={t('onboardingList.Wizard.ethics.welcome.startTour')}
-                defaultbuttonLink={() => navigate('/onboarding/ethics/wizard')}
+                defaultbuttonLink={startOnboarding}
                 icon={<Logo />}
             />
         </View>
