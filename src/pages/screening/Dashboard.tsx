@@ -8,11 +8,11 @@ import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql';
 import { useUser } from '../../hooks/useApollo';
 import { PupilForScreening, StudentForScreening } from '../../types';
-import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
 import { ScreenStudentCard } from '../../widgets/screening/ScreenStudentCard';
 import { useShortcut } from '../../helper/keyboard';
 import UserCard from './components/UserCard';
 import { Typography } from '@/components/Typography';
+import PupilDetail from './pupil/PupilDetail';
 
 const greetings = ['Wilkommen', 'Bonjour', 'Hola', 'Salve', 'asalaam alaikum', 'konnichiwa'];
 
@@ -44,6 +44,12 @@ export function ScreeningDashboard() {
                     gradeAsInt
                     openMatchRequestCount
                     verifiedAt
+                    state
+                    schooltype
+                    onlyMatchWithWomen
+                    hasSpecialNeeds
+                    descriptionForScreening
+                    descriptionForMatch
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -120,6 +126,12 @@ export function ScreeningDashboard() {
                 grade
                 gradeAsInt
                 openMatchRequestCount
+                state
+                schooltype
+                onlyMatchWithWomen
+                hasSpecialNeeds
+                descriptionForScreening
+                descriptionForMatch
                 matches {
                     createdAt
                     student { firstname lastname }
@@ -200,7 +212,7 @@ export function ScreeningDashboard() {
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
-            <div className="px-2 mx-auto w-full max-w-7xl">
+            <div className="px-2 mx-auto w-full max-w-5xl">
                 <SearchBar
                     inputRef={searchbarRef}
                     placeholder={t('screening.search.placeholder')}
@@ -231,7 +243,7 @@ export function ScreeningDashboard() {
                             ))}
                     </div>
                 )}
-                {selectedPupil && <ScreenPupilCard pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
+                {selectedPupil && <PupilDetail pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
                 {selectedStudent && <ScreenStudentCard student={selectedStudent} refresh={handleOnRefreshStudents} />}
 
                 {!searchQuery && !selectedPupil && !selectedStudent && (
