@@ -1,4 +1,4 @@
-import { Row } from 'native-base';
+import { Row, Box } from 'native-base';
 import { useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Subject } from '../gql/graphql';
@@ -24,9 +24,11 @@ export function SubjectTagList({ subjects }: { subjects: Subject[] }) {
     const { space } = useTheme();
 
     return (
-        <Row space={space['0.5']}>
+        <Row space={space['0.5']} display="flex" flexWrap="wrap">
             {subjects.map((it, id) => (
-                <SubjectTag key={id} subject={it} />
+                <Box marginY={space['0.5']}>
+                    <SubjectTag key={id} subject={it} />
+                </Box>
             ))}
         </Row>
     );

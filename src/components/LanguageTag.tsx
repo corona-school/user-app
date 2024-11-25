@@ -1,4 +1,4 @@
-import { Row, useTheme } from 'native-base';
+import { Row, Box, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import IconTagList from '../widgets/IconTagList';
 import { languages as _allLanguages } from '../types/lernfair/Language';
@@ -24,9 +24,15 @@ export function LanguageTagList({ languages = allLanguages, onPress }: { languag
     const { space } = useTheme();
 
     return (
-        <Row space={space['0.5']} display="flex" flexWrap="wrap">
+        <Row
+            space={space['0.5']} // Horizontal spacing
+            display="flex"
+            flexWrap="wrap"
+        >
             {languages.map((it) => (
-                <LanguageTag key={it} language={it} onPress={onPress} />
+                <Box key={it} marginY={space['0.5']}>
+                    <LanguageTag language={it} onPress={onPress} />
+                </Box>
             ))}
         </Row>
     );

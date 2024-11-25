@@ -69,7 +69,7 @@ const StudentGroup: React.FC = () => {
                     }
                 }
 
-                subcoursesPublic(take: 20) {
+                subcoursesPublic(take: 50) {
                     id
                     published
                     cancelled

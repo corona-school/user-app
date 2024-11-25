@@ -1,4 +1,4 @@
-import { Button, HStack, Heading, Text, TextArea, VStack, useTheme, Select, Input } from 'native-base';
+import { Button, Divider, HStack, Heading, Text, TextArea, VStack, useTheme, Select, Input } from 'native-base';
 import { InstructorScreening, StudentForScreening, TutorScreening } from '../../types';
 import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
@@ -10,11 +10,14 @@ import { useMutation } from '@apollo/client';
 import { MatchPupilCard } from '../matching/MatchPupilCard';
 import { StudentScreeningCard } from './StudentScreeningCard';
 import { SubcourseCard } from '../course/SubcourseCard';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Modal } from 'native-base';
 import { JobStatusSelector } from './JobStatusSelector';
 import { Screening_Jobstatus_Enum } from '../../gql/graphql';
 import { formatDate } from '../../Utility';
+import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
+import { EditLanguagesModal } from './EditLanguagesModal';
+import { EditSubjectsModal } from './EditSubjectsModal';
 
 type ScreeningInput = { success: boolean; comment: string; jobStatus: Screening_Jobstatus_Enum; knowsFrom: string };
 
@@ -155,10 +158,27 @@ function CreateScreeningModal({
     );
 }
 
-export function ScreenStudentCard({ student, refresh }: { student: StudentForScreening; refresh: () => void }) {
+export function ScreenStudentCard({ student, refresh }: { student: StudentForScreening; refresh: () => Promise<void> }) {
     const { space } = useTheme();
     const { t } = useTranslation();
     const myRoles = useRoles();
+    const { colors } = useTheme();
+
+    const [languageError, setLanguageError] = useState('');
+    const [subjectError, setSubjectError] = useState('');
+
+    useEffect(() => {
+        if (!student.languages || student.languages.length === 0) {
+            setLanguageError(t('screening.errors.language_missing'));
+        } else {
+            setLanguageError('');
+        }
+        if (!student.subjectsFormatted || student.subjectsFormatted.length === 0) {
+            setSubjectError(t('screening.errors.subjects_missing'));
+        } else {
+            setSubjectError('');
+        }
+    }, [student, t]);
 
     const [openScreenAsTutor, setScreenAsTutor] = useState(false);
     const [openScreenAsInstructor, setScreenAsInstructor] = useState(false);
@@ -253,19 +273,52 @@ export function ScreenStudentCard({ student, refresh }: { student: StudentForScr
         refresh();
     };
 
+    const [showEditSubjects, setShowEditSubjects] = useState(false);
+    const [showEditLanguages, setShowEditLanguages] = useState(false);
+
     return (
         <VStack paddingTop="20px" space={space['2']}>
             <Heading fontSize="30px">
                 {t('helper')} / {student.firstname} {student.lastname}
             </Heading>
-            <HStack>
+            <VStack space={space['2']}>
                 <LanguageTagList languages={student.languages} />
-                <Text fontSize="20px" lineHeight="50px">
-                    {' '}
-                    -{' '}
-                </Text>
+
+                <Button variant="outline" onPress={() => setShowEditLanguages(true)} rightIcon={<EditIcon />}>
+                    Sprachen bearbeiten
+                </Button>
+
+                {languageError && <Text color={colors.error[500]}>{languageError}</Text>}
+
+                <Divider my="1" />
+
                 <SubjectTagList subjects={student.subjectsFormatted} />
-            </HStack>
+
+                <Button variant="outline" onPress={() => setShowEditSubjects(true)} rightIcon={<EditIcon />}>
+                    Fächer bearbeiten
+                </Button>
+
+                {subjectError && <Text color={colors.error[500]}>{subjectError}</Text>}
+            </VStack>
+
+            <EditSubjectsModal
+                type="student"
+                pupilOrStudentId={student.id}
+                subjects={student.subjectsFormatted}
+                onOpenChange={setShowEditSubjects}
+                isOpen={showEditSubjects}
+                onSubjectsUpdated={refresh}
+            />
+            <EditLanguagesModal
+                type="student"
+                pupilOrStudentId={student.id}
+                languages={student.languages}
+                onLanguagesUpdated={refresh}
+                onOpenChange={setShowEditLanguages}
+                isOpen={showEditLanguages}
+            />
+            <Divider my="1" />
+
             <VStack>
                 <Heading fontSize="20px">{t('screening.certificateOfConduct')}</Heading>
                 <Text fontSize="15px" lineHeight="50px">

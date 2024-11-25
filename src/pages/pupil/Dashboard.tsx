@@ -308,34 +308,36 @@ const Dashboard: React.FC<Props> = () => {
                                     showAll={(data?.subcoursesPublic?.length ?? 0) > 4}
                                 >
                                     {data?.subcoursesPublic?.slice(0, 4).map((subcourse) => (
-                                        <AppointmentCard
-                                            key={subcourse.id}
-                                            subcourseId={subcourse.id}
-                                            description={subcourse.course.description}
-                                            tags={subcourse.course.tags}
-                                            dateNextLecture={subcourse?.nextLecture?.start ?? undefined}
-                                            image={subcourse.course.image ?? undefined}
-                                            title={subcourse.course.name}
-                                            countCourse={subcourse.lectures.length}
-                                            maxParticipants={subcourse.maxParticipants}
-                                            participantsCount={subcourse.participantsCount}
-                                            minGrade={subcourse.minGrade}
-                                            maxGrade={subcourse.maxGrade}
-                                            isFullHeight
-                                            showCourseTraffic
-                                            showSchoolclass
-                                            trafficLightStatus={getTrafficStatus(subcourse.participantsCount ?? 0, subcourse.maxParticipants ?? 0)}
-                                            onPressToCourse={() => {
-                                                trackEvent({
-                                                    category: 'dashboard',
-                                                    action: 'click-event',
-                                                    name: 'Schüler Dashboard – Matching Vorschlag',
-                                                    documentTitle: 'Schüler Dashboard',
-                                                });
+                                        <div>
+                                            <AppointmentCard
+                                                key={subcourse.id}
+                                                subcourseId={subcourse.id}
+                                                description={subcourse.course.description}
+                                                tags={subcourse.course.tags}
+                                                dateNextLecture={subcourse?.nextLecture?.start ?? undefined}
+                                                image={subcourse.course.image ?? undefined}
+                                                title={subcourse.course.name}
+                                                countCourse={subcourse.lectures.length}
+                                                maxParticipants={subcourse.maxParticipants}
+                                                participantsCount={subcourse.participantsCount}
+                                                minGrade={subcourse.minGrade}
+                                                maxGrade={subcourse.maxGrade}
+                                                isFullHeight
+                                                showCourseTraffic
+                                                showSchoolclass
+                                                trafficLightStatus={getTrafficStatus(subcourse.participantsCount ?? 0, subcourse.maxParticipants ?? 0)}
+                                                onPressToCourse={() => {
+                                                    trackEvent({
+                                                        category: 'dashboard',
+                                                        action: 'click-event',
+                                                        name: 'Schüler Dashboard – Matching Vorschlag',
+                                                        documentTitle: 'Schüler Dashboard',
+                                                    });
 
-                                                navigate(`/single-course/${subcourse.id}`);
-                                            }}
-                                        />
+                                                    navigate(`/single-course/${subcourse.id}`);
+                                                }}
+                                            />
+                                        </div>
                                     ))}
                                 </HSection>
                             )}
