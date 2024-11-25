@@ -10,9 +10,7 @@ interface SwitchLanguageButtonProps {
 
 const SwitchLanguageButton = ({ className }: SwitchLanguageButtonProps) => {
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
-
     const storageLanguage = localStorage.getItem('lernfair-language');
-
     const Icon = languageIcons[storageLanguage as keyof typeof languageIcons];
 
     return (
@@ -23,7 +21,7 @@ const SwitchLanguageButton = ({ className }: SwitchLanguageButtonProps) => {
                 variant="none"
                 size="icon"
             >
-                <Icon />
+                <Icon className={cn(`rounded-full h-5 w-5 border`)} />
             </Button>
             <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
         </>
