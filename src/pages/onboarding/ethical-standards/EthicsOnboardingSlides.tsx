@@ -8,6 +8,7 @@ import OnboardingView from '../../../widgets/OnboardingView';
 import { Checkbox } from '@/components/Checkbox';
 import { useMutation } from '@apollo/client';
 import { gql } from '@/gql';
+import useApollo from '@/hooks/useApollo';
 
 type Props = {};
 
@@ -36,6 +37,7 @@ function Page({ screenIndex }: { screenIndex: number }): JSX.Element {
 const OnBoardingStudentSlides: React.FC<Props> = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { refreshUser } = useApollo();
 
     const { trackPageView } = useMatomo();
 
@@ -51,13 +53,13 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
 
     const onFinish = async () => {
         setCheckboxChecked(true);
+
         trackPageView({
             documentTitle: 'Ethikonboarding abgeschlossen',
         });
-        /* TBD: Fix "timing" here (right after onboarding done user still gets redirected, altough they have done the onboarding)
-            Probably has to do with the session still saving the wrong value... Maybe just reload the page?
-        */
+
         await setOnboardingDoneTrue();
+        await refreshUser();
         navigate('/start');
     };
 

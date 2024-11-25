@@ -31,8 +31,6 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
             return <RequireScreeningModal />;
         }
 
-        console.info(user?.student?.hasDoneEthicsOnboarding);
-
         // Require the ethics onboarding for newly-screened students
         if (
             !location.pathname.startsWith('/onboarding/ethics/') &&
