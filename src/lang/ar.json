@@ -2085,7 +2085,6 @@
         "recommend_rejection": "يوصى بالرفض",
         "screening_saved": "تم حفظ الفحص",
         "account_deactivated": "تم تعطيل الحساب",
-        "account_deactivated_details": "لم يعد بإمكان الطالب تسجيل الدخول إلى منطقة المستخدمين. يمكن لفريق الدعم إعادة تنشيط الحسابات.",
         "save_and_four_eyes": "حفظ وأربعة عيون",
         "success": "قبول",
         "rejection": "رفض",
@@ -2127,7 +2126,8 @@
             "grade_missing": "يُرجى اختيار فصل دراسي.",
             "language_missing": "يُرجى إضافة لغة واحدة على الأقل.",
             "subjects_missing": "يُرجى إضافة مادة دراسية واحدة على الأقل."
-        }
+        },
+        "account_deactivated_details": "لم يعد بإمكان المستخدم تسجيل الدخول إلى منطقة المستخدم. يمكن للدعم إعادة تنشيط الحسابات."
     },
     "achievement": {
         "empty_state": {

@@ -2085,7 +2085,6 @@
         "recommend_rejection": "Recommend rejection",
         "screening_saved": "Screening saved",
         "account_deactivated": "Account deactivated",
-        "account_deactivated_details": "The pupil can no longer log in to the user area. Support can reactivate accounts.",
         "save_and_four_eyes": "Save & Four Eyes",
         "success": "Accept",
         "rejection": "Reject",
@@ -2127,7 +2126,8 @@
             "grade_missing": "Please select a grade.",
             "language_missing": "Please add at least one language.",
             "subjects_missing": "Please add at least one subject."
-        }
+        },
+        "account_deactivated_details": "The user can no longer log in to the user area. Support can reactivate accounts."
     },
     "achievement": {
         "empty_state": {
