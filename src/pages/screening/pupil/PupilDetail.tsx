@@ -17,7 +17,7 @@ import { useTranslation } from 'react-i18next';
 import { ButtonField } from '../components/ButtonField';
 import { EditLocationModal } from '../components/EditLocationModal';
 import { EditSchoolTypeModal } from '../components/EditSchoolTypeModal';
-import { PupilHistory } from './PupilScreeningHistory';
+import { PupilHistory } from './PupilHistory';
 import { SchoolSearchInput } from '../components/SchoolSearchInput';
 import { ScreeningSuggestionCard } from '@/widgets/screening/ScreeningSuggestionCard';
 import { ScreenPupil } from './ScreenPupil';
