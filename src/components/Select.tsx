@@ -75,4 +75,36 @@ const SelectItem = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Item
     )
 );
 
+interface SelectInputProps {
+    value: string;
+    onValueChange: (value: string) => void;
+    className?: string;
+    options: { value: string; label: string }[] | string[];
+    placeholder?: string;
+}
+
+export const SelectInput = ({ value, onValueChange, options, placeholder, className }: SelectInputProps) => (
+    <Select value={value} onValueChange={onValueChange}>
+        <SelectTrigger className={cn('h-10 w-full', className)} placeholder={placeholder}>
+            <SelectValue />
+        </SelectTrigger>
+        <SelectContent>
+            {options.map((option) => {
+                if (typeof option === 'string') {
+                    return (
+                        <SelectItem key={option} value={option}>
+                            {option}
+                        </SelectItem>
+                    );
+                }
+                return (
+                    <SelectItem key={option.value} value={option.value}>
+                        {option.label}
+                    </SelectItem>
+                );
+            })}
+        </SelectContent>
+    </Select>
+);
+
 export { Select, SelectValue, SelectTrigger, SelectContent, SelectItem };
