@@ -30,7 +30,8 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onIsOpenChange })
                             key={i}
                             className="justify-center pl-[5%]"
                         >
-                            <Icon className="mr-2" /> <span className="min-w-[15%] text-left">{button.name}</span>
+                            <Icon className={`mr-2 rounded-full h-5 w-5 border`} />
+                            <span className="min-w-[18%] text-left">{button.name}</span>
                         </Toggle>
                     );
                 })}
