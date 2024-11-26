@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 import { Button } from '../components/Button';
+import { Checkbox } from '@/components/Checkbox';
+import { cn } from '@/lib/Tailwind';
+
 import { Box, VStack, HStack, Text, Select, TextArea, ScrollView } from 'native-base';
 import WithNavigation from '@/components/WithNavigation';
 import { Typography } from '@/components/Typography';
 
 import { useTranslation } from 'react-i18next';
-import INFOICON from '../assets/icons/lernfair/lesson/info_icon.svg'; // Adjust path based on your file location
+import INFOICON from '../assets/icons/lernfair/lesson/info_icon.svg';
+
+import { gql } from './../gql';
+import { useMutation } from '@apollo/client';
 
 interface LessonPlanOutput {
     title: string;
@@ -82,24 +88,25 @@ const Lesson: React.FC = () => {
             },
             {
                 title: 'Presentation (15 minutes)',
-                content: [
-                    'Share a slide presentation or images of each planet, explaining key facts:',
-                    'Mercury: Smallest planet, closest to the Sun.',
-                    'Venus: Hottest planet with thick clouds.',
-                    'Earth: Our home, the only planet with life.',
-                    'Mars: The "Red Planet," with evidence of water.',
-                    'Jupiter: Largest planet, known for its Great Red Spot.',
-                    'Saturn: Famous for its beautiful rings.',
-                    'Uranus: Tilted on its side, cold and windy.',
-                    'Neptune: Deep blue color, with strong winds.',
-                ],
+                content: ['Share a slide presentation or images of each planet, explaining key facts:'],
             },
         ],
     };
 
+    // Add this dummy mutation hook using exampleOutput
+    const [generateLessonPlan] = useState(() => async () => {
+        return {
+            data: {
+                generateLessonPlan: exampleOutput,
+            },
+        };
+    });
+
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
     const [selectedSubject, setSelectedSubject] = useState('');
     const [prompt, setPrompt] = useState('');
+    const [showError, setShowError] = useState(false);
+    const [termsAccepted, setTermsAccepted] = useState(false);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
@@ -114,6 +121,27 @@ const Lesson: React.FC = () => {
         setSelectedSubject('');
         setPrompt('');
         setUploadedFiles([]);
+    };
+
+    const handleGenerate = async () => {
+        if (!selectedSubject) {
+            // Handle subject selection error
+            return;
+        }
+
+        if (!termsAccepted) {
+            setShowError(true);
+            return;
+        }
+
+        try {
+            const { data } = await generateLessonPlan();
+            if (data?.generateLessonPlan) {
+                setGeneratedPlan(data.generateLessonPlan);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
     };
 
     return (
@@ -224,12 +252,65 @@ const Lesson: React.FC = () => {
                                     </Box>
                                 </HStack>
 
+                                {/* Terms and Conditions Checkbox */}
+                                <Box mb={4} maxWidth="100%">
+                                    <HStack space={2} alignItems="flex-start" width="100%">
+                                        <Checkbox
+                                            id="terms"
+                                            checked={termsAccepted}
+                                            onCheckedChange={(checked: boolean) => {
+                                                setTermsAccepted(checked);
+                                                if (checked) setShowError(false);
+                                            }}
+                                            className="mt-1 flex-shrink-0" // Added flex-shrink-0 to prevent checkbox from shrinking
+                                        />
+                                        <VStack space={1} flex={1}>
+                                            {' '}
+                                            {/* Added flex={1} to make it take remaining space */}
+                                            <label
+                                                htmlFor="terms"
+                                                className="flex text-[14px] font-medium font-outfit text-[#2A4A50] leading-[14px] cursor-pointer"
+                                            >
+                                                Accept Terms and Conditions
+                                                <span className="text-[#D41212]">*</span>
+                                            </label>
+                                            <Text
+                                                fontSize="10px"
+                                                fontFamily="Outfit"
+                                                fontWeight="400"
+                                                color="#64748B"
+                                                lineHeight="14px"
+                                                pr={4}
+                                                style={{
+                                                    flexWrap: 'wrap',
+                                                    maxWidth: '100%',
+                                                }}
+                                            >
+                                                I have not entered any personal data in the text field and I am aware that Open AI may use it without European
+                                                data protection standards. If someone asserts claims against Lern-Fair because I have no rights to the uploaded
+                                                documents, I undertake to indemnify Lern-Fair.
+                                            </Text>
+                                        </VStack>
+                                    </HStack>
+
+                                    {showError && (
+                                        <Text fontSize="12px" color="#D41212" mt={1} ml={8}>
+                                            Please accept the terms and conditions
+                                        </Text>
+                                    )}
+                                </Box>
+
                                 {/* Generate Button */}
                                 <HStack space="4" justifyContent="flex-end">
                                     <Button variant="outline" onClick={resetForm}>
                                         Reset
                                     </Button>
-                                    <Button variant="secondary" onClick={() => console.log('Generate clicked')}>
+                                    <Button
+                                        variant="secondary"
+                                        onClick={handleGenerate}
+                                        disabled={!termsAccepted}
+                                        className={cn('bg-[#F7DB4D] text-[#2A4A50]', !termsAccepted && 'opacity-50 bg-[#E5E7EB] cursor-not-allowed')}
+                                    >
                                         Generate Lesson Plan
                                     </Button>
                                 </HStack>
