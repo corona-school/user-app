@@ -89,8 +89,6 @@ export function ScreeningDashboard() {
                         studentFirstMatchRequest
                         subjectsFormatted { name }
                     }
-                    
-                    hasDoneEthicsOnboarding
                     subcoursesInstructing {
                         id
                         published
