@@ -47,7 +47,7 @@ export type PupilForScreening = Pick<
     | 'verifiedAt'
     | 'state'
     | 'schooltype'
-    | 'onlyMatchWithWomen'
+    | 'onlyMatchWith'
     | 'hasSpecialNeeds'
     | 'descriptionForMatch'
     | 'descriptionForScreening'
@@ -69,7 +69,18 @@ export type SubcourseForScreening = Pick<Subcourse, 'id' | 'published'> & {
 
 export type StudentForScreening = Pick<
     Student,
-    'active' | 'id' | 'email' | 'firstname' | 'lastname' | 'createdAt' | 'subjectsFormatted' | 'languages' | 'certificateOfConductDeactivationDate'
+    | 'active'
+    | 'id'
+    | 'email'
+    | 'firstname'
+    | 'lastname'
+    | 'createdAt'
+    | 'subjectsFormatted'
+    | 'languages'
+    | 'certificateOfConductDeactivationDate'
+    | 'hasSpecialExperience'
+    | 'gender'
+    | 'descriptionForMatch'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];
