@@ -7,7 +7,7 @@ import { InfoCard } from '../../components/InfoCard';
 import { LanguageTagList } from '../../components/LanguageTag';
 import { SubjectTagList } from '../../components/SubjectTag';
 import { gql } from '../../gql';
-import { PupilScreeningStatus, Pupil_Languages_Enum, Pupil_Screening_Status_Enum } from '../../gql/graphql';
+import { PupilScreeningStatus, Pupil_Screening_Status_Enum } from '../../gql/graphql';
 import { ConfirmModal } from '../../modals/ConfirmModal';
 import { PupilForScreening, PupilScreening } from '../../types';
 import { MatchStudentCard } from '../matching/MatchStudentCard';
@@ -304,10 +304,6 @@ function PupilHistory({ pupil, previousScreenings }: { pupil: PupilForScreening;
     );
 }
 
-const UPDATE_LANGUAGES_QUERY = gql(`
-    mutation PupilUpdateLanguages($pupilId: Float!, $languages: [Language!]) { pupilUpdate(pupilId: $pupilId, data: { languages: $languages }) }
-`);
-
 const REQUEST_MATCH_QUERY = gql(`
     mutation PupilRequestMatch($pupilId: Float!) { pupilCreateMatchRequest(pupilId: $pupilId) }
 `);
@@ -360,23 +356,8 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
     const [showEditLanguages, setShowEditLanguages] = useState(false);
     const [showEditGrade, setShowEditGrade] = useState(false);
 
-    const [mutationUpdateLanguages] = useMutation(UPDATE_LANGUAGES_QUERY);
     const [requestMatch, { loading: loadingRequestMatch }] = useMutation(REQUEST_MATCH_QUERY);
     const [revokeMatchRequest, { loading: loadingRevokeMatchRequest }] = useMutation(REVOKE_MATCH_REQUEST_QUERY);
-
-    function updateLanguages(languages: Pupil_Languages_Enum[]) {
-        if (languages.length === 0) {
-            setLanguageError(t('screening.errors.language_missing'));
-        } else {
-            setLanguageError('');
-        }
-        mutationUpdateLanguages({
-            variables: {
-                pupilId: pupil?.id ?? 0,
-                languages: languages as any,
-            },
-        }).then(() => refresh());
-    }
 
     function deactivate() {
         setConfirmDeactivation(false);
@@ -399,6 +380,7 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
         }
 
         return { previousScreenings, screeningToEdit };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pupil!.screenings!]);
 
     const needsScreening =
