@@ -223,7 +223,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                                 <CSSWrapper className="profil-tab-link">
                                                     <IconTagList
                                                         isDisabled
-                                                        iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                                                        icon={lang.toLowerCase()}
                                                         text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     />
                                                 </CSSWrapper>

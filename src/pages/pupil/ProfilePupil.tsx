@@ -1,4 +1,4 @@
-import { Box, Button, Column, Flex, FormControl, Heading, Input, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Button, Column, FormControl, Input, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
@@ -137,7 +137,7 @@ function PupilAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSa
 }
 
 const ProfilePupil: React.FC<Props> = () => {
-    const { colors, space, sizes } = useTheme();
+    const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -181,19 +181,6 @@ const ProfilePupil: React.FC<Props> = () => {
     const ContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['containerWidth'],
-    });
-
-    const HeaderStyle = useBreakpointValue({
-        base: {
-            isMobile: true,
-            bgColor: 'primary.700',
-            paddingY: space['2'],
-        },
-        lg: {
-            isMobile: false,
-            bgColor: 'transparent',
-            paddingY: 0,
-        },
     });
 
     const isMobileSM = useBreakpointValue({
@@ -288,7 +275,7 @@ const ProfilePupil: React.FC<Props> = () => {
                                                 <CSSWrapper className="profil-tab-link">
                                                     <IconTagList
                                                         isDisabled
-                                                        iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                                                        icon={lang.toLowerCase()}
                                                         text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     />
                                                 </CSSWrapper>

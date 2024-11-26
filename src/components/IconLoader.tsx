@@ -4,10 +4,10 @@ import { lazyWithRetry } from '../lazy';
 
 const IconLoaderLazy = lazyWithRetry(() => import('./IconLoader_Lazy'));
 
-export function IconLoader({ iconPath }: { iconPath: string }) {
+export function IconLoader({ icon, iconPath }: { icon?: string; iconPath?: string }) {
     return (
         <Suspense fallback={<CircleIcon size={'30px'} color="lightText" />}>
-            <IconLoaderLazy iconPath={iconPath} />
+            {icon ? <IconLoaderLazy icon={icon} /> : <IconLoaderLazy iconPath={iconPath} />}
         </Suspense>
     );
 }
