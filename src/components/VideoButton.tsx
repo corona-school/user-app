@@ -37,7 +37,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 }) => {
     const { t } = useTranslation();
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-    const { data } = useQuery(
+    const { data, loading: isLoading } = useQuery(
         gql(`
         query overrrideLink($appointmentId: Float!) {
             appointment(appointmentId: $appointmentId) {
@@ -59,13 +59,14 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         `)
     );
     const openMeeting = async () => {
+        if (!data) return;
         // Technically the user has not joined yet, but they tried, that should be good enough for now
         await trackJoinMeeting({ variables: { appointmentId } });
 
         const overrideLink = data?.appointment?.override_meeting_link;
         if (!overrideLink) {
             setIsOpenModal(true);
-        } else {
+        } else if (zoomUrl) {
             window.open(overrideLink, '_blank');
         }
     };
@@ -82,6 +83,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
                 zoomUrl={zoomUrl ?? undefined}
             />
             <Button
+                isLoading={isLoading}
                 disabled={!(canJoin ?? canStartMeeting) || isOver}
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
                 onClick={openMeeting}
