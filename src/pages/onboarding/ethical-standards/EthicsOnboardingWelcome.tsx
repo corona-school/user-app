@@ -12,11 +12,13 @@ const OnBoardingStudentWelcome: React.FC<Props> = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const { trackPageView } = useMatomo();
+    const { trackEvent } = useMatomo();
 
     const startOnboarding = () => {
-        trackPageView({
-            documentTitle: 'Ethikonboarding gestartet',
+        trackEvent({
+            category: 'HuH Registration',
+            action: 'Button Click',
+            name: 'Ethikonboarding gestartet',
         });
 
         navigate('/onboarding/ethics/wizard');

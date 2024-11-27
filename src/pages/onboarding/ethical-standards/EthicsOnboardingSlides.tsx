@@ -39,7 +39,7 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
     const navigate = useNavigate();
     const { refreshUser } = useApollo();
 
-    const { trackPageView } = useMatomo();
+    const { trackEvent } = useMatomo();
 
     const [checkboxChecked, setCheckboxChecked] = useState(false);
 
@@ -54,8 +54,10 @@ const OnBoardingStudentSlides: React.FC<Props> = () => {
     const onFinish = async () => {
         setCheckboxChecked(true);
 
-        trackPageView({
-            documentTitle: 'Ethikonboarding abgeschlossen',
+        trackEvent({
+            category: 'HuH Registration',
+            action: 'Button Click',
+            name: 'Ethikonboarding abgeschlossen',
         });
 
         await setOnboardingDoneTrue();
