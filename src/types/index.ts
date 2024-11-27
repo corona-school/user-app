@@ -45,6 +45,12 @@ export type PupilForScreening = Pick<
     | 'gradeAsInt'
     | 'openMatchRequestCount'
     | 'verifiedAt'
+    | 'state'
+    | 'schooltype'
+    | 'onlyMatchWith'
+    | 'hasSpecialNeeds'
+    | 'descriptionForMatch'
+    | 'descriptionForScreening'
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];
@@ -73,6 +79,9 @@ export type StudentForScreening = Pick<
     | 'languages'
     | 'certificateOfConductDeactivationDate'
     | 'hasDoneEthicsOnboarding'
+    | 'hasSpecialExperience'
+    | 'gender'
+    | 'descriptionForMatch'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];
