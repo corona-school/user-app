@@ -37,7 +37,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 }) => {
     const { t } = useTranslation();
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-    const { data } = useQuery(
+    const { data, loading: isLoading } = useQuery(
         gql(`
         query overrrideLink($appointmentId: Float!) {
             appointment(appointmentId: $appointmentId) {
@@ -82,6 +82,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
                 zoomUrl={zoomUrl ?? undefined}
             />
             <Button
+                isLoading={isLoading}
                 disabled={!(canJoin ?? canStartMeeting) || isOver}
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
                 onClick={openMeeting}
