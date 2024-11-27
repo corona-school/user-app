@@ -8,11 +8,11 @@ import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql';
 import { useUser } from '../../hooks/useApollo';
 import { PupilForScreening, StudentForScreening } from '../../types';
-import { ScreenStudentCard } from '../../widgets/screening/ScreenStudentCard';
 import { useShortcut } from '../../helper/keyboard';
 import UserCard from './components/UserCard';
 import { Typography } from '@/components/Typography';
 import PupilDetail from './pupil/PupilDetail';
+import { StudentDetail } from './student/StudentDetail';
 
 const greetings = ['Wilkommen', 'Bonjour', 'Hola', 'Salve', 'asalaam alaikum', 'konnichiwa'];
 
@@ -46,7 +46,7 @@ export function ScreeningDashboard() {
                     verifiedAt
                     state
                     schooltype
-                    onlyMatchWithWomen
+                    onlyMatchWith
                     hasSpecialNeeds
                     descriptionForScreening
                     descriptionForMatch
@@ -85,6 +85,9 @@ export function ScreeningDashboard() {
                     certificateOfConduct {
                         id
                     }
+                    hasSpecialExperience
+                    gender
+                    descriptionForMatch
                     matches {
                         createdAt
                         pupil { firstname lastname }
@@ -128,7 +131,7 @@ export function ScreeningDashboard() {
                 openMatchRequestCount
                 state
                 schooltype
-                onlyMatchWithWomen
+                onlyMatchWith
                 hasSpecialNeeds
                 descriptionForScreening
                 descriptionForMatch
@@ -244,7 +247,7 @@ export function ScreeningDashboard() {
                     </div>
                 )}
                 {selectedPupil && <PupilDetail pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
-                {selectedStudent && <ScreenStudentCard student={selectedStudent} refresh={handleOnRefreshStudents} />}
+                {selectedStudent && <StudentDetail student={selectedStudent} refresh={handleOnRefreshStudents} />}
 
                 {!searchQuery && !selectedPupil && !selectedStudent && (
                     <>

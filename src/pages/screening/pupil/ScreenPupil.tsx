@@ -131,7 +131,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
             setComment(resultComment);
             toast.success(t('screening.screening_saved'));
         } catch (error) {
-            toast.success(t('error'), { description: (error as ApolloError)?.message });
+            toast.error(t('error'));
         }
         await handleOnSavePupil();
         refresh();
@@ -151,7 +151,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
             });
             toast.success(t('screening.screening_saved'));
         } catch (error) {
-            toast.success(t('error'), { description: (error as ApolloError)?.message });
+            toast.error(t('error'));
         }
         await handleOnSavePupil();
         refresh();
@@ -170,7 +170,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
             setComment(resultComment);
             toast.success(t('screening.screening_saved'));
         } catch (error) {
-            toast.success(t('error'), { description: (error as ApolloError)?.message });
+            toast.error(t('error'));
         }
         await handleOnSavePupil();
         refresh();
@@ -189,7 +189,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
             });
             toast.success(t('changesWereSaved'));
         } catch (error) {
-            toast.success(t('error'), { description: (error as ApolloError)?.message });
+            toast.success(t('error'));
         }
     };
 
@@ -328,7 +328,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                         onClick={() => setShowConfirmReject(true)}
                         isLoading={isLoading}
                         variant="destructive"
-                        leftIcon={<IconThumbUp />}
+                        leftIcon={<IconThumbDown />}
                         className="w-[200px]"
                     >
                         Ablehnen

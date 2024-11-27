@@ -47,7 +47,7 @@ export type PupilForScreening = Pick<
     | 'verifiedAt'
     | 'state'
     | 'schooltype'
-    | 'onlyMatchWithWomen'
+    | 'onlyMatchWith'
     | 'hasSpecialNeeds'
     | 'descriptionForMatch'
     | 'descriptionForScreening'
@@ -79,6 +79,9 @@ export type StudentForScreening = Pick<
     | 'languages'
     | 'certificateOfConductDeactivationDate'
     | 'hasDoneEthicsOnboarding'
+    | 'hasSpecialExperience'
+    | 'gender'
+    | 'descriptionForMatch'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];

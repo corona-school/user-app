@@ -3,7 +3,7 @@ import { Checkbox } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
-import { Pupil_Screening_Status_Enum } from '@/gql/graphql';
+import { Gender_Enum as Gender, Pupil_Screening_Status_Enum } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { PupilForScreening, PupilScreening } from '@/types';
 import { getGradeLabel } from '@/Utility';
@@ -22,7 +22,7 @@ import { SchoolSearchInput } from '../components/SchoolSearchInput';
 import { ScreeningSuggestionCard } from '@/widgets/screening/ScreeningSuggestionCard';
 import { ScreenPupil } from './ScreenPupil';
 import { gql } from '@/gql';
-import { ApolloError, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
 import { useRoles } from '@/hooks/useApollo';
 
@@ -64,7 +64,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
     const [showEditSubjects, setShowEditSubjects] = useState(false);
     const [showEditLanguages, setShowEditLanguages] = useState(false);
 
-    const [onlyMatchWithWomen, setOnlyMatchWithWomen] = useState<CheckedState>(pupil.onlyMatchWithWomen);
+    const [onlyMatchWithWomen, setOnlyMatchWithWomen] = useState<CheckedState>(pupil.onlyMatchWith === Gender.Female);
     const [hasSpecialNeeds, setHasSpecialNeeds] = useState<CheckedState>(pupil.hasSpecialNeeds);
     const [pupilLocation, setPupilLocation] = useState(pupil.state);
     const [schoolType, setSchoolType] = useState(pupil.schooltype);
@@ -126,14 +126,14 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                         schooltype: schoolType as any,
                         state: pupilLocation as any,
                         languages: languages as any,
-                        onlyMatchWithWomen: onlyMatchWithWomen === true,
+                        onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (undefined as any),
                         hasSpecialNeeds: hasSpecialNeeds === true,
                     },
                 },
             });
             toast.success(t('changesWereSaved'));
         } catch (error) {
-            toast.success(t('error'), { description: (error as ApolloError)?.message });
+            toast.success(t('error'));
         }
     };
 
@@ -159,7 +159,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
             await mutationRequestMatch({ variables: { pupilId: pupil.id } });
             toast.success(t('changesWereSaved'));
         } catch (error) {
-            toast.success(t('error'), { description: (error as ApolloError)?.message });
+            toast.error(t('error'));
         }
         refresh();
     };
@@ -169,7 +169,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
             await mutationRevokeMatchRequest({ variables: { pupilId: pupil.id } });
             toast.success(t('changesWereSaved'));
         } catch (error) {
-            toast.success(t('error'), { description: (error as ApolloError)?.message });
+            toast.error(t('error'));
         }
         refresh();
     };
@@ -231,8 +231,8 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                             </div>
                             <div className="flex gap-x-7 mt-2">
                                 <div className="flex gap-x-2 items-center">
-                                    <Checkbox id="onlyMatchWithWomen" checked={onlyMatchWithWomen} onCheckedChange={setOnlyMatchWithWomen} />{' '}
-                                    <Label htmlFor="onlyMatchWithWomen">Nur mit Frauen matchen</Label>
+                                    <Checkbox id="onlyMatchWith" checked={onlyMatchWithWomen} onCheckedChange={setOnlyMatchWithWomen} />{' '}
+                                    <Label htmlFor="onlyMatchWith">Nur mit Frauen matchen</Label>
                                 </div>
                                 <div className="flex gap-x-2 items-center">
                                     <Checkbox id="specialNeeds" checked={hasSpecialNeeds} onCheckedChange={setHasSpecialNeeds} />{' '}
