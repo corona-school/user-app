@@ -61,6 +61,14 @@ function CreateScreeningModal({
 
     const { space } = useTheme();
 
+    const [requireStudentOnboarding] = useMutation(
+        gql(`
+            mutation requireStudentOnboarding($studentId: Float!) {
+                studentRequireOnboarding(studentId: $studentId)
+            }
+        `)
+    );
+
     const handleOnKnowsFromChanges = (value: string) => {
         setKnowsFrom(value);
     };
@@ -83,7 +91,15 @@ function CreateScreeningModal({
 
     function doScreen(success: boolean) {
         const finalKnowsFrom = knowsFrom === 'Sonstiges' ? customKnowsFrom : knowsFrom;
+
+        let hadSuccessfulScreening;
+        if (success) hadSuccessfulScreening = student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success);
+
         screen({ success, comment, jobStatus, knowsFrom: finalKnowsFrom });
+
+        if (success && !hadSuccessfulScreening) {
+            requireStudentOnboarding({ variables: { studentId: student.id } });
+        }
     }
 
     return (
