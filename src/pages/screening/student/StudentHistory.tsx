@@ -1,8 +1,11 @@
 import { Typography } from '@/components/Typography';
+import { gql } from '@/gql';
+import { Screening } from '@/gql/graphql';
 import { StudentForScreening } from '@/types';
 import { SubcourseCard } from '@/widgets/course/SubcourseCard';
 import { MatchPupilCard } from '@/widgets/matching/MatchPupilCard';
 import { StudentScreeningCard } from '@/widgets/screening/StudentScreeningCard';
+import { useMutation } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 
 interface StudentHistoryProps {
@@ -11,13 +14,32 @@ interface StudentHistoryProps {
 
 export const StudentHistory = ({ student }: StudentHistoryProps) => {
     const { t } = useTranslation();
+    const [mutationUpdateTutorScreening] = useMutation(
+        gql(`
+            mutation UpdateTutorScreening($screeningId: Float!, $comment: String) {
+                studentTutorScreeningUpdate(screeningId: $screeningId, data: { comment: $comment })
+            }
+        `)
+    );
+
+    const [mutationUpdateInstructorScreening] = useMutation(
+        gql(`
+            mutation UpdateInstructorScreening($screeningId: Float!, $comment: String) {
+                studentInstructorScreeningUpdate(screeningId: $screeningId, data: { comment: $comment })
+            }
+        `)
+    );
 
     const activeMatches = student!.matches!.filter((it) => !it!.dissolved).sort((a, b) => +new Date(b!.createdAt) - +new Date(a!.createdAt));
     const dissolvedMatches = student.matches!.filter((it) => it!.dissolved).sort((a, b) => +new Date(b!.createdAt) - +new Date(a!.createdAt));
 
-    const handleOnUpdateTutorScreening = () => {};
+    const handleOnUpdateTutorScreening = (screeningId: number, data: Pick<Screening, 'comment'>) => {
+        mutationUpdateTutorScreening({ variables: { screeningId, comment: data.comment } });
+    };
 
-    const handleOnUpdateInstructorScreening = () => {};
+    const handleOnUpdateInstructorScreening = (screeningId: number, data: Pick<Screening, 'comment'>) => {
+        mutationUpdateInstructorScreening({ variables: { screeningId, comment: data.comment } });
+    };
 
     return (
         <div className="flex flex-col gap-y-6">
