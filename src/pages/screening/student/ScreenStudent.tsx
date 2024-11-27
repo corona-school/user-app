@@ -79,22 +79,6 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
         setCustomKnowsFrom(values.customValue);
     };
 
-    const [updateTutorScreening] = useMutation(
-        gql(`
-            mutation UpdateTutorScreening($screeningId: Float!, $comment: String) {
-                studentTutorScreeningUpdate(screeningId: $screeningId, data: { comment: $comment })
-            }
-        `)
-    );
-
-    const [updateInstructorScreening] = useMutation(
-        gql(`
-            mutation UpdateInstructorScreening($screeningId: Float!, $comment: String) {
-                studentInstructorScreeningUpdate(screeningId: $screeningId, data: { comment: $comment })
-            }
-        `)
-    );
-
     const clearForm = () => {
         setJobStatus(undefined);
         setComment('');
