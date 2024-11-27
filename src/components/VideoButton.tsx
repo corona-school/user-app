@@ -59,13 +59,14 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         `)
     );
     const openMeeting = async () => {
+        if (!data) return;
         // Technically the user has not joined yet, but they tried, that should be good enough for now
         await trackJoinMeeting({ variables: { appointmentId } });
 
         const overrideLink = data?.appointment?.override_meeting_link;
         if (!overrideLink) {
             setIsOpenModal(true);
-        } else {
+        } else if (zoomUrl) {
             window.open(overrideLink, '_blank');
         }
     };
