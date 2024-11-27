@@ -13,7 +13,7 @@ interface ComboboxItem {
 
 interface ComboboxProps {
     values: ComboboxItem[];
-    value: string;
+    value?: string;
     placeholder?: string;
     searchPlaceholder?: string;
     emptyText?: string;
@@ -37,18 +37,18 @@ export const Combobox = ({ value, values, searchPlaceholder, placeholder, emptyT
                     className={cn('w-full', !value && 'text-muted-foreground overflow-hidden', className)}
                     rightIcon={<IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />}
                 >
-                    <div className="text-ellipsis overflow-hidden w-[90%] text-left">{value ? values.find((e) => e.value === value)?.label : placeholder}</div>
+                    <div className="text-ellipsis overflow-hidden w-[90%] text-left">{values.find((e) => e.value === value)?.label ?? placeholder}</div>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className={cn('max-w-full p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]')}>
                 <Command shouldFilter={false}>
-                    <CommandInput placeholder={searchPlaceholder || placeholder} onValueChange={onSearch} />
+                    <CommandInput placeholder={searchPlaceholder} onValueChange={onSearch} />
                     <CommandList>
                         <CommandEmpty>{emptyText}</CommandEmpty>
                         <CommandGroup>
                             {values.map((e) => (
                                 <CommandItem
-                                    key={e.value}
+                                    key={`${e.value}-${e.label}}`}
                                     value={e.value}
                                     onSelect={(currentValue) => {
                                         onSelect(currentValue === value ? '' : currentValue);
