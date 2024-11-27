@@ -271,7 +271,7 @@ const ProfilePupil: React.FC<Props> = () => {
                                 {(data?.me?.pupil?.languages?.length && (
                                     <Row flexWrap="wrap" w="100%">
                                         {data?.me?.pupil?.languages.map((lang: string) => (
-                                            <Column marginRight={3} mb={space['0.5']}>
+                                            <Column marginRight={3} mb={space['0.5']} key={lang}>
                                                 <CSSWrapper className="profil-tab-link">
                                                     <IconTagList
                                                         isDisabled
