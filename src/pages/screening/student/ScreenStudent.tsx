@@ -50,6 +50,12 @@ const UPDATE_STUDENT_MUTATION = gql(`
     }
 `);
 
+const REQUIRE_STUDENT_ONBOARDING_MUTATION = gql(`
+    mutation requireStudentOnboarding($studentId: Float!) {
+        studentRequireOnboarding(studentId: $studentId)
+    }
+`);
+
 export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const { t } = useTranslation();
     const [currentScreeningType, setCurrentScreeningType] = useState('');
@@ -66,6 +72,7 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const [mutationCreateInstructorScreening, { loading: loadingInstructorScreening }] = useMutation(CREATE_INSTRUCTOR_SCREENING_MUTATION);
     const [mutationCreateTutorScreening, { loading: loadingTutorScreening }] = useMutation(CREATE_TUTOR_SCREENING_MUTATION);
     const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
+    const [mutationRequireStudentOnboarding] = useMutation(REQUIRE_STUDENT_ONBOARDING_MUTATION);
 
     const handleOnKnowsFromChanges = (values: { value: string; customValue: string }) => {
         setKnowsFrom(values.value);
@@ -82,6 +89,14 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
         try {
             await mutationCreateInstructorScreening({ variables: { studentId: student.id, comment, knowsFrom, jobStatus: jobStatus!, success: decision } });
             await mutationUpdateStudent({ variables: { studentId: student.id, data: { descriptionForMatch } } });
+
+            const hadSuccessfulScreening = decision
+                ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
+                : false;
+
+            if (decision && !hadSuccessfulScreening) {
+                mutationRequireStudentOnboarding({ variables: { studentId: student.id } });
+            }
             await refresh();
             toast.success(t('changesWereSaved'));
             setCurrentScreeningType('');
@@ -95,6 +110,14 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
         try {
             await mutationCreateTutorScreening({ variables: { studentId: student.id, comment, knowsFrom, jobStatus: jobStatus!, success: decision } });
             await mutationUpdateStudent({ variables: { studentId: student.id, data: { descriptionForMatch } } });
+
+            const hadSuccessfulScreening = decision
+                ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
+                : false;
+
+            if (decision && !hadSuccessfulScreening) {
+                mutationRequireStudentOnboarding({ variables: { studentId: student.id } });
+            }
             refresh();
             toast.success(t('changesWereSaved'));
             setCurrentScreeningType('');

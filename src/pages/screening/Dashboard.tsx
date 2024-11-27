@@ -98,7 +98,6 @@ export function ScreeningDashboard() {
                         studentFirstMatchRequest
                         subjectsFormatted { name }
                     }
-                    
                     subcoursesInstructing {
                         id
                         published
