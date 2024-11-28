@@ -1039,6 +1039,46 @@
                     "buttonText": "End tour",
                     "buttonLinkText": "Watch the tour again"
                 }
+            },
+            "ethics": {
+                "welcome": {
+                    "title": "Ethical standards",
+                    "content": "This ethics guide provides an overview of the minimum requirements for responsible conduct at Lern-Fair and encourages self-critical reflection when dealing with pupils . Please read the following points carefully and observe them in your work.",
+                    "startTour": "Start tour"
+                },
+                "screen1": {
+                    "title": "Interpersonal interaction",
+                    "header1": "General handling and acceptance",
+                    "content1": "At Lern-Fair , reliability, respect and appreciation take center stage. Every person is accepted as an equal regardless of age, gender, origin, culture, status, orientation, ideology or religion.",
+                    "header2": "Restraint",
+                    "content2": "I respect different political and religious views and avoid influencing learners in a particular direction. At the same time, I stand by our laws and democratic values and am committed to tolerance and against discrimination."
+                },
+                "screen2": {
+                    "title": "Security",
+                    "header1": "Working with minors",
+                    "content1": "The well-being of minors is my top priority. I always keep my distance, respect personal boundaries and the privacy of pupils to create a safe and trusting environment. In case of suspected neglect or violence, our website offers counseling services.",
+                    "header2": "Privacy and data protection",
+                    "content2": "All data and information must be treated confidentially. Personal data may not be passed on, not even in private. Access data and video chat links are not shared with third parties."
+                },
+                "screen3": {
+                    "title": "Code of conduct",
+                    "header1": "Self-care",
+                    "content1": "I assess my workload realistically and adjust my workload if it is too much. The Lern-Fair team is there to support me.",
+                    "header2": "Voluntariness",
+                    "content2": "The cooperation is voluntary and can be terminated, adapted or changed at any time."
+                },
+                "screen4": {
+                    "title": "Pedagogical and professional competence",
+                    "header1": "Assistance",
+                    "content1": "I consciously reflect on my actions and my professional and media skills in order to provide the best possible support for pupils . If necessary, I look for tips and educational support from the user area.",
+                    "header2": "Transparency",
+                    "content2": "I communicate clearly about the nature and scope of my support. If I am unable to provide this for time, professional or other reasons, I will inform pupils in good time."
+                },
+                "screen5": {
+                    "title": "Dealing with inquiries, complaints and violations",
+                    "content1": "The Executive Board of Lern-Fair e.V. decides on measures to be taken in the event of breaches of the ethics guidelines. In certain cases, this may mean exclusion from the project, which will be communicated with a reason. Inquiries, complaints or reports of violations can be sent by e-mail to support@lern-fair.de.",
+                    "checkboxText": "I have read the ethics guidelines carefully and agree to them."
+                }
             }
         },
         "header": "Onboarding tour",
