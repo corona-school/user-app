@@ -12,6 +12,7 @@ import INFOICON from '../assets/icons/lernfair/lesson/info_icon.svg';
 
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
+import { DocumentNode } from 'graphql';
 
 interface GeneratedLessonPlan {
     title: string;
@@ -35,6 +36,9 @@ interface LessonPlanOutput {
         title: string;
         content: string[];
     }[];
+    assessment?: string;
+    homework?: string;
+    resources?: string;
 }
 
 const GENERATE_LESSON_PLAN_MUTATION = gql(`
@@ -53,7 +57,7 @@ mutation GenerateLessonPlan(
         resources
     }
 }
-`);
+`) as DocumentNode;
 
 interface SubjectMapping {
     [key: string]: string;
@@ -126,6 +130,15 @@ ${section.content.join('\n')}
 `
     )
     .join('\n')}
+
+Assessment:
+${generatedPlan.assessment || 'N/A'}
+
+Homework:
+${generatedPlan.homework || 'N/A'}
+
+Resources:
+${generatedPlan.resources || 'N/A'}
             `.trim();
 
             navigator.clipboard
@@ -138,6 +151,16 @@ ${section.content.join('\n')}
                 });
         }
     };
+
+    // Utility function to render text with preserved line breaks
+    const renderTextWithLineBreaks = (text: string) => {
+        return text.split('\n').map((line, index) => (
+            <Typography key={index} variant="h6" className="text-[#0F172A] text-base font-normal leading-[26px]">
+                {line}
+            </Typography>
+        ));
+    };
+
     const exampleOutput: LessonPlanOutput = {
         title: 'Exploring the Solar System',
         grade: '6th Grade',
@@ -162,6 +185,9 @@ ${section.content.join('\n')}
                 content: ['Share a slide presentation or images of each planet, explaining key facts:'],
             },
         ],
+        assessment: 'Students will complete a quiz identifying planets and their characteristics.',
+        homework: 'Create a model of the solar system using household materials.',
+        resources: 'Astronomy textbook, solar system poster, online planetary database',
     };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,6 +255,9 @@ ${section.content.join('\n')}
                               },
                           ]
                         : [],
+                    assessment: data.generateLessonPlan.assessment,
+                    homework: data.generateLessonPlan.homework,
+                    resources: data.generateLessonPlan.resources,
                 };
 
                 setGeneratedPlan(transformedPlan);
@@ -357,11 +386,9 @@ ${section.content.join('\n')}
                                                 setTermsAccepted(checked);
                                                 if (checked) setShowError(false);
                                             }}
-                                            className="mt-1 flex-shrink-0" // Added flex-shrink-0 to prevent checkbox from shrinking
+                                            className="mt-1 flex-shrink-0"
                                         />
                                         <VStack space={1} flex={1}>
-                                            {' '}
-                                            {/* Added flex={1} to make it take remaining space */}
                                             <label
                                                 htmlFor="terms"
                                                 className="flex text-[14px] font-medium font-outfit text-[#2A4A50] leading-[14px] cursor-pointer"
@@ -412,8 +439,7 @@ ${section.content.join('\n')}
                             </VStack>
                         </Box>
 
-                        {/* Divider */}
-                        {/*Right Section */}
+                        {/* Right Section */}
                         <Box w="573px" bg="white" p={6} borderRadius="sm" borderWidth={1} borderColor="gray.200">
                             {generatedPlan && (
                                 <VStack space={4} alignItems="flex-start">
@@ -441,11 +467,7 @@ ${section.content.join('\n')}
                                         <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
                                             Learning Goal:
                                         </Typography>
-                                        {generatedPlan.learningGoals.map((goal, index) => (
-                                            <Typography key={index} variant="h6" className="text-[#0F172A] text-base font-normal leading-[26px]">
-                                                {goal}
-                                            </Typography>
-                                        ))}
+                                        {generatedPlan.learningGoals.map((goal, index) => renderTextWithLineBreaks(goal))}
                                     </VStack>
 
                                     {/* Divider */}
@@ -457,21 +479,54 @@ ${section.content.join('\n')}
                                             <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
                                                 {section.title}
                                             </Typography>
-                                            {section.content.map((item, itemIndex) => (
-                                                <Typography key={itemIndex} variant="h6" className="text-[#0F172A] text-base font-normal leading-[26px]">
-                                                    {item}
-                                                </Typography>
-                                            ))}
+                                            {section.content.map((item, itemIndex) => renderTextWithLineBreaks(item))}
                                             {index < generatedPlan.agenda.length - 1 && (
                                                 <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" my={4} />
                                             )}
                                         </VStack>
                                     ))}
 
-                                    {/* Divider */}
-                                    <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
+                                    {/* Assessment */}
+                                    {generatedPlan.assessment && (
+                                        <>
+                                            <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
+                                            <VStack space={2} alignItems="flex-start" width="100%">
+                                                <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
+                                                    Assessment:
+                                                </Typography>
+                                                {renderTextWithLineBreaks(generatedPlan.assessment)}
+                                            </VStack>
+                                        </>
+                                    )}
+
+                                    {/* Homework */}
+                                    {generatedPlan.homework && (
+                                        <>
+                                            <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
+                                            <VStack space={2} alignItems="flex-start" width="100%">
+                                                <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
+                                                    Homework:
+                                                </Typography>
+                                                {renderTextWithLineBreaks(generatedPlan.homework)}
+                                            </VStack>
+                                        </>
+                                    )}
+
+                                    {/* Resources */}
+                                    {generatedPlan.resources && (
+                                        <>
+                                            <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
+                                            <VStack space={2} alignItems="flex-start" width="100%">
+                                                <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
+                                                    Resources:
+                                                </Typography>
+                                                {renderTextWithLineBreaks(generatedPlan.resources)}
+                                            </VStack>
+                                        </>
+                                    )}
 
                                     {/* Copy Output Button */}
+                                    <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
                                     <VStack alignItems="stretch" style={{ width: '100%', alignItems: 'flex-end' }}>
                                         {generatedPlan && (
                                             <Button
