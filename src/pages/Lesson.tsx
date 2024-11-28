@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Button } from '../components/Button';
-import { Checkbox } from '@/components/Checkbox';
-import { cn } from '@/lib/Tailwind';
+import { Checkbox } from '../components/Checkbox';
+import { cn } from '../lib/Tailwind';
 
 import { Box, VStack, HStack, Text, Select, TextArea, ScrollView } from 'native-base';
-import WithNavigation from '@/components/WithNavigation';
-import { Typography } from '@/components/Typography';
+import WithNavigation from '../components/WithNavigation';
+import { Typography } from '../components/Typography';
 
 import { useTranslation } from 'react-i18next';
 import INFOICON from '../assets/icons/lernfair/lesson/info_icon.svg';
@@ -110,6 +111,29 @@ const Lesson: React.FC = () => {
     const [showError, setShowError] = useState(false);
     const [termsAccepted, setTermsAccepted] = useState(false);
 
+    const [fileUploadStatus, setFileUploadStatus] = useState<string | null>(null);
+
+    // New method for file upload
+    const uploadFile = async (file: File): Promise<string | null> => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/files/upload`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            setFileUploadStatus('File uploaded successfully');
+            return response.data;
+        } catch (error) {
+            console.error('File upload error:', error);
+            setFileUploadStatus('File upload failed');
+            return null;
+        }
+    };
+
     const copyOutputToClipboard = () => {
         if (generatedPlan) {
             const outputText = `
@@ -190,11 +214,15 @@ ${generatedPlan.resources || 'N/A'}
         resources: 'Astronomy textbook, solar system poster, online planetary database',
     };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const files = Array.from(e.target.files);
             const newFiles = [...uploadedFiles, ...files].slice(0, 3);
             setUploadedFiles(newFiles);
+
+            // Optional: Automatically upload files
+            const uploadPromises = newFiles.map(uploadFile);
+            await Promise.all(uploadPromises);
         }
     };
 
@@ -219,11 +247,10 @@ ${generatedPlan.resources || 'N/A'}
             // Upload files first and get their UUIDs
             const fileUuids: string[] = [];
             for (const file of uploadedFiles) {
-                // Implement file upload logic here
-                // This is a placeholder and should be replaced with actual file upload mechanism
-                // fileUuids.push(await uploadFile(file));
+                const uuid = await uploadFile(file);
+                if (uuid) fileUuids.push(uuid);
             }
-
+            console.log('Uploaded file UUIDs:', fileUuids);
             const { data } = await generateLessonPlan({
                 variables: {
                     data: {
@@ -446,16 +473,16 @@ ${generatedPlan.resources || 'N/A'}
                                     {/* Title and Details */}
                                     <VStack space={2} alignItems="flex-start">
                                         <Typography variant="h4" className="text-[#0F172A] font-normal">
-                                            Lesson Plan: {generatedPlan.title}
+                                            Lesson Plan: {generatedPlan.title || ''}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
-                                            Grade: {generatedPlan.grade}
+                                            Grade: {generatedPlan.grade || ''}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
-                                            Subject: {generatedPlan.subject}
+                                            Subject: {generatedPlan.subject || ''}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
-                                            Duration: {generatedPlan.duration}
+                                            Duration: {generatedPlan.duration || ''}
                                         </Typography>
                                     </VStack>
 
