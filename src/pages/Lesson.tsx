@@ -13,11 +13,22 @@ import INFOICON from '../assets/icons/lernfair/lesson/info_icon.svg';
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
 
+interface GeneratedLessonPlan {
+    title: string;
+    subject: string;
+    grade: string;
+    duration: string;
+    learningGoal: string;
+    agendaExercises: string;
+    assessment: string;
+    homework: string;
+    resources: string;
+}
+
 interface LessonPlanOutput {
     title: string;
     grade: string;
     subject: string;
-    subtopic: string;
     duration: string;
     learningGoals: string[];
     agenda: {
@@ -26,38 +37,100 @@ interface LessonPlanOutput {
     }[];
 }
 
+const GENERATE_LESSON_PLAN_MUTATION = gql(`
+mutation GenerateLessonPlan(
+    $data: GenerateLessonPlanInput!
+) {
+    generateLessonPlan(data: $data) {
+        title
+        subject
+        grade
+        duration
+        learningGoal
+        agendaExercises
+        assessment
+        homework
+        resources
+    }
+}
+`);
+
+interface SubjectMapping {
+    [key: string]: string;
+}
+
+const subjectMapping: SubjectMapping = {
+    Altgriechisch: 'Altgriechisch',
+    Arbeitslehre: 'Arbeitslehre',
+    Biologie: 'Biologie',
+    Chemie: 'Chemie',
+    Deutsch: 'Deutsch',
+    Deutsch_als_Zweitsprache: 'Deutsch als Zweitsprache',
+    Englisch: 'Englisch',
+    Erdkunde: 'Erdkunde',
+    Ethik: 'Ethik',
+    Franz_sisch: 'Französisch',
+    Geschichte: 'Geschichte',
+    Gesundheit: 'Gesundheit',
+    Informatik: 'Informatik',
+    Italienisch: 'Italienisch',
+    Kunst: 'Kunst',
+    Latein: 'Latein',
+    Mathematik: 'Mathematik',
+    Musik: 'Musik',
+    Niederl_ndisch: 'Niederländisch',
+    P_dagogik: 'Pädagogik',
+    Philosophie: 'Philosophie',
+    Physik: 'Physik',
+    Politik: 'Politik',
+    Religion: 'Religion',
+    Russisch: 'Russisch',
+    Sachkunde: 'Sachkunde',
+    Spanisch: 'Spanisch',
+    Technik: 'Technik',
+    Wirtschaft: 'Wirtschaft',
+    Lernen_lernen: 'Lernen lernen',
+};
+
+const subjects = Object.keys(subjectMapping);
+
 const Lesson: React.FC = () => {
     const { t } = useTranslation();
 
     const [generatedPlan, setGeneratedPlan] = useState<LessonPlanOutput | null>(null);
+    const [generateLessonPlan, { loading, error }] = useMutation<{ generateLessonPlan: GeneratedLessonPlan }>(GENERATE_LESSON_PLAN_MUTATION);
+
+    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+    const [selectedSubject, setSelectedSubject] = useState('');
+    const [prompt, setPrompt] = useState('');
+    const [showError, setShowError] = useState(false);
+    const [termsAccepted, setTermsAccepted] = useState(false);
+
     const copyOutputToClipboard = () => {
         if (generatedPlan) {
             const outputText = `
-                Lesson Plan: ${generatedPlan.title}
-                Grade: ${generatedPlan.grade}
-                Subject: ${generatedPlan.subject}
-                Subtopic: ${generatedPlan.subtopic}
-                Duration: ${generatedPlan.duration}
-    
-                Learning Goal:
-                By the end of the lesson, students will be able to:
-                ${generatedPlan.learningGoals.join('\n')}
-    
-                Agenda:
-                ${generatedPlan.agenda
-                    .map(
-                        (section) => `
-                    ${section.title}
-                    ${section.content.join('\n')}
-                `
-                    )
-                    .join('\n')}
-            `;
+Lesson Plan: ${generatedPlan.title}
+Grade: ${generatedPlan.grade}
+Subject: ${generatedPlan.subject}
+Duration: ${generatedPlan.duration}
+
+Learning Goal:
+${generatedPlan.learningGoals.join('\n')}
+
+Agenda:
+${generatedPlan.agenda
+    .map(
+        (section) => `
+${section.title}
+${section.content.join('\n')}
+`
+    )
+    .join('\n')}
+            `.trim();
 
             navigator.clipboard
                 .writeText(outputText)
                 .then(() => {
-                    // Optional: Add a success notification
                     console.log('Content copied!');
                 })
                 .catch((err) => {
@@ -65,12 +138,10 @@ const Lesson: React.FC = () => {
                 });
         }
     };
-
     const exampleOutput: LessonPlanOutput = {
         title: 'Exploring the Solar System',
         grade: '6th Grade',
         subject: 'Science',
-        subtopic: 'Solar System',
         duration: '30 Mins',
         learningGoals: [
             'Identify the planets in the solar system and their order from the Sun.',
@@ -93,25 +164,9 @@ const Lesson: React.FC = () => {
         ],
     };
 
-    // Add this dummy mutation hook using exampleOutput
-    const [generateLessonPlan] = useState(() => async () => {
-        return {
-            data: {
-                generateLessonPlan: exampleOutput,
-            },
-        };
-    });
-
-    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
-    const [selectedSubject, setSelectedSubject] = useState('');
-    const [prompt, setPrompt] = useState('');
-    const [showError, setShowError] = useState(false);
-    const [termsAccepted, setTermsAccepted] = useState(false);
-
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files) {
             const files = Array.from(e.target.files);
-            // limit to 3
             const newFiles = [...uploadedFiles, ...files].slice(0, 3);
             setUploadedFiles(newFiles);
         }
@@ -121,11 +176,11 @@ const Lesson: React.FC = () => {
         setSelectedSubject('');
         setPrompt('');
         setUploadedFiles([]);
+        setGeneratedPlan(null);
     };
 
     const handleGenerate = async () => {
         if (!selectedSubject) {
-            // Handle subject selection error
             return;
         }
 
@@ -135,12 +190,52 @@ const Lesson: React.FC = () => {
         }
 
         try {
-            const { data } = await generateLessonPlan();
+            // Upload files first and get their UUIDs
+            const fileUuids: string[] = [];
+            for (const file of uploadedFiles) {
+                // Implement file upload logic here
+                // This is a placeholder and should be replaced with actual file upload mechanism
+                // fileUuids.push(await uploadFile(file));
+            }
+
+            const { data } = await generateLessonPlan({
+                variables: {
+                    data: {
+                        fileUuids: fileUuids,
+                        grade: 10, // Default grade, could be made dynamic
+                        duration: 60, // Default duration, could be made dynamic
+                        state: 'he', // Default state
+                        prompt: prompt || `Erstelle einen Unterrichtsplan für das Thema ${selectedSubject}`,
+                        expectedOutputs: ['AGENDA_EXERCISES', 'ASSESSMENT', 'HOMEWORK', 'LEARNING_GOAL', 'RESOURCES', 'TITLE'],
+                        schoolType: 'gymnasium',
+                        language: 'German',
+                        subject: selectedSubject,
+                    },
+                },
+            });
+
             if (data?.generateLessonPlan) {
-                setGeneratedPlan(data.generateLessonPlan);
+                const transformedPlan: LessonPlanOutput = {
+                    title: data.generateLessonPlan.title || '',
+                    grade: data.generateLessonPlan.grade || '',
+                    subject: data.generateLessonPlan.subject || '',
+                    duration: data.generateLessonPlan.duration || '',
+                    learningGoals: data.generateLessonPlan.learningGoal ? [data.generateLessonPlan.learningGoal] : [],
+                    agenda: data.generateLessonPlan.agendaExercises
+                        ? [
+                              {
+                                  title: 'Lesson Agenda',
+                                  content: [data.generateLessonPlan.agendaExercises],
+                              },
+                          ]
+                        : [],
+                };
+
+                setGeneratedPlan(transformedPlan);
             }
         } catch (error) {
-            console.error('Error:', error);
+            console.error('Error generating lesson plan:', error);
+            // Optionally, show an error message to the user
         }
     };
 
@@ -178,17 +273,17 @@ const Lesson: React.FC = () => {
                                 {/* Subject Selection */}
                                 <Box>
                                     <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                        Select Subject<Text color="red.500">*</Text>
+                                        Fach auswählen<Text color="red.500">*</Text>
                                     </Text>
                                     <Select
-                                        placeholder="Select a subject"
+                                        placeholder="Wählen Sie ein Fach"
                                         borderColor="gray.300"
                                         selectedValue={selectedSubject}
                                         onValueChange={(value) => setSelectedSubject(value)}
                                     >
-                                        <Select.Item label="Science" value="science" />
-                                        <Select.Item label="Mathematics" value="mathematics" />
-                                        <Select.Item label="English" value="english" />
+                                        {subjects.map((subject) => (
+                                            <Select.Item key={subject} label={subjectMapping[subject]} value={subject} />
+                                        ))}
                                     </Select>
                                 </Box>
 
@@ -199,7 +294,7 @@ const Lesson: React.FC = () => {
                                     </Text>
                                     <TextArea
                                         h={32}
-                                        placeholder="Describe your lesson by adding more context for the AI"
+                                        placeholder="Beschreiben Sie Ihre Unterrichtsstunde mit mehr Kontext für die KI"
                                         borderColor="gray.300"
                                         autoCompleteType={undefined}
                                         value={prompt}
@@ -334,9 +429,6 @@ const Lesson: React.FC = () => {
                                             Subject: {generatedPlan.subject}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
-                                            Subtopic: {generatedPlan.subtopic}
-                                        </Typography>
-                                        <Typography variant="h6" className="text-[#0F172A] font-normal">
                                             Duration: {generatedPlan.duration}
                                         </Typography>
                                     </VStack>
@@ -348,9 +440,6 @@ const Lesson: React.FC = () => {
                                     <VStack space={2} alignItems="flex-start" width="100%">
                                         <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
                                             Learning Goal:
-                                        </Typography>
-                                        <Typography variant="h6" className="text-[#0F172A] text-base font-normal leading-[34px]">
-                                            By the end of the lesson, students will be able to:
                                         </Typography>
                                         {generatedPlan.learningGoals.map((goal, index) => (
                                             <Typography key={index} variant="h6" className="text-[#0F172A] text-base font-normal leading-[26px]">
