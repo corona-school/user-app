@@ -176,10 +176,10 @@ ${generatedPlan.resources || 'N/A'}
         }
     };
 
-    // Utility function to render text with preserved line breaks
+    // Utility function to render text with preserved line breaks and whitespaces
     const renderTextWithLineBreaks = (text: string) => {
         return text.split('\n').map((line, index) => (
-            <Typography key={index} variant="h6" className="text-[#0F172A] text-base font-normal leading-[26px]">
+            <Typography key={index} variant="h6" className="text-[#0F172A] text-base font-normal leading-[26px] whitespace-pre-wrap">
                 {line}
             </Typography>
         ));
