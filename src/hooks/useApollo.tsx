@@ -220,6 +220,7 @@ interface UserType {
     student: {
         id: number;
         verifiedAt: Date | null;
+        hasDoneEthicsOnboarding?: boolean | null;
     } | null;
     screener: {
         id: number;
@@ -586,7 +587,7 @@ const useApolloInternal = () => {
             lastname
             email
             pupil { id verifiedAt }
-            student { id verifiedAt }
+            student { id verifiedAt hasDoneEthicsOnboarding}
             screener { id }
           }
           myRoles

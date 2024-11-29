@@ -1,13 +1,7 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-
+import { DE, GB, SA, TR, UA, RU } from 'country-flag-icons/react/1x1';
 import de from './lang/de.json';
-import IconDE from './assets/icons/icon_flag_de.svg';
-import IconEN from './assets/icons/icon_flag_en.svg';
-import IconUK from './assets/icons/icon_flag_uk.svg';
-import IconTR from './assets/icons/icon_flag_tr.svg';
-import IconRU from './assets/icons/icon_flag_ru.svg';
-import IconAR from './assets/icons/icon_flag_ar.svg';
 import { Settings } from 'luxon';
 
 // As users will rarely use the non-german version, lazily load these language files
@@ -30,12 +24,12 @@ export const languageList = [
 ];
 
 export const languageIcons = {
-    de: IconDE,
-    en: IconEN,
-    ar: IconAR,
-    tr: IconTR,
-    uk: IconUK,
-    ru: IconRU,
+    de: DE,
+    en: GB,
+    ar: SA,
+    tr: TR,
+    uk: UA,
+    ru: RU,
 };
 
 export const defaultLang = 'de';

@@ -220,6 +220,7 @@
     "skip": "Überspringen",
     "send": "Senden",
     "save": "Speichern",
+    "changesWereSaved": "Änderungen wurden gespeichert",
     "edit": "Bearbeiten",
     "signup": "Registrieren",
     "signin": "Anmelden",
@@ -1122,6 +1123,46 @@
                     "helpcenter": "Zum Hilfebereich",
                     "buttonText": "Tour beenden",
                     "buttonLinkText": "Tour nochmal ansehen"
+                }
+            },
+            "ethics": {
+                "welcome": {
+                    "title": "Ethische Standards",
+                    "content": "Dieser Ethik-Leitfaden bietet einen Überblick über die Mindestanforderungen für verantwortungsvolles Handeln bei Lern-Fair und regt zur selbstkritischen Reflexion im Umgang mit Schüler:innen an. Bitte lies die folgenden Punkte sorgfältig und beachte sie bei deiner Arbeit.",
+                    "startTour": "Tour starten"
+                },
+                "screen1": {
+                    "title": "Zwischenmenschlicher Umgang",
+                    "header1": "Allgemeiner Umgang und Akzeptanz",
+                    "content1": "Bei Lern-Fair stehen Zuverlässigkeit, Respekt und Wertschätzung im Mittelpunkt. Jede Person wird unabhängig von Alter, Geschlecht, Herkunft, Kultur, Status, Orientierung, Weltanschauung oder Religion als gleichberechtigt akzeptiert.",
+                    "header2": "Zurückhaltung",
+                    "content2": "Ich respektiere unterschiedliche politische und religiöse Ansichten und vermeide es, Lernende in eine bestimmte Richtung zu beeinflussen. Gleichzeitig stehe ich zu unseren Gesetzen, demokratischen Werten und setze mich für Toleranz sowie gegen Diskriminierung ein."
+                },
+                "screen2": {
+                    "title": "Sicherheit",
+                    "header1": "Arbeit mit Minderjährigen",
+                    "content1": "Das Wohl von Minderjährigen hat höchste Priorität. Ich wahre stets Distanz, respektiere persönliche Grenzen und die Privatsphäre der Schüler:innen um eine sichere und vertrauensvolle Umgebung zu schaffen. Bei Verdacht auf Vernachlässigung oder Gewalt bietet unsere Website Beratungsstellen.",
+                    "header2": "Privatsphäre und Datenschutz",
+                    "content2": "Alle Daten und Informationen sind vertraulich zu behandeln. Persönliche Daten dürfen nicht weitergegeben werden, auch nicht im privaten Umfeld. Zugangsdaten und Videochat-Links werden nicht mit Dritten geteilt."
+                },
+                "screen3": {
+                    "title": "Verhaltensrichtlinien",
+                    "header1": "Selbstfürsorge",
+                    "content1": "Ich schätze meine Belastbarkeit realistisch ein und passe meinen Arbeitsaufwand bei Überforderung an. Das Lern-Fair Team steht unterstützend zur Seite.",
+                    "header2": "Freiwilligkeit",
+                    "content2": "Die Zusammenarbeit beruht auf Freiwilligkeit und kann jederzeit beendet, angepasst oder verändert werden."
+                },
+                "screen4": {
+                    "title": "Pädagogische und fachliche Kompetenz",
+                    "header1": "Hilfestellungen",
+                    "content1": "Ich reflektiere mein Handeln sowie meine Fach- und Medienkompetenzen bewusst, um die Schüler:innen bestmöglich zu unterstützen. Wenn nötig, suche ich mir Tipps und pädagogische Unterstützung aus dem Userbereich.",
+                    "header2": "Transparenz",
+                    "content2": "Ich kommuniziere klar über Art und Umfang meiner Unterstützung. Sollte ich diese aus zeitlichen, fachlichen oder anderen Gründen nicht leisten können, informiere ich die Schüler:innen rechtzeitig."
+                },
+                "screen5": {
+                    "title": "Umgang mit Anfragen, Beschwerden und Verstößen",
+                    "content1": "Über Maßnahmen bei Verstößen gegen den Ethik-Leitfaden entscheidet der Vorstand von Lern-Fair e.V. In bestimmten Fällen kann dies den Ausschluss vom Projekt bedeuten, der mit einer Begründung mitgeteilt wird. Anfragen, Beschwerden oder Meldungen zu Verstößen können per E-Mail an support@lern-fair.de gesendet werden.",
+                    "checkboxText": "Ich habe den Ethik-Leitfaden gründlich gelesen und erkläre mich mit ihm einverstanden."
                 }
             }
         }
@@ -2187,6 +2228,11 @@
         "certificateOfConductWasProvided": "Führungszeugnis wurde eingereicht",
         "certificateOfConductWasNotProvided": "Führungszeugnis wurde noch nicht eingereicht",
         "comment": "Kommentar",
+        "errors": {
+            "grade_missing": "Bitte wähle eine Klasse aus.",
+            "language_missing": "Bitte ergänze mind. 1 Sprache.",
+            "subjects_missing": "Bitte ergänze mind. 1 Fach."
+        },
         "courses": {
             "header": "Screening Gruppenkurse",
             "submitted_or_allowed": "Eingereichte & genehmigte Kurse",

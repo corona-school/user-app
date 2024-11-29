@@ -29,29 +29,31 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
         showDate: boolean = true,
         readonly: boolean = false
     ) => (
-        <AppointmentCard
-            key={index}
-            subcourseId={subcourse.id}
-            description={subcourse.course!.description}
-            tags={subcourse.course!.tags}
-            dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
-            image={subcourse.course!.image ?? undefined}
-            title={subcourse.course!.name}
-            countCourse={subcourse.lectures!.length}
-            maxParticipants={subcourse.maxParticipants}
-            participantsCount={subcourse.participantsCount}
-            minGrade={subcourse.minGrade}
-            maxGrade={subcourse.maxGrade}
-            statusText={getTrafficStatusText(subcourse)}
-            isFullHeight
-            showCourseTraffic
-            showStatus={false}
-            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
-            showSchoolclass
-            isOnWaitinglist={subcourse.isOnWaitingList}
-            isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
-        />
+        <div>
+            <AppointmentCard
+                key={index}
+                subcourseId={subcourse.id}
+                description={subcourse.course!.description}
+                tags={subcourse.course!.tags}
+                dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
+                image={subcourse.course!.image ?? undefined}
+                title={subcourse.course!.name}
+                countCourse={subcourse.lectures!.length}
+                maxParticipants={subcourse.maxParticipants}
+                participantsCount={subcourse.participantsCount}
+                minGrade={subcourse.minGrade}
+                maxGrade={subcourse.maxGrade}
+                statusText={getTrafficStatusText(subcourse)}
+                isFullHeight
+                showCourseTraffic
+                showStatus={false}
+                trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+                showSchoolclass
+                isOnWaitinglist={subcourse.isOnWaitingList}
+                isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
+            />
+        </div>
     );
 
     return (

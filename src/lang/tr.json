@@ -1046,6 +1046,46 @@
                     "buttonText": "Tur sonu",
                     "buttonLinkText": "Turu tekrar izleyin"
                 }
+            },
+            "ethics": {
+                "welcome": {
+                    "title": "Etik standartlar",
+                    "content": "Lern-Fair Bu etik kılavuzu, sorumlu davranış için asgari gerekliliklere genel bir bakış sağlar ve öğrencilerle ilgilenirken özeleştirel düşünmeyi teşvik eder. Lütfen aşağıdaki noktaları dikkatle okuyun ve çalışmalarınızda bunları dikkate alın.",
+                    "startTour": "Tura başlayın"
+                },
+                "screen1": {
+                    "title": "Kişilerarası etkileşim",
+                    "header1": "Genel kullanım ve kabul",
+                    "content1": "Lern-Fair 'de güvenilirlik, saygı ve takdir ön plandadır. Yaşı, cinsiyeti, kökeni, kültürü, statüsü, yönelimi, ideolojisi veya dini ne olursa olsun herkes eşit olarak kabul edilir.",
+                    "header2": "Kısıtlama",
+                    "content2": "Farklı siyasi ve dini görüşlere saygı duyuyorum ve öğrencileri belirli bir yönde etkilemekten kaçınıyorum. Aynı zamanda, yasalarımızın ve demokratik değerlerimizin yanındayım ve hoşgörüden yanayım ve ayrımcılığa karşıyım."
+                },
+                "screen2": {
+                    "title": "Güvenlik",
+                    "header1": "Reşit olmayanlarla çalışma",
+                    "content1": "Reşit olmayanların refahı benim en önemli önceliğimdir. Güvenli ve güvenilir bir ortam yaratmak için her zaman mesafeyi korur, kişisel sınırlara ve öğrencilerin mahremiyetine saygı gösteririm. İhmal veya şiddet şüphesi durumunda, web sitemiz danışmanlık hizmetleri sunmaktadır.",
+                    "header2": "Gizlilik ve veri koruma",
+                    "content2": "Tüm veri ve bilgiler gizli tutulmalıdır. Kişisel veriler özel olarak bile aktarılamaz. Erişim verileri ve görüntülü sohbet bağlantıları üçüncü taraflarla paylaşılmaz."
+                },
+                "screen3": {
+                    "title": "Davranışsal kılavuzlar",
+                    "header1": "Öz bakım",
+                    "content1": "İş yükümü gerçekçi bir şekilde değerlendiriyorum ve çok zorlayıcı olması halinde iş yükümü ayarlıyorum. Lern-Fair Ekip beni desteklemek için orada.",
+                    "header2": "Gönüllülük",
+                    "content2": "İşbirliği gönüllülük esasına dayanır ve herhangi bir zamanda sonlandırılabilir, uyarlanabilir veya değiştirilebilir."
+                },
+                "screen4": {
+                    "title": "Pedagojik ve mesleki uzmanlık",
+                    "header1": "Yardımlar",
+                    "content1": "Öğrencileri mümkün olan en iyi şekilde desteklemek için eylemlerimi, mesleki ve medya becerilerimi bilinçli olarak gözden geçiririm. Gerekirse, kullanıcı alanından ipuçları ve pedagojik destek ararım.",
+                    "header2": "Şeffaflık",
+                    "content2": "Desteğimin niteliği ve kapsamı hakkında açık bir şekilde iletişim kurarım. Zaman, teknik veya başka nedenlerle bunu sağlayamayacaksam, öğrencileri zamanında bilgilendiririm."
+                },
+                "screen5": {
+                    "title": "Sorular, şikayetler ve ihlallerle ilgilenmek",
+                    "content1": "Lern-Fair Etik kuralların ihlal edilmesi durumunda alınacak önlemlere e.V. Yönetim Kurulu karar verir. Bazı durumlarda bu, bir gerekçeyle birlikte bildirilecek olan projeden çıkarılma anlamına gelebilir.lern-fair Sorular, şikayetler veya ihlal raporları support@ .de adresine e-posta ile gönderilebilir.",
+                    "checkboxText": "Etik kuralları dikkatlice okudum ve bunlara uymayı kabul ediyorum."
+                }
             }
         },
         "header": "Onboarding turu",
@@ -2133,7 +2173,12 @@
         "certificateOfConduct": "İyi hal belgesi",
         "certificateOfConductWasProvided": "İyi hal belgesi ibraz edilmiştir",
         "certificateOfConductWasNotProvided": "İyi hal belgesi henüz teslim edilmemiştir",
-        "comment": "Yorum"
+        "comment": "Yorum",
+        "errors": {
+            "grade_missing": "Lütfen bir okul sınıfı seçin.",
+            "language_missing": "Lütfen en az 1 dil ekleyin.",
+            "subjects_missing": "Lütfen en az 1 okul dersi ekleyin."
+        }
     },
     "achievement": {
         "empty_state": {
@@ -2449,5 +2494,6 @@
         "thisDevice": "Bu cihaz",
         "unknownDevice": "Bilinmeyen cihaz",
         "deviceOnOs": "üzerinde"
-    }
+    },
+    "changesWereSaved": "Değişiklikler kaydedildi"
 }
