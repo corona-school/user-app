@@ -4,7 +4,7 @@ import { Button } from '../components/Button';
 import { Checkbox } from '../components/Checkbox';
 import { cn } from '../lib/Tailwind';
 
-import { Box, VStack, HStack, Text, Select, TextArea, ScrollView } from 'native-base';
+import { Box, VStack, HStack, Text, Select, TextArea, ScrollView, Pressable, Center } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import { Typography } from '../components/Typography';
 
@@ -101,6 +101,10 @@ const subjects = Object.keys(subjectMapping);
 
 const Lesson: React.FC = () => {
     const { t } = useTranslation();
+
+    const removeFile = (indexToRemove: number) => {
+        setUploadedFiles((files) => files.filter((_, index) => index !== indexToRemove));
+    };
 
     const [generatedPlan, setGeneratedPlan] = useState<LessonPlanOutput | null>(null);
     const [generateLessonPlan, { loading, error }] = useMutation<{ generateLessonPlan: GeneratedLessonPlan }>(GENERATE_LESSON_PLAN_MUTATION);
@@ -391,12 +395,44 @@ ${generatedPlan.resources || 'N/A'}
                                                     borderColor="gray.300"
                                                     borderRadius="lg"
                                                     alignItems="center"
+                                                    justifyContent="space-between"
                                                     space={2}
                                                 >
-                                                    <Text fontSize="xs">{file.name}</Text>
-                                                    <Text fontSize="xs" color="gray.500">
-                                                        {(file.size / (1024 * 1024)).toFixed(2)} MB
-                                                    </Text>
+                                                    <HStack flex={1} space={2} alignItems="center" minW={0} maxW="80%">
+                                                        <Box flexShrink={0}>
+                                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
+                                                                    stroke="#2A4A50"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                />
+                                                                <path
+                                                                    d="M14 2V8H20"
+                                                                    stroke="#2A4A50"
+                                                                    strokeWidth="2"
+                                                                    strokeLinecap="round"
+                                                                    strokeLinejoin="round"
+                                                                />
+                                                            </svg>
+                                                        </Box>
+                                                        <VStack flex={1} space={0.5} minW={0}>
+                                                            <Text fontSize="xs" color="#2A4A50" noOfLines={1} maxW="100%" flexShrink={1}>
+                                                                {file.name}
+                                                            </Text>
+                                                            <Text fontSize="xs" color="gray.500">
+                                                                {(file.size / (1024 * 1024)).toFixed(2)} MB
+                                                            </Text>
+                                                        </VStack>
+                                                    </HStack>
+                                                    <Pressable p={1} minW={0} onPress={() => removeFile(index)} _hover={{ opacity: 0.8 }}>
+                                                        <Center w={8} h={8} bg="#2A4A50" borderRadius="md">
+                                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                                <path d="M1 1L13 13M1 13L13 1" stroke="white" strokeWidth="2" strokeLinecap="round" />
+                                                            </svg>
+                                                        </Center>
+                                                    </Pressable>
                                                 </HStack>
                                             ))}
                                         </VStack>
@@ -457,10 +493,18 @@ ${generatedPlan.resources || 'N/A'}
                                     <Button
                                         variant="secondary"
                                         onClick={handleGenerate}
-                                        disabled={!termsAccepted}
-                                        className={cn('bg-[#F7DB4D] text-[#2A4A50]', !termsAccepted && 'opacity-50 bg-[#E5E7EB] cursor-not-allowed')}
+                                        disabled={!termsAccepted || loading}
+                                        className={cn(
+                                            'bg-[#F7DB4D] text-[#2A4A50] relative',
+                                            (!termsAccepted || loading) && 'opacity-50 bg-[#E5E7EB] cursor-not-allowed'
+                                        )}
                                     >
-                                        Generate Lesson Plan
+                                        {loading && (
+                                            <div className="absolute inset-0 flex items-center justify-center">
+                                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+                                            </div>
+                                        )}
+                                        <span className={loading ? 'invisible' : ''}>Generate Lesson Plan</span>
                                     </Button>
                                 </HStack>
                             </VStack>
