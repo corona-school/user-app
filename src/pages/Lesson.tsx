@@ -3,9 +3,14 @@ import axios from 'axios';
 import { Button } from '../components/Button';
 import { Checkbox } from '../components/Checkbox';
 import { cn } from '../lib/Tailwind';
+import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 
 import { Box, VStack, HStack, Text, Select, TextArea, ScrollView, Pressable, Center } from 'native-base';
+import { useParams } from 'react-router-dom';
+import AsNavigationItem from '../components/AsNavigationItem';
 import WithNavigation from '../components/WithNavigation';
+import NotificationAlert from '../components/notifications/NotificationAlert';
+
 import { Typography } from '../components/Typography';
 
 import { useTranslation } from 'react-i18next';
@@ -141,15 +146,15 @@ const Lesson: React.FC = () => {
     const copyOutputToClipboard = () => {
         if (generatedPlan) {
             const outputText = `
-Lesson Plan: ${generatedPlan.title}
-Grade: ${generatedPlan.grade}
-Subject: ${generatedPlan.subject}
-Duration: ${generatedPlan.duration}
+${t('lesson.lessonPlan')}: ${generatedPlan.title}
+${t('lesson.lessonGrade')}:${generatedPlan.grade}
+${t('lesson.subject')}: ${generatedPlan.subject}
+${t('lesson.duration')}: ${generatedPlan.duration}
 
-Learning Goal:
+${t('lesson.learningGoals')}:
 ${generatedPlan.learningGoals.join('\n')}
 
-Agenda:
+${t('lesson.lessonAgenda')}:
 ${generatedPlan.agenda
     .map(
         (section) => `
@@ -159,13 +164,13 @@ ${section.content.join('\n')}
     )
     .join('\n')}
 
-Assessment:
+${t('lesson.assessment')}: 
 ${generatedPlan.assessment || 'N/A'}
 
-Homework:
+${t('lesson.homework')}: 
 ${generatedPlan.homework || 'N/A'}
 
-Resources:
+${t('lesson.resources')}:
 ${generatedPlan.resources || 'N/A'}
             `.trim();
 
@@ -281,7 +286,7 @@ ${generatedPlan.resources || 'N/A'}
                     agenda: data.generateLessonPlan.agendaExercises
                         ? [
                               {
-                                  title: 'Lesson Agenda',
+                                  title: t('lesson.lessonAgenda') as string,
                                   content: [data.generateLessonPlan.agendaExercises],
                               },
                           ]
@@ -300,7 +305,14 @@ ${generatedPlan.resources || 'N/A'}
     };
 
     return (
-        <WithNavigation>
+        <WithNavigation
+            headerLeft={
+                <div className="flex">
+                    <NotificationAlert />
+                    <SwitchLanguageButton />
+                </div>
+            }
+        >
             <Box position="relative" minH="100vh">
                 <ScrollView>
                     <HStack maxW="1200px" mx="auto" p={4} space={8} alignItems="flex-start">
@@ -309,10 +321,10 @@ ${generatedPlan.resources || 'N/A'}
                             {/* Header */}
                             <Box mb={5}>
                                 <Text fontSize="39px" fontWeight="bold" color="#2a4a50" fontFamily="Outfit">
-                                    Lesson Plan Generator
+                                    {t('lesson.pageTitle')}
                                 </Text>
                                 <Text fontSize="16px" color="gray.700" fontFamily="Outfit">
-                                    Generate a lesson plan to teach your students
+                                    {t('lesson.generatePlanText')}
                                 </Text>
                             </Box>
 
@@ -325,7 +337,7 @@ ${generatedPlan.resources || 'N/A'}
                                         marginRight: 8,
                                     }}
                                 ></INFOICON>
-                                Try Example
+                                {t('lesson.tryExample')}
                             </Button>
 
                             {/* Form */}
@@ -333,10 +345,11 @@ ${generatedPlan.resources || 'N/A'}
                                 {/* Subject Selection */}
                                 <Box>
                                     <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                        Fach auswählen<Text color="red.500">*</Text>
+                                        {t('lesson.chooseSubject')}
+                                        <Text color="red.500">*</Text>
                                     </Text>
                                     <Select
-                                        placeholder="Wählen Sie ein Fach"
+                                        placeholder={t('lesson.chooseSubject')}
                                         borderColor="gray.300"
                                         selectedValue={selectedSubject}
                                         onValueChange={(value) => setSelectedSubject(value)}
@@ -350,11 +363,11 @@ ${generatedPlan.resources || 'N/A'}
                                 {/* Prompt */}
                                 <Box>
                                     <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                        Prompt
+                                        {t('lesson.prompt') as string}
                                     </Text>
                                     <TextArea
                                         h={32}
-                                        placeholder="Beschreiben Sie Ihre Unterrichtsstunde mit mehr Kontext für die KI"
+                                        placeholder={t('lesson.placeholderDescription') as string}
                                         borderColor="gray.300"
                                         autoCompleteType={undefined}
                                         value={prompt}
@@ -367,15 +380,15 @@ ${generatedPlan.resources || 'N/A'}
                                     {/* Upload Area */}
                                     <Box flex={1}>
                                         <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                            Knowledge (optional)
+                                            {t('lesson.knowdlegeButton') as string}
                                         </Text>
                                         <VStack space={2} p={4} borderWidth={1} borderColor="gray.300" borderRadius="md" alignItems="center">
                                             <Text color="gray.400" fontSize="sm">
-                                                Upload documents here
+                                                {t('lesson.uploadHere') as string}
                                             </Text>
 
                                             <Button variant="default" onClick={() => document.getElementById('file-upload')?.click()}>
-                                                Browse
+                                                {t('lesson.browseButton') as string}
                                             </Button>
                                             <input id="file-upload" type="file" hidden multiple onChange={handleFileChange} />
                                         </VStack>
@@ -384,7 +397,7 @@ ${generatedPlan.resources || 'N/A'}
                                     {/* Uploaded Files */}
                                     <Box flex={1} mt={4}>
                                         <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                            Uploaded Files (Max 3)
+                                            {t('lesson.uploadedFiles') as string}
                                         </Text>
                                         <VStack space={2}>
                                             {uploadedFiles.map((file, index) => (
@@ -456,7 +469,7 @@ ${generatedPlan.resources || 'N/A'}
                                                 htmlFor="terms"
                                                 className="flex text-[14px] font-medium font-outfit text-[#2A4A50] leading-[14px] cursor-pointer"
                                             >
-                                                Accept Terms and Conditions
+                                                {t('lesson.acceptTermsCheckbox') as string}
                                                 <span className="text-[#D41212]">*</span>
                                             </label>
                                             <Text
@@ -471,9 +484,7 @@ ${generatedPlan.resources || 'N/A'}
                                                     maxWidth: '100%',
                                                 }}
                                             >
-                                                I have not entered any personal data in the text field and I am aware that Open AI may use it without European
-                                                data protection standards. If someone asserts claims against Lern-Fair because I have no rights to the uploaded
-                                                documents, I undertake to indemnify Lern-Fair.
+                                                {t('lesson.acceptTCText') as string}
                                             </Text>
                                         </VStack>
                                     </HStack>
@@ -488,7 +499,7 @@ ${generatedPlan.resources || 'N/A'}
                                 {/* Generate Button */}
                                 <HStack space="4" justifyContent="flex-end">
                                     <Button variant="outline" onClick={resetForm}>
-                                        Reset
+                                        {t('lesson.resetLesson') as string}
                                     </Button>
                                     <Button
                                         variant="secondary"
@@ -517,16 +528,16 @@ ${generatedPlan.resources || 'N/A'}
                                     {/* Title and Details */}
                                     <VStack space={2} alignItems="flex-start">
                                         <Typography variant="h4" className="text-[#0F172A] font-normal">
-                                            Lesson Plan: {generatedPlan.title || ''}
+                                            {t('lesson.lessonPlan') as string} {generatedPlan.title || ''}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
-                                            Grade: {generatedPlan.grade || ''}
+                                            {t('lesson.lessonGrade') as string} {generatedPlan.grade || ''}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
-                                            Subject: {generatedPlan.subject || ''}
+                                            {t('lesson.subject') as string} {generatedPlan.subject || ''}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
-                                            Duration: {generatedPlan.duration || ''}
+                                            {t('lesson.duration') as string} {generatedPlan.duration || ''}
                                         </Typography>
                                     </VStack>
 
@@ -536,7 +547,7 @@ ${generatedPlan.resources || 'N/A'}
                                     {/* Learning Goals */}
                                     <VStack space={2} alignItems="flex-start" width="100%">
                                         <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
-                                            Learning Goal:
+                                            {t('lesson.learningGoals') as string}
                                         </Typography>
                                         {generatedPlan.learningGoals.map((goal, index) => renderTextWithLineBreaks(goal))}
                                     </VStack>
@@ -563,7 +574,7 @@ ${generatedPlan.resources || 'N/A'}
                                             <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
                                             <VStack space={2} alignItems="flex-start" width="100%">
                                                 <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
-                                                    Assessment:
+                                                    {t('lesson.assessment') as string}
                                                 </Typography>
                                                 {renderTextWithLineBreaks(generatedPlan.assessment)}
                                             </VStack>
@@ -576,7 +587,7 @@ ${generatedPlan.resources || 'N/A'}
                                             <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
                                             <VStack space={2} alignItems="flex-start" width="100%">
                                                 <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
-                                                    Homework:
+                                                    {t('lesson.homework') as string}
                                                 </Typography>
                                                 {renderTextWithLineBreaks(generatedPlan.homework)}
                                             </VStack>
@@ -589,7 +600,7 @@ ${generatedPlan.resources || 'N/A'}
                                             <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
                                             <VStack space={2} alignItems="flex-start" width="100%">
                                                 <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
-                                                    Resources:
+                                                    {t('lesson.resources') as string}{' '}
                                                 </Typography>
                                                 {renderTextWithLineBreaks(generatedPlan.resources)}
                                             </VStack>
@@ -606,7 +617,7 @@ ${generatedPlan.resources || 'N/A'}
                                                 className="bg-[#F7DB4D] hover:bg-[#F7DB4D] text-[#2A4A50]"
                                                 onClick={copyOutputToClipboard}
                                             >
-                                                Copy Output
+                                                {t('lesson.copyButton') as string}
                                             </Button>
                                         )}
                                     </VStack>
