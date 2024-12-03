@@ -143,6 +143,15 @@ const Lesson: React.FC = () => {
         }
     };
 
+    const examplePrompt =
+        'Erstelle einen kreativen Unterrichtsplan auf Deutsch zum Thema Sonnensystem und Planeten. Nutze eine ansprechende und kreative Sprache, die die Schüler motiviert.';
+
+    const handleTryExample = () => {
+        setPrompt(examplePrompt);
+        setSelectedSubject('Physik');
+        setGeneratedPlan(exampleOutput);
+    };
+
     const copyOutputToClipboard = () => {
         if (generatedPlan) {
             const outputText = `
@@ -195,32 +204,58 @@ ${generatedPlan.resources || 'N/A'}
     };
 
     const exampleOutput: LessonPlanOutput = {
-        title: 'Exploring the Solar System',
-        grade: '6th Grade',
-        subject: 'Science',
-        duration: '30 Mins',
+        title: 'Reise durch das Sonnensystem',
+        grade: '10. Klasse',
+        subject: 'Physik',
+        duration: '60 Minuten',
         learningGoals: [
-            'Identify the planets in the solar system and their order from the Sun.',
-            'Describe key features of each planet.',
-            'Understand the concept of orbits and how planets revolve around the Sun.',
-            'Differentiate between inner and outer planets.',
+            'Die Schüler können die Struktur und die Hauptmerkmale des Sonnensystems beschreiben.',
+            'Sie erkennen die Unterschiede zwischen inneren und äußeren Planeten.',
+            'Sie verstehen die Bedeutung von Umlaufbahnen und deren Einfluss auf die Planetenbewegung.',
         ],
         agenda: [
             {
-                title: 'Introduction (10 minutes)',
+                title: 'Mission-Start: Einführung (10 Minuten)',
                 content: [
-                    'Ask the students: "When you look up at the sky at night, what do you see?" Write down answers (e.g., stars, planets, the moon).',
-                    'Transition by saying: "Today, we\'re going to learn about our amazing solar system and all the planets in it."',
+                    'Begrüßung der Klasse mit der Frage: "Wenn ihr Astronauten wärt, welches Ziel würdet ihr im Sonnensystem zuerst ansteuern?"',
+                    'Kurze Diskussion darüber, was die Schüler bereits über das Sonnensystem wissen.',
+                    'Einführung in das Thema mit einem kurzen Video oder einer Animation des Sonnensystems.',
                 ],
             },
             {
-                title: 'Presentation (15 minutes)',
-                content: ['Share a slide presentation or images of each planet, explaining key facts:'],
+                title: 'Forschungsteam: Gruppenarbeit (20 Minuten)',
+                content: [
+                    'Die Klasse wird in kleine Teams aufgeteilt, jedes Team erhält einen Planeten (inkl. Sonne und Zwergplaneten).',
+                    'Aufgabe: Recherchiert in euren Teams die wichtigsten Eigenschaften eures Planeten (z. B. Größe, Entfernung zur Sonne, Atmosphäre, besondere Merkmale).',
+                    'Die Teams erstellen eine kurze Präsentation (z. B. ein Poster oder eine digitale Folie).',
+                ],
+            },
+            {
+                title: 'Wissenschaftskongress: Präsentation (15 Minuten)',
+                content: [
+                    'Jedes Team präsentiert ihren Planeten als Teil einer gemeinsamen "Reise durch das Sonnensystem".',
+                    'Die Schüler sollen besonders darauf achten, wie sich ihr Planet von den anderen unterscheidet.',
+                ],
+            },
+            {
+                title: 'Kosmische Diskussion (10 Minuten)',
+                content: [
+                    'Offene Diskussion über die größten Unterschiede und Gemeinsamkeiten der Planeten.',
+                    'Fragen wie: "Warum gibt es Leben auf der Erde, aber nicht auf anderen Planeten?"',
+                ],
+            },
+            {
+                title: 'Landung: Zusammenfassung (5 Minuten)',
+                content: [
+                    'Gemeinsame Reflexion: Was hat euch überrascht oder am meisten interessiert?',
+                    'Zusammenfassung der wichtigsten Punkte und Verabschiedung mit einem kurzen Ausblick auf das nächste Thema.',
+                ],
             },
         ],
-        assessment: 'Students will complete a quiz identifying planets and their characteristics.',
-        homework: 'Create a model of the solar system using household materials.',
-        resources: 'Astronomy textbook, solar system poster, online planetary database',
+        assessment: 'Die Schüler werden anhand ihrer Teampräsentationen und ihrer aktiven Teilnahme an der Diskussion bewertet.',
+        homework:
+            'Schreibt einen kreativen Reisebericht: Stellt euch vor, ihr besucht den Planeten, den ihr erforscht habt. Beschreibt, was ihr dort seht und erlebt.',
+        resources: 'Digitale Animation des Sonnensystems, Arbeitsblätter für Planetenrecherche, Zugang zu Tablets oder Büchern zur Recherche',
     };
 
     const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -329,7 +364,7 @@ ${generatedPlan.resources || 'N/A'}
                             </Box>
 
                             {/* Try Example Button */}
-                            <Button variant="default" className="text-white font-medium mb-6" onClick={() => setGeneratedPlan(exampleOutput)}>
+                            <Button variant="default" className="text-white font-medium mb-6" onClick={handleTryExample}>
                                 <INFOICON
                                     style={{
                                         width: 16,
@@ -515,7 +550,7 @@ ${generatedPlan.resources || 'N/A'}
                                                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
                                             </div>
                                         )}
-                                        <span className={loading ? 'invisible' : ''}>Generate Lesson Plan</span>
+                                        <span className={loading ? 'invisible' : ''}> {t('lesson.generatePlan') as string}n</span>
                                     </Button>
                                 </HStack>
                             </VStack>
@@ -612,9 +647,9 @@ ${generatedPlan.resources || 'N/A'}
                                     <VStack alignItems="stretch" style={{ width: '100%', alignItems: 'flex-end' }}>
                                         {generatedPlan && (
                                             <Button
-                                                variant="default"
+                                                variant="secondary"
                                                 size="default"
-                                                className="bg-[#F7DB4D] hover:bg-[#F7DB4D] text-[#2A4A50]"
+                                                className={cn('bg-[#F7DB4D] text-[#2A4A50] relative')}
                                                 onClick={copyOutputToClipboard}
                                             >
                                                 {t('lesson.copyButton') as string}
