@@ -443,17 +443,17 @@ export function ScreenPupilCard({ pupil, refresh }: { pupil: PupilForScreening; 
         if (!needsScreening) {
             return { can: false, reason: `${pupil.firstname} ${pupil.lastname} wurde bereits gescreent` };
         }
-        if (languageError) {
-            return { can: false, reason: languageError };
-        }
+        // if (languageError) {
+        //     return { can: false, reason: languageError };
+        // }
 
-        if (gradeError) {
-            return { can: false, reason: gradeError };
-        }
+        // if (gradeError) {
+        //     return { can: false, reason: gradeError };
+        // }
 
-        if (subjectError) {
-            return { can: false, reason: subjectError };
-        }
+        // if (subjectError) {
+        //     return { can: false, reason: subjectError };
+        // }
         return { can: true, reason: '' };
     };
 
