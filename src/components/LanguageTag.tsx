@@ -14,7 +14,7 @@ export function LanguageTag({ language, onPress }: { language: string; onPress?:
             onPress={() => {
                 onPress && onPress(language);
             }}
-            iconPath={`languages/icon_${language.toLowerCase()}.svg`}
+            icon={language.toLowerCase()}
             text={t(`lernfair.languages.${language.toLowerCase()}` as unknown as TemplateStringsArray)}
         />
     );

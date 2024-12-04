@@ -1,6 +1,6 @@
 import { Modal, ModalHeader, ModalTitle } from '@/components/Modal';
 import { Toggle } from '@/components/Toggle';
-import { switchLanguage, languageList, languageIcons } from '../I18n';
+import { switchLanguage, languageListSelectionModal, languageIcons } from '../I18n';
 
 type Props = {
     isOpen: boolean;
@@ -15,7 +15,7 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onIsOpenChange })
                 <ModalTitle>Sprache wechseln / Choose language</ModalTitle>
             </ModalHeader>
             <div className="flex flex-col py-4 gap-y-4">
-                {languageList.map((button, i) => {
+                {languageListSelectionModal.map((button, i) => {
                     const Icon = languageIcons[button.short as keyof typeof languageIcons];
 
                     return (
