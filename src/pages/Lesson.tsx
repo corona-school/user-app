@@ -12,10 +12,11 @@ import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
 import { Typography } from '../components/Typography';
+import { TooltipButton } from '../components/Tooltip';
 
 import { useTranslation } from 'react-i18next';
 import INFOICON from '../assets/icons/lernfair/lesson/info_icon.svg';
-
+import InfoGreen from '../assets/icons/icon_info_dk_green.svg';
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
@@ -106,6 +107,23 @@ const subjects = Object.keys(subjectMapping);
 
 const Lesson: React.FC = () => {
     const { t } = useTranslation();
+
+    const [selectedGrade, setSelectedGrade] = useState('13');
+    const [selectedDuration, setSelectedDuration] = useState('60');
+
+    // Grade options
+    const gradeOptions = Array.from({ length: 13 }, (_, i) => ({
+        value: String(i + 1),
+        label: `${i + 1}. Klasse`,
+    }));
+
+    // Duration options in minutes
+    const durationOptions = [
+        { value: '30', label: '30 Minuten' },
+        { value: '45', label: '45 Minuten' },
+        { value: '60', label: '60 Minuten' },
+        { value: '90', label: '90 Minuten' },
+    ];
 
     const removeFile = (indexToRemove: number) => {
         setUploadedFiles((files) => files.filter((_, index) => index !== indexToRemove));
@@ -299,9 +317,9 @@ ${generatedPlan.resources || 'N/A'}
                 variables: {
                     data: {
                         fileUuids: fileUuids,
-                        grade: 10, // Default grade, could be made dynamic
-                        duration: 60, // Default duration, could be made dynamic
-                        state: 'he', // Default state
+                        grade: parseInt(selectedGrade), // Use selected grade
+                        duration: parseInt(selectedDuration), // Use selected duration
+                        state: 'he',
                         prompt: prompt || `Erstelle einen Unterrichtsplan für das Thema ${selectedSubject}`,
                         expectedOutputs: ['AGENDA_EXERCISES', 'ASSESSMENT', 'HOMEWORK', 'LEARNING_GOAL', 'RESOURCES', 'TITLE'],
                         schoolType: 'gymnasium',
@@ -314,9 +332,9 @@ ${generatedPlan.resources || 'N/A'}
             if (data?.generateLessonPlan) {
                 const transformedPlan: LessonPlanOutput = {
                     title: data.generateLessonPlan.title || '',
-                    grade: data.generateLessonPlan.grade || '',
+                    grade: `${selectedGrade}. Klasse`,
                     subject: data.generateLessonPlan.subject || '',
-                    duration: data.generateLessonPlan.duration || '',
+                    duration: `${selectedDuration} Minuten`,
                     learningGoals: data.generateLessonPlan.learningGoal ? [data.generateLessonPlan.learningGoal] : [],
                     agenda: data.generateLessonPlan.agendaExercises
                         ? [
@@ -335,7 +353,6 @@ ${generatedPlan.resources || 'N/A'}
             }
         } catch (error) {
             console.error('Error generating lesson plan:', error);
-            // Optionally, show an error message to the user
         }
     };
 
@@ -395,7 +412,45 @@ ${generatedPlan.resources || 'N/A'}
                                     </Select>
                                 </Box>
 
-                                {/* Prompt */}
+                                {/* Grade and Duration Selection side by side */}
+                                <HStack space={4} w="100%">
+                                    {/* Grade Selection */}
+                                    <Box flex={1}>
+                                        <Text fontSize="sm" color="#2a4a50" mb={1}>
+                                            {t('lesson.lessonGrade')}
+                                            <Text color="red.500">*</Text>
+                                        </Text>
+                                        <Select
+                                            placeholder={t('lesson.chooseGrade')}
+                                            borderColor="gray.300"
+                                            selectedValue={selectedGrade}
+                                            onValueChange={(value) => setSelectedGrade(value)}
+                                        >
+                                            {gradeOptions.map((grade) => (
+                                                <Select.Item key={grade.value} label={grade.label} value={grade.value} />
+                                            ))}
+                                        </Select>
+                                    </Box>
+
+                                    {/* Duration Selection */}
+                                    <Box flex={1}>
+                                        <Text fontSize="sm" color="#2a4a50" mb={1}>
+                                            {t('lesson.duration')}
+                                            <Text color="red.500">*</Text>
+                                        </Text>
+                                        <Select
+                                            placeholder={t('lesson.chooseDuration')}
+                                            borderColor="gray.300"
+                                            selectedValue={selectedDuration}
+                                            onValueChange={(value) => setSelectedDuration(value)}
+                                        >
+                                            {durationOptions.map((duration) => (
+                                                <Select.Item key={duration.value} label={duration.label} value={duration.value} />
+                                            ))}
+                                        </Select>
+                                    </Box>
+                                </HStack>
+
                                 <Box>
                                     <Text fontSize="sm" color="#2a4a50" mb={1}>
                                         {t('lesson.prompt') as string}
@@ -414,9 +469,22 @@ ${generatedPlan.resources || 'N/A'}
                                 <HStack space={4} alignItems="flex-start">
                                     {/* Upload Area */}
                                     <Box flex={1}>
-                                        <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                            {t('lesson.knowdlegeButton') as string}
-                                        </Text>
+                                        <HStack alignItems="center" space={2} mb={1}>
+                                            <Text fontSize="sm" color="#2a4a50">
+                                                {t('lesson.knowdlegeButton') as string}
+                                            </Text>
+                                            <TooltipButton tooltipContent={t('lesson.fileUploadTooltip')}>
+                                                <InfoGreen
+                                                    style={{
+                                                        width: 12,
+                                                        height: 12,
+                                                        position: 'relative',
+
+                                                        color: '#D41212',
+                                                    }}
+                                                />
+                                            </TooltipButton>
+                                        </HStack>
                                         <VStack space={2} p={4} borderWidth={1} borderColor="gray.300" borderRadius="md" alignItems="center">
                                             <Text color="gray.400" fontSize="sm">
                                                 {t('lesson.uploadHere') as string}
@@ -569,7 +637,7 @@ ${generatedPlan.resources || 'N/A'}
                                             {t('lesson.lessonGrade') as string} {generatedPlan.grade || ''}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
-                                            {t('lesson.subject') as string} {generatedPlan.subject || ''}
+                                            {t('lesson.subject') as string} {subjectMapping[generatedPlan.subject] || generatedPlan.subject}
                                         </Typography>
                                         <Typography variant="h6" className="text-[#0F172A] font-normal">
                                             {t('lesson.duration') as string} {generatedPlan.duration || ''}

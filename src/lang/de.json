@@ -2418,6 +2418,8 @@
         "duration": "Dauer:",
         "placeholderDescription": "Beschreiben Sie Ihre Unterrichtsstunde mit mehr Kontext für die KI",
         "chooseSubject": "Fach auswählen",
+        "chooseGrade": "Klasse auswählen",
+        "chooseDuration": "Dauer auswählen",
         "lessonTitle": "Titel der Lektion",
         "lessonPlan": "Unterrichtsplan:",
         "lessonAgenda": "Unterrichtsagenda",
@@ -2435,7 +2437,8 @@
         "resetLesson": "Zurücksetzen",
         "generatePlan": "Plan erstellen",
         "acceptTermsCheckbox": "Allgemeine Geschäftsbedingungen akzeptieren:",
-        "acceptTCText": "Ich habe keine persönlichen Daten in das Textfeld eingegeben und bin mir bewusst, dass Open AI diese ohne europäische Datenschutzstandards verwenden darf. Sollte jemand Ansprüche gegen Lern-Fair geltend machen, weil ich keine Rechte an den hochgeladenen Dokumenten habe, verpflichte ich mich, Lern-Fair schadlos zu halten."
+        "acceptTCText": "Ich habe keine persönlichen Daten in das Textfeld eingegeben und bin mir bewusst, dass Open AI diese ohne europäische Datenschutzstandards verwenden darf. Sollte jemand Ansprüche gegen Lern-Fair geltend machen, weil ich keine Rechte an den hochgeladenen Dokumenten habe, verpflichte ich mich, Lern-Fair schadlos zu halten.",
+        "fileUploadTooltip": "Verbessern Sie die KI-Ausgabe, indem Sie hier zusätzliche Dateien hochladen"
     },
     "logout": "Abmelden",
     "installation": {
