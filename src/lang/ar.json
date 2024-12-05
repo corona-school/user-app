@@ -696,7 +696,8 @@
             "description": "وصف",
             "lessons": "الدروس",
             "waitinglist": "قائمة الانتظار",
-            "participant": "المشاركون"
+            "participant": "المشاركون",
+            "prospectParticipants": "المهتمون"
         },
         "courseInfo": {
             "grade": "درجة: ",
@@ -818,8 +819,8 @@
         "joinPupilModal": {
             "header": "التلاميذ يتحركون للأعلى",
             "add": "جمع",
-            "amount": "عدد التلاميذ",
-            "success": "تمت إضافة الطلاب بنجاح",
+            "amount": "الكمية تلاميذ",
+            "success": "تلاميذ تمت الإضافة بنجاح",
             "error": "تلاميذ لا يمكن إضافتها"
         },
         "removeParticipantFromCourseModal": {
@@ -829,7 +830,13 @@
             "error": "الطالب: في لا يمكن إزالتها"
         },
         "removeFromCourse": "الإزالة من المقرر الدراسي",
-        "addToCourse": "إضافة إلى المقرر الدراسي"
+        "addToCourse": "إضافة إلى المقرر الدراسي",
+        "prospectList": {
+            "toast": "تمت إضافة الطالب إلى المقرر الدراسي.",
+            "error": "غير قادر على إضافة طالب.",
+            "noProspects": "لا توجد أطراف مهتمة تواصلت معك عبر الدردشة.",
+            "description": "هنا يمكنك الاطلاع على الأطراف المهتمة التي تواصلت معك عبر الدردشة."
+        }
     },
     "settings": {
         "general": {
