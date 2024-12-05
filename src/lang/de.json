@@ -2409,13 +2409,13 @@
         "screenshotShouldNotBeBiggerThan": "Der Screenshot kann nicht größer als {{size}} MB sein"
     },
     "lesson": {
-        "pageTitle": "Unterrichtsplannen mit KI",
+        "pageTitle": "Unterrichtsplanung mit KI",
         "generatePlanText": "Erstellen Sie einen Unterrichtsplan, um Ihre Schüler zu unterrichten.",
         "generatePlanButton": "Unterrichtsplan erstellen",
-        "lessonGrade": "Klasse",
-        "subject":"Fach",
-        "prompt":"Prompt Eingabe",
-        "duration": "Dauer",
+        "lessonGrade": "Klasse:",
+        "subject": "Fach:",
+        "prompt": "Prompt Eingabe",
+        "duration": "Dauer:",
         "placeholderDescription": "Beschreiben Sie Ihre Unterrichtsstunde mit mehr Kontext für die KI",
         "chooseSubject": "Fach auswählen",
         "lessonTitle": "Titel der Lektion",

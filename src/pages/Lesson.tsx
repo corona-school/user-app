@@ -155,19 +155,19 @@ const Lesson: React.FC = () => {
     const copyOutputToClipboard = () => {
         if (generatedPlan) {
             const outputText = `
-${t('lesson.lessonPlan')}: ${generatedPlan.title}
-${t('lesson.lessonGrade')}:${generatedPlan.grade}
-${t('lesson.subject')}: ${generatedPlan.subject}
-${t('lesson.duration')}: ${generatedPlan.duration}
+${t('lesson.lessonPlan')} ${generatedPlan.title}
+${t('lesson.lessonGrade')} ${generatedPlan.grade}
+${t('lesson.subject')} ${generatedPlan.subject}
+${t('lesson.duration')} ${generatedPlan.duration}
 
 ${t('lesson.learningGoals')}:
 ${generatedPlan.learningGoals.join('\n')}
 
-${t('lesson.lessonAgenda')}:
+
 ${generatedPlan.agenda
     .map(
         (section) => `
-${section.title}
+${section.title}:
 ${section.content.join('\n')}
 `
     )
@@ -550,7 +550,7 @@ ${generatedPlan.resources || 'N/A'}
                                                 <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
                                             </div>
                                         )}
-                                        <span className={loading ? 'invisible' : ''}> {t('lesson.generatePlan') as string}n</span>
+                                        <span className={loading ? 'invisible' : ''}>{t('lesson.generatePlanButton') as string}</span>
                                     </Button>
                                 </HStack>
                             </VStack>
