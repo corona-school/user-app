@@ -7,12 +7,13 @@ type Props = {
     title: string;
     content?: string;
     contentEnd?: string;
-    image: string;
+    image?: string;
     isBigger?: boolean;
+    alternativeContent?: JSX.Element;
 };
 
-const OnboardingView: React.FC<Props> = ({ title, content, contentEnd, image, isBigger = false }) => {
-    const { space, sizes } = useTheme();
+const OnboardingView: React.FC<Props> = ({ title, content, contentEnd, image, isBigger = false, alternativeContent }) => {
+    const { space } = useTheme();
     const { currentIndex, setCurrentIndex, itemCount } = useContext(ViewPagerContext);
 
     const contentWidth = useBreakpointValue({
@@ -52,7 +53,7 @@ const OnboardingView: React.FC<Props> = ({ title, content, contentEnd, image, is
                     </Row>
                 </View>
             </Box>
-            {image && (
+            {image ? (
                 <Box justifyContent="center" flex="1">
                     <Box justifyContent="center">
                         <Image
@@ -74,7 +75,10 @@ const OnboardingView: React.FC<Props> = ({ title, content, contentEnd, image, is
                         ))}
                     </Row>
                 </Box>
+            ) : (
+                <></>
             )}
+            {alternativeContent ?? <></>}
         </View>
     );
 };

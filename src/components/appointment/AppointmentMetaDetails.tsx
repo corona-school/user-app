@@ -70,6 +70,13 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
+
+    const lectureDetailWidth = useBreakpointValue({
+        base: '100%',
+        lg: '40%',
+        xl: '45%',
+    });
+
     useInterval(() => {
         setCurrentTime(new Date().getTime());
     }, 30_000);
@@ -108,8 +115,8 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
             </Modal>
 
             <HStack alignItems={'flex-start'} space={4} flexWrap="wrap" mt="-20px" flexShrink={1}>
-                <VStack alignItems={'flex-start'} mt="20px" flexShrink={1}>
-                    <Stack space={isMobile ? 5 : 7} alignItems="flex-start" flexWrap={'wrap'} flexShrink={1} direction={isMobile ? 'column' : 'row'} mt="-10px">
+                <VStack alignItems={'flex-start'} mt="20px" flexShrink={1} width={lectureDetailWidth}>
+                    <Stack space={isMobile ? 5 : 7} alignItems="flex-start" flexWrap={'wrap'} flexShrink={1} direction={'column'} mt="-10px">
                         <HStack space={2} alignItems="center">
                             <DateIcon />
                             <Text fontWeight="normal">{date}</Text>

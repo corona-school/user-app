@@ -306,9 +306,9 @@
                     "max-dissolved-matches": "Bir öğrenim çifti talep edemezsiniz çünkü zaten çok fazla öğrenim çiftiniz olmuştur.",
                     "not-tutee": "Öğrenme desteği için kayıtlı olmadığınız için bir öğrenme çifti talep edemezsiniz.",
                     "max-requests": "Zaten bekleme listesindesiniz.",
-                    "max-matches": "Yüksek talep nedeniyle, aynı anda yalnızca bir öğrenim ortağınız olabilir. Öğrenim ortağınızla artık çalışmıyorsanız lütfen bağlantıyı iptal edin.",
                     "deactivated": "Bire bir öğrenme desteği için kayıtlar yoğun talep nedeniyle geçici olarak kapatılmıştır. Öğrenme desteği için daha önce talepte bulunduysanız, sonraki adımları görüşmek üzere yakın gelecekte sizinle e-posta yoluyla iletişime geçeceğiz. Bu arada, lütfen diğer tekliflerimizden yararlanmaktan çekinmeyin. ",
-                    "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır."
+                    "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır.",
+                    "max-matches": "Şu anda aynı anda en fazla 2 öğrenim ortağınız olabilir. Artık tüm öğrenim ortaklarıyla aktif olarak çalışmıyorsanız, en iyisi öğrenim çiftini feshetmektir."
                 }
             }
         },
@@ -1039,6 +1039,46 @@
                     "buttonText": "Tur sonu",
                     "buttonLinkText": "Turu tekrar izleyin"
                 }
+            },
+            "ethics": {
+                "welcome": {
+                    "title": "Etik standartlar",
+                    "content": "Lern-Fair Bu etik kılavuzu, sorumlu davranış için asgari gerekliliklere genel bir bakış sağlar ve öğrencilerle ilgilenirken özeleştirel düşünmeyi teşvik eder. Lütfen aşağıdaki noktaları dikkatle okuyun ve çalışmalarınızda bunları dikkate alın.",
+                    "startTour": "Tura başlayın"
+                },
+                "screen1": {
+                    "title": "Kişilerarası etkileşim",
+                    "header1": "Genel kullanım ve kabul",
+                    "content1": "Lern-Fair 'de güvenilirlik, saygı ve takdir ön plandadır. Yaşı, cinsiyeti, kökeni, kültürü, statüsü, yönelimi, ideolojisi veya dini ne olursa olsun herkes eşit olarak kabul edilir.",
+                    "header2": "Kısıtlama",
+                    "content2": "Farklı siyasi ve dini görüşlere saygı duyuyorum ve öğrencileri belirli bir yönde etkilemekten kaçınıyorum. Aynı zamanda, yasalarımızın ve demokratik değerlerimizin yanındayım ve hoşgörüden yanayım ve ayrımcılığa karşıyım."
+                },
+                "screen2": {
+                    "title": "Güvenlik",
+                    "header1": "Reşit olmayanlarla çalışma",
+                    "content1": "Reşit olmayanların refahı benim en önemli önceliğimdir. Güvenli ve güvenilir bir ortam yaratmak için her zaman mesafeyi korur, kişisel sınırlara ve öğrencilerin mahremiyetine saygı gösteririm. İhmal veya şiddet şüphesi durumunda, web sitemiz danışmanlık hizmetleri sunmaktadır.",
+                    "header2": "Gizlilik ve veri koruma",
+                    "content2": "Tüm veri ve bilgiler gizli tutulmalıdır. Kişisel veriler özel olarak bile aktarılamaz. Erişim verileri ve görüntülü sohbet bağlantıları üçüncü taraflarla paylaşılmaz."
+                },
+                "screen3": {
+                    "title": "Davranışsal kılavuzlar",
+                    "header1": "Öz bakım",
+                    "content1": "İş yükümü gerçekçi bir şekilde değerlendiriyorum ve çok zorlayıcı olması halinde iş yükümü ayarlıyorum. Lern-Fair Ekip beni desteklemek için orada.",
+                    "header2": "Gönüllülük",
+                    "content2": "İşbirliği gönüllülük esasına dayanır ve herhangi bir zamanda sonlandırılabilir, uyarlanabilir veya değiştirilebilir."
+                },
+                "screen4": {
+                    "title": "Pedagojik ve mesleki uzmanlık",
+                    "header1": "Yardımlar",
+                    "content1": "Öğrencileri mümkün olan en iyi şekilde desteklemek için eylemlerimi, mesleki ve medya becerilerimi bilinçli olarak gözden geçiririm. Gerekirse, kullanıcı alanından ipuçları ve pedagojik destek ararım.",
+                    "header2": "Şeffaflık",
+                    "content2": "Desteğimin niteliği ve kapsamı hakkında açık bir şekilde iletişim kurarım. Zaman, teknik veya başka nedenlerle bunu sağlayamayacaksam, öğrencileri zamanında bilgilendiririm."
+                },
+                "screen5": {
+                    "title": "Sorular, şikayetler ve ihlallerle ilgilenmek",
+                    "content1": "Lern-Fair Etik kuralların ihlal edilmesi durumunda alınacak önlemlere e.V. Yönetim Kurulu karar verir. Bazı durumlarda bu, bir gerekçeyle birlikte bildirilecek olan projeden çıkarılma anlamına gelebilir.lern-fair Sorular, şikayetler veya ihlal raporları support@ .de adresine e-posta ile gönderilebilir.",
+                    "checkboxText": "Etik kuralları dikkatlice okudum ve bunlara uymayı kabul ediyorum."
+                }
             }
         },
         "header": "Onboarding turu",
@@ -1121,127 +1161,93 @@
     },
     "helperwizard": {
         "verifizierung": {
-            "buttons": [
-                "E-postayı yeniden gönder"
-            ],
+            "buttons": ["E-postayı yeniden gönder"],
             "subtitle": "Doğrulama",
             "title": "E-posta adresinizi doğrulayın",
             "content": "Lern-Fair \"de başlayabilmeniz için önce e-posta adresinizi onaylamanız gerekir. Size {{date}} tarihinde {{email}} adresine bir e-posta gönderdik. Bizden bir e-posta almadınız mı?\""
         },
         "passwort": {
-            "buttons": [
-                "Şifre ayarlama"
-            ],
+            "buttons": ["Şifre ayarlama"],
             "subtitle": "şifre",
             "title": "Şifre ayarlama",
             "content": "Sonunda zamanı geldi, giriş sistemimizi değiştiriyoruz! Lern-Fair Artık hesabınız için bir şifre atayabilir ve gelecekte giriş yapmak için bu şifreyi kullanabilirsiniz."
         },
         "willkommen": {
-            "buttons": [
-                "Kursları görüntüle",
-                "Öğrenme desteği için başvurun"
-            ],
+            "buttons": ["Kursları görüntüle", "Öğrenme desteği için başvurun"],
             "title": "Hoş geldiniz 👋",
             "subtitle": "Seni burada görmek ne güzel!",
             "content": "Lern-Fair Sizi ağırlamak için sabırsızlanıyoruz! Almanca, matematik ve İngilizce gibi çeşitli konularda özel dersler sunuyoruz. Bireysel yardıma ihtiyacınız varsa, öğrenme desteği için bekleme listemize de katılabilirsiniz",
             "actionDescription": "Öğrenme teklifini görüntüle"
         },
         "statusSchüler": {
-            "buttons": [
-                "Kursları görüntüle",
-                "Talebi geri çekin"
-            ],
+            "buttons": ["Kursları görüntüle", "Talebi geri çekin"],
             "title": "Bekleme listesindesiniz!",
             "subtitle": "Bekleme listesi",
             "content": "Sıra size geldiğinde sizi e-posta ile bilgilendireceğiz. Talebiniz {{date}} tarihinde yapılmıştır. Bu arada grup kurslarımıza katılabilirsiniz."
         },
         "interestconfirmation": {
-            "buttons": [
-                "Evet",
-                "Hayır"
-            ],
+            "buttons": ["Evet", "Hayır"],
             "title": "Hâlâ desteğe ihtiyacınız var mı?",
             "subtitle": "Destek için",
             "content": "Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von  <b>14 Tagen </b> bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen."
         },
         "kontaktSchüler": {
-            "buttons": [
-                "Öğrenme ortağını görüntüle"
-            ],
+            "buttons": ["Öğrenme ortağını görüntüle"],
             "subtitle": "1:1 öğrenme desteği",
             "title": "Yeni öğrenme ortakları",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. "
         },
         "angeforderteBescheinigung": {
-            "buttons": [
-                "Bilgileri onaylayın"
-            ],
+            "buttons": ["Bilgileri onaylayın"],
             "title": "Onaylama",
             "subtitle": "{{nameHelfer}} ile özel ders ",
             "content": "{{nameHelfer}} bizden öğrenim desteğiniz için bir sertifika istedi. Ancak bunu onaylarsanız {{nameHelfer}}'ın talebini yerine getirebiliriz.",
             "actionDescription": "Bilgileri onaylayın"
         },
         "kennenlernen": {
-            "buttons": [
-                "Randevu alın"
-            ],
+            "buttons": ["Randevu alın"],
             "subtitle": "Bizi tanıyın",
             "title": "Sizi tanımak isteriz 👋!",
             "content": "Bizimle çalışmaya başlamadan önce, 15 dakikalık bir video konferans görüşmesinde sizi tanımak istiyoruz. Bunun için bizden bir randevu almanız yeterli."
         },
         "zeugnis": {
-            "buttons": [
-                "İyi hal belgesi hakkında bilgi"
-            ],
+            "buttons": ["İyi hal belgesi hakkında bilgi"],
             "subtitle": "Önemli!",
             "title": "Genişletilmiş iyi hal sertifikası",
             "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
             "actionDescription": "İyi hal belgesi hakkında her şey"
         },
         "statusStudent": {
-            "buttons": [
-                "Sorun bildir"
-            ],
+            "buttons": ["Sorun bildir"],
             "subtitle": "1:1 öğrenme desteği",
             "title": "Sizin için bir öğrenme ortağı arıyoruz!",
             "content": "Lern-Fair 'da bir öğrenciyi desteklemek istediğiniz için teşekkür ederiz. Size belirttiğiniz derslere veya notlara uygun birini bulacağız. Genellikle bir hafta içinde size uygun bir öğrenciyle e-posta yoluyla geri döneceğiz."
         },
         "statusStudent2": {
-            "buttons": [
-                "Başka bir öğrenme çifti ise şu şekilde oluşur",
-                "Grup kurslarını görüntüleyin"
-            ],
+            "buttons": ["Başka bir öğrenme çifti ise şu şekilde oluşur", "Grup kurslarını görüntüleyin"],
             "subtitle": "Daha fazla destek fırsatı",
             "title": "Daha fazlasını ister misin?",
             "content": "Diğer öğrencileri desteklemek ister misiniz? Bir grup kursu veya ileri öğrenme ortaklıkları teklif edin.",
             "actionDescription": "Seçenekleri şimdi görüntüleyin"
         },
         "kontaktStudent": {
-            "buttons": [
-                "Öğrenme ortağını görüntüle"
-            ],
+            "buttons": ["Öğrenme ortağını görüntüle"],
             "title": "Yeni öğrenme ortakları",
             "subtitle": "1:1 öğrenme desteği",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen."
         },
         "homeworkHelpStudent": {
-            "buttons": [
-                "Ev Ödevi Yardımı (Zoom Kaydı)"
-            ],
+            "buttons": ["Ev Ödevi Yardımı (Zoom Kaydı)"],
             "title": "Ev ödevi yardımı",
             "content": "<b>Ev ödevi yardımı</b> ile öğrenciler ev ödevi soruları için bir kereye mahsus, spontane ve doğrudan yardım alırlar. Kulağa harika geldiğini mi düşünüyorsunuz? O zaman bize katılmanızı çok isteriz!<br/><b>Pazartesiden perşembeye 15:50</b> 'deki ön toplantıya gelin ve derslerinizdeki öğrencilere <b>17:00 ile 18:00</b> arasında yaklaşık 15'er dakika ev ödevlerinde destek olun. Uğrayın, sizi görmeyi dört gözle bekliyoruz!"
         },
         "homeworkHelpPupil": {
-            "buttons": [
-                "Ev ödevi yardımı"
-            ],
+            "buttons": ["Ev ödevi yardımı"],
             "title": "Ödevleriniz için yardım",
             "content": "Ev ödevinizde takıldınız mı? <b>Pazartesi'den Perşembe'ye saat 17:00 ile 18:00 arasında</b> 10 ila 15 dakika boyunca ev ödevlerinizde size hızlı ve kolay bir şekilde yardımcı olabiliriz. Sizi görmek için sabırsızlanıyoruz!"
         },
         "pupilScreening": {
-            "buttons": [
-                "Randevu alın"
-            ],
+            "buttons": ["Randevu alın"],
             "title": "Sizi tanımak isteriz!",
             "subtitle": "Bizi tanıyın",
             "content": "Size bir öğrenim ortağı bulmadan önce sizi tanımak isteriz. Lütfen bunun için bir randevu alın."
@@ -1287,9 +1293,7 @@
             "description": "Size mükemmel bir öğrenme ortağı atayabilmemiz için öncelikle platformumuz üzerinden bir talep göndermeniz gerekmektedir. Orada sizin için önemli olan ve size yardımcı olabileceğimiz konuları kolayca belirtebilirsiniz. Sizinle birlikte başlamak ve öğrenme yolculuğunuza birlikte başlamak için sabırsızlanıyoruz!"
         },
         "pupilFirstScreening": {
-            "buttons": [
-                "Randevu alın"
-            ],
+            "buttons": ["Randevu alın"],
             "title": "Sizi tanımak isteriz!",
             "subtitle": "Bizi tanıyın",
             "content": "Lern-Fair tarafından sunulan hizmetleri kullanmadan önce sizi tanımak isteriz. Zoom görüşmesi için lütfen randevu alın."
@@ -1329,7 +1333,7 @@
             "ctaCardHeader": "Grup kursları",
             "ctaCardContent": "Almanca, Matematik, İngilizce konularında çeşitli konularda kurslar ...",
             "ctaCardButton": "Grup kurslarına dön",
-            "firstContent": "Özel derslerde, sizi boş zamanlarında size yardımcı olacak bir gönüllüyle eşleştiriyoruz."
+            "firstContent": "İki tür özel ders sunuyoruz: Günlük, açık ev ödevi yardımı ve 1:1 öğrenme desteği. 1:1 öğrenme desteğinde, bir kişi boş zamanlarında ev ödevi, sınav hazırlığı ve tartışmak istediğiniz diğer her konuda size ücretsiz olarak yardımcı olur."
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
@@ -2162,7 +2166,12 @@
         "certificateOfConduct": "İyi hal belgesi",
         "certificateOfConductWasProvided": "İyi hal belgesi ibraz edilmiştir",
         "certificateOfConductWasNotProvided": "İyi hal belgesi henüz teslim edilmemiştir",
-        "comment": "Yorum"
+        "comment": "Yorum",
+        "errors": {
+            "grade_missing": "Lütfen bir okul sınıfı seçin.",
+            "language_missing": "Lütfen en az 1 dil ekleyin.",
+            "subjects_missing": "Lütfen en az 1 okul dersi ekleyin."
+        }
     },
     "achievement": {
         "empty_state": {
@@ -2306,9 +2315,10 @@
     "requireScreening": {
         "pupil": {
             "noScreening": {
-                "title": "Lütfen randevu alın, {{firstname}}!",
-                "content": "Lern-Fair tarafından sunulan hizmetleri kullanmadan önce sizi tanımak isteriz. Zoom görüşmesi için lütfen randevu alın.",
-                "makeAppointment": "Randevu alın"
+                "makeAppointment": "Randevu alın",
+                "title": "Hoş geldin, {{firstname}}! 👋 Yakında birbirimizi tanıyacağız 🤗",
+                "content": "Sizi, {{firstname}}, uygun bir yardımcı ile şimdi temasa geçirebilmemiz için, sizinle 15 dakikalık bir video görüşmesi yapmak istiyoruz. Görüşme Almanca dilinde yapılacaktır.\n Takvimden bir randevu seçebilirsiniz ve randevu onaylandıktan sonra {{email}} adresine bir e-posta alacaksınız. Randevuyu istediğiniz zaman değiştirebilir veya iptal edebilirsiniz. Lern-Fair- Telefon görüşmesi sırasında, mevcut zorluklarınız hakkında konuşacağız ve açıklayacağız. Yalnız veya ebeveynlerinizle gelebilirsiniz. Almancanız iyi değilse endişelenmeyin, yine de telefon görüşmesi yapabiliriz. Hiçbir koşulda görüntülü arama yapmak istemiyorsanız, lütfen iletişime geçin ve başka bir çözüm bulalım.",
+                "footer": "Kendinize güveniniz yok mu? Almanca bilmiyor musunuz? Ya da başka sorularınız mı var? O zaman bizimle iletişime geçin"
             },
             "hasScreening": {
                 "title": "Lütfen biraz bekleyin",
@@ -2477,5 +2487,6 @@
         "thisDevice": "Bu cihaz",
         "unknownDevice": "Bilinmeyen cihaz",
         "deviceOnOs": "üzerinde"
-    }
+    },
+    "changesWereSaved": "Değişiklikler kaydedildi"
 }

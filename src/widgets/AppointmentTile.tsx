@@ -77,7 +77,7 @@ const AppointmentTile: React.FC<Props> = ({
                                 {timeDescriptionText}
                             </Typography>
                         </div>
-                        {avatars.length && (
+                        {avatars.length > 0 && (
                             <div className="flex">
                                 {avatars?.map((type, i) =>
                                     type === 'student' ? (

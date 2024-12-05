@@ -80,6 +80,8 @@ import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
 import Lesson from '@/pages/Lesson';
+import EthicsOnboardingSlides from '@/pages/onboarding/ethical-standards/EthicsOnboardingSlides';
+import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/EthicsOnboardingWelcome';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -233,6 +235,21 @@ export default function NavigatorLazy() {
                 <Route path="students" element={<OnBoardingStudentWelcome />} />
                 <Route path="helper" element={<OnBoardingHelperWelcome />} />
                 <Route path="helpermatching" element={<OnBoardingHelperMatchingWelcome />} />
+                <Route path="ethics" />
+            </Route>
+
+            {/* Ethics Onboarding for HuHs */}
+            <Route
+                path="/onboarding/ethics"
+                element={
+                    <RequireAuth>
+                        <Outlet />
+                    </RequireAuth>
+                }
+            >
+                <Route path="welcome" element={<EthicsOnboardingWelcome />} />
+                <Route path="wizard" element={<EthicsOnboardingSlides />} />
+                <Route path="*" element={<EthicsOnboardingWelcome />} />
             </Route>
 
             {/* Onboarding Students */}
