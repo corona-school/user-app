@@ -9,12 +9,10 @@ interface PupilScreeningsHistoryProps {
 }
 
 export const PupilScreeningsHistory = ({ screenings }: PupilScreeningsHistoryProps) => {
-    const { t } = useTranslation();
     if (!screenings.length) return null;
 
     return (
         <div className="flex flex-col gap-y-2">
-            <Typography variant="h6">{t('screening.previous_screenings')}</Typography>
             {screenings.map((screening, id) => (
                 <PupilScreeningCard key={id} screening={screening} />
             ))}
