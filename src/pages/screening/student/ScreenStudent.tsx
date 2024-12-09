@@ -44,12 +44,6 @@ const CREATE_TUTOR_SCREENING_MUTATION = gql(`
     }
 `);
 
-const UPDATE_STUDENT_MUTATION = gql(`
-    mutation ScreenerUpdateStudent($studentId: Float!, $data: StudentUpdateInput!) {
-        studentUpdate(studentId: $studentId, data: $data)
-    }
-`);
-
 const REQUIRE_STUDENT_ONBOARDING_MUTATION = gql(`
     mutation requireStudentOnboarding($studentId: Float!) {
         studentRequireOnboarding(studentId: $studentId)
@@ -63,7 +57,7 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const isInstructor = student.instructorScreenings?.some((it) => it.success) ?? false;
     const [knowsFrom, setKnowsFrom] = useState('');
     const [comment, setComment] = useState('');
-    const [descriptionForMatch, setDescriptionForMatch] = useState(student.descriptionForMatch);
+
     const [customKnowsFrom, setCustomKnowsFrom] = useState('');
     const [jobStatus, setJobStatus] = useState<Screening_Jobstatus_Enum>();
     const [showJobStatusModal, setShowJobStatusModal] = useState(false);
@@ -71,7 +65,6 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const [showConfirmReject, setShowConfirmReject] = useState(false);
     const [mutationCreateInstructorScreening, { loading: loadingInstructorScreening }] = useMutation(CREATE_INSTRUCTOR_SCREENING_MUTATION);
     const [mutationCreateTutorScreening, { loading: loadingTutorScreening }] = useMutation(CREATE_TUTOR_SCREENING_MUTATION);
-    const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
     const [mutationRequireStudentOnboarding] = useMutation(REQUIRE_STUDENT_ONBOARDING_MUTATION);
 
     const handleOnKnowsFromChanges = (values: { value: string; customValue: string }) => {
@@ -88,7 +81,6 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     async function screenAsInstructor(decision: boolean) {
         try {
             await mutationCreateInstructorScreening({ variables: { studentId: student.id, comment, knowsFrom, jobStatus: jobStatus!, success: decision } });
-            await mutationUpdateStudent({ variables: { studentId: student.id, data: { descriptionForMatch } } });
             const hadSuccessfulScreening = decision
                 ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
                 : false;
@@ -108,7 +100,6 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     async function screenAsTutor(decision: boolean) {
         try {
             await mutationCreateTutorScreening({ variables: { studentId: student.id, comment, knowsFrom, jobStatus: jobStatus!, success: decision } });
-            await mutationUpdateStudent({ variables: { studentId: student.id, data: { descriptionForMatch } } });
             const hadSuccessfulScreening = decision
                 ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
                 : false;
@@ -125,23 +116,16 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
         }
     }
 
-    const isLoading = loadingInstructorScreening || loadingTutorScreening || isUpdating;
+    const isLoading = loadingInstructorScreening || loadingTutorScreening;
 
     return (
         <div>
             {!currentScreeningType && (
-                <>
-                    <div className="mt-5">
-                        <Typography variant="h4" className="mb-5">
-                            Screening
-                        </Typography>
-                    </div>
-                    <div className="flex gap-x-2">
-                        {!isTutor && <Button onClick={() => setCurrentScreeningType('tutor')}>{t('screening.screen_as_tutor')}</Button>}
-                        {!isInstructor && <Button onClick={() => setCurrentScreeningType('instructor')}>{t('screening.screen_as_instructor')}</Button>}
-                        {isTutor && isInstructor && <Typography>Dieser Helfer wurde bereits gescreent</Typography>}
-                    </div>
-                </>
+                <div className="flex gap-x-2">
+                    {!isTutor && <Button onClick={() => setCurrentScreeningType('tutor')}>{t('screening.screen_as_tutor')}</Button>}
+                    {!isInstructor && <Button onClick={() => setCurrentScreeningType('instructor')}>{t('screening.screen_as_instructor')}</Button>}
+                    {isTutor && isInstructor && <Typography>Dieser Helfer wurde bereits gescreent</Typography>}
+                </div>
             )}
             {currentScreeningType && (
                 <div>
@@ -177,28 +161,6 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
                             </div>
                         </div>
                     </div>
-                    {currentScreeningType === 'tutor' && (
-                        <div className="mt-4">
-                            <Typography variant="h5" className="mb-5">
-                                Öffentliche Notizen
-                            </Typography>
-                            <div className="flex flex-col gap-6">
-                                <div className="flex flex-col gap-y-2">
-                                    <Label>
-                                        Info für Schüler:in{' - '}
-                                        <span className="font-bold">
-                                            (Sichtbar für Schüler:innen, nicht für Helfer:innen - Fasse zusammen was relevant ist für die Zusammenarbeit)
-                                        </span>
-                                    </Label>
-                                    <TextArea
-                                        className="resize-none h-24 w-full"
-                                        value={descriptionForMatch}
-                                        onChange={(e) => setDescriptionForMatch(e.target.value)}
-                                    />
-                                </div>
-                            </div>
-                        </div>
-                    )}
                     <div className="mt-8">
                         <Typography variant="h4" className="mb-5">
                             Entscheidungen
