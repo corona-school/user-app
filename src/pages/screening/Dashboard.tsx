@@ -50,6 +50,9 @@ export function ScreeningDashboard() {
                     hasSpecialNeeds
                     descriptionForScreening
                     descriptionForMatch
+                    school {
+                        name
+                    }
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -135,6 +138,9 @@ export function ScreeningDashboard() {
                 hasSpecialNeeds
                 descriptionForScreening
                 descriptionForMatch
+                school {
+                    name
+                }
                 matches {
                     createdAt
                     student { firstname lastname }

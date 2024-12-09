@@ -3,7 +3,7 @@ import { Checkbox } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
-import { Gender_Enum as Gender, Pupil_Screening_Status_Enum } from '@/gql/graphql';
+import { ExternalSchoolSearch, Gender_Enum as Gender, Pupil_Screening_Status_Enum } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { PupilForScreening, PupilScreening } from '@/types';
 import { getGradeLabel } from '@/Utility';
@@ -71,6 +71,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
     const [grade, setGrade] = useState(pupil.gradeAsInt);
     const [subjects, setSubjects] = useState(pupil.subjectsFormatted);
     const [languages, setLanguages] = useState(pupil.languages);
+    const [school, setSchool] = useState<ExternalSchoolSearch | undefined>(pupil.school as any);
     const [mutationUpdatePupil, { loading: isUpdating }] = useMutation(UPDATE_PUPIL_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
     const [mutationRequestMatch, { loading: isRequestingMatch }] = useMutation(REQUEST_MATCH_MUTATION);
@@ -115,19 +116,22 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
         // or in case the previous screening was already invalidated
         previousScreenings[0].invalidated;
 
-    const handleOnSavePupil = () => {
+    const handleOnSavePupil = async () => {
         try {
-            mutationUpdatePupil({
+            await mutationUpdatePupil({
                 variables: {
                     pupilId: pupil.id,
                     data: {
                         gradeAsInt: grade,
                         subjects: subjects.map((e) => ({ name: e.name, grade: e.grade, mandatory: e.mandatory })),
-                        schooltype: schoolType as any,
-                        state: pupilLocation as any,
                         languages: languages as any,
                         onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (undefined as any),
                         hasSpecialNeeds: hasSpecialNeeds === true,
+                        school: {
+                            name: school?.name,
+                            schooltype: schoolType as any,
+                            state: pupilLocation as any,
+                        },
                     },
                 },
             });
@@ -174,6 +178,16 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
         refresh();
     };
 
+    const handleOnSelectSchool = (school: ExternalSchoolSearch) => {
+        setSchool(school);
+        if (school.schooltype) {
+            setSchoolType(school.schooltype as any);
+        }
+        if (school.state) {
+            setPupilLocation(school.state as any);
+        }
+    };
+
     return (
         <div className="mt-8">
             <Tabs defaultValue="personal">
@@ -194,7 +208,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                             Persönliche Daten
                         </Typography>
                         <div className="flex flex-wrap gap-6">
-                            <SchoolSearchInput />
+                            <SchoolSearchInput onSelect={handleOnSelectSchool} defaultValue={school?.name} />
                             <div className="flex flex-col gap-y-2">
                                 <ButtonField label="Schulort" onClick={() => setShowEditLocation(true)}>
                                     {t(`lernfair.states.${pupilLocation}`) ?? 'Schulort bearbeiten'}

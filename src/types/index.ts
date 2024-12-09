@@ -7,6 +7,7 @@ import {
     Match,
     Pupil,
     Pupil_Screening,
+    School,
     Screener,
     Screening,
     Student,
@@ -54,6 +55,7 @@ export type PupilForScreening = Pick<
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];
+    school?: Pick<School, 'name'> | null;
 };
 
 export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'success' | 'createdAt' | 'comment'> & {
