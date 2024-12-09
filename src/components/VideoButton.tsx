@@ -66,7 +66,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         const overrideLink = data?.appointment?.override_meeting_link;
         if (!overrideLink) {
             setIsOpenModal(true);
-        } else if (zoomUrl) {
+        } else {
             window.open(overrideLink, '_blank');
         }
     };
