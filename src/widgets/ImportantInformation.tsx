@@ -191,8 +191,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- Screening -----------
         if (
-            student?.canRequestMatch?.reason === 'not-screened' ||
-            student?.canCreateCourse?.reason === 'not-screened' ||
+            (student?.canCreateCourse?.reason === 'not-screened' && student?.canRequestMatch?.reason === 'not-screened') ||
+            (student?.canCreateCourse?.reason === 'not-instructor' && student?.canRequestMatch?.reason === 'not-screened') ||
+            (student?.canCreateCourse?.reason === 'not-screened' && student.canRequestMatch?.reason === 'not-tutor') ||
             (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
         ) {
             const student_url = createStudentScreeningLink({

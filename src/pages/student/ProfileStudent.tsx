@@ -218,12 +218,12 @@ const ProfileStudent: React.FC<Props> = () => {
                             <ProfileSettingItem title={t('profile.FluentLanguagenalData.label')} href={() => navigate('/change-setting/language')}>
                                 {(data?.me?.student?.languages?.length && (
                                     <Row flexWrap="wrap" w="100%">
-                                        {data?.me?.student?.languages.map((lang: string, i: number) => (
-                                            <Column marginRight={3} mb={space['0.5']} key={i}>
+                                        {data?.me?.student?.languages.map((lang: string) => (
+                                            <Column marginRight={3} mb={space['0.5']} key={lang}>
                                                 <CSSWrapper className="profil-tab-link">
                                                     <IconTagList
                                                         isDisabled
-                                                        iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                                                        icon={lang.toLowerCase()}
                                                         text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     />
                                                 </CSSWrapper>
