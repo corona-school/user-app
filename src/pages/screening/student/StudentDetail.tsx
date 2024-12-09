@@ -58,16 +58,16 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
     const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
 
-    const handleOnSaveStudent = () => {
+    const handleOnSaveStudent = async () => {
         try {
-            mutationUpdateStudent({
+            await mutationUpdateStudent({
                 variables: {
                     studentId: student.id,
                     data: {
-                        subjects: subjects.map((e) => ({ name: e.name })),
+                        subjects: subjects.map((e) => ({ name: e.name, grade: e.grade ? { min: e.grade.min, max: e.grade.max } : null })),
                         languages: languages as any,
                         hasSpecialExperience: hasSpecialExperience === true,
-                        gender: gender as Gender,
+                        gender: (gender as Gender) || undefined,
                     },
                 },
             });
