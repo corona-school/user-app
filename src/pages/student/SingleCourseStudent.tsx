@@ -20,7 +20,7 @@ import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { ParticipantsList } from '../subcourse/ParticipantsList';
-import Waitinglist from '../single-course/Waitinglist';
+import WaitingListProspectList from '../single-course/WaitingListProspectList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 
@@ -140,6 +140,15 @@ query GetInstructorSubcourse($subcourseId: Int!) {
                 isPupil
                 isStudent
             }
+        }
+        prospectParticipants {
+            id
+            firstname
+            lastname
+            schooltype
+            grade
+            gradeAsInt
+            conversationId
         }
     }
 }
@@ -304,10 +313,10 @@ const SingleCourseStudent = () => {
     }, [appointments, subcourse?.cancelled]);
 
     const showParticipantsTab = subcourse?.isInstructor;
-    const showWaitingListTab = subcourse?.isInstructor && instructorSubcourse?.subcourse;
-    const showLecturesTab = showParticipantsTab || showWaitingListTab;
+    const showWaitingListProspectListTab = subcourse?.isInstructor && instructorSubcourse?.subcourse;
+    const showLecturesTab = showParticipantsTab || showWaitingListProspectListTab;
 
-    const showTabsControls = showParticipantsTab || showWaitingListTab || showLecturesTab;
+    const showTabsControls = showParticipantsTab || showWaitingListProspectListTab || showLecturesTab;
 
     return (
         <WithNavigation
@@ -381,9 +390,14 @@ const SingleCourseStudent = () => {
                                         {t('single.tabs.participant')}
                                     </TabsTrigger>
                                 )}
-                                {showWaitingListTab && (
+                                {showWaitingListProspectListTab && (
                                     <TabsTrigger badge={instructorSubcourse.subcourse!.pupilsWaitingCount} value="waiting-list">
                                         {t('single.tabs.waitinglist')}
+                                    </TabsTrigger>
+                                )}
+                                {showWaitingListProspectListTab && (
+                                    <TabsTrigger badge={instructorSubcourse.subcourse!.prospectParticipants.length} value="prospect-list">
+                                        {t('single.tabs.prospectParticipants')}
                                     </TabsTrigger>
                                 )}
                             </TabsList>
@@ -403,16 +417,31 @@ const SingleCourseStudent = () => {
                                 />
                             )}
                         </TabsContent>
-                        {showWaitingListTab && (
+                        {showWaitingListProspectListTab && (
                             <TabsContent value="waiting-list">
-                                <Waitinglist
+                                <WaitingListProspectList
                                     subcourseId={subcourseId}
                                     maxParticipants={subcourse?.maxParticipants}
-                                    pupilsOnWaitinglist={instructorSubcourse!.subcourse?.pupilsOnWaitinglist}
+                                    pupils={instructorSubcourse!.subcourse?.pupilsOnWaitinglist}
                                     refetch={() => {
                                         refetchInstructorData();
                                         return refetchBasics();
                                     }}
+                                    type={'waitinglist'}
+                                />
+                            </TabsContent>
+                        )}
+                        {showWaitingListProspectListTab && (
+                            <TabsContent value="prospect-list">
+                                <WaitingListProspectList
+                                    subcourseId={subcourseId}
+                                    pupils={instructorSubcourse!.subcourse!.prospectParticipants}
+                                    refetch={() => {
+                                        refetchInstructorData();
+                                        return refetchBasics();
+                                    }}
+                                    maxParticipants={subcourse?.maxParticipants}
+                                    type={'prospectlist'}
                                 />
                             </TabsContent>
                         )}

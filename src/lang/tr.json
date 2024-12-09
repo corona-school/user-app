@@ -700,7 +700,8 @@
             "description": "Açıklama",
             "lessons": "Dersler",
             "waitinglist": "Bekleme listesi",
-            "participant": "Katılımcılar"
+            "participant": "Katılımcılar",
+            "prospectParticipants": "İlgilenenler"
         },
         "courseInfo": {
             "grade": "Sınıf seviyesi ",
@@ -833,7 +834,13 @@
             "error": "Öğrenci:in kaldırılamadı"
         },
         "removeFromCourse": "Kurstan çıkarma",
-        "addToCourse": "Kursa ekle"
+        "addToCourse": "Kursa ekle",
+        "prospectList": {
+            "toast": "Öğrenci kursa eklenmiştir.",
+            "error": "Öğrenci eklenemedi.",
+            "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok.",
+            "description": "Burada, sohbet yoluyla sizinle iletişime geçen ilgili tarafları görebilirsiniz."
+        }
     },
     "settings": {
         "general": {
