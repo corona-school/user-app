@@ -221,7 +221,7 @@ export function ScreeningDashboard() {
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
-            <div className="px-2 mx-auto w-full max-w-5xl">
+            <div className="px-2 mx-auto w-full max-w-6xl">
                 <SearchBar
                     inputRef={searchbarRef}
                     placeholder={t('screening.search.placeholder')}

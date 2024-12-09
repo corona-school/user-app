@@ -1,7 +1,5 @@
 import { useState } from 'react';
 import { Button } from '@/components/Button';
-import { Label } from '@/components/Label';
-import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { IconDeviceFloppy, IconThumbUp, IconThumbDown, IconGhost } from '@tabler/icons-react';
 import { KnowsUsSelect } from '../components/KnowsUsSelect';
@@ -14,6 +12,8 @@ import { toast } from 'sonner';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { useUser } from '@/hooks/useApollo';
 import { PupilScreeningStatus, Pupil_Screening_Status_Enum } from '@/gql/graphql';
+import { Label } from '@/components/Label';
+import { TextArea } from '@/components/TextArea';
 
 interface ScreenPupilProps {
     pupil: PupilForScreening;
@@ -40,12 +40,6 @@ const UPDATE_SCREENING_MUTATION = gql(`
     }
 `);
 
-const UPDATE_PUPIL_MUTATION = gql(`
-    mutation ScreenerUpdatePupil($pupilId: Float!, $data: PupilUpdateInput!) {
-        pupilUpdate(pupilId: $pupilId, data: $data)
-    }
-`);
-
 const MISSED_SCREENING_MUTATION = gql(
     `mutation MissedScreening($pupilScreeningId: Float!, $comment: String!) { pupilMissedScreening(pupilScreeningId: $pupilScreeningId, comment: $comment) }`
 );
@@ -58,8 +52,6 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
     const [knowsFrom, setKnowsFrom] = useState(screening?.knowsCoronaSchoolFrom ?? '');
     const [customKnowsFrom, setCustomKnowsFrom] = useState('');
     const [comment, setComment] = useState(screening?.comment ?? '');
-    const [descriptionForScreening, setDescriptionForScreening] = useState(pupil.descriptionForScreening);
-    const [descriptionForMatch, setDescriptionForMatch] = useState(pupil.descriptionForMatch);
     const [showConfirmDeactivate, setShowConfirmDeactivate] = useState(false);
     const [showConfirmApprove, setShowConfirmApprove] = useState(false);
     const [showConfirmReject, setShowConfirmReject] = useState(false);
@@ -68,7 +60,6 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
     const [mutationDeactivateAccount, { loading: isDeactivating, data: deactivateResult }] = useMutation(DEACTIVATE_ACCOUNT_MUTATION);
     const [mutationCreateScreening] = useMutation(CREATE_PUPIL_SCREENING_MUTATION);
     const [mutationUpdateScreening, { loading: isUpdatingScreening }] = useMutation(UPDATE_SCREENING_MUTATION);
-    const [mutationUpdatePupil, { loading: isUpdating }] = useMutation(UPDATE_PUPIL_MUTATION);
     const [mutationMarkScreeningAsMissed, { loading: isMarkingScreeningAsMissed }] = useMutation(MISSED_SCREENING_MUTATION);
 
     const getCanCreateScreening = () => {
@@ -133,7 +124,6 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
         } catch (error) {
             toast.error(t('error'));
         }
-        await handleOnSavePupil();
         refresh();
     };
 
@@ -153,7 +143,6 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
         } catch (error) {
             toast.error(t('error'));
         }
-        await handleOnSavePupil();
         refresh();
     };
 
@@ -172,25 +161,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
         } catch (error) {
             toast.error(t('error'));
         }
-        await handleOnSavePupil();
         refresh();
-    };
-
-    const handleOnSavePupil = async () => {
-        try {
-            await mutationUpdatePupil({
-                variables: {
-                    pupilId: pupil.id,
-                    data: {
-                        descriptionForMatch,
-                        descriptionForScreening,
-                    },
-                },
-            });
-            toast.success(t('changesWereSaved'));
-        } catch (error) {
-            toast.success(t('error'));
-        }
     };
 
     const { can: canCreateScreening, reason: canCreateScreeningReason } = getCanCreateScreening();
@@ -226,7 +197,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
         );
     }
 
-    const isLoading = isUpdatingScreening || isDeactivating || isUpdating || isMarkingScreeningAsMissed;
+    const isLoading = isUpdatingScreening || isDeactivating || isMarkingScreeningAsMissed;
 
     return (
         <>
@@ -249,48 +220,11 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                         type="pupil"
                     />
                 </div>
-                <div className="mt-4">
-                    <Typography variant="h5" className="mb-5">
-                        Interne Notizen
-                    </Typography>
-                    <div className="flex flex-col gap-6">
-                        <div className="flex flex-col gap-y-2">
-                            <Label>
-                                Temporäre Notiz - <span className="font-bold">(Wird nach Annahme/Ablehnung gelöscht)</span>
-                            </Label>
-                            <TextArea className="resize-none h-24 w-full" value={comment} onChange={(e) => setComment(e.target.value)} />
-                        </div>
-                        <div className="flex flex-col gap-y-2">
-                            <Label>
-                                Gespeicherte Notiz - <span className="font-bold">(Wird für spätere Screenings gespeichert)</span>
-                            </Label>
-                            <TextArea
-                                className="resize-none h-24 w-full"
-                                value={descriptionForScreening}
-                                onChange={(e) => setDescriptionForScreening(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="mt-4">
-                    <Typography variant="h5" className="mb-5">
-                        Öffentliche Notizen
-                    </Typography>
-                    <div className="flex flex-col gap-6">
-                        <div className="flex flex-col gap-y-2">
-                            <Label>
-                                Info für Helfer:in{' - '}
-                                <span className="font-bold">
-                                    (Sichtbar für Helfer:innen, nicht für Schüler:innen - Fasse zusammen was relevant ist für die Zusammenarbeit)
-                                </span>
-                            </Label>
-                            <TextArea
-                                className="resize-none h-24 w-full"
-                                value={descriptionForMatch}
-                                onChange={(e) => setDescriptionForMatch(e.target.value)}
-                            />
-                        </div>
-                    </div>
+                <div className="flex flex-col gap-y-2">
+                    <Label>
+                        Temporäre Notiz - <span className="font-bold">(Wird nach Annahme/Ablehnung gelöscht)</span>
+                    </Label>
+                    <TextArea className="resize-none h-24 w-full" value={comment} onChange={(e) => setComment(e.target.value)} />
                 </div>
             </div>
             <div>
@@ -299,7 +233,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                 </Button>
             </div>
             <div className="mt-8">
-                <Typography variant="h4" className="mb-5">
+                <Typography variant="h5" className="mb-5">
                     Entscheidungen
                 </Typography>
                 <div className="flex flex-row flex-wrap gap-x-10 gap-y-6">

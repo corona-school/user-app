@@ -1,19 +1,36 @@
 import { Typography } from '@/components/Typography';
-import { PupilForScreening, PupilScreening } from '@/types';
+import { MatchWithStudent, PupilScreening } from '@/types';
 import { MatchStudentCard } from '@/widgets/matching/MatchStudentCard';
 import { PupilScreeningCard } from '@/widgets/screening/PupilScreeningCard';
 import { useTranslation } from 'react-i18next';
 
-interface PupilHistoryProps {
-    pupil: PupilForScreening;
-    previousScreenings: PupilScreening[];
+interface PupilScreeningsHistoryProps {
+    screenings: PupilScreening[];
 }
 
-export const PupilHistory = ({ pupil, previousScreenings }: PupilHistoryProps) => {
+export const PupilScreeningsHistory = ({ screenings }: PupilScreeningsHistoryProps) => {
+    const { t } = useTranslation();
+    if (!screenings.length) return null;
+
+    return (
+        <div className="flex flex-col gap-y-2">
+            <Typography variant="h6">{t('screening.previous_screenings')}</Typography>
+            {screenings.map((screening, id) => (
+                <PupilScreeningCard key={id} screening={screening} />
+            ))}
+        </div>
+    );
+};
+
+interface PupilMatchingHistoryProps {
+    matches: MatchWithStudent[];
+}
+
+export const PupilMatchingHistory = ({ matches }: PupilMatchingHistoryProps) => {
     const { t } = useTranslation();
 
-    const activeMatches = pupil!.matches!.filter((it) => !it!.dissolved).sort((a, b) => +new Date(b!.createdAt) - +new Date(a!.createdAt));
-    const dissolvedMatches = pupil.matches!.filter((it) => it!.dissolved).sort((a, b) => +new Date(b!.createdAt) - +new Date(a!.createdAt));
+    const activeMatches = matches!.filter((it) => !it!.dissolved).sort((a, b) => +new Date(b!.createdAt) - +new Date(a!.createdAt));
+    const dissolvedMatches = matches!.filter((it) => it!.dissolved).sort((a, b) => +new Date(b!.createdAt) - +new Date(a!.createdAt));
 
     return (
         <div className="flex flex-col gap-y-6">
@@ -30,14 +47,6 @@ export const PupilHistory = ({ pupil, previousScreenings }: PupilHistoryProps) =
                     <Typography variant="h6">{t('screening.dissolved_matches')}</Typography>
                     {dissolvedMatches.map((it, id) => (
                         <MatchStudentCard key={id} match={it} />
-                    ))}
-                </div>
-            )}
-            {previousScreenings.length > 0 && (
-                <div className="flex flex-col gap-y-2">
-                    <Typography variant="h6">{t('screening.previous_screenings')}</Typography>
-                    {previousScreenings.map((screening, id) => (
-                        <PupilScreeningCard key={id} screening={screening} />
                     ))}
                 </div>
             )}
