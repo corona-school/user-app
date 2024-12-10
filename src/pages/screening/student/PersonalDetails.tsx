@@ -155,7 +155,7 @@ const PersonalDetails = ({ student }: PersonalDetailsProps) => {
                 </div>
             </div>
             <div className="mt-10 flex items-center gap-x-4">
-                <Button onClick={handleOnSaveStudent} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
+                <Button variant="outline" onClick={handleOnSaveStudent} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
                     Speichern
                 </Button>
                 {myRoles.includes('TRUSTED_SCREENER') && student.active && (

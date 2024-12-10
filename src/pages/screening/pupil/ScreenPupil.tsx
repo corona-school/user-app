@@ -228,7 +228,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                 </div>
             </div>
             <div>
-                <Button isLoading={isLoading} onClick={() => handleOnSaveScreening()} leftIcon={<IconDeviceFloppy />} className="w-80 mt-10">
+                <Button variant="outline" isLoading={isLoading} onClick={() => handleOnSaveScreening()} leftIcon={<IconDeviceFloppy />} className="w-80 mt-10">
                     Speichern
                 </Button>
             </div>
@@ -237,9 +237,6 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                     Entscheidungen
                 </Typography>
                 <div className="flex flex-row flex-wrap gap-x-10 gap-y-6">
-                    <Button onClick={() => setShowConfirmApprove(true)} variant="default" leftIcon={<IconThumbUp className="" />} className="w-[200px]">
-                        Annehmen
-                    </Button>
                     <Button
                         onClick={() => handleOnSaveScreening(true)}
                         isLoading={isLoading}
@@ -259,15 +256,6 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                         Ablehnung empfehlen
                     </Button>
                     <Button
-                        onClick={() => setShowConfirmReject(true)}
-                        isLoading={isLoading}
-                        variant="destructive"
-                        leftIcon={<IconThumbDown />}
-                        className="w-[200px]"
-                    >
-                        Ablehnen
-                    </Button>
-                    <Button
                         onClick={() => setShowConfirmMissedScreening(true)}
                         isLoading={isLoading}
                         variant="outline"
@@ -276,6 +264,25 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                     >
                         Screening verpasst
                     </Button>
+                </div>
+                <div className="flex flex-row flex-wrap gap-x-10 mt-10">
+                    <Button onClick={() => setShowConfirmApprove(true)} variant="default" leftIcon={<IconThumbUp className="" />} className="w-[200px]">
+                        Annehmen
+                    </Button>
+                    <Button
+                        onClick={() => setShowConfirmReject(true)}
+                        isLoading={isLoading}
+                        variant="destructive"
+                        leftIcon={<IconThumbDown />}
+                        className="w-[200px]"
+                    >
+                        Ablehnen
+                    </Button>
+                    {pupil.active && (
+                        <Button isLoading={isDeactivating} variant="ghost" onClick={() => setShowConfirmDeactivate(true)}>
+                            {t('screening.deactivate')}
+                        </Button>
+                    )}
                 </div>
             </div>
             <ConfirmationModal
