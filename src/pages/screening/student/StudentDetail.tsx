@@ -2,6 +2,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
 import { StudentForScreening } from '@/types';
 import { formatDate } from '@/Utility';
+import { ScreeningSuggestionCard } from '@/widgets/screening/ScreeningSuggestionCard';
 import { useTranslation } from 'react-i18next';
 import PersonalDetails from './PersonalDetails';
 import { ScreenStudent } from './ScreenStudent';
@@ -29,6 +30,9 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                     </TabsTrigger>
                     <TabsTrigger className="max-h-7" value="certificateOfConduct">
                         Führungszeugnis
+                    </TabsTrigger>
+                    <TabsTrigger className="max-h-7" value="recommendation">
+                        Empfehlungen
                     </TabsTrigger>
                 </TabsList>
                 <TabsContent value="main">
@@ -80,6 +84,14 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                                 </Typography>
                             )}
                         </div>
+                    </div>
+                </TabsContent>
+                <TabsContent value="recommendation">
+                    <div className="flex flex-col shadow-md px-6 py-8 rounded-md">
+                        <Typography variant="h4" className="mb-5">
+                            Empfehlungen
+                        </Typography>
+                        <ScreeningSuggestionCard userID={`student/${student.id}`} />
                     </div>
                 </TabsContent>
             </Tabs>
