@@ -1,29 +1,30 @@
 import { Button } from '@/components/Button';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Screening_Jobstatus_Enum } from '@/gql/graphql';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GradeSelector } from '../../components/GradeSelector';
+import { JobStatusSelector } from './JobStatusSelector';
 
-interface EditGradeModalProps extends BaseModalProps {
-    grade: number;
-    onSave: (grade: number) => void;
+interface EditJobStatusModalProps extends BaseModalProps {
+    jobStatus?: Screening_Jobstatus_Enum;
+    onSave: (jobStatus?: Screening_Jobstatus_Enum) => void;
 }
 
-export function EditGradeModal({ grade, onOpenChange, isOpen, onSave }: EditGradeModalProps) {
-    const [selectedGrade, setSelectedGrade] = useState(grade);
+export function EditJobStatusModal({ jobStatus, onOpenChange, isOpen, onSave }: EditJobStatusModalProps) {
+    const [selectedValue, setSelectedValue] = useState(jobStatus);
     const { t } = useTranslation();
 
     const handleOnSave = async () => {
-        onSave(selectedGrade);
+        onSave(selectedValue);
         onOpenChange(false);
     };
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
             <ModalHeader>
-                <ModalTitle>Klasse bearbeiten</ModalTitle>
+                <ModalTitle>Beruflicher Status bearbeiten</ModalTitle>
             </ModalHeader>
             <div className="flex flex-col gap-y-4">
-                <GradeSelector className="grid grid-cols-5" grade={selectedGrade} onGradeChange={setSelectedGrade} />
+                <JobStatusSelector className="grid grid-cols-5" value={selectedValue} setValue={setSelectedValue} />
             </div>
             <ModalFooter>
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>

@@ -1,61 +1,58 @@
 import { Button } from '@/components/Button';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Slider } from '@/components/Slider';
 import { Typography } from '@/components/Typography';
-import { gql } from '@/gql';
 import { Subject } from '@/gql/graphql';
-import { useMutation } from '@apollo/client';
+import { getGradeLabel } from '@/Utility';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
 import { SubjectSelector } from '../SubjectSelector';
 
 interface EditSubjectsModalProps extends BaseModalProps {
-    pupilOrStudentId: number;
     subjects: Subject[];
-    onSubjectsUpdated: () => Promise<void>;
+    onSave: (subjects: Subject[]) => void;
     type: 'pupil' | 'student';
 }
 
-const UPDATE_PUPIL_SUBJECTS_MUTATION = gql(`
-    mutation PupilUpdateSubjects($pupilId: Float!, $data: PupilUpdateSubjectsInput!) { pupilUpdateSubjects(pupilId: $pupilId, data: $data) }
-    `);
+interface SubjectGradeSliderProps {
+    subject: Subject;
+    setSubject: (subject: Subject) => void;
+}
 
-const UPDATE_STUDENT_SUBJECTS_MUTATION = gql(`
-    mutation StudentUpdateSubjects($studentId: Float!, $subjects: [SubjectInput!]) { studentUpdate(studentId: $studentId, data: { subjects: $subjects }) }
-    `);
+const SubjectGradeSlider = ({ subject, setSubject }: SubjectGradeSliderProps) => {
+    const onValueChange = (range: [number, number]) => {
+        setSubject({ name: subject.name, grade: { min: range[0], max: range[1] } });
+    };
 
-export const EditSubjectsModal = ({ subjects, pupilOrStudentId, type, onSubjectsUpdated, onOpenChange, isOpen }: EditSubjectsModalProps) => {
+    const min = 1;
+    const max = 14;
+    const currentMin = subject?.grade?.min ?? min;
+    const currentMax = subject?.grade?.max ?? max;
+
+    return (
+        <div className="bg-primary-lighter p-4 rounded-md">
+            <div>
+                <Typography className="font-bold">{subject.name}</Typography>
+                <Typography className="mb-4">
+                    {getGradeLabel(currentMin)} {currentMin !== currentMax ? `- ${getGradeLabel(currentMax)}` : ''}
+                </Typography>
+            </div>
+            <Slider min={min} step={1} max={max} value={[currentMin, currentMax]} onValueChange={onValueChange} />
+        </div>
+    );
+};
+
+export const EditSubjectsModal = ({ subjects, onOpenChange, isOpen, type, onSave }: EditSubjectsModalProps) => {
     const [editedSubjects, setEditedSubjects] = useState<Subject[]>(subjects);
-    const [mutationUpdatePupilSubjects, { loading: isLoadingPupil }] = useMutation(UPDATE_PUPIL_SUBJECTS_MUTATION);
-    const [mutationUpdateStudentSubjects, { loading: isLoadingStudent }] = useMutation(UPDATE_STUDENT_SUBJECTS_MUTATION);
     const { t } = useTranslation();
 
-    const onSave = async () => {
-        try {
-            if (type === 'pupil') {
-                await mutationUpdatePupilSubjects({
-                    variables: {
-                        pupilId: pupilOrStudentId,
-                        data: {
-                            subjects: editedSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })),
-                        },
-                    },
-                });
-            } else {
-                await mutationUpdateStudentSubjects({
-                    variables: {
-                        studentId: pupilOrStudentId,
-                        subjects: editedSubjects.map((it) => ({ name: it.name })),
-                    },
-                });
-            }
-            toast.success(t('changesWereSaved'));
-        } catch (error) {
-            toast.error(t('error'));
-        } finally {
-            onOpenChange(false);
+    const handleOnSave = async () => {
+        if (type === 'pupil') {
+            onSave(editedSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })));
+        } else {
+            onSave(editedSubjects.map((it) => ({ name: it.name, grade: it.grade })));
         }
-        onSubjectsUpdated();
+        onOpenChange(false);
     };
 
     return (
@@ -63,7 +60,7 @@ export const EditSubjectsModal = ({ subjects, pupilOrStudentId, type, onSubjects
             <ModalHeader>
                 <ModalTitle>Fächer bearbeiten</ModalTitle>
             </ModalHeader>
-            <div className="flex flex-col gap-y-4 max-w-[1000px]">
+            <div className="flex flex-col gap-y-4 max-w-[1000px] overflow-y-auto max-h-[550px]">
                 <SubjectSelector
                     subjects={editedSubjects.map((it) => it.name)}
                     includeDaz
@@ -74,6 +71,19 @@ export const EditSubjectsModal = ({ subjects, pupilOrStudentId, type, onSubjects
                         setEditedSubjects((prev) => prev.filter((s) => s.name !== it));
                     }}
                 />
+                {type === 'student' && (
+                    <div className="flex flex-col gap-y-4">
+                        {editedSubjects.map((e) => (
+                            <SubjectGradeSlider
+                                key={e.name}
+                                subject={e}
+                                setSubject={(updatedSubject) => {
+                                    setEditedSubjects((prev) => prev.map((e) => (e.name === updatedSubject.name ? updatedSubject : e)));
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
 
                 {type === 'pupil' && (
                     <>
@@ -93,7 +103,7 @@ export const EditSubjectsModal = ({ subjects, pupilOrStudentId, type, onSubjects
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
                     {t('cancel')}
                 </Button>
-                <Button className="w-full lg:w-fit" isLoading={isLoadingPupil || isLoadingStudent} onClick={onSave}>
+                <Button className="w-full lg:w-fit" onClick={handleOnSave}>
                     {t('select')}
                 </Button>
             </ModalFooter>
