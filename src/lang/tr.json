@@ -2083,7 +2083,8 @@
             "newPassword": "Şifre değiştirme",
             "install": "Lern-Fair Uygulama",
             "progress": "Başarılar ve ilerleme",
-            "editCourse": "Kursu düzenle"
+            "editCourse": "Kursu düzenle",
+            "lesson": "Dersler"
         }
     },
     "screening": {
@@ -2488,5 +2489,37 @@
         "unknownDevice": "Bilinmeyen cihaz",
         "deviceOnOs": "üzerinde"
     },
-    "changesWereSaved": "Değişiklikler kaydedildi"
+    "changesWereSaved": "Değişiklikler kaydedildi",
+    "lesson": {
+        "pageTitle": "Yapay zeka ile ders planlama",
+        "generatePlanText": "Öğrencilerinize öğretmek için bir ders planı oluşturun.",
+        "generatePlanButton": "Bir ders planı oluşturun",
+        "lessonGrade": "Sınıf:",
+        "subject": "Konu:",
+        "prompt": "Giriş istemi",
+        "duration": "Süre:",
+        "placeholderDescription": "Dersinizi YZ için daha fazla bağlamla açıklayın",
+        "chooseSubject": "Konu seçiniz",
+        "chooseGrade": "Sınıf seçin",
+        "chooseDuration": "Süre seçin",
+        "lessonTitle": "Ders başlığı",
+        "lessonPlan": "Ders planı:",
+        "lessonAgenda": "Öğretim gündemi",
+        "learningGoals": "Öğrenme hedefleri",
+        "knowdlegeButton": "Dosya yükleme (isteğe bağlı)",
+        "uploadedFiles": "Yüklenen dosyalar (en fazla 3)",
+        "uploadHere": "Buraya yükleyin",
+        "browseButton": "Gözat",
+        "tryExample": "Bir örnek deneyin",
+        "copyOutput": "Çıktıyı kopyala",
+        "assessment": "Değerleme",
+        "homework": "Ev Ödevi",
+        "resources": "Kaynaklar",
+        "copyButton": "Anlaşıldı",
+        "resetLesson": "Sıfırla",
+        "generatePlan": "Plan oluşturun",
+        "acceptTermsCheckbox": "Genel hüküm ve koşulları kabul edin:",
+        "acceptTCText": "Metin alanına herhangi bir kişisel veri girmedim ve Open AI'nın bu verileri Avrupa veri koruma standartları olmadan kullanabileceğinin farkındayım. Lern-Fair  Lern-Fair Yüklenen belgeler üzerinde herhangi bir hakkım olmadığı için herhangi biri aleyhime hak iddia ederse, tazmin etmeyi taahhüt ederim.",
+        "fileUploadTooltip": "Buraya ek dosyalar yükleyerek AI çıktısını iyileştirin"
+    }
 }

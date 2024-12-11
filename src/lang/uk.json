@@ -2083,7 +2083,8 @@
             "newPassword": "Змінити пароль",
             "install": "Lern-Fair Додаток",
             "progress": "Успіхи та прогрес",
-            "editCourse": "Редагувати курс"
+            "editCourse": "Редагувати курс",
+            "lesson": "Уроки"
         }
     },
     "screening": {
@@ -2488,5 +2489,37 @@
         "unknownDevice": "Невідомий пристрій",
         "deviceOnOs": "на"
     },
-    "changesWereSaved": "Зміни збережено"
+    "changesWereSaved": "Зміни збережено",
+    "lesson": {
+        "pageTitle": "Планування уроків за допомогою ШІ",
+        "generatePlanText": "Створіть план уроку, щоб навчати своїх учнів.",
+        "generatePlanButton": "Створіть план уроку",
+        "lessonGrade": "Клас:",
+        "subject": "Тема:",
+        "prompt": "Швидке введення",
+        "duration": "Тривалість:",
+        "placeholderDescription": "Опишіть свій урок з більшим контекстом для ШІ",
+        "chooseSubject": "Виберіть тему",
+        "chooseGrade": "Виберіть клас",
+        "chooseDuration": "Виберіть тривалість",
+        "lessonTitle": "Назва уроку",
+        "lessonPlan": "План уроку:",
+        "lessonAgenda": "Програма викладання",
+        "learningGoals": "Цілі навчання",
+        "knowdlegeButton": "Завантажте файли (необов'язково)",
+        "uploadedFiles": "Завантажені файли (максимум 3)",
+        "uploadHere": "Завантажити тут",
+        "browseButton": "Переглянути",
+        "tryExample": "Спробуйте приклад",
+        "copyOutput": "Виведення копії",
+        "assessment": "Оцінка",
+        "homework": "Домашнє завдання",
+        "resources": "Ресурси",
+        "copyButton": "Зрозумів.",
+        "resetLesson": "Перезавантаження",
+        "generatePlan": "Створіть план",
+        "acceptTermsCheckbox": "Приймаємо загальні положення та умови:",
+        "acceptTCText": "Я не вводив жодних персональних даних у текстовому полі та усвідомлюю, що Open AI може використовувати їх без дотримання європейських стандартів захисту даних. Lern-Fair  Lern-Fair Якщо хтось висуне претензії через те, що я не маю прав на завантажені документи, я зобов'язуюсь відшкодувати збитки.",
+        "fileUploadTooltip": "Покращуйте результати ШІ, завантаживши додаткові файли тут"
+    }
 }

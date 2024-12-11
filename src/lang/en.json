@@ -2079,7 +2079,8 @@
             "newPassword": "Change password",
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
-            "editCourse": "Edit course"
+            "editCourse": "Edit course",
+            "lesson": "Lessons"
         }
     },
     "screening": {
@@ -2484,5 +2485,37 @@
         "unknownDevice": "Unknown device",
         "deviceOnOs": "on"
     },
-    "changesWereSaved": "Changes have been saved"
+    "changesWereSaved": "Changes have been saved",
+    "lesson": {
+        "pageTitle": "Lesson planning with AI",
+        "generatePlanText": "Create a lesson plan to teach your students.",
+        "generatePlanButton": "Create a lesson plan",
+        "lessonGrade": "Class:",
+        "subject": "Subject:",
+        "prompt": "Prompt input",
+        "duration": "Duration:",
+        "placeholderDescription": "Describe your lesson with more context for the AI",
+        "chooseSubject": "Select subject",
+        "chooseGrade": "Select class",
+        "chooseDuration": "Select duration",
+        "lessonTitle": "Lesson title",
+        "lessonPlan": "Lesson plan:",
+        "lessonAgenda": "Teaching agenda",
+        "learningGoals": "Learning objectives",
+        "knowdlegeButton": "Upload files (optional)",
+        "uploadedFiles": "Uploaded files (max 3)",
+        "uploadHere": "Upload here",
+        "browseButton": "Browse",
+        "tryExample": "Try out an example",
+        "copyOutput": "Copy output",
+        "assessment": "Rating",
+        "homework": "Homework",
+        "resources": "Resources",
+        "copyButton": "Copy",
+        "resetLesson": "Reset",
+        "generatePlan": "Create plan",
+        "acceptTermsCheckbox": "Accept general terms and conditions:",
+        "acceptTCText": "I have not entered any personal data in the text field and I am aware that Open AI may use it without European data protection standards. Should anyone assert claims against Lern-Fair because I have no rights to the uploaded documents, I undertake to indemnify Lern-Fair .",
+        "fileUploadTooltip": "Improve the AI output by uploading additional files here"
+    }
 }

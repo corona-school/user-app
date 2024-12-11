@@ -2079,7 +2079,8 @@
             "newPassword": "تغيير كلمة المرور",
             "install": "Lern-Fair التطبيق",
             "progress": "إنجازات والتقدم",
-            "editCourse": "تحرير الدورة التدريبية"
+            "editCourse": "تحرير الدورة التدريبية",
+            "lesson": "الدروس"
         }
     },
     "screening": {
@@ -2484,5 +2485,37 @@
         "unknownDevice": "جهاز غير معروف",
         "deviceOnOs": "على"
     },
-    "changesWereSaved": "تم حفظ التغييرات"
+    "changesWereSaved": "تم حفظ التغييرات",
+    "lesson": {
+        "pageTitle": "تخطيط الدروس باستخدام الذكاء الاصطناعي",
+        "generatePlanText": "ضع خطة درس لتعليم طلابك.",
+        "generatePlanButton": "إنشاء خطة الدرس",
+        "lessonGrade": "الصف:",
+        "subject": "الموضوع:",
+        "prompt": "الإدخال الفوري",
+        "duration": "المدة:",
+        "placeholderDescription": "صف درسك بمزيد من السياق للذكاء الاصطناعي",
+        "chooseSubject": "اختر الموضوع",
+        "chooseGrade": "اختر الفئة",
+        "chooseDuration": "اختر المدة",
+        "lessonTitle": "عنوان الدرس",
+        "lessonPlan": "خطة الدرس:",
+        "lessonAgenda": "جدول أعمال التدريس",
+        "learningGoals": "أهداف التعلم",
+        "knowdlegeButton": "تحميل الملفات (اختياري)",
+        "uploadedFiles": "الملفات المرفوعة (بحد أقصى 3 ملفات)",
+        "uploadHere": "قم بالتحميل هنا",
+        "browseButton": "تصفح",
+        "tryExample": "جرّب مثالاً",
+        "copyOutput": "نسخ الإخراج",
+        "assessment": "التقييم",
+        "homework": "الواجبات المنزلية",
+        "resources": "الموارد",
+        "copyButton": "نسخ",
+        "resetLesson": "إعادة تعيين",
+        "generatePlan": "إنشاء خطة",
+        "acceptTermsCheckbox": "قبول الشروط والأحكام العامة:",
+        "acceptTCText": "لم أقم بإدخال أي بيانات شخصية في حقل النص، وأنا على علم بأن منظمة العفو الدولية المفتوحة قد تستخدمها دون معايير حماية البيانات الأوروبية. Lern-Fair  Lern-Fair في حالة قيام أي شخص بتأكيد أي مطالبات ضدّي بسبب عدم امتلاكي أي حقوق في المستندات التي تم تحميلها، فإنني أتعهد بتعويض .",
+        "fileUploadTooltip": "تحسين مخرجات الذكاء الاصطناعي عن طريق تحميل ملفات إضافية هنا"
+    }
 }
