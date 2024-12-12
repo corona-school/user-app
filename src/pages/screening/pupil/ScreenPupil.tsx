@@ -222,7 +222,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                 </div>
                 <div className="flex flex-col gap-y-2">
                     <Label>
-                        Temporäre Notiz - <span className="font-bold">(Wird nach Annahme/Ablehnung gelöscht)</span>
+                        Gesprächsdokumentation für 4-Augen-Entscheidung - <span className="font-bold">(Wird nach Annahme/Ablehnung gelöscht)</span>
                     </Label>
                     <TextArea className="resize-none h-24 w-full" value={comment} onChange={(e) => setComment(e.target.value)} />
                 </div>
