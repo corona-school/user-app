@@ -1,12 +1,15 @@
-import { Flex, Spinner } from 'native-base';
+import { cn } from '@/lib/Tailwind';
+import { IconLoader2 } from '@tabler/icons-react';
 
-type Props = {};
+type Props = {
+    className?: string;
+};
 
-const CenterLoadingSpinner: React.FC<Props> = () => {
+const CenterLoadingSpinner: React.FC<Props> = ({ className }) => {
     return (
-        <Flex flex="1" h="100%" justifyContent="center" alignItems="center">
-            <Spinner />
-        </Flex>
+        <div className="flex flex-1 justify-center items-center">
+            <IconLoader2 className={cn('size-6 text-primary animate-spin', className)} />
+        </div>
     );
 };
 export default CenterLoadingSpinner;

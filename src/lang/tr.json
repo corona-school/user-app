@@ -33,7 +33,8 @@
         },
         "appointmentTile": {
             "lecture": "Ders #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "{{name}} tarafından iptal edildi"
         },
         "create": {
             "videoSelectOptions": {
@@ -93,7 +94,6 @@
             "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Saat ({{duration}} dakika)",
             "repeatDate": "{{appointmentCount}}. toplam {{appointmentsTotal}} üzerinden randevular",
-            "participants": "{{participantsTotal}} Teilnehmer:innen",
             "videochatButton": "Görüntülü sohbete şimdi katılın",
             "descriptionHeader": "Açıklama",
             "deleteButton": "Randevu sil",
@@ -101,7 +101,19 @@
             "editButton": "Randevu düzenleme",
             "canceledToast": "Randevu iptal edildi",
             "zoomTooltipStudent": "Bu bağlantıya tıklarsanız, toplantıya katılımcı olarak katılırsınız. Toplantıya ev sahibi olarak katılmak için \"Video sohbete şimdi katıl\" düğmesini kullanın.",
-            "zoomTooltipPupil": "Bu bağlantıyı asla başkalarıyla paylaşmayın. Platformun güvenliğini ancak bu şekilde garanti edebiliriz."
+            "zoomTooltipPupil": "Bu bağlantıyı asla başkalarıyla paylaşmayın. Platformun güvenliğini ancak bu şekilde garanti edebiliriz.",
+            "qrcode": {
+                "title": "Akıllı telefonunuzla giriş yapın",
+                "header": "Avantajlarınız",
+                "bp1": "Notların, ders kitabının veya çalışma sayfalarının fotoğraflarını çekin",
+                "bp2": "Doğrudan akıllı telefonunuzdan sohbet edin ve dosya gönderin",
+                "bp3": "Cihaz üzerinden bildirim alma",
+                "footer": "QR kodunu akıllı telefonunuzla taramanız yeterli"
+            },
+            "cancelledBy": "{{name}} bu randevuyu iptal etti",
+            "rescheduleButton": "Randevuyu ertele",
+            "rescheduleDescription": "Randevuyu ertelerseniz, {{name}} tekrar davet edilecektir.",
+            "participants": "{{participantsTotal}} Katılımcılar"
         },
         "zoomModal": {
             "useZoomApp": {
@@ -294,9 +306,9 @@
                     "max-dissolved-matches": "Bir öğrenim çifti talep edemezsiniz çünkü zaten çok fazla öğrenim çiftiniz olmuştur.",
                     "not-tutee": "Öğrenme desteği için kayıtlı olmadığınız için bir öğrenme çifti talep edemezsiniz.",
                     "max-requests": "Zaten bekleme listesindesiniz.",
-                    "max-matches": "Yüksek talep nedeniyle, aynı anda yalnızca bir öğrenim ortağınız olabilir. Öğrenim ortağınızla artık çalışmıyorsanız lütfen bağlantıyı iptal edin.",
                     "deactivated": "Bire bir öğrenme desteği için kayıtlar yoğun talep nedeniyle geçici olarak kapatılmıştır. Öğrenme desteği için daha önce talepte bulunduysanız, sonraki adımları görüşmek üzere yakın gelecekte sizinle e-posta yoluyla iletişime geçeceğiz. Bu arada, lütfen diğer tekliflerimizden yararlanmaktan çekinmeyin. ",
-                    "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır."
+                    "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır.",
+                    "max-matches": "Şu anda aynı anda en fazla 2 öğrenim ortağınız olabilir. Artık tüm öğrenim ortaklarıyla aktif olarak çalışmıyorsanız, en iyisi öğrenim çiftini feshetmektir."
                 }
             }
         },
@@ -688,7 +700,8 @@
             "description": "Açıklama",
             "lessons": "Dersler",
             "waitinglist": "Bekleme listesi",
-            "participant": "Katılımcılar"
+            "participant": "Katılımcılar",
+            "prospectParticipants": "İlgilenenler"
         },
         "courseInfo": {
             "grade": "Sınıf seviyesi ",
@@ -811,13 +824,22 @@
             "header": "Öğrencileri yedeklemek",
             "add": "Ekle",
             "amount": "Öğrenci sayısı",
-            "success": "Öğrenci başarıyla eklendi"
+            "success": "Öğrenci başarıyla eklendi",
+            "error": "Öğrenciler eklenemedi"
         },
         "removeParticipantFromCourseModal": {
             "header": "Öğrenciyi kurstan çıkarma",
             "remove": "Kaldırmak",
             "success": "Başarılı bir şekilde öğrenci kaldırıldı",
             "error": "Öğrenci:in kaldırılamadı"
+        },
+        "removeFromCourse": "Kurstan çıkarma",
+        "addToCourse": "Kursa ekle",
+        "prospectList": {
+            "toast": "Öğrenci kursa eklenmiştir.",
+            "error": "Öğrenci eklenemedi.",
+            "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok.",
+            "description": "Burada, sohbet yoluyla sizinle iletişime geçen ilgili tarafları görebilirsiniz."
         }
     },
     "settings": {
@@ -831,7 +853,8 @@
             "forStudents": "Yardımcılar için",
             "forPupils": "Öğrenciler için",
             "push": "Uygulama mesajları",
-            "faq": "SSS & İletişim"
+            "faq": "SSS & İletişim",
+            "manageSessions": "Cihazları yönetme"
         },
         "account": {
             "title": "Hesap",
@@ -1022,6 +1045,46 @@
                     "helpcenter": "Yardım bölümüne ",
                     "buttonText": "Tur sonu",
                     "buttonLinkText": "Turu tekrar izleyin"
+                }
+            },
+            "ethics": {
+                "welcome": {
+                    "title": "Etik standartlar",
+                    "content": "Lern-Fair Bu etik kılavuzu, sorumlu davranış için asgari gerekliliklere genel bir bakış sağlar ve öğrencilerle ilgilenirken özeleştirel düşünmeyi teşvik eder. Lütfen aşağıdaki noktaları dikkatle okuyun ve çalışmalarınızda bunları dikkate alın.",
+                    "startTour": "Tura başlayın"
+                },
+                "screen1": {
+                    "title": "Kişilerarası etkileşim",
+                    "header1": "Genel kullanım ve kabul",
+                    "content1": "Lern-Fair 'de güvenilirlik, saygı ve takdir ön plandadır. Yaşı, cinsiyeti, kökeni, kültürü, statüsü, yönelimi, ideolojisi veya dini ne olursa olsun herkes eşit olarak kabul edilir.",
+                    "header2": "Kısıtlama",
+                    "content2": "Farklı siyasi ve dini görüşlere saygı duyuyorum ve öğrencileri belirli bir yönde etkilemekten kaçınıyorum. Aynı zamanda, yasalarımızın ve demokratik değerlerimizin yanındayım ve hoşgörüden yanayım ve ayrımcılığa karşıyım."
+                },
+                "screen2": {
+                    "title": "Güvenlik",
+                    "header1": "Reşit olmayanlarla çalışma",
+                    "content1": "Reşit olmayanların refahı benim en önemli önceliğimdir. Güvenli ve güvenilir bir ortam yaratmak için her zaman mesafeyi korur, kişisel sınırlara ve öğrencilerin mahremiyetine saygı gösteririm. İhmal veya şiddet şüphesi durumunda, web sitemiz danışmanlık hizmetleri sunmaktadır.",
+                    "header2": "Gizlilik ve veri koruma",
+                    "content2": "Tüm veri ve bilgiler gizli tutulmalıdır. Kişisel veriler özel olarak bile aktarılamaz. Erişim verileri ve görüntülü sohbet bağlantıları üçüncü taraflarla paylaşılmaz."
+                },
+                "screen3": {
+                    "title": "Davranışsal kılavuzlar",
+                    "header1": "Öz bakım",
+                    "content1": "İş yükümü gerçekçi bir şekilde değerlendiriyorum ve çok zorlayıcı olması halinde iş yükümü ayarlıyorum. Lern-Fair Ekip beni desteklemek için orada.",
+                    "header2": "Gönüllülük",
+                    "content2": "İşbirliği gönüllülük esasına dayanır ve herhangi bir zamanda sonlandırılabilir, uyarlanabilir veya değiştirilebilir."
+                },
+                "screen4": {
+                    "title": "Pedagojik ve mesleki uzmanlık",
+                    "header1": "Yardımlar",
+                    "content1": "Öğrencileri mümkün olan en iyi şekilde desteklemek için eylemlerimi, mesleki ve medya becerilerimi bilinçli olarak gözden geçiririm. Gerekirse, kullanıcı alanından ipuçları ve pedagojik destek ararım.",
+                    "header2": "Şeffaflık",
+                    "content2": "Desteğimin niteliği ve kapsamı hakkında açık bir şekilde iletişim kurarım. Zaman, teknik veya başka nedenlerle bunu sağlayamayacaksam, öğrencileri zamanında bilgilendiririm."
+                },
+                "screen5": {
+                    "title": "Sorular, şikayetler ve ihlallerle ilgilenmek",
+                    "content1": "Lern-Fair Etik kuralların ihlal edilmesi durumunda alınacak önlemlere e.V. Yönetim Kurulu karar verir. Bazı durumlarda bu, bir gerekçeyle birlikte bildirilecek olan projeden çıkarılma anlamına gelebilir.lern-fair Sorular, şikayetler veya ihlal raporları support@ .de adresine e-posta ile gönderilebilir.",
+                    "checkboxText": "Etik kuralları dikkatlice okudum ve bunlara uymayı kabul ediyorum."
                 }
             }
         },
@@ -1277,7 +1340,7 @@
             "ctaCardHeader": "Grup kursları",
             "ctaCardContent": "Almanca, Matematik, İngilizce konularında çeşitli konularda kurslar ...",
             "ctaCardButton": "Grup kurslarına dön",
-            "firstContent": "Özel derslerde, sizi boş zamanlarında size yardımcı olacak bir gönüllüyle eşleştiriyoruz."
+            "firstContent": "İki tür özel ders sunuyoruz: Günlük, açık ev ödevi yardımı ve 1:1 öğrenme desteği. 1:1 öğrenme desteğinde, bir kişi boş zamanlarında ev ödevi, sınav hazırlığı ve tartışmak istediğiniz diğer her konuda size ücretsiz olarak yardımcı olur."
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
@@ -1602,6 +1665,11 @@
             "startMeeting": "Toplantıya başlayın",
             "browser": "Tarayıcıda devam et",
             "zoomClient": "Yakınlaştırmada Aç"
+        },
+        "volunteering": {
+            "title": "Onur kanıtı",
+            "text": "Faaliyetinizi istediğiniz zaman onaylatabilir ve ardından sertifikayı indirebilirsiniz.",
+            "button": "Sertifikalara"
         }
     },
     "course": {
@@ -1935,7 +2003,8 @@
         "placeholder": "Bir şeyler yaz.",
         "chatError": "Sohbet açılamıyor.",
         "groupChatError": "Grup sohbeti açılamıyor.",
-        "announcementChatError": "Duyuru sohbeti açılamıyor."
+        "announcementChatError": "Duyuru sohbeti açılamıyor.",
+        "openChat": "Açık sohbet"
     },
     "introduction": {
         "courseTypes": {
@@ -2005,7 +2074,23 @@
             "appointments": "Tarihler",
             "chat": "sohbet",
             "forStudents": "Yardımcılar için",
-            "forPupils": "Öğrenciler için"
+            "forPupils": "Öğrenciler için",
+            "requestMatch": "Yeni bir öğrenme çifti oluşturun",
+            "createCourse": "Kurslar oluşturun",
+            "createAppointment": "Randevu oluştur",
+            "editAppointment": "Randevu düzenleme",
+            "settings": "Ayarlar",
+            "notifications": "Bildirimler",
+            "systemNotifications": "Sistem bildirimleri",
+            "newsletterNotifications": "Bülten bildirimleri",
+            "profile": "Profil",
+            "manageSessions": "Cihazları yönetme",
+            "helpCenter": "Yardım alanı",
+            "newEmail": "E-posta değiştir",
+            "newPassword": "Şifre değiştirme",
+            "install": "Lern-Fair Uygulama",
+            "progress": "Başarılar ve ilerleme",
+            "editCourse": "Kursu düzenle"
         }
     },
     "screening": {
@@ -2088,7 +2173,12 @@
         "certificateOfConduct": "İyi hal belgesi",
         "certificateOfConductWasProvided": "İyi hal belgesi ibraz edilmiştir",
         "certificateOfConductWasNotProvided": "İyi hal belgesi henüz teslim edilmemiştir",
-        "comment": "Yorum"
+        "comment": "Yorum",
+        "errors": {
+            "grade_missing": "Lütfen bir okul sınıfı seçin.",
+            "language_missing": "Lütfen en az 1 dil ekleyin.",
+            "subjects_missing": "Lütfen en az 1 okul dersi ekleyin."
+        }
     },
     "achievement": {
         "empty_state": {
@@ -2232,9 +2322,10 @@
     "requireScreening": {
         "pupil": {
             "noScreening": {
-                "title": "Lütfen randevu alın, {{firstname}}!",
-                "content": "Lern-Fair tarafından sunulan hizmetleri kullanmadan önce sizi tanımak isteriz. Zoom görüşmesi için lütfen randevu alın.",
-                "makeAppointment": "Randevu alın"
+                "makeAppointment": "Randevu alın",
+                "title": "Hoş geldin, {{firstname}}! 👋 Yakında birbirimizi tanıyacağız 🤗",
+                "content": "Sizi, {{firstname}}, uygun bir yardımcı ile şimdi temasa geçirebilmemiz için, sizinle 15 dakikalık bir video görüşmesi yapmak istiyoruz. Görüşme Almanca dilinde yapılacaktır.\n Takvimden bir randevu seçebilirsiniz ve randevu onaylandıktan sonra {{email}} adresine bir e-posta alacaksınız. Randevuyu istediğiniz zaman değiştirebilir veya iptal edebilirsiniz. Lern-Fair- Telefon görüşmesi sırasında, mevcut zorluklarınız hakkında konuşacağız ve açıklayacağız. Yalnız veya ebeveynlerinizle gelebilirsiniz. Almancanız iyi değilse endişelenmeyin, yine de telefon görüşmesi yapabiliriz. Hiçbir koşulda görüntülü arama yapmak istemiyorsanız, lütfen iletişime geçin ve başka bir çözüm bulalım.",
+                "footer": "Kendinize güveniniz yok mu? Almanca bilmiyor musunuz? Ya da başka sorularınız mı var? O zaman bizimle iletişime geçin"
             },
             "hasScreening": {
                 "title": "Lütfen biraz bekleyin",
@@ -2362,6 +2453,47 @@
         "installTitle": "Lern-Fair Kurulum",
         "installDescription": "Oturum açmadan sohbetlere ve randevulara daha hızlı erişim için",
         "installButton": "Kurulum",
-        "iOSInstallInstructions": "<0/> ve ardından <1/> \"Ana Ekrana Ekle\"ye dokunun"
-    }
+        "page": {
+            "pros": {
+                "list": [
+                    "Uygulama daha hızlı yüklenir, verileri kaydeder ve bildirimleri doğrudan cihazınıza gönderir. Böylece hiçbir sohbeti veya randevuyu kaçırmazsınız ve artık her seferinde oturum açmanız gerekmez.",
+                    "Uygulamayı farklı cihazlara yükleyebilirsiniz, böylece hem ebeveynler hem de öğrenciler sohbet ve randevu hatırlatıcılarına erişebilir."
+                ],
+                "title": "Avantajlar"
+            },
+            "installationDetails": {
+                "list": [
+                    "Uygulama, App Store olmadan doğrudan bu tarayıcıdan yüklenebilir.",
+                    "Aşağıdaki tarayıcılar desteklenmektedir: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) ve macOS (Chrome).",
+                    "\"Uygulamayı yükle\" düğmesine tıklayın ve talimatları izleyin."
+                ],
+                "title": "Kurulum"
+            },
+            "title": "Lern-Fair Uygulama",
+            "description": "Lern-Fair Sohbetlere ve randevulara her zaman erişebilmek için uygulamayı tüm cihazlarınıza indirin.",
+            "install": "Uygulamayı yükleyin",
+            "not-supported": "Ne yazık ki, uygulamanın bu cihaza yüklenmesi desteklenmiyor.",
+            "installed": "Uygulama zaten yüklü."
+        },
+        "iOSInstallInstructions": {
+            "title": "Uygulamayı yükleyin",
+            "steps": {
+                "first": "Tarayıcının üst veya alt kısmındaki <0/>'ya tıklayın",
+                "second": "<0/>'yı seçin \"Ana ekrana git\""
+            }
+        }
+    },
+    "show": "Ekran",
+    "showMore": "Daha fazla göster",
+    "showLess": "Daha az göster",
+    "sessionManager": {
+        "title": "Cihazları yönetme",
+        "description": "Burada hesabınıza bağlı olan tüm cihazları görebilirsiniz. Artık kullanmadığınız cihazları kaldırabilirsiniz.",
+        "lastUsed": "Son kullanılan:",
+        "toast": "Cihaz başarıyla kaldırıldı",
+        "thisDevice": "Bu cihaz",
+        "unknownDevice": "Bilinmeyen cihaz",
+        "deviceOnOs": "üzerinde"
+    },
+    "changesWereSaved": "Değişiklikler kaydedildi"
 }

@@ -80,12 +80,14 @@ query SingleMatchAppointments_NO_CACHE($matchId: Int!, $take: Float!, $skip: Flo
             isOrganizer
             isParticipant
             override_meeting_link
+            declinedBy
             organizers(skip: 0, take: 5) {
                 id
                 firstname
                 lastname
             }
             participants(skip: 0, take: 10) {
+                userID
                 id
                 firstname
                 lastname
@@ -258,7 +260,6 @@ const SingleMatch = () => {
         <AsNavigationItem path="matching">
             <WithNavigation
                 headerTitle={''}
-                showBack={!createAppointment}
                 previousFallbackRoute="/matching"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
@@ -367,9 +368,7 @@ const SingleMatch = () => {
                     }}
                     onPressBack={() => setShowDissolveModal(false)}
                 />
-                {data?.match.id && (
-                    <AdHocMeetingModal showAdHocModal={showAdHocMeetingModal} matchId={data?.match.id} onPressBack={() => setShowAdHocMeetingModal(false)} />
-                )}
+                {data?.match.id && <AdHocMeetingModal onOpenChange={setShowAdHocMeetingModal} isOpen={showAdHocMeetingModal} matchId={data?.match.id} />}
                 {data && data.match.pupil.firstname && data.match.student.firstname && (
                     <ReportMatchModal
                         matchName={userType === 'student' ? data.match.pupil.firstname : data.match.student.firstname}

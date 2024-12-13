@@ -1,8 +1,11 @@
-import { Text, Modal, Button, Stack, VStack, Box, useBreakpointValue } from 'native-base';
+import { Button } from '@/components/Button';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Typography } from '@/components/Typography';
+import { cn } from '@/lib/Tailwind';
 import { useTranslation } from 'react-i18next';
 import { NextStepLabelType, getNextStepIcon } from '../../../helper/important-information-helper';
 
-type Props = {
+interface NextStepModalProps extends BaseModalProps {
     header?: string;
     title: string;
     description: string;
@@ -10,70 +13,50 @@ type Props = {
         label: string;
         btnfn: (() => void) | null;
     }[];
-    isOpen?: boolean;
     label?: NextStepLabelType;
-    onClose: () => any;
-};
+}
 
-const NextStepModal: React.FC<Props> = ({ header, title, description, buttons, isOpen, label, onClose }) => {
+const NextStepModal = ({ header, title, description, buttons, isOpen, label, onOpenChange }: NextStepModalProps) => {
     const { t } = useTranslation();
     const NextStepIcon = label ? getNextStepIcon(label) : getNextStepIcon(NextStepLabelType.DEFAULT);
 
-    const modalHeight = useBreakpointValue({ base: '100vh', md: 'auto' });
-    const modalWidth = useBreakpointValue({ base: '100vw', md: '530px' });
-    const modalBorderRadius = useBreakpointValue({ base: '0', md: '8px' });
-
-    const iconTextDir = useBreakpointValue({ base: 'column', md: 'row' });
-    const iconTextAllign = useBreakpointValue({ base: 'center', md: 'flex-start' });
-    const iconScale = useBreakpointValue({ base: 2, md: 1 });
-    const iconPadding = useBreakpointValue({ base: '32px', md: '0' });
-
-    const justifyContent = useBreakpointValue({ base: 'space-between', md: 'flex-start' });
-
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <Modal.Content height={modalHeight} maxHeight="unset" width={modalWidth} maxWidth="unset" padding={6} marginY={0} borderRadius={modalBorderRadius}>
-                <Modal.CloseButton />
-                <VStack height="100%" space={6} justifyContent={justifyContent}>
-                    <VStack space={6}>
-                        <Stack space={6} paddingX={6} paddingTop={6} direction={iconTextDir} alignItems={iconTextAllign}>
-                            <Box style={{ transform: [{ scale: iconScale }] }} paddingY={iconPadding}>
-                                <NextStepIcon />
-                            </Box>
-                            <VStack alignItems={iconTextAllign} flexShrink="1">
-                                {header && <Text fontSize="14px">{header}</Text>}
-                                <Text fontSize="20px" bold flexWrap="wrap">
-                                    {title}
-                                </Text>
-                            </VStack>
-                        </Stack>
-                        <Box>
-                            <Text>{description}</Text>
-                        </Box>
-                    </VStack>
-                    <Box>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalHeader>
+                <ModalTitle>{title}</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col">
+                <div className="flex flex-col items-center">
+                    <div>
+                        <NextStepIcon />
+                    </div>
+                    <Typography>{description}</Typography>
+                </div>
+                <ModalFooter>
+                    <div className="flex-1 w-full flex flex-col gap-2 mt-4">
                         {buttons && (
-                            <Stack space={4} width="100%" direction={buttons.length > 1 ? 'row' : 'column'} flexWrap="wrap">
+                            <div className={cn('flex w-full flex-wrap gap-2', buttons.length > 1 ? 'flex-row' : 'flex-col')}>
                                 {buttons?.map((btn, idx) => (
-                                    <Button
-                                        variant={idx === 0 ? 'solid' : 'outline'}
-                                        onPress={() => {
-                                            btn.btnfn && btn.btnfn();
-                                        }}
-                                        flexGrow={1}
-                                        marginBottom="16px"
-                                    >
-                                        {btn.label}
-                                    </Button>
+                                    <div className="flex-1">
+                                        <Button
+                                            variant={idx === 0 ? 'default' : 'outline'}
+                                            onClick={() => {
+                                                btn.btnfn && btn.btnfn();
+                                            }}
+                                            className="w-full"
+                                        >
+                                            {btn.label}
+                                        </Button>
+                                    </div>
                                 ))}
-                            </Stack>
+                            </div>
                         )}
-                        <Button onPress={onClose} width="100%" variant="outline">
+                        <Button className="w-full" onClick={() => onOpenChange(false)} variant="outline">
                             {t('cancel')}
                         </Button>
-                    </Box>
-                </VStack>
-            </Modal.Content>
+                    </div>
+                </ModalFooter>
+            </div>
         </Modal>
     );
 };

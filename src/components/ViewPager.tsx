@@ -7,7 +7,7 @@ import LfPrev from '../assets/icons/lernfair/lf-back.svg';
 import LfNext from '../assets/icons/lernfair/lf-next.svg';
 
 type Props = {
-    children: ReactNode | ReactNode[];
+    children: ReactNode[];
     onSkip?: () => any;
     onPrev?: (currentIndex: number) => any;
     onNext?: (currentIndex: number) => any;
@@ -15,6 +15,7 @@ type Props = {
     isOnboarding?: boolean;
     onFinish?: () => any;
     showNavigation?: boolean;
+    hideNextOnLast?: boolean;
 };
 
 export type IViewPagerContext = {
@@ -37,6 +38,7 @@ const ViewPager: React.FC<Props> = ({
     isOnboarding,
     onFinish,
     showNavigation = true,
+    hideNextOnLast = false,
 }) => {
     const navigate = useNavigate();
 
@@ -74,6 +76,7 @@ const ViewPager: React.FC<Props> = ({
                             alignItems="center"
                             justifyContent={'space-between'}
                         >
+                            {/* PREV BUTTON */}
                             <Pressable
                                 onPress={() => {
                                     let i = currentIndex > 0 ? currentIndex - 1 : loop ? (isMultiple && children?.length - 1) || 0 : 0;
@@ -107,34 +110,39 @@ const ViewPager: React.FC<Props> = ({
                                     </Link>
                                 </Box>
                             )}
-                            <Pressable
-                                onPress={() => {
-                                    let i = currentIndex < (isMultiple && children?.length - 1) ? currentIndex + 1 : loop ? 0 : currentIndex;
-                                    setCurrentIndex(i);
+                            {/* NEXT BUTTON */}
+                            {hideNextOnLast && currentIndex + 1 === children?.length ? (
+                                <></>
+                            ) : (
+                                <Pressable
+                                    onPress={() => {
+                                        let i = currentIndex < (isMultiple && children?.length - 1) ? currentIndex + 1 : loop ? 0 : currentIndex;
+                                        setCurrentIndex(i);
 
-                                    if (isMultiple) {
-                                        if (currentIndex + 1 === children?.length) {
-                                            onFinish && onFinish();
+                                        if (isMultiple) {
+                                            if (currentIndex + 1 === children?.length) {
+                                                onFinish && onFinish();
+                                            } else {
+                                                onNext && onNext(i);
+                                            }
                                         } else {
-                                            onNext && onNext(i);
+                                            onFinish && onFinish();
                                         }
-                                    } else {
-                                        onFinish && onFinish();
-                                    }
-                                }}
-                            >
-                                <Box
-                                    width="32px"
-                                    height="32px"
-                                    padding="6px"
-                                    backgroundColor="primary.100"
-                                    justifyContent="center"
-                                    alignItems="center"
-                                    borderRadius="50%"
+                                    }}
                                 >
-                                    <LfNext />
-                                </Box>
-                            </Pressable>
+                                    <Box
+                                        width="32px"
+                                        height="32px"
+                                        padding="6px"
+                                        backgroundColor="primary.100"
+                                        justifyContent="center"
+                                        alignItems="center"
+                                        borderRadius="50%"
+                                    >
+                                        <LfNext />
+                                    </Box>
+                                </Pressable>
+                            )}
                         </Box>
                     </Row>
                 )}

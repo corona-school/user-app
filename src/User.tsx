@@ -31,6 +31,16 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
             return <RequireScreeningModal />;
         }
 
+        // Require the ethics onboarding for newly-screened students
+        if (
+            !location.pathname.startsWith('/onboarding/ethics/') &&
+            user &&
+            user.student &&
+            user.student.hasDoneEthicsOnboarding === false /* Important to write it like this, as a null value must not to trigger this redirect */
+        ) {
+            return <Navigate to="/onboarding/ethics/welcome" replace />;
+        }
+
         return children;
     }
 

@@ -11,6 +11,7 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Outlet, useNavigate, useMatch, useSearchParams } from 'react-router-dom';
 import { getAllPreferencesInCategorySetToValue } from '../../helper/notification-helper';
 import { marketingNotificationCategories } from '../../helper/notification-preferences';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const channels = ['email', 'push'];
 
@@ -64,7 +65,6 @@ const NotificationControlPanel = () => {
     return (
         <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreferences, ...rest, channels }}>
             <WithNavigation
-                showBack={isMobileSM}
                 hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('notification.controlPanel.title')}
@@ -77,7 +77,8 @@ const NotificationControlPanel = () => {
                     )
                 }
             >
-                <View py={5}>
+                <View>
+                    <Breadcrumb />
                     {!isMobile && (
                         <Column space={space['1']} marginBottom={space['2']} ml={3}>
                             <Heading>{t('notification.controlPanel.title')}</Heading>

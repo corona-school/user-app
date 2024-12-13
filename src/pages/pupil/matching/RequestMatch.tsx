@@ -15,6 +15,7 @@ import Priority from './Priority';
 import Subjects from './Subjects';
 import UpdateData from './UpdateData';
 import SwitchLanguageButton from '../../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const query = gql(`
     query PupilMatchRequestInfo {
@@ -129,7 +130,6 @@ const RequestMatch: React.FC = () => {
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
-                showBack
                 previousFallbackRoute="/matching"
                 isLoading={loading || isLoading}
                 headerLeft={
@@ -155,7 +155,8 @@ const RequestMatch: React.FC = () => {
                     }}
                 >
                     {!loading && !isLoading && data && (
-                        <Box paddingX={space['1']} paddingBottom={space['1']} pt={6}>
+                        <Box paddingX={space['1']} paddingBottom={space['1']}>
+                            <Breadcrumb />
                             {currentIndex === 0 && <Filter />}
                             {currentIndex === 1 && (
                                 <UpdateData

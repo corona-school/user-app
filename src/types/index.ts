@@ -63,7 +63,16 @@ export type SubcourseForScreening = Pick<Subcourse, 'id' | 'published'> & {
 
 export type StudentForScreening = Pick<
     Student,
-    'active' | 'id' | 'email' | 'firstname' | 'lastname' | 'createdAt' | 'subjectsFormatted' | 'languages' | 'certificateOfConductDeactivationDate'
+    | 'active'
+    | 'id'
+    | 'email'
+    | 'firstname'
+    | 'lastname'
+    | 'createdAt'
+    | 'subjectsFormatted'
+    | 'languages'
+    | 'certificateOfConductDeactivationDate'
+    | 'hasDoneEthicsOnboarding'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];

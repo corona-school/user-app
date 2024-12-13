@@ -13,8 +13,6 @@ declare namespace NodeJS {
         // Matomo API Key
         readonly REACT_APP_MATOMO_URL: string;
         readonly REACT_APP_DISABLE_MATOMO?: 'true';
-        // Unsplash API Key
-        readonly REACT_APP_UNSPLASH: string;
         // URL for student screenings
         readonly REACT_APP_SCREENING_URL: string;
         // URL for pupil screenings
@@ -42,6 +40,9 @@ declare interface Window {
         readonly RUNTIME_SERVICE_WORKER_ACTIVE?: 'true' | 'false';
         readonly RUNTIME_PROMOTE_APP_BANNER_ACTIVE?: 'true' | 'false';
         readonly RUNTIME_SCHOOL_SEARCH_ACTIVE?: 'true' | 'false';
+        readonly RUNTIME_PUPIL_FIRST_SCREENING_URL: string;
+        readonly RUNTIME_PUPIL_SCREENING_URL: string;
+        readonly RUNTIME_SCREENING_URL: string;
 
         readonly RUNTIME_WEBPUSH_ROLLOUT_RATIO?: string;
     };

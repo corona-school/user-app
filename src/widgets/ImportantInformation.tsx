@@ -191,8 +191,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
         // -------- Screening -----------
         if (
-            student?.canRequestMatch?.reason === 'not-screened' ||
-            student?.canCreateCourse?.reason === 'not-screened' ||
+            (student?.canCreateCourse?.reason === 'not-screened' && student?.canRequestMatch?.reason === 'not-screened') ||
+            (student?.canCreateCourse?.reason === 'not-instructor' && student?.canRequestMatch?.reason === 'not-screened') ||
+            (student?.canCreateCourse?.reason === 'not-screened' && student.canRequestMatch?.reason === 'not-tutor') ||
             (student?.canCreateCourse?.reason === 'not-instructor' && student.canRequestMatch?.reason === 'not-tutor')
         ) {
             const student_url = createStudentScreeningLink({
@@ -370,7 +371,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     description={t(`helperwizard.${selectedInformation.label}.content` as unknown as TemplateStringsArray, selectedInformation.lang)}
                     isOpen={selectedInformation !== undefined}
                     label={selectedInformation.label}
-                    onClose={() => setSelectedInformation(undefined)}
+                    onOpenChange={() => setSelectedInformation(undefined)}
                     buttons={
                         selectedInformation.btnfn?.length > 0
                             ? selectedInformation.btntxt?.map((txt, index) => ({

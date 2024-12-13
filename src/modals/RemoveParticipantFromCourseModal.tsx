@@ -55,14 +55,12 @@ const RemoveParticipantFromCourseModal = ({ isOpen, onOpenChange, subcourseId, p
                     </div>
                 )}
                 <ModalFooter>
-                    <div className="flex flex-row gap-4">
-                        <Button variant="destructive" isLoading={isRemoving} onClick={handleOnRemoveParticipant}>
-                            {t('single.removeParticipantFromCourseModal.remove')}
-                        </Button>
-                        <Button variant="outline" onClick={() => onOpenChange(false)}>
-                            {t('cancel')}
-                        </Button>
-                    </div>
+                    <Button className="w-full lg:w-fit" variant="destructive" isLoading={isRemoving} onClick={handleOnRemoveParticipant}>
+                        {t('single.removeParticipantFromCourseModal.remove')}
+                    </Button>
+                    <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                        {t('cancel')}
+                    </Button>
                 </ModalFooter>
             </Modal>
         </>

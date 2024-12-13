@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, Stack, Button, useBreakpointValue } from 'native-base';
+import { Heading, useTheme, VStack, Stack, Button, useBreakpointValue } from 'native-base';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
@@ -20,6 +20,9 @@ import { Course_Category_Enum } from '../../gql/graphql';
 import { Subcourse } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import TruncatedText from '@/components/TruncatedText';
+import { Typography } from '@/components/Typography';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -66,7 +69,7 @@ const StudentGroup: React.FC = () => {
                     }
                 }
 
-                subcoursesPublic(take: 20) {
+                subcoursesPublic(take: 50) {
                     id
                     published
                     cancelled
@@ -116,6 +119,11 @@ const StudentGroup: React.FC = () => {
     const ContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['containerWidth'],
+    });
+
+    const ContentContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['contentContainerWidth'],
     });
 
     const ButtonContainer = useBreakpointValue({
@@ -195,13 +203,16 @@ const StudentGroup: React.FC = () => {
                 }
             >
                 <VStack paddingX={space['1']} marginX="auto" marginBottom={space['1']} maxWidth={ContainerWidth} width="100%">
+                    <Breadcrumb />
                     {loading && <CenterLoadingSpinner />}
 
                     {!loading && (
                         <VStack space={space['1']}>
-                            <VStack space={space['0.5']}>
+                            <VStack space={space['0.5']} alignItems={'flex-start'} maxWidth={ContentContainerWidth}>
                                 <Heading>{t('matching.group.helper.title')}</Heading>
-                                <Text>{t('matching.group.helper.content')}</Text>
+                                <TruncatedText asChild maxLines={2}>
+                                    <Typography>{t('matching.group.helper.content')}</Typography>
+                                </TruncatedText>
                             </VStack>
                             <VStack>
                                 {locState && Object.keys(locState).length > 0 && (

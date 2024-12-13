@@ -1,23 +1,20 @@
-import { Button, Modal, Stack, Text, useBreakpointValue, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import { useState } from 'react';
 import { ZoomInfoOptions } from './ZoomMeetingModal';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
 
-type ModalProps = {
+interface ModalProps extends BaseModalProps {
     matchId: number;
-    showAdHocModal: boolean;
-    onPressBack: () => void;
-};
+}
 
-const AdHocMeetingModal: React.FC<ModalProps> = ({ showAdHocModal, onPressBack, matchId }) => {
+const AdHocMeetingModal = ({ isOpen, onOpenChange, matchId }: ModalProps) => {
     const { t } = useTranslation();
-    const { space } = useTheme();
     const navigate = useNavigate();
-    const { isMobile } = useLayoutHelper();
     const [isBrowserMeeting, setIsBrowserMeeting] = useState(true);
     const [createAdHocMeeting, { loading: isCreatingMeeting }] = useMutation(
         gql(`
@@ -52,16 +49,11 @@ const AdHocMeetingModal: React.FC<ModalProps> = ({ showAdHocModal, onPressBack, 
         return { appointmentId, appointmentType, zoomUrl };
     };
 
-    const minWidth = useBreakpointValue({
-        base: '350px',
-        lg: '680px',
-    });
-
     const handleOnBrowser = async () => {
         setIsBrowserMeeting(true);
         const response = await createMeeting();
         if (response) {
-            navigate(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
+            window.open(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
         }
     };
 
@@ -71,7 +63,7 @@ const AdHocMeetingModal: React.FC<ModalProps> = ({ showAdHocModal, onPressBack, 
         if (response.zoomUrl) {
             window.open(response.zoomUrl, '_self');
         } else {
-            navigate(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
+            window.open(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
         }
     };
 
@@ -79,38 +71,28 @@ const AdHocMeetingModal: React.FC<ModalProps> = ({ showAdHocModal, onPressBack, 
     const isLoadingZoomClientMeeting = isCreatingMeeting && !isBrowserMeeting;
 
     return (
-        <Modal isOpen={showAdHocModal} onClose={onPressBack}>
-            <Modal.Content minW={minWidth}>
-                <Modal.CloseButton />
-                <>
-                    <Modal.Header>{t('matching.adHocMeeting.title')}</Modal.Header>
-                    <Modal.Body justifyContent="center" py={4}>
-                        <Text p={space['0.5']}>{t('matching.adHocMeeting.infoText')}</Text>
-                        <ZoomInfoOptions />
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Stack space={isMobile ? space['0.5'] : space['1']} direction={isMobile ? 'column' : 'row'} width="full" justifyContent="center">
-                            <Button
-                                width={['100%', '100%', '46%']}
-                                variant="outline"
-                                onPress={handleOnBrowser}
-                                isLoading={isLoadingBrowserMeeting}
-                                isDisabled={isLoadingZoomClientMeeting}
-                            >
-                                {t('matching.adHocMeeting.browser')}
-                            </Button>
-                            <Button
-                                width={['100%', '100%', '46%']}
-                                isDisabled={isLoadingBrowserMeeting}
-                                onPress={handleOnZoomClient}
-                                isLoading={isLoadingZoomClientMeeting}
-                            >
-                                {t('matching.adHocMeeting.zoomClient')}
-                            </Button>
-                        </Stack>
-                    </Modal.Footer>
-                </>
-            </Modal.Content>
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen}>
+            <ModalHeader>
+                <ModalTitle>{t('matching.adHocMeeting.title')}</ModalTitle>
+            </ModalHeader>
+            <div>
+                <Typography className="mb-4">{t('matching.adHocMeeting.infoText')}</Typography>
+                <ZoomInfoOptions />
+            </div>
+            <ModalFooter>
+                <Button
+                    className="w-full"
+                    variant="outline"
+                    onClick={handleOnBrowser}
+                    isLoading={isLoadingBrowserMeeting}
+                    disabled={isLoadingZoomClientMeeting}
+                >
+                    {t('matching.adHocMeeting.browser')}
+                </Button>
+                <Button className="w-full" disabled={isLoadingBrowserMeeting} onClick={handleOnZoomClient} isLoading={isLoadingZoomClientMeeting}>
+                    {t('matching.adHocMeeting.zoomClient')}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 };

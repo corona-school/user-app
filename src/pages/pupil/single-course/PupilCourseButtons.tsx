@@ -1,18 +1,18 @@
 import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
-import { Button, Modal, Stack, useTheme, useToast } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
-import { useLayoutHelper } from '../../../hooks/useLayoutHelper';
-import CourseConfirmationModal from '../../../modals/CourseConfirmationModal';
+import ConfirmationModal from '../../../modals/ConfirmationModal';
 import { getTrafficStatus } from '../../../Utility';
 import WaitinglistBanner from '../../../widgets/WaitinglistBanner';
-import AlertMessage from '../../../widgets/AlertMessage';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import { gql } from '../../../gql';
 import VideoButton from '../../../components/VideoButton';
 import { useNavigate } from 'react-router-dom';
-import DisableableButton from '../../../components/DisablebleButton';
+import { Button } from '@/components/Button';
+import { IconMessage2, IconInfoCircleFilled } from '@tabler/icons-react';
+import { toast } from 'sonner';
+import { Alert } from '@/components/Alert';
 
 type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
@@ -46,15 +46,12 @@ query GetCourseConversationId($subcourseId: Int!, $isParticipant: Boolean!) {
 `);
 
 const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, isActiveSubcourse }) => {
-    const [signInModal, setSignInModal] = useState<boolean>(false);
-    const [signOutModal, setSignOutModal] = useState<boolean>(false);
-    const [joinWaitinglistModal, setJoinWaitinglistModal] = useState<boolean>(false);
-    const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState<boolean>(false);
+    const [signInModal, setSignInModal] = useState(false);
+    const [signOutModal, setSignOutModal] = useState(false);
+    const [joinWaitinglistModal, setJoinWaitinglistModal] = useState(false);
+    const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState(false);
 
     const { t } = useTranslation();
-    const { space } = useTheme();
-    const { isMobile } = useLayoutHelper();
-    const toast = useToast();
     const navigate = useNavigate();
 
     const [joinSubcourse, { loading: loadingSubcourseJoined, data: joinedSubcourse }] = useMutation(
@@ -116,24 +113,24 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
     );
 
     async function contactInstructorAsParticipant() {
-        const conversation = await chatCreateForSubcourse({
-            variables: { subcourseId: subcourse.id, memberUserId: `student/${subcourse.instructors[0].id}` },
-        });
-        if (conversation) {
+        try {
+            const conversation = await chatCreateForSubcourse({
+                variables: { subcourseId: subcourse.id, memberUserId: `student/${subcourse.instructors[0].id}` },
+            });
             navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
-        } else {
-            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        } catch (error) {
+            toast.error(t('chat.chatError'));
         }
     }
 
     async function contactInstructorAsProspect() {
-        const conversation = await chatCreateAsProspect({
-            variables: { subcourseId: subcourse.id, instructorUserId: `student/${subcourse.instructors[0].id}` },
-        });
-        if (conversation) {
+        try {
+            const conversation = await chatCreateAsProspect({
+                variables: { subcourseId: subcourse.id, instructorUserId: `student/${subcourse.instructors[0].id}` },
+            });
             navigate('/chat', { state: { conversationId: conversation?.data?.prospectChatCreate } });
-        } else {
-            toast.show({ description: t('chat.chatError'), placement: 'top' });
+        } catch (error) {
+            toast.error(t('chat.chatError'));
         }
     }
 
@@ -147,28 +144,28 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
         setSignInModal(false);
         try {
             await joinSubcourse();
-            toast.show({ description: t('single.signIn.toast'), placement: 'top' });
+            toast.success(t('single.signIn.toast'));
         } catch (e) {
-            toast.show({ description: t('single.signIn.error'), placement: 'top' });
+            toast.error(t('single.signIn.error'));
         }
     }, []);
 
     const handleCourseLeave = useCallback(async () => {
         setSignOutModal(false);
-        leaveSubcourse();
-        toast.show({ description: t('single.leave.toast'), placement: 'top' });
+        await leaveSubcourse();
+        toast.success(t('single.leave.toast'));
     }, []);
 
-    const handleJoinWaitinglist = useCallback(() => {
-        joinWaitinglist();
+    const handleJoinWaitinglist = useCallback(async () => {
         setJoinWaitinglistModal(false);
-        toast.show({ description: t('single.joinWaitinglist.toast'), placement: 'top' });
+        await joinWaitinglist();
+        toast.success(t('single.joinWaitinglist.toast'));
     }, []);
 
     const handleWaitinglistLeave = useCallback(async () => {
-        leaveWaitinglist();
         setLeaveWaitingslistModal(false);
-        toast.show({ description: t('single.leaveWaitinglist.toast'), placement: 'top' });
+        await leaveWaitinglist();
+        toast.success(t('single.leaveWaitinglist.toast'));
     }, []);
 
     const courseTrafficStatus = useMemo(
@@ -185,16 +182,22 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
     const appointment = subcourse.appointments[0];
     return (
         <>
-            <Stack direction={isMobile ? 'column' : 'row'} mb="5" space={isMobile ? space['1'] : space['2']}>
+            {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
+                <Alert className="w-full md:w-fit" icon={<IconInfoCircleFilled />}>
+                    {t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)}
+                </Alert>
+            )}
+            <div className="flex flex-col items-stretch lg:items-center gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap lg:w-1/2">
                 {!subcourse.isParticipant && subcourse.canJoin?.allowed && (
-                    <DisableableButton isDisabled={loadingSubcourseJoined} reasonDisabled={t('reasonsDisabled.loading')} onPress={() => setSignInModal(true)}>
+                    <Button
+                        disabled={loadingSubcourseJoined}
+                        reasonDisabled={t('reasonsDisabled.loading')}
+                        onClick={() => setSignInModal(true)}
+                        className="w-full  md:w-fit"
+                    >
                         {t('signin')}
-                    </DisableableButton>
+                    </Button>
                 )}
-                {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
-                    <AlertMessage content={t(`lernfair.reason.course.pupil.${subcourse.canJoin.reason as CanJoinReason}`)} />
-                )}
-
                 {subcourse.isParticipant && !loading && isActiveSubcourse && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
@@ -203,17 +206,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                         participantsCount={subcourse.participantsCount}
                         isParticipant={subcourse.isParticipant}
                         refresh={refresh}
+                        className="w-full  md:w-fit"
                     />
-                )}
-                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && isActiveSubcourse && (
-                    <Button variant="outline" onPress={() => contactInstructorAsParticipant()}>
-                        {t('single.actions.contactInstructor')}
-                    </Button>
-                )}
-                {!subcourse.isParticipant && subcourse.allowChatContactProspects && isActiveSubcourse && (
-                    <Button variant="outline" onPress={() => contactInstructorAsProspect()}>
-                        {t('single.actions.contactInstructor')}
-                    </Button>
                 )}
                 {subcourse.isParticipant && isActiveSubcourse && (
                     <>
@@ -222,72 +216,96 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                             appointmentType={appointment.appointmentType}
                             startDateTime={appointment.start}
                             duration={appointment.duration}
+                            className="w-full  md:w-fit"
                         />
-                        <DisableableButton
-                            isDisabled={loadingSubcourseLeft}
+                        <Button
+                            variant="ghost"
+                            disabled={loadingSubcourseLeft}
                             reasonDisabled={t('reasonsDisabled.loading')}
-                            onPress={() => setSignOutModal(true)}
+                            onClick={() => setSignOutModal(true)}
+                            className="w-full  md:w-fit"
                         >
                             {t('single.actions.leaveSubcourse')}
-                        </DisableableButton>
+                        </Button>
                     </>
                 )}
+                {subcourse.isParticipant && subcourse.canContactInstructor.allowed && isActiveSubcourse && (
+                    <Button
+                        variant="outline"
+                        onClick={() => contactInstructorAsParticipant()}
+                        leftIcon={<IconMessage2 size={16} />}
+                        className="w-full  md:w-fit"
+                    >
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && isActiveSubcourse && (
+                    <Button variant="outline" onClick={() => contactInstructorAsProspect()} leftIcon={<IconMessage2 size={16} />} className="w-full  md:w-fit">
+                        {t('single.actions.contactInstructor')}
+                    </Button>
+                )}
                 {!subcourse.isParticipant && !subcourse.isOnWaitingList && !subcourse.canJoin.allowed && subcourse.canJoinWaitinglist.allowed && (
-                    <DisableableButton
-                        isDisabled={loadingJoinedWaitinglist}
+                    <Button
+                        disabled={loadingJoinedWaitinglist}
                         reasonDisabled={t('reasonsDisabled.loading')}
                         variant="outline"
-                        onPress={() => setJoinWaitinglistModal(true)}
+                        onClick={() => setJoinWaitinglistModal(true)}
+                        className="w-full  md:w-fit"
                     >
                         {t('single.actions.joinWaitinglist')}
-                    </DisableableButton>
+                    </Button>
                 )}
-            </Stack>
+            </div>
             {subcourse.isOnWaitingList && (
-                <Stack space={space['0.5']} mb="5">
-                    <WaitinglistBanner courseStatus={courseTrafficStatus} onLeaveWaitinglist={setLeaveWaitingslistModal} loading={loadingLeftWaitinglist} />
-                </Stack>
+                <div className="flex gap-0.5 mb-5">
+                    <WaitinglistBanner
+                        courseStatus={courseTrafficStatus}
+                        onLeaveWaitingList={() => setLeaveWaitingslistModal(true)}
+                        loading={loadingLeftWaitinglist}
+                    />
+                </div>
             )}
 
-            <Modal isOpen={signInModal} onClose={() => setSignInModal(false)}>
-                <CourseConfirmationModal
-                    headline={t('registrationTitle')}
-                    confirmButtonText={t('single.signIn.button')}
-                    description={<Trans i18nKey="single.signIn.description" components={{ b: <b />, br: <br /> }} />}
-                    onClose={() => setSignInModal(false)}
-                    onConfirm={handleSignInCourse}
-                />
-            </Modal>
+            <ConfirmationModal
+                headline={t('registrationTitle')}
+                confirmButtonText={t('single.signIn.button')}
+                description={<Trans i18nKey="single.signIn.description" components={{ b: <b />, br: <br /> }} />}
+                onOpenChange={setSignInModal}
+                isOpen={signInModal}
+                onConfirm={handleSignInCourse}
+                isLoading={loadingSubcourseJoined}
+            />
 
-            <Modal isOpen={signOutModal} onClose={() => setSignOutModal(false)}>
-                <CourseConfirmationModal
-                    headline={t('deregistrationTitle')}
-                    confirmButtonText={t('single.leave.signOut')}
-                    description={t('single.leave.description')}
-                    onClose={() => setSignOutModal(false)}
-                    onConfirm={() => handleCourseLeave()}
-                />
-            </Modal>
+            <ConfirmationModal
+                headline={t('deregistrationTitle')}
+                confirmButtonText={t('single.leave.signOut')}
+                description={t('single.leave.description')}
+                onOpenChange={setSignOutModal}
+                isOpen={signOutModal}
+                onConfirm={() => handleCourseLeave()}
+                variant="destructive"
+                isLoading={loadingSubcourseLeft}
+            />
 
-            <Modal isOpen={joinWaitinglistModal} onClose={() => setJoinWaitinglistModal(false)}>
-                <CourseConfirmationModal
-                    headline={t('registrationTitle')}
-                    confirmButtonText={t('single.joinWaitinglist.button')}
-                    description={t('single.joinWaitinglist.description')}
-                    onClose={() => setJoinWaitinglistModal(false)}
-                    onConfirm={handleJoinWaitinglist}
-                />
-            </Modal>
-
-            <Modal isOpen={leaveWaitinglistModal} onClose={() => setLeaveWaitingslistModal(false)}>
-                <CourseConfirmationModal
-                    headline={t('deregistrationTitle')}
-                    confirmButtonText={t('single.leaveWaitinglist.button')}
-                    description={t('single.leaveWaitinglist.description')}
-                    onClose={() => setJoinWaitinglistModal(false)}
-                    onConfirm={handleWaitinglistLeave}
-                />
-            </Modal>
+            <ConfirmationModal
+                headline={t('registrationTitle')}
+                confirmButtonText={t('single.joinWaitinglist.button')}
+                description={t('single.joinWaitinglist.description')}
+                onOpenChange={setJoinWaitinglistModal}
+                isOpen={joinWaitinglistModal}
+                onConfirm={handleJoinWaitinglist}
+                isLoading={loadingJoinedWaitinglist}
+            />
+            <ConfirmationModal
+                headline={t('deregistrationTitle')}
+                confirmButtonText={t('single.leaveWaitinglist.button')}
+                description={t('single.leaveWaitinglist.description')}
+                onOpenChange={setLeaveWaitingslistModal}
+                isOpen={leaveWaitinglistModal}
+                onConfirm={handleWaitinglistLeave}
+                variant="destructive"
+                isLoading={loadingLeftWaitinglist}
+            />
         </>
     );
 };

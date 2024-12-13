@@ -13,6 +13,9 @@
     "helper": "Helfer:in",
     "to": "An",
     "or": "oder",
+    "show": "Anzeigen",
+    "showMore": "Mehr anzeigen",
+    "showLess": "Weniger anzeigen",
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -56,7 +59,8 @@
         },
         "appointmentTile": {
             "lecture": "Lektion #{{position}}",
-            "title": ": {{appointmentTitle}}"
+            "title": ": {{appointmentTitle}}",
+            "cancelledBy": "Abgesagt von {{name}}"
         },
         "create": {
             "assignmentHeader": "Für welches Lernangebot soll dieser Termin erstellt werden?",
@@ -109,6 +113,7 @@
             "deleteButton": "Termin löschen",
             "cancelButton": "Termin absagen",
             "editButton": "Termin bearbeiten",
+            "rescheduleButton": "Termin verschieben",
             "canceledToast": "Termin wurde abgesagt",
             "zoomTooltipStudent": "Wenn du diesen Link aufrufst, trittst du dem Meeting als Teilnehmer:in bei. Um als Host dem Meeting beizutrteten nutze den Button \"Jetzt Videochat beitreten\".",
             "zoomTooltipPupil": "Teile diesen Link niemals mit anderen Personen. Nur so können wir die Sicherheit der Plattform gewährleisten.",
@@ -124,7 +129,17 @@
                     "isOver": "Du kannst diesen Termin nicht absagen, da er bereits vorbei ist.",
                     "isCancelled": "Du hast diesen Termin bereits abgesagt."
                 }
-            }
+            },
+            "qrcode": {
+                "title": "Mit Smartphone einloggen",
+                "header": "Deine Vorteile",
+                "bp1": "Fotos von Notizen, Lehrbuch oder Arbeitsblättern machen",
+                "bp2": "Direkt vom Smartphone chatten und Dateien senden",
+                "bp3": "Benachrichtigungen auf das Gerät erhalten",
+                "footer": "Einfach QR Code mit Smartphone scannen"
+            },
+            "cancelledBy": "{{name}} hat diesen Termin abgesagt",
+            "rescheduleDescription": "Wenn du den Termin verschiebst, wird {{name}} wieder eingeladen."
         },
         "zoomModal": {
             "header": "Hinweise zum Videochat",
@@ -205,6 +220,7 @@
     "skip": "Überspringen",
     "send": "Senden",
     "save": "Speichern",
+    "changesWereSaved": "Änderungen wurden gespeichert",
     "edit": "Bearbeiten",
     "signup": "Registrieren",
     "signin": "Anmelden",
@@ -346,9 +362,9 @@
                 },
                 "pupil": {
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
-                    "not-tutee": "Du kannst kein Lernpaar anfordern, da du nicht für die Nachhilfe registriert bist.",
+                    "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
-                    "max-matches": "Aufgrund der hohen Nachfrage kannst du nur ein:e Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit deinem:r Lernpartner:in zusammenarbeiten, löse die Verbindung auf.",
+                    "max-matches": "Aktuell kannst du maximal 2 Lernpartner:innen gleichzeitig haben. Solltest du nicht mehr mit allen Lernpartner:innen aktiv arbeiten, löse am besten das Lernpaar auf.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
@@ -757,7 +773,8 @@
             "description": "Beschreibung",
             "lessons": "Lektionen",
             "waitinglist": "Warteliste",
-            "participant": "Teilnehmer:innen"
+            "participant": "Teilnehmer:innen",
+            "prospectParticipants": "Interessent:innen"
         },
         "courseInfo": {
             "grade": "Jahrgangsstufe: ",
@@ -876,18 +893,27 @@
                 "cancel": "Abbrechen"
             }
         },
+        "prospectList": {
+            "toast": "Schüler wurde dem Kurs hinzugefügt.",
+            "error": "Schüler:in konnte nicht hinzugefügt werden.",
+            "description": "Hier siehst du Interessent:innen, die dich per Chat kontaktiert haben.",
+            "noProspects": "Keine Interessent:innen, die dich per Chat kontaktiert haben."
+        },
         "joinPupilModal": {
             "header": "Schüler:innen nachrücken",
             "add": "Hinzufügen",
             "amount": "Anzahl Schüler:innen",
-            "success": "Schüler:innen erfolgreich hinzugefügt"
+            "success": "Schüler:innen erfolgreich hinzugefügt",
+            "error": "Schüler:innen konnten nicht hinzugefügt werden"
         },
         "removeParticipantFromCourseModal": {
             "header": "Schüler:in aus Kurs entfernen",
             "remove": "Entfernen",
             "success": "Schüler:in erfolgreich entfernt",
             "error": "Schüler:in konnte nicht entfernt werden"
-        }
+        },
+        "removeFromCourse": "Aus dem Kurs entfernen",
+        "addToCourse": "Zum Kurs hinzufügen"
     },
     "settings": {
         "header": "Einstellungen",
@@ -901,7 +927,8 @@
             "forStudents": "Wissens-Center",
             "forPupils": "Wissens-Center",
             "push": "App-Mitteilungen",
-            "faq": "Häufige Fragen (FAQ) & Kontakt"
+            "faq": "Häufige Fragen (FAQ) & Kontakt",
+            "manageSessions": "Geräte verwalten"
         },
         "account": {
             "title": "Konto",
@@ -1096,6 +1123,46 @@
                     "helpcenter": "Zum Hilfebereich",
                     "buttonText": "Tour beenden",
                     "buttonLinkText": "Tour nochmal ansehen"
+                }
+            },
+            "ethics": {
+                "welcome": {
+                    "title": "Ethische Standards",
+                    "content": "Dieser Ethik-Leitfaden bietet einen Überblick über die Mindestanforderungen für verantwortungsvolles Handeln bei Lern-Fair und regt zur selbstkritischen Reflexion im Umgang mit Schüler:innen an. Bitte lies die folgenden Punkte sorgfältig und beachte sie bei deiner Arbeit.",
+                    "startTour": "Tour starten"
+                },
+                "screen1": {
+                    "title": "Zwischenmenschlicher Umgang",
+                    "header1": "Allgemeiner Umgang und Akzeptanz",
+                    "content1": "Bei Lern-Fair stehen Zuverlässigkeit, Respekt und Wertschätzung im Mittelpunkt. Jede Person wird unabhängig von Alter, Geschlecht, Herkunft, Kultur, Status, Orientierung, Weltanschauung oder Religion als gleichberechtigt akzeptiert.",
+                    "header2": "Zurückhaltung",
+                    "content2": "Ich respektiere unterschiedliche politische und religiöse Ansichten und vermeide es, Lernende in eine bestimmte Richtung zu beeinflussen. Gleichzeitig stehe ich zu unseren Gesetzen, demokratischen Werten und setze mich für Toleranz sowie gegen Diskriminierung ein."
+                },
+                "screen2": {
+                    "title": "Sicherheit",
+                    "header1": "Arbeit mit Minderjährigen",
+                    "content1": "Das Wohl von Minderjährigen hat höchste Priorität. Ich wahre stets Distanz, respektiere persönliche Grenzen und die Privatsphäre der Schüler:innen um eine sichere und vertrauensvolle Umgebung zu schaffen. Bei Verdacht auf Vernachlässigung oder Gewalt bietet unsere Website Beratungsstellen.",
+                    "header2": "Privatsphäre und Datenschutz",
+                    "content2": "Alle Daten und Informationen sind vertraulich zu behandeln. Persönliche Daten dürfen nicht weitergegeben werden, auch nicht im privaten Umfeld. Zugangsdaten und Videochat-Links werden nicht mit Dritten geteilt."
+                },
+                "screen3": {
+                    "title": "Verhaltensrichtlinien",
+                    "header1": "Selbstfürsorge",
+                    "content1": "Ich schätze meine Belastbarkeit realistisch ein und passe meinen Arbeitsaufwand bei Überforderung an. Das Lern-Fair Team steht unterstützend zur Seite.",
+                    "header2": "Freiwilligkeit",
+                    "content2": "Die Zusammenarbeit beruht auf Freiwilligkeit und kann jederzeit beendet, angepasst oder verändert werden."
+                },
+                "screen4": {
+                    "title": "Pädagogische und fachliche Kompetenz",
+                    "header1": "Hilfestellungen",
+                    "content1": "Ich reflektiere mein Handeln sowie meine Fach- und Medienkompetenzen bewusst, um die Schüler:innen bestmöglich zu unterstützen. Wenn nötig, suche ich mir Tipps und pädagogische Unterstützung aus dem Userbereich.",
+                    "header2": "Transparenz",
+                    "content2": "Ich kommuniziere klar über Art und Umfang meiner Unterstützung. Sollte ich diese aus zeitlichen, fachlichen oder anderen Gründen nicht leisten können, informiere ich die Schüler:innen rechtzeitig."
+                },
+                "screen5": {
+                    "title": "Umgang mit Anfragen, Beschwerden und Verstößen",
+                    "content1": "Über Maßnahmen bei Verstößen gegen den Ethik-Leitfaden entscheidet der Vorstand von Lern-Fair e.V. In bestimmten Fällen kann dies den Ausschluss vom Projekt bedeuten, der mit einer Begründung mitgeteilt wird. Anfragen, Beschwerden oder Meldungen zu Verstößen können per E-Mail an support@lern-fair.de gesendet werden.",
+                    "checkboxText": "Ich habe den Ethik-Leitfaden gründlich gelesen und erkläre mich mit ihm einverstanden."
                 }
             }
         }
@@ -1346,7 +1413,7 @@
             "ctaCardHeader": "Gruppen-Kurse",
             "ctaCardContent": "Kurse zu verschiedenen Themen in den Fächern Deutsch, Mathe, Englisch…",
             "ctaCardButton": "Zu den Gruppen-Kursen",
-            "firstContent": "In der Nachhilfe vermitteln wir dich mit einer ehrenamtlichen Person, die dir in ihrer Freizeit hilft."
+            "firstContent": "Wir bieten zwei Arten von Nachhilfe an: Die tägliche, offene Hausaufgabenhilfe und die 1:1-Lernunterstützung. Bei der 1:1-Lernunterstützung hilft dir eine Person kostenlos in ihrer Freizeit bei Hausaufgaben, Prüfungsvorbereitung und allem, was du besprechen möchtest."
         },
         "homeworkhelp": {
             "title": "Hausaufgabenhilfe",
@@ -1354,6 +1421,11 @@
             "texthelper": "In der Hausaufgabenhilfe kannst du Schüler:innen wie in einer Sprechstunde spontan bei ihren Hausaufgaben helfen. Die Hausaufgabenhilfe findet Montag - Donnerstag 17h - 18h statt. Du kannst dich hier unverbindlich so oft engagieren, wie es dir passt.",
             "button": "Zur Hausaufgabenhilfe",
             "buttonSummerVacation": "Die Hausaufgabenhilfe ist in der Sommerpause. Ab dem {{endSummerVacation}} geht es weiter."
+        },
+        "volunteering": {
+            "title": "Ehrenamtsnachweis",
+            "text": "Du kannst dir jederzeit deine Tätigkeit bestätigen lassen und die Bescheinigung dann runterladen.",
+            "button": "Zu den Bescheinigungen"
         },
         "pending": {
             "modal": {
@@ -1479,9 +1551,9 @@
                     "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "details": {
-                    "heading": "Details",
-                    "subheading": "Möchtest du noch etwas an deine:n zuküftigen Lernpartner:in loswerden?",
-                    "text": "Hier kannst du weitere Angaben zu dir oder deiner aktuellen Situation machen, z.B. hast du ein spezielles Thema bei dem du Hilfe benötigst oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte? Wir leiten diesen Text an deine:n zukünftige:n Lernpartner:in weiter.",
+                    "heading": "Deine aktuelle Situation",
+                    "subheading": "Diese Angabe wird an deine:n Lernpartner:in weitergeleitet.",
+                    "text": "Gibt es ein spezielles Thema bei dem du Hilfe benötigst? Oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte?",
                     "additionalInfo": "Deine Angaben",
                     "placeholder": "Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?"
                 },
@@ -1969,8 +2041,18 @@
             }
         }
     },
+    "sessionManager": {
+        "title": "Geräte verwalten",
+        "description": "Hier kannst du alle Geräte sehen, die mit deinem Account verbunden sind. Du kannst Geräte entfernen, die du nicht mehr benutzt.",
+        "lastUsed": "Zuletzt benutzt:",
+        "toast": "Gerät erfolgreich entfernt",
+        "thisDevice": "Dieses Gerät",
+        "unknownDevice": "Unbekanntes Gerät",
+        "deviceOnOs": "auf"
+    },
     "chat": {
         "title": "Chat",
+        "openChat": "Chat öffnen",
         "openSubcourseChat": "Gruppen-Chat öffnen",
         "openAnnouncementChat": "Ankündigungschat öffnen",
         "hint": "Du kannst den Gruppen-Chat erst öffnen, wenn sich mindestens zwei Schüler:innen zu deinem Kurs angemeldet haben.",
@@ -2074,7 +2156,23 @@
             "appointments": "Termine",
             "chat": "Chat",
             "forStudents": "Wissens-Center",
-            "forPupils": "Wissens-Center"
+            "forPupils": "Wissens-Center",
+            "requestMatch": "Ein neues Lernpaar bilden",
+            "createCourse": "Kurse anlegen",
+            "editCourse": "Kurs editieren",
+            "createAppointment": "Termin erstellen",
+            "editAppointment": "Termin bearbeiten",
+            "settings": "Einstellungen",
+            "notifications": "Benachrichtigungen",
+            "systemNotifications": "System-Benachrichtigungen",
+            "newsletterNotifications": "Newsletter-Benachrichtigungen",
+            "profile": "Profil",
+            "manageSessions": "Geräte verwalten",
+            "helpCenter": "Hilfebereich",
+            "newEmail": "E-Mail ändern",
+            "newPassword": "Passwort ändern",
+            "install": "Die Lern-Fair App",
+            "progress": "Erfolge & Fortschritte"
         }
     },
     "screening": {
@@ -2130,6 +2228,11 @@
         "certificateOfConductWasProvided": "Führungszeugnis wurde eingereicht",
         "certificateOfConductWasNotProvided": "Führungszeugnis wurde noch nicht eingereicht",
         "comment": "Kommentar",
+        "errors": {
+            "grade_missing": "Bitte wähle eine Klasse aus.",
+            "language_missing": "Bitte ergänze mind. 1 Sprache.",
+            "subjects_missing": "Bitte ergänze mind. 1 Fach."
+        },
         "courses": {
             "header": "Screening Gruppenkurse",
             "submitted_or_allowed": "Eingereichte & genehmigte Kurse",
@@ -2302,8 +2405,9 @@
         "contactSupport": "Support kontaktieren",
         "pupil": {
             "noScreening": {
-                "title": "Bitte buche dir einen Termin, {{firstname}}!",
-                "content": "Bevor du die Angebote von Lern-Fair nutzen kannst, möchten wir dich kennenlernen. Bitte buche dir dazu einen Termin für ein Zoom-Gespräch.",
+                "title": "Willkommen, {{firstname}}! 👋 Bald lernen wir uns kennen 🤗",
+                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine Email an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
+                "footer": "Du traust dich nicht? Sprichst kein Deutsch? Oder hast andere Fragen? Dann melde dich bei uns",
                 "makeAppointment": "Termin vereinbaren"
             },
             "hasScreening": {
@@ -2359,9 +2463,37 @@
     },
     "logout": "Abmelden",
     "installation": {
-        "installTitle": "Lern-Fair installieren",
+        "installTitle": "Die Lern-Fair App",
         "installDescription": "Für schnelleren Zugriff auf Chats und Termine ohne Einloggen",
         "installButton": "Installieren",
-        "iOSInstallInstructions": "Auf <0/> und dann <1/> \"Zum Home-Bildschirm\" klicken"
+        "iOSInstallInstructions": {
+            "title": "App Installieren",
+            "steps": {
+                "first": "Klicke auf <0/> oben oder unten im Browser",
+                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+            }
+        },
+        "page": {
+            "title": "Die Lern-Fair App",
+            "description": "Lade dir die Lern-Fair App auf alle deine Geräte, um jederzeit auf Chats und Termine Zugriff zu haben.",
+            "install": "App installieren",
+            "not-supported": "Leider wird die Installation der App auf diesem Gerät nicht unterstützt.",
+            "installed": "Die App ist bereits installiert.",
+            "pros": {
+                "title": "Vorteile",
+                "list": [
+                    "Die App lädt schneller, spart Daten und schickt dir Benachrichtigungen direkt auf dein Gerät. So verpasst du keinen Chat oder Termin - und musst dich auch nicht mehr jedes Mal neu einloggen.",
+                    "Du kannst die App auf verschiedenen Geräten installieren, so dass sowohl Eltern als auch Schüler:innen auf den Chat und Terminerinnerungen Zugriff haben."
+                ]
+            },
+            "installationDetails": {
+                "title": "Installation",
+                "list": [
+                    "Die App kann ohne App Store direkt aus diesem Browser installiert werden.",
+                    "Folgende Browser werden unterstützt: Android (Chrome), iOS (Safari), Windows (Chrome, Edge) sowie macOS (Chrome).",
+                    "Klicke auf den “App installieren” Button und folge den Anweisungen."
+                ]
+            }
+        }
     }
 }

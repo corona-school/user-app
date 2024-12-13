@@ -10,92 +10,19 @@ import WithNavigation from '../../components/WithNavigation';
 import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import Banner from '../../widgets/CourseBanner';
 import PromoteBanner from '../../widgets/PromoteBanner';
-import Waitinglist from '../single-course/Waitinglist';
-import ParticipantRow from '../subcourse/ParticipantRow';
 import SubcourseData from '../subcourse/SubcourseData';
 import StudentCourseButtons from './single-course/StudentCourseButtons';
-import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
-import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
-import { SubcourseParticipant } from '../../types/lernfair/Course';
 import { Button } from '@/components/Button';
 import { toast } from 'sonner';
-import RemoveParticipantFromCourseModal from '@/modals/RemoveParticipantFromCourseModal';
 import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
-import { Typography } from '@/components/Typography';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
-
-function Participants({
-    subcourseId,
-    contactParticipant,
-    isInstructor,
-    onParticipantRemoved,
-}: {
-    subcourseId: number;
-    contactParticipant: (participantId: string) => void;
-    isInstructor: boolean;
-    onParticipantRemoved: () => void;
-}) {
-    const { t } = useTranslation();
-    const { data, loading, refetch } = useQuery(
-        gql(`
-        query GetParticipants($subcourseId: Int!) {
-            subcourse(subcourseId: $subcourseId){
-                participants {
-                    id
-                    firstname
-                    lastname
-                    schooltype
-                    grade
-                    gradeAsInt
-                }
-            }
-        }
-    `),
-        { variables: { subcourseId } }
-    );
-    const [isRemoveParticipantModalOpen, setIsRemoveParticipantModalOpen] = useState(false);
-    const [participantToRemove, setParticipantToRemove] = useState<SubcourseParticipant>();
-
-    const handleOpenModal = (participant: SubcourseParticipant) => {
-        setIsRemoveParticipantModalOpen(true);
-        setParticipantToRemove(participant);
-    };
-    const handleOnParticipantRemoved = async () => {
-        setParticipantToRemove(undefined);
-        onParticipantRemoved();
-        await refetch();
-    };
-
-    if (loading) return <CenterLoadingSpinner />;
-
-    const participants = data?.subcourse?.participants ?? [];
-
-    if (participants.length === 0) return <p>{t('single.global.noMembers')}</p>;
-
-    return (
-        <>
-            {participants.map((participant) => (
-                <ParticipantRow
-                    participant={participant}
-                    isInstructor={isInstructor}
-                    contactParticipant={contactParticipant}
-                    removeParticipant={handleOpenModal}
-                />
-            ))}
-            {participantToRemove && (
-                <RemoveParticipantFromCourseModal
-                    subcourseId={subcourseId}
-                    isOpen={isRemoveParticipantModalOpen}
-                    onOpenChange={setIsRemoveParticipantModalOpen}
-                    participant={participantToRemove}
-                    onParticipantRemoved={handleOnParticipantRemoved}
-                />
-            )}
-        </>
-    );
-}
+import { AppointmentList } from '@/components/appointment/AppointmentsList';
+import { ParticipantsList } from '../subcourse/ParticipantsList';
+import WaitingListProspectList from '../single-course/WaitingListProspectList';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -159,7 +86,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
               subcourse {
                 published
               }
-            }
+        }
     }
 }
 `);
@@ -185,6 +112,27 @@ query GetInstructorSubcourse($subcourseId: Int!) {
         canContactParticipants { allowed reason }
         canCancel { allowed reason }
         appointments {
+            id
+            appointmentType
+            title
+            description
+            start
+            duration
+            displayName
+            position
+            total
+            isOrganizer
+            isParticipant
+            organizers(skip: 0, take: 5) {
+                id
+                firstname
+                lastname
+            }
+            participantIds
+            declinedBy
+            subcourse {
+                published
+            }
             participants(skip: 0, take: 50) {
                 id
                 firstname
@@ -192,6 +140,15 @@ query GetInstructorSubcourse($subcourseId: Int!) {
                 isPupil
                 isStudent
             }
+        }
+        prospectParticipants {
+            id
+            firstname
+            lastname
+            schooltype
+            grade
+            gradeAsInt
+            conversationId
         }
     }
 }
@@ -201,6 +158,7 @@ const SingleCourseStudent = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
+    const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const navigate = useNavigate();
 
@@ -232,7 +190,9 @@ const SingleCourseStudent = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
-    const appointments = subcourse?.appointments ?? [];
+    const appointments = useMemo(() => {
+        return ((isInstructorOfSubcourse ? instructorSubcourse?.subcourse?.appointments : subcourse?.appointments) ?? []) as Appointment[];
+    }, [instructorSubcourse?.subcourse?.appointments, isInstructorOfSubcourse, subcourse?.appointments]);
     const myNextAppointment = useMemo(() => {
         const now = DateTime.now();
         const next = appointments.find((appointment) => {
@@ -352,10 +312,15 @@ const SingleCourseStudent = () => {
         return !is30DaysBeforeToday;
     }, [appointments, subcourse?.cancelled]);
 
+    const showParticipantsTab = subcourse?.isInstructor;
+    const showWaitingListProspectListTab = subcourse?.isInstructor && instructorSubcourse?.subcourse;
+    const showLecturesTab = showParticipantsTab || showWaitingListProspectListTab;
+
+    const showTabsControls = showParticipantsTab || showWaitingListProspectListTab || showLecturesTab;
+
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
-            showBack
             previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
@@ -365,96 +330,86 @@ const SingleCourseStudent = () => {
                 </div>
             }
         >
-            {subLoading ? (
+            {subLoading || !course || !subcourse ? (
                 <CenterLoadingSpinner />
             ) : (
-                <div className="px-4 flex flex-col gap-y-11">
-                    <SubcourseData
-                        course={course!}
-                        subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}
-                        isInPast={isInPast}
-                        hideTrafficStatus={canPromoteCourse}
-                    />
-                    {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
-                        <StudentCourseButtons
-                            subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
-                            refresh={refetchBasics}
-                            appointment={myNextAppointment as Lecture}
-                            isActiveSubcourse={isActiveSubcourse}
+                <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
+                    <div>
+                        <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name }]} />
+                        <SubcourseData
+                            course={course}
+                            subcourse={
+                                isInstructorOfSubcourse && instructorSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse.subcourse } : subcourse
+                            }
+                            isInPast={isInPast}
+                            hideTrafficStatus={canPromoteCourse}
                         />
-                    )}
-                    {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
-                        <div>
-                            <Button variant="outline" onClick={contactInstructorAsProspect}>
-                                {t('single.actions.contactInstructor')}
-                            </Button>
+                    </div>
+                    <div className="flex flex-col gap-y-11 justify-between xl:flex-row">
+                        <div className="flex flex-col gap-y-11 justify-between w-full">
+                            {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && instructorSubcourse?.subcourse && (
+                                <StudentCourseButtons
+                                    subcourse={{ ...subcourse, ...instructorSubcourse.subcourse }}
+                                    refresh={refetchBasics}
+                                    appointment={myNextAppointment as Lecture}
+                                    isActiveSubcourse={isActiveSubcourse}
+                                />
+                            )}
+                            {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
+                                <div>
+                                    <Button variant="outline" onClick={contactInstructorAsProspect}>
+                                        {t('single.actions.contactInstructor')}
+                                    </Button>
+                                </div>
+                            )}
+                            {!isInPast && isInstructorOfSubcourse && (
+                                <Banner
+                                    courseState={course.courseState}
+                                    isCourseCancelled={subcourse.cancelled}
+                                    isPublished={subcourse.published}
+                                    handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
+                                />
+                            )}
                         </div>
-                    )}
-                    {subcourse &&
-                        instructorSubcourse?.subcourse &&
-                        isInstructorOfSubcourse &&
-                        subcourse.published &&
-                        !subLoading &&
-                        !isInPast &&
-                        canPromoteCourse && (
+                        {isInstructorOfSubcourse && instructorSubcourse?.subcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                             <PromoteBanner
                                 onPromoted={handleOnPromoted}
                                 subcourse={{
                                     id: subcourse.id,
-                                    maxParticipants: subcourse.maxParticipants,
-                                    participantsCount: subcourse.participantsCount,
                                     wasPromotedByInstructor: instructorSubcourse.subcourse.wasPromotedByInstructor,
                                 }}
                             />
                         )}
-                    {!isInPast && isInstructorOfSubcourse && (
-                        <Banner
-                            courseState={course!.courseState!}
-                            isCourseCancelled={subcourse!.cancelled}
-                            isPublished={subcourse!.published}
-                            handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
-                        />
-                    )}
+                    </div>
                     <Tabs defaultValue="lectures">
-                        <TabsList>
-                            <TabsTrigger value="lectures">{t('single.tabs.lessons')}</TabsTrigger>
-                            <TabsTrigger value="description">{t('single.tabs.description')}</TabsTrigger>
-                            {subcourse?.isInstructor && (
-                                <TabsTrigger badge={subcourse?.participantsCount} value="participants">
-                                    {t('single.tabs.participant')}
-                                </TabsTrigger>
-                            )}
-                            {subcourse?.isInstructor && instructorSubcourse?.subcourse && (
-                                <TabsTrigger badge={instructorSubcourse.subcourse.pupilsWaitingCount} value="waiting-list">
-                                    {t('single.tabs.waitinglist')}
-                                </TabsTrigger>
-                            )}
-                        </TabsList>
+                        {showTabsControls && (
+                            <TabsList>
+                                {showLecturesTab && <TabsTrigger value="lectures">{t('single.tabs.lessons')}</TabsTrigger>}
+                                {showParticipantsTab && (
+                                    <TabsTrigger badge={subcourse?.participantsCount} value="participants">
+                                        {t('single.tabs.participant')}
+                                    </TabsTrigger>
+                                )}
+                                {showWaitingListProspectListTab && (
+                                    <TabsTrigger badge={instructorSubcourse.subcourse!.pupilsWaitingCount} value="waiting-list">
+                                        {t('single.tabs.waitinglist')}
+                                    </TabsTrigger>
+                                )}
+                                {showWaitingListProspectListTab && (
+                                    <TabsTrigger badge={instructorSubcourse.subcourse!.prospectParticipants.length} value="prospect-list">
+                                        {t('single.tabs.prospectParticipants')}
+                                    </TabsTrigger>
+                                )}
+                            </TabsList>
+                        )}
                         <TabsContent value="lectures">
-                            {appointments.length > 0 ? (
-                                <AppointmentList
-                                    isReadOnlyList={!subcourse?.isInstructor}
-                                    disableScroll
-                                    appointments={appointments as Appointment[]}
-                                    noOldAppointments
-                                    height="340px"
-                                    isFullWidth
-                                />
-                            ) : (
-                                <div className="justify-center">
-                                    <AppointmentsEmptyState
-                                        title={t('appointment.empty.noAppointments')}
-                                        subtitle={t('appointment.empty.noAppointmentsDesc')}
-                                    />
-                                </div>
-                            )}
-                        </TabsContent>
-                        <TabsContent value="description">
-                            <Typography>{course?.description}</Typography>
+                            <div className="mt-8 max-h-full overflow-y-scroll">
+                                <AppointmentList appointments={appointments} isReadOnly={!isInstructorOfSubcourse} disableScroll />
+                            </div>
                         </TabsContent>
                         <TabsContent value="participants">
-                            {subcourse && subcourse.isInstructor && (
-                                <Participants
+                            {showParticipantsTab && (
+                                <ParticipantsList
                                     subcourseId={subcourseId}
                                     isInstructor={subcourse.isInstructor}
                                     contactParticipant={(memberUserId: string) => doContactParticipant(memberUserId)}
@@ -462,16 +417,31 @@ const SingleCourseStudent = () => {
                                 />
                             )}
                         </TabsContent>
-                        {subcourse?.isInstructor && instructorSubcourse?.subcourse && (
+                        {showWaitingListProspectListTab && (
                             <TabsContent value="waiting-list">
-                                <Waitinglist
+                                <WaitingListProspectList
                                     subcourseId={subcourseId}
                                     maxParticipants={subcourse?.maxParticipants}
-                                    pupilsOnWaitinglist={instructorSubcourse.subcourse.pupilsOnWaitinglist}
+                                    pupils={instructorSubcourse!.subcourse?.pupilsOnWaitinglist}
                                     refetch={() => {
                                         refetchInstructorData();
                                         return refetchBasics();
                                     }}
+                                    type={'waitinglist'}
+                                />
+                            </TabsContent>
+                        )}
+                        {showWaitingListProspectListTab && (
+                            <TabsContent value="prospect-list">
+                                <WaitingListProspectList
+                                    subcourseId={subcourseId}
+                                    pupils={instructorSubcourse!.subcourse!.prospectParticipants}
+                                    refetch={() => {
+                                        refetchInstructorData();
+                                        return refetchBasics();
+                                    }}
+                                    maxParticipants={subcourse?.maxParticipants}
+                                    type={'prospectlist'}
                                 />
                             </TabsContent>
                         )}

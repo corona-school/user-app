@@ -2,13 +2,12 @@ import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
-import { Modal } from 'native-base';
 import ZoomMeetingModal from '../modals/ZoomMeetingModal';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { canJoinMeeting } from '../widgets/AppointmentDay';
-import { DateTime } from 'luxon';
 import { Button } from './Button';
+import { IconVideo } from '@tabler/icons-react';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -38,7 +37,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 }) => {
     const { t } = useTranslation();
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-    const { data } = useQuery(
+    const { data, loading: isLoading } = useQuery(
         gql(`
         query overrrideLink($appointmentId: Float!) {
             appointment(appointmentId: $appointmentId) {
@@ -60,6 +59,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         `)
     );
     const openMeeting = async () => {
+        if (!data) return;
         // Technically the user has not joined yet, but they tried, that should be good enough for now
         await trackJoinMeeting({ variables: { appointmentId } });
 
@@ -71,21 +71,24 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         }
     };
 
-    const canStartMeeting = useMemo(
-        () => canJoin ?? (startDateTime && duration && canJoinMeeting(startDateTime, duration, isInstructor ? 240 : 10, DateTime.now())),
-        [canJoin, duration, isInstructor, startDateTime]
-    );
+    const canStartMeeting = useCanJoinMeeting(isInstructor ? 240 : 10, startDateTime, duration);
 
     return (
         <>
-            <Modal isOpen={isOpenModal} onClose={() => setIsOpenModal(false)}>
-                <ZoomMeetingModal appointmentId={appointmentId} appointmentType={appointmentType} zoomUrl={zoomUrl ?? undefined} />
-            </Modal>
+            <ZoomMeetingModal
+                isOpen={isOpenModal}
+                onOpenChange={setIsOpenModal}
+                appointmentId={appointmentId}
+                appointmentType={appointmentType}
+                zoomUrl={zoomUrl ?? undefined}
+            />
             <Button
-                disabled={!canStartMeeting || isOver}
+                isLoading={isLoading}
+                disabled={!(canJoin ?? canStartMeeting) || isOver}
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
                 onClick={openMeeting}
                 className={className}
+                leftIcon={<IconVideo size={16} />}
                 variant="secondary"
             >
                 {buttonText ?? isInstructor ? t('course.meeting.videobutton.student') : t('course.meeting.videobutton.pupil')}

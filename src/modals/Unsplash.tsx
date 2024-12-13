@@ -1,150 +1,129 @@
-import { HStack, Pressable, View, Text, VStack, Image, Box, Flex, useTheme, Row, Modal, Stack, useBreakpointValue } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SearchBar from '../components/SearchBar';
 import UnsplashPagination from '../components/UnsplashPagination';
-import DisableableButton from '../components/DisablebleButton';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
+import { cn } from '@/lib/Tailwind';
+import { useQuery } from '@apollo/client';
+import { gql } from '@/gql';
 
-type Props = {
-    showUnsplashModal: boolean;
+const COURSE_IMAGES_SEARCH_QUERY = gql(`
+    query searchCourseImages($search: String!, $page: Float!) {
+        courseImages(search: $search, page: $page, take: 8) {
+            results {
+                id
+                description
+                regularImageUrl
+                smallImageUrl
+            }
+            total
+            totalPages
+        }
+    }    
+`);
+
+interface UnsplashModalProps extends BaseModalProps {
     onPhotoSelected: (photoUrl: string) => void;
-    onClose: () => void;
-};
+}
 
-const Unsplash: React.FC<Props> = ({ showUnsplashModal, onPhotoSelected, onClose }) => {
-    const [photos, setPhotos] = useState([]);
-    const [selectedPhoto, setSelectedPhoto] = useState<string>('');
-    const [pageIndex, setPageIndex] = useState<number>(1);
-    const [isLoading, setIsLoading] = useState<boolean>();
-    const [totalPages, setTotalPages] = useState<number>(1);
-    const [searchValue, setSearch] = useState('');
-    const { space } = useTheme();
+const UnsplashModal = ({ isOpen, onOpenChange, onPhotoSelected }: UnsplashModalProps) => {
+    const [selectedPhoto, setSelectedPhoto] = useState('');
+    const [pageIndex, setPageIndex] = useState(1);
+    const [totalPages, setTotalPages] = useState(1);
+    const [searchValue, setSearch] = useState('Schule');
     const { t } = useTranslation();
-
-    const modalMinWidth = useBreakpointValue({
-        base: 320,
-        lg: 700,
-    });
-
-    const imageSize = useBreakpointValue({
-        base: 100,
-        lg: 175,
-    });
-
-    const containerMaxHeight = useBreakpointValue({
-        base: 300,
-        lg: 600,
-    });
+    const { data, loading: isLoading } = useQuery(COURSE_IMAGES_SEARCH_QUERY, { variables: { search: searchValue, page: pageIndex }, skip: !searchValue });
 
     useEffect(() => {
-        const controller = new AbortController();
-        (async function () {
-            try {
-                setIsLoading(true);
-                const data = await fetch(`https://api.unsplash.com/search/photos?query=${searchValue || 'Schule'}&page=${pageIndex}&per_page=9`, {
-                    method: 'GET',
-                    headers: {
-                        Authorization: `Client-ID ${process.env.REACT_APP_UNSPLASH}`,
-                    },
-                    signal: controller.signal,
-                });
-                const res = await data.json();
-                setTotalPages(res.total_pages);
-                setPhotos(res.results || []);
-                setIsLoading(false);
-            } catch (e) {
-                setIsLoading(false);
-                console.error(e);
-            }
-        })();
-
-        return () => controller.abort();
-    }, [searchValue, pageIndex]);
+        if (isLoading) return;
+        setTotalPages(data?.courseImages.totalPages ?? 1);
+    }, [data?.courseImages.totalPages, isLoading]);
 
     const pickPhoto = useCallback(() => {
         onPhotoSelected(selectedPhoto);
         setSelectedPhoto('');
     }, [onPhotoSelected, selectedPhoto]);
 
-    const closeModal = () => {
-        onClose();
-    };
+    const photos = data?.courseImages.results || [];
 
     return (
-        <Modal isOpen={showUnsplashModal} onClose={() => closeModal()}>
-            <Modal.Content minW={modalMinWidth}>
-                <Modal.Header>{t('course.unsplash.heading')}</Modal.Header>
-                <Modal.CloseButton />
-                <Modal.Body>
-                    <Stack space={space['1']}>
-                        <Text>{t('course.unsplash.description')}</Text>
-                        <Row>
-                            <SearchBar
-                                placeholder={t('course.unsplash.placeholder')}
-                                onSearch={(value: string) => {
-                                    setPageIndex(1);
-                                    setSearch(value);
-                                }}
-                                autoSubmit
-                            />
-                        </Row>
-                        {isLoading && <CenterLoadingSpinner />}
-                        {!isLoading && (
-                            <View flex="1" overflowY="scroll">
-                                {photos.length > 0 ? (
-                                    <VStack justifyContent="space-between" maxW="800" maxH={containerMaxHeight}>
-                                        <HStack flex="1" flexWrap="wrap" justifyContent="center">
-                                            {photos.map((photo: any) => {
-                                                return (
-                                                    <VStack padding="1">
-                                                        <Pressable
-                                                            onPress={() =>
-                                                                selectedPhoto === photo.urls.regular
-                                                                    ? setSelectedPhoto('')
-                                                                    : setSelectedPhoto(photo.urls.regular)
-                                                            }
-                                                        >
-                                                            <Image
-                                                                size={imageSize}
-                                                                padding="2"
-                                                                borderColor="primary.500"
-                                                                borderWidth={selectedPhoto === photo.urls.regular ? '3' : '0'}
-                                                                src={photo.urls.small}
-                                                                alt={photo.alt_description}
-                                                            />
-                                                        </Pressable>
-                                                    </VStack>
-                                                );
-                                            })}
-                                        </HStack>
-                                    </VStack>
-                                ) : (
-                                    <Flex flex="1" justifyContent="center" alignItems="center" minH="400">
-                                        <Text>{t('course.unsplash.noSearchoResults')}</Text>
-                                    </Flex>
-                                )}
-                            </View>
-                        )}
-
-                        <UnsplashPagination
-                            currentIndex={pageIndex}
-                            totalPagesCount={totalPages}
-                            onPageChange={(index) => {
-                                setPageIndex(index);
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-w-full w-[900px] h-full flex flex-col md:h-[700px]">
+            <ModalHeader>
+                <ModalTitle>{t('course.unsplash.heading')}</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col flex-1 gap-2 overflow-hidden">
+                <div className="flex flex-col gap-2">
+                    <Typography>{t('course.unsplash.description')}</Typography>
+                    <div className="h-10">
+                        <SearchBar
+                            placeholder={t('course.unsplash.placeholder')}
+                            onSearch={(value: string) => {
+                                setPageIndex(1);
+                                setSearch(value);
                             }}
+                            autoSubmit
+                            isLoading={isLoading}
                         />
-                    </Stack>
-                </Modal.Body>
-                <Modal.Footer bgColor="primary.900">
-                    <Box alignItems="flex-end" justifyContent="center" paddingRight={space['0.5']}>
-                        <DisableableButton isDisabled={!selectedPhoto} reasonDisabled={t('course.unsplash.tooltipBtn')} onPress={pickPhoto}>
-                            {t('course.unsplash.choose')}
-                        </DisableableButton>
-                    </Box>
-                </Modal.Footer>
-            </Modal.Content>
+                    </div>
+                </div>
+                <div className="mt-2 md:pt-0 md:h-[400px] overflow-scroll flex-1">
+                    {isLoading && <CenterLoadingSpinner />}
+                    {!isLoading && (
+                        <div className="flex flex-col">
+                            {photos.length > 0 ? (
+                                <div className="flex flex-wrap justify-center max-w-[800px] gap-2 p-2">
+                                    {photos.map((photo) => {
+                                        return (
+                                            <div
+                                                role="button"
+                                                onClick={() =>
+                                                    selectedPhoto === photo.regularImageUrl ? setSelectedPhoto('') : setSelectedPhoto(photo.regularImageUrl)
+                                                }
+                                            >
+                                                <img
+                                                    className={cn(
+                                                        'object-cover size-[150px] md:size-[170px] rounded-sm',
+                                                        selectedPhoto === photo.regularImageUrl ? 'outline outline-secondary outline-[3px]' : 'outline-none'
+                                                    )}
+                                                    src={photo.smallImageUrl}
+                                                    alt={photo.description}
+                                                />
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            ) : (
+                                <div className="flex flex-1 justify-center items-center">
+                                    <Typography>{t('course.unsplash.noSearchoResults')}</Typography>
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+                <div>
+                    <UnsplashPagination
+                        currentIndex={pageIndex}
+                        totalPagesCount={totalPages}
+                        onPageChange={(index) => {
+                            setPageIndex(index);
+                        }}
+                    />
+                </div>
+            </div>
+            <ModalFooter className="flex flex-col items-stretch lg:items-end">
+                <Button
+                    className="w-full lg:w-fit lg:min-w-[200px]"
+                    disabled={!selectedPhoto}
+                    reasonDisabled={t('course.unsplash.tooltipBtn')}
+                    onClick={pickPhoto}
+                >
+                    {t('course.unsplash.choose')}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 };
-export default Unsplash;
+export default UnsplashModal;
