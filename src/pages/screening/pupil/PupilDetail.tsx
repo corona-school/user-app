@@ -91,9 +91,6 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                 </TabsList>
                 <TabsContent value="main">
                     <div className="shadow-md px-6 py-8 rounded-md">
-                        <Typography variant="h4" className="mb-5">
-                            Persönliche Daten
-                        </Typography>
                         <PersonalDetails pupil={pupil} refresh={refresh} />
                     </div>
                     <div className="shadow-md px-6 py-8 rounded-md mt-10">

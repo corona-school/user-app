@@ -13,7 +13,7 @@ import { StudentForScreening } from '@/types';
 import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { ApolloError, useMutation } from '@apollo/client';
-import { IconDeviceFloppy } from '@tabler/icons-react';
+import { IconDeviceFloppy, IconKey } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -98,93 +98,98 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
 
     return (
         <>
-            {!student.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
-            <div className="flex flex-col gap-y-2 mb-6">
-                <Label>Geschlecht</Label>
-                <SelectInput
-                    className="w-[200px]"
-                    value={gender}
-                    onValueChange={setGender}
-                    options={[
-                        { label: 'Weiblich', value: Gender.Female },
-                        { label: 'Männlich', value: Gender.Male },
-                        { label: 'Unbekannt', value: Gender.Other },
-                    ]}
-                />
-            </div>
-            <div className="flex flex-wrap gap-6">
-                <div className="flex flex-col gap-y-2 flex-1">
-                    <ButtonField className="min-w-full" label="Fächer" onClick={() => setShowEditSubjects(true)}>
-                        {subjects.map((e) => t(asTranslationKey(`lernfair.subjects.${e.name}`))).join(', ') ?? 'Fächer bearbeiten'}
-                    </ButtonField>
-                    <Typography variant="sm" className="text-destructive">
-                        {errors.subjects}
-                    </Typography>
-                </div>
-                <div className="flex flex-col gap-y-2 flex-1">
-                    <ButtonField className="min-w-full" label="Gesprochene Sprachen" onClick={() => setShowEditLanguages(true)}>
-                        {languages.map((e) => t(asTranslationKey(`lernfair.languages.${e.toLowerCase()}`))).join(', ') ?? 'Sprachen bearbeiten'}
-                    </ButtonField>
-                    <Typography variant="sm" className="text-destructive">
-                        {errors.languages}
-                    </Typography>
-                </div>
-            </div>
-            <div className="flex gap-x-7 mt-6">
-                <div className="flex gap-x-2 items-center">
-                    <Checkbox id="hasSpecialExperience" checked={hasSpecialExperience} onCheckedChange={setHasSpecialExperience} />{' '}
-                    <Label htmlFor="hasSpecialExperience">Besondere Erfahrung</Label>
-                </div>
-            </div>
-            <div className="flex flex-col gap-6 w-full">
-                <div className="mt-8">
-                    <Typography variant="h5" className="mb-5">
-                        Interne Notizen
-                    </Typography>
-                    <div className="flex flex-col gap-6">
-                        <div className="flex flex-col gap-y-2">
-                            <Label>Gespeicherte Notiz</Label>
-                            <TextArea
-                                className="resize-y h-24 w-full"
-                                value={descriptionForScreening}
-                                onChange={(e) => setDescriptionForScreening(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                </div>
-                <div className="mt-4">
-                    <Typography variant="h5" className="mb-5">
-                        Öffentliche Notizen
-                    </Typography>
-                    <div className="flex flex-col gap-6">
-                        <div className="flex flex-col gap-y-2">
-                            <Label>
-                                Info für Schüler:in{' - '}
-                                <span className="font-bold">
-                                    (Sichtbar für Schüler:innen, nicht für Helfer:innen - Fasse zusammen was relevant ist für die Zusammenarbeit)
-                                </span>
-                            </Label>
-                            <TextArea
-                                className="resize-none h-24 w-full"
-                                value={descriptionForMatch}
-                                onChange={(e) => setDescriptionForMatch(e.target.value)}
-                            />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div className="mt-10 flex items-center gap-x-4">
-                <Button variant="outline" onClick={handleOnSaveStudent} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
-                    Speichern
-                </Button>
+            <div className="flex w-full justify-between mb-10">
+                <Typography variant="h4">Persönliche Daten</Typography>
                 {myRoles.includes('TRUSTED_SCREENER') && student.active && (
-                    <Button variant="outline" onClick={impersonate}>
+                    <Button variant="outline" onClick={impersonate} leftIcon={<IconKey size={18} />}>
                         Als Nutzer anmelden
                     </Button>
                 )}
             </div>
-            <EditSubjectsModal type="student" subjects={subjects} onSave={setSubjects} onOpenChange={setShowEditSubjects} isOpen={showEditSubjects} />
-            <EditLanguagesModal languages={languages} onSave={setLanguages} onOpenChange={setShowEditLanguages} isOpen={showEditLanguages} />
+            <div>
+                {!student.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
+                <div className="flex flex-col gap-y-2 mb-6">
+                    <Label>Geschlecht</Label>
+                    <SelectInput
+                        className="w-[200px]"
+                        value={gender}
+                        onValueChange={setGender}
+                        options={[
+                            { label: 'Weiblich', value: Gender.Female },
+                            { label: 'Männlich', value: Gender.Male },
+                            { label: 'Unbekannt', value: Gender.Other },
+                        ]}
+                    />
+                </div>
+                <div className="flex flex-wrap gap-6">
+                    <div className="flex flex-col gap-y-2 flex-1">
+                        <ButtonField className="min-w-full" label="Fächer" onClick={() => setShowEditSubjects(true)}>
+                            {subjects.map((e) => t(asTranslationKey(`lernfair.subjects.${e.name}`))).join(', ') ?? 'Fächer bearbeiten'}
+                        </ButtonField>
+                        <Typography variant="sm" className="text-destructive">
+                            {errors.subjects}
+                        </Typography>
+                    </div>
+                    <div className="flex flex-col gap-y-2 flex-1">
+                        <ButtonField className="min-w-full" label="Gesprochene Sprachen" onClick={() => setShowEditLanguages(true)}>
+                            {languages.map((e) => t(asTranslationKey(`lernfair.languages.${e.toLowerCase()}`))).join(', ') ?? 'Sprachen bearbeiten'}
+                        </ButtonField>
+                        <Typography variant="sm" className="text-destructive">
+                            {errors.languages}
+                        </Typography>
+                    </div>
+                </div>
+                <div className="flex gap-x-7 mt-6">
+                    <div className="flex gap-x-2 items-center">
+                        <Checkbox id="hasSpecialExperience" checked={hasSpecialExperience} onCheckedChange={setHasSpecialExperience} />{' '}
+                        <Label htmlFor="hasSpecialExperience">Besondere Erfahrung</Label>
+                    </div>
+                </div>
+                <div className="flex flex-col gap-6 w-full">
+                    <div className="mt-8">
+                        <Typography variant="h5" className="mb-5">
+                            Interne Notizen
+                        </Typography>
+                        <div className="flex flex-col gap-6">
+                            <div className="flex flex-col gap-y-2">
+                                <Label>Gespeicherte Notiz</Label>
+                                <TextArea
+                                    className="resize-y h-24 w-full"
+                                    value={descriptionForScreening}
+                                    onChange={(e) => setDescriptionForScreening(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="mt-4">
+                        <Typography variant="h5" className="mb-5">
+                            Öffentliche Notizen
+                        </Typography>
+                        <div className="flex flex-col gap-6">
+                            <div className="flex flex-col gap-y-2">
+                                <Label>
+                                    Info für Schüler:in{' - '}
+                                    <span className="font-bold">
+                                        (Sichtbar für Schüler:innen, nicht für Helfer:innen - Fasse zusammen was relevant ist für die Zusammenarbeit)
+                                    </span>
+                                </Label>
+                                <TextArea
+                                    className="resize-none h-24 w-full"
+                                    value={descriptionForMatch}
+                                    onChange={(e) => setDescriptionForMatch(e.target.value)}
+                                />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-10 flex items-center gap-x-4">
+                    <Button variant="outline" onClick={handleOnSaveStudent} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
+                        Speichern
+                    </Button>
+                </div>
+                <EditSubjectsModal type="student" subjects={subjects} onSave={setSubjects} onOpenChange={setShowEditSubjects} isOpen={showEditSubjects} />
+                <EditLanguagesModal languages={languages} onSave={setLanguages} onOpenChange={setShowEditLanguages} isOpen={showEditLanguages} />
+            </div>
         </>
     );
 };

@@ -13,7 +13,7 @@ import { EditGradeModal } from '@/widgets/screening/EditGradeModal';
 import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { useMutation } from '@apollo/client';
-import { IconDeviceFloppy } from '@tabler/icons-react';
+import { IconDeviceFloppy, IconKey } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -136,6 +136,14 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
     };
     return (
         <>
+            <div className="flex w-full justify-between mb-10">
+                <Typography variant="h4">Persönliche Daten</Typography>
+                {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
+                    <Button variant="outline" onClick={impersonate} leftIcon={<IconKey size={18} />}>
+                        Als Nutzer anmelden
+                    </Button>
+                )}
+            </div>
             <div className="flex flex-wrap gap-6">
                 <SchoolSearchInput onSelect={handleOnSelectSchool} defaultValue={school?.name} />
                 <div className="flex flex-col gap-y-2">
