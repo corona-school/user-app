@@ -91,6 +91,7 @@ export function ScreeningDashboard() {
                     hasSpecialExperience
                     gender
                     descriptionForMatch
+                    descriptionForScreening
                     matches {
                         createdAt
                         pupil { firstname lastname }

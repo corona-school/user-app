@@ -40,7 +40,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                         <Typography variant="h4" className="mb-5">
                             Persönliche Daten
                         </Typography>
-                        <PersonalDetails student={student} />
+                        <PersonalDetails student={student} refresh={refresh} />
                     </div>
                     <div className="shadow-md px-6 py-8 rounded-md mt-10">
                         <Typography variant="h4" className="mb-5">

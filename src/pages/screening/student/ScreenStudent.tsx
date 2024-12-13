@@ -1,6 +1,4 @@
 import { Button } from '@/components/Button';
-import { Label } from '@/components/Label';
-import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
 import { Screening_Jobstatus_Enum } from '@/gql/graphql';
@@ -56,7 +54,6 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const isTutor = student.tutorScreenings?.some((it) => it.success) ?? false;
     const isInstructor = student.instructorScreenings?.some((it) => it.success) ?? false;
     const [knowsFrom, setKnowsFrom] = useState('');
-    const [comment, setComment] = useState('');
 
     const [customKnowsFrom, setCustomKnowsFrom] = useState('');
     const [jobStatus, setJobStatus] = useState<Screening_Jobstatus_Enum>();
@@ -74,13 +71,14 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
 
     const clearForm = () => {
         setJobStatus(undefined);
-        setComment('');
         setKnowsFrom('');
     };
 
     async function screenAsInstructor(decision: boolean) {
         try {
-            await mutationCreateInstructorScreening({ variables: { studentId: student.id, comment, knowsFrom, jobStatus: jobStatus!, success: decision } });
+            await mutationCreateInstructorScreening({
+                variables: { studentId: student.id, comment: student.descriptionForScreening, knowsFrom, jobStatus: jobStatus!, success: decision },
+            });
             const hadSuccessfulScreening = decision
                 ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
                 : false;
@@ -99,7 +97,9 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
 
     async function screenAsTutor(decision: boolean) {
         try {
-            await mutationCreateTutorScreening({ variables: { studentId: student.id, comment, knowsFrom, jobStatus: jobStatus!, success: decision } });
+            await mutationCreateTutorScreening({
+                variables: { studentId: student.id, comment: student.descriptionForScreening, knowsFrom, jobStatus: jobStatus!, success: decision },
+            });
             const hadSuccessfulScreening = decision
                 ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
                 : false;
@@ -148,17 +148,6 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
                             <ButtonField className="min-w-full" label="Beruflicher Status" onClick={() => setShowJobStatusModal(true)}>
                                 {jobStatus ? t(`job_status.${jobStatus}`) : ''}
                             </ButtonField>
-                        </div>
-                    </div>
-                    <div className="mt-4">
-                        <Typography variant="h5" className="mb-5">
-                            Interne Notizen
-                        </Typography>
-                        <div className="flex flex-col gap-6">
-                            <div className="flex flex-col gap-y-2">
-                                <Label>Gespeicherte Notiz</Label>
-                                <TextArea className="resize-none h-24 w-full" value={comment} onChange={(e) => setComment(e.target.value)} />
-                            </div>
                         </div>
                     </div>
                     <div className="mt-8">

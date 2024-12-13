@@ -21,6 +21,7 @@ import { ButtonField } from '../components/ButtonField';
 
 interface PersonalDetailsProps {
     student: StudentForScreening;
+    refresh: () => Promise<void>;
 }
 
 interface FormErrors {
@@ -38,7 +39,7 @@ const UPDATE_STUDENT_MUTATION = gql(`
     }
 `);
 
-const PersonalDetails = ({ student }: PersonalDetailsProps) => {
+const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const myRoles = useRoles();
     const { t } = useTranslation();
     const [showEditSubjects, setShowEditSubjects] = useState(false);
@@ -49,6 +50,7 @@ const PersonalDetails = ({ student }: PersonalDetailsProps) => {
     const [languages, setLanguages] = useState(student.languages);
     const [hasSpecialExperience, setHasSpecialExperience] = useState<CheckedState>(student.hasSpecialExperience);
     const [descriptionForMatch, setDescriptionForMatch] = useState(student.descriptionForMatch);
+    const [descriptionForScreening, setDescriptionForScreening] = useState(student.descriptionForScreening);
 
     const [errors, setErrors] = useState<FormErrors>({});
 
@@ -66,10 +68,12 @@ const PersonalDetails = ({ student }: PersonalDetailsProps) => {
                         hasSpecialExperience: hasSpecialExperience === true,
                         gender: (gender as Gender) || undefined,
                         descriptionForMatch,
+                        descriptionForScreening,
                     },
                 },
             });
             toast.success(t('changesWereSaved'));
+            await refresh();
         } catch (error) {
             toast.error(t('error'), { description: (error as ApolloError)?.message });
         }
@@ -134,6 +138,21 @@ const PersonalDetails = ({ student }: PersonalDetailsProps) => {
             </div>
             <div className="flex flex-col gap-6 w-full">
                 <div className="mt-8">
+                    <Typography variant="h5" className="mb-5">
+                        Interne Notizen
+                    </Typography>
+                    <div className="flex flex-col gap-6">
+                        <div className="flex flex-col gap-y-2">
+                            <Label>Gespeicherte Notiz</Label>
+                            <TextArea
+                                className="resize-y h-24 w-full"
+                                value={descriptionForScreening}
+                                onChange={(e) => setDescriptionForScreening(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                </div>
+                <div className="mt-4">
                     <Typography variant="h5" className="mb-5">
                         Öffentliche Notizen
                     </Typography>
