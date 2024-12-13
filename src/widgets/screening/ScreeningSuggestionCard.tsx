@@ -20,11 +20,11 @@ const QUERY_GET_SUGGESTIONS = gql(`
     }
 `);
 
-export function ScreeningSuggestionCard({ userID }: { userID: string }) {
+export function ScreeningSuggestionCard({ userID, variant }: { userID: string; variant: 'pupil' | 'student' }) {
     const [chosenSuggestion, setChosenSuggestion] = useState<number>(0);
     const [send, { loading, reset }] = useMutation(MUTATION_SEND_SUGGESTION);
     const { data: suggestionsData } = useQuery(QUERY_GET_SUGGESTIONS);
-    const suggestions = suggestionsData?.notifications;
+    const suggestions = suggestionsData?.notifications.filter((e) => (variant === 'pupil' ? e.description.startsWith('SuS') : e.description.startsWith('HuH')));
 
     if (!suggestions || suggestions.length === 0) return null;
 

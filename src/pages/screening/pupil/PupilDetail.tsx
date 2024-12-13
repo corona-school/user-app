@@ -150,7 +150,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                         <Typography variant="h4" className="mb-5">
                             Empfehlungen
                         </Typography>
-                        <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} />
+                        <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} variant="pupil" />
                     </div>
                 </TabsContent>
             </Tabs>

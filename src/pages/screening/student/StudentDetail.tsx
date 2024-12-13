@@ -88,7 +88,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                         <Typography variant="h4" className="mb-5">
                             Empfehlungen
                         </Typography>
-                        <ScreeningSuggestionCard userID={`student/${student.id}`} />
+                        <ScreeningSuggestionCard userID={`student/${student.id}`} variant="student" />
                     </div>
                 </TabsContent>
             </Tabs>
