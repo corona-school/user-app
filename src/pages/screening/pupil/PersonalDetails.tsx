@@ -234,11 +234,6 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
                 <Button variant="outline" onClick={handleOnSavePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
                     Speichern
                 </Button>
-                {myRoles.includes('TRUSTED_SCREENER') && pupil.active && (
-                    <Button variant="outline" onClick={impersonate}>
-                        Als Nutzer anmelden
-                    </Button>
-                )}
             </div>
             <EditLocationModal state={pupilLocation} onSave={setPupilLocation} isOpen={showEditLocation} onOpenChange={setShowEditLocation} />
             <EditSchoolTypeModal schoolType={schoolType} onSave={setSchoolType} isOpen={showEditSchoolType} onOpenChange={setShowEditSchoolType} />
