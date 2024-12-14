@@ -227,11 +227,6 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                     <TextArea className="resize-none h-24 w-full" value={comment} onChange={(e) => setComment(e.target.value)} />
                 </div>
             </div>
-            <div>
-                <Button variant="outline" isLoading={isLoading} onClick={() => handleOnSaveScreening()} leftIcon={<IconDeviceFloppy />} className="w-80 mt-10">
-                    Speichern
-                </Button>
-            </div>
             <div className="mt-8">
                 <Typography variant="h5" className="mb-5">
                     Entscheidungen
