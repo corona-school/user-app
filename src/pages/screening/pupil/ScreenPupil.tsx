@@ -96,10 +96,10 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
         try {
             await mutationDeactivateAccount({ variables: { pupilId: pupil.id } });
             toast.success(t('screening.account_deactivated'));
+            await refresh();
         } catch (error) {
             toast.error(`${t('error')} ${(error as ApolloError).message}`);
         }
-        refresh();
     };
 
     const handleOnSaveScreening = async (decision?: boolean) => {
@@ -121,10 +121,10 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
             });
             setComment(resultComment);
             toast.success(t('screening.screening_saved'));
+            await refresh();
         } catch (error) {
             toast.error(t('error'));
         }
-        refresh();
     };
 
     const handleOnDecision = async (decision: PupilScreeningStatus) => {
@@ -313,6 +313,19 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                 confirmButtonText="Screening verpasst"
                 onConfirm={handleOnMissedScreening}
                 isLoading={isLoading}
+            />
+            <ConfirmationModal
+                variant="destructive"
+                isOpen={showConfirmDeactivate}
+                onOpenChange={setShowConfirmDeactivate}
+                headline="Deaktivieren"
+                description={t('screening.confirm_deactivate', {
+                    firstname: pupil.firstname,
+                    lastname: pupil.lastname,
+                })}
+                confirmButtonText="Deaktivieren"
+                onConfirm={handleOnDeactivate}
+                isLoading={isDeactivating}
             />
         </>
     );
