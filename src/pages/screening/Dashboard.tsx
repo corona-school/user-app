@@ -268,7 +268,10 @@ export function ScreeningDashboard() {
                                         disputedScreenings.pupilsToBeScreened.map((it, id) => (
                                             <UserCard
                                                 key={`pupil/${it?.id}`}
-                                                onClick={() => setSelectedPupil(it!)}
+                                                onClick={() => {
+                                                    setSelectedPupil(it!);
+                                                    setSearchQuery(it.firstname!);
+                                                }}
                                                 type="pupil"
                                                 user={{ ...it!, pupilScreenings: it?.screenings }}
                                             />
