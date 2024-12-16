@@ -2136,7 +2136,6 @@
         "recommend_rejection": "Reddedilmesini önerin",
         "screening_saved": "Tarama kaydedildi",
         "account_deactivated": "Hesap devre dışı bırakıldı",
-        "account_deactivated_details": "Öğrenci artık kullanıcı olarak oturum açamaz. Online destek ile hesaplar yeniden etkinleştirebilir.",
         "save_and_four_eyes": "Kaydet & Dört Göz",
         "success": "Kabul et",
         "rejection": "Reddet",
@@ -2178,7 +2177,8 @@
             "grade_missing": "Lütfen bir okul sınıfı seçin.",
             "language_missing": "Lütfen en az 1 dil ekleyin.",
             "subjects_missing": "Lütfen en az 1 okul dersi ekleyin."
-        }
+        },
+        "account_deactivated_details": "Kullanıcı artık kullanıcı alanında oturum açamaz. Destek, hesapları yeniden etkinleştirebilir."
     },
     "achievement": {
         "empty_state": {
