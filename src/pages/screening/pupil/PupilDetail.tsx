@@ -77,6 +77,9 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
 
     return (
         <div className="mt-8">
+            <Typography variant="h3" className="mb-6">
+                {pupil.firstname} {pupil.lastname} (Schüler:in)
+            </Typography>
             <Tabs defaultValue="main">
                 <TabsList className="max-h-9 p-1 mb-2">
                     <TabsTrigger className="max-h-7" value="main">

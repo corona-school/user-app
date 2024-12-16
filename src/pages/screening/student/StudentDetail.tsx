@@ -17,6 +17,9 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
     const { t } = useTranslation();
     return (
         <div className="mt-8">
+            <Typography variant="h3" className="mb-6">
+                {student.firstname} {student.lastname} (Helfer:in)
+            </Typography>
             <Tabs defaultValue="main">
                 <TabsList className="max-h-9 p-1">
                     <TabsTrigger className="max-h-7" value="main">
