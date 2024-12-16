@@ -342,7 +342,6 @@ const SingleCourseStudent = () => {
                                 isInstructorOfSubcourse && instructorSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse.subcourse } : subcourse
                             }
                             isInPast={isInPast}
-                            hideTrafficStatus={canPromoteCourse}
                         />
                     </div>
                     <div className="flex flex-col gap-y-11 justify-between xl:flex-row">

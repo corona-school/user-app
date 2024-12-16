@@ -97,7 +97,13 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         <SubcourseFactRow>
                             <IconUsersGroup />
                             <div className="flex items-center gap-x-2">
-                                {getTrafficLampText(trafficStatus, userType === 'student', subcourse?.maxParticipants, subcourse?.participantsCount, seatsLeft)}
+                                {getTrafficLampText(
+                                    trafficStatus,
+                                    ['student', 'screener'].includes(userType),
+                                    subcourse?.maxParticipants,
+                                    subcourse?.participantsCount,
+                                    seatsLeft
+                                )}
                                 <div className={`size-3 rounded-full ${getTrafficLampColor(trafficStatus)}`} />
                             </div>
                         </SubcourseFactRow>
