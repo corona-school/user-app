@@ -19,6 +19,7 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
 
     if (sessionState === 'logged-in') {
         // Blocking Modals that require the user from accessing the UserApp:
+        sessionStorage.setItem('userID', user.userID);
 
         // Require pupils and students to be verified
         if (user && !user.screener && !(user.pupil ?? user.student)!.verifiedAt) {
