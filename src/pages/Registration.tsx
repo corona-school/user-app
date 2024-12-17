@@ -50,6 +50,7 @@ type RegistrationContextType = {
 
 export const RegistrationContext = createContext<RegistrationContextType>({} as RegistrationContextType);
 
+// Add the referredById variable to the GraphQL mutation for mutPupil and mutStudent
 const mutPupil = gql(`
     mutation registerPupil(
         $firstname: String!
@@ -60,10 +61,11 @@ const mutPupil = gql(`
         $grade: Int!
         $retainPath: String!
         $school: RegistrationSchool!
+        $referredById: String
     ) {
         meRegisterPupil(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, school: $school }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, school: $school, referredById: $referredById }
         ) {
             id
         }
@@ -73,10 +75,10 @@ const mutPupil = gql(`
     }
 `);
 const mutStudent = gql(`
-    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!, $cooperationTag: String) {
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!, $cooperationTag: String, $referredById: String) {
         meRegisterStudent(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, cooperationTag: $cooperationTag }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById }
         ) {
             id
         }
@@ -142,6 +144,7 @@ const Registration: React.FC = () => {
 
     const cooperationTag = new URL(window.location.toString()).searchParams.get('cooperation');
 
+    const referredById = new URL(window.location.toString()).searchParams.get('referredById'); // Extracting referredById from URL
     const cooperation = useMemo(() => {
         const result = corpData?.cooperations?.find((it) => it.tag === cooperationTag);
 
@@ -152,6 +155,7 @@ const Registration: React.FC = () => {
         return result;
     }, [cooperationTag, corpData]);
 
+    //Pass the referredbyId as a Mutation variable in the attemptRegister function (access it from Registration data here)
     const attemptRegister = useCallback(async () => {
         try {
             const validMail = email.toLowerCase();
@@ -178,10 +182,11 @@ const Registration: React.FC = () => {
                                   state: school?.state || State.Other,
                                   zip: school?.zip,
                               },
+                              referredById,
                           },
                       })
                     : await registerStudent({
-                          variables: { ...basicData, cooperationTag },
+                          variables: { ...basicData, cooperationTag, referredById },
                       });
 
             if (!result.errors) {
