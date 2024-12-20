@@ -46,11 +46,25 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-const TabsContent = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Content>, React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content>>(
-    ({ className, ...props }, ref) => (
+/**
+ *
+ */
+
+interface TabContentProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content> {
+    /**
+     * unmount: It's the default behavior. The TabContent is ONLY mounted when the tab is selected
+     * unmount: The TabContent is always mounted but just hidden when not selected
+     */
+    inactiveMode?: 'hide' | 'unmount';
+}
+
+const TabsContent = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Content>, TabContentProps>(
+    ({ className, inactiveMode = 'unmount', forceMount, ...props }, ref) => (
         <TabsPrimitive.Content
             ref={ref}
+            forceMount={forceMount || inactiveMode === 'hide' ? true : undefined}
             className={cn(
+                inactiveMode === 'hide' ? 'data-[state=inactive]:hidden' : '',
                 'mt-2 ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2',
                 className
             )}
@@ -58,6 +72,5 @@ const TabsContent = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Conte
         />
     )
 );
-TabsContent.displayName = TabsPrimitive.Content.displayName;
 
 export { Tabs, TabsList, TabsTrigger, TabsContent };
