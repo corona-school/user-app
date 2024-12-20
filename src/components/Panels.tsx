@@ -46,10 +46,6 @@ const TabsTrigger = React.forwardRef<React.ElementRef<typeof TabsPrimitive.Trigg
 ));
 TabsTrigger.displayName = TabsPrimitive.Trigger.displayName;
 
-/**
- *
- */
-
 interface TabContentProps extends React.ComponentPropsWithoutRef<typeof TabsPrimitive.Content> {
     /**
      * unmount: It's the default behavior. The TabContent is ONLY mounted when the tab is selected
