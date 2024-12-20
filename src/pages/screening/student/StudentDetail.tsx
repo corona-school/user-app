@@ -41,7 +41,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                         Empfehlungen
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value="main">
+                <TabsContent inactiveMode="hide" value="main">
                     <div className="shadow-md px-6 py-8 rounded-md">
                         <PersonalDetails student={student} refresh={refresh} />
                     </div>
@@ -52,7 +52,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                         <ScreenStudent student={student} refresh={refresh} />
                     </div>
                 </TabsContent>
-                <TabsContent value="matching">
+                <TabsContent inactiveMode="hide" value="matching">
                     <div className="shadow-md px-6 py-8 rounded-md">
                         <Typography variant="h4" className="mb-5">
                             Matching
@@ -60,7 +60,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                         <StudentMatchingHistory matches={student.matches ?? []} />
                     </div>
                 </TabsContent>
-                <TabsContent value="courses">
+                <TabsContent inactiveMode="hide" value="courses">
                     <div className="shadow-md px-6 py-8 rounded-md">
                         <Typography variant="h4" className="mb-5">
                             Kurse
@@ -68,7 +68,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                         <StudentCourseHistory subcourses={student.subcoursesInstructing ?? []} />
                     </div>
                 </TabsContent>
-                <TabsContent value="certificateOfConduct">
+                <TabsContent inactiveMode="hide" value="certificateOfConduct">
                     <div className="shadow-md px-6 py-8 rounded-md">
                         <Typography variant="h4" className="mb-5">
                             {t('screening.certificateOfConduct')}
@@ -89,7 +89,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                         </div>
                     </div>
                 </TabsContent>
-                <TabsContent value="recommendation">
+                <TabsContent inactiveMode="hide" value="recommendation">
                     <div className="flex flex-col shadow-md px-6 py-8 rounded-md">
                         <Typography variant="h4" className="mb-5">
                             Empfehlungen

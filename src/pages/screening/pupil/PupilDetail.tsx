@@ -95,7 +95,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                         Empfehlungen
                     </TabsTrigger>
                 </TabsList>
-                <TabsContent value="main">
+                <TabsContent inactiveMode="hide" value="main">
                     <div className="shadow-md px-6 py-8 rounded-md">
                         <PersonalDetails pupil={pupil} refresh={refresh} />
                     </div>
@@ -114,7 +114,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                         </div>
                     )}
                 </TabsContent>
-                <TabsContent value="matching">
+                <TabsContent inactiveMode="hide" value="matching">
                     <div className="flex flex-col shadow-md px-6 py-8 rounded-md">
                         <Typography variant="h4" className="mb-5">
                             Match Anfragen
@@ -151,7 +151,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                         </div>
                     )}
                 </TabsContent>
-                <TabsContent value="recommendation">
+                <TabsContent inactiveMode="hide" value="recommendation">
                     <div className="flex flex-col shadow-md px-6 py-8 rounded-md">
                         <Typography variant="h4" className="mb-5">
                             Empfehlungen
