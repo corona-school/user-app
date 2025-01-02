@@ -854,7 +854,8 @@
             "forPupils": "For pupils",
             "push": "App messages",
             "faq": "FAQ & Contact",
-            "manageSessions": "Manage devices"
+            "manageSessions": "Manage devices",
+            "certificates": "Certificates"
         },
         "account": {
             "title": "Account",
@@ -2086,7 +2087,8 @@
             "newPassword": "Change password",
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
-            "editCourse": "Edit course"
+            "editCourse": "Edit course",
+            "certificates": "Certificates"
         }
     },
     "screening": {
@@ -2491,5 +2493,21 @@
         "unknownDevice": "Unknown device",
         "deviceOnOs": "on"
     },
-    "changesWereSaved": "Changes have been saved"
+    "changesWereSaved": "Changes have been saved",
+    "certificates": {
+        "instantCertificate": {
+            "bullets": [
+                "immediately available",
+                "does not list individual learning partners",
+                "The type of support, total duration and number of lessons are listed"
+            ],
+            "title": "Immediate certificate",
+            "request": "Request an immediate certificate"
+        },
+        "participationCertificate": {
+            "bullets": ["must be confirmed by the learning partner", "for each learning partner individually", "The time spent can also be confirmed here"],
+            "title": "Individual certificate"
+        },
+        "title": "My certificates"
+    }
 }

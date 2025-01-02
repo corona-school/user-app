@@ -1,5 +1,4 @@
 import { useMutation } from '@apollo/client';
-import { useTheme, Card, VStack, Row, Box, Heading, Text, useToast } from 'native-base';
 import { useState, useCallback } from 'react';
 import { BACKEND_URL } from '../../config';
 import { gql } from '../../gql';
@@ -11,6 +10,8 @@ import { ProgressSpinnerModal } from '../../components/ProgressSpinnerModal';
 import { downloadFile } from '../../helper/download-file';
 import { Modal, ModalHeader, ModalTitle } from '@/components/Modal';
 import { Button } from '@/components/Button';
+import { useToast } from 'native-base';
+import { Typography } from '@/components/Typography';
 
 type Certificate = Pick<
     Participation_Certificate,
@@ -18,7 +19,6 @@ type Certificate = Pick<
 > & { pupil: { firstname?: string | null; lastname?: string | null } };
 
 export const MatchCertificateCard = ({ certificate }: { certificate: Certificate }) => {
-    const { space } = useTheme();
     const toast = useToast();
     const { t } = useTranslation();
 
@@ -76,30 +76,28 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
                     description={t('certificate.download.download_browser')}
                 />
             )}
-            <Card padding={space['1']} marginBottom={space['1']} marginRight={space['1']} minWidth="300px">
-                <VStack>
-                    <Row justifyContent="flex-end" alignItems="center">
-                        <Box mr={space['0.5']}>
+            <div className="max-w-300 bg-primary-lighter py-4 px-5 rounded-md">
+                <div className="flex flex-col">
+                    <div className="justify-end items-center">
+                        <div>
                             <CertificateMatchIcon />
-                        </Box>
-                        <Heading flex="1">
+                        </div>
+                        <Typography variant="h4">
                             {certificate.pupil.firstname} {certificate.pupil.lastname}
-                        </Heading>
-                    </Row>
-                    <VStack py={space['1']}>
-                        <Text>
-                            <Text bold mr="0.5">
-                                {t('certificate.download.state')}:{' '}
-                            </Text>
-                            <Text>
+                        </Typography>
+                    </div>
+                    <div className="flex flex-col">
+                        <Typography>
+                            <Typography className="font-bold">{t('certificate.download.state')}: </Typography>
+                            <Typography>
                                 {{
                                     manual: t('certificate.download.state_manual'),
                                     'awaiting-approval': t('certificate.download.state_awaiting'),
                                     approved: t('certificate.download.state_approved'),
                                 }[certificate.state] ?? certificate.state}
-                            </Text>
-                        </Text>
-                    </VStack>
+                            </Typography>
+                        </Typography>
+                    </div>
                     <DisableableButton
                         isDisabled={certificate.state === 'awaiting-approval' || requestCertificateState.loading}
                         reasonDisabled={requestCertificateState.loading ? t('reasonsDisabled.loading') : t('certificate.download.reasonBtnDisabled')}
@@ -108,8 +106,8 @@ export const MatchCertificateCard = ({ certificate }: { certificate: Certificate
                     >
                         {t('certificate.download.download')}
                     </DisableableButton>
-                </VStack>
-            </Card>
+                </div>
+            </div>
             <Modal isOpen={showSelectPDFLanguageModal} onOpenChange={setShowSelectPDFLanguageModal} className="w-[400px]">
                 <ModalHeader>
                     <ModalTitle>{t('certificate.download.download_certificate')}</ModalTitle>
