@@ -36,7 +36,7 @@ query Certificates {
     }
 }`);
 
-const CertificatesPage: React.FC<{}> = () => {
+const CertificatesPage: React.FC = () => {
     const { t } = useTranslation();
     const { data } = useQuery(query);
     const navigate = useNavigate();
