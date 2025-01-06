@@ -38,7 +38,7 @@ query Certificates {
 
 const CertificatesPage: React.FC<{}> = () => {
     const { t } = useTranslation();
-    const { data, loading } = useQuery(query);
+    const { data } = useQuery(query);
     const navigate = useNavigate();
 
     const [showSelectInstantPDFLanguageModal, setShowSelectInstantPDFLanguageModal] = useState<boolean>(false);
@@ -62,7 +62,6 @@ const CertificatesPage: React.FC<{}> = () => {
 
         if (res?.data?.instantCertificateCreate) {
             downloadFile(`Lernfair_Zertifikat_${Date.now()}.pdf`, `${BACKEND_URL}${res?.data?.instantCertificateCreate}`);
-            toast.info('done');
         } else {
             toast.error(t('certificate.download.error'));
         }
