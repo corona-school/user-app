@@ -2502,11 +2502,25 @@
         "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
         "share": {
             "title": "Share your unique link",
-            "description": "Copy your personal link and share with your network to start referring! You can share the link  to your social media channels, WhatsApp, email or sms."
+            "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
+            "option1": {
+                "option": "Copy and Share Link",
+                "description": "- share to your favorite social apps"
+            },
+            "option2": {
+                "option": "Share on WhatsApp",
+                "description": "- directly share to your contacts"
+            },
+            "option3": {
+                "option": "Share on LinkedIn",
+                "description": "- copy link then click \"Share on LinkedIn\", and paste the link in a post"
+            }
         },
-        "social": {
-            "title": "Share on LinkedIn or Instagram",
-            "description": "Want to use our graphics? select social media type below, customize it and preview what it looks like before posting."
+        "reward": {
+            "title": "My Impact",
+            "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let’s make an impact today!",
+            "RegisteredUsers": "Registered users",
+            "HoursSupported": "Hours supported"
         }
     }
 }
