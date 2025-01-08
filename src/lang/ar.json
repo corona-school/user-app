@@ -71,7 +71,8 @@
             "wrongVideoUrlError": "الرجاء إدخال رابط فيديو صالح.",
             "courseImageAltText": "صورة الدورة",
             "videoChatLabel": "دردشة الفيديو",
-            "videoChatPlaceholder": "أضف الرابط الخاص بك إلى محادثة الفيديو"
+            "videoChatPlaceholder": "أضف الرابط الخاص بك إلى محادثة الفيديو",
+            "toolTipTimeLabel": "Alle Uhrzeiten bei Lern-Fair werden in der Zeitzone „Central European Time (CET), Europa/Berlin“ erstellt (Aktuelle Zeit: {{currentTime}})."
         },
         "detail": {
             "reasonDisabled": {

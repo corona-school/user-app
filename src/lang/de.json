@@ -80,6 +80,7 @@
             "titleLabel": "Titel",
             "dateLabel": "Datum",
             "timeLabel": "Uhrzeit",
+            "toolTipTimeLabel": "Alle Uhrzeiten bei Lern-Fair werden in der Zeitzone „Central European Time (CET), Europa/Berlin“ erstellt (Aktuelle Zeit: {{currentTime}}).",
             "durationLabel": "Dauer",
             "descriptionLabel": "Beschreibung (optional)",
             "descriptionPlaceholder": "Füge eine prägnante und verständliche Beschreibung hinzu...",

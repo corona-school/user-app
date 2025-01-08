@@ -11,6 +11,9 @@ import { isDateToday } from '../../helper/appointment-helper';
 import { DateTime } from 'luxon';
 import CustomSelect from '../../components/CustomSelect';
 import CustomVideoInput from '../../widgets/CustomVideoInput';
+import { Tooltip } from 'native-base';
+import InformationBadge from '../../components/notifications/preferences/InformationBadge';
+import useInterval from '@/hooks/useInterval';
 
 type FormProps = {
     errors: FormErrors;
@@ -30,12 +33,23 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
         lg: '50%',
     });
 
+    const currentTimeToShow = () => {
+        let date = DateTime.now();
+        let time = date.setZone('Europe/Berlin').toFormat('HH:mm');
+        return time;
+    };
+
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
+    const [currentTime, setCurrentTimeToShow] = useState(currentTimeToShow());
     const [time, setTime] = useState('');
     const [meetingLink, setMeetingLink] = useState(overrideMeetingLink ?? undefined);
     const [isToday, setIsToday] = useState<boolean>(false);
+
+    useInterval(() => {
+        setCurrentTimeToShow(currentTimeToShow());
+    }, 30_000);
 
     const handleTitleInput = (e: any) => {
         setTitle(e.target.value);
@@ -119,7 +133,25 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
                 <Stack direction={isMobile ? 'column' : 'row'} space={5}>
                     {/* TIME */}
                     <FormControl isInvalid={'time' in errors || 'timeNotInFiveMin' in errors} width={inputWidth}>
-                        <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
+                        <FormControl.Label>
+                            {t('appointment.create.timeLabel')}
+                            <div className="flex flex-col gap-y-0 px-2">
+                                <Tooltip
+                                    maxW={300}
+                                    label={t('appointment.create.toolTipTimeLabel', { currentTime })}
+                                    display="flex"
+                                    bg={'primary.900'}
+                                    _text={{ textAlign: 'center' }}
+                                    p={3}
+                                    hasArrow
+                                    children={
+                                        <Box ml={0}>
+                                            <InformationBadge ml={0} bg="danger.900" />
+                                        </Box>
+                                    }
+                                ></Tooltip>
+                            </div>
+                        </FormControl.Label>
                         <Box width="full">
                             <DatePicker
                                 type="time"
