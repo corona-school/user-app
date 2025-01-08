@@ -8,11 +8,11 @@ import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql';
 import { useUser } from '../../hooks/useApollo';
 import { PupilForScreening, StudentForScreening } from '../../types';
-import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
-import { ScreenStudentCard } from '../../widgets/screening/ScreenStudentCard';
 import { useShortcut } from '../../helper/keyboard';
 import UserCard from './components/UserCard';
 import { Typography } from '@/components/Typography';
+import PupilDetail from './pupil/PupilDetail';
+import { StudentDetail } from './student/StudentDetail';
 
 const greetings = ['Wilkommen', 'Bonjour', 'Hola', 'Salve', 'asalaam alaikum', 'konnichiwa'];
 
@@ -44,6 +44,15 @@ export function ScreeningDashboard() {
                     gradeAsInt
                     openMatchRequestCount
                     verifiedAt
+                    state
+                    schooltype
+                    onlyMatchWith
+                    hasSpecialNeeds
+                    descriptionForScreening
+                    descriptionForMatch
+                    school {
+                        name
+                    }
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -79,6 +88,10 @@ export function ScreeningDashboard() {
                     certificateOfConduct {
                         id
                     }
+                    hasSpecialExperience
+                    gender
+                    descriptionForMatch
+                    descriptionForScreening
                     matches {
                         createdAt
                         pupil { firstname lastname }
@@ -120,6 +133,15 @@ export function ScreeningDashboard() {
                 grade
                 gradeAsInt
                 openMatchRequestCount
+                state
+                schooltype
+                onlyMatchWith
+                hasSpecialNeeds
+                descriptionForScreening
+                descriptionForMatch
+                school {
+                    name
+                }
                 matches {
                     createdAt
                     student { firstname lastname }
@@ -200,7 +222,7 @@ export function ScreeningDashboard() {
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
-            <div className="px-2 mx-auto w-full max-w-7xl">
+            <div className="px-2 mx-auto w-full max-w-6xl">
                 <SearchBar
                     inputRef={searchbarRef}
                     placeholder={t('screening.search.placeholder')}
@@ -227,12 +249,12 @@ export function ScreeningDashboard() {
                         {searchResult?.usersSearch
                             .filter((it) => it.student)
                             .map((it, id) => (
-                                <UserCard key={`pupil/${it.student?.id}`} onClick={() => setSelectedStudent(it.student!)} type="student" user={it.student!} />
+                                <UserCard key={`student/${it.student?.id}`} onClick={() => setSelectedStudent(it.student!)} type="student" user={it.student!} />
                             ))}
                     </div>
                 )}
-                {selectedPupil && <ScreenPupilCard pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
-                {selectedStudent && <ScreenStudentCard student={selectedStudent} refresh={handleOnRefreshStudents} />}
+                {selectedPupil && <PupilDetail pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
+                {selectedStudent && <StudentDetail student={selectedStudent} refresh={handleOnRefreshStudents} />}
 
                 {!searchQuery && !selectedPupil && !selectedStudent && (
                     <>
@@ -246,7 +268,10 @@ export function ScreeningDashboard() {
                                         disputedScreenings.pupilsToBeScreened.map((it, id) => (
                                             <UserCard
                                                 key={`pupil/${it?.id}`}
-                                                onClick={() => setSelectedPupil(it!)}
+                                                onClick={() => {
+                                                    setSelectedPupil(it!);
+                                                    setSearchQuery(it.firstname!);
+                                                }}
                                                 type="pupil"
                                                 user={{ ...it!, pupilScreenings: it?.screenings }}
                                             />

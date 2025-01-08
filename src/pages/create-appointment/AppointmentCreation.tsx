@@ -105,7 +105,7 @@ const AppointmentCreation: React.FC<Props> = ({
 
         // the regex should check, if the passed url is a valid meeting url
         if (url) {
-            const urlRegex = /^(https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+)\.(?:[a-zA-Z]{2,})(?:\.[a-zA-Z]{2,})(\/[^\s]*)?(?:\?[^\s]*)?$/;
+            const urlRegex = /^(https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+)\.[a-zA-Z]{2,}(\/[^\s]*)?(?:\?[^\s]*)?$/;
             return urlRegex.test(url);
         }
 

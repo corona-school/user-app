@@ -7,6 +7,7 @@ import {
     Match,
     Pupil,
     Pupil_Screening,
+    School,
     Screener,
     Screening,
     Student,
@@ -45,9 +46,16 @@ export type PupilForScreening = Pick<
     | 'gradeAsInt'
     | 'openMatchRequestCount'
     | 'verifiedAt'
+    | 'state'
+    | 'schooltype'
+    | 'onlyMatchWith'
+    | 'hasSpecialNeeds'
+    | 'descriptionForMatch'
+    | 'descriptionForScreening'
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];
+    school?: Pick<School, 'name'> | null;
 };
 
 export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'success' | 'createdAt' | 'comment'> & {
@@ -73,6 +81,10 @@ export type StudentForScreening = Pick<
     | 'languages'
     | 'certificateOfConductDeactivationDate'
     | 'hasDoneEthicsOnboarding'
+    | 'hasSpecialExperience'
+    | 'gender'
+    | 'descriptionForMatch'
+    | 'descriptionForScreening'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];
