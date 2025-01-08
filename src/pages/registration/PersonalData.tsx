@@ -108,11 +108,11 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
                     >
                         <div className="flex gap-x-2 items-center">
                             <RadioGroupItem id="ageOption1" value="<= 15" />
-                            <Label htmlFor="ageOption1">Schüler:in ist 15 oder jünger</Label>
+                            <Label htmlFor="ageOption1">{t('registration.ageOptions.15OrYounger')}</Label>
                         </div>
                         <div className="flex gap-x-2 items-center">
                             <RadioGroupItem id="ageOption2" value="> 15" />
-                            <Label htmlFor="ageOption2">Schüler:in ist 16 oder älter</Label>
+                            <Label htmlFor="ageOption2">{t('registration.ageOptions.16OrOlder')}</Label>
                         </div>
                     </RadioGroup>
                     {showAgeMissing && (

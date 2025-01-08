@@ -461,8 +461,8 @@
         "password_repeat": "Repeat password",
         "to_login": "I already have an account",
         "ageOptions": {
-            "15OrYounger": "pupil is 15 or younger",
-            "16OrOlder": "pupil is 16 or older"
+            "15OrYounger": "Pupil is 15 or younger",
+            "16OrOlder": "Pupil is 16 or older"
         },
         "emailOwnerOptions": {
             "pupil": "Pupil email",
