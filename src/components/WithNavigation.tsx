@@ -8,7 +8,7 @@ import CenterLoadingSpinner from './CenterLoadingSpinner';
 import { useTranslation } from 'react-i18next';
 import { useChat } from '../context/ChatContext';
 import InstallAppBanner from '../widgets/InstallAppBanner';
-import { IconHome2, IconCalendarClock, IconMessage, IconUsersGroup, IconUsers, IconBook2 } from '@tabler/icons-react';
+import { IconHome2, IconCalendarClock, IconMessage, IconUsersGroup, IconUsers, IconBook2, IconAward } from '@tabler/icons-react';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -56,7 +56,7 @@ const WithNavigation: React.FC<Props> = ({
             label: t('navigation.label.forPupils'),
             icon: IconBook2,
         },
-        referral: { label: t('navigation.label.referral'), icon: IconUsers },
+        referral: { label: t('navigation.label.referral'), icon: IconAward },
     };
 
     return (
