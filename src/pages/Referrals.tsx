@@ -58,13 +58,9 @@ const Referrals: React.FC<{}> = () => {
         console.error(referralError ?? hoursError);
     }
 
-    console.log('Fetching data for userID:', userID);
-
     // Access the results
     const referralCount = referralData?.referralCount ?? 0;
     const supportedHours = hoursData?.supportedHours ?? 0;
-
-    console.log('Supported Hours:', supportedHours);
 
     // Whatsapp Share
     const message =
@@ -227,7 +223,7 @@ const Referrals: React.FC<{}> = () => {
                                             {t('referral.reward.HoursSupported')}
                                         </Typography>
                                         <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
-                                            25
+                                            {supportedHours}
                                         </Typography>
                                         <HandsPhone2
                                             style={{
@@ -277,7 +273,7 @@ const Referrals: React.FC<{}> = () => {
                                 {t('referral.reward.HoursSupported')}
                             </Typography>
                             <Typography variant="h5" className="font-bold" style={{ color: colors.primary[400] }}>
-                                25
+                                {supportedHours}
                             </Typography>
                         </HStack>
                     </Box>
