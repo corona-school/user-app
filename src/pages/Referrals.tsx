@@ -25,6 +25,20 @@ import BGMobile from '../assets/images/referral/BGMobile.svg';
 import Character from '../assets/images/referral/Character.svg';
 import HandsPhone1 from '../assets/images/referral/HandsPhone1.svg';
 import HandsPhone2 from '../assets/images/referral/HandsPhone2.svg';
+import { gql } from '@/gql';
+import { useQuery } from '@apollo/client';
+
+const ReferralCountQuery = gql(`
+    query ReferralCount($userId: String!) {
+        referralCount(userId: $userId )
+    }
+`);
+
+const SupportedHoursQuery = gql(`
+    query SupportedHours($userId: String!) {
+        supportedHours(userId: $userId)
+    }
+`);
 
 const Referrals: React.FC<{}> = () => {
     const { t } = useTranslation();
@@ -34,6 +48,23 @@ const Referrals: React.FC<{}> = () => {
     const [uniqueReferralLink, setUniqueReferralLink] = useState('https://www.lern-fair.de/referral?referredById=' + userID);
     const [buttonText, setButtonText] = useState('Share on LinkedIn');
     const { onCopy, hasCopied } = useClipboard();
+
+    // Fetch referral count and supported hours
+    const { data: referralData, error: referralError } = useQuery(ReferralCountQuery, { variables: { userId: userID ?? '' } });
+    const { data: hoursData, error: hoursError } = useQuery(SupportedHoursQuery, { variables: { userId: userID ?? '' } });
+
+    // Handle errors
+    if (referralError || hoursError) {
+        console.error(referralError ?? hoursError);
+    }
+
+    console.log('Fetching data for userID:', userID);
+
+    // Access the results
+    const referralCount = referralData?.referralCount ?? 0;
+    const supportedHours = hoursData?.supportedHours ?? 0;
+
+    console.log('Supported Hours:', supportedHours);
 
     // Whatsapp Share
     const message =
@@ -181,7 +212,7 @@ const Referrals: React.FC<{}> = () => {
                                             {t('referral.reward.RegisteredUsers')}
                                         </Typography>
                                         <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
-                                            6
+                                            {referralCount}
                                         </Typography>
                                         <HandsPhone1
                                             style={{
@@ -238,7 +269,7 @@ const Referrals: React.FC<{}> = () => {
                                 {t('referral.reward.RegisteredUsers')}
                             </Typography>
                             <Typography variant="h5" className="font-bold mb-3" style={{ color: colors.primary[400] }}>
-                                6
+                                {referralCount}
                             </Typography>
                         </HStack>
                         <HStack space={5}>
