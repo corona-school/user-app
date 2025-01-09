@@ -200,7 +200,7 @@ const Registration: React.FC = () => {
                     const eventNameEmailOwner = {
                         [PupilEmailOwner.Pupil]: 'Pupil Email',
                         [PupilEmailOwner.Parent]: 'Parent Email',
-                        [PupilEmailOwner.SupportPerson]: 'Support Person Email',
+                        [PupilEmailOwner.Other]: 'Other',
                         [PupilEmailOwner.Unknown]: 'Unknown Email',
                     };
                     trackEvent({

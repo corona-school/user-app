@@ -388,7 +388,7 @@
         "emailOwnerOptions": {
             "pupil": "Schüler:in Email",
             "parent": "Elternteil Email",
-            "supportPerson": "Hilfsperson Email"
+            "other": "Hilfsperson Email"
         },
         "barrier": {
             "title": "Wichtig",

@@ -467,7 +467,7 @@
         "emailOwnerOptions": {
             "pupil": "Pupil email",
             "parent": "Parent Email",
-            "supportPerson": "Support person Email"
+            "other": "Support person Email"
         }
     },
     "helpcenter": {

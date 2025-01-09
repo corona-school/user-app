@@ -467,7 +467,7 @@
         "emailOwnerOptions": {
             "pupil": "Öğrenci: E-postada",
             "parent": "Ebeveyn E-postası",
-            "supportPerson": "Yardımcı kişi E-posta"
+            "other": "Yardımcı kişi E-posta"
         }
     },
     "helpcenter": {

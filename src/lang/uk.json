@@ -467,7 +467,7 @@
         "emailOwnerOptions": {
             "pupil": "Студент:в Email",
             "parent": "Електронна пошта батьків",
-            "supportPerson": "Допоміжна особа Email"
+            "other": "Допоміжна особа Email"
         }
     },
     "helpcenter": {

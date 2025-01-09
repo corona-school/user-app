@@ -149,8 +149,8 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
                             <Label htmlFor="emailOwner2">{t('registration.emailOwnerOptions.parent')}</Label>
                         </div>
                         <div className="flex gap-x-2 items-center">
-                            <RadioGroupItem id="emailOwner3" value={PupilEmailOwner.SupportPerson} />
-                            <Label htmlFor="emailOwner3">{t('registration.emailOwnerOptions.supportPerson')}</Label>
+                            <RadioGroupItem id="emailOwner3" value={PupilEmailOwner.Other} />
+                            <Label htmlFor="emailOwner3">{t('registration.emailOwnerOptions.other')}</Label>
                         </div>
                     </RadioGroup>
                     {showEmailOwnerMissing && (
