@@ -45,7 +45,7 @@ const Referrals: React.FC<{}> = () => {
     const { colors, space, sizes } = useTheme();
 
     const userID = sessionStorage.getItem('userID');
-    const [uniqueReferralLink, setUniqueReferralLink] = useState('https://www.lern-fair.de/referral?referredById=' + userID);
+    const [uniqueReferralLink, setUniqueReferralLink] = useState('https://app.lern-fair.de/registration?referredById=' + userID);
     const [buttonText, setButtonText] = useState('Share on LinkedIn');
     const { onCopy, hasCopied } = useClipboard();
 
