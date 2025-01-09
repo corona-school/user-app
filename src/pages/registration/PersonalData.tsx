@@ -104,7 +104,7 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
                         onValueChange={(nextValue) => {
                             setPupilAge(nextValue === '<= 15' ? '<= 15' : '> 15');
                         }}
-                        className="flex flex-col md:flex-row gap-y-4 md:gap-x-4 md:gap-y-0"
+                        className="flex flex-row gap-x-4"
                     >
                         <div className="flex gap-x-2 items-center">
                             <RadioGroupItem id="ageOption1" value="<= 15" />
