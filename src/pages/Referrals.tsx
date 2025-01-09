@@ -3,7 +3,7 @@ import NotificationAlert from '@/components/notifications/NotificationAlert';
 import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
 import { Button } from '../components/Button';
-import { HStack, Stack, VStack, Box, useTheme, useBreakpointValue, Input, IconButton, useClipboard } from 'native-base';
+import { HStack, Stack, VStack, Box, useTheme, useBreakpointValue, Input, IconButton, useClipboard, Tooltip } from 'native-base';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { useTranslation } from 'react-i18next';
 import { WhatsappShareButton } from 'react-share';
@@ -25,6 +25,9 @@ import BGMobile from '../assets/images/referral/BGMobile.svg';
 import Character from '../assets/images/referral/Character.svg';
 import HandsPhone1 from '../assets/images/referral/HandsPhone1.svg';
 import HandsPhone2 from '../assets/images/referral/HandsPhone2.svg';
+import LOCK from '../assets/images/referral/Lock.svg';
+import LOCKMOBILE from '../assets/images/referral/LockMobile.svg';
+
 import { gql } from '@/gql';
 import { useQuery } from '@apollo/client';
 
@@ -213,7 +216,7 @@ const Referrals: React.FC<{}> = () => {
                                         <HandsPhone1
                                             style={{
                                                 position: 'absolute',
-                                                bottom: '-150px',
+                                                bottom: referralCount >= 3 ? '-150px' : '-145px',
                                             }}
                                         ></HandsPhone1>
                                     </VStack>
@@ -223,12 +226,29 @@ const Referrals: React.FC<{}> = () => {
                                             {t('referral.reward.HoursSupported')}
                                         </Typography>
                                         <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
-                                            {supportedHours}
+                                            {referralCount >= 3 ? (
+                                                supportedHours
+                                            ) : (
+                                                <Tooltip
+                                                    maxW={250}
+                                                    label={'to unlock this you need to have 3 or more registered users'}
+                                                    bg={'primary.100'}
+                                                    placement="right"
+                                                    _text={{ lineHeight: '1rem', color: colors.primary[700] }}
+                                                    p={3}
+                                                    hasArrow
+                                                    children={
+                                                        <Box>
+                                                            <LOCK />
+                                                        </Box>
+                                                    }
+                                                ></Tooltip>
+                                            )}
                                         </Typography>
                                         <HandsPhone2
                                             style={{
                                                 position: 'absolute',
-                                                bottom: '-150px',
+                                                bottom: referralCount >= 3 ? '-150px' : '-145px',
                                             }}
                                         ></HandsPhone2>
                                     </VStack>
@@ -273,7 +293,24 @@ const Referrals: React.FC<{}> = () => {
                                 {t('referral.reward.HoursSupported')}
                             </Typography>
                             <Typography variant="h5" className="font-bold" style={{ color: colors.primary[400] }}>
-                                {supportedHours}
+                                {referralCount >= 3 ? (
+                                    supportedHours
+                                ) : (
+                                    <Tooltip
+                                        maxW={250}
+                                        label={'to unlock this you need to have 3 or more registered users'}
+                                        bg={'primary.100'}
+                                        placement="right"
+                                        _text={{ lineHeight: '1rem', color: colors.primary[700] }}
+                                        p={3}
+                                        hasArrow
+                                        children={
+                                            <Box>
+                                                <LOCKMOBILE />
+                                            </Box>
+                                        }
+                                    ></Tooltip>
+                                )}
                             </Typography>
                         </HStack>
                     </Box>
