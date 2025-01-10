@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import { toast } from 'sonner';
 import { Button } from '../components/Button';
 import { Checkbox } from '../components/Checkbox';
@@ -149,14 +148,16 @@ const Lesson: React.FC = () => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/files/upload`, formData, {
-                headers: {
-                    'Content-Type': 'multipart/form-data',
-                },
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/files/upload`, {
+                method: 'POST',
+                body: formData,
             });
-
+            if (!response.ok) {
+                throw new Error('File upload failed');
+            }
+            const data = await response.text();
             setFileUploadStatus('File uploaded successfully');
-            return response.data;
+            return data;
         } catch (error) {
             console.error('File upload error:', error);
             setFileUploadStatus('File upload failed');
