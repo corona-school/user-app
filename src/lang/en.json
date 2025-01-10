@@ -188,7 +188,9 @@
         "emailVerification": "E-mail verification",
         "succesEmailVerification": "Your e-mail has been successfully changed!",
         "invalidToken": "Token invalid",
-        "invalidMailMessage": "The e-mail address you entered is incorrect."
+        "invalidMailMessage": "The e-mail address you entered is incorrect.",
+        "newEmail": "New e-mail",
+        "changeEmailConfirmation": "We have sent you a confirmation email to the new email address"
     },
     "lernfair": {
         "languages": {
@@ -422,15 +424,18 @@
         },
         "verifyemail": {
             "resend": {
-                "button": "Send confirmation mail again",
                 "successAlert": "We have resent you the confirmation email. Please check your inbox and also check your spam.",
-                "failedAlert": "Unfortunately, an error has occurred. Please try again later."
+                "failedAlert": "Unfortunately, an error has occurred. Please try again later.",
+                "button": "Send confirmation email again"
             },
-            "title": "Check your e-mail inbox!",
-            "mailsendto": "We have sent an e-mail to {{email}}.",
-            "description": "Before you can use our offer, you must confirm your e-mail address. You will then be automatically redirected to your user area.",
-            "notreceived": "Didn't receive an e-mail? Please also check your spam!",
-            "backToWelcomeButton": "To the login area"
+            "backToWelcomeButton": "To the login area",
+            "notreceived": {
+                "title": "No email received?",
+                "description": "Also check your spam folder"
+            },
+            "title": "Confirm your email address",
+            "mailsendto": "We have sent an email to:",
+            "description": "After confirming your email address, you will be automatically redirected here."
         },
         "legal": {
             "usageBullets": {
