@@ -381,6 +381,15 @@
     "registration": {
         "password_repeat": "Passwort wiederholen",
         "to_login": "Ich habe bereits einen Account",
+        "ageOptions": {
+            "15OrYounger": "Schüler:in ist 15 oder jünger",
+            "16OrOlder": "Schüler:in ist 16 oder älter"
+        },
+        "emailOwnerOptions": {
+            "pupil": "Schüler:in Email",
+            "parent": "Elternteil Email",
+            "other": "Hilfsperson Email"
+        },
         "barrier": {
             "title": "Wichtig",
             "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen / Azubi. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
@@ -404,6 +413,7 @@
             "schoolClassSelectionMissing": "Bitte wähle eine Klasse aus.",
             "schoolTypeSelectionMissing": "Bitte wähle eine Schulform aus.",
             "userStateSelectionMissing": "Bitte wähle einen Schulort aus.",
+            "radioSelectionMissing": "Bitte wähle eine Option aus",
             "password": {
                 "length": "Das Passwort muss mindestens 6 Zeichen enthalten.",
                 "nomatch": "Die Passwörter stimmen nicht überein"
@@ -418,6 +428,7 @@
         },
         "personal": {
             "title": "Gib deine persönlichen Daten ein",
+            "pupilSubtitle": "Angaben zu Schüler:in",
             "about": {
                 "label": "Über mich",
                 "text": "Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können."

@@ -355,14 +355,16 @@
             "userType": {
                 "missing": "Please identify your role"
             },
-            "name": "Please enter your full name"
+            "name": "Please enter your full name",
+            "radioSelectionMissing": "Please select an option"
         },
         "personal": {
             "about": {
                 "label": "About me",
                 "text": "Write a short text about yourself here that other users can see on your profile."
             },
-            "title": "Enter your personal data"
+            "title": "Enter your personal data",
+            "pupilSubtitle": "Pupil Information"
         },
         "result": {
             "success": {
@@ -457,7 +459,16 @@
             "underageDisclaimer": "Note: In the event that the person giving consent has not yet reached the age of 18, the holder of parental responsibility for the person must give their consent."
         },
         "password_repeat": "Repeat password",
-        "to_login": "I already have an account"
+        "to_login": "I already have an account",
+        "ageOptions": {
+            "15OrYounger": "Pupil is 15 or younger",
+            "16OrOlder": "Pupil is 16 or older"
+        },
+        "emailOwnerOptions": {
+            "pupil": "Pupil email",
+            "parent": "Parent Email",
+            "other": "Support person Email"
+        }
     },
     "helpcenter": {
         "subtitle": {
