@@ -357,14 +357,16 @@
             "userType": {
                 "missing": "Lütfen rolünüzü tanımlayın"
             },
-            "name": "Lütfen tam adınızı girin"
+            "name": "Lütfen tam adınızı girin",
+            "radioSelectionMissing": "Lütfen bir seçenek seçin"
         },
         "personal": {
             "about": {
                 "label": "Benim hakkımda",
                 "text": "Buraya kendiniz hakkında diğer kullanıcıların profilinizde görebileceği kısa bir metin yazın."
             },
-            "title": "Kişisel verilerinizi girin"
+            "title": "Kişisel verilerinizi girin",
+            "pupilSubtitle": "Öğrencilerin detayları: in"
         },
         "result": {
             "success": {
@@ -462,7 +464,16 @@
             "underageDisclaimer": "Not: Onay veren kişinin henüz 18 yaşını doldurmamış olması halinde, kişinin ebeveyn sorumluluğunu taşıyan kişinin onay vermesi gerekmektedir."
         },
         "password_repeat": "Şifreyi tekrarla",
-        "to_login": "Zaten bir hesabım var"
+        "to_login": "Zaten bir hesabım var",
+        "ageOptions": {
+            "15OrYounger": "Öğrenci 15 yaşında veya daha küçük",
+            "16OrOlder": "Öğrenci 16 yaşında veya daha büyük"
+        },
+        "emailOwnerOptions": {
+            "pupil": "Öğrenci: E-postada",
+            "parent": "Ebeveyn E-postası",
+            "other": "Yardımcı kişi E-posta"
+        }
     },
     "helpcenter": {
         "subtitle": {
