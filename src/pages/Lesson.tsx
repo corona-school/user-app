@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { toast } from 'sonner';
 import { Button } from '../components/Button';
 import { Checkbox } from '../components/Checkbox';
 import { cn } from '../lib/Tailwind';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
+import { IconX } from '@tabler/icons-react';
+import { IconWand } from '@tabler/icons-react';
 
 import { Box, VStack, HStack, Text, Select, TextArea, ScrollView, Pressable, Center } from 'native-base';
 import { useParams } from 'react-router-dom';
@@ -15,11 +18,11 @@ import { Typography } from '../components/Typography';
 import { TooltipButton } from '../components/Tooltip';
 
 import { useTranslation } from 'react-i18next';
-import INFOICON from '../assets/icons/lernfair/lesson/info_icon.svg';
 import InfoGreen from '../assets/icons/icon_info_dk_green.svg';
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
+import { getGradeLabel } from '@/Utility';
 
 interface GeneratedLessonPlan {
     title: string;
@@ -112,9 +115,9 @@ const Lesson: React.FC = () => {
     const [selectedDuration, setSelectedDuration] = useState('60');
 
     // Grade options
-    const gradeOptions = Array.from({ length: 13 }, (_, i) => ({
+    const gradeOptions = Array.from({ length: 14 }, (_, i) => ({
         value: String(i + 1),
-        label: `${i + 1}. Klasse`,
+        label: getGradeLabel(i + 1),
     }));
 
     // Duration options in minutes
@@ -204,10 +207,10 @@ ${generatedPlan.resources || 'N/A'}
             navigator.clipboard
                 .writeText(outputText)
                 .then(() => {
-                    console.log('Content copied!');
+                    toast.info('Content copied!');
                 })
                 .catch((err) => {
-                    console.error('Failed to copy: ', err);
+                    console.log('Failed to copy: ', err);
                 });
         }
     };
@@ -312,7 +315,6 @@ ${generatedPlan.resources || 'N/A'}
                 const uuid = await uploadFile(file);
                 if (uuid) fileUuids.push(uuid);
             }
-            console.log('Uploaded file UUIDs:', fileUuids);
             const { data } = await generateLessonPlan({
                 variables: {
                     data: {
@@ -382,13 +384,9 @@ ${generatedPlan.resources || 'N/A'}
 
                             {/* Try Example Button */}
                             <Button variant="default" className="text-white font-medium mb-6" onClick={handleTryExample}>
-                                <INFOICON
-                                    style={{
-                                        width: 16,
-                                        height: 16,
-                                        marginRight: 8,
-                                    }}
-                                ></INFOICON>
+                                <div style={{ display: 'inline-block', marginRight: 8 }}>
+                                    <IconWand size={16} style={{ marginRight: 8 }} color="white" strokeWidth={2} />
+                                </div>
                                 {t('lesson.tryExample')}
                             </Button>
 
@@ -544,9 +542,7 @@ ${generatedPlan.resources || 'N/A'}
                                                     </HStack>
                                                     <Pressable p={1} minW={0} onPress={() => removeFile(index)} _hover={{ opacity: 0.8 }}>
                                                         <Center w={8} h={8} bg="#2A4A50" borderRadius="md">
-                                                            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                                <path d="M1 1L13 13M1 13L13 1" stroke="white" strokeWidth="2" strokeLinecap="round" />
-                                                            </svg>
+                                                            <IconX size={14} color="white" strokeWidth={2} />
                                                         </Center>
                                                     </Pressable>
                                                 </HStack>
@@ -607,18 +603,14 @@ ${generatedPlan.resources || 'N/A'}
                                     <Button
                                         variant="secondary"
                                         onClick={handleGenerate}
+                                        isLoading={loading}
                                         disabled={!termsAccepted || loading}
                                         className={cn(
                                             'bg-[#F7DB4D] text-[#2A4A50] relative',
                                             (!termsAccepted || loading) && 'opacity-50 bg-[#E5E7EB] cursor-not-allowed'
                                         )}
                                     >
-                                        {loading && (
-                                            <div className="absolute inset-0 flex items-center justify-center">
-                                                <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
-                                            </div>
-                                        )}
-                                        <span className={loading ? 'invisible' : ''}>{t('lesson.generatePlanButton') as string}</span>
+                                        {t('lesson.generatePlanButton') as string}
                                     </Button>
                                 </HStack>
                             </VStack>
