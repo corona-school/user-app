@@ -39,7 +39,7 @@ const query = gql(`
                         id
                     }
                 }
-                subcoursesInstructing {
+                subcoursesInstructing(excludeCancelled: true) {
                     id
                     published
                     lectures {
