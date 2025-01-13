@@ -188,7 +188,9 @@
         "emailVerification": "E-posta doğrulama",
         "succesEmailVerification": "E-posta adresiniz başarıyla değiştirildi!",
         "invalidToken": "Belirteç geçersiz",
-        "invalidMailMessage": "Girdiğiniz e-posta adresi yanlış."
+        "invalidMailMessage": "Girdiğiniz e-posta adresi yanlış.",
+        "newEmail": "Yeni e-posta",
+        "changeEmailConfirmation": "Yeni e-posta adresinize bir onay e-postası gönderdik"
     },
     "lernfair": {
         "languages": {
@@ -424,15 +426,18 @@
         },
         "verifyemail": {
             "resend": {
-                "button": "Onay e-postasını tekrar gönder",
                 "successAlert": "Size onay e-postasını yeniden gönderdik. Lütfen gelen kutunuzu ve ayrıca spam kutunuzu kontrol edin.",
-                "failedAlert": "Maalesef bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+                "failedAlert": "Maalesef bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+                "button": "Onay e-postasını tekrar gönder"
             },
-            "title": "E-posta kutunuzu kontrol edin!",
-            "mailsendto": "{{email}} adresine bir e-posta gönderdik.",
-            "description": "Sunucumuzu kullanmadan önce e-posta adresinizi doğrulamanız gerekmektedir. Daha sonra otomatik olarak kullanıcı alanınıza yönlendirileceksiniz.",
-            "notreceived": "E-posta almadınız mı? Lütfen spam kutunuzu da kontrol edin!",
-            "backToWelcomeButton": "Giriş alanına"
+            "backToWelcomeButton": "Giriş alanına",
+            "notreceived": {
+                "title": "E-posta alınmadı mı?",
+                "description": "Ayrıca spam klasörünüzü de kontrol edin"
+            },
+            "title": "E-posta adresinizi onaylayın",
+            "mailsendto": "Bir e-posta gönderdik:",
+            "description": "E-posta adresinizi onayladıktan sonra otomatik olarak buraya yönlendirileceksiniz."
         },
         "legal": {
             "usageBullets": {

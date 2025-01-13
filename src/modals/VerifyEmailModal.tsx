@@ -9,6 +9,8 @@ import { Button } from '@/components/Button';
 import { Alert } from '@/components/Alert';
 import { IconInfoCircleFilled } from '@tabler/icons-react';
 import { PublicFooter } from '@/components/PublicFooter';
+import { Separator } from '@/components/Separator';
+import ChangeEmailModal from './ChangeEmailModal';
 
 interface VerifyEmailModalProps {
     email?: string;
@@ -21,6 +23,7 @@ const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps
     usePageTitle(`Lern-Fair - Registrierung: Bitte Email bestätigen für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
+    const [isOpen, setIsOpen] = useState(false);
 
     const [sendVerification, _sendVerification] = useMutation(
         gql(`
@@ -51,21 +54,26 @@ const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps
                 {email && (
                     <>
                         <Typography className="text-white text-center">
-                            {t('registration.verifyemail.mailsendto', {
-                                email: email,
-                            })}
+                            {t('registration.verifyemail.mailsendto')} <b>{email}</b>
                         </Typography>
                     </>
                 )}
                 <Typography className="text-white text-center">{t('registration.verifyemail.description')}</Typography>
-                <Typography className="text-white text-center font-bold">{t('registration.verifyemail.notreceived')}</Typography>
+                <Separator />
+                <Typography variant="h5" className="text-white text-center font-bold">
+                    {t('registration.verifyemail.notreceived.title')}
+                </Typography>
+                <Typography className="text-white text-center">{t('registration.verifyemail.notreceived.description')}</Typography>
+                <Button variant="outline-light" onClick={() => setIsOpen(true)}>
+                    {t('login.changeEmail')}
+                </Button>
                 <Button
                     disabled={_sendVerification?.loading}
                     isLoading={_sendVerification?.loading}
                     reasonDisabled={t('reasonsDisabled.loading')}
                     onClick={requestEmailVerification}
                     variant="link"
-                    className="text-primary-light"
+                    className="text-white underline"
                 >
                     {t('registration.verifyemail.resend.button')}
                 </Button>
@@ -82,6 +90,7 @@ const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps
             <div className="mt-4">
                 <PublicFooter />
             </div>
+            <ChangeEmailModal isOpen={isOpen} onOpenChange={setIsOpen} currentEmail={email!} />
         </div>
     );
 };
