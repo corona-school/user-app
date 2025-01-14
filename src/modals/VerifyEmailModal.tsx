@@ -69,7 +69,9 @@ const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps
                 {email && (
                     <>
                         <Typography className="text-white text-center">
-                            {t('registration.verifyemail.mailsendto')} <b>{email}</b>
+                            {t('registration.verifyemail.mailsendto')}
+                            <br />
+                            <b>{email}</b>
                         </Typography>
                     </>
                 )}
