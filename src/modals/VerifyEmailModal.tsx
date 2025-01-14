@@ -7,10 +7,12 @@ import { usePageTitle } from '../hooks/usePageTitle';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import { Alert } from '@/components/Alert';
-import { IconInfoCircleFilled } from '@tabler/icons-react';
+import { IconInfoCircleFilled, IconSettingsFilled } from '@tabler/icons-react';
 import { PublicFooter } from '@/components/PublicFooter';
 import { Separator } from '@/components/Separator';
 import ChangeEmailModal from './ChangeEmailModal';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/Dropdown';
+import { useNavigate } from 'react-router-dom';
 
 interface VerifyEmailModalProps {
     email?: string;
@@ -20,6 +22,7 @@ interface VerifyEmailModalProps {
 
 const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
     usePageTitle(`Lern-Fair - Registrierung: Bitte Email bestätigen für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
@@ -46,6 +49,18 @@ const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps
 
     return (
         <div className="flex flex-col flex-1 items-center justify-center bg-primary p-4">
+            <div className="flex w-full gap-2 items-center justify-end px-4 pt-2 z-50">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button size="icon" variant="ghost-light">
+                            <IconSettingsFilled />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuItem onClick={() => navigate('/logout')}>Logout</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
             <div className="flex flex-col flex-1 w-full lg:max-w-2xl items-center justify-center gap-y-6">
                 <Icon className="size-16" />
                 <Typography variant="h4" className="text-center text-white">
@@ -54,7 +69,9 @@ const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps
                 {email && (
                     <>
                         <Typography className="text-white text-center">
-                            {t('registration.verifyemail.mailsendto')} <b>{email}</b>
+                            {t('registration.verifyemail.mailsendto')}
+                            <br />
+                            <b>{email}</b>
                         </Typography>
                     </>
                 )}
