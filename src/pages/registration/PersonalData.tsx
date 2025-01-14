@@ -64,7 +64,7 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
             setShowAgeMissing(!pupilAge);
             setShowEmailOwnerMissing(!emailOwner || emailOwner === PupilEmailOwner.Unknown);
         }
-        const arePupilOnlyFieldsValid = emailOwner && pupilAge;
+        const arePupilOnlyFieldsValid = emailOwner !== PupilEmailOwner.Unknown && pupilAge;
         const areGeneralFieldsValid = password.length >= 6 && password === passwordRepeat && isEmail(email) && firstname && lastname;
         return userType === 'student' ? areGeneralFieldsValid : areGeneralFieldsValid && arePupilOnlyFieldsValid;
     }, [email, firstname, lastname, password, passwordRepeat, pupilAge, emailOwner]);
