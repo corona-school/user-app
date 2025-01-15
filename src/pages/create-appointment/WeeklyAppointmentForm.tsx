@@ -1,11 +1,14 @@
-import { Divider, FormControl, HStack, IconButton, TextArea, useBreakpointValue, VStack, WarningTwoIcon } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import AppointmentDate from '../../widgets/AppointmentDate';
-import InputSuffix from '../../widgets/InputSuffix';
-import RemoveIcon from '../../assets/icons/lernfair/remove_circle_outline.svg';
 import { useWeeklyAppointments } from '../../context/AppointmentContext';
 import { WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { useState } from 'react';
+import { Label } from '@/components/Label';
+import { Input } from '@/components/Input';
+import { TextArea } from '@/components/TextArea';
+import { Separator } from '@/components/Separator';
+import { Button } from '@/components/Button';
+import { IconCircleMinus } from '@tabler/icons-react';
 
 type WeeklyProps = {
     index: number;
@@ -28,21 +31,21 @@ const WeeklyAppointmentForm: React.FC<WeeklyProps> = ({ index, isLast }) => {
         setDescription(e);
     };
 
-    const width = useBreakpointValue({
-        base: isLast ? '70%' : '85%',
-        lg: isLast ? '40%' : '46%',
-    });
+    const appointmentsCount = weeklies[index].index;
 
     return (
-        <HStack space={3}>
+        <div className="flex w-full gap-x-4">
             <AppointmentDate current={false} date={weeklies[index].nextDate} />
-            <VStack space={3} width={width}>
-                <FormControl>
-                    <InputSuffix
-                        appointmentsCount={weeklies[index].index}
-                        handleInput={handleTitleInput}
-                        inputValue={title}
-                        handleBlur={() =>
+            <div className="flex flex-col gap-y-4 w-[75%]">
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="title">{t('appointment.create.inputPlaceholder')}</Label>
+                    <Input
+                        className="w-full"
+                        id="title"
+                        value={title}
+                        placeholder={t('appointment.create.lecture') + `${appointmentsCount ? ' #' : ''}${appointmentsCount ?? ''}`}
+                        onChange={handleTitleInput}
+                        onBlur={() =>
                             dispatchWeeklyAppointment({
                                 type: WeeklyReducerActionType.CHANGE_WEEKLY_APPOINTMENT_TITLE,
                                 value: title,
@@ -51,15 +54,14 @@ const WeeklyAppointmentForm: React.FC<WeeklyProps> = ({ index, isLast }) => {
                             })
                         }
                     />
-                    <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>{t('appointment.create.emptyFieldError')}</FormControl.ErrorMessage>
-                </FormControl>
-                <FormControl>
+                </div>
+                <div className="flex flex-col gap-y-1 flex-1">
+                    <Label htmlFor="description">{t('appointment.create.descriptionLabel')}</Label>
                     <TextArea
-                        placeholder={t('appointment.create.descriptionLabel')}
-                        _light={{ placeholderTextColor: 'primary.500' }}
-                        autoCompleteType={'normal'}
+                        id="description"
                         value={description}
-                        onChangeText={(e) => handleDescriptionInput(e)}
+                        onChange={(e) => handleDescriptionInput(e.target.value)}
+                        placeholder={t('appointment.create.descriptionPlaceholder')}
                         onBlur={() =>
                             dispatchWeeklyAppointment({
                                 type: WeeklyReducerActionType.CHANGE_WEEKLY_APPOINTMENT_DESCRIPTION,
@@ -69,21 +71,18 @@ const WeeklyAppointmentForm: React.FC<WeeklyProps> = ({ index, isLast }) => {
                             })
                         }
                     />
-                </FormControl>
-            </VStack>
+                </div>
+            </div>
 
             {isLast && (
-                <HStack space={3} alignItems={'flex-start'}>
-                    <Divider orientation="vertical" />
-                    <IconButton
-                        icon={<RemoveIcon />}
-                        onPress={() => {
-                            dispatchWeeklyAppointment({ type: WeeklyReducerActionType.REMOVE_WEEKLY_APPOINTMENT });
-                        }}
-                    />
-                </HStack>
+                <div className="flex items-start gap-x-3">
+                    <Separator orientation="vertical" />
+                    <Button variant="ghost" size="icon" onClick={() => dispatchWeeklyAppointment({ type: WeeklyReducerActionType.REMOVE_WEEKLY_APPOINTMENT })}>
+                        <IconCircleMinus />
+                    </Button>
+                </div>
             )}
-        </HStack>
+        </div>
     );
 };
 
