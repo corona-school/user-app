@@ -2,17 +2,12 @@ import { useState } from 'react';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
 import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
-import { Button } from '../components/Button';
-import { HStack, Stack, VStack, Box, useTheme, useBreakpointValue, Input, IconButton, useClipboard, Tooltip } from 'native-base';
+import { HStack, Stack, VStack, Box, useTheme, useBreakpointValue, useClipboard, Tooltip } from 'native-base';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { useTranslation } from 'react-i18next';
-import { WhatsappShareButton } from 'react-share';
+import { isMobile } from 'react-device-detect';
 
 // Icons
-import CopyIcon from '../assets/icons/lernfair/copy_button.svg';
-import CopiedIcon from '../assets/icons/lernfair/referral/copyticked.svg';
-import WhatsAppIcon from '../assets/icons/lernfair/referral/Whatsapp.svg';
-import LinkedInIcon from '../assets/icons/lernfair/referral/LinkedIn.svg';
 import Option1Icon from '../assets/icons/lernfair/referral/bulletOne.svg';
 import Option2Icon from '../assets/icons/lernfair/referral/bulletTwo.svg';
 import Option3Icon from '../assets/icons/lernfair/referral/bulletThree.svg';
@@ -23,13 +18,12 @@ import ConnfettiMobile from '../assets/images/referral/ConfettiMobile.svg';
 import BGDesktop from '../assets/images/referral/BGDesktop.svg';
 import BGMobile from '../assets/images/referral/BGMobile.svg';
 import Character from '../assets/images/referral/Character.svg';
-import HandsPhone1 from '../assets/images/referral/HandsPhone1.svg';
-import HandsPhone2 from '../assets/images/referral/HandsPhone2.svg';
-import LOCK from '../assets/images/referral/Lock.svg';
 import LOCKMOBILE from '../assets/images/referral/LockMobile.svg';
 
 import { gql } from '@/gql';
 import { useQuery } from '@apollo/client';
+import SocialOptions from '@/components/referral/socialOptions';
+import Rewards from '@/components/referral/rewards';
 
 const ReferralCountQuery = gql(`
     query ReferralCount($userId: String!) {
@@ -46,11 +40,14 @@ const SupportedHoursQuery = gql(`
 const Referrals: React.FC<{}> = () => {
     const { t } = useTranslation();
     const { colors, space, sizes } = useTheme();
+    const { onCopy, hasCopied } = useClipboard();
 
     const userID = sessionStorage.getItem('userID');
-    const [uniqueReferralLink, setUniqueReferralLink] = useState('https://app.lern-fair.de/registration?referredById=' + userID);
-    const [buttonText, setButtonText] = useState('Share on LinkedIn');
-    const { onCopy, hasCopied } = useClipboard();
+    const uniqueReferralLink = 'https://app.lern-fair.de/registration?referredById=' + userID;
+
+    // Share Variables
+    const referralMessage = t('referral.referralMessage');
+    const [linkedinButtonText, setLinkedinButtonText] = useState(t('referral.share.option3.option'));
 
     // Fetch referral count and supported hours
     const { data: referralData, error: referralError } = useQuery(ReferralCountQuery, { variables: { userId: userID ?? '' } });
@@ -65,21 +62,17 @@ const Referrals: React.FC<{}> = () => {
     const referralCount = referralData?.referralCount ?? 0;
     const supportedHours = hoursData?.supportedHours ?? 0;
 
-    // Whatsapp Share
-    const message =
-        '📣 HIRING VOLUNTEERS  📣Want to give back to the community? Now is the perfect time! We are currently looking for volunteers to teach german school children grade 1- 13. #lernfair #education #e-learning';
-
     // Linkedin Share
     const shareToLinkedIn = () => {
         const imageURL = 'https://user-app-files.fra1.digitaloceanspaces.com/static/images/share_image.jpg';
         const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(imageURL)}`;
 
-        setButtonText('Referral link copied!');
-        onCopy(message + '\n' + uniqueReferralLink);
+        setLinkedinButtonText(t('referral.copiedReferralLink'));
+        onCopy(referralMessage + '\n' + uniqueReferralLink);
 
         setTimeout(() => {
             window.open(linkedinURL, '_blank');
-            setButtonText('Share on LinkedIn');
+            setLinkedinButtonText(t('referral.share.option3.option'));
         }, 2000);
     };
 
@@ -90,6 +83,7 @@ const Referrals: React.FC<{}> = () => {
         });
     };
 
+    // Breakpoint
     const ContainerWidth = useBreakpointValue({
         base: '100%',
         lg: sizes['containerWidth'],
@@ -132,6 +126,7 @@ const Referrals: React.FC<{}> = () => {
                                     </Typography>
                                 </Typography>
                             </HStack>
+
                             <HStack space={2} margin={space['1']}>
                                 <Option2Icon />
                                 <Typography variant="h5">
@@ -141,6 +136,7 @@ const Referrals: React.FC<{}> = () => {
                                     </Typography>
                                 </Typography>
                             </HStack>
+
                             <HStack space={2} margin={space['1']}>
                                 <Option3Icon />
                                 <Typography variant="h5">
@@ -152,108 +148,26 @@ const Referrals: React.FC<{}> = () => {
                             </HStack>
 
                             {/* Share Buttons */}
-                            <VStack space={2}>
-                                <label className="block"> {t('referral.share.title')}</label>
-                                <Input
-                                    value={uniqueReferralLink}
-                                    placeholder="Enter link"
-                                    isReadOnly
-                                    InputRightElement={
-                                        // 👉 Remove icon hover effect
-                                        <IconButton
-                                            icon={
-                                                hasCopied ? (
-                                                    <>
-                                                        <CopiedIcon style={{ marginRight: '8px' }} /> Copied!
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <CopyIcon style={{ marginRight: '8px' }} /> Copy Link
-                                                    </>
-                                                )
-                                            }
-                                            onPress={() => onCopy(uniqueReferralLink)}
-                                            borderRadius="full"
-                                        />
-                                    }
-                                />
-                                <HStack space={4}>
-                                    <WhatsappShareButton url={uniqueReferralLink} title={message} className="w-full">
-                                        <Button variant="success" className="w-full">
-                                            <WhatsAppIcon />
-                                            Share on WhatsApp
-                                        </Button>
-                                    </WhatsappShareButton>
-
-                                    <Button variant="linkedIn" className="w-full" onClick={shareToLinkedIn}>
-                                        <LinkedInIcon /> {buttonText}
-                                    </Button>
-                                </HStack>
-                            </VStack>
+                            <SocialOptions
+                                uniqueReferralLink={uniqueReferralLink}
+                                referralMessage={referralMessage}
+                                onCopy={onCopy}
+                                hasCopied={hasCopied}
+                                linkedinButtonText={linkedinButtonText}
+                                t={t}
+                                shareToLinkedIn={shareToLinkedIn}
+                                handleShare={handleShare}
+                                isMobile={isMobile}
+                            />
                         </Box>
                     </VStack>
                     <VStack w="52%">
                         <BGDesktop style={{ position: 'absolute', top: '-150px', left: 'calc(-380px + (100% - 686px) / 2)', zIndex: -1 }}></BGDesktop>
 
-                        <Box w="480px" h="440px" marginX={'auto'} backgroundColor="white" borderRadius="md" shadow={4} padding="10" position="relative">
+                        <Box w="480px" marginX={'auto'} backgroundColor="white" borderRadius="md" shadow={4} padding="10" paddingBottom="0" position="relative">
                             <Confetti style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.8)' }}></Confetti>
 
-                            <Typography variant="h4" className=" font-bold">
-                                {t('referral.reward.title')}
-                            </Typography>
-                            <Typography variant="h6" className="w-3/4 mb-5">
-                                {t('referral.reward.description')}
-                            </Typography>
-                            <VStack space={4} alignItems="center">
-                                <HStack space={8} justifyContent="center">
-                                    <VStack alignItems="center" position="relative">
-                                        <Typography variant="h5" className="mb-4 font-bold underline">
-                                            {t('referral.reward.RegisteredUsers')}
-                                        </Typography>
-                                        <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
-                                            {referralCount}
-                                        </Typography>
-                                        <HandsPhone1
-                                            style={{
-                                                position: 'absolute',
-                                                bottom: referralCount >= 3 ? '-150px' : '-145px',
-                                            }}
-                                        ></HandsPhone1>
-                                    </VStack>
-
-                                    <VStack alignItems="center" position="relative">
-                                        <Typography variant="h5" className="mb-4 font-bold underline">
-                                            {t('referral.reward.HoursSupported')}
-                                        </Typography>
-                                        <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
-                                            {referralCount >= 3 ? (
-                                                supportedHours
-                                            ) : (
-                                                <Tooltip
-                                                    maxW={250}
-                                                    label={'to unlock this you need to have 3 or more registered users'}
-                                                    bg={'primary.100'}
-                                                    placement="right"
-                                                    _text={{ lineHeight: '1rem', color: colors.primary[700] }}
-                                                    p={3}
-                                                    hasArrow
-                                                    children={
-                                                        <Box>
-                                                            <LOCK />
-                                                        </Box>
-                                                    }
-                                                ></Tooltip>
-                                            )}
-                                        </Typography>
-                                        <HandsPhone2
-                                            style={{
-                                                position: 'absolute',
-                                                bottom: referralCount >= 3 ? '-150px' : '-145px',
-                                            }}
-                                        ></HandsPhone2>
-                                    </VStack>
-                                </HStack>
-                            </VStack>
+                            <Rewards referralCount={referralCount} supportedHours={supportedHours} colors={colors} t={t} />
                         </Box>
                     </VStack>
                 </HStack>
@@ -314,57 +228,19 @@ const Referrals: React.FC<{}> = () => {
                             </Typography>
                         </HStack>
                     </Box>
-                    <Box backgroundColor="white" borderRadius="md" shadow={4} padding="5">
-                        <label className="block mb-2">How it works</label>
-
-                        <Typography variant="h5">
-                            <Option1Icon className="inline mr-1 mb-1" />
-                            Copy your Referral Link
-                            <Typography variant="h6" className="inline">
-                                - copy your unique link below
-                            </Typography>
-                        </Typography>
-
-                        <Typography variant="h5">
-                            <Option2Icon className="inline mr-1 mb-1" />
-                            Choose where to Share
-                            <Typography variant="h6" className="inline">
-                                - with the copied link, hit Share and select your preferred app to share on WhatsApp, LinkedIn, Email or Social Media apps
-                            </Typography>
-                        </Typography>
-                    </Box>
                     <Box h="170px" backgroundColor="white" borderRadius="md" shadow={4} padding="5">
-                        <VStack space={2}>
-                            <label className="block"> {t('referral.share.title')}</label>
-                            <Input
-                                value={uniqueReferralLink}
-                                placeholder="Enter link"
-                                isReadOnly
-                                InputRightElement={
-                                    <IconButton
-                                        icon={
-                                            hasCopied ? (
-                                                <>
-                                                    <CopiedIcon />
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <CopyIcon />
-                                                </>
-                                            )
-                                        }
-                                        onPress={() => onCopy(uniqueReferralLink)}
-                                        borderRadius="full"
-                                    />
-                                }
-                            />
-
-                            <HStack space={4}>
-                                <Button variant="default" className="w-full py-2" onClick={handleShare}>
-                                    Share
-                                </Button>
-                            </HStack>
-                        </VStack>
+                        {/* Share Buttons */}
+                        <SocialOptions
+                            uniqueReferralLink={uniqueReferralLink}
+                            referralMessage={referralMessage}
+                            onCopy={onCopy}
+                            hasCopied={hasCopied}
+                            linkedinButtonText={linkedinButtonText}
+                            t={t}
+                            shareToLinkedIn={shareToLinkedIn}
+                            handleShare={handleShare}
+                            isMobile={isMobile}
+                        />
                     </Box>
                 </VStack>
             </Box>

@@ -2498,29 +2498,34 @@
         }
     },
     "referral": {
-        "title": "Referral program",
-        "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
+        "title": "Empfehlungsprogramm",
+        "description": "Kennen Sie jemanden, der etwas für junge Menschen bewirken kann? Verbreiten Sie die Nachricht! Hier finden Sie weitere Informationen",
+        "referralMessage": "📣 HIRING VOLUNTEERS 📣Wollen Sie der Gemeinschaft etwas zurückgeben? Jetzt ist der perfekte Zeitpunkt! Wir suchen derzeit nach Freiwilligen, die deutsche Schulkinder von Klasse 1 bis 13 unterrichten. #lernfair #Bildung #e-learning",
+        "copy": "Kopieren",
+        "copied": "Kopiert",
+        "copiedReferralLink": "Empfehlungslink kopiert",
         "share": {
-            "title": "Share your unique link",
-            "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
+            "share": "Teilen",
+            "title": "Teilen Sie Ihren einzigartigen Link",
+            "description": "Teilen Sie Ihren persönlichen Link mit Ihrem Netzwerk, um mit dem Empfehlen zu beginnen! Sie haben drei einfache Möglichkeiten, Ihren Empfehlungslink zu teilen:",
             "option1": {
-                "option": "Copy and Share Link",
-                "description": "- share to your favorite social apps"
+                "option": "Link kopieren und weitergeben",
+                "description": "- mit Ihren bevorzugten sozialen Anwendungen teilen"
             },
             "option2": {
-                "option": "Share on WhatsApp",
-                "description": "- directly share to your contacts"
+                "option": "Auf WhatsApp teilen",
+                "description": "- direkte Weitergabe an Ihre Kontakte"
             },
             "option3": {
-                "option": "Share on LinkedIn",
-                "description": "- copy link then click \"Share on LinkedIn\", and paste the link in a post"
+                "option": "Auf LinkedIn teilen",
+                "description": "- Klicken Sie auf „Auf LinkedIn teilen“ und fügen Sie den Link in einen Beitrag ein."
             }
         },
         "reward": {
-            "title": "My Impact",
-            "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let’s make an impact today!",
-            "RegisteredUsers": "Registered users",
-            "HoursSupported": "Hours supported"
+            "title": "Mein Einfluss",
+            "description": "Für jeden Freiwilligen, der sich anmeldet, erhalten Sie Punkte für Ihr persönliches Zertifikat, mit dem Sie Ihre Erfahrung in Ihrem Netzwerk auf LinkedIn präsentieren können. Lassen Sie uns noch heute etwas bewirken!",
+            "RegisteredUsers": "Registrierte Benutzer",
+            "HoursSupported": "Unterstützte Stunden"
         }
     }
 }
