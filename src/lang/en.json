@@ -2492,12 +2492,9 @@
         "unknownDevice": "Unknown device",
         "deviceOnOs": "on"
     },
+    "changesWereSaved": "Changes have been saved",
     "referral": {
-        "title": "Referral program",
-        "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
         "share": {
-            "title": "Share your unique link",
-            "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
             "option1": {
                 "option": "Copy and Share Link",
                 "description": "- share to your favorite social apps"
@@ -2508,14 +2505,23 @@
             },
             "option3": {
                 "option": "Share on LinkedIn",
-                "description": "- copy link then click \"Share on LinkedIn\", and paste the link in a post"
-            }
+                "description": "- Click on \"Share on LinkedIn\" and insert the link into a post."
+            },
+            "title": "Share your unique link",
+            "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
+            "share": "Share"
         },
         "reward": {
             "title": "My Impact",
-            "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let’s make an impact today!",
+            "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let's make an impact today!",
             "RegisteredUsers": "Registered users",
             "HoursSupported": "Hours supported"
-        }
+        },
+        "title": "Referral program",
+        "description": "Know someone who can help make a difference to young people? Spread the word! find out more here",
+        "referralMessage": "📣 HIRING VOLUNTEERS 📣Want to give back to the community? Now is the perfect time! We are currently looking for volunteers to teach german school children grade 1- 13. #lernfair #education #e-learning",
+        "copy": "Copy",
+        "copied": "Copied",
+        "copiedReferralLink": "Recommendation link copied"
     }
 }

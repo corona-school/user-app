@@ -2091,7 +2091,7 @@
             "install": "Lern-Fair Приложение",
             "progress": "Успехи и прогресс",
             "editCourse": "Редактировать курс",
-            "referral": "Referral"
+            "referral": "Направление"
         }
     },
     "screening": {
@@ -2496,30 +2496,36 @@
         "unknownDevice": "Неизвестное устройство",
         "deviceOnOs": "на"
     },
+    "changesWereSaved": "Изменения сохранены",
     "referral": {
-        "title": "Referral program",
-        "description": "Know someone who can help make a difference to young people? Spread the word!  find out more here",
         "share": {
-            "title": "Share your unique link",
-            "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
             "option1": {
-                "option": "Copy and Share Link",
-                "description": "- share to your favorite social apps"
+                "option": "Скопируйте и поделитесь ссылкой",
+                "description": "- делитесь с любимыми социальными приложениями"
             },
             "option2": {
-                "option": "Share on WhatsApp",
-                "description": "- directly share to your contacts"
+                "option": "Поделиться в WhatsApp",
+                "description": "- напрямую делиться с вашими контактами"
             },
             "option3": {
-                "option": "Share on LinkedIn",
-                "description": "- copy link then click \"Share on LinkedIn\", and paste the link in a post"
-            }
+                "option": "Поделиться на LinkedIn",
+                "description": "- Нажмите \"Поделиться на LinkedIn\" и вставьте ссылку в сообщение."
+            },
+            "title": "Поделитесь своей уникальной ссылкой",
+            "description": "Поделитесь своей личной ссылкой со своей сетью, чтобы начать реферальную деятельность! У вас есть три простых способа поделиться своей реферальной ссылкой:",
+            "share": "Поделиться"
         },
         "reward": {
-            "title": "My Impact",
-            "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let’s make an impact today!",
-            "RegisteredUsers": "Registered users",
-            "HoursSupported": "Hours supported"
-        }
+            "title": "Мое влияние",
+            "description": "За каждого присоединившегося волонтера вы зарабатываете баллы для получения персонального сертификата и демонстрируете свой опыт в своей сети LinkedIn. Давайте повлияем на ситуацию уже сегодня!",
+            "RegisteredUsers": "Зарегистрированные пользователи",
+            "HoursSupported": "Поддерживаемые часы"
+        },
+        "title": "Реферальная программа",
+        "description": "Знаете, кто может помочь изменить жизнь молодых людей к лучшему? Распространите это слово! Узнайте больше здесь",
+        "referralMessage": "📣 НАБИРАЕМ ВОЛОНТЕРОВ 📣 Хотите внести свой вклад в развитие общества? Сейчас самое время! Мы ищем волонтеров для обучения детей немецкой школы с 1 по 13 класс. #lernfair #education #e-learning",
+        "copy": "Копировать",
+        "copied": "Скопировано",
+        "copiedReferralLink": "Рекомендательная ссылка скопирована"
     }
 }
