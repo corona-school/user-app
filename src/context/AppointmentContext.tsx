@@ -71,7 +71,7 @@ export const AppointmentContext = createContext<TAppointmentContext>({
         date: '',
         time: '',
         meetingLink: undefined,
-        duration: 0,
+        duration: 60,
         isRecurring: false,
     },
     dispatchCreateAppointment: () => undefined,
@@ -91,7 +91,7 @@ export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ c
         description: '',
         date: '',
         time: '',
-        duration: 0,
+        duration: 60,
         meetingLink: undefined,
         isRecurring: false,
     });
