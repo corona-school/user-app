@@ -30,7 +30,7 @@ const query = gql(`
                     reason
                     limit
                 }
-                subcoursesJoined(search: $search) {
+                subcoursesJoined(search: $search, excludePast: true) {
                     id
                     minGrade
                     maxGrade

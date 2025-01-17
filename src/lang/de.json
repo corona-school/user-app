@@ -180,10 +180,12 @@
         "signupNew": "Neu registrieren",
         "noaccount": "Du hast noch keinen Account? Hier geht es zur Registrierung!",
         "currentEmail": "Aktuelle E-Mail",
+        "newEmail": "Neue E-Mail",
         "setNewEmail": "E-Mail neu setzen",
-        "changeEmail": "E-Mail ändern",
+        "changeEmail": "E-Mail-Adresse ändern",
         "emailVerification": "E-Mail Verifizierung",
         "succesEmailVerification": "Dein E-Mail wurde erfolgreich geändert!",
+        "changeEmailConfirmation": "Wir haben dir an die neue E-Mail-Adresse eine E-mail zur Bestätigung gesendet",
         "invalidToken": "Token ungültig",
         "email": {
             "sent": "Wir haben dir eine E-Mail zum Login geschickt"
@@ -381,6 +383,15 @@
     "registration": {
         "password_repeat": "Passwort wiederholen",
         "to_login": "Ich habe bereits einen Account",
+        "ageOptions": {
+            "15OrYounger": "Schüler:in ist 15 oder jünger",
+            "16OrOlder": "Schüler:in ist 16 oder älter"
+        },
+        "emailOwnerOptions": {
+            "pupil": "Schüler:in E-mail",
+            "parent": "Elternteil E-mail",
+            "other": "Hilfsperson E-mail"
+        },
         "barrier": {
             "title": "Wichtig",
             "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen / Azubi. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
@@ -404,6 +415,7 @@
             "schoolClassSelectionMissing": "Bitte wähle eine Klasse aus.",
             "schoolTypeSelectionMissing": "Bitte wähle eine Schulform aus.",
             "userStateSelectionMissing": "Bitte wähle einen Schulort aus.",
+            "radioSelectionMissing": "Bitte wähle eine Option aus",
             "password": {
                 "length": "Das Passwort muss mindestens 6 Zeichen enthalten.",
                 "nomatch": "Die Passwörter stimmen nicht überein"
@@ -418,6 +430,7 @@
         },
         "personal": {
             "title": "Gib deine persönlichen Daten ein",
+            "pupilSubtitle": "Angaben zu Schüler:in",
             "about": {
                 "label": "Über mich",
                 "text": "Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können."
@@ -432,7 +445,7 @@
             "error": {
                 "tryagain": "Erneut versuchen",
                 "message": {
-                    "Email is already used by another account": "Diese Email ist bereits in Verwendung",
+                    "Email is already used by another account": "Diese E-mail ist bereits in Verwendung",
                     "Response not successful: Received status code 400": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.",
                     "RateLimit Enforcement": "Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.",
                     "Unknown User Type": "Dein Account-Typ konnte nicht bestimmt werden. Bitte versuche versuche einen einfachen Login."
@@ -480,12 +493,15 @@
             "label": "Helfer:in"
         },
         "verifyemail": {
-            "title": "Überprüfe dein E-Mail-Postfach!",
-            "mailsendto": "Wir haben eine E-Mail an {{email}} gesendet.",
-            "description": "Bevor du unser Angebot nutzen kannst, musst du deine E-Mail-Adresse bestätigen. Danach wirst du automatisch in deinen User-Bereich weitergeleitet.",
-            "notreceived": "Keine E-Mail erhalten? Schau bitte auch im Spam nach!",
+            "title": "Bestätige deine E-Mail-Adresse",
+            "mailsendto": "Wir haben eine E-mail gesendet an:",
+            "description": "Nach der Bestätigung deiner E-Mail-Adresse, wirst du automatisch hierhin zurück geleitet.",
+            "notreceived": {
+                "title": "Keine E-mail erhalten?",
+                "description": "Überprüfe auch deinen Spam-Ordner"
+            },
             "resend": {
-                "button": "Bestätigungsmail erneut senden",
+                "button": "Bestätigungs-E-mail erneut senden",
                 "successAlert": "Wir haben dir die Bestätigungs-E-Mail erneut gesendet. Bitte überprüfe deinen Posteingang und schau auch im Spam nach.",
                 "failedAlert": "Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut."
             },
@@ -1303,7 +1319,7 @@
         "statusStudent": {
             "subtitle": "Neue Lernpartner:in",
             "title": "Schüler:in gesucht 🔍",
-            "content": "Wir warten auf jemanden, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. Je nach Auswahl der Fächer kann das unterschiedlich lang dauern. Bei den am stärksten nachgefragten Fächern wie Deutsch als Zweitsprache, Deutsch oder Mathe sind das oft nur wenige Tage. Bei selteneren Fächern kann es auch einige Wochen dauern. In jedem Fall melden wir uns per Email. Du kannst jederzeit deine Anfrage ändern und andere Fächer angeben.",
+            "content": "Wir warten auf jemanden, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. Je nach Auswahl der Fächer kann das unterschiedlich lang dauern. Bei den am stärksten nachgefragten Fächern wie Deutsch als Zweitsprache, Deutsch oder Mathe sind das oft nur wenige Tage. Bei selteneren Fächern kann es auch einige Wochen dauern. In jedem Fall melden wir uns per E-mail. Du kannst jederzeit deine Anfrage ändern und andere Fächer angeben.",
             "buttons": ["Problem melden"]
         },
         "statusStudent2": {
@@ -1740,7 +1756,7 @@
         },
         "adHocMeeting": {
             "title": "Sofortbesprechung starten",
-            "infoText": " Wir informieren dein:e Schüler:in per Email, sobald du das Meeting startest.",
+            "infoText": " Wir informieren dein:e Schüler:in per E-mail, sobald du das Meeting startest.",
             "startMeeting": "Besprechung starten",
             "browser": "Im Browser fortfahren",
             "zoomClient": "In Zoom öffnen"
@@ -2033,7 +2049,7 @@
             "tabs": {
                 "system": {
                     "title": "System",
-                    "description": "Benachrichtigungen werden dir immer oben rechts - und optional als App-Mitteilung oder Email angezeigt."
+                    "description": "Benachrichtigungen werden dir immer oben rechts - und optional als App-Mitteilung oder E-mail angezeigt."
                 },
                 "newsletter": {
                     "title": "Newsletter",
@@ -2395,7 +2411,7 @@
     },
     "reasonsDisabled": {
         "loading": "Es werden noch Daten geladen...",
-        "invalidEMail": "Bitte gebe eine gültige E-Mail Adresse an.",
+        "invalidEMail": "Bitte gebe eine gültige E-Mail-Adresse an.",
         "formIncomplete": "Du musst alle Felder ausfüllen.",
         "fieldEmpty": "Gebe etwas in dieses Feld ein.",
         "questionUnaswerd": "Bitte beantworte die Frage.",
@@ -2408,7 +2424,7 @@
         "pupil": {
             "noScreening": {
                 "title": "Willkommen, {{firstname}}! 👋 Bald lernen wir uns kennen 🤗",
-                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine Email an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
+                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine E-mail an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
                 "footer": "Du traust dich nicht? Sprichst kein Deutsch? Oder hast andere Fragen? Dann melde dich bei uns",
                 "makeAppointment": "Termin vereinbaren"
             },
@@ -2456,7 +2472,7 @@
             "screenshotLabel": "Screenshot (optional)",
             "screenshotContent": "Hier Screenshot reinziehen",
             "screenshotFromDevice": "vom Gerät hochladen",
-            "canWeContactPerMailLabel": "Dürfen wir uns per Email melden?",
+            "canWeContactPerMailLabel": "Dürfen wir uns per E-mail melden?",
             "canWeContactPerMailHelperText": "Um Probleme / Ideen besser zu verstehen. Machen wir nur, wenn notwendig.",
             "sendFeedback": "Feedback senden"
         },

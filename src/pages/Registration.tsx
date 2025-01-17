@@ -13,11 +13,12 @@ import UserState from './registration/UserState';
 import Legal from './registration/Legal';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../gql';
-import { ExternalSchoolSearch, SchoolType, State } from '../gql/graphql';
+import { ExternalSchoolSearch, PupilEmailOwner, SchoolType, State } from '../gql/graphql';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import SchoolSearch from './registration/SchoolSearch';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { SCHOOL_SEARCH_ACTIVE } from '../config';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 interface SelectedSchool extends Partial<ExternalSchoolSearch> {
     hasPredefinedType?: boolean;
@@ -44,6 +45,10 @@ type RegistrationContextType = {
     newsletter: boolean;
     setNewsletter: Dispatch<SetStateAction<boolean>>;
     currentStep: RegistrationStep;
+    emailOwner: PupilEmailOwner;
+    setEmailOwner: Dispatch<SetStateAction<PupilEmailOwner>>;
+    pupilAge?: '<= 15' | '> 15';
+    setPupilAge: Dispatch<SetStateAction<'<= 15' | '> 15' | undefined>>;
     onNext: () => void;
     onPrev: () => void;
 };
@@ -60,10 +65,11 @@ const mutPupil = gql(`
         $grade: Int!
         $retainPath: String!
         $school: RegistrationSchool!
+        $emailOwner: PupilEmailOwner!
     ) {
         meRegisterPupil(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, school: $school }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, school: $school, emailOwner: $emailOwner }
         ) {
             id
         }
@@ -101,6 +107,7 @@ const Registration: React.FC = () => {
     const { space } = useTheme();
     const { t } = useTranslation();
     const { show, hide } = useModal();
+    const { trackEvent } = useMatomo();
 
     const location = useLocation();
     const locState = location.state as { retainPath?: string };
@@ -122,6 +129,8 @@ const Registration: React.FC = () => {
     const [schoolClass, setSchoolClass] = useState<number>(0);
     const [newsletter, setNewsletter] = useState<boolean>(false);
     const [school, setSchool] = useState<SelectedSchool>();
+    const [emailOwner, setEmailOwner] = useState<PupilEmailOwner>(PupilEmailOwner.Unknown);
+    const [pupilAge, setPupilAge] = useState<'<= 15' | '> 15' | undefined>();
 
     const [registerPupil] = useMutation(mutPupil);
     const [registerStudent] = useMutation(mutStudent);
@@ -169,6 +178,7 @@ const Registration: React.FC = () => {
                     ? await registerPupil({
                           variables: {
                               ...basicData,
+                              emailOwner,
                               grade: schoolClass,
                               school: {
                                   name: school?.name,
@@ -185,6 +195,20 @@ const Registration: React.FC = () => {
                       });
 
             if (!result.errors) {
+                if (userType === 'pupil') {
+                    const eventNameAge = pupilAge === '<= 15' ? '15 or younger' : '16 or older';
+                    const eventNameEmailOwner = {
+                        [PupilEmailOwner.Pupil]: 'Pupil Email',
+                        [PupilEmailOwner.Parent]: 'Parent Email',
+                        [PupilEmailOwner.Other]: 'Other',
+                        [PupilEmailOwner.Unknown]: 'Unknown Email',
+                    };
+                    trackEvent({
+                        category: 'SuS Registration',
+                        action: 'Radiobutton Age and Email',
+                        name: `${eventNameAge} and ${eventNameEmailOwner[emailOwner]}`,
+                    });
+                }
                 show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} userType={userType} />);
 
                 // Remove /registration from the URL so that a refresh of the page won't show the registration form again
@@ -364,6 +388,10 @@ const Registration: React.FC = () => {
                         currentStep,
                         onNext: handleOnNext,
                         onPrev: handleOnPrev,
+                        emailOwner,
+                        setEmailOwner,
+                        pupilAge,
+                        setPupilAge,
                     }}
                 >
                     <Box w="100%" maxW={'contentContainerWidth'}>
