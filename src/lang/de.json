@@ -936,6 +936,7 @@
         "general": {
             "title": "Allgemein",
             "profile": "Profil",
+            "certificates": "Bescheinigungen",
             "languageVersion": "Sprachversion",
             "notifications": "Benachrichtigungen",
             "onboarding": "Onboarding-Tour",
@@ -2188,7 +2189,8 @@
             "newEmail": "E-Mail ändern",
             "newPassword": "Passwort ändern",
             "install": "Die Lern-Fair App",
-            "progress": "Erfolge & Fortschritte"
+            "progress": "Erfolge & Fortschritte",
+            "certificates": "Bescheinigungen"
         }
     },
     "screening": {
@@ -2510,6 +2512,26 @@
                     "Klicke auf den “App installieren” Button und folge den Anweisungen."
                 ]
             }
+        }
+    },
+    "certificates": {
+        "title": "Meine Bescheinigungen",
+        "instantCertificate": {
+            "title": "Sofort-Nachweis",
+            "bullets": [
+                "sofort verfügbar",
+                "führt keine einzelnen Lernpartner:innen auf",
+                "Art der Unterstützung, Gesamtdauer und Anzahl der Lektionen werden aufgeführt"
+            ],
+            "request": "Sofortbescheinigung anfordern"
+        },
+        "participationCertificate": {
+            "title": "Individueller Nachweis",
+            "bullets": [
+                "muss durch den/die Lernpartner:in bestätigt werden",
+                "für jeden Lernpartner einzeln",
+                "zusätzlich kann hier noch die aufgewendete Zeit bestätigt werden"
+            ]
         }
     }
 }

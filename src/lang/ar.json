@@ -866,7 +866,8 @@
             "forPupils": "للتلاميذ",
             "push": "رسائل التطبيق",
             "faq": "الأسئلة الشائعة والاتصال",
-            "manageSessions": "إدارة الأجهزة"
+            "manageSessions": "إدارة الأجهزة",
+            "certificates": "الشهادات"
         },
         "account": {
             "title": "حساب",
@@ -2102,7 +2103,8 @@
             "newPassword": "تغيير كلمة المرور",
             "install": "Lern-Fair التطبيق",
             "progress": "إنجازات والتقدم",
-            "editCourse": "تحرير الدورة التدريبية"
+            "editCourse": "تحرير الدورة التدريبية",
+            "certificates": "الشهادات"
         }
     },
     "screening": {
@@ -2507,5 +2509,17 @@
         "unknownDevice": "جهاز غير معروف",
         "deviceOnOs": "على"
     },
-    "changesWereSaved": "تم حفظ التغييرات"
+    "changesWereSaved": "تم حفظ التغييرات",
+    "certificates": {
+        "instantCertificate": {
+            "bullets": ["متاح على الفور", "لا يدرج شركاء التعلم الفردي", "يتم سرد نوع الدعم والمدة الإجمالية وعدد الدروس"],
+            "title": "إثبات فوري",
+            "request": "طلب شهادة فورية"
+        },
+        "participationCertificate": {
+            "bullets": ["شريك تعلُّم يجب تأكيده من قبل", "لكل شريك تعلم على حدة", "يمكن أيضاً تأكيد الوقت المستغرق هنا"],
+            "title": "الإثبات الفردي"
+        },
+        "title": "شهاداتي"
+    }
 }
