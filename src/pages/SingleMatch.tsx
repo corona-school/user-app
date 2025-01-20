@@ -165,8 +165,8 @@ const SingleMatch = () => {
 
     const [dissolveMatch, { data: dissolveData }] = useMutation(
         gql(`
-            mutation dissolveMatchStudent2($matchId: Int!, $dissolveReasons: [dissolve_reason!]!) {
-                matchDissolve(info: { matchId: $matchId, dissolveReasons: $dissolveReasons})
+            mutation dissolveMatchStudent2($matchId: Int!, $dissolveReasons: [dissolve_reason!]!, $otherFreeText: String) {
+                matchDissolve(info: { matchId: $matchId, dissolveReasons: $dissolveReasons, otherDissolveReason: $otherFreeText})
             }
         `)
     );
@@ -177,7 +177,7 @@ const SingleMatch = () => {
 
     const totalAppointmentsCount = data?.match.appointmentsCount || 0;
     const dissolve = useCallback(
-        async (reasons: Dissolve_Reason[]) => {
+        async (reasons: Dissolve_Reason[], otherFreeText: string | undefined) => {
             setShowDissolveModal(false);
             trackEvent({
                 category: 'matching',
@@ -189,6 +189,7 @@ const SingleMatch = () => {
                 variables: {
                     matchId: matchId || 0,
                     dissolveReasons: reasons,
+                    otherFreeText,
                 },
             });
             dissolved && refetch();
@@ -363,8 +364,8 @@ const SingleMatch = () => {
                 <DissolveMatchModal
                     showDissolveModal={showDissolveModal}
                     alsoShowWarningModal={data?.match?.createdAt && new Date(data.match.createdAt).getTime() > new Date().getTime() - 1000 * 60 * 60 * 24 * 14}
-                    onPressDissolve={async (reasons: Dissolve_Reason[]) => {
-                        return await dissolve(reasons);
+                    onPressDissolve={async (reasons: Dissolve_Reason[], otherFreeText: string | undefined) => {
+                        return await dissolve(reasons, otherFreeText);
                     }}
                     onPressBack={() => setShowDissolveModal(false)}
                 />

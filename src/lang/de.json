@@ -1691,7 +1691,8 @@
             "modal": {
                 "title": "Warum möchtest du das Lernpaar auflösen?",
                 "btn": "Lernpaar auflösen",
-                "tooltip": "Du musst einen Grund angeben."
+                "tooltip": "Du musst einen Grund angeben.",
+                "otherFreeText": "Grund:"
             },
             "warningModal": {
                 "title": "Bist du sicher?",
