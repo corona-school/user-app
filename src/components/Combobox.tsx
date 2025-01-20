@@ -18,12 +18,26 @@ interface ComboboxProps {
     searchPlaceholder?: string;
     emptyText?: string;
     onSearch?: (search: string) => void;
+    search?: string;
     onSelect: (value: string) => void;
+    onCreate?: (name: string) => void;
     isLoading?: boolean;
     className?: string;
 }
 
-export const Combobox = ({ value, values, searchPlaceholder, placeholder, emptyText, isLoading, onSearch, onSelect, className }: ComboboxProps) => {
+export const Combobox = ({
+    value,
+    values,
+    searchPlaceholder,
+    placeholder,
+    emptyText,
+    isLoading,
+    onSearch,
+    search,
+    onCreate,
+    onSelect,
+    className,
+}: ComboboxProps) => {
     const [open, setOpen] = useState(false);
 
     return (
@@ -42,9 +56,27 @@ export const Combobox = ({ value, values, searchPlaceholder, placeholder, emptyT
             </PopoverTrigger>
             <PopoverContent className={cn('max-w-full p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]')}>
                 <Command shouldFilter={false}>
-                    <CommandInput placeholder={searchPlaceholder} onValueChange={onSearch} />
+                    <CommandInput placeholder={searchPlaceholder} onValueChange={onSearch} value={search} />
                     <CommandList>
-                        <CommandEmpty>{emptyText}</CommandEmpty>
+                        <CommandEmpty className="py-0">
+                            {onCreate && !isLoading && !values.length && (
+                                <div
+                                    className="relative flex cursor-default gap-2 select-none items-center rounded-sm mx-2 my-2 px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground"
+                                    onClick={() => {
+                                        if (onCreate && search) {
+                                            onCreate(search);
+                                        }
+                                        if (onSearch) {
+                                            onSearch('');
+                                        }
+                                        setOpen(false);
+                                    }}
+                                >
+                                    {search}
+                                </div>
+                            )}
+                            <div className="flex cursor-pointer items-center justify-center gap-1">{!onSearch && emptyText}</div>
+                        </CommandEmpty>
                         <CommandGroup>
                             {values.map((e) => (
                                 <CommandItem
