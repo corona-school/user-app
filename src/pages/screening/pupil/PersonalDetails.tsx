@@ -129,10 +129,10 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
 
     const handleOnSelectSchool = (school: Partial<ExternalSchoolSearch>) => {
         setSchool(school);
-        if (school.schooltype || (!school.id && !school.schooltype)) {
+        if (school.schooltype) {
             setSchoolType(school.schooltype as any);
         }
-        if (school.state || (!school.id && !school.state)) {
+        if (school.state) {
             setPupilLocation(school.state as any);
         }
     };

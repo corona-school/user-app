@@ -16,7 +16,7 @@ interface SchoolSearchInputProps {
 
 export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolSearchInputProps) => {
     const { t } = useTranslation();
-    const [search, setSearch] = useState('');
+    const [search, setSearch] = useState(defaultValue?.name ?? '');
     const [school, setSchool] = useState<Partial<ExternalSchoolSearch> | undefined>(defaultValue);
     const { schools, isLoading } = useSchoolSearch({ name: search });
 
@@ -33,12 +33,19 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
         onSelect({ name });
     };
 
+    const getLabel = (school: Partial<ExternalSchoolSearch>) => {
+        let label = school.name;
+        if (school.zip) label += `, ${school.zip}`;
+        if (school.city) label += `, ${school.city}`;
+        return label ?? '';
+    };
+
     return (
         <div className="flex flex-col gap-y-2">
             <Label>Schule</Label>
             <div className="flex gap-x-2 items-center justify-center">
                 <Combobox
-                    values={schools.map((e) => ({ value: e.id, label: `${e.name}, ${e.zip}, ${e.city}` }))}
+                    values={schools.map((e) => ({ value: e.id, label: getLabel(e) }))}
                     value={school?.id}
                     onSearch={setSearch}
                     search={search}
@@ -47,7 +54,7 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
                     className={cn('w-[500px]', className)}
                     isLoading={isLoading}
                     searchPlaceholder="z.B Erich-Kästner-Schule"
-                    placeholder={defaultValue?.name}
+                    placeholder={defaultValue ? getLabel(defaultValue) : ''}
                 />
 
                 {school?.name && !school.zip && !school.city && (

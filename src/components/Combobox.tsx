@@ -59,20 +59,17 @@ export const Combobox = ({
                     <CommandInput placeholder={searchPlaceholder} onValueChange={onSearch} value={search} />
                     <CommandList>
                         <CommandEmpty className="py-0">
-                            {onCreate && !isLoading && !values.length && (
+                            {onCreate && !isLoading && !values.length && search && (
                                 <div
                                     className="relative flex cursor-default gap-2 select-none items-center rounded-sm mx-2 my-2 px-2 py-1.5 text-sm outline-none hover:bg-accent hover:text-accent-foreground"
                                     onClick={() => {
                                         if (onCreate && search) {
                                             onCreate(search);
                                         }
-                                        if (onSearch) {
-                                            onSearch('');
-                                        }
                                         setOpen(false);
                                     }}
                                 >
-                                    {search}
+                                    Eigene Eingabe speichern <b>“{search}”</b>
                                 </div>
                             )}
                             <div className="flex cursor-pointer items-center justify-center gap-1">{!onSearch && emptyText}</div>
