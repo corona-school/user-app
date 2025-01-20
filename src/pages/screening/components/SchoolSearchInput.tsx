@@ -20,8 +20,6 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
     const [school, setSchool] = useState<Partial<ExternalSchoolSearch> | undefined>(defaultValue);
     const { schools, isLoading } = useSchoolSearch({ name: search });
 
-    console.log({ school });
-
     const handleOnSelect = (id: string) => {
         const newSelectedSchool = schools.find((e) => e.id === id);
         if (newSelectedSchool) {
