@@ -66,7 +66,7 @@ const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ isOpen, onOpenChang
                 <Button className="w-full" variant="outline" onClick={handleOnContinueInBrowser}>
                     {t('appointment.zoomModal.browser')}
                 </Button>
-                <Button className="w-full" disabled={!zoomUrl} onClick={() => window.open(zoomUrl, '_self')}>
+                <Button className="w-full" disabled={!zoomUrl} onClick={() => window.open(zoomUrl, '_blank')}>
                     {t('appointment.zoomModal.zoomClient')}
                 </Button>
             </ModalFooter>
