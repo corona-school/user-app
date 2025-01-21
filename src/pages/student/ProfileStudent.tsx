@@ -12,7 +12,6 @@ import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
-import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { Breadcrumb } from '@/components/Breadcrumb';
@@ -257,17 +256,6 @@ const ProfileStudent: React.FC<Props> = () => {
                                     )) || <Text>{t('profile.State.empty')}</Text>}
                                 </Row>
                             </ProfileSettingItem>
-                        </ProfileSettingRow>
-                        <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
-                            <div ref={(el) => setDivRef(el)}></div>
-                            <Button marginY={space['1']} onPress={() => navigate('/request-certificate')} maxWidth="300px">
-                                {t('profile.Helper.certificate.button')}
-                            </Button>
-                            <VStack display="flex" flexDirection="row" flexWrap="wrap">
-                                {data?.me.student?.participationCertificates.map((certificate, i) => (
-                                    <MatchCertificateCard certificate={certificate} key={i} />
-                                ))}
-                            </VStack>
                         </ProfileSettingRow>
                     </VStack>
                 </VStack>
