@@ -2544,7 +2544,8 @@
             "description": "Für jeden Freiwilligen, der sich anmeldet, erhalten Sie Punkte für Ihr persönliches Zertifikat, mit dem Sie Ihre Erfahrung in Ihrem Netzwerk auf LinkedIn präsentieren können. Lassen Sie uns noch heute etwas bewirken!",
             "RegisteredUsers": "Registrierte Benutzer",
             "HoursSupported": "Unterstützte Stunden"
-        },
+        }
+    },
     "certificates": {
         "title": "Meine Bescheinigungen",
         "instantCertificate": {
