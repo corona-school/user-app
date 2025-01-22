@@ -446,7 +446,9 @@ export default function NavigatorLazy() {
                 path="lesson"
                 element={
                     <RequireAuth>
-                        <Lesson />
+                        <RequireRole roles={['STUDENT']}>
+                            <Lesson />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
