@@ -190,7 +190,6 @@ const AppointmentCreation: React.FC<Props> = ({
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
-            toast.success(weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'));
             closeModal && closeModal();
         }
     };
@@ -235,7 +234,6 @@ const AppointmentCreation: React.FC<Props> = ({
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
-
             toast.success(weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'));
             navigate('/appointments');
         }
