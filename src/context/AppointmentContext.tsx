@@ -90,7 +90,7 @@ export const CreateAppointmentProvider: React.FC<{ children: ReactNode }> = ({ c
         title: '',
         description: '',
         date: '',
-        time: '',
+        time: '15:00',
         duration: 60,
         meetingLink: undefined,
         isRecurring: false,
