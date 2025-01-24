@@ -66,7 +66,7 @@ const AppointmentCreation: React.FC<Props> = ({
     const navigate = useNavigate();
 
     const [dateSelected, setDateSelected] = useState<boolean>(false);
-    const [timeSelected, setTimeSelected] = useState<boolean>(false);
+    const [timeSelected, setTimeSelected] = useState<boolean>(true);
     const [videoChatType, setVideoChatType] = useState<VideoChatTypeEnum>(VideoChatTypeEnum.ZOOM);
 
     const [createGroupAppointments] = useMutation(
