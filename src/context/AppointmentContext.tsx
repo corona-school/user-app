@@ -69,7 +69,7 @@ export const AppointmentContext = createContext<TAppointmentContext>({
         title: '',
         description: '',
         date: '',
-        time: '',
+        time: '15:00',
         meetingLink: undefined,
         duration: 60,
         isRecurring: false,
