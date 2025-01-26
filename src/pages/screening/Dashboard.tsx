@@ -51,7 +51,11 @@ export function ScreeningDashboard() {
                     descriptionForScreening
                     descriptionForMatch
                     school {
+                        id
                         name
+                        zip
+                        city
+                        email
                     }
                     matches {
                         createdAt

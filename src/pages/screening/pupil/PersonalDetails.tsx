@@ -59,7 +59,7 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
     const [languages, setLanguages] = useState(pupil.languages);
     const [onlyMatchWithWomen, setOnlyMatchWithWomen] = useState<CheckedState>(pupil.onlyMatchWith === Gender.Female);
     const [hasSpecialNeeds, setHasSpecialNeeds] = useState<CheckedState>(pupil.hasSpecialNeeds);
-    const [school, setSchool] = useState<ExternalSchoolSearch | undefined>(pupil.school as any);
+    const [school, setSchool] = useState<Partial<ExternalSchoolSearch> | undefined>(pupil.school as any);
     const [descriptionForScreening, setDescriptionForScreening] = useState(pupil.descriptionForScreening);
     const [descriptionForMatch, setDescriptionForMatch] = useState(pupil.descriptionForMatch);
 
@@ -96,6 +96,8 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
                             name: school?.name,
                             schooltype: schoolType as any,
                             state: pupilLocation as any,
+                            city: school?.city,
+                            zip: school?.zip,
                         },
                         descriptionForMatch,
                         descriptionForScreening,
@@ -125,7 +127,7 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
         }
     };
 
-    const handleOnSelectSchool = (school: ExternalSchoolSearch) => {
+    const handleOnSelectSchool = (school: Partial<ExternalSchoolSearch>) => {
         setSchool(school);
         if (school.schooltype) {
             setSchoolType(school.schooltype as any);
@@ -145,15 +147,15 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
                 )}
             </div>
             <div className="flex flex-wrap gap-6">
-                <SchoolSearchInput onSelect={handleOnSelectSchool} defaultValue={school?.name} />
+                <SchoolSearchInput onSelect={handleOnSelectSchool} defaultValue={school} />
                 <div className="flex flex-col gap-y-2">
                     <ButtonField label="Schulort" onClick={() => setShowEditLocation(true)}>
-                        {t(`lernfair.states.${pupilLocation}`) ?? 'Schulort bearbeiten'}
+                        {pupilLocation ? t(`lernfair.states.${pupilLocation}`) : 'Schulort bearbeiten'}
                     </ButtonField>
                 </div>
                 <div className="flex flex-col gap-y-2">
                     <ButtonField label="Schulform" onClick={() => setShowEditSchoolType(true)}>
-                        {t(`lernfair.schooltypes.${schoolType}`) ?? 'Schulform bearbeiten'}
+                        {schoolType ? t(`lernfair.schooltypes.${schoolType}`) : 'Schulform bearbeiten'}
                     </ButtonField>
                 </div>
                 <div className="flex flex-col gap-y-2">
