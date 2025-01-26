@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+//import { useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import { useState } from 'react';
@@ -14,7 +14,7 @@ interface ModalProps extends BaseModalProps {
 
 const AdHocMeetingModal = ({ isOpen, onOpenChange, matchId }: ModalProps) => {
     const { t } = useTranslation();
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
     const [isBrowserMeeting, setIsBrowserMeeting] = useState(true);
     const [createAdHocMeeting, { loading: isCreatingMeeting }] = useMutation(
         gql(`
@@ -61,7 +61,7 @@ const AdHocMeetingModal = ({ isOpen, onOpenChange, matchId }: ModalProps) => {
         setIsBrowserMeeting(false);
         const response = await createMeeting();
         if (response.zoomUrl) {
-            window.open(response.zoomUrl, '_self');
+            window.open(response.zoomUrl, '_blank');
         } else {
             window.open(`/video-chat/${response.appointmentId}/${response.appointmentType}`);
         }
