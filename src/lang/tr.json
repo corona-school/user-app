@@ -215,7 +215,13 @@
             "ukrainisch": "Ukraynaca",
             "vietnamesisch": "Vietnamca",
             "other": "Diğer",
-            "andere": "Diğer"
+            "andere": "Diğer",
+            "farsi": "Farsça/Farsça",
+            "griechisch": "Yunan",
+            "koreanisch": "Korece",
+            "kroatisch": "Hırvatça",
+            "rum_nisch": "Romence",
+            "serbisch": "Sırpça"
         },
         "subjects": {
             "Altgriechisch": "Antik Yunan",
@@ -1185,93 +1191,127 @@
     },
     "helperwizard": {
         "verifizierung": {
-            "buttons": ["E-postayı yeniden gönder"],
+            "buttons": [
+                "E-postayı yeniden gönder"
+            ],
             "subtitle": "Doğrulama",
             "title": "E-posta adresinizi doğrulayın",
             "content": "Lern-Fair \"de başlayabilmeniz için önce e-posta adresinizi onaylamanız gerekir. Size {{date}} tarihinde {{email}} adresine bir e-posta gönderdik. Bizden bir e-posta almadınız mı?\""
         },
         "passwort": {
-            "buttons": ["Şifre ayarlama"],
+            "buttons": [
+                "Şifre ayarlama"
+            ],
             "subtitle": "şifre",
             "title": "Şifre ayarlama",
             "content": "Sonunda zamanı geldi, giriş sistemimizi değiştiriyoruz! Lern-Fair Artık hesabınız için bir şifre atayabilir ve gelecekte giriş yapmak için bu şifreyi kullanabilirsiniz."
         },
         "willkommen": {
-            "buttons": ["Kursları görüntüle", "Öğrenme desteği için başvurun"],
+            "buttons": [
+                "Kursları görüntüle",
+                "Öğrenme desteği için başvurun"
+            ],
             "title": "Hoş geldiniz 👋",
             "subtitle": "Seni burada görmek ne güzel!",
             "content": "Lern-Fair Sizi ağırlamak için sabırsızlanıyoruz! Almanca, matematik ve İngilizce gibi çeşitli konularda özel dersler sunuyoruz. Bireysel yardıma ihtiyacınız varsa, öğrenme desteği için bekleme listemize de katılabilirsiniz",
             "actionDescription": "Öğrenme teklifini görüntüle"
         },
         "statusSchüler": {
-            "buttons": ["Kursları görüntüle", "Talebi geri çekin"],
+            "buttons": [
+                "Kursları görüntüle",
+                "Talebi geri çekin"
+            ],
             "title": "Bekleme listesindesiniz!",
             "subtitle": "Bekleme listesi",
             "content": "Sıra size geldiğinde sizi e-posta ile bilgilendireceğiz. Talebiniz {{date}} tarihinde yapılmıştır. Bu arada grup kurslarımıza katılabilirsiniz."
         },
         "interestconfirmation": {
-            "buttons": ["Evet", "Hayır"],
+            "buttons": [
+                "Evet",
+                "Hayır"
+            ],
             "title": "Hâlâ desteğe ihtiyacınız var mı?",
             "subtitle": "Destek için",
             "content": "Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von  <b>14 Tagen </b> bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen."
         },
         "kontaktSchüler": {
-            "buttons": ["Öğrenme ortağını görüntüle"],
+            "buttons": [
+                "Öğrenme ortağını görüntüle"
+            ],
             "subtitle": "1:1 öğrenme desteği",
             "title": "Yeni öğrenme ortakları",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. "
         },
         "angeforderteBescheinigung": {
-            "buttons": ["Bilgileri onaylayın"],
+            "buttons": [
+                "Bilgileri onaylayın"
+            ],
             "title": "Onaylama",
             "subtitle": "{{nameHelfer}} ile özel ders ",
             "content": "{{nameHelfer}} bizden öğrenim desteğiniz için bir sertifika istedi. Ancak bunu onaylarsanız {{nameHelfer}}'ın talebini yerine getirebiliriz.",
             "actionDescription": "Bilgileri onaylayın"
         },
         "kennenlernen": {
-            "buttons": ["Randevu alın"],
+            "buttons": [
+                "Randevu alın"
+            ],
             "subtitle": "Bizi tanıyın",
             "title": "Sizi tanımak isteriz 👋!",
             "content": "Bizimle çalışmaya başlamadan önce, 15 dakikalık bir video konferans görüşmesinde sizi tanımak istiyoruz. Bunun için bizden bir randevu almanız yeterli."
         },
         "zeugnis": {
-            "buttons": ["İyi hal belgesi hakkında bilgi"],
+            "buttons": [
+                "İyi hal belgesi hakkında bilgi"
+            ],
             "subtitle": "Önemli!",
             "title": "Genişletilmiş iyi hal sertifikası",
             "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
             "actionDescription": "İyi hal belgesi hakkında her şey"
         },
         "statusStudent": {
-            "buttons": ["Sorun bildir"],
+            "buttons": [
+                "Sorun bildir"
+            ],
             "subtitle": "1:1 öğrenme desteği",
             "title": "Sizin için bir öğrenme ortağı arıyoruz!",
             "content": "Lern-Fair 'da bir öğrenciyi desteklemek istediğiniz için teşekkür ederiz. Size belirttiğiniz derslere veya notlara uygun birini bulacağız. Genellikle bir hafta içinde size uygun bir öğrenciyle e-posta yoluyla geri döneceğiz."
         },
         "statusStudent2": {
-            "buttons": ["Başka bir öğrenme çifti ise şu şekilde oluşur", "Grup kurslarını görüntüleyin"],
+            "buttons": [
+                "Başka bir öğrenme çifti ise şu şekilde oluşur",
+                "Grup kurslarını görüntüleyin"
+            ],
             "subtitle": "Daha fazla destek fırsatı",
             "title": "Daha fazlasını ister misin?",
             "content": "Diğer öğrencileri desteklemek ister misiniz? Bir grup kursu veya ileri öğrenme ortaklıkları teklif edin.",
             "actionDescription": "Seçenekleri şimdi görüntüleyin"
         },
         "kontaktStudent": {
-            "buttons": ["Öğrenme ortağını görüntüle"],
+            "buttons": [
+                "Öğrenme ortağını görüntüle"
+            ],
             "title": "Yeni öğrenme ortakları",
             "subtitle": "1:1 öğrenme desteği",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen."
         },
         "homeworkHelpStudent": {
-            "buttons": ["Ev Ödevi Yardımı (Zoom Kaydı)"],
+            "buttons": [
+                "Ev Ödevi Yardımı (Zoom Kaydı)"
+            ],
             "title": "Ev ödevi yardımı",
             "content": "<b>Ev ödevi yardımı</b> ile öğrenciler ev ödevi soruları için bir kereye mahsus, spontane ve doğrudan yardım alırlar. Kulağa harika geldiğini mi düşünüyorsunuz? O zaman bize katılmanızı çok isteriz!<br/><b>Pazartesiden perşembeye 15:50</b> 'deki ön toplantıya gelin ve derslerinizdeki öğrencilere <b>17:00 ile 18:00</b> arasında yaklaşık 15'er dakika ev ödevlerinde destek olun. Uğrayın, sizi görmeyi dört gözle bekliyoruz!"
         },
         "homeworkHelpPupil": {
-            "buttons": ["Ev ödevi yardımı"],
+            "buttons": [
+                "Ev ödevi yardımı"
+            ],
             "title": "Ödevleriniz için yardım",
             "content": "Ev ödevinizde takıldınız mı? <b>Pazartesi'den Perşembe'ye saat 17:00 ile 18:00 arasında</b> 10 ila 15 dakika boyunca ev ödevlerinizde size hızlı ve kolay bir şekilde yardımcı olabiliriz. Sizi görmek için sabırsızlanıyoruz!"
         },
         "pupilScreening": {
-            "buttons": ["Randevu alın"],
+            "buttons": [
+                "Randevu alın"
+            ],
             "title": "Sizi tanımak isteriz!",
             "subtitle": "Bizi tanıyın",
             "content": "Size bir öğrenim ortağı bulmadan önce sizi tanımak isteriz. Lütfen bunun için bir randevu alın."
@@ -1317,7 +1357,9 @@
             "description": "Size mükemmel bir öğrenme ortağı atayabilmemiz için öncelikle platformumuz üzerinden bir talep göndermeniz gerekmektedir. Orada sizin için önemli olan ve size yardımcı olabileceğimiz konuları kolayca belirtebilirsiniz. Sizinle birlikte başlamak ve öğrenme yolculuğunuza birlikte başlamak için sabırsızlanıyoruz!"
         },
         "pupilFirstScreening": {
-            "buttons": ["Randevu alın"],
+            "buttons": [
+                "Randevu alın"
+            ],
             "title": "Sizi tanımak isteriz!",
             "subtitle": "Bizi tanıyın",
             "content": "Lern-Fair tarafından sunulan hizmetleri kullanmadan önce sizi tanımak isteriz. Zoom görüşmesi için lütfen randevu alın."
@@ -2516,12 +2558,20 @@
     "changesWereSaved": "Değişiklikler kaydedildi",
     "certificates": {
         "instantCertificate": {
-            "bullets": ["hemen temin edilebilir", "bireysel öğrenme ortaklarını listelemez", "Destek türü, toplam süre ve ders sayısı listelenmiştir"],
+            "bullets": [
+                "hemen temin edilebilir",
+                "bireysel öğrenme ortaklarını listelemez",
+                "Destek türü, toplam süre ve ders sayısı listelenmiştir"
+            ],
             "title": "Anında kanıt",
             "request": "Acil sertifika talep edin"
         },
         "participationCertificate": {
-            "bullets": ["öğrenim ortağı tarafından onaylanmalıdır", "her bir öğrenme ortağı için ayrı ayrı", "Harcanan zaman da buradan teyit edilebilir"],
+            "bullets": [
+                "öğrenim ortağı tarafından onaylanmalıdır",
+                "her bir öğrenme ortağı için ayrı ayrı",
+                "Harcanan zaman da buradan teyit edilebilir"
+            ],
             "title": "Bireysel kanıt"
         },
         "title": "Sertifikalarım"

@@ -1,9 +1,9 @@
 import { Row, Box, useTheme } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import IconTagList from '../widgets/IconTagList';
-import { languages as _allLanguages } from '../types/lernfair/Language';
+import { languageList as _allLanguages } from '@/I18n';
 
-const allLanguages = _allLanguages.map((it) => it.key);
+const allLanguages = _allLanguages.map((it) => it.long);
 export { allLanguages };
 
 export function LanguageTag({ language, onPress }: { language: string; onPress?: (language: string) => void }) {

@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import { useUserType } from '../../hooks/useApollo';
-import { languages } from '../../types/lernfair/Language';
+import { languageList } from '@/I18n';
 import AlertMessage from '../../widgets/AlertMessage';
 import IconTagList from '../../widgets/IconTagList';
 import ProfileSettingItem from '../../widgets/ProfileSettingItem';
@@ -100,6 +100,8 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    console.log('ChangeSettingLanguage: ', languageList);
+
     return (
         <WithNavigation headerTitle={t('profile.FluentLanguagenalData.single.header')} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
@@ -138,21 +140,23 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                     <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
                         <VStack w="100%">
                             <Row flexWrap="wrap" width="100%">
-                                {languages.map(
-                                    (language, index) =>
-                                        !selections.find((sel) => sel === language.key) && (
+                                {languageList.map((language, index) => {
+                                    console.log('ChangeSettingLanguage: ', language, index);
+                                    return (
+                                        !selections.find((sel) => sel === language.long) && (
                                             <Column marginRight={3} marginBottom={3} key={`offers-${index}`}>
                                                 <IconTagList
                                                     initial={false}
-                                                    icon={language.key.toLowerCase()}
-                                                    text={t(`lernfair.languages.${language.key.toLowerCase()}` as unknown as TemplateStringsArray)}
+                                                    icon={language.long.toLowerCase()}
+                                                    text={t(`lernfair.languages.${language.long.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     onPress={() => {
-                                                        setSelections((prev) => [...prev, language.key]); // 'Französisch' (display name) -> 'franz_sisch' (key)
+                                                        setSelections((prev) => [...prev, language.long]); // 'Französisch' (display name) -> 'franz_sisch' (key)
                                                     }}
                                                 />
                                             </Column>
                                         )
-                                )}
+                                    );
+                                })}
                             </Row>
                         </VStack>
                     </ProfileSettingItem>
