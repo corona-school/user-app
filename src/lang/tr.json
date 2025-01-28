@@ -2537,7 +2537,8 @@
             "title": "Benim Etkim",
             "description": "Katılan her gönüllü için, kendi kişisel sertifikanız için puan kazanırsınız ve deneyiminizi LinkedIn'deki ağınızda sergilersiniz. Hadi bugün bir etki yaratalım!",
             "RegisteredUsers": "Kayıtlı kullanıcılar",
-            "HoursSupported": "Desteklenen saatler"
+            "HoursSupported": "Desteklenen saatler",
+            "tooltip": "Bu kilidi açmak için 3 veya daha fazla kayıtlı kullanıcıya sahip olmanız gerekir"
         },
         "title": "Yönlendirme programı",
         "description": "Gençler için fark yaratmaya yardımcı olabilecek birini mi tanıyorsunuz? Herkese duyurun! buradan daha fazlasını öğrenin",

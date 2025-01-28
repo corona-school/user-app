@@ -42,7 +42,7 @@ const Rewards: React.FC<Props> = ({ referralCount, supportedHours, colors, t }) 
                     ) : (
                         <Tooltip
                             maxW={250}
-                            label={'to unlock this you need to have 3 or more registered users'}
+                            label={t('referral.reward.tooltip')}
                             bg={'primary.100'}
                             placement="right"
                             _text={{ lineHeight: '1rem', color: colors.primary[700] }}
@@ -50,7 +50,7 @@ const Rewards: React.FC<Props> = ({ referralCount, supportedHours, colors, t }) 
                             hasArrow
                             children={
                                 <Box>
-                                    <LOCK />
+                                    <LOCK className="w-[48px] h-[50px]" />
                                 </Box>
                             }
                         ></Tooltip>

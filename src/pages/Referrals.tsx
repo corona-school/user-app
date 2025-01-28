@@ -6,19 +6,18 @@ import { HStack, Stack, VStack, Box, useTheme, useBreakpointValue, useClipboard,
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { useTranslation } from 'react-i18next';
 import { isMobile } from 'react-device-detect';
+import { toast } from 'sonner';
 
 // Icons
-import Option1Icon from '../assets/icons/lernfair/referral/bulletOne.svg';
-import Option2Icon from '../assets/icons/lernfair/referral/bulletTwo.svg';
-import Option3Icon from '../assets/icons/lernfair/referral/bulletThree.svg';
+import { IconCircleNumber1Filled, IconCircleNumber2Filled, IconCircleNumber3Filled } from '@tabler/icons-react';
 
 // Importing Assests
 import Confetti from '../assets/images/referral/Confetti.svg';
-import ConnfettiMobile from '../assets/images/referral/ConfettiMobile.svg';
+import ConfettiMobile from '../assets/images/referral/ConfettiMobile.svg';
 import BGDesktop from '../assets/images/referral/BGDesktop.svg';
 import BGMobile from '../assets/images/referral/BGMobile.svg';
 import Character from '../assets/images/referral/Character.svg';
-import LOCKMOBILE from '../assets/images/referral/LockMobile.svg';
+import LOCK from '../assets/images/referral/Lock.svg';
 
 import { gql } from '@/gql';
 import { useQuery } from '@apollo/client';
@@ -55,7 +54,7 @@ const Referrals: React.FC<{}> = () => {
 
     // Handle errors
     if (referralError || hoursError) {
-        console.error(referralError ?? hoursError);
+        toast.error((referralError ?? hoursError)?.message);
     }
 
     // Access the results
@@ -118,7 +117,7 @@ const Referrals: React.FC<{}> = () => {
 
                             {/* Options */}
                             <HStack space={2} margin={space['1']}>
-                                <Option1Icon />
+                                <IconCircleNumber1Filled />
                                 <Typography variant="h5">
                                     {t('referral.share.option1.option')}
                                     <Typography variant="h6" className="inline">
@@ -128,7 +127,7 @@ const Referrals: React.FC<{}> = () => {
                             </HStack>
 
                             <HStack space={2} margin={space['1']}>
-                                <Option2Icon />
+                                <IconCircleNumber2Filled />
                                 <Typography variant="h5">
                                     {t('referral.share.option2.option')}
                                     <Typography variant="h6" className="inline">
@@ -138,7 +137,7 @@ const Referrals: React.FC<{}> = () => {
                             </HStack>
 
                             <HStack space={2} margin={space['1']}>
-                                <Option3Icon />
+                                <IconCircleNumber3Filled />
                                 <Typography variant="h5">
                                     {t('referral.share.option3.option')}
                                     <Typography variant="h6" className="inline">
@@ -146,7 +145,7 @@ const Referrals: React.FC<{}> = () => {
                                     </Typography>
                                 </Typography>
                             </HStack>
-
+                            {isMobile ? 'mobile' : 'pc'}
                             {/* Share Buttons */}
                             <SocialOptions
                                 uniqueReferralLink={uniqueReferralLink}
@@ -189,7 +188,7 @@ const Referrals: React.FC<{}> = () => {
                         </Box>
                     </Box>
                     <Box h="140px" backgroundColor="white" borderRadius="md" shadow={4} padding="5">
-                        <ConnfettiMobile style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.6)' }}></ConnfettiMobile>
+                        <ConfettiMobile style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.6)' }}></ConfettiMobile>
 
                         <Typography variant="h5" className="font-bold mb-3">
                             {t('referral.reward.title')}
@@ -212,7 +211,7 @@ const Referrals: React.FC<{}> = () => {
                                 ) : (
                                     <Tooltip
                                         maxW={250}
-                                        label={'to unlock this you need to have 3 or more registered users'}
+                                        label={t('referral.reward.tooltip')}
                                         bg={'primary.100'}
                                         placement="right"
                                         _text={{ lineHeight: '1rem', color: colors.primary[700] }}
@@ -220,7 +219,7 @@ const Referrals: React.FC<{}> = () => {
                                         hasArrow
                                         children={
                                             <Box>
-                                                <LOCKMOBILE />
+                                                <LOCK className="w-[20px] h-[20px]" />
                                             </Box>
                                         }
                                     ></Tooltip>

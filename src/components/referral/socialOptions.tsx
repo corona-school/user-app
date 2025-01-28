@@ -2,9 +2,8 @@ import React from 'react';
 import { VStack, HStack, Input, IconButton } from 'native-base';
 import { WhatsappShareButton } from 'react-share';
 import { Button } from '@/components/Button';
+import { IconCopy, IconCopyCheck } from '@tabler/icons-react';
 
-import CopyIcon from '../../assets/icons/lernfair/copy_button.svg';
-import CopiedIcon from '../../assets/icons/lernfair/referral/copyticked.svg';
 import WhatsAppIcon from '../../assets/icons/lernfair/referral/Whatsapp.svg';
 import LinkedInIcon from '../../assets/icons/lernfair/referral/LinkedIn.svg';
 
@@ -42,11 +41,11 @@ const SocialOptions: React.FC<Props> = ({
                     icon={
                         hasCopied ? (
                             <>
-                                <CopiedIcon style={{ marginRight: '8px' }} /> {t('referral.copied')}
+                                <IconCopyCheck style={{ marginRight: '8px' }} /> {t('referral.copied')}
                             </>
                         ) : (
                             <>
-                                <CopyIcon style={{ marginRight: '8px' }} /> {t('referral.copy')}
+                                <IconCopy style={{ marginRight: '8px' }} /> {t('referral.copy')}
                             </>
                         )
                     }

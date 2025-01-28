@@ -2533,7 +2533,8 @@
             "title": "My Impact",
             "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let's make an impact today!",
             "RegisteredUsers": "Registered users",
-            "HoursSupported": "Hours supported"
+            "HoursSupported": "Hours supported",
+            "tooltip": "to unlock this you need to have 3 or more registered users"
         },
         "title": "Referral program",
         "description": "Know someone who can help make a difference to young people? Spread the word! find out more here",

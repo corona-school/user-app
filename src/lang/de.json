@@ -2543,7 +2543,8 @@
             "title": "Mein Einfluss",
             "description": "Für jeden Freiwilligen, der sich anmeldet, erhalten Sie Punkte für Ihr persönliches Zertifikat, mit dem Sie Ihre Erfahrung in Ihrem Netzwerk auf LinkedIn präsentieren können. Lassen Sie uns noch heute etwas bewirken!",
             "RegisteredUsers": "Registrierte Benutzer",
-            "HoursSupported": "Unterstützte Stunden"
+            "HoursSupported": "Unterstützte Stunden",
+            "tooltip": "Um dies freizuschalten, müssen Sie 3 oder mehr registrierte Benutzer haben"
         }
     },
     "certificates": {
