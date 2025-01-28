@@ -25,14 +25,18 @@ import SocialOptions from '@/components/referral/socialOptions';
 import Rewards from '@/components/referral/rewards';
 
 const ReferralCountQuery = gql(`
-    query ReferralCount($userId: String!) {
-        referralCount(userId: $userId )
+    query ReferralCount {
+        me {
+            referralCount
+        }  
     }
 `);
 
 const SupportedHoursQuery = gql(`
-    query SupportedHours($userId: String!) {
-        supportedHours(userId: $userId)
+    query SupportedHours {
+        me {
+            supportedHours
+        }
     }
 `);
 
@@ -49,8 +53,8 @@ const Referrals: React.FC<{}> = () => {
     const [linkedinButtonText, setLinkedinButtonText] = useState(t('referral.share.option3.option'));
 
     // Fetch referral count and supported hours
-    const { data: referralData, error: referralError } = useQuery(ReferralCountQuery, { variables: { userId: userID ?? '' } });
-    const { data: hoursData, error: hoursError } = useQuery(SupportedHoursQuery, { variables: { userId: userID ?? '' } });
+    const { data: referralData, error: referralError } = useQuery(ReferralCountQuery);
+    const { data: hoursData, error: hoursError } = useQuery(SupportedHoursQuery);
 
     // Handle errors
     if (referralError || hoursError) {
@@ -58,8 +62,8 @@ const Referrals: React.FC<{}> = () => {
     }
 
     // Access the results
-    const referralCount = referralData?.referralCount ?? 0;
-    const supportedHours = hoursData?.supportedHours ?? 0;
+    const referralCount = referralData?.me?.referralCount ?? 0;
+    const supportedHours = hoursData?.me?.supportedHours ?? 0;
 
     // Linkedin Share
     const shareToLinkedIn = () => {
