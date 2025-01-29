@@ -1,23 +1,25 @@
-import { Modal } from 'native-base';
 import React from 'react';
 import AppointmentCreation from '../create-appointment/AppointmentCreation';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
+import { BaseModalProps, Modal, ModalHeader, ModalTitle } from '@/components/Modal';
+import { useTranslation } from 'react-i18next';
 
-type ModalProps = {
+interface ModalProps extends BaseModalProps {
     total: number;
-    closeModal: () => void;
-};
-const CreateCourseAppointmentModal: React.FC<ModalProps> = ({ closeModal, total }) => {
-    const { isMobile } = useLayoutHelper();
+}
+const CreateCourseAppointmentModal: React.FC<ModalProps> = ({ total, isOpen, onOpenChange }) => {
+    const { t } = useTranslation();
+    const handleOnClose = () => {
+        onOpenChange(false);
+    };
     return (
-        <>
-            <Modal.Content minW="90%" p={isMobile ? 3 : 10}>
-                <Modal.CloseButton />
-                <Modal.Body>
-                    <AppointmentCreation appointmentsTotal={total} isCourseCreation={true} back={closeModal} closeModal={closeModal} />
-                </Modal.Body>
-            </Modal.Content>
-        </>
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-w-full w-[90%] max-h-[90%] flex flex-col md:min-h-auto">
+            <ModalHeader>
+                <ModalTitle>{t('appointment.title')}</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col p-4 overflow-scroll">
+                <AppointmentCreation appointmentsTotal={total} isCourseCreation={true} back={handleOnClose} closeModal={handleOnClose} />
+            </div>
+        </Modal>
     );
 };
 

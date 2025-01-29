@@ -29,7 +29,7 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
+    const [time, setTime] = useState('15:00');
     const [meetingLink, setMeetingLink] = useState(overrideMeetingLink ?? undefined);
     const [isToday, setIsToday] = useState<boolean>(false);
 
@@ -68,15 +68,14 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
         let date = DateTime.now();
         if (type === 'date') {
             if (isCourse) date = date.plus({ days: 7 });
-            return date.toFormat('yyyy-MM-dd');
+            return date;
         }
 
-        if (type === 'time') {
-            if (!isCourse && isToday) date = date.plus({ minutes: 5 });
-            return date.toFormat('HH:mm');
-        }
-        return undefined;
+        if (!isCourse && isToday) date = date.plus({ minutes: 5 });
+        return date;
     }, []);
+
+    const minDate = getMinForDatePicker('date', isCourse, isToday).toJSDate();
 
     return (
         <div>
@@ -94,7 +93,12 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
                 </div>
                 <div className="flex flex-col gap-y-1">
                     <Label htmlFor="date">{t('appointment.create.dateLabel')}</Label>
-                    <DatePicker id="date" value={date ? DateTime.fromISO(date).toJSDate() : undefined} onChange={handleDateInput} />
+                    <DatePicker
+                        id="date"
+                        value={date ? DateTime.fromISO(date).toJSDate() : undefined}
+                        onChange={handleDateInput}
+                        disabled={{ before: minDate }}
+                    />
                     {'date' in errors && (
                         <Typography variant="sm" className="text-red-500">
                             {t('appointment.create.emptyDateError')}
@@ -113,9 +117,10 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
                         id="time"
                         type="time"
                         value={time}
+                        defaultValue={time}
                         onChange={handleTimeInput}
                         onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: time })}
-                        min={getMinForDatePicker('time', isCourse, isToday)}
+                        min={getMinForDatePicker('time', isCourse, isToday).toFormat('HH:mm')}
                     />
                     {'time' in errors && (
                         <Typography variant="sm" className="text-red-500">
