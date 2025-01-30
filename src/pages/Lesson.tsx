@@ -360,15 +360,6 @@ ${generatedPlan.resources || 'N/A'}
         }
     };
 
-    // To-Do 📋
-    // 1. Right-left for desktop (adjust for screens) and top-bottom for mobile ✅
-    // 2. Replace w. @/component components
-    // 3. Add translations
-    // 4. Grade and duration section seperate line for mobile
-    // 5. Upload section mobile design (file upload) ❗️
-    // 6. Drag and drop file upload ❗️
-    // 7. Refactor ❗️
-
     return (
         <WithNavigation
             headerLeft={
