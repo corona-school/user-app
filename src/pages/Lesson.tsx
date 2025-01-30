@@ -18,6 +18,7 @@ import { TooltipButton } from '../components/Tooltip';
 
 import { useTranslation } from 'react-i18next';
 import InfoGreen from '../assets/icons/icon_info_dk_green.svg';
+import Sachkunde from '../assets/icons/lernfair/subjects/icon_sachkunde.svg';
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
@@ -619,7 +620,17 @@ ${generatedPlan.resources || 'N/A'}
 
                         {/* Right Section */}
                         <Box w="573px" bg="white" p={6} borderRadius="sm" borderWidth={1} borderColor="gray.200">
-                            {generatedPlan && (
+                            {!generatedPlan ? (
+                                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '24px', paddingBottom: '16px' }}>
+                                    <Sachkunde
+                                        style={{
+                                            transform: 'scale(4)',
+                                            marginBottom: '40px',
+                                        }}
+                                    />
+                                    <p style={{ fontSize: '18px', color: '#0F172A', textAlign: 'center' }}>Fill out the form to generate a lesson plan.</p>
+                                </div>
+                            ) : (
                                 <VStack space={4} alignItems="flex-start">
                                     {/* Title and Details */}
                                     <VStack space={2} alignItems="flex-start">
