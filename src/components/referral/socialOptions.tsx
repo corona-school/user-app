@@ -30,31 +30,26 @@ const SocialOptions: React.FC<Props> = ({
     t,
     isMobile,
 }) => (
-    <VStack space={2}>
+    <div className="space-y-2">
         <label className="block"> {t('referral.share.title')}</label>
-        <Input
-            value={uniqueReferralLink}
-            isReadOnly
-            placeholder="Enter link"
-            InputRightElement={
-                <IconButton
-                    icon={
-                        hasCopied ? (
-                            <>
-                                <IconCopyCheck style={{ marginRight: '8px' }} /> {t('referral.copied')}
-                            </>
-                        ) : (
-                            <>
-                                <IconCopy style={{ marginRight: '8px' }} /> {t('referral.copy')}
-                            </>
-                        )
-                    }
-                    onPress={() => onCopy(uniqueReferralLink)}
-                    borderRadius="full"
-                />
-            }
-        />
-        <HStack space={4}>
+        <div className="relative">
+            <input value={uniqueReferralLink} readOnly placeholder="Enter link" className="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg" />
+            <button
+                onClick={() => onCopy(uniqueReferralLink)}
+                className="absolute right-2 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-gray-100 hover:bg-gray-300"
+            >
+                {hasCopied ? (
+                    <span className="flex items-center">
+                        <IconCopyCheck className="mr-2" /> {t('referral.copied')}
+                    </span>
+                ) : (
+                    <span className="flex items-center">
+                        <IconCopy className="mr-2" /> {t('referral.copy')}
+                    </span>
+                )}
+            </button>
+        </div>
+        <div className="space-x-4 flex">
             {isMobile ? (
                 <Button variant="default" className="w-full py-2" onClick={handleShare}>
                     {t('referral.share.share')}
@@ -73,8 +68,8 @@ const SocialOptions: React.FC<Props> = ({
                     </Button>
                 </>
             )}
-        </HStack>
-    </VStack>
+        </div>
+    </div>
 );
 
 export default SocialOptions;
