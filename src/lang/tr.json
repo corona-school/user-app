@@ -188,7 +188,9 @@
         "emailVerification": "E-posta doğrulama",
         "succesEmailVerification": "E-posta adresiniz başarıyla değiştirildi!",
         "invalidToken": "Belirteç geçersiz",
-        "invalidMailMessage": "Girdiğiniz e-posta adresi yanlış."
+        "invalidMailMessage": "Girdiğiniz e-posta adresi yanlış.",
+        "newEmail": "Yeni e-posta",
+        "changeEmailConfirmation": "Yeni e-posta adresinize bir onay e-postası gönderdik"
     },
     "lernfair": {
         "languages": {
@@ -355,14 +357,16 @@
             "userType": {
                 "missing": "Lütfen rolünüzü tanımlayın"
             },
-            "name": "Lütfen tam adınızı girin"
+            "name": "Lütfen tam adınızı girin",
+            "radioSelectionMissing": "Lütfen bir seçenek seçin"
         },
         "personal": {
             "about": {
                 "label": "Benim hakkımda",
                 "text": "Buraya kendiniz hakkında diğer kullanıcıların profilinizde görebileceği kısa bir metin yazın."
             },
-            "title": "Kişisel verilerinizi girin"
+            "title": "Kişisel verilerinizi girin",
+            "pupilSubtitle": "Öğrencilerin detayları: in"
         },
         "result": {
             "success": {
@@ -422,15 +426,18 @@
         },
         "verifyemail": {
             "resend": {
-                "button": "Onay e-postasını tekrar gönder",
                 "successAlert": "Size onay e-postasını yeniden gönderdik. Lütfen gelen kutunuzu ve ayrıca spam kutunuzu kontrol edin.",
-                "failedAlert": "Maalesef bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+                "failedAlert": "Maalesef bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
+                "button": "Onay e-postasını tekrar gönder"
             },
-            "title": "E-posta kutunuzu kontrol edin!",
-            "mailsendto": "{{email}} adresine bir e-posta gönderdik.",
-            "description": "Sunucumuzu kullanmadan önce e-posta adresinizi doğrulamanız gerekmektedir. Daha sonra otomatik olarak kullanıcı alanınıza yönlendirileceksiniz.",
-            "notreceived": "E-posta almadınız mı? Lütfen spam kutunuzu da kontrol edin!",
-            "backToWelcomeButton": "Giriş alanına"
+            "backToWelcomeButton": "Giriş alanına",
+            "notreceived": {
+                "title": "E-posta alınmadı mı?",
+                "description": "Ayrıca spam klasörünüzü de kontrol edin"
+            },
+            "title": "E-posta adresinizi onaylayın",
+            "mailsendto": "Bir e-posta gönderdik:",
+            "description": "E-posta adresinizi onayladıktan sonra otomatik olarak buraya yönlendirileceksiniz."
         },
         "legal": {
             "usageBullets": {
@@ -457,7 +464,16 @@
             "underageDisclaimer": "Not: Onay veren kişinin henüz 18 yaşını doldurmamış olması halinde, kişinin ebeveyn sorumluluğunu taşıyan kişinin onay vermesi gerekmektedir."
         },
         "password_repeat": "Şifreyi tekrarla",
-        "to_login": "Zaten bir hesabım var"
+        "to_login": "Zaten bir hesabım var",
+        "ageOptions": {
+            "15OrYounger": "Öğrenci 15 yaşında veya daha küçük",
+            "16OrOlder": "Öğrenci 16 yaşında veya daha büyük"
+        },
+        "emailOwnerOptions": {
+            "pupil": "Öğrenci: E-postada",
+            "parent": "Ebeveyn E-postası",
+            "other": "Yardımcı kişi E-posta"
+        }
     },
     "helpcenter": {
         "subtitle": {
@@ -700,7 +716,8 @@
             "description": "Açıklama",
             "lessons": "Dersler",
             "waitinglist": "Bekleme listesi",
-            "participant": "Katılımcılar"
+            "participant": "Katılımcılar",
+            "prospectParticipants": "İlgilenenler"
         },
         "courseInfo": {
             "grade": "Sınıf seviyesi ",
@@ -833,7 +850,13 @@
             "error": "Öğrenci:in kaldırılamadı"
         },
         "removeFromCourse": "Kurstan çıkarma",
-        "addToCourse": "Kursa ekle"
+        "addToCourse": "Kursa ekle",
+        "prospectList": {
+            "toast": "Öğrenci kursa eklenmiştir.",
+            "error": "Öğrenci eklenemedi.",
+            "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok.",
+            "description": "Burada, sohbet yoluyla sizinle iletişime geçen ilgili tarafları görebilirsiniz."
+        }
     },
     "settings": {
         "general": {
@@ -847,7 +870,8 @@
             "forPupils": "Öğrenciler için",
             "push": "Uygulama mesajları",
             "faq": "SSS & İletişim",
-            "manageSessions": "Cihazları yönetme"
+            "manageSessions": "Cihazları yönetme",
+            "certificates": "Sertifikalar"
         },
         "account": {
             "title": "Hesap",
@@ -2084,7 +2108,8 @@
             "install": "Lern-Fair Uygulama",
             "progress": "Başarılar ve ilerleme",
             "editCourse": "Kursu düzenle",
-            "lesson": "Dersler"
+            "lesson": "Dersler",
+            "certificates": "Sertifikalar"
         }
     },
     "screening": {
@@ -2130,7 +2155,6 @@
         "recommend_rejection": "Reddedilmesini önerin",
         "screening_saved": "Tarama kaydedildi",
         "account_deactivated": "Hesap devre dışı bırakıldı",
-        "account_deactivated_details": "Öğrenci artık kullanıcı olarak oturum açamaz. Online destek ile hesaplar yeniden etkinleştirebilir.",
         "save_and_four_eyes": "Kaydet & Dört Göz",
         "success": "Kabul et",
         "rejection": "Reddet",
@@ -2172,7 +2196,8 @@
             "grade_missing": "Lütfen bir okul sınıfı seçin.",
             "language_missing": "Lütfen en az 1 dil ekleyin.",
             "subjects_missing": "Lütfen en az 1 okul dersi ekleyin."
-        }
+        },
+        "account_deactivated_details": "Kullanıcı artık kullanıcı alanında oturum açamaz. Destek, hesapları yeniden etkinleştirebilir."
     },
     "achievement": {
         "empty_state": {
@@ -2521,5 +2546,17 @@
         "acceptTermsCheckbox": "Genel hüküm ve koşulları kabul edin:",
         "acceptTCText": "Metin alanına herhangi bir kişisel veri girmedim ve Open AI'nın bu verileri Avrupa veri koruma standartları olmadan kullanabileceğinin farkındayım. Lern-Fair  Lern-Fair Yüklenen belgeler üzerinde herhangi bir hakkım olmadığı için herhangi biri aleyhime hak iddia ederse, tazmin etmeyi taahhüt ederim.",
         "fileUploadTooltip": "Buraya ek dosyalar yükleyerek AI çıktısını iyileştirin"
+    },
+    "certificates": {
+        "instantCertificate": {
+            "bullets": ["hemen temin edilebilir", "bireysel öğrenme ortaklarını listelemez", "Destek türü, toplam süre ve ders sayısı listelenmiştir"],
+            "title": "Anında kanıt",
+            "request": "Acil sertifika talep edin"
+        },
+        "participationCertificate": {
+            "bullets": ["öğrenim ortağı tarafından onaylanmalıdır", "her bir öğrenme ortağı için ayrı ayrı", "Harcanan zaman da buradan teyit edilebilir"],
+            "title": "Bireysel kanıt"
+        },
+        "title": "Sertifikalarım"
     }
 }

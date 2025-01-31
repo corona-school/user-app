@@ -68,7 +68,7 @@ export async function subscribeUserToPush(serverKey: string) {
     log('WebPush', 'Registering service worker');
 
     const sw = await getServiceWorker();
-    if (!sw) {
+    if (!sw || !sw.pushManager) {
         log('WebPush', 'No service worker present');
         return;
     }
@@ -153,12 +153,6 @@ export function useWebPush() {
             return;
         }
 
-        // Do we have a service worker running?
-        if (!getServiceWorker()) {
-            setStatus('not-supported');
-            return;
-        }
-
         // Did the user deny us permissions? If yes,
         // we cannot ask again :/
         if (Notification.permission === 'denied') {
@@ -177,6 +171,12 @@ export function useWebPush() {
             const sw = await getServiceWorker();
             if (!sw) {
                 setStatus('not-subscribed');
+                return;
+            }
+
+            // Older Safari is not spec compliant and does not have .pushManager:
+            if (!sw.pushManager) {
+                setStatus('not-supported');
                 return;
             }
 
@@ -258,7 +258,7 @@ export function useWebPush() {
         try {
             const sw = await getServiceWorker();
             if (sw) {
-                const subscription = await sw.pushManager.getSubscription();
+                const subscription = await sw.pushManager?.getSubscription();
                 await subscription?.unsubscribe();
             }
 

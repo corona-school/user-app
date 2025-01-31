@@ -64,6 +64,11 @@ const Settings: React.FC = () => {
                                     </Column>
                                 </>
                             )}
+                            {userType === 'student' && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.general.certificates')} onPress={() => navigate('/certificates')} />
+                                </Column>
+                            )}
                         </ProfileSettingRow>
                         <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
                             {GAMIFICATION_ACTIVE && (

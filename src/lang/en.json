@@ -188,7 +188,9 @@
         "emailVerification": "E-mail verification",
         "succesEmailVerification": "Your e-mail has been successfully changed!",
         "invalidToken": "Token invalid",
-        "invalidMailMessage": "The e-mail address you entered is incorrect."
+        "invalidMailMessage": "The e-mail address you entered is incorrect.",
+        "newEmail": "New e-mail",
+        "changeEmailConfirmation": "We have sent you a confirmation email to the new email address"
     },
     "lernfair": {
         "languages": {
@@ -355,14 +357,16 @@
             "userType": {
                 "missing": "Please identify your role"
             },
-            "name": "Please enter your full name"
+            "name": "Please enter your full name",
+            "radioSelectionMissing": "Please select an option"
         },
         "personal": {
             "about": {
                 "label": "About me",
                 "text": "Write a short text about yourself here that other users can see on your profile."
             },
-            "title": "Enter your personal data"
+            "title": "Enter your personal data",
+            "pupilSubtitle": "Pupil Information"
         },
         "result": {
             "success": {
@@ -422,15 +426,18 @@
         },
         "verifyemail": {
             "resend": {
-                "button": "Send confirmation mail again",
                 "successAlert": "We have resent you the confirmation email. Please check your inbox and also check your spam.",
-                "failedAlert": "Unfortunately, an error has occurred. Please try again later."
+                "failedAlert": "Unfortunately, an error has occurred. Please try again later.",
+                "button": "Send confirmation email again"
             },
-            "title": "Check your e-mail inbox!",
-            "mailsendto": "We have sent an e-mail to {{email}}.",
-            "description": "Before you can use our offer, you must confirm your e-mail address. You will then be automatically redirected to your user area.",
-            "notreceived": "Didn't receive an e-mail? Please also check your spam!",
-            "backToWelcomeButton": "To the login area"
+            "backToWelcomeButton": "To the login area",
+            "notreceived": {
+                "title": "No email received?",
+                "description": "Also check your spam folder"
+            },
+            "title": "Confirm your email address",
+            "mailsendto": "We have sent an email to:",
+            "description": "After confirming your email address, you will be automatically redirected here."
         },
         "legal": {
             "usageBullets": {
@@ -457,7 +464,16 @@
             "underageDisclaimer": "Note: In the event that the person giving consent has not yet reached the age of 18, the holder of parental responsibility for the person must give their consent."
         },
         "password_repeat": "Repeat password",
-        "to_login": "I already have an account"
+        "to_login": "I already have an account",
+        "ageOptions": {
+            "15OrYounger": "Pupil is 15 or younger",
+            "16OrOlder": "Pupil is 16 or older"
+        },
+        "emailOwnerOptions": {
+            "pupil": "Pupil email",
+            "parent": "Parent Email",
+            "other": "Support person Email"
+        }
     },
     "helpcenter": {
         "subtitle": {
@@ -700,7 +716,8 @@
             "description": "Description",
             "lessons": "Lessons",
             "waitinglist": "Waiting list",
-            "participant": "Participants"
+            "participant": "Participants",
+            "prospectParticipants": "Prospects"
         },
         "courseInfo": {
             "grade": "School grade: ",
@@ -822,8 +839,8 @@
         "joinPupilModal": {
             "header": "pupils move up",
             "add": "Add",
-            "amount": "Quantity pupils",
-            "success": "pupils successfully added",
+            "amount": "Number of pupils",
+            "success": "Pupils successfully added",
             "error": "pupils could not be added"
         },
         "removeParticipantFromCourseModal": {
@@ -833,7 +850,13 @@
             "error": "pupil could not be removed"
         },
         "removeFromCourse": "Remove from the course",
-        "addToCourse": "Add to course"
+        "addToCourse": "Add to course",
+        "prospectList": {
+            "toast": "Student has been added to the course.",
+            "error": "Pupil could not be added.",
+            "noProspects": "No interested parties who have contacted you via chat.",
+            "description": "Here you can see interested parties who have contacted you via chat."
+        }
     },
     "settings": {
         "general": {
@@ -847,7 +870,8 @@
             "forPupils": "For pupils",
             "push": "App messages",
             "faq": "FAQ & Contact",
-            "manageSessions": "Manage devices"
+            "manageSessions": "Manage devices",
+            "certificates": "Certificates"
         },
         "account": {
             "title": "Account",
@@ -2080,7 +2104,8 @@
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
             "editCourse": "Edit course",
-            "lesson": "Lessons"
+            "lesson": "Lessons",
+            "certificates": "Certificates"
         }
     },
     "screening": {
@@ -2126,7 +2151,6 @@
         "recommend_rejection": "Recommend rejection",
         "screening_saved": "Screening saved",
         "account_deactivated": "Account deactivated",
-        "account_deactivated_details": "The pupil can no longer log in to the user area. Support can reactivate accounts.",
         "save_and_four_eyes": "Save & Four Eyes",
         "success": "Accept",
         "rejection": "Reject",
@@ -2168,7 +2192,8 @@
             "grade_missing": "Please select a grade.",
             "language_missing": "Please add at least one language.",
             "subjects_missing": "Please add at least one subject."
-        }
+        },
+        "account_deactivated_details": "The user can no longer log in to the user area. Support can reactivate accounts."
     },
     "achievement": {
         "empty_state": {
@@ -2517,5 +2542,21 @@
         "acceptTermsCheckbox": "Accept general terms and conditions:",
         "acceptTCText": "I have not entered any personal data in the text field and I am aware that Open AI may use it without European data protection standards. Should anyone assert claims against Lern-Fair because I have no rights to the uploaded documents, I undertake to indemnify Lern-Fair .",
         "fileUploadTooltip": "Improve the AI output by uploading additional files here"
+    },
+    "certificates": {
+        "instantCertificate": {
+            "bullets": [
+                "immediately available",
+                "does not list individual learning partners",
+                "The type of support, total duration and number of lessons are listed"
+            ],
+            "title": "Immediate certificate",
+            "request": "Request an immediate certificate"
+        },
+        "participationCertificate": {
+            "bullets": ["must be confirmed by the learning partner", "for each learning partner individually", "The time spent can also be confirmed here"],
+            "title": "Individual certificate"
+        },
+        "title": "My certificates"
     }
 }
