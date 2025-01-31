@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
 import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
@@ -64,9 +64,14 @@ const Referrals: React.FC<{}> = () => {
     const { data: hoursData, error: hoursError } = useQuery(SupportedHoursQuery);
 
     // Handle errors
-    if (referralError || hoursError) {
-        toast.error((referralError ?? hoursError)?.message);
-    }
+    useEffect(() => {
+        if (referralError) {
+            toast.error(referralError.message);
+        }
+        if (hoursError) {
+            toast.error(hoursError.message);
+        }
+    }, [referralError, hoursError]);
 
     // Access the results
     const referralCount = referralData?.me?.referralCount ?? 0;
