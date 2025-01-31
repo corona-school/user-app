@@ -4,7 +4,6 @@ import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { useTranslation } from 'react-i18next';
-import { isMobile } from 'react-device-detect';
 import { toast } from 'sonner';
 
 // Icons
@@ -151,7 +150,6 @@ const Referrals: React.FC<{}> = () => {
                                     </Typography>
                                 </Typography>
                             </div>
-                            {isMobile ? 'mobile' : 'pc'}
                             {/* Share Buttons */}
                             <SocialOptions
                                 uniqueReferralLink={uniqueReferralLink}
@@ -162,7 +160,6 @@ const Referrals: React.FC<{}> = () => {
                                 t={t}
                                 shareToLinkedIn={shareToLinkedIn}
                                 handleShare={handleShare}
-                                isMobile={isMobile}
                             />
                         </div>
                     </div>
@@ -239,7 +236,6 @@ const Referrals: React.FC<{}> = () => {
                             t={t}
                             shareToLinkedIn={shareToLinkedIn}
                             handleShare={handleShare}
-                            isMobile={isMobile}
                         />
                     </div>
                 </div>
