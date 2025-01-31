@@ -8,11 +8,10 @@ import LOCK from '../../assets/images/referral/Lock.svg';
 type Props = {
     referralCount: number;
     supportedHours: number;
-    colors: any;
     t: (key: string) => string;
 };
 
-const Rewards: React.FC<Props> = ({ referralCount, supportedHours, colors, t }) => (
+const Rewards: React.FC<Props> = ({ referralCount, supportedHours, t }) => (
     <div>
         <Typography variant="h4" className=" font-bold">
             {t('referral.reward.title')}
@@ -25,7 +24,7 @@ const Rewards: React.FC<Props> = ({ referralCount, supportedHours, colors, t }) 
                 <Typography variant="h5" className="mb-4 font-bold underline">
                     {t('referral.reward.RegisteredUsers')}
                 </Typography>
-                <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
+                <Typography variant="h2" className="font-bold text-primary-400">
                     {referralCount}
                 </Typography>
                 <HandsPhone1 style={{ marginTop: '5px' }}></HandsPhone1>
@@ -35,7 +34,7 @@ const Rewards: React.FC<Props> = ({ referralCount, supportedHours, colors, t }) 
                 <Typography variant="h5" className="mb-4 font-bold underline">
                     {t('referral.reward.HoursSupported')}
                 </Typography>
-                <Typography variant="h2" className="font-bold" style={{ color: colors.primary[400] }}>
+                <Typography variant="h2" className="font-bold text-primary-400">
                     {referralCount >= 3 ? (
                         supportedHours
                     ) : (

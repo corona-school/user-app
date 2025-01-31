@@ -2,7 +2,6 @@ import { useState } from 'react';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
 import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
-import { HStack, Stack, VStack, Box, useTheme, useBreakpointValue, useClipboard, Tooltip } from 'native-base';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { useTranslation } from 'react-i18next';
 import { isMobile } from 'react-device-detect';
@@ -42,8 +41,17 @@ const SupportedHoursQuery = gql(`
 
 const Referrals: React.FC<{}> = () => {
     const { t } = useTranslation();
-    const { colors, space, sizes } = useTheme();
-    const { onCopy, hasCopied } = useClipboard();
+    const [hasCopied, setHasCopied] = useState(false);
+
+    const onCopy = async (text: string) => {
+        try {
+            await navigator.clipboard.writeText(text);
+            setHasCopied(true);
+            setTimeout(() => setHasCopied(false), 2000);
+        } catch (error) {
+            console.error('Failed to copy: ', error);
+        }
+    };
 
     const userID = sessionStorage.getItem('userID');
     const uniqueReferralLink = 'https://app.lern-fair.de/registration?referredById=' + userID;
@@ -86,26 +94,20 @@ const Referrals: React.FC<{}> = () => {
         });
     };
 
-    // Breakpoint
-    const ContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['containerWidth'],
-    });
-
     return (
         <WithNavigation
             headerLeft={
-                <Stack alignItems="center" direction="row">
+                <div className="flex items-center space-x-4">
                     <SwitchLanguageButton />
                     <NotificationAlert />
-                </Stack>
+                </div>
             }
         >
             {/* Desktop View */}
-            <Box display={{ base: 'none', xl: 'block' }}>
-                <HStack padding={space['2']} marginY={space['3']} space={12} maxWidth={ContainerWidth} alignItems="center">
-                    <VStack w="48%" zIndex="1">
-                        <Box>
+            <div className="hidden lg:block mt-16">
+                <div className={`flex items-center px-2 my-3 max-w-full space-x-12`}>
+                    <div className="flex flex-col w-[48%] z-1">
+                        <div>
                             <Typography variant="h3" className="mb-1.5 font-bold">
                                 {t('referral.title')}
                             </Typography>
@@ -120,7 +122,7 @@ const Referrals: React.FC<{}> = () => {
                             </Typography>
 
                             {/* Options */}
-                            <HStack space={2} margin={space['1']}>
+                            <div className="flex space-x-2 m-3 mb-8 mt-8">
                                 <IconCircleNumber1Filled />
                                 <Typography variant="h5">
                                     {t('referral.share.option1.option')}
@@ -128,9 +130,9 @@ const Referrals: React.FC<{}> = () => {
                                         {t('referral.share.option1.description')}
                                     </Typography>
                                 </Typography>
-                            </HStack>
+                            </div>
 
-                            <HStack space={2} margin={space['1']}>
+                            <div className="flex space-x-2 m-3 mb-8">
                                 <IconCircleNumber2Filled />
                                 <Typography variant="h5">
                                     {t('referral.share.option2.option')}
@@ -138,9 +140,9 @@ const Referrals: React.FC<{}> = () => {
                                         {t('referral.share.option2.description')}
                                     </Typography>
                                 </Typography>
-                            </HStack>
+                            </div>
 
-                            <HStack space={2} margin={space['1']}>
+                            <div className="flex space-x-2 m-3 mb-4">
                                 <IconCircleNumber3Filled />
                                 <Typography variant="h5">
                                     {t('referral.share.option3.option')}
@@ -148,7 +150,7 @@ const Referrals: React.FC<{}> = () => {
                                         {t('referral.share.option3.description')}
                                     </Typography>
                                 </Typography>
-                            </HStack>
+                            </div>
                             {isMobile ? 'mobile' : 'pc'}
                             {/* Share Buttons */}
                             <SocialOptions
@@ -162,76 +164,71 @@ const Referrals: React.FC<{}> = () => {
                                 handleShare={handleShare}
                                 isMobile={isMobile}
                             />
-                        </Box>
-                    </VStack>
-                    <VStack w="52%">
-                        <BGDesktop style={{ position: 'absolute', top: '-150px', left: 'calc(-380px + (100% - 686px) / 2)', zIndex: -1 }}></BGDesktop>
+                        </div>
+                    </div>
+                    <div className="flex flex-col w-[52%] relative">
+                        <BGDesktop style={{ position: 'absolute', top: '-140px', left: 'calc(-380px + (100% - 686px) / 2)', zIndex: -1 }}></BGDesktop>
 
-                        <Box w="480px" marginX={'auto'} backgroundColor="white" borderRadius="md" shadow={4} padding="10" paddingBottom="0" position="relative">
+                        <div className="w-[480px] mx-auto bg-white rounded-md shadow-lg p-10 pb-0 relative">
                             <Confetti style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.8)' }}></Confetti>
 
-                            <Rewards referralCount={referralCount} supportedHours={supportedHours} colors={colors} t={t} />
-                        </Box>
-                    </VStack>
-                </HStack>
-            </Box>
+                            <Rewards referralCount={referralCount} supportedHours={supportedHours} t={t} />
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             {/* Mobile View */}
-            <Box display={{ base: 'block', xl: 'none' }}>
-                <VStack minW="300px" maxW="768px" space={4} marginX="auto">
-                    <Box h="220px">
+            <div className="block lg:hidden">
+                <div className="min-w-[300px] max-w-[768px] space-y-4 mx-auto">
+                    <div className="h-[220px]">
                         <BGMobile style={{ position: 'absolute', right: 0 }}></BGMobile>
-                        <Character style={{ position: 'absolute', top: '50px', right: 0 }}></Character>
-                        <Box>
+                        <Character style={{ position: 'absolute', top: '135px', right: 16 }}></Character>
+                        <div>
                             <Typography variant="h5" className="font-bold mt-4 mb-3">
                                 {t('referral.title')}
                             </Typography>
                             <Typography variant="h6" className="mb-3 w-2/5">
                                 {t('referral.description')}
                             </Typography>
-                        </Box>
-                    </Box>
-                    <Box h="140px" backgroundColor="white" borderRadius="md" shadow={4} padding="5">
-                        <ConfettiMobile style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.6)' }}></ConfettiMobile>
+                        </div>
+                    </div>
+                    <div className="h-[140px] bg-white rounded-md shadow-lg p-5">
+                        <ConfettiMobile style={{ position: 'absolute', top: '320px', right: '10px', transform: 'scale(.6)' }}></ConfettiMobile>
 
                         <Typography variant="h5" className="font-bold mb-3">
                             {t('referral.reward.title')}
                         </Typography>
-                        <HStack space={5}>
+                        <div className="flex space-x-5">
                             <Typography variant="h6" className="font-bold mb-3">
                                 {t('referral.reward.RegisteredUsers')}
                             </Typography>
-                            <Typography variant="h5" className="font-bold mb-3" style={{ color: colors.primary[400] }}>
+                            <Typography variant="h5" className="font-bold mb-3 text-primary-400">
                                 {referralCount}
                             </Typography>
-                        </HStack>
-                        <HStack space={5}>
+                        </div>
+                        <div className="flex space-x-5">
                             <Typography variant="h6" className="font-bold">
                                 {t('referral.reward.HoursSupported')}
                             </Typography>
-                            <Typography variant="h5" className="font-bold" style={{ color: colors.primary[400] }}>
+                            <Typography variant="h5" className="font-bold text-primary-400">
                                 {referralCount >= 3 ? (
                                     supportedHours
                                 ) : (
-                                    <Tooltip
-                                        maxW={250}
-                                        label={t('referral.reward.tooltip')}
-                                        bg={'primary.100'}
-                                        placement="right"
-                                        _text={{ lineHeight: '1rem', color: colors.primary[700] }}
-                                        p={3}
-                                        hasArrow
-                                        children={
-                                            <Box>
-                                                <LOCK className="w-[20px] h-[20px]" />
-                                            </Box>
-                                        }
-                                    ></Tooltip>
+                                    <div className="group relative">
+                                        <LOCK className="w-[20px] h-[20px]" />
+                                        <div className="absolute left-full top-[-10px] hidden group-hover:block w-[180px] p-3 flex flex-col items-start gap-1 bg-[#ECF3F2] text-primary-700 font-outfit text-xs font-normal leading-[10px] rounded-[6px] ml-2">
+                                            <div className="text-primary-700 font-outfit text-xs font-normal leading-[10px]">
+                                                {t('referral.reward.tooltip')}
+                                            </div>
+                                            <div className="absolute left-[-10px] top-[50%] transform -translate-y-[60%] w-0 h-0 border-t-[5px] border-r-[10px] border-b-[5px] border-transparent border-r-[#ECF3F2]"></div>
+                                        </div>
+                                    </div>
                                 )}
                             </Typography>
-                        </HStack>
-                    </Box>
-                    <Box h="170px" backgroundColor="white" borderRadius="md" shadow={4} padding="5">
+                        </div>
+                    </div>
+                    <div className="h-[170px] bg-white rounded-md shadow-lg p-5">
                         {/* Share Buttons */}
                         <SocialOptions
                             uniqueReferralLink={uniqueReferralLink}
@@ -244,9 +241,9 @@ const Referrals: React.FC<{}> = () => {
                             handleShare={handleShare}
                             isMobile={isMobile}
                         />
-                    </Box>
-                </VStack>
-            </Box>
+                    </div>
+                </div>
+            </div>
         </WithNavigation>
     );
 };

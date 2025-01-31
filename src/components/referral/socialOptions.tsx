@@ -1,5 +1,4 @@
 import React from 'react';
-import { VStack, HStack, Input, IconButton } from 'native-base';
 import { WhatsappShareButton } from 'react-share';
 import { Button } from '@/components/Button';
 import { IconCopy, IconCopyCheck } from '@tabler/icons-react';
