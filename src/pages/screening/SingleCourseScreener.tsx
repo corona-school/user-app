@@ -214,7 +214,7 @@ const SingleCourseScreener: React.FC = () => {
 
     return (
         <WithNavigation showBack>
-            {loading ? (
+            {loading || !course || !subcourse ? (
                 <CenterLoadingSpinner />
             ) : (
                 <Stack space={sectionSpacing} paddingX={space['1.5']}>
