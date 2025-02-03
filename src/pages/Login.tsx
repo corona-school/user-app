@@ -35,6 +35,9 @@ import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import InformationModal from '@/modals/InformationModal';
 import { Typography } from '@/components/Typography';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { useGoogleLogin } from '@react-oauth/google';
+import { Button as LFButton } from '@/components/Button';
+import { IconBrandGoogleFilled } from '@tabler/icons-react';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -296,6 +299,12 @@ export default function Login() {
         }
     }, [email, loginEmail]);
 
+    const loginWithGoogle = useGoogleLogin({
+        flow: 'auth-code',
+        ux_mode: 'redirect',
+        redirect_uri: `${window.location.origin}/login-with`,
+    });
+
     return (
         <>
             <VStack overflowY={'auto'} height="100dvh">
@@ -389,6 +398,9 @@ export default function Login() {
                         >
                             {t('signin')}
                         </DisableableButton>
+                        <LFButton variant="outline" className="mt-4" onClick={loginWithGoogle} rightIcon={<IconBrandGoogleFilled size={16} />}>
+                            Weiter mit Google
+                        </LFButton>
                     </Box>
 
                     <Box paddingTop={10} paddingBottom={1}>
