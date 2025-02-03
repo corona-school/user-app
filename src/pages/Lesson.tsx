@@ -7,9 +7,7 @@ import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { IconX } from '@tabler/icons-react';
 import { IconWand } from '@tabler/icons-react';
 
-import { Box, VStack, HStack, Text, Select, TextArea, ScrollView, Pressable, Center } from 'native-base';
-import { useParams } from 'react-router-dom';
-import AsNavigationItem from '../components/AsNavigationItem';
+import { Box, VStack, HStack } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
@@ -373,16 +371,12 @@ ${generatedPlan.resources || 'N/A'}
             <Box position="relative" minH="100vh">
                 <Box maxW="1350px" mx="auto" p={4} flexDirection={{ base: 'column', xl: 'row' }}>
                     {/* Left Section */}
-                    <Box w={{ base: '100%', xl: '49%' }} p={6} m={2} borderRadius="sm" borderWidth={1} borderColor="gray.200">
+                    <div className="w-full xl:w-[49%] p-6 m-2 border border-gray-200 rounded-sm">
                         {/* Header */}
-                        <Box mb={5}>
-                            <Text fontSize="39px" fontWeight="bold" color="#2a4a50" fontFamily="Outfit">
-                                {t('lesson.pageTitle')}
-                            </Text>
-                            <Text fontSize="16px" color="gray.700" fontFamily="Outfit">
-                                {t('lesson.generatePlanText')}
-                            </Text>
-                        </Box>
+                        <div className="mb-5">
+                            <h1 className="text-[39px] font-bold text-[#2a4a50] font-outfit">{t('lesson.pageTitle')}</h1>
+                            <p className="text-[16px] text-gray-700 font-outfit">{t('lesson.generatePlanText')}</p>
+                        </div>
 
                         {/* Try Example Button */}
                         <Button variant="default" className="text-white font-medium mb-6" onClick={handleTryExample}>
@@ -393,86 +387,92 @@ ${generatedPlan.resources || 'N/A'}
                         </Button>
 
                         {/* Form */}
-                        <VStack space={4}>
+                        <div className="flex flex-col space-y-4">
                             {/* Subject Selection */}
-                            <Box>
-                                <Text fontSize="sm" color="#2a4a50" mb={1}>
+                            <div>
+                                <label className="text-m text-[#2a4a50] mb-1">
                                     {t('lesson.chooseSubject')}
-                                    <Text color="red.500">*</Text>
-                                </Text>
-                                <Select
-                                    placeholder={t('lesson.chooseSubject')}
-                                    borderColor="gray.300"
-                                    selectedValue={selectedSubject}
-                                    onValueChange={(value) => setSelectedSubject(value)}
+                                    <span className="text-red-500">*</span>
+                                </label>
+                                <select
+                                    className="w-full border border-gray-300 bg-[#ECF3F2] p-3.5 rounded-lg focus:bg-white"
+                                    value={selectedSubject}
+                                    onChange={(e) => setSelectedSubject(e.target.value)}
                                 >
+                                    <option value="" disabled>
+                                        {t('lesson.chooseSubject')}
+                                    </option>
                                     {subjects.map((subject) => (
-                                        <Select.Item key={subject} label={subjectMapping[subject]} value={subject} />
+                                        <option key={subject} value={subject}>
+                                            {subjectMapping[subject]}
+                                        </option>
                                     ))}
-                                </Select>
-                            </Box>
+                                </select>
+                            </div>
 
                             {/* Grade and Duration Selection side by side */}
-                            <HStack space={4} w="100%">
+                            <div className="flex w-full space-x-4">
                                 {/* Grade Selection */}
-                                <Box flex={1}>
-                                    <Text fontSize="sm" color="#2a4a50" mb={1}>
+                                <div className="flex-1">
+                                    <label className="text-m text-[#2a4a50] mb=1">
                                         {t('lesson.lessonGrade')}
-                                        <Text color="red.500">*</Text>
-                                    </Text>
-                                    <Select
-                                        placeholder={t('lesson.chooseGrade')}
-                                        borderColor="gray.300"
-                                        selectedValue={selectedGrade}
-                                        onValueChange={(value) => setSelectedGrade(value)}
+                                        <span className="text-red-500">*</span>
+                                    </label>
+                                    <select
+                                        className="w-full border border-gray-300 bg-[#ECF3F2] p-3.5 rounded-lg focus:bg-white"
+                                        value={selectedGrade}
+                                        onChange={(e) => setSelectedGrade(e.target.value)}
                                     >
-                                        {gradeOptions.map((grade) => (
-                                            <Select.Item key={grade.value} label={grade.label} value={grade.value} />
+                                        <option value="" disabled>
+                                            {t('lesson.chooseGrade')}
+                                        </option>
+                                        {gradeOptions.map(({ value, label }) => (
+                                            <option key={value} value={value}>
+                                                {label}
+                                            </option>
                                         ))}
-                                    </Select>
-                                </Box>
+                                    </select>
+                                </div>
 
                                 {/* Duration Selection */}
-                                <Box flex={1}>
-                                    <Text fontSize="sm" color="#2a4a50" mb={1}>
+                                <div className="flex-1">
+                                    <label className="text-m text-[#2a4a50] mb-1">
                                         {t('lesson.duration')}
-                                        <Text color="red.500">*</Text>
-                                    </Text>
-                                    <Select
-                                        placeholder={t('lesson.chooseDuration')}
-                                        borderColor="gray.300"
-                                        selectedValue={selectedDuration}
-                                        onValueChange={(value) => setSelectedDuration(value)}
+                                        <span className="text-red-500">*</span>
+                                    </label>
+                                    <select
+                                        className="w-full border border-gray-300 bg-[#ECF3F2] p-3.5 rounded-lg focus:bg-white"
+                                        value={selectedDuration}
+                                        onChange={(e) => setSelectedDuration(e.target.value)}
                                     >
+                                        <option value="" disabled>
+                                            {t('lesson.chooseDuration')}
+                                        </option>
                                         {durationOptions.map((duration) => (
-                                            <Select.Item key={duration.value} label={duration.label} value={duration.value} />
+                                            <option key={duration.value} value={duration.value}>
+                                                {duration.label}
+                                            </option>
                                         ))}
-                                    </Select>
-                                </Box>
-                            </HStack>
+                                    </select>
+                                </div>
+                            </div>
 
-                            <Box>
-                                <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                    {t('lesson.prompt') as string}
-                                </Text>
-                                <TextArea
-                                    h={32}
-                                    placeholder={t('lesson.placeholderDescription') as string}
-                                    borderColor="gray.300"
-                                    autoCompleteType={undefined}
+                            <div>
+                                <p className="text-m text-[#2a4a50] mb-1">{t('lesson.prompt')}</p>
+                                <textarea
+                                    className="w-full h-40 p-4 text-m bg-[#ECF3F2] border border-gray-300 rounded-lg"
+                                    placeholder={t('lesson.placeholderDescription')}
                                     value={prompt}
-                                    onChangeText={(text: string) => setPrompt(text)}
+                                    onChange={(e) => setPrompt(e.target.value)}
                                 />
-                            </Box>
+                            </div>
 
                             {/* File Upload Section */}
-                            <HStack space={4} alignItems="flex-start">
+                            <div className="flex flex-row gap-4 items-start">
                                 {/* Upload Area */}
-                                <Box flex={1}>
-                                    <HStack alignItems="center" space={2} mb={1}>
-                                        <Text fontSize="sm" color="#2a4a50">
-                                            {t('lesson.knowdlegeButton') as string}
-                                        </Text>
+                                <div className="flex-1">
+                                    <div className="flex items-center mb-1 space-x-2">
+                                        <p className="text-m text-[#2a4a50]">{t('lesson.knowdlegeButton') as string}</p>
                                         <TooltipButton tooltipContent={t('lesson.fileUploadTooltip')}>
                                             <InfoGreen
                                                 style={{
@@ -483,38 +483,25 @@ ${generatedPlan.resources || 'N/A'}
                                                 }}
                                             />
                                         </TooltipButton>
-                                    </HStack>
-                                    <VStack space={2} p={4} borderWidth={1} borderColor="gray.300" borderRadius="md" alignItems="center">
-                                        <Text color="gray.400" fontSize="sm">
-                                            {t('lesson.uploadHere') as string}
-                                        </Text>
+                                    </div>
+                                    <div className="flex flex-col items-center p-4 border border-gray-300 rounded-md space-y-2">
+                                        <p className="text-m text-gray-400">{t('lesson.uploadHere') as string}</p>
 
                                         <Button variant="default" onClick={() => document.getElementById('file-upload')?.click()}>
                                             {t('lesson.browseButton') as string}
                                         </Button>
                                         <input id="file-upload" type="file" hidden multiple onChange={handleFileChange} />
-                                    </VStack>
-                                </Box>
+                                    </div>
+                                </div>
 
                                 {/* Uploaded Files */}
-                                <Box flex={1} mt={4}>
-                                    <Text fontSize="sm" color="#2a4a50" mb={1}>
-                                        {t('lesson.uploadedFiles') as string}
-                                    </Text>
-                                    <VStack space={2}>
+                                <div className="flex-1 mt-4">
+                                    <p className="text-m text-[#2a4a50] mb-1">{t('lesson.uploadedFiles') as string}</p>
+                                    <div className="flex flex-col space-y-2">
                                         {uploadedFiles.map((file, index) => (
-                                            <HStack
-                                                key={index}
-                                                p={2}
-                                                borderWidth={2}
-                                                borderColor="gray.300"
-                                                borderRadius="lg"
-                                                alignItems="center"
-                                                justifyContent="space-between"
-                                                space={2}
-                                            >
-                                                <HStack flex={1} space={2} alignItems="center" minW={0} maxW="80%">
-                                                    <Box flexShrink={0}>
+                                            <div key={index} className="flex items-center justify-between p-2 border-2 border-gray-300 rounded-lg space-x-2">
+                                                <div className="flex items-center space-x-2 min-w-0 max-w-[80%]">
+                                                    <div className="flex-shrink-0">
                                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                             <path
                                                                 d="M14 2H6C5.46957 2 4.96086 2.21071 4.58579 2.58579C4.21071 2.96086 4 3.46957 4 4V20C4 20.5304 4.21071 21.0391 4.58579 21.4142C4.96086 21.7893 5.46957 22 6 22H18C18.5304 22 19.0391 21.7893 19.4142 21.4142C19.7893 21.0391 20 20.5304 20 20V8L14 2Z"
@@ -531,30 +518,27 @@ ${generatedPlan.resources || 'N/A'}
                                                                 strokeLinejoin="round"
                                                             />
                                                         </svg>
-                                                    </Box>
-                                                    <VStack flex={1} space={0.5} minW={0}>
-                                                        <Text fontSize="xs" color="#2A4A50" noOfLines={1} maxW="100%" flexShrink={1}>
-                                                            {file.name}
-                                                        </Text>
-                                                        <Text fontSize="xs" color="gray.500">
-                                                            {(file.size / (1024 * 1024)).toFixed(2)} MB
-                                                        </Text>
-                                                    </VStack>
-                                                </HStack>
-                                                <Pressable p={1} minW={0} onPress={() => removeFile(index)} _hover={{ opacity: 0.8 }}>
-                                                    <Center w={8} h={8} bg="#2A4A50" borderRadius="md">
-                                                        <IconX size={14} color="white" strokeWidth={2} />
-                                                    </Center>
-                                                </Pressable>
-                                            </HStack>
+                                                    </div>
+                                                    <div className="flex flex-col flex-1 space-y-0.5 min-w-0">
+                                                        <p className="text-xs text-[#2A4A50] truncate max-w-full flex-shrink">{file.name}</p>
+                                                        <p className="text-xs text-gray-500">{(file.size / (1024 * 1024)).toFixed(2)} MB</p>
+                                                    </div>
+                                                </div>
+                                                <button
+                                                    className="w-8 h-8 flex items-center justify-center bg-[#2A4A50] rounded-md hover:opacity-80 transition"
+                                                    onClick={() => removeFile(index)}
+                                                >
+                                                    <IconX size={14} color="white" strokeWidth={2} />
+                                                </button>
+                                            </div>
                                         ))}
-                                    </VStack>
-                                </Box>
-                            </HStack>
+                                    </div>
+                                </div>
+                            </div>
 
                             {/* Terms and Conditions Checkbox */}
-                            <Box mb={4} maxWidth="100%">
-                                <HStack space={2} alignItems="flex-start" width="100%">
+                            <div className="mb-4 max-w-full">
+                                <div className="flex space-x-2 items-start w-full">
                                     <Checkbox
                                         id="terms"
                                         checked={termsAccepted}
@@ -564,7 +548,7 @@ ${generatedPlan.resources || 'N/A'}
                                         }}
                                         className="mt-1 flex-shrink-0"
                                     />
-                                    <VStack space={1} flex={1}>
+                                    <div className="flex flex-col space-y-1 flex-1">
                                         <label
                                             htmlFor="terms"
                                             className="flex text-[14px] font-medium font-outfit text-[#2A4A50] leading-[14px] cursor-pointer"
@@ -572,32 +556,17 @@ ${generatedPlan.resources || 'N/A'}
                                             {t('lesson.acceptTermsCheckbox') as string}
                                             <span className="text-[#D41212]">*</span>
                                         </label>
-                                        <Text
-                                            fontSize="10px"
-                                            fontFamily="Outfit"
-                                            fontWeight="400"
-                                            color="#64748B"
-                                            lineHeight="14px"
-                                            pr={4}
-                                            style={{
-                                                flexWrap: 'wrap',
-                                                maxWidth: '100%',
-                                            }}
-                                        >
+                                        <p className="text-[10px] font-outfit font-normal text-[#64748B] leading-[14px] pr-4 flex-wrap max-w-full">
                                             {t('lesson.acceptTCText') as string}
-                                        </Text>
-                                    </VStack>
-                                </HStack>
+                                        </p>
+                                    </div>
+                                </div>
 
-                                {showError && (
-                                    <Text fontSize="12px" color="#D41212" mt={1} ml={8}>
-                                        Please accept the terms and conditions
-                                    </Text>
-                                )}
-                            </Box>
+                                {showError && <p className="text-[12px] text-[#D41212] mt-1 ml-8">Please accept the terms and conditions</p>}
+                            </div>
 
                             {/* Generate Button */}
-                            <HStack space="4" justifyContent="flex-end">
+                            <div className="flex justify-end space-x-4">
                                 <Button variant="outline" onClick={resetForm}>
                                     {t('lesson.resetLesson') as string}
                                 </Button>
@@ -613,9 +582,9 @@ ${generatedPlan.resources || 'N/A'}
                                 >
                                     {t('lesson.generatePlanButton') as string}
                                 </Button>
-                            </HStack>
-                        </VStack>
-                    </Box>
+                            </div>
+                        </div>
+                    </div>
                     {/* Right Section */}
                     <Box w={{ base: '100%', xl: '49%' }} p={6} m={2} borderRadius="sm" borderWidth={1} borderColor="gray.200">
                         {!generatedPlan ? (
