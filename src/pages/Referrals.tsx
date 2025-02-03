@@ -126,8 +126,8 @@ const Referrals: React.FC<{}> = () => {
                             </Typography>
 
                             {/* Options */}
-                            <div className="flex space-x-2 m-3 mb-8 mt-8">
-                                <IconCircleNumber1Filled />
+                            <div className="flex space-x-2 m-3 mb-8 mt-8 items-center">
+                                <IconCircleNumber1Filled className="w-6 h-6 flex-shrink-0" />
                                 <Typography variant="h5">
                                     {t('referral.share.option1.option')}
                                     <Typography variant="h6" className="inline">
@@ -136,8 +136,8 @@ const Referrals: React.FC<{}> = () => {
                                 </Typography>
                             </div>
 
-                            <div className="flex space-x-2 m-3 mb-8">
-                                <IconCircleNumber2Filled />
+                            <div className="flex space-x-2 m-3 mb-8 items-center">
+                                <IconCircleNumber2Filled className="w-6 h-6 flex-shrink-0" />
                                 <Typography variant="h5">
                                     {t('referral.share.option2.option')}
                                     <Typography variant="h6" className="inline">
@@ -146,8 +146,8 @@ const Referrals: React.FC<{}> = () => {
                                 </Typography>
                             </div>
 
-                            <div className="flex space-x-2 m-3 mb-4">
-                                <IconCircleNumber3Filled />
+                            <div className="flex space-x-2 m-3 mb-4 items-center">
+                                <IconCircleNumber3Filled className="w-6 h-6 flex-shrink-0" />
                                 <Typography variant="h5">
                                     {t('referral.share.option3.option')}
                                     <Typography variant="h6" className="inline">
