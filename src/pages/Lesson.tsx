@@ -7,7 +7,6 @@ import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { IconX } from '@tabler/icons-react';
 import { IconWand } from '@tabler/icons-react';
 
-import { Box, VStack, HStack } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 
@@ -368,8 +367,8 @@ ${generatedPlan.resources || 'N/A'}
                 </div>
             }
         >
-            <Box position="relative" minH="100vh">
-                <Box maxW="1350px" mx="auto" p={4} flexDirection={{ base: 'column', xl: 'row' }}>
+            <div className="relative min-h-[100vh]">
+                <div className="max-w-[1350px] mx-auto p-4 flex flex-col xl:flex-row">
                     {/* Left Section */}
                     <div className="w-full xl:w-[49%] p-6 m-2 border border-gray-200 rounded-sm">
                         {/* Header */}
@@ -586,7 +585,7 @@ ${generatedPlan.resources || 'N/A'}
                         </div>
                     </div>
                     {/* Right Section */}
-                    <Box w={{ base: '100%', xl: '49%' }} p={6} m={2} borderRadius="sm" borderWidth={1} borderColor="gray.200">
+                    <div className="w-full xl:w-[49%] p-6 m-2 border border-gray-200 rounded-sm">
                         {!generatedPlan ? (
                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingTop: '24px', paddingBottom: '16px' }}>
                                 <Sachkunde
@@ -598,9 +597,9 @@ ${generatedPlan.resources || 'N/A'}
                                 <p style={{ fontSize: '18px', color: '#0F172A', textAlign: 'center' }}>Fill out the form to generate a lesson plan.</p>
                             </div>
                         ) : (
-                            <VStack space={4} alignItems="flex-start">
+                            <div className="space-y-4 flex-start">
                                 {/* Title and Details */}
-                                <VStack space={2} alignItems="flex-start">
+                                <div className="space-y-2 flex-start">
                                     <Typography variant="h4" className="text-[#0F172A] font-normal">
                                         {t('lesson.lessonPlan') as string} {generatedPlan.title || ''}
                                     </Typography>
@@ -613,77 +612,75 @@ ${generatedPlan.resources || 'N/A'}
                                     <Typography variant="h6" className="text-[#0F172A] font-normal">
                                         {t('lesson.duration') as string} {generatedPlan.duration || ''}
                                     </Typography>
-                                </VStack>
+                                </div>
 
                                 {/* Divider */}
-                                <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
+                                <div className="self-stretch flex-1 border border-[#ECF0F3]"></div>
 
                                 {/* Learning Goals */}
-                                <VStack space={2} alignItems="flex-start" width="100%">
+                                <div className="space-y-2 flex-start w-full">
                                     <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
                                         {t('lesson.learningGoals') as string}
                                     </Typography>
                                     {generatedPlan.learningGoals.map((goal, index) => renderTextWithLineBreaks(goal))}
-                                </VStack>
+                                </div>
 
                                 {/* Divider */}
-                                <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
+                                <div className="self-stretch flex-1 border border-[#ECF0F3]"></div>
 
                                 {/* Agenda */}
                                 {generatedPlan.agenda.map((section, index) => (
-                                    <VStack key={index} space={2} alignItems="flex-start" width="100%">
+                                    <div key={index} className="space-y-2 flex-start">
                                         <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
                                             {section.title}
                                         </Typography>
                                         {section.content.map((item, itemIndex) => renderTextWithLineBreaks(item))}
-                                        {index < generatedPlan.agenda.length - 1 && (
-                                            <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" my={4} />
-                                        )}
-                                    </VStack>
+                                        {index < generatedPlan.agenda.length - 1 && <div className="self-stretch flex-1 border border-[#ECF0F3] my-4"></div>}
+                                    </div>
                                 ))}
 
                                 {/* Assessment */}
                                 {generatedPlan.assessment && (
                                     <>
-                                        <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
-                                        <VStack space={2} alignItems="flex-start" width="100%">
+                                        <div className="self-stretch flex-1 border border-[#ECF0F3]"></div>
+                                        <div className="space-y-2 flex-start w-full">
                                             <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
                                                 {t('lesson.assessment') as string}
                                             </Typography>
                                             {renderTextWithLineBreaks(generatedPlan.assessment)}
-                                        </VStack>
+                                        </div>
                                     </>
                                 )}
 
                                 {/* Homework */}
                                 {generatedPlan.homework && (
                                     <>
-                                        <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
-                                        <VStack space={2} alignItems="flex-start" width="100%">
+                                        <div className="self-stretch flex-1 border border-[#ECF0F3]"></div>
+                                        <div className="space-y-2 flex-start w-full">
                                             <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
                                                 {t('lesson.homework') as string}
                                             </Typography>
                                             {renderTextWithLineBreaks(generatedPlan.homework)}
-                                        </VStack>
+                                        </div>
                                     </>
                                 )}
 
                                 {/* Resources */}
                                 {generatedPlan.resources && (
                                     <>
-                                        <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
-                                        <VStack space={2} alignItems="flex-start" width="100%">
+                                        <div className="self-stretch flex-1 border border-[#ECF0F3]"></div>
+                                        <div className="space-y-2 flex-start w-full">
                                             <Typography variant="h4" className="text-[#0F172A] text-base font-bold leading-[34px]">
                                                 {t('lesson.resources') as string}{' '}
                                             </Typography>
                                             {renderTextWithLineBreaks(generatedPlan.resources)}
-                                        </VStack>
+                                        </div>
                                     </>
                                 )}
 
                                 {/* Copy Output Button */}
-                                <Box alignSelf="stretch" flex={1} borderWidth={1} borderColor="#ECF0F3" />
-                                <VStack alignItems="stretch" style={{ width: '100%', alignItems: 'flex-end' }}>
+                                <div className="self-stretch flex-1 border border-[#ECF0F3]"></div>
+                                <div className="w-full flex flex-col items-end">
                                     {generatedPlan && (
                                         <Button
                                             variant="secondary"
@@ -694,12 +691,12 @@ ${generatedPlan.resources || 'N/A'}
                                             {t('lesson.copyButton') as string}
                                         </Button>
                                     )}
-                                </VStack>
-                            </VStack>
+                                </div>
+                            </div>
                         )}
-                    </Box>
-                </Box>
-            </Box>
+                    </div>
+                </div>
+            </div>
         </WithNavigation>
     );
 };
