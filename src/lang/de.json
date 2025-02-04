@@ -92,11 +92,11 @@
             "emptyTimeError": "Zeit darf nicht leer sein",
             "wrongVideoUrlError": "Bitte gebe einen gültigen Videolink ein.",
             "courseImageAltText": "Kursbild",
-            "videoChatLabel": "Video-Chat",
+            "videoChatLabel": "Video-Meeting",
             "videoChatPlaceholder": "Hinterlege deinen eigenen Link zum Videochat",
             "videoSelectOptions": {
-                "zoom": "          Zoom Meeting (automatisch generieren)",
-                "link": "Eigenen Meeting Link"
+                "zoom": "          Automatischer Zoom-Link (ohne Zeitbegrenzung)",
+                "link": "Eigener Meeting-Link"
             }
         },
         "detail": {
