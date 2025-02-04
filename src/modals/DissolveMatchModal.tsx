@@ -74,7 +74,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                         <Modal.Footer>
                             <Row space={space['1']}>
                                 <DisableableButton
-                                    isDisabled={reasons.length === 0} // todo: other freetext required?
+                                    isDisabled={reasons.length === 0 || (reasons.includes(Dissolve_Reason.Other) && !otherFreeText)}
                                     reasonDisabled={t('matching.dissolve.modal.tooltip')}
                                     onPress={() => onPressDissolve(reasons, reasons.includes(Dissolve_Reason.Other) ? otherFreeText : undefined)}
                                 >
