@@ -71,8 +71,7 @@
             "wrongVideoUrlError": "Lütfen geçerli bir video bağlantısı girin.",
             "courseImageAltText": "Kurs görüntüsü",
             "videoChatLabel": "Görüntülü sohbet",
-            "videoChatPlaceholder": "Görüntülü sohbete kendi bağlantınızı ekleyin",
-            "toolTipTimeLabel": "Alle Uhrzeiten bei Lern-Fair werden in der Zeitzone „Central European Time (CET), Europa/Berlin“ erstellt (Aktuelle Zeit: {{currentTime}})."
+            "videoChatPlaceholder": "Görüntülü sohbete kendi bağlantınızı ekleyin"
         },
         "detail": {
             "reasonDisabled": {
