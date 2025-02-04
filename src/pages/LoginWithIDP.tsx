@@ -30,7 +30,7 @@ const LoginWithIDP = () => {
         }
     }, [code, handleOnLoginWithSSO]);
 
-    if (roles.includes('SSO_REGISTERING_USER') && ssoStatus === SsoAuthStatus.Success) {
+    if (roles.includes('SSO_REGISTERING_USER') && ssoStatus === SsoAuthStatus.Register) {
         return <Navigate to="/registration" />;
     }
 
