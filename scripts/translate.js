@@ -204,7 +204,7 @@ function getCurrentCommit() {
 // -------------- Translation -------------------
 
 function getTemplates(text) {
-    return [...text.matchAll(/\{\{([\wäöüÄÖÜß]+)\}\}/ig)].map(it => it[1]);
+    return [...text.matchAll(/\{\{([\w]+)\}\}/ig)].map(it => it[1]);
 }
 
 function checkTemplates(expected, actual) {
