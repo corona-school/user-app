@@ -2545,7 +2545,46 @@
         "generatePlan": "Plan oluşturun",
         "acceptTermsCheckbox": "Genel hüküm ve koşulları kabul edin:",
         "acceptTCText": "Metin alanına herhangi bir kişisel veri girmedim ve Open AI'nın bu verileri Avrupa veri koruma standartları olmadan kullanabileceğinin farkındayım. Lern-Fair  Lern-Fair Yüklenen belgeler üzerinde herhangi bir hakkım olmadığı için herhangi biri aleyhime hak iddia ederse, tazmin etmeyi taahhüt ederim.",
-        "fileUploadTooltip": "Buraya ek dosyalar yükleyerek AI çıktısını iyileştirin"
+        "fileUploadTooltip": "Buraya ek dosyalar yükleyerek AI çıktısını iyileştirin",
+        "durations": {
+            "30": "30 dakika",
+            "45": "45 dakika",
+            "60": "60 dakika",
+            "90": "90 dakika"
+        },
+        "subjects": {
+            "Altgriechisch": "Antik Yunan",
+            "Arbeitslehre": "İşgücü teorisi",
+            "Biologie": "Biyoloji",
+            "Chemie": "Kimya",
+            "Deutsch": "Alman",
+            "Deutsch als Zweitsprache": "İkinci dil olarak Almanca",
+            "Englisch": "İngilizce",
+            "Erdkunde": "Coğrafya",
+            "Ethik": "Etik",
+            "Französisch": "Fransızca",
+            "Geschichte": "Tarih",
+            "Gesundheit": "Sağlık",
+            "Informatik": "Bilgisayar bilimi",
+            "Italienisch": "İtalyan",
+            "Kunst": "Sanat",
+            "Latein": "Latince",
+            "Mathematik": "Matematik",
+            "Musik": "Müzik",
+            "Niederländisch": "Hollandaca",
+            "Pädagogik": "Pedagoji",
+            "Philosophie": "Felsefe",
+            "Physik": "Fizik",
+            "Politik": "Politika",
+            "Religion": "Din",
+            "Russisch": "Rusça",
+            "Sachkunde": "Fen Bilgisi",
+            "Spanisch": "İspanyolca",
+            "Technik": "Teknoloji",
+            "Wirtschaft": "Ekonomi",
+            "Lernen lernen": "Öğrenmeyi öğrenmek"
+        },
+        "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
     },
     "certificates": {
         "instantCertificate": {

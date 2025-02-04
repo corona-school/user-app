@@ -20,6 +20,7 @@ import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
 import { getGradeLabel } from '@/Utility';
+import { asTranslationKey } from '@/helper/string-helper';
 
 interface GeneratedLessonPlan {
     title: string;
@@ -119,10 +120,10 @@ const Lesson: React.FC = () => {
 
     // Duration options in minutes
     const durationOptions = [
-        { value: '30', label: '30 Minuten' },
-        { value: '45', label: '45 Minuten' },
-        { value: '60', label: '60 Minuten' },
-        { value: '90', label: '90 Minuten' },
+        { value: '30', label: t('lesson.durations.30') as string },
+        { value: '45', label: t('lesson.durations.45') as string },
+        { value: '60', label: t('lesson.durations.60') as string },
+        { value: '90', label: t('lesson.durations.90') as string },
     ];
 
     const removeFile = (indexToRemove: number) => {
@@ -308,6 +309,18 @@ ${generatedPlan.resources || 'N/A'}
             return;
         }
 
+        const languageMap: Record<string, string> = {
+            en: 'English',
+            de: 'German',
+            ar: 'Arabic',
+            ru: 'Russian',
+            uk: 'Ukrainian',
+            tr: 'Turkish',
+        };
+
+        const storageLanguage = localStorage.getItem('lernfair-language') || 'German';
+        const mappedLanguage = languageMap[storageLanguage] || storageLanguage;
+
         try {
             // Upload files first and get their UUIDs
             const fileUuids: string[] = [];
@@ -325,7 +338,7 @@ ${generatedPlan.resources || 'N/A'}
                         prompt: prompt || `Erstelle einen Unterrichtsplan für das Thema ${selectedSubject}`,
                         expectedOutputs: ['AGENDA_EXERCISES', 'ASSESSMENT', 'HOMEWORK', 'LEARNING_GOAL', 'RESOURCES', 'TITLE'],
                         schoolType: 'gymnasium',
-                        language: 'German',
+                        language: mappedLanguage,
                         subject: selectedSubject,
                     },
                 },
@@ -403,7 +416,7 @@ ${generatedPlan.resources || 'N/A'}
                                     </option>
                                     {subjects.map((subject) => (
                                         <option key={subject} value={subject}>
-                                            {subjectMapping[subject]}
+                                            {t(asTranslationKey(`lesson.subjects.${subjectMapping[subject]}`))}
                                         </option>
                                     ))}
                                 </select>
@@ -447,9 +460,9 @@ ${generatedPlan.resources || 'N/A'}
                                         <option value="" disabled>
                                             {t('lesson.chooseDuration')}
                                         </option>
-                                        {durationOptions.map((duration) => (
-                                            <option key={duration.value} value={duration.value}>
-                                                {duration.label}
+                                        {durationOptions.map(({ value, label }) => (
+                                            <option key={value} value={value}>
+                                                {label}
                                             </option>
                                         ))}
                                     </select>
@@ -594,7 +607,7 @@ ${generatedPlan.resources || 'N/A'}
                                         marginBottom: '40px',
                                     }}
                                 />
-                                <p style={{ fontSize: '18px', color: '#0F172A', textAlign: 'center' }}>Fill out the form to generate a lesson plan.</p>
+                                <p style={{ fontSize: '18px', color: '#0F172A', textAlign: 'center' }}>{t('lesson.placeholderImageDescription') as string}</p>
                             </div>
                         ) : (
                             <div className="space-y-4 flex-start">

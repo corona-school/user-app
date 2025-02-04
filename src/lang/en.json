@@ -2541,7 +2541,46 @@
         "generatePlan": "Create plan",
         "acceptTermsCheckbox": "Accept general terms and conditions:",
         "acceptTCText": "I have not entered any personal data in the text field and I am aware that Open AI may use it without European data protection standards. Should anyone assert claims against Lern-Fair because I have no rights to the uploaded documents, I undertake to indemnify Lern-Fair .",
-        "fileUploadTooltip": "Improve the AI output by uploading additional files here"
+        "fileUploadTooltip": "Improve the AI output by uploading additional files here",
+        "durations": {
+            "30": "30 minutes",
+            "45": "45 minutes",
+            "60": "60 minutes",
+            "90": "90 minutes"
+        },
+        "subjects": {
+            "Altgriechisch": "Ancient Greek",
+            "Arbeitslehre": "Labor theory",
+            "Biologie": "Biology",
+            "Chemie": "Chemistry",
+            "Deutsch": "German",
+            "Deutsch als Zweitsprache": "German as a second language",
+            "Englisch": "English",
+            "Erdkunde": "Geography",
+            "Ethik": "Ethics",
+            "Französisch": "French",
+            "Geschichte": "History",
+            "Gesundheit": "Health",
+            "Informatik": "Computer science",
+            "Italienisch": "Italian",
+            "Kunst": "Art",
+            "Latein": "Latin",
+            "Mathematik": "Mathematics",
+            "Musik": "Music",
+            "Niederländisch": "Dutch",
+            "Pädagogik": "Pedagogy",
+            "Philosophie": "Philosophy",
+            "Physik": "Physics",
+            "Politik": "Politics",
+            "Religion": "Religion",
+            "Russisch": "Russian",
+            "Sachkunde": "Expertise",
+            "Spanisch": "Spanish",
+            "Technik": "Technology",
+            "Wirtschaft": "Economy",
+            "Lernen lernen": "Learning to learn"
+        },
+        "placeholderImageDescription": "Fill out the form to create a lesson plan"
     },
     "certificates": {
         "instantCertificate": {

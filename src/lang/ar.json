@@ -2541,7 +2541,46 @@
         "generatePlan": "إنشاء خطة",
         "acceptTermsCheckbox": "قبول الشروط والأحكام العامة:",
         "acceptTCText": "لم أقم بإدخال أي بيانات شخصية في حقل النص، وأنا على علم بأن منظمة العفو الدولية المفتوحة قد تستخدمها دون معايير حماية البيانات الأوروبية. Lern-Fair  Lern-Fair في حالة قيام أي شخص بتأكيد أي مطالبات ضدّي بسبب عدم امتلاكي أي حقوق في المستندات التي تم تحميلها، فإنني أتعهد بتعويض .",
-        "fileUploadTooltip": "تحسين مخرجات الذكاء الاصطناعي عن طريق تحميل ملفات إضافية هنا"
+        "fileUploadTooltip": "تحسين مخرجات الذكاء الاصطناعي عن طريق تحميل ملفات إضافية هنا",
+        "durations": {
+            "30": "30 دقيقة",
+            "45": "45 دقيقة",
+            "60": "60 دقيقة",
+            "90": "90 دقيقة"
+        },
+        "subjects": {
+            "Altgriechisch": "اليونانية القديمة",
+            "Arbeitslehre": "نظرية العمل",
+            "Biologie": "بيولوجيا",
+            "Chemie": "كيمياء",
+            "Deutsch": "الألمانية",
+            "Deutsch als Zweitsprache": "الألمانية كلغة ثانية",
+            "Englisch": "الإنكليزية",
+            "Erdkunde": "جغرافيا",
+            "Ethik": "الأخلاقيات",
+            "Französisch": "الفرنسية",
+            "Geschichte": "تاريخ",
+            "Gesundheit": "الصحة",
+            "Informatik": "علوم الكمبيوتر",
+            "Italienisch": "الإيطالية",
+            "Kunst": "فن",
+            "Latein": "لاتينيه",
+            "Mathematik": "رياضيات",
+            "Musik": "موسيقى",
+            "Niederländisch": "الهولندية",
+            "Pädagogik": "التربيه",
+            "Philosophie": "فلسفة",
+            "Physik": "فيزياء",
+            "Politik": "سياسة",
+            "Religion": "دين",
+            "Russisch": "الروسية",
+            "Sachkunde": "إمكان",
+            "Spanisch": "الإسبانية",
+            "Technik": "التكنولوجيا",
+            "Wirtschaft": "اقتصاد",
+            "Lernen lernen": "تعلّم كيف تتعلم"
+        },
+        "placeholderImageDescription": "املأ النموذج لإنشاء خطة الدرس"
     },
     "certificates": {
         "instantCertificate": {
