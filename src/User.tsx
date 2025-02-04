@@ -58,6 +58,17 @@ export function RequireRole({ roles, children }: { roles: Role[]; children: JSX.
     return <Navigate to="/" replace />;
 }
 
+export const VisitorsOnly = ({ children }: { children: JSX.Element }) => {
+    const actualRoles = useRoles();
+    const { sessionState } = useApollo();
+
+    if (actualRoles.includes('USER') && sessionState === 'logged-in') {
+        return <Navigate to="/" replace />;
+    }
+
+    return children;
+};
+
 export const SwitchUserType = ({
     pupilComponent,
     studentComponent,
@@ -96,6 +107,8 @@ export function MockScreener({ children }: React.PropsWithChildren<{}>) {
         logout: () => Promise.resolve(),
         loginWithPassword: () => Promise.resolve({}),
         refreshUser: () => {},
+        loginWithSSO: () => Promise.resolve(),
+        refreshSessionState: () => Promise.resolve(),
         sessionState: 'logged-in',
         roles: ['SCREENER', 'TRUSTED_SCREENER'],
         user: {
@@ -118,6 +131,8 @@ export function MockStudent({ children }: React.PropsWithChildren<{}>) {
         logout: () => Promise.resolve(),
         loginWithPassword: () => Promise.resolve({}),
         refreshUser: () => {},
+        loginWithSSO: () => Promise.resolve(),
+        refreshSessionState: () => Promise.resolve(),
         sessionState: 'logged-in',
         roles: ['STUDENT'],
         user: {
