@@ -11,7 +11,7 @@ import { RequireAuth, VisitorsOnly } from '../User';
 import FullPageModal from '../modals/FullPageModal';
 import { lazyWithRetry } from '../lazy';
 import Logout from '../components/Logout';
-import LoginWith from '@/pages/LoginWith';
+import LoginWithIDP from '@/pages/LoginWithIDP';
 
 // All other pages load lazy:
 const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: true });
@@ -27,7 +27,7 @@ export default function Navigator() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/login-token" element={<LoginToken />} />
-                <Route path="/login-with" element={<LoginWith />} />
+                <Route path="/login-with" element={<LoginWithIDP />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route
                     path="/welcome"

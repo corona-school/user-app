@@ -210,6 +210,10 @@
         "invalidMailMessage": "Die eingegebene E-Mail-Adresse ist fehlerhaft.",
         "invalidTokenAlert": {
             "text": "Der Token, mit dem du versucht hast, dich anzumelden, ist ungültig. Bitte versuche, dich erneut anzumelden."
+        },
+        "reauthenticate": {
+            "title": "Erneut anmelden",
+            "passwordDescription": "Bitte melde dich erneut mit deinem Passwort an, um den Verknüpfungsprozess abzuschließen. Beachte, dass du dies nur einmal tun musst."
         }
     },
     "begin": "Ab",

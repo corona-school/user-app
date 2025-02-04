@@ -29,6 +29,7 @@ import { gql } from '../gql';
 import { Role } from '../types/lernfair/User';
 import { datadogRum } from '@datadog/browser-rum';
 import { Kind } from 'graphql';
+import { SsoAuthStatus } from '@/gql/graphql';
 
 // Utility type to extract the query result:
 // const SomeQuery = gql(...);
@@ -237,7 +238,7 @@ export type LFApollo = {
 
     loginWithPassword: (email: string, password: string, deviceId: string) => Promise<FetchResult>;
 
-    loginWithSSO: (code: string) => Promise<void>;
+    loginWithSSO: (code: string) => Promise<SsoAuthStatus | undefined>;
 
     refreshSessionState: () => Promise<void>;
 
@@ -759,13 +760,14 @@ const useApolloInternal = () => {
         `);
             const { data } = await client.mutate({ mutation: LOGIN_WITH_SSO_MUTATION, variables: { code, referrer: document.referrer } });
             const result = data?.loginWithSSO;
-            if (result && ['register', 'success'].includes(result)) {
+            if (result && ['register', 'success', 'link'].includes(result)) {
                 determineUser();
                 if (result === 'success') {
                     log('GraphQL', 'Logged in successfully');
                     setSessionState('logged-in');
                 }
             }
+            return result;
         },
         [client]
     );
