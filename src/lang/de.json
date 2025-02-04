@@ -1652,7 +1652,8 @@
                         "past": "Vergangene Kurse",
                         "language": "Deutsch für Anfänger",
                         "focus": "Fokus-Kurse",
-                        "courses": "Nachhilfe-Kurse"
+                        "courses": "Nachhilfe-Kurse",
+                        "homeworkHelp": "Hausaufgabenhilfe"
                     }
                 }
             },

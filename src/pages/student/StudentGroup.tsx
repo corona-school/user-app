@@ -165,11 +165,19 @@ const StudentGroup: React.FC = () => {
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
         [data?.subcoursesPublic]
     );
+    const homeworkHelpCourses = useMemo(
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
+        [data?.subcoursesPublic]
+    );
+
     const revisionCourses = useMemo(
         () =>
             sortByDate(
                 data?.subcoursesPublic?.filter(
-                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                    (subcourse) =>
+                        subcourse.course.category !== Course_Category_Enum.Language &&
+                        subcourse.course.category !== Course_Category_Enum.Focus &&
+                        subcourse.course.category !== Course_Category_Enum.HomeworkHelp
                 )
             ),
         [data?.subcoursesPublic]
@@ -281,7 +289,12 @@ const StudentGroup: React.FC = () => {
                                             title: t('matching.group.helper.course.tabs.tab2.title'),
                                             content: (
                                                 <>
-                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
+                                                    <AllSubcourses
+                                                        languageCourses={languageCourses}
+                                                        courses={revisionCourses}
+                                                        focusCourses={focusCourses}
+                                                        homeworkHelpCourses={homeworkHelpCourses}
+                                                    />
                                                 </>
                                             ),
                                         },
