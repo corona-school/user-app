@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Heading, Image, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import useModal from '../hooks/useModal';
 import VerifyEmailModal from '../modals/VerifyEmailModal';
@@ -19,6 +19,7 @@ import SchoolSearch from './registration/SchoolSearch';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { SCHOOL_SEARCH_ACTIVE } from '../config';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import useApollo, { useRoles } from '@/hooks/useApollo';
 
 interface SelectedSchool extends Partial<ExternalSchoolSearch> {
     hasPredefinedType?: boolean;
@@ -51,19 +52,18 @@ type RegistrationContextType = {
     setPupilAge: Dispatch<SetStateAction<'<= 15' | '> 15' | undefined>>;
     onNext: () => void;
     onPrev: () => void;
+    isRegisteringManually: boolean;
 };
 
 export const RegistrationContext = createContext<RegistrationContextType>({} as RegistrationContextType);
 
-const mutPupil = gql(`
+const MUTATION_REGISTER_PUPIL = gql(`
     mutation registerPupil(
         $firstname: String!
         $lastname: String!
         $email: String!
-        $password: String!
         $newsletter: Boolean!
         $grade: Int!
-        $retainPath: String!
         $school: RegistrationSchool!
         $emailOwner: PupilEmailOwner!
     ) {
@@ -73,19 +73,22 @@ const mutPupil = gql(`
         ) {
             id
         }
-        passwordCreate(password: $password)
         meUpdate(update: { pupil: { gradeAsInt: $grade } })
-        tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
 `);
-const mutStudent = gql(`
-    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $password: String!, $newsletter: Boolean!, $retainPath: String!, $cooperationTag: String) {
+const MUTATION_REGISTER_STUDENT = gql(`
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $newsletter: Boolean!, $cooperationTag: String) {
         meRegisterStudent(
             noEmail: true
             data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: $newsletter, registrationSource: normal, cooperationTag: $cooperationTag }
         ) {
             id
         }
+    }
+`);
+
+const MUTATION_CREATE_CREDENTIALS = gql(`
+    mutation createCredentials($email: String!, $password: String!, $retainPath: String!) {
         passwordCreate(password: $password)
         tokenRequest(action: "user-verify-email", email: $email, redirectTo: $retainPath)
     }
@@ -108,6 +111,9 @@ const Registration: React.FC = () => {
     const { t } = useTranslation();
     const { show, hide } = useModal();
     const { trackEvent } = useMatomo();
+    const { refreshSessionState, user: sessionUser } = useApollo();
+    const roles = useRoles();
+    const navigate = useNavigate();
 
     const location = useLocation();
     const locState = location.state as { retainPath?: string };
@@ -121,9 +127,9 @@ const Registration: React.FC = () => {
     const [userType, setUserType] = useState<'pupil' | 'student'>(
         location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' ? 'student' : 'pupil'
     );
-    const [firstname, setFirstname] = useState<string>('');
-    const [lastname, setLastname] = useState<string>('');
-    const [email, setEmail] = useState<string>('');
+    const [firstname, setFirstname] = useState<string>(sessionUser?.firstname ?? '');
+    const [lastname, setLastname] = useState<string>(sessionUser?.lastname ?? '');
+    const [email, setEmail] = useState<string>(sessionUser?.email ?? '');
     const [password, setPassword] = useState<string>('');
     const [passwordRepeat, setPasswordRepeat] = useState<string>('');
     const [schoolClass, setSchoolClass] = useState<number>(0);
@@ -131,9 +137,11 @@ const Registration: React.FC = () => {
     const [school, setSchool] = useState<SelectedSchool>();
     const [emailOwner, setEmailOwner] = useState<PupilEmailOwner>(PupilEmailOwner.Unknown);
     const [pupilAge, setPupilAge] = useState<'<= 15' | '> 15' | undefined>();
+    const isRegisteringManually = !roles.includes('SSO_REGISTERING_USER');
 
-    const [registerPupil] = useMutation(mutPupil);
-    const [registerStudent] = useMutation(mutStudent);
+    const [registerPupil] = useMutation(MUTATION_REGISTER_PUPIL);
+    const [registerStudent] = useMutation(MUTATION_REGISTER_STUDENT);
+    const [createCredentials] = useMutation(MUTATION_CREATE_CREDENTIALS);
 
     const { data: corpData } = useQuery(
         gql(
@@ -168,12 +176,10 @@ const Registration: React.FC = () => {
                 firstname,
                 lastname,
                 email: validMail,
-                password,
                 newsletter,
-                retainPath: retainPath,
             };
 
-            let result =
+            let createAccountResult =
                 userType === 'pupil'
                     ? await registerPupil({
                           variables: {
@@ -194,7 +200,11 @@ const Registration: React.FC = () => {
                           variables: { ...basicData, cooperationTag },
                       });
 
-            if (!result.errors) {
+            if (isRegisteringManually) {
+                await createCredentials({ variables: { email: validMail, password, retainPath: retainPath } });
+            }
+
+            if (!createAccountResult.errors) {
                 if (userType === 'pupil') {
                     const eventNameAge = pupilAge === '<= 15' ? '15 or younger' : '16 or older';
                     const eventNameEmailOwner = {
@@ -209,17 +219,23 @@ const Registration: React.FC = () => {
                         name: `${eventNameAge} and ${eventNameEmailOwner[emailOwner]}`,
                     });
                 }
-                show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} userType={userType} />);
 
-                // Remove /registration from the URL so that a refresh of the page won't show the registration form again
-                window.history.replaceState({}, '', '/');
+                if (isRegisteringManually) {
+                    show({ variant: 'dark' }, <VerifyEmailModal email={email} retainPath={retainPath} userType={userType} />);
+
+                    // Remove /registration from the URL so that a refresh of the page won't show the registration form again
+                    window.history.replaceState({}, '', '/');
+                } else {
+                    await refreshSessionState();
+                    navigate('/');
+                }
             } else {
                 show(
                     { variant: 'dark' },
                     <VStack space={space['1']} p={space['1']} flex="1" alignItems="center">
                         <Text color="lightText">
-                            {t(`registration.result.error.message.${result.errors[0].message}` as unknown as TemplateStringsArray, {
-                                defaultValue: result.errors[0].message,
+                            {t(`registration.result.error.message.${createAccountResult.errors[0].message}` as unknown as TemplateStringsArray, {
+                                defaultValue: createAccountResult.errors[0].message,
                             })}
                         </Text>
                         <Button
@@ -392,6 +408,7 @@ const Registration: React.FC = () => {
                         setEmailOwner,
                         pupilAge,
                         setPupilAge,
+                        isRegisteringManually,
                     }}
                 >
                     <Box w="100%" maxW={'contentContainerWidth'}>

@@ -237,6 +237,10 @@ export type LFApollo = {
 
     loginWithPassword: (email: string, password: string, deviceId: string) => Promise<FetchResult>;
 
+    loginWithSSO: (code: string) => Promise<void>;
+
+    refreshSessionState: () => Promise<void>;
+
     sessionState: 'unknown' | 'logged-out' | 'logged-in' | 'error';
     // Once the session is 'logged-in', a query will be issued to determine the user session
     // When the query is finished, the user will be available:
@@ -601,7 +605,19 @@ const useApolloInternal = () => {
         if (error) throw new Error(`Failed to determine user: ${error.message}`);
         setUser(me as UserType);
         setRoles(myRoles as Role[]);
+        return { user: me as UserType, roles: myRoles as Role[] };
     }, [client, setUser, setRoles]);
+
+    // ----------- Refresh Session State --------------------------
+    const refreshSessionState = useCallback(async () => {
+        const res = await determineUser();
+        if (res.roles.includes('USER')) {
+            setSessionState('logged-in');
+        }
+        if (res.roles.includes('SSO_REGISTERING_USER')) {
+            setSessionState('logged-out');
+        }
+    }, [determineUser]);
 
     // If the session is present and the user is not yet determined
     // Trigger the user query
@@ -639,8 +655,7 @@ const useApolloInternal = () => {
 
             // Maybe the session already works?
             try {
-                await determineUser();
-                setSessionState('logged-in');
+                await refreshSessionState();
                 return;
             } catch (error) {
                 log('GraphQL', 'Could not query user, need to log in');
@@ -733,9 +748,31 @@ const useApolloInternal = () => {
         [client]
     );
 
+    // ------------ Login with SSO -------------
+    const loginWithSSO = useCallback(
+        async (code: string) => {
+            log('GraphQL', 'Logging in with SSO');
+            const LOGIN_WITH_SSO_MUTATION = gql(`
+            mutation MutationLoginWithSSO($code: String!, $referrer: String!) {
+                loginWithSSO(code: $code, referrer: $referrer)
+            }
+        `);
+            const { data } = await client.mutate({ mutation: LOGIN_WITH_SSO_MUTATION, variables: { code, referrer: document.referrer } });
+            const result = data?.loginWithSSO;
+            if (result && ['register', 'success'].includes(result)) {
+                determineUser();
+                if (result === 'success') {
+                    log('GraphQL', 'Logged in successfully');
+                    setSessionState('logged-in');
+                }
+            }
+        },
+        [client]
+    );
+
     return useMemo(
-        () => ({ client, logout, sessionState, user, loginWithPassword, refreshUser: determineUser, roles }),
-        [client, logout, user, sessionState, loginWithPassword, determineUser, roles]
+        () => ({ client, logout, sessionState, user, loginWithPassword, loginWithSSO, refreshUser: determineUser, refreshSessionState, roles }),
+        [client, logout, user, sessionState, loginWithPassword, loginWithSSO, determineUser, refreshSessionState, roles]
     );
 };
 
