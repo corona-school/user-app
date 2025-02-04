@@ -677,7 +677,7 @@ const CreateCourse: React.FC = () => {
                 errors.push('subcourse');
                 await resetEditSubcourse();
                 await resetEditCourse();
-                finishCourseCreation(errors, courseId);
+                finishCourseCreation(errors, prefillCourseId);
                 setLoadingCourse(false);
                 return;
             }
@@ -720,7 +720,7 @@ const CreateCourse: React.FC = () => {
                     await resetAppointments();
                     await resetSubcourse();
                     await resetCourse();
-                    finishCourseCreation(errors, courseId);
+                    finishCourseCreation(errors, prefillCourseId);
                     setLoadingCourse(false);
                     return;
                 }
@@ -732,7 +732,7 @@ const CreateCourse: React.FC = () => {
              */
             if (!pickedPhoto) {
                 setLoadingCourse(false);
-                finishCourseCreation(errors, courseId);
+                finishCourseCreation(errors, prefillCourseId);
                 return;
             }
             setImageLoading(true);
@@ -761,7 +761,7 @@ const CreateCourse: React.FC = () => {
             }
 
             if (!uploadFileId) {
-                finishCourseCreation(errors, courseId);
+                finishCourseCreation(errors, prefillCourseId);
                 return;
             }
 
@@ -780,7 +780,7 @@ const CreateCourse: React.FC = () => {
             }
 
             setImageLoading(false);
-            finishCourseCreation(errors, _courseId);
+            finishCourseCreation(errors, prefillCourseId);
         },
         [
             _getCourseData,

@@ -1571,7 +1571,8 @@
                         "past": "Geçmiş kurslar",
                         "language": "Yeni başlayanlar için Almanca",
                         "focus": "Odak kursları",
-                        "courses": "Özel dersler"
+                        "courses": "Özel dersler",
+                        "homeworkHelp": "Ev ödevi yardımı"
                     }
                 },
                 "header": "Grup kursları",

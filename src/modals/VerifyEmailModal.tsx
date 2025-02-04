@@ -13,6 +13,7 @@ import { Separator } from '@/components/Separator';
 import ChangeEmailModal from './ChangeEmailModal';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/Dropdown';
 import { useNavigate } from 'react-router-dom';
+import useModal from '@/hooks/useModal';
 
 interface VerifyEmailModalProps {
     email?: string;
@@ -23,6 +24,7 @@ interface VerifyEmailModalProps {
 const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { hide } = useModal();
     usePageTitle(`Lern-Fair - Registrierung: Bitte Email bestätigen für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
@@ -47,6 +49,11 @@ const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps
         setShowSendEmailResult(res.data?.tokenRequest ? 'success' : 'error');
     }, [email, sendVerification]);
 
+    const handleOnLogout = () => {
+        hide();
+        navigate('/logout');
+    };
+
     return (
         <div className="flex flex-col flex-1 items-center justify-center bg-primary p-4">
             <div className="flex w-full gap-2 items-center justify-end px-4 pt-2 z-50">
@@ -57,7 +64,7 @@ const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent>
-                        <DropdownMenuItem onClick={() => navigate('/logout')}>Logout</DropdownMenuItem>
+                        <DropdownMenuItem onClick={handleOnLogout}>Logout</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             </div>

@@ -1,6 +1,6 @@
 import useApollo from '../hooks/useApollo';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useEffect } from 'react';
 import { WebPushContext } from '@/context/WebPushProvider';
 import { WEBPUSH_ACTIVE } from '@/config';
 import { logError } from '@/log';
@@ -31,7 +31,9 @@ export default function Logout() {
     };
 
     const logout = useLogout();
-    logout().then(() => navigate('/welcome', { state: locState }));
+    useEffect(() => {
+        logout().then(() => navigate('/welcome', { state: locState }));
+    }, []);
 
     return <CenterLoadingSpinner />;
 }

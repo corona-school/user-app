@@ -1,8 +1,7 @@
-import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box, Column, Row } from 'native-base';
+import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import Card from '../../../components/Card';
 import { RequestMatchContext } from './RequestMatch';
-import { Slider } from '@miblanchard/react-native-slider';
 import { gql } from './../../../gql';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Subject } from '../../../gql/graphql';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { getGradeLabel } from '../../../Utility';
+import { Slider } from '@/components/Slider';
 
 type Props = {};
 
@@ -132,17 +132,7 @@ const SubjectGradeSlider = ({ subject, setSubject }: { subject: Subject; setSubj
                 <Heading fontSize="md">
                     {getGradeLabel(subject.grade!.min)} - {getGradeLabel(subject.grade!.max)}
                 </Heading>
-
-                <Slider
-                    animateTransitions
-                    minimumValue={1}
-                    maximumValue={14}
-                    minimumTrackTintColor={colors['primary']['500']}
-                    thumbTintColor={colors['primary']['900']}
-                    value={[subject.grade!.min, subject.grade!.max]}
-                    step={1}
-                    onValueChange={onValueChange as any}
-                />
+                <Slider className="my-4" step={1} min={1} max={14} value={[subject.grade!.min, subject.grade!.max]} onValueChange={onValueChange} />
             </VStack>
         </Card>
     );
