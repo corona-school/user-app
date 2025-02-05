@@ -1,7 +1,7 @@
 import { SsoAuthStatus } from '@/gql/graphql';
 import LinkIDPModal from '@/modals/LinkIDPModal';
-import { useCallback, useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import useApollo from '../hooks/useApollo';
 
@@ -13,30 +13,26 @@ const LoginWithIDP = () => {
 
     const code = searchParams.get('code');
 
-    const handleOnLoginWithSSO = useCallback(
-        async (idpCode: string) => {
-            const ssoStatus = await loginWithSSO(idpCode);
+    const handleOnLoginWithSSO = async (idpCode: string) => {
+        const ssoStatus = await loginWithSSO(idpCode);
+        if (ssoStatus === SsoAuthStatus.Register) {
+            navigate('/registration');
+        }
 
-            if (roles.includes('SSO_REGISTERING_USER') && ssoStatus === SsoAuthStatus.Register) {
-                navigate('/registration');
-            }
-
-            if (ssoStatus === SsoAuthStatus.Link) {
-                setShowReauthenticate(true);
-            }
-
-            if (roles.includes('USER')) {
-                navigate('/');
-            }
-        },
-        [loginWithSSO, roles, navigate]
-    );
+        if (ssoStatus === SsoAuthStatus.Link) {
+            setShowReauthenticate(true);
+        }
+    };
 
     useEffect(() => {
         if (code) {
             handleOnLoginWithSSO(code);
         }
-    }, [code, handleOnLoginWithSSO]);
+    }, [code]);
+
+    if (roles.includes('USER')) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <>
