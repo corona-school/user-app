@@ -179,6 +179,7 @@
         "forgotPassword": "Passwort vergessen?",
         "signupNew": "Neu registrieren",
         "continueWith": "Weiter mit {{idp}}",
+        "linkAccountWithIdpError": "Die Verknüpfung deines Kontos mit einem Identitätsanbieter erfordert ein Passwort. Bitte setze zuerst ein Passwort",
         "noaccount": "Du hast noch keinen Account? Hier geht es zur Registrierung!",
         "currentEmail": "Aktuelle E-Mail",
         "newEmail": "Neue E-Mail",

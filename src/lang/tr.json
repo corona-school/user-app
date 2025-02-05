@@ -195,7 +195,8 @@
             "title": "Tekrar kaydolun",
             "passwordDescription": "Bağlama işlemini tamamlamak için lütfen şifrenizle tekrar giriş yapın. Lütfen bunu yalnızca bir kez yapmanız gerektiğini unutmayın."
         },
-        "continueWith": "{{idp}} ile devam edin"
+        "continueWith": "{{idp}} ile devam edin",
+        "linkAccountWithIdpError": "Hesabınızı bir kimlik sağlayıcısına bağlamak için bir parola gerekir. Lütfen önce bir parola belirleyin"
     },
     "lernfair": {
         "languages": {

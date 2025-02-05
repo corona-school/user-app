@@ -1,11 +1,14 @@
 import { SsoAuthStatus } from '@/gql/graphql';
 import LinkIDPModal from '@/modals/LinkIDPModal';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
+import { toast } from 'sonner';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import useApollo from '../hooks/useApollo';
 
 const LoginWithIDP = () => {
+    const { t } = useTranslation();
     const [showReauthenticate, setShowReauthenticate] = useState(false);
     const { roles, loginWithSSO } = useApollo();
     const [searchParams] = useSearchParams();
@@ -14,13 +17,22 @@ const LoginWithIDP = () => {
     const code = searchParams.get('code');
 
     const handleOnLoginWithSSO = async (idpCode: string) => {
-        const ssoStatus = await loginWithSSO(idpCode);
-        if (ssoStatus === SsoAuthStatus.Register) {
-            navigate('/registration');
-        }
+        try {
+            const ssoStatus = await loginWithSSO(idpCode);
+            if (ssoStatus === SsoAuthStatus.Register) {
+                navigate('/registration');
+            }
 
-        if (ssoStatus === SsoAuthStatus.Link) {
-            setShowReauthenticate(true);
+            if (ssoStatus === SsoAuthStatus.Link) {
+                setShowReauthenticate(true);
+            }
+
+            if (ssoStatus === SsoAuthStatus.Error) {
+                navigate('/');
+            }
+        } catch (error) {
+            toast.error(t('login.linkAccountWithIdpError'));
+            navigate('/');
         }
     };
 
