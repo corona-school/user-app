@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { AL, AM, AZ, BA, BG, CN, DE, ES, FR, GB, IR, KZ, PL, PT, SA, TR, UA, VN, RU, IT } from 'country-flag-icons/react/1x1';
+import { AL, AM, AZ, BA, BG, CN, DE, ES, FR, GB, GR, HR, IR, KR, KZ, PL, PT, RO, RS, SA, TR, UA, VN, RU, IT } from 'country-flag-icons/react/1x1';
 import de from './lang/de.json';
 import { Settings } from 'luxon';
 
@@ -35,15 +35,22 @@ export const languageList = [
     { short: 'en', long: 'englisch' },
     { short: 'es', long: 'spanisch' },
     { short: 'fr', long: 'franz_sisch' },
+    { short: 'gr', long: 'griechisch' },
+    { short: 'hr', long: 'kroatisch' },
     { short: 'it', long: 'italienisch' },
     { short: 'ir', long: 'kurdisch' },
+    { short: 'irn', long: 'farsi' },
     { short: 'kz', long: 'kasachisch' },
+    { short: 'kr', long: 'koreanisch' },
     { short: 'pl', long: 'polnisch' },
     { short: 'pt', long: 'portugiesisch' },
+    { short: 'ro', long: 'rum_nisch' },
+    { short: 'rs', long: 'serbisch' },
     { short: 'ru', long: 'russisch' },
     { short: 'tr', long: 't_rkisch' },
     { short: 'uk', long: 'ukrainisch' },
     { short: 'vn', long: 'vietnamesisch' },
+    { short: 'oth', long: 'andere' },
 ];
 
 export const languageIcons = {
@@ -58,11 +65,17 @@ export const languageIcons = {
     en: GB,
     es: ES,
     fr: FR,
+    gr: GR,
+    hr: HR,
     it: IT,
     ir: IR,
+    irn: IR,
+    kr: KR,
     kz: KZ,
     pl: PL,
     pt: PT,
+    ro: RO,
+    rs: RS,
     ru: RU,
     tr: TR,
     uk: UA,
