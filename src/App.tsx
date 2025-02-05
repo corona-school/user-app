@@ -22,7 +22,6 @@ import InstallationProvider from './context/InstallationProvider';
 import WebPushProvider from './context/WebPushProvider';
 import { Toaster } from '@/components/Toaster';
 import { GlobalModalsProvider } from './context/GlobalModalsProvider';
-import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GOOGLE_CLIENT_ID } from './config';
 
 function App() {
@@ -39,15 +38,13 @@ function App() {
                                             <GlobalModalsProvider>
                                                 <NotificationsProvider>
                                                     <LFChatProvider>
-                                                        <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                                                            <NavigationStackProvider>
-                                                                <InstallationProvider>
-                                                                    <Navigator />
-                                                                </InstallationProvider>
-                                                                <ToastNotifications />
-                                                                <Toaster />
-                                                            </NavigationStackProvider>
-                                                        </GoogleOAuthProvider>
+                                                        <NavigationStackProvider>
+                                                            <InstallationProvider>
+                                                                <Navigator />
+                                                            </InstallationProvider>
+                                                            <ToastNotifications />
+                                                            <Toaster />
+                                                        </NavigationStackProvider>
                                                     </LFChatProvider>
                                                 </NotificationsProvider>
                                             </GlobalModalsProvider>
