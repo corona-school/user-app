@@ -127,6 +127,7 @@ const Registration: React.FC = () => {
     const [userType, setUserType] = useState<'pupil' | 'student'>(
         location?.pathname === '/registration/student' || location?.pathname === '/registration/helper' ? 'student' : 'pupil'
     );
+    // If the user registers through an IDP, we prefill the registration form using the IDP info
     const [firstname, setFirstname] = useState<string>(sessionUser?.firstname ?? '');
     const [lastname, setLastname] = useState<string>(sessionUser?.lastname ?? '');
     const [email, setEmail] = useState<string>(sessionUser?.email ?? '');
