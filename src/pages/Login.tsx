@@ -8,7 +8,6 @@ import {
     Flex,
     Heading,
     Image,
-    Modal,
     Row,
     Text,
     useBreakpointValue,
@@ -35,9 +34,9 @@ import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import InformationModal from '@/modals/InformationModal';
 import { Typography } from '@/components/Typography';
 import ConfirmationModal from '@/modals/ConfirmationModal';
-import { useGoogleLogin } from '@react-oauth/google';
 import { Button as LFButton } from '@/components/Button';
 import { IconBrandGoogleFilled } from '@tabler/icons-react';
+import useLoginWithIDP from '@/hooks/useLoginWithIDP';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -54,6 +53,7 @@ export default function Login() {
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
     const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
     const [loginResult, setLoginResult] = useState<FetchResult>();
+    const { loginWithGoogle } = useLoginWithIDP();
     const toast = useToast();
 
     const location = useLocation();
@@ -299,12 +299,6 @@ export default function Login() {
         }
     }, [email, loginEmail]);
 
-    const loginWithGoogle = useGoogleLogin({
-        flow: 'auth-code',
-        ux_mode: 'redirect',
-        redirect_uri: `${window.location.origin}/login-with`,
-    });
-
     return (
         <>
             <VStack overflowY={'auto'} height="100dvh">
@@ -399,7 +393,7 @@ export default function Login() {
                             {t('signin')}
                         </DisableableButton>
                         <LFButton variant="outline" className="mt-4" onClick={loginWithGoogle} rightIcon={<IconBrandGoogleFilled size={16} />}>
-                            Weiter mit Google
+                            {t('login.continueWith', { idp: 'Google' })}
                         </LFButton>
                     </Box>
 
