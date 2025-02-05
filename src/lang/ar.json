@@ -71,7 +71,8 @@
             "wrongVideoUrlError": "الرجاء إدخال رابط فيديو صالح.",
             "courseImageAltText": "صورة الدورة",
             "videoChatLabel": "دردشة الفيديو",
-            "videoChatPlaceholder": "أضف الرابط الخاص بك إلى محادثة الفيديو"
+            "videoChatPlaceholder": "أضف الرابط الخاص بك إلى محادثة الفيديو",
+            "toolTipTimeLabel": "يتم إنشاء جميع الأوقات في Lern-Fair في المنطقة الزمنية \"توقيت وسط أوروبا (CET، أوروبا/برلين\" (التوقيت الحالي: {{currentTime}})."
         },
         "detail": {
             "reasonDisabled": {
