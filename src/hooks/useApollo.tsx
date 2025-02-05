@@ -761,7 +761,7 @@ const useApolloInternal = () => {
             const { data } = await client.mutate({ mutation: LOGIN_WITH_SSO_MUTATION, variables: { code, referrer: document.referrer } });
             const result = data?.loginWithSSO;
             if (result && ['register', 'success', 'link'].includes(result)) {
-                determineUser();
+                await determineUser();
                 if (result === 'success') {
                     log('GraphQL', 'Logged in successfully');
                     setSessionState('logged-in');
