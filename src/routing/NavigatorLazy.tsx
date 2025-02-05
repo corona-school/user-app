@@ -79,6 +79,7 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
+import Lesson from '@/pages/Lesson';
 import EthicsOnboardingSlides from '@/pages/onboarding/ethical-standards/EthicsOnboardingSlides';
 import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/EthicsOnboardingWelcome';
 import CertificatesPage from '@/pages/student/Certificates';
@@ -448,6 +449,19 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            {/* Lesson Plan Generator */}
+            <Route
+                path="lesson"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['STUDENT']}>
+                            <Lesson />
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+
             {/* Knowledge Center */}
             <Route
                 path="/knowledge-helper"
