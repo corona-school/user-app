@@ -22,7 +22,6 @@ import InstallationProvider from './context/InstallationProvider';
 import WebPushProvider from './context/WebPushProvider';
 import { Toaster } from '@/components/Toaster';
 import { GlobalModalsProvider } from './context/GlobalModalsProvider';
-import { GOOGLE_CLIENT_ID } from './config';
 
 function App() {
     return (
