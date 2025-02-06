@@ -1573,7 +1573,8 @@
                         "past": "Past courses",
                         "language": "German for beginners",
                         "focus": "Focus courses",
-                        "courses": "Tutoring courses"
+                        "courses": "Tutoring courses",
+                        "homeworkHelp": "Homework help"
                     }
                 },
                 "header": "Group courses",
