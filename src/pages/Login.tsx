@@ -37,6 +37,7 @@ import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Button as LFButton } from '@/components/Button';
 import { IconBrandGoogleFilled } from '@tabler/icons-react';
 import useLoginWithIDP from '@/hooks/useLoginWithIDP';
+import { GOOGLE_CLIENT_ID } from '@/config';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -392,9 +393,11 @@ export default function Login() {
                         >
                             {t('signin')}
                         </DisableableButton>
-                        <LFButton variant="outline" className="mt-4" onClick={loginWithGoogle} rightIcon={<IconBrandGoogleFilled size={16} />}>
-                            {t('login.continueWith', { idp: 'Google' })}
-                        </LFButton>
+                        {GOOGLE_CLIENT_ID && (
+                            <LFButton variant="outline" className="mt-4" onClick={loginWithGoogle} rightIcon={<IconBrandGoogleFilled size={16} />}>
+                                {t('login.continueWith', { idp: 'Google' })}
+                            </LFButton>
+                        )}
                     </Box>
 
                     <Box paddingTop={10} paddingBottom={1}>
