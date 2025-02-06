@@ -714,6 +714,8 @@ const useApolloInternal = () => {
             log('GraphQL', 'Failed to log out, probably the session already expired', error);
         }
         refreshSessionToken();
+        setUser(null);
+        setRoles([]);
         setSessionState('logged-out');
         log('GraphQL', 'Logged out');
     }, [client]);
