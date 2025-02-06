@@ -8,6 +8,7 @@ import useApollo, { getOrCreateDeviceId, useUser } from '@/hooks/useApollo';
 import { IconLogin2 } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
 interface LinkIDPModalProps extends BaseModalProps {}
@@ -17,7 +18,8 @@ const LinkIDPModal = ({ isOpen, onOpenChange }: LinkIDPModalProps) => {
     const [password, setPassword] = useState('');
     const [isAuthenticating, setIsAuthenticating] = useState(false);
     const user = useUser();
-    const { loginWithPassword } = useApollo();
+    const navigate = useNavigate();
+    const { loginWithPassword, logout } = useApollo();
 
     const handleOnLogin = async () => {
         setIsAuthenticating(true);
@@ -33,8 +35,16 @@ const LinkIDPModal = ({ isOpen, onOpenChange }: LinkIDPModalProps) => {
         setIsAuthenticating(false);
     };
 
+    const handleOnOpenChange = async (open: boolean) => {
+        onOpenChange(open);
+        if (!open) {
+            await logout();
+            navigate('/');
+        }
+    };
+
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} classes={{ closeIcon: 'hidden' }}>
+        <Modal onOpenChange={handleOnOpenChange} isOpen={isOpen} classes={{ closeIcon: 'hidden' }}>
             <ModalHeader>
                 <ModalTitle className="inline-flex gap-x-2 items-center">
                     {t('login.reauthenticate.title')} <IconLogin2 />{' '}
@@ -59,11 +69,11 @@ const LinkIDPModal = ({ isOpen, onOpenChange }: LinkIDPModalProps) => {
                 )}
             </div>
             <ModalFooter>
-                <Button className="w-full lg:w-fit" variant="outline" disabled={isAuthenticating} onClick={() => onOpenChange(false)}>
+                <Button className="w-full lg:w-fit" variant="outline" disabled={isAuthenticating} onClick={() => handleOnOpenChange(false)}>
                     {t('cancel')}
                 </Button>
                 <Button className="w-full lg:w-fit" isLoading={isAuthenticating} disabled={!password || !user} onClick={handleOnLogin}>
-                    {t('login.title')}
+                    {t('signin')}
                 </Button>
             </ModalFooter>
         </Modal>
