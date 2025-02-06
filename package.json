@@ -12,7 +12,6 @@
         "@graphql-codegen/cli": "2.15.0",
         "@graphql-codegen/client-preset": "^1.2.1",
         "@jonkoops/matomo-tracker-react": "^0.7.0",
-        "@miblanchard/react-native-slider": "^2.1.0",
         "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
         "@radix-ui/react-checkbox": "^1.1.1",
         "@radix-ui/react-dialog": "^1.1.1",

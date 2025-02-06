@@ -19,9 +19,10 @@ type GroupProps = {
     languageCourses: ASubcourse[];
     courses: ASubcourse[];
     focusCourses: ASubcourse[];
+    homeworkHelpCourses: ASubcourse[];
 };
 
-const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCourses }) => {
+const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCourses, homeworkHelpCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -57,6 +58,15 @@ const AllSubcourses: React.FC<GroupProps> = ({ languageCourses, courses, focusCo
 
     return (
         <Stack space={5}>
+            {homeworkHelpCourses && homeworkHelpCourses.length > 0 && (
+                <Box>
+                    <HSection scrollable title={t('matching.group.pupil.tabs.tab2.homeworkHelp')}>
+                        {homeworkHelpCourses?.map((subcourse: any, index: number) => {
+                            return renderSubcourse(subcourse, index, true);
+                        })}
+                    </HSection>
+                </Box>
+            )}
             {focusCourses && focusCourses.length > 0 && (
                 <Box>
                     <HSection scrollable title={t('matching.group.pupil.tabs.tab2.focus')}>
