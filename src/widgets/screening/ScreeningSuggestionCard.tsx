@@ -45,7 +45,7 @@ export function ScreeningSuggestionCard({ userID, variant }: { userID: string; v
                     <SelectItem value={'' + 0}>Keine Empfehlung</SelectItem>
                     {suggestions.map((option) => (
                         <SelectItem key={option.id} value={'' + option.id}>
-                            {option.description}
+                            {option.description.replace(/SuS Empfehlung|HuH Empfehlung/, '')}
                         </SelectItem>
                     ))}
                 </SelectContent>
