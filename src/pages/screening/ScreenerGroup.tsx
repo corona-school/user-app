@@ -48,6 +48,13 @@ const ScreenerGroup: React.FC = () => {
             maxGrade
             maxParticipants
             participantsCount
+            firstLecture {
+                start
+            }
+            instructors {
+                firstname
+                lastname
+            }
             }
         }  
     `);
@@ -138,10 +145,6 @@ const ScreenerGroup: React.FC = () => {
                         <NavigationTabs
                             tabs={[
                                 {
-                                    title: t('screening.courses.drafts'),
-                                    content: <Subcourses courseGroups={[drafts?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.drafts')]} />,
-                                },
-                                {
                                     title: t('screening.courses.submitted'),
                                     content: (
                                         <Subcourses courseGroups={[submitted?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.submitted')]} />
@@ -150,6 +153,10 @@ const ScreenerGroup: React.FC = () => {
                                 {
                                     title: t('screening.courses.allowed'),
                                     content: <Subcourses courseGroups={[allowed?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.allowed')]} />,
+                                },
+                                {
+                                    title: t('screening.courses.drafts'),
+                                    content: <Subcourses courseGroups={[drafts?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.drafts')]} />,
                                 },
                                 {
                                     title: t('screening.courses.cancelled'),
