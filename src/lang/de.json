@@ -2257,6 +2257,7 @@
             "submitted_or_allowed": "Eingereichte & genehmigte Kurse",
             "denied_or_cancelled": "Abgelehnte & abgesagte Kurse",
             "submitted": "Eingereicht",
+            "drafts": "Entwürfe",
             "allowed": "Genehmigt",
             "denied": "Abgelehnt",
             "cancelled": "Abgesagt",
