@@ -2115,6 +2115,7 @@
             "install": "Lern-Fair Uygulama",
             "progress": "Başarılar ve ilerleme",
             "editCourse": "Kursu düzenle",
+            "referral": "Yönlendirme",
             "certificates": "Sertifikalar"
         }
     },
@@ -2521,6 +2522,38 @@
         "deviceOnOs": "üzerinde"
     },
     "changesWereSaved": "Değişiklikler kaydedildi",
+    "referral": {
+        "share": {
+            "option1": {
+                "option": "Bağlantıyı Kopyala ve Paylaş",
+                "description": "- favori sosyal uygulamalarınızda paylaşın"
+            },
+            "option2": {
+                "option": "WhatsApp'ta Paylaş",
+                "description": "- kişilerinizle doğrudan paylaşın"
+            },
+            "option3": {
+                "option": "LinkedIn'de Paylaş",
+                "description": "- \"LinkedIn'de Paylaş \"a tıklayın ve bağlantıyı bir gönderiye ekleyin."
+            },
+            "title": "Benzersiz bağlantınızı paylaşın",
+            "description": "Yönlendirmeye başlamak için kişisel bağlantınızı ağınızla paylaşın! Yönlendirme bağlantınızı paylaşmanın üç kolay yolu var:",
+            "share": "Paylaş"
+        },
+        "reward": {
+            "title": "Benim Etkim",
+            "description": "Katılan her gönüllü için, kendi kişisel sertifikanız için puan kazanırsınız ve deneyiminizi LinkedIn'deki ağınızda sergilersiniz. Hadi bugün bir etki yaratalım!",
+            "RegisteredUsers": "Kayıtlı kullanıcılar",
+            "HoursSupported": "Desteklenen saatler",
+            "tooltip": "Bu kilidi açmak için 3 veya daha fazla kayıtlı kullanıcıya sahip olmanız gerekir"
+        },
+        "title": "Yönlendirme programı",
+        "description": "Gençler için fark yaratmaya yardımcı olabilecek birini mi tanıyorsunuz? Herkese duyurun! buradan daha fazlasını öğrenin",
+        "referralMessage": "📣 GÖNÜLLÜLER ARANIYOR 📣Topluma geri vermek ister misiniz? Şimdi tam zamanı! Şu anda 1-13. sınıf Alman okul çocuklarına ders verecek gönüllüler arıyoruz. #lernfair #eğitim #e-öğrenme",
+        "copy": "Anlaşıldı",
+        "copied": "Kopyalandı",
+        "copiedReferralLink": "Tavsiye bağlantısı kopyalandı"
+    },
     "certificates": {
         "instantCertificate": {
             "bullets": ["hemen temin edilebilir", "bireysel öğrenme ortaklarını listelemez", "Destek türü, toplam süre ve ders sayısı listelenmiştir"],

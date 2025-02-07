@@ -81,6 +81,7 @@ import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
 import EthicsOnboardingSlides from '@/pages/onboarding/ethical-standards/EthicsOnboardingSlides';
 import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/EthicsOnboardingWelcome';
+import Referrals from '@/pages/Referrals';
 import CertificatesPage from '@/pages/student/Certificates';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
@@ -392,6 +393,16 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<EditAppointment />} />
+                    </RequireAuth>
+                }
+            />
+
+            {/* Referral Center */}
+            <Route
+                path="referral"
+                element={
+                    <RequireAuth>
+                        <Referrals />
                     </RequireAuth>
                 }
             />
