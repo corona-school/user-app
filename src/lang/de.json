@@ -186,8 +186,8 @@
         "setNewEmail": "E-Mail neu setzen",
         "changeEmail": "E-Mail-Adresse ändern",
         "emailVerification": "E-Mail Verifizierung",
-        "succesEmailVerification": "Dein E-Mail wurde erfolgreich geändert!",
-        "changeEmailConfirmation": "Wir haben dir an die neue E-Mail-Adresse eine E-mail zur Bestätigung gesendet",
+        "succesEmailVerification": "Deine E-Mail wurde erfolgreich geändert!",
+        "changeEmailConfirmation": "Wir haben dir an die neue Adresse eine E-Mail zur Bestätigung gesendet",
         "invalidToken": "Token ungültig",
         "email": {
             "sent": "Wir haben dir eine E-Mail zum Login geschickt"
@@ -500,14 +500,14 @@
         },
         "verifyemail": {
             "title": "Bestätige deine E-Mail-Adresse",
-            "mailsendto": "Wir haben eine E-mail gesendet an:",
+            "mailsendto": "Wir haben eine E-Mail gesendet an:",
             "description": "Nach der Bestätigung deiner E-Mail-Adresse, wirst du automatisch hierhin zurück geleitet.",
             "notreceived": {
-                "title": "Keine E-mail erhalten?",
+                "title": "Keine E-Mail erhalten?",
                 "description": "Überprüfe auch deinen Spam-Ordner"
             },
             "resend": {
-                "button": "Bestätigungs-E-mail erneut senden",
+                "button": "Bestätigungs-E-Mail erneut senden",
                 "successAlert": "Wir haben dir die Bestätigungs-E-Mail erneut gesendet. Bitte überprüfe deinen Posteingang und schau auch im Spam nach.",
                 "failedAlert": "Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut."
             },
@@ -2432,7 +2432,7 @@
         "pupil": {
             "noScreening": {
                 "title": "Willkommen, {{firstname}}! 👋 Bald lernen wir uns kennen 🤗",
-                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine E-mail an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
+                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine E-Mail an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
                 "footer": "Du traust dich nicht? Sprichst kein Deutsch? Oder hast andere Fragen? Dann melde dich bei uns",
                 "makeAppointment": "Termin vereinbaren"
             },
