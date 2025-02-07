@@ -186,8 +186,8 @@
         "setNewEmail": "E-Mail neu setzen",
         "changeEmail": "E-Mail-Adresse ändern",
         "emailVerification": "E-Mail Verifizierung",
-        "succesEmailVerification": "Dein E-Mail wurde erfolgreich geändert!",
-        "changeEmailConfirmation": "Wir haben dir an die neue E-Mail-Adresse eine E-mail zur Bestätigung gesendet",
+        "succesEmailVerification": "Deine E-Mail wurde erfolgreich geändert!",
+        "changeEmailConfirmation": "Wir haben dir an die neue Adresse eine E-Mail zur Bestätigung gesendet",
         "invalidToken": "Token ungültig",
         "email": {
             "sent": "Wir haben dir eine E-Mail zum Login geschickt"
@@ -499,11 +499,11 @@
             "label": "Helfer:in"
         },
         "verifyemail": {
-            "title": "Bestätige deine Email-Adresse",
-            "mailsendto": "Wir haben eine Email gesendet an:",
-            "description": "Nach der Bestätigung deiner Email-Adresse, wirst du automatisch hierhin zurück geleitet.",
+            "title": "Bestätige deine E-Mail-Adresse",
+            "mailsendto": "Wir haben eine E-Mail gesendet an:",
+            "description": "Nach der Bestätigung deiner E-Mail-Adresse, wirst du automatisch hierhin zurück geleitet.",
             "notreceived": {
-                "title": "Keine Email erhalten?",
+                "title": "Keine E-Mail erhalten?",
                 "description": "Überprüfe auch deinen Spam-Ordner"
             },
             "resend": {
