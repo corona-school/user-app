@@ -178,6 +178,8 @@
         "error": "Deine Login-Daten stimmen nicht mit unseren Informationen überein. Bitte überprüfe deine Angaben.",
         "forgotPassword": "Passwort vergessen?",
         "signupNew": "Neu registrieren",
+        "continueWith": "Weiter mit {{idp}}",
+        "linkAccountWithIdpError": "Die Verknüpfung deines Kontos mit einem Identitätsanbieter erfordert ein Passwort. Bitte setze zuerst ein Passwort",
         "noaccount": "Du hast noch keinen Account? Hier geht es zur Registrierung!",
         "currentEmail": "Aktuelle E-Mail",
         "newEmail": "Neue E-Mail",
@@ -210,6 +212,10 @@
         "invalidMailMessage": "Die eingegebene E-Mail-Adresse ist fehlerhaft.",
         "invalidTokenAlert": {
             "text": "Der Token, mit dem du versucht hast, dich anzumelden, ist ungültig. Bitte versuche, dich erneut anzumelden."
+        },
+        "reauthenticate": {
+            "title": "Erneut anmelden",
+            "passwordDescription": "Bitte melde dich erneut mit deinem Passwort an, um den Verknüpfungsprozess abzuschließen. Beachte, dass du dies nur einmal tun musst."
         }
     },
     "begin": "Ab",
