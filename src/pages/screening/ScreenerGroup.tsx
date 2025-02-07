@@ -28,7 +28,7 @@ const ScreenerGroup: React.FC = () => {
     const subcourseQuery = gql(`
         query Subcourses($search: String!, $courseState: String!) {
             subcourseSearch(
-                take: 10,
+                take: 50,
                 search: $search
                 courseStates: [$courseState],
                 orderBy: "last-update",
@@ -51,6 +51,17 @@ const ScreenerGroup: React.FC = () => {
             }
         }  
     `);
+
+    const {
+        data: drafts,
+        loading: loadingDrafts,
+        refetch: refetchDrafts,
+    } = useQuery(subcourseQuery, {
+        variables: {
+            search: '',
+            courseState: Course_Coursestate_Enum.Created,
+        },
+    });
 
     const {
         data: allowed,
@@ -96,7 +107,7 @@ const ScreenerGroup: React.FC = () => {
         },
     });
 
-    const loading = loadingAllowed || loadingSubmitted || loadingCancelled || loadingDenied;
+    const loading = loadingAllowed || loadingSubmitted || loadingCancelled || loadingDenied || loadingDrafts;
 
     const search = useCallback(
         async (search: string) => {
@@ -104,8 +115,9 @@ const ScreenerGroup: React.FC = () => {
             refetchSubmitted({ search });
             refetchCancelled({ search });
             refetchDenied({ search });
+            refetchDrafts({ search });
         },
-        [refetchAllowed, refetchCancelled, refetchSubmitted, refetchDenied]
+        [refetchAllowed, refetchCancelled, refetchSubmitted, refetchDenied, refetchDrafts]
     );
 
     return (
@@ -126,22 +138,28 @@ const ScreenerGroup: React.FC = () => {
                         <NavigationTabs
                             tabs={[
                                 {
-                                    title: t('screening.courses.submitted_or_allowed'),
+                                    title: t('screening.courses.drafts'),
+                                    content: <Subcourses courseGroups={[drafts?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.drafts')]} />,
+                                },
+                                {
+                                    title: t('screening.courses.submitted'),
                                     content: (
-                                        <Subcourses
-                                            courseGroups={[submitted?.subcourseSearch as Subcourse[], allowed?.subcourseSearch as Subcourse[]]}
-                                            titles={[t('screening.courses.submitted'), t('screening.courses.allowed')]}
-                                        />
+                                        <Subcourses courseGroups={[submitted?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.submitted')]} />
                                     ),
                                 },
                                 {
-                                    title: t('screening.courses.denied_or_cancelled'),
+                                    title: t('screening.courses.allowed'),
+                                    content: <Subcourses courseGroups={[allowed?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.allowed')]} />,
+                                },
+                                {
+                                    title: t('screening.courses.cancelled'),
                                     content: (
-                                        <Subcourses
-                                            courseGroups={[denied?.subcourseSearch as Subcourse[], cancelled?.subcourseSearch as Subcourse[]]}
-                                            titles={[t('screening.courses.denied'), t('screening.courses.cancelled')]}
-                                        />
+                                        <Subcourses courseGroups={[cancelled?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.cancelled')]} />
                                     ),
+                                },
+                                {
+                                    title: t('screening.courses.denied'),
+                                    content: <Subcourses courseGroups={[denied?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.denied')]} />,
                                 },
                             ]}
                         />
