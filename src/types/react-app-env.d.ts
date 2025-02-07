@@ -43,6 +43,7 @@ declare interface Window {
         readonly RUNTIME_PUPIL_FIRST_SCREENING_URL: string;
         readonly RUNTIME_PUPIL_SCREENING_URL: string;
         readonly RUNTIME_SCREENING_URL: string;
+        readonly RUNTIME_GOOGLE_CLIENT_ID: string;
 
         readonly RUNTIME_WEBPUSH_ROLLOUT_RATIO?: string;
     };

@@ -1,10 +1,10 @@
 import { FormControl, Heading, useBreakpointValue, useTheme, VStack, Text, Box, Input } from 'native-base';
-import { Slider } from '@miblanchard/react-native-slider';
 import { useCallback, useContext, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { CreateCourseContext } from '../CreateCourse';
 import ButtonRow from './ButtonRow';
 import { getGradeLabel } from '../../Utility';
+import { Slider } from '@/components/Slider';
 
 type AttendeesProps = {
     onNext: () => void;
@@ -48,13 +48,11 @@ const CourseAttendees: React.FC<AttendeesProps> = ({ onNext, onBack }) => {
                     </Text>
                     <Box>
                         <Slider
-                            animateTransitions
-                            minimumValue={1}
-                            maximumValue={14}
-                            minimumTrackTintColor={colors['primary']['500']}
-                            thumbTintColor={colors['primary']['900']}
-                            value={courseClassRange}
+                            className="my-4"
                             step={1}
+                            min={1}
+                            max={14}
+                            value={courseClassRange}
                             onValueChange={(value: number | number[]) => {
                                 Array.isArray(value) && setCourseClassRange([value[0], value[1]]);
                             }}

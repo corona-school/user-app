@@ -223,11 +223,19 @@ const PupilGroup: React.FC<Props> = () => {
         () => sortByDate(publicSubcourses.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
         [publicSubcourses]
     );
+    const homeworkHelpCourses = useMemo(
+        () => sortByDate(publicSubcourses?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
+        [publicSubcourses]
+    );
+
     const revisionCourses = useMemo(
         () =>
             sortByDate(
                 publicSubcourses.filter(
-                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                    (subcourse) =>
+                        subcourse.course.category !== Course_Category_Enum.Language &&
+                        subcourse.course.category !== Course_Category_Enum.Focus &&
+                        subcourse.course.category !== Course_Category_Enum.HomeworkHelp
                 )
             ),
         [publicSubcourses]
@@ -264,7 +272,14 @@ const PupilGroup: React.FC<Props> = () => {
                                 tabs={[
                                     {
                                         title: t('matching.group.pupil.tabs.tab2.title'),
-                                        content: <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />,
+                                        content: (
+                                            <AllSubcourses
+                                                languageCourses={languageCourses}
+                                                courses={revisionCourses}
+                                                focusCourses={focusCourses}
+                                                homeworkHelpCourses={homeworkHelpCourses}
+                                            />
+                                        ),
                                     },
                                     {
                                         title: t('matching.group.pupil.tabs.tab1.title'),
