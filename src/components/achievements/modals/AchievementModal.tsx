@@ -68,7 +68,7 @@ const AchievementModal: React.FC<AchievementModalProps> = ({
             isOpen={!!showModal}
             onOpenChange={() => onClose && onClose()}
             className={cn(
-                'w-full lg:w-[820px] max-w-[550px] lg:max-w-[820px] h-dvh lg:h-fit rounded-none lg:rounded-md',
+                'w-full lg:w-[820px] max-w-[550px] lg:max-w-[820px] rounded-none lg:rounded-md',
                 achievementState === Achievement_State.Completed || achievementType === Achievement_Type_Enum.Streak ? 'bg-primary' : 'bg-white',
                 achievementType === Achievement_Type_Enum.Tiered && achievementState === Achievement_State.Completed ? 'mt-0 lg:mt-[62px]' : undefined
             )}
