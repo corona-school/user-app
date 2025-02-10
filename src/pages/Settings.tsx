@@ -97,6 +97,16 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
+                            {/* Add Lesson for both desktop and mobile */}
+                            <Column mb={tabspace}>
+                                <ListItem label={t('navigation.label.lesson')} onPress={() => navigate('/lesson')} />
+                            </Column>
+                            {/* Move Referral to Knowledge Center on Mobile Only */}
+                            {isMobile && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('navigation.label.referral')} onPress={() => navigate('/referral')} />
+                                </Column>
+                            )}
                         </ProfileSettingRow>
                     </>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>

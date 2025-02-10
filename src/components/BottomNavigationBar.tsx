@@ -38,7 +38,7 @@ const BottomNavigationBar: React.FC<Props> = ({ navItems, unreadMessagesCount })
             {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
                 const disabled = _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
 
-                const isHidden = ['knowledge-helper', 'knowledge-pupil'].includes(key);
+                const isHidden = ['knowledge-helper', 'knowledge-pupil', 'referral'].includes(key);
                 if (isHidden) return null;
 
                 return (

@@ -56,7 +56,10 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                     {Object.entries(navItems).map(([key, { label, icon: Icon, disabled: _disabled }]) => {
                         const disabled =
                             _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
-                        const isHidden = (key === 'knowledge-helper' && hideForStudents) || (key === 'knowledge-pupil' && hideForPupils);
+                        const isHidden =
+                            (key === 'knowledge-helper' && hideForStudents) ||
+                            (key === 'knowledge-pupil' && hideForPupils) ||
+                            (key === 'lesson' && userType === 'pupil');
                         if (isHidden) return null;
                         return (
                             <NavLink
