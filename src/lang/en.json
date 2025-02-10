@@ -190,7 +190,13 @@
         "invalidToken": "Token invalid",
         "invalidMailMessage": "The e-mail address you entered is incorrect.",
         "newEmail": "New e-mail",
-        "changeEmailConfirmation": "We have sent you a confirmation email to the new email address"
+        "changeEmailConfirmation": "We have sent you a confirmation email to the new email address",
+        "reauthenticate": {
+            "title": "Register again",
+            "passwordDescription": "Please log in again with your password to complete the linking process. Note that you only need to do this once."
+        },
+        "continueWith": "Continue with {{idp}}",
+        "linkAccountWithIdpError": "Linking your account to an identity provider requires a password. Please set a password first"
     },
     "lernfair": {
         "languages": {
@@ -2105,6 +2111,7 @@
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
             "editCourse": "Edit course",
+            "referral": "Referral",
             "certificates": "Certificates"
         }
     },
@@ -2512,6 +2519,38 @@
         "deviceOnOs": "on"
     },
     "changesWereSaved": "Changes have been saved",
+    "referral": {
+        "share": {
+            "option1": {
+                "option": "Copy and Share Link",
+                "description": "- share to your favorite social apps"
+            },
+            "option2": {
+                "option": "Share on WhatsApp",
+                "description": "- directly share to your contacts"
+            },
+            "option3": {
+                "option": "Share on LinkedIn",
+                "description": "- Click on \"Share on LinkedIn\" and insert the link into a post."
+            },
+            "title": "Share your unique link",
+            "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
+            "share": "Share"
+        },
+        "reward": {
+            "title": "My Impact",
+            "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let's make an impact today!",
+            "RegisteredUsers": "Registered users",
+            "HoursSupported": "Hours supported",
+            "tooltip": "to unlock this you need to have 3 or more registered users"
+        },
+        "title": "Referral program",
+        "description": "Know someone who can help make a difference to young people? Spread the word! find out more here",
+        "referralMessage": "📣 HIRING VOLUNTEERS 📣Want to give back to the community? Now is the perfect time! We are currently looking for volunteers to teach german school children grade 1- 13. #lernfair #education #e-learning",
+        "copy": "Copy",
+        "copied": "Copied",
+        "copiedReferralLink": "Recommendation link copied"
+    },
     "certificates": {
         "instantCertificate": {
             "bullets": [

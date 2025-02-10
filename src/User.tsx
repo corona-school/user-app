@@ -19,6 +19,7 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
 
     if (sessionState === 'logged-in') {
         // Blocking Modals that require the user from accessing the UserApp:
+        sessionStorage.setItem('userID', user.userID);
 
         // Require pupils and students to be verified
         if (user && !user.screener && !(user.pupil ?? user.student)!.verifiedAt) {
@@ -58,6 +59,17 @@ export function RequireRole({ roles, children }: { roles: Role[]; children: JSX.
     return <Navigate to="/" replace />;
 }
 
+export const VisitorsOnly = ({ children }: { children: JSX.Element }) => {
+    const actualRoles = useRoles();
+    const { sessionState } = useApollo();
+
+    if (actualRoles.includes('USER') && sessionState === 'logged-in') {
+        return <Navigate to="/" replace />;
+    }
+
+    return children;
+};
+
 export const SwitchUserType = ({
     pupilComponent,
     studentComponent,
@@ -96,6 +108,8 @@ export function MockScreener({ children }: React.PropsWithChildren<{}>) {
         logout: () => Promise.resolve(),
         loginWithPassword: () => Promise.resolve({}),
         refreshUser: () => {},
+        loginWithSSO: () => Promise.resolve(undefined),
+        refreshSessionState: () => Promise.resolve(),
         sessionState: 'logged-in',
         roles: ['SCREENER', 'TRUSTED_SCREENER'],
         user: {
@@ -118,6 +132,8 @@ export function MockStudent({ children }: React.PropsWithChildren<{}>) {
         logout: () => Promise.resolve(),
         loginWithPassword: () => Promise.resolve({}),
         refreshUser: () => {},
+        loginWithSSO: () => Promise.resolve(undefined),
+        refreshSessionState: () => Promise.resolve(),
         sessionState: 'logged-in',
         roles: ['STUDENT'],
         user: {

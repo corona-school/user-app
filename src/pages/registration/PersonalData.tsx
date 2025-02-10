@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import TextInput from '../../components/TextInput';
 import PasswordInput from '../../components/PasswordInput';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { RegistrationContext } from '../Registration';
 import isEmail from 'validator/es/lib/isEmail';
 import { Cooperation, PupilEmailOwner } from '../../gql/graphql';
@@ -14,6 +14,7 @@ import { Typography } from '@/components/Typography';
 import { renderTextWithEmailLinks } from '@/Utility';
 import { Label } from '@/components/Label';
 import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
+import { gql } from '@/gql';
 
 export default function PersonalData({ cooperation }: { cooperation?: Cooperation }) {
     const {
@@ -34,6 +35,7 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
         setPasswordRepeat,
         onNext,
         onPrev,
+        isRegisteringManually,
     } = useContext(RegistrationContext);
     usePageTitle(`Lern-Fair - Registrierung: Persönliche Daten für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
@@ -49,25 +51,30 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
     const [showAgeMissing, setShowAgeMissing] = useState(false);
     const [showEmailOwnerMissing, setShowEmailOwnerMissing] = useState(false);
 
-    const [isEmailAvailable] = useMutation(gql`
+    const [isEmailAvailable] = useMutation(
+        gql(`
         mutation isEmailAvailable($email: String!) {
             isEmailAvailable(email: $email)
         }
-    `);
+    `)
+    );
 
     const isInputValid = useCallback(() => {
         setShowNameMissing(!firstname || !lastname);
-        setShowPasswordLength(password.length < 6);
-        setShowPasswordConfirmNoMatch(password !== passwordRepeat);
-        setEmailValidate(!isEmail(email));
+        if (isRegisteringManually) {
+            setShowPasswordLength(password.length < 6);
+            setShowPasswordConfirmNoMatch(password !== passwordRepeat);
+            setEmailValidate(!isEmail(email));
+        }
         if (userType === 'pupil') {
             setShowAgeMissing(!pupilAge);
             setShowEmailOwnerMissing(!emailOwner || emailOwner === PupilEmailOwner.Unknown);
         }
+        const isPasswordValid = (password.length >= 6 && password === passwordRepeat) || !isRegisteringManually;
         const arePupilOnlyFieldsValid = emailOwner !== PupilEmailOwner.Unknown && pupilAge;
-        const areGeneralFieldsValid = password.length >= 6 && password === passwordRepeat && isEmail(email) && firstname && lastname;
+        const areGeneralFieldsValid = isPasswordValid && isEmail(email) && firstname && lastname;
         return userType === 'student' ? areGeneralFieldsValid : areGeneralFieldsValid && arePupilOnlyFieldsValid;
-    }, [email, firstname, lastname, password, passwordRepeat, pupilAge, emailOwner]);
+    }, [email, firstname, lastname, password, passwordRepeat, pupilAge, emailOwner, isRegisteringManually, userType]);
 
     const checkEmail = useCallback(async () => {
         if (!isInputValid()) return;
@@ -161,7 +168,7 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
                 </div>
             )}
             <div className="flex flex-col gap-y-1">
-                <TextInput keyboardType="email-address" placeholder={t('email')} onChangeText={setEmail} value={email} />
+                <TextInput keyboardType="email-address" placeholder={t('email')} onChangeText={setEmail} value={email} isDisabled={!isRegisteringManually} />
                 {showEmailNotAvailable && (
                     <Typography variant="sm" className="text-destructive">
                         {t('registration.hint.email.unavailable')}
@@ -173,21 +180,23 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
                     </Typography>
                 )}
             </div>
-            <div className="flex flex-col gap-y-1">
-                <PasswordInput placeholder={t('password')} onChangeText={setPassword} value={password} />
-                {showPasswordLength && (
-                    <Typography variant="sm" className="text-destructive">
-                        {t('registration.hint.password.length')}
-                    </Typography>
-                )}
-                <PasswordInput placeholder={t('registration.password_repeat')} onChangeText={setPasswordRepeat} value={passwordRepeat} />
+            {isRegisteringManually && (
+                <div className="flex flex-col gap-y-1">
+                    <PasswordInput placeholder={t('password')} onChangeText={setPassword} value={password} />
+                    {showPasswordLength && (
+                        <Typography variant="sm" className="text-destructive">
+                            {t('registration.hint.password.length')}
+                        </Typography>
+                    )}
+                    <PasswordInput placeholder={t('registration.password_repeat')} onChangeText={setPasswordRepeat} value={passwordRepeat} />
 
-                {showPasswordConfirmNoMatch && (
-                    <Typography variant="sm" className="text-destructive">
-                        {t('registration.hint.password.nomatch')}
-                    </Typography>
-                )}
-            </div>
+                    {showPasswordConfirmNoMatch && (
+                        <Typography variant="sm" className="text-destructive">
+                            {t('registration.hint.password.nomatch')}
+                        </Typography>
+                    )}
+                </div>
+            )}
 
             <Box alignItems="center" marginTop={space['2']}>
                 <Row space={space['1']} justifyContent="center">

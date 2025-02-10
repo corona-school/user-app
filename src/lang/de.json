@@ -178,6 +178,8 @@
         "error": "Deine Login-Daten stimmen nicht mit unseren Informationen überein. Bitte überprüfe deine Angaben.",
         "forgotPassword": "Passwort vergessen?",
         "signupNew": "Neu registrieren",
+        "continueWith": "Weiter mit {{idp}}",
+        "linkAccountWithIdpError": "Die Verknüpfung deines Kontos mit einem Identitätsanbieter erfordert ein Passwort. Bitte setze zuerst ein Passwort",
         "noaccount": "Du hast noch keinen Account? Hier geht es zur Registrierung!",
         "currentEmail": "Aktuelle E-Mail",
         "newEmail": "Neue E-Mail",
@@ -210,6 +212,10 @@
         "invalidMailMessage": "Die eingegebene E-Mail-Adresse ist fehlerhaft.",
         "invalidTokenAlert": {
             "text": "Der Token, mit dem du versucht hast, dich anzumelden, ist ungültig. Bitte versuche, dich erneut anzumelden."
+        },
+        "reauthenticate": {
+            "title": "Erneut anmelden",
+            "passwordDescription": "Bitte melde dich erneut mit deinem Passwort an, um den Verknüpfungsprozess abzuschließen. Beachte, dass du dies nur einmal tun musst."
         }
     },
     "begin": "Ab",
@@ -2191,6 +2197,7 @@
             "newPassword": "Passwort ändern",
             "install": "Die Lern-Fair App",
             "progress": "Erfolge & Fortschritte",
+            "referral": "Referral",
             "certificates": "Bescheinigungen"
         }
     },
@@ -2514,6 +2521,38 @@
                     "Klicke auf den “App installieren” Button und folge den Anweisungen."
                 ]
             }
+        }
+    },
+    "referral": {
+        "title": "Empfehlungsprogramm",
+        "description": "Kennen Sie jemanden, der etwas für junge Menschen bewirken kann? Verbreiten Sie die Nachricht! Hier finden Sie weitere Informationen",
+        "referralMessage": "📣 HIRING VOLUNTEERS 📣Wollen Sie der Gemeinschaft etwas zurückgeben? Jetzt ist der perfekte Zeitpunkt! Wir suchen derzeit nach Freiwilligen, die deutsche Schulkinder von Klasse 1 bis 13 unterrichten. #lernfair #Bildung #e-learning",
+        "copy": "Kopieren",
+        "copied": "Kopiert",
+        "copiedReferralLink": "Empfehlungslink kopiert",
+        "share": {
+            "share": "Teilen",
+            "title": "Teilen Sie Ihren einzigartigen Link",
+            "description": "Teilen Sie Ihren persönlichen Link mit Ihrem Netzwerk, um mit dem Empfehlen zu beginnen! Sie haben drei einfache Möglichkeiten, Ihren Empfehlungslink zu teilen:",
+            "option1": {
+                "option": "Link kopieren und weitergeben",
+                "description": "- mit Ihren bevorzugten sozialen Anwendungen teilen"
+            },
+            "option2": {
+                "option": "Auf WhatsApp teilen",
+                "description": "- direkte Weitergabe an Ihre Kontakte"
+            },
+            "option3": {
+                "option": "Auf LinkedIn teilen",
+                "description": "- Klicken Sie auf „Auf LinkedIn teilen“ und fügen Sie den Link in einen Beitrag ein."
+            }
+        },
+        "reward": {
+            "title": "Mein Einfluss",
+            "description": "Für jeden Freiwilligen, der sich anmeldet, erhalten Sie Punkte für Ihr persönliches Zertifikat, mit dem Sie Ihre Erfahrung in Ihrem Netzwerk auf LinkedIn präsentieren können. Lassen Sie uns noch heute etwas bewirken!",
+            "RegisteredUsers": "Registrierte Benutzer",
+            "HoursSupported": "Unterstützte Stunden",
+            "tooltip": "Um dies freizuschalten, müssen Sie 3 oder mehr registrierte Benutzer haben"
         }
     },
     "certificates": {

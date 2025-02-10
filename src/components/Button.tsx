@@ -11,6 +11,7 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+                success: 'bg-green-500 text-white hover:bg-green-600',
                 destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
                 outline: 'border border-primary text-primary bg-transparent hover:bg-accent hover:text-accent-foreground',
                 'outline-light': 'border border-white text-white bg-transparent hover:bg-white hover:text-primary',
@@ -20,6 +21,7 @@ const buttonVariants = cva(
                 link: 'text-primary underline-offset-4 hover:underline',
                 none: 'text-primary',
                 input: 'border border-input justify-between bg-transparent text-form font-normal ring-offset-background placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:w-full [&>span]:justify-between',
+                linkedIn: 'bg-blue-700 text-white hover:bg-blue-600/90',
             },
             size: {
                 default: 'h-10 px-4 text-form',
