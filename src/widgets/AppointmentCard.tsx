@@ -22,7 +22,7 @@ import {
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import { getGradeLabel, toTimerString } from '../Utility';
+import { formatDate, getGradeLabel, toTimerString } from '../Utility';
 import useInterval from '../hooks/useInterval';
 import { TrafficStatus } from '../types/lernfair/Course';
 import { DateTime } from 'luxon';
@@ -35,9 +35,10 @@ import { useTranslation } from 'react-i18next';
 import { useUserType } from '../hooks/useApollo';
 import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
-import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { Instructor, Lecture, Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
+import { Typography } from '@/components/Typography';
 
 type Props = {
     appointmentId?: number;
@@ -75,7 +76,10 @@ type Props = {
     showStatus?: boolean;
     showCourseTraffic?: boolean;
     showSchoolclass?: boolean;
+    showInformationForScreeners?: boolean;
     trafficLightStatus?: TrafficStatus;
+    instructors?: Instructor[];
+    firstLecture?: Lecture;
 };
 
 const AppointmentCard: React.FC<Props> = ({
@@ -112,9 +116,12 @@ const AppointmentCard: React.FC<Props> = ({
     showStatus,
     showCourseTraffic,
     showSchoolclass,
+    showInformationForScreeners,
     trafficLightStatus,
     hasVideoButton,
     isOrganizer,
+    instructors,
+    firstLecture,
 }) => {
     const { space, sizes } = useTheme();
     const { t, i18n } = useTranslation();
@@ -333,6 +340,23 @@ const AppointmentCard: React.FC<Props> = ({
                                         {!!(minGrade && maxGrade) &&
                                             t('single.courseInfo.class', { minGrade: getGradeLabel(minGrade), maxGrade: getGradeLabel(maxGrade) })}
                                     </Text>
+                                )}
+
+                                {showInformationForScreeners && (
+                                    <div className="flex flex-col gap-y-2">
+                                        {firstLecture ? (
+                                            <Typography>
+                                                <span className="font-bold">Kursstart:</span> {formatDate(firstLecture?.start)}
+                                            </Typography>
+                                        ) : null}
+                                        <Typography>
+                                            {instructors && instructors?.length ? (
+                                                <span>
+                                                    <span className="font-bold">Kursleiter:</span> {instructors[0].firstname} {instructors[0].lastname}
+                                                </span>
+                                            ) : null}
+                                        </Typography>
+                                    </div>
                                 )}
 
                                 {showStatus && (

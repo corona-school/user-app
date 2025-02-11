@@ -259,6 +259,15 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                     >
                         Screening verpasst
                     </Button>
+                    <Button
+                        onClick={() => handleOnSaveScreening()}
+                        isLoading={isLoading}
+                        variant="outline"
+                        leftIcon={<IconDeviceFloppy />}
+                        className="w-[200px]"
+                    >
+                        Speichern
+                    </Button>
                 </div>
                 <div className="flex flex-row flex-wrap gap-x-10 mt-10">
                     <Button onClick={() => setShowConfirmApprove(true)} variant="default" leftIcon={<IconThumbUp className="" />} className="w-[200px]">
