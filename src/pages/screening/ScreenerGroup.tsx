@@ -2,18 +2,19 @@ import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import WithNavigation from '../../components/WithNavigation';
 import { Heading, VStack, useBreakpointValue, useTheme } from 'native-base';
-import NavigationTabs from '../../components/NavigationTabs';
 import SearchBar from '../../components/SearchBar';
 import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import Subcourses from './Subcourses';
-import { useCallback } from 'react';
+import { useCallback, useState } from 'react';
 import { Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
+import { Tabs, TabsList, TabsTrigger } from '@/components/Panels';
 
 const ScreenerGroup: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
+    const [courseState, setCourseState] = useState<Course_Coursestate_Enum>(Course_Coursestate_Enum.Submitted);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -28,7 +29,7 @@ const ScreenerGroup: React.FC = () => {
     const subcourseQuery = gql(`
         query Subcourses($search: String!, $courseState: String!) {
             subcourseSearch(
-                take: 50,
+                take: 100,
                 search: $search
                 courseStates: [$courseState],
                 orderBy: "last-update",
@@ -60,118 +61,52 @@ const ScreenerGroup: React.FC = () => {
     `);
 
     const {
-        data: drafts,
-        loading: loadingDrafts,
-        refetch: refetchDrafts,
+        data: subcourses,
+        loading,
+        refetch: refetchSubcourses,
     } = useQuery(subcourseQuery, {
         variables: {
             search: '',
-            courseState: Course_Coursestate_Enum.Created,
+            courseState,
         },
     });
-
-    const {
-        data: allowed,
-        loading: loadingAllowed,
-        refetch: refetchAllowed,
-    } = useQuery(subcourseQuery, {
-        variables: {
-            search: '',
-            courseState: Course_Coursestate_Enum.Allowed,
-        },
-    });
-
-    const {
-        data: submitted,
-        loading: loadingSubmitted,
-        refetch: refetchSubmitted,
-    } = useQuery(subcourseQuery, {
-        variables: {
-            search: '',
-            courseState: Course_Coursestate_Enum.Submitted,
-        },
-    });
-
-    const {
-        data: denied,
-        loading: loadingDenied,
-        refetch: refetchDenied,
-    } = useQuery(subcourseQuery, {
-        variables: {
-            search: '',
-            courseState: Course_Coursestate_Enum.Denied,
-        },
-    });
-
-    const {
-        data: cancelled,
-        loading: loadingCancelled,
-        refetch: refetchCancelled,
-    } = useQuery(subcourseQuery, {
-        variables: {
-            search: '',
-            courseState: Course_Coursestate_Enum.Cancelled,
-        },
-    });
-
-    const loading = loadingAllowed || loadingSubmitted || loadingCancelled || loadingDenied || loadingDrafts;
 
     const search = useCallback(
         async (search: string) => {
-            refetchAllowed({ search });
-            refetchSubmitted({ search });
-            refetchCancelled({ search });
-            refetchDenied({ search });
-            refetchDrafts({ search });
+            refetchSubcourses({ search });
         },
-        [refetchAllowed, refetchCancelled, refetchSubmitted, refetchDenied, refetchDrafts]
+        [refetchSubcourses]
     );
 
     return (
         <AsNavigationItem path="group">
             <WithNavigation>
-                {loading && <CenterLoadingSpinner />}
-                {!loading && (
-                    <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                        <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
-                            <Heading>{t('screening.courses.header')}</Heading>
-                            <br />
-                        </VStack>
-
-                        <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
-                            <SearchBar autoSubmit onSearch={search} />
-                        </VStack>
-
-                        <NavigationTabs
-                            tabs={[
-                                {
-                                    title: t('screening.courses.submitted'),
-                                    content: (
-                                        <Subcourses courseGroups={[submitted?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.submitted')]} />
-                                    ),
-                                },
-                                {
-                                    title: t('screening.courses.allowed'),
-                                    content: <Subcourses courseGroups={[allowed?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.allowed')]} />,
-                                },
-                                {
-                                    title: t('screening.courses.drafts'),
-                                    content: <Subcourses courseGroups={[drafts?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.drafts')]} />,
-                                },
-                                {
-                                    title: t('screening.courses.cancelled'),
-                                    content: (
-                                        <Subcourses courseGroups={[cancelled?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.cancelled')]} />
-                                    ),
-                                },
-                                {
-                                    title: t('screening.courses.denied'),
-                                    content: <Subcourses courseGroups={[denied?.subcourseSearch as Subcourse[]]} titles={[t('screening.courses.denied')]} />,
-                                },
-                            ]}
-                        />
+                <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                    <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+                        <Heading>{t('screening.courses.header')}</Heading>
+                        <br />
                     </VStack>
-                )}
+
+                    <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
+                        <SearchBar autoSubmit onSearch={search} isLoading={loading} />
+                    </VStack>
+                    <Tabs value={courseState} onValueChange={(value) => setCourseState(value as Course_Coursestate_Enum)}>
+                        <TabsList>
+                            <TabsTrigger value={Course_Coursestate_Enum.Submitted}>{t('screening.courses.submitted')}</TabsTrigger>
+                            <TabsTrigger value={Course_Coursestate_Enum.Allowed}>{t('screening.courses.allowed')}</TabsTrigger>
+                            <TabsTrigger value={Course_Coursestate_Enum.Created}>{t('screening.courses.drafts')}</TabsTrigger>
+                            <TabsTrigger value={Course_Coursestate_Enum.Cancelled}>{t('screening.courses.cancelled')}</TabsTrigger>
+                            <TabsTrigger value={Course_Coursestate_Enum.Denied}>{t('screening.courses.denied')}</TabsTrigger>
+                        </TabsList>
+                        {loading ? (
+                            <CenterLoadingSpinner />
+                        ) : (
+                            <div className="mt-8 max-h-full overflow-y-scroll">
+                                <Subcourses courseGroups={[subcourses?.subcourseSearch as Subcourse[]]} titles={[]} />
+                            </div>
+                        )}
+                    </Tabs>
+                </VStack>
             </WithNavigation>
         </AsNavigationItem>
     );
