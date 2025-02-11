@@ -300,6 +300,14 @@ export default function Login() {
         }
     }, [email, loginEmail]);
 
+    const { roles, logout } = useApollo();
+
+    useEffect(() => {
+        if (roles.includes('SSO_REGISTERING_USER')) {
+            logout();
+        }
+    }, [roles]);
+
     return (
         <>
             <VStack overflowY={'auto'} height="100dvh">
