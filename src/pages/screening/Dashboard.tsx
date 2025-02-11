@@ -77,6 +77,14 @@ export function ScreeningDashboard() {
                         updatedAt
                         screeners { firstname lastname }
                     }
+                    user {
+                        receivedScreeningSuggestions {
+                            sentAt
+                            notification {
+                                description
+                            }
+                        }
+                    }
                 }
 
                 student {
@@ -115,6 +123,14 @@ export function ScreeningDashboard() {
 
                     tutorScreenings { id createdAt success comment screener { firstname lastname } }
                     instructorScreenings { id createdAt success comment screener { firstname lastname } }
+                    user {
+                        receivedScreeningSuggestions {
+                            sentAt
+                            notification {
+                                description
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -165,6 +181,14 @@ export function ScreeningDashboard() {
                     createdAt
                     updatedAt
                     screeners { firstname lastname }
+                }
+                user {
+                    receivedScreeningSuggestions {
+                        sentAt
+                        notification {
+                            description
+                        }
+                    }
                 }
             }
         }
