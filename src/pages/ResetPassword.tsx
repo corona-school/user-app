@@ -1,7 +1,7 @@
 import { VStack, Flex, Box, useTheme, Image, Heading, Row, Button, useBreakpointValue, Modal, Stack, Text } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import PasswordInput from '../components/PasswordInput';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import { gql } from './../gql';
@@ -19,7 +19,7 @@ type Props = {
 };
 
 const ResetPassword: React.FC<Props> = ({ layout }) => {
-    const { sessionState } = useApollo();
+    const { sessionState, roles } = useApollo();
     const [searchParams] = useSearchParams();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -88,6 +88,10 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
         const redirectTo = searchParams?.get('redirectTo');
         navigate(redirectTo || '/');
     };
+
+    if (roles.includes('SSO_USER')) {
+        return <Navigate to="/settings" />;
+    }
 
     return (
         <WithNavigation
