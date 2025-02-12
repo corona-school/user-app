@@ -12,6 +12,7 @@ import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
 import PersonalDetails from './PersonalDetails';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
+import { SuggestionsHistory } from '@/widgets/screening/SuggestionsHistory';
 
 interface PupilDetailProps {
     pupil: PupilForScreening;
@@ -156,7 +157,13 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                         <Typography variant="h4" className="mb-5">
                             Empfehlungen
                         </Typography>
-                        <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} variant="pupil" />
+                        <ScreeningSuggestionCard userID={`pupil/${pupil.id}`} variant="pupil" refresh={refresh} />
+                    </div>
+                    <div className="flex flex-col shadow-md px-6 py-8 rounded-md mt-10">
+                        <Typography variant="h4" className="mb-5">
+                            Historie
+                        </Typography>
+                        <SuggestionsHistory suggestionsHistory={pupil?.user?.receivedScreeningSuggestions ?? []} />
                     </div>
                 </TabsContent>
             </Tabs>

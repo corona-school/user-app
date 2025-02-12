@@ -3,6 +3,7 @@ import { Typography } from '@/components/Typography';
 import { StudentForScreening } from '@/types';
 import { formatDate } from '@/Utility';
 import { ScreeningSuggestionCard } from '@/widgets/screening/ScreeningSuggestionCard';
+import { SuggestionsHistory } from '@/widgets/screening/SuggestionsHistory';
 import { useTranslation } from 'react-i18next';
 import PersonalDetails from './PersonalDetails';
 import { ScreenStudent } from './ScreenStudent';
@@ -94,7 +95,13 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                         <Typography variant="h4" className="mb-5">
                             Empfehlungen
                         </Typography>
-                        <ScreeningSuggestionCard userID={`student/${student.id}`} variant="student" />
+                        <ScreeningSuggestionCard userID={`student/${student.id}`} variant="student" refresh={refresh} />
+                    </div>
+                    <div className="flex flex-col shadow-md px-6 py-8 rounded-md">
+                        <Typography variant="h4" className="mb-5">
+                            Historie
+                        </Typography>
+                        <SuggestionsHistory suggestionsHistory={student?.user?.receivedScreeningSuggestions ?? []} />
                     </div>
                 </TabsContent>
             </Tabs>

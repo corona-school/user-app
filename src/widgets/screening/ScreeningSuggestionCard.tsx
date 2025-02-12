@@ -20,19 +20,24 @@ const QUERY_GET_SUGGESTIONS = gql(`
     }
 `);
 
-export function ScreeningSuggestionCard({ userID, variant }: { userID: string; variant: 'pupil' | 'student' }) {
+interface ScreeningSuggestionCardProps {
+    userID: string;
+    variant: 'pupil' | 'student';
+    refresh: () => Promise<void>;
+}
+
+export function ScreeningSuggestionCard({ userID, variant, refresh }: ScreeningSuggestionCardProps) {
     const [chosenSuggestion, setChosenSuggestion] = useState<number>(0);
     const [send, { loading, reset }] = useMutation(MUTATION_SEND_SUGGESTION);
     const { data: suggestionsData } = useQuery(QUERY_GET_SUGGESTIONS);
     const suggestions = suggestionsData?.notifications.filter((e) => (variant === 'pupil' ? e.description.startsWith('SuS') : e.description.startsWith('HuH')));
-
-    if (!suggestions || suggestions.length === 0) return null;
 
     const handleOnSend = async () => {
         await send({ variables: { userID, suggestion: chosenSuggestion } });
         toast.success('Empfehlung verschickt');
         reset();
         setChosenSuggestion(0);
+        await refresh();
     };
 
     return (
@@ -43,7 +48,7 @@ export function ScreeningSuggestionCard({ userID, variant }: { userID: string; v
                 </SelectTrigger>
                 <SelectContent>
                     <SelectItem value={'' + 0}>Keine Empfehlung</SelectItem>
-                    {suggestions.map((option) => (
+                    {suggestions?.map((option) => (
                         <SelectItem key={option.id} value={'' + option.id}>
                             {option.description.replace(/SuS Empfehlung|HuH Empfehlung/, '')}
                         </SelectItem>
