@@ -1,5 +1,5 @@
 import { Box, Button, Flex, Heading, Image, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useMemo, useState } from 'react';
+import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
@@ -174,6 +174,15 @@ const Registration: React.FC = () => {
         return result;
     }, [cooperationTag, corpData]);
 
+    useEffect(() => {
+        if (cooperationTag) {
+            sessionStorage.setItem('cooperationTag', cooperationTag);
+        }
+        if (referredById) {
+            sessionStorage.setItem('referredById', referredById);
+        }
+    }, [cooperationTag, referredById]);
+
     //Pass the referredbyId as a Mutation variable in the attemptRegister function (access it from Registration data here)
     const attemptRegister = useCallback(async () => {
         try {
@@ -184,6 +193,8 @@ const Registration: React.FC = () => {
                 email: validMail,
                 newsletter,
             };
+            const referredBy = sessionStorage.getItem('referredById');
+            const cooperation = sessionStorage.getItem('cooperationTag');
 
             let createAccountResult =
                 userType === 'pupil'
@@ -200,12 +211,15 @@ const Registration: React.FC = () => {
                                   state: school?.state || State.Other,
                                   zip: school?.zip,
                               },
-                              referredById,
+                              referredById: referredBy,
                           },
                       })
                     : await registerStudent({
-                          variables: { ...basicData, cooperationTag, referredById },
+                          variables: { ...basicData, cooperationTag: cooperation, referredById: referredBy },
                       });
+
+            sessionStorage.removeItem('referredById');
+            sessionStorage.removeItem('cooperationTag');
 
             if (isRegisteringManually) {
                 await createCredentials({ variables: { email: validMail, password, retainPath: retainPath } });
