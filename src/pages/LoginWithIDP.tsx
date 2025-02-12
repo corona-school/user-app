@@ -70,10 +70,6 @@ const LoginWithIDP = () => {
         return <Navigate to="/" />;
     }
 
-    if (error) {
-        return <Navigate to="/login" />;
-    }
-
     return (
         <>
             <CenterLoadingSpinner />
