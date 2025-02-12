@@ -17,6 +17,7 @@ const LoginWithIDP = () => {
     const navigate = useNavigate();
 
     const code = searchParams.get('code');
+    const error = searchParams.get('error');
 
     const handleOnLoginWithSSO = async (idpCode: string) => {
         try {
@@ -55,8 +56,22 @@ const LoginWithIDP = () => {
         }
     }, [code]);
 
+    useEffect(() => {
+        if (error) {
+            if (error !== 'access_denied') {
+                logError('LoginWithIDP', error);
+                toast.error(t('error'));
+            }
+            navigate('/login');
+        }
+    }, [error]);
+
     if (roles.includes('USER')) {
         return <Navigate to="/" />;
+    }
+
+    if (error) {
+        return <Navigate to="/login" />;
     }
 
     return (
