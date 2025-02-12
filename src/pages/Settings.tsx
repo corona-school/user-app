@@ -17,7 +17,7 @@ const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { user } = useApollo();
+    const { user, roles } = useApollo();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
@@ -100,12 +100,16 @@ const Settings: React.FC = () => {
                         </ProfileSettingRow>
                     </>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
-                        </Column>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
-                        </Column>
+                        {!roles.includes('SSO_USER') && (
+                            <>
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
+                                </Column>
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
+                                </Column>
+                            </>
+                        )}
 
                         <Column mb={tabspace}>
                             <ListItem label={t('settings.account.deactivateAccount')} onPress={() => setShowDeactivate(true)} />

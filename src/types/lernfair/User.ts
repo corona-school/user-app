@@ -24,7 +24,8 @@ export type Role =
     | 'TUTEE'
     | 'PARTICIPANT'
     | 'SUBCOURSE_PARTICIPANT'
-    | 'SSO_REGISTERING_USER';
+    | 'SSO_REGISTERING_USER'
+    | 'SSO_USER';
 
 export const ERole = {
     USER: 'USER' as const,
