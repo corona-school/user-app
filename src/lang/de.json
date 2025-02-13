@@ -2197,7 +2197,7 @@
             "newPassword": "Passwort ändern",
             "install": "Die Lern-Fair App",
             "progress": "Erfolge & Fortschritte",
-            "referral": "Referral",
+            "referral": "Hilf uns zu wachsen",
             "certificates": "Bescheinigungen"
         }
     },
@@ -2523,35 +2523,35 @@
         }
     },
     "referral": {
-        "title": "Empfehlungsprogramm",
-        "description": "Kennen Sie jemanden, der etwas für junge Menschen bewirken kann? Verbreiten Sie die Nachricht! Hier finden Sie weitere Informationen",
-        "referralMessage": "📣 HIRING VOLUNTEERS 📣Wollen Sie der Gemeinschaft etwas zurückgeben? Jetzt ist der perfekte Zeitpunkt! Wir suchen derzeit nach Freiwilligen, die deutsche Schulkinder von Klasse 1 bis 13 unterrichten. #lernfair #Bildung #e-learning",
+        "title": "Hilf uns zu wachsen",
+        "description": "Empfiehl uns weiter bei Schüler:innen oder motivierten Helfer:innen - so können wir gemeinsam noch mehr für die Bildungsgerechtigkeit tun!  ",
+        "referralMessage": "📣 Bildungs-Verbesserer gesucht 📣 Ich engagiere mich ehrenamtlich bei Lern-Fair, wo bildungsbenachteiligte Schüler:innen der Klasse 1 bis 13 sowie Azubi kostenlose Nachhilfe erhalten - digital und flexibel per Zoom-Meeting. #digital #Bildungsgerechtigkeit #ehrenamt",
         "copy": "Kopieren",
         "copied": "Kopiert",
         "copiedReferralLink": "Empfehlungslink kopiert",
         "share": {
             "share": "Teilen",
-            "title": "Teilen Sie Ihren einzigartigen Link",
-            "description": "Teilen Sie Ihren persönlichen Link mit Ihrem Netzwerk, um mit dem Empfehlen zu beginnen! Sie haben drei einfache Möglichkeiten, Ihren Empfehlungslink zu teilen:",
+            "title": "Teile deinen persönlichen Link",
+            "description": "",
             "option1": {
-                "option": "Link kopieren und weitergeben",
-                "description": "- mit Ihren bevorzugten sozialen Anwendungen teilen"
+                "option": "Empfehlungslink teilen",
+                "description": ""
             },
             "option2": {
                 "option": "Auf WhatsApp teilen",
-                "description": "- direkte Weitergabe an Ihre Kontakte"
+                "description": ""
             },
             "option3": {
                 "option": "Auf LinkedIn teilen",
-                "description": "- Klicken Sie auf „Auf LinkedIn teilen“ und fügen Sie den Link in einen Beitrag ein."
+                "description": "- Beim kopieren wird ein Muster-Text - zum einfachen Einfügen - in deine Zwischenablage kopiert."
             }
         },
         "reward": {
-            "title": "Mein Einfluss",
-            "description": "Für jeden Freiwilligen, der sich anmeldet, erhalten Sie Punkte für Ihr persönliches Zertifikat, mit dem Sie Ihre Erfahrung in Ihrem Netzwerk auf LinkedIn präsentieren können. Lassen Sie uns noch heute etwas bewirken!",
-            "RegisteredUsers": "Registrierte Benutzer",
-            "HoursSupported": "Unterstützte Stunden",
-            "tooltip": "Um dies freizuschalten, müssen Sie 3 oder mehr registrierte Benutzer haben"
+            "title": "Meine geworbenen Nutzer:innen",
+            "description": "Wenn du deinen persönlichen Link nutzt, kannst du hier deinen Beitrag verfolgen.",
+            "RegisteredUsers": "Registrierte Nutzer:innen",
+            "HoursSupported": "Stunden Nachhilfe ermöglicht",
+            "tooltip": "Um diese Info freizuschalten, müssen sich 3 oder mehr Nutzer:innen registriert haben"
         }
     },
     "certificates": {
