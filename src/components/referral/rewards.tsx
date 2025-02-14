@@ -16,9 +16,7 @@ const Rewards: React.FC<Props> = ({ referralCount, supportedHours, t }) => (
         <Typography variant="h4" className=" font-bold">
             {t('referral.reward.title')}
         </Typography>
-        <Typography variant="h6" className="w-3/4 mb-5">
-            {t('referral.reward.description')}
-        </Typography>
+        <Typography className="w-3/4 mb-5">{t('referral.reward.description')}</Typography>
         <div className="flex justify-center space-x-4 text-center">
             <div className="flex flex-col items-center max-w-[200px]">
                 <Typography variant="h5" className="mb-4 font-bold underline">
