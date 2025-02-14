@@ -97,6 +97,11 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
+                            {isMobile && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('navigation.label.referral')} onPress={() => navigate('/referral')} />
+                                </Column>
+                            )}
                         </ProfileSettingRow>
                     </>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>

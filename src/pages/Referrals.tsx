@@ -117,7 +117,7 @@ const Referrals: React.FC<{}> = () => {
                 </div>
             }
         >
-            <Breadcrumb className="mx-4" />
+            <Breadcrumb className="md:mx-2" />
             {/* Desktop View */}
             <div className="hidden lg:block mt-8">
                 <div className={`flex items-center px-2 my-3 max-w-full space-x-12`}>
