@@ -30,6 +30,7 @@ export const useBreadcrumbRoutes = () => {
             INSTALL: { label: t('navigation.label.install'), route: '/install' },
             PROGRESS: { label: t('navigation.label.progress'), route: '/progress' },
             CERTIFICATES: { label: t('navigation.label.certificates'), route: '/certificates' },
+            REFERRAL: { label: t('navigation.label.referral'), route: '/referral' },
         } as const;
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [localStorageLanguage, t]);
@@ -60,6 +61,7 @@ export const useBreadcrumb = () => {
         map.set(/new-password/, [routes.SETTINGS, routes.NEW_PASSWORD]);
         map.set(/install/, [routes.SETTINGS, routes.INSTALL]);
         map.set(/progress/, [routes.SETTINGS, routes.PROGRESS]);
+        map.set(/referral/, [routes.REFERRAL]);
         return Array.from(map.entries());
     }, [localStorageLanguage]);
 

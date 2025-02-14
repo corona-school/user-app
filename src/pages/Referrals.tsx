@@ -22,6 +22,7 @@ import { useQuery } from '@apollo/client';
 import SocialOptions from '@/components/referral/socialOptions';
 import Rewards from '@/components/referral/rewards';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const ReferralCountQuery = gql(`
     query ReferralCount {
@@ -116,32 +117,27 @@ const Referrals: React.FC<{}> = () => {
                 </div>
             }
         >
+            <Breadcrumb className="mx-4" />
             {/* Desktop View */}
-            <div className="hidden lg:block mt-16">
+            <div className="hidden lg:block mt-8">
                 <div className={`flex items-center px-2 my-3 max-w-full space-x-12`}>
                     <div className="flex flex-col w-[48%] z-1">
                         <div>
-                            <Typography variant="h3" className="mb-1.5 font-bold">
+                            <Typography variant="h3" className="mb-2">
                                 {t('referral.title')}
                             </Typography>
-                            <Typography variant="h6" className="mb-3">
-                                {t('referral.description')}
-                            </Typography>
+                            <Typography className="mb-3">{t('referral.description')}</Typography>
                             <Typography variant="h4" className="mb-1.5 font-bold">
                                 {t('referral.share.title')}
                             </Typography>
-                            <Typography variant="h6" className="mb-3">
-                                {t('referral.share.description')}
-                            </Typography>
+                            <Typography className="mb-3">{t('referral.share.description')}</Typography>
 
                             {/* Options */}
                             <div className="flex space-x-2 m-3 mb-8 mt-8 items-center">
                                 <IconCircleNumber1Filled className="w-6 h-6 flex-shrink-0" />
                                 <Typography variant="h5">
                                     {t('referral.share.option1.option')}
-                                    <Typography variant="h6" className="inline">
-                                        {t('referral.share.option1.description')}
-                                    </Typography>
+                                    <Typography className="inline">{t('referral.share.option1.description')}</Typography>
                                 </Typography>
                             </div>
 
@@ -149,9 +145,7 @@ const Referrals: React.FC<{}> = () => {
                                 <IconCircleNumber2Filled className="w-6 h-6 flex-shrink-0" />
                                 <Typography variant="h5">
                                     {t('referral.share.option2.option')}
-                                    <Typography variant="h6" className="inline">
-                                        {t('referral.share.option2.description')}
-                                    </Typography>
+                                    <Typography className="inline">{t('referral.share.option2.description')}</Typography>
                                 </Typography>
                             </div>
 
@@ -159,9 +153,7 @@ const Referrals: React.FC<{}> = () => {
                                 <IconCircleNumber3Filled className="w-6 h-6 flex-shrink-0" />
                                 <Typography variant="h5">
                                     {t('referral.share.option3.option')}
-                                    <Typography variant="h6" className="inline">
-                                        {t('referral.share.option3.description')}
-                                    </Typography>
+                                    <Typography className="inline">{t('referral.share.option3.description')}</Typography>
                                 </Typography>
                             </div>
                             {/* Share Buttons */}
@@ -199,9 +191,7 @@ const Referrals: React.FC<{}> = () => {
                             <Typography variant="h5" className="font-bold mt-4 mb-3">
                                 {t('referral.title')}
                             </Typography>
-                            <Typography variant="h6" className="mb-3 w-2/5">
-                                {t('referral.description')}
-                            </Typography>
+                            <Typography className="mb-3 w-2/5">{t('referral.description')}</Typography>
                         </div>
                     </div>
                     <div className="h-[140px] bg-white rounded-md shadow-lg p-5">
