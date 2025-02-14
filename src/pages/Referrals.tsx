@@ -21,6 +21,7 @@ import { gql } from '@/gql';
 import { useQuery } from '@apollo/client';
 import SocialOptions from '@/components/referral/socialOptions';
 import Rewards from '@/components/referral/rewards';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 const ReferralCountQuery = gql(`
     query ReferralCount {
@@ -41,6 +42,7 @@ const SupportedHoursQuery = gql(`
 const Referrals: React.FC<{}> = () => {
     const { t } = useTranslation();
     const [hasCopied, setHasCopied] = useState(false);
+    const { trackPageView } = useMatomo();
 
     const onCopy = async (text: string) => {
         try {
@@ -51,6 +53,13 @@ const Referrals: React.FC<{}> = () => {
             console.error('Failed to copy: ', error);
         }
     };
+
+    useEffect(() => {
+        trackPageView({
+            documentTitle: 'Referrals',
+        });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const userID = sessionStorage.getItem('userID');
     const uniqueReferralLink = 'https://app.lern-fair.de/registration?referredById=' + userID;
