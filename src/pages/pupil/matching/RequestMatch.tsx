@@ -46,7 +46,6 @@ export enum RequestMatchStep {
     german = 'german',
     subjects = 'subjects',
     priority = 'priority',
-    details = 'details',
 }
 
 type RequestMatchContextType = {
