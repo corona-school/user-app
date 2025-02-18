@@ -13,6 +13,7 @@ import { toast } from 'sonner';
 import PersonalDetails from './PersonalDetails';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { SuggestionsHistory } from '@/widgets/screening/SuggestionsHistory';
+import { IconCheck, IconX } from '@tabler/icons-react';
 
 interface PupilDetailProps {
     pupil: PupilForScreening;
@@ -82,7 +83,13 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                 <Typography variant="h3" className="mb-2">
                     {pupil.firstname} {pupil.lastname} (Schüler:in)
                 </Typography>
-                <Typography>{pupil.email}</Typography>
+                <Typography>
+                    <span className="font-bold">E-Mail</span>: {pupil.email}
+                </Typography>
+                <Typography>
+                    <span className="font-bold">Aktiv</span>:{' '}
+                    {pupil.active ? <IconCheck className="inline text-green-500" /> : <IconX className="inline text-red-500" />}
+                </Typography>
             </div>
             <Tabs defaultValue="main">
                 <TabsList className="max-h-9 p-1 mb-2">
