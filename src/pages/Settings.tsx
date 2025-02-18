@@ -9,7 +9,7 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE, REFERRALS_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
 import { Breadcrumb } from '@/components/Breadcrumb';
 
@@ -97,7 +97,7 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
-                            {isMobile && (
+                            {isMobile && REFERRALS_ACTIVE && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('navigation.label.referral')} onPress={() => navigate('/referral')} />
                                 </Column>
