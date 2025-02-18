@@ -1,4 +1,4 @@
-import { gql, useMutation } from '@apollo/client';
+import { gql } from '@/gql';
 import { DocumentNode } from 'graphql';
 import { Text, VStack, useTheme, Heading, Row, Column, Modal, useToast } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
@@ -9,9 +9,11 @@ import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
-import { RequestMatchContext } from './RequestMatch';
+import { RequestMatchContext, RequestMatchStep } from './RequestMatch';
 import DisableableButton from '../../../components/DisablebleButton';
 import { GradeSelector, GradeTag } from '../../../components/GradeSelector';
+import { useMutation } from '@apollo/client';
+import { SchoolType, State } from '@/gql/graphql';
 
 type Props = {
     schooltype: string;
@@ -21,7 +23,7 @@ type Props = {
 };
 
 const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQuery }) => {
-    const { setCurrentIndex, isEdit } = useContext(RequestMatchContext);
+    const { setCurrentStep } = useContext(RequestMatchContext);
     const { space } = useTheme();
     const { t } = useTranslation();
     const toast = useToast();
@@ -32,27 +34,27 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
     const [modalSelection, setModalSelection] = useState<string>();
 
     const [meUpdateSchooltype] = useMutation(
-        gql`
+        gql(`
             mutation changeSchooltypeData($data: SchoolType!) {
                 meUpdate(update: { pupil: { schooltype: $data } })
             }
-        `,
+        `),
         { refetchQueries: [refetchQuery] }
     );
     const [meUpdateSchoolClass] = useMutation(
-        gql`
+        gql(`
             mutation changeSchoolClassData($data: Int!) {
                 meUpdate(update: { pupil: { gradeAsInt: $data } })
             }
-        `,
+        `),
         { refetchQueries: [refetchQuery] }
     );
     const [meUpdateState] = useMutation(
-        gql`
+        gql(`
             mutation changePupilStateData($data: State!) {
                 meUpdate(update: { pupil: { state: $data } })
             }
-        `,
+        `),
         { refetchQueries: [refetchQuery] }
     );
 
@@ -91,7 +93,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
             switch (modalType) {
                 case 'schooltypes':
                     await meUpdateSchooltype({
-                        variables: { data: modalSelection },
+                        variables: { data: modalSelection as SchoolType },
                     });
                     break;
                 case 'schoolclass':
@@ -100,7 +102,7 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                     });
                     break;
                 case 'states':
-                    await meUpdateState({ variables: { data: modalSelection } });
+                    await meUpdateState({ variables: { data: modalSelection as State } });
                     break;
                 default:
                     break;
@@ -190,10 +192,8 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
 
                 <NextPrevButtons
                     disablingNext={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
-                    disablingPrev={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
-                    onPressNext={() => setCurrentIndex(2)}
-                    onPressPrev={() => setCurrentIndex(0)}
-                    onlyNext={isEdit}
+                    onPressNext={() => setCurrentStep(RequestMatchStep.german)}
+                    onlyNext
                 />
             </VStack>
             <Modal
