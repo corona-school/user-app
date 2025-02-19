@@ -2151,7 +2151,8 @@
             "share_course": "Kursu şablon olarak işaretle",
             "unshare_course": "İşaretleyiciyi şablon olarak kaldır",
             "are_you_sure_allow": "Bu kursu etkinleştirmek istediğinizden emin misiniz?",
-            "are_you_sure_deny": "Bu kursu reddetmek istediğinizden emin misiniz?"
+            "are_you_sure_deny": "Bu kursu reddetmek istediğinizden emin misiniz?",
+            "drafts": "Taslaklar"
         },
         "title": "Tarama",
         "howto": "Taramak istediğiniz öğrenci veya yardımcıyı bulmak için arama çubuğunu kullanın.",

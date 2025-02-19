@@ -1,5 +1,7 @@
 import { SsoAuthStatus } from '@/gql/graphql';
+import { logError } from '@/log';
 import LinkIDPModal from '@/modals/LinkIDPModal';
+import { ApolloError, isApolloError } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
@@ -15,6 +17,7 @@ const LoginWithIDP = () => {
     const navigate = useNavigate();
 
     const code = searchParams.get('code');
+    const error = searchParams.get('error');
 
     const handleOnLoginWithSSO = async (idpCode: string) => {
         try {
@@ -30,8 +33,19 @@ const LoginWithIDP = () => {
             if (ssoStatus === SsoAuthStatus.Error) {
                 navigate('/');
             }
-        } catch (error) {
-            toast.error(t('login.linkAccountWithIdpError'));
+        } catch (e) {
+            if (isApolloError(e as Error)) {
+                const [error] = (e as ApolloError).graphQLErrors;
+                if (error?.extensions?.code === 'PREREQUISITE') {
+                    toast.error(t('login.linkAccountWithIdpError'));
+                } else {
+                    toast.error(t('error'));
+                    logError('loginWithSSO', error.message, JSON.stringify(error));
+                }
+            } else {
+                toast.error(t('error'));
+                logError('loginWithSSO', (e as Error)?.message, JSON.stringify(e));
+            }
             navigate('/');
         }
     };
@@ -41,6 +55,16 @@ const LoginWithIDP = () => {
             handleOnLoginWithSSO(code);
         }
     }, [code]);
+
+    useEffect(() => {
+        if (error) {
+            if (error !== 'access_denied') {
+                logError('LoginWithIDP', error);
+                toast.error(t('error'));
+            }
+            navigate('/login');
+        }
+    }, [error]);
 
     if (roles.includes('USER')) {
         return <Navigate to="/" />;

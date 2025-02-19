@@ -186,8 +186,8 @@
         "setNewEmail": "E-Mail neu setzen",
         "changeEmail": "E-Mail-Adresse ändern",
         "emailVerification": "E-Mail Verifizierung",
-        "succesEmailVerification": "Dein E-Mail wurde erfolgreich geändert!",
-        "changeEmailConfirmation": "Wir haben dir an die neue E-Mail-Adresse eine E-mail zur Bestätigung gesendet",
+        "succesEmailVerification": "Deine E-Mail wurde erfolgreich geändert!",
+        "changeEmailConfirmation": "Wir haben dir an die neue Adresse eine E-Mail zur Bestätigung gesendet",
         "invalidToken": "Token ungültig",
         "email": {
             "sent": "Wir haben dir eine E-Mail zum Login geschickt"
@@ -500,14 +500,14 @@
         },
         "verifyemail": {
             "title": "Bestätige deine E-Mail-Adresse",
-            "mailsendto": "Wir haben eine E-mail gesendet an:",
+            "mailsendto": "Wir haben eine E-Mail gesendet an:",
             "description": "Nach der Bestätigung deiner E-Mail-Adresse, wirst du automatisch hierhin zurück geleitet.",
             "notreceived": {
-                "title": "Keine E-mail erhalten?",
+                "title": "Keine E-Mail erhalten?",
                 "description": "Überprüfe auch deinen Spam-Ordner"
             },
             "resend": {
-                "button": "Bestätigungs-E-mail erneut senden",
+                "button": "Bestätigungs-E-Mail erneut senden",
                 "successAlert": "Wir haben dir die Bestätigungs-E-Mail erneut gesendet. Bitte überprüfe deinen Posteingang und schau auch im Spam nach.",
                 "failedAlert": "Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut."
             },
@@ -2198,7 +2198,7 @@
             "newPassword": "Passwort ändern",
             "install": "Die Lern-Fair App",
             "progress": "Erfolge & Fortschritte",
-            "referral": "Referral",
+            "referral": "Hilf uns zu wachsen",
             "certificates": "Bescheinigungen"
         }
     },
@@ -2265,6 +2265,7 @@
             "submitted_or_allowed": "Eingereichte & genehmigte Kurse",
             "denied_or_cancelled": "Abgelehnte & abgesagte Kurse",
             "submitted": "Eingereicht",
+            "drafts": "Entwürfe",
             "allowed": "Genehmigt",
             "denied": "Abgelehnt",
             "cancelled": "Abgesagt",
@@ -2433,7 +2434,7 @@
         "pupil": {
             "noScreening": {
                 "title": "Willkommen, {{firstname}}! 👋 Bald lernen wir uns kennen 🤗",
-                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine E-mail an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
+                "content": "Damit wir dich, {{firstname}}, jetzt an eine:n passende:n Helfer:in vermitteln können, möchten wir mit dir ein 15-minütiges Videotelefonat führen. Das Telefonat wird auf Deutsch geführt.\n Du kannst dir einen Termin im Kalender aussuchen und bekommst nach der Terminbestätigung eine E-Mail an {{email}}. Du kannst den Termin jederzeit ändern oder absagen. - Im Telefonat sprechen wir über deine aktuellen Herausforderungen und erklären dir Lern-Fair. Du kannst alleine oder mit deinen Eltern kommen. Du brauchst keine Angst zu haben, wenn dein Deutsch nicht gut ist, wir können das Telefonat trotzdem führen. Wenn du auf keinen Fall per Video telefonieren möchtest, dann melde dich und wir finden eine andere Lösung.",
                 "footer": "Du traust dich nicht? Sprichst kein Deutsch? Oder hast andere Fragen? Dann melde dich bei uns",
                 "makeAppointment": "Termin vereinbaren"
             },
@@ -2595,35 +2596,35 @@
         }
     },
     "referral": {
-        "title": "Empfehlungsprogramm",
-        "description": "Kennen Sie jemanden, der etwas für junge Menschen bewirken kann? Verbreiten Sie die Nachricht! Hier finden Sie weitere Informationen",
-        "referralMessage": "📣 HIRING VOLUNTEERS 📣Wollen Sie der Gemeinschaft etwas zurückgeben? Jetzt ist der perfekte Zeitpunkt! Wir suchen derzeit nach Freiwilligen, die deutsche Schulkinder von Klasse 1 bis 13 unterrichten. #lernfair #Bildung #e-learning",
+        "title": "Hilf uns zu wachsen",
+        "description": "Empfiehl uns weiter bei Schüler:innen oder motivierten Helfer:innen - so können wir gemeinsam noch mehr für die Bildungsgerechtigkeit tun!  ",
+        "referralMessage": "📣 Bildungs-Verbesserer gesucht 📣 Ich engagiere mich ehrenamtlich bei Lern-Fair, wo bildungsbenachteiligte Schüler:innen der Klasse 1 bis 13 sowie Azubi kostenlose Nachhilfe erhalten - digital und flexibel per Zoom-Meeting. #digital #Bildungsgerechtigkeit #ehrenamt",
         "copy": "Kopieren",
         "copied": "Kopiert",
         "copiedReferralLink": "Empfehlungslink kopiert",
         "share": {
             "share": "Teilen",
-            "title": "Teilen Sie Ihren einzigartigen Link",
-            "description": "Teilen Sie Ihren persönlichen Link mit Ihrem Netzwerk, um mit dem Empfehlen zu beginnen! Sie haben drei einfache Möglichkeiten, Ihren Empfehlungslink zu teilen:",
+            "title": "Teile deinen persönlichen Link",
+            "description": "",
             "option1": {
-                "option": "Link kopieren und weitergeben",
-                "description": "- mit Ihren bevorzugten sozialen Anwendungen teilen"
+                "option": "Empfehlungslink teilen",
+                "description": ""
             },
             "option2": {
                 "option": "Auf WhatsApp teilen",
-                "description": "- direkte Weitergabe an Ihre Kontakte"
+                "description": ""
             },
             "option3": {
                 "option": "Auf LinkedIn teilen",
-                "description": "- Klicken Sie auf „Auf LinkedIn teilen“ und fügen Sie den Link in einen Beitrag ein."
+                "description": "- Beim kopieren wird ein Muster-Text - zum einfachen Einfügen - in deine Zwischenablage kopiert."
             }
         },
         "reward": {
-            "title": "Mein Einfluss",
-            "description": "Für jeden Freiwilligen, der sich anmeldet, erhalten Sie Punkte für Ihr persönliches Zertifikat, mit dem Sie Ihre Erfahrung in Ihrem Netzwerk auf LinkedIn präsentieren können. Lassen Sie uns noch heute etwas bewirken!",
-            "RegisteredUsers": "Registrierte Benutzer",
-            "HoursSupported": "Unterstützte Stunden",
-            "tooltip": "Um dies freizuschalten, müssen Sie 3 oder mehr registrierte Benutzer haben"
+            "title": "Meine geworbenen Nutzer:innen",
+            "description": "Wenn du deinen persönlichen Link nutzt, kannst du hier deinen Beitrag verfolgen.",
+            "RegisteredUsers": "Registrierte Nutzer:innen",
+            "HoursSupported": "Stunden Nachhilfe ermöglicht",
+            "tooltip": "Um diese Info freizuschalten, müssen sich 3 oder mehr Nutzer:innen registriert haben"
         }
     },
     "certificates": {
@@ -2635,7 +2636,7 @@
                 "führt keine einzelnen Lernpartner:innen auf",
                 "Art der Unterstützung, Gesamtdauer und Anzahl der Lektionen werden aufgeführt"
             ],
-            "request": "Sofortbescheinigung anfordern"
+            "request": "Jetzt runterladen"
         },
         "participationCertificate": {
             "title": "Individueller Nachweis",

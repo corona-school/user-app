@@ -265,7 +265,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 lang: {},
             });
         // -------- Password Login Promotion -----------
-        if (data && !data?.me?.secrets?.some((secret: any) => secret.type === 'PASSWORD'))
+        if (data && !data?.me?.secrets?.some((secret: any) => ['PASSWORD', 'IDP'].includes(secret.type)))
             infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
 
         // -------- New Match -----------

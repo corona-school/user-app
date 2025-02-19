@@ -2147,7 +2147,8 @@
             "share_course": "Mark course as template",
             "unshare_course": "Remove marker as template",
             "are_you_sure_allow": "Are you sure you want to activate this course?",
-            "are_you_sure_deny": "Are you sure you want to decline this course?"
+            "are_you_sure_deny": "Are you sure you want to decline this course?",
+            "drafts": "Drafts"
         },
         "title": "Screening",
         "howto": "Use the search bar to find the pupil or helper you want to screen.",
