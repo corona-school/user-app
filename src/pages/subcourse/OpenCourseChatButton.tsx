@@ -68,6 +68,10 @@ const OpenCourseChatButton: React.FC<OpenSubcourseChatProps> = ({
         return false;
     }, [conversationId, isInstructor, isParticipant, participantsCount]);
 
+    if (disableButton && !isInstructor) {
+        return null;
+    }
+
     return (
         <Button
             leftIcon={<IconMessage2 size={16} />}
