@@ -1428,39 +1428,6 @@
         },
         "wizard": {
             "pupil": {
-                "filter": {
-                    "bulletPoints": ["You need help at school", "Your family can't help you with your homework", "Your family can't pay for tutoring for you"],
-                    "heading": "The 1:1 learning support",
-                    "subheading1": "Who is the 1:1 learning support for?",
-                    "text1": "If the following points apply to you, you can apply for 1:1 learning support from us:",
-                    "question1": "Do these points apply to you?",
-                    "subheading2": "Long waiting time: 3-6 months",
-                    "text2": "At the moment, many pupils need learning support. That's why we have a long waiting list. You will probably have to wait 3-6 months before we can find a learning partner for you.",
-                    "question2": "Are you prepared to wait 3-6 months?"
-                },
-                "alternatives": {
-                    "bulletPoints": [
-                        "You need help with your studies.",
-                        "You have disadvantages when learning.",
-                        "Your family can't help you study.",
-                        "Your family can't pay for tutoring for you."
-                    ],
-                    "educloud": {
-                        "heading": "Do you already know Edu-Cloud?",
-                        "text": "There you will find many offers that may be of interest to you. If you have any questions, please feel free to contact us at any time.",
-                        "button": "To the Edu-Cloud"
-                    },
-                    "groupcourses": {
-                        "button": "To the group courses"
-                    },
-                    "homeworkhelp": {
-                        "heading": "Do you already know about our homework help?",
-                        "text": "Do you have a question about your homework? Between 17:00 and 18:00, we from the Lern-Fair team are on Zoom and can help you with your homework.",
-                        "button": "To the homework help"
-                    },
-                    "heading": "Alternative offers",
-                    "text": "Unfortunately, we cannot support you at Lern-Fair in this case. Our help is offered by volunteers volunteers . Therefore, we only have limited places and would like to help especially those pupils who fulfill the following criteria:"
-                },
                 "profiledata": {
                     "heading": "Update profile",
                     "text": "So that we can assign you an optimal learning partner, we ask you to check and complete your personal information once again.",
@@ -1490,13 +1457,6 @@
                     "subheading": "In which subject do you need the most help?",
                     "text": "We will try to find someone to help you in all subjects. Unfortunately, this is not always possible. You can therefore indicate here which subject is most important to you.",
                     "reason_btn_disabled": "Please select a subject."
-                },
-                "details": {
-                    "heading": "Details",
-                    "subheading": "Is there anything else you would like to say to your future learning partner?",
-                    "text": "Here you can provide further information about yourself or your current situation, e.g. do you have a specific topic you need help with or is there something your learning partner should know about you? We will forward this text to your future learning partner.",
-                    "additionalInfo": "Your details",
-                    "placeholder": "What should your future learning partner know about you?"
                 },
                 "modalSuccess": {
                     "heading": {

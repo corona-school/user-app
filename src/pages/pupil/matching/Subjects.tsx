@@ -3,12 +3,12 @@ import { useContext, useEffect } from 'react';
 import { containsDAZ, DAZ } from '../../../types/subject';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
-import { RequestMatchContext } from './RequestMatch';
+import { RequestMatchContext, RequestMatchStep } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
-    const { matchRequest, setSubject, removeSubject, setCurrentIndex, setSkippedSubjectPriority, skippedSubjectPriority, setSubjectPriority } =
+    const { matchRequest, setSubject, removeSubject, setCurrentStep, setSkippedSubjectPriority, skippedSubjectPriority, setSubjectPriority, requestMatch } =
         useContext(RequestMatchContext);
     const { t } = useTranslation();
 
@@ -36,8 +36,10 @@ const Subjects: React.FC = () => {
                     is: matchRequest.subjects.length === 0 || (matchRequest.subjects.length === 1 && isDAZ),
                     reason: isDAZ ? t('matching.wizard.pupil.subjects.reason_btn_disabled_DAZ') : t('matching.wizard.pupil.subjects.reason_btn_disabled'),
                 }}
-                onPressPrev={() => setCurrentIndex(2)}
-                onPressNext={() => setCurrentIndex(skippedSubjectPriority ? 5 : 4)}
+                onPressPrev={() => setCurrentStep(RequestMatchStep.german)}
+                onPressNext={() => {
+                    skippedSubjectPriority ? requestMatch() : setCurrentStep(RequestMatchStep.priority);
+                }}
             />
         </VStack>
     );

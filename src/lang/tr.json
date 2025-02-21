@@ -1428,43 +1428,6 @@
         },
         "wizard": {
             "pupil": {
-                "filter": {
-                    "bulletPoints": [
-                        "Okulda yardıma ihtiyacınız var",
-                        "Aileniz ev ödevlerinizde size yardımcı olamaz",
-                        "Aileniz sizin için özel ders ücretini ödeyemez"
-                    ],
-                    "heading": "Birebir öğrenme desteği",
-                    "subheading1": "Birebir öğrenme desteği kimler için tasarlanmıştır?",
-                    "text1": "Aşağıdaki hususlar sizin için geçerliyse, bizden birebir öğrenim desteği almak için başvurabilirsiniz:",
-                    "question1": "Bu maddeler seni doğru şekilde yansıtıyor mu?",
-                    "subheading2": "Uzun bekleme süresi: 3-6 ay",
-                    "text2": "Şu anda birçok öğrencinin öğrenme desteğine ihtiyacı var. Bu yüzden uzun bir bekleme listemiz var. Sizin için bir öğrenme ortağı bulabilmemiz için muhtemelen 3-6 ay beklemeniz gerekecektir.",
-                    "question2": "3-6 ay beklemeyebilir misiniz?"
-                },
-                "alternatives": {
-                    "bulletPoints": [
-                        "Öğrenmek için yardıma ihtiyacın var.",
-                        "Öğrenirken dezavantajlarınız var.",
-                        "Aileniz ders çalışmanıza yardımcı olamaz.",
-                        "Aileniz sizin için özel ders ücretini ödeyemez."
-                    ],
-                    "educloud": {
-                        "heading": "Edu-Cloud'u zaten biliyor musunuz?",
-                        "text": "Orada ilginizi çekebilecek birçok teklif bulacaksınız. Herhangi bir sorunuz varsa, lütfen istediğiniz zaman bizimle iletişime geçmekten çekinmeyin.",
-                        "button": "Edu-Cloud'a"
-                    },
-                    "groupcourses": {
-                        "button": "Grup kurslarına dön"
-                    },
-                    "homeworkhelp": {
-                        "heading": "Ev ödevi yardımımızı zaten biliyor musunuz?",
-                        "text": "Ödevinizle ilgili bir sorunuz mu var? Lern-Fair Saat 17:00 ile 18:00 arasında ekipten bizler Zoom'dayız ve ödevlerinizde size yardımcı olabiliriz.",
-                        "button": "Ev ödevi yardımı"
-                    },
-                    "heading": "Alternatif teklifler",
-                    "text": "Lern-Fair Maalesef bu durumda size destek olamıyoruz. Yardımlarımız gönüllüler tarafından sunulmaktadır. Bu nedenle, yalnızca sınırlı sayıda yerimiz var ve aşağıdaki kriterleri karşılayan öğrencilere yardımcı olmak istiyoruz:"
-                },
                 "profiledata": {
                     "heading": "Profili güncelle",
                     "text": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
@@ -1494,13 +1457,6 @@
                     "subheading": "En çok hangi konuda yardıma ihtiyacınız var?",
                     "text": "Tüm konularda size yardımcı olacak birini bulmaya çalışacağız. Ne yazık ki bu her zaman mümkün olmuyor. Bu nedenle hangi konunun sizin için en önemli olduğunu burada belirtebilirsiniz.",
                     "reason_btn_disabled": "Lütfen bir konu seçiniz."
-                },
-                "details": {
-                    "heading": "Detaylar",
-                    "subheading": "Gelecekteki öğrenim ortağınıza söylemek istediğiniz başka bir şey var mı?",
-                    "text": "Burada kendiniz veya mevcut durumunuz hakkında daha fazla bilgi verebilirsiniz, örneğin yardıma ihtiyacınız olan belirli bir konu var mı veya öğrenim ortağınızın sizin hakkınızda bilmesi gereken bir şey var mı? Bu metni gelecekteki öğrenim ortağınıza ileteceğiz.",
-                    "additionalInfo": "Bilgileriniz",
-                    "placeholder": "Gelecekteki öğrenim ortağınız sizin hakkınızda ne bilmeli?"
                 },
                 "modalSuccess": {
                     "heading": {
