@@ -20,6 +20,7 @@ import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { SCHOOL_SEARCH_ACTIVE } from '../config';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import useApollo, { useRoles } from '@/hooks/useApollo';
+import { Helmet } from 'react-helmet';
 
 interface SelectedSchool extends Partial<ExternalSchoolSearch> {
     hasPredefinedType?: boolean;
@@ -385,6 +386,12 @@ const Registration: React.FC = () => {
 
     return (
         <Flex alignItems="center" w="100%" h="100dvh">
+            <Helmet>
+                <meta property="og:title" content={t('referral.title')} />
+                <meta property="og:description" content={t('referral.referralMessage')} />
+                <meta property="og:image" content={'https://user-app-files.fra1.digitaloceanspaces.com/static/images/share_image.jpg'} />
+                <meta property="og:url" content={'https://app.lern-fair.de/registration'} />
+            </Helmet>
             <Box w="100%" display="flex" flexDirection={headerDirection} position="relative" padding={headerSpace} justifyContent="center" alignItems="center">
                 <Image
                     alt="Lernfair"
