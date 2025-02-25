@@ -247,7 +247,7 @@ const MatchingStudent: React.FC<Props> = () => {
                                 {t('matching.volunteering.text')}
                             </Text>
                             <VStack marginBottom={space['2.5']}>
-                                <Button className={'w-full md:w-fit'} onClick={() => navigate('/profile#profileStudentMyCertificates')} variant={'outline'}>
+                                <Button className={'w-full md:w-fit'} onClick={() => navigate('/certificates')} variant={'outline'}>
                                     {t('matching.volunteering.button')}
                                 </Button>
                             </VStack>
