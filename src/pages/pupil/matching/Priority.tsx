@@ -3,12 +3,12 @@ import { useContext } from 'react';
 import { DAZ } from '../../../types/subject';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
-import { RequestMatchContext } from './RequestMatch';
+import { RequestMatchContext, RequestMatchStep } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
 
 const Priority: React.FC = () => {
     const { space } = useTheme();
-    const { matchRequest, setSubject, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, setCurrentStep, requestMatch } = useContext(RequestMatchContext);
     const { t } = useTranslation();
 
     return (
@@ -27,8 +27,8 @@ const Priority: React.FC = () => {
             />
             <NextPrevButtons
                 disablingNext={{ is: matchRequest.subjects.every((it) => !it.mandatory), reason: t('matching.wizard.pupil.priority.reason_btn_disabled') }}
-                onPressPrev={() => setCurrentIndex(3)}
-                onPressNext={() => setCurrentIndex(5)}
+                onPressPrev={() => setCurrentStep(RequestMatchStep.subjects)}
+                onPressNext={requestMatch}
             />
         </VStack>
     );
