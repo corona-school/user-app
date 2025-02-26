@@ -113,7 +113,7 @@ const RequestMatch: React.FC = () => {
         },
         [setMatchRequest]
     );
-    const [showModal, setShowModal] = useState(false);
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const location = useLocation();
     const locationState = location.state as { edit: boolean };
@@ -163,27 +163,19 @@ const RequestMatch: React.FC = () => {
     const requestMatch = useCallback(async () => {
         setIsLoading(true);
         const resSubs = await update({ variables: { subjects: matchRequest.subjects } });
-
-        if (resSubs.data && !resSubs.errors) {
+        let hasError = !!resSubs.errors;
+        if (resSubs.data && !hasError) {
             if (!isEdit) {
                 const resRequest = await createMatchRequest();
-                if (resRequest.data && !resRequest.errors) {
-                    setShowModal(true);
-                } else {
-                    toast.error(t('error'));
-                    setIsLoading(false);
-                }
-            } else {
-                setShowModal(true);
-                setIsLoading(false);
+                hasError = !!resRequest.errors;
             }
-        } else {
-            toast.error(t('error'));
         }
-    }, [createMatchRequest, matchRequest.subjects, showModal, toast, update, isEdit]);
+        setIsLoading(false);
+        hasError ? toast.error(t('error')) : setShowSuccessModal(true);
+    }, [createMatchRequest, matchRequest.subjects, showSuccessModal, toast, update, isEdit]);
 
     const handleOnOpenChange = (open: boolean) => {
-        setShowModal(open);
+        setShowSuccessModal(open);
         if (!open) {
             navigate('/matching', {
                 state: { tabID: 1 },
@@ -239,7 +231,7 @@ const RequestMatch: React.FC = () => {
                     {(loading || isLoading) && <CenterLoadingSpinner />}
                 </RequestMatchContext.Provider>
                 <InformationModal
-                    isOpen={showModal}
+                    isOpen={showSuccessModal}
                     onOpenChange={handleOnOpenChange}
                     headline={
                         <span className="flex items-center gap-x-2">
@@ -258,7 +250,7 @@ const RequestMatch: React.FC = () => {
                         </Button>
                         <Button
                             onClick={() => {
-                                setShowModal(false);
+                                setShowSuccessModal(false);
                                 navigate('/group');
                             }}
                             className="w-full lg:w-fit"
