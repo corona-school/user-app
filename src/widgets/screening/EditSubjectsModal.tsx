@@ -3,7 +3,7 @@ import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/c
 import { Slider } from '@/components/Slider';
 import { Typography } from '@/components/Typography';
 import { Subject } from '@/gql/graphql';
-import { getGradeLabel } from '@/Utility';
+import { getGradeLabel, MIN_MAX_GRADE_RANGE } from '@/Utility';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { SubjectSelector } from '../SubjectSelector';
@@ -24,8 +24,7 @@ const SubjectGradeSlider = ({ subject, setSubject }: SubjectGradeSliderProps) =>
         setSubject({ name: subject.name, grade: { min: range[0], max: range[1] } });
     };
 
-    const min = 1;
-    const max = 14;
+    const { min, max } = MIN_MAX_GRADE_RANGE;
     const currentMin = subject?.grade?.min ?? min;
     const currentMax = subject?.grade?.max ?? max;
 
@@ -65,7 +64,7 @@ export const EditSubjectsModal = ({ subjects, onOpenChange, isOpen, type, onSave
                     subjects={editedSubjects.map((it) => it.name)}
                     includeDaz
                     addSubject={(it) => {
-                        setEditedSubjects((prev) => [...prev, { name: it, mandatory: false }]);
+                        setEditedSubjects((prev) => [...prev, { name: it, mandatory: false, grade: MIN_MAX_GRADE_RANGE }]);
                     }}
                     removeSubject={(it) => {
                         setEditedSubjects((prev) => prev.filter((s) => s.name !== it));
