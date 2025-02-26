@@ -246,7 +246,7 @@ const RequestMatch: React.FC = () => {
                     </Typography>
                     <ModalFooter>
                         <Button className="w-full lg:w-fit" variant="outline" onClick={() => handleOnOpenChange(false)}>
-                            {t('back')}
+                            {t('done')}
                         </Button>
                         <Button
                             onClick={() => {
