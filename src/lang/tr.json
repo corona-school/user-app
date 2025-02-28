@@ -1580,8 +1580,9 @@
             },
             "warningModal": {
                 "title": "Emin misin?",
-                "body": "Ara sıra, karşı tarafın geri dönüşü biraz zaman alabilir. Tüm öğrencilerle tanışma görüşmeleri yaptık ve öğrenme desteği ihtiyaçlarını kontrol ettik. Bu nedenle, bir öğrenme çiftini sonlandırmadan önce en az 14 gün geri dönüş beklemenizi öneriyoruz.",
-                "btn": "Yine de sonlandır"
+                "btn": "Yine de sonlandır",
+                "studentDescription": "Bazen muhatabınızın size geri dönmesi biraz zaman alabilir. Tüm öğrencilerle tanışma görüşmeleri gerçekleştirdik ve özel ders ihtiyaçlarını değerlendirdik. Bu nedenle, öğrenim çiftini iptal etmeden önce geri bildirim için en az 14 gün beklemenizi öneririz.",
+                "pupilDescription": "Bazen yardımcıların sohbet yoluyla size geri dönmesi biraz zaman alabilir, bu nedenle yaklaşık 14 gün beklemenizi öneririz. Bizimle istediğiniz zamanlern-fair adresinden iletişime geçebilirsiniz."
             },
             "newMatch": {
                 "title": "Yeni bir öğrenme çifti oluşturun",

@@ -37,7 +37,9 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                 {alsoShowWarningModal && !showedWarning ? (
                     <>
                         <Modal.Header>{t('matching.dissolve.warningModal.title')}</Modal.Header>
-                        <Modal.Body>{t('matching.dissolve.warningModal.body')}</Modal.Body>
+                        <Modal.Body>
+                            {t(userType === 'pupil' ? 'matching.dissolve.warningModal.pupilDescription' : 'matching.dissolve.warningModal.studentDescription')}
+                        </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
                                 <Button onPress={onPressBack} variant="ghost">
