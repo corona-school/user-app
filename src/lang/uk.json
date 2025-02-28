@@ -1582,7 +1582,7 @@
                 "title": "Ти впевнений?",
                 "btn": "Розчиняйтеся в будь-якому випадку",
                 "studentDescription": "Іноді потрібен певний час, щоб ваш візаві відповів вам. Ми провели вступні співбесіди з усіма студентами та оцінили їхню потребу в репетиторстві. Тому ми рекомендуємо вам зачекати щонайменше 14 днів на зворотній зв'язок, перш ніж скасовувати навчальну пару.",
-                "pupilDescription": "Manchmal dauert es etwas bis Helfer:innen sich zurückmelden per Chat, daher empfehlen wir ca. 14 Tage zu warten. Du kannst dich jederzeit unter <0/> melden."
+                "pupilDescription": "Manchmal dauert es etwas bis Helfer:innen sich zurückmelden per Chat, daher empfehlen wir ca. 14 Tage zu warten. Du kannst dich jederzeit unter <0>{{email}}</0> melden."
             },
             "newMatch": {
                 "title": "Сформуйте нову навчальну пару",

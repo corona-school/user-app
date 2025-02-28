@@ -1578,7 +1578,7 @@
                 "title": "هل أنت متأكد؟",
                 "btn": "قم بإلغاء الشراكة على أي حال",
                 "studentDescription": "في بعض الأحيان يستغرق الأمر بعض الوقت حتى يرد عليك الشخص الآخر. لقد أجرينا محادثات تمهيدية مع جميع تلاميذ وتحققنا من حاجتهم للدروس الخصوصية. لذلك نوصيك بالانتظار لمدة 14 يومًا على الأقل للحصول على ردود الفعل قبل إلغاء شراكة شراكة تعلم .",
-                "pupilDescription": "Manchmal dauert es etwas bis Helfer:innen sich zurückmelden per Chat, daher empfehlen wir ca. 14 Tage zu warten. Du kannst dich jederzeit unter <0/> melden."
+                "pupilDescription": "Manchmal dauert es etwas bis Helfer:innen sich zurückmelden per Chat, daher empfehlen wir ca. 14 Tage zu warten. Du kannst dich jederzeit unter <0>{{email}}</0> melden."
             },
             "newMatch": {
                 "title": "تشكيل شراكة تعليمية جديدة",

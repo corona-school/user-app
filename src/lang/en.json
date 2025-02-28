@@ -1582,7 +1582,7 @@
                 "title": "Are you sure?",
                 "btn": "Dissolve anyway",
                 "studentDescription": "Sometimes it takes a while for your counterpart to get back to you. We have held introductory meetings with all pupils and checked their need for tutoring. We therefore recommend that you wait at least 14 days for feedback before you dissolve the learning pair.",
-                "pupilDescription": "Manchmal dauert es etwas bis Helfer:innen sich zurückmelden per Chat, daher empfehlen wir ca. 14 Tage zu warten. Du kannst dich jederzeit unter <0/> melden."
+                "pupilDescription": "Manchmal dauert es etwas bis Helfer:innen sich zurückmelden per Chat, daher empfehlen wir ca. 14 Tage zu warten. Du kannst dich jederzeit unter <0>{{email}}</0> melden."
             },
             "newMatch": {
                 "title": "Form a new learning pair",
