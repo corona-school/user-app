@@ -197,7 +197,7 @@ const SingleCourseStudent = () => {
         const now = DateTime.now();
         const next = appointments.find((appointment) => {
             const appointmentStart = DateTime.fromISO(appointment.start);
-            const appointmentEnd = DateTime.fromISO(appointment.start).plus(appointment.duration);
+            const appointmentEnd = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
 
             const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 240 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
 

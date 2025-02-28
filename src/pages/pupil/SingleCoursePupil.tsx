@@ -19,6 +19,7 @@ import { Typography } from '@/components/Typography';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
+import { Lecture } from '@/gql/graphql';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -136,7 +137,22 @@ const SingleCoursePupil = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
-    const appointments = subcourse?.appointments ?? [];
+    const appointments = useMemo(() => {
+        return subcourse?.appointments ?? [];
+    }, [subcourse?.appointments]);
+
+    const myNextAppointment = useMemo(() => {
+        const now = DateTime.now();
+        const next = appointments.find((appointment) => {
+            const appointmentStart = DateTime.fromISO(appointment.start);
+            const appointmentEnd = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
+
+            const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 240 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
+            return isWithinTimeFrame;
+        });
+
+        return next;
+    }, [appointments]);
 
     const isInPast = useMemo(
         () =>
@@ -176,7 +192,14 @@ const SingleCoursePupil = () => {
                     <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name! }]} />
                     {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
                 </div>
-                {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
+                {course && subcourse && !isInPast && (
+                    <PupilCourseButtons
+                        appointment={myNextAppointment as Lecture}
+                        subcourse={subcourse}
+                        refresh={refetch}
+                        isActiveSubcourse={isActiveSubcourse}
+                    />
+                )}
                 {subcourse?.isParticipant && !isInPast && (
                     <PupilJoinedCourseBanner
                         courseStatus={getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants)}

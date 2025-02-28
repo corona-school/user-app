@@ -23,6 +23,7 @@ import SocialOptions from '@/components/referral/socialOptions';
 import Rewards from '@/components/referral/rewards';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { useUserType } from '@/hooks/useApollo';
 
 const ReferralCountQuery = gql(`
     query ReferralCount {
@@ -43,7 +44,8 @@ const SupportedHoursQuery = gql(`
 const Referrals: React.FC<{}> = () => {
     const { t } = useTranslation();
     const [hasCopied, setHasCopied] = useState(false);
-    const { trackPageView } = useMatomo();
+    const { trackPageView, trackEvent } = useMatomo();
+    const userType = useUserType();
 
     const onCopy = async (text: string) => {
         try {
@@ -89,6 +91,11 @@ const Referrals: React.FC<{}> = () => {
 
     // Linkedin Share
     const shareToLinkedIn = () => {
+        trackEvent({
+            category: `${userType === 'pupil' ? 'SuS' : 'HuH'} Referral`,
+            action: 'Share on Desktop',
+            name: 'Click Share on LinkedIn on Desktop',
+        });
         const imageURL = 'https://user-app-files.fra1.digitaloceanspaces.com/static/images/share_image.jpg';
         const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(imageURL)}`;
 
@@ -103,9 +110,23 @@ const Referrals: React.FC<{}> = () => {
 
     // Mobile Share
     const handleShare = () => {
+        trackEvent({
+            category: `${userType === 'pupil' ? 'SuS' : 'HuH'} Referral`,
+            action: 'Share on Mobile',
+            name: 'Click Share on Mobile',
+        });
         navigator.share({
             url: uniqueReferralLink,
         });
+    };
+
+    const handleOnCopy = (text: string, version: 'Mobile' | 'Desktop') => {
+        trackEvent({
+            category: `${userType === 'pupil' ? 'SuS' : 'HuH'} Referral`,
+            action: `Share on ${version}`,
+            name: `Click copy URL on ${version}`,
+        });
+        onCopy(text);
     };
 
     return (
@@ -160,7 +181,7 @@ const Referrals: React.FC<{}> = () => {
                             <SocialOptions
                                 uniqueReferralLink={uniqueReferralLink}
                                 referralMessage={referralMessage}
-                                onCopy={onCopy}
+                                onCopy={(text) => handleOnCopy(text, 'Desktop')}
                                 hasCopied={hasCopied}
                                 linkedinButtonText={linkedinButtonText}
                                 t={t}
@@ -234,7 +255,7 @@ const Referrals: React.FC<{}> = () => {
                         <SocialOptions
                             uniqueReferralLink={uniqueReferralLink}
                             referralMessage={referralMessage}
-                            onCopy={onCopy}
+                            onCopy={(text) => handleOnCopy(text, 'Mobile')}
                             hasCopied={hasCopied}
                             linkedinButtonText={linkedinButtonText}
                             t={t}
