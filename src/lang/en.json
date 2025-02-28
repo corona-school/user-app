@@ -1580,8 +1580,9 @@
             },
             "warningModal": {
                 "title": "Are you sure?",
-                "body": "Sometimes it takes a while for your counterpart to get back to you. We have held introductory meetings with all pupils and checked their need for learning support. We therefore recommend that you wait at least 14 days for feedback before you dissolve the learning pair.",
-                "btn": "Dissolve anyway"
+                "btn": "Dissolve anyway",
+                "studentDescription": "Sometimes it takes a while for your counterpart to get back to you. We have held introductory meetings with all pupils and checked their need for tutoring. We therefore recommend that you wait at least 14 days for feedback before you dissolve the learning pair.",
+                "pupilDescription": "Sometimes it takes a while for volunteers to get back to you via chat, so we recommend waiting about 14 days. You can contact us at <0/> at any time."
             },
             "newMatch": {
                 "title": "Form a new learning pair",

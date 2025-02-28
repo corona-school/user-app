@@ -1,9 +1,10 @@
 import { Button, Modal, Radio, Row, useTheme, VStack } from 'native-base';
 import { useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Dissolve_Reason } from '../gql/graphql';
 import DisableableButton from '../components/DisablebleButton';
+import { Typography } from '@/components/Typography';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
@@ -11,6 +12,12 @@ type DissolveModalProps = {
     onPressDissolve: (dissolveReasons: Dissolve_Reason[]) => any;
     onPressBack: () => any;
 };
+
+const SupportEmail = () => (
+    <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
+        support@lern-fair.de
+    </a>
+);
 
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack }) => {
     const [showedWarning, setShowedWarning] = useState<boolean>(false);
@@ -37,7 +44,19 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                 {alsoShowWarningModal && !showedWarning ? (
                     <>
                         <Modal.Header>{t('matching.dissolve.warningModal.title')}</Modal.Header>
-                        <Modal.Body>{t('matching.dissolve.warningModal.body')}</Modal.Body>
+                        <Modal.Body>
+                            <Typography>
+                                <Trans
+                                    i18nKey={
+                                        userType === 'pupil'
+                                            ? 'matching.dissolve.warningModal.pupilDescription'
+                                            : 'matching.dissolve.warningModal.studentDescription'
+                                    }
+                                    components={[<SupportEmail />]}
+                                    values={{ email: 'support@lern-fair.de' }}
+                                ></Trans>
+                            </Typography>
+                        </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
                                 <Button onPress={onPressBack} variant="ghost">
