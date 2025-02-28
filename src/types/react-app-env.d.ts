@@ -45,6 +45,7 @@ declare interface Window {
         readonly RUNTIME_SCREENING_URL: string;
         readonly RUNTIME_GOOGLE_CLIENT_ID: string;
         readonly RUNTIME_REFERRALS_ACTIVE: string;
+        readonly RUNTIME_LESSON_PLAN_GENERATOR_ACTIVE: string;
 
         readonly RUNTIME_WEBPUSH_ROLLOUT_RATIO?: string;
     };
