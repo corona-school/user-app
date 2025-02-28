@@ -1582,7 +1582,7 @@
                 "title": "Emin misin?",
                 "btn": "Yine de sonlandır",
                 "studentDescription": "Bazen muhatabınızın size geri dönmesi biraz zaman alabilir. Tüm öğrencilerle tanışma görüşmeleri gerçekleştirdik ve özel ders ihtiyaçlarını değerlendirdik. Bu nedenle, öğrenim çiftini iptal etmeden önce geri bildirim için en az 14 gün beklemenizi öneririz.",
-                "pupilDescription": "Manchmal dauert es etwas bis Helfer:innen sich zurückmelden per Chat, daher empfehlen wir ca. 14 Tage zu warten. Du kannst dich jederzeit unter <0>{{email}}</0> melden."
+                "pupilDescription": "Bazen yardımcıların sohbet yoluyla size geri dönmesi biraz zaman alabilir, bu nedenle yaklaşık 14 gün beklemenizi öneririz. İstediğiniz zaman <0/> adresinden bizimle iletişime geçebilirsiniz."
             },
             "newMatch": {
                 "title": "Yeni bir öğrenme çifti oluşturun",

@@ -13,6 +13,12 @@ type DissolveModalProps = {
     onPressBack: () => any;
 };
 
+const SupportEmail = () => (
+    <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
+        support@lern-fair.de
+    </a>
+);
+
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack }) => {
     const [showedWarning, setShowedWarning] = useState<boolean>(false);
     const { t } = useTranslation();
@@ -46,11 +52,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                                             ? 'matching.dissolve.warningModal.pupilDescription'
                                             : 'matching.dissolve.warningModal.studentDescription'
                                     }
-                                    components={[
-                                        <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
-                                            support@lern-fair.de
-                                        </a>,
-                                    ]}
+                                    components={[<SupportEmail />]}
                                     values={{ email: 'support@lern-fair.de' }}
                                 ></Trans>
                             </Typography>
