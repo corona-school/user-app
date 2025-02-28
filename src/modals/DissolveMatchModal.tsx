@@ -1,9 +1,10 @@
 import { Button, Modal, Radio, Row, useTheme, VStack } from 'native-base';
 import { useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Dissolve_Reason } from '../gql/graphql';
 import DisableableButton from '../components/DisablebleButton';
+import { Typography } from '@/components/Typography';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
@@ -38,7 +39,21 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                     <>
                         <Modal.Header>{t('matching.dissolve.warningModal.title')}</Modal.Header>
                         <Modal.Body>
-                            {t(userType === 'pupil' ? 'matching.dissolve.warningModal.pupilDescription' : 'matching.dissolve.warningModal.studentDescription')}
+                            <Typography>
+                                <Trans
+                                    i18nKey={
+                                        userType === 'pupil'
+                                            ? 'matching.dissolve.warningModal.pupilDescription'
+                                            : 'matching.dissolve.warningModal.studentDescription'
+                                    }
+                                    components={[
+                                        <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
+                                            support@lern-fair.de
+                                        </a>,
+                                    ]}
+                                    values={{ email: 'support@lern-fair.de' }}
+                                ></Trans>
+                            </Typography>
                         </Modal.Body>
                         <Modal.Footer>
                             <Row space={space['1']}>
