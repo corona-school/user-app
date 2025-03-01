@@ -255,6 +255,9 @@
     "grade": "Klasse",
     "since": "seit",
     "till": "bis",
+    "sortBy": "Sortieren nach",
+    "updatedAt": "Zuletzt aktualisiert",
+    "lectureDate": "Kurstermin",
     "lernfair": {
         "languages": {
             "albanisch": "Albanisch",
