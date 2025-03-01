@@ -2396,6 +2396,9 @@
     "since": "منذ",
     "till": "حتى",
     "logout": "تسجيل الخروج",
+    "sortBy": "Sortieren nach",
+    "updatedAt": "Zuletzt aktualisiert",
+    "lectureDate": "Kurstermin",
     "forStudents": {
         "tabs": {
             "handbook": "يدوي",

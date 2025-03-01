@@ -2400,6 +2400,9 @@
     "since": "beri",
     "till": "kadar",
     "logout": "Oturumu kapat",
+    "sortBy": "Sortieren nach",
+    "updatedAt": "Zuletzt aktualisiert",
+    "lectureDate": "Kurstermin",
     "forStudents": {
         "tabs": {
             "handbook": "Manuel",

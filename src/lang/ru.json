@@ -2400,6 +2400,9 @@
     "since": "с",
     "till": "до",
     "logout": "Выход из системы",
+    "sortBy": "Sortieren nach",
+    "updatedAt": "Zuletzt aktualisiert",
+    "lectureDate": "Kurstermin",
     "forStudents": {
         "tabs": {
             "handbook": "Руководство",
