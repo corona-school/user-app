@@ -52,7 +52,6 @@ export const MatchPupilCardDissolved = {
                 ],
 
                 dissolvedBy: 'student',
-                dissolveReasonEnum: 'noMoreHelpNeeded',
                 dissolveReasons: [Dissolve_Reason.NoMoreHelpNeeded],
             }}
         />
