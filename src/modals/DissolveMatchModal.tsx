@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Dissolve_Reason } from '../gql/graphql';
 import { Typography } from '@/components/Typography';
 import { cn } from '@/lib/Tailwind';
@@ -16,6 +16,12 @@ type DissolveModalProps = {
     onPressDissolve: (dissolveReasons: Dissolve_Reason[], otherFreeText: string | undefined) => any;
     onPressBack: () => any;
 };
+
+const SupportEmail = () => (
+    <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
+        support@lern-fair.de
+    </a>
+);
 
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack }) => {
     const [showedWarning, setShowedWarning] = useState<boolean>(false);
@@ -50,7 +56,17 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                         <ModalHeader>
                             <ModalTitle>{t('matching.dissolve.warningModal.title')}</ModalTitle>
                         </ModalHeader>
-                        <Typography className="py-4">{t('matching.dissolve.warningModal.body')}</Typography>
+                        <Typography className="py-4">
+                            <Trans
+                                i18nKey={
+                                    userType === 'pupil'
+                                        ? 'matching.dissolve.warningModal.pupilDescription'
+                                        : 'matching.dissolve.warningModal.studentDescription'
+                                }
+                                components={[<SupportEmail />]}
+                                values={{ email: 'support@lern-fair.de' }}
+                            ></Trans>
+                        </Typography>
                         <ModalFooter variant="default">
                             <Button onClick={onPressBack} variant="ghost">
                                 {t('back')}

@@ -79,8 +79,10 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
+import Lesson from '@/pages/Lesson';
 import EthicsOnboardingSlides from '@/pages/onboarding/ethical-standards/EthicsOnboardingSlides';
 import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/EthicsOnboardingWelcome';
+import Referrals from '@/pages/Referrals';
 import CertificatesPage from '@/pages/student/Certificates';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
@@ -396,6 +398,16 @@ export default function NavigatorLazy() {
                 }
             />
 
+            {/* Referral Center */}
+            <Route
+                path="referral"
+                element={
+                    <RequireAuth>
+                        <Referrals />
+                    </RequireAuth>
+                }
+            />
+
             <Route
                 path="/matching"
                 element={
@@ -448,6 +460,19 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            {/* Lesson Plan Generator */}
+            <Route
+                path="lesson"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['STUDENT']}>
+                            <Lesson />
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+
             {/* Knowledge Center */}
             <Route
                 path="/knowledge-helper"

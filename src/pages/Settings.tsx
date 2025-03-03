@@ -9,7 +9,7 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE, LESSON_PLAN_GENERATOR_ACTIVE, REFERRALS_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
 import { Breadcrumb } from '@/components/Breadcrumb';
 
@@ -17,7 +17,7 @@ const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { user } = useApollo();
+    const { user, roles } = useApollo();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
@@ -97,15 +97,31 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
+                            {/* Add Lesson for both desktop and mobile */}
+                            {LESSON_PLAN_GENERATOR_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('navigation.label.lesson')} onPress={() => navigate('/lesson')} />
+                                </Column>
+                            )}
+                            {/* Move Referral to Knowledge Center on Mobile Only */}
+                            {isMobile && REFERRALS_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('navigation.label.referral')} onPress={() => navigate('/referral')} />
+                                </Column>
+                            )}
                         </ProfileSettingRow>
                     </>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
-                        </Column>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
-                        </Column>
+                        {!roles.includes('SSO_USER') && (
+                            <>
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
+                                </Column>
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
+                                </Column>
+                            </>
+                        )}
 
                         <Column mb={tabspace}>
                             <ListItem label={t('settings.account.deactivateAccount')} onPress={() => setShowDeactivate(true)} />

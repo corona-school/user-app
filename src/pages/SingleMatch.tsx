@@ -33,7 +33,6 @@ query SingleMatch($matchId: Int! ) {
     createdAt
     dissolved
     dissolvedAt
-    dissolveReason
     appointmentsCount
     lastAppointmentId
     firstAppointmentId

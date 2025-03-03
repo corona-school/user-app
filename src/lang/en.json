@@ -190,7 +190,13 @@
         "invalidToken": "Token invalid",
         "invalidMailMessage": "The e-mail address you entered is incorrect.",
         "newEmail": "New e-mail",
-        "changeEmailConfirmation": "We have sent you a confirmation email to the new email address"
+        "changeEmailConfirmation": "We have sent you a confirmation email to the new email address",
+        "reauthenticate": {
+            "title": "Register again",
+            "passwordDescription": "Please log in again with your password to complete the linking process. Note that you only need to do this once."
+        },
+        "continueWith": "Continue with {{idp}}",
+        "linkAccountWithIdpError": "Linking your account to an identity provider requires a password. Please set a password first"
     },
     "lernfair": {
         "languages": {
@@ -1422,39 +1428,6 @@
         },
         "wizard": {
             "pupil": {
-                "filter": {
-                    "bulletPoints": ["You need help at school", "Your family can't help you with your homework", "Your family can't pay for tutoring for you"],
-                    "heading": "The 1:1 learning support",
-                    "subheading1": "Who is the 1:1 learning support for?",
-                    "text1": "If the following points apply to you, you can apply for 1:1 learning support from us:",
-                    "question1": "Do these points apply to you?",
-                    "subheading2": "Long waiting time: 3-6 months",
-                    "text2": "At the moment, many pupils need learning support. That's why we have a long waiting list. You will probably have to wait 3-6 months before we can find a learning partner for you.",
-                    "question2": "Are you prepared to wait 3-6 months?"
-                },
-                "alternatives": {
-                    "bulletPoints": [
-                        "You need help with your studies.",
-                        "You have disadvantages when learning.",
-                        "Your family can't help you study.",
-                        "Your family can't pay for tutoring for you."
-                    ],
-                    "educloud": {
-                        "heading": "Do you already know Edu-Cloud?",
-                        "text": "There you will find many offers that may be of interest to you. If you have any questions, please feel free to contact us at any time.",
-                        "button": "To the Edu-Cloud"
-                    },
-                    "groupcourses": {
-                        "button": "To the group courses"
-                    },
-                    "homeworkhelp": {
-                        "heading": "Do you already know about our homework help?",
-                        "text": "Do you have a question about your homework? Between 17:00 and 18:00, we from the Lern-Fair team are on Zoom and can help you with your homework.",
-                        "button": "To the homework help"
-                    },
-                    "heading": "Alternative offers",
-                    "text": "Unfortunately, we cannot support you at Lern-Fair in this case. Our help is offered by volunteers volunteers . Therefore, we only have limited places and would like to help especially those pupils who fulfill the following criteria:"
-                },
                 "profiledata": {
                     "heading": "Update profile",
                     "text": "So that we can assign you an optimal learning partner, we ask you to check and complete your personal information once again.",
@@ -1484,13 +1457,6 @@
                     "subheading": "In which subject do you need the most help?",
                     "text": "We will try to find someone to help you in all subjects. Unfortunately, this is not always possible. You can therefore indicate here which subject is most important to you.",
                     "reason_btn_disabled": "Please select a subject."
-                },
-                "details": {
-                    "heading": "Details",
-                    "subheading": "Is there anything else you would like to say to your future learning partner?",
-                    "text": "Here you can provide further information about yourself or your current situation, e.g. do you have a specific topic you need help with or is there something your learning partner should know about you? We will forward this text to your future learning partner.",
-                    "additionalInfo": "Your details",
-                    "placeholder": "What should your future learning partner know about you?"
                 },
                 "modalSuccess": {
                     "heading": {
@@ -1615,8 +1581,9 @@
             },
             "warningModal": {
                 "title": "Are you sure?",
-                "body": "Sometimes it takes a while for your counterpart to get back to you. We have held introductory meetings with all pupils and checked their need for learning support. We therefore recommend that you wait at least 14 days for feedback before you dissolve the learning pair.",
-                "btn": "Dissolve anyway"
+                "btn": "Dissolve anyway",
+                "studentDescription": "Sometimes it takes a while for your counterpart to get back to you. We have held introductory meetings with all pupils and checked their need for tutoring. We therefore recommend that you wait at least 14 days for feedback before you dissolve the learning pair.",
+                "pupilDescription": "Sometimes it takes a while for volunteers to get back to you via chat, so we recommend waiting about 14 days. You can contact us at <0/> at any time."
             },
             "newMatch": {
                 "title": "Form a new learning pair",
@@ -2106,6 +2073,8 @@
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
             "editCourse": "Edit course",
+            "lesson": "Lessons",
+            "referral": "Referral",
             "certificates": "Certificates"
         }
     },
@@ -2140,7 +2109,8 @@
             "share_course": "Mark course as template",
             "unshare_course": "Remove marker as template",
             "are_you_sure_allow": "Are you sure you want to activate this course?",
-            "are_you_sure_deny": "Are you sure you want to decline this course?"
+            "are_you_sure_deny": "Are you sure you want to decline this course?",
+            "drafts": "Drafts"
         },
         "title": "Screening",
         "howto": "Use the search bar to find the pupil or helper you want to screen.",
@@ -2512,6 +2482,109 @@
         "deviceOnOs": "on"
     },
     "changesWereSaved": "Changes have been saved",
+    "lesson": {
+        "pageTitle": "Lesson planning with AI",
+        "generatePlanText": "Create a lesson plan to teach your students.",
+        "generatePlanButton": "Create a lesson plan",
+        "lessonGrade": "Class:",
+        "subject": "Subject:",
+        "prompt": "Prompt input",
+        "duration": "Duration:",
+        "placeholderDescription": "Describe your lesson with more context for the AI",
+        "chooseSubject": "Select subject",
+        "chooseGrade": "Select class",
+        "chooseDuration": "Select duration",
+        "lessonTitle": "Lesson title",
+        "lessonPlan": "Lesson plan:",
+        "lessonAgenda": "Teaching agenda",
+        "learningGoals": "Learning objectives",
+        "knowdlegeButton": "Upload files (optional)",
+        "uploadedFiles": "Uploaded files (max 3)",
+        "uploadHere": "Upload here",
+        "browseButton": "Browse",
+        "tryExample": "Try out an example",
+        "copyOutput": "Copy output",
+        "assessment": "Rating",
+        "homework": "Homework",
+        "resources": "Resources",
+        "copyButton": "Copy",
+        "resetLesson": "Reset",
+        "generatePlan": "Create plan",
+        "acceptTermsCheckbox": "Accept general terms and conditions:",
+        "acceptTCText": "I have not entered any personal data in the text field and I am aware that Open AI may use it without European data protection standards. Should anyone assert claims against Lern-Fair because I have no rights to the uploaded documents, I undertake to indemnify Lern-Fair .",
+        "fileUploadTooltip": "Improve the AI output by uploading additional files here",
+        "durations": {
+            "30": "30 minutes",
+            "45": "45 minutes",
+            "60": "60 minutes",
+            "90": "90 minutes"
+        },
+        "subjects": {
+            "Altgriechisch": "Ancient Greek",
+            "Arbeitslehre": "Labor theory",
+            "Biologie": "Biology",
+            "Chemie": "Chemistry",
+            "Deutsch": "German",
+            "Deutsch als Zweitsprache": "German as a second language",
+            "Englisch": "English",
+            "Erdkunde": "Geography",
+            "Ethik": "Ethics",
+            "Französisch": "French",
+            "Geschichte": "History",
+            "Gesundheit": "Health",
+            "Informatik": "Computer science",
+            "Italienisch": "Italian",
+            "Kunst": "Art",
+            "Latein": "Latin",
+            "Mathematik": "Mathematics",
+            "Musik": "Music",
+            "Niederländisch": "Dutch",
+            "Pädagogik": "Pedagogy",
+            "Philosophie": "Philosophy",
+            "Physik": "Physics",
+            "Politik": "Politics",
+            "Religion": "Religion",
+            "Russisch": "Russian",
+            "Sachkunde": "Expertise",
+            "Spanisch": "Spanish",
+            "Technik": "Technology",
+            "Wirtschaft": "Economy",
+            "Lernen lernen": "Learning to learn"
+        },
+        "placeholderImageDescription": "Fill out the form to create a lesson plan"
+    },
+    "referral": {
+        "share": {
+            "option1": {
+                "option": "Copy and Share Link",
+                "description": "- share to your favorite social apps"
+            },
+            "option2": {
+                "option": "Share on WhatsApp",
+                "description": "- directly share to your contacts"
+            },
+            "option3": {
+                "option": "Share on LinkedIn",
+                "description": "- Click on \"Share on LinkedIn\" and insert the link into a post."
+            },
+            "title": "Share your unique link",
+            "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
+            "share": "Share"
+        },
+        "reward": {
+            "title": "My Impact",
+            "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let's make an impact today!",
+            "RegisteredUsers": "Registered users",
+            "HoursSupported": "Hours supported",
+            "tooltip": "to unlock this you need to have 3 or more registered users"
+        },
+        "title": "Referral program",
+        "description": "Know someone who can help make a difference to young people? Spread the word! find out more here",
+        "referralMessage": "📣 HIRING VOLUNTEERS 📣Want to give back to the community? Now is the perfect time! We are currently looking for volunteers to teach german school children grade 1- 13. #lernfair #education #e-learning",
+        "copy": "Copy",
+        "copied": "Copied",
+        "copiedReferralLink": "Recommendation link copied"
+    },
     "certificates": {
         "instantCertificate": {
             "bullets": [

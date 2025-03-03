@@ -190,7 +190,13 @@
         "invalidToken": "Belirteç geçersiz",
         "invalidMailMessage": "Girdiğiniz e-posta adresi yanlış.",
         "newEmail": "Yeni e-posta",
-        "changeEmailConfirmation": "Yeni e-posta adresinize bir onay e-postası gönderdik"
+        "changeEmailConfirmation": "Yeni e-posta adresinize bir onay e-postası gönderdik",
+        "reauthenticate": {
+            "title": "Tekrar kaydolun",
+            "passwordDescription": "Bağlama işlemini tamamlamak için lütfen şifrenizle tekrar giriş yapın. Lütfen bunu yalnızca bir kez yapmanız gerektiğini unutmayın."
+        },
+        "continueWith": "{{idp}} ile devam edin",
+        "linkAccountWithIdpError": "Hesabınızı bir kimlik sağlayıcısına bağlamak için bir parola gerekir. Lütfen önce bir parola belirleyin"
     },
     "lernfair": {
         "languages": {
@@ -1422,43 +1428,6 @@
         },
         "wizard": {
             "pupil": {
-                "filter": {
-                    "bulletPoints": [
-                        "Okulda yardıma ihtiyacınız var",
-                        "Aileniz ev ödevlerinizde size yardımcı olamaz",
-                        "Aileniz sizin için özel ders ücretini ödeyemez"
-                    ],
-                    "heading": "Birebir öğrenme desteği",
-                    "subheading1": "Birebir öğrenme desteği kimler için tasarlanmıştır?",
-                    "text1": "Aşağıdaki hususlar sizin için geçerliyse, bizden birebir öğrenim desteği almak için başvurabilirsiniz:",
-                    "question1": "Bu maddeler seni doğru şekilde yansıtıyor mu?",
-                    "subheading2": "Uzun bekleme süresi: 3-6 ay",
-                    "text2": "Şu anda birçok öğrencinin öğrenme desteğine ihtiyacı var. Bu yüzden uzun bir bekleme listemiz var. Sizin için bir öğrenme ortağı bulabilmemiz için muhtemelen 3-6 ay beklemeniz gerekecektir.",
-                    "question2": "3-6 ay beklemeyebilir misiniz?"
-                },
-                "alternatives": {
-                    "bulletPoints": [
-                        "Öğrenmek için yardıma ihtiyacın var.",
-                        "Öğrenirken dezavantajlarınız var.",
-                        "Aileniz ders çalışmanıza yardımcı olamaz.",
-                        "Aileniz sizin için özel ders ücretini ödeyemez."
-                    ],
-                    "educloud": {
-                        "heading": "Edu-Cloud'u zaten biliyor musunuz?",
-                        "text": "Orada ilginizi çekebilecek birçok teklif bulacaksınız. Herhangi bir sorunuz varsa, lütfen istediğiniz zaman bizimle iletişime geçmekten çekinmeyin.",
-                        "button": "Edu-Cloud'a"
-                    },
-                    "groupcourses": {
-                        "button": "Grup kurslarına dön"
-                    },
-                    "homeworkhelp": {
-                        "heading": "Ev ödevi yardımımızı zaten biliyor musunuz?",
-                        "text": "Ödevinizle ilgili bir sorunuz mu var? Lern-Fair Saat 17:00 ile 18:00 arasında ekipten bizler Zoom'dayız ve ödevlerinizde size yardımcı olabiliriz.",
-                        "button": "Ev ödevi yardımı"
-                    },
-                    "heading": "Alternatif teklifler",
-                    "text": "Lern-Fair Maalesef bu durumda size destek olamıyoruz. Yardımlarımız gönüllüler tarafından sunulmaktadır. Bu nedenle, yalnızca sınırlı sayıda yerimiz var ve aşağıdaki kriterleri karşılayan öğrencilere yardımcı olmak istiyoruz:"
-                },
                 "profiledata": {
                     "heading": "Profili güncelle",
                     "text": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
@@ -1488,13 +1457,6 @@
                     "subheading": "En çok hangi konuda yardıma ihtiyacınız var?",
                     "text": "Tüm konularda size yardımcı olacak birini bulmaya çalışacağız. Ne yazık ki bu her zaman mümkün olmuyor. Bu nedenle hangi konunun sizin için en önemli olduğunu burada belirtebilirsiniz.",
                     "reason_btn_disabled": "Lütfen bir konu seçiniz."
-                },
-                "details": {
-                    "heading": "Detaylar",
-                    "subheading": "Gelecekteki öğrenim ortağınıza söylemek istediğiniz başka bir şey var mı?",
-                    "text": "Burada kendiniz veya mevcut durumunuz hakkında daha fazla bilgi verebilirsiniz, örneğin yardıma ihtiyacınız olan belirli bir konu var mı veya öğrenim ortağınızın sizin hakkınızda bilmesi gereken bir şey var mı? Bu metni gelecekteki öğrenim ortağınıza ileteceğiz.",
-                    "additionalInfo": "Bilgileriniz",
-                    "placeholder": "Gelecekteki öğrenim ortağınız sizin hakkınızda ne bilmeli?"
                 },
                 "modalSuccess": {
                     "heading": {
@@ -1619,8 +1581,9 @@
             },
             "warningModal": {
                 "title": "Emin misin?",
-                "body": "Ara sıra, karşı tarafın geri dönüşü biraz zaman alabilir. Tüm öğrencilerle tanışma görüşmeleri yaptık ve öğrenme desteği ihtiyaçlarını kontrol ettik. Bu nedenle, bir öğrenme çiftini sonlandırmadan önce en az 14 gün geri dönüş beklemenizi öneriyoruz.",
-                "btn": "Yine de sonlandır"
+                "btn": "Yine de sonlandır",
+                "studentDescription": "Bazen muhatabınızın size geri dönmesi biraz zaman alabilir. Tüm öğrencilerle tanışma görüşmeleri gerçekleştirdik ve özel ders ihtiyaçlarını değerlendirdik. Bu nedenle, öğrenim çiftini iptal etmeden önce geri bildirim için en az 14 gün beklemenizi öneririz.",
+                "pupilDescription": "Bazen yardımcıların sohbet yoluyla size geri dönmesi biraz zaman alabilir, bu nedenle yaklaşık 14 gün beklemenizi öneririz. İstediğiniz zaman <0/> adresinden bizimle iletişime geçebilirsiniz."
             },
             "newMatch": {
                 "title": "Yeni bir öğrenme çifti oluşturun",
@@ -2110,6 +2073,8 @@
             "install": "Lern-Fair Uygulama",
             "progress": "Başarılar ve ilerleme",
             "editCourse": "Kursu düzenle",
+            "lesson": "Dersler",
+            "referral": "Yönlendirme",
             "certificates": "Sertifikalar"
         }
     },
@@ -2144,7 +2109,8 @@
             "share_course": "Kursu şablon olarak işaretle",
             "unshare_course": "İşaretleyiciyi şablon olarak kaldır",
             "are_you_sure_allow": "Bu kursu etkinleştirmek istediğinizden emin misiniz?",
-            "are_you_sure_deny": "Bu kursu reddetmek istediğinizden emin misiniz?"
+            "are_you_sure_deny": "Bu kursu reddetmek istediğinizden emin misiniz?",
+            "drafts": "Taslaklar"
         },
         "title": "Tarama",
         "howto": "Taramak istediğiniz öğrenci veya yardımcıyı bulmak için arama çubuğunu kullanın.",
@@ -2516,6 +2482,109 @@
         "deviceOnOs": "üzerinde"
     },
     "changesWereSaved": "Değişiklikler kaydedildi",
+    "lesson": {
+        "pageTitle": "Yapay zeka ile ders planlama",
+        "generatePlanText": "Öğrencilerinize öğretmek için bir ders planı oluşturun.",
+        "generatePlanButton": "Bir ders planı oluşturun",
+        "lessonGrade": "Sınıf:",
+        "subject": "Konu:",
+        "prompt": "Giriş istemi",
+        "duration": "Süre:",
+        "placeholderDescription": "Dersinizi YZ için daha fazla bağlamla açıklayın",
+        "chooseSubject": "Konu seçiniz",
+        "chooseGrade": "Sınıf seçin",
+        "chooseDuration": "Süre seçin",
+        "lessonTitle": "Ders başlığı",
+        "lessonPlan": "Ders planı:",
+        "lessonAgenda": "Öğretim gündemi",
+        "learningGoals": "Öğrenme hedefleri",
+        "knowdlegeButton": "Dosya yükleme (isteğe bağlı)",
+        "uploadedFiles": "Yüklenen dosyalar (en fazla 3)",
+        "uploadHere": "Buraya yükleyin",
+        "browseButton": "Gözat",
+        "tryExample": "Bir örnek deneyin",
+        "copyOutput": "Çıktıyı kopyala",
+        "assessment": "Değerleme",
+        "homework": "Ev Ödevi",
+        "resources": "Kaynaklar",
+        "copyButton": "Anlaşıldı",
+        "resetLesson": "Sıfırla",
+        "generatePlan": "Plan oluşturun",
+        "acceptTermsCheckbox": "Genel hüküm ve koşulları kabul edin:",
+        "acceptTCText": "Metin alanına herhangi bir kişisel veri girmedim ve Open AI'nın bu verileri Avrupa veri koruma standartları olmadan kullanabileceğinin farkındayım. Lern-Fair  Lern-Fair Yüklenen belgeler üzerinde herhangi bir hakkım olmadığı için herhangi biri aleyhime hak iddia ederse, tazmin etmeyi taahhüt ederim.",
+        "fileUploadTooltip": "Buraya ek dosyalar yükleyerek AI çıktısını iyileştirin",
+        "durations": {
+            "30": "30 dakika",
+            "45": "45 dakika",
+            "60": "60 dakika",
+            "90": "90 dakika"
+        },
+        "subjects": {
+            "Altgriechisch": "Antik Yunan",
+            "Arbeitslehre": "İşgücü teorisi",
+            "Biologie": "Biyoloji",
+            "Chemie": "Kimya",
+            "Deutsch": "Alman",
+            "Deutsch als Zweitsprache": "İkinci dil olarak Almanca",
+            "Englisch": "İngilizce",
+            "Erdkunde": "Coğrafya",
+            "Ethik": "Etik",
+            "Französisch": "Fransızca",
+            "Geschichte": "Tarih",
+            "Gesundheit": "Sağlık",
+            "Informatik": "Bilgisayar bilimi",
+            "Italienisch": "İtalyan",
+            "Kunst": "Sanat",
+            "Latein": "Latince",
+            "Mathematik": "Matematik",
+            "Musik": "Müzik",
+            "Niederländisch": "Hollandaca",
+            "Pädagogik": "Pedagoji",
+            "Philosophie": "Felsefe",
+            "Physik": "Fizik",
+            "Politik": "Politika",
+            "Religion": "Din",
+            "Russisch": "Rusça",
+            "Sachkunde": "Fen Bilgisi",
+            "Spanisch": "İspanyolca",
+            "Technik": "Teknoloji",
+            "Wirtschaft": "Ekonomi",
+            "Lernen lernen": "Öğrenmeyi öğrenmek"
+        },
+        "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
+    },
+    "referral": {
+        "share": {
+            "option1": {
+                "option": "Bağlantıyı Kopyala ve Paylaş",
+                "description": "- favori sosyal uygulamalarınızda paylaşın"
+            },
+            "option2": {
+                "option": "WhatsApp'ta Paylaş",
+                "description": "- kişilerinizle doğrudan paylaşın"
+            },
+            "option3": {
+                "option": "LinkedIn'de Paylaş",
+                "description": "- \"LinkedIn'de Paylaş \"a tıklayın ve bağlantıyı bir gönderiye ekleyin."
+            },
+            "title": "Benzersiz bağlantınızı paylaşın",
+            "description": "Yönlendirmeye başlamak için kişisel bağlantınızı ağınızla paylaşın! Yönlendirme bağlantınızı paylaşmanın üç kolay yolu var:",
+            "share": "Paylaş"
+        },
+        "reward": {
+            "title": "Benim Etkim",
+            "description": "Katılan her gönüllü için, kendi kişisel sertifikanız için puan kazanırsınız ve deneyiminizi LinkedIn'deki ağınızda sergilersiniz. Hadi bugün bir etki yaratalım!",
+            "RegisteredUsers": "Kayıtlı kullanıcılar",
+            "HoursSupported": "Desteklenen saatler",
+            "tooltip": "Bu kilidi açmak için 3 veya daha fazla kayıtlı kullanıcıya sahip olmanız gerekir"
+        },
+        "title": "Yönlendirme programı",
+        "description": "Gençler için fark yaratmaya yardımcı olabilecek birini mi tanıyorsunuz? Herkese duyurun! buradan daha fazlasını öğrenin",
+        "referralMessage": "📣 GÖNÜLLÜLER ARANIYOR 📣Topluma geri vermek ister misiniz? Şimdi tam zamanı! Şu anda 1-13. sınıf Alman okul çocuklarına ders verecek gönüllüler arıyoruz. #lernfair #eğitim #e-öğrenme",
+        "copy": "Anlaşıldı",
+        "copied": "Kopyalandı",
+        "copiedReferralLink": "Tavsiye bağlantısı kopyalandı"
+    },
     "certificates": {
         "instantCertificate": {
             "bullets": ["hemen temin edilebilir", "bireysel öğrenme ortaklarını listelemez", "Destek türü, toplam süre ve ders sayısı listelenmiştir"],

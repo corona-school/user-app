@@ -16,7 +16,7 @@ import { Alert } from '@/components/Alert';
 
 type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
-type ActionButtonProps = {
+type PupilCourseButtonsProps = {
     subcourse: Pick<
         Subcourse,
         | 'id'
@@ -32,9 +32,10 @@ type ActionButtonProps = {
         | 'canJoinWaitinglist'
         | 'isParticipant'
         | 'isOnWaitingList'
-    > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType'>[] };
+    > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType' | 'override_meeting_link'>[] };
     refresh: () => Promise<ApolloQueryResult<unknown>>;
     isActiveSubcourse: boolean;
+    appointment?: Lecture;
 };
 
 const courseConversationId = gql(`
@@ -45,7 +46,7 @@ query GetCourseConversationId($subcourseId: Int!, $isParticipant: Boolean!) {
 }
 `);
 
-const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, isActiveSubcourse }) => {
+const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment }: PupilCourseButtonsProps) => {
     const [signInModal, setSignInModal] = useState(false);
     const [signOutModal, setSignOutModal] = useState(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState(false);
@@ -179,7 +180,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
         }
     }, [joinedSubcourse, leftSubcourse, joinedWaitinglist, leftWaitinglist]);
 
-    const appointment = subcourse.appointments[0];
     return (
         <>
             {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
@@ -198,7 +198,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                         {t('signin')}
                     </Button>
                 )}
-                {subcourse.isParticipant && !loading && isActiveSubcourse && (
+                {subcourse.isParticipant && !loading && isActiveSubcourse && conversationId && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={conversationId}
@@ -211,13 +211,16 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 )}
                 {subcourse.isParticipant && isActiveSubcourse && (
                     <>
-                        <VideoButton
-                            appointmentId={appointment.id}
-                            appointmentType={appointment.appointmentType}
-                            startDateTime={appointment.start}
-                            duration={appointment.duration}
-                            className="w-full  md:w-fit"
-                        />
+                        {appointment && (
+                            <VideoButton
+                                appointmentId={appointment.id}
+                                appointmentType={appointment.appointmentType}
+                                startDateTime={appointment.start}
+                                duration={appointment.duration}
+                                className="w-full  md:w-fit"
+                                overrideLink={appointment.override_meeting_link ?? undefined}
+                            />
+                        )}
                         <Button
                             variant="ghost"
                             disabled={loadingSubcourseLeft}
