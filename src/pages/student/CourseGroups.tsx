@@ -6,10 +6,11 @@ import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
+import { useState } from 'react';
 
 type SubsetSubcourse = Pick<
     Subcourse,
-    'id' | 'course' | 'nextLecture' | 'lectures' | 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'isParticipant'
+    'id' | 'course' | 'nextLecture' | 'lectures' | 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'isParticipant' | 'updatedAt'
 >;
 
 type GroupProps = {
@@ -21,6 +22,22 @@ type GroupProps = {
 const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const [sortedCourses, setSortedCourses] = useState({
+        current: currentCourses,
+        draft: draftCourses,
+        past: pastCourses,
+    });
+
+    function sortBy(section: 'current' | 'draft' | 'past' | undefined, value: 'updatedAt' | 'start') {
+        if (!section) return;
+        setSortedCourses((prev) => ({
+            ...prev,
+            [section]: [...prev[section]!].sort((a, b) => {
+                const getDate = (course: SubsetSubcourse) => new Date(value === 'updatedAt' ? course.updatedAt : course.nextLecture?.start ?? 0).getTime();
+                return value === 'updatedAt' ? getDate(b) - getDate(a) : getDate(a) - getDate(b);
+            }),
+        }));
+    }
 
     const renderSubcourse = (subcourse: SubsetSubcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
         <div>
@@ -51,25 +68,25 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
     return (
         <Stack space={5}>
             <Box>
-                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.current')}>
-                    {((currentCourses?.length ?? 0) > 0 &&
-                        currentCourses?.map((subcourse: any, index: number) => {
+                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.current')} showSort section={'current'} sortBy={sortBy}>
+                    {((sortedCourses.current?.length ?? 0) > 0 &&
+                        sortedCourses.current?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index);
                         })) || <AlertMessage content={t('course.empty.nocourses')} />}
                 </HSection>
             </Box>
             <Box>
-                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.draft')}>
-                    {((draftCourses?.length ?? 0) > 0 &&
-                        draftCourses?.map((subcourse: any, index: number) => {
+                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.draft')} showSort section={'draft'} sortBy={sortBy}>
+                    {((sortedCourses.draft?.length ?? 0) > 0 &&
+                        sortedCourses.draft?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index);
                         })) || <AlertMessage content={t('course.empty.noremissionordraft')} />}
                 </HSection>
             </Box>
             <Box>
-                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.past')}>
-                    {((pastCourses?.length ?? 0) > 0 &&
-                        pastCourses?.map((subcourse: any, index: number) => {
+                <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.past')} section={'past'} sortBy={sortBy}>
+                    {((sortedCourses.past?.length ?? 0) > 0 &&
+                        sortedCourses.past?.map((subcourse: any, index: number) => {
                             return renderSubcourse(subcourse, index, true, false, true);
                         })) || <AlertMessage content={t('course.empty.nopastcourses')} />}
                 </HSection>
