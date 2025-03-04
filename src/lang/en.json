@@ -2072,9 +2072,9 @@
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
             "editCourse": "Edit course",
-            "lesson": "Lessons",
             "referral": "Referral",
-            "certificates": "Certificates"
+            "certificates": "Certificates",
+            "lesson": "Lesson planner with AI (Beta)"
         }
     },
     "screening": {

@@ -2068,9 +2068,9 @@
             "install": "Lern-Fair التطبيق",
             "progress": "إنجازات والتقدم",
             "editCourse": "تحرير الدورة التدريبية",
-            "lesson": "الدروس",
             "referral": "الإحالة",
-            "certificates": "الشهادات"
+            "certificates": "الشهادات",
+            "lesson": "مخطط الدروس مع الذكاء الاصطناعي (تجريبي)"
         }
     },
     "screening": {

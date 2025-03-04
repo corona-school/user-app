@@ -2072,9 +2072,9 @@
             "install": "Lern-Fair Uygulama",
             "progress": "Başarılar ve ilerleme",
             "editCourse": "Kursu düzenle",
-            "lesson": "Dersler",
             "referral": "Yönlendirme",
-            "certificates": "Sertifikalar"
+            "certificates": "Sertifikalar",
+            "lesson": "Yapay zeka ile ders planlayıcı (Beta)"
         }
     },
     "screening": {
