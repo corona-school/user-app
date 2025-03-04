@@ -171,6 +171,7 @@ query GetAllSubcourses($search: String) {
             tags {
                 name
             }
+            category
             description
             courseState
         }

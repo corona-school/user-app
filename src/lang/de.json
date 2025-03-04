@@ -805,7 +805,8 @@
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
             "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden",
-            "is_shared": "Dieser Kurs ist als Vorlage freigeben"
+            "is_shared": "Dieser Kurs ist als Vorlage freigeben",
+            "timesAWeek": "{{times}}x pro Woche"
         },
         "card": {
             "expandCardButton": "Mehr Infos",
