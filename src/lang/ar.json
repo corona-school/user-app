@@ -1843,7 +1843,8 @@
         "cancelation_success": "تم إلغاء الدورة بنجاح",
         "select_participant": "حدد مشاركا",
         "all_participants": "جميع المشاركين",
-        "cancelation_error": "حدث خطأ. تعذر إلغاء الدورة التدريبية."
+        "cancelation_error": "حدث خطأ. تعذر إلغاء الدورة التدريبية.",
+        "alternatingInstructors": "تغيير متطوعون"
     },
     "notification": {
         "timedifference": {

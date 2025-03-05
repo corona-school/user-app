@@ -1847,7 +1847,8 @@
         "cancelation_success": "The course was successfully canceled",
         "select_participant": "Select participant",
         "all_participants": "all participants",
-        "cancelation_error": "An error has occurred. The course could not be canceled."
+        "cancelation_error": "An error has occurred. The course could not be canceled.",
+        "alternatingInstructors": "Changing volunteers"
     },
     "notification": {
         "timedifference": {

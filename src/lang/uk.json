@@ -1847,7 +1847,8 @@
         "cancelation_success": "Курс успішно скасовано",
         "select_participant": "Виберіть учасника:в",
         "all_participants": "всі учасники",
-        "cancelation_error": "Сталася помилка. Курс не може бути скасований."
+        "cancelation_error": "Сталася помилка. Курс не може бути скасований.",
+        "alternatingInstructors": "Зміна помічників"
     },
     "notification": {
         "timedifference": {

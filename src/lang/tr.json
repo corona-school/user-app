@@ -1847,7 +1847,8 @@
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
         "all_participants": "tüm katılımcılar",
-        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi."
+        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi.",
+        "alternatingInstructors": "Yardımcıların değiştirilmesi"
     },
     "notification": {
         "timedifference": {

@@ -1847,7 +1847,8 @@
         "cancelation_success": "Курс был успешно отменен",
         "select_participant": "участник выберите",
         "all_participants": "все участники",
-        "cancelation_error": "Произошла ошибка. Курс не может быть отменен."
+        "cancelation_error": "Произошла ошибка. Курс не может быть отменен.",
+        "alternatingInstructors": "Смена помощников"
     },
     "notification": {
         "timedifference": {
