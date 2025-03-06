@@ -50,7 +50,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                 closeIcon: 'text-primary',
             }}
         >
-            <div className="flex flex-col w-full h-full lg:h-fit justify-between md:justify-center lg:justify-between">
+            <div className="flex flex-col w-full justify-between md:justify-center lg:justify-between">
                 {alsoShowWarningModal && !showedWarning ? (
                     <>
                         <ModalHeader>
@@ -89,7 +89,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                                 className="flex flex-col gap-y-4"
                             >
                                 {availableReasons.map((key) => (
-                                    <div className="flex gap-x-2 items-center">
+                                    <div className="flex gap-x-2 items-center" key={key}>
                                         <RadioGroupItem id={key} value={key} />
                                         <Label htmlFor={key} className="cursor-pointer">
                                             {t(`matching.dissolveReasons.${userType}.${key}` as unknown as TemplateStringsArray)}
