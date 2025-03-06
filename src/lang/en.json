@@ -1718,7 +1718,8 @@
             "instructors": "One or more instructors could not be added.",
             "lectures": "One or more lectures could not be added.",
             "tags": "Your tags could not be added.",
-            "appointments": "No lectures created."
+            "appointments": "No lectures created.",
+            "isInPastOrInvalid": "We could not find this course or it is in the past."
         },
         "CourseDate": {
             "step": {

@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -317,6 +317,13 @@ const SingleCourseStudent = () => {
     const showLecturesTab = showParticipantsTab || showWaitingListProspectListTab;
 
     const showTabsControls = showParticipantsTab || showWaitingListProspectListTab || showLecturesTab;
+
+    useEffect(() => {
+        if (!loading && isInPast && !isInstructorOfSubcourse) {
+            navigate('/group');
+            toast.error(t('course.error.isInPastOrInvalid'));
+        }
+    }, [loading, isInPast, isInstructorOfSubcourse]);
 
     return (
         <WithNavigation
