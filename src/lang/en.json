@@ -1719,7 +1719,7 @@
             "lectures": "One or more lectures could not be added.",
             "tags": "Your tags could not be added.",
             "appointments": "No lectures created.",
-            "isInPastOrInvalid": "Course is in the past or invalid course link."
+            "isInPastOrInvalid": "We could not find this course or it is in the past."
         },
         "CourseDate": {
             "step": {

@@ -1799,7 +1799,7 @@
             "lectures": "Ein oder mehrere Termine konnten nicht hinzugefügt werden.",
             "tags": "Deine Tags konnten nicht hinzugefügt werden.",
             "appointments": "Keine Termine angelegt.",
-            "isInPastOrInvalid": "Kurs liegt in Vergangenheit oder ungültiger Kurs-Link."
+            "isInPastOrInvalid": "Wir konnten diesen Kurs nicht finden oder er liegt in der Vergangenheit."
         },
         "CourseDate": {
             "headline": "Allgemeine Informationen zu deinem Kurs",
