@@ -7,7 +7,7 @@ import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
 type MyLecture = Pick<Lecture, 'start' | 'duration'>;
-type MyCourse = Pick<Course, 'name' | 'description' | 'image' | 'courseState'> & { tags: Pick<Course_Tag, 'name'>[] };
+type MyCourse = Pick<Course, 'name' | 'description' | 'image' | 'courseState' | 'category'> & { tags: Pick<Course_Tag, 'name'>[] };
 type MySubcourse = Pick<
     Subcourse,
     'minGrade' | 'maxGrade' | 'participantsCount' | 'maxParticipants' | 'isOnWaitingList' | 'id' | 'isParticipant' | 'published' | 'cancelled'
@@ -36,6 +36,7 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
                 description={subcourse.course!.description}
                 tags={subcourse.course!.tags}
                 dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
+                duration={subcourse?.nextLecture?.duration ?? undefined}
                 image={subcourse.course!.image ?? undefined}
                 title={subcourse.course!.name}
                 countCourse={subcourse.lectures!.length}
@@ -52,6 +53,7 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
                 showSchoolclass
                 isOnWaitinglist={subcourse.isOnWaitingList}
                 isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
+                courseCategory={subcourse.course.category}
             />
         </div>
     );

@@ -35,10 +35,11 @@ import { useTranslation } from 'react-i18next';
 import { useUserType } from '../hooks/useApollo';
 import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
-import { Instructor, Lecture, Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { Instructor, Lecture, Lecture_Appointmenttype_Enum, Course_Category_Enum } from '../gql/graphql';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
 import { Typography } from '@/components/Typography';
+import { asTranslationKey } from '@/helper/string-helper';
 
 type Props = {
     appointmentId?: number;
@@ -80,6 +81,7 @@ type Props = {
     trafficLightStatus?: TrafficStatus;
     instructors?: Instructor[];
     firstLecture?: Lecture;
+    courseCategory?: Course_Category_Enum;
 };
 
 const AppointmentCard: React.FC<Props> = ({
@@ -122,6 +124,7 @@ const AppointmentCard: React.FC<Props> = ({
     isOrganizer,
     instructors,
     firstLecture,
+    courseCategory,
 }) => {
     const { space, sizes } = useTheme();
     const { t, i18n } = useTranslation();
@@ -227,6 +230,7 @@ const AppointmentCard: React.FC<Props> = ({
     const today = new Date();
     const aWeekAgo = today.setDate(today.getDate() - 7);
     const isCourseNewlyAdded = publishedAt?.getTime() ?? new Date(0).getTime() > aWeekAgo;
+    const showHomeworkHelpInformation = courseCategory === Course_Category_Enum.HomeworkHelp;
 
     return (
         <View ref={rootRef} height={isFullHeight ? '100%' : 'auto'}>
@@ -340,6 +344,20 @@ const AppointmentCard: React.FC<Props> = ({
                                         {!!(minGrade && maxGrade) &&
                                             t('single.courseInfo.class', { minGrade: getGradeLabel(minGrade), maxGrade: getGradeLabel(maxGrade) })}
                                     </Text>
+                                )}
+
+                                {showHomeworkHelpInformation && (
+                                    <>
+                                        {duration && (
+                                            <Typography>
+                                                <Typography className="font-bold inline">{t('duration')}: </Typography>
+                                                {t(asTranslationKey(`lesson.durations.${duration}`))}
+                                            </Typography>
+                                        )}
+                                        <Typography>
+                                            <Typography className="font-bold">{t('single.courseInfo.timesAWeek', { times: 4 })}</Typography>
+                                        </Typography>
+                                    </>
                                 )}
 
                                 {showInformationForScreeners && (
