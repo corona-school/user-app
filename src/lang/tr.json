@@ -1718,7 +1718,8 @@
             "instructors": "Bir veya daha fazla eğitmen eklenemedi.",
             "lectures": "Bir veya daha fazla tarih eklenemedi.",
             "tags": "Etiketleriniz eklenemedi.",
-            "appointments": "Hiçbir tarih belirlenmedi"
+            "appointments": "Hiçbir tarih belirlenmedi",
+            "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı."
         },
         "CourseDate": {
             "step": {

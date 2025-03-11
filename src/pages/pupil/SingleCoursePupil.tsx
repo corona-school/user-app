@@ -2,13 +2,13 @@ import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { DateTime } from 'luxon';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
@@ -20,6 +20,7 @@ import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import { Lecture } from '@/gql/graphql';
+import { toast } from 'sonner';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -127,6 +128,7 @@ const SingleCoursePupil = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
@@ -175,6 +177,12 @@ const SingleCoursePupil = () => {
     const showParticipantsTab = subcourse?.isParticipant;
     const showTabsControls = showParticipantsTab;
 
+    useEffect(() => {
+        if (!loading && isInPast && !subcourse?.isParticipant) {
+            navigate('/group');
+            toast.error(t('course.error.isInPastOrInvalid'));
+        }
+    }, [loading, isInPast, subcourse?.isParticipant]);
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}

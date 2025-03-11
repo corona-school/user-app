@@ -1798,7 +1798,8 @@
             "instructors": "Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.",
             "lectures": "Ein oder mehrere Termine konnten nicht hinzugefügt werden.",
             "tags": "Deine Tags konnten nicht hinzugefügt werden.",
-            "appointments": "Keine Termine angelegt."
+            "appointments": "Keine Termine angelegt.",
+            "isInPastOrInvalid": "Wir konnten diesen Kurs nicht finden oder er liegt in der Vergangenheit."
         },
         "CourseDate": {
             "headline": "Allgemeine Informationen zu deinem Kurs",
