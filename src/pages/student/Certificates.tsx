@@ -105,7 +105,7 @@ const CertificatesPage: React.FC = () => {
                 <div className="flex flex-col">
                     <BulletList bulletPoints={t('certificates.instantCertificate.bullets', { returnObjects: true })} />
                 </div>
-                <Button onClick={() => setShowSelectInstantPDFLanguageModal(true)} className="my-2" disabled={requestInstantCertificateFetching}>
+                <Button onClick={() => setShowSelectInstantPDFLanguageModal(true)} className="my-2" isLoading={requestInstantCertificateFetching}>
                     {t('certificates.instantCertificate.request')}
                 </Button>
 
