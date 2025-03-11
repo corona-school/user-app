@@ -2568,7 +2568,12 @@
             },
             "title": "Share your unique link",
             "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
-            "share": "Share"
+            "share": "Share",
+            "materials": {
+                "title": "Distribute flyers & advertising material",
+                "description": "You can download free multilingual flyers, posters and other promotional materials to print out and display at a school, youth center or library, for example.",
+                "button": "To the advertising media"
+            }
         },
         "reward": {
             "title": "My Impact",

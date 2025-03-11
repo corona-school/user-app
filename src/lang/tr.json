@@ -2568,7 +2568,12 @@
             },
             "title": "Benzersiz bağlantınızı paylaşın",
             "description": "Yönlendirmeye başlamak için kişisel bağlantınızı ağınızla paylaşın! Yönlendirme bağlantınızı paylaşmanın üç kolay yolu var:",
-            "share": "Paylaş"
+            "share": "Paylaş",
+            "materials": {
+                "title": "El ilanları ve reklam materyalleri dağıtın",
+                "description": "Ücretsiz çok dilli el ilanları, posterler ve diğer tanıtım materyallerini indirerek çıktı alabilir ve örneğin bir okulda, gençlik merkezinde veya kütüphanede sergileyebilirsiniz.",
+                "button": "Reklam medyasına"
+            }
         },
         "reward": {
             "title": "Benim Etkim",
