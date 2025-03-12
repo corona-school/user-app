@@ -2575,6 +2575,11 @@
             "option3": {
                 "option": "Auf LinkedIn teilen",
                 "description": "- Beim kopieren wird ein Muster-Text - zum einfachen Einfügen - in deine Zwischenablage kopiert."
+            },
+            "materials": {
+                "title": "Flyer & Werbematerial verteilen",
+                "description": "Du kannst kostenlos mehrsprachige Flyer, Poster und andere Werbematerialien zum ausdrucken herunterladen, um diese z.B. an einer Schule, Jugendzentrum oder Bibliothek auszulegen.",
+                "button": "Zu den Werbemitteln"
             }
         },
         "reward": {

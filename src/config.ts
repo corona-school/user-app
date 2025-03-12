@@ -63,3 +63,4 @@ export const PUPIL_FIRST_SCREENING_URL = window.liveConfig?.RUNTIME_PUPIL_FIRST_
 export const PUPIL_SCREENING_URL = window.liveConfig?.RUNTIME_PUPIL_SCREENING_URL ?? process.env.REACT_APP_PUPIL_SCREENING_URL;
 export const SCREENING_URL = window.liveConfig?.RUNTIME_SCREENING_URL ?? process.env.REACT_APP_SCREENING_URL;
 export const GOOGLE_CLIENT_ID = window.liveConfig.RUNTIME_GOOGLE_CLIENT_ID ?? process.env.REACT_APP_GOOGLE_CLIENT_ID;
+export const SHARING_MATERIALS_URL = window.liveConfig.RUNTIME_SHARING_MATERIALS_URL ?? process.env.REACT_APP_SHARING_MATERIALS_URL;
