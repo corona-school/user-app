@@ -98,8 +98,9 @@ const Referrals: React.FC<{}> = () => {
             action: 'Share on Desktop',
             name: 'Click Share on LinkedIn on Desktop',
         });
-        const imageURL = 'https://user-app-files.fra1.digitaloceanspaces.com/static/images/share_image.jpg';
-        const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(imageURL)}`;
+        const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?text=${encodeURIComponent(referralMessage)}&url=${encodeURIComponent(
+            uniqueReferralLink
+        )}`;
 
         setLinkedinButtonText(t('referral.copiedReferralLink'));
         onCopy(referralMessage + '\n' + uniqueReferralLink);
