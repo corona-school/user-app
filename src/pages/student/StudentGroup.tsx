@@ -34,6 +34,38 @@ const StudentGroup: React.FC = () => {
                             allowed
                             reason
                         }
+                        subcoursesMentoring {
+                            id
+                            published
+                            cancelled
+                            participantsCount
+                            maxParticipants
+                            minGrade
+                            maxGrade
+                            firstLecture {
+                                start
+                                duration
+                            }
+                            nextLecture {
+                                start
+                                duration
+                            }
+                            lectures {
+                                start
+                                duration
+                            }
+                            course {
+                                courseState
+                                name
+                                description
+                                image
+                                category
+                                tags {
+                                    id
+                                    name
+                                }
+                            }
+                        }
                         subcoursesInstructing {
                             id
                             published
@@ -169,6 +201,10 @@ const StudentGroup: React.FC = () => {
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
         [data?.subcoursesPublic]
     );
+    const mentoringCourses = useMemo(
+        () => sortByDate(data?.me.student?.subcoursesMentoring?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
+        [data?.me.student?.subcoursesMentoring]
+    );
 
     const revisionCourses = useMemo(
         () =>
@@ -281,6 +317,7 @@ const StudentGroup: React.FC = () => {
                                                         currentCourses={publishedSubcourses as Subcourse[]}
                                                         draftCourses={unpublishedOrDraftedSubcourses as Subcourse[]}
                                                         pastCourses={pastOrCancelledSubcourses as Subcourse[]}
+                                                        homeworkHelpCourses={mentoringCourses as Subcourse[]}
                                                     />
                                                 </>
                                             ),

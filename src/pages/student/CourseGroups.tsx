@@ -7,18 +7,16 @@ import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
-type SubsetSubcourse = Pick<
-    Subcourse,
-    'id' | 'course' | 'nextLecture' | 'lectures' | 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade' | 'isParticipant'
->;
+type SubsetSubcourse = Pick<Subcourse, 'id' | 'course' | 'nextLecture' | 'lectures' | 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade'>;
 
 type GroupProps = {
     currentCourses: SubsetSubcourse[] | undefined;
     draftCourses: SubsetSubcourse[] | undefined;
     pastCourses: SubsetSubcourse[] | undefined;
+    homeworkHelpCourses: SubsetSubcourse[] | undefined;
 };
 
-const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses }) => {
+const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses, homeworkHelpCourses }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -40,16 +38,23 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
                 statusText={getTrafficStatusText(subcourse)}
                 isFullHeight
                 showCourseTraffic
-                showStatus={!subcourse.isParticipant}
                 trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                 onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
                 showSchoolclass
-                isHorizontalCardCourseChecked={subcourse.isParticipant}
             />
         </div>
     );
     return (
         <Stack space={5}>
+            <Box>
+                {(homeworkHelpCourses?.length ?? 0) > 0 && (
+                    <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.homeworkHelp')}>
+                        {homeworkHelpCourses?.map((subcourse: any, index: number) => {
+                            return renderSubcourse(subcourse, index);
+                        })}
+                    </HSection>
+                )}
+            </Box>
             <Box>
                 <HSection scrollable title={t('matching.group.helper.course.tabs.tab1.current')}>
                     {((currentCourses?.length ?? 0) > 0 &&

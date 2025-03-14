@@ -809,7 +809,8 @@
             "button": "Binding registration",
             "description": "Thank you for <b>registering</b> for this course.\nOur volunteers offer the courses on a voluntary basis. So please arrive on time and cancel if you can't make it.",
             "toast": "You have successfully registered for the course.",
-            "error": "You could not be registered for the course."
+            "error": "You could not be registered for the course.",
+            "homeworkHelpButton": "Register without obligation"
         },
         "joinWaitinglist": {
             "button": "Put on waiting list",
@@ -863,6 +864,16 @@
             "error": "Pupil could not be added.",
             "noProspects": "No interested parties who have contacted you via chat.",
             "description": "Here you can see interested parties who have contacted you via chat."
+        },
+        "homeworkHelp": {
+            "signIn": {
+                "title": "Non-binding registration",
+                "description": "As soon as you have registered, you can spontaneously support individual homework help lessons. Registration does not commit you to anything, but helps us to roughly gauge interest."
+            },
+            "signOut": {
+                "title": "Logout",
+                "description": "Log out if you no longer need access to the homework help lessons."
+            }
         }
     },
     "settings": {
@@ -1549,7 +1560,8 @@
                             "title": "My courses",
                             "current": "Current courses (published)",
                             "draft": "Draft or under review",
-                            "past": "Past and canceled courses"
+                            "past": "Past and canceled courses",
+                            "homeworkHelp": "Homework help"
                         },
                         "tab2": {
                             "title": "All courses"
