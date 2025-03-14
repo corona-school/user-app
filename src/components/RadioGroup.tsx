@@ -21,7 +21,7 @@ const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimit
                 {...props}
             >
                 <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-                    <IconCheck className="size-3" />
+                    <IconCheck className="size-4 tabler-icon-thick" />
                 </RadioGroupPrimitive.Indicator>
             </RadioGroupPrimitive.Item>
         );
