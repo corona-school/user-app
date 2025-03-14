@@ -878,8 +878,19 @@
                 "info": "Dein Kurs wurde von uns überprüft, aber abgelehnt. Der Kurs ist nicht öffentlich sichtbar und Schüler:innen können sich nicht für diesen Kurs anmelden. Bei Rückfragen oder Problemen, melde dich bei unserem Support."
             }
         },
+        "homeworkHelp": {
+            "signIn": {
+                "title": "Unverbindliche Anmeldung",
+                "description": "Sobald du dich angemeldet hast, kannst du spontan einzelne Hausaufgabenhilfe-Stunden unterstützen. Die Anmeldung verpflichtet dich zu nichts, sondern hilft uns ganz grob das Interesse zu erfassen."
+            },
+            "signOut": {
+                "title": "Abmeldung",
+                "description": "Melde dich ab, wenn du keinen Zugriff mehr auf die Hausaufgabehilfe-Lektionen brauchst."
+            }
+        },
         "signIn": {
             "button": "Verbindlich anmelden",
+            "homeworkHelpButton": "Unverbindlich anmelden",
             "description": "Schön, dass du dich zu diesem Kurs <b>verbindlich</b> anmelden möchtest.\nUnsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. Komme daher bitte pünktlich und sage ab, falls du doch nicht kommen kannst.",
             "toast": "Du hast dich erfolgreich zu dem Kurs angemeldet.",
             "error": "Du konntest nicht zu dem Kurs angemeldet werden."
@@ -1630,6 +1641,7 @@
                     "tabs": {
                         "tab1": {
                             "title": "Meine Kurse",
+                            "homeworkHelp": "Hausaufgabenhilfe",
                             "current": "Aktuelle Kurse (veröffentlicht)",
                             "draft": "Entwurf oder in Prüfung",
                             "past": "Vergangene und abgesagte Kurse"
