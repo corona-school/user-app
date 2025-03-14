@@ -732,7 +732,8 @@
             "courseInPast": "This course is already over.",
             "courseCancelled": "This course has been canceled.",
             "courseStartedButJoinable": "This course has already started, but you can still register",
-            "is_shared": "This course is released as a template"
+            "is_shared": "This course is released as a template",
+            "timesAWeek": "{{times}}x per week"
         },
         "card": {
             "time": {
@@ -1847,7 +1848,8 @@
         "cancelation_success": "The course was successfully canceled",
         "select_participant": "Select participant",
         "all_participants": "all participants",
-        "cancelation_error": "An error has occurred. The course could not be canceled."
+        "cancelation_error": "An error has occurred. The course could not be canceled.",
+        "alternatingInstructors": "Changing volunteers"
     },
     "notification": {
         "timedifference": {

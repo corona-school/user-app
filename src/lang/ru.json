@@ -732,7 +732,8 @@
             "courseInPast": "Этот курс уже закончился.",
             "courseCancelled": "Данный курс был отменен.",
             "courseStartedButJoinable": "Курс уже начался, но вы еще можете зарегистрироваться",
-            "is_shared": "Этот курс выпущен в качестве шаблона"
+            "is_shared": "Этот курс выпущен в качестве шаблона",
+            "timesAWeek": "{{times}}x в неделю"
         },
         "card": {
             "time": {
@@ -1847,7 +1848,8 @@
         "cancelation_success": "Курс был успешно отменен",
         "select_participant": "участник выберите",
         "all_participants": "все участники",
-        "cancelation_error": "Произошла ошибка. Курс не может быть отменен."
+        "cancelation_error": "Произошла ошибка. Курс не может быть отменен.",
+        "alternatingInstructors": "Смена помощников"
     },
     "notification": {
         "timedifference": {

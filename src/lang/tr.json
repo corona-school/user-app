@@ -732,7 +732,8 @@
             "courseInPast": "Bu kurs çoktan bitti.",
             "courseCancelled": "Bu kurs iptal edilmiştir.",
             "courseStartedButJoinable": "Bu kurs çoktan başladı, ancak hala kayıt olabilirsiniz",
-            "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır"
+            "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır",
+            "timesAWeek": "Haftalık {{times}}x"
         },
         "card": {
             "time": {
@@ -1847,7 +1848,8 @@
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
         "all_participants": "tüm katılımcılar",
-        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi."
+        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi.",
+        "alternatingInstructors": "Yardımcıların değiştirilmesi"
     },
     "notification": {
         "timedifference": {

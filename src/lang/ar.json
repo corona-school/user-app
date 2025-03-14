@@ -728,7 +728,8 @@
             "courseInPast": "هذه الدورة قد انتهت بالفعل.",
             "courseCancelled": "تم إلغاء هذه الدورة.",
             "courseStartedButJoinable": "لقد بدأت هذه الدورة بالفعل ، ولكن لا يزال بإمكانك التسجيل",
-            "is_shared": "يتم إصدار هذه الدورة التدريبية كقالب"
+            "is_shared": "يتم إصدار هذه الدورة التدريبية كقالب",
+            "timesAWeek": "{{times}} x في الأسبوع"
         },
         "card": {
             "time": {
@@ -1843,7 +1844,8 @@
         "cancelation_success": "تم إلغاء الدورة بنجاح",
         "select_participant": "حدد مشاركا",
         "all_participants": "جميع المشاركين",
-        "cancelation_error": "حدث خطأ. تعذر إلغاء الدورة التدريبية."
+        "cancelation_error": "حدث خطأ. تعذر إلغاء الدورة التدريبية.",
+        "alternatingInstructors": "تغيير متطوعون"
     },
     "notification": {
         "timedifference": {
