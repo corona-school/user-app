@@ -201,10 +201,7 @@ const StudentGroup: React.FC = () => {
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
         [data?.subcoursesPublic]
     );
-    const mentoringCourses = useMemo(
-        () => sortByDate(data?.me.student?.subcoursesMentoring?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
-        [data?.me.student?.subcoursesMentoring]
-    );
+    const mentoringCourses = useMemo(() => sortByDate(data?.me.student?.subcoursesMentoring), [data?.me.student?.subcoursesMentoring]);
 
     const revisionCourses = useMemo(
         () =>
