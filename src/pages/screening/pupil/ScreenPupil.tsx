@@ -20,6 +20,7 @@ interface ScreenPupilProps {
     screening?: PupilScreening;
     needsScreening: boolean;
     refresh: () => Promise<void>;
+    onAfterSaveScreening: () => Promise<void>;
 }
 
 const DEACTIVATE_ACCOUNT_MUTATION = gql(`
@@ -46,7 +47,7 @@ const MISSED_SCREENING_MUTATION = gql(
 
 const CUSTOM_KNOWS_FROM_PREFIX = 'Sonstiges: ';
 
-export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: ScreenPupilProps) => {
+export const ScreenPupil = ({ screening, needsScreening, pupil, refresh, onAfterSaveScreening }: ScreenPupilProps) => {
     const { t } = useTranslation();
     const screener = useUser();
     const [knowsFrom, setKnowsFrom] = useState(screening?.knowsCoronaSchoolFrom ?? '');
@@ -122,6 +123,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
             setComment(resultComment);
             toast.success(t('screening.screening_saved'));
             await refresh();
+            await onAfterSaveScreening();
         } catch (error) {
             toast.error(t('error'));
         }
@@ -139,6 +141,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                     knowsFrom: computedKnowsFrom,
                 },
             });
+            await onAfterSaveScreening();
             toast.success(t('screening.screening_saved'));
         } catch (error) {
             toast.error(t('error'));
@@ -156,6 +159,7 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh }: Scree
                     comment: resultComment,
                 },
             });
+            await onAfterSaveScreening();
             setComment(resultComment);
             toast.success(t('screening.screening_saved'));
         } catch (error) {
