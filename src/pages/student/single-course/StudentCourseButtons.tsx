@@ -44,7 +44,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         className="w-full  md:w-fit"
                     />
                 )}
-                {subcourse?.canEdit?.allowed && subcourse.isInstructor && (
+                {subcourse?.canEdit?.allowed && (
                     <>
                         <Button
                             onClick={() => {
