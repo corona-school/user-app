@@ -732,7 +732,8 @@
             "courseInPast": "This course is already over.",
             "courseCancelled": "This course has been canceled.",
             "courseStartedButJoinable": "This course has already started, but you can still register",
-            "is_shared": "This course is released as a template"
+            "is_shared": "This course is released as a template",
+            "timesAWeek": "{{times}}x per week"
         },
         "card": {
             "time": {
@@ -1719,7 +1720,8 @@
             "instructors": "One or more instructors could not be added.",
             "lectures": "One or more lectures could not be added.",
             "tags": "Your tags could not be added.",
-            "appointments": "No lectures created."
+            "appointments": "No lectures created.",
+            "isInPastOrInvalid": "We could not find this course or it is in the past."
         },
         "CourseDate": {
             "step": {
@@ -1847,7 +1849,8 @@
         "cancelation_success": "The course was successfully canceled",
         "select_participant": "Select participant",
         "all_participants": "all participants",
-        "cancelation_error": "An error has occurred. The course could not be canceled."
+        "cancelation_error": "An error has occurred. The course could not be canceled.",
+        "alternatingInstructors": "Changing volunteers"
     },
     "notification": {
         "timedifference": {
@@ -2073,9 +2076,9 @@
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
             "editCourse": "Edit course",
-            "lesson": "Lessons",
             "referral": "Referral",
-            "certificates": "Certificates"
+            "certificates": "Certificates",
+            "lesson": "Lesson planner with AI (Beta)"
         }
     },
     "screening": {
@@ -2569,7 +2572,12 @@
             },
             "title": "Share your unique link",
             "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
-            "share": "Share"
+            "share": "Share",
+            "materials": {
+                "title": "Distribute flyers & advertising material",
+                "description": "You can download free multilingual flyers, posters and other promotional materials to print out and display at a school, youth center or library, for example.",
+                "button": "To the advertising media"
+            }
         },
         "reward": {
             "title": "My Impact",

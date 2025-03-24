@@ -805,7 +805,8 @@
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
             "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden",
-            "is_shared": "Dieser Kurs ist als Vorlage freigeben"
+            "is_shared": "Dieser Kurs ist als Vorlage freigeben",
+            "timesAWeek": "{{times}}x pro Woche"
         },
         "card": {
             "expandCardButton": "Mehr Infos",
@@ -1735,6 +1736,7 @@
         "selectPlaceHolderDuration": "Dauer auswählen",
         "cancelation_success": "Der Kurs wurde erfolgreich abgesagt",
         "cancelation_error": "Es ist ein Fehler aufgetreten. Der Kurs konnte nicht abgesagt werden.",
+        "alternatingInstructors": "Wechselnde Helfer:innen",
         "selectOptions": {
             "_15minutes": "15 Minuten",
             "_30minutes": "30 Minuten",
@@ -1799,7 +1801,8 @@
             "instructors": "Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.",
             "lectures": "Ein oder mehrere Termine konnten nicht hinzugefügt werden.",
             "tags": "Deine Tags konnten nicht hinzugefügt werden.",
-            "appointments": "Keine Termine angelegt."
+            "appointments": "Keine Termine angelegt.",
+            "isInPastOrInvalid": "Wir konnten diesen Kurs nicht finden oder er liegt in der Vergangenheit."
         },
         "CourseDate": {
             "headline": "Allgemeine Informationen zu deinem Kurs",
@@ -2139,7 +2142,7 @@
             "chat": "Chat",
             "forStudents": "Wissens-Center",
             "forPupils": "Wissens-Center",
-            "lesson": "Lektionen",
+            "lesson": "Lektionsplaner mit KI (Beta)",
             "requestMatch": "Ein neues Lernpaar bilden",
             "createCourse": "Kurse anlegen",
             "editCourse": "Kurs editieren",
@@ -2556,7 +2559,7 @@
     "referral": {
         "title": "Hilf uns zu wachsen",
         "description": "Empfiehl uns weiter bei Schüler:innen oder motivierten Helfer:innen - so können wir gemeinsam noch mehr für die Bildungsgerechtigkeit tun!  ",
-        "referralMessage": "📣 Bildungs-Verbesserer gesucht 📣 Ich engagiere mich ehrenamtlich bei Lern-Fair, wo bildungsbenachteiligte Schüler:innen der Klasse 1 bis 13 sowie Azubi kostenlose Nachhilfe erhalten - digital und flexibel per Zoom-Meeting. #digital #Bildungsgerechtigkeit #ehrenamt",
+        "referralMessage": "Ich engagiere mich ehrenamtlich bei Lern-Fair, wo bildungsbenachteiligte Schüler:innen (Klasse 1 bis 13 & Azubi) kostenlose Nachhilfe erhalten - digital & flexibel via Zoom #Bildungsgerechtigkeit #ehrenamt",
         "copy": "Kopieren",
         "copied": "Kopiert",
         "copiedReferralLink": "Empfehlungslink kopiert",
@@ -2575,6 +2578,11 @@
             "option3": {
                 "option": "Auf LinkedIn teilen",
                 "description": "- Beim kopieren wird ein Muster-Text - zum einfachen Einfügen - in deine Zwischenablage kopiert."
+            },
+            "materials": {
+                "title": "Flyer & Werbematerial verteilen",
+                "description": "Du kannst kostenlos mehrsprachige Flyer, Poster und andere Werbematerialien zu dir nach Hause bestellen, um diese z.B. an Schule, Jugendzentrum oder Bibliothek zu verteilen.",
+                "button": "Formular ausfüllen"
             }
         },
         "reward": {

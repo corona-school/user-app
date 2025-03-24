@@ -732,7 +732,8 @@
             "courseInPast": "Bu kurs çoktan bitti.",
             "courseCancelled": "Bu kurs iptal edilmiştir.",
             "courseStartedButJoinable": "Bu kurs çoktan başladı, ancak hala kayıt olabilirsiniz",
-            "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır"
+            "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır",
+            "timesAWeek": "Haftalık {{times}}x"
         },
         "card": {
             "time": {
@@ -1719,7 +1720,8 @@
             "instructors": "Bir veya daha fazla eğitmen eklenemedi.",
             "lectures": "Bir veya daha fazla tarih eklenemedi.",
             "tags": "Etiketleriniz eklenemedi.",
-            "appointments": "Hiçbir tarih belirlenmedi"
+            "appointments": "Hiçbir tarih belirlenmedi",
+            "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı."
         },
         "CourseDate": {
             "step": {
@@ -1847,7 +1849,8 @@
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
         "all_participants": "tüm katılımcılar",
-        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi."
+        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi.",
+        "alternatingInstructors": "Yardımcıların değiştirilmesi"
     },
     "notification": {
         "timedifference": {
@@ -2073,9 +2076,9 @@
             "install": "Lern-Fair Uygulama",
             "progress": "Başarılar ve ilerleme",
             "editCourse": "Kursu düzenle",
-            "lesson": "Dersler",
             "referral": "Yönlendirme",
-            "certificates": "Sertifikalar"
+            "certificates": "Sertifikalar",
+            "lesson": "Yapay zeka ile ders planlayıcı (Beta)"
         }
     },
     "screening": {
@@ -2569,7 +2572,12 @@
             },
             "title": "Benzersiz bağlantınızı paylaşın",
             "description": "Yönlendirmeye başlamak için kişisel bağlantınızı ağınızla paylaşın! Yönlendirme bağlantınızı paylaşmanın üç kolay yolu var:",
-            "share": "Paylaş"
+            "share": "Paylaş",
+            "materials": {
+                "title": "El ilanları ve reklam materyalleri dağıtın",
+                "description": "Ücretsiz çok dilli el ilanları, posterler ve diğer tanıtım materyallerini indirerek çıktı alabilir ve örneğin bir okulda, gençlik merkezinde veya kütüphanede sergileyebilirsiniz.",
+                "button": "Reklam medyasına"
+            }
         },
         "reward": {
             "title": "Benim Etkim",

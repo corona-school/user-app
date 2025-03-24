@@ -19,6 +19,7 @@ query appointmentMeetingData($appointmentId: Float!) {
         zoomMeetingId
         isOrganizer
         isParticipant
+        zoomMeetingPassword
     }
 }`);
 
@@ -132,7 +133,7 @@ const ZoomMeeting: React.FC = () => {
                     signature: credentials.signature!,
                     sdkKey: credentials.sdkKey,
                     meetingNumber: credentials.meetingNumber,
-                    passWord: '',
+                    passWord: appointmentMeetingData.appointment.zoomMeetingPassword ?? '',
                     userName: credentials.userName || '',
                     userEmail: credentials.userEmail,
                     zak: credentials.zak,

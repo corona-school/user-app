@@ -24,6 +24,8 @@ import Rewards from '@/components/referral/rewards';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useUserType } from '@/hooks/useApollo';
+import { Button } from '@/components/Button';
+import { SHARING_MATERIALS_URL } from '@/config';
 
 const ReferralCountQuery = gql(`
     query ReferralCount {
@@ -96,8 +98,9 @@ const Referrals: React.FC<{}> = () => {
             action: 'Share on Desktop',
             name: 'Click Share on LinkedIn on Desktop',
         });
-        const imageURL = 'https://user-app-files.fra1.digitaloceanspaces.com/static/images/share_image.jpg';
-        const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(imageURL)}`;
+        const linkedinURL = `https://www.linkedin.com/sharing/share-offsite/?text=${encodeURIComponent(referralMessage)}&url=${encodeURIComponent(
+            uniqueReferralLink
+        )}`;
 
         setLinkedinButtonText(t('referral.copiedReferralLink'));
         onCopy(referralMessage + '\n' + uniqueReferralLink);
@@ -200,6 +203,15 @@ const Referrals: React.FC<{}> = () => {
                         </div>
                     </div>
                 </div>
+                <div className="flex flex-col px-2 max-w-[40%]">
+                    <Typography variant="h4" className="mt-14 mb-1.5 font-bold">
+                        {t('referral.share.materials.title')}
+                    </Typography>
+                    <Typography>{t('referral.share.materials.description')}</Typography>
+                    <Button className="mt-4" variant="outline" onClick={() => window.open(SHARING_MATERIALS_URL, '_blank')}>
+                        {t('referral.share.materials.button')}
+                    </Button>
+                </div>
             </div>
 
             {/* Mobile View */}
@@ -262,6 +274,17 @@ const Referrals: React.FC<{}> = () => {
                             shareToLinkedIn={shareToLinkedIn}
                             handleShare={handleShare}
                         />
+                    </div>
+                    <div className="bg-white rounded-md shadow-lg p-5">
+                        <div className="flex flex-col">
+                            <Typography variant="h6" className="mb-1.5 font-bold">
+                                {t('referral.share.materials.title')}
+                            </Typography>
+                            <Typography>{t('referral.share.materials.description')}</Typography>
+                            <Button className="mt-4 w-full" variant="outline" onClick={() => window.open(SHARING_MATERIALS_URL, '_blank')}>
+                                {t('referral.share.materials.button')}
+                            </Button>
+                        </div>
                     </div>
                 </div>
             </div>
