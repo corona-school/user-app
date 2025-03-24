@@ -54,6 +54,7 @@ const StudentGroup: React.FC = () => {
                                 start
                                 duration
                             }
+                            updatedAt
                             course {
                                 courseState
                                 name
