@@ -1,5 +1,5 @@
 import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
@@ -13,6 +13,7 @@ import { Button } from '@/components/Button';
 import { IconMessage2, IconInfoCircleFilled } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { Alert } from '@/components/Alert';
+import { RecommendationEnum, RecommendationsContext } from '@/context/RecommendationsContext';
 
 type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
@@ -46,11 +47,22 @@ query GetCourseConversationId($subcourseId: Int!, $isParticipant: Boolean!) {
 }
 `);
 
+const TOTAL_SUBCOURSES_JOINED_QUERY = gql(`
+query totalSubcoursesJoined {
+    me {
+        pupil {
+            totalSubcoursesJoined
+        }
+    }
+}
+`);
+
 const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment }: PupilCourseButtonsProps) => {
     const [signInModal, setSignInModal] = useState(false);
     const [signOutModal, setSignOutModal] = useState(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState(false);
     const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState(false);
+    const { recommend } = useContext(RecommendationsContext);
 
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -113,6 +125,8 @@ const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment
         `)
     );
 
+    const { data: totalSubcoursesQuery } = useQuery(TOTAL_SUBCOURSES_JOINED_QUERY);
+
     async function contactInstructorAsParticipant() {
         try {
             const conversation = await chatCreateForSubcourse({
@@ -141,15 +155,18 @@ const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment
 
     const conversationId = data?.subcourse?.conversationId || '';
 
-    const handleSignInCourse = useCallback(async () => {
+    const handleSignInCourse = async () => {
         setSignInModal(false);
         try {
             await joinSubcourse();
+            if (totalSubcoursesQuery?.me.pupil?.totalSubcoursesJoined === 0) {
+                recommend(RecommendationEnum.PUSH_NOTIFICATIONS_JOINED_COURSE);
+            }
             toast.success(t('single.signIn.toast'));
         } catch (e) {
             toast.error(t('single.signIn.error'));
         }
-    }, []);
+    };
 
     const handleCourseLeave = useCallback(async () => {
         setSignOutModal(false);
