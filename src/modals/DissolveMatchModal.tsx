@@ -44,7 +44,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
     return (
         <Modal
             isOpen={!!showDissolveModal}
-            onOpenChange={(isOpen) => isOpen && onPressBack()}
+            onOpenChange={(isOpen) => !isOpen && onPressBack()}
             className={cn('w-full lg:w-[820px] max-w-[550px] rounded-none lg:rounded-md', 'bg-white')}
             classes={{
                 closeIcon: 'text-primary',
@@ -68,7 +68,7 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                             ></Trans>
                         </Typography>
                         <ModalFooter variant="default">
-                            <Button onClick={onPressBack} variant="ghost">
+                            <Button onClick={onPressBack} variant="ghost" className="w-full lg:w-fit">
                                 {t('back')}
                             </Button>
                             <Button onClick={() => setShowedWarning(true)}>{t('matching.dissolve.warningModal.btn')}</Button>
