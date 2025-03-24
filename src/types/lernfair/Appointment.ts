@@ -1,4 +1,4 @@
-import { AppointmentParticipant, Course_Category_Enum, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
+import { AppointmentParticipant, Lecture_Appointmenttype_Enum, Organizer } from '../../gql/graphql';
 
 export type Appointment = {
     __typename?: 'Lecture' | undefined;
@@ -26,9 +26,6 @@ export type Appointment = {
     zoomMeetingUrl?: string;
     subcourse?: {
         published?: boolean;
-        course?: {
-            category: Course_Category_Enum;
-        };
     };
 };
 

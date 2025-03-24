@@ -46,9 +46,6 @@ export const STUDENT_APPOINTMENT = gql(`
             zoomMeetingId
             subcourse {
                 published
-                course {
-                    category
-                }
             }
         }
     }

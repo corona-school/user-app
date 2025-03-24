@@ -12,7 +12,7 @@ import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
-import { Course_Category_Enum, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 import { Typography } from '../Typography';
 import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/icons-react';
@@ -138,7 +138,6 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     isOrganizer={appointment.isOrganizer}
                     overrideMeetingLink={appointment.override_meeting_link}
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
-                    showParticipants={appointment.subcourse?.course?.category !== Course_Category_Enum.HomeworkHelp}
                 />
                 {wasRejectedByMatch && (
                     <>
@@ -151,7 +150,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                 )}
                 <Description description={appointment.description} />
                 <div className="flex flex-col md:flex-row gap-3">
-                    {appointment.isOrganizer && (
+                    {user?.student && (
                         <>
                             <Button
                                 disabled={isPastAppointment}
@@ -179,7 +178,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                             </Button>
                         </>
                     )}
-                    {appointment.isParticipant && (
+                    {user?.pupil && (
                         <Button
                             disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
                             reasonDisabled={
