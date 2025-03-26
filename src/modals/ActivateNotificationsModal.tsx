@@ -20,10 +20,11 @@ const ActivateNotificationsModal = ({ isOpen, onOpenChange }: ActivateNotificati
             appointment: { ...userPreferences.appointment, push: true },
             announcement: { ...userPreferences.announcement, push: true },
         };
-        await updateUserPreferences(preferences);
-        await subscribe();
-        toast.success(t('notification.controlPanel.preference.preferencesUpdated'));
-        onOpenChange(false);
+        if (await subscribe()) {
+            await updateUserPreferences(preferences);
+            toast.success(t('notification.controlPanel.preference.preferencesUpdated'));
+            onOpenChange(false);
+        }
     };
 
     return (

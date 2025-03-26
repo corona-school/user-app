@@ -6,7 +6,7 @@ import { WEBPUSH_ACTIVE } from '../config';
 
 interface WebPushContextValue {
     status: WebPushStatus;
-    subscribe: () => Promise<void>;
+    subscribe: () => Promise<boolean | void>;
     unsubscribe: () => Promise<void>;
 }
 
