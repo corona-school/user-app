@@ -37,7 +37,6 @@ const NotificationAlert: React.FC = () => {
     }, [lastTimeCheckedNotifications, userNotifications]);
 
     useEffect(() => {
-        console.log({ showNotifications });
         if (showNotifications) {
             searchParams.delete('showNotifications');
             window.history.replaceState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
