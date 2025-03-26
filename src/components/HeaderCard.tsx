@@ -33,14 +33,10 @@ const HeaderCard: React.FC<Props> = ({ children, leftContent, rightContent, onBa
                             </NavLink>
                         )}
                     </div>
-                    <div className="flex flex-row items-center justify-end w-full md:hidden">
-                        <div className="flex flex-row items-center">
-                            {leftContent} {rightContent}
-                        </div>
-                    </div>
-                    <div className="flex-row justify-end hidden md:flex">
+                    <div className="flex flex-row items-center w-full justify-end">
                         <div>{leftContent}</div>
-                        <div>{rightContent}</div>
+                        <div className="flex flex-row items-center md:hidden">{rightContent}</div>
+                        <div className="hidden md:flex">{rightContent}</div>
                     </div>
                 </div>
             </div>

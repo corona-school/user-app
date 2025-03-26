@@ -8,12 +8,15 @@ import { Button } from '../Button';
 import { IconBell, IconX } from '@tabler/icons-react';
 import { Badge } from '../Badge';
 import { Popover, PopoverArrow, PopoverClose, PopoverContent, PopoverTrigger } from '../Popover';
+import { useSearchParams } from 'react-router-dom';
 
 const NotificationAlert: React.FC = () => {
     const [count, setCount] = useState<number>(0);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const message = useContext(NotificationsContext);
     const { userNotifications, refetch, loading } = useConcreteNotifications();
+    const [searchParams] = useSearchParams();
+    const showNotifications = searchParams.has('showNotifications');
 
     const { lastTimeCheckedNotifications, updateLastTimeChecked } = useLastTimeCheckedNotifications();
 
@@ -33,6 +36,15 @@ const NotificationAlert: React.FC = () => {
         setCount(unreadNotifications.length);
     }, [lastTimeCheckedNotifications, userNotifications]);
 
+    useEffect(() => {
+        if (showNotifications) {
+            searchParams.delete('showNotifications');
+            window.history.replaceState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
+            handleOnOpenChange(true);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showNotifications]);
+
     const handleOnOpenChange = (value: boolean) => {
         setIsOpen(value);
         if (value) {
@@ -44,7 +56,7 @@ const NotificationAlert: React.FC = () => {
 
     return (
         <>
-            <Popover onOpenChange={handleOnOpenChange}>
+            <Popover onOpenChange={handleOnOpenChange} open={isOpen}>
                 <PopoverTrigger asChild>
                     <div className="group flex flex-col relative">
                         {!!count && (
