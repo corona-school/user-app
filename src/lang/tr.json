@@ -1950,7 +1950,13 @@
             "yourMail": "E-postanız: ",
             "closeButton": "Kapat"
         },
-        "send": "Bildirim gönderildi"
+        "send": "Bildirim gönderildi",
+        "activateNotificationsModal": {
+            "title": "Yeni mesajla ilgili not",
+            "description": "Sohbetteki yeni mesajlar veya yeni randevularla ilgili bildirimleri doğrudan cihazınızdan alabilirsiniz (\"anlık bildirim\").",
+            "confirmButton": "Şimdi etkinleştirin",
+            "cancelButton": "Daha sonra"
+        }
     },
     "chat": {
         "modal": {

@@ -2023,6 +2023,12 @@
                     "description": "Newsletter werden ausschließlich per Mail versendet."
                 }
             }
+        },
+        "activateNotificationsModal": {
+            "title": "Hinweis zu neuer Nachricht",
+            "description": "Du kannst Hinweise zu neuen Nachrichten im Chat oder neuen Terminen direkt auf dein Gerät erhalten (“Push-Notification”).",
+            "confirmButton": "Jetzt aktivieren",
+            "cancelButton": "Später"
         }
     },
     "sessionManager": {
