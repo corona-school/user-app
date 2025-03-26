@@ -222,20 +222,20 @@ export function useWebPush() {
         setStatus('loading');
 
         const granted = await userGrantsWebpushPermission();
-        if (!granted) return;
+        if (!granted) return false;
 
         const pushPublicKey = await getServerPublicKey(client);
 
         if (!pushPublicKey) {
             logError('WebPush', 'Missing Server Public Key');
             setStatus('error');
-            return;
+            return false;
         }
 
         const subscription = await subscribeUserToPush(pushPublicKey);
         if (!subscription) {
             setStatus('error');
-            return;
+            return false;
         }
 
         try {
@@ -248,10 +248,11 @@ export function useWebPush() {
         } catch (error) {
             logError('WebPush', 'Failed to subscribe on server', error);
             setStatus('error');
-            return;
+            return false;
         }
 
         setStatus('subscribed');
+        return true;
     }
 
     async function unsubscribe() {
