@@ -1,15 +1,19 @@
-import { Button, Modal, Radio, Row, useTheme, VStack } from 'native-base';
 import { useState } from 'react';
 import { useUserType } from '../hooks/useApollo';
 import { Trans, useTranslation } from 'react-i18next';
 import { Dissolve_Reason } from '../gql/graphql';
-import DisableableButton from '../components/DisablebleButton';
 import { Typography } from '@/components/Typography';
+import { cn } from '@/lib/Tailwind';
+import { Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
+import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
+import { Label } from '@/components/Label';
+import { Input } from '@/components/Input';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
     alsoShowWarningModal?: boolean | undefined;
-    onPressDissolve: (dissolveReasons: Dissolve_Reason[]) => any;
+    onPressDissolve: (dissolveReasons: Dissolve_Reason[], otherFreeText: string | undefined) => any;
     onPressBack: () => any;
 };
 
@@ -22,9 +26,9 @@ const SupportEmail = () => (
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack }) => {
     const [showedWarning, setShowedWarning] = useState<boolean>(false);
     const { t } = useTranslation();
-    const { space } = useTheme();
     const userType = useUserType();
     const [reasons, setReasons] = useState<Dissolve_Reason[]>([]);
+    const [otherFreeText, setOtherFreeText] = useState<string>('');
     const availableReasons = [
         Dissolve_Reason.Ghosted,
         Dissolve_Reason.NoMoreHelpNeeded,
@@ -38,65 +42,86 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
     ];
 
     return (
-        <Modal isOpen={showDissolveModal} onClose={onPressBack}>
-            <Modal.Content>
-                <Modal.CloseButton />
+        <Modal
+            isOpen={!!showDissolveModal}
+            onOpenChange={(isOpen) => !isOpen && onPressBack()}
+            className={cn('w-full lg:w-[820px] max-w-[550px] rounded-none lg:rounded-md', 'bg-white')}
+            classes={{
+                closeIcon: 'text-primary',
+            }}
+        >
+            <div className="flex flex-col w-full justify-between md:justify-center lg:justify-between">
                 {alsoShowWarningModal && !showedWarning ? (
                     <>
-                        <Modal.Header>{t('matching.dissolve.warningModal.title')}</Modal.Header>
-                        <Modal.Body>
-                            <Typography>
-                                <Trans
-                                    i18nKey={
-                                        userType === 'pupil'
-                                            ? 'matching.dissolve.warningModal.pupilDescription'
-                                            : 'matching.dissolve.warningModal.studentDescription'
-                                    }
-                                    components={[<SupportEmail />]}
-                                    values={{ email: 'support@lern-fair.de' }}
-                                ></Trans>
-                            </Typography>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Row space={space['1']}>
-                                <Button onPress={onPressBack} variant="ghost">
-                                    {t('back')}
-                                </Button>
-                                <Button onPress={() => setShowedWarning(true)}>{t('matching.dissolve.warningModal.btn')}</Button>
-                            </Row>
-                        </Modal.Footer>
+                        <ModalHeader>
+                            <ModalTitle>{t('matching.dissolve.warningModal.title')}</ModalTitle>
+                        </ModalHeader>
+                        <Typography className="py-4">
+                            <Trans
+                                i18nKey={
+                                    userType === 'pupil'
+                                        ? 'matching.dissolve.warningModal.pupilDescription'
+                                        : 'matching.dissolve.warningModal.studentDescription'
+                                }
+                                components={[<SupportEmail />]}
+                                values={{ email: 'support@lern-fair.de' }}
+                            ></Trans>
+                        </Typography>
+                        <ModalFooter variant="default">
+                            <Button onClick={onPressBack} variant="ghost" className="w-full lg:w-fit">
+                                {t('back')}
+                            </Button>
+                            <Button onClick={() => setShowedWarning(true)}>{t('matching.dissolve.warningModal.btn')}</Button>
+                        </ModalFooter>
                     </>
                 ) : (
                     <>
-                        <Modal.Header>{t('matching.dissolve.modal.title')}</Modal.Header>
-                        <Modal.Body>
-                            <Radio.Group name="dissolve-reason" value={reasons[0]} onChange={(key) => setReasons([key as Dissolve_Reason])}>
-                                <VStack space={space['1']}>
-                                    {availableReasons.map((key) => (
-                                        <Radio key={key} value={key}>
+                        <ModalHeader>
+                            <ModalTitle>{t('matching.dissolve.modal.title')}</ModalTitle>
+                        </ModalHeader>
+                        <div className="py-4 px-4">
+                            <RadioGroup
+                                name="dissolve-reason"
+                                value={reasons[0]}
+                                onValueChange={(key) => {
+                                    setReasons([key as unknown as Dissolve_Reason]);
+                                }}
+                                className="flex flex-col gap-y-4"
+                            >
+                                {availableReasons.map((key) => (
+                                    <div className="flex gap-x-2 items-center" key={key}>
+                                        <RadioGroupItem id={key} value={key} />
+                                        <Label htmlFor={key} className="cursor-pointer">
                                             {t(`matching.dissolveReasons.${userType}.${key}` as unknown as TemplateStringsArray)}
-                                        </Radio>
-                                    ))}
-                                </VStack>
-                            </Radio.Group>
-                        </Modal.Body>
-                        <Modal.Footer>
-                            <Row space={space['1']}>
-                                <DisableableButton
-                                    isDisabled={reasons.length === 0}
-                                    reasonDisabled={t('matching.dissolve.modal.tooltip')}
-                                    onPress={() => onPressDissolve(reasons ?? [Dissolve_Reason.Unknown])}
-                                >
-                                    {t('matching.dissolve.modal.btn')}
-                                </DisableableButton>
-                                <Button onPress={onPressBack} variant="ghost">
-                                    {t('back')}
-                                </Button>
-                            </Row>
-                        </Modal.Footer>
+                                        </Label>
+                                    </div>
+                                ))}
+                            </RadioGroup>
+                            {reasons.includes(Dissolve_Reason.Other) && (
+                                <Input
+                                    placeholder={t('matching.dissolve.modal.otherFreeText')}
+                                    value={otherFreeText}
+                                    onChange={(e) => setOtherFreeText(e.target.value)}
+                                    className="w-full my-2"
+                                    autoFocus={true}
+                                />
+                            )}
+                        </div>
+                        <ModalFooter variant="default">
+                            <Button onClick={onPressBack} variant="ghost">
+                                {t('back')}
+                            </Button>
+                            <Button
+                                disabled={reasons.length === 0 || (reasons.includes(Dissolve_Reason.Other) && !otherFreeText)}
+                                reasonDisabled={t('matching.dissolve.modal.tooltip')}
+                                onClick={() => onPressDissolve(reasons, reasons.includes(Dissolve_Reason.Other) ? otherFreeText : undefined)}
+                            >
+                                {t('matching.dissolve.modal.btn')}
+                            </Button>
+                        </ModalFooter>
                     </>
                 )}
-            </Modal.Content>
+            </div>
         </Modal>
     );
 };

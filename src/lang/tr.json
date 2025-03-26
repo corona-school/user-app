@@ -1577,7 +1577,8 @@
             "modal": {
                 "title": "Neden öğrenme çiftini sonlandirmak istiyorsunuz?",
                 "btn": "Çifti iptal et",
-                "tooltip": "Bir sebep göstermelisiniz."
+                "tooltip": "Bir sebep göstermelisiniz.",
+                "otherFreeText": "Sebep:"
             },
             "warningModal": {
                 "title": "Emin misin?",
