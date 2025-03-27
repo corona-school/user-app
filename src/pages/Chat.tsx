@@ -38,7 +38,7 @@ const Chat: React.FC = () => {
     const { t } = useTranslation();
     const location = useLocation();
     const [searchParams] = useSearchParams();
-    const conversationIdParam = searchParams.has('conversationId');
+    const conversationIdParam = searchParams.get('conversationId');
 
     const locationState = location.state as { conversationId: string };
     const conversationId = locationState?.conversationId ?? conversationIdParam;
