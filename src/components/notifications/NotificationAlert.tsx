@@ -8,7 +8,7 @@ import { Button } from '../Button';
 import { IconBell, IconX } from '@tabler/icons-react';
 import { Badge } from '../Badge';
 import { Popover, PopoverArrow, PopoverClose, PopoverContent, PopoverTrigger } from '../Popover';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useLocation } from 'react-router-dom';
 
 const NotificationAlert: React.FC = () => {
     const [count, setCount] = useState<number>(0);
@@ -16,6 +16,9 @@ const NotificationAlert: React.FC = () => {
     const message = useContext(NotificationsContext);
     const { userNotifications, refetch, loading } = useConcreteNotifications();
     const [searchParams] = useSearchParams();
+    const location = useLocation();
+    const { pathname } = location;
+    const isChat = pathname.includes('/chat');
     const showNotifications = searchParams.has('showNotifications');
 
     const { lastTimeCheckedNotifications, updateLastTimeChecked } = useLastTimeCheckedNotifications();
@@ -40,10 +43,12 @@ const NotificationAlert: React.FC = () => {
         if (showNotifications) {
             searchParams.delete('showNotifications');
             window.history.replaceState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
-            handleOnOpenChange(true);
+            if (!isChat) {
+                handleOnOpenChange(true);
+            }
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showNotifications]);
+    }, [showNotifications, isChat]);
 
     const handleOnOpenChange = (value: boolean) => {
         setIsOpen(value);
