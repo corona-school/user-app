@@ -38,8 +38,15 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
     const today = new Date();
     const aWeekAgo = today.setDate(today.getDate() - 7);
     const isCourseNewlyAdded = subcourse?.publishedAt ? new Date(subcourse?.publishedAt).getTime() > aWeekAgo : false;
+    const isHomeworkHelp = course.category === Course_Category_Enum.HomeworkHelp;
     const showTrafficStatus =
-        !isInPast && !subcourse?.cancelled && subcourse?.published && !subcourse.isOnWaitingList && !hideTrafficStatus && !subcourse?.isParticipant;
+        !isInPast &&
+        !subcourse?.cancelled &&
+        subcourse?.published &&
+        !subcourse.isOnWaitingList &&
+        !hideTrafficStatus &&
+        !subcourse?.isParticipant &&
+        !isHomeworkHelp;
 
     return (
         <div className="flex flex-col-reverse lg:flex-row justify-between">
@@ -78,13 +85,13 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                             </Typography>
                         </SubcourseFactRow>
                     )}
-                    {subcourse?.instructors && subcourse?.instructors[0] && course.category !== Course_Category_Enum.HomeworkHelp && (
+                    {subcourse?.instructors && subcourse?.instructors[0] && !isHomeworkHelp && (
                         <SubcourseFactRow>
                             <IconSchool />
                             <Typography>{subcourse?.instructors.map((it) => `${it.firstname} ${it.lastname}`).join(' • ')}</Typography>
                         </SubcourseFactRow>
                     )}
-                    {course.category === Course_Category_Enum.HomeworkHelp && (
+                    {isHomeworkHelp && (
                         <SubcourseFactRow>
                             <IconSchool />
                             <Typography>{t('course.alternatingInstructors')}</Typography>

@@ -14,14 +14,13 @@ type ActionButtonProps = {
         | 'participantsCount'
         | 'published'
         | 'isInstructor'
-        | 'canCancel'
-        | 'canContactParticipants'
-        | 'canEdit'
+        | 'isMentor'
         | 'conversationId'
         | 'allowChatContactProspects'
         | 'allowChatContactParticipants'
         | 'groupChatType'
-    >;
+    > &
+        Partial<Pick<Subcourse, 'canEdit'>>;
     appointment: Lecture;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
     isActiveSubcourse?: boolean;
@@ -34,7 +33,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
     return (
         <>
             <div className="flex flex-col gap-y-4 md:flex-row md:gap-x-4 md:flex-wrap">
-                {subcourse.published && isActiveSubcourse && (
+                {subcourse.published && isActiveSubcourse && subcourse.isInstructor && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={subcourse.conversationId}
@@ -45,7 +44,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         className="w-full  md:w-fit"
                     />
                 )}
-                {subcourse.canEdit.allowed && (
+                {subcourse?.canEdit?.allowed && (
                     <>
                         <Button
                             onClick={() => {
@@ -61,9 +60,9 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         </Button>
                     </>
                 )}
-                {subcourse.published && appointment && isActiveSubcourse && (
+                {subcourse.published && appointment && isActiveSubcourse && (subcourse.isInstructor || subcourse.isMentor) && (
                     <VideoButton
-                        isInstructor
+                        isInstructor={subcourse.isInstructor}
                         appointmentId={appointment.id}
                         appointmentType={appointment.appointmentType}
                         startDateTime={appointment.start}

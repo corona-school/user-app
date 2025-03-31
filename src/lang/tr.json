@@ -809,7 +809,8 @@
             "button": "Bağlayıcı kayıt",
             "description": "Bu kursa <b>kayıt</b> yaptırdığınız için teşekkür ederiz.\nYardımcılarımız kursları gönüllülük esasına göre sunmaktadır. Bu nedenle lütfen zamanında gelin ve gelemeyecekseniz iptal edin.",
             "toast": "Kurs kaydınızı başarıyla tamamladınız.",
-            "error": "Kurs için kayıt yaptıramadınız."
+            "error": "Kurs için kayıt yaptıramadınız.",
+            "homeworkHelpButton": "Yükümlülük olmadan kayıt olun"
         },
         "joinWaitinglist": {
             "button": "Bekleme listesine alın",
@@ -863,6 +864,16 @@
             "error": "Öğrenci eklenemedi.",
             "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok.",
             "description": "Burada, sohbet yoluyla sizinle iletişime geçen ilgili tarafları görebilirsiniz."
+        },
+        "homeworkHelp": {
+            "signIn": {
+                "title": "Bağlayıcı olmayan kayıt",
+                "description": "Kayıt olur olmaz, bireysel ev ödevi yardım derslerini kendiliğinden destekleyebilirsiniz. Kayıt yaptırmak sizi herhangi bir taahhüt altına sokmaz, ancak ilgiyi kabaca ölçmemize yardımcı olur."
+            },
+            "signOut": {
+                "title": "Çıkış",
+                "description": "Ev ödevi yardımı derslerine artık erişmeniz gerekmiyorsa oturumu kapatın."
+            }
         }
     },
     "settings": {
@@ -1549,7 +1560,8 @@
                             "title": "Kurslarım",
                             "current": "Güncel kurslar (yayınlanmış)",
                             "draft": "Taslak veya inceleme aşamasında",
-                            "past": "Geçmiş ve iptal edilen kurslar"
+                            "past": "Geçmiş ve iptal edilen kurslar",
+                            "homeworkHelp": "Ev ödevi yardımı"
                         },
                         "tab2": {
                             "title": "Tüm kurslar"
