@@ -8,7 +8,7 @@ import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import FloatingActionButton from '../components/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
 import { useChat } from '../context/ChatContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { ChatContactSupportModal, ReportInfos } from '../modals/ChatContactSupportModal';
@@ -37,9 +37,19 @@ const Chat: React.FC = () => {
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const location = useLocation();
+    const [searchParams] = useSearchParams();
+    const conversationIdParam = searchParams.get('conversationId');
 
     const locationState = location.state as { conversationId: string };
-    const conversationId = locationState?.conversationId;
+    const conversationId = locationState?.conversationId ?? conversationIdParam;
+
+    useEffect(() => {
+        if (conversationIdParam) {
+            searchParams.delete('conversationId');
+            window.history.replaceState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [conversationId]);
 
     const paddingRight = useBreakpointValue({
         base: '2',

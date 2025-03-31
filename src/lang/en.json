@@ -1962,7 +1962,13 @@
             "yourMail": "Your e-mail: ",
             "closeButton": "Close"
         },
-        "send": "Notification sent"
+        "send": "Notification sent",
+        "activateNotificationsModal": {
+            "title": "Note on new message",
+            "description": "You can receive notifications about new messages in the chat or new appointments directly on your device (\"push notification\").",
+            "confirmButton": "Activate now",
+            "cancelButton": "Later"
+        }
     },
     "chat": {
         "modal": {
