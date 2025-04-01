@@ -22,6 +22,7 @@ import InstallationProvider from './context/InstallationProvider';
 import WebPushProvider from './context/WebPushProvider';
 import { Toaster } from '@/components/Toaster';
 import { GlobalModalsProvider } from './context/GlobalModalsProvider';
+import { RecommendationsProvider } from './context/RecommendationsContext';
 
 function App() {
     return (
@@ -35,17 +36,19 @@ function App() {
                                     <IssueReporter>
                                         <MatomoProvider value={matomo}>
                                             <GlobalModalsProvider>
-                                                <NotificationsProvider>
-                                                    <LFChatProvider>
-                                                        <NavigationStackProvider>
-                                                            <InstallationProvider>
-                                                                <Navigator />
-                                                            </InstallationProvider>
-                                                            <ToastNotifications />
-                                                            <Toaster />
-                                                        </NavigationStackProvider>
-                                                    </LFChatProvider>
-                                                </NotificationsProvider>
+                                                <InstallationProvider>
+                                                    <NotificationsProvider>
+                                                        <RecommendationsProvider>
+                                                            <LFChatProvider>
+                                                                <NavigationStackProvider>
+                                                                    <Navigator />
+                                                                    <ToastNotifications />
+                                                                    <Toaster />
+                                                                </NavigationStackProvider>
+                                                            </LFChatProvider>
+                                                        </RecommendationsProvider>
+                                                    </NotificationsProvider>
+                                                </InstallationProvider>
                                             </GlobalModalsProvider>
                                         </MatomoProvider>
                                     </IssueReporter>
