@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
-import { Screening_Jobstatus_Enum } from '@/gql/graphql';
+import { Screening_Jobstatus_Enum, StudentScreeningStatus } from '@/gql/graphql';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { StudentForScreening } from '@/types';
 import { EditJobStatusModal } from '@/widgets/screening/EditJobStatusModal';
@@ -21,9 +21,10 @@ interface ScreenStudentProps {
 const CUSTOM_KNOWS_FROM_PREFIX = 'Sonstiges: ';
 
 const CREATE_INSTRUCTOR_SCREENING_MUTATION = gql(`
-    mutation ScreenAsInstructor($studentId: Float!, $success: Boolean!, $comment: String! $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
+    mutation ScreenAsInstructor($studentId: Float!, $success: Boolean!, $status: StudentScreeningStatus, $comment: String! $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
         studentInstructorScreeningCreate(studentId: $studentId, screening: {
             success: $success
+            status: $status
             comment: $comment
             jobStatus: $jobStatus
             knowsCoronaSchoolFrom: $knowsFrom
@@ -32,9 +33,10 @@ const CREATE_INSTRUCTOR_SCREENING_MUTATION = gql(`
 `);
 
 const CREATE_TUTOR_SCREENING_MUTATION = gql(`
-    mutation ScreenAsTutor($studentId: Float!, $success: Boolean!, $comment: String!, $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
+    mutation ScreenAsTutor($studentId: Float!, $success: Boolean!, $status: StudentScreeningStatus, $comment: String!, $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
         studentTutorScreeningCreate(studentId: $studentId, screening: {
             success: $success
+            status: $status
             comment: $comment
             jobStatus: $jobStatus
             knowsCoronaSchoolFrom: $knowsFrom
@@ -74,10 +76,17 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
         setKnowsFrom('');
     };
 
-    async function screenAsInstructor(decision: boolean) {
+    async function screenAsInstructor(decision: StudentScreeningStatus) {
         try {
             await mutationCreateInstructorScreening({
-                variables: { studentId: student.id, comment: student.descriptionForScreening, knowsFrom, jobStatus: jobStatus!, success: decision },
+                variables: {
+                    studentId: student.id,
+                    comment: student.descriptionForScreening,
+                    knowsFrom,
+                    jobStatus: jobStatus!,
+                    success: decision === StudentScreeningStatus.Success,
+                    status: decision,
+                },
             });
             const hadSuccessfulScreening = decision
                 ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
@@ -95,10 +104,17 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
         }
     }
 
-    async function screenAsTutor(decision: boolean) {
+    async function screenAsTutor(decision: StudentScreeningStatus) {
         try {
             await mutationCreateTutorScreening({
-                variables: { studentId: student.id, comment: student.descriptionForScreening, knowsFrom, jobStatus: jobStatus!, success: decision },
+                variables: {
+                    studentId: student.id,
+                    comment: student.descriptionForScreening,
+                    knowsFrom,
+                    jobStatus: jobStatus!,
+                    success: decision === StudentScreeningStatus.Success,
+                    status: decision,
+                },
             });
             const hadSuccessfulScreening = decision
                 ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
@@ -181,7 +197,9 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
                         confirmButtonText="Annehmen"
                         onConfirm={() => {
                             setShowConfirmApprove(false);
-                            currentScreeningType === 'tutor' ? screenAsTutor(true) : screenAsInstructor(true);
+                            currentScreeningType === 'tutor'
+                                ? screenAsTutor(StudentScreeningStatus.Success)
+                                : screenAsInstructor(StudentScreeningStatus.Success);
                         }}
                         isLoading={isLoading}
                     />
@@ -197,7 +215,9 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
                         confirmButtonText="Ablehnen"
                         onConfirm={() => {
                             setShowConfirmReject(false);
-                            currentScreeningType === 'tutor' ? screenAsTutor(false) : screenAsInstructor(false);
+                            currentScreeningType === 'tutor'
+                                ? screenAsTutor(StudentScreeningStatus.Rejection)
+                                : screenAsInstructor(StudentScreeningStatus.Rejection);
                         }}
                         isLoading={isLoading}
                     />
