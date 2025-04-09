@@ -13,7 +13,7 @@ import { DateTime } from 'luxon';
 import AppointmentList from '../../widgets/AppointmentList';
 import { Appointment } from '../../types/lernfair/Appointment';
 import ScreenerCourseButtons from './single-course/ScreenerCourseButtons';
-import { ConfirmModal } from '../../modals/ConfirmModal';
+import ConfirmationModal from '@/modals/ConfirmationModal';
 
 const subcourseQuery = gql(`
 query subcourse($subcourseId: Int!) {
@@ -241,31 +241,36 @@ const SingleCourseScreener: React.FC = () => {
                 </Stack>
             )}
             {/* ALLOW COURSE MODAL */}
-            <ConfirmModal
-                text={`${course?.courseState === Course_Coursestate_Enum.Denied ? t('screening.courses.already.denied') + '.\n' : ''}${t(
+            <ConfirmationModal
+                description={`${course?.courseState === Course_Coursestate_Enum.Denied ? t('screening.courses.already.denied') + '.\n' : ''}${t(
                     'screening.courses.are_you_sure_allow'
                 )}`}
                 isOpen={showAllowModal}
-                danger={course?.courseState === Course_Coursestate_Enum.Denied}
-                onConfirmed={async () => {
+                onConfirm={async () => {
                     setShowAllowModal(false);
                     await allowCourse({ variables: { courseId: course?.id! } });
                     refetchSubcourse();
                     toast.show({ description: t('screening.courses.toast.allowed'), placement: 'top' });
                 }}
-                onClose={() => setShowAllowModal(false)}
+                onOpenChange={setShowAllowModal}
+                headline={t('screening.courses.allow_course')}
+                confirmButtonText={t('screening.courses.allow_course')}
+                variant={course?.courseState === Course_Coursestate_Enum.Denied ? 'destructive' : 'default'}
             />
             {/* DENY COURSE MODAL */}
-            <ConfirmModal
-                text={t('screening.courses.are_you_sure_deny')}
+            <ConfirmationModal
+                description={t('screening.courses.are_you_sure_deny')}
                 isOpen={showDenyModal}
-                onConfirmed={async () => {
+                onConfirm={async () => {
                     setShowDenyModal(false);
                     await denyCourse({ variables: { courseId: course?.id! } });
                     refetchSubcourse();
                     toast.show({ description: t('screening.courses.toast.denied'), placement: 'top' });
                 }}
-                onClose={() => setShowDenyModal(false)}
+                onOpenChange={setShowDenyModal}
+                headline={t('screening.courses.deny_course')}
+                confirmButtonText={t('screening.courses.deny_course')}
+                variant="destructive"
             />
         </WithNavigation>
     );
