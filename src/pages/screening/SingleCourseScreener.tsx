@@ -123,12 +123,11 @@ const SingleCourseScreener: React.FC = () => {
 
     const [allowCourse] = useMutation(
         gql(`
-            mutation allowCourse($subcourseId: Float!){
-                courseAllow(courseId: $subcourseId)
+            mutation allowCourse($courseId: Float!){
+                courseAllow(courseId: $courseId)
             }
         `),
         {
-            variables: { subcourseId: subcourseId },
             onError: () => {
                 refetchSubcourse(); // necessary when allowCourse runs with errors (subcourse can't be published, but course will still get allowed)
             },
@@ -137,13 +136,10 @@ const SingleCourseScreener: React.FC = () => {
 
     const [denyCourse] = useMutation(
         gql(`
-            mutation denyCourse($subcourseId: Float!){
-                courseDeny(courseId: $subcourseId)
+            mutation denyCourse($courseId: Float!){
+                courseDeny(courseId: $courseId)
             }
-        `),
-        {
-            variables: { subcourseId: subcourseId },
-        }
+        `)
     );
 
     const [shareCourseMutation] = useMutation(
@@ -253,7 +249,7 @@ const SingleCourseScreener: React.FC = () => {
                 danger={course?.courseState === Course_Coursestate_Enum.Denied}
                 onConfirmed={async () => {
                     setShowAllowModal(false);
-                    await allowCourse();
+                    await allowCourse({ variables: { courseId: course?.id! } });
                     refetchSubcourse();
                     toast.show({ description: t('screening.courses.toast.allowed'), placement: 'top' });
                 }}
@@ -265,7 +261,7 @@ const SingleCourseScreener: React.FC = () => {
                 isOpen={showDenyModal}
                 onConfirmed={async () => {
                     setShowDenyModal(false);
-                    await denyCourse();
+                    await denyCourse({ variables: { courseId: course?.id! } });
                     refetchSubcourse();
                     toast.show({ description: t('screening.courses.toast.denied'), placement: 'top' });
                 }}
