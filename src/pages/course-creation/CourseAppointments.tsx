@@ -1,25 +1,22 @@
-import { Box, Button, Divider, useBreakpointValue } from 'native-base';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList from '../../widgets/AppointmentList';
-import AppointmentsEmptyState from '../../widgets/AppointmentsEmptyState';
 import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
-import ButtonRow from './ButtonRow';
 import { DateTime } from 'luxon';
 import { CreateCourseContext } from '../CreateCourse';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
+import { Typography } from '@/components/Typography';
+import { Button } from '@/components/Button';
 
 type Props = {
-    next: () => void;
-    back: () => void;
     isEditing?: boolean;
     appointments: Appointment[];
 };
 
-const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointments }) => {
+const CourseAppointments: React.FC<Props> = ({ isEditing, appointments }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState<boolean>(false);
 
@@ -28,11 +25,6 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointmen
     const { dispatchWeeklyAppointment } = useWeeklyAppointments();
 
     const { courseName } = useContext(CreateCourseContext);
-
-    const maxHeight = useBreakpointValue({
-        base: 400,
-        lg: 600,
-    });
 
     const handleOnOpenChange = (open: boolean) => {
         setShowModal(open);
@@ -97,34 +89,19 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointmen
 
     return (
         <>
-            <CreateCourseAppointmentModal isOpen={showModal} onOpenChange={handleOnOpenChange} total={allAppointmentsToShow.length} />
-            <Box>
-                <Box maxH={maxHeight} flex="1" mb="10">
-                    {!isEditing && allAppointmentsToShow.length === 0 ? (
-                        <Box justifyContent="center">
-                            <AppointmentsEmptyState title={t('appointment.empty.noAppointments')} subtitle={t('appointment.empty.createNewAppointmentDesc')} />
-                        </Box>
-                    ) : (
-                        <Box minH={400}>
-                            <AppointmentList height="100%" isReadOnlyList={true} appointments={allAppointmentsToShow} />
-                        </Box>
-                    )}
-                </Box>
+            <Typography variant="h3">{t('course.CourseDate.step.appointments')}</Typography>
 
-                <Button
-                    variant="outline"
-                    borderStyle="dashed"
-                    borderWidth="2"
-                    borderColor="primary.500"
-                    _text={{ color: 'primary.500' }}
-                    width="full"
-                    onPress={() => setShowModal(true)}
-                >
-                    {t('course.appointments.addOtherAppointment')}
+            <CreateCourseAppointmentModal isOpen={showModal} onOpenChange={handleOnOpenChange} total={allAppointmentsToShow.length} />
+            <div>
+                {!isEditing && allAppointmentsToShow.length > 0 && (
+                    <div className="mb-2">
+                        <AppointmentList height="100%" isReadOnlyList={true} appointments={allAppointmentsToShow} />
+                    </div>
+                )}
+                <Button onClick={() => setShowModal(true)} variant={'default'} className="w-full p-6">
+                    {allAppointmentsToShow.length === 0 ? t('course.appointments.addFirstAppointment') : t('course.appointments.addOtherAppointment')}
                 </Button>
-                <Divider my="5" />
-                <ButtonRow onNext={next} onBack={back} isDisabled={canGoFurther()} />
-            </Box>
+            </div>
         </>
     );
 };

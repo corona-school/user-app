@@ -150,7 +150,7 @@ const CoursePreview: React.FC<Props> = ({
                 </Heading>
 
                 <Box bg="gray.500" h="180">
-                    <Image src={pickedPhoto} h="100%" />
+                    <Image src={pickedPhoto?.content as string} h="100%" />
                 </Box>
             </Row>
             {subject && (

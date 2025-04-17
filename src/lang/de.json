@@ -1784,6 +1784,7 @@
         "appointments": {
             "headline": "Wann soll der Kurs stattfinden?",
             "content": "Termin erstellen",
+            "addFirstAppointment": "Ersten Termin anlegen",
             "addOtherAppointment": "Weiteren Termin anlegen",
             "check": "Angaben prüfen",
             "saveDraft": "Als Entwurf speichern",
@@ -1801,12 +1802,12 @@
             "appointments": "Keine Termine angelegt."
         },
         "CourseDate": {
-            "headline": "Allgemeine Informationen zu deinem Kurs",
+            "headline": "Kursdetails",
             "step": {
-                "general": "Allgemeine Informationen",
+                "general": "Kursdetails",
                 "subject": "Einordnung",
                 "attendees": "Teilnehmer:innen",
-                "appointments": "Termin(e)",
+                "appointments": "Termine",
                 "settings": "Einstellungen",
                 "checker": "Überprüfung"
             },
@@ -1818,7 +1819,7 @@
                 "revision": "Nachhilfe-Kurs",
                 "language": "Deutsch für Anfänger Kurs",
                 "focus": "Fokus-Kurs",
-                "courseSubjectLabel": "Fach",
+                "courseSubjectLabel": "Fächer",
                 "coursePhotoLabel": "Foto",
                 "changeImage": "Bild ändern",
                 "CourseInstructors": "Kursleiter:innen",
