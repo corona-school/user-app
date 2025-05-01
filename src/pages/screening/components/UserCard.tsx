@@ -27,6 +27,7 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
             className="flex flex-col items-center w-full h-full py-4 px-4 border-[0.5px] rounded-sm border-primary-light bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground"
             role="button"
             onClick={onClick}
+            style={{ backgroundColor: type === 'student' ? '#CBDDE0' : 'white' }}
         >
             <div className="h-auto w-auto">
                 {type === 'pupil' ? <AvatarPupil className="size-20 lg:size-10" /> : <AvatarStudent className="size-20 lg:size-10" />}
