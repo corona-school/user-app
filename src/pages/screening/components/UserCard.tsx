@@ -4,10 +4,12 @@ import AvatarStudent from '@/assets/icons/lernfair/avatar_student.svg';
 import { InstructorScreening, MatchWithPupil, MatchWithStudent, TutorScreening, PupilScreening } from '@/types';
 import { Badge } from '@/components/Badge';
 import { useTranslation } from 'react-i18next';
+import { createReadableDate } from '@/helper/general-helper';
 
 interface UserCardProps {
     user: {
         id: number;
+        createdAt: string;
         firstname?: string | null;
         lastname?: string | null;
         email: string;
@@ -52,6 +54,9 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
                 {/** Student specific tags */}
                 {user?.instructorScreenings?.some((it) => it.success) && <Badge>gescreenter Kursleiter</Badge>}
                 {user?.tutorScreenings?.some((it) => it.success) && <Badge>gescreenter Helfer</Badge>}
+            </div>
+            <div className="flex flex-col w-full mt-1">
+                <Typography variant="sm">Registriert: {createReadableDate(user?.createdAt, true)}</Typography>
             </div>
         </div>
     );
