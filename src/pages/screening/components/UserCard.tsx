@@ -46,14 +46,18 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
                 {!!user?.matches?.length && <Badge>{t('screening.has_matches')}</Badge>}
 
                 {/** Pupil specific tags */}
-                {user?.pupilScreenings?.some((it) => !it!.invalidated && it!.status === 'dispute') && <Badge>{t('screening.dispute_screening')}</Badge>}
-                {user?.pupilScreenings?.some((it) => !it!.invalidated && it!.status === 'pending') && <Badge>{t('screening.pending_screening')}</Badge>}
-                {user?.pupilScreenings?.some((it) => it!.status === 'success') && <Badge>{t('screening.success_screening')}</Badge>}
-                {user?.pupilScreenings?.some((it) => it!.status === 'rejection') && <Badge>{t('screening.rejection_screening')}</Badge>}
+                {user?.pupilScreenings?.some((it) => !it!.invalidated && it!.status === 'dispute') && (
+                    <Badge variant="unclear">{t('screening.dispute_screening')}</Badge>
+                )}
+                {user?.pupilScreenings?.some((it) => !it!.invalidated && it!.status === 'pending') && (
+                    <Badge variant="caution">{t('screening.pending_screening')}</Badge>
+                )}
+                {user?.pupilScreenings?.some((it) => it!.status === 'success') && <Badge variant="success">{t('screening.success_screening')}</Badge>}
+                {user?.pupilScreenings?.some((it) => it!.status === 'rejection') && <Badge variant="destructive">{t('screening.rejection_screening')}</Badge>}
 
                 {/** Student specific tags */}
-                {user?.instructorScreenings?.some((it) => it.success) && <Badge>gescreenter Kursleiter</Badge>}
-                {user?.tutorScreenings?.some((it) => it.success) && <Badge>gescreenter Helfer</Badge>}
+                {user?.instructorScreenings?.some((it) => it.success) && <Badge variant="purple">gescreenter Kursleiter</Badge>}
+                {user?.tutorScreenings?.some((it) => it.success) && <Badge variant="teal">gescreenter Helfer</Badge>}
             </div>
             <div className="flex flex-col w-full mt-1">
                 <Typography variant="sm">Registriert: {createReadableDate(user?.createdAt, true)}</Typography>
