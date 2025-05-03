@@ -3,6 +3,7 @@ import { WhatsappShareButton } from 'react-share';
 import { Button } from '@/components/Button';
 import { IconCopy, IconCopyCheck } from '@tabler/icons-react';
 
+import { useTranslation } from 'react-i18next';
 import WhatsAppIcon from '../../assets/icons/lernfair/referral/Whatsapp.svg';
 import LinkedInIcon from '../../assets/icons/lernfair/referral/LinkedIn.svg';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
@@ -16,12 +17,13 @@ type Props = {
     linkedinButtonText: string;
     shareToLinkedIn: () => void;
     handleShare: () => void;
-    t: (key: string) => string;
 };
 
-const SocialOptions: React.FC<Props> = ({ uniqueReferralLink, referralMessage, onCopy, hasCopied, linkedinButtonText, shareToLinkedIn, handleShare, t }) => {
+const SocialOptions: React.FC<Props> = ({ uniqueReferralLink, referralMessage, onCopy, hasCopied, linkedinButtonText, shareToLinkedIn, handleShare }) => {
     const { trackEvent } = useMatomo();
+    const { t } = useTranslation();
     const userType = useUserType();
+
     return (
         <div className="space-y-2">
             <div className="relative">

@@ -19,8 +19,8 @@ import LOCK from '../assets/images/referral/Lock.svg';
 
 import { gql } from '@/gql';
 import { useQuery } from '@apollo/client';
-import SocialOptions from '@/components/referral/socialOptions';
-import Rewards from '@/components/referral/rewards';
+import SocialOptions from '@/components/referral/SocialOptions';
+import Rewards from '@/components/referral/Rewards';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useUserType } from '@/hooks/useApollo';
@@ -161,7 +161,6 @@ const Referrals: React.FC<{}> = () => {
                                 onCopy={(text) => handleOnCopy(text, 'Desktop')}
                                 hasCopied={hasCopied}
                                 linkedinButtonText={linkedinButtonText}
-                                t={t}
                                 shareToLinkedIn={shareToLinkedIn}
                                 handleShare={handleShare}
                             />
@@ -173,7 +172,7 @@ const Referrals: React.FC<{}> = () => {
                         <div className="w-[480px] mx-auto bg-white rounded-md shadow-lg p-10 pb-0 relative">
                             <Confetti style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.8)' }}></Confetti>
 
-                            <Rewards referralCount={referralCount} supportedHours={supportedHours} t={t} />
+                            <Rewards referralCount={referralCount} supportedHours={supportedHours} />
                         </div>
                     </div>
                 </div>
@@ -244,7 +243,6 @@ const Referrals: React.FC<{}> = () => {
                             onCopy={(text) => handleOnCopy(text, 'Mobile')}
                             hasCopied={hasCopied}
                             linkedinButtonText={linkedinButtonText}
-                            t={t}
                             shareToLinkedIn={shareToLinkedIn}
                             handleShare={handleShare}
                         />
