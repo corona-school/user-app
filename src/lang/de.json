@@ -2585,18 +2585,9 @@
             "share": "Teilen",
             "title": "Teile deinen persönlichen Link",
             "description": "",
-            "option1": {
-                "option": "Empfehlungslink teilen",
-                "description": ""
-            },
-            "option2": {
-                "option": "Auf WhatsApp teilen",
-                "description": ""
-            },
-            "option3": {
-                "option": "Auf LinkedIn teilen",
-                "description": "- Beim kopieren wird ein Muster-Text - zum einfachen Einfügen - in deine Zwischenablage kopiert."
-            },
+            "option1": "Empfehlungslink teilen",
+            "option2": "Auf WhatsApp teilen",
+            "option3": "Auf LinkedIn teilen",
             "materials": {
                 "title": "Flyer & Poster auslegen",
                 "description": "Du kannst z.B. Flyer auslegen oder Poster aufhängen - in der Schule, im Jugendzentrum, der Bibliothek oder Geschäften. Erhalte Flyer, Poster und andere Werbematerialien kostenlos zu dir nach Hause.",
