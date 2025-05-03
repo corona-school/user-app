@@ -1,5 +1,7 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack } from 'native-base';
+import { Text, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading, Button } from 'native-base';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import TruncatedText from '@/components/TruncatedText';
+import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import WithNavigation from '../../components/WithNavigation';
@@ -23,6 +25,8 @@ import DisableableButton from '../../components/DisablebleButton';
 import { useRoles } from '../../hooks/useApollo';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Typography } from '@/components/Typography';
+import CTACard from '@/widgets/CTACard';
+import { Button as ButtonNew } from '@/components/Button';
 
 type Props = {};
 
@@ -341,6 +345,26 @@ const Dashboard: React.FC<Props> = () => {
                                     ))}
                                 </HSection>
                             )}
+                        </VStack>
+                        <VStack marginBottom={space['1.5']}>
+                            <Heading marginBottom={space['1']}>{t('dashboard.helpers.headlines.recommend')}</Heading>
+                            <CTACard
+                                title={t('dashboard.helpers.headlines.recommendFriends')}
+                                button={
+                                    <ButtonNew variant="outline" className="w-full lg:w-fit" onClick={() => navigate('/referral')}>
+                                        {t('dashboard.helpers.buttons.recommend')}
+                                    </ButtonNew>
+                                }
+                                icon={<BooksIcon className="size-10" />}
+                            >
+                                <div>
+                                    <TruncatedText asChild maxLines={4}>
+                                        <Typography className="whitespace-break-spaces text-pretty w-full">
+                                            {t('dashboard.helpers.contents.recommendFriends')}
+                                        </Typography>
+                                    </TruncatedText>
+                                </div>
+                            </CTACard>
                         </VStack>
                     </VStack>
                 )}

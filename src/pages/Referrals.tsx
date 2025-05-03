@@ -243,10 +243,6 @@ const Referrals: React.FC<{}> = () => {
                                 )}
                             </Typography>
                         </div>
-                        {/* 
-                        <div className="relative top-[-280px] w-full">
-                            <ConfettiMobile style={{ position: 'fixed', right: '0px', transform: 'scale(.5)' }} />
-                        </div> */}
                     </div>
                     <div className="h-[170px] bg-white rounded-md shadow-lg p-5">
                         {/* Share Buttons */}
