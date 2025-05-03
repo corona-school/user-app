@@ -190,7 +190,7 @@ const Referrals: React.FC<{}> = () => {
             {/* Mobile View */}
             <div className="block lg:hidden">
                 <div className="min-w-[300px] max-w-[768px] space-y-4 mx-auto">
-                    <div className="h-[220px]">
+                    <div>
                         <BGMobile style={{ position: 'absolute', right: 0 }}></BGMobile>
                         <Character style={{ position: 'absolute', top: '135px', right: 16 }}></Character>
                         <div>
@@ -201,7 +201,16 @@ const Referrals: React.FC<{}> = () => {
                         </div>
                     </div>
                     <div className="h-[140px] bg-white rounded-md shadow-lg p-5">
-                        <ConfettiMobile style={{ position: 'absolute', top: '320px', right: '10px', transform: 'scale(.6)' }}></ConfettiMobile>
+                        <div className="relative">
+                            <ConfettiMobile
+                                style={{
+                                    position: 'absolute',
+                                    top: -50,
+                                    right: -50,
+                                    transform: 'scale(.5)',
+                                }}
+                            />
+                        </div>
 
                         <Typography variant="h5" className="font-bold mb-3">
                             {t('referral.reward.title')}
@@ -234,6 +243,10 @@ const Referrals: React.FC<{}> = () => {
                                 )}
                             </Typography>
                         </div>
+                        {/* 
+                        <div className="relative top-[-280px] w-full">
+                            <ConfettiMobile style={{ position: 'fixed', right: '0px', transform: 'scale(.5)' }} />
+                        </div> */}
                     </div>
                     <div className="h-[170px] bg-white rounded-md shadow-lg p-5">
                         {/* Share Buttons */}
