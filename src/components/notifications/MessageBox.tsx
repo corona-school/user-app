@@ -8,6 +8,8 @@ import { Typography } from '../Typography';
 import { cn } from '@/lib/Tailwind';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../Tooltip';
 import { GlobalModalsContext } from '@/context/GlobalModalsProvider';
+import { IconX } from '@tabler/icons-react';
+import { Button } from '../Button';
 
 interface MessageBoxProps {
     userNotification: Concrete_Notification;
@@ -15,9 +17,10 @@ interface MessageBoxProps {
     isRead?: boolean;
     updateLastTimeChecked?: () => void;
     className?: string;
+    onClose?: () => void;
 }
 
-const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChecked, className }: MessageBoxProps) => {
+const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChecked, className, onClose }: MessageBoxProps) => {
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
     const { openLeavePageModal, openAchievementModal } = useContext(GlobalModalsContext);
@@ -86,12 +89,22 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
     return (
         <LinkedBox
             className={cn(
-                'cursor-pointer rounded-md mb-2 py-2 h-full max-h-[500px] hover:bg-primary-lighter',
+                'cursor-pointer relative rounded-md mb-2 py-2 h-full max-h-[500px] hover:bg-primary-lighter',
                 isRead ? 'bg-white' : 'bg-primary-lighter',
                 !isStandalone ? 'w-full' : 'w-[270px]',
                 className
             )}
         >
+            {onClose && (
+                <Button
+                    onClick={onClose}
+                    variant="none"
+                    size="auto"
+                    className="size-6 rounded-full absolute top-[-6px] right-[-6px] shadow-sm bg-primary-lighter text-primary hover:shadow-md"
+                >
+                    <IconX className="size-3" style={{ strokeWidth: '1.5px' }} />
+                </Button>
+            )}
             <div className="flex items-center gap-x-1">
                 <div className="flex flex-col px-1.5">
                     <Icon />

@@ -9,22 +9,28 @@ export const TIME_THRESHOLD = 2 * 60 * 60 * 1000;
 export const TOKEN_LENGTH = 32;
 // eslint-disable-next-line no-restricted-globals
 export const REDIRECT_PASSWORD = `/login`;
+export const MIN_MAX_GRADE_RANGE = { min: 1, max: 14 };
 
 export const toTimerString = (referenceDate: DateTime, theDate: DateTime) => {
-    const days = theDate.startOf('day').diff(referenceDate.startOf('day'), 'days').days;
+    const inPast = theDate < referenceDate;
+    let prefix = 'In';
+    if (inPast) {
+        prefix = 'Vor';
+    }
+    const days = Math.abs(theDate.startOf('day').diff(referenceDate.startOf('day'), 'days').days);
 
-    if (days > 1 && days <= 14) return `In ${days} Tagen`;
+    if (days > 1 && days <= 14) return `${prefix} ${days} Tagen`;
     if (days > 14) return theDate.toLocaleString();
 
     if (days === 1) {
-        return `Morgen`;
+        return inPast ? 'Gestern' : `Morgen`;
     }
 
     const diff = Math.abs(theDate.toUnixInteger() - referenceDate.toUnixInteger());
     const hrs = Math.floor((diff / (60 * 60)) % 24);
     const mins = Math.floor((diff / 60) % 60);
 
-    return `In ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
+    return `${prefix} ${hrs.toString().padStart(2, '0')} Stunden und ${mins.toString().padStart(2, '0')} Minuten`;
 };
 
 export const createToken = () => {
@@ -85,14 +91,10 @@ export const getGradeLabel = (grade: number) => {
     return i18next.t('lernfair.schoolclass', { class: grade });
 };
 
-export const formatDate: (date: Date, format?: Intl.DateTimeFormatOptions, locale?: string) => string = (
-    date,
-    format = DateTime.DATETIME_MED,
-    locale = 'de'
-) => {
+export const formatDate: (date: Date, format?: Intl.DateTimeFormatOptions, locale?: string) => string = (date, format = DateTime.DATETIME_MED, locale) => {
     if (!date) return '';
 
-    return DateTime.fromISO(date.toString()).toLocaleString(format, { locale });
+    return DateTime.fromISO(date.toString()).toLocaleString(format, { locale: locale ?? i18next.language });
 };
 
 export const handleDateString: (datetime: string, format: string, locale?: string, outputFormat?: Intl.DateTimeFormatOptions) => string = (
@@ -155,6 +157,11 @@ export const sortByDate = <Subcourse extends { firstLecture?: { start: any } | n
     });
 };
 
+export const renderTextWithEmailLinks = (text: string) => {
+    const emailRegex = /([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})/g;
+    return text.replace(emailRegex, '<a class="underline" href="mailto:$1">$1</a>');
+};
+
 const Utility = {
     createToken,
     toTimerString,
@@ -165,5 +172,6 @@ const Utility = {
     handleDateString,
     getTrafficStatus,
     sortByDate,
+    renderTextWithEmailLinks,
 };
 export default Utility;

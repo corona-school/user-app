@@ -1,20 +1,26 @@
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Box, Stack, useTheme } from 'native-base';
 import { createContext, Dispatch, SetStateAction, useEffect, useState, useCallback } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../../components/AsNavigationItem';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import WithNavigation from '../../../components/WithNavigation';
 import { gql } from '../../../gql';
 import { Subject } from '../../../gql/graphql';
-import Details from './Details';
-import Filter from './Filter';
 import German from './German';
 import Priority from './Priority';
 import Subjects from './Subjects';
 import UpdateData from './UpdateData';
 import SwitchLanguageButton from '../../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import InformationModal from '@/modals/InformationModal';
+import { Typography } from '@/components/Typography';
+import { useTranslation } from 'react-i18next';
+import { ModalFooter } from '@/components/Modal';
+import { Button } from '@/components/Button';
+import { toast } from 'sonner';
+import { IconCircleCheckFilled } from '@tabler/icons-react';
+import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 
 const query = gql(`
     query PupilMatchRequestInfo {
@@ -35,18 +41,27 @@ export type MatchRequest = {
     message: string;
 };
 
+export enum RequestMatchStep {
+    updateData = 'updateData',
+    german = 'german',
+    subjects = 'subjects',
+    priority = 'priority',
+}
+
 type RequestMatchContextType = {
     matchRequest: MatchRequest;
     setSubject: (value: Subject) => void;
     removeSubject: (name: string) => void;
     setMessage: (message: string) => void;
     setSubjectPriority: (subjectName: string, mandatory: boolean) => void;
-    setCurrentIndex: Dispatch<SetStateAction<number>>;
     setSkippedSubjectPriority: Dispatch<SetStateAction<boolean>>;
     skippedSubjectPriority: boolean;
     setSkippedSubjectList: Dispatch<SetStateAction<boolean>>;
     skippedSubjectList: boolean;
     isEdit: boolean;
+    currentStep: RequestMatchStep;
+    setCurrentStep: (step: RequestMatchStep) => void;
+    requestMatch: () => Promise<void>;
 };
 export const RequestMatchContext = createContext<RequestMatchContextType>({
     matchRequest: { subjects: [], message: '' },
@@ -54,17 +69,20 @@ export const RequestMatchContext = createContext<RequestMatchContextType>({
     removeSubject: () => {},
     setMessage: () => {},
     setSubjectPriority: () => {},
-    setCurrentIndex: () => null,
     setSkippedSubjectPriority: () => null,
     skippedSubjectPriority: false,
     setSkippedSubjectList: () => null,
     skippedSubjectList: false,
     isEdit: false,
+    currentStep: RequestMatchStep.updateData,
+    setCurrentStep: () => {},
+    requestMatch: () => Promise.resolve(),
 });
 
 const RequestMatch: React.FC = () => {
-    const { space } = useTheme();
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
+    const { t } = useTranslation();
+    const navigate = useNavigate();
+    const [currentStep, setCurrentStep] = useState<RequestMatchStep>(RequestMatchStep.updateData);
     const [skippedSubjectPriority, setSkippedSubjectPriority] = useState<boolean>(false);
     const [skippedSubjectList, setSkippedSubjectList] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -95,11 +113,27 @@ const RequestMatch: React.FC = () => {
         },
         [setMatchRequest]
     );
-
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const location = useLocation();
     const locationState = location.state as { edit: boolean };
     const { trackPageView } = useMatomo();
+
+    const [update, { loading: isUpdating }] = useMutation(
+        gql(`
+        mutation updatePupil($subjects: [SubjectInput!]) {
+            meUpdate(update: { pupil: { subjects: $subjects } })
+        }
+    `)
+    );
+
+    const [createMatchRequest] = useMutation(
+        gql(`
+            mutation PupilCreateMatchRequest {
+                pupilCreateMatchRequest
+            }
+        `)
+    );
 
     useEffect(() => {
         trackPageView({
@@ -111,7 +145,7 @@ const RequestMatch: React.FC = () => {
     useEffect(() => {
         setIsEdit(locationState?.edit);
         if (locationState?.edit) {
-            setCurrentIndex(1);
+            setCurrentStep(RequestMatchStep.updateData);
         }
         setIsLoading(false);
     }, [locationState]);
@@ -126,17 +160,39 @@ const RequestMatch: React.FC = () => {
             });
     }, [data]);
 
+    const requestMatch = useCallback(async () => {
+        setIsLoading(true);
+        const resSubs = await update({ variables: { subjects: matchRequest.subjects } });
+        let hasError = !!resSubs.errors;
+        if (resSubs.data && !hasError) {
+            if (!isEdit) {
+                const resRequest = await createMatchRequest();
+                hasError = !!resRequest.errors;
+            }
+        }
+        setIsLoading(false);
+        hasError ? toast.error(t('error')) : setShowSuccessModal(true);
+    }, [createMatchRequest, matchRequest.subjects, showSuccessModal, toast, update, isEdit]);
+
+    const handleOnOpenChange = (open: boolean) => {
+        setShowSuccessModal(open);
+        if (!open) {
+            navigate('/matching', {
+                state: { tabID: 1 },
+            });
+        }
+    };
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
-                showBack
                 previousFallbackRoute="/matching"
-                isLoading={loading || isLoading}
+                isLoading={loading}
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
+                    <div className="flex">
                         <SwitchLanguageButton />
                         <NotificationAlert />
-                    </Stack>
+                    </div>
                 }
             >
                 <RequestMatchContext.Provider
@@ -145,19 +201,21 @@ const RequestMatch: React.FC = () => {
                         matchRequest,
                         setSubject,
                         removeSubject,
-                        setCurrentIndex,
                         setSkippedSubjectPriority,
                         skippedSubjectPriority,
                         setSkippedSubjectList,
                         skippedSubjectList,
                         setMessage,
                         setSubjectPriority,
+                        currentStep,
+                        setCurrentStep,
+                        requestMatch,
                     }}
                 >
                     {!loading && !isLoading && data && (
-                        <Box paddingX={space['1']} paddingBottom={space['1']} pt={6}>
-                            {currentIndex === 0 && <Filter />}
-                            {currentIndex === 1 && (
+                        <div className="px-2 pb-2">
+                            <Breadcrumb />
+                            {currentStep === RequestMatchStep.updateData && (
                                 <UpdateData
                                     schooltype={data.me.pupil!.schooltype}
                                     gradeAsInt={data.me.pupil!.gradeAsInt}
@@ -165,13 +223,42 @@ const RequestMatch: React.FC = () => {
                                     refetchQuery={query}
                                 />
                             )}
-                            {currentIndex === 2 && <German />}
-                            {currentIndex === 3 && <Subjects />}
-                            {currentIndex === 4 && <Priority />}
-                            {currentIndex === 5 && <Details />}
-                        </Box>
+                            {currentStep === RequestMatchStep.german && <German />}
+                            {currentStep === RequestMatchStep.subjects && <Subjects />}
+                            {currentStep === RequestMatchStep.priority && <Priority />}
+                        </div>
                     )}
+                    {(loading || isLoading) && <CenterLoadingSpinner />}
                 </RequestMatchContext.Provider>
+                <InformationModal
+                    isOpen={showSuccessModal}
+                    onOpenChange={handleOnOpenChange}
+                    headline={
+                        <span className="flex items-center gap-x-2">
+                            {(!isEdit && t('matching.wizard.pupil.modalSuccess.heading.ver1')) || t('matching.wizard.pupil.modalSuccess.heading.ver2')}{' '}
+                            <IconCircleCheckFilled className="inline text-green-600" />
+                        </span>
+                    }
+                    showCloseButton={false}
+                >
+                    <Typography className="text-pretty mb-4">
+                        {(!isEdit && t('matching.wizard.pupil.modalSuccess.text.ver1')) || t('matching.wizard.pupil.modalSuccess.text.ver2')}
+                    </Typography>
+                    <ModalFooter>
+                        <Button className="w-full lg:w-fit" variant="outline" onClick={() => handleOnOpenChange(false)}>
+                            {t('done')}
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                setShowSuccessModal(false);
+                                navigate('/group');
+                            }}
+                            className="w-full lg:w-fit"
+                        >
+                            {t('matching.wizard.pupil.modalSuccess.groupCourses')}
+                        </Button>
+                    </ModalFooter>
+                </InformationModal>
             </WithNavigation>
         </AsNavigationItem>
     );

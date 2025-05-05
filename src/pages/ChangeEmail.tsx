@@ -12,10 +12,14 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import DisableableButton from '../components/DisablebleButton';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import useApollo from '@/hooks/useApollo';
+import { Navigate } from 'react-router-dom';
 
 const ChangeEmail = () => {
     const [newEmail, setNewEmail] = useState<string>();
     const [showEmailSent, setShowEmailSent] = useState<boolean>();
+    const { roles } = useApollo();
 
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
@@ -68,9 +72,12 @@ const ChangeEmail = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [newEmail]);
 
+    if (roles.includes('SSO_USER')) {
+        return <Navigate to="/settings" />;
+    }
+
     return (
         <WithNavigation
-            showBack={isMobileSM}
             hideMenu={isMobileSM}
             previousFallbackRoute="/settings"
             headerLeft={
@@ -86,6 +93,7 @@ const ChangeEmail = () => {
                 <CenterLoadingSpinner />
             ) : (
                 <Flex overflowY="auto" height="100dvh">
+                    <Breadcrumb />
                     <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
                         <Logo />
                         <Heading mt={space['1']}>{t('login.setNewEmail')}</Heading>

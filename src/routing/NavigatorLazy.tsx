@@ -76,8 +76,14 @@ import ForPupils from '../pages/ForPupils';
 import { useBreakpointValue, Stack } from 'native-base';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
+import Lesson from '@/pages/Lesson';
+import EthicsOnboardingSlides from '@/pages/onboarding/ethical-standards/EthicsOnboardingSlides';
+import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/EthicsOnboardingWelcome';
+import Referrals from '@/pages/Referrals';
+import CertificatesPage from '@/pages/student/Certificates';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -141,6 +147,14 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<ProfilePupil />} studentComponent={<ProfileStudent />} />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/certificates"
+                element={
+                    <RequireAuth>
+                        <CertificatesPage />
                     </RequireAuth>
                 }
             />
@@ -231,6 +245,21 @@ export default function NavigatorLazy() {
                 <Route path="students" element={<OnBoardingStudentWelcome />} />
                 <Route path="helper" element={<OnBoardingHelperWelcome />} />
                 <Route path="helpermatching" element={<OnBoardingHelperMatchingWelcome />} />
+                <Route path="ethics" />
+            </Route>
+
+            {/* Ethics Onboarding for HuHs */}
+            <Route
+                path="/onboarding/ethics"
+                element={
+                    <RequireAuth>
+                        <Outlet />
+                    </RequireAuth>
+                }
+            >
+                <Route path="welcome" element={<EthicsOnboardingWelcome />} />
+                <Route path="wizard" element={<EthicsOnboardingSlides />} />
+                <Route path="*" element={<EthicsOnboardingWelcome />} />
             </Route>
 
             {/* Onboarding Students */}
@@ -369,6 +398,16 @@ export default function NavigatorLazy() {
                 }
             />
 
+            {/* Referral Center */}
+            <Route
+                path="referral"
+                element={
+                    <RequireAuth>
+                        <Referrals />
+                    </RequireAuth>
+                }
+            />
+
             <Route
                 path="/matching"
                 element={
@@ -421,6 +460,19 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            {/* Lesson Plan Generator */}
+            <Route
+                path="lesson"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['STUDENT']}>
+                            <Lesson />
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+
             {/* Knowledge Center */}
             <Route
                 path="/knowledge-helper"
@@ -471,6 +523,14 @@ export default function NavigatorLazy() {
 
             <Route path="/install" element={<InstallApp />} />
 
+            <Route
+                path="/manage-sessions"
+                element={
+                    <RequireAuth>
+                        <SessionManager />
+                    </RequireAuth>
+                }
+            />
             <Route
                 path="/datenschutz"
                 element={

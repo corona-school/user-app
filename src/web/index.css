@@ -49,8 +49,16 @@
         @apply bg-background text-foreground;
         font-feature-settings: 'rlig' 1, 'calt' 1;
     }
+    input[type='time']::-webkit-calendar-picker-indicator {
+        position: absolute;
+        right: 10px;
+        opacity: 0.3;
+    }
 }
 
 .tabler-icon {
     stroke-width: 1;
+}
+.tabler-icon-thick {
+    stroke-width: 2;
 }

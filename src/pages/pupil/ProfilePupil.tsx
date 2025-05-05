@@ -1,4 +1,4 @@
-import { Box, Button, Column, Flex, FormControl, Heading, Input, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { Button, Column, FormControl, Input, Modal, Row, Stack, Text, TextArea, useBreakpointValue, useTheme, VStack } from 'native-base';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import IconTagList from '../../widgets/IconTagList';
@@ -16,6 +16,7 @@ import CSSWrapper from '../../components/CSSWrapper';
 import { gql } from '../../gql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { GradeTag } from '../../components/GradeSelector';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {};
 
@@ -136,7 +137,7 @@ function PupilAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; onSa
 }
 
 const ProfilePupil: React.FC<Props> = () => {
-    const { colors, space, sizes } = useTheme();
+    const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -182,19 +183,6 @@ const ProfilePupil: React.FC<Props> = () => {
         lg: sizes['containerWidth'],
     });
 
-    const HeaderStyle = useBreakpointValue({
-        base: {
-            isMobile: true,
-            bgColor: 'primary.700',
-            paddingY: space['2'],
-        },
-        lg: {
-            isMobile: false,
-            bgColor: 'transparent',
-            paddingY: 0,
-        },
-    });
-
     const isMobileSM = useBreakpointValue({
         base: true,
         sm: false,
@@ -219,37 +207,9 @@ const ProfilePupil: React.FC<Props> = () => {
         <>
             <WithNavigation
                 isLoading={loading}
-                showBack={isMobileSM}
                 hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}
-                headerContent={
-                    <Flex
-                        marginX="auto"
-                        width="100%"
-                        maxWidth={ContainerWidth}
-                        bg={HeaderStyle.bgColor}
-                        alignItems={HeaderStyle.isMobile ? 'center' : 'flex-start'}
-                        justifyContent="center"
-                        paddingY={HeaderStyle.paddingY}
-                        borderBottomRadius={16}
-                    >
-                        <Box
-                            marginX="auto"
-                            width="100%"
-                            maxWidth={ContainerWidth}
-                            bg={HeaderStyle.bgColor}
-                            alignItems="center"
-                            paddingY={space['2']}
-                            borderBottomRadius={16}
-                        >
-                            <Box position="relative" />
-                            <Heading color={colors.white} bold fontSize="xl">
-                                {data?.me?.firstname}
-                            </Heading>
-                        </Box>
-                    </Flex>
-                }
                 headerLeft={
                     !isMobileSM && (
                         <Stack alignItems="center" direction="row">
@@ -259,8 +219,10 @@ const ProfilePupil: React.FC<Props> = () => {
                     )
                 }
             >
+                <VStack maxWidth={ContainerWidth} paddingX={space['1']}>
+                    <Breadcrumb />
+                </VStack>
                 {(showSuccessfulChangeAlert || userSettingChanged) && <AlertMessage content={t('profile.successmessage')} />}
-
                 <VStack space={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
                     {profileCompleteness !== 100 && (
                         <VStack paddingX={space['1.5']} space={space['1']}>
@@ -309,11 +271,11 @@ const ProfilePupil: React.FC<Props> = () => {
                                 {(data?.me?.pupil?.languages?.length && (
                                     <Row flexWrap="wrap" w="100%">
                                         {data?.me?.pupil?.languages.map((lang: string) => (
-                                            <Column marginRight={3} mb={space['0.5']}>
+                                            <Column marginRight={3} mb={space['0.5']} key={lang}>
                                                 <CSSWrapper className="profil-tab-link">
                                                     <IconTagList
                                                         isDisabled
-                                                        iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                                                        icon={lang.toLowerCase()}
                                                         text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     />
                                                 </CSSWrapper>

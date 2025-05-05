@@ -25,10 +25,11 @@ interface ParticipantRowProps {
     participant: SubcourseParticipant;
     isInstructor?: boolean;
     contactParticipant?: (participantId: string) => void;
+    contactProspect?: () => void;
     removeParticipant?: (participant: SubcourseParticipant) => void;
     addParticipant?: (participant: SubcourseParticipant) => void;
 }
-const ParticipantRow = ({ participant, isInstructor, contactParticipant, removeParticipant, addParticipant }: ParticipantRowProps) => {
+const ParticipantRow = ({ participant, isInstructor, contactParticipant, contactProspect, removeParticipant, addParticipant }: ParticipantRowProps) => {
     const { t } = useTranslation();
     return (
         <div className="flex flex-col lg:flex-row items-center lg:h-[84px] max-w-[980px] py-4 px-4 lg:pl-9 lg:pr-7 border border-gray-300 rounded">
@@ -58,6 +59,11 @@ const ParticipantRow = ({ participant, isInstructor, contactParticipant, removeP
                             leftIcon={<IconMessage size={16} />}
                             className="w-full lg:w-fit"
                         >
+                            {t('chat.openChat')}
+                        </Button>
+                    )}
+                    {!!contactProspect && (
+                        <Button onClick={() => contactProspect()} variant="outline" leftIcon={<IconMessage size={16} />} className="w-full lg:w-fit">
                             {t('chat.openChat')}
                         </Button>
                     )}

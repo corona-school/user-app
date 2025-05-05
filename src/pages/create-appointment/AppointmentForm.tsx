@@ -1,16 +1,17 @@
-import { Box, FormControl, Select, Stack, TextArea, useBreakpointValue, VStack, WarningTwoIcon } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import DatePicker from '../../components/DatePicker';
 import { useCreateAppointment } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
-import InputSuffix from '../../widgets/InputSuffix';
 import { Dispatch, SetStateAction, useCallback, useState } from 'react';
 import { FormErrors, VideoChatTypeEnum } from './AppointmentCreation';
 import { isDateToday } from '../../helper/appointment-helper';
 import { DateTime } from 'luxon';
-import CustomSelect from '../../components/CustomSelect';
 import CustomVideoInput from '../../widgets/CustomVideoInput';
+import { Label } from '@/components/Label';
+import { Input } from '@/components/Input';
+import { Typography } from '@/components/Typography';
+import { DatePicker } from '@/components/DatePicker';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
+import { TextArea } from '@/components/TextArea';
 
 type FormProps = {
     errors: FormErrors;
@@ -22,18 +23,13 @@ type FormProps = {
     isCourse: boolean;
 };
 const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeetingLink, onSetTime, isCourse, setVideoChatType, videoChatType }) => {
-    const { dispatchCreateAppointment } = useCreateAppointment();
+    const { dispatchCreateAppointment, appointmentToCreate } = useCreateAppointment();
     const { t } = useTranslation();
-    const { isMobile } = useLayoutHelper();
-    const inputWidth = useBreakpointValue({
-        base: 'full',
-        lg: '50%',
-    });
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
-    const [time, setTime] = useState('');
+    const [time, setTime] = useState('15:00');
     const [meetingLink, setMeetingLink] = useState(overrideMeetingLink ?? undefined);
     const [isToday, setIsToday] = useState<boolean>(false);
 
@@ -49,14 +45,14 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
         setDescription(e);
     };
 
-    const handleDateInput = (e: any) => {
-        setDate(e.target.value);
-        onSetDate();
-    };
-
-    const handleDateBlur = () => {
-        dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: date });
-        setIsToday(isDateToday(date));
+    const handleDateInput = (value: Date | undefined) => {
+        if (value) {
+            const newValue = DateTime.fromJSDate(value).toISODate();
+            dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'date', value: newValue });
+            setIsToday(isDateToday(newValue));
+            setDate(newValue);
+            onSetDate();
+        }
     };
 
     const handleTimeInput = (e: any) => {
@@ -72,134 +68,125 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
         let date = DateTime.now();
         if (type === 'date') {
             if (isCourse) date = date.plus({ days: 7 });
-            return date.toFormat('yyyy-MM-dd');
+            return date;
         }
 
-        if (type === 'time') {
-            if (!isCourse && isToday) date = date.plus({ minutes: 5 });
-            return date.toFormat('HH:mm');
-        }
-        return undefined;
+        if (!isCourse && isToday) date = date.plus({ minutes: 5 });
+        return date;
     }, []);
 
+    const minDate = getMinForDatePicker('date', isCourse, isToday).toJSDate();
+
     return (
-        <Box>
-            <VStack space={1} width="full">
-                {/* TITLE */}
-                <Stack direction={isMobile ? 'column' : 'row'} space={5}>
-                    <FormControl width={inputWidth}>
-                        <FormControl.Label>{t('appointment.create.titleLabel')}</FormControl.Label>
-                        <InputSuffix
-                            inputValue={title}
-                            handleInput={handleTitleInput}
-                            handleBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: title })}
-                        />
-                    </FormControl>
-                    {/* DATE */}
-                    <FormControl isInvalid={'date' in errors || 'dateNotInOneWeek' in errors} width={inputWidth}>
-                        <FormControl.Label>{t('appointment.create.dateLabel')}</FormControl.Label>
-                        <DatePicker
-                            onChange={(e) => handleDateInput(e)}
-                            value={date}
-                            onBlur={handleDateBlur}
-                            min={getMinForDatePicker('date', isCourse, isToday)}
-                        />
-                        {'date' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
-                                {t('appointment.create.emptyDateError')}
-                            </FormControl.ErrorMessage>
-                        )}
-                        {'dateNotInOneWeek' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
-                                {t('appointment.create.wrongDateError')}
-                            </FormControl.ErrorMessage>
-                        )}
-                    </FormControl>
-                </Stack>
-                <Stack direction={isMobile ? 'column' : 'row'} space={5}>
-                    {/* TIME */}
-                    <FormControl isInvalid={'time' in errors || 'timeNotInFiveMin' in errors} width={inputWidth}>
-                        <FormControl.Label>{t('appointment.create.timeLabel')}</FormControl.Label>
-                        <Box width="full">
-                            <DatePicker
-                                type="time"
-                                onChange={(e) => handleTimeInput(e)}
-                                value={time}
-                                onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: time })}
-                                min={getMinForDatePicker('time', isCourse, isToday)}
-                            />
-                        </Box>
-                        {'time' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
-                                {t('appointment.create.emptyTimeError')}
-                            </FormControl.ErrorMessage>
-                        )}
-                        {'timeNotInFiveMin' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
-                                {t('appointment.errors.timeNotInFiveMin')}
-                            </FormControl.ErrorMessage>
-                        )}
-                    </FormControl>
-
-                    {/* DURATION */}
-                    <FormControl isInvalid={'duration' in errors} width={inputWidth}>
-                        <FormControl.Label>{t('appointment.create.durationLabel')}</FormControl.Label>
-                        <CustomSelect placeholder="Dauer der Unterrichtseinheit" onValueChange={(duration: string) => handleDurationSelection(duration)}>
-                            <Select.Item value="15" label={t('course.selectOptions._15minutes')} />
-                            <Select.Item value="30" label={t('course.selectOptions._30minutes')} />
-                            <Select.Item value="45" label={t('course.selectOptions._45minutes')} />
-                            <Select.Item value="60" label={t('course.selectOptions._1hour')} />
-                            <Select.Item value="90" label={t('course.selectOptions._90minutes')} />
-                            <Select.Item value="120" label={t('course.selectOptions._2hour')} />
-                            <Select.Item value="180" label={t('course.selectOptions._3hour')} />
-                            <Select.Item value="240" label={t('course.selectOptions._4hour')} />
-                        </CustomSelect>
-                        {'duration' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
-                                {t('appointment.create.emptySelectError')}
-                            </FormControl.ErrorMessage>
-                        )}
-                    </FormControl>
-                </Stack>
-
-                <Stack direction={isMobile ? 'column' : 'row'} space={5}>
-                    <FormControl isInvalid={('invalidLink' || 'videoChat') in errors} width={inputWidth}>
-                        {/* VIDEO CHAT */}
-                        <FormControl.Label>{t('appointment.create.videoChatLabel')}</FormControl.Label>
-                        <CustomVideoInput
-                            inputValue={meetingLink}
-                            handleInput={handleVideoInput}
-                            handleBlur={() => {
-                                dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'meetingLink', value: meetingLink });
-                            }}
-                            overrideMeetingLink={overrideMeetingLink}
-                            setVideoChatType={setVideoChatType}
-                            videoChatType={videoChatType}
-                        />
-                        {'invalidLink' in errors && (
-                            <FormControl.ErrorMessage leftIcon={<WarningTwoIcon size="xs" />}>
-                                {t('appointment.create.wrongVideoUrlError')}
-                            </FormControl.ErrorMessage>
-                        )}
-                    </FormControl>
-                </Stack>
-
-                <Stack direction={isMobile ? 'column' : 'row'} space={5}>
-                    {/* DESCRIPTION */}
-                    <FormControl isInvalid={'description' in errors} width={inputWidth}>
-                        <FormControl.Label>{t('appointment.create.descriptionLabel')}</FormControl.Label>
-                        <TextArea
-                            value={description}
-                            onChangeText={(e) => handleDescriptionInput(e)}
-                            onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: description })}
-                            placeholder={t('appointment.create.descriptionPlaceholder')}
-                            autoCompleteType={'normal'}
-                            h="100"
-                        />
-                    </FormControl>
-                </Stack>
-            </VStack>
-        </Box>
+        <div>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="title">{t('appointment.create.titleLabel')}</Label>
+                    <Input
+                        className="w-full"
+                        id="title"
+                        value={title}
+                        placeholder={t('appointment.create.inputPlaceholder')}
+                        onChange={handleTitleInput}
+                        onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'title', value: title })}
+                    />
+                </div>
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="date">{t('appointment.create.dateLabel')}</Label>
+                    <DatePicker
+                        id="date"
+                        value={date ? DateTime.fromISO(date).toJSDate() : undefined}
+                        onChange={handleDateInput}
+                        disabled={{ before: minDate }}
+                    />
+                    {'date' in errors && (
+                        <Typography variant="sm" className="text-red-500">
+                            {t('appointment.create.emptyDateError')}
+                        </Typography>
+                    )}
+                    {'dateNotInOneWeek' in errors && (
+                        <Typography variant="sm" className="text-red-500">
+                            {t('appointment.create.wrongDateError')}
+                        </Typography>
+                    )}
+                </div>
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="time">{t('appointment.create.timeLabel')}</Label>
+                    <Input
+                        className="w-full"
+                        id="time"
+                        type="time"
+                        value={time}
+                        defaultValue={time}
+                        onChange={handleTimeInput}
+                        onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: time })}
+                        min={getMinForDatePicker('time', isCourse, isToday).toFormat('HH:mm')}
+                    />
+                    {'time' in errors && (
+                        <Typography variant="sm" className="text-red-500">
+                            {t('appointment.create.emptyTimeError')}
+                        </Typography>
+                    )}
+                    {'timeNotInFiveMin' in errors && (
+                        <Typography variant="sm" className="text-red-500">
+                            {t('appointment.errors.timeNotInFiveMin')}
+                        </Typography>
+                    )}
+                </div>
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="duration">{t('appointment.create.durationLabel')}</Label>
+                    <Select value={appointmentToCreate.duration.toString()} defaultValue="60" onValueChange={handleDurationSelection}>
+                        <SelectTrigger id="duration" className="h-10 w-full">
+                            <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="15">{t('course.selectOptions._15minutes')}</SelectItem>
+                            <SelectItem value="30">{t('course.selectOptions._30minutes')}</SelectItem>
+                            <SelectItem value="45">{t('course.selectOptions._45minutes')}</SelectItem>
+                            <SelectItem value="60">{t('course.selectOptions._1hour')}</SelectItem>
+                            <SelectItem value="90">{t('course.selectOptions._90minutes')}</SelectItem>
+                            <SelectItem value="120">{t('course.selectOptions._2hour')}</SelectItem>
+                            <SelectItem value="180">{t('course.selectOptions._3hour')}</SelectItem>
+                            <SelectItem value="240">{t('course.selectOptions._4hour')}</SelectItem>
+                        </SelectContent>
+                    </Select>
+                    {'duration' in errors && (
+                        <Typography variant="sm" className="text-red-500">
+                            {t('appointment.create.emptySelectError')}
+                        </Typography>
+                    )}
+                </div>
+                <div className="flex flex-col gap-y-1 flex-1">
+                    <Label htmlFor="videoChat">{t('appointment.create.videoChatLabel')}</Label>
+                    <CustomVideoInput
+                        inputValue={meetingLink}
+                        handleInput={handleVideoInput}
+                        handleBlur={() => {
+                            dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'meetingLink', value: meetingLink });
+                        }}
+                        overrideMeetingLink={overrideMeetingLink}
+                        setVideoChatType={setVideoChatType}
+                        videoChatType={videoChatType}
+                    />
+                    {'invalidLink' in errors && (
+                        <Typography variant="sm" className="text-red-500">
+                            {t('appointment.create.wrongVideoUrlError')}
+                        </Typography>
+                    )}
+                </div>
+                <div className="flex flex-1"></div>
+                <div className="flex flex-col gap-y-1 flex-1 lg:col-span-2">
+                    <Label htmlFor="description">{t('appointment.create.descriptionLabel')}</Label>
+                    <TextArea
+                        id="description"
+                        value={description}
+                        onChange={(e) => handleDescriptionInput(e.target.value)}
+                        onBlur={() => dispatchCreateAppointment({ type: FormReducerActionType.TEXT_CHANGE, field: 'description', value: description })}
+                        placeholder={t('appointment.create.descriptionPlaceholder')}
+                    />
+                </div>
+            </div>
+        </div>
     );
 };
 

@@ -1,30 +1,34 @@
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
-import { Text, VStack, Heading, useTheme, useBreakpointValue, Flex, Box } from 'native-base';
 import { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Icon from '../assets/icons/lernfair/ic_email.svg';
-import AlertMessage from '../widgets/AlertMessage';
-import DisableableButton from '../components/DisablebleButton';
 import { usePageTitle } from '../hooks/usePageTitle';
+import { Typography } from '@/components/Typography';
+import { Button } from '@/components/Button';
+import { Alert } from '@/components/Alert';
+import { IconInfoCircleFilled, IconSettingsFilled } from '@tabler/icons-react';
+import { PublicFooter } from '@/components/PublicFooter';
+import { Separator } from '@/components/Separator';
+import ChangeEmailModal from './ChangeEmailModal';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/Dropdown';
+import { useNavigate } from 'react-router-dom';
+import useModal from '@/hooks/useModal';
 
-type Props = {
+interface VerifyEmailModalProps {
     email?: string;
     retainPath?: string;
     userType?: string;
-};
+}
 
-const VerifyEmailModal: React.FC<Props> = ({ email, retainPath, userType }) => {
-    const { space, sizes } = useTheme();
+const VerifyEmailModal = ({ email, retainPath, userType }: VerifyEmailModalProps) => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
+    const { hide } = useModal();
     usePageTitle(`Lern-Fair - Registrierung: Bitte Email bestätigen für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
     const [showSendEmailResult, setShowSendEmailResult] = useState<'success' | 'error' | undefined>();
-
-    const ContentContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['contentContainerWidth'],
-    });
+    const [isOpen, setIsOpen] = useState(false);
 
     const [sendVerification, _sendVerification] = useMutation(
         gql(`
@@ -45,49 +49,73 @@ const VerifyEmailModal: React.FC<Props> = ({ email, retainPath, userType }) => {
         setShowSendEmailResult(res.data?.tokenRequest ? 'success' : 'error');
     }, [email, sendVerification]);
 
+    const handleOnLogout = () => {
+        hide();
+        navigate('/logout');
+    };
+
     return (
-        <Flex p={space['1']} flex="1" alignItems="center" justifyContent="center" bgColor="primary.900">
-            <VStack w={ContentContainerWidth} space={space['1']} flex="1" alignItems="center">
-                <Icon />
-                <Heading size="md" textAlign="center" color="lightText">
-                    {t('registration.verifyemail.title')}
-                </Heading>
+        <div className="flex flex-col flex-1 items-center justify-center bg-primary p-4">
+            <div className="flex w-full gap-2 items-center justify-end px-4 pt-2 z-50">
+                <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                        <Button size="icon" variant="ghost-light">
+                            <IconSettingsFilled />
+                        </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                        <DropdownMenuItem onClick={handleOnLogout}>Logout</DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            </div>
+            <div className="flex flex-col flex-1 w-full lg:max-w-2xl items-center justify-center gap-y-6">
+                <Icon className="size-16" />
+                <Typography variant="h4" className="text-center text-white">
+                    {t('registration.verifyemail.title')} ✉️
+                </Typography>
                 {email && (
                     <>
-                        <Text color="lightText">
-                            {t('registration.verifyemail.mailsendto', {
-                                email: email,
-                            })}
-                        </Text>
+                        <Typography className="text-white text-center">
+                            {t('registration.verifyemail.mailsendto')}
+                            <br />
+                            <b>{email}</b>
+                        </Typography>
                     </>
                 )}
-                <Text color="lightText" textAlign={'center'}>
-                    {t('registration.verifyemail.description')}
-                </Text>
-                <Text bold color="lightText">
-                    {t('registration.verifyemail.notreceived')}
-                </Text>
-                <DisableableButton
-                    isDisabled={_sendVerification?.loading}
+                <Typography className="text-white text-center">{t('registration.verifyemail.description')}</Typography>
+                <Separator />
+                <Typography variant="h5" className="text-white text-center font-bold">
+                    {t('registration.verifyemail.notreceived.title')}
+                </Typography>
+                <Typography className="text-white text-center">{t('registration.verifyemail.notreceived.description')}</Typography>
+                <Button variant="outline-light" onClick={() => setIsOpen(true)}>
+                    {t('login.changeEmail')}
+                </Button>
+                <Button
+                    disabled={_sendVerification?.loading}
+                    isLoading={_sendVerification?.loading}
                     reasonDisabled={t('reasonsDisabled.loading')}
-                    onPress={requestEmailVerification}
+                    onClick={requestEmailVerification}
                     variant="link"
+                    className="text-white underline"
                 >
                     {t('registration.verifyemail.resend.button')}
-                </DisableableButton>
+                </Button>
                 {showSendEmailResult && (
-                    <Box width="100%">
-                        <AlertMessage
-                            content={
-                                showSendEmailResult === 'success'
-                                    ? t('registration.verifyemail.resend.successAlert')
-                                    : t('registration.verifyemail.resend.failedAlert')
-                            }
-                        />
-                    </Box>
+                    <div className="w-full max-w-[500px]">
+                        <Alert title={showSendEmailResult === 'success' ? t('done') : t('error')} icon={<IconInfoCircleFilled />}>
+                            {showSendEmailResult === 'success'
+                                ? t('registration.verifyemail.resend.successAlert')
+                                : t('registration.verifyemail.resend.failedAlert')}
+                        </Alert>
+                    </div>
                 )}
-            </VStack>
-        </Flex>
+            </div>
+            <div className="mt-4">
+                <PublicFooter />
+            </div>
+            <ChangeEmailModal isOpen={isOpen} onOpenChange={setIsOpen} currentEmail={email!} />
+        </div>
     );
 };
 export default VerifyEmailModal;

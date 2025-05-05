@@ -120,7 +120,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                                     <Row alignItems="center" justifyContent="center">
                                         <IconTagList
                                             isDisabled
-                                            iconPath={`languages/icon_${language.toLowerCase()}.svg`}
+                                            icon={language.toLowerCase()}
                                             text={t(`lernfair.languages.${language.toLowerCase()}` as unknown as TemplateStringsArray)}
                                         />
                                         <Text color={'danger.500'} fontSize="xl" ml="1" bold>
@@ -144,7 +144,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                                             <Column marginRight={3} marginBottom={3} key={`offers-${index}`}>
                                                 <IconTagList
                                                     initial={false}
-                                                    iconPath={`languages/icon_${language.key.toLowerCase()}.svg`}
+                                                    icon={language.key.toLowerCase()}
                                                     text={t(`lernfair.languages.${language.key.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     onPress={() => {
                                                         setSelections((prev) => [...prev, language.key]); // 'Französisch' (display name) -> 'franz_sisch' (key)

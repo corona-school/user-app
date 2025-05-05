@@ -135,7 +135,7 @@ const RequestCertificate: React.FC<Props> = () => {
         >
             <WithNavigation
                 showBack
-                previousFallbackRoute="/profile"
+                previousFallbackRoute="/certificates"
                 headerLeft={
                     <Stack alignItems="center" direction="row">
                         <SwitchLanguageButton />

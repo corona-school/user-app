@@ -1,10 +1,9 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { Box, FormControl, Input, Select, Stack } from 'native-base';
-import CustomSelect from '../components/CustomSelect';
-import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import ZoomIcon from '../assets/icons/zoom-logo.svg';
 import { VideoChatTypeEnum } from '../pages/create-appointment/AppointmentCreation';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
+import { Input } from '@/components/Input';
 
 type CustomVideoInputProps = {
     inputValue?: string;
@@ -17,7 +16,6 @@ type CustomVideoInputProps = {
 
 const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, overrideMeetingLink, videoChatType, setVideoChatType, handleBlur, handleInput }) => {
     const { t } = useTranslation();
-    const { isMobile } = useLayoutHelper();
     const [isPrefilled, setIsPrefilled] = useState<boolean>();
 
     useEffect(() => {
@@ -28,40 +26,42 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, overrid
     }, [overrideMeetingLink, setVideoChatType]);
 
     return (
-        <Stack space={1}>
-            <FormControl>
-                <CustomSelect
-                    placeholder="Videochat"
+        <div className="flex flex-col gap-y-1">
+            <div className="flex flex-col gap-y-1">
+                <Select
+                    value={isPrefilled ? 'Link' : videoChatType}
+                    defaultValue={VideoChatTypeEnum.ZOOM}
                     onValueChange={(value: string) => {
                         setVideoChatType(value === 'Zoom' ? VideoChatTypeEnum.ZOOM : VideoChatTypeEnum.LINK);
                         setIsPrefilled(false);
                     }}
-                    selectedValue={isPrefilled ? 'Link' : videoChatType}
                 >
-                    <Select.Item value={VideoChatTypeEnum.ZOOM} label={t('appointment.create.videoSelectOptions.zoom')} />
-                    <Select.Item value={VideoChatTypeEnum.LINK} label={t('appointment.create.videoSelectOptions.link')} />
-                </CustomSelect>
-                {videoChatType === VideoChatTypeEnum.ZOOM && (
-                    <Box top="12px" left="12px" pointerEvents="none" position="absolute">
-                        <ZoomIcon />
-                    </Box>
-                )}
-            </FormControl>
+                    <SelectTrigger id="videoChat" className="h-10 w-full">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value={VideoChatTypeEnum.ZOOM}>
+                            <div className="flex gap-x-2 items-center justify-center">
+                                {t('appointment.create.videoSelectOptions.zoom')} <ZoomIcon />
+                            </div>
+                        </SelectItem>
+                        <SelectItem value={VideoChatTypeEnum.LINK}>{t('appointment.create.videoSelectOptions.link')}</SelectItem>
+                    </SelectContent>
+                </Select>
+            </div>
 
             {videoChatType === VideoChatTypeEnum.LINK && (
-                <FormControl>
+                <div className="flex flex-col gap-y-1">
                     <Input
-                        width={isMobile ? '60%' : '100%'}
-                        onChange={(value) => handleInput(value)}
-                        borderBottomRightRadius={5}
-                        borderTopRightRadius={5}
+                        className="w-[60%] md:w-full rad"
+                        onChange={handleInput}
                         placeholder={t('appointment.create.videoChatPlaceholder')}
                         value={inputValue}
                         onBlur={handleBlur}
                     />
-                </FormControl>
+                </div>
             )}
-        </Stack>
+        </div>
     );
 };
 

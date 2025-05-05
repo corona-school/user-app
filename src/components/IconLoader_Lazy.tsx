@@ -4,12 +4,20 @@
 // thus users can use the app even while the icons are loading
 
 import { CircleIcon } from 'native-base';
+import { languageList, languageIcons } from '@/I18n';
 
 // DO NOT USE THIS DIRECTLY, only use the <IconLoader />!
-export default function _IconLoaderLazy({ iconPath }: { iconPath: string }) {
+export default function _IconLoaderLazy({ icon, iconPath }: { icon?: string; iconPath?: string }) {
     try {
-        const Res = require(`../assets/icons/lernfair/${iconPath}`).default;
-        return <Res />;
+        if (icon) {
+            const item = languageList.find((item) => item.long === icon)!;
+            const Icon = languageIcons[item?.short as keyof typeof languageIcons];
+            if (Icon) return <Icon className={`rounded-full h-7 w-7 border`} />;
+        }
+        if (iconPath) {
+            const Res = require(`../assets/icons/lernfair/${iconPath}`).default;
+            return <Res />;
+        }
     } catch (e) {}
     return <CircleIcon size={'30px'} color="lightText" />;
 }

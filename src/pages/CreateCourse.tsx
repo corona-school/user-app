@@ -35,6 +35,8 @@ import { Appointment } from '../types/lernfair/Appointment';
 import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import useApollo, { useUserType } from '../hooks/useApollo';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 export enum ChatType {
@@ -97,6 +99,7 @@ const CreateCourse: React.FC = () => {
     const location = useLocation();
     const state = location.state as { courseId?: number; currentStep?: number };
     const prefillCourseId = state?.courseId;
+    const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const [courseId, setCourseId] = useState<string>('');
     const [courseName, setCourseName] = useState<string>('');
@@ -674,7 +677,7 @@ const CreateCourse: React.FC = () => {
                 errors.push('subcourse');
                 await resetEditSubcourse();
                 await resetEditCourse();
-                finishCourseCreation(errors, courseId);
+                finishCourseCreation(errors, prefillCourseId);
                 setLoadingCourse(false);
                 return;
             }
@@ -717,7 +720,7 @@ const CreateCourse: React.FC = () => {
                     await resetAppointments();
                     await resetSubcourse();
                     await resetCourse();
-                    finishCourseCreation(errors, courseId);
+                    finishCourseCreation(errors, prefillCourseId);
                     setLoadingCourse(false);
                     return;
                 }
@@ -729,7 +732,7 @@ const CreateCourse: React.FC = () => {
              */
             if (!pickedPhoto) {
                 setLoadingCourse(false);
-                finishCourseCreation(errors, courseId);
+                finishCourseCreation(errors, prefillCourseId);
                 return;
             }
             setImageLoading(true);
@@ -758,7 +761,7 @@ const CreateCourse: React.FC = () => {
             }
 
             if (!uploadFileId) {
-                finishCourseCreation(errors, courseId);
+                finishCourseCreation(errors, prefillCourseId);
                 return;
             }
 
@@ -777,7 +780,7 @@ const CreateCourse: React.FC = () => {
             }
 
             setImageLoading(false);
-            finishCourseCreation(errors, _courseId);
+            finishCourseCreation(errors, prefillCourseId);
         },
         [
             _getCourseData,
@@ -864,7 +867,6 @@ const CreateCourse: React.FC = () => {
         <AsNavigationItem path="group">
             <WithNavigation
                 headerTitle={isEditing ? t('course.edit') : t('course.header')}
-                showBack
                 previousFallbackRoute="/group"
                 isLoading={loadingStudent || loadingCourse}
                 headerLeft={
@@ -911,7 +913,14 @@ const CreateCourse: React.FC = () => {
                     }}
                 >
                     {(((roles.includes('INSTRUCTOR') && canCreateCourse?.allowed) || roles.includes('COURSE_SCREENER')) && (
-                        <VStack space={space['1']} padding={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
+                        <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
+                            {isEditing ? (
+                                <Breadcrumb
+                                    items={[breadcrumbRoutes.COURSES, { label: courseName, route: `single-course/${courseId}` }, breadcrumbRoutes.EDIT_COURSE]}
+                                />
+                            ) : (
+                                <Breadcrumb />
+                            )}
                             <InstructionProgress
                                 isDark={false}
                                 currentIndex={currentIndex}

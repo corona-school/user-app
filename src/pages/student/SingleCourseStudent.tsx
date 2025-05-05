@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { gql } from '../../gql';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
-import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import Banner from '../../widgets/CourseBanner';
 import PromoteBanner from '../../widgets/PromoteBanner';
 import SubcourseData from '../subcourse/SubcourseData';
@@ -20,7 +20,10 @@ import CancelSubCourseModal from '@/modals/CancelSubCourseModal';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { ParticipantsList } from '../subcourse/ParticipantsList';
-import Waitinglist from '../single-course/Waitinglist';
+import WaitingListProspectList from '../single-course/WaitingListProspectList';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
+import ConfirmationModal from '@/modals/ConfirmationModal';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -38,6 +41,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
         published
         publishedAt
         isInstructor
+        isMentor
         nextLecture{
             start
             duration
@@ -139,16 +143,44 @@ query GetInstructorSubcourse($subcourseId: Int!) {
                 isStudent
             }
         }
+        prospectParticipants {
+            id
+            firstname
+            lastname
+            schooltype
+            grade
+            gradeAsInt
+            conversationId
+        }
     }
 }
 `);
+
+const MUTATION_JOIN_AS_MENTOR = gql(`
+    mutation JoinAsMentor($subcourseId: Float!) {
+        subcourseJoinAsMentor(subcourseId: $subcourseId)
+    }
+`);
+
+const MUTATION_MENTOR_LEAVE_COURSE = gql(`
+    mutation MentorLeaveSubcourse($subcourseId: Float!) {
+        subcourseMentorLeave(subcourseId: $subcourseId)
+    }
+`);
+
 const SingleCourseStudent = () => {
     const [showCancelModal, setShowCancelModal] = useState(false);
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
+    const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const navigate = useNavigate();
+
+    const [joinAsMentorMutation, { loading: isLoadingJoinCourse }] = useMutation(MUTATION_JOIN_AS_MENTOR);
+    const [mentorLeaveCourseMutation, { loading: isLoadingLeaveCourse }] = useMutation(MUTATION_MENTOR_LEAVE_COURSE);
+    const [signInModal, setSignInModal] = useState(false);
+    const [signOutModal, setSignOutModal] = useState(false);
 
     const {
         data,
@@ -178,14 +210,22 @@ const SingleCourseStudent = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+    const isMentor = !!data?.subcourse?.isMentor;
+    const isHomeworkHelp = course?.category === Course_Category_Enum.HomeworkHelp;
     const appointments = useMemo(() => {
-        return ((isInstructorOfSubcourse ? instructorSubcourse?.subcourse?.appointments : subcourse?.appointments) ?? []) as Appointment[];
+        if (isInstructorOfSubcourse) return (instructorSubcourse?.subcourse?.appointments || []) as Appointment[];
+        return ((subcourse?.appointments || []) as Appointment[]).filter((e) => {
+            const appointmentStart = DateTime.fromISO(e.start);
+            const appointmentEnd = appointmentStart.plus({ minutes: e.duration });
+            return appointmentEnd > DateTime.now();
+        });
     }, [instructorSubcourse?.subcourse?.appointments, isInstructorOfSubcourse, subcourse?.appointments]);
+
     const myNextAppointment = useMemo(() => {
         const now = DateTime.now();
         const next = appointments.find((appointment) => {
             const appointmentStart = DateTime.fromISO(appointment.start);
-            const appointmentEnd = DateTime.fromISO(appointment.start).plus(appointment.duration);
+            const appointmentEnd = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
 
             const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 240 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
 
@@ -285,6 +325,20 @@ const SingleCourseStudent = () => {
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     };
 
+    const joinAsMentor = async () => {
+        await joinAsMentorMutation({ variables: { subcourseId } });
+        await refetchBasics();
+        toast.success(t('single.signIn.toast'));
+        setSignInModal(false);
+    };
+
+    const leaveCourse = async () => {
+        await mentorLeaveCourseMutation({ variables: { subcourseId } });
+        await refetchBasics();
+        toast.success(t('single.leave.toast'));
+        setSignOutModal(false);
+    };
+
     const handleOnPromoted = async () => {
         await refetchInstructorData();
     };
@@ -301,15 +355,24 @@ const SingleCourseStudent = () => {
     }, [appointments, subcourse?.cancelled]);
 
     const showParticipantsTab = subcourse?.isInstructor;
-    const showWaitingListTab = subcourse?.isInstructor && instructorSubcourse?.subcourse;
-    const showLecturesTab = showParticipantsTab || showWaitingListTab;
+    const showWaitingListProspectListTab = subcourse?.isInstructor && instructorSubcourse?.subcourse;
+    const showLecturesTab = showParticipantsTab || showWaitingListProspectListTab;
 
-    const showTabsControls = showParticipantsTab || showWaitingListTab || showLecturesTab;
+    const showTabsControls = showParticipantsTab || showWaitingListProspectListTab || showLecturesTab;
+    const canContactInstructor = !isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse;
+
+    useEffect(() => {
+        if (!loading && isInPast && !isInstructorOfSubcourse) {
+            navigate('/group');
+            toast.error(t('course.error.isInPastOrInvalid'));
+        }
+    }, [loading, isInPast, isInstructorOfSubcourse]);
+
+    const canAccessLectures = isInstructorOfSubcourse || isMentor;
 
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
-            showBack
             previousFallbackRoute="/group"
             isLoading={loading}
             headerLeft={
@@ -319,57 +382,63 @@ const SingleCourseStudent = () => {
                 </div>
             }
         >
-            {subLoading ? (
+            {subLoading || !course || !subcourse ? (
                 <CenterLoadingSpinner />
             ) : (
                 <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
-                    <SubcourseData
-                        course={course!}
-                        subcourse={isInstructorOfSubcourse && !subLoading ? { ...subcourse!, ...instructorSubcourse!.subcourse! } : subcourse!}
-                        isInPast={isInPast}
-                        hideTrafficStatus={canPromoteCourse}
-                    />
+                    <div>
+                        <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name }]} />
+                        <SubcourseData
+                            course={course}
+                            subcourse={
+                                isInstructorOfSubcourse && instructorSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse.subcourse } : subcourse
+                            }
+                            isInPast={isInPast}
+                        />
+                    </div>
                     <div className="flex flex-col gap-y-11 justify-between xl:flex-row">
                         <div className="flex flex-col gap-y-11 justify-between w-full">
-                            {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && (
+                            {(isInstructorOfSubcourse || isMentor) && !subcourse?.cancelled && !subLoading && (
                                 <StudentCourseButtons
-                                    subcourse={{ ...subcourse!, ...instructorSubcourse!.subcourse! }}
+                                    subcourse={{ ...subcourse, ...instructorSubcourse?.subcourse }}
                                     refresh={refetchBasics}
                                     appointment={myNextAppointment as Lecture}
                                     isActiveSubcourse={isActiveSubcourse}
                                 />
                             )}
-                            {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
-                                <div>
+                            <div className="flex gap-x-4">
+                                {canContactInstructor && (
                                     <Button variant="outline" onClick={contactInstructorAsProspect}>
                                         {t('single.actions.contactInstructor')}
                                     </Button>
-                                </div>
-                            )}
+                                )}
+                                {!isMentor && !isInstructorOfSubcourse && isHomeworkHelp && (
+                                    <Button onClick={() => setSignInModal(true)}>{t('single.signIn.homeworkHelpButton')}</Button>
+                                )}
+                                {isMentor && (
+                                    <Button variant="ghost" onClick={() => setSignOutModal(true)}>
+                                        {t('single.leave.signOut')}
+                                    </Button>
+                                )}
+                            </div>
                             {!isInPast && isInstructorOfSubcourse && (
                                 <Banner
-                                    courseState={course!.courseState!}
-                                    isCourseCancelled={subcourse!.cancelled}
-                                    isPublished={subcourse!.published}
+                                    courseState={course.courseState}
+                                    isCourseCancelled={subcourse.cancelled}
+                                    isPublished={subcourse.published}
                                     handleButtonClick={subcourse?.published ? () => setShowCancelModal(true) : getButtonClick}
                                 />
                             )}
                         </div>
-                        {subcourse &&
-                            instructorSubcourse?.subcourse &&
-                            isInstructorOfSubcourse &&
-                            subcourse.published &&
-                            !subLoading &&
-                            !isInPast &&
-                            canPromoteCourse && (
-                                <PromoteBanner
-                                    onPromoted={handleOnPromoted}
-                                    subcourse={{
-                                        id: subcourse.id,
-                                        wasPromotedByInstructor: instructorSubcourse.subcourse.wasPromotedByInstructor,
-                                    }}
-                                />
-                            )}
+                        {isInstructorOfSubcourse && instructorSubcourse?.subcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
+                            <PromoteBanner
+                                onPromoted={handleOnPromoted}
+                                subcourse={{
+                                    id: subcourse.id,
+                                    wasPromotedByInstructor: instructorSubcourse.subcourse.wasPromotedByInstructor,
+                                }}
+                            />
+                        )}
                     </div>
                     <Tabs defaultValue="lectures">
                         {showTabsControls && (
@@ -380,20 +449,25 @@ const SingleCourseStudent = () => {
                                         {t('single.tabs.participant')}
                                     </TabsTrigger>
                                 )}
-                                {showWaitingListTab && (
+                                {showWaitingListProspectListTab && (
                                     <TabsTrigger badge={instructorSubcourse.subcourse!.pupilsWaitingCount} value="waiting-list">
                                         {t('single.tabs.waitinglist')}
+                                    </TabsTrigger>
+                                )}
+                                {showWaitingListProspectListTab && (
+                                    <TabsTrigger badge={instructorSubcourse.subcourse!.prospectParticipants.length} value="prospect-list">
+                                        {t('single.tabs.prospectParticipants')}
                                     </TabsTrigger>
                                 )}
                             </TabsList>
                         )}
                         <TabsContent value="lectures">
                             <div className="mt-8 max-h-full overflow-y-scroll">
-                                <AppointmentList appointments={appointments} isReadOnly={!isInstructorOfSubcourse} disableScroll />
+                                <AppointmentList appointments={appointments} isReadOnly={!canAccessLectures} disableScroll />
                             </div>
                         </TabsContent>
                         <TabsContent value="participants">
-                            {subcourse && showParticipantsTab && (
+                            {showParticipantsTab && (
                                 <ParticipantsList
                                     subcourseId={subcourseId}
                                     isInstructor={subcourse.isInstructor}
@@ -402,16 +476,31 @@ const SingleCourseStudent = () => {
                                 />
                             )}
                         </TabsContent>
-                        {showWaitingListTab && (
+                        {showWaitingListProspectListTab && (
                             <TabsContent value="waiting-list">
-                                <Waitinglist
+                                <WaitingListProspectList
                                     subcourseId={subcourseId}
                                     maxParticipants={subcourse?.maxParticipants}
-                                    pupilsOnWaitinglist={instructorSubcourse!.subcourse?.pupilsOnWaitinglist}
+                                    pupils={instructorSubcourse!.subcourse?.pupilsOnWaitinglist}
                                     refetch={() => {
                                         refetchInstructorData();
                                         return refetchBasics();
                                     }}
+                                    type={'waitinglist'}
+                                />
+                            </TabsContent>
+                        )}
+                        {showWaitingListProspectListTab && (
+                            <TabsContent value="prospect-list">
+                                <WaitingListProspectList
+                                    subcourseId={subcourseId}
+                                    pupils={instructorSubcourse!.subcourse!.prospectParticipants}
+                                    refetch={() => {
+                                        refetchInstructorData();
+                                        return refetchBasics();
+                                    }}
+                                    maxParticipants={subcourse?.maxParticipants}
+                                    type={'prospectlist'}
                                 />
                             </TabsContent>
                         )}
@@ -421,6 +510,26 @@ const SingleCourseStudent = () => {
             {subcourse?.id && (
                 <CancelSubCourseModal subcourseId={subcourse?.id} isOpen={showCancelModal} onOpenChange={setShowCancelModal} onCourseCanceled={refetchBasics} />
             )}
+            <ConfirmationModal
+                headline={t('single.homeworkHelp.signIn.title')}
+                confirmButtonText={t('single.signIn.homeworkHelpButton')}
+                description={t('single.homeworkHelp.signIn.description')}
+                onOpenChange={setSignInModal}
+                isOpen={signInModal}
+                onConfirm={joinAsMentor}
+                isLoading={isLoadingJoinCourse}
+            />
+
+            <ConfirmationModal
+                headline={t('single.homeworkHelp.signOut.title')}
+                confirmButtonText={t('single.leave.signOut')}
+                description={t('single.homeworkHelp.signOut.description')}
+                onOpenChange={setSignOutModal}
+                isOpen={signOutModal}
+                onConfirm={() => leaveCourse()}
+                variant="destructive"
+                isLoading={isLoadingLeaveCourse}
+            />
         </WithNavigation>
     );
 };

@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { IconLoader } from '../components/IconLoader';
 
 export type IIconTagList = {
+    icon?: string;
     iconPath?: string;
     textIcon?: string;
     text: string;
@@ -14,7 +15,7 @@ export type IIconTagList = {
     initial?: boolean;
 };
 
-const IconTagList: React.FC<IIconTagList> = ({ iconPath, textIcon, text, link, variant = 'normal', space, onPress, isDisabled, initial }) => {
+const IconTagList: React.FC<IIconTagList> = ({ icon, iconPath, textIcon, text, link, variant = 'normal', space, onPress, isDisabled, initial }) => {
     const [active, setActive] = useState<boolean>(false);
 
     useEffect(() => {
@@ -22,16 +23,21 @@ const IconTagList: React.FC<IIconTagList> = ({ iconPath, textIcon, text, link, v
     }, [initial]);
 
     const renderIcon = useMemo(() => {
-        if (!iconPath) return;
-        return <IconLoader iconPath={iconPath} />;
-    }, [iconPath]);
+        if (icon) {
+            return <IconLoader icon={icon} />;
+        } else if (iconPath) {
+            return <IconLoader iconPath={iconPath} />;
+        } else {
+            return;
+        }
+    }, [icon, iconPath]);
 
     const renderText = useMemo(() => {
         if (iconPath) return;
 
         return (
-            <Box size={'8'} position={'relative'} justifyContent="center" alignItems="center">
-                <CircleIcon color="lightText" position="absolute" size={'8'} top="0" left="0" zIndex="-1" />
+            <Box size={'10'} position={'relative'} justifyContent="center" alignItems="center">
+                <CircleIcon color="lightText" position="absolute" size={'10'} top="0" left="0" zIndex="-1" />
                 <Text bold fontSize="20px" textAlign={'center'}>
                     {textIcon}
                 </Text>
@@ -65,7 +71,7 @@ const IconTagList: React.FC<IIconTagList> = ({ iconPath, textIcon, text, link, v
                         justifyContent={'center'}
                     >
                         <Column marginRight={variant !== 'selection' ? 2 : 0} marginBottom={variant === 'center' || variant === 'selection' ? 2 : ''}>
-                            {(iconPath && renderIcon) || renderText}
+                            {((icon || iconPath) && renderIcon) || renderText}
                         </Column>
                         <Column alignItems="center" justifyContent="center">
                             <Text

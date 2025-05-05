@@ -203,7 +203,7 @@ const CoursePreview: React.FC<Props> = ({
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
             <Box minH={300} maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
+                <AppointmentList height="100%" isReadOnlyList={true} appointments={allAppointmentsToShow} />
             </Box>
             {isError && (
                 <Box mt={space['1']}>

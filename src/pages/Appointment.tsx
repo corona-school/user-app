@@ -7,6 +7,10 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useUserType } from '../hooks/useApollo';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
+import { useTranslation } from 'react-i18next';
+import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 
 export const STUDENT_APPOINTMENT = gql(`
     query appointmentStudent($appointmentId: Float!) {
@@ -42,6 +46,9 @@ export const STUDENT_APPOINTMENT = gql(`
             zoomMeetingId
             subcourse {
                 published
+                course {
+                    category
+                }
             }
         }
     }
@@ -61,6 +68,7 @@ export const PUPIL_APPOINTMENT = gql(`
             total
             displayName
             isOrganizer
+            isParticipant
             override_meeting_link
             zoomMeetingUrl
             subcourseId
@@ -93,6 +101,8 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     const userType = useUserType();
     const { id } = useParams();
     const appointmentId = parseFloat(id ? id : '');
+    const breadcrumbRoutes = useBreadcrumbRoutes();
+    const { t } = useTranslation();
 
     const {
         data: studentAppointment,
@@ -120,8 +130,20 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
         return '/appointments';
     };
 
+    const appointmentTile = data?.appointment?.title || t('appointment.appointmentTile.lecture', { position: data?.appointment?.position });
     return (
-        <WithNavigation showBack previousFallbackRoute={getDefaultPreviousPath()} headerLeft={<NotificationAlert />}>
+        <WithNavigation
+            previousFallbackRoute={getDefaultPreviousPath()}
+            headerLeft={
+                <div className="flex">
+                    <NotificationAlert /> <SwitchLanguageButton />
+                </div>
+            }
+        >
+            <Breadcrumb
+                className="mx-4"
+                items={[breadcrumbRoutes.APPOINTMENTS, { label: data?.appointment?.displayName, route: getDefaultPreviousPath() }, { label: appointmentTile }]}
+            />
             {loading && <CenterLoadingSpinner />}
             {!error && data?.appointment && <AppointmentDetail appointment={data?.appointment} startMeeting={startMeeting} />}
         </WithNavigation>

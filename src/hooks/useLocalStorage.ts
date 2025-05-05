@@ -10,17 +10,14 @@ export function useLocalStorage<T>({ key, initialValue }: UseLocalStorageArgs<T>
         return JSON.stringify(value);
     }, []);
 
-    const deserialize = useCallback(
-        (value: string) => {
-            try {
-                const parsed = JSON.parse(value);
-                return parsed;
-            } catch (error) {
-                return initialValue;
-            }
-        },
-        [initialValue]
-    );
+    const deserialize = useCallback((value: string) => {
+        try {
+            const parsed = JSON.parse(value);
+            return parsed;
+        } catch (error) {
+            return value;
+        }
+    }, []);
 
     const readValue = useCallback((): T => {
         try {
@@ -59,7 +56,7 @@ export function useLocalStorage<T>({ key, initialValue }: UseLocalStorageArgs<T>
 
     useEffect(() => {
         setStoredValue(readValue());
-    }, [key, readValue]);
+    }, [key]);
 
     const handleStorageChange = useCallback(
         (event: StorageEvent | CustomEvent) => {

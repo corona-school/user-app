@@ -1,16 +1,19 @@
-import { Box, Button, Checkbox, Stack, useBreakpointValue, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
-import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import WeeklyAppointments from './WeeklyAppointments';
 import AppointmentForm from './AppointmentForm';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useMemo, useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
 import { calcNewAppointmentInOneWeek, convertStartDate, isDateMinOneWeekLater, isTimeMinFiveMinutesLater } from '../../helper/appointment-helper';
+import { Button } from '@/components/Button';
+import { toast } from 'sonner';
+import { Checkbox } from '@/components/Checkbox';
+import { Label } from '@/components/Label';
+import { RecommendationEnum, RecommendationsContext } from '@/context/RecommendationsContext';
 
 export type FormErrors = {
     title?: string;
@@ -45,6 +48,16 @@ type Props = {
     setIsLoading?: Dispatch<SetStateAction<boolean>>;
 };
 
+const TOTAL_APPOINTMENTS_CREATED_QUERY = gql(`
+    query totalAppointmentsCreated {
+        me {
+            student {
+                totalLecturesOrganized
+            }
+        }
+    }
+    `);
+
 const AppointmentCreation: React.FC<Props> = ({
     back,
     courseOrMatchId,
@@ -60,20 +73,13 @@ const AppointmentCreation: React.FC<Props> = ({
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
     const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
+    const { recommend } = useContext(RecommendationsContext);
     const { t } = useTranslation();
-    const { isMobile } = useLayoutHelper();
-
-    const toast = useToast();
     const navigate = useNavigate();
 
     const [dateSelected, setDateSelected] = useState<boolean>(false);
-    const [timeSelected, setTimeSelected] = useState<boolean>(false);
+    const [timeSelected, setTimeSelected] = useState<boolean>(true);
     const [videoChatType, setVideoChatType] = useState<VideoChatTypeEnum>(VideoChatTypeEnum.ZOOM);
-
-    const buttonWidth = useBreakpointValue({
-        base: 'full',
-        lg: '25%',
-    });
 
     const [createGroupAppointments] = useMutation(
         gql(`
@@ -91,6 +97,8 @@ const AppointmentCreation: React.FC<Props> = ({
     `)
     );
 
+    const { data: totalAppointmentsQuery } = useQuery(TOTAL_APPOINTMENTS_CREATED_QUERY);
+
     const newOverrideMeetingLink = useMemo(() => {
         const meetingLink =
             videoChatType === VideoChatTypeEnum.ZOOM ? undefined : appointmentToCreate.meetingLink ? appointmentToCreate.meetingLink : overrideMeetingLink;
@@ -105,7 +113,7 @@ const AppointmentCreation: React.FC<Props> = ({
 
         // the regex should check, if the passed url is a valid meeting url
         if (url) {
-            const urlRegex = /^(https?:\/\/)?(?:www\.)?([a-zA-Z0-9-]+)\.(?:[a-zA-Z]{2,})(?:\.[a-zA-Z]{2,})(\/[^\s]*)?(?:\?[^\s]*)?$/;
+            const urlRegex = /^(https?):\/\/(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}(?:\/[^\s]*)?$/;
             return urlRegex.test(url);
         }
 
@@ -196,11 +204,6 @@ const AppointmentCreation: React.FC<Props> = ({
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
-
-            toast.show({
-                description: weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'),
-                placement: 'top',
-            });
             closeModal && closeModal();
         }
     };
@@ -242,14 +245,13 @@ const AppointmentCreation: React.FC<Props> = ({
             }
 
             await createGroupAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
+            if (totalAppointmentsQuery?.me?.student?.totalLecturesOrganized === 0) {
+                recommend(RecommendationEnum.PUSH_NOTIFICATIONS_CREATED_APPOINTMENT);
+            }
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
-
-            toast.show({
-                description: weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'),
-                placement: 'top',
-            });
+            toast.success(weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'));
             navigate('/appointments');
         }
     };
@@ -291,14 +293,14 @@ const AppointmentCreation: React.FC<Props> = ({
             }
 
             await createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
+            if (totalAppointmentsQuery?.me?.student?.totalLecturesOrganized === 0) {
+                recommend(RecommendationEnum.PUSH_NOTIFICATIONS_CREATED_APPOINTMENT);
+            }
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
 
-            toast.show({
-                description: weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'),
-                placement: 'top',
-            });
+            toast.success(weeklies.length > 0 ? t('appointment.toast.createAppointmentsSuccess') : t('appointment.toast.createOneAppointmentSuccess'));
 
             if (navigateToMatch) {
                 await navigateToMatch();
@@ -310,8 +312,8 @@ const AppointmentCreation: React.FC<Props> = ({
     };
 
     return (
-        <Box flex={1} display="flex" justifyContent="space-between">
-            <Box>
+        <div className="flex flex-col flex-1 justify-between">
+            <div>
                 <AppointmentForm
                     errors={errors}
                     onSetDate={() => {
@@ -326,32 +328,27 @@ const AppointmentCreation: React.FC<Props> = ({
                     videoChatType={videoChatType}
                 />
                 {dateSelected && timeSelected && (
-                    <Box py="5">
-                        <Checkbox
-                            _checked={{ backgroundColor: 'danger.900' }}
-                            onChange={() => handleWeeklyCheck()}
-                            value={appointmentToCreate.isRecurring ? 'true' : 'false'}
-                        >
-                            {t('appointment.create.weeklyRepeat')}
-                        </Checkbox>
-                    </Box>
+                    <div className="flex items-center py-2 gap-x-2">
+                        <Checkbox id="weeklyRepeat" onCheckedChange={() => handleWeeklyCheck()} checked={appointmentToCreate.isRecurring} />
+                        <Label htmlFor="weeklyRepeat">{t('appointment.create.weeklyRepeat')}</Label>
+                    </div>
                 )}
                 {appointmentToCreate.isRecurring && (
                     <WeeklyAppointments appointmentsCount={appointmentsTotal ?? 0} nextDate={calcNewAppointmentInOneWeek(appointmentToCreate.date)} />
                 )}
-            </Box>
-            <Stack direction={isMobile ? 'column' : 'row'} space={3} my="3">
-                <Button variant="outline" onPress={back} _text={{ padding: '3px 5px' }} width={buttonWidth}>
+            </div>
+            <div className="flex flex-col lg:flex-row gap-4 mt-5">
+                <Button variant="outline" onClick={back} className="w-full lg:w-fit">
                     {t('appointment.create.backButton')}
                 </Button>
                 <Button
-                    onPress={isCourseCreation ? handleCreateCourseAppointments : isCourse ? handleCreateCourseAppointment : handleCreateMatchAppointment}
-                    width={buttonWidth}
+                    onClick={isCourseCreation ? handleCreateCourseAppointments : isCourse ? handleCreateCourseAppointment : handleCreateMatchAppointment}
+                    className="w-full lg:w-fit"
                 >
                     {t('appointment.create.addAppointmentButton')}
                 </Button>
-            </Stack>
-        </Box>
+            </div>
+        </div>
     );
 };
 

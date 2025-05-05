@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, Stack, Button, useBreakpointValue } from 'native-base';
+import { Heading, useTheme, VStack, Stack, Button, useBreakpointValue } from 'native-base';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
@@ -20,6 +20,9 @@ import { Course_Category_Enum } from '../../gql/graphql';
 import { Subcourse } from '../../gql/graphql';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import TruncatedText from '@/components/TruncatedText';
+import { Typography } from '@/components/Typography';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -30,6 +33,38 @@ const StudentGroup: React.FC = () => {
                         canCreateCourse {
                             allowed
                             reason
+                        }
+                        subcoursesMentoring {
+                            id
+                            published
+                            cancelled
+                            participantsCount
+                            maxParticipants
+                            minGrade
+                            maxGrade
+                            firstLecture {
+                                start
+                                duration
+                            }
+                            nextLecture {
+                                start
+                                duration
+                            }
+                            lectures {
+                                start
+                                duration
+                            }
+                            course {
+                                courseState
+                                name
+                                description
+                                image
+                                category
+                                tags {
+                                    id
+                                    name
+                                }
+                            }
                         }
                         subcoursesInstructing {
                             id
@@ -66,7 +101,7 @@ const StudentGroup: React.FC = () => {
                     }
                 }
 
-                subcoursesPublic(take: 20) {
+                subcoursesPublic(take: 50) {
                     id
                     published
                     cancelled
@@ -118,6 +153,11 @@ const StudentGroup: React.FC = () => {
         lg: sizes['containerWidth'],
     });
 
+    const ContentContainerWidth = useBreakpointValue({
+        base: '100%',
+        lg: sizes['contentContainerWidth'],
+    });
+
     const ButtonContainer = useBreakpointValue({
         base: '100%',
         lg: sizes['desktopbuttonWidth'],
@@ -157,11 +197,20 @@ const StudentGroup: React.FC = () => {
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
         [data?.subcoursesPublic]
     );
+    const homeworkHelpCourses = useMemo(
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
+        [data?.subcoursesPublic]
+    );
+    const mentoringCourses = useMemo(() => sortByDate(data?.me.student?.subcoursesMentoring), [data?.me.student?.subcoursesMentoring]);
+
     const revisionCourses = useMemo(
         () =>
             sortByDate(
                 data?.subcoursesPublic?.filter(
-                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                    (subcourse) =>
+                        subcourse.course.category !== Course_Category_Enum.Language &&
+                        subcourse.course.category !== Course_Category_Enum.Focus &&
+                        subcourse.course.category !== Course_Category_Enum.HomeworkHelp
                 )
             ),
         [data?.subcoursesPublic]
@@ -195,13 +244,16 @@ const StudentGroup: React.FC = () => {
                 }
             >
                 <VStack paddingX={space['1']} marginX="auto" marginBottom={space['1']} maxWidth={ContainerWidth} width="100%">
+                    <Breadcrumb />
                     {loading && <CenterLoadingSpinner />}
 
                     {!loading && (
                         <VStack space={space['1']}>
-                            <VStack space={space['0.5']}>
+                            <VStack space={space['0.5']} alignItems={'flex-start'} maxWidth={ContentContainerWidth}>
                                 <Heading>{t('matching.group.helper.title')}</Heading>
-                                <Text>{t('matching.group.helper.content')}</Text>
+                                <TruncatedText asChild maxLines={2}>
+                                    <Typography>{t('matching.group.helper.content')}</Typography>
+                                </TruncatedText>
                             </VStack>
                             <VStack>
                                 {locState && Object.keys(locState).length > 0 && (
@@ -262,6 +314,7 @@ const StudentGroup: React.FC = () => {
                                                         currentCourses={publishedSubcourses as Subcourse[]}
                                                         draftCourses={unpublishedOrDraftedSubcourses as Subcourse[]}
                                                         pastCourses={pastOrCancelledSubcourses as Subcourse[]}
+                                                        homeworkHelpCourses={mentoringCourses as Subcourse[]}
                                                     />
                                                 </>
                                             ),
@@ -270,7 +323,12 @@ const StudentGroup: React.FC = () => {
                                             title: t('matching.group.helper.course.tabs.tab2.title'),
                                             content: (
                                                 <>
-                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
+                                                    <AllSubcourses
+                                                        languageCourses={languageCourses}
+                                                        courses={revisionCourses}
+                                                        focusCourses={focusCourses}
+                                                        homeworkHelpCourses={homeworkHelpCourses}
+                                                    />
                                                 </>
                                             ),
                                         },

@@ -5,7 +5,7 @@ import HSection from '../../widgets/HSection';
 import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import { useNavigate } from 'react-router-dom';
 
-type ASubcourse = Pick<Subcourse, 'id' | 'minGrade' | 'maxGrade' | 'maxParticipants' | 'published' | 'participantsCount'> & {
+type ASubcourse = Pick<Subcourse, 'id' | 'minGrade' | 'maxGrade' | 'maxParticipants' | 'published' | 'participantsCount' | 'firstLecture' | 'instructors'> & {
     course: Pick<Course, 'name' | 'courseState' | 'image' | 'category'> & { tags: Pick<Course_Tag, 'name'>[] };
 };
 type Props = {
@@ -43,6 +43,9 @@ const Subcourses: React.FC<Props> = ({ courseGroups, titles }) => {
                 trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                 onPressToCourse={() => navigate(`/single-course/${subcourse.id}`)}
                 showSchoolclass
+                showInformationForScreeners
+                instructors={subcourse.instructors}
+                firstLecture={subcourse.firstLecture ? subcourse.firstLecture : undefined}
             />
         );
     };

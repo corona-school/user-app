@@ -7,9 +7,11 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import Login from '../pages/Login';
 import Welcome from '../pages/Welcome';
 import LoginToken from '../pages/LoginToken';
-import { RequireAuth } from '../User';
+import { RequireAuth, VisitorsOnly } from '../User';
 import FullPageModal from '../modals/FullPageModal';
 import { lazyWithRetry } from '../lazy';
+import Logout from '../components/Logout';
+import LoginWithIDP from '@/pages/LoginWithIDP';
 
 // All other pages load lazy:
 const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: true });
@@ -25,8 +27,16 @@ export default function Navigator() {
             <Routes>
                 <Route path="/login" element={<Login />} />
                 <Route path="/login-token" element={<LoginToken />} />
-
-                <Route path="/welcome" element={<Welcome />} />
+                <Route path="/login-with" element={<LoginWithIDP />} />
+                <Route path="/logout" element={<Logout />} />
+                <Route
+                    path="/welcome"
+                    element={
+                        <VisitorsOnly>
+                            <Welcome />
+                        </VisitorsOnly>
+                    }
+                />
 
                 <Route
                     path="/"

@@ -9,16 +9,15 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE, LESSON_PLAN_GENERATOR_ACTIVE, REFERRALS_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
-import useLogout from '../hooks/useLogout';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { user } = useApollo();
-    const logout = useLogout();
+    const { user, roles } = useApollo();
     const tabspace = 3;
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
@@ -50,8 +49,9 @@ const Settings: React.FC = () => {
 
     return (
         <>
-            <WithNavigation headerTitle={t('settings.header')} hideMenu showBack previousFallbackRoute="/start">
-                <VStack paddingX={space['1.5']} pt={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+            <WithNavigation headerTitle={t('settings.header')} hideMenu previousFallbackRoute="/start">
+                <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                    <Breadcrumb />
                     <>
                         <ProfileSettingRow title={user?.firstname!} isSpace={false}>
                             {userType !== 'screener' && (
@@ -63,6 +63,11 @@ const Settings: React.FC = () => {
                                         <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
                                     </Column>
                                 </>
+                            )}
+                            {userType === 'student' && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.general.certificates')} onPress={() => navigate('/certificates')} />
+                                </Column>
                             )}
                         </ProfileSettingRow>
                         <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
@@ -79,6 +84,9 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />
                                 </Column>
                             )}
+                            <Column mb={tabspace}>
+                                <ListItem label={t('settings.general.manageSessions')} onPress={() => navigate('/manage-sessions')} />
+                            </Column>
                             {userType === 'student' && isMobile && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/knowledge-helper')} />
@@ -89,15 +97,31 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
+                            {/* Add Lesson for both desktop and mobile */}
+                            {LESSON_PLAN_GENERATOR_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('navigation.label.lesson')} onPress={() => navigate('/lesson')} />
+                                </Column>
+                            )}
+                            {/* Move Referral to Knowledge Center on Mobile Only */}
+                            {isMobile && REFERRALS_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('navigation.label.referral')} onPress={() => navigate('/referral')} />
+                                </Column>
+                            )}
                         </ProfileSettingRow>
                     </>
                     <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
-                        </Column>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
-                        </Column>
+                        {!roles.includes('SSO_USER') && (
+                            <>
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
+                                </Column>
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
+                                </Column>
+                            </>
+                        )}
 
                         <Column mb={tabspace}>
                             <ListItem label={t('settings.account.deactivateAccount')} onPress={() => setShowDeactivate(true)} />
@@ -112,7 +136,7 @@ const Settings: React.FC = () => {
                                         name: 'Abmelden im Account',
                                         documentTitle: 'Logout',
                                     });
-                                    logout();
+                                    navigate('/logout');
                                 }}
                             />
                         </Column>

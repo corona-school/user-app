@@ -60,7 +60,7 @@ export type LFInstructor = {
 
 export type LFPupilsOnWaitinglist = PupilOnWaitinglist[] | undefined;
 
-export type PupilOnWaitinglist = Pick<Pupil, 'id' | 'firstname' | 'lastname' | 'schooltype' | 'grade' | 'gradeAsInt'>;
+export type PupilOnWaitinglist = Pick<Pupil, 'id' | 'firstname' | 'lastname' | 'schooltype' | 'grade' | 'gradeAsInt'> & { conversationId?: string };
 
 export type SubcourseParticipant = Pick<Participant, 'id' | 'firstname' | 'grade' | 'gradeAsInt'> & Partial<Pick<Participant, 'lastname' | 'schooltype'>>;
 

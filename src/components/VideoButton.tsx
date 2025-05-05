@@ -3,12 +3,12 @@ import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
 import ZoomMeetingModal from '../modals/ZoomMeetingModal';
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { canJoinMeeting } from '../widgets/AppointmentDay';
-import { DateTime } from 'luxon';
 import { Button } from './Button';
 import { IconVideo } from '@tabler/icons-react';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
+import { toast } from 'sonner';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -38,19 +38,17 @@ const VideoButton: React.FC<VideoButtonProps> = ({
 }) => {
     const { t } = useTranslation();
     const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-    const { data } = useQuery(
+    const [zoomUrl, setZoomUrl] = useState('');
+    const { data, loading: isLoadingOverrideMeetingLink } = useQuery(
         gql(`
         query overrrideLink($appointmentId: Float!) {
             appointment(appointmentId: $appointmentId) {
                 override_meeting_link
-                zoomMeetingUrl
             }
         }
         `),
         { variables: { appointmentId } }
     );
-
-    const zoomUrl = data?.appointment?.zoomMeetingUrl;
 
     const [trackJoinMeeting] = useMutation(
         gql(`
@@ -59,22 +57,35 @@ const VideoButton: React.FC<VideoButtonProps> = ({
             }
         `)
     );
+
+    const [getZoomMeetingLink, { loading: isLoadingZoomMeetingLink }] = useMutation(
+        gql(`
+            mutation GetZoomMeetingLink($appointmentId: Float!) { 
+                appointmentZoomLinkGet(appointmentId: $appointmentId)
+            }
+        `)
+    );
+
     const openMeeting = async () => {
+        if (!data) return;
         // Technically the user has not joined yet, but they tried, that should be good enough for now
         await trackJoinMeeting({ variables: { appointmentId } });
-
         const overrideLink = data?.appointment?.override_meeting_link;
-        if (!overrideLink) {
+        if (overrideLink) {
+            window.open(overrideLink, '_blank');
+            return;
+        }
+
+        const { data: zoomMeetingData } = await getZoomMeetingLink({ variables: { appointmentId } });
+        if (zoomMeetingData?.appointmentZoomLinkGet) {
+            setZoomUrl(zoomMeetingData.appointmentZoomLinkGet);
             setIsOpenModal(true);
         } else {
-            window.open(overrideLink, '_blank');
+            toast.error(t('error'));
         }
     };
 
-    const canStartMeeting = useMemo(
-        () => canJoin ?? (startDateTime && duration && canJoinMeeting(startDateTime, duration, isInstructor ? 240 : 10, DateTime.now())),
-        [canJoin, duration, isInstructor, startDateTime]
-    );
+    const canStartMeeting = useCanJoinMeeting(isInstructor ? 240 : 10, startDateTime, duration);
 
     return (
         <>
@@ -86,7 +97,8 @@ const VideoButton: React.FC<VideoButtonProps> = ({
                 zoomUrl={zoomUrl ?? undefined}
             />
             <Button
-                disabled={!canStartMeeting || isOver}
+                isLoading={isLoadingOverrideMeetingLink || isLoadingZoomMeetingLink}
+                disabled={!(canJoin ?? canStartMeeting) || isOver}
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
                 onClick={openMeeting}
                 className={className}

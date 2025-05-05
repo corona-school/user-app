@@ -1,97 +1,24 @@
 import { useQuery } from '@apollo/client';
-import { Card, Heading, HStack, Pressable, Stack, Text, TextArea, useLayout, useTheme, VStack } from 'native-base';
-import { Button } from 'native-base';
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { InfoCard } from '../../components/InfoCard';
 import SearchBar from '../../components/SearchBar';
-import Tag from '../../components/Tag';
 import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql';
 import { useUser } from '../../hooks/useApollo';
 import { PupilForScreening, StudentForScreening } from '../../types';
-import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
-import { ScreenStudentCard } from '../../widgets/screening/ScreenStudentCard';
 import { useShortcut } from '../../helper/keyboard';
-
-function PupilCard({ pupil, onClick }: { pupil: PupilForScreening; onClick: () => void }) {
-    const { space } = useTheme();
-    const { t } = useTranslation();
-
-    return (
-        <Pressable onPress={onClick}>
-            <HStack borderRadius="15px" backgroundColor="primary.900" padding="20px" margin="20px" minW="325px">
-                <VStack space={space['1.5']}>
-                    <VStack space={space['0.5']}>
-                        <Heading color="white" fontSize="20px">
-                            {pupil.firstname} {pupil.lastname}
-                        </Heading>
-                        <Text color="white" fontSize="15px">
-                            E-Mail: <b>{pupil.email}</b>
-                        </Text>
-                        <Text color="white" fontSize="15px">
-                            {t('screening.registered_since')} {new Date(pupil!.createdAt).toLocaleDateString()}
-                        </Text>
-                    </VStack>
-                    <HStack space={space['0.5']} display="flex" flexWrap="wrap" maxW="270px">
-                        {pupil!.matches!.length > 0 && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
-                        {pupil!.screenings!.some((it) => !it!.invalidated && it!.status === 'dispute') && (
-                            <Tag variant="orange" padding="5px" text={t('screening.dispute_screening')} />
-                        )}
-                        {pupil!.screenings!.some(
-                            (it) =>
-                                !it!.invalidated && it!.status === 'pending' && <Tag variant="orange" padding="5px" text={t('screening.pending_screening')} />
-                        )}
-                        {pupil!.screenings!.some((it) => it!.status === 'success') && (
-                            <Tag variant="orange" padding="5px" text={t('screening.success_screening')} />
-                        )}
-                        {pupil!.screenings!.some((it) => it!.status === 'rejection') && (
-                            <Tag variant="orange" padding="5px" text={t('screening.rejection_screening')} />
-                        )}
-                    </HStack>
-                </VStack>
-            </HStack>
-        </Pressable>
-    );
-}
-
-function StudentCard({ student, onClick }: { student: StudentForScreening; onClick: () => void }) {
-    const { space } = useTheme();
-    const { t } = useTranslation();
-
-    return (
-        <Pressable onPress={onClick}>
-            <HStack borderRadius="15px" backgroundColor="primary.400" padding="20px" margin="20px" minW="325px">
-                <VStack space={space['1.5']}>
-                    <VStack space={space['0.5']}>
-                        <Heading color="white" fontSize="20px">
-                            {student.firstname} {student.lastname}
-                        </Heading>
-                        <Text color="white" fontSize="15px">
-                            E-Mail: <b>{student.email}</b>
-                        </Text>
-                        <Text color="white" fontSize="15px">
-                            {t('screening.registered_since')} {new Date(student!.createdAt).toLocaleDateString()}
-                        </Text>
-                    </VStack>
-                    <HStack space={space['0.5']} display="flex" flexWrap="wrap" maxW="270px">
-                        {student!.matches!.length > 0 && <Tag variant="orange" padding="5px" text={t('screening.has_matches')} />}
-                        {student.instructorScreenings?.some((it) => it.success) && <Tag variant="orange" padding="5px" text={`gescreenter Kursleiter`} />}
-                        {student.tutorScreenings?.some((it) => it.success) && <Tag variant="orange" padding="5px" text={`gescreenter Helfer`} />}
-                    </HStack>
-                </VStack>
-            </HStack>
-        </Pressable>
-    );
-}
+import UserCard from './components/UserCard';
+import { Typography } from '@/components/Typography';
+import PupilDetail from './pupil/PupilDetail';
+import { StudentDetail } from './student/StudentDetail';
 
 const greetings = ['Wilkommen', 'Bonjour', 'Hola', 'Salve', 'asalaam alaikum', 'konnichiwa'];
 
 const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 
 export function ScreeningDashboard() {
-    const { space, sizes } = useTheme();
     const user = useUser();
     const { t } = useTranslation();
 
@@ -117,6 +44,19 @@ export function ScreeningDashboard() {
                     gradeAsInt
                     openMatchRequestCount
                     verifiedAt
+                    state
+                    schooltype
+                    onlyMatchWith
+                    hasSpecialNeeds
+                    descriptionForScreening
+                    descriptionForMatch
+                    school {
+                        id
+                        name
+                        zip
+                        city
+                        email
+                    }
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -137,6 +77,14 @@ export function ScreeningDashboard() {
                         updatedAt
                         screeners { firstname lastname }
                     }
+                    user {
+                        receivedScreeningSuggestions {
+                            sentAt
+                            notification {
+                                description
+                            }
+                        }
+                    }
                 }
 
                 student {
@@ -152,6 +100,10 @@ export function ScreeningDashboard() {
                     certificateOfConduct {
                         id
                     }
+                    hasSpecialExperience
+                    gender
+                    descriptionForMatch
+                    descriptionForScreening
                     matches {
                         createdAt
                         pupil { firstname lastname }
@@ -162,7 +114,6 @@ export function ScreeningDashboard() {
                         studentFirstMatchRequest
                         subjectsFormatted { name }
                     }
-                    
                     subcoursesInstructing {
                         id
                         published
@@ -172,6 +123,14 @@ export function ScreeningDashboard() {
 
                     tutorScreenings { id createdAt success comment screener { firstname lastname } }
                     instructorScreenings { id createdAt success comment screener { firstname lastname } }
+                    user {
+                        receivedScreeningSuggestions {
+                            sentAt
+                            notification {
+                                description
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -194,6 +153,15 @@ export function ScreeningDashboard() {
                 grade
                 gradeAsInt
                 openMatchRequestCount
+                state
+                schooltype
+                onlyMatchWith
+                hasSpecialNeeds
+                descriptionForScreening
+                descriptionForMatch
+                school {
+                    name
+                }
                 matches {
                     createdAt
                     student { firstname lastname }
@@ -213,6 +181,14 @@ export function ScreeningDashboard() {
                     createdAt
                     updatedAt
                     screeners { firstname lastname }
+                }
+                user {
+                    receivedScreeningSuggestions {
+                        sentAt
+                        notification {
+                            description
+                        }
+                    }
                 }
             }
         }
@@ -262,11 +238,19 @@ export function ScreeningDashboard() {
 
     const searchbarRef = useRef<HTMLInputElement>();
 
+    const handleOnRefreshPupils = async () => {
+        await Promise.all([refetchDisputedScreenings(), refetchUserSearch()]);
+    };
+
+    const handleOnRefreshStudents = async () => {
+        await refetchUserSearch();
+    };
+
     useShortcut('KeyF', () => searchbarRef.current?.focus(), [searchbarRef]);
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
-            <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={sizes['containerWidth']}>
+            <div className="px-2 mx-auto w-full max-w-6xl">
                 <SearchBar
                     inputRef={searchbarRef}
                     placeholder={t('screening.search.placeholder')}
@@ -276,39 +260,29 @@ export function ScreeningDashboard() {
                         setSelectedStudent(null);
                     }}
                 />
-                {searchLoading && <CenterLoadingSpinner />}
+                {searchLoading && <CenterLoadingSpinner className="my-4" />}
                 {searchResult?.usersSearch.length === 0 && <InfoCard icon="no" title={t('not_found')} message={t('screening.search.not_found')} />}
                 {!selectedPupil && !selectedStudent && (
-                    <HStack display="flex" flexWrap="wrap">
+                    <div className="grid grid-cols-3 gap-4 mt-4">
                         {searchResult?.usersSearch
                             .filter((it) => it.pupil)
                             .map((it, id) => (
-                                <PupilCard key={id} onClick={() => setSelectedPupil(it.pupil!)} pupil={it.pupil!} />
+                                <UserCard
+                                    key={`pupil/${it.pupil?.id}`}
+                                    onClick={() => setSelectedPupil(it.pupil!)}
+                                    type="pupil"
+                                    user={{ ...it.pupil!, pupilScreenings: it.pupil?.screenings }}
+                                />
                             ))}
                         {searchResult?.usersSearch
                             .filter((it) => it.student)
                             .map((it, id) => (
-                                <StudentCard key={id} onClick={() => setSelectedStudent(it.student!)} student={it.student!} />
+                                <UserCard key={`student/${it.student?.id}`} onClick={() => setSelectedStudent(it.student!)} type="student" user={it.student!} />
                             ))}
-                    </HStack>
+                    </div>
                 )}
-                {selectedPupil && (
-                    <ScreenPupilCard
-                        pupil={selectedPupil}
-                        refresh={() => {
-                            refetchDisputedScreenings();
-                            refetchUserSearch();
-                        }}
-                    />
-                )}
-                {selectedStudent && (
-                    <ScreenStudentCard
-                        student={selectedStudent}
-                        refresh={() => {
-                            refetchUserSearch();
-                        }}
-                    />
-                )}
+                {selectedPupil && <PupilDetail pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
+                {selectedStudent && <StudentDetail student={selectedStudent} refresh={handleOnRefreshStudents} />}
 
                 {!searchQuery && !selectedPupil && !selectedStudent && (
                     <>
@@ -316,18 +290,26 @@ export function ScreeningDashboard() {
 
                         {disputedScreenings && disputedScreenings.pupilsToBeScreened.length !== 0 && (
                             <>
-                                <Heading>{t('screening.disputed_screenings')}</Heading>
-                                <VStack marginTop="20px">
+                                <Typography variant="h4">{t('screening.disputed_screenings')}</Typography>
+                                <div className="grid grid-cols-3 gap-4 mt-4">
                                     {disputedScreenings &&
                                         disputedScreenings.pupilsToBeScreened.map((it, id) => (
-                                            <PupilCard key={id} onClick={() => setSelectedPupil(it)} pupil={it} />
+                                            <UserCard
+                                                key={`pupil/${it?.id}`}
+                                                onClick={() => {
+                                                    setSelectedPupil(it!);
+                                                    setSearchQuery(it.firstname!);
+                                                }}
+                                                type="pupil"
+                                                user={{ ...it!, pupilScreenings: it?.screenings }}
+                                            />
                                         ))}
-                                </VStack>
+                                </div>
                             </>
                         )}
                     </>
                 )}
-            </VStack>
+            </div>
         </WithNavigation>
     );
 }

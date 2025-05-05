@@ -7,7 +7,7 @@ import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
 type MyLecture = Pick<Lecture, 'start' | 'duration'>;
-type MyCourse = Pick<Course, 'name' | 'description' | 'image' | 'courseState'> & { tags: Pick<Course_Tag, 'name'>[] };
+type MyCourse = Pick<Course, 'name' | 'description' | 'image' | 'courseState' | 'category'> & { tags: Pick<Course_Tag, 'name'>[] };
 type MySubcourse = Pick<
     Subcourse,
     'minGrade' | 'maxGrade' | 'participantsCount' | 'maxParticipants' | 'isOnWaitingList' | 'id' | 'isParticipant' | 'published' | 'cancelled'
@@ -29,29 +29,33 @@ const MySubcourses: React.FC<GroupProps> = ({ currentCourses, pastCourses, loadi
         showDate: boolean = true,
         readonly: boolean = false
     ) => (
-        <AppointmentCard
-            key={index}
-            subcourseId={subcourse.id}
-            description={subcourse.course!.description}
-            tags={subcourse.course!.tags}
-            dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
-            image={subcourse.course!.image ?? undefined}
-            title={subcourse.course!.name}
-            countCourse={subcourse.lectures!.length}
-            maxParticipants={subcourse.maxParticipants}
-            participantsCount={subcourse.participantsCount}
-            minGrade={subcourse.minGrade}
-            maxGrade={subcourse.maxGrade}
-            statusText={getTrafficStatusText(subcourse)}
-            isFullHeight
-            showCourseTraffic
-            showStatus={false}
-            trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
-            onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
-            showSchoolclass
-            isOnWaitinglist={subcourse.isOnWaitingList}
-            isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
-        />
+        <div>
+            <AppointmentCard
+                key={index}
+                subcourseId={subcourse.id}
+                description={subcourse.course!.description}
+                tags={subcourse.course!.tags}
+                dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
+                duration={subcourse?.nextLecture?.duration ?? undefined}
+                image={subcourse.course!.image ?? undefined}
+                title={subcourse.course!.name}
+                countCourse={subcourse.lectures!.length}
+                maxParticipants={subcourse.maxParticipants}
+                participantsCount={subcourse.participantsCount}
+                minGrade={subcourse.minGrade}
+                maxGrade={subcourse.maxGrade}
+                statusText={getTrafficStatusText(subcourse)}
+                isFullHeight
+                showCourseTraffic
+                showStatus={false}
+                trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
+                onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+                showSchoolclass
+                isOnWaitinglist={subcourse.isOnWaitingList}
+                isHorizontalCardCourseChecked={subcourse.isParticipant || subcourse.isOnWaitingList}
+                courseCategory={subcourse.course.category}
+            />
+        </div>
     );
 
     return (

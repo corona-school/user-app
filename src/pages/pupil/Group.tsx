@@ -1,4 +1,4 @@
-import { Text, Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
+import { Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
@@ -15,6 +15,9 @@ import MySubcourses from './MySubcourses';
 import AllSubcourses from '../subcourse/AllSubcourses';
 import { Course_Category_Enum } from '../../gql/graphql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import TruncatedText from '@/components/TruncatedText';
+import { Typography } from '@/components/Typography';
 
 type Props = {};
 
@@ -27,7 +30,7 @@ const query = gql(`
                     reason
                     limit
                 }
-                subcoursesJoined(search: $search) {
+                subcoursesJoined(search: $search, excludePast: true) {
                     id
                     minGrade
                     maxGrade
@@ -141,7 +144,7 @@ const queryPast = gql(`
 
 const queryPublic = gql(`
 query GetAllSubcourses($search: String) {
-    subcoursesPublic(search: $search, take: 20, excludeKnown: false) {
+    subcoursesPublic(search: $search, take: 50, excludeKnown: false) {
         cancelled
         published
         isParticipant
@@ -168,6 +171,7 @@ query GetAllSubcourses($search: String) {
             tags {
                 name
             }
+            category
             description
             courseState
         }
@@ -220,11 +224,19 @@ const PupilGroup: React.FC<Props> = () => {
         () => sortByDate(publicSubcourses.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
         [publicSubcourses]
     );
+    const homeworkHelpCourses = useMemo(
+        () => sortByDate(publicSubcourses?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
+        [publicSubcourses]
+    );
+
     const revisionCourses = useMemo(
         () =>
             sortByDate(
                 publicSubcourses.filter(
-                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                    (subcourse) =>
+                        subcourse.course.category !== Course_Category_Enum.Language &&
+                        subcourse.course.category !== Course_Category_Enum.Focus &&
+                        subcourse.course.category !== Course_Category_Enum.HomeworkHelp
                 )
             ),
         [publicSubcourses]
@@ -244,10 +256,13 @@ const PupilGroup: React.FC<Props> = () => {
                 {loading && <CenterLoadingSpinner />}
                 {!loading && (
                     <VStack paddingX={space['1']} marginBottom={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
+                        <Breadcrumb />
                         <VStack space={space['1']}>
-                            <VStack space={space['0.5']} maxWidth={ContentContainerWidth}>
+                            <VStack space={space['0.5']} maxWidth={ContentContainerWidth} alignItems={'flex-start'} marginBottom={space['0.5']}>
                                 <Heading>{t('matching.group.pupil.title')}</Heading>
-                                <Text marginBottom={space['0.5']}>{t('matching.group.pupil.content')}</Text>
+                                <TruncatedText asChild maxLines={2}>
+                                    <Typography>{t('matching.group.pupil.content')}</Typography>
+                                </TruncatedText>
                             </VStack>
 
                             <VStack maxWidth={ContentContainerWidth} marginBottom={space['1']}>
@@ -258,7 +273,14 @@ const PupilGroup: React.FC<Props> = () => {
                                 tabs={[
                                     {
                                         title: t('matching.group.pupil.tabs.tab2.title'),
-                                        content: <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />,
+                                        content: (
+                                            <AllSubcourses
+                                                languageCourses={languageCourses}
+                                                courses={revisionCourses}
+                                                focusCourses={focusCourses}
+                                                homeworkHelpCourses={homeworkHelpCourses}
+                                            />
+                                        ),
                                     },
                                     {
                                         title: t('matching.group.pupil.tabs.tab1.title'),

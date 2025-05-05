@@ -1,4 +1,4 @@
-import { Box, Button, Divider, Modal, useBreakpointValue } from 'native-base';
+import { Box, Button, Divider, useBreakpointValue } from 'native-base';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
@@ -34,10 +34,12 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointmen
         lg: 600,
     });
 
-    const closeModal = () => {
-        setShowModal(false);
-        dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
-        dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
+    const handleOnOpenChange = (open: boolean) => {
+        setShowModal(open);
+        if (!open) {
+            dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
+            dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
+        }
     };
 
     const convertAppointments = () => {
@@ -95,9 +97,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointmen
 
     return (
         <>
-            <Modal isOpen={showModal} backgroundColor="transparent" onClose={closeModal}>
-                {showModal && <CreateCourseAppointmentModal closeModal={closeModal} total={allAppointmentsToShow.length} />}
-            </Modal>
+            <CreateCourseAppointmentModal isOpen={showModal} onOpenChange={handleOnOpenChange} total={allAppointmentsToShow.length} />
             <Box>
                 <Box maxH={maxHeight} flex="1" mb="10">
                     {!isEditing && allAppointmentsToShow.length === 0 ? (
@@ -106,7 +106,7 @@ const CourseAppointments: React.FC<Props> = ({ next, back, isEditing, appointmen
                         </Box>
                     ) : (
                         <Box minH={400}>
-                            <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
+                            <AppointmentList height="100%" isReadOnlyList={true} appointments={allAppointmentsToShow} />
                         </Box>
                     )}
                 </Box>

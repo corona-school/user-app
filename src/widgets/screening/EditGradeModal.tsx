@@ -1,27 +1,38 @@
-import { Modal, Row, Text, useTheme } from 'native-base';
+import { Button } from '@/components/Button';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { GradeSelector } from '../../components/GradeSelector';
 
-export function EditGradeModal({ grade, onClose, store }: { grade: number; onClose: () => void; store: (grade: number) => void }) {
-    const { space } = useTheme();
+interface EditGradeModalProps extends BaseModalProps {
+    grade: number;
+    onSave: (grade: number) => void;
+}
+
+export function EditGradeModal({ grade, onOpenChange, isOpen, onSave }: EditGradeModalProps) {
+    const [selectedGrade, setSelectedGrade] = useState(grade);
+    const { t } = useTranslation();
+
+    const handleOnSave = async () => {
+        onSave(selectedGrade);
+        onOpenChange(false);
+    };
     return (
-        <Modal size="xl" isOpen onClose={onClose}>
-            <Modal.Content>
-                <Modal.Header>
-                    <Text>Klasse bearbeiten</Text>
-                    <Modal.CloseButton />
-                </Modal.Header>
-                <Modal.Body>
-                    <Row flexWrap="wrap" w="100%" mt={space['1']} marginBottom={space['1']}>
-                        <GradeSelector
-                            grade={grade}
-                            onGradeChange={(grade) => {
-                                store(grade);
-                                onClose();
-                            }}
-                        />
-                    </Row>
-                </Modal.Body>
-            </Modal.Content>
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
+            <ModalHeader>
+                <ModalTitle>Klasse bearbeiten</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col gap-y-4">
+                <GradeSelector className="grid grid-cols-5" grade={selectedGrade} onGradeChange={setSelectedGrade} />
+            </div>
+            <ModalFooter>
+                <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                    {t('cancel')}
+                </Button>
+                <Button className="w-full lg:w-fit" onClick={handleOnSave}>
+                    {t('select')}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
 }

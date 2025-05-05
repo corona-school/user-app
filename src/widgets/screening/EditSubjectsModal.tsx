@@ -1,33 +1,92 @@
-import { Radio, VStack, Modal, Text, useTheme, Stack, Button } from 'native-base';
-import { SubjectSelector } from '../SubjectSelector';
-import { Subject } from '../../gql/graphql';
+import { Button } from '@/components/Button';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Slider } from '@/components/Slider';
+import { Typography } from '@/components/Typography';
+import { Subject } from '@/gql/graphql';
+import { getGradeLabel, MIN_MAX_GRADE_RANGE } from '@/Utility';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { SubjectSelector } from '../SubjectSelector';
 
-export function EditSubjectsModal({ subjects, onClose, store }: { subjects: Subject[]; onClose: () => void; store: (subjects: Subject[]) => void }) {
-    const { space } = useTheme();
-    const [editedSubjects, setEditedSubjects] = useState<Subject[]>(subjects);
+interface EditSubjectsModalProps extends BaseModalProps {
+    subjects: Subject[];
+    onSave: (subjects: Subject[]) => void;
+    type: 'pupil' | 'student';
+}
+
+interface SubjectGradeSliderProps {
+    subject: Subject;
+    setSubject: (subject: Subject) => void;
+}
+
+const SubjectGradeSlider = ({ subject, setSubject }: SubjectGradeSliderProps) => {
+    const onValueChange = (range: [number, number]) => {
+        setSubject({ name: subject.name, grade: { min: range[0], max: range[1] } });
+    };
+
+    const { min, max } = MIN_MAX_GRADE_RANGE;
+    const currentMin = subject?.grade?.min ?? min;
+    const currentMax = subject?.grade?.max ?? max;
 
     return (
-        <Modal size="full" isOpen onClose={onClose}>
-            <Modal.Content>
-                <Modal.Header>
-                    <Text>Fächer bearbeiten</Text>
-                    <Modal.CloseButton />
-                </Modal.Header>
-                <Modal.Body>
-                    <SubjectSelector
-                        subjects={editedSubjects.map((it) => it.name)}
-                        includeDaz
-                        addSubject={(it) => {
-                            setEditedSubjects((prev) => [...prev, { name: it, mandatory: false }]);
-                        }}
-                        removeSubject={(it) => {
-                            setEditedSubjects((prev) => prev.filter((s) => s.name !== it));
-                        }}
-                    />
+        <div className="bg-primary-lighter p-4 rounded-md">
+            <div>
+                <Typography className="font-bold">{subject.name}</Typography>
+                <Typography className="mb-4">
+                    {getGradeLabel(currentMin)} {currentMin !== currentMax ? `- ${getGradeLabel(currentMax)}` : ''}
+                </Typography>
+            </div>
+            <Slider min={min} step={1} max={max} value={[currentMin, currentMax]} onValueChange={onValueChange} />
+        </div>
+    );
+};
 
-                    <Text bold>Priorisiertes Fach:</Text>
-                    <Stack direction="row">
+export const EditSubjectsModal = ({ subjects, onOpenChange, isOpen, type, onSave }: EditSubjectsModalProps) => {
+    const [editedSubjects, setEditedSubjects] = useState<Subject[]>(subjects);
+    const { t } = useTranslation();
+
+    const handleOnSave = async () => {
+        if (type === 'pupil') {
+            onSave(editedSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })));
+        } else {
+            onSave(editedSubjects.map((it) => ({ name: it.name, grade: it.grade })));
+        }
+        onOpenChange(false);
+    };
+
+    return (
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-w-max">
+            <ModalHeader>
+                <ModalTitle>Fächer bearbeiten</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col gap-y-4 max-w-[1000px] overflow-y-auto max-h-[550px]">
+                <SubjectSelector
+                    subjects={editedSubjects.map((it) => it.name)}
+                    includeDaz
+                    addSubject={(it) => {
+                        setEditedSubjects((prev) => [...prev, { name: it, mandatory: false, grade: MIN_MAX_GRADE_RANGE }]);
+                    }}
+                    removeSubject={(it) => {
+                        setEditedSubjects((prev) => prev.filter((s) => s.name !== it));
+                    }}
+                />
+                {type === 'student' && (
+                    <div className="flex flex-col gap-y-4">
+                        {editedSubjects.map((e) => (
+                            <SubjectGradeSlider
+                                key={e.name}
+                                subject={e}
+                                setSubject={(updatedSubject) => {
+                                    setEditedSubjects((prev) => prev.map((e) => (e.name === updatedSubject.name ? updatedSubject : e)));
+                                }}
+                            />
+                        ))}
+                    </div>
+                )}
+
+                {type === 'pupil' && (
+                    <>
+                        <Typography className="font-bold">Priorisiertes Fach:</Typography>
                         <SubjectSelector
                             selectable={editedSubjects.map((it) => it.name)}
                             subjects={editedSubjects.filter((it) => it.mandatory).map((it) => it.name)}
@@ -36,22 +95,17 @@ export function EditSubjectsModal({ subjects, onClose, store }: { subjects: Subj
                             removeSubject={() => setEditedSubjects((prev) => prev.map(({ name }) => ({ name, mandatory: false })))}
                             justifyContent="left"
                         />
-                    </Stack>
-                    <Stack direction="row" space={space['1']}>
-                        <Button variant="outline" onPress={onClose}>
-                            Abbrechen
-                        </Button>
-                        <Button
-                            onPress={() => {
-                                store(editedSubjects);
-                                onClose();
-                            }}
-                        >
-                            Speichern
-                        </Button>
-                    </Stack>
-                </Modal.Body>
-            </Modal.Content>
+                    </>
+                )}
+            </div>
+            <ModalFooter>
+                <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                    {t('cancel')}
+                </Button>
+                <Button className="w-full lg:w-fit" onClick={handleOnSave}>
+                    {t('select')}
+                </Button>
+            </ModalFooter>
         </Modal>
     );
-}
+};

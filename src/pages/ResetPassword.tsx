@@ -1,7 +1,7 @@
 import { VStack, Flex, Box, useTheme, Image, Heading, Row, Button, useBreakpointValue, Modal, Stack, Text } from 'native-base';
 import { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Navigate, useNavigate, useSearchParams } from 'react-router-dom';
 import PasswordInput from '../components/PasswordInput';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import { gql } from './../gql';
@@ -12,13 +12,14 @@ import { log } from '../log';
 import WithNavigation from '../components/WithNavigation';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
 
 type Props = {
     layout: 'new-pw' | 'reset-pw';
 };
 
 const ResetPassword: React.FC<Props> = ({ layout }) => {
-    const { sessionState } = useApollo();
+    const { sessionState, roles } = useApollo();
     const [searchParams] = useSearchParams();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -88,9 +89,12 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
         navigate(redirectTo || '/');
     };
 
+    if (roles.includes('SSO_USER')) {
+        return <Navigate to="/settings" />;
+    }
+
     return (
         <WithNavigation
-            showBack={isMobileSM}
             hideMenu={isMobileSM}
             previousFallbackRoute="/settings"
             headerLeft={
@@ -105,10 +109,13 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
             <Flex overflowY={'auto'} height="100dvh">
                 <>
                     {layout === 'new-pw' ? (
-                        <Box paddingY={space['2']} justifyContent="center" alignItems="center">
-                            <Logo />
-                            <Heading mt={space['1']}>{t('set_password.title')}</Heading>
-                        </Box>
+                        <>
+                            <Breadcrumb />
+                            <Box paddingY={space['2']} justifyContent="center" alignItems="center">
+                                <Logo />
+                                <Heading mt={space['1']}>{t('set_password.title')}</Heading>
+                            </Box>
+                        </>
                     ) : (
                         <Box position="relative" paddingY={space['2']} mb={space['3']} justifyContent="center" alignItems="center">
                             <Image

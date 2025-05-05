@@ -204,7 +204,7 @@ function getCurrentCommit() {
 // -------------- Translation -------------------
 
 function getTemplates(text) {
-    return [...text.matchAll(/\{\{([a-z]+)\}\}/ig)].map(it => it[1]);
+    return [...text.matchAll(/\{\{([\w]+)\}\}/ig)].map(it => it[1]);
 }
 
 function checkTemplates(expected, actual) {
@@ -234,7 +234,7 @@ async function translate(texts, fromLanguage, toLanguage) {
 
         let escapedText = text;
         for (const [index, template] of templates.entries()) {
-            escapedText = escapedText.replaceAll(`{{${template}}}`, `{{${index}}}`);
+            escapedText = escapedText.replaceAll(`{{${template}}}`, `[[${index}]]`);
         }
 
         console.log(`escaped "${text}" to "${escapedText}"`);
@@ -266,7 +266,7 @@ async function translate(texts, fromLanguage, toLanguage) {
         
         let unescapedResult = result;
         for (const [index, template] of templates.entries()) {
-            unescapedResult = unescapedResult.replaceAll(`{{${index}}}`, `{{${template}}}`);
+            unescapedResult = unescapedResult.replaceAll(`[[${index}]]`, `{{${template}}}`);
         }
 
         console.log(`unescaped "${result}" to "${unescapedResult}"`);

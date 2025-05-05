@@ -1,8 +1,7 @@
-import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box, Column, Row } from 'native-base';
+import { useTheme, VStack, Heading, Button, useToast, Text, useBreakpointValue, Box } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import Card from '../../../components/Card';
 import { RequestMatchContext } from './RequestMatch';
-import { Slider } from '@miblanchard/react-native-slider';
 import { gql } from './../../../gql';
 import { useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
@@ -12,6 +11,7 @@ import { useTranslation } from 'react-i18next';
 import { Subject } from '../../../gql/graphql';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { getGradeLabel } from '../../../Utility';
+import { Slider } from '@/components/Slider';
 
 type Props = {};
 
@@ -35,6 +35,8 @@ const SchoolClasses: React.FC<Props> = () => {
         }
     `)
     );
+
+    const [isLoading, setIsLoading] = useState(false);
 
     const [createMatchRequest] = useMutation(
         gql(`
@@ -76,6 +78,7 @@ const SchoolClasses: React.FC<Props> = () => {
     }, [buttonWidth, navigate, show, hide, space]);
 
     const submit = useCallback(async () => {
+        setIsLoading(true);
         const resSubs = await updateSubjects({ variables: { subjects: matchRequest.subjects } });
         if (resSubs.data && !resSubs.errors) {
             if (!isEdit) {
@@ -92,6 +95,7 @@ const SchoolClasses: React.FC<Props> = () => {
         } else {
             toast.show({ description: t('error'), placement: 'top' });
         }
+        setIsLoading(false);
     }, [createMatchRequest, isEdit, matchRequest, showModal, toast, updateSubjects]);
 
     return (
@@ -104,7 +108,7 @@ const SchoolClasses: React.FC<Props> = () => {
                     <SubjectGradeSlider subject={subject} setSubject={setSubject} />
                 ))}
             </VStack>
-            <NextPrevButtons onPressPrev={() => setCurrentIndex(1)} onPressNext={submit} />
+            <NextPrevButtons isLoading={isLoading} onPressPrev={() => setCurrentIndex(1)} onPressNext={submit} />
         </VStack>
     );
 };
@@ -128,17 +132,7 @@ const SubjectGradeSlider = ({ subject, setSubject }: { subject: Subject; setSubj
                 <Heading fontSize="md">
                     {getGradeLabel(subject.grade!.min)} - {getGradeLabel(subject.grade!.max)}
                 </Heading>
-
-                <Slider
-                    animateTransitions
-                    minimumValue={1}
-                    maximumValue={14}
-                    minimumTrackTintColor={colors['primary']['500']}
-                    thumbTintColor={colors['primary']['900']}
-                    value={[subject.grade!.min, subject.grade!.max]}
-                    step={1}
-                    onValueChange={onValueChange as any}
-                />
+                <Slider className="my-4" step={1} min={1} max={14} value={[subject.grade!.min, subject.grade!.max]} onValueChange={onValueChange} />
             </VStack>
         </Card>
     );

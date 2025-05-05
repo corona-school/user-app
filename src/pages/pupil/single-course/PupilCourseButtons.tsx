@@ -1,5 +1,5 @@
 import { ApolloQueryResult, useMutation, useQuery } from '@apollo/client';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation, Trans } from 'react-i18next';
 import { Instructor, Lecture, Subcourse } from '../../../gql/graphql';
 import ConfirmationModal from '../../../modals/ConfirmationModal';
@@ -13,10 +13,11 @@ import { Button } from '@/components/Button';
 import { IconMessage2, IconInfoCircleFilled } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { Alert } from '@/components/Alert';
+import { RecommendationEnum, RecommendationsContext } from '@/context/RecommendationsContext';
 
 type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
 
-type ActionButtonProps = {
+type PupilCourseButtonsProps = {
     subcourse: Pick<
         Subcourse,
         | 'id'
@@ -32,9 +33,10 @@ type ActionButtonProps = {
         | 'canJoinWaitinglist'
         | 'isParticipant'
         | 'isOnWaitingList'
-    > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType'>[] };
+    > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType' | 'override_meeting_link'>[] };
     refresh: () => Promise<ApolloQueryResult<unknown>>;
     isActiveSubcourse: boolean;
+    appointment?: Lecture;
 };
 
 const courseConversationId = gql(`
@@ -45,11 +47,22 @@ query GetCourseConversationId($subcourseId: Int!, $isParticipant: Boolean!) {
 }
 `);
 
-const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, isActiveSubcourse }) => {
+const TOTAL_SUBCOURSES_JOINED_QUERY = gql(`
+query totalSubcoursesJoined {
+    me {
+        pupil {
+            totalSubcoursesJoined
+        }
+    }
+}
+`);
+
+const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment }: PupilCourseButtonsProps) => {
     const [signInModal, setSignInModal] = useState(false);
     const [signOutModal, setSignOutModal] = useState(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState(false);
     const [leaveWaitinglistModal, setLeaveWaitingslistModal] = useState(false);
+    const { recommend } = useContext(RecommendationsContext);
 
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -112,6 +125,8 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
         `)
     );
 
+    const { data: totalSubcoursesQuery } = useQuery(TOTAL_SUBCOURSES_JOINED_QUERY);
+
     async function contactInstructorAsParticipant() {
         try {
             const conversation = await chatCreateForSubcourse({
@@ -140,15 +155,18 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
 
     const conversationId = data?.subcourse?.conversationId || '';
 
-    const handleSignInCourse = useCallback(async () => {
+    const handleSignInCourse = async () => {
         setSignInModal(false);
         try {
             await joinSubcourse();
+            if (totalSubcoursesQuery?.me.pupil?.totalSubcoursesJoined === 0) {
+                recommend(RecommendationEnum.PUSH_NOTIFICATIONS_JOINED_COURSE);
+            }
             toast.success(t('single.signIn.toast'));
         } catch (e) {
             toast.error(t('single.signIn.error'));
         }
-    }, []);
+    };
 
     const handleCourseLeave = useCallback(async () => {
         setSignOutModal(false);
@@ -179,7 +197,6 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
         }
     }, [joinedSubcourse, leftSubcourse, joinedWaitinglist, leftWaitinglist]);
 
-    const appointment = subcourse.appointments[0];
     return (
         <>
             {!subcourse.isParticipant && subcourse.canJoin?.allowed === false && (
@@ -198,7 +215,7 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                         {t('signin')}
                     </Button>
                 )}
-                {subcourse.isParticipant && !loading && isActiveSubcourse && (
+                {subcourse.isParticipant && !loading && isActiveSubcourse && conversationId && (
                     <OpenCourseChatButton
                         groupChatType={subcourse.groupChatType}
                         conversationId={conversationId}
@@ -211,13 +228,16 @@ const PupilCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, i
                 )}
                 {subcourse.isParticipant && isActiveSubcourse && (
                     <>
-                        <VideoButton
-                            appointmentId={appointment.id}
-                            appointmentType={appointment.appointmentType}
-                            startDateTime={appointment.start}
-                            duration={appointment.duration}
-                            className="w-full  md:w-fit"
-                        />
+                        {appointment && (
+                            <VideoButton
+                                appointmentId={appointment.id}
+                                appointmentType={appointment.appointmentType}
+                                startDateTime={appointment.start}
+                                duration={appointment.duration}
+                                className="w-full  md:w-fit"
+                                overrideLink={appointment.override_meeting_link ?? undefined}
+                            />
+                        )}
                         <Button
                             variant="ghost"
                             disabled={loadingSubcourseLeft}

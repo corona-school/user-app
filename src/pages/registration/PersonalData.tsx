@@ -3,18 +3,26 @@ import { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import TextInput from '../../components/TextInput';
 import PasswordInput from '../../components/PasswordInput';
-import AlertMessage from '../../widgets/AlertMessage';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { gql, useMutation } from '@apollo/client';
+import { useMutation } from '@apollo/client';
 import { RegistrationContext } from '../Registration';
 import isEmail from 'validator/es/lib/isEmail';
-import { Cooperation } from '../../gql/graphql';
+import { Cooperation, PupilEmailOwner } from '../../gql/graphql';
 import { InfoCard } from '../../components/InfoCard';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import { Typography } from '@/components/Typography';
+import { renderTextWithEmailLinks } from '@/Utility';
+import { Label } from '@/components/Label';
+import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
+import { gql } from '@/gql';
 
 export default function PersonalData({ cooperation }: { cooperation?: Cooperation }) {
     const {
         userType,
+        pupilAge,
+        setPupilAge,
+        emailOwner,
+        setEmailOwner,
         firstname,
         setFirstname,
         lastname,
@@ -27,6 +35,7 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
         setPasswordRepeat,
         onNext,
         onPrev,
+        isRegisteringManually,
     } = useContext(RegistrationContext);
     usePageTitle(`Lern-Fair - Registrierung: Persönliche Daten für ${userType === 'pupil' ? 'Schüler:innen' : 'Helfer:innen'}`);
 
@@ -39,20 +48,33 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
     const [showEmailValidate, setEmailValidate] = useState<boolean>(false);
     const [showPasswordLength, setShowPasswordLength] = useState<boolean>(false);
     const [showPasswordConfirmNoMatch, setShowPasswordConfirmNoMatch] = useState<boolean>(false);
+    const [showAgeMissing, setShowAgeMissing] = useState(false);
+    const [showEmailOwnerMissing, setShowEmailOwnerMissing] = useState(false);
 
-    const [isEmailAvailable] = useMutation(gql`
+    const [isEmailAvailable] = useMutation(
+        gql(`
         mutation isEmailAvailable($email: String!) {
             isEmailAvailable(email: $email)
         }
-    `);
+    `)
+    );
 
     const isInputValid = useCallback(() => {
         setShowNameMissing(!firstname || !lastname);
-        setShowPasswordLength(password.length < 6);
-        setShowPasswordConfirmNoMatch(password !== passwordRepeat);
-        setEmailValidate(!isEmail(email));
-        return password.length >= 6 && password === passwordRepeat && isEmail(email) && firstname && lastname;
-    }, [email, firstname, lastname, password, passwordRepeat]);
+        if (isRegisteringManually) {
+            setShowPasswordLength(password.length < 6);
+            setShowPasswordConfirmNoMatch(password !== passwordRepeat);
+            setEmailValidate(!isEmail(email));
+        }
+        if (userType === 'pupil') {
+            setShowAgeMissing(!pupilAge);
+            setShowEmailOwnerMissing(!emailOwner || emailOwner === PupilEmailOwner.Unknown);
+        }
+        const isPasswordValid = (password.length >= 6 && password === passwordRepeat) || !isRegisteringManually;
+        const arePupilOnlyFieldsValid = emailOwner !== PupilEmailOwner.Unknown && pupilAge;
+        const areGeneralFieldsValid = isPasswordValid && isEmail(email) && firstname && lastname;
+        return userType === 'student' ? areGeneralFieldsValid : areGeneralFieldsValid && arePupilOnlyFieldsValid;
+    }, [email, firstname, lastname, password, passwordRepeat, pupilAge, emailOwner, isRegisteringManually, userType]);
 
     const checkEmail = useCallback(async () => {
         if (!isInputValid()) return;
@@ -74,19 +96,107 @@ export default function PersonalData({ cooperation }: { cooperation?: Cooperatio
 
     return (
         <VStack w="100%" space={space['1']} marginTop={space['1']}>
-            {cooperation && <InfoCard icon="loki" title={cooperation.welcomeTitle} message={cooperation.welcomeMessage} />}
+            {cooperation && (
+                <InfoCard icon="loki" title={cooperation.welcomeTitle}>
+                    <Typography className="text-white">
+                        <span dangerouslySetInnerHTML={{ __html: renderTextWithEmailLinks(cooperation.welcomeMessage) }} />
+                    </Typography>
+                </InfoCard>
+            )}
+            {userType === 'pupil' && <Typography variant="h5">{t('registration.personal.pupilSubtitle')}</Typography>}
+            {userType === 'pupil' && (
+                <div className="flex flex-col gap-y-1">
+                    <RadioGroup
+                        value={pupilAge}
+                        onValueChange={(nextValue) => {
+                            setPupilAge(nextValue === '<= 15' ? '<= 15' : '> 15');
+                        }}
+                        className="flex flex-row gap-x-4"
+                    >
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="ageOption1" value="<= 15" />
+                            <Label htmlFor="ageOption1">{t('registration.ageOptions.15OrYounger')}</Label>
+                        </div>
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="ageOption2" value="> 15" />
+                            <Label htmlFor="ageOption2">{t('registration.ageOptions.16OrOlder')}</Label>
+                        </div>
+                    </RadioGroup>
+                    {showAgeMissing && (
+                        <Typography variant="sm" className="text-destructive">
+                            {t('registration.hint.radioSelectionMissing')}
+                        </Typography>
+                    )}
+                </div>
+            )}
+            <div className="flex flex-col gap-y-2">
+                <TextInput value={firstname} placeholder={t('firstname')} onChangeText={setFirstname} />
+                <TextInput value={lastname} placeholder={t('lastname')} onChangeText={setLastname} />
+                {showNameMissing && (
+                    <Typography variant="sm" className="text-destructive">
+                        {t('registration.hint.name')}
+                    </Typography>
+                )}
+            </div>
+            {userType === 'pupil' && (
+                <div className="flex flex-col gap-y-1">
+                    <RadioGroup
+                        value={emailOwner}
+                        onValueChange={(nextValue) => {
+                            setEmailOwner(nextValue as PupilEmailOwner);
+                        }}
+                        className="flex flex-row gap-x-4"
+                    >
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="emailOwner1" value={PupilEmailOwner.Pupil} />
+                            <Label htmlFor="emailOwner1">{t('registration.emailOwnerOptions.pupil')}</Label>
+                        </div>
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="emailOwner2" value={PupilEmailOwner.Parent} />
+                            <Label htmlFor="emailOwner2">{t('registration.emailOwnerOptions.parent')}</Label>
+                        </div>
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="emailOwner3" value={PupilEmailOwner.Other} />
+                            <Label htmlFor="emailOwner3">{t('registration.emailOwnerOptions.other')}</Label>
+                        </div>
+                    </RadioGroup>
+                    {showEmailOwnerMissing && (
+                        <Typography variant="sm" className="text-destructive">
+                            {t('registration.hint.radioSelectionMissing')}
+                        </Typography>
+                    )}
+                </div>
+            )}
+            <div className="flex flex-col gap-y-1">
+                <TextInput keyboardType="email-address" placeholder={t('email')} onChangeText={setEmail} value={email} isDisabled={!isRegisteringManually} />
+                {showEmailNotAvailable && (
+                    <Typography variant="sm" className="text-destructive">
+                        {t('registration.hint.email.unavailable')}
+                    </Typography>
+                )}
+                {showEmailValidate && (
+                    <Typography variant="sm" className="text-destructive">
+                        {t('registration.hint.email.invalid')}
+                    </Typography>
+                )}
+            </div>
+            {isRegisteringManually && (
+                <div className="flex flex-col gap-y-1">
+                    <PasswordInput placeholder={t('password')} onChangeText={setPassword} value={password} />
+                    {showPasswordLength && (
+                        <Typography variant="sm" className="text-destructive">
+                            {t('registration.hint.password.length')}
+                        </Typography>
+                    )}
+                    <PasswordInput placeholder={t('registration.password_repeat')} onChangeText={setPasswordRepeat} value={passwordRepeat} />
 
-            <TextInput value={firstname} placeholder={t('firstname')} onChangeText={setFirstname} />
-            <TextInput value={lastname} placeholder={t('lastname')} onChangeText={setLastname} />
-            {showNameMissing && <AlertMessage content={t('registration.hint.name')} />}
-            <TextInput keyboardType="email-address" placeholder={t('email')} onChangeText={setEmail} value={email} />
-            {showEmailNotAvailable && <AlertMessage content={t('registration.hint.email.unavailable')} />}
-            {showEmailValidate && <AlertMessage content={t('registration.hint.email.invalid')} />}
-            <PasswordInput placeholder={t('password')} onChangeText={setPassword} value={password} />
-            {showPasswordLength && <AlertMessage content={t('registration.hint.password.length')} />}
-            <PasswordInput placeholder={t('registration.password_repeat')} onChangeText={setPasswordRepeat} value={passwordRepeat} />
-
-            {showPasswordConfirmNoMatch && <AlertMessage content={t('registration.hint.password.nomatch')} />}
+                    {showPasswordConfirmNoMatch && (
+                        <Typography variant="sm" className="text-destructive">
+                            {t('registration.hint.password.nomatch')}
+                        </Typography>
+                    )}
+                </div>
+            )}
 
             <Box alignItems="center" marginTop={space['2']}>
                 <Row space={space['1']} justifyContent="center">
