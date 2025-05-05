@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
-import { IconDeviceFloppy, IconThumbUp, IconThumbDown, IconGhost } from '@tabler/icons-react';
+import { IconQuestionMark, IconThumbUp, IconThumbDown, IconGhost } from '@tabler/icons-react';
 import { KnowsUsSelect } from '../components/KnowsUsSelect';
 import { InfoCard } from '@/components/InfoCard';
 import { useTranslation } from 'react-i18next';
@@ -246,6 +246,15 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh, onAfter
                         Annahme empfehlen
                     </Button>
                     <Button
+                        onClick={() => handleOnSaveScreening()}
+                        isLoading={isLoading}
+                        variant="outline"
+                        leftIcon={<IconQuestionMark />}
+                        className="w-[200px]"
+                    >
+                        Empfehlunglos speichern
+                    </Button>
+                    <Button
                         onClick={() => handleOnSaveScreening(false)}
                         isLoading={isLoading}
                         variant="outline"
@@ -262,15 +271,6 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh, onAfter
                         className="w-[200px]"
                     >
                         Screening verpasst
-                    </Button>
-                    <Button
-                        onClick={() => handleOnSaveScreening()}
-                        isLoading={isLoading}
-                        variant="outline"
-                        leftIcon={<IconDeviceFloppy />}
-                        className="w-[200px]"
-                    >
-                        Speichern
                     </Button>
                 </div>
                 <div className="flex flex-row flex-wrap gap-x-10 mt-10">

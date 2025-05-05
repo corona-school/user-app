@@ -15,6 +15,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { SuggestionsHistory } from '@/widgets/screening/SuggestionsHistory';
 import { IconCheck, IconX } from '@tabler/icons-react';
 import { useUpdatePupil } from './useUpdatePupil';
+import { createReadableDate } from '@/helper/general-helper';
 
 interface PupilDetailProps {
     pupil: PupilForScreening;
@@ -87,6 +88,9 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                 </Typography>
                 <Typography>
                     <span className="font-bold">E-Mail</span>: {pupil.email}
+                </Typography>
+                <Typography>
+                    <span className="font-bold">Registiert</span>: {createReadableDate(pupil.createdAt)}
                 </Typography>
                 <Typography>
                     <span className="font-bold">Aktiv</span>:{' '}
