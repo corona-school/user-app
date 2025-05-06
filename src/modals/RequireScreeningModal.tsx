@@ -19,6 +19,7 @@ import { InlineWidget, useCalendlyEventListener } from 'react-calendly';
 import { useState } from 'react';
 import { cn } from '@/lib/Tailwind';
 import TruncatedText from '@/components/TruncatedText';
+import { Student_Screening_Status_Enum } from '@/gql/graphql';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -30,8 +31,8 @@ const EXISTING_SCREENINGS_QUERY = gql(`
                 screenings { status }
             }
             student {
-                tutorScreenings { success }
-                instructorScreenings { success }
+                tutorScreenings { status }
+                instructorScreenings { status }
             }
         }
     }
@@ -57,8 +58,8 @@ export function RequireScreeningModal() {
     const tutorScreenings = data?.me.student?.tutorScreenings ?? [];
     const needsStudentScreening = () => !instructorScreenings.length && !tutorScreenings.length;
     const wasStudentRejected = () => {
-        const rejectedForInstructor = instructorScreenings.some((e) => !e.success);
-        const rejectedForTutor = tutorScreenings.some((e) => !e.success);
+        const rejectedForInstructor = instructorScreenings.some((e) => e.status === Student_Screening_Status_Enum.Rejection);
+        const rejectedForTutor = tutorScreenings.some((e) => e.status === Student_Screening_Status_Enum.Rejection);
         return !needsStudentScreening() && (rejectedForInstructor || rejectedForTutor);
     };
 

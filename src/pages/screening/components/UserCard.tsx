@@ -4,6 +4,7 @@ import AvatarStudent from '@/assets/icons/lernfair/avatar_student.svg';
 import { InstructorScreening, MatchWithPupil, MatchWithStudent, TutorScreening, PupilScreening } from '@/types';
 import { Badge } from '@/components/Badge';
 import { useTranslation } from 'react-i18next';
+import { Student_Screening_Status_Enum } from '@/gql/graphql';
 
 interface UserCardProps {
     user: {
@@ -49,8 +50,8 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
                 {user?.pupilScreenings?.some((it) => it!.status === 'rejection') && <Badge>{t('screening.rejection_screening')}</Badge>}
 
                 {/** Student specific tags */}
-                {user?.instructorScreenings?.some((it) => it.success) && <Badge>gescreenter Kursleiter</Badge>}
-                {user?.tutorScreenings?.some((it) => it.success) && <Badge>gescreenter Helfer</Badge>}
+                {user?.instructorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Success) && <Badge>gescreenter Kursleiter</Badge>}
+                {user?.tutorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Success) && <Badge>gescreenter Helfer</Badge>}
             </div>
         </div>
     );

@@ -5,7 +5,7 @@ import { Box, HStack, Button, Text } from 'native-base';
 import EditIcon from '../../assets/icons/lernfair/lf-edit.svg';
 import { useState } from 'react';
 import { EditStudentScreeningModal } from './EditStudentScreeningModal';
-import { Screening } from '../../gql/graphql';
+import { Screening, Student_Screening_Status_Enum } from '../../gql/graphql';
 
 interface StudentScreeningCardProps {
     screeningType: 'instructor' | 'tutor';
@@ -27,14 +27,23 @@ export function StudentScreeningCard({ screening, onUpdate, screeningType }: Stu
 
     const getTitle = () => {
         if (screeningType === 'tutor') {
-            return screening.success ? t('screening.successful_tutor_screening') : t('screening.rejected_tutor_screening');
+            return screening.status === Student_Screening_Status_Enum.Success
+                ? t('screening.successful_tutor_screening')
+                : t('screening.rejected_tutor_screening');
         }
-        return screening.success ? t('screening.successful_instructor_screening') : t('screening.rejected_instructor_screening');
+        return screening.status === Student_Screening_Status_Enum.Success
+            ? t('screening.successful_instructor_screening')
+            : t('screening.rejected_instructor_screening');
     };
 
     return (
         <>
-            <InfoCard noMargin icon={screening.success ? 'yes' : 'no'} background={screening.success ? 'primary.900' : 'orange.500'} title={getTitle()}>
+            <InfoCard
+                noMargin
+                icon={screening.status === Student_Screening_Status_Enum.Success ? 'yes' : 'no'}
+                background={screening.status === Student_Screening_Status_Enum.Success ? 'primary.900' : 'orange.500'}
+                title={getTitle()}
+            >
                 <Box>
                     <Text color="white">
                         <Text bold>{`${t('screening.decision')}: `}</Text>
