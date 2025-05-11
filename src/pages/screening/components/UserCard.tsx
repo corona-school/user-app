@@ -52,7 +52,6 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
                 {user?.pupilScreenings?.some((it) => !it!.invalidated && it!.status === 'pending') && (
                     <Badge variant="caution">{t('screening.pending_screening')}</Badge>
                 )}
-                {user?.pupilScreenings?.some((it) => it!.status === 'success') && <Badge variant="success">{t('screening.success_screening')}</Badge>}
                 {user?.pupilScreenings?.some((it) => it!.status === 'rejection') && <Badge variant="destructive">{t('screening.rejection_screening')}</Badge>}
 
                 {/** Student specific tags */}
