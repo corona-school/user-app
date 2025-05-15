@@ -16,6 +16,8 @@ import CourseDetails from '@/pages/course-creation/CourseDetails';
 import FurtherInstructors from '@/pages/course-creation/FurtherInstructors';
 import { FileItem } from '@/components/Dropzone';
 import CourseAppointments from '@/pages/course-creation/CourseAppointments';
+import Instructors from '@/pages/course-creation/Instructors';
+import { Instructor } from '@/gql/graphql';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
@@ -81,6 +83,7 @@ const COURSE_QUERY = gql(`
                     id
                     firstname
                     lastname
+                    aboutMe
                 }
                 joinAfterStart
                 allowChatContactParticipants
@@ -123,6 +126,22 @@ const COURSE_QUERY = gql(`
         }
     `);
 
+const STUDENT_QUERY = gql(`
+    query StudentCanCreateCourse {
+        me {
+            student {
+                canCreateCourse {
+                    allowed
+                    reason
+                }
+                id
+                firstname
+                lastname
+            }
+        }
+    }
+`);
+
 const CreateCourse: React.FC = () => {
     const { roles } = useApollo();
     const userType = useUserType();
@@ -150,8 +169,8 @@ const CreateCourse: React.FC = () => {
     const [lectures, setLectures] = useState<LFLecture[]>([]);
     const [newLectures, setNewLectures] = useState<Lecture[]>([]);
     const [pickedPhoto, setPickedPhoto] = useState<FileItem | null>(null);
-    const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
-    const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
+    const [addedInstructors, setAddedInstructors] = useState<Instructor[]>([]);
+    const [newInstructors, setNewInstructors] = useState<Instructor[]>([]);
     const [image, setImage] = useState<string>('');
     const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
     const [studentMyself, setStudentMyself] = useState<{ firstname: string; lastname: string }>();
@@ -162,10 +181,29 @@ const CreateCourse: React.FC = () => {
 
     const [courseQuery] = useLazyQuery(COURSE_QUERY);
 
+    const [studentQuery] = useLazyQuery(STUDENT_QUERY);
+
+    const queryStudent = useCallback(async () => {
+        const { data } = await studentQuery();
+
+        setStudentMyself({
+            firstname: data.me.firstname,
+            lastname: data.me.lastname,
+        });
+        // setCanCreateCourse(data.me.student.canCreateCourse);
+        setStudentId(data.me.student.id);
+        setLoadingStudent(false);
+    }, [studentQuery]);
+
+    useEffect(() => {
+        if (userType === 'student') queryStudent();
+    }, [queryStudent]);
+
     const queryCourse = useCallback(async () => {
+        console.log('location.state', location.state, studentId);
         if (!prefillCourseId) return;
         if (userType === 'student' && !studentId) return;
-
+        console.log('PREFILLING');
         setLoadingCourse(true);
         const {
             data: { subcourse: prefillCourse },
@@ -188,7 +226,8 @@ const CreateCourse: React.FC = () => {
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
-            const arr = prefillCourse.instructors.filter((instructor: LFInstructor) => instructor.id !== studentId);
+            console.log('prefillCourse.instructors', prefillCourse.instructors);
+            const arr = prefillCourse.instructors.filter((instructor: Instructor) => instructor.id !== studentId);
             setAddedInstructors(arr);
         }
 
@@ -261,8 +300,9 @@ const CreateCourse: React.FC = () => {
                 >
                     <div className="flex flex-col gap-4 max-w-xl w-full">
                         <CourseDetails />
+                        {/*<FurtherInstructors onRemove={() => new Promise<void>(() => {})} addInstructor={() => {}} onNext={() => {}} onBack={() => {}} />*/}
+                        <Instructors instructors={addedInstructors} mentors={[]} />
                         <CourseAppointments isEditing={isEditing} appointments={courseAppointments ?? []} />
-                        <FurtherInstructors onRemove={() => new Promise<void>(() => {})} addInstructor={() => {}} onNext={() => {}} onBack={() => {}} />
                         {/* TODO: Modal*/}
                     </div>
                 </CreateCourseContext.Provider>

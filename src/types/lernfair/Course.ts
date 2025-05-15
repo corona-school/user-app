@@ -1,4 +1,4 @@
-import { Course_Coursestate_Enum } from '../../gql/graphql';
+import { Course_Coursestate_Enum, Instructor } from '../../gql/graphql';
 import { Pupil, Participant } from '../../gql/graphql';
 import { ChatType } from '../../pages/CreateCourse';
 import { Appointment } from './Appointment';
@@ -30,7 +30,7 @@ export interface LFSubCourse {
     published?: boolean;
     cancelled?: boolean;
     joinAfterStart?: boolean;
-    instructors?: LFInstructor[];
+    instructors?: Instructor[];
     isInstructor?: boolean;
     firstLecture?: LFLecture;
     minGrade?: number;
