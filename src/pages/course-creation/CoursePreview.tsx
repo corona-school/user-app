@@ -19,7 +19,6 @@ type Props = {
     isDisabled?: boolean;
     reasonDisabled?: string;
     isError?: boolean;
-    courseId?: number;
     isEditing?: boolean;
     createAndSubmit?: () => void;
     createOnly?: () => void;
@@ -27,18 +26,7 @@ type Props = {
     appointments: Appointment[];
 };
 
-const CoursePreview: React.FC<Props> = ({
-    onBack,
-    isDisabled,
-    isError,
-    courseId,
-    appointments,
-    reasonDisabled,
-    isEditing,
-    createAndSubmit,
-    createOnly,
-    update,
-}) => {
+const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, appointments, reasonDisabled, isEditing, createAndSubmit, createOnly, update }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
