@@ -97,8 +97,8 @@ const CreateCourse: React.FC = () => {
     const toast = useToast();
 
     const location = useLocation();
-    const state = location.state as { courseId?: number; currentStep?: number };
-    const prefillCourseId = state?.courseId;
+    const state = location.state as { subcourseId?: number; currentStep?: number };
+    const prefillSubcourseId = state?.subcourseId;
     const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const [courseId, setCourseId] = useState<string>('');
@@ -128,7 +128,7 @@ const CreateCourse: React.FC = () => {
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
 
     const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
-    const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
+    const isEditing = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
 
     // Not to be used when the user is a Screener
     const [loadingStudent, setLoadingStudent] = useState(userType === 'student');
@@ -154,7 +154,7 @@ const CreateCourse: React.FC = () => {
     `)
     );
 
-    const [courseQuery] = useLazyQuery(
+    const [subcourseQuery] = useLazyQuery(
         gql(`
         query GetSubcourse($id: Int!) {
             subcourse(subcourseId: $id) {
@@ -269,17 +269,17 @@ const CreateCourse: React.FC = () => {
     `)
     );
 
-    const [addCourseInstructor] = useMutation(
+    const [addSubcourseInstructor] = useMutation(
         gql(`
-        mutation addCourseInstructor($studentId: Float!, $courseId: Float!) {
-            subcourseAddInstructor(studentId: $studentId, subcourseId: $courseId)
+        mutation addSubcourseInstructor($studentId: Float!, $subcourseId: Float!) {
+            subcourseAddInstructor(studentId: $studentId, subcourseId: $subcourseId)
         }
     `)
     );
-    const [removeCourseInstructor] = useMutation(
+    const [removeSubcourseInstructor] = useMutation(
         gql(`
-        mutation removeCourseInstructor($studentId: Float!, $courseId: Float!) {
-            subcourseDeleteInstructor(studentId: $studentId, subcourseId: $courseId)
+        mutation removeSubcourseInstructor($studentId: Float!, $subcourseId: Float!) {
+            subcourseDeleteInstructor(studentId: $studentId, subcourseId: $subcourseId)
         }
     `)
     );
@@ -337,14 +337,14 @@ const CreateCourse: React.FC = () => {
     }, [queryStudent]);
 
     const queryCourse = useCallback(async () => {
-        if (!prefillCourseId) return;
+        if (!prefillSubcourseId) return;
         if (userType === 'student' && !studentId) return;
 
         setLoadingCourse(true);
         const {
             data: { subcourse: prefillCourse },
-        } = (await courseQuery({
-            variables: { id: prefillCourseId },
+        } = (await subcourseQuery({
+            variables: { id: prefillSubcourseId },
         })) as { data: { subcourse: LFSubCourse } };
 
         setCourseId(prefillCourse.course.id || '');
@@ -371,20 +371,20 @@ const CreateCourse: React.FC = () => {
         }
 
         setLoadingCourse(false);
-    }, [courseQuery, prefillCourseId, studentId]);
+    }, [subcourseQuery, prefillSubcourseId, studentId]);
 
     useEffect(() => {
-        if (prefillCourseId != null) queryCourse();
-    }, [prefillCourseId, queryCourse]);
+        if (prefillSubcourseId != null) queryCourse();
+    }, [prefillSubcourseId, queryCourse]);
 
     const finishCourseCreation = useCallback(
-        (errors: any[], courseId?: string | number) => {
+        (errors: any[], subcourseId?: string | number) => {
             setLoadingCourse(false);
 
             if (errors.includes('course') || errors.includes('subcourse') || errors.includes('appointments')) {
                 setShowCourseError(true);
             } else {
-                navigate(courseId ? `/single-course/${courseId}` : '/group', {
+                navigate(subcourseId ? `/single-course/${subcourseId}` : '/group', {
                     state: {
                         wasEdited: isEditing,
                         errors,
@@ -504,9 +504,9 @@ const CreateCourse: React.FC = () => {
 
             if (subRes.data.subcourseCreate && !subRes.errors) {
                 for await (const instructor of newInstructors) {
-                    let res = await addCourseInstructor({
+                    let res = await addSubcourseInstructor({
                         variables: {
-                            courseId: subRes.data?.subcourseCreate?.id,
+                            subcourseId: subcourseId,
                             studentId: instructor.id,
                         },
                     });
@@ -559,7 +559,7 @@ const CreateCourse: React.FC = () => {
              * Image upload
              */
             if (!pickedPhoto) {
-                finishCourseCreation(errors, courseId);
+                finishCourseCreation(errors, subcourseId);
                 return;
             }
             setImageLoading(true);
@@ -607,12 +607,12 @@ const CreateCourse: React.FC = () => {
 
             setImageLoading(false);
 
-            finishCourseCreation(errors, courseId);
+            finishCourseCreation(errors, subcourseId);
         },
         [
             _getCourseData,
             _getSubcourseData,
-            addCourseInstructor,
+            addSubcourseInstructor,
             newInstructors,
             createCourse,
             createSubcourse,
@@ -668,7 +668,7 @@ const CreateCourse: React.FC = () => {
             const subcourse = _getSubcourseData();
             const subRes = await updateSubcourse({
                 variables: {
-                    id: prefillCourseId,
+                    id: prefillSubcourseId,
                     course: subcourse,
                 },
             });
@@ -677,15 +677,15 @@ const CreateCourse: React.FC = () => {
                 errors.push('subcourse');
                 await resetEditSubcourse();
                 await resetEditCourse();
-                finishCourseCreation(errors, prefillCourseId);
+                finishCourseCreation(errors, prefillSubcourseId);
                 setLoadingCourse(false);
                 return;
             }
 
             for await (const instructor of newInstructors) {
-                let res = await addCourseInstructor({
+                let res = await addSubcourseInstructor({
                     variables: {
-                        courseId: prefillCourseId,
+                        subcourseId: prefillSubcourseId,
                         studentId: instructor.id,
                     },
                 });
@@ -720,7 +720,7 @@ const CreateCourse: React.FC = () => {
                     await resetAppointments();
                     await resetSubcourse();
                     await resetCourse();
-                    finishCourseCreation(errors, prefillCourseId);
+                    finishCourseCreation(errors, prefillSubcourseId);
                     setLoadingCourse(false);
                     return;
                 }
@@ -732,7 +732,7 @@ const CreateCourse: React.FC = () => {
              */
             if (!pickedPhoto) {
                 setLoadingCourse(false);
-                finishCourseCreation(errors, prefillCourseId);
+                finishCourseCreation(errors, prefillSubcourseId);
                 return;
             }
             setImageLoading(true);
@@ -761,7 +761,7 @@ const CreateCourse: React.FC = () => {
             }
 
             if (!uploadFileId) {
-                finishCourseCreation(errors, prefillCourseId);
+                finishCourseCreation(errors, prefillSubcourseId);
                 return;
             }
 
@@ -780,7 +780,7 @@ const CreateCourse: React.FC = () => {
             }
 
             setImageLoading(false);
-            finishCourseCreation(errors, prefillCourseId);
+            finishCourseCreation(errors, prefillSubcourseId);
         },
         [
             _getCourseData,
@@ -790,14 +790,14 @@ const CreateCourse: React.FC = () => {
             setCourseTags,
             _getSubcourseData,
             updateSubcourse,
-            prefillCourseId,
+            prefillSubcourseId,
             pickedPhoto,
             setCourseImage,
             finishCourseCreation,
             resetEditCourse,
             resetEditSubcourse,
             newInstructors,
-            addCourseInstructor,
+            addSubcourseInstructor,
         ]
     );
 
@@ -836,9 +836,9 @@ const CreateCourse: React.FC = () => {
                 arr.splice(index, 1);
                 setNewInstructors(arr);
             } else {
-                const res = await removeCourseInstructor({
+                const res = await removeSubcourseInstructor({
                     variables: {
-                        courseId: prefillCourseId,
+                        subcourseId: prefillSubcourseId,
                         studentId: addedInstructors[index].id,
                     },
                 });
@@ -856,7 +856,7 @@ const CreateCourse: React.FC = () => {
                 }
             }
         },
-        [addedInstructors, newInstructors, prefillCourseId, removeCourseInstructor, toast]
+        [addedInstructors, newInstructors, prefillSubcourseId, removeSubcourseInstructor, toast]
     );
 
     const goToStep = useCallback((index: number) => {
@@ -958,11 +958,10 @@ const CreateCourse: React.FC = () => {
                             {currentIndex === 5 && (
                                 <>
                                     <CoursePreview
-                                        createAndSubmit={prefillCourseId ? undefined : () => finishCreation(/* also submit */ true)}
-                                        createOnly={prefillCourseId ? undefined : () => finishCreation(/* also submit */ false)}
-                                        update={prefillCourseId ? editCourse : undefined}
+                                        createAndSubmit={prefillSubcourseId ? undefined : () => finishCreation(/* also submit */ true)}
+                                        createOnly={prefillSubcourseId ? undefined : () => finishCreation(/* also submit */ false)}
+                                        update={prefillSubcourseId ? editCourse : undefined}
                                         onBack={onBack}
-                                        courseId={prefillCourseId}
                                         isEditing={isEditing}
                                         isError={showCourseError}
                                         isDisabled={loadingStudent || loadingCourse || imageLoading}

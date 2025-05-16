@@ -49,7 +49,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         <Button
                             onClick={() => {
                                 navigate('/edit-course', {
-                                    state: { courseId: subcourse.id },
+                                    state: { subcourseId: subcourse.id },
                                 });
                             }}
                             variant="outline"
