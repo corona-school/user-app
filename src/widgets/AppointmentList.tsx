@@ -79,11 +79,9 @@ const AppointmentItem = React.memo(({ appointment, previousAppointment, index, i
         return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
     };
 
-    const weekDivider = showWeekDivider(appointment, previousAppointment);
     const monthDivider = showMonthDivider(appointment, previousAppointment);
     return (
         <div>
-            {!monthDivider && weekDivider && <Separator className="my-3 w-[95%]" />}
             {monthDivider && (
                 <>
                     <div className="flex items-center justify-center mt-3">
@@ -99,6 +97,7 @@ const AppointmentItem = React.memo(({ appointment, previousAppointment, index, i
                     start={appointment.start}
                     duration={appointment.duration}
                     title={appointment.title}
+                    description={appointment.description}
                     organizers={appointment.organizers}
                     participants={appointment.participants}
                     onPress={() => navigate(`/appointment/${appointment.id}`)}

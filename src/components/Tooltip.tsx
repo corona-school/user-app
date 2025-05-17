@@ -2,6 +2,8 @@ import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
 import { cn } from '@/lib/Tailwind';
+import InfoGreen from '@/assets/icons/icon_info_dk_green.svg';
+import { IconInfoCircleFilled } from '@tabler/icons-react';
 
 const TooltipProvider = TooltipPrimitive.Provider;
 
@@ -43,6 +45,14 @@ export const TooltipButton = ({ children, tooltipContent, className }: TooltipBu
                 <TooltipContent className={className}>{tooltipContent}</TooltipContent>
             </Tooltip>
         </TooltipProvider>
+    );
+};
+
+export const InfoTooltipButton: React.FC<{ tooltipContent: string }> = ({ tooltipContent }) => {
+    return (
+        <TooltipButton tooltipContent={tooltipContent}>
+            <IconInfoCircleFilled size="20px" />
+        </TooltipButton>
     );
 };
 

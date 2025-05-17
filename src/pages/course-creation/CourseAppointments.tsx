@@ -93,7 +93,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments }) => {
 
             <CreateCourseAppointmentModal isOpen={showModal} onOpenChange={handleOnOpenChange} total={allAppointmentsToShow.length} />
             <div>
-                {!isEditing && allAppointmentsToShow.length > 0 && (
+                {(isEditing || allAppointmentsToShow.length !== 0) && (
                     <div className="mb-2">
                         <AppointmentList height="100%" isReadOnlyList={true} appointments={allAppointmentsToShow} />
                     </div>

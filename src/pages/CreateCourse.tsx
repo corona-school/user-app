@@ -13,11 +13,13 @@ import { LFInstructor, LFLecture, LFSubCourse, LFTag } from '@/types/lernfair/Co
 import { Appointment } from '@/types/lernfair/Appointment';
 import { gql, useLazyQuery } from '@apollo/client';
 import CourseDetails from '@/pages/course-creation/CourseDetails';
-import FurtherInstructors from '@/pages/course-creation/FurtherInstructors';
 import { FileItem } from '@/components/Dropzone';
 import CourseAppointments from '@/pages/course-creation/CourseAppointments';
-import Instructors from '@/pages/course-creation/Instructors';
+import CourseInstructors from '@/pages/course-creation/CourseInstructors';
 import { Instructor } from '@/gql/graphql';
+import CourseSettings from './course-creation/CourseSettings';
+import { Button } from '@/components/Button';
+import { IconArrowRight, IconCheck } from '@tabler/icons-react';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
@@ -223,6 +225,7 @@ const CreateCourse: React.FC = () => {
         setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 14]);
         setCourseAppointments(prefillCourse.appointments ?? []);
+        console.log('prefillCourse.appointments', prefillCourse.appointments);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
@@ -300,10 +303,20 @@ const CreateCourse: React.FC = () => {
                 >
                     <div className="flex flex-col gap-4 max-w-xl w-full">
                         <CourseDetails />
-                        {/*<FurtherInstructors onRemove={() => new Promise<void>(() => {})} addInstructor={() => {}} onNext={() => {}} onBack={() => {}} />*/}
-                        <Instructors instructors={addedInstructors} mentors={[]} />
-                        <CourseAppointments isEditing={isEditing} appointments={courseAppointments ?? []} />
-                        {/* TODO: Modal*/}
+                        <CourseInstructors instructors={addedInstructors} mentors={[]} setInstructors={() => {}} setMentors={() => {}} />
+                        <CourseAppointments isEditing={true} appointments={courseAppointments ?? []} />
+                        <CourseSettings />
+                        <div className="flex flex-col gap-2">
+                            <Button variant="outline" className="w-full">
+                                Abbrechen
+                            </Button>
+                            <Button leftIcon={<IconCheck />} className="w-full">
+                                Entwurf speichern
+                            </Button>
+                            <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full">
+                                zur Prüfung freigeben
+                            </Button>
+                        </div>
                     </div>
                 </CreateCourseContext.Provider>
             </WithNavigation>

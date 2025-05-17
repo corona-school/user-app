@@ -11,6 +11,7 @@ type Props = {
     start: string;
     duration: number;
     title: string;
+    description?: string;
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     scrollToRef?: any;
@@ -31,6 +32,7 @@ const AppointmentDay: React.FC<Props> = ({
     start,
     duration,
     title,
+    description,
     organizers,
     participants,
     scrollToRef,
@@ -55,20 +57,6 @@ const AppointmentDay: React.FC<Props> = ({
         return sameMonth && sameYear;
     }, []);
 
-    const getAppointmentTimeText = (start: string, duration: number): string => {
-        const now = DateTime.now();
-        const startDate = DateTime.fromISO(start);
-        const end = startDate.plus({ minutes: duration });
-
-        const startTime = startDate.toFormat('T');
-        const endTime = end.toFormat('T');
-
-        if (startDate <= now && now <= end) {
-            return t('appointment.clock.nowToEnd', { end: endTime });
-        }
-        return t('appointment.clock.startToEnd', { start: startTime, end: endTime });
-    };
-
     const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, start, duration);
     const currentMonth = isCurrentMonth(start);
 
@@ -80,10 +68,11 @@ const AppointmentDay: React.FC<Props> = ({
                 <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 50 : 100 }}>
                     <div className="w-full mt-6">
                         <div className="flex">
-                            <AppointmentDate current={isCurrent} date={start} />
                             <AppointmentTile
-                                timeDescriptionText={getAppointmentTimeText(start, duration)}
+                                start={start}
+                                duration={duration}
                                 title={title}
+                                description={description}
                                 isCurrentlyTakingPlace={isCurrent}
                                 organizers={organizers}
                                 participants={participants}
@@ -106,11 +95,11 @@ const AppointmentDay: React.FC<Props> = ({
                 <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 100 }}>
                     <div className="w-full mt-6">
                         <div className="flex">
-                            <AppointmentDate current={isCurrent} date={start} isReadOnly={isReadOnly} />
-
                             <AppointmentTile
-                                timeDescriptionText={getAppointmentTimeText(start, duration)}
+                                start={start}
+                                duration={duration}
                                 title={title}
+                                description={description}
                                 isCurrentlyTakingPlace={isCurrent}
                                 appointmentType={appointmentType}
                                 position={position}

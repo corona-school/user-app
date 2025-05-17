@@ -59,6 +59,7 @@
         },
         "appointmentTile": {
             "lecture": "Lektion #{{position}}",
+            "lectureWithTotal": "Lektion #{{position}} von {{total}}",
             "title": ": {{appointmentTitle}}",
             "cancelledBy": "Abgesagt von {{name}}"
         },
@@ -1838,7 +1839,7 @@
                 "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Max. Teilnehmer:innenzahl",
                 "maxMembersInfo": "Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.",
-                "otherHeadline": "Sonstiges",
+                "otherHeadline": "Einstellungen",
                 "otherContactHeadline": "Kontaktaufnahme",
                 "otherOptionStart": "Schüler:innen können sich nach dem ersten Kurstermin anmelden",
                 "otherProspects": "Interessent:innen",
