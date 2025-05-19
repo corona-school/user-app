@@ -21,7 +21,7 @@ interface ScreenStudentProps {
 const CUSTOM_KNOWS_FROM_PREFIX = 'Sonstiges: ';
 
 const CREATE_INSTRUCTOR_SCREENING_MUTATION = gql(`
-    mutation ScreenAsInstructor($studentId: Float!, $status: StudentScreeningStatus!, $comment: String! $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
+    mutation ScreenAsInstructor($studentId: Float!, $status: StudentScreeningStatus!, $comment: String! $knowsFrom: String, $jobStatus: screening_jobstatus_enum) {
         studentInstructorScreeningCreate(studentId: $studentId, screening: {
             status: $status
             comment: $comment
@@ -32,7 +32,7 @@ const CREATE_INSTRUCTOR_SCREENING_MUTATION = gql(`
 `);
 
 const CREATE_TUTOR_SCREENING_MUTATION = gql(`
-    mutation ScreenAsTutor($studentId: Float!, $status: StudentScreeningStatus!, $comment: String!, $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
+    mutation ScreenAsTutor($studentId: Float!, $status: StudentScreeningStatus!, $comment: String!, $knowsFrom: String, $jobStatus: screening_jobstatus_enum) {
         studentTutorScreeningCreate(studentId: $studentId, screening: {
             status: $status
             comment: $comment
