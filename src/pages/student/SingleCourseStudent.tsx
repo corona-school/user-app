@@ -25,6 +25,7 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { useRoles } from '@/hooks/useApollo';
+import { useJoinCourseAsMentor } from '@/hooks/useJoinCourseAsMentor';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -157,12 +158,6 @@ query GetInstructorSubcourse($subcourseId: Int!) {
 }
 `);
 
-const MUTATION_JOIN_AS_MENTOR = gql(`
-    mutation JoinAsMentor($subcourseId: Float!) {
-        subcourseJoinAsMentor(subcourseId: $subcourseId)
-    }
-`);
-
 const MUTATION_MENTOR_LEAVE_COURSE = gql(`
     mutation MentorLeaveSubcourse($subcourseId: Float!) {
         subcourseMentorLeave(subcourseId: $subcourseId)
@@ -179,9 +174,7 @@ const SingleCourseStudent = () => {
 
     const navigate = useNavigate();
 
-    const [joinAsMentorMutation, { loading: isLoadingJoinCourse }] = useMutation(MUTATION_JOIN_AS_MENTOR);
     const [mentorLeaveCourseMutation, { loading: isLoadingLeaveCourse }] = useMutation(MUTATION_MENTOR_LEAVE_COURSE);
-    const [signInModal, setSignInModal] = useState(false);
     const [signOutModal, setSignOutModal] = useState(false);
 
     const {
@@ -283,6 +276,17 @@ const SingleCourseStudent = () => {
         `)
     );
 
+    const {
+        confirmationModal: confirmationToJoinAsMentor,
+        joinAsMentor,
+        isJoiningCourse,
+    } = useJoinCourseAsMentor({
+        subcourseId: isHomeworkHelp ? subcourseId : 0,
+        onSuccess: async () => {
+            await refetchBasics();
+        },
+    });
+
     async function contactInstructorAsProspect() {
         try {
             const conversation = await chatCreateAsProspect({
@@ -325,13 +329,6 @@ const SingleCourseStudent = () => {
     const doContactParticipant = async (memberUserId: string) => {
         const conversation = await contactParticipant({ variables: { memberUserId: memberUserId, subcourseId: subcourseId } });
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
-    };
-
-    const joinAsMentor = async () => {
-        await joinAsMentorMutation({ variables: { subcourseId } });
-        await refetchBasics();
-        toast.success(t('single.signIn.toast'));
-        setSignInModal(false);
     };
 
     const leaveCourse = async () => {
@@ -419,7 +416,9 @@ const SingleCourseStudent = () => {
                                     </Button>
                                 )}
                                 {!isMentor && !isInstructorOfSubcourse && isHomeworkHelp && (
-                                    <Button onClick={() => setSignInModal(true)}>{t('single.signIn.homeworkHelpButton')}</Button>
+                                    <Button isLoading={isJoiningCourse} onClick={joinAsMentor}>
+                                        {t('single.signIn.homeworkHelpButton')}
+                                    </Button>
                                 )}
                                 {isMentor && (
                                     <Button variant="ghost" onClick={() => setSignOutModal(true)}>
@@ -516,15 +515,7 @@ const SingleCourseStudent = () => {
             {subcourse?.id && (
                 <CancelSubCourseModal subcourseId={subcourse?.id} isOpen={showCancelModal} onOpenChange={setShowCancelModal} onCourseCanceled={refetchBasics} />
             )}
-            <ConfirmationModal
-                headline={t('single.homeworkHelp.signIn.title')}
-                confirmButtonText={t('single.signIn.homeworkHelpButton')}
-                description={t('single.homeworkHelp.signIn.description')}
-                onOpenChange={setSignInModal}
-                isOpen={signInModal}
-                onConfirm={joinAsMentor}
-                isLoading={isLoadingJoinCourse}
-            />
+            {confirmationToJoinAsMentor}
 
             <ConfirmationModal
                 headline={t('single.homeworkHelp.signOut.title')}
