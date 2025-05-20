@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { gql } from '../../gql';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
@@ -24,6 +24,7 @@ import WaitingListProspectList from '../single-course/WaitingListProspectList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { useRoles } from '@/hooks/useApollo';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -169,6 +170,7 @@ const MUTATION_MENTOR_LEAVE_COURSE = gql(`
 `);
 
 const SingleCourseStudent = () => {
+    const roles = useRoles();
     const [showCancelModal, setShowCancelModal] = useState(false);
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
@@ -334,7 +336,11 @@ const SingleCourseStudent = () => {
 
     const leaveCourse = async () => {
         await mentorLeaveCourseMutation({ variables: { subcourseId } });
-        await refetchBasics();
+        if (!roles.includes('INSTRUCTOR')) {
+            navigate('/group');
+        } else {
+            await refetchBasics();
+        }
         toast.success(t('single.leave.toast'));
         setSignOutModal(false);
     };
