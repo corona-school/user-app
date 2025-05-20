@@ -367,9 +367,13 @@ const SingleCourseStudent = () => {
     useEffect(() => {
         if (!loading && isInPast && !isInstructorOfSubcourse) {
             navigate('/group');
-            toast.error(t('course.error.isInPastOrInvalid'));
+            // Let's not show this error to non-instructors
+            // We may have many of them trying to access the Hausaufgabenhilfe course without being registered
+            if (roles.includes('INSTRUCTOR')) {
+                toast.error(t('course.error.isInPastOrInvalid'));
+            }
         }
-    }, [loading, isInPast, isInstructorOfSubcourse]);
+    }, [loading, isInPast, isInstructorOfSubcourse, roles]);
 
     const canAccessLectures = isInstructorOfSubcourse || isMentor;
 
