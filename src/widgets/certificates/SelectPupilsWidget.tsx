@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { Text, useTheme, VStack, Button, Heading } from 'native-base';
+import { Text, useTheme, VStack, Heading } from 'native-base';
 import { useCallback, useContext, useState } from 'react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import { RequestCertificateContext } from '../../pages/RequestCertificate';

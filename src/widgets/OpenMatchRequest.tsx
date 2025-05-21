@@ -1,4 +1,4 @@
-import { Text, Column, Box, Row, Button, useTheme, useBreakpointValue, Heading } from 'native-base';
+import { Text, Column, Box, Button, useTheme, useBreakpointValue, Heading } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { Subject } from '../gql/graphql';
 import SubjectList from './SubjectList';
