@@ -2355,7 +2355,17 @@
                 "content": "Unfortunately, we have decided that the commitment at Lern-Fair does not suit you. Contact us if you have any questions about the decision."
             }
         },
-        "contactSupport": "Contact support"
+        "contactSupport": "Contact support",
+        "appointment": {
+            "joinMeeting": "Join video chat",
+            "joinMeetingHint": "You can only start the meeting 5 minutes before the start of the appointment.",
+            "changeAppointment": "change lecture",
+            "cancelAppointment": "Cancel lecture",
+            "title": "lecture created ✅",
+            "yourAppointment": "Your lecture",
+            "optionsDescription": "You don't have time and want to postpone or cancel the lecture ?",
+            "description": "You will receive an appointment confirmation to your e-mail address. You can add the lecture to your calendar with a click."
+        }
     },
     "contactSupport": {
         "title": "Contact support",

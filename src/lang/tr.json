@@ -2355,7 +2355,17 @@
                 "content": "Lern-Fair Ne yazık ki, bu taahhüdün size uygun olmadığına karar verdik. Kararla ilgili herhangi bir sorunuz varsa bizimle iletişime geçin."
             }
         },
-        "contactSupport": "İletişim desteği"
+        "contactSupport": "İletişim desteği",
+        "appointment": {
+            "joinMeeting": "Görüntülü sohbete katılın",
+            "joinMeetingHint": "Toplantıyı sadece randevunun başlamasından 5 dakika önce başlatabilirsiniz.",
+            "changeAppointment": "Tarih değiştir",
+            "cancelAppointment": "Randevuyu iptal et",
+            "title": "Randevu oluşturuldu ✅",
+            "yourAppointment": "Randevunuz",
+            "optionsDescription": "Zamanınız yok ve randevuyu ertelemek veya iptal etmek mi istiyorsunuz?",
+            "description": "E-posta adresinize bir randevu onayı alacaksınız. Tek bir tıklama ile tarihi takviminize girebilirsiniz."
+        }
     },
     "contactSupport": {
         "title": "İletişim desteği",
