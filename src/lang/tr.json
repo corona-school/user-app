@@ -2357,14 +2357,14 @@
         },
         "contactSupport": "İletişim desteği",
         "appointment": {
-            "joinMeeting": "Görüntülü sohbete katılın",
-            "joinMeetingHint": "Toplantıyı sadece randevunun başlamasından 5 dakika önce başlatabilirsiniz.",
-            "changeAppointment": "Tarih değiştir",
+            "joinMeeting": "Görüntülü sohbete katıl",
+            "joinMeetingHint": "Toplantıyı yalnızca randevudan 5 dakika önce başlatabilirsin.",
+            "changeAppointment": "Randevuyu değiştir",
             "cancelAppointment": "Randevuyu iptal et",
             "title": "Randevu oluşturuldu ✅",
-            "yourAppointment": "Randevunuz",
-            "optionsDescription": "Zamanınız yok ve randevuyu ertelemek veya iptal etmek mi istiyorsunuz?",
-            "description": "E-posta adresinize bir randevu onayı alacaksınız. Tek bir tıklama ile tarihi takviminize girebilirsiniz."
+            "yourAppointment": "Randevun",
+            "optionsDescription": "Vaktin yok mu? Randevuyu değiştirmek veya iptal etmek mi istiyorsun?",
+            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin."
         }
     },
     "contactSupport": {

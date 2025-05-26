@@ -2353,14 +2353,14 @@
         },
         "contactSupport": "الاتصال بالدعم",
         "appointment": {
-            "joinMeeting": "انضم إلى حوار الفيديو",
-            "joinMeetingHint": "يمكنك بدء الاجتماع قبل 5 دقائق فقط من بدء الموعد.",
-            "changeAppointment": "تغيير موعد التغيير",
-            "cancelAppointment": "إلغاء موعد",
-            "title": "موعد إنشاء ✅ تم إنشاء ✅",
-            "yourAppointment": "موعد",
-            "optionsDescription": "ليس لديك وقت وتريد تأجيل أو إلغاء موعد",
-            "description": "ستتلقى تأكيداً بالموعد على عنوان بريدك الإلكتروني. يمكنك إدخال موعد في التقويم الخاص بك بنقرة واحدة."
+            "joinMeeting": "الانضمام إلى الدردشة المرئية",
+            "joinMeetingHint": "يمكنك بدء الاجتماع قبل 5 دقائق فقط من موعده.",
+            "changeAppointment": "تغيير الموعد",
+            "cancelAppointment": "إلغاء الموعد",
+            "title": "تم إنشاء الموعد ✅",
+            "yourAppointment": "موعدك",
+            "optionsDescription": "هل لا تملك وقتاً وتريد تغيير الموعد أو إلغاؤه؟",
+            "description": "سوف يصلك تأكيد الموعد عبر بريدك الإلكتروني. يمكنك إضافته إلى التقويم بنقرة واحدة."
         }
     },
     "contactSupport": {

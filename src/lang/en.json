@@ -2359,12 +2359,12 @@
         "appointment": {
             "joinMeeting": "Join video chat",
             "joinMeetingHint": "You can only start the meeting 5 minutes before the start of the appointment.",
-            "changeAppointment": "change lecture",
-            "cancelAppointment": "Cancel lecture",
-            "title": "lecture created ✅",
-            "yourAppointment": "Your lecture",
-            "optionsDescription": "You don't have time and want to postpone or cancel the lecture ?",
-            "description": "You will receive an appointment confirmation to your e-mail address. You can add the lecture to your calendar with a click."
+            "changeAppointment": "Change appointment",
+            "cancelAppointment": "Cancel appointment",
+            "title": "Appointment created ✅",
+            "yourAppointment": "Your appointment",
+            "optionsDescription": "You don't have time and want to postpone or cancel the appointment?",
+            "description": "You will receive an appointment confirmation to your e-mail address. You can add the appointment to your calendar with a click."
         }
     },
     "contactSupport": {
