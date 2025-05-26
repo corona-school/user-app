@@ -257,7 +257,7 @@ export function RequireScreeningModal() {
 }
 
 const AppointmentDetail = ({ appointment, onAction }: { appointment: ScreeningAppointment; onAction: () => void }) => {
-    const { t } = useTranslation();
+    const { t, i18n } = useTranslation();
     const canStartMeeting = useCanJoinMeeting(5, appointment.start!, appointment.duration!);
     return (
         <div className="flex flex-col max-w-[400px] w-full gap-y-10 flex-1 items-center justify-center">
@@ -267,7 +267,7 @@ const AppointmentDetail = ({ appointment, onAction }: { appointment: ScreeningAp
             <Typography className="text-white text-center">
                 {t('requireScreening.appointment.yourAppointment')}:
                 <Typography className="text-white text-center" variant="h4">
-                    {DateTime.fromISO(appointment.start!).toFormat('cccc dd. MMM, HH:mm', { locale: 'de' })}
+                    {DateTime.fromISO(appointment.start!).toFormat('cccc dd. MMM, HH:mm', { locale: i18n.language })}
                 </Typography>
             </Typography>
             <div className="flex flex-col gap-y-4">
