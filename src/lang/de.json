@@ -2437,6 +2437,16 @@
                 "title": "Leider hat das nicht gepasst",
                 "content": "Leider haben wir entschieden, dass das Engagement bei Lern-Fair nicht zu dir passt. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
             }
+        },
+        "appointment": {
+            "joinMeeting": "Videochat beitreten",
+            "joinMeetingHint": "Du kannst das Meeting erst 5 Minuten vor Beginn des Termins starten.",
+            "changeAppointment": "Termin ändern",
+            "cancelAppointment": "Termin absagen",
+            "title": "Termin erstellt ✅",
+            "yourAppointment": "Dein Termin",
+            "optionsDescription": "Du hast doch keine Zeit und möchtest den Termin verschieben oder absagen?",
+            "description": "Du erhältst an deine Email-Adresse eine Terminbestätigung. Du kannst dir den Termin per Klick in deinen Kalender eintragen."
         }
     },
     "contactSupport": {
