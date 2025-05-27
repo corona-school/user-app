@@ -2,7 +2,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { gql } from '../../gql';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
@@ -24,6 +24,8 @@ import WaitingListProspectList from '../single-course/WaitingListProspectList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { useRoles } from '@/hooks/useApollo';
+import { useJoinCourseAsMentor } from '@/hooks/useJoinCourseAsMentor';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -156,12 +158,6 @@ query GetInstructorSubcourse($subcourseId: Int!) {
 }
 `);
 
-const MUTATION_JOIN_AS_MENTOR = gql(`
-    mutation JoinAsMentor($subcourseId: Float!) {
-        subcourseJoinAsMentor(subcourseId: $subcourseId)
-    }
-`);
-
 const MUTATION_MENTOR_LEAVE_COURSE = gql(`
     mutation MentorLeaveSubcourse($subcourseId: Float!) {
         subcourseMentorLeave(subcourseId: $subcourseId)
@@ -169,6 +165,7 @@ const MUTATION_MENTOR_LEAVE_COURSE = gql(`
 `);
 
 const SingleCourseStudent = () => {
+    const roles = useRoles();
     const [showCancelModal, setShowCancelModal] = useState(false);
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
@@ -177,9 +174,7 @@ const SingleCourseStudent = () => {
 
     const navigate = useNavigate();
 
-    const [joinAsMentorMutation, { loading: isLoadingJoinCourse }] = useMutation(MUTATION_JOIN_AS_MENTOR);
     const [mentorLeaveCourseMutation, { loading: isLoadingLeaveCourse }] = useMutation(MUTATION_MENTOR_LEAVE_COURSE);
-    const [signInModal, setSignInModal] = useState(false);
     const [signOutModal, setSignOutModal] = useState(false);
 
     const {
@@ -281,6 +276,17 @@ const SingleCourseStudent = () => {
         `)
     );
 
+    const {
+        confirmationModal: confirmationToJoinAsMentor,
+        joinAsMentor,
+        isJoiningCourse,
+    } = useJoinCourseAsMentor({
+        subcourseId: isHomeworkHelp ? subcourseId : 0,
+        onSuccess: async () => {
+            await refetchBasics();
+        },
+    });
+
     async function contactInstructorAsProspect() {
         try {
             const conversation = await chatCreateAsProspect({
@@ -325,16 +331,13 @@ const SingleCourseStudent = () => {
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     };
 
-    const joinAsMentor = async () => {
-        await joinAsMentorMutation({ variables: { subcourseId } });
-        await refetchBasics();
-        toast.success(t('single.signIn.toast'));
-        setSignInModal(false);
-    };
-
     const leaveCourse = async () => {
         await mentorLeaveCourseMutation({ variables: { subcourseId } });
-        await refetchBasics();
+        if (!roles.includes('INSTRUCTOR')) {
+            navigate('/group');
+        } else {
+            await refetchBasics();
+        }
         toast.success(t('single.leave.toast'));
         setSignOutModal(false);
     };
@@ -364,9 +367,13 @@ const SingleCourseStudent = () => {
     useEffect(() => {
         if (!loading && isInPast && !isInstructorOfSubcourse) {
             navigate('/group');
-            toast.error(t('course.error.isInPastOrInvalid'));
+            // Let's not show this error to non-instructors
+            // We may have many of them trying to access the Hausaufgabenhilfe course without being registered
+            if (roles.includes('INSTRUCTOR')) {
+                toast.error(t('course.error.isInPastOrInvalid'));
+            }
         }
-    }, [loading, isInPast, isInstructorOfSubcourse]);
+    }, [loading, isInPast, isInstructorOfSubcourse, roles]);
 
     const canAccessLectures = isInstructorOfSubcourse || isMentor;
 
@@ -413,7 +420,9 @@ const SingleCourseStudent = () => {
                                     </Button>
                                 )}
                                 {!isMentor && !isInstructorOfSubcourse && isHomeworkHelp && (
-                                    <Button onClick={() => setSignInModal(true)}>{t('single.signIn.homeworkHelpButton')}</Button>
+                                    <Button isLoading={isJoiningCourse} onClick={joinAsMentor}>
+                                        {t('single.signIn.homeworkHelpButton')}
+                                    </Button>
                                 )}
                                 {isMentor && (
                                     <Button variant="ghost" onClick={() => setSignOutModal(true)}>
@@ -510,15 +519,7 @@ const SingleCourseStudent = () => {
             {subcourse?.id && (
                 <CancelSubCourseModal subcourseId={subcourse?.id} isOpen={showCancelModal} onOpenChange={setShowCancelModal} onCourseCanceled={refetchBasics} />
             )}
-            <ConfirmationModal
-                headline={t('single.homeworkHelp.signIn.title')}
-                confirmButtonText={t('single.signIn.homeworkHelpButton')}
-                description={t('single.homeworkHelp.signIn.description')}
-                onOpenChange={setSignInModal}
-                isOpen={signInModal}
-                onConfirm={joinAsMentor}
-                isLoading={isLoadingJoinCourse}
-            />
+            {confirmationToJoinAsMentor}
 
             <ConfirmationModal
                 headline={t('single.homeworkHelp.signOut.title')}

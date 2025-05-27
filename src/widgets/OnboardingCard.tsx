@@ -40,7 +40,7 @@ const OnboardingCard: React.FC<CardProps> = ({
     const isMobile = useBreakpointValue({ base: true, lg: false });
 
     return (
-        <View px="10" maxW="1450px">
+        <View px={{ base: 0, md: 10 }} maxW="1450px">
             <Card bgColor="primary.100">
                 {!isMobile ? (
                     <Stack space="2" direction="row">
@@ -66,7 +66,7 @@ const OnboardingCard: React.FC<CardProps> = ({
                             </Stack>
                         </Stack>
 
-                        <Container w="700px" height="full" mt={-5} position="relative">
+                        <Container w="700px" height="auto" mt={-5} position="relative">
                             <Image
                                 resizeMode="cover"
                                 width="100%"

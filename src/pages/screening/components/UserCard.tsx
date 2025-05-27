@@ -5,6 +5,7 @@ import { InstructorScreening, MatchWithPupil, MatchWithStudent, TutorScreening, 
 import { Badge } from '@/components/Badge';
 import { useTranslation } from 'react-i18next';
 import { createReadableDate } from '@/helper/general-helper';
+import { Student_Screening_Status_Enum } from '@/gql/graphql';
 
 interface UserCardProps {
     user: {
@@ -55,8 +56,10 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
                 {user?.pupilScreenings?.some((it) => it!.status === 'rejection') && <Badge variant="destructive">{t('screening.rejection_screening')}</Badge>}
 
                 {/** Student specific tags */}
-                {user?.instructorScreenings?.some((it) => it.success) && <Badge variant="purple">gescreenter Kursleiter</Badge>}
-                {user?.tutorScreenings?.some((it) => it.success) && <Badge variant="teal">gescreenter Helfer</Badge>}
+                {user?.instructorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Success) && (
+                    <Badge variant="purple">gescreenter Kursleiter</Badge>
+                )}
+                {user?.tutorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Success) && <Badge variant="teal">gescreenter Helfer</Badge>}
             </div>
             <div className="flex flex-col w-full mt-1">
                 <Typography variant="sm">Registriert: {createReadableDate(user?.createdAt, true)}</Typography>

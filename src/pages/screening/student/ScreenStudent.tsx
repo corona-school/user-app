@@ -1,7 +1,7 @@
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
-import { Screening_Jobstatus_Enum, StudentScreeningStatus } from '@/gql/graphql';
+import { Screening_Jobstatus_Enum, StudentScreeningStatus, Student_Screening_Status_Enum } from '@/gql/graphql';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { StudentForScreening } from '@/types';
 import { EditJobStatusModal } from '@/widgets/screening/EditJobStatusModal';
@@ -21,9 +21,8 @@ interface ScreenStudentProps {
 const CUSTOM_KNOWS_FROM_PREFIX = 'Sonstiges: ';
 
 const CREATE_INSTRUCTOR_SCREENING_MUTATION = gql(`
-    mutation ScreenAsInstructor($studentId: Float!, $success: Boolean!, $status: StudentScreeningStatus, $comment: String! $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
+    mutation ScreenAsInstructor($studentId: Float!, $status: StudentScreeningStatus!, $comment: String! $knowsFrom: String, $jobStatus: screening_jobstatus_enum) {
         studentInstructorScreeningCreate(studentId: $studentId, screening: {
-            success: $success
             status: $status
             comment: $comment
             jobStatus: $jobStatus
@@ -33,9 +32,8 @@ const CREATE_INSTRUCTOR_SCREENING_MUTATION = gql(`
 `);
 
 const CREATE_TUTOR_SCREENING_MUTATION = gql(`
-    mutation ScreenAsTutor($studentId: Float!, $success: Boolean!, $status: StudentScreeningStatus, $comment: String!, $knowsFrom: String!, $jobStatus: screening_jobstatus_enum!) {
+    mutation ScreenAsTutor($studentId: Float!, $status: StudentScreeningStatus!, $comment: String!, $knowsFrom: String, $jobStatus: screening_jobstatus_enum) {
         studentTutorScreeningCreate(studentId: $studentId, screening: {
-            success: $success
             status: $status
             comment: $comment
             jobStatus: $jobStatus
@@ -53,8 +51,10 @@ const REQUIRE_STUDENT_ONBOARDING_MUTATION = gql(`
 export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const { t } = useTranslation();
     const [currentScreeningType, setCurrentScreeningType] = useState('');
-    const isTutor = student.tutorScreenings?.some((it) => it.success) ?? false;
-    const isInstructor = student.instructorScreenings?.some((it) => it.success) ?? false;
+    const isTutor = student.tutorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Success) ?? false;
+    const isInstructor = student.instructorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Success) ?? false;
+    const wasRejectedAsTutor = student.tutorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Rejection) ?? false;
+    const wasRejectedAsInstructor = student.instructorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Rejection) ?? false;
     const [knowsFrom, setKnowsFrom] = useState('');
 
     const [customKnowsFrom, setCustomKnowsFrom] = useState('');
@@ -84,12 +84,12 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
                     comment: student.descriptionForScreening,
                     knowsFrom,
                     jobStatus: jobStatus!,
-                    success: decision === StudentScreeningStatus.Success,
                     status: decision,
                 },
             });
             const hadSuccessfulScreening = decision
-                ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
+                ? student.tutorScreenings?.some((s) => s.status === Student_Screening_Status_Enum.Success) ||
+                  student.instructorScreenings?.some((s) => s.status === Student_Screening_Status_Enum.Success)
                 : false;
 
             if (decision && !hadSuccessfulScreening) {
@@ -112,12 +112,12 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
                     comment: student.descriptionForScreening,
                     knowsFrom,
                     jobStatus: jobStatus!,
-                    success: decision === StudentScreeningStatus.Success,
                     status: decision,
                 },
             });
             const hadSuccessfulScreening = decision
-                ? student.tutorScreenings?.some((s) => s.success) || student.instructorScreenings?.some((s) => s.success)
+                ? student.tutorScreenings?.some((s) => s.status === Student_Screening_Status_Enum.Success) ||
+                  student.instructorScreenings?.some((s) => s.status === Student_Screening_Status_Enum.Success)
                 : false;
 
             if (decision && !hadSuccessfulScreening) {
@@ -138,8 +138,24 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
         <div>
             {!currentScreeningType && (
                 <div className="flex gap-x-2">
-                    {!isTutor && <Button onClick={() => setCurrentScreeningType('tutor')}>{t('screening.screen_as_tutor')}</Button>}
-                    {!isInstructor && <Button onClick={() => setCurrentScreeningType('instructor')}>{t('screening.screen_as_instructor')}</Button>}
+                    {!isTutor && (
+                        <Button
+                            disabled={wasRejectedAsTutor}
+                            reasonDisabled="Dieser Helfer wurde bereits für 1:1 abgelehnt und kann nicht erneut gescreent werden"
+                            onClick={() => setCurrentScreeningType('tutor')}
+                        >
+                            {t('screening.screen_as_tutor')}
+                        </Button>
+                    )}
+                    {!isInstructor && (
+                        <Button
+                            disabled={wasRejectedAsInstructor}
+                            reasonDisabled="Dieser Helfer wurde bereits für Kursleiter abgelehnt und kann nicht erneut gescreent werden"
+                            onClick={() => setCurrentScreeningType('instructor')}
+                        >
+                            {t('screening.screen_as_instructor')}
+                        </Button>
+                    )}
                     {isTutor && isInstructor && <Typography>Dieser Helfer wurde bereits gescreent</Typography>}
                 </div>
             )}
