@@ -524,14 +524,6 @@ export default function NavigatorLazy() {
                         showBack={isMobileSM}
                         hideMenu={isMobileSM || sessionState !== 'logged-in'}
                         previousFallbackRoute="/settings"
-                        headerLeft={
-                            !isMobileSM && (
-                                <Stack alignItems="center" direction="row">
-                                    <SwitchLanguageButton />
-                                    <NotificationAlert />
-                                </Stack>
-                            )
-                        }
                         headerTitle="Datenschutz"
                     >
                         <IFrame title="datenschutz" src="https://www.lern-fair.de/iframe/datenschutz" />
@@ -553,14 +545,6 @@ export default function NavigatorLazy() {
                         showBack={isMobileSM}
                         hideMenu={isMobileSM || sessionState !== 'logged-in'}
                         previousFallbackRoute="/settings"
-                        headerLeft={
-                            !isMobileSM && (
-                                <Stack alignItems="center" direction="row">
-                                    <SwitchLanguageButton />
-                                    <NotificationAlert />
-                                </Stack>
-                            )
-                        }
                         headerTitle="Impressum"
                     >
                         <IFrame title="impressum" src="https://www.lern-fair.de/iframe/impressum" />
