@@ -33,6 +33,12 @@ const UPDATE_STUDENT_SCREENING_MUTATION = gql(`
     }
 `);
 
+const DELETE_STUDENT_SCREENING_MUTATION = gql(`
+    mutation DeleteStudentScreening($screeningId: Float!, $type: String!) {
+        studentScreeningDelete(screeningId: $screeningId, type: $type)
+    }
+`);
+
 export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const { t } = useTranslation();
     const [mutationCreateStudentScreening, { loading: loadingStudentScreening }] = useMutation(CREATE_STUDENT_SCREENING_MUTATION);
@@ -121,6 +127,7 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
     const [showConfirmReject, setShowConfirmReject] = useState(false);
 
     const [mutationUpdateStudentScreening, { loading: loadingUpdateStudentScreening }] = useMutation(UPDATE_STUDENT_SCREENING_MUTATION);
+    const [mutationDeleteStudentScreening, { loading: deletingStudentScreening }] = useMutation(DELETE_STUDENT_SCREENING_MUTATION);
 
     const computedKnowsFrom = knowsFrom === 'Sonstiges' ? `${CUSTOM_KNOWS_FROM_PREFIX}${customKnowsFrom}` : knowsFrom;
 
@@ -143,6 +150,17 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
         } catch (error) {
             toast.error(t('error'));
         }
+    };
+
+    const deleteStudentScreening = async () => {
+        if (!screening?.id) return;
+        await mutationDeleteStudentScreening({
+            variables: {
+                screeningId: screening?.id,
+                type: currentScreeningType,
+            },
+        });
+        await onDecision();
     };
 
     const handleOnKnowsFromChanges = (values: { value: string; customValue: string }) => {
@@ -203,8 +221,8 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
                         >
                             Ablehnen
                         </Button>
-                        <Button variant="ghost" className="w-[200px]">
-                            Nicht interessiert
+                        <Button variant="ghost" className="w-[200px]" onClick={deleteStudentScreening}>
+                            Aktuell nicht interessiert
                         </Button>
                     </div>
                 )}
