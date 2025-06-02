@@ -6,12 +6,13 @@ import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { YesNoSelector } from '../../../components/YesNoSelector';
-import { RequestMatchContext } from './RequestMatch';
+import { RequestMatchContext, RequestMatchStep } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
 
 const German: React.FC = () => {
     const { space } = useTheme();
-    const { matchRequest, setSubject, removeSubject, setCurrentIndex, setSkippedSubjectPriority, setSkippedSubjectList } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, removeSubject, setCurrentStep, setSkippedSubjectPriority, setSkippedSubjectList, requestMatch } =
+        useContext(RequestMatchContext);
     const { t } = useTranslation();
     const [showSecond, setShowSecond] = useState<boolean>(false);
     const [isNativeLanguage, setIsNativeLanguage] = useState<boolean | null>(() => (containsDAZ(matchRequest.subjects) ? false : null));
@@ -22,37 +23,37 @@ const German: React.FC = () => {
             setShowSecond(true);
         } else {
             removeSubject(DAZ);
-            setCurrentIndex(3);
+            setCurrentStep(RequestMatchStep.subjects);
             setSkippedSubjectList(false);
         }
-    }, [isNativeLanguage, setCurrentIndex]);
+    }, [isNativeLanguage, setCurrentStep]);
 
-    const onSecondNext = useCallback(() => {
+    const onSecondNext = useCallback(async () => {
         switch (learningSince) {
             case '<1':
             case '1-2':
                 for (const subject of matchRequest.subjects) removeSubject(subject.name);
                 setSubject({ name: DAZ, mandatory: true });
-                setCurrentIndex(5); // 5 = details, skip subjects, priorities
+                await requestMatch();
                 setSkippedSubjectPriority(true);
                 setSkippedSubjectList(true);
                 break;
             case '2-4':
                 for (const subject of matchRequest.subjects) removeSubject(subject.name);
                 setSubject({ name: DAZ, mandatory: true });
-                setCurrentIndex(3); // 3 = subjects
+                setCurrentStep(RequestMatchStep.subjects);
                 setSkippedSubjectPriority(true);
                 setSkippedSubjectList(false);
                 break;
             case '>4':
             default:
                 removeSubject(DAZ);
-                setCurrentIndex(3);
+                setCurrentStep(RequestMatchStep.subjects);
                 setSkippedSubjectPriority(false);
                 setSkippedSubjectList(false);
                 break;
         }
-    }, [matchRequest, learningSince, setCurrentIndex, setSubject]);
+    }, [matchRequest, learningSince, setCurrentStep, setSubject]);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -70,7 +71,7 @@ const German: React.FC = () => {
                     <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
                     <NextPrevButtons
                         disablingNext={{ is: isNativeLanguage === null, reason: t('reasonsDisabled.questionUnaswerd') }}
-                        onPressPrev={() => setCurrentIndex(1)}
+                        onPressPrev={() => setCurrentStep(RequestMatchStep.updateData)}
                         onPressNext={onGoNext}
                     />
                 </>

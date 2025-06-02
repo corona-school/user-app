@@ -79,10 +79,12 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
+import Lesson from '@/pages/Lesson';
 import EthicsOnboardingSlides from '@/pages/onboarding/ethical-standards/EthicsOnboardingSlides';
 import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/EthicsOnboardingWelcome';
 import Referrals from '@/pages/Referrals';
 import CertificatesPage from '@/pages/student/Certificates';
+import { HOMEWORK_HELP_COURSE } from '@/config';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -459,6 +461,19 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            {/* Lesson Plan Generator */}
+            <Route
+                path="lesson"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['STUDENT']}>
+                            <Lesson />
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+
             {/* Knowledge Center */}
             <Route
                 path="/knowledge-helper"
@@ -551,6 +566,7 @@ export default function NavigatorLazy() {
                     </WithNavigation>
                 }
             />
+            {HOMEWORK_HELP_COURSE && <Route path="/hausaufgabenhilfe" element={<Navigate to={`/single-course/${HOMEWORK_HELP_COURSE}`} />} />}
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/start" />} />
         </Routes>

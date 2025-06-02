@@ -9,7 +9,7 @@ import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE } from '../config';
+import { GAMIFICATION_ACTIVE, LESSON_PLAN_GENERATOR_ACTIVE, REFERRALS_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
 import { Breadcrumb } from '@/components/Breadcrumb';
 
@@ -97,7 +97,14 @@ const Settings: React.FC = () => {
                                     <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
                                 </Column>
                             )}
-                            {isMobile && (
+                            {/* Add Lesson for both desktop and mobile */}
+                            {LESSON_PLAN_GENERATOR_ACTIVE && (
+                                <Column mb={tabspace}>
+                                    <ListItem label={t('navigation.label.lesson')} onPress={() => navigate('/lesson')} />
+                                </Column>
+                            )}
+                            {/* Move Referral to Knowledge Center on Mobile Only */}
+                            {isMobile && REFERRALS_ACTIVE && (
                                 <Column mb={tabspace}>
                                     <ListItem label={t('navigation.label.referral')} onPress={() => navigate('/referral')} />
                                 </Column>

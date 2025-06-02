@@ -4,6 +4,7 @@ import { StudentForScreening } from '@/types';
 import { formatDate } from '@/Utility';
 import { ScreeningSuggestionCard } from '@/widgets/screening/ScreeningSuggestionCard';
 import { SuggestionsHistory } from '@/widgets/screening/SuggestionsHistory';
+import { IconCheck, IconX } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import PersonalDetails from './PersonalDetails';
 import { ScreenStudent } from './ScreenStudent';
@@ -22,7 +23,13 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                 <Typography variant="h3" className="mb-2">
                     {student.firstname} {student.lastname} (Helfer:in)
                 </Typography>
-                <Typography>{student.email}</Typography>
+                <Typography>
+                    <span className="font-bold">E-Mail</span>: {student.email}
+                </Typography>
+                <Typography>
+                    <span className="font-bold">Aktiv</span>:{' '}
+                    {student.active ? <IconCheck className="inline text-green-500" /> : <IconX className="inline text-red-500" />}
+                </Typography>
             </div>
             <Tabs defaultValue="main">
                 <TabsList className="max-h-9 p-1">

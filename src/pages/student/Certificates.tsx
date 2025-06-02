@@ -15,6 +15,7 @@ import { downloadFile } from '@/helper/download-file';
 import { BACKEND_URL } from '@/config';
 import { Modal, ModalHeader, ModalTitle } from '@/components/Modal';
 import { toast } from 'sonner';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 const query = gql(`
 query Certificates {
@@ -40,6 +41,7 @@ const CertificatesPage: React.FC = () => {
     const { t } = useTranslation();
     const { data } = useQuery(query);
     const navigate = useNavigate();
+    const { trackEvent } = useMatomo();
 
     const [showSelectInstantPDFLanguageModal, setShowSelectInstantPDFLanguageModal] = useState<boolean>(false);
 
@@ -52,6 +54,11 @@ const CertificatesPage: React.FC = () => {
     );
 
     const downloadInstantCertificate = async (lang: 'de' | 'en') => {
+        trackEvent({
+            category: 'HuH Certificates',
+            action: 'Certificate requested',
+            name: 'Instant Certificate downloaded',
+        });
         setShowSelectInstantPDFLanguageModal(false);
 
         const res = await requestInstantCertificateMutation({
@@ -65,6 +72,15 @@ const CertificatesPage: React.FC = () => {
         } else {
             toast.error(t('certificate.download.error'));
         }
+    };
+
+    const handleRequestCertificate = () => {
+        trackEvent({
+            category: 'HuH Certificates',
+            action: 'Certificate requested',
+            name: 'Customized Certificate requested',
+        });
+        navigate('/request-certificate');
     };
 
     return (
@@ -89,7 +105,7 @@ const CertificatesPage: React.FC = () => {
                 <div className="flex flex-col">
                     <BulletList bulletPoints={t('certificates.instantCertificate.bullets', { returnObjects: true })} />
                 </div>
-                <Button onClick={() => setShowSelectInstantPDFLanguageModal(true)} className="my-2" disabled={requestInstantCertificateFetching}>
+                <Button onClick={() => setShowSelectInstantPDFLanguageModal(true)} className="my-2" isLoading={requestInstantCertificateFetching}>
                     {t('certificates.instantCertificate.request')}
                 </Button>
 
@@ -113,7 +129,7 @@ const CertificatesPage: React.FC = () => {
                 <div className="flex flex-col">
                     <BulletList bulletPoints={t('certificates.participationCertificate.bullets', { returnObjects: true })} />
                 </div>
-                <Button onClick={() => navigate('/request-certificate')} className="my-2">
+                <Button onClick={handleRequestCertificate} className="my-2">
                     {t('profile.Helper.certificate.button')}
                 </Button>
                 <div className="flex flex-row gap-3">

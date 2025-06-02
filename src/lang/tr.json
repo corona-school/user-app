@@ -732,7 +732,8 @@
             "courseInPast": "Bu kurs çoktan bitti.",
             "courseCancelled": "Bu kurs iptal edilmiştir.",
             "courseStartedButJoinable": "Bu kurs çoktan başladı, ancak hala kayıt olabilirsiniz",
-            "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır"
+            "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır",
+            "timesAWeek": "Haftalık {{times}}x"
         },
         "card": {
             "time": {
@@ -808,7 +809,8 @@
             "button": "Bağlayıcı kayıt",
             "description": "Bu kursa <b>kayıt</b> yaptırdığınız için teşekkür ederiz.\nYardımcılarımız kursları gönüllülük esasına göre sunmaktadır. Bu nedenle lütfen zamanında gelin ve gelemeyecekseniz iptal edin.",
             "toast": "Kurs kaydınızı başarıyla tamamladınız.",
-            "error": "Kurs için kayıt yaptıramadınız."
+            "error": "Kurs için kayıt yaptıramadınız.",
+            "homeworkHelpButton": "Yükümlülük olmadan kayıt olun"
         },
         "joinWaitinglist": {
             "button": "Bekleme listesine alın",
@@ -862,6 +864,16 @@
             "error": "Öğrenci eklenemedi.",
             "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok.",
             "description": "Burada, sohbet yoluyla sizinle iletişime geçen ilgili tarafları görebilirsiniz."
+        },
+        "homeworkHelp": {
+            "signIn": {
+                "title": "Bağlayıcı olmayan kayıt",
+                "description": "Kayıt olur olmaz, bireysel ev ödevi yardım derslerini kendiliğinden destekleyebilirsiniz. Kayıt yaptırmak sizi herhangi bir taahhüt altına sokmaz, ancak ilgiyi kabaca ölçmemize yardımcı olur."
+            },
+            "signOut": {
+                "title": "Çıkış",
+                "description": "Ev ödevi yardımı derslerine artık erişmeniz gerekmiyorsa oturumu kapatın."
+            }
         }
     },
     "settings": {
@@ -1428,43 +1440,6 @@
         },
         "wizard": {
             "pupil": {
-                "filter": {
-                    "bulletPoints": [
-                        "Okulda yardıma ihtiyacınız var",
-                        "Aileniz ev ödevlerinizde size yardımcı olamaz",
-                        "Aileniz sizin için özel ders ücretini ödeyemez"
-                    ],
-                    "heading": "Birebir öğrenme desteği",
-                    "subheading1": "Birebir öğrenme desteği kimler için tasarlanmıştır?",
-                    "text1": "Aşağıdaki hususlar sizin için geçerliyse, bizden birebir öğrenim desteği almak için başvurabilirsiniz:",
-                    "question1": "Bu maddeler seni doğru şekilde yansıtıyor mu?",
-                    "subheading2": "Uzun bekleme süresi: 3-6 ay",
-                    "text2": "Şu anda birçok öğrencinin öğrenme desteğine ihtiyacı var. Bu yüzden uzun bir bekleme listemiz var. Sizin için bir öğrenme ortağı bulabilmemiz için muhtemelen 3-6 ay beklemeniz gerekecektir.",
-                    "question2": "3-6 ay beklemeyebilir misiniz?"
-                },
-                "alternatives": {
-                    "bulletPoints": [
-                        "Öğrenmek için yardıma ihtiyacın var.",
-                        "Öğrenirken dezavantajlarınız var.",
-                        "Aileniz ders çalışmanıza yardımcı olamaz.",
-                        "Aileniz sizin için özel ders ücretini ödeyemez."
-                    ],
-                    "educloud": {
-                        "heading": "Edu-Cloud'u zaten biliyor musunuz?",
-                        "text": "Orada ilginizi çekebilecek birçok teklif bulacaksınız. Herhangi bir sorunuz varsa, lütfen istediğiniz zaman bizimle iletişime geçmekten çekinmeyin.",
-                        "button": "Edu-Cloud'a"
-                    },
-                    "groupcourses": {
-                        "button": "Grup kurslarına dön"
-                    },
-                    "homeworkhelp": {
-                        "heading": "Ev ödevi yardımımızı zaten biliyor musunuz?",
-                        "text": "Ödevinizle ilgili bir sorunuz mu var? Lern-Fair Saat 17:00 ile 18:00 arasında ekipten bizler Zoom'dayız ve ödevlerinizde size yardımcı olabiliriz.",
-                        "button": "Ev ödevi yardımı"
-                    },
-                    "heading": "Alternatif teklifler",
-                    "text": "Lern-Fair Maalesef bu durumda size destek olamıyoruz. Yardımlarımız gönüllüler tarafından sunulmaktadır. Bu nedenle, yalnızca sınırlı sayıda yerimiz var ve aşağıdaki kriterleri karşılayan öğrencilere yardımcı olmak istiyoruz:"
-                },
                 "profiledata": {
                     "heading": "Profili güncelle",
                     "text": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
@@ -1494,13 +1469,6 @@
                     "subheading": "En çok hangi konuda yardıma ihtiyacınız var?",
                     "text": "Tüm konularda size yardımcı olacak birini bulmaya çalışacağız. Ne yazık ki bu her zaman mümkün olmuyor. Bu nedenle hangi konunun sizin için en önemli olduğunu burada belirtebilirsiniz.",
                     "reason_btn_disabled": "Lütfen bir konu seçiniz."
-                },
-                "details": {
-                    "heading": "Detaylar",
-                    "subheading": "Gelecekteki öğrenim ortağınıza söylemek istediğiniz başka bir şey var mı?",
-                    "text": "Burada kendiniz veya mevcut durumunuz hakkında daha fazla bilgi verebilirsiniz, örneğin yardıma ihtiyacınız olan belirli bir konu var mı veya öğrenim ortağınızın sizin hakkınızda bilmesi gereken bir şey var mı? Bu metni gelecekteki öğrenim ortağınıza ileteceğiz.",
-                    "additionalInfo": "Bilgileriniz",
-                    "placeholder": "Gelecekteki öğrenim ortağınız sizin hakkınızda ne bilmeli?"
                 },
                 "modalSuccess": {
                     "heading": {
@@ -1592,7 +1560,8 @@
                             "title": "Kurslarım",
                             "current": "Güncel kurslar (yayınlanmış)",
                             "draft": "Taslak veya inceleme aşamasında",
-                            "past": "Geçmiş ve iptal edilen kurslar"
+                            "past": "Geçmiş ve iptal edilen kurslar",
+                            "homeworkHelp": "Ev ödevi yardımı"
                         },
                         "tab2": {
                             "title": "Tüm kurslar"
@@ -1620,12 +1589,14 @@
             "modal": {
                 "title": "Neden öğrenme çiftini sonlandirmak istiyorsunuz?",
                 "btn": "Çifti iptal et",
-                "tooltip": "Bir sebep göstermelisiniz."
+                "tooltip": "Bir sebep göstermelisiniz.",
+                "otherFreeText": "Sebep:"
             },
             "warningModal": {
                 "title": "Emin misin?",
-                "body": "Ara sıra, karşı tarafın geri dönüşü biraz zaman alabilir. Tüm öğrencilerle tanışma görüşmeleri yaptık ve öğrenme desteği ihtiyaçlarını kontrol ettik. Bu nedenle, bir öğrenme çiftini sonlandırmadan önce en az 14 gün geri dönüş beklemenizi öneriyoruz.",
-                "btn": "Yine de sonlandır"
+                "btn": "Yine de sonlandır",
+                "studentDescription": "Bazen muhatabınızın size geri dönmesi biraz zaman alabilir. Tüm öğrencilerle tanışma görüşmeleri gerçekleştirdik ve özel ders ihtiyaçlarını değerlendirdik. Bu nedenle, öğrenim çiftini iptal etmeden önce geri bildirim için en az 14 gün beklemenizi öneririz.",
+                "pupilDescription": "Bazen yardımcıların sohbet yoluyla size geri dönmesi biraz zaman alabilir, bu nedenle yaklaşık 14 gün beklemenizi öneririz. İstediğiniz zaman <0/> adresinden bizimle iletişime geçebilirsiniz."
             },
             "newMatch": {
                 "title": "Yeni bir öğrenme çifti oluşturun",
@@ -1761,7 +1732,8 @@
             "instructors": "Bir veya daha fazla eğitmen eklenemedi.",
             "lectures": "Bir veya daha fazla tarih eklenemedi.",
             "tags": "Etiketleriniz eklenemedi.",
-            "appointments": "Hiçbir tarih belirlenmedi"
+            "appointments": "Hiçbir tarih belirlenmedi",
+            "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı."
         },
         "CourseDate": {
             "step": {
@@ -1889,7 +1861,8 @@
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
         "all_participants": "tüm katılımcılar",
-        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi."
+        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi.",
+        "alternatingInstructors": "Yardımcıların değiştirilmesi"
     },
     "notification": {
         "timedifference": {
@@ -1990,7 +1963,13 @@
             "yourMail": "E-postanız: ",
             "closeButton": "Kapat"
         },
-        "send": "Bildirim gönderildi"
+        "send": "Bildirim gönderildi",
+        "activateNotificationsModal": {
+            "title": "Yeni mesajla ilgili not",
+            "description": "Sohbetteki yeni mesajlar veya yeni randevularla ilgili bildirimleri doğrudan cihazınızdan alabilirsiniz (\"anlık bildirim\").",
+            "confirmButton": "Şimdi etkinleştirin",
+            "cancelButton": "Daha sonra"
+        }
     },
     "chat": {
         "modal": {
@@ -2116,7 +2095,8 @@
             "progress": "Başarılar ve ilerleme",
             "editCourse": "Kursu düzenle",
             "referral": "Yönlendirme",
-            "certificates": "Sertifikalar"
+            "certificates": "Sertifikalar",
+            "lesson": "Yapay zeka ile ders planlayıcı (Beta)"
         }
     },
     "screening": {
@@ -2375,7 +2355,17 @@
                 "content": "Lern-Fair Ne yazık ki, bu taahhüdün size uygun olmadığına karar verdik. Kararla ilgili herhangi bir sorunuz varsa bizimle iletişime geçin."
             }
         },
-        "contactSupport": "İletişim desteği"
+        "contactSupport": "İletişim desteği",
+        "appointment": {
+            "joinMeeting": "Görüntülü sohbete katıl",
+            "joinMeetingHint": "Toplantıyı yalnızca randevudan 5 dakika önce başlatabilirsin.",
+            "changeAppointment": "Randevuyu değiştir",
+            "cancelAppointment": "Randevuyu iptal et",
+            "title": "Randevu oluşturuldu ✅",
+            "yourAppointment": "Randevun",
+            "optionsDescription": "Vaktin yok mu? Randevuyu değiştirmek veya iptal etmek mi istiyorsun?",
+            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin."
+        }
     },
     "contactSupport": {
         "title": "İletişim desteği",
@@ -2523,6 +2513,77 @@
         "deviceOnOs": "üzerinde"
     },
     "changesWereSaved": "Değişiklikler kaydedildi",
+    "lesson": {
+        "pageTitle": "Yapay zeka ile ders planlama",
+        "generatePlanText": "Öğrencilerinize öğretmek için bir ders planı oluşturun.",
+        "generatePlanButton": "Bir ders planı oluşturun",
+        "lessonGrade": "Sınıf:",
+        "subject": "Konu:",
+        "prompt": "Giriş istemi",
+        "duration": "Süre:",
+        "placeholderDescription": "Dersinizi YZ için daha fazla bağlamla açıklayın",
+        "chooseSubject": "Konu seçiniz",
+        "chooseGrade": "Sınıf seçin",
+        "chooseDuration": "Süre seçin",
+        "lessonTitle": "Ders başlığı",
+        "lessonPlan": "Ders planı:",
+        "lessonAgenda": "Öğretim gündemi",
+        "learningGoals": "Öğrenme hedefleri",
+        "knowdlegeButton": "Dosya yükleme (isteğe bağlı)",
+        "uploadedFiles": "Yüklenen dosyalar (en fazla 3)",
+        "uploadHere": "Buraya yükleyin",
+        "browseButton": "Gözat",
+        "tryExample": "Bir örnek deneyin",
+        "copyOutput": "Çıktıyı kopyala",
+        "assessment": "Değerleme",
+        "homework": "Ev Ödevi",
+        "resources": "Kaynaklar",
+        "copyButton": "Anlaşıldı",
+        "resetLesson": "Sıfırla",
+        "generatePlan": "Plan oluşturun",
+        "acceptTermsCheckbox": "Genel hüküm ve koşulları kabul edin:",
+        "acceptTCText": "Metin alanına herhangi bir kişisel veri girmedim ve Open AI'nın bu verileri Avrupa veri koruma standartları olmadan kullanabileceğinin farkındayım. Lern-Fair  Lern-Fair Yüklenen belgeler üzerinde herhangi bir hakkım olmadığı için herhangi biri aleyhime hak iddia ederse, tazmin etmeyi taahhüt ederim.",
+        "fileUploadTooltip": "Buraya ek dosyalar yükleyerek AI çıktısını iyileştirin",
+        "durations": {
+            "30": "30 dakika",
+            "45": "45 dakika",
+            "60": "60 dakika",
+            "90": "90 dakika"
+        },
+        "subjects": {
+            "Altgriechisch": "Antik Yunan",
+            "Arbeitslehre": "İşgücü teorisi",
+            "Biologie": "Biyoloji",
+            "Chemie": "Kimya",
+            "Deutsch": "Alman",
+            "Deutsch als Zweitsprache": "İkinci dil olarak Almanca",
+            "Englisch": "İngilizce",
+            "Erdkunde": "Coğrafya",
+            "Ethik": "Etik",
+            "Französisch": "Fransızca",
+            "Geschichte": "Tarih",
+            "Gesundheit": "Sağlık",
+            "Informatik": "Bilgisayar bilimi",
+            "Italienisch": "İtalyan",
+            "Kunst": "Sanat",
+            "Latein": "Latince",
+            "Mathematik": "Matematik",
+            "Musik": "Müzik",
+            "Niederländisch": "Hollandaca",
+            "Pädagogik": "Pedagoji",
+            "Philosophie": "Felsefe",
+            "Physik": "Fizik",
+            "Politik": "Politika",
+            "Religion": "Din",
+            "Russisch": "Rusça",
+            "Sachkunde": "Fen Bilgisi",
+            "Spanisch": "İspanyolca",
+            "Technik": "Teknoloji",
+            "Wirtschaft": "Ekonomi",
+            "Lernen lernen": "Öğrenmeyi öğrenmek"
+        },
+        "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
+    },
     "referral": {
         "share": {
             "option1": {
@@ -2539,7 +2600,12 @@
             },
             "title": "Benzersiz bağlantınızı paylaşın",
             "description": "Yönlendirmeye başlamak için kişisel bağlantınızı ağınızla paylaşın! Yönlendirme bağlantınızı paylaşmanın üç kolay yolu var:",
-            "share": "Paylaş"
+            "share": "Paylaş",
+            "materials": {
+                "title": "El ilanları ve reklam materyalleri dağıtın",
+                "description": "Ücretsiz çok dilli el ilanları, posterler ve diğer tanıtım materyallerini indirerek çıktı alabilir ve örneğin bir okulda, gençlik merkezinde veya kütüphanede sergileyebilirsiniz.",
+                "button": "Reklam medyasına"
+            }
         },
         "reward": {
             "title": "Benim Etkim",

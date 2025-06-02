@@ -48,6 +48,10 @@ swSelf.addEventListener('notificationclick', (event) => {
     event.notification.close();
 
     const { navigateTo } = event.notification.data;
+    const hasQueryParam = navigateTo.includes('?') && navigateTo.split('?')[1].length > 0;
+    // For local links we always want to show the notifications popover
+    const localRoute = hasQueryParam ? `${navigateTo}&showNotifications` : `${navigateTo.replace('?', '')}?showNotifications`;
+    const route = navigateTo.startsWith('/') ? localRoute : navigateTo;
 
     // This looks to see if the current is already open and
     // focuses if it is
@@ -60,12 +64,12 @@ swSelf.addEventListener('notificationclick', (event) => {
                 for (const client of clientList) {
                     if ('focus' in client) {
                         client.focus();
-                        client.navigate(navigateTo);
+                        client.navigate(route);
                         return;
                     }
                 }
 
-                return swSelf.clients.openWindow(navigateTo);
+                return swSelf.clients.openWindow(route);
             })
     );
 });

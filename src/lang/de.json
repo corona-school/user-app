@@ -805,7 +805,8 @@
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
             "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden",
-            "is_shared": "Dieser Kurs ist als Vorlage freigeben"
+            "is_shared": "Dieser Kurs ist als Vorlage freigeben",
+            "timesAWeek": "{{times}}x pro Woche"
         },
         "card": {
             "expandCardButton": "Mehr Infos",
@@ -877,8 +878,19 @@
                 "info": "Dein Kurs wurde von uns überprüft, aber abgelehnt. Der Kurs ist nicht öffentlich sichtbar und Schüler:innen können sich nicht für diesen Kurs anmelden. Bei Rückfragen oder Problemen, melde dich bei unserem Support."
             }
         },
+        "homeworkHelp": {
+            "signIn": {
+                "title": "Unverbindliche Anmeldung",
+                "description": "Sobald du dich angemeldet hast, kannst du spontan einzelne Hausaufgabenhilfe-Stunden unterstützen. Die Anmeldung verpflichtet dich zu nichts, sondern hilft uns ganz grob das Interesse zu erfassen."
+            },
+            "signOut": {
+                "title": "Abmeldung",
+                "description": "Melde dich ab, wenn du keinen Zugriff mehr auf die Hausaufgabehilfe-Lektionen brauchst."
+            }
+        },
         "signIn": {
             "button": "Verbindlich anmelden",
+            "homeworkHelpButton": "Unverbindlich anmelden",
             "description": "Schön, dass du dich zu diesem Kurs <b>verbindlich</b> anmelden möchtest.\nUnsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. Komme daher bitte pünktlich und sage ab, falls du doch nicht kommen kannst.",
             "toast": "Du hast dich erfolgreich zu dem Kurs angemeldet.",
             "error": "Du konntest nicht zu dem Kurs angemeldet werden."
@@ -1506,43 +1518,6 @@
         },
         "wizard": {
             "pupil": {
-                "filter": {
-                    "heading": "Die 1:1-Nachhilfe",
-                    "subheading1": "Für wen ist die 1:1-Nachhilfe gedacht?",
-                    "text1": "Wenn folgende Punkte auf dich zutreffen, kannst du eine 1:1-Nachhilfe bei uns beantragen:",
-                    "bulletPoints": [
-                        "Du brauchst Hilfe in der Schule",
-                        "Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
-                        "Deine Familie kann keine Nachhilfe für dich bezahlen"
-                    ],
-                    "question1": "Treffen diese Punkte auf dich zu?",
-                    "subheading2": "Lange Wartezeit: 3-6 Monate",
-                    "text2": "Zur Zeit brauchen sehr viele Schüler:innen Nachhilfe. Deshalb haben wir eine lange Warteliste. Wahrscheinlich musst du 3-6 Monate warten, bevor wir eine:n Lernpartner:in für dich finden können.",
-                    "question2": "Bist du bereit, 3-6 Monate zu warten?"
-                },
-                "alternatives": {
-                    "heading": "Alternative Angebote",
-                    "text": "Leider können wir dich bei Lern-Fair in diesem Fall nicht unterstützen. Unsere Hilfe wird von freiwilligen Helfer:innen angeboten. Deshalb haben wir nur begrenzte Plätze und möchten vor allem denjenigen Schüler:innen helfen, die folgende Kriterien erfüllen:",
-                    "bulletPoints": [
-                        "Du brauchst Hilfe beim Lernen.",
-                        "Du hast Nachteile beim Lernen.",
-                        "Deine Familie kann dir nicht beim Lernen helfen.",
-                        "Deine Familie kann keine Nachhilfe für dich bezahlen."
-                    ],
-                    "educloud": {
-                        "heading": "Kennst du schon Edu-Cloud?",
-                        "text": "Dort findest du viele Angebote, die für dich interessant sein können. Bei Fragen kannst du dich gerne jederzeit bei uns melden.",
-                        "button": "Zur Edu-Cloud"
-                    },
-                    "groupcourses": {
-                        "button": "Zu den Gruppen-Kursen"
-                    },
-                    "homeworkhelp": {
-                        "heading": "Kennst du schon unsere Hausaufgabenhilfe?",
-                        "text": "Du hast eine Frage zu deinen Hausaufgaben? Zwischen 17:00 und 18:00 Uhr sind wir vom Lern-Fair Team auf Zoom und können dir bei deinen Hausaufgaben helfen.",
-                        "button": "Zur Hausaufgabenhilfe"
-                    }
-                },
                 "profiledata": {
                     "heading": "Profil aktualisieren",
                     "text": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
@@ -1572,13 +1547,6 @@
                     "subheading": "In welchen Fach brauchst du am meisten Hilfe?",
                     "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
                     "reason_btn_disabled": "Bitte wähle ein Fach aus."
-                },
-                "details": {
-                    "heading": "Deine aktuelle Situation",
-                    "subheading": "Diese Angabe wird an deine:n Lernpartner:in weitergeleitet.",
-                    "text": "Gibt es ein spezielles Thema bei dem du Hilfe benötigst? Oder gibt es etwas, was deine Lernpartner:in über dich wissen sollte?",
-                    "additionalInfo": "Deine Angaben",
-                    "placeholder": "Was sollte dein:e zukünftige:r Lernpartner:in über dich wissen?"
                 },
                 "modalSuccess": {
                     "heading": {
@@ -1673,6 +1641,7 @@
                     "tabs": {
                         "tab1": {
                             "title": "Meine Kurse",
+                            "homeworkHelp": "Hausaufgabenhilfe",
                             "current": "Aktuelle Kurse (veröffentlicht)",
                             "draft": "Entwurf oder in Prüfung",
                             "past": "Vergangene und abgesagte Kurse"
@@ -1698,11 +1667,13 @@
             "modal": {
                 "title": "Warum möchtest du das Lernpaar auflösen?",
                 "btn": "Lernpaar auflösen",
-                "tooltip": "Du musst einen Grund angeben."
+                "tooltip": "Du musst einen Grund angeben.",
+                "otherFreeText": "Grund:"
             },
             "warningModal": {
                 "title": "Bist du sicher?",
-                "body": "Manchmal dauert es etwas bis sich dein Gegenüber zurückmeldet. Wir haben mit allen Schüler:innen Kennenlerngespräche geführt und ihren Bedarf an Nachhilfe geprüft. Wir empfehlen dir daher, mindestens 14 Tage auf Rückmeldung zu warten, bevor du das Lernpaar auflöst.",
+                "studentDescription": "Manchmal dauert es etwas bis sich dein Gegenüber zurückmeldet. Wir haben mit allen Schüler:innen Kennenlerngespräche geführt und ihren Bedarf an Nachhilfe geprüft. Wir empfehlen dir daher, mindestens 14 Tage auf Rückmeldung zu warten, bevor du das Lernpaar auflöst.",
+                "pupilDescription": "Manchmal dauert es etwas bis Helfer:innen sich zurückmelden per Chat, daher empfehlen wir ca. 14 Tage zu warten. Du kannst dich jederzeit unter <0/> melden.",
                 "btn": "Trotzdem auflösen"
             },
             "newMatch": {
@@ -1777,6 +1748,7 @@
         "selectPlaceHolderDuration": "Dauer auswählen",
         "cancelation_success": "Der Kurs wurde erfolgreich abgesagt",
         "cancelation_error": "Es ist ein Fehler aufgetreten. Der Kurs konnte nicht abgesagt werden.",
+        "alternatingInstructors": "Wechselnde Helfer:innen",
         "selectOptions": {
             "_15minutes": "15 Minuten",
             "_30minutes": "30 Minuten",
@@ -1841,7 +1813,8 @@
             "instructors": "Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.",
             "lectures": "Ein oder mehrere Termine konnten nicht hinzugefügt werden.",
             "tags": "Deine Tags konnten nicht hinzugefügt werden.",
-            "appointments": "Keine Termine angelegt."
+            "appointments": "Keine Termine angelegt.",
+            "isInPastOrInvalid": "Wir konnten diesen Kurs nicht finden oder er liegt in der Vergangenheit."
         },
         "CourseDate": {
             "headline": "Allgemeine Informationen zu deinem Kurs",
@@ -2063,6 +2036,12 @@
                     "description": "Newsletter werden ausschließlich per Mail versendet."
                 }
             }
+        },
+        "activateNotificationsModal": {
+            "title": "Hinweis zu neuer Nachricht",
+            "description": "Du kannst Hinweise zu neuen Nachrichten im Chat oder neuen Terminen direkt auf dein Gerät erhalten (“Push-Notification”).",
+            "confirmButton": "Jetzt aktivieren",
+            "cancelButton": "Später"
         }
     },
     "sessionManager": {
@@ -2181,6 +2160,7 @@
             "chat": "Chat",
             "forStudents": "Wissens-Center",
             "forPupils": "Wissens-Center",
+            "lesson": "Lektionsplaner mit KI (Beta)",
             "requestMatch": "Ein neues Lernpaar bilden",
             "createCourse": "Kurse anlegen",
             "editCourse": "Kurs editieren",
@@ -2457,6 +2437,16 @@
                 "title": "Leider hat das nicht gepasst",
                 "content": "Leider haben wir entschieden, dass das Engagement bei Lern-Fair nicht zu dir passt. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
             }
+        },
+        "appointment": {
+            "joinMeeting": "Videochat beitreten",
+            "joinMeetingHint": "Du kannst das Meeting erst 5 Minuten vor Beginn des Termins starten.",
+            "changeAppointment": "Termin ändern",
+            "cancelAppointment": "Termin absagen",
+            "title": "Termin erstellt ✅",
+            "yourAppointment": "Dein Termin",
+            "optionsDescription": "Du hast doch keine Zeit und möchtest den Termin verschieben oder absagen?",
+            "description": "Du erhältst an deine Email-Adresse eine Terminbestätigung. Du kannst dir den Termin per Klick in deinen Kalender eintragen."
         }
     },
     "contactSupport": {
@@ -2487,6 +2477,77 @@
         },
         "feedbackSuccessfullySent": "Feedback erfolgreich gesendet",
         "screenshotShouldNotBeBiggerThan": "Der Screenshot kann nicht größer als {{size}} MB sein"
+    },
+    "lesson": {
+        "pageTitle": "Unterrichtsplan mit KI",
+        "generatePlanText": "Lasse dir von der generativen KI einen Unterrichtsplan generieren",
+        "generatePlanButton": "Jetzt generieren",
+        "lessonGrade": "Klasse",
+        "subject": "Fach",
+        "prompt": "Beschreibe Thema, Ziele und wichtige Infos",
+        "duration": "Dauer",
+        "placeholderDescription": "Je ausführlicher deine Beschreibung ist, desto individueller kann der Unterrichtsplan generiert werden.",
+        "chooseSubject": "Fach auswählen",
+        "chooseGrade": "Klasse auswählen",
+        "chooseDuration": "Dauer auswählen",
+        "lessonTitle": "Titel der Lektion",
+        "lessonPlan": "Unterrichtsplan:",
+        "lessonAgenda": "Unterrichtsagenda",
+        "learningGoals": "Lernziele",
+        "knowdlegeButton": "Dateien Hochladen (optional)",
+        "uploadedFiles": "Hochgeladene Dateien (max 3)",
+        "uploadHere": "Hier hochladen",
+        "browseButton": "Durchsuchen",
+        "tryExample": "Beispiel ausprobieren",
+        "copyOutput": "Ausgabe kopieren",
+        "assessment": "Aktuellen Stand ermitteln",
+        "homework": "Mögliche Hausaufgabe",
+        "resources": "Hintergrundwissen",
+        "copyButton": "Text kopieren",
+        "resetLesson": "Zurücksetzen",
+        "generatePlan": "Plan erstellen",
+        "acceptTermsCheckbox": "AGB akzeptieren:",
+        "acceptTCText": "Ich habe keine persönlichen Daten in das Textfeld eingegeben und bin mir bewusst, dass Open AI diese ohne europäische Datenschutzstandards verwenden darf. Sollte jemand Ansprüche gegen Lern-Fair geltend machen, weil ich keine Rechte an den hochgeladenen Dokumenten habe, verpflichte ich mich, Lern-Fair schadlos zu halten.",
+        "fileUploadTooltip": "Lade hier relevante Arbeitsblätter oder Buchseiten hoch und beziehe dich darauf in der Beschreibung.",
+        "placeholderImageDescription": "Fülle das Formular aus, um einen Unterrrichtsplan zu erstellen",
+        "durations": {
+            "30": "30 Minuten",
+            "45": "45 Minuten",
+            "60": "60 Minuten",
+            "90": "90 Minuten"
+        },
+        "subjects": {
+            "Altgriechisch": "Altgriechisch",
+            "Arbeitslehre": "Arbeitslehre",
+            "Biologie": "Biologie",
+            "Chemie": "Chemie",
+            "Deutsch": "Deutsch",
+            "Deutsch als Zweitsprache": "Deutsch als Zweitsprache",
+            "Englisch": "Englisch",
+            "Erdkunde": "Erdkunde",
+            "Ethik": "Ethik",
+            "Französisch": "Französisch",
+            "Geschichte": "Geschichte",
+            "Gesundheit": "Gesundheit",
+            "Informatik": "Informatik",
+            "Italienisch": "Italienisch",
+            "Kunst": "Kunst",
+            "Latein": "Latein",
+            "Mathematik": "Mathematik",
+            "Musik": "Musik",
+            "Niederländisch": "Niederländisch",
+            "Pädagogik": "Pädagogik",
+            "Philosophie": "Philosophie",
+            "Physik": "Physik",
+            "Politik": "Politik",
+            "Religion": "Religion",
+            "Russisch": "Russisch",
+            "Sachkunde": "Sachkunde",
+            "Spanisch": "Spanisch",
+            "Technik": "Technik",
+            "Wirtschaft": "Wirtschaft",
+            "Lernen lernen": "Lernen lernen"
+        }
     },
     "logout": "Abmelden",
     "installation": {
@@ -2525,8 +2586,8 @@
     },
     "referral": {
         "title": "Hilf uns zu wachsen",
-        "description": "Empfiehl uns weiter bei Schüler:innen oder motivierten Helfer:innen - so können wir gemeinsam noch mehr für die Bildungsgerechtigkeit tun!  ",
-        "referralMessage": "📣 Bildungs-Verbesserer gesucht 📣 Ich engagiere mich ehrenamtlich bei Lern-Fair, wo bildungsbenachteiligte Schüler:innen der Klasse 1 bis 13 sowie Azubi kostenlose Nachhilfe erhalten - digital und flexibel per Zoom-Meeting. #digital #Bildungsgerechtigkeit #ehrenamt",
+        "description": "Viele kommen durch Empfehlungen zu uns. Hilf uns, Lern-Fair bekannter zu machen! Du kannst einen Empfehlungs-Link schicken oder Poster und Flyer benutzen.",
+        "referralMessage": "Ich engagiere mich ehrenamtlich bei Lern-Fair, wo bildungsbenachteiligte Schüler:innen (Klasse 1 bis 13 & Azubi) kostenlose Nachhilfe erhalten - digital & flexibel via Zoom #Bildungsgerechtigkeit #ehrenamt",
         "copy": "Kopieren",
         "copied": "Kopiert",
         "copiedReferralLink": "Empfehlungslink kopiert",
@@ -2545,10 +2606,15 @@
             "option3": {
                 "option": "Auf LinkedIn teilen",
                 "description": "- Beim kopieren wird ein Muster-Text - zum einfachen Einfügen - in deine Zwischenablage kopiert."
+            },
+            "materials": {
+                "title": "Flyer & Poster auslegen",
+                "description": "Du kannst z.B. Flyer auslegen oder Poster aufhängen - in der Schule, im Jugendzentrum, der Bibliothek oder Geschäften. Erhalte Flyer, Poster und andere Werbematerialien kostenlos zu dir nach Hause.",
+                "button": "Kostenlos bestellen"
             }
         },
         "reward": {
-            "title": "Meine geworbenen Nutzer:innen",
+            "title": "Mein Beitrag",
             "description": "Wenn du deinen persönlichen Link nutzt, kannst du hier deinen Beitrag verfolgen.",
             "RegisteredUsers": "Registrierte Nutzer:innen",
             "HoursSupported": "Stunden Nachhilfe ermöglicht",
