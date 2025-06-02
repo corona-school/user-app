@@ -15,28 +15,20 @@ interface StudentScreeningHistoryProps {
 
 export const StudentScreeningHistory = ({ tutorScreenings, instructorScreenings }: StudentScreeningHistoryProps) => {
     const { t } = useTranslation();
-    const [mutationUpdateTutorScreening] = useMutation(
+    const [mutationUpdateScreening] = useMutation(
         gql(`
-            mutation UpdateTutorScreening($screeningId: Float!, $comment: String) {
-                studentTutorScreeningUpdate(screeningId: $screeningId, data: { comment: $comment })
-            }
-        `)
-    );
-
-    const [mutationUpdateInstructorScreening] = useMutation(
-        gql(`
-            mutation UpdateInstructorScreening($screeningId: Float!, $comment: String) {
-                studentInstructorScreeningUpdate(screeningId: $screeningId, data: { comment: $comment })
+            mutation UpdateStudentScreeningComment($screeningId: Float!, $type: String!, $comment: String) {
+                studentScreeningUpdate(screeningId: $screeningId, type: $type, data: { comment: $comment })
             }
         `)
     );
 
     const handleOnUpdateTutorScreening = (screeningId: number, data: Pick<Screening, 'comment'>) => {
-        mutationUpdateTutorScreening({ variables: { screeningId, comment: data.comment } });
+        mutationUpdateScreening({ variables: { screeningId, type: 'tutor', comment: data.comment } });
     };
 
     const handleOnUpdateInstructorScreening = (screeningId: number, data: Pick<Screening, 'comment'>) => {
-        mutationUpdateInstructorScreening({ variables: { screeningId, comment: data.comment } });
+        mutationUpdateScreening({ variables: { screeningId, type: 'instructor', comment: data.comment } });
     };
 
     return (
