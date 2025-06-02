@@ -11,6 +11,7 @@ interface KnowsUsSelectProps {
     customValue: string;
     onChange: (values: { value: string; customValue: string }) => void;
     className?: string;
+    disabled?: boolean;
 }
 
 const pupilOptions = [
@@ -43,7 +44,7 @@ const studentOptions = [
     'Sonstiges',
 ];
 
-export const KnowsUsSelect = ({ value: knowsFrom, customValue: customKnowsFrom, onChange, type, className }: KnowsUsSelectProps) => {
+export const KnowsUsSelect = ({ value: knowsFrom, customValue: customKnowsFrom, onChange, type, className, disabled }: KnowsUsSelectProps) => {
     const [errorMessage, setErrorMessage] = useState('');
     const options = type === 'pupil' ? pupilOptions : studentOptions;
 
@@ -62,7 +63,7 @@ export const KnowsUsSelect = ({ value: knowsFrom, customValue: customKnowsFrom, 
     return (
         <>
             <Label>Kennt Lern-Fair durch:</Label>
-            <Select value={knowsFrom} onValueChange={(newValue) => onChange({ value: newValue, customValue: customKnowsFrom })}>
+            <Select value={knowsFrom} disabled={disabled} onValueChange={(newValue) => onChange({ value: newValue, customValue: customKnowsFrom })}>
                 <SelectTrigger className={cn('h-10 w-full', className)} placeholder="Bitte wähle eine Antwort aus" aria-label="Knows us from">
                     <SelectValue />
                 </SelectTrigger>
