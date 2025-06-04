@@ -2,7 +2,7 @@ import { Button } from '@/components/Button';
 import { Separator } from '@/components/Separator';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
-import { StudentScreeningStatus, Student_Screening_Status_Enum } from '@/gql/graphql';
+import { StudentScreeningStatus, StudentScreeningType, Student_Screening_Status_Enum } from '@/gql/graphql';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { InstructorScreening, StudentForScreening, TutorScreening } from '@/types';
 import { EditJobStatusModal } from '@/widgets/screening/EditJobStatusModal';
@@ -22,34 +22,33 @@ interface ScreenStudentProps {
 const CUSTOM_KNOWS_FROM_PREFIX = 'Sonstiges: ';
 
 const CREATE_STUDENT_SCREENING_MUTATION = gql(`
-    mutation ScreenStudent($studentId: Float!, $type: String!) {
+    mutation ScreenStudent($studentId: Float!, $type: StudentScreeningType!) {
         studentScreeningCreate(studentId: $studentId, type: $type, screening: {})
     }
 `);
 
 const UPDATE_STUDENT_SCREENING_MUTATION = gql(`
-    mutation UpdateStudentScreening($screeningId: Float!, $type: String!, $screening: ScreeningUpdateInput!) {
+    mutation UpdateStudentScreening($screeningId: Float!, $type: StudentScreeningType!, $screening: ScreeningUpdateInput!) {
         studentScreeningUpdate(screeningId: $screeningId, type: $type, data: $screening)
     }
 `);
 
 const DELETE_STUDENT_SCREENING_MUTATION = gql(`
-    mutation DeleteStudentScreening($screeningId: Float!, $type: String!) {
+    mutation DeleteStudentScreening($screeningId: Float!, $type: StudentScreeningType!) {
         studentScreeningDelete(screeningId: $screeningId, type: $type)
     }
 `);
 
 export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const { t } = useTranslation();
-    const [mutationCreateStudentScreening, { loading: loadingStudentScreening }] = useMutation(CREATE_STUDENT_SCREENING_MUTATION);
+    const [mutationCreateStudentScreening, { loading: isLoading }] = useMutation(CREATE_STUDENT_SCREENING_MUTATION);
 
-    const createStudentScreening = async (type: 'instructor' | 'tutor') => {
+    const createStudentScreening = async (type: StudentScreeningType) => {
         await mutationCreateStudentScreening({ variables: { studentId: student.id, type } });
         toast.success('Screening wurde erstellt');
         await refresh();
     };
 
-    const isLoading = loadingStudentScreening;
     const hasInstructorScreening = !!student?.instructorScreenings?.length;
     const hasTutorScreening = !!student?.tutorScreenings?.length;
 
@@ -74,8 +73,10 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     return (
         <div>
             <div className="flex gap-x-2">
-                {!hasTutorScreening && <Button onClick={() => createStudentScreening('tutor')}>{t('screening.screen_as_tutor')}</Button>}
-                {!hasInstructorScreening && <Button onClick={() => createStudentScreening('instructor')}>{t('screening.screen_as_instructor')}</Button>}
+                {!hasTutorScreening && <Button onClick={() => createStudentScreening(StudentScreeningType.Tutor)}>{t('screening.screen_as_tutor')}</Button>}
+                {!hasInstructorScreening && (
+                    <Button onClick={() => createStudentScreening(StudentScreeningType.Instructor)}>{t('screening.screen_as_instructor')}</Button>
+                )}
             </div>
             {hasInstructorScreening && (
                 <ScreeningForm
@@ -86,7 +87,7 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
                     }
                     student={student}
                     isLoading={isLoading}
-                    currentScreeningType="instructor"
+                    currentScreeningType={StudentScreeningType.Instructor}
                     onDecision={refresh}
                 />
             )}
@@ -100,7 +101,7 @@ export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
                     }
                     student={student}
                     isLoading={isLoading}
-                    currentScreeningType="tutor"
+                    currentScreeningType={StudentScreeningType.Tutor}
                     onDecision={refresh}
                 />
             )}
@@ -112,7 +113,7 @@ interface ScreeningFormProps {
     student: StudentForScreening;
     screening?: TutorScreening | InstructorScreening;
     isLoading: boolean;
-    currentScreeningType: 'instructor' | 'tutor';
+    currentScreeningType: StudentScreeningType;
     onDecision: () => Promise<void>;
 }
 
@@ -221,7 +222,7 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
                         >
                             Ablehnen
                         </Button>
-                        <Button variant="ghost" className="w-[200px]" onClick={deleteStudentScreening}>
+                        <Button variant="ghost" className="w-[200px]" onClick={deleteStudentScreening} isLoading={deletingStudentScreening}>
                             Aktuell nicht interessiert
                         </Button>
                     </div>

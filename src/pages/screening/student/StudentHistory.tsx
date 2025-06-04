@@ -1,6 +1,6 @@
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
-import { Screening } from '@/gql/graphql';
+import { Screening, StudentScreeningType } from '@/gql/graphql';
 import { InstructorScreening, MatchWithPupil, SubcourseForScreening, TutorScreening } from '@/types';
 import { SubcourseCard } from '@/widgets/course/SubcourseCard';
 import { MatchPupilCard } from '@/widgets/matching/MatchPupilCard';
@@ -17,18 +17,18 @@ export const StudentScreeningHistory = ({ tutorScreenings, instructorScreenings 
     const { t } = useTranslation();
     const [mutationUpdateScreening] = useMutation(
         gql(`
-            mutation UpdateStudentScreeningComment($screeningId: Float!, $type: String!, $comment: String) {
+            mutation UpdateStudentScreeningComment($screeningId: Float!, $type: StudentScreeningType!, $comment: String) {
                 studentScreeningUpdate(screeningId: $screeningId, type: $type, data: { comment: $comment })
             }
         `)
     );
 
     const handleOnUpdateTutorScreening = (screeningId: number, data: Pick<Screening, 'comment'>) => {
-        mutationUpdateScreening({ variables: { screeningId, type: 'tutor', comment: data.comment } });
+        mutationUpdateScreening({ variables: { screeningId, type: StudentScreeningType.Tutor, comment: data.comment } });
     };
 
     const handleOnUpdateInstructorScreening = (screeningId: number, data: Pick<Screening, 'comment'>) => {
-        mutationUpdateScreening({ variables: { screeningId, type: 'instructor', comment: data.comment } });
+        mutationUpdateScreening({ variables: { screeningId, type: StudentScreeningType.Instructor, comment: data.comment } });
     };
 
     return (
