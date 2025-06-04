@@ -8,7 +8,7 @@ import { InstructorScreening, StudentForScreening, TutorScreening } from '@/type
 import { EditJobStatusModal } from '@/widgets/screening/EditJobStatusModal';
 import { useMutation } from '@apollo/client';
 import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ButtonField } from '../components/ButtonField';
@@ -127,12 +127,18 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
     const [showConfirmApprove, setShowConfirmApprove] = useState(false);
     const [showConfirmReject, setShowConfirmReject] = useState(false);
 
+    useEffect(() => {
+        setKnowsFrom(screening?.knowsCoronaSchoolFrom ?? '');
+        setJobStatus(screening?.jobStatus ?? undefined);
+    }, [screening?.knowsCoronaSchoolFrom, screening?.jobStatus]);
+
     const [mutationUpdateStudentScreening, { loading: loadingUpdateStudentScreening }] = useMutation(UPDATE_STUDENT_SCREENING_MUTATION);
     const [mutationDeleteStudentScreening, { loading: deletingStudentScreening }] = useMutation(DELETE_STUDENT_SCREENING_MUTATION);
 
-    const computedKnowsFrom = knowsFrom === 'Sonstiges' ? `${CUSTOM_KNOWS_FROM_PREFIX}${customKnowsFrom}` : knowsFrom;
-
     const updateStudentScreening = async (status: StudentScreeningStatus) => {
+        const computedKnowsFrom = knowsFrom.includes('Sonstiges')
+            ? `${CUSTOM_KNOWS_FROM_PREFIX}${customKnowsFrom.replaceAll(CUSTOM_KNOWS_FROM_PREFIX, '')}`
+            : knowsFrom;
         if (!screening?.id) return;
         try {
             await mutationUpdateStudentScreening({
