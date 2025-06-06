@@ -97,23 +97,25 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
         <>
             <div className="flex w-full justify-between mb-10">
                 <Typography variant="h4">Persönliche Daten</Typography>
-                <div className="flex flex-col gap-y-4 max-w-[500px]">
-                    {myRoles.includes('TRUSTED_SCREENER') && student.active && (
-                        <Button className="w-full" variant="outline" onClick={() => impersonate(`student/${student!.id}`)} leftIcon={<IconKey size={18} />}>
-                            Als Nutzer anmelden
-                        </Button>
-                    )}
-                    {TEST_STUDENT_ID && (
-                        <Button
-                            className="w-full"
-                            variant="outline"
-                            onClick={() => impersonate(`student/${TEST_STUDENT_ID}`)}
-                            leftIcon={<IconTestPipe size={18} />}
-                        >
-                            Als Test-Helfer anmelden
-                        </Button>
-                    )}
-                </div>
+                {myRoles.includes('TRUSTED_SCREENER') && (
+                    <div className="flex flex-col gap-y-4 max-w-[500px]">
+                        {student.active && (
+                            <Button className="w-full" variant="outline" onClick={() => impersonate(`student/${student!.id}`)} leftIcon={<IconKey size={18} />}>
+                                Als Nutzer anmelden
+                            </Button>
+                        )}
+                        {TEST_STUDENT_ID && (
+                            <Button
+                                className="w-full"
+                                variant="outline"
+                                onClick={() => impersonate(`student/${TEST_STUDENT_ID}`)}
+                                leftIcon={<IconTestPipe size={18} />}
+                            >
+                                Als Test-Helfer anmelden
+                            </Button>
+                        )}
+                    </div>
+                )}
             </div>
             <div>
                 {!student.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
