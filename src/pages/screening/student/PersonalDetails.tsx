@@ -5,6 +5,7 @@ import { Label } from '@/components/Label';
 import { SelectInput } from '@/components/Select';
 import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
+import { TEST_STUDENT_ID } from '@/config';
 import { gql } from '@/gql';
 import { Gender } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
@@ -13,7 +14,7 @@ import { StudentForScreening } from '@/types';
 import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { ApolloError, useMutation } from '@apollo/client';
-import { IconDeviceFloppy, IconKey } from '@tabler/icons-react';
+import { IconDeviceFloppy, IconKey, IconTestPipe } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -79,19 +80,15 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
         }
     };
 
-    const impersonate = async () => {
+    const impersonate = async (userId: string) => {
         // We need to work around the popup blocker of modern browsers, as you can only
         // call window.open(.., '_blank') in a synchronous event handler of onClick,
         // so we open the window before we call any asynchronous functions and later set the URL when we have the data.
         const w = window.open('', '_blank');
         if (w != null) {
-            const res = await mutationCreateLoginToken({ variables: { userId: `student/${student!.id}` } });
+            const res = await mutationCreateLoginToken({ variables: { userId } });
             const token = res?.data?.tokenCreateAdmin;
-
-            w.location.href =
-                process.env.NODE_ENV === 'production'
-                    ? `https://app.lern-fair.de/login-token?secret_token=${token}&temporary`
-                    : `http://localhost:3000/login-token?secret_token=${token}&temporary`;
+            w.location.href = `${window.location.origin}/login-token?secret_token=${token}&temporary`;
             w.focus();
         }
     };
@@ -100,10 +97,24 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
         <>
             <div className="flex w-full justify-between mb-10">
                 <Typography variant="h4">Persönliche Daten</Typography>
-                {myRoles.includes('TRUSTED_SCREENER') && student.active && (
-                    <Button variant="outline" onClick={impersonate} leftIcon={<IconKey size={18} />}>
-                        Als Nutzer anmelden
-                    </Button>
+                {myRoles.includes('TRUSTED_SCREENER') && (
+                    <div className="flex flex-col gap-y-4 max-w-[500px]">
+                        {student.active && (
+                            <Button className="w-full" variant="outline" onClick={() => impersonate(`student/${student!.id}`)} leftIcon={<IconKey size={18} />}>
+                                Als Nutzer anmelden
+                            </Button>
+                        )}
+                        {TEST_STUDENT_ID && (
+                            <Button
+                                className="w-full"
+                                variant="outline"
+                                onClick={() => impersonate(`student/${TEST_STUDENT_ID}`)}
+                                leftIcon={<IconTestPipe size={18} />}
+                            >
+                                Als Test-Helfer anmelden
+                            </Button>
+                        )}
+                    </div>
                 )}
             </div>
             <div>
