@@ -17,6 +17,7 @@ import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 import { Typography } from '../Typography';
 import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/icons-react';
 import { Button } from '../Button';
+import AddToCalendarDropdown from '../AddToCalendarDropdown';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -194,6 +195,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                             {t('appointment.detail.cancelButton')}
                         </Button>
                     )}
+                    <AddToCalendarDropdown appointment={appointment} />
                 </div>
             </Box>
         </>
