@@ -151,7 +151,8 @@
         "loadPastAppointments": "تحميل التواريخ السابقة",
         "loadedPastAppointments": "تم تحميل التواريخ السابقة",
         "courseNotPublished": "لم يتم بعد إصدار الدورة التدريبية المرتبطة بهذا التاريخ للمراجعة.",
-        "noNextAppointment": "لا يوجد موعد تالي."
+        "noNextAppointment": "لا يوجد موعد تالي.",
+        "addToCalendar": "إضافة إلى التقويم"
     },
     "login": {
         "email": {
