@@ -79,6 +79,21 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
         refresh();
     };
 
+    const handleOnUpdatePupil = async () => {
+        await updatePupil();
+        await refresh();
+    };
+
+    const canRequestMatch = () => {
+        if (needsScreening && !screeningToEdit) {
+            return { can: false, reason: 'Zuerst muss ein Screening angelegt werden' };
+        }
+        if (!pupil.subjectsFormatted.length) {
+            return { can: false, reason: 'zuerst müssen Schulfächer ausgewählt werden' };
+        }
+        return { can: true, reason: '' };
+    };
+
     return (
         <div className="mt-8">
             <div className="mb-6">
@@ -107,14 +122,14 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                 </TabsList>
                 <TabsContent inactiveMode="hide" value="main">
                     <div className="shadow-md px-6 py-8 rounded-md">
-                        <PersonalDetails pupil={pupil} refresh={refresh} form={form} isUpdating={isUpdating} updatePupil={updatePupil} />
+                        <PersonalDetails pupil={pupil} refresh={refresh} form={form} isUpdating={isUpdating} updatePupil={handleOnUpdatePupil} />
                     </div>
                     <div className="shadow-md px-6 py-8 rounded-md mt-10">
                         <Typography variant="h4" className="mb-5">
                             Screening
                         </Typography>
                         <ScreenPupil
-                            onAfterSaveScreening={updatePupil}
+                            onAfterSaveScreening={handleOnUpdatePupil}
                             pupil={pupil}
                             screening={screeningToEdit ?? undefined}
                             needsScreening={needsScreening}
@@ -140,8 +155,8 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                             <div className="flex items-center gap-x-4">
                                 <Button
                                     isLoading={isRequestingMatch}
-                                    disabled={needsScreening && !screeningToEdit}
-                                    reasonDisabled="Zuerst muss ein Screening angelegt werden"
+                                    disabled={!canRequestMatch()?.can}
+                                    reasonDisabled={canRequestMatch()?.reason}
                                     onClick={handleOnRequestMatch}
                                 >
                                     Match anfragen
