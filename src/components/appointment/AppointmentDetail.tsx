@@ -164,6 +164,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                             >
                                 {wasRejectedByMatch ? t('appointment.detail.rescheduleButton') : t('appointment.detail.editButton')}
                             </Button>
+                            <AddToCalendarDropdown buttonClasses="w-full lg:w-[300px]" appointment={appointment} />
                             <Button
                                 disabled={isPastAppointment || isLastAppointment}
                                 reasonDisabled={
@@ -181,21 +182,23 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                         </>
                     )}
                     {appointment.isParticipant && (
-                        <Button
-                            disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
-                            reasonDisabled={
-                                isPastAppointment
-                                    ? t('appointment.detail.reasonDisabled.cancelBtn.isOver')
-                                    : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
-                            }
-                            onClick={() => setShowDeclineModal(true)}
-                            variant="destructive"
-                            className="w-full lg:w-[300px]"
-                        >
-                            {t('appointment.detail.cancelButton')}
-                        </Button>
+                        <>
+                            <AddToCalendarDropdown buttonClasses="w-full lg:w-[300px]" appointment={appointment} />
+                            <Button
+                                disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
+                                reasonDisabled={
+                                    isPastAppointment
+                                        ? t('appointment.detail.reasonDisabled.cancelBtn.isOver')
+                                        : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
+                                }
+                                onClick={() => setShowDeclineModal(true)}
+                                variant="destructive"
+                                className="w-full lg:w-[300px]"
+                            >
+                                {t('appointment.detail.cancelButton')}
+                            </Button>
+                        </>
                     )}
-                    <AddToCalendarDropdown appointment={appointment} />
                 </div>
             </Box>
         </>

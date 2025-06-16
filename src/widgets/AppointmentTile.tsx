@@ -9,6 +9,7 @@ import { Typography } from '@/components/Typography';
 import { cn } from '@/lib/Tailwind';
 import { useUser } from '@/hooks/useApollo';
 import { useMemo } from 'react';
+import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
 
 type Props = {
     timeDescriptionText: string;
@@ -28,6 +29,9 @@ type Props = {
     canJoinVideochat?: boolean;
     wasRejected: boolean;
     declinedBy: Appointment['declinedBy'];
+    description?: Appointment['description'];
+    duration: Appointment['duration'];
+    start: Appointment['start'];
 };
 
 const AppointmentTile: React.FC<Props> = ({
@@ -46,6 +50,9 @@ const AppointmentTile: React.FC<Props> = ({
     isOrganizer,
     wasRejected,
     declinedBy,
+    description,
+    duration,
+    start,
 }) => {
     const { t } = useTranslation();
     const { userID } = useUser();
@@ -107,15 +114,26 @@ const AppointmentTile: React.FC<Props> = ({
                             </div>
                         )}
                     </div>
-                    {isHighlighted && appointmentId && appointmentType && (
-                        <VideoButton
-                            isInstructor={isOrganizer}
-                            canJoin
-                            appointmentId={appointmentId}
-                            appointmentType={appointmentType}
-                            className={cn('w-full lg:w-[300px] mt-4')}
-                        />
-                    )}
+                    <div className="flex flex-col gap-y-4 lg:flex-row lg:justify-between align-top mt-4">
+                        {isHighlighted && appointmentId && appointmentType ? (
+                            <VideoButton
+                                isInstructor={isOrganizer}
+                                canJoin
+                                appointmentId={appointmentId}
+                                appointmentType={appointmentType}
+                                className={cn('w-full lg:w-[300px]')}
+                            />
+                        ) : (
+                            <div />
+                        )}
+                        {appointmentId && (
+                            <AddToCalendarDropdown
+                                buttonVariant="optional"
+                                buttonClasses="w-full lg:w-[300px]"
+                                appointment={{ id: appointmentId, displayName, title, start, duration, description: description ?? '' }}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

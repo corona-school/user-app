@@ -1,5 +1,5 @@
 import { IconCalendarDown, IconCalendarPlus } from '@tabler/icons-react';
-import { Button } from './Button';
+import { Button, ButtonProps } from './Button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from './Dropdown';
 import { google, outlook, ics, CalendarEvent } from 'calendar-link';
 import { Appointment } from '@/types/lernfair/Appointment';
@@ -10,10 +10,12 @@ import { formatDate } from '@/Utility';
 import { DateTime } from 'luxon';
 
 interface AddToCalendarDropdownProps {
-    appointment: Appointment;
+    appointment: Pick<Appointment, 'displayName' | 'title' | 'description' | 'start' | 'duration' | 'id'>;
+    buttonClasses?: string;
+    buttonVariant?: ButtonProps['variant'];
 }
 
-const AddToCalendarDropdown = ({ appointment }: AddToCalendarDropdownProps) => {
+const AddToCalendarDropdown = ({ appointment, buttonClasses, buttonVariant = 'outline' }: AddToCalendarDropdownProps) => {
     const { t } = useTranslation();
     const event: CalendarEvent = {
         title: appointment.displayName ?? appointment.title,
@@ -22,22 +24,34 @@ const AddToCalendarDropdown = ({ appointment }: AddToCalendarDropdownProps) => {
         description: appointment.description,
         location: `${window.location.origin}/appointment/${appointment.id}`,
     };
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button variant="outline" leftIcon={<IconCalendarPlus />}>
+                <Button className={buttonClasses} variant={buttonVariant} leftIcon={<IconCalendarPlus />}>
                     {t('appointment.addToCalendar')}
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent>
-                <DropdownMenuItem onClick={() => window.open(google(event))}>
+                <DropdownMenuItem
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(google(event));
+                    }}
+                >
                     <IconGoogle width={16} height={16} /> Google
                 </DropdownMenuItem>
-                <DropdownMenuItem onClick={() => window.open(outlook(event))}>
+                <DropdownMenuItem
+                    onClick={(e) => {
+                        e.stopPropagation();
+                        window.open(outlook(event));
+                    }}
+                >
                     <IconOutlook /> Outlook
                 </DropdownMenuItem>
                 <DropdownMenuItem
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation();
                         const link = document.createElement('a');
                         link.href = ics(event);
                         link.setAttribute('download', `Termin am ${formatDate(appointment.start, DateTime.DATETIME_SHORT)}.ics`);
