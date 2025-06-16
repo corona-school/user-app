@@ -254,7 +254,8 @@
             "Arbeitslehre": "Теория труда",
             "Ethik": "Этика",
             "Gesundheit": "Здоровье",
-            "Technik": "Технология"
+            "Technik": "Технология",
+            "Steuerlehre": "Теория налогообложения"
         },
         "states": {
             "bw": "Баден-Вюртемберг",
@@ -2580,7 +2581,8 @@
             "Spanisch": "Испанский язык",
             "Technik": "Технология",
             "Wirtschaft": "Экономика",
-            "Lernen lernen": "Учиться учиться"
+            "Lernen lernen": "Учиться учиться",
+            "Steuerlehre": "Теория налогообложения"
         },
         "placeholderImageDescription": "Заполните форму, чтобы создать план урока"
     },
