@@ -10,6 +10,7 @@ import { cn } from '@/lib/Tailwind';
 import { useUser } from '@/hooks/useApollo';
 import { useMemo } from 'react';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
+import { DateTime } from 'luxon';
 
 type Props = {
     timeDescriptionText: string;
@@ -64,6 +65,10 @@ const AppointmentTile: React.FC<Props> = ({
     const avatars = useMemo(() => {
         return [...(organizers?.map((e) => 'student') || []), ...(participants?.map((e) => 'pupil') || [])].slice(0, 5);
     }, [organizers?.length, participants?.length]);
+
+    const isPastAppointment = useMemo(() => {
+        return DateTime.fromISO(start).toMillis() + duration * 60000 < DateTime.now().toMillis();
+    }, [duration, start]);
 
     return (
         <div
@@ -126,7 +131,7 @@ const AppointmentTile: React.FC<Props> = ({
                         ) : (
                             <div />
                         )}
-                        {appointmentId && (
+                        {appointmentId && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
                             <AddToCalendarDropdown
                                 buttonVariant="optional"
                                 buttonClasses="w-full lg:w-[300px]"
