@@ -255,7 +255,8 @@
             "Arbeitslehre": "Labor theory",
             "Ethik": "Ethics",
             "Gesundheit": "Health",
-            "Technik": "Technology"
+            "Technik": "Technology",
+            "Steuerlehre": "Tax theory"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2581,7 +2582,8 @@
             "Spanisch": "Spanish",
             "Technik": "Technology",
             "Wirtschaft": "Economy",
-            "Lernen lernen": "Learning to learn"
+            "Lernen lernen": "Learning to learn",
+            "Steuerlehre": "Tax theory"
         },
         "placeholderImageDescription": "Fill out the form to create a lesson plan"
     },

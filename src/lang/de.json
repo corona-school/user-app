@@ -312,7 +312,8 @@
             "Spanisch": "Spanisch",
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
+            "Lernen lernen": "Lernen lernen",
+            "Steuerlehre": "Steuerlehre"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2547,7 +2548,8 @@
             "Spanisch": "Spanisch",
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
+            "Lernen lernen": "Lernen lernen",
+            "Steuerlehre": "Steuerlehre"
         }
     },
     "logout": "Abmelden",
