@@ -151,7 +151,8 @@
         "loadPastAppointments": "Загрузка прошлых дат",
         "loadedPastAppointments": "Загрузка прошлых дат",
         "courseNotPublished": "Курс, связанный с этой датой, еще не выпущен для ознакомления.",
-        "noNextAppointment": "Следующая встреча не назначена."
+        "noNextAppointment": "Следующая встреча не назначена.",
+        "addToCalendar": "Добавить в календарь"
     },
     "login": {
         "email": {

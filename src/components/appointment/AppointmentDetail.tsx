@@ -17,6 +17,8 @@ import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 import { Typography } from '../Typography';
 import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/icons-react';
 import { Button } from '../Button';
+import AddToCalendarDropdown from '../AddToCalendarDropdown';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -110,6 +112,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
     const wasRejectedByMe = appointment.declinedBy?.includes(user?.userID!);
     const wasRejectedByMatch = appointment.appointmentType === 'match' && wasRejected && byMatch;
 
+    const isCurrent = useCanJoinMeeting(appointment.isOrganizer ? 240 : 10, appointment.start, appointment.duration);
+
+    const canAddToCalendar = !wasRejected && !appointment.declinedBy?.length && !isPastAppointment && !isCurrent;
+
     return (
         <>
             <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
@@ -163,6 +169,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                             >
                                 {wasRejectedByMatch ? t('appointment.detail.rescheduleButton') : t('appointment.detail.editButton')}
                             </Button>
+                            {canAddToCalendar && <AddToCalendarDropdown buttonClasses="w-full lg:w-[300px]" appointment={appointment} />}
                             <Button
                                 disabled={isPastAppointment || isLastAppointment}
                                 reasonDisabled={
@@ -180,19 +187,22 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                         </>
                     )}
                     {appointment.isParticipant && (
-                        <Button
-                            disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
-                            reasonDisabled={
-                                isPastAppointment
-                                    ? t('appointment.detail.reasonDisabled.cancelBtn.isOver')
-                                    : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
-                            }
-                            onClick={() => setShowDeclineModal(true)}
-                            variant="destructive"
-                            className="w-full lg:w-[300px]"
-                        >
-                            {t('appointment.detail.cancelButton')}
-                        </Button>
+                        <>
+                            {canAddToCalendar && <AddToCalendarDropdown buttonClasses="w-full lg:w-[300px]" appointment={appointment} />}
+                            <Button
+                                disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
+                                reasonDisabled={
+                                    isPastAppointment
+                                        ? t('appointment.detail.reasonDisabled.cancelBtn.isOver')
+                                        : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
+                                }
+                                onClick={() => setShowDeclineModal(true)}
+                                variant="destructive"
+                                className="w-full lg:w-[300px]"
+                            >
+                                {t('appointment.detail.cancelButton')}
+                            </Button>
+                        </>
                     )}
                 </div>
             </Box>
