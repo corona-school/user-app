@@ -891,7 +891,8 @@
             "push": "Uygulama mesajları",
             "faq": "SSS & İletişim",
             "manageSessions": "Cihazları yönetme",
-            "certificates": "Sertifikalar"
+            "certificates": "Sertifikalar",
+            "calendarAvailability": "Zaman uygunluğu"
         },
         "account": {
             "title": "Hesap",
@@ -2098,7 +2099,8 @@
             "editCourse": "Kursu düzenle",
             "referral": "Yönlendirme",
             "certificates": "Sertifikalar",
-            "lesson": "Yapay zeka ile ders planlayıcı (Beta)"
+            "lesson": "Yapay zeka ile ders planlayıcı (Beta)",
+            "calendarAvailability": "Zaman uygunluğu"
         }
     },
     "screening": {
@@ -2635,5 +2637,14 @@
             "title": "Bireysel kanıt"
         },
         "title": "Sertifikalarım"
+    },
+    "weekdays": {
+        "monday": "Pazartesi",
+        "tuesday": "Salı",
+        "wednesday": "Çarşamba",
+        "thursday": "Perşembe",
+        "friday": "Cuma",
+        "saturday": "Cumartesi",
+        "sunday": "Pazar"
     }
 }
