@@ -113,13 +113,18 @@ module.exports = {
                     '15%, 25%, 35%, 45%': { transform: 'scale3d(1.1,1.1,1.1) rotate(5deg)' },
                     '20%, 30%, 40%': { transform: 'scale3d(1.1,1.1,1.1) rotate(-5deg)' },
                     '50%': { transform: 'scale3d(1.1,1.1,1.1) rotate(-5deg)' },
-                }
+                },
+                'skeleton': {
+                    '0%': { backgroundColor: '#222222' },
+                    '100%': { backgroundColor: '#2A2A2A' }, 
+                },
             },
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
                 'shine': 'shine 2s infinite',
                 'bell-ring': 'bell-ring 2s infinite',
+                'skeleton': 'skeleton 1s infinite',
             },
             boxShadow: {
                 bottomNavigation: '0px 4px 16px rgba(17,17,26,0.1), 0px 8px 24px rgba(17,17,26,0.1),0px 16px 56px rgba(17,17,26,0.1)',
