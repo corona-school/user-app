@@ -16,6 +16,15 @@
     "show": "Anzeigen",
     "showMore": "Mehr anzeigen",
     "showLess": "Weniger anzeigen",
+    "weekdays": {
+        "monday": "Montag",
+        "tuesday": "Dienstag",
+        "wednesday": "Mittwoch",
+        "thursday": "Donnerstag",
+        "friday": "Freitag",
+        "saturday": "Samstag",
+        "sunday": "Sonntag"
+    },
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
@@ -956,6 +965,7 @@
         "general": {
             "title": "Allgemein",
             "profile": "Profil",
+            "calendarAvailability": "Zeitliche Verfügbarkeit",
             "certificates": "Bescheinigungen",
             "languageVersion": "Sprachversion",
             "notifications": "Benachrichtigungen",
@@ -2173,6 +2183,7 @@
             "systemNotifications": "System-Benachrichtigungen",
             "newsletterNotifications": "Newsletter-Benachrichtigungen",
             "profile": "Profil",
+            "calendarAvailability": "Zeitliche Verfügbarkeit",
             "manageSessions": "Geräte verwalten",
             "helpCenter": "Hilfebereich",
             "newEmail": "E-Mail ändern",

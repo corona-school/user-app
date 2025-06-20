@@ -887,7 +887,8 @@
             "push": "رسائل التطبيق",
             "faq": "الأسئلة الشائعة والاتصال",
             "manageSessions": "إدارة الأجهزة",
-            "certificates": "الشهادات"
+            "certificates": "الشهادات",
+            "calendarAvailability": "الوقت المتاح"
         },
         "account": {
             "title": "حساب",
@@ -2094,7 +2095,8 @@
             "editCourse": "تحرير الدورة التدريبية",
             "referral": "الإحالة",
             "certificates": "الشهادات",
-            "lesson": "مخطط الدروس مع الذكاء الاصطناعي (تجريبي)"
+            "lesson": "مخطط الدروس مع الذكاء الاصطناعي (تجريبي)",
+            "calendarAvailability": "الوقت المتاح"
         }
     },
     "screening": {
@@ -2631,5 +2633,14 @@
             "title": "الإثبات الفردي"
         },
         "title": "شهاداتي"
+    },
+    "weekdays": {
+        "monday": "الإثنين",
+        "tuesday": "الثلاثاء",
+        "wednesday": "الأربعاء",
+        "thursday": "الخميس",
+        "friday": "الجمعة",
+        "saturday": "يوم السبت",
+        "sunday": "يوم الأحد"
     }
 }

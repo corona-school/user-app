@@ -891,7 +891,8 @@
             "push": "App messages",
             "faq": "FAQ & Contact",
             "manageSessions": "Manage devices",
-            "certificates": "Certificates"
+            "certificates": "Certificates",
+            "calendarAvailability": "Time availability"
         },
         "account": {
             "title": "Account",
@@ -2098,7 +2099,8 @@
             "editCourse": "Edit course",
             "referral": "Referral",
             "certificates": "Certificates",
-            "lesson": "Lesson planner with AI (Beta)"
+            "lesson": "Lesson planner with AI (Beta)",
+            "calendarAvailability": "Time availability"
         }
     },
     "screening": {
@@ -2639,5 +2641,14 @@
             "title": "Individual certificate"
         },
         "title": "My certificates"
+    },
+    "weekdays": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
     }
 }
