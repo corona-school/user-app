@@ -73,6 +73,9 @@ import { SystemNotifications } from '../components/notifications/preferences/Sys
 import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
 import ForStudents from '../pages/ForStudents';
 import ForPupils from '../pages/ForPupils';
+import { LearningPupilPage } from '../pages/learning/LearningPage';
+import { LearningTopicPupilPage } from '../pages/learning/LearningTopicPage';
+import { LearningAssignmentPupilPage } from '../pages/learning/LearningAssignmentPage';
 import { useBreakpointValue, Stack } from 'native-base';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -504,6 +507,30 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <ProgressPage />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/learning"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<LearningPupilPage />} />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/learning/topic/:id"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<LearningTopicPupilPage />} />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/learning/assignment/:id"
+                element={
+                    <RequireAuth>
+                        <SwitchUserType pupilComponent={<LearningAssignmentPupilPage />} />
                     </RequireAuth>
                 }
             />
