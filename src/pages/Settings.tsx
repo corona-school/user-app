@@ -60,6 +60,9 @@ const Settings: React.FC = () => {
                                         <ListItem label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
                                     </Column>
                                     <Column mb={tabspace}>
+                                        <ListItem label={t('settings.general.calendarAvailability')} onPress={() => navigate('/calendar-availability')} />
+                                    </Column>
+                                    <Column mb={tabspace}>
                                         <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
                                     </Column>
                                 </>
