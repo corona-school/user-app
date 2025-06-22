@@ -121,8 +121,8 @@ export function ScreeningDashboard() {
                         nextLecture { start duration }
                     }
 
-                    tutorScreenings { id createdAt success comment screener { firstname lastname } }
-                    instructorScreenings { id createdAt success comment screener { firstname lastname } }
+                    tutorScreenings { id createdAt status comment, jobStatus,  knowsCoronaSchoolFrom, screener { firstname lastname } }
+                    instructorScreenings { id createdAt status comment, jobStatus, knowsCoronaSchoolFrom, screener { firstname lastname } }
                     user {
                         receivedScreeningSuggestions {
                             sentAt

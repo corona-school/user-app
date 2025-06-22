@@ -151,7 +151,8 @@
         "loadPastAppointments": "Geçmiş tarihleri yükle",
         "loadedPastAppointments": "Geçmiş tarihler yüklendi",
         "courseNotPublished": "Bu tarihle ilişkili kurs henüz inceleme için yayınlanmamıştır.",
-        "noNextAppointment": "Bir sonraki randevu yok."
+        "noNextAppointment": "Bir sonraki randevu yok.",
+        "addToCalendar": "Takvime ekle"
     },
     "login": {
         "email": {
@@ -254,7 +255,8 @@
             "Arbeitslehre": "İşgücü teorisi",
             "Ethik": "Etik",
             "Gesundheit": "Sağlık",
-            "Technik": "Teknoloji"
+            "Technik": "Teknoloji",
+            "Steuerlehre": "Vergi teorisi"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2355,7 +2357,17 @@
                 "content": "Lern-Fair Ne yazık ki, bu taahhüdün size uygun olmadığına karar verdik. Kararla ilgili herhangi bir sorunuz varsa bizimle iletişime geçin."
             }
         },
-        "contactSupport": "İletişim desteği"
+        "contactSupport": "İletişim desteği",
+        "appointment": {
+            "joinMeeting": "Görüntülü sohbete katıl",
+            "joinMeetingHint": "Toplantıyı yalnızca randevudan 5 dakika önce başlatabilirsin.",
+            "changeAppointment": "Randevuyu değiştir",
+            "cancelAppointment": "Randevuyu iptal et",
+            "title": "Randevu oluşturuldu ✅",
+            "yourAppointment": "Randevun",
+            "optionsDescription": "Vaktin yok mu? Randevuyu değiştirmek veya iptal etmek mi istiyorsun?",
+            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin."
+        }
     },
     "contactSupport": {
         "title": "İletişim desteği",
@@ -2570,7 +2582,8 @@
             "Spanisch": "İspanyolca",
             "Technik": "Teknoloji",
             "Wirtschaft": "Ekonomi",
-            "Lernen lernen": "Öğrenmeyi öğrenmek"
+            "Lernen lernen": "Öğrenmeyi öğrenmek",
+            "Steuerlehre": "Vergi teorisi"
         },
         "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
     },

@@ -91,7 +91,11 @@ export const getGradeLabel = (grade: number) => {
     return i18next.t('lernfair.schoolclass', { class: grade });
 };
 
-export const formatDate: (date: Date, format?: Intl.DateTimeFormatOptions, locale?: string) => string = (date, format = DateTime.DATETIME_MED, locale) => {
+export const formatDate: (date: Date | string, format?: Intl.DateTimeFormatOptions, locale?: string) => string = (
+    date,
+    format = DateTime.DATETIME_MED,
+    locale
+) => {
     if (!date) return '';
 
     return DateTime.fromISO(date.toString()).toLocaleString(format, { locale: locale ?? i18next.language });

@@ -44,7 +44,7 @@ export const useBreadcrumb = () => {
     const items = useMemo(() => {
         const map = new Map<RegExp, BreadcrumbItem[]>();
         map.set(/appointments/, [routes.APPOINTMENTS]);
-        map.set(/create-appointment/, [routes.CREATE_APPOINTMENT]);
+        map.set(/create-appointment/, [routes.APPOINTMENTS, routes.CREATE_APPOINTMENT]);
         map.set(/settings/, [routes.SETTINGS]);
         map.set(/profile/, [routes.SETTINGS, routes.PROFILE]);
         map.set(/certificates/, [routes.SETTINGS, routes.CERTIFICATES]);

@@ -151,7 +151,8 @@
         "loadPastAppointments": "تحميل التواريخ السابقة",
         "loadedPastAppointments": "تم تحميل التواريخ السابقة",
         "courseNotPublished": "لم يتم بعد إصدار الدورة التدريبية المرتبطة بهذا التاريخ للمراجعة.",
-        "noNextAppointment": "لا يوجد موعد تالي."
+        "noNextAppointment": "لا يوجد موعد تالي.",
+        "addToCalendar": "إضافة إلى التقويم"
     },
     "login": {
         "email": {
@@ -254,7 +255,8 @@
             "Arbeitslehre": "نظرية العمل",
             "Ethik": "الأخلاقيات",
             "Gesundheit": "الصحة",
-            "Technik": "التكنولوجيا"
+            "Technik": "التكنولوجيا",
+            "Steuerlehre": "النظرية الضريبية"
         },
         "states": {
             "bw": "بادن فورتمبيرغ",
@@ -2351,7 +2353,17 @@
                 "content": "Lern-Fair للأسف، قررنا أن الالتزام في لا يناسبك. تواصل معنا إذا كان لديك أي أسئلة حول القرار."
             }
         },
-        "contactSupport": "الاتصال بالدعم"
+        "contactSupport": "الاتصال بالدعم",
+        "appointment": {
+            "joinMeeting": "الانضمام إلى الدردشة المرئية",
+            "joinMeetingHint": "يمكنك بدء الاجتماع قبل 5 دقائق فقط من موعده.",
+            "changeAppointment": "تغيير الموعد",
+            "cancelAppointment": "إلغاء الموعد",
+            "title": "تم إنشاء الموعد ✅",
+            "yourAppointment": "موعدك",
+            "optionsDescription": "هل لا تملك وقتاً وتريد تغيير الموعد أو إلغاؤه؟",
+            "description": "سوف يصلك تأكيد الموعد عبر بريدك الإلكتروني. يمكنك إضافته إلى التقويم بنقرة واحدة."
+        }
     },
     "contactSupport": {
         "title": "الاتصال بالدعم",
@@ -2566,7 +2578,8 @@
             "Spanisch": "الإسبانية",
             "Technik": "التكنولوجيا",
             "Wirtschaft": "اقتصاد",
-            "Lernen lernen": "تعلّم كيف تتعلم"
+            "Lernen lernen": "تعلّم كيف تتعلم",
+            "Steuerlehre": "النظرية الضريبية"
         },
         "placeholderImageDescription": "املأ النموذج لإنشاء خطة الدرس"
     },

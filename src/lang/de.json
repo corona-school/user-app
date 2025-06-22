@@ -21,6 +21,7 @@
         "saveChanges": "Änderungen speichern",
         "editSuccess": "Termin erfolgreich geändert",
         "deleteAppointment": "Termin löschen",
+        "addToCalendar": "zum Kalender hinzufügen",
         "goBack": "zur vorherigen Seite",
         "loadPastAppointments": "Vergangene Termine laden",
         "loadedPastAppointments": "Vergangene Termine geladen",
@@ -311,7 +312,8 @@
             "Spanisch": "Spanisch",
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
+            "Lernen lernen": "Lernen lernen",
+            "Steuerlehre": "Steuerlehre"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2441,6 +2443,16 @@
                 "title": "Leider hat das nicht gepasst",
                 "content": "Leider haben wir entschieden, dass das Engagement bei Lern-Fair nicht zu dir passt. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
             }
+        },
+        "appointment": {
+            "joinMeeting": "Videochat beitreten",
+            "joinMeetingHint": "Du kannst das Meeting erst 5 Minuten vor Beginn des Termins starten.",
+            "changeAppointment": "Termin ändern",
+            "cancelAppointment": "Termin absagen",
+            "title": "Termin erstellt ✅",
+            "yourAppointment": "Dein Termin",
+            "optionsDescription": "Du hast doch keine Zeit und möchtest den Termin verschieben oder absagen?",
+            "description": "Du erhältst an deine Email-Adresse eine Terminbestätigung. Du kannst dir den Termin per Klick in deinen Kalender eintragen."
         }
     },
     "contactSupport": {
@@ -2540,7 +2552,8 @@
             "Spanisch": "Spanisch",
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
+            "Lernen lernen": "Lernen lernen",
+            "Steuerlehre": "Steuerlehre"
         }
     },
     "logout": "Abmelden",
