@@ -151,7 +151,8 @@
         "loadPastAppointments": "Geçmiş tarihleri yükle",
         "loadedPastAppointments": "Geçmiş tarihler yüklendi",
         "courseNotPublished": "Bu tarihle ilişkili kurs henüz inceleme için yayınlanmamıştır.",
-        "noNextAppointment": "Bir sonraki randevu yok."
+        "noNextAppointment": "Bir sonraki randevu yok.",
+        "addToCalendar": "Takvime ekle"
     },
     "login": {
         "email": {
@@ -254,7 +255,8 @@
             "Arbeitslehre": "İşgücü teorisi",
             "Ethik": "Etik",
             "Gesundheit": "Sağlık",
-            "Technik": "Teknoloji"
+            "Technik": "Teknoloji",
+            "Steuerlehre": "Vergi teorisi"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2580,7 +2582,8 @@
             "Spanisch": "İspanyolca",
             "Technik": "Teknoloji",
             "Wirtschaft": "Ekonomi",
-            "Lernen lernen": "Öğrenmeyi öğrenmek"
+            "Lernen lernen": "Öğrenmeyi öğrenmek",
+            "Steuerlehre": "Vergi teorisi"
         },
         "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
     },

@@ -21,6 +21,7 @@
         "saveChanges": "Änderungen speichern",
         "editSuccess": "Termin erfolgreich geändert",
         "deleteAppointment": "Termin löschen",
+        "addToCalendar": "zum Kalender hinzufügen",
         "goBack": "zur vorherigen Seite",
         "loadPastAppointments": "Vergangene Termine laden",
         "loadedPastAppointments": "Vergangene Termine geladen",
@@ -311,7 +312,8 @@
             "Spanisch": "Spanisch",
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
+            "Lernen lernen": "Lernen lernen",
+            "Steuerlehre": "Steuerlehre"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2546,7 +2548,8 @@
             "Spanisch": "Spanisch",
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
+            "Lernen lernen": "Lernen lernen",
+            "Steuerlehre": "Steuerlehre"
         }
     },
     "logout": "Abmelden",

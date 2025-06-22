@@ -151,7 +151,8 @@
         "loadPastAppointments": "تحميل التواريخ السابقة",
         "loadedPastAppointments": "تم تحميل التواريخ السابقة",
         "courseNotPublished": "لم يتم بعد إصدار الدورة التدريبية المرتبطة بهذا التاريخ للمراجعة.",
-        "noNextAppointment": "لا يوجد موعد تالي."
+        "noNextAppointment": "لا يوجد موعد تالي.",
+        "addToCalendar": "إضافة إلى التقويم"
     },
     "login": {
         "email": {
@@ -254,7 +255,8 @@
             "Arbeitslehre": "نظرية العمل",
             "Ethik": "الأخلاقيات",
             "Gesundheit": "الصحة",
-            "Technik": "التكنولوجيا"
+            "Technik": "التكنولوجيا",
+            "Steuerlehre": "النظرية الضريبية"
         },
         "states": {
             "bw": "بادن فورتمبيرغ",
@@ -2576,7 +2578,8 @@
             "Spanisch": "الإسبانية",
             "Technik": "التكنولوجيا",
             "Wirtschaft": "اقتصاد",
-            "Lernen lernen": "تعلّم كيف تتعلم"
+            "Lernen lernen": "تعلّم كيف تتعلم",
+            "Steuerlehre": "النظرية الضريبية"
         },
         "placeholderImageDescription": "املأ النموذج لإنشاء خطة الدرس"
     },

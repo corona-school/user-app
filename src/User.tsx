@@ -1,6 +1,6 @@
 import { useLocation, Navigate } from 'react-router-dom';
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
-import useApollo, { ExtendedApolloContext, LFApollo, useRoles } from './hooks/useApollo';
+import useApollo, { ExtendedApolloContext, LFApollo, TEMPORARY_LOGIN, useRoles } from './hooks/useApollo';
 import VerifyEmailModal from './modals/VerifyEmailModal';
 import { useApolloClient } from '@apollo/client';
 import { ERole, Role } from './types/lernfair/User';
@@ -34,10 +34,9 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
 
         // Require the ethics onboarding for newly-screened students
         if (
+            !TEMPORARY_LOGIN &&
             !location.pathname.startsWith('/onboarding/ethics/') &&
-            user &&
-            user.student &&
-            user.student.hasDoneEthicsOnboarding === false /* Important to write it like this, as a null value must not to trigger this redirect */
+            user?.student?.hasDoneEthicsOnboarding === false /* Important to write it like this, as a null value must not to trigger this redirect */
         ) {
             return <Navigate to="/onboarding/ethics/welcome" replace />;
         }

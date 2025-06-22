@@ -151,7 +151,8 @@
         "loadPastAppointments": "Load past lectures ",
         "loadedPastAppointments": "Past lectures loaded",
         "courseNotPublished": "The course associated with this lecture has not yet been released for review.",
-        "noNextAppointment": "No next lecture."
+        "noNextAppointment": "No next lecture.",
+        "addToCalendar": "Add to calendar"
     },
     "login": {
         "email": {
@@ -254,7 +255,8 @@
             "Arbeitslehre": "Labor theory",
             "Ethik": "Ethics",
             "Gesundheit": "Health",
-            "Technik": "Technology"
+            "Technik": "Technology",
+            "Steuerlehre": "Tax theory"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2580,7 +2582,8 @@
             "Spanisch": "Spanish",
             "Technik": "Technology",
             "Wirtschaft": "Economy",
-            "Lernen lernen": "Learning to learn"
+            "Lernen lernen": "Learning to learn",
+            "Steuerlehre": "Tax theory"
         },
         "placeholderImageDescription": "Fill out the form to create a lesson plan"
     },
