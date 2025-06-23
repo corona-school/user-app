@@ -4,7 +4,8 @@ import AvatarStudent from '@/assets/icons/lernfair/avatar_student.svg';
 import { InstructorScreening, MatchWithPupil, MatchWithStudent, TutorScreening, PupilScreening } from '@/types';
 import { Badge } from '@/components/Badge';
 import { useTranslation } from 'react-i18next';
-import { createReadableDate } from '@/helper/general-helper';
+import { formatDate } from '@/Utility';
+import { DateTime } from 'luxon';
 import { Student_Screening_Status_Enum } from '@/gql/graphql';
 
 interface UserCardProps {
@@ -62,7 +63,7 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
                 {user?.tutorScreenings?.some((it) => it.status === Student_Screening_Status_Enum.Success) && <Badge variant="teal">gescreenter Helfer</Badge>}
             </div>
             <div className="flex flex-col w-full mt-1">
-                <Typography variant="sm">Registriert: {createReadableDate(user?.createdAt, true)}</Typography>
+                <Typography variant="sm">Registriert: {formatDate(user?.createdAt, DateTime.DATETIME_MED).substring(0, 13)}</Typography>
             </div>
         </div>
     );

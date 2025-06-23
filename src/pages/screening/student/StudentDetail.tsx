@@ -9,8 +9,7 @@ import { useTranslation } from 'react-i18next';
 import PersonalDetails from './PersonalDetails';
 import { ScreenStudent } from './ScreenStudent';
 import { StudentCourseHistory, StudentMatchingHistory } from './StudentHistory';
-import { createReadableDate } from '@/helper/general-helper';
-
+import { DateTime } from 'luxon';
 interface StudentDetailProps {
     student: StudentForScreening;
     refresh: () => Promise<void>;
@@ -28,7 +27,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                     <span className="font-bold">E-Mail</span>: {student.email}
                 </Typography>
                 <Typography>
-                    <span className="font-bold">Registiert</span>: {createReadableDate(student.createdAt)}
+                    <span className="font-bold">Registiert</span>: {formatDate(student.createdAt, DateTime.DATE_MED)}
                 </Typography>
                 <Typography>
                     <span className="font-bold">Aktiv</span>:{' '}
