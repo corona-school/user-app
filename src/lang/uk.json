@@ -892,7 +892,7 @@
             "faq": "Часті запитання та контакти",
             "manageSessions": "Керування пристроями",
             "certificates": "Сертифікати",
-            "calendarAvailability": "Наявність часу"
+            "calendarPreferences": "Наявність часу"
         },
         "account": {
             "title": "Обліковий запис",
@@ -2100,7 +2100,7 @@
             "referral": "Направлення",
             "certificates": "Сертифікати",
             "lesson": "Планувальник уроків зі штучним інтелектом (бета-версія)",
-            "calendarAvailability": "Наявність часу"
+            "calendarPreferences": "Наявність часу"
         }
     },
     "screening": {

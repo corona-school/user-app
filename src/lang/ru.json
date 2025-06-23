@@ -892,7 +892,7 @@
             "faq": "Вопросы и ответы",
             "manageSessions": "Управление устройствами",
             "certificates": "Сертификаты",
-            "calendarAvailability": "Наличие времени"
+            "calendarPreferences": "Наличие времени"
         },
         "account": {
             "title": "Счет",
@@ -2100,7 +2100,7 @@
             "referral": "Направление",
             "certificates": "Сертификаты",
             "lesson": "Планировщик уроков с искусственным интеллектом (бета-версия)",
-            "calendarAvailability": "Наличие времени"
+            "calendarPreferences": "Наличие времени"
         }
     },
     "screening": {

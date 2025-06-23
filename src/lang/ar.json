@@ -888,7 +888,7 @@
             "faq": "الأسئلة الشائعة والاتصال",
             "manageSessions": "إدارة الأجهزة",
             "certificates": "الشهادات",
-            "calendarAvailability": "الوقت المتاح"
+            "calendarPreferences": "الوقت المتاح"
         },
         "account": {
             "title": "حساب",
@@ -2096,7 +2096,7 @@
             "referral": "الإحالة",
             "certificates": "الشهادات",
             "lesson": "مخطط الدروس مع الذكاء الاصطناعي (تجريبي)",
-            "calendarAvailability": "الوقت المتاح"
+            "calendarPreferences": "الوقت المتاح"
         }
     },
     "screening": {

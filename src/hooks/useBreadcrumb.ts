@@ -23,7 +23,7 @@ export const useBreadcrumbRoutes = () => {
             KNOWLEDGE_CENTER_STUDENTS: { label: t('navigation.label.forStudents'), route: '/knowledge-helper' },
             KNOWLEDGE_CENTER_PUPILS: { label: t('navigation.label.forPupils'), route: '/knowledge-pupil' },
             PROFILE: { label: t('navigation.label.profile'), route: '/profile' },
-            CALENDAR_AVAILABILITY: { label: t('navigation.label.calendarAvailability'), route: '/calendar-availability' },
+            CALENDAR_PREFERENCES: { label: t('navigation.label.calendarPreferences'), route: '/calendar-preferences' },
             MANAGE_SESSIONS: { label: t('navigation.label.manageSessions'), route: '/manage-sessions' },
             HELP_CENTER: { label: t('navigation.label.helpCenter'), route: '/hilfebereich' },
             NEW_EMAIL: { label: t('navigation.label.newEmail'), route: '/new-email' },
@@ -48,7 +48,7 @@ export const useBreadcrumb = () => {
         map.set(/create-appointment/, [routes.APPOINTMENTS, routes.CREATE_APPOINTMENT]);
         map.set(/settings/, [routes.SETTINGS]);
         map.set(/profile/, [routes.SETTINGS, routes.PROFILE]);
-        map.set(/calendar-availability/, [routes.SETTINGS, routes.CALENDAR_AVAILABILITY]);
+        map.set(/calendar-calendar-preferences/, [routes.SETTINGS, routes.CALENDAR_PREFERENCES]);
         map.set(/certificates/, [routes.SETTINGS, routes.CERTIFICATES]);
         map.set(/group/, [routes.COURSES]);
         map.set(/create-course/, [routes.COURSES, routes.CREATE_COURSE]);

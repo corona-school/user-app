@@ -892,7 +892,7 @@
             "faq": "SSS & İletişim",
             "manageSessions": "Cihazları yönetme",
             "certificates": "Sertifikalar",
-            "calendarAvailability": "Zaman uygunluğu"
+            "calendarPreferences": "Zaman uygunluğu"
         },
         "account": {
             "title": "Hesap",
@@ -2100,7 +2100,7 @@
             "referral": "Yönlendirme",
             "certificates": "Sertifikalar",
             "lesson": "Yapay zeka ile ders planlayıcı (Beta)",
-            "calendarAvailability": "Zaman uygunluğu"
+            "calendarPreferences": "Zaman uygunluğu"
         }
     },
     "screening": {

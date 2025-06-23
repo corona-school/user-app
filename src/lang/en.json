@@ -892,7 +892,7 @@
             "faq": "FAQ & Contact",
             "manageSessions": "Manage devices",
             "certificates": "Certificates",
-            "calendarAvailability": "Time availability"
+            "calendarPreferences": "Time availability"
         },
         "account": {
             "title": "Account",
@@ -2100,7 +2100,7 @@
             "referral": "Referral",
             "certificates": "Certificates",
             "lesson": "Lesson planner with AI (Beta)",
-            "calendarAvailability": "Time availability"
+            "calendarPreferences": "Time availability"
         }
     },
     "screening": {

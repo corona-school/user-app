@@ -13,18 +13,16 @@ import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-const GET_CALENDAR_AVAILABILITY_QUERY = gql(`
-    query GetCalendarAvailability {
+const GET_CALENDAR_PREFERENCES_QUERY = gql(`
+    query GetCalendarPreferences {
         me {
-            pupil {
-                calendarPreferences
-            }
+            calendarPreferences
         }
     }
 `);
 
-const UPDATE_CALENDAR_AVAILABILITY_MUTATION = gql(`
-    mutation UpdateCalendarAvailability($calendarPreferences: CalendarPreferences!) {
+const UPDATE_CALENDAR_PREFERENCES_MUTATION = gql(`
+    mutation UpdateCalendarPreferences($calendarPreferences: CalendarPreferences!) {
         meUpdate(update:  {
             pupil: {
                 calendarPreferences: $calendarPreferences
@@ -33,15 +31,15 @@ const UPDATE_CALENDAR_AVAILABILITY_MUTATION = gql(`
     }
 `);
 
-export const CalendarAvailabilityPage = () => {
+const CalendarPreferencesPage = () => {
     const [calendarPreferences, setCalendarPreferences] = useState<CalendarPreferences>();
-    const { data, loading } = useQuery(GET_CALENDAR_AVAILABILITY_QUERY);
-    const [updateCalendarAvailability, { loading: updating }] = useMutation(UPDATE_CALENDAR_AVAILABILITY_MUTATION);
+    const { data, loading } = useQuery(GET_CALENDAR_PREFERENCES_QUERY);
+    const [updateCalendarPreferences, { loading: updating }] = useMutation(UPDATE_CALENDAR_PREFERENCES_MUTATION);
     const { t } = useTranslation();
 
     useEffect(() => {
         if (!loading && data) {
-            setCalendarPreferences(data?.me?.pupil?.calendarPreferences ?? {});
+            setCalendarPreferences(data?.me?.calendarPreferences ?? {});
         }
     }, [data, loading]);
 
@@ -50,7 +48,7 @@ export const CalendarAvailabilityPage = () => {
             return;
         }
         try {
-            await updateCalendarAvailability({
+            await updateCalendarPreferences({
                 variables: {
                     calendarPreferences: calendarPreferences,
                 },
@@ -58,7 +56,7 @@ export const CalendarAvailabilityPage = () => {
             toast.success(t('changesWereSaved'));
         } catch (error: any) {
             toast.error(t('error'));
-            logError('calendarAvailability', error?.message, error);
+            logError('calendarPreferences', error?.message, error);
         }
     };
 
@@ -75,7 +73,7 @@ export const CalendarAvailabilityPage = () => {
         >
             <Breadcrumb />
             <Typography variant="h4" className="mb-2">
-                {t('navigation.label.calendarAvailability')}
+                {t('navigation.label.calendarPreferences')}
             </Typography>
             <div>
                 <WeeklyAvailabilitySelector
@@ -90,3 +88,5 @@ export const CalendarAvailabilityPage = () => {
         </WithNavigation>
     );
 };
+
+export default CalendarPreferencesPage;

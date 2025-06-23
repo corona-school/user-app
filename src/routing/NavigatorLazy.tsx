@@ -83,7 +83,7 @@ import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/Ethics
 import Referrals from '@/pages/Referrals';
 import CertificatesPage from '@/pages/student/Certificates';
 import { HOMEWORK_HELP_COURSE } from '@/config';
-import { CalendarAvailabilityPage } from '@/pages/CalendarAvailabilityPage';
+import CalendarPreferencesPage from '@/pages/CalendarPreferencesPage';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -532,10 +532,10 @@ export default function NavigatorLazy() {
                 }
             />
             <Route
-                path="/calendar-availability"
+                path="/calendar-preferences"
                 element={
                     <RequireAuth>
-                        <CalendarAvailabilityPage />
+                        <CalendarPreferencesPage />
                     </RequireAuth>
                 }
             />
