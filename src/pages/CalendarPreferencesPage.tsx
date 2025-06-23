@@ -24,9 +24,7 @@ const GET_CALENDAR_PREFERENCES_QUERY = gql(`
 const UPDATE_CALENDAR_PREFERENCES_MUTATION = gql(`
     mutation UpdateCalendarPreferences($calendarPreferences: CalendarPreferences!) {
         meUpdate(update:  {
-            pupil: {
-                calendarPreferences: $calendarPreferences
-            }
+            calendarPreferences: $calendarPreferences
         })
     }
 `);
