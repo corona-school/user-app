@@ -48,7 +48,7 @@ export const useBreadcrumb = () => {
         map.set(/create-appointment/, [routes.APPOINTMENTS, routes.CREATE_APPOINTMENT]);
         map.set(/settings/, [routes.SETTINGS]);
         map.set(/profile/, [routes.SETTINGS, routes.PROFILE]);
-        map.set(/calendar-calendar-preferences/, [routes.SETTINGS, routes.CALENDAR_PREFERENCES]);
+        map.set(/calendar-preferences/, [routes.SETTINGS, routes.CALENDAR_PREFERENCES]);
         map.set(/certificates/, [routes.SETTINGS, routes.CERTIFICATES]);
         map.set(/group/, [routes.COURSES]);
         map.set(/create-course/, [routes.COURSES, routes.CREATE_COURSE]);
