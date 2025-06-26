@@ -2,8 +2,11 @@ import { WeeklyAvailability } from '@/gql/graphql';
 import { cn } from '@/lib/Tailwind';
 import { useTranslation } from 'react-i18next';
 import { Checkbox } from './Checkbox';
-import { Day, DAYS, TIME_SLOTS } from '@/Utility';
+import { Day, DAYS, fromMinutesOfTheDayToFormat, TIME_SLOTS } from '@/Utility';
 import { Skeleton } from './Skeleton';
+import { Button } from './Button';
+import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
+import { useRef } from 'react';
 
 interface WeeklyAvailabilityProps {
     availability?: WeeklyAvailability;
@@ -13,7 +16,7 @@ interface WeeklyAvailabilityProps {
 
 const fromTimeSlotToValues = (timeSlot: string) => {
     const [from, to] = timeSlot.split('-');
-    return { from, to };
+    return { from: Number(from), to: Number(to) };
 };
 
 export const WeeklyAvailabilitySelector = ({
@@ -48,14 +51,15 @@ export const WeeklyAvailabilitySelector = ({
     };
 
     const handleCellClick = (row: string, col: string) => {
+        console.log({ row, col });
         if (!availability) return;
 
         const { from, to } = fromTimeSlotToValues(row);
         const daySlots = availability[col as Day] || [];
 
         const wasSelected = daySlots.some((slot) => slot.from === from && slot.to === to);
-
         const newDaySlots = wasSelected ? daySlots.filter((slot) => !(slot.from === from && slot.to === to)) : [...daySlots, { from, to }];
+        console.log({ availability, daySlots, wasSelected, from, to, newDaySlots });
         onChange({ ...availability, [col as Day]: newDaySlots });
     };
 
@@ -84,49 +88,65 @@ export const WeeklyAvailabilitySelector = ({
     };
 
     const formatTimeSlot = (timeSlot: string) => {
+        if (!timeSlot) return '';
+
         const { from, to } = fromTimeSlotToValues(timeSlot);
-        return t('appointment.clock.startToEnd', { start: from.split(':')[0], end: to.split(':')[0] });
+        return t('appointment.clock.startToEndShort', { start: fromMinutesOfTheDayToFormat(from, 'HH'), end: fromMinutesOfTheDayToFormat(to, 'HH') });
+    };
+
+    const gridRef = useRef<HTMLDivElement>(null);
+    const handleOnScroll = (to: 'start' | 'end') => {
+        gridRef.current?.scrollTo({ behavior: 'smooth', left: to === 'start' ? 0 : gridRef.current.scrollWidth });
     };
 
     return (
-        <div className="bg-background">
-            <div className="inline-block overflow-hidden">
+        <div className="bg-background overflow-x-hidden">
+            <div className="md:hidden flex gap-x-2 justify-end mb-4">
+                <Button onClick={() => handleOnScroll('start')} size="icon" variant="outline" className="rounded-full border-primary-lighter">
+                    <IconChevronLeft />
+                </Button>
+                <Button onClick={() => handleOnScroll('end')} size="icon" variant="outline" className="rounded-full border-primary-lighter">
+                    <IconChevronRight />
+                </Button>
+            </div>
+            <div className="block overflow-x-scroll" ref={gridRef}>
                 {/* Header row with weekdays */}
-                <div className="grid grid-cols-8 bg-white gap-1 mb-1">
+                <div className="grid grid-cols-[100px_repeat(7,40px)] bg-white gap-y-1 gap-x-2 mb-1">
                     {/* Empty corner cell */}
-                    <div className="p-3 bg-white"></div>
+                    <div className="w-[100px] h-10 bg-white flex items-center justify-center">{t('time')}</div>
                     {DAYS.map((day) => (
                         <Skeleton key={day} loading={isLoading}>
                             <div
                                 role="button"
                                 tabIndex={0}
                                 onClick={() => handleColumnClick(day)}
-                                className={'p-3 rounded-md text-center transition-colors flex items-center justify-center gap-1 text-primary'}
+                                className={cn(
+                                    'size-10 rounded-md text-center bg-primary-lighter transition-colors flex items-center justify-center gap-y-1 gap-x-2 text-primary',
+                                    {
+                                        'bg-green-200 text-green-800': isColumnSelected(day),
+                                    }
+                                )}
                             >
-                                <span>{weekdaysLabels[day]}</span>
-                                <Checkbox checked={isColumnSelected(day)} className={cn('size-4', isColumnSelected(day) ? 'bg-primary' : 'bg-white')} />
+                                <span>{weekdaysLabels[day].substring(0, 2)}</span>
                             </div>
                         </Skeleton>
                     ))}
                 </div>
 
                 {/* Time slots and cells */}
-                <div className="flex flex-col gap-1">
+                <div className="flex flex-col gap-y-1 gap-x-2">
                     {TIME_SLOTS.map((timeSlot) => (
-                        <div key={`time-slot-${timeSlot}`} className="grid grid-cols-8 gap-1">
+                        <div key={`time-slot-${timeSlot}`} className="grid grid-cols-[100px_repeat(7,40px)] gap-y-1 gap-x-2">
                             {/* Time slot header */}
                             <Skeleton key={timeSlot} loading={isLoading}>
                                 <div
                                     onClick={() => handleRowClick(timeSlot)}
                                     className={cn(
-                                        'p-3 rounded-md text-center bg-primary-lighter text-primary transition-colors flex items-center justify-center gap-1',
-                                        isRowSelected(timeSlot) ? 'bg-primary text-white' : ''
+                                        'w-[100px] h-10 rounded-md text-center bg-primary-lighter text-primary transition-colors flex items-center justify-center gap-y-1 gap-x-2 cursor-pointer',
+                                        { 'bg-green-200 text-green-800': isRowSelected(timeSlot) }
                                     )}
                                 >
-                                    <Checkbox
-                                        checked={isRowSelected(timeSlot)}
-                                        className={cn('size-4', isRowSelected(timeSlot) ? 'border-white' : 'border-primary')}
-                                    />
+                                    {formatTimeSlot(timeSlot)}
                                 </div>
                             </Skeleton>
                             {/* Schedule cells */}
@@ -137,12 +157,16 @@ export const WeeklyAvailabilitySelector = ({
                                         tabIndex={0}
                                         key={`${timeSlot}-${day}`}
                                         onClick={() => handleCellClick(timeSlot, day)}
-                                        className={cn(
-                                            'p-3 rounded-md text-center bg-primary-lighter text-primary transition-colors',
-                                            isCellSelected(timeSlot, day) ? 'bg-primary text-white' : ''
-                                        )}
+                                        className={cn('size-10 rounded-md transition-colors flex items-center justify-center group')}
                                     >
-                                        {formatTimeSlot(timeSlot)}
+                                        <Checkbox
+                                            checked={isCellSelected(timeSlot, day)}
+                                            className={cn(
+                                                'size-4 data-[state=checked]:bg-green-500',
+                                                isCellSelected(timeSlot, day) ? 'border-transparent' : 'border-primary group-hover:bg-green-200'
+                                            )}
+                                            checkClasses={'size-3'}
+                                        />
                                     </div>
                                 </Skeleton>
                             ))}
