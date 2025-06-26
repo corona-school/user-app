@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Clock",
-            "nowToEnd": "Now - {{end}} Clock"
+            "nowToEnd": "Now - {{end}} Clock",
+            "startToEndShort": "{{start}}-{{end}} clock"
         },
         "deleteModal": {
             "title": "Are you sure you want to delete this lecture ?",

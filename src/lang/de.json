@@ -54,6 +54,7 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Uhr",
+            "startToEndShort": "{{start}}–{{end}} Uhr",
             "nowToEnd": "Jetzt - {{end}} Uhr"
         },
         "deleteModal": {

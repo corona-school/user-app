@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Годинник",
-            "nowToEnd": "Зараз - {{end}} Годинник."
+            "nowToEnd": "Зараз - {{end}} Годинник.",
+            "startToEndShort": "{{start}}-{{end}} годинник"
         },
         "deleteModal": {
             "title": "Ви впевнені, що хочете видалити цю зустріч?",

@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Saat",
-            "nowToEnd": "Şimdi - {{end}} Saat"
+            "nowToEnd": "Şimdi - {{end}} Saat",
+            "startToEndShort": "{{start}}-{{end}} saat"
         },
         "deleteModal": {
             "title": "Bu randevuyu silmek istediğinizden emin misiniz?",

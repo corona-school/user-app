@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Часы",
-            "nowToEnd": "Сейчас - {{end}} Часы"
+            "nowToEnd": "Сейчас - {{end}} Часы",
+            "startToEndShort": "{{start}}-{{end}} часы"
         },
         "deleteModal": {
             "title": "Вы уверены, что хотите удалить эту встречу?",
