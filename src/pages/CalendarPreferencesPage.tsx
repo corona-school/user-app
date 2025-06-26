@@ -70,19 +70,24 @@ const CalendarPreferencesPage = () => {
             }
         >
             <Breadcrumb />
-            <Typography variant="h4" className="mb-2">
+            <Typography variant="h4" className="mb-5">
                 {t('navigation.label.calendarPreferences')}
             </Typography>
-            <div>
+            <div className="md:w-fit">
                 <WeeklyAvailabilitySelector
                     onChange={(weeklyAvailability) => setCalendarPreferences({ weeklyAvailability })}
                     availability={calendarPreferences?.weeklyAvailability}
                     isLoading={loading}
                 />
+                <Button
+                    onClick={handleOnSave}
+                    isLoading={updating}
+                    disabled={loading || !calendarPreferences}
+                    className="mt-4 md:w-[165px] md:block md:ml-auto w-full"
+                >
+                    {t('done')}!
+                </Button>
             </div>
-            <Button onClick={handleOnSave} isLoading={updating} disabled={loading || !calendarPreferences} className="mt-4 md:w-[350px] w-full">
-                {t('save')}
-            </Button>
         </WithNavigation>
     );
 };
