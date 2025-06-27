@@ -8,7 +8,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../gql';
 import useApollo, { QueryResult, useUserType } from '../hooks/useApollo';
-import { Dissolve_Reason, Pupil, Student } from '../gql/graphql';
+import { DayAvailabilitySlot, Dissolve_Reason, Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import DissolveMatchModal from '../modals/DissolveMatchModal';
@@ -26,6 +26,9 @@ import ReportMatchModal from '../modals/ReportMatchModal';
 import { ScrollDirection } from './Appointments';
 import { Typography } from '@/components/Typography';
 import { MatchAvailability } from '@/components/availability/MatchAvailability';
+import { Day, DAYS } from '@/Utility';
+import ConfirmationModal from '@/modals/ConfirmationModal';
+import i18n from 'i18next';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -124,6 +127,8 @@ const SingleMatch = () => {
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
+    const [isConfirmCreateAppointmentModalOpen, setIsConfirmCreateAppointmentModalOpen] = useState(false);
+    const [selectedDateTime, setSelectedDateTime] = useState<DateTime | null>(null);
     const { client } = useApollo();
 
     const {
@@ -137,31 +142,26 @@ const SingleMatch = () => {
         },
     });
 
-    type Appointments = QueryResult<typeof appointmentsQuery>['match']['appointments'];
+    const {
+        data: appointmentsData,
+        refetch: refetchAppointments,
+        loading: isLoadingAppointments,
+    } = useQuery(appointmentsQuery, {
+        variables: {
+            matchId,
+            take,
+            skip: 0,
+        },
+    });
 
-    const [isLoadingAppointments, setIsLoadingAppointments] = useState(true);
+    type Appointments = QueryResult<typeof appointmentsQuery>['match']['appointments'];
     const [appointments, setAppointments] = useState<Appointments>([]);
 
-    const loadMatchAppointments = useCallback(
-        async function loadMatchAppointments() {
-            setIsLoadingAppointments(true);
-            const result = await client.query({
-                query: appointmentsQuery,
-                variables: {
-                    matchId,
-                    take,
-                    skip: 0,
-                },
-            });
-            setAppointments(result.data.match.appointments);
-            setIsLoadingAppointments(false);
-        },
-        [setIsLoadingAppointments, setAppointments, client, matchId]
-    );
-
     useEffect(() => {
-        loadMatchAppointments();
-    }, [loadMatchAppointments]);
+        if (appointmentsData?.match?.appointments) {
+            setAppointments(appointmentsData.match.appointments);
+        }
+    }, [appointmentsData]);
 
     const [createMatcheeChat] = useMutation(matchChatMutation);
 
@@ -174,8 +174,8 @@ const SingleMatch = () => {
     );
 
     const refetch = useCallback(async () => {
-        await Promise.all([refetchMatchData(), loadMatchAppointments()]);
-    }, [refetchMatchData, loadMatchAppointments]);
+        await Promise.all([refetchMatchData(), refetchAppointments()]);
+    }, [refetchMatchData, refetchAppointments]);
 
     const totalAppointmentsCount = data?.match.appointmentsCount || 0;
     const dissolve = useCallback(
@@ -201,6 +201,21 @@ const SingleMatch = () => {
 
     const goBackToMatch = async () => {
         await refetch();
+        setCreateAppointment(false);
+        setSelectedDateTime(null);
+    };
+
+    const handleOnSlotClick = (day: Day, slot: DayAvailabilitySlot) => {
+        const weekday = DAYS.indexOf(day) + 1;
+        const today = DateTime.now();
+        const daysUntilTarget = (weekday + 7 - today.weekday) % 7 || 7;
+        setSelectedDateTime(today.startOf('day').plus({ days: daysUntilTarget, minutes: slot.from }));
+        setIsConfirmCreateAppointmentModalOpen(true);
+    };
+
+    const handleOnCancelAppointmentCreation = async () => {
+        setSelectedDateTime(null);
+        await refetchAppointments();
         setCreateAppointment(false);
     };
 
@@ -279,13 +294,15 @@ const SingleMatch = () => {
                         <Stack space={space['1']} paddingX={space['1.5']} mb={space[1.5]}>
                             {createAppointment ? (
                                 <AppointmentCreation
-                                    back={() => setCreateAppointment(false)}
+                                    back={handleOnCancelAppointmentCreation}
                                     courseOrMatchId={matchId}
                                     isCourse={false}
                                     appointmentsTotal={totalAppointmentsCount}
                                     navigateToMatch={async () => await goBackToMatch()}
                                     overrideMeetingLink={overrideMeetingLink}
                                     setIsLoading={setIsLoading}
+                                    defaultDate={selectedDateTime?.toISODate()}
+                                    defaultTime={selectedDateTime?.toFormat('HH:mm')}
                                 />
                             ) : (
                                 <>
@@ -361,7 +378,11 @@ const SingleMatch = () => {
                                         <Typography variant="h4" className="h4 mb-4">
                                             {t('matching.availability.title')}
                                         </Typography>
-                                        <MatchAvailability matchAvailability={data?.match?.matchWeeklyAvailability} isLoading={false} />
+                                        <MatchAvailability
+                                            matchAvailability={data?.match?.matchWeeklyAvailability}
+                                            onSlotClick={userType === 'student' ? handleOnSlotClick : undefined}
+                                            isLoading={false}
+                                        />
                                     </div>
                                 </>
                             )}
@@ -386,6 +407,20 @@ const SingleMatch = () => {
                         isOpen={showReportModal}
                     />
                 )}
+                <ConfirmationModal
+                    headline={t('matching.availability.createAppointmentModal.title')}
+                    confirmButtonText={t('yes')}
+                    cancelButtonText={t('back')}
+                    description={
+                        selectedDateTime && <Typography>{selectedDateTime.toFormat('cccc, dd. LLLL yyyy HH:mm', { locale: i18n.language })}</Typography>
+                    }
+                    onConfirm={() => {
+                        setCreateAppointment(true);
+                        setIsConfirmCreateAppointmentModalOpen(false);
+                    }}
+                    isOpen={isConfirmCreateAppointmentModalOpen}
+                    onOpenChange={setIsConfirmCreateAppointmentModalOpen}
+                />
             </WithNavigation>
         </AsNavigationItem>
     );
