@@ -1669,6 +1669,11 @@
             "title": "Proof of honorary office",
             "text": "You can have your activity confirmed at any time and then download the certificate.",
             "button": "About the certificates"
+        },
+        "availability": {
+            "title": "Availability",
+            "sharedTimeSlots": "{{count}} common time slot",
+            "otherTimeSlots": "{{count}} further time slots"
         }
     },
     "course": {

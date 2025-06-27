@@ -1454,6 +1454,11 @@
             "appointmentsHeadline": "Termine",
             "createAppointment": "Termin erstellen"
         },
+        "availability": {
+            "title": "Verfügbarkeit",
+            "sharedTimeSlots": "{{count}} gemeinsame Zeitfenster",
+            "otherTimeSlots": "{{count}} weitere Zeitfenster"
+        },
         "blocker": {
             "header": "Nachhilfe",
             "title": "Unterstützung anfragen",

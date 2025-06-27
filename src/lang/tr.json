@@ -1669,6 +1669,11 @@
             "title": "Onur kanıtı",
             "text": "Faaliyetinizi istediğiniz zaman onaylatabilir ve ardından sertifikayı indirebilirsiniz.",
             "button": "Sertifikalara"
+        },
+        "availability": {
+            "title": "Kullanılabilirlik",
+            "sharedTimeSlots": "{{count}} ortak zaman aralığı",
+            "otherTimeSlots": "{{count}} daha fazla zaman dilimi"
         }
     },
     "course": {

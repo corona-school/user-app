@@ -1665,6 +1665,11 @@
             "title": "إثبات الشرف",
             "text": "يمكنك تأكيد نشاطك في أي وقت ثم تنزيل الشهادة.",
             "button": "للشهادات"
+        },
+        "availability": {
+            "title": "التوفر",
+            "sharedTimeSlots": "{{count}} فترة زمنية مشتركة",
+            "otherTimeSlots": "{{count}} فترات زمنية أخرى"
         }
     },
     "course": {
