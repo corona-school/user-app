@@ -61,7 +61,6 @@ const CalendarPreferencesPage = () => {
     return (
         <WithNavigation
             previousFallbackRoute="/settings"
-            headerTitle={t('sessionManager.title')}
             headerLeft={
                 <div className="flex items-center flex-row">
                     <SwitchLanguageButton />
