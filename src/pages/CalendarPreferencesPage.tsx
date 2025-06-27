@@ -78,14 +78,11 @@ const CalendarPreferencesPage = () => {
                     availability={calendarPreferences?.weeklyAvailability}
                     isLoading={loading}
                 />
-                <Button
-                    onClick={handleOnSave}
-                    isLoading={updating}
-                    disabled={loading || !calendarPreferences}
-                    className="mt-4 md:w-[165px] md:block md:ml-auto w-full"
-                >
-                    {t('done')}!
-                </Button>
+                <div className="mt-4 md:w-[165px] md:block md:ml-auto w-full">
+                    <Button onClick={handleOnSave} isLoading={updating} disabled={loading || !calendarPreferences} className="w-full">
+                        {t('done')}!
+                    </Button>
+                </div>
             </div>
         </WithNavigation>
     );
