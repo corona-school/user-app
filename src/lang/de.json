@@ -1457,7 +1457,10 @@
         "availability": {
             "title": "Verfügbarkeit",
             "sharedTimeSlots": "{{count}} gemeinsame Zeitfenster",
-            "otherTimeSlots": "{{count}} weitere Zeitfenster"
+            "otherTimeSlots": "{{count}} weitere Zeitfenster",
+            "createAppointmentModal": {
+                "title": "Möchtest du für dieses Zeitfenster einen Termin erstellen?"
+            }
         },
         "blocker": {
             "header": "Nachhilfe",

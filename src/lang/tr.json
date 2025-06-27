@@ -1673,7 +1673,10 @@
         "availability": {
             "title": "Kullanılabilirlik",
             "sharedTimeSlots": "{{count}} ortak zaman aralığı",
-            "otherTimeSlots": "{{count}} daha fazla zaman dilimi"
+            "otherTimeSlots": "{{count}} daha fazla zaman dilimi",
+            "createAppointmentModal": {
+                "title": "Bu zaman aralığı için bir randevu oluşturmak ister misiniz?"
+            }
         }
     },
     "course": {

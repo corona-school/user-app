@@ -1673,7 +1673,10 @@
         "availability": {
             "title": "Availability",
             "sharedTimeSlots": "{{count}} common time slot",
-            "otherTimeSlots": "{{count}} further time slots"
+            "otherTimeSlots": "{{count}} further time slots",
+            "createAppointmentModal": {
+                "title": "Would you like to create a lecture for this time slot?"
+            }
         }
     },
     "course": {
