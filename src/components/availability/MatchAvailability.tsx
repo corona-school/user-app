@@ -78,7 +78,7 @@ export const MatchAvailability = ({
             </div>
             <div className="grid grid-cols-[repeat(3,100px)] md:grid-cols-[repeat(4,100px)] lg:grid-cols-[repeat(7,100px)] bg-white gap-y-1 gap-x-4 mb-1">
                 {DAYS.map((day) => (
-                    <Skeleton key={day} loading={isLoading}>
+                    <Skeleton key={day} isLoading={isLoading}>
                         <div className="flex flex-col gap-y-1">
                             {/* Header row with weekdays */}
                             <div
@@ -90,7 +90,7 @@ export const MatchAvailability = ({
                             </div>
                             {/* Slots cells */}
                             {matchAvailability[day].map((slot) => (
-                                <Skeleton key={`schedule-cell-${fromSlotToKey(slot)}-${day}`} loading={isLoading}>
+                                <Skeleton key={`schedule-cell-${fromSlotToKey(slot)}-${day}`} isLoading={isLoading}>
                                     <div
                                         onClick={() => onSlotClick && onSlotClick(day, slot)}
                                         className={cn(

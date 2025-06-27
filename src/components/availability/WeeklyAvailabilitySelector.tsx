@@ -113,7 +113,7 @@ export const WeeklyAvailabilitySelector = ({
                     {/* Empty corner cell */}
                     <div className="w-[100px] h-10 bg-white flex items-center justify-center">{t('time')}</div>
                     {DAYS.map((day) => (
-                        <Skeleton key={day} loading={isLoading}>
+                        <Skeleton key={day} isLoading={isLoading}>
                             <div
                                 role="button"
                                 tabIndex={0}
@@ -136,7 +136,7 @@ export const WeeklyAvailabilitySelector = ({
                     {TIME_SLOTS.map((timeSlot) => (
                         <div key={`time-slot-${timeSlot}`} className="grid grid-cols-[100px_repeat(7,40px)] gap-y-1 gap-x-2">
                             {/* Time slot header */}
-                            <Skeleton key={timeSlot} loading={isLoading}>
+                            <Skeleton key={timeSlot} isLoading={isLoading}>
                                 <div
                                     onClick={() => handleRowClick(timeSlot)}
                                     className={cn(
@@ -149,7 +149,7 @@ export const WeeklyAvailabilitySelector = ({
                             </Skeleton>
                             {/* Schedule cells */}
                             {DAYS.map((day) => (
-                                <Skeleton key={`schedule-cell-${timeSlot}-${day}`} loading={isLoading}>
+                                <Skeleton key={`schedule-cell-${timeSlot}-${day}`} isLoading={isLoading}>
                                     <div
                                         role="button"
                                         tabIndex={0}

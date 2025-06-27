@@ -4,14 +4,14 @@ import React from 'react';
 
 interface SkeletonProps {
     className?: string;
-    loading?: boolean;
+    isLoading?: boolean;
     children: React.ReactNode;
 }
 
 export const Skeleton = (props: SkeletonProps) => {
-    const { children, className, loading, ...rest } = props;
+    const { children, className, isLoading, ...rest } = props;
 
-    if (!loading) return <>{children}</>;
+    if (!isLoading) return <>{children}</>;
 
     const Tag = React.isValidElement(children) ? Root : 'span';
 
