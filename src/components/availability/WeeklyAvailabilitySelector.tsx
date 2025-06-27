@@ -51,7 +51,6 @@ export const WeeklyAvailabilitySelector = ({
     };
 
     const handleCellClick = (row: string, col: string) => {
-        console.log({ row, col });
         if (!availability) return;
 
         const { from, to } = fromTimeSlotToValues(row);
@@ -59,7 +58,6 @@ export const WeeklyAvailabilitySelector = ({
 
         const wasSelected = daySlots.some((slot) => slot.from === from && slot.to === to);
         const newDaySlots = wasSelected ? daySlots.filter((slot) => !(slot.from === from && slot.to === to)) : [...daySlots, { from, to }];
-        console.log({ availability, daySlots, wasSelected, from, to, newDaySlots });
         onChange({ ...availability, [col as Day]: newDaySlots });
     };
 
