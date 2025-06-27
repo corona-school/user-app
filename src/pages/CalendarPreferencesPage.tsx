@@ -3,7 +3,7 @@ import { Button } from '@/components/Button';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { Typography } from '@/components/Typography';
-import { WeeklyAvailabilitySelector } from '@/components/WeeklyAvailabilitySelector';
+import { WeeklyAvailabilitySelector } from '@/components/availability/WeeklyAvailabilitySelector';
 import WithNavigation from '@/components/WithNavigation';
 import { gql } from '@/gql';
 import { CalendarPreferences } from '@/gql/graphql';

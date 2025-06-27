@@ -1,10 +1,10 @@
 import { WeeklyAvailability } from '@/gql/graphql';
 import { cn } from '@/lib/Tailwind';
 import { useTranslation } from 'react-i18next';
-import { Checkbox } from './Checkbox';
+import { Checkbox } from '../Checkbox';
 import { Day, DAYS, fromMinutesOfTheDayToFormat, TIME_SLOTS } from '@/Utility';
-import { Skeleton } from './Skeleton';
-import { Button } from './Button';
+import { Skeleton } from '../Skeleton';
+import { Button } from '../Button';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useRef } from 'react';
 
@@ -14,7 +14,7 @@ interface WeeklyAvailabilityProps {
     isLoading?: boolean;
 }
 
-const fromTimeSlotToValues = (timeSlot: string) => {
+export const fromTimeSlotToValues = (timeSlot: string) => {
     const [from, to] = timeSlot.split('-');
     return { from: Number(from), to: Number(to) };
 };
