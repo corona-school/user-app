@@ -94,8 +94,9 @@ export const MatchAvailability = ({
                                     <div
                                         onClick={() => onSlotClick && onSlotClick(day, slot)}
                                         className={cn(
-                                            'w-[100px] h-10 rounded-md text-center bg-primary-lighter text-primary transition-colors flex items-center justify-center gap-y-1 gap-x-2 cursor-pointer',
-                                            { 'bg-green-200 text-green-800': isCellHighlighted(day, slot) }
+                                            'w-[100px] h-10 rounded-md text-center bg-primary-lighter text-primary transition-colors flex items-center justify-center gap-y-1 gap-x-2',
+                                            { 'bg-green-200 text-green-800': isCellHighlighted(day, slot) },
+                                            { 'cursor-pointer': !!onSlotClick }
                                         )}
                                     >
                                         {formatTimeSlot(slot)}
