@@ -73,9 +73,7 @@ import { SystemNotifications } from '../components/notifications/preferences/Sys
 import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
 import ForStudents from '../pages/ForStudents';
 import ForPupils from '../pages/ForPupils';
-import { useBreakpointValue, Stack } from 'native-base';
-import SwitchLanguageButton from '../components/SwitchLanguageButton';
-import NotificationAlert from '../components/notifications/NotificationAlert';
+import { useBreakpointValue } from 'native-base';
 import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
@@ -85,6 +83,7 @@ import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/Ethics
 import Referrals from '@/pages/Referrals';
 import CertificatesPage from '@/pages/student/Certificates';
 import { HOMEWORK_HELP_COURSE } from '@/config';
+import CalendarPreferencesPage from '@/pages/CalendarPreferencesPage';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -529,6 +528,14 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SessionManager />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/calendar-preferences"
+                element={
+                    <RequireAuth>
+                        <CalendarPreferencesPage />
                     </RequireAuth>
                 }
             />

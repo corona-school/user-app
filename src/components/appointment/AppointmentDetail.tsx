@@ -81,10 +81,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         return DateTime.fromISO(appointment.start).toMillis() + appointment.duration * 60000 < DateTime.now().toMillis();
     }, [appointment.duration, appointment.start]);
 
-    const handleCancelClick = useCallback(() => {
+    const handleCancelClick = useCallback(async () => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
-        cancelAppointment({ variables: { appointmentId: appointment.id } });
+        await cancelAppointment({ variables: { appointmentId: appointment.id } });
         navigate(-1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);

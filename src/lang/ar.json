@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - ساعة {{end}}",
-            "nowToEnd": "الآن - {{end}} شاهد"
+            "nowToEnd": "الآن - {{end}} شاهد",
+            "startToEndShort": "{{start}}-{{end}} الساعة"
         },
         "deleteModal": {
             "title": "هل أنت متأكد من رغبتك في حذف هذا الحدث؟",
@@ -887,7 +888,8 @@
             "push": "رسائل التطبيق",
             "faq": "الأسئلة الشائعة والاتصال",
             "manageSessions": "إدارة الأجهزة",
-            "certificates": "الشهادات"
+            "certificates": "الشهادات",
+            "calendarPreferences": "الوقت المتاح"
         },
         "account": {
             "title": "حساب",
@@ -1663,6 +1665,14 @@
             "title": "إثبات الشرف",
             "text": "يمكنك تأكيد نشاطك في أي وقت ثم تنزيل الشهادة.",
             "button": "للشهادات"
+        },
+        "availability": {
+            "title": "التوفر",
+            "sharedTimeSlots": "{{count}} فترة زمنية مشتركة",
+            "otherTimeSlots": "{{count}} فترات زمنية أخرى",
+            "createAppointmentModal": {
+                "title": "هل ترغب في إنشاء موعد لهذه الفترة الزمنية؟"
+            }
         }
     },
     "course": {
@@ -2094,7 +2104,8 @@
             "editCourse": "تحرير الدورة التدريبية",
             "referral": "الإحالة",
             "certificates": "الشهادات",
-            "lesson": "مخطط الدروس مع الذكاء الاصطناعي (تجريبي)"
+            "lesson": "مخطط الدروس مع الذكاء الاصطناعي (تجريبي)",
+            "calendarPreferences": "الوقت المتاح"
         }
     },
     "screening": {
@@ -2631,5 +2642,14 @@
             "title": "الإثبات الفردي"
         },
         "title": "شهاداتي"
+    },
+    "weekdays": {
+        "monday": "الإثنين",
+        "tuesday": "الثلاثاء",
+        "wednesday": "الأربعاء",
+        "thursday": "الخميس",
+        "friday": "الجمعة",
+        "saturday": "يوم السبت",
+        "sunday": "يوم الأحد"
     }
 }

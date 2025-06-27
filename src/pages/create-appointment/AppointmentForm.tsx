@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { useCreateAppointment } from '../../context/AppointmentContext';
 import { FormReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { Dispatch, SetStateAction, useCallback, useState } from 'react';
+import { Dispatch, SetStateAction, useCallback, useEffect, useState } from 'react';
 import { FormErrors, VideoChatTypeEnum } from './AppointmentCreation';
 import { isDateToday } from '../../helper/appointment-helper';
 import { DateTime } from 'luxon';
@@ -21,8 +21,20 @@ type FormProps = {
     setVideoChatType: Dispatch<SetStateAction<VideoChatTypeEnum>>;
     videoChatType: string;
     isCourse: boolean;
+    defaultDate?: string;
+    defaultTime?: string;
 };
-const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeetingLink, onSetTime, isCourse, setVideoChatType, videoChatType }) => {
+const AppointmentForm: React.FC<FormProps> = ({
+    errors,
+    onSetDate,
+    overrideMeetingLink,
+    onSetTime,
+    isCourse,
+    setVideoChatType,
+    videoChatType,
+    defaultDate,
+    defaultTime,
+}) => {
     const { dispatchCreateAppointment, appointmentToCreate } = useCreateAppointment();
     const { t } = useTranslation();
 
@@ -76,6 +88,17 @@ const AppointmentForm: React.FC<FormProps> = ({ errors, onSetDate, overrideMeeti
     }, []);
 
     const minDate = getMinForDatePicker('date', isCourse, isToday).toJSDate();
+
+    useEffect(() => {
+        if (defaultDate) {
+            const parsedDate = DateTime.fromISO(defaultDate);
+            handleDateInput(parsedDate.toJSDate());
+        }
+        if (defaultTime) {
+            handleTimeInput({ target: { value: defaultTime } });
+            dispatchCreateAppointment({ type: FormReducerActionType.DATE_CHANGE, field: 'time', value: defaultTime });
+        }
+    }, [defaultDate, defaultTime]);
 
     return (
         <div>

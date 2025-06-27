@@ -42,6 +42,8 @@ type Props = {
     isCourseCreation?: boolean;
     appointmentsTotal?: number;
     overrideMeetingLink?: string;
+    defaultDate?: string;
+    defaultTime?: string;
     back: () => void;
     closeModal?: () => void;
     navigateToMatch?: () => Promise<void>;
@@ -65,6 +67,8 @@ const AppointmentCreation: React.FC<Props> = ({
     isCourseCreation,
     appointmentsTotal,
     overrideMeetingLink,
+    defaultDate,
+    defaultTime,
     closeModal,
     navigateToMatch,
     setIsLoading,
@@ -326,6 +330,8 @@ const AppointmentCreation: React.FC<Props> = ({
                     overrideMeetingLink={overrideMeetingLink}
                     setVideoChatType={setVideoChatType}
                     videoChatType={videoChatType}
+                    defaultDate={defaultDate}
+                    defaultTime={defaultTime}
                 />
                 {dateSelected && timeSelected && (
                     <div className="flex items-center py-2 gap-x-2">
