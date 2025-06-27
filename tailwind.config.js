@@ -72,6 +72,31 @@ module.exports = {
                     DEFAULT: 'hsl(var(--card))',
                     foreground: 'hsl(var(--card-foreground))',
                 },
+                success: {
+                    DEFAULT: '#4CAF50',
+                    lighter: '#C8E6C9',
+                    foreground: '#FFFFFF',
+                },
+                caution: {
+                    DEFAULT: '#FFC107',
+                    lighter: '#FFECB3',
+                    foreground: '#FFFFFF',
+                },
+                purple: {
+                    DEFAULT: '#673AB7',
+                    lighter: '#D1C4E9',
+                    foreground: '#FFFFFF',
+                },
+                teal: {
+                    DEFAULT: '#009688',
+                    lighter: '#B2DFDB',
+                    foreground: '#FFFFFF',
+                },
+                unclear: {
+                    DEFAULT: '#B87333',
+                    lighter: '#D2A679',
+                    foreground: '#FFFFFF',
+                },
             },
             borderRadius: {
                 lg: `var(--radius)`,
