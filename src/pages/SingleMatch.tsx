@@ -24,6 +24,8 @@ import AdHocMeetingModal from '../modals/AdHocMeetingModal';
 import { DateTime } from 'luxon';
 import ReportMatchModal from '../modals/ReportMatchModal';
 import { ScrollDirection } from './Appointments';
+import { Typography } from '@/components/Typography';
+import { MatchAvailability } from '@/components/availability/MatchAvailability';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -36,6 +38,7 @@ query SingleMatch($matchId: Int! ) {
     appointmentsCount
     lastAppointmentId
     firstAppointmentId
+    matchWeeklyAvailability
     pupil {
         id
         firstname
@@ -354,6 +357,12 @@ const SingleMatch = () => {
                                             </Stack>
                                         </Box>
                                     )}
+                                    <div>
+                                        <Typography variant="h4" className="h4 mb-4">
+                                            {t('matching.availability.title')}
+                                        </Typography>
+                                        <MatchAvailability matchAvailability={data?.match?.matchWeeklyAvailability} isLoading={false} />
+                                    </div>
                                 </>
                             )}
                         </Stack>
