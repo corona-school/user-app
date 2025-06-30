@@ -76,9 +76,9 @@ export function RequireScreeningModal() {
     const pupilScreenings = data?.me.pupil?.screenings ?? [];
     const needsPupilScreening = () => !pupilScreenings.length || pupilScreenings.some((e) => e.status === 'pending' && !e.appointment);
     const wasPupilRejected = () => !needsPupilScreening() && pupilScreenings.some((it) => it.status === 'rejection');
-    const wasPupilScreened = () => !needsPupilScreening() && pupilScreenings.some((it) => it.status === 'dispute');
+    const wasPupilScreened = () => pupilScreenings.some((it) => it.status === 'dispute');
     const getPupilScreeningAppointment = () => {
-        const currentBookedScreening = pupilScreenings.find((e) => e.status === 'pending');
+        const currentBookedScreening = pupilScreenings.find((e) => ['pending', 'dispute'].includes(e.status));
         if (!currentBookedScreening?.appointment) return null;
         return currentBookedScreening.appointment;
     };
@@ -221,14 +221,14 @@ export function RequireScreeningModal() {
                 {data && !needScreening() && currentBookedScreeningAppointment && (
                     <AppointmentDetail appointment={currentBookedScreeningAppointment} onAction={() => setShouldReload(true)} />
                 )}
-                {data && isPupil && wasPupilScreened() && (
+                {data && isPupil && wasPupilScreened() && !showCalendar && !currentBookedScreeningAppointment && (
                     <div className="flex flex-col max-w-96 gap-y-4 flex-1 items-center justify-center">
                         <TimeIcon className="size-16" />
                         <Typography variant="h4" className="text-center text-white">
                             {t('requireScreening.pupil.hasScreening.title')}
                         </Typography>
                         <Typography className="text-white text-center">{t('requireScreening.pupil.hasScreening.content')}</Typography>
-                        <Button variant="ghost" onClick={() => window.open(calendlyLink, '_blank')}>
+                        <Button variant="optional" onClick={() => setShowCalendar(true)}>
                             {t('requireScreening.pupil.hasScreening.makeAnotherAppointment')}
                         </Button>
                     </div>
