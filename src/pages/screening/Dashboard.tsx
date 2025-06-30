@@ -95,6 +95,7 @@ export function ScreeningDashboard() {
                     firstname
                     lastname
                     languages
+                    zipCode
                     subjectsFormatted { name grade { min max } }
                     certificateOfConductDeactivationDate
                     certificateOfConduct {
