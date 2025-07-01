@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Clock",
-            "nowToEnd": "Now - {{end}} Clock"
+            "nowToEnd": "Now - {{end}} Clock",
+            "startToEndShort": "{{start}}-{{end}} clock"
         },
         "deleteModal": {
             "title": "Are you sure you want to delete this lecture ?",
@@ -891,7 +892,8 @@
             "push": "App messages",
             "faq": "FAQ & Contact",
             "manageSessions": "Manage devices",
-            "certificates": "Certificates"
+            "certificates": "Certificates",
+            "calendarPreferences": "Time availability"
         },
         "account": {
             "title": "Account",
@@ -1667,6 +1669,14 @@
             "title": "Proof of honorary office",
             "text": "You can have your activity confirmed at any time and then download the certificate.",
             "button": "About the certificates"
+        },
+        "availability": {
+            "title": "Availability",
+            "sharedTimeSlots": "{{count}} common time slot",
+            "otherTimeSlots": "{{count}} further time slots",
+            "createAppointmentModal": {
+                "title": "Would you like to create a lecture for this time slot?"
+            }
         }
     },
     "course": {
@@ -2098,7 +2108,8 @@
             "editCourse": "Edit course",
             "referral": "Referral",
             "certificates": "Certificates",
-            "lesson": "Lesson planner with AI (Beta)"
+            "lesson": "Lesson planner with AI (Beta)",
+            "calendarPreferences": "Time availability"
         }
     },
     "screening": {
@@ -2639,5 +2650,14 @@
             "title": "Individual certificate"
         },
         "title": "My certificates"
+    },
+    "weekdays": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
     }
 }
