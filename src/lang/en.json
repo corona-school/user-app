@@ -1672,11 +1672,11 @@
         },
         "availability": {
             "title": "Availability",
-            "sharedTimeSlots": "{{count}} common time slot",
-            "otherTimeSlots": "{{count}} further time slots",
             "createAppointmentModal": {
                 "title": "Would you like to create a lecture for this time slot?"
-            }
+            },
+            "bothOfYouHaveTime": "You both have time",
+            "youDoNotHaveTime": "You don't have time"
         }
     },
     "course": {

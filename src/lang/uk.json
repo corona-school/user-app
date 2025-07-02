@@ -1672,11 +1672,11 @@
         },
         "availability": {
             "title": "Доступність",
-            "sharedTimeSlots": "{{count}} загальний часовий інтервал",
-            "otherTimeSlots": "{{count}} подальші часові інтервали",
             "createAppointmentModal": {
                 "title": "Бажаєте створити зустріч на цей часовий проміжок?"
-            }
+            },
+            "bothOfYouHaveTime": "У вас обох є час.",
+            "youDoNotHaveTime": "У вас немає часу"
         }
     },
     "course": {

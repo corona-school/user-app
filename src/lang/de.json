@@ -1456,8 +1456,8 @@
         },
         "availability": {
             "title": "Verfügbarkeit",
-            "sharedTimeSlots": "{{count}} gemeinsame Zeitfenster",
-            "otherTimeSlots": "{{count}} weitere Zeitfenster",
+            "bothOfYouHaveTime": "Ihr habt beide Zeit",
+            "youDoNotHaveTime": "Du hast keine Zeit",
             "createAppointmentModal": {
                 "title": "Möchtest du für dieses Zeitfenster einen Termin erstellen?"
             }

@@ -1672,11 +1672,11 @@
         },
         "availability": {
             "title": "Доступность",
-            "sharedTimeSlots": "{{count}} общий временной интервал",
-            "otherTimeSlots": "{{count}} дальнейшие временные интервалы",
             "createAppointmentModal": {
                 "title": "Вы хотите назначить встречу на это время?"
-            }
+            },
+            "bothOfYouHaveTime": "У вас обоих есть время",
+            "youDoNotHaveTime": "У вас нет времени"
         }
     },
     "course": {
