@@ -28,6 +28,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [school, setSchool] = useState<Partial<ExternalSchoolSearch> | undefined>(pupil.school as any);
     const [descriptionForScreening, setDescriptionForScreening] = useState(pupil.descriptionForScreening);
     const [descriptionForMatch, setDescriptionForMatch] = useState(pupil.descriptionForMatch);
+    const [weeklyAvailability, setWeeklyAvailability] = useState(pupil.calendarPreferences?.weeklyAvailability);
 
     const updatePupil = async () => {
         try {
@@ -49,6 +50,12 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         },
                         descriptionForMatch,
                         descriptionForScreening,
+                        calendarPreferences: pupil.calendarPreferences
+                            ? {
+                                  ...pupil.calendarPreferences,
+                                  weeklyAvailability: weeklyAvailability!,
+                              }
+                            : undefined,
                     },
                 },
             });
@@ -82,6 +89,8 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             setDescriptionForScreening,
             descriptionForMatch,
             setDescriptionForMatch,
+            weeklyAvailability,
+            setWeeklyAvailability,
         },
     };
 };

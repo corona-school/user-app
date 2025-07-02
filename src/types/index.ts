@@ -1,4 +1,5 @@
 import {
+    CalendarPreferences,
     Certificate_Of_Conduct,
     Course,
     Course_Tag,
@@ -66,6 +67,7 @@ export type PupilForScreening = Pick<
     user?: {
         receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
     };
+    calendarPreferences?: CalendarPreferences;
 };
 
 export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'status' | 'createdAt' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus'> & {
@@ -106,4 +108,5 @@ export type StudentForScreening = Pick<
     user?: {
         receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
     };
+    calendarPreferences?: CalendarPreferences;
 };
