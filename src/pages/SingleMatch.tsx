@@ -1,34 +1,31 @@
-import { Box, Button, Divider, Heading, Stack, useTheme, useToast } from 'native-base';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import MatchPartner from './match/MatchPartner';
-import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useMutation, useQuery } from '@apollo/client';
+import { useParams } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
 import { gql } from './../gql';
 import useApollo, { QueryResult, useUserType } from '../hooks/useApollo';
-import { DayAvailabilitySlot, Dissolve_Reason, Pupil, Student } from '../gql/graphql';
+import { DayAvailabilitySlot, Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import DissolveMatchModal from '../modals/DissolveMatchModal';
-import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AlertMessage from '../widgets/AlertMessage';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import MatchAppointments from '../widgets/MatchAppointments';
 import { Appointment } from '../types/lernfair/Appointment';
 import AppointmentCreation from './create-appointment/AppointmentCreation';
-import { pupilIdToUserId, studentIdToUserId } from '../helper/chat-helper';
 import AsNavigationItem from '../components/AsNavigationItem';
-import AdHocMeetingModal from '../modals/AdHocMeetingModal';
 import { DateTime } from 'luxon';
-import ReportMatchModal from '../modals/ReportMatchModal';
 import { ScrollDirection } from './Appointments';
 import { Typography } from '@/components/Typography';
 import { MatchAvailability } from '@/components/availability/MatchAvailability';
 import { Day, DAYS } from '@/Utility';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import i18n from 'i18next';
+import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { MatchButtons } from './match/MatchButtons';
+import { Button } from '@/components/Button';
+import { toast } from 'sonner';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -102,41 +99,20 @@ query SingleMatchAppointments_NO_CACHE($matchId: Int!, $take: Float!, $skip: Flo
     }
 }`);
 
-const matchChatMutation = gql(`
-mutation createMatcheeChat($matcheeId: String!) {
-  matchChatCreate(matcheeUserId: $matcheeId)
-}
-`);
-
 const take = 10;
 
 const SingleMatch = () => {
-    const { trackEvent } = useMatomo();
-    const navigate = useNavigate();
     const { id: _matchId } = useParams();
     const matchId = parseInt(_matchId ?? '', 10);
-    const { space } = useTheme();
-    const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const userType = useUserType();
-    const toast = useToast();
-    const [showDissolveModal, setShowDissolveModal] = useState<boolean>();
-    const [showAdHocMeetingModal, setShowAdHocMeetingModal] = useState<boolean>(false);
-    const [showReportModal, setShowReportModal] = useState(false);
-    const [toastShown, setToastShown] = useState<boolean>();
     const [createAppointment, setCreateAppointment] = useState<boolean>(false);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const [isConfirmCreateAppointmentModalOpen, setIsConfirmCreateAppointmentModalOpen] = useState(false);
     const [selectedDateTime, setSelectedDateTime] = useState<DateTime | null>(null);
     const { client } = useApollo();
 
-    const {
-        data,
-        loading: isLoadingMatchData,
-        error,
-        refetch: refetchMatchData,
-    } = useQuery(singleMatchQuery, {
+    const { data, refetch: refetchMatchData } = useQuery(singleMatchQuery, {
         variables: {
             matchId,
         },
@@ -163,41 +139,11 @@ const SingleMatch = () => {
         }
     }, [appointmentsData]);
 
-    const [createMatcheeChat] = useMutation(matchChatMutation);
-
-    const [dissolveMatch, { data: dissolveData }] = useMutation(
-        gql(`
-            mutation dissolveMatchStudent2($matchId: Int!, $dissolveReasons: [dissolve_reason!]!, $otherFreeText: String) {
-                matchDissolve(info: { matchId: $matchId, dissolveReasons: $dissolveReasons, otherDissolveReason: $otherFreeText})
-            }
-        `)
-    );
-
     const refetch = useCallback(async () => {
         await Promise.all([refetchMatchData(), refetchAppointments()]);
     }, [refetchMatchData, refetchAppointments]);
 
     const totalAppointmentsCount = data?.match.appointmentsCount || 0;
-    const dissolve = useCallback(
-        async (reasons: Dissolve_Reason[], otherFreeText: string | undefined) => {
-            setShowDissolveModal(false);
-            trackEvent({
-                category: 'matching',
-                action: 'click-event',
-                name: 'Helfer Matching lösen',
-                documentTitle: 'Helfer Matching',
-            });
-            const dissolved = await dissolveMatch({
-                variables: {
-                    matchId: matchId || 0,
-                    dissolveReasons: reasons,
-                    otherFreeText,
-                },
-            });
-            dissolved && refetch();
-        },
-        [dissolveMatch, matchId, refetch, trackEvent]
-    );
 
     const goBackToMatch = async () => {
         await refetch();
@@ -219,22 +165,6 @@ const SingleMatch = () => {
         setCreateAppointment(false);
     };
 
-    const openChatContact = async () => {
-        let contactId: string = '';
-        if (userType === 'student' && data?.match?.pupil.id) contactId = pupilIdToUserId(data?.match?.pupil.id);
-        if (userType === 'pupil' && data?.match?.student.id) contactId = studentIdToUserId(data?.match?.student.id);
-        const conversation = await createMatcheeChat({ variables: { matcheeId: contactId } });
-        navigate('/chat', { state: { conversationId: conversation?.data?.matchChatCreate } });
-    };
-
-    const isActiveMatch = useMemo(() => {
-        if (!data?.match.dissolved) return true;
-        const today = DateTime.now().endOf('day');
-        const dissolvedAtPlus30Days = DateTime.fromISO(data?.match.dissolvedAt).plus({ days: 30 });
-        const before = dissolvedAtPlus30Days < today;
-        return !before;
-    }, [data?.match.dissolved, data?.match.dissolvedAt]);
-
     const overrideMeetingLink = useMemo(() => {
         const lastAppointment = appointments[appointments.length - 1];
         if (lastAppointment && lastAppointment.override_meeting_link !== null) {
@@ -243,13 +173,6 @@ const SingleMatch = () => {
             return undefined;
         }
     }, [appointments]);
-
-    useEffect(() => {
-        if (dissolveData?.matchDissolve && !toastShown) {
-            setToastShown(true);
-            toast.show({ description: t('matching.shared.dissolved'), placement: 'top' });
-        }
-    }, [dissolveData?.matchDissolve, toast, toastShown, t]);
 
     const loadMoreAppointments = async (skip: number, cursor: number, scrollDirection: ScrollDirection) => {
         setIsFetchingMoreAppointments(true);
@@ -263,7 +186,7 @@ const SingleMatch = () => {
         });
 
         if (scrollDirection === 'last') {
-            toast.show({ description: t('appointment.loadedPastAppointments'), placement: 'top' });
+            toast.info(t('appointment.loadedPastAppointments'));
         }
 
         setAppointments((prev) => (scrollDirection === 'next' ? [...prev, ...appointments] : [...appointments, ...prev]));
@@ -274,139 +197,88 @@ const SingleMatch = () => {
     const hasMoreOldAppointments = !appointments.some((e) => e.id === data?.match.firstAppointmentId);
     const hasMoreNewAppointments = !appointments.some((e) => e.id === data?.match.lastAppointmentId);
 
+    const breadcrumbRoutes = useBreadcrumbRoutes();
+    const partner = userType === 'student' ? data?.match.pupil : data?.match.student;
+    const partnerName = partner ? `${partner.firstname} ${partner.lastname}` : '...';
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
-                headerTitle={''}
                 previousFallbackRoute="/matching"
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
+                    <div className="flex items-start">
                         <SwitchLanguageButton />
                         <NotificationAlert />
-                    </Stack>
+                    </div>
                 }
-                isLoading={(isLoadingMatchData && isLoadingAppointments) || isLoading}
             >
-                {isLoadingMatchData || !data ? (
-                    <CenterLoadingSpinner />
-                ) : (
-                    !error && (
-                        <Stack space={space['1']} paddingX={space['1.5']} mb={space[1.5]}>
-                            {createAppointment ? (
-                                <AppointmentCreation
-                                    back={handleOnCancelAppointmentCreation}
-                                    courseOrMatchId={matchId}
-                                    isCourse={false}
-                                    appointmentsTotal={totalAppointmentsCount}
-                                    navigateToMatch={async () => await goBackToMatch()}
-                                    overrideMeetingLink={overrideMeetingLink}
-                                    setIsLoading={setIsLoading}
-                                    defaultDate={selectedDateTime?.toISODate()}
-                                    defaultTime={selectedDateTime?.toFormat('HH:mm')}
-                                />
+                <div className="flex flex-col px-4 gap-y-10 mb-10">
+                    {createAppointment ? (
+                        <div className="px-2 mb-2">
+                            <AppointmentCreation
+                                back={handleOnCancelAppointmentCreation}
+                                courseOrMatchId={matchId}
+                                appointmentsTotal={totalAppointmentsCount}
+                                navigateToMatch={async () => await goBackToMatch()}
+                                overrideMeetingLink={overrideMeetingLink}
+                                defaultDate={selectedDateTime?.toISODate()}
+                                defaultTime={selectedDateTime?.toFormat('HH:mm')}
+                            />
+                        </div>
+                    ) : (
+                        <>
+                            <Breadcrumb items={[breadcrumbRoutes.MATCHING, { label: partnerName }]} className="self-start" />
+                            {userType === 'student' ? (
+                                <MatchPartner partner={data?.match?.pupil as Pupil} isPupil isLoading={!data} />
                             ) : (
-                                <>
-                                    {userType === 'student' ? (
-                                        <MatchPartner partner={(data?.match?.pupil as Pupil) || {}} isPupil />
-                                    ) : (
-                                        <MatchPartner partner={(data?.match?.student as Student) || {}} />
-                                    )}
-
-                                    {data?.match?.dissolved && (
-                                        <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0.5'] : space['3']}>
-                                            <AlertMessage
-                                                content={t('matching.shared.dissolvedAlert', {
-                                                    partnerName: userType === 'student' ? data?.match?.pupil?.firstname : data?.match?.student?.firstname,
-                                                })}
-                                            />
-                                        </Stack>
-                                    )}
-
-                                    <Stack
-                                        direction={isMobile ? 'column' : 'row'}
-                                        flexWrap={isMobile ? 'nowrap' : 'wrap'}
-                                        justifyContent="center"
-                                        space={isMobile ? space['0.5'] : space['2']}
-                                    >
-                                        {isActiveMatch && (
-                                            <Button onPress={() => openChatContact()} my={isMobile ? '0' : '1'}>
-                                                {t('matching.shared.contactViaChat')}
-                                            </Button>
-                                        )}
-                                        {userType === 'student' && !data?.match?.dissolved && (
-                                            <Button onPress={() => setShowAdHocMeetingModal(true)} variant="outline" my={isMobile ? '0' : '1'}>
-                                                {t('matching.shared.directCall')}
-                                            </Button>
-                                        )}
-                                        {!data?.match?.dissolved && (
-                                            <Button variant="outline" my={isMobile ? '0' : '1'} onPress={() => setShowDissolveModal(true)}>
-                                                {t('matching.shared.dissolveMatch')}
-                                            </Button>
-                                        )}
-                                        {isActiveMatch && (
-                                            <Button variant="outline" onPress={() => setShowReportModal(true)} my={isMobile ? '0' : '1'}>
-                                                {t('matching.shared.reportProblem')}
-                                            </Button>
-                                        )}
-                                    </Stack>
-                                    <Divider thickness={1} mb={4} />
-                                    <Stack space={space['1']}>
-                                        <Heading>{t('matching.shared.appointmentsHeadline')}</Heading>
-                                    </Stack>
-                                    <MatchAppointments
-                                        appointments={appointments as Appointment[]}
-                                        minimumHeight={'30vh'}
-                                        loading={isLoadingAppointments || isFetchingMoreAppointments}
-                                        dissolved={data?.match?.dissolved}
-                                        loadMoreAppointments={loadMoreAppointments}
-                                        noNewAppointments={!hasMoreNewAppointments || !hasMoreAppointments}
-                                        noOldAppointments={!hasMoreOldAppointments || !hasMoreAppointments}
-                                        hasAppointments={hasMoreAppointments || !!appointments.length}
-                                        lastAppointmentId={data.match.lastAppointmentId}
-                                    />
-                                    {userType === 'student' && !data?.match?.dissolved && (
-                                        <Box>
-                                            <Divider thickness={1} mb={4} />
-                                            <Stack direction={isMobile ? 'column' : 'row'} justifyContent="center" space={isMobile ? space['0'] : space['5']}>
-                                                <Button variant="outline" onPress={() => setCreateAppointment(true)}>
-                                                    {t('matching.shared.createAppointment')}
-                                                </Button>
-                                            </Stack>
-                                        </Box>
-                                    )}
-                                    <div>
-                                        <Typography variant="h4" className="h4 mb-4">
-                                            {t('matching.availability.title')}
-                                        </Typography>
-                                        <MatchAvailability
-                                            matchAvailability={data?.match?.matchWeeklyAvailability}
-                                            onSlotClick={userType === 'student' ? handleOnSlotClick : undefined}
-                                            isLoading={false}
-                                        />
-                                    </div>
-                                </>
+                                <MatchPartner partner={data?.match?.student as Student} isLoading={!data} />
                             )}
-                        </Stack>
-                    )
-                )}
+                            <MatchButtons match={data?.match} isLoading={!data} refresh={refetchMatchData} />
+                            {data?.match?.dissolved && (
+                                <div className="flex flex-col md:flex-row justify-center">
+                                    <AlertMessage
+                                        content={t('matching.shared.dissolvedAlert', {
+                                            partnerName: userType === 'student' ? data?.match?.pupil?.firstname : data?.match?.student?.firstname,
+                                        })}
+                                    />
+                                </div>
+                            )}
+                            {!data?.match?.dissolved && (
+                                <div>
+                                    <Typography variant="h4" className="h4 mb-4">
+                                        {t('matching.availability.title')}
+                                    </Typography>
+                                    <MatchAvailability
+                                        matchAvailability={data?.match?.matchWeeklyAvailability}
+                                        onSlotClick={userType === 'student' ? handleOnSlotClick : undefined}
+                                        isLoading={false}
+                                    />
+                                </div>
+                            )}
+                            <div>
+                                <Typography variant="h4">{t('matching.shared.appointmentsHeadline')}</Typography>
+                                <MatchAppointments
+                                    appointments={appointments as Appointment[]}
+                                    minimumHeight={'30vh'}
+                                    loading={isLoadingAppointments || isFetchingMoreAppointments}
+                                    dissolved={!!data?.match?.dissolved}
+                                    loadMoreAppointments={loadMoreAppointments}
+                                    noNewAppointments={!hasMoreNewAppointments || !hasMoreAppointments}
+                                    noOldAppointments={!hasMoreOldAppointments || !hasMoreAppointments}
+                                    hasAppointments={hasMoreAppointments || !!appointments.length}
+                                    lastAppointmentId={data?.match?.lastAppointmentId}
+                                />
+                                {userType === 'student' && !data?.match?.dissolved && (
+                                    <div className="flex flex-col md:flex-row justify-center">
+                                        <Button className="md:max-w-[200px] w-full" variant="outline" onClick={() => setCreateAppointment(true)}>
+                                            {t('matching.shared.createAppointment')}
+                                        </Button>
+                                    </div>
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
 
-                <DissolveMatchModal
-                    showDissolveModal={showDissolveModal}
-                    alsoShowWarningModal={data?.match?.createdAt && new Date(data.match.createdAt).getTime() > new Date().getTime() - 1000 * 60 * 60 * 24 * 14}
-                    onPressDissolve={async (reasons: Dissolve_Reason[], otherFreeText: string | undefined) => {
-                        return await dissolve(reasons, otherFreeText);
-                    }}
-                    onPressBack={() => setShowDissolveModal(false)}
-                />
-                {data?.match.id && <AdHocMeetingModal onOpenChange={setShowAdHocMeetingModal} isOpen={showAdHocMeetingModal} matchId={data?.match.id} />}
-                {data && data.match.pupil.firstname && data.match.student.firstname && (
-                    <ReportMatchModal
-                        matchName={userType === 'student' ? data.match.pupil.firstname : data.match.student.firstname}
-                        matchId={data.match.id}
-                        onClose={() => setShowReportModal(false)}
-                        isOpen={showReportModal}
-                    />
-                )}
                 <ConfirmationModal
                     headline={t('matching.availability.createAppointmentModal.title')}
                     confirmButtonText={t('yes')}
