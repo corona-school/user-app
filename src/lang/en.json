@@ -1676,7 +1676,8 @@
                 "title": "Would you like to create a lecture for this time slot?"
             },
             "bothOfYouHaveTime": "You both have time",
-            "youDoNotHaveTime": "You don't have time"
+            "youDoNotHaveTime": "You don't have time",
+            "editAvailability": "Edit times"
         }
     },
     "course": {

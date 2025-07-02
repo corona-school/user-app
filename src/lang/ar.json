@@ -1672,7 +1672,8 @@
                 "title": "هل ترغب في إنشاء موعد لهذه الفترة الزمنية؟"
             },
             "bothOfYouHaveTime": "كلاكما لديه الوقت",
-            "youDoNotHaveTime": "ليس لديك وقت"
+            "youDoNotHaveTime": "ليس لديك وقت",
+            "editAvailability": "تحرير الأوقات"
         }
     },
     "course": {

@@ -1676,7 +1676,8 @@
                 "title": "Bu zaman aralığı için bir randevu oluşturmak ister misiniz?"
             },
             "bothOfYouHaveTime": "İkinizin de zamanı var.",
-            "youDoNotHaveTime": "Zamanın yok."
+            "youDoNotHaveTime": "Zamanın yok.",
+            "editAvailability": "Düzenleme zamanları"
         }
     },
     "course": {

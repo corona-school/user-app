@@ -1458,6 +1458,7 @@
             "title": "Verfügbarkeit",
             "bothOfYouHaveTime": "Ihr habt beide Zeit",
             "youDoNotHaveTime": "Du hast keine Zeit",
+            "editAvailability": "Zeiten bearbeiten",
             "createAppointmentModal": {
                 "title": "Möchtest du für dieses Zeitfenster einen Termin erstellen?"
             }

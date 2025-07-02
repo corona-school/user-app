@@ -1676,7 +1676,8 @@
                 "title": "Бажаєте створити зустріч на цей часовий проміжок?"
             },
             "bothOfYouHaveTime": "У вас обох є час.",
-            "youDoNotHaveTime": "У вас немає часу"
+            "youDoNotHaveTime": "У вас немає часу",
+            "editAvailability": "Час редагування"
         }
     },
     "course": {

@@ -1676,7 +1676,8 @@
                 "title": "Вы хотите назначить встречу на это время?"
             },
             "bothOfYouHaveTime": "У вас обоих есть время",
-            "youDoNotHaveTime": "У вас нет времени"
+            "youDoNotHaveTime": "У вас нет времени",
+            "editAvailability": "Время редактирования"
         }
     },
     "course": {
