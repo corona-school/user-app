@@ -63,7 +63,9 @@ const MatchPartner = ({ partner, isLoading, isPupil }: MatchPartnerProps) => {
                         <div className="flex gap-2 flex-wrap w-full">
                             <Skeleton isLoading={isLoading} variant="body">
                                 {partner?.subjectsFormatted.map((subject) => (
-                                    <Badge className="max-h-5 text-sm font-normal">{subject.name}</Badge>
+                                    <Badge key={subject.name} className="max-h-5 text-sm font-normal">
+                                        {subject.name}
+                                    </Badge>
                                 ))}
                             </Skeleton>
                         </div>
