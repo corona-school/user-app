@@ -1677,7 +1677,9 @@
             },
             "bothOfYouHaveTime": "İkinizin de zamanı var.",
             "youDoNotHaveTime": "Zamanın yok.",
-            "editAvailability": "Düzenleme zamanları"
+            "editAvailability": "Düzenleme zamanları",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} henüz zaman aralıklarını girmedi (ona bir <chatLink>bağlantı</chatLink> gönder)",
+            "setupPreferencesChatMessage": "Merhaba 👋, ben {{myName}}, belki zamanınız olduğunda günlerinizi benimle paylaşmak istersiniz. Burada bulabilirsiniz: {{link}}"
         }
     },
     "course": {

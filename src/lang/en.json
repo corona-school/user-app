@@ -1677,7 +1677,9 @@
             },
             "bothOfYouHaveTime": "You both have time",
             "youDoNotHaveTime": "You don't have time",
-            "editAvailability": "Edit times"
+            "editAvailability": "Edit times",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} has not entered any time slots yet (send them a <chatLink>link</chatLink>)",
+            "setupPreferencesChatMessage": "Hi 👋, this is {{myName}}, maybe you would like to share your days when you have time with me. You can find it here: {{link}}"
         }
     },
     "course": {

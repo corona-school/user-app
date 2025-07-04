@@ -2,8 +2,8 @@ import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useTranslation } from 'react-i18next';
 import MatchPartner from './match/MatchPartner';
-import { useParams } from 'react-router-dom';
-import { useQuery } from '@apollo/client';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../gql';
 import useApollo, { QueryResult, useUserType } from '../hooks/useApollo';
 import { DayAvailabilitySlot, Pupil, Student } from '../gql/graphql';
@@ -26,6 +26,8 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { MatchButtons } from './match/MatchButtons';
 import { Button } from '@/components/Button';
 import { toast } from 'sonner';
+import { MatchAvailabilityStatus } from '@/components/availability/MatchAvailabilityStatus';
+import { pupilIdToUserId, studentIdToUserId } from '@/helper/chat-helper';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -51,6 +53,7 @@ query SingleMatch($matchId: Int! ) {
             name
         }
         aboutMe
+        calendarPreferences
     }
     student {
         id
@@ -61,9 +64,16 @@ query SingleMatch($matchId: Int! ) {
             name
         }
         aboutMe
+        calendarPreferences
     }
   }
 }
+`);
+
+const CREATE_MATCH_CHAT_MUTATION = gql(`
+    mutation createMatcheeChat($matcheeId: String!) {
+        matchChatCreate(matcheeUserId: $matcheeId)
+    }
 `);
 
 const appointmentsQuery = gql(`
@@ -111,11 +121,13 @@ const SingleMatch = () => {
     const [isConfirmCreateAppointmentModalOpen, setIsConfirmCreateAppointmentModalOpen] = useState(false);
     const [selectedDateTime, setSelectedDateTime] = useState<DateTime | null>(null);
     const { client } = useApollo();
-
+    const navigate = useNavigate();
+    const [createMatchChat, { loading: isContactingMatch }] = useMutation(CREATE_MATCH_CHAT_MUTATION);
     const { data, refetch: refetchMatchData } = useQuery(singleMatchQuery, {
         variables: {
             matchId,
         },
+        errorPolicy: 'all',
     });
 
     const {
@@ -165,6 +177,14 @@ const SingleMatch = () => {
         setCreateAppointment(false);
     };
 
+    const handleOnContactMatch = async () => {
+        let contactId: string = '';
+        if (userType === 'student' && data?.match?.pupil.id) contactId = pupilIdToUserId(data?.match?.pupil.id);
+        if (userType === 'pupil' && data?.match?.student.id) contactId = studentIdToUserId(data?.match?.student.id);
+        const conversation = await createMatchChat({ variables: { matcheeId: contactId } });
+        navigate('/chat?messageTemplateId=setupCalendarPreferences', { state: { conversationId: conversation?.data?.matchChatCreate } });
+    };
+
     const overrideMeetingLink = useMemo(() => {
         const lastAppointment = appointments[appointments.length - 1];
         if (lastAppointment && lastAppointment.override_meeting_link !== null) {
@@ -196,10 +216,14 @@ const SingleMatch = () => {
     const hasMoreAppointments = appointments.length < totalAppointmentsCount;
     const hasMoreOldAppointments = !appointments.some((e) => e.id === data?.match.firstAppointmentId);
     const hasMoreNewAppointments = !appointments.some((e) => e.id === data?.match.lastAppointmentId);
-
     const breadcrumbRoutes = useBreadcrumbRoutes();
-    const partner = userType === 'student' ? data?.match.pupil : data?.match.student;
-    const partnerName = partner ? `${partner.firstname} ${partner.lastname}` : '...';
+    const learningPartner = userType === 'student' ? data?.match.pupil : data?.match.student;
+    const learningPartnerName = learningPartner ? `${learningPartner.firstname} ${learningPartner.lastname}` : '...';
+    const learningPartnerFirstName = learningPartner ? `${learningPartner.firstname}` : '...';
+
+    const areMyMatchPreferencesSetup = userType === 'student' ? !!data?.match.pupil?.calendarPreferences : !!data?.match.student?.calendarPreferences;
+    const areMyPreferencesSetup = userType === 'student' ? !!data?.match.student?.calendarPreferences : !!data?.match.pupil?.calendarPreferences;
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
@@ -226,7 +250,7 @@ const SingleMatch = () => {
                         </div>
                     ) : (
                         <>
-                            <Breadcrumb items={[breadcrumbRoutes.MATCHING, { label: partnerName }]} className="self-start" />
+                            <Breadcrumb items={[breadcrumbRoutes.MATCHING, { label: learningPartnerName }]} className="self-start" />
                             {userType === 'student' ? (
                                 <MatchPartner partner={data?.match?.pupil as Pupil} isPupil isLoading={!data} />
                             ) : (
@@ -247,10 +271,18 @@ const SingleMatch = () => {
                                     <Typography variant="h4" className="h4 mb-4">
                                         {t('matching.availability.title')}
                                     </Typography>
+                                    <MatchAvailabilityStatus
+                                        areMyMatchPreferencesSetup={areMyMatchPreferencesSetup}
+                                        areMyPreferencesSetup={areMyPreferencesSetup}
+                                        learningPartnerName={learningPartnerFirstName}
+                                        onContactMatch={handleOnContactMatch}
+                                        isContactingMatch={isContactingMatch}
+                                        isLoading={!data}
+                                    />
                                     <MatchAvailability
                                         matchAvailability={data?.match?.matchWeeklyAvailability}
                                         onSlotClick={userType === 'student' ? handleOnSlotClick : undefined}
-                                        isLoading={false}
+                                        isLoading={!data}
                                     />
                                 </div>
                             )}

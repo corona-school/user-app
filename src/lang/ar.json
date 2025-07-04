@@ -1673,7 +1673,9 @@
             },
             "bothOfYouHaveTime": "كلاكما لديه الوقت",
             "youDoNotHaveTime": "ليس لديك وقت",
-            "editAvailability": "تحرير الأوقات"
+            "editAvailability": "تحرير الأوقات",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} لم يُدخل بعد أي فترات زمنية (أرسل له <chatLink>رابطًا</chatLink>)",
+            "setupPreferencesChatMessage": "مرحبًا 👋، أنا {{myName}}، لعلك تود أن تشاركني أيامك عندما يكون لديك وقت. يمكنك العثور عليه هنا: {{link}}"
         }
     },
     "course": {
