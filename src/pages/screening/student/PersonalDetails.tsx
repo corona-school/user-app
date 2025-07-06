@@ -7,7 +7,7 @@ import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { TEST_STUDENT_ID } from '@/config';
 import { gql } from '@/gql';
-import { Gender } from '@/gql/graphql';
+import { Gender, Student_State_Enum } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { useRoles } from '@/hooks/useApollo';
 import { StudentForScreening } from '@/types';
@@ -48,6 +48,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [showEditSubjects, setShowEditSubjects] = useState(false);
     const [showEditLanguages, setShowEditLanguages] = useState(false);
     const [showEditAvailability, setShowEditAvailability] = useState(false);
+    const [showEditLocation, setShowEditLocation] = useState(false);
 
     const [gender, setGender] = useState(student.gender ?? '');
     const [subjects, setSubjects] = useState(student.subjectsFormatted);
@@ -56,12 +57,25 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [hasSpecialExperience, setHasSpecialExperience] = useState<CheckedState>(student.hasSpecialExperience);
     const [descriptionForMatch, setDescriptionForMatch] = useState(student.descriptionForMatch);
     const [descriptionForScreening, setDescriptionForScreening] = useState(student.descriptionForScreening);
+    const [location, setLocation] = useState(student.state);
     const [zipCode, setZipCode] = useState(student.zipCode ?? '');
 
     const [errors, setErrors] = useState<FormErrors>({});
 
     const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
+
+    const zipCodeLength = () => {
+        switch (student.state) {
+            case Student_State_Enum.At:
+            case Student_State_Enum.Ch:
+                return 4;
+            case Student_State_Enum.Other:
+                return null;
+            default:
+                return 5;
+        }
+    };
 
     const handleOnSaveStudent = async () => {
         try {
@@ -146,11 +160,20 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         />
                     </div>
                     <div className="flex flex-col gap-y-2 mb-6">
+                        <ButtonField className="min-w-full" label="Ort" onClick={() => setShowEditLocation(true)}>
+                            {t(asTranslationKey(`lernfair.states.${location}`))}
+                        </ButtonField>
+                    </div>
+                    <div className="flex flex-col gap-y-2 mb-6">
                         <Label>Postleitzahl</Label>
                         <Input
+                            maxLength={zipCodeLength() ?? undefined}
                             value={zipCode}
                             onChange={(e) => setZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only digits can pe typed in
                         />
+                        <Typography variant="sm" className="text-destructive">
+                            {`Postleitzahl für ${t(asTranslationKey(`lernfair.states.${student?.state}`))} muss ${zipCodeLength()} Ziffern haben.`}
+                        </Typography>
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-6">
