@@ -13,13 +13,14 @@ import { EditGradeModal } from '@/widgets/screening/EditGradeModal';
 import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { useMutation } from '@apollo/client';
-import { IconDeviceFloppy, IconKey } from '@tabler/icons-react';
+import { IconCheck, IconDeviceFloppy, IconKey } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonField } from '../components/ButtonField';
 import { EditLocationModal } from '../components/EditLocationModal';
 import { EditSchoolTypeModal } from '../components/EditSchoolTypeModal';
 import { SchoolSearchInput } from '../components/SchoolSearchInput';
+import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityModal';
 import { UpdatePupilFormState } from './useUpdatePupil';
 
 const CREATE_LOGIN_TOKEN_MUTATION = gql(`
@@ -48,6 +49,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
     const [showEditGrade, setShowEditGrade] = useState(false);
     const [showEditSubjects, setShowEditSubjects] = useState(false);
     const [showEditLanguages, setShowEditLanguages] = useState(false);
+    const [showEditAvailability, setShowEditAvailability] = useState(false);
     const {
         pupilLocation,
         setPupilLocation,
@@ -69,6 +71,8 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
         setDescriptionForScreening,
         descriptionForMatch,
         setDescriptionForMatch,
+        weeklyAvailability,
+        setWeeklyAvailability,
     } = form;
 
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
@@ -160,6 +164,20 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                         {errors.languages}
                     </Typography>
                 </div>
+                <div className="flex flex-col gap-y-2">
+                    <ButtonField className="min-w-[350px]" label="Zeitliche Verfügbarkeit" onClick={() => setShowEditAvailability(true)}>
+                        {weeklyAvailability ? (
+                            <span className="flex items-center justify-center gap-x-1">
+                                Eingerichtet <IconCheck className="text-green-500" size={16} />
+                            </span>
+                        ) : (
+                            <span>Muss eingerichtet werden</span>
+                        )}
+                    </ButtonField>
+                    <Typography variant="sm" className="text-destructive">
+                        {errors.languages}
+                    </Typography>
+                </div>
                 <div className="flex gap-x-7 mt-2">
                     <div className="flex gap-x-2 items-center">
                         <Checkbox id="onlyMatchWith" checked={onlyMatchWithWomen} onCheckedChange={setOnlyMatchWithWomen} />{' '}
@@ -220,6 +238,12 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
             <EditGradeModal grade={grade} onSave={setGrade} onOpenChange={setShowEditGrade} isOpen={showEditGrade} />
             <EditSubjectsModal type="pupil" subjects={subjects} onSave={setSubjects} onOpenChange={setShowEditSubjects} isOpen={showEditSubjects} />
             <EditLanguagesModal languages={languages} onSave={setLanguages} onOpenChange={setShowEditLanguages} isOpen={showEditLanguages} />
+            <EditWeeklyAvailabilityModal
+                weeklyAvailability={weeklyAvailability}
+                onSave={setWeeklyAvailability}
+                onOpenChange={setShowEditAvailability}
+                isOpen={showEditAvailability}
+            />
         </>
     );
 };

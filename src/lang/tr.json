@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Saat",
-            "nowToEnd": "Şimdi - {{end}} Saat"
+            "nowToEnd": "Şimdi - {{end}} Saat",
+            "startToEndShort": "{{start}}-{{end}} saat"
         },
         "deleteModal": {
             "title": "Bu randevuyu silmek istediğinizden emin misiniz?",
@@ -891,7 +892,8 @@
             "push": "Uygulama mesajları",
             "faq": "SSS & İletişim",
             "manageSessions": "Cihazları yönetme",
-            "certificates": "Sertifikalar"
+            "certificates": "Sertifikalar",
+            "calendarPreferences": "Zaman uygunluğu"
         },
         "account": {
             "title": "Hesap",
@@ -1667,6 +1669,14 @@
             "title": "Onur kanıtı",
             "text": "Faaliyetinizi istediğiniz zaman onaylatabilir ve ardından sertifikayı indirebilirsiniz.",
             "button": "Sertifikalara"
+        },
+        "availability": {
+            "title": "Kullanılabilirlik",
+            "sharedTimeSlots": "{{count}} ortak zaman aralığı",
+            "otherTimeSlots": "{{count}} daha fazla zaman dilimi",
+            "createAppointmentModal": {
+                "title": "Bu zaman aralığı için bir randevu oluşturmak ister misiniz?"
+            }
         }
     },
     "course": {
@@ -2098,7 +2108,8 @@
             "editCourse": "Kursu düzenle",
             "referral": "Yönlendirme",
             "certificates": "Sertifikalar",
-            "lesson": "Yapay zeka ile ders planlayıcı (Beta)"
+            "lesson": "Yapay zeka ile ders planlayıcı (Beta)",
+            "calendarPreferences": "Zaman uygunluğu"
         }
     },
     "screening": {
@@ -2635,5 +2646,14 @@
             "title": "Bireysel kanıt"
         },
         "title": "Sertifikalarım"
+    },
+    "weekdays": {
+        "monday": "Pazartesi",
+        "tuesday": "Salı",
+        "wednesday": "Çarşamba",
+        "thursday": "Perşembe",
+        "friday": "Cuma",
+        "saturday": "Cumartesi",
+        "sunday": "Pazar"
     }
 }

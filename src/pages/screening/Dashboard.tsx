@@ -50,6 +50,7 @@ export function ScreeningDashboard() {
                     hasSpecialNeeds
                     descriptionForScreening
                     descriptionForMatch
+                    calendarPreferences
                     school {
                         id
                         name
@@ -105,6 +106,7 @@ export function ScreeningDashboard() {
                     gender
                     descriptionForMatch
                     descriptionForScreening
+                    calendarPreferences
                     matches {
                         createdAt
                         pupil { firstname lastname }
