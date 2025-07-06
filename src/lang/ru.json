@@ -686,7 +686,11 @@
         "type": "Тип поддержки:",
         "availability": "Управление доступностью",
         "noInfo": "Не указано",
-        "PersonalData": "Персональные данные"
+        "PersonalData": "Персональные данные",
+        "ZipCode": {
+            "zipCode": "Почтовый индекс",
+            "requiredLength": "Почтовый индекс должен содержать {{length}} цифр."
+        }
     },
     "single": {
         "global": {

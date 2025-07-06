@@ -686,7 +686,11 @@
         "type": "Type of support:",
         "availability": "Manage availability",
         "noInfo": "Not specified",
-        "PersonalData": "Personal data"
+        "PersonalData": "Personal data",
+        "ZipCode": {
+            "zipCode": "Zip code",
+            "requiredLength": "The zip code must have {{length}} digits."
+        }
     },
     "single": {
         "global": {

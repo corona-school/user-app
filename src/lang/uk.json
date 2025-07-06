@@ -686,7 +686,11 @@
         "type": "Тип підтримки:",
         "availability": "Керуйте доступністю",
         "noInfo": "Не вказано",
-        "PersonalData": "Персональні дані"
+        "PersonalData": "Персональні дані",
+        "ZipCode": {
+            "zipCode": "Поштовий індекс",
+            "requiredLength": "Поштовий індекс повинен містити {{length}} цифр."
+        }
     },
     "single": {
         "global": {
