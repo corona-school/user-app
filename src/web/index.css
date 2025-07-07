@@ -58,6 +58,7 @@
 
 .tabler-icon {
     stroke-width: 1;
+    flex-shrink: 0;
 }
 .tabler-icon-thick {
     stroke-width: 2;
