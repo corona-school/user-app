@@ -1605,7 +1605,8 @@
                 "profile": {
                     "title": "Profil aktualisieren",
                     "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
-                    "personalData": "Persönliche Daten"
+                    "personalData": "Persönliche Daten",
+                    "availabilityRequirement": "Bitte richte zuerst deine Verfügbarkeit ein, um fortzufahren."
                 },
                 "success": {
                     "title": "Geschafft, du bist ein:e Held:in!",

@@ -1507,7 +1507,8 @@
                 "profile": {
                     "title": "Profili güncelle",
                     "subtitle": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
-                    "personalData": "Kişisel veriler"
+                    "personalData": "Kişisel veriler",
+                    "availabilityRequirement": "Devam etmek için lütfen önce müsaitlik durumunuzu ayarlayın."
                 },
                 "success": {
                     "title": "Başardın, sen bir kahramansın!",

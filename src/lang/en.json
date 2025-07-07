@@ -1507,7 +1507,8 @@
                 "profile": {
                     "title": "Update profile",
                     "subtitle": "So that we can assign you an optimal learning partner, we ask you to check and complete your personal information once again.",
-                    "personalData": "Personal data"
+                    "personalData": "Personal data",
+                    "availabilityRequirement": "Please set up your availability first to continue."
                 },
                 "success": {
                     "title": "You've done it, you're a hero!",
