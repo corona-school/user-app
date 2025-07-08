@@ -1676,11 +1676,14 @@
         },
         "availability": {
             "title": "Kullanılabilirlik",
-            "sharedTimeSlots": "{{count}} ortak zaman aralığı",
-            "otherTimeSlots": "{{count}} daha fazla zaman dilimi",
             "createAppointmentModal": {
                 "title": "Bu zaman aralığı için bir randevu oluşturmak ister misiniz?"
-            }
+            },
+            "bothOfYouHaveTime": "İkinizin de zamanı var.",
+            "youDoNotHaveTime": "Zamanın yok.",
+            "editAvailability": "Düzenleme zamanları",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} henüz zaman aralıklarını girmedi (ona bir <chatLink>bağlantı</chatLink> gönder)",
+            "setupPreferencesChatMessage": "Merhaba 👋, ben {{myName}}, belki zamanınız olduğunda günlerinizi benimle paylaşmak istersiniz. Burada bulabilirsiniz: {{link}}"
         }
     },
     "course": {

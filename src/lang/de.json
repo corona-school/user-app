@@ -1460,8 +1460,11 @@
         },
         "availability": {
             "title": "Verfügbarkeit",
-            "sharedTimeSlots": "{{count}} gemeinsame Zeitfenster",
-            "otherTimeSlots": "{{count}} weitere Zeitfenster",
+            "bothOfYouHaveTime": "Ihr habt beide Zeit",
+            "youDoNotHaveTime": "Du hast keine Zeit",
+            "editAvailability": "Zeiten bearbeiten",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} hat noch keine Zeitfenster eingegeben (sende ihm/ihr einen <chatLink>Link</chatLink> zu)",
+            "setupPreferencesChatMessage": "Hallo 👋, hier ist {{myName}}, vielleicht möchtest du deine Tage an denen du Zeit hast mit mir teilen. Du findest das hier: {{link}}",
             "createAppointmentModal": {
                 "title": "Möchtest du für dieses Zeitfenster einen Termin erstellen?"
             }
