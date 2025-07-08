@@ -1,6 +1,6 @@
 import { gql } from '@/gql';
 import { DocumentNode } from 'graphql';
-import { Text, VStack, useTheme, Heading, Row, Column, Modal, useToast } from 'native-base';
+import { Text, VStack, useTheme, Heading, Row, Column } from 'native-base';
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
@@ -10,24 +10,37 @@ import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext, RequestMatchStep } from './RequestMatch';
-import DisableableButton from '../../../components/DisablebleButton';
 import { GradeSelector, GradeTag } from '../../../components/GradeSelector';
 import { useMutation } from '@apollo/client';
-import { SchoolType, State } from '@/gql/graphql';
+import { CalendarPreferences, SchoolType, State } from '@/gql/graphql';
+import { Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
+import { Label } from '@/components/Label';
+import { WeeklyAvailabilitySelector } from '@/components/availability/WeeklyAvailabilitySelector';
+import { toast } from 'sonner';
+import { logError } from '@/log';
 
 type Props = {
     schooltype: string;
     gradeAsInt: number;
     state: string;
+    calendarPreferences?: CalendarPreferences;
     refetchQuery: DocumentNode;
 };
 
-const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQuery }) => {
+const ME_UPDATE_MUTATION = gql(`
+    mutation changePupilMatchingInfoData($calendarPreferences: CalendarPreferences!) {
+        meUpdate(update: { pupil: { calendarPreferences: $calendarPreferences } })
+    }
+`);
+
+const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, calendarPreferences, refetchQuery }) => {
     const { setCurrentStep } = useContext(RequestMatchContext);
     const { space } = useTheme();
     const { t } = useTranslation();
-    const toast = useToast();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [meUpdate, { loading: isUpdating }] = useMutation(ME_UPDATE_MUTATION, { refetchQueries: [refetchQuery] });
+    const [newCalendarPreferences, setNewCalendarPreferences] = useState<CalendarPreferences | undefined>(calendarPreferences);
 
     const [showModal, setShowModal] = useState<boolean>();
     const [modalType, setModalType] = useState<'schooltypes' | 'schoolclass' | 'states'>();
@@ -107,13 +120,38 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                 default:
                     break;
             }
-            toast.show({ description: t('matching.request.updateData'), placement: 'top' });
+            toast.success(t('matching.request.updateData'));
         } catch (e) {
-            toast.show({ description: t('error'), placement: 'top' });
+            toast.error(t('error'));
         }
         setShowModal(false);
         setIsLoading(false);
-    }, [meUpdateSchoolClass, meUpdateSchooltype, meUpdateState, modalSelection, modalType, t, toast]);
+    }, [meUpdateSchoolClass, meUpdateSchooltype, meUpdateState, modalSelection, modalType, t]);
+
+    const handleOnNext = async () => {
+        if (!newCalendarPreferences) {
+            return;
+        }
+        try {
+            await meUpdate({ variables: { calendarPreferences: newCalendarPreferences } });
+            toast.success(t('changesWereSaved'));
+            setCurrentStep(RequestMatchStep.german);
+        } catch (error: any) {
+            logError('[matchRequest]', error?.message, error);
+            toast.error(t('error'));
+        }
+    };
+
+    const getIsNextDisabled = () => {
+        const availabilitySlots = Object.values(newCalendarPreferences?.weeklyAvailability ?? {}).some((e) => !!e.length);
+        if (!isLoading && !availabilitySlots) {
+            return {
+                is: true,
+                reason: t('matching.wizard.student.profile.availabilityRequirement'),
+            };
+        }
+        return { is: false, reason: '' };
+    };
 
     return (
         <>
@@ -189,51 +227,55 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, refetchQue
                         )) || <Text>{t('profile.Notice.noState')}</Text>}
                     </Row>
                 </ProfileSettingItem>
+                <div className="flex flex-col gap-y-2">
+                    <Label>{t('profile.availability')}*</Label>
+                    <WeeklyAvailabilitySelector
+                        onChange={(weeklyAvailability) => setNewCalendarPreferences({ ...newCalendarPreferences, weeklyAvailability })}
+                        availability={newCalendarPreferences?.weeklyAvailability}
+                        isLoading={isLoading}
+                    />
+                </div>
 
-                <NextPrevButtons
-                    disablingNext={{ is: isLoading, reason: t('reasonsDisabled.loading') }}
-                    onPressNext={() => setCurrentStep(RequestMatchStep.german)}
-                    onlyNext
-                />
+                <NextPrevButtons disablingNext={getIsNextDisabled()} isLoading={isLoading} onPressNext={handleOnNext} onlyNext />
             </VStack>
             <Modal
-                isOpen={showModal}
-                onClose={() => {
-                    setShowModal(false);
+                isOpen={!!showModal}
+                onOpenChange={(value) => {
+                    setShowModal(value);
                     setModalSelection('');
                 }}
+                className="max-h-[90%]"
             >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('change')}</Modal.Header>
-                    <Modal.Body>
-                        <Row flexWrap="wrap">
-                            {modalType === 'schoolclass' ? (
-                                <GradeSelector grade={Number(modalSelection)} onGradeChange={(newGrade) => setModalSelection(`${newGrade}`)} />
-                            ) : (
-                                listItems.map((item: { label: string; key: string }) => (
-                                    <Column mb={space['1']} mr={space['1']}>
-                                        <IconTagList
-                                            initial={modalSelection === item.key}
-                                            text={item.label}
-                                            onPress={() => setModalSelection(item.key)}
-                                            iconPath={`${modalType}/icon_${item.key}.svg`}
-                                        />
-                                    </Column>
-                                ))
-                            )}
-                        </Row>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <DisableableButton
-                            isDisabled={data === modalSelection || isLoading}
-                            reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
-                            onPress={changeData}
-                        >
-                            {t('change')}
-                        </DisableableButton>
-                    </Modal.Footer>
-                </Modal.Content>
+                <ModalHeader>
+                    <ModalTitle>{t('change')}</ModalTitle>
+                </ModalHeader>
+                <div className="flex overflow-auto">
+                    {modalType === 'schoolclass' ? (
+                        <GradeSelector grade={Number(modalSelection)} onGradeChange={(newGrade) => setModalSelection(`${newGrade}`)} />
+                    ) : (
+                        <div className="flex flex-wrap gap-3 max-h-[500px]">
+                            {listItems.map((item: { label: string; key: string }) => (
+                                <IconTagList
+                                    initial={modalSelection === item.key}
+                                    text={item.label}
+                                    onPress={() => setModalSelection(item.key)}
+                                    iconPath={`${modalType}/icon_${item.key}.svg`}
+                                />
+                            ))}
+                        </div>
+                    )}
+                </div>
+                <ModalFooter>
+                    <Button
+                        className="w-full lg:w-fit"
+                        reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
+                        disabled={data === modalSelection || isLoading}
+                        isLoading={isLoading || isUpdating}
+                        onClick={changeData}
+                    >
+                        {t('change')}
+                    </Button>
+                </ModalFooter>
             </Modal>
         </>
     );

@@ -31,6 +31,7 @@ const query = gql(`
                 state
                 openMatchRequestCount
                 subjectsFormatted { name mandatory }
+                calendarPreferences
             }
         }
     }
@@ -220,6 +221,7 @@ const RequestMatch: React.FC = () => {
                                     schooltype={data.me.pupil!.schooltype}
                                     gradeAsInt={data.me.pupil!.gradeAsInt}
                                     state={data.me.pupil!.state}
+                                    calendarPreferences={data?.me?.pupil?.calendarPreferences}
                                     refetchQuery={query}
                                 />
                             )}
