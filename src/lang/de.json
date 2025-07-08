@@ -966,7 +966,7 @@
         "general": {
             "title": "Allgemein",
             "profile": "Profil",
-            "calendarPreferences": "Zeitliche Verfügbarkeit",
+            "calendarPreferences": "Wann hast du Zeit?",
             "certificates": "Bescheinigungen",
             "languageVersion": "Sprachversion",
             "notifications": "Benachrichtigungen",
@@ -2195,7 +2195,7 @@
             "systemNotifications": "System-Benachrichtigungen",
             "newsletterNotifications": "Newsletter-Benachrichtigungen",
             "profile": "Profil",
-            "calendarPreferences": "Zeitliche Verfügbarkeit",
+            "calendarPreferences": "Wann hast du Zeit?",
             "manageSessions": "Geräte verwalten",
             "helpCenter": "Hilfebereich",
             "newEmail": "E-Mail ändern",
