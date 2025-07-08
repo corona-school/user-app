@@ -1,6 +1,6 @@
 import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { createContext, Dispatch, SetStateAction, useEffect, useState, useCallback, useRef } from 'react';
+import { createContext, useEffect, useState, useCallback } from 'react';
 import { useLocation } from 'react-router-dom';
 import AsNavigationItem from '../../../components/AsNavigationItem';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
@@ -36,14 +36,12 @@ type RequestMatchContextType = {
     matchRequest: MatchRequest;
     setSubject: (value: Subject) => void;
     removeSubject: (name: string) => void;
-    setCurrentIndex: Dispatch<SetStateAction<number>>;
     isEdit: boolean;
 };
 export const RequestMatchContext = createContext<RequestMatchContextType>({
     matchRequest: { subjects: [] },
     setSubject: () => {},
     removeSubject: () => {},
-    setCurrentIndex: () => {},
     isEdit: false,
 });
 
@@ -56,7 +54,6 @@ enum RequestMatchStep {
 const flow = Object.values(RequestMatchStep);
 
 const RequestMatching: React.FC = () => {
-    const [currentIndex, setCurrentIndex] = useState<number>(0);
     const [currentStep, setCurrentStep] = useState(RequestMatchStep.profileUpdate);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [matchRequest, setMatchRequest] = useState<MatchRequest>({
@@ -104,10 +101,6 @@ const RequestMatching: React.FC = () => {
 
     const currentStepIndex = flow.indexOf(currentStep);
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-    }, [currentStep]);
-
     const handleOnNext = () => {
         if (currentStepIndex === -1) return;
         const nextStep = flow[currentStepIndex + 1];
@@ -135,7 +128,7 @@ const RequestMatching: React.FC = () => {
                     </div>
                 }
             >
-                <RequestMatchContext.Provider value={{ matchRequest, setSubject, removeSubject, setCurrentIndex, isEdit }}>
+                <RequestMatchContext.Provider value={{ matchRequest, setSubject, removeSubject, isEdit }}>
                     {!loading && !isLoading && data && (
                         <div className="px-1 pb-1">
                             <Breadcrumb />
