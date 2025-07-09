@@ -570,8 +570,9 @@
                 "title": "Benim dillerim",
                 "others": "Diğer diller"
             },
-            "label": "Akıcı dil",
-            "empty": "Bilgi yok"
+            "empty": "Bilgi yok",
+            "labelPupil": "Evde hangi dilleri konuşuyorsunuz?",
+            "labelStudent": "Hangi dillerde yardımcı olabilirsiniz?"
         },
         "State": {
             "single": {
@@ -684,9 +685,9 @@
         "editprofile": "Profil resmini değiştir",
         "birthday": "Doğum tarihini değiştir",
         "type": "Destek türü:",
-        "availability": "Kullanılabilirliği yönetin",
         "noInfo": "Bilgi yok",
-        "PersonalData": "Kişisel veriler"
+        "PersonalData": "Kişisel veriler",
+        "availability": "Ne zaman vaktin var?"
     },
     "single": {
         "global": {
