@@ -5,20 +5,20 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import CSSWrapper from '../../../components/CSSWrapper';
 import { schooltypes } from '../../../types/lernfair/SchoolType';
-import { states } from '../../../types/lernfair/State';
 import IconTagList from '../../../widgets/IconTagList';
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
 import { RequestMatchContext, RequestMatchStep } from './RequestMatch';
 import { GradeSelector, GradeTag } from '../../../components/GradeSelector';
 import { useMutation } from '@apollo/client';
-import { CalendarPreferences, SchoolType, State } from '@/gql/graphql';
+import { CalendarPreferences, Language, SchoolType, State } from '@/gql/graphql';
 import { Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import { Label } from '@/components/Label';
 import { WeeklyAvailabilitySelector } from '@/components/availability/WeeklyAvailabilitySelector';
 import { toast } from 'sonner';
 import { logError } from '@/log';
+import { LanguageSelector } from '@/components/LanguageSelector';
 
 type Props = {
     schooltype: string;
@@ -26,6 +26,7 @@ type Props = {
     state: string;
     calendarPreferences?: CalendarPreferences;
     refetchQuery: DocumentNode;
+    languages: Language[];
 };
 
 const ME_UPDATE_MUTATION = gql(`
@@ -34,13 +35,14 @@ const ME_UPDATE_MUTATION = gql(`
     }
 `);
 
-const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, calendarPreferences, refetchQuery }) => {
+const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, calendarPreferences, refetchQuery, languages }) => {
     const { setCurrentStep } = useContext(RequestMatchContext);
     const { space } = useTheme();
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [meUpdate, { loading: isUpdating }] = useMutation(ME_UPDATE_MUTATION, { refetchQueries: [refetchQuery] });
     const [newCalendarPreferences, setNewCalendarPreferences] = useState<CalendarPreferences | undefined>(calendarPreferences);
+    const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(languages ?? []);
 
     const [showModal, setShowModal] = useState<boolean>();
     const [modalType, setModalType] = useState<'schooltypes' | 'schoolclass' | 'states'>();
@@ -75,8 +77,6 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, calendarPr
         switch (modalType) {
             case 'schooltypes':
                 return schooltypes;
-            case 'states':
-                return states;
             default:
                 return [];
         }
@@ -143,13 +143,13 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, calendarPr
     };
 
     const getIsNextDisabled = () => {
-        const availabilitySlots = Object.values(newCalendarPreferences?.weeklyAvailability ?? {}).some((e) => !!e.length);
-        if (!isLoading && !availabilitySlots) {
-            return {
-                is: true,
-                reason: t('matching.wizard.student.profile.availabilityRequirement'),
-            };
-        }
+        // const availabilitySlots = Object.values(newCalendarPreferences?.weeklyAvailability ?? {}).some((e) => !!e.length);
+        // if (!isLoading && !availabilitySlots) {
+        //     return {
+        //         is: true,
+        //         reason: t('matching.wizard.student.profile.availabilityRequirement'),
+        //     };
+        // }
         return { is: false, reason: '' };
     };
 
@@ -161,82 +161,59 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, calendarPr
                 <Text>{t('matching.wizard.pupil.profiledata.text')}</Text>
 
                 <Heading>{t('matching.wizard.pupil.profiledata.subheading')}</Heading>
-
-                <ProfileSettingItem
-                    title={t('profile.SchoolType.label')}
-                    href={() => {
-                        setModalType('schooltypes');
-                        setShowModal(true);
-                    }}
-                >
-                    <Row flexWrap="wrap" w="100%">
-                        {(schooltype && (
-                            <Column marginRight={3} mb={space['0.5']}>
-                                <CSSWrapper className="profil-tab-link">
-                                    <IconTagList
-                                        isDisabled
-                                        iconPath={`schooltypes/icon_${schooltype}.svg`}
-                                        text={t(`lernfair.schooltypes.${schooltype}` as unknown as TemplateStringsArray)}
-                                    />
-                                </CSSWrapper>
-                            </Column>
-                        )) || <Text>{t('profile.Notice.noSchoolType')}</Text>}
-                    </Row>
-                </ProfileSettingItem>
-                <ProfileSettingItem
-                    title={t('profile.SchoolClass.label')}
-                    href={() => {
-                        setModalType('schoolclass');
-                        setShowModal(true);
-                    }}
-                >
-                    <Row flexWrap="wrap" w="100%">
-                        {(gradeAsInt && (
-                            <Column marginRight={3} mb={space['0.5']}>
-                                <CSSWrapper className="profil-tab-link">
-                                    <GradeTag grade={gradeAsInt} />
-                                </CSSWrapper>
-                            </Column>
-                        )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
-                    </Row>
-                </ProfileSettingItem>
-
-                <ProfileSettingItem
-                    title={t('profile.State.label')}
-                    href={() => {
-                        setModalType('states');
-                        setShowModal(true);
-                    }}
-                >
-                    <Row flexWrap="wrap" w="100%">
-                        <Text marginBottom={3} flexBasis={'100%'}>
-                            {t('profile.State.weightingNote')}
-                        </Text>
-                        {(state && (
-                            <Column marginRight={3} mb={space['0.5']}>
-                                {(state && (
+                <div className="flex flex-col gap-y-6">
+                    <ProfileSettingItem
+                        title={t('profile.SchoolType.label')}
+                        href={() => {
+                            setModalType('schooltypes');
+                            setShowModal(true);
+                        }}
+                    >
+                        <Row flexWrap="wrap" w="100%">
+                            {(schooltype && (
+                                <Column marginRight={3} mb={space['0.5']}>
                                     <CSSWrapper className="profil-tab-link">
                                         <IconTagList
                                             isDisabled
-                                            iconPath={`states/icon_${state}.svg`}
-                                            text={t(`lernfair.states.${state}` as unknown as TemplateStringsArray)}
+                                            iconPath={`schooltypes/icon_${schooltype}.svg`}
+                                            text={t(`lernfair.schooltypes.${schooltype}` as unknown as TemplateStringsArray)}
                                         />
                                     </CSSWrapper>
-                                )) || <Text>{t('profile.noInfo')}</Text>}
-                            </Column>
-                        )) || <Text>{t('profile.Notice.noState')}</Text>}
-                    </Row>
-                </ProfileSettingItem>
-                <div className="flex flex-col gap-y-2">
-                    <Label>{t('profile.availability')}*</Label>
-                    <WeeklyAvailabilitySelector
-                        onChange={(weeklyAvailability) => setNewCalendarPreferences({ ...newCalendarPreferences, weeklyAvailability })}
-                        availability={newCalendarPreferences?.weeklyAvailability}
-                        isLoading={isLoading}
-                    />
+                                </Column>
+                            )) || <Text>{t('profile.Notice.noSchoolType')}</Text>}
+                        </Row>
+                    </ProfileSettingItem>
+                    <ProfileSettingItem
+                        title={t('profile.SchoolClass.label')}
+                        href={() => {
+                            setModalType('schoolclass');
+                            setShowModal(true);
+                        }}
+                    >
+                        <Row flexWrap="wrap" w="100%">
+                            {(gradeAsInt && (
+                                <Column marginRight={3} mb={space['0.5']}>
+                                    <CSSWrapper className="profil-tab-link">
+                                        <GradeTag grade={gradeAsInt} />
+                                    </CSSWrapper>
+                                </Column>
+                            )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
+                        </Row>
+                    </ProfileSettingItem>
+                    <div className="flex flex-col gap-y-1">
+                        <Label>{t('profile.Languages.labelPupil')}</Label>
+                        <LanguageSelector multiple value={selectedLanguages} setValue={setSelectedLanguages} />
+                    </div>
+                    <div className="flex flex-col gap-y-2">
+                        <Label>{t('profile.availability')}</Label>
+                        <WeeklyAvailabilitySelector
+                            onChange={(weeklyAvailability) => setNewCalendarPreferences({ ...newCalendarPreferences, weeklyAvailability })}
+                            availability={newCalendarPreferences?.weeklyAvailability}
+                            isLoading={isLoading}
+                        />
+                    </div>
+                    <NextPrevButtons disablingNext={getIsNextDisabled()} isLoading={isLoading} onPressNext={handleOnNext} onlyNext />
                 </div>
-
-                <NextPrevButtons disablingNext={getIsNextDisabled()} isLoading={isLoading} onPressNext={handleOnNext} onlyNext />
             </VStack>
             <Modal
                 isOpen={!!showModal}
