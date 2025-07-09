@@ -101,9 +101,9 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
     }, []);
 
     return (
-        <WithNavigation headerTitle={t('profile.FluentLanguagenalData.single.header')} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
+        <WithNavigation headerTitle={t('profile.Languages.single.header')} showBack isLoading={loading} headerLeft={<NotificationAlert />}>
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                <Heading>{t('profile.FluentLanguagenalData.single.title')}</Heading>
+                <Heading>{t('profile.Languages.single.title')}</Heading>
                 <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
                     <Row flexWrap="wrap" width="100%">
                         {selections.map((language, index) => (
@@ -134,7 +134,7 @@ const ChangeSettingLanguage: React.FC<Props> = () => {
                 </ProfileSettingItem>
             </VStack>
             <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                <ProfileSettingRow title={t('profile.FluentLanguagenalData.single.others')}>
+                <ProfileSettingRow title={t('profile.Languages.single.others')}>
                     <ProfileSettingItem border={false} isIcon={false} isHeaderspace={false}>
                         <VStack w="100%">
                             <Row flexWrap="wrap" width="100%">

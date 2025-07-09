@@ -6,7 +6,7 @@ import AsNavigationItem from '../../../components/AsNavigationItem';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import WithNavigation from '../../../components/WithNavigation';
 import { gql } from '../../../gql';
-import { Subject } from '../../../gql/graphql';
+import { Language, Subject } from '../../../gql/graphql';
 import German from './German';
 import Priority from './Priority';
 import Subjects from './Subjects';
@@ -31,6 +31,8 @@ const query = gql(`
                 state
                 openMatchRequestCount
                 subjectsFormatted { name mandatory }
+                calendarPreferences
+                languages
             }
         }
     }
@@ -220,6 +222,8 @@ const RequestMatch: React.FC = () => {
                                     schooltype={data.me.pupil!.schooltype}
                                     gradeAsInt={data.me.pupil!.gradeAsInt}
                                     state={data.me.pupil!.state}
+                                    calendarPreferences={data?.me?.pupil?.calendarPreferences}
+                                    languages={(data?.me?.pupil?.languages as unknown as Language[]) ?? []}
                                     refetchQuery={query}
                                 />
                             )}

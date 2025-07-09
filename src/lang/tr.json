@@ -560,7 +560,7 @@
             "label": "Benim hakkımda",
             "empty": "Bilgi yok"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Diğer okul türleri",
@@ -570,8 +570,9 @@
                 "title": "Benim dillerim",
                 "others": "Diğer diller"
             },
-            "label": "Akıcı dil",
-            "empty": "Bilgi yok"
+            "empty": "Bilgi yok",
+            "labelPupil": "Evde hangi dilleri konuşuyorsunuz?",
+            "labelStudent": "Hangi dillerde yardımcı olabilirsiniz?"
         },
         "State": {
             "single": {
@@ -684,9 +685,9 @@
         "editprofile": "Profil resmini değiştir",
         "birthday": "Doğum tarihini değiştir",
         "type": "Destek türü:",
-        "availability": "Kullanılabilirliği yönetin",
         "noInfo": "Bilgi yok",
-        "PersonalData": "Kişisel veriler"
+        "PersonalData": "Kişisel veriler",
+        "availability": "Ne zaman vaktin var?"
     },
     "single": {
         "global": {
@@ -1507,7 +1508,8 @@
                 "profile": {
                     "title": "Profili güncelle",
                     "subtitle": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
-                    "personalData": "Kişisel veriler"
+                    "personalData": "Kişisel veriler",
+                    "availabilityRequirement": "Devam etmek için lütfen önce müsaitlik durumunuzu ayarlayın."
                 },
                 "success": {
                     "title": "Başardın, sen bir kahramansın!",

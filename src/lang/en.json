@@ -560,7 +560,7 @@
             "label": "About me",
             "empty": "Not specified"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Other type of school",
@@ -570,8 +570,9 @@
                 "title": "My languages",
                 "others": "Other languages"
             },
-            "label": "Fluent language",
-            "empty": "Not specified"
+            "empty": "Not specified",
+            "labelPupil": "What languages do you speak at home?",
+            "labelStudent": "In which languages can you help?"
         },
         "State": {
             "single": {
@@ -684,9 +685,9 @@
         "editprofile": "Change profile picture",
         "birthday": "Change date of birth",
         "type": "Type of support:",
-        "availability": "Manage availability",
         "noInfo": "Not specified",
-        "PersonalData": "Personal data"
+        "PersonalData": "Personal data",
+        "availability": "When do you have time?"
     },
     "single": {
         "global": {
@@ -1507,7 +1508,8 @@
                 "profile": {
                     "title": "Update profile",
                     "subtitle": "So that we can assign you an optimal learning partner, we ask you to check and complete your personal information once again.",
-                    "personalData": "Personal data"
+                    "personalData": "Personal data",
+                    "availabilityRequirement": "Please set up your availability first to continue."
                 },
                 "success": {
                     "title": "You've done it, you're a hero!",

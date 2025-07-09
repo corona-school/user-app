@@ -625,7 +625,7 @@
         "editprofile": "Profilbild ändern",
         "birthday": "Geburtsdatum ändern",
         "type": "Art der Unterstützung:",
-        "availability": "Verfügbarkeit verwalten",
+        "availability": "Wann hast du Zeit?",
         "noInfo": "Keine Angabe",
         "ProfileCompletion": {
             "name": "Profilvollständigkeit"
@@ -651,8 +651,9 @@
                 "label": "Dein Text"
             }
         },
-        "FluentLanguagenalData": {
-            "label": "Fließende Sprache",
+        "Languages": {
+            "labelPupil": "Welche Sprachen sprichst du zuhause?",
+            "labelStudent": "In welchen Sprachen kannst du helfen?",
             "empty": "Keine Angabe",
             "single": {
                 "header": "Sprache ändern",
@@ -1605,7 +1606,8 @@
                 "profile": {
                     "title": "Profil aktualisieren",
                     "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
-                    "personalData": "Persönliche Daten"
+                    "personalData": "Persönliche Daten",
+                    "availabilityRequirement": "Bitte richte zuerst deine Verfügbarkeit ein, um fortzufahren."
                 },
                 "success": {
                     "title": "Geschafft, du bist ein:e Held:in!",
