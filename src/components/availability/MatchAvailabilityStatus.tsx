@@ -36,10 +36,11 @@ export const MatchAvailabilityStatus = ({
                         <div className="flex items-center gap-x-2">
                             <div className="size-[14px] border border-gray-300 bg-primary-lighter rounded-full"></div>{' '}
                             <Typography>
-                                {t('matching.availability.youDoNotHaveTime')}{' '}
+                                {t('matching.availability.youDoNotHaveTime', { learningPartnerName })} {'('}
                                 <Link to="/calendar-preferences" className="underline decoration-1">
-                                    ({t('matching.availability.editAvailability')})
+                                    {t('matching.availability.editAvailability')}
                                 </Link>
+                                {')'}
                             </Typography>
                         </div>
                     </>

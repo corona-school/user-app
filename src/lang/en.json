@@ -894,7 +894,7 @@
             "faq": "FAQ & Contact",
             "manageSessions": "Manage devices",
             "certificates": "Certificates",
-            "calendarPreferences": "Time availability"
+            "calendarPreferences": "When do you have time?"
         },
         "account": {
             "title": "Account",
@@ -1673,15 +1673,15 @@
             "button": "About the certificates"
         },
         "availability": {
-            "title": "Availability",
             "createAppointmentModal": {
                 "title": "Would you like to create a lecture for this time slot?"
             },
             "bothOfYouHaveTime": "You both have time",
-            "youDoNotHaveTime": "You don't have time",
-            "editAvailability": "Edit times",
             "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} has not entered any time slots yet (send them a <chatLink>link</chatLink>)",
-            "setupPreferencesChatMessage": "Hi 👋, this is {{myName}}, maybe you would like to share your days when you have time with me. You can find it here: {{link}}"
+            "setupPreferencesChatMessage": "Hi 👋, this is {{myName}}, maybe you would like to share your days when you have time with me. You can find it here: {{link}}",
+            "title": "Possible time slots",
+            "youDoNotHaveTime": "Only {{learningPartnerName}} has time",
+            "editAvailability": "Edit your time slots"
         }
     },
     "course": {
@@ -2114,7 +2114,7 @@
             "referral": "Referral",
             "certificates": "Certificates",
             "lesson": "Lesson planner with AI (Beta)",
-            "calendarPreferences": "Time availability"
+            "calendarPreferences": "When do you have time?"
         }
     },
     "screening": {

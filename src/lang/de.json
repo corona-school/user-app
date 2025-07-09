@@ -668,7 +668,7 @@
         "State": {
             "empty": "Keine Angabe",
             "label": "Schulort",
-            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
+            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
             "single": {
                 "selectedStates": "Mein Schulort",
                 "otherStates": "Weitere (Bundes-)Länder",
@@ -967,7 +967,7 @@
         "general": {
             "title": "Allgemein",
             "profile": "Profil",
-            "calendarPreferences": "Zeitliche Verfügbarkeit",
+            "calendarPreferences": "Wann hast du Zeit?",
             "certificates": "Bescheinigungen",
             "languageVersion": "Sprachversion",
             "notifications": "Benachrichtigungen",
@@ -1456,10 +1456,10 @@
             "createAppointment": "Termin erstellen"
         },
         "availability": {
-            "title": "Verfügbarkeit",
+            "title": "Mögliche Zeitfenster",
             "bothOfYouHaveTime": "Ihr habt beide Zeit",
-            "youDoNotHaveTime": "Du hast keine Zeit",
-            "editAvailability": "Zeiten bearbeiten",
+            "youDoNotHaveTime": "Nur {{learningPartnerName}} hat Zeit",
+            "editAvailability": "Deine Zeitfenster bearbeiten",
             "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} hat noch keine Zeitfenster eingegeben (sende ihm/ihr einen <chatLink>Link</chatLink> zu)",
             "setupPreferencesChatMessage": "Hallo 👋, hier ist {{myName}}, vielleicht möchtest du deine Tage an denen du Zeit hast mit mir teilen. Du findest das hier: {{link}}",
             "createAppointmentModal": {
@@ -2197,7 +2197,7 @@
             "systemNotifications": "System-Benachrichtigungen",
             "newsletterNotifications": "Newsletter-Benachrichtigungen",
             "profile": "Profil",
-            "calendarPreferences": "Zeitliche Verfügbarkeit",
+            "calendarPreferences": "Wann hast du Zeit?",
             "manageSessions": "Geräte verwalten",
             "helpCenter": "Hilfebereich",
             "newEmail": "E-Mail ändern",
