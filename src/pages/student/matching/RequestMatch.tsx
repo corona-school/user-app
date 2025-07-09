@@ -17,7 +17,6 @@ const query = gql(`
     query StudentMatchRequestCount {
         me {
             student {
-                aboutMe
                 state
                 openMatchRequestCount
                 subjectsFormatted { name grade { min max }}
@@ -138,7 +137,6 @@ const RequestMatching: React.FC = () => {
                                     onNext={handleOnNext}
                                     onBack={handleOnBack}
                                     profile={{
-                                        aboutMe: data.me.student?.aboutMe,
                                         calendarPreferences: data.me.student?.calendarPreferences,
                                         languages: data.me.student?.languages as unknown as Language[],
                                     }}
