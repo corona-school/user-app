@@ -893,7 +893,7 @@
             "faq": "SSS & İletişim",
             "manageSessions": "Cihazları yönetme",
             "certificates": "Sertifikalar",
-            "calendarPreferences": "Zaman uygunluğu"
+            "calendarPreferences": "Ne zaman vaktin var?"
         },
         "account": {
             "title": "Hesap",
@@ -1671,15 +1671,15 @@
             "button": "Sertifikalara"
         },
         "availability": {
-            "title": "Kullanılabilirlik",
             "createAppointmentModal": {
                 "title": "Bu zaman aralığı için bir randevu oluşturmak ister misiniz?"
             },
             "bothOfYouHaveTime": "İkinizin de zamanı var.",
-            "youDoNotHaveTime": "Zamanın yok.",
-            "editAvailability": "Düzenleme zamanları",
             "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} henüz zaman aralıklarını girmedi (ona bir <chatLink>bağlantı</chatLink> gönder)",
-            "setupPreferencesChatMessage": "Merhaba 👋, ben {{myName}}, belki zamanınız olduğunda günlerinizi benimle paylaşmak istersiniz. Burada bulabilirsiniz: {{link}}"
+            "setupPreferencesChatMessage": "Merhaba 👋, ben {{myName}}, belki zamanınız olduğunda günlerinizi benimle paylaşmak istersiniz. Burada bulabilirsiniz: {{link}}",
+            "title": "Olası zaman aralıkları",
+            "youDoNotHaveTime": "Yalnızca {{learningPartnerName}}'ın zamanı vardır",
+            "editAvailability": "Zaman aralıklarınızı düzenleyin"
         }
     },
     "course": {
@@ -2112,7 +2112,7 @@
             "referral": "Yönlendirme",
             "certificates": "Sertifikalar",
             "lesson": "Yapay zeka ile ders planlayıcı (Beta)",
-            "calendarPreferences": "Zaman uygunluğu"
+            "calendarPreferences": "Ne zaman vaktin var?"
         }
     },
     "screening": {
