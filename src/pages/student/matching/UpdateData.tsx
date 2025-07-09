@@ -83,7 +83,7 @@ const UpdateData = ({ refetchQuery, profile, onNext, onBack }: UpdateDataProps) 
                 <TextArea className="resize-none h-20 w-full" id="aboutMe" value={aboutMe} onChangeText={setAboutMe} />
             </div>
             <div className="flex flex-col gap-y-1">
-                <Label>{t('profile.FluentLanguagenalData.single.title')}</Label>
+                <Label>{t('profile.Languages.labelStudent')}</Label>
                 <LanguageSelector multiple value={selectedLanguages} setValue={setSelectedLanguages} />
             </div>
             <div className="flex flex-col gap-y-2">

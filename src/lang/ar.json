@@ -556,7 +556,7 @@
             "label": "معلومات عني",
             "empty": "غير محدد"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "نوع آخر من المدارس",

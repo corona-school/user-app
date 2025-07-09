@@ -560,7 +560,7 @@
             "label": "Обо мне",
             "empty": "Не указано"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Другой тип школы",

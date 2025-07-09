@@ -560,7 +560,7 @@
             "label": "About me",
             "empty": "Not specified"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Other type of school",

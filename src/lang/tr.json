@@ -560,7 +560,7 @@
             "label": "Benim hakkımda",
             "empty": "Bilgi yok"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Diğer okul türleri",
