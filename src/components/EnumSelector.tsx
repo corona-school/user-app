@@ -3,7 +3,7 @@ import { StringMap, TOptions } from 'i18next';
 import { ReactNode } from 'react';
 import { TFuncKey, useTranslation } from 'react-i18next';
 import { asTranslationKey } from '../helper/string-helper';
-import { Toggle } from './Toggle';
+import { Toggle, ToggleVariants } from './Toggle';
 
 // Given an enum:
 //  enum SomeEnum { A = "A", B = "B" }
@@ -18,6 +18,7 @@ interface SingleSelectorProps<Enum> {
     setValue: (it: Enum) => any;
     multiple?: false;
     className?: string;
+    variant?: ToggleVariants;
 }
 
 interface MultiSelectorProps<Enum> {
@@ -25,6 +26,7 @@ interface MultiSelectorProps<Enum> {
     setValue: (it: Enum[]) => any;
     multiple: true;
     className?: string;
+    variant?: ToggleVariants;
 }
 
 type SelectorProps<Enum> = SingleSelectorProps<Enum> | MultiSelectorProps<Enum>;
@@ -34,7 +36,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
     getTranslation: (it: Enum) => TFuncKey | [TFuncKey, TOptions<StringMap>],
     getIcon?: (it: Enum) => ReactNode
 ) {
-    return function Selector({ value, setValue, className, multiple }: SelectorProps<Enum>) {
+    return function Selector({ value, setValue, className, multiple, variant = { size: 'lg', variant: 'outline' } }: SelectorProps<Enum>) {
         const { t } = useTranslation();
 
         return (
@@ -57,7 +59,14 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                     };
 
                     return (
-                        <Toggle pressed={isSelected} variant="outline" onPressedChange={handleChange} key={it} size="lg" className="justify-center gap-2">
+                        <Toggle
+                            pressed={isSelected}
+                            variant={variant.variant}
+                            onPressedChange={handleChange}
+                            key={it}
+                            size={variant.size}
+                            className="justify-center gap-2"
+                        >
                             <>
                                 {getIcon && getIcon(it as Enum)}
                                 {Array.isArray(translation) ? t(...translation) : t(asTranslationKey(translation))}

@@ -9,8 +9,9 @@ const toggleVariants = cva(
         variants: {
             variant: {
                 default: 'hover:bg-accent hover:text-accent-foreground',
-                outline: 'border border-input bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground',
+                outline: 'border border-input data-[state=on]:border-primary-light bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground',
                 'outline-primary': 'border border-primary text-primary bg-transparent hover:bg-accent hover:text-accent-foreground',
+                white: 'bg-white data-[state=on]:border-primary',
             },
             size: {
                 default: 'h-9 px-3',
@@ -25,9 +26,10 @@ const toggleVariants = cva(
     }
 );
 
-const Toggle = React.forwardRef<
-    React.ElementRef<typeof TogglePrimitive.Root>,
-    React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> & VariantProps<typeof toggleVariants>
->(({ className, variant, size, ...props }, ref) => <TogglePrimitive.Root ref={ref} className={cn(toggleVariants({ variant, size, className }))} {...props} />);
+export type ToggleVariants = VariantProps<typeof toggleVariants>;
+
+const Toggle = React.forwardRef<React.ElementRef<typeof TogglePrimitive.Root>, React.ComponentPropsWithoutRef<typeof TogglePrimitive.Root> & ToggleVariants>(
+    ({ className, variant, size, ...props }, ref) => <TogglePrimitive.Root ref={ref} className={cn(toggleVariants({ variant, size, className }))} {...props} />
+);
 
 export { Toggle, toggleVariants };
