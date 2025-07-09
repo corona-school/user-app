@@ -6,7 +6,7 @@ import { Day, DAYS, fromMinutesOfTheDayToFormat, TIME_SLOTS } from '@/Utility';
 import { Skeleton } from '../Skeleton';
 import { Button } from '../Button';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 
 interface WeeklyAvailabilityProps {
     availability?: WeeklyAvailability;
@@ -34,10 +34,16 @@ export const WeeklyAvailabilitySelector = ({
 }: WeeklyAvailabilityProps) => {
     const { t } = useTranslation();
     const weekdaysLabels = t('weekdays', { returnObjects: true });
+    const [hoveredRow, setHoveredRow] = useState('');
+    const [hoveredColumn, setHoveredColumn] = useState('');
 
     const isCellSelected = (row: string, col: string) => {
         if (!availability) return false;
         return availability[col as Day]?.some(({ from, to }) => `${from}-${to}` === row);
+    };
+
+    const isCellHovered = (row: string, col: string) => {
+        return hoveredColumn === col || hoveredRow === row;
     };
 
     const isColumnSelected = (col: Day) => {
@@ -118,6 +124,8 @@ export const WeeklyAvailabilitySelector = ({
                                 role="button"
                                 tabIndex={0}
                                 onClick={() => handleColumnClick(day)}
+                                onMouseEnter={() => setHoveredColumn(day)}
+                                onMouseLeave={() => setHoveredColumn('')}
                                 className={cn(
                                     'size-10 rounded-md text-center bg-primary-lighter transition-colors flex items-center justify-center gap-y-1 gap-x-2 text-primary',
                                     {
@@ -139,6 +147,8 @@ export const WeeklyAvailabilitySelector = ({
                             <Skeleton key={timeSlot} isLoading={isLoading}>
                                 <div
                                     onClick={() => handleRowClick(timeSlot)}
+                                    onMouseEnter={() => setHoveredRow(timeSlot)}
+                                    onMouseLeave={() => setHoveredRow('')}
                                     className={cn(
                                         'w-[100px] h-10 rounded-md text-center bg-primary-lighter text-primary transition-colors flex items-center justify-center gap-y-1 gap-x-2 cursor-pointer',
                                         { 'bg-green-200 text-green-800': isRowSelected(timeSlot) }
@@ -159,10 +169,11 @@ export const WeeklyAvailabilitySelector = ({
                                     >
                                         <Checkbox
                                             checked={isCellSelected(timeSlot, day)}
-                                            className={cn(
-                                                'size-4 data-[state=checked]:bg-green-500',
-                                                isCellSelected(timeSlot, day) ? 'border-transparent' : 'border-primary group-hover:bg-green-200'
-                                            )}
+                                            className={cn('size-4 data-[state=checked]:bg-green-500', {
+                                                'border-transparent': isCellSelected(timeSlot, day),
+                                                'border-primary group-hover:bg-green-200': !isCellSelected(timeSlot, day),
+                                                'bg-green-200': isCellHovered(timeSlot, day),
+                                            })}
                                             checkClasses={'size-3'}
                                         />
                                     </div>
