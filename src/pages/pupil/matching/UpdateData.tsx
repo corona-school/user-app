@@ -30,8 +30,8 @@ type Props = {
 };
 
 const ME_UPDATE_MUTATION = gql(`
-    mutation changePupilMatchingInfoData($calendarPreferences: CalendarPreferences!) {
-        meUpdate(update: { pupil: { calendarPreferences: $calendarPreferences } })
+    mutation changePupilMatchingInfoData($languages: [Language!], $calendarPreferences: CalendarPreferences) {
+        meUpdate(update: { pupil: { languages: $languages, calendarPreferences: $calendarPreferences } })
     }
 `);
 
@@ -129,11 +129,8 @@ const UpdateData: React.FC<Props> = ({ schooltype, gradeAsInt, state, calendarPr
     }, [meUpdateSchoolClass, meUpdateSchooltype, meUpdateState, modalSelection, modalType, t]);
 
     const handleOnNext = async () => {
-        if (!newCalendarPreferences) {
-            return;
-        }
         try {
-            await meUpdate({ variables: { calendarPreferences: newCalendarPreferences } });
+            await meUpdate({ variables: { calendarPreferences: newCalendarPreferences, languages: selectedLanguages } });
             toast.success(t('changesWereSaved'));
             setCurrentStep(RequestMatchStep.german);
         } catch (error: any) {

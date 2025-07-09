@@ -13,7 +13,7 @@ import { toast } from 'sonner';
 import { logError } from '@/log';
 
 const ME_UPDATE_MUTATION = gql(`
-    mutation changeStudentStateData($languages: [StudentLanguage!], $calendarPreferences: CalendarPreferences!) {
+    mutation changeStudentStateData($languages: [StudentLanguage!], $calendarPreferences: CalendarPreferences) {
         meUpdate(update: { student: { languages: $languages, calendarPreferences: $calendarPreferences } })
     }
 `);
@@ -56,9 +56,6 @@ const UpdateData = ({ refetchQuery, profile, onNext, onBack }: UpdateDataProps) 
     };
 
     const handleOnNext = async () => {
-        if (!calendarPreferences) {
-            return;
-        }
         try {
             await meUpdate({ variables: { languages: selectedLanguages as unknown as StudentLanguage[], calendarPreferences } });
             toast.success(t('changesWereSaved'));
