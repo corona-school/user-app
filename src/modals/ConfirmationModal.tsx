@@ -7,6 +7,7 @@ import { Button } from '@/components/Button';
 interface ConfirmationModalProps extends BaseModalProps {
     headline: string;
     confirmButtonText: string;
+    cancelButtonText?: string;
     description: ReactNode;
     onConfirm: () => void;
     variant?: 'default' | 'destructive';
@@ -15,6 +16,7 @@ interface ConfirmationModalProps extends BaseModalProps {
 const ConfirmationModal = ({
     headline,
     confirmButtonText,
+    cancelButtonText,
     description,
     onConfirm,
     isOpen,
@@ -34,7 +36,7 @@ const ConfirmationModal = ({
             </div>
             <ModalFooter variant={variant}>
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
-                    {t('cancel')}
+                    {cancelButtonText ? cancelButtonText : t('cancel')}
                 </Button>
                 <Button className="w-full lg:w-fit" variant={variant} onClick={onConfirm} isLoading={isLoading}>
                     {confirmButtonText}

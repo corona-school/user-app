@@ -1,3 +1,4 @@
+import { getSystemNotificationPreferenceCategories } from '@/helper/notification-preferences';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { NotificationPreferences, PreferencesType } from '../types/lernfair/NotificationPreferences';
@@ -45,7 +46,16 @@ const useUserPreferences = () => {
             setUserPreferencesPrivate(preferences);
         }
     }, [loading, error, data?.me?.notificationPreferences]);
+
+    const systemNotificationCategories = getSystemNotificationPreferenceCategories();
+    const currentSystemPreferences = Object.entries(userPreferences).filter(([key]) => systemNotificationCategories.includes(key));
+
+    const hasPushSystemNotificationsEnabled = currentSystemPreferences.every(([key, value]) => {
+        return value.push === true;
+    });
+
     return {
+        hasPushSystemNotificationsEnabled,
         userPreferences,
         updateUserPreference,
         updateUserPreferences,

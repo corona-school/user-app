@@ -14,6 +14,9 @@ import PersonalDetails from './PersonalDetails';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { SuggestionsHistory } from '@/widgets/screening/SuggestionsHistory';
 import { IconCheck, IconX } from '@tabler/icons-react';
+import { useUpdatePupil } from './useUpdatePupil';
+import { formatDate } from '@/Utility';
+import { DateTime } from 'luxon';
 
 interface PupilDetailProps {
     pupil: PupilForScreening;
@@ -30,6 +33,7 @@ const REVOKE_MATCH_REQUEST_MUTATION = gql(`
 
 const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
     const { t } = useTranslation();
+    const { updatePupil, isUpdating, form } = useUpdatePupil(pupil);
 
     const [mutationRequestMatch, { loading: isRequestingMatch }] = useMutation(REQUEST_MATCH_MUTATION);
     const [mutationRevokeMatchRequest, { loading: isRevokingMatchRequest }] = useMutation(REVOKE_MATCH_REQUEST_MUTATION);
@@ -77,6 +81,21 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
         refresh();
     };
 
+    const handleOnUpdatePupil = async () => {
+        await updatePupil();
+        await refresh();
+    };
+
+    const canRequestMatch = () => {
+        if (needsScreening && !screeningToEdit) {
+            return { can: false, reason: 'Zuerst muss ein Screening angelegt werden' };
+        }
+        if (!pupil.subjectsFormatted.length) {
+            return { can: false, reason: 'zuerst müssen Schulfächer ausgewählt werden' };
+        }
+        return { can: true, reason: '' };
+    };
+
     return (
         <div className="mt-8">
             <div className="mb-6">
@@ -85,6 +104,9 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                 </Typography>
                 <Typography>
                     <span className="font-bold">E-Mail</span>: {pupil.email}
+                </Typography>
+                <Typography>
+                    <span className="font-bold">Registiert</span>: {formatDate(pupil.createdAt, DateTime.DATE_MED)}
                 </Typography>
                 <Typography>
                     <span className="font-bold">Aktiv</span>:{' '}
@@ -105,13 +127,19 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                 </TabsList>
                 <TabsContent inactiveMode="hide" value="main">
                     <div className="shadow-md px-6 py-8 rounded-md">
-                        <PersonalDetails pupil={pupil} refresh={refresh} />
+                        <PersonalDetails pupil={pupil} refresh={refresh} form={form} isUpdating={isUpdating} updatePupil={handleOnUpdatePupil} />
                     </div>
                     <div className="shadow-md px-6 py-8 rounded-md mt-10">
                         <Typography variant="h4" className="mb-5">
                             Screening
                         </Typography>
-                        <ScreenPupil pupil={pupil} screening={screeningToEdit ?? undefined} needsScreening={needsScreening} refresh={refresh} />
+                        <ScreenPupil
+                            onAfterSaveScreening={handleOnUpdatePupil}
+                            pupil={pupil}
+                            screening={screeningToEdit ?? undefined}
+                            needsScreening={needsScreening}
+                            refresh={refresh}
+                        />
                     </div>
                     {previousScreenings.length > 0 && (
                         <div className="shadow-md px-6 py-8 rounded-md mt-10">
@@ -132,8 +160,8 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                             <div className="flex items-center gap-x-4">
                                 <Button
                                     isLoading={isRequestingMatch}
-                                    disabled={needsScreening && !screeningToEdit}
-                                    reasonDisabled="Zuerst muss ein Screening angelegt werden"
+                                    disabled={!canRequestMatch()?.can}
+                                    reasonDisabled={canRequestMatch()?.reason}
                                     onClick={handleOnRequestMatch}
                                 >
                                     Match anfragen

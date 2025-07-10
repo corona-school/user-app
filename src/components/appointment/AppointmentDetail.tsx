@@ -12,11 +12,13 @@ import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
-import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { Course_Category_Enum, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 import { Typography } from '../Typography';
 import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/icons-react';
 import { Button } from '../Button';
+import AddToCalendarDropdown from '../AddToCalendarDropdown';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -79,10 +81,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
         return DateTime.fromISO(appointment.start).toMillis() + appointment.duration * 60000 < DateTime.now().toMillis();
     }, [appointment.duration, appointment.start]);
 
-    const handleCancelClick = useCallback(() => {
+    const handleCancelClick = useCallback(async () => {
         toast.show({ description: t('appointment.detail.canceledToast'), placement: 'top' });
         setCanceled(true);
-        cancelAppointment({ variables: { appointmentId: appointment.id } });
+        await cancelAppointment({ variables: { appointmentId: appointment.id } });
         navigate(-1);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
@@ -109,6 +111,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
     const byMatch = !appointment.declinedBy?.includes(user?.userID!);
     const wasRejectedByMe = appointment.declinedBy?.includes(user?.userID!);
     const wasRejectedByMatch = appointment.appointmentType === 'match' && wasRejected && byMatch;
+
+    const isCurrent = useCanJoinMeeting(appointment.isOrganizer ? 240 : 10, appointment.start, appointment.duration);
+
+    const canAddToCalendar = !wasRejected && !appointment.declinedBy?.length && !isPastAppointment && !isCurrent;
 
     return (
         <>
@@ -138,6 +144,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     isOrganizer={appointment.isOrganizer}
                     overrideMeetingLink={appointment.override_meeting_link}
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
+                    showParticipants={appointment.subcourse?.course?.category !== Course_Category_Enum.HomeworkHelp}
                 />
                 {wasRejectedByMatch && (
                     <>
@@ -150,7 +157,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                 )}
                 <Description description={appointment.description} />
                 <div className="flex flex-col md:flex-row gap-3">
-                    {user?.student && (
+                    {appointment.isOrganizer && (
                         <>
                             <Button
                                 disabled={isPastAppointment}
@@ -162,6 +169,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                             >
                                 {wasRejectedByMatch ? t('appointment.detail.rescheduleButton') : t('appointment.detail.editButton')}
                             </Button>
+                            {canAddToCalendar && <AddToCalendarDropdown buttonClasses="w-full lg:w-[300px]" appointment={appointment} />}
                             <Button
                                 disabled={isPastAppointment || isLastAppointment}
                                 reasonDisabled={
@@ -178,20 +186,23 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                             </Button>
                         </>
                     )}
-                    {user?.pupil && (
-                        <Button
-                            disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
-                            reasonDisabled={
-                                isPastAppointment
-                                    ? t('appointment.detail.reasonDisabled.cancelBtn.isOver')
-                                    : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
-                            }
-                            onClick={() => setShowDeclineModal(true)}
-                            variant="destructive"
-                            className="w-full lg:w-[300px]"
-                        >
-                            {t('appointment.detail.cancelButton')}
-                        </Button>
+                    {appointment.isParticipant && (
+                        <>
+                            {canAddToCalendar && <AddToCalendarDropdown buttonClasses="w-full lg:w-[300px]" appointment={appointment} />}
+                            <Button
+                                disabled={(wasRejectedByMe ?? false) || canceled || isPastAppointment}
+                                reasonDisabled={
+                                    isPastAppointment
+                                        ? t('appointment.detail.reasonDisabled.cancelBtn.isOver')
+                                        : t('appointment.detail.reasonDisabled.cancelBtn.isCancelled')
+                                }
+                                onClick={() => setShowDeclineModal(true)}
+                                variant="destructive"
+                                className="w-full lg:w-[300px]"
+                            >
+                                {t('appointment.detail.cancelButton')}
+                            </Button>
+                        </>
                     )}
                 </div>
             </Box>

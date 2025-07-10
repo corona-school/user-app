@@ -269,7 +269,7 @@ export const LFApolloProvider: React.FC<{ children: ReactNode }> = ({ children }
 // By storing the credentials in sessionStorage instead, reloading the tab will remove the session,
 //  and opening a new page will log in again with the default account
 const { searchParams } = new URL(window.location.href);
-const TEMPORARY_LOGIN = searchParams.has('temporary');
+export const TEMPORARY_LOGIN = searchParams.has('temporary') || !!sessionStorage.getItem('lernfair:token');
 
 const STORAGE = TEMPORARY_LOGIN ? sessionStorage : localStorage;
 

@@ -58,7 +58,7 @@ const ScreenerCourseButtons: React.FC<Props> = ({ courseState, isShared, subcour
             <Button
                 onPress={() => {
                     navigate('/edit-course', {
-                        state: { courseId: subcourseId },
+                        state: { subcourseId: subcourseId },
                     });
                 }}
                 variant="outline"

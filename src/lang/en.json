@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Clock",
-            "nowToEnd": "Now - {{end}} Clock"
+            "nowToEnd": "Now - {{end}} Clock",
+            "startToEndShort": "{{start}}-{{end}} clock"
         },
         "deleteModal": {
             "title": "Are you sure you want to delete this lecture ?",
@@ -151,7 +152,8 @@
         "loadPastAppointments": "Load past lectures ",
         "loadedPastAppointments": "Past lectures loaded",
         "courseNotPublished": "The course associated with this lecture has not yet been released for review.",
-        "noNextAppointment": "No next lecture."
+        "noNextAppointment": "No next lecture.",
+        "addToCalendar": "Add to calendar"
     },
     "login": {
         "email": {
@@ -254,7 +256,8 @@
             "Arbeitslehre": "Labor theory",
             "Ethik": "Ethics",
             "Gesundheit": "Health",
-            "Technik": "Technology"
+            "Technik": "Technology",
+            "Steuerlehre": "Tax theory"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -557,7 +560,7 @@
             "label": "About me",
             "empty": "Not specified"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Other type of school",
@@ -567,8 +570,9 @@
                 "title": "My languages",
                 "others": "Other languages"
             },
-            "label": "Fluent language",
-            "empty": "Not specified"
+            "empty": "Not specified",
+            "labelPupil": "What languages do you speak at home?",
+            "labelStudent": "In which languages can you help?"
         },
         "State": {
             "single": {
@@ -681,9 +685,9 @@
         "editprofile": "Change profile picture",
         "birthday": "Change date of birth",
         "type": "Type of support:",
-        "availability": "Manage availability",
         "noInfo": "Not specified",
-        "PersonalData": "Personal data"
+        "PersonalData": "Personal data",
+        "availability": "When do you have time?"
     },
     "single": {
         "global": {
@@ -732,7 +736,8 @@
             "courseInPast": "This course is already over.",
             "courseCancelled": "This course has been canceled.",
             "courseStartedButJoinable": "This course has already started, but you can still register",
-            "is_shared": "This course is released as a template"
+            "is_shared": "This course is released as a template",
+            "timesAWeek": "{{times}}x per week"
         },
         "card": {
             "time": {
@@ -808,7 +813,8 @@
             "button": "Binding registration",
             "description": "Thank you for <b>registering</b> for this course.\nOur volunteers offer the courses on a voluntary basis. So please arrive on time and cancel if you can't make it.",
             "toast": "You have successfully registered for the course.",
-            "error": "You could not be registered for the course."
+            "error": "You could not be registered for the course.",
+            "homeworkHelpButton": "Register without obligation"
         },
         "joinWaitinglist": {
             "button": "Put on waiting list",
@@ -862,6 +868,16 @@
             "error": "Pupil could not be added.",
             "noProspects": "No interested parties who have contacted you via chat.",
             "description": "Here you can see interested parties who have contacted you via chat."
+        },
+        "homeworkHelp": {
+            "signIn": {
+                "title": "Non-binding registration",
+                "description": "As soon as you have registered, you can spontaneously support individual homework help lessons. Registration does not commit you to anything, but helps us to roughly gauge interest."
+            },
+            "signOut": {
+                "title": "Logout",
+                "description": "Log out if you no longer need access to the homework help lessons."
+            }
         }
     },
     "settings": {
@@ -877,7 +893,8 @@
             "push": "App messages",
             "faq": "FAQ & Contact",
             "manageSessions": "Manage devices",
-            "certificates": "Certificates"
+            "certificates": "Certificates",
+            "calendarPreferences": "When do you have time?"
         },
         "account": {
             "title": "Account",
@@ -1491,7 +1508,8 @@
                 "profile": {
                     "title": "Update profile",
                     "subtitle": "So that we can assign you an optimal learning partner, we ask you to check and complete your personal information once again.",
-                    "personalData": "Personal data"
+                    "personalData": "Personal data",
+                    "availabilityRequirement": "Please set up your availability first to continue."
                 },
                 "success": {
                     "title": "You've done it, you're a hero!",
@@ -1548,7 +1566,8 @@
                             "title": "My courses",
                             "current": "Current courses (published)",
                             "draft": "Draft or under review",
-                            "past": "Past and canceled courses"
+                            "past": "Past and canceled courses",
+                            "homeworkHelp": "Homework help"
                         },
                         "tab2": {
                             "title": "All courses"
@@ -1576,7 +1595,8 @@
             "modal": {
                 "title": "Why do you want to dissolve the learning pair?",
                 "btn": "Dissolve learning pair",
-                "tooltip": "You must give a reason."
+                "tooltip": "You must give a reason.",
+                "otherFreeText": "Reason:"
             },
             "warningModal": {
                 "title": "Are you sure?",
@@ -1651,6 +1671,17 @@
             "title": "Proof of honorary office",
             "text": "You can have your activity confirmed at any time and then download the certificate.",
             "button": "About the certificates"
+        },
+        "availability": {
+            "createAppointmentModal": {
+                "title": "Would you like to create a lecture for this time slot?"
+            },
+            "bothOfYouHaveTime": "You both have time",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} has not entered any time slots yet (send them a <chatLink>link</chatLink>)",
+            "setupPreferencesChatMessage": "Hi 👋, this is {{myName}}, maybe you would like to share your days when you have time with me. You can find it here: {{link}}",
+            "title": "Possible time slots",
+            "youDoNotHaveTime": "Only {{learningPartnerName}} has time",
+            "editAvailability": "Edit your time slots"
         }
     },
     "course": {
@@ -1718,7 +1749,8 @@
             "instructors": "One or more instructors could not be added.",
             "lectures": "One or more lectures could not be added.",
             "tags": "Your tags could not be added.",
-            "appointments": "No lectures created."
+            "appointments": "No lectures created.",
+            "isInPastOrInvalid": "We could not find this course or it is in the past."
         },
         "CourseDate": {
             "step": {
@@ -1846,7 +1878,8 @@
         "cancelation_success": "The course was successfully canceled",
         "select_participant": "Select participant",
         "all_participants": "all participants",
-        "cancelation_error": "An error has occurred. The course could not be canceled."
+        "cancelation_error": "An error has occurred. The course could not be canceled.",
+        "alternatingInstructors": "Changing volunteers"
     },
     "notification": {
         "timedifference": {
@@ -1947,7 +1980,13 @@
             "yourMail": "Your e-mail: ",
             "closeButton": "Close"
         },
-        "send": "Notification sent"
+        "send": "Notification sent",
+        "activateNotificationsModal": {
+            "title": "Note on new message",
+            "description": "You can receive notifications about new messages in the chat or new appointments directly on your device (\"push notification\").",
+            "confirmButton": "Activate now",
+            "cancelButton": "Later"
+        }
     },
     "chat": {
         "modal": {
@@ -2074,7 +2113,8 @@
             "editCourse": "Edit course",
             "referral": "Referral",
             "certificates": "Certificates",
-            "lesson": "Lesson planner with AI (Beta)"
+            "lesson": "Lesson planner with AI (Beta)",
+            "calendarPreferences": "When do you have time?"
         }
     },
     "screening": {
@@ -2333,7 +2373,17 @@
                 "content": "Unfortunately, we have decided that the commitment at Lern-Fair does not suit you. Contact us if you have any questions about the decision."
             }
         },
-        "contactSupport": "Contact support"
+        "contactSupport": "Contact support",
+        "appointment": {
+            "joinMeeting": "Join video chat",
+            "joinMeetingHint": "You can only start the meeting 5 minutes before the start of the appointment.",
+            "changeAppointment": "Change appointment",
+            "cancelAppointment": "Cancel appointment",
+            "title": "Appointment created ✅",
+            "yourAppointment": "Your appointment",
+            "optionsDescription": "You don't have time and want to postpone or cancel the appointment?",
+            "description": "You will receive an appointment confirmation to your e-mail address. You can add the appointment to your calendar with a click."
+        }
     },
     "contactSupport": {
         "title": "Contact support",
@@ -2548,7 +2598,8 @@
             "Spanisch": "Spanish",
             "Technik": "Technology",
             "Wirtschaft": "Economy",
-            "Lernen lernen": "Learning to learn"
+            "Lernen lernen": "Learning to learn",
+            "Steuerlehre": "Tax theory"
         },
         "placeholderImageDescription": "Fill out the form to create a lesson plan"
     },
@@ -2568,7 +2619,12 @@
             },
             "title": "Share your unique link",
             "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
-            "share": "Share"
+            "share": "Share",
+            "materials": {
+                "title": "Distribute flyers & advertising material",
+                "description": "You can download free multilingual flyers, posters and other promotional materials to print out and display at a school, youth center or library, for example.",
+                "button": "To the advertising media"
+            }
         },
         "reward": {
             "title": "My Impact",
@@ -2599,5 +2655,14 @@
             "title": "Individual certificate"
         },
         "title": "My certificates"
+    },
+    "weekdays": {
+        "monday": "Monday",
+        "tuesday": "Tuesday",
+        "wednesday": "Wednesday",
+        "thursday": "Thursday",
+        "friday": "Friday",
+        "saturday": "Saturday",
+        "sunday": "Sunday"
     }
 }

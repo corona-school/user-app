@@ -267,7 +267,7 @@ const ProfilePupil: React.FC<Props> = () => {
                                 <PupilAboutMeModal aboutMe={data!.me.pupil!.aboutMe} onSave={onSave} onClose={() => setAboutMeModalVisible(false)} />
                             )}
 
-                            <ProfileSettingItem title={t('profile.FluentLanguagenalData.label')} href={() => navigate('/change-setting/language')}>
+                            <ProfileSettingItem title={t('profile.Languages.labelPupil')} href={() => navigate('/change-setting/language')}>
                                 {(data?.me?.pupil?.languages?.length && (
                                     <Row flexWrap="wrap" w="100%">
                                         {data?.me?.pupil?.languages.map((lang: string) => (

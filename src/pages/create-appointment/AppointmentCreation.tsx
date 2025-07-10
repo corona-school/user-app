@@ -1,10 +1,10 @@
 import { useTranslation } from 'react-i18next';
 import WeeklyAppointments from './WeeklyAppointments';
 import AppointmentForm from './AppointmentForm';
-import { useMutation } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
-import { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useMemo, useState } from 'react';
 import { AppointmentCreateGroupInput, AppointmentCreateMatchInput, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { useNavigate } from 'react-router-dom';
 import { gql } from './../../gql';
@@ -13,6 +13,7 @@ import { Button } from '@/components/Button';
 import { toast } from 'sonner';
 import { Checkbox } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
+import { RecommendationEnum, RecommendationsContext } from '@/context/RecommendationsContext';
 
 export type FormErrors = {
     title?: string;
@@ -41,11 +42,23 @@ type Props = {
     isCourseCreation?: boolean;
     appointmentsTotal?: number;
     overrideMeetingLink?: string;
+    defaultDate?: string;
+    defaultTime?: string;
     back: () => void;
     closeModal?: () => void;
     navigateToMatch?: () => Promise<void>;
     setIsLoading?: Dispatch<SetStateAction<boolean>>;
 };
+
+const TOTAL_APPOINTMENTS_CREATED_QUERY = gql(`
+    query totalAppointmentsCreated {
+        me {
+            student {
+                totalLecturesOrganized
+            }
+        }
+    }
+    `);
 
 const AppointmentCreation: React.FC<Props> = ({
     back,
@@ -54,6 +67,8 @@ const AppointmentCreation: React.FC<Props> = ({
     isCourseCreation,
     appointmentsTotal,
     overrideMeetingLink,
+    defaultDate,
+    defaultTime,
     closeModal,
     navigateToMatch,
     setIsLoading,
@@ -62,6 +77,7 @@ const AppointmentCreation: React.FC<Props> = ({
     const { appointmentToCreate, dispatchCreateAppointment } = useCreateAppointment();
     const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
     const { weeklies, dispatchWeeklyAppointment } = useWeeklyAppointments();
+    const { recommend } = useContext(RecommendationsContext);
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -84,6 +100,8 @@ const AppointmentCreation: React.FC<Props> = ({
         }
     `)
     );
+
+    const { data: totalAppointmentsQuery } = useQuery(TOTAL_APPOINTMENTS_CREATED_QUERY);
 
     const newOverrideMeetingLink = useMemo(() => {
         const meetingLink =
@@ -231,6 +249,9 @@ const AppointmentCreation: React.FC<Props> = ({
             }
 
             await createGroupAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
+            if (totalAppointmentsQuery?.me?.student?.totalLecturesOrganized === 0) {
+                recommend(RecommendationEnum.PUSH_NOTIFICATIONS_CREATED_APPOINTMENT);
+            }
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
@@ -276,6 +297,9 @@ const AppointmentCreation: React.FC<Props> = ({
             }
 
             await createMatchAppointments({ variables: { appointments, id: courseOrMatchId ? courseOrMatchId : 1 } });
+            if (totalAppointmentsQuery?.me?.student?.totalLecturesOrganized === 0) {
+                recommend(RecommendationEnum.PUSH_NOTIFICATIONS_CREATED_APPOINTMENT);
+            }
 
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
@@ -306,6 +330,8 @@ const AppointmentCreation: React.FC<Props> = ({
                     overrideMeetingLink={overrideMeetingLink}
                     setVideoChatType={setVideoChatType}
                     videoChatType={videoChatType}
+                    defaultDate={defaultDate}
+                    defaultTime={defaultTime}
                 />
                 {dateSelected && timeSelected && (
                     <div className="flex items-center py-2 gap-x-2">

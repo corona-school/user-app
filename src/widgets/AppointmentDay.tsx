@@ -11,7 +11,6 @@ type Props = {
     start: string;
     duration: number;
     title: string;
-    description?: string;
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
     scrollToRef?: any;
@@ -26,6 +25,7 @@ type Props = {
     appointmentId: Appointment['id'];
     canJoinVideochat?: boolean;
     declinedBy: Appointment['declinedBy'];
+    description?: Appointment['description'];
     onEdit?: () => void;
     onDuplicate?: () => void;
     onDelete?: () => void;

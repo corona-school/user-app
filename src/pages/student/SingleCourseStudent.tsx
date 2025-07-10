@@ -1,13 +1,13 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { DateTime } from 'luxon';
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
-import { Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum, Lecture } from '../../gql/graphql';
 import Banner from '../../widgets/CourseBanner';
 import PromoteBanner from '../../widgets/PromoteBanner';
 import SubcourseData from '../subcourse/SubcourseData';
@@ -23,6 +23,9 @@ import { ParticipantsList } from '../subcourse/ParticipantsList';
 import WaitingListProspectList from '../single-course/WaitingListProspectList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
+import ConfirmationModal from '@/modals/ConfirmationModal';
+import { useRoles } from '@/hooks/useApollo';
+import { useJoinCourseAsMentor } from '@/hooks/useJoinCourseAsMentor';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -40,6 +43,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
         published
         publishedAt
         isInstructor
+        isMentor
         nextLecture{
             start
             duration
@@ -153,7 +157,15 @@ query GetInstructorSubcourse($subcourseId: Int!) {
     }
 }
 `);
+
+const MUTATION_MENTOR_LEAVE_COURSE = gql(`
+    mutation MentorLeaveSubcourse($subcourseId: Float!) {
+        subcourseMentorLeave(subcourseId: $subcourseId)
+    }
+`);
+
 const SingleCourseStudent = () => {
+    const roles = useRoles();
     const [showCancelModal, setShowCancelModal] = useState(false);
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
@@ -161,6 +173,9 @@ const SingleCourseStudent = () => {
     const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const navigate = useNavigate();
+
+    const [mentorLeaveCourseMutation, { loading: isLoadingLeaveCourse }] = useMutation(MUTATION_MENTOR_LEAVE_COURSE);
+    const [signOutModal, setSignOutModal] = useState(false);
 
     const {
         data,
@@ -190,9 +205,17 @@ const SingleCourseStudent = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
+    const isMentor = !!data?.subcourse?.isMentor;
+    const isHomeworkHelp = course?.category === Course_Category_Enum.HomeworkHelp;
     const appointments = useMemo(() => {
-        return ((isInstructorOfSubcourse ? instructorSubcourse?.subcourse?.appointments : subcourse?.appointments) ?? []) as Appointment[];
+        if (isInstructorOfSubcourse) return (instructorSubcourse?.subcourse?.appointments || []) as Appointment[];
+        return ((subcourse?.appointments || []) as Appointment[]).filter((e) => {
+            const appointmentStart = DateTime.fromISO(e.start);
+            const appointmentEnd = appointmentStart.plus({ minutes: e.duration });
+            return appointmentEnd > DateTime.now();
+        });
     }, [instructorSubcourse?.subcourse?.appointments, isInstructorOfSubcourse, subcourse?.appointments]);
+
     const myNextAppointment = useMemo(() => {
         const now = DateTime.now();
         const next = appointments.find((appointment) => {
@@ -253,6 +276,17 @@ const SingleCourseStudent = () => {
         `)
     );
 
+    const {
+        confirmationModal: confirmationToJoinAsMentor,
+        joinAsMentor,
+        isJoiningCourse,
+    } = useJoinCourseAsMentor({
+        subcourseId: isHomeworkHelp ? subcourseId : 0,
+        onSuccess: async () => {
+            await refetchBasics();
+        },
+    });
+
     async function contactInstructorAsProspect() {
         try {
             const conversation = await chatCreateAsProspect({
@@ -297,6 +331,17 @@ const SingleCourseStudent = () => {
         navigate('/chat', { state: { conversationId: conversation?.data?.participantChatCreate } });
     };
 
+    const leaveCourse = async () => {
+        await mentorLeaveCourseMutation({ variables: { subcourseId } });
+        if (!roles.includes('INSTRUCTOR')) {
+            navigate('/group');
+        } else {
+            await refetchBasics();
+        }
+        toast.success(t('single.leave.toast'));
+        setSignOutModal(false);
+    };
+
     const handleOnPromoted = async () => {
         await refetchInstructorData();
     };
@@ -317,6 +362,20 @@ const SingleCourseStudent = () => {
     const showLecturesTab = showParticipantsTab || showWaitingListProspectListTab;
 
     const showTabsControls = showParticipantsTab || showWaitingListProspectListTab || showLecturesTab;
+    const canContactInstructor = !isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse;
+
+    useEffect(() => {
+        if (!loading && isInPast && !isInstructorOfSubcourse) {
+            navigate('/group');
+            // Let's not show this error to non-instructors
+            // We may have many of them trying to access the Hausaufgabenhilfe course without being registered
+            if (roles.includes('INSTRUCTOR')) {
+                toast.error(t('course.error.isInPastOrInvalid'));
+            }
+        }
+    }, [loading, isInPast, isInstructorOfSubcourse, roles]);
+
+    const canAccessLectures = isInstructorOfSubcourse || isMentor;
 
     return (
         <WithNavigation
@@ -346,21 +405,31 @@ const SingleCourseStudent = () => {
                     </div>
                     <div className="flex flex-col gap-y-11 justify-between xl:flex-row">
                         <div className="flex flex-col gap-y-11 justify-between w-full">
-                            {isInstructorOfSubcourse && !subcourse?.cancelled && !subLoading && instructorSubcourse?.subcourse && (
+                            {(isInstructorOfSubcourse || isMentor) && !subcourse?.cancelled && !subLoading && (
                                 <StudentCourseButtons
-                                    subcourse={{ ...subcourse, ...instructorSubcourse.subcourse }}
+                                    subcourse={{ ...subcourse, ...instructorSubcourse?.subcourse }}
                                     refresh={refetchBasics}
                                     appointment={myNextAppointment as Lecture}
                                     isActiveSubcourse={isActiveSubcourse}
                                 />
                             )}
-                            {!isInstructorOfSubcourse && subcourse?.allowChatContactProspects && isActiveSubcourse && (
-                                <div>
+                            <div className="flex gap-x-4">
+                                {canContactInstructor && (
                                     <Button variant="outline" onClick={contactInstructorAsProspect}>
                                         {t('single.actions.contactInstructor')}
                                     </Button>
-                                </div>
-                            )}
+                                )}
+                                {!isMentor && !isInstructorOfSubcourse && isHomeworkHelp && (
+                                    <Button isLoading={isJoiningCourse} onClick={joinAsMentor}>
+                                        {t('single.signIn.homeworkHelpButton')}
+                                    </Button>
+                                )}
+                                {isMentor && (
+                                    <Button variant="ghost" onClick={() => setSignOutModal(true)}>
+                                        {t('single.leave.signOut')}
+                                    </Button>
+                                )}
+                            </div>
                             {!isInPast && isInstructorOfSubcourse && (
                                 <Banner
                                     courseState={course.courseState}
@@ -403,7 +472,7 @@ const SingleCourseStudent = () => {
                         )}
                         <TabsContent value="lectures">
                             <div className="mt-8 max-h-full overflow-y-scroll">
-                                <AppointmentList appointments={appointments} isReadOnly={!isInstructorOfSubcourse} disableScroll />
+                                <AppointmentList appointments={appointments} isReadOnly={!canAccessLectures} disableScroll />
                             </div>
                         </TabsContent>
                         <TabsContent value="participants">
@@ -450,6 +519,18 @@ const SingleCourseStudent = () => {
             {subcourse?.id && (
                 <CancelSubCourseModal subcourseId={subcourse?.id} isOpen={showCancelModal} onOpenChange={setShowCancelModal} onCourseCanceled={refetchBasics} />
             )}
+            {confirmationToJoinAsMentor}
+
+            <ConfirmationModal
+                headline={t('single.homeworkHelp.signOut.title')}
+                confirmButtonText={t('single.leave.signOut')}
+                description={t('single.homeworkHelp.signOut.description')}
+                onOpenChange={setSignOutModal}
+                isOpen={signOutModal}
+                onConfirm={() => leaveCourse()}
+                variant="destructive"
+                isLoading={isLoadingLeaveCourse}
+            />
         </WithNavigation>
     );
 };

@@ -16,11 +16,21 @@
     "show": "Anzeigen",
     "showMore": "Mehr anzeigen",
     "showLess": "Weniger anzeigen",
+    "weekdays": {
+        "monday": "Montag",
+        "tuesday": "Dienstag",
+        "wednesday": "Mittwoch",
+        "thursday": "Donnerstag",
+        "friday": "Freitag",
+        "saturday": "Samstag",
+        "sunday": "Sonntag"
+    },
     "appointment": {
         "title": "Termine",
         "saveChanges": "Änderungen speichern",
         "editSuccess": "Termin erfolgreich geändert",
         "deleteAppointment": "Termin löschen",
+        "addToCalendar": "zum Kalender hinzufügen",
         "goBack": "zur vorherigen Seite",
         "loadPastAppointments": "Vergangene Termine laden",
         "loadedPastAppointments": "Vergangene Termine geladen",
@@ -44,6 +54,7 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Uhr",
+            "startToEndShort": "{{start}}–{{end}} Uhr",
             "nowToEnd": "Jetzt - {{end}} Uhr"
         },
         "deleteModal": {
@@ -312,7 +323,8 @@
             "Spanisch": "Spanisch",
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
+            "Lernen lernen": "Lernen lernen",
+            "Steuerlehre": "Steuerlehre"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -614,7 +626,7 @@
         "editprofile": "Profilbild ändern",
         "birthday": "Geburtsdatum ändern",
         "type": "Art der Unterstützung:",
-        "availability": "Verfügbarkeit verwalten",
+        "availability": "Wann hast du Zeit?",
         "noInfo": "Keine Angabe",
         "ProfileCompletion": {
             "name": "Profilvollständigkeit"
@@ -640,8 +652,9 @@
                 "label": "Dein Text"
             }
         },
-        "FluentLanguagenalData": {
-            "label": "Fließende Sprache",
+        "Languages": {
+            "labelPupil": "Welche Sprachen sprichst du zuhause?",
+            "labelStudent": "In welchen Sprachen kannst du helfen?",
             "empty": "Keine Angabe",
             "single": {
                 "header": "Sprache ändern",
@@ -656,7 +669,7 @@
         "State": {
             "empty": "Keine Angabe",
             "label": "Schulort",
-            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
+            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
             "single": {
                 "selectedStates": "Mein Schulort",
                 "otherStates": "Weitere (Bundes-)Länder",
@@ -806,7 +819,8 @@
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
             "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden",
-            "is_shared": "Dieser Kurs ist als Vorlage freigeben"
+            "is_shared": "Dieser Kurs ist als Vorlage freigeben",
+            "timesAWeek": "{{times}}x pro Woche"
         },
         "card": {
             "expandCardButton": "Mehr Infos",
@@ -878,8 +892,19 @@
                 "info": "Dein Kurs wurde von uns überprüft, aber abgelehnt. Der Kurs ist nicht öffentlich sichtbar und Schüler:innen können sich nicht für diesen Kurs anmelden. Bei Rückfragen oder Problemen, melde dich bei unserem Support."
             }
         },
+        "homeworkHelp": {
+            "signIn": {
+                "title": "Unverbindliche Anmeldung",
+                "description": "Sobald du dich angemeldet hast, kannst du spontan einzelne Hausaufgabenhilfe-Stunden unterstützen. Die Anmeldung verpflichtet dich zu nichts, sondern hilft uns ganz grob das Interesse zu erfassen."
+            },
+            "signOut": {
+                "title": "Abmeldung",
+                "description": "Melde dich ab, wenn du keinen Zugriff mehr auf die Hausaufgabehilfe-Lektionen brauchst."
+            }
+        },
         "signIn": {
             "button": "Verbindlich anmelden",
+            "homeworkHelpButton": "Unverbindlich anmelden",
             "description": "Schön, dass du dich zu diesem Kurs <b>verbindlich</b> anmelden möchtest.\nUnsere Helfer:innen bieten die Kurse freiwillig und ehrenamtlich an. Komme daher bitte pünktlich und sage ab, falls du doch nicht kommen kannst.",
             "toast": "Du hast dich erfolgreich zu dem Kurs angemeldet.",
             "error": "Du konntest nicht zu dem Kurs angemeldet werden."
@@ -943,6 +968,7 @@
         "general": {
             "title": "Allgemein",
             "profile": "Profil",
+            "calendarPreferences": "Wann hast du Zeit?",
             "certificates": "Bescheinigungen",
             "languageVersion": "Sprachversion",
             "notifications": "Benachrichtigungen",
@@ -1430,6 +1456,17 @@
             "appointmentsHeadline": "Termine",
             "createAppointment": "Termin erstellen"
         },
+        "availability": {
+            "title": "Mögliche Zeitfenster",
+            "bothOfYouHaveTime": "Ihr habt beide Zeit",
+            "youDoNotHaveTime": "Nur {{learningPartnerName}} hat Zeit",
+            "editAvailability": "Deine Zeitfenster bearbeiten",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} hat noch keine Zeitfenster eingegeben (sende ihm/ihr einen <chatLink>Link</chatLink> zu)",
+            "setupPreferencesChatMessage": "Hallo 👋, hier ist {{myName}}, vielleicht möchtest du deine Tage an denen du Zeit hast mit mir teilen. Du findest das hier: {{link}}",
+            "createAppointmentModal": {
+                "title": "Möchtest du für dieses Zeitfenster einen Termin erstellen?"
+            }
+        },
         "blocker": {
             "header": "Nachhilfe",
             "title": "Unterstützung anfragen",
@@ -1570,7 +1607,8 @@
                 "profile": {
                     "title": "Profil aktualisieren",
                     "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
-                    "personalData": "Persönliche Daten"
+                    "personalData": "Persönliche Daten",
+                    "availabilityRequirement": "Bitte richte zuerst deine Verfügbarkeit ein, um fortzufahren."
                 },
                 "success": {
                     "title": "Geschafft, du bist ein:e Held:in!",
@@ -1630,6 +1668,7 @@
                     "tabs": {
                         "tab1": {
                             "title": "Meine Kurse",
+                            "homeworkHelp": "Hausaufgabenhilfe",
                             "current": "Aktuelle Kurse (veröffentlicht)",
                             "draft": "Entwurf oder in Prüfung",
                             "past": "Vergangene und abgesagte Kurse"
@@ -1655,7 +1694,8 @@
             "modal": {
                 "title": "Warum möchtest du das Lernpaar auflösen?",
                 "btn": "Lernpaar auflösen",
-                "tooltip": "Du musst einen Grund angeben."
+                "tooltip": "Du musst einen Grund angeben.",
+                "otherFreeText": "Grund:"
             },
             "warningModal": {
                 "title": "Bist du sicher?",
@@ -1735,6 +1775,7 @@
         "selectPlaceHolderDuration": "Dauer auswählen",
         "cancelation_success": "Der Kurs wurde erfolgreich abgesagt",
         "cancelation_error": "Es ist ein Fehler aufgetreten. Der Kurs konnte nicht abgesagt werden.",
+        "alternatingInstructors": "Wechselnde Helfer:innen",
         "selectOptions": {
             "_15minutes": "15 Minuten",
             "_30minutes": "30 Minuten",
@@ -1800,7 +1841,8 @@
             "instructors": "Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.",
             "lectures": "Ein oder mehrere Termine konnten nicht hinzugefügt werden.",
             "tags": "Deine Tags konnten nicht hinzugefügt werden.",
-            "appointments": "Keine Termine angelegt."
+            "appointments": "Keine Termine angelegt.",
+            "isInPastOrInvalid": "Wir konnten diesen Kurs nicht finden oder er liegt in der Vergangenheit."
         },
         "CourseDate": {
             "headline": "Kursdetails",
@@ -2022,6 +2064,12 @@
                     "description": "Newsletter werden ausschließlich per Mail versendet."
                 }
             }
+        },
+        "activateNotificationsModal": {
+            "title": "Hinweis zu neuer Nachricht",
+            "description": "Du kannst Hinweise zu neuen Nachrichten im Chat oder neuen Terminen direkt auf dein Gerät erhalten (“Push-Notification”).",
+            "confirmButton": "Jetzt aktivieren",
+            "cancelButton": "Später"
         }
     },
     "sessionManager": {
@@ -2151,6 +2199,7 @@
             "systemNotifications": "System-Benachrichtigungen",
             "newsletterNotifications": "Newsletter-Benachrichtigungen",
             "profile": "Profil",
+            "calendarPreferences": "Wann hast du Zeit?",
             "manageSessions": "Geräte verwalten",
             "helpCenter": "Hilfebereich",
             "newEmail": "E-Mail ändern",
@@ -2417,6 +2466,16 @@
                 "title": "Leider hat das nicht gepasst",
                 "content": "Leider haben wir entschieden, dass das Engagement bei Lern-Fair nicht zu dir passt. Melde dich bei uns, falls du Fragen zu der Entscheidung hast."
             }
+        },
+        "appointment": {
+            "joinMeeting": "Videochat beitreten",
+            "joinMeetingHint": "Du kannst das Meeting erst 5 Minuten vor Beginn des Termins starten.",
+            "changeAppointment": "Termin ändern",
+            "cancelAppointment": "Termin absagen",
+            "title": "Termin erstellt ✅",
+            "yourAppointment": "Dein Termin",
+            "optionsDescription": "Du hast doch keine Zeit und möchtest den Termin verschieben oder absagen?",
+            "description": "Du erhältst an deine Email-Adresse eine Terminbestätigung. Du kannst dir den Termin per Klick in deinen Kalender eintragen."
         }
     },
     "contactSupport": {
@@ -2516,7 +2575,8 @@
             "Spanisch": "Spanisch",
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
-            "Lernen lernen": "Lernen lernen"
+            "Lernen lernen": "Lernen lernen",
+            "Steuerlehre": "Steuerlehre"
         }
     },
     "logout": "Abmelden",
@@ -2556,8 +2616,8 @@
     },
     "referral": {
         "title": "Hilf uns zu wachsen",
-        "description": "Empfiehl uns weiter bei Schüler:innen oder motivierten Helfer:innen - so können wir gemeinsam noch mehr für die Bildungsgerechtigkeit tun!  ",
-        "referralMessage": "📣 Bildungs-Verbesserer gesucht 📣 Ich engagiere mich ehrenamtlich bei Lern-Fair, wo bildungsbenachteiligte Schüler:innen der Klasse 1 bis 13 sowie Azubi kostenlose Nachhilfe erhalten - digital und flexibel per Zoom-Meeting. #digital #Bildungsgerechtigkeit #ehrenamt",
+        "description": "Viele kommen durch Empfehlungen zu uns. Hilf uns, Lern-Fair bekannter zu machen! Du kannst einen Empfehlungs-Link schicken oder Poster und Flyer benutzen.",
+        "referralMessage": "Ich engagiere mich ehrenamtlich bei Lern-Fair, wo bildungsbenachteiligte Schüler:innen (Klasse 1 bis 13 & Azubi) kostenlose Nachhilfe erhalten - digital & flexibel via Zoom #Bildungsgerechtigkeit #ehrenamt",
         "copy": "Kopieren",
         "copied": "Kopiert",
         "copiedReferralLink": "Empfehlungslink kopiert",
@@ -2576,10 +2636,15 @@
             "option3": {
                 "option": "Auf LinkedIn teilen",
                 "description": "- Beim kopieren wird ein Muster-Text - zum einfachen Einfügen - in deine Zwischenablage kopiert."
+            },
+            "materials": {
+                "title": "Flyer & Poster auslegen",
+                "description": "Du kannst z.B. Flyer auslegen oder Poster aufhängen - in der Schule, im Jugendzentrum, der Bibliothek oder Geschäften. Erhalte Flyer, Poster und andere Werbematerialien kostenlos zu dir nach Hause.",
+                "button": "Kostenlos bestellen"
             }
         },
         "reward": {
-            "title": "Meine geworbenen Nutzer:innen",
+            "title": "Mein Beitrag",
             "description": "Wenn du deinen persönlichen Link nutzt, kannst du hier deinen Beitrag verfolgen.",
             "RegisteredUsers": "Registrierte Nutzer:innen",
             "HoursSupported": "Stunden Nachhilfe ermöglicht",

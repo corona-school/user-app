@@ -1,4 +1,5 @@
 import {
+    CalendarPreferences,
     Certificate_Of_Conduct,
     Course,
     Course_Tag,
@@ -66,13 +67,16 @@ export type PupilForScreening = Pick<
     user?: {
         receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
     };
+    calendarPreferences?: CalendarPreferences;
 };
 
-export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'success' | 'createdAt' | 'comment'> & {
+export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'status' | 'createdAt' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus'> & {
     screener: Pick<Screener, 'firstname' | 'lastname'>;
 };
 
-export type TutorScreening = Pick<Screening, 'id' | 'createdAt' | 'success' | 'comment'> & { screener: Pick<Screener, 'firstname' | 'lastname'> };
+export type TutorScreening = Pick<Screening, 'id' | 'createdAt' | 'status' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus'> & {
+    screener: Pick<Screener, 'firstname' | 'lastname'>;
+};
 
 export type SubcourseForScreening = Pick<Subcourse, 'id' | 'published'> & {
     course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
@@ -104,4 +108,5 @@ export type StudentForScreening = Pick<
     user?: {
         receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
     };
+    calendarPreferences?: CalendarPreferences;
 };

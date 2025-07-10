@@ -46,6 +46,9 @@ export const STUDENT_APPOINTMENT = gql(`
             zoomMeetingId
             subcourse {
                 published
+                course {
+                    category
+                }
             }
         }
     }
@@ -65,6 +68,7 @@ export const PUPIL_APPOINTMENT = gql(`
             total
             displayName
             isOrganizer
+            isParticipant
             override_meeting_link
             zoomMeetingUrl
             subcourseId

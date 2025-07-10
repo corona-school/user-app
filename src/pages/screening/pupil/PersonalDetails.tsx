@@ -1,10 +1,10 @@
 import { Button } from '@/components/Button';
-import { Checkbox, CheckedState } from '@/components/Checkbox';
+import { Checkbox } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
 import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
-import { ExternalSchoolSearch, Gender_Enum as Gender } from '@/gql/graphql';
+import { ExternalSchoolSearch } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { useRoles } from '@/hooks/useApollo';
 import { PupilForScreening } from '@/types';
@@ -13,20 +13,15 @@ import { EditGradeModal } from '@/widgets/screening/EditGradeModal';
 import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { useMutation } from '@apollo/client';
-import { IconDeviceFloppy, IconKey } from '@tabler/icons-react';
+import { IconCheck, IconDeviceFloppy, IconKey } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
 import { ButtonField } from '../components/ButtonField';
 import { EditLocationModal } from '../components/EditLocationModal';
 import { EditSchoolTypeModal } from '../components/EditSchoolTypeModal';
 import { SchoolSearchInput } from '../components/SchoolSearchInput';
-
-const UPDATE_PUPIL_MUTATION = gql(`
-    mutation ScreenerUpdatePupil($pupilId: Float!, $data: PupilUpdateInput!) {
-        pupilUpdate(pupilId: $pupilId, data: $data)
-    }
-`);
+import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityModal';
+import { UpdatePupilFormState } from './useUpdatePupil';
 
 const CREATE_LOGIN_TOKEN_MUTATION = gql(`
     mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
@@ -41,9 +36,12 @@ interface FormErrors {
 interface PersonalDetailsProps {
     pupil: PupilForScreening;
     refresh: () => Promise<void>;
+    form: UpdatePupilFormState;
+    isUpdating: boolean;
+    updatePupil: () => Promise<void>;
 }
 
-const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
+const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: PersonalDetailsProps) => {
     const { t } = useTranslation();
     const myRoles = useRoles();
     const [showEditLocation, setShowEditLocation] = useState(false);
@@ -51,19 +49,32 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
     const [showEditGrade, setShowEditGrade] = useState(false);
     const [showEditSubjects, setShowEditSubjects] = useState(false);
     const [showEditLanguages, setShowEditLanguages] = useState(false);
+    const [showEditAvailability, setShowEditAvailability] = useState(false);
+    const {
+        pupilLocation,
+        setPupilLocation,
+        schoolType,
+        setSchoolType,
+        grade,
+        setGrade,
+        subjects,
+        setSubjects,
+        languages,
+        setLanguages,
+        onlyMatchWithWomen,
+        setOnlyMatchWithWomen,
+        hasSpecialNeeds,
+        setHasSpecialNeeds,
+        school,
+        setSchool,
+        descriptionForScreening,
+        setDescriptionForScreening,
+        descriptionForMatch,
+        setDescriptionForMatch,
+        weeklyAvailability,
+        setWeeklyAvailability,
+    } = form;
 
-    const [pupilLocation, setPupilLocation] = useState(pupil.state);
-    const [schoolType, setSchoolType] = useState(pupil.schooltype);
-    const [grade, setGrade] = useState(pupil.gradeAsInt);
-    const [subjects, setSubjects] = useState(pupil.subjectsFormatted);
-    const [languages, setLanguages] = useState(pupil.languages);
-    const [onlyMatchWithWomen, setOnlyMatchWithWomen] = useState<CheckedState>(pupil.onlyMatchWith === Gender.Female);
-    const [hasSpecialNeeds, setHasSpecialNeeds] = useState<CheckedState>(pupil.hasSpecialNeeds);
-    const [school, setSchool] = useState<Partial<ExternalSchoolSearch> | undefined>(pupil.school as any);
-    const [descriptionForScreening, setDescriptionForScreening] = useState(pupil.descriptionForScreening);
-    const [descriptionForMatch, setDescriptionForMatch] = useState(pupil.descriptionForMatch);
-
-    const [mutationUpdatePupil, { loading: isUpdating }] = useMutation(UPDATE_PUPIL_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
     const [errors, setErrors] = useState<FormErrors>({});
 
@@ -80,35 +91,6 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
         }
         setErrors(updatedErrors);
     }, [languages, grade, subjects, t]);
-
-    const handleOnSavePupil = async () => {
-        try {
-            await mutationUpdatePupil({
-                variables: {
-                    pupilId: pupil.id,
-                    data: {
-                        gradeAsInt: grade,
-                        subjects: subjects.map((e) => ({ name: e.name, grade: e.grade, mandatory: e.mandatory })),
-                        languages: languages as any,
-                        onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (undefined as any),
-                        hasSpecialNeeds: hasSpecialNeeds === true,
-                        school: {
-                            name: school?.name,
-                            schooltype: schoolType as any,
-                            state: pupilLocation as any,
-                            city: school?.city,
-                            zip: school?.zip,
-                        },
-                        descriptionForMatch,
-                        descriptionForScreening,
-                    },
-                },
-            });
-            toast.success(t('changesWereSaved'));
-        } catch (error) {
-            toast.success(t('error'));
-        }
-    };
 
     const impersonate = async () => {
         // We need to work around the popup blocker of modern browsers, as you can only
@@ -182,6 +164,20 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
                         {errors.languages}
                     </Typography>
                 </div>
+                <div className="flex flex-col gap-y-2">
+                    <ButtonField className="min-w-[350px]" label="Zeitliche Verfügbarkeit" onClick={() => setShowEditAvailability(true)}>
+                        {weeklyAvailability ? (
+                            <span className="flex items-center justify-center gap-x-1">
+                                Eingerichtet <IconCheck className="text-green-500" size={16} />
+                            </span>
+                        ) : (
+                            <span>Muss eingerichtet werden</span>
+                        )}
+                    </ButtonField>
+                    <Typography variant="sm" className="text-destructive">
+                        {errors.languages}
+                    </Typography>
+                </div>
                 <div className="flex gap-x-7 mt-2">
                     <div className="flex gap-x-2 items-center">
                         <Checkbox id="onlyMatchWith" checked={onlyMatchWithWomen} onCheckedChange={setOnlyMatchWithWomen} />{' '}
@@ -233,7 +229,7 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
                 </div>
             </div>
             <div className="mt-10 flex items-center gap-x-4">
-                <Button variant="outline" onClick={handleOnSavePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
+                <Button variant="outline" onClick={updatePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
                     Speichern
                 </Button>
             </div>
@@ -242,6 +238,12 @@ const PersonalDetails = ({ pupil, refresh }: PersonalDetailsProps) => {
             <EditGradeModal grade={grade} onSave={setGrade} onOpenChange={setShowEditGrade} isOpen={showEditGrade} />
             <EditSubjectsModal type="pupil" subjects={subjects} onSave={setSubjects} onOpenChange={setShowEditSubjects} isOpen={showEditSubjects} />
             <EditLanguagesModal languages={languages} onSave={setLanguages} onOpenChange={setShowEditLanguages} isOpen={showEditLanguages} />
+            <EditWeeklyAvailabilityModal
+                weeklyAvailability={weeklyAvailability}
+                onSave={setWeeklyAvailability}
+                onOpenChange={setShowEditAvailability}
+                isOpen={showEditAvailability}
+            />
         </>
     );
 };

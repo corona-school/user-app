@@ -43,9 +43,12 @@ declare interface Window {
         readonly RUNTIME_PUPIL_FIRST_SCREENING_URL: string;
         readonly RUNTIME_PUPIL_SCREENING_URL: string;
         readonly RUNTIME_SCREENING_URL: string;
+        readonly RUNTIME_SHARING_MATERIALS_URL: string;
         readonly RUNTIME_GOOGLE_CLIENT_ID: string;
         readonly RUNTIME_REFERRALS_ACTIVE: string;
         readonly RUNTIME_LESSON_PLAN_GENERATOR_ACTIVE: string;
+        readonly RUNTIME_HOMEWORK_HELP_COURSE: string;
+        readonly RUNTIME_TEST_STUDENT_ID: string;
 
         readonly RUNTIME_WEBPUSH_ROLLOUT_RATIO?: string;
     };

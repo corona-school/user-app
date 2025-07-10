@@ -50,6 +50,7 @@ export function ScreeningDashboard() {
                     hasSpecialNeeds
                     descriptionForScreening
                     descriptionForMatch
+                    calendarPreferences
                     school {
                         id
                         name
@@ -104,6 +105,7 @@ export function ScreeningDashboard() {
                     gender
                     descriptionForMatch
                     descriptionForScreening
+                    calendarPreferences
                     matches {
                         createdAt
                         pupil { firstname lastname }
@@ -121,8 +123,8 @@ export function ScreeningDashboard() {
                         nextLecture { start duration }
                     }
 
-                    tutorScreenings { id createdAt success comment screener { firstname lastname } }
-                    instructorScreenings { id createdAt success comment screener { firstname lastname } }
+                    tutorScreenings { id createdAt status comment, jobStatus,  knowsCoronaSchoolFrom, screener { firstname lastname } }
+                    instructorScreenings { id createdAt status comment, jobStatus, knowsCoronaSchoolFrom, screener { firstname lastname } }
                     user {
                         receivedScreeningSuggestions {
                             sentAt

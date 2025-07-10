@@ -18,7 +18,8 @@
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Saat",
-            "nowToEnd": "Şimdi - {{end}} Saat"
+            "nowToEnd": "Şimdi - {{end}} Saat",
+            "startToEndShort": "{{start}}-{{end}} saat"
         },
         "deleteModal": {
             "title": "Bu randevuyu silmek istediğinizden emin misiniz?",
@@ -151,7 +152,8 @@
         "loadPastAppointments": "Geçmiş tarihleri yükle",
         "loadedPastAppointments": "Geçmiş tarihler yüklendi",
         "courseNotPublished": "Bu tarihle ilişkili kurs henüz inceleme için yayınlanmamıştır.",
-        "noNextAppointment": "Bir sonraki randevu yok."
+        "noNextAppointment": "Bir sonraki randevu yok.",
+        "addToCalendar": "Takvime ekle"
     },
     "login": {
         "email": {
@@ -254,7 +256,8 @@
             "Arbeitslehre": "İşgücü teorisi",
             "Ethik": "Etik",
             "Gesundheit": "Sağlık",
-            "Technik": "Teknoloji"
+            "Technik": "Teknoloji",
+            "Steuerlehre": "Vergi teorisi"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -557,7 +560,7 @@
             "label": "Benim hakkımda",
             "empty": "Bilgi yok"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Diğer okul türleri",
@@ -567,8 +570,9 @@
                 "title": "Benim dillerim",
                 "others": "Diğer diller"
             },
-            "label": "Akıcı dil",
-            "empty": "Bilgi yok"
+            "empty": "Bilgi yok",
+            "labelPupil": "Evde hangi dilleri konuşuyorsunuz?",
+            "labelStudent": "Hangi dillerde yardımcı olabilirsiniz?"
         },
         "State": {
             "single": {
@@ -681,9 +685,9 @@
         "editprofile": "Profil resmini değiştir",
         "birthday": "Doğum tarihini değiştir",
         "type": "Destek türü:",
-        "availability": "Kullanılabilirliği yönetin",
         "noInfo": "Bilgi yok",
-        "PersonalData": "Kişisel veriler"
+        "PersonalData": "Kişisel veriler",
+        "availability": "Ne zaman vaktin var?"
     },
     "single": {
         "global": {
@@ -732,7 +736,8 @@
             "courseInPast": "Bu kurs çoktan bitti.",
             "courseCancelled": "Bu kurs iptal edilmiştir.",
             "courseStartedButJoinable": "Bu kurs çoktan başladı, ancak hala kayıt olabilirsiniz",
-            "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır"
+            "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır",
+            "timesAWeek": "Haftalık {{times}}x"
         },
         "card": {
             "time": {
@@ -808,7 +813,8 @@
             "button": "Bağlayıcı kayıt",
             "description": "Bu kursa <b>kayıt</b> yaptırdığınız için teşekkür ederiz.\nYardımcılarımız kursları gönüllülük esasına göre sunmaktadır. Bu nedenle lütfen zamanında gelin ve gelemeyecekseniz iptal edin.",
             "toast": "Kurs kaydınızı başarıyla tamamladınız.",
-            "error": "Kurs için kayıt yaptıramadınız."
+            "error": "Kurs için kayıt yaptıramadınız.",
+            "homeworkHelpButton": "Yükümlülük olmadan kayıt olun"
         },
         "joinWaitinglist": {
             "button": "Bekleme listesine alın",
@@ -862,6 +868,16 @@
             "error": "Öğrenci eklenemedi.",
             "noProspects": "Sizinle sohbet yoluyla iletişime geçen ilgili taraf yok.",
             "description": "Burada, sohbet yoluyla sizinle iletişime geçen ilgili tarafları görebilirsiniz."
+        },
+        "homeworkHelp": {
+            "signIn": {
+                "title": "Bağlayıcı olmayan kayıt",
+                "description": "Kayıt olur olmaz, bireysel ev ödevi yardım derslerini kendiliğinden destekleyebilirsiniz. Kayıt yaptırmak sizi herhangi bir taahhüt altına sokmaz, ancak ilgiyi kabaca ölçmemize yardımcı olur."
+            },
+            "signOut": {
+                "title": "Çıkış",
+                "description": "Ev ödevi yardımı derslerine artık erişmeniz gerekmiyorsa oturumu kapatın."
+            }
         }
     },
     "settings": {
@@ -877,7 +893,8 @@
             "push": "Uygulama mesajları",
             "faq": "SSS & İletişim",
             "manageSessions": "Cihazları yönetme",
-            "certificates": "Sertifikalar"
+            "certificates": "Sertifikalar",
+            "calendarPreferences": "Ne zaman vaktin var?"
         },
         "account": {
             "title": "Hesap",
@@ -1491,7 +1508,8 @@
                 "profile": {
                     "title": "Profili güncelle",
                     "subtitle": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
-                    "personalData": "Kişisel veriler"
+                    "personalData": "Kişisel veriler",
+                    "availabilityRequirement": "Devam etmek için lütfen önce müsaitlik durumunuzu ayarlayın."
                 },
                 "success": {
                     "title": "Başardın, sen bir kahramansın!",
@@ -1548,7 +1566,8 @@
                             "title": "Kurslarım",
                             "current": "Güncel kurslar (yayınlanmış)",
                             "draft": "Taslak veya inceleme aşamasında",
-                            "past": "Geçmiş ve iptal edilen kurslar"
+                            "past": "Geçmiş ve iptal edilen kurslar",
+                            "homeworkHelp": "Ev ödevi yardımı"
                         },
                         "tab2": {
                             "title": "Tüm kurslar"
@@ -1576,7 +1595,8 @@
             "modal": {
                 "title": "Neden öğrenme çiftini sonlandirmak istiyorsunuz?",
                 "btn": "Çifti iptal et",
-                "tooltip": "Bir sebep göstermelisiniz."
+                "tooltip": "Bir sebep göstermelisiniz.",
+                "otherFreeText": "Sebep:"
             },
             "warningModal": {
                 "title": "Emin misin?",
@@ -1651,6 +1671,17 @@
             "title": "Onur kanıtı",
             "text": "Faaliyetinizi istediğiniz zaman onaylatabilir ve ardından sertifikayı indirebilirsiniz.",
             "button": "Sertifikalara"
+        },
+        "availability": {
+            "createAppointmentModal": {
+                "title": "Bu zaman aralığı için bir randevu oluşturmak ister misiniz?"
+            },
+            "bothOfYouHaveTime": "İkinizin de zamanı var.",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} henüz zaman aralıklarını girmedi (ona bir <chatLink>bağlantı</chatLink> gönder)",
+            "setupPreferencesChatMessage": "Merhaba 👋, ben {{myName}}, belki zamanınız olduğunda günlerinizi benimle paylaşmak istersiniz. Burada bulabilirsiniz: {{link}}",
+            "title": "Olası zaman aralıkları",
+            "youDoNotHaveTime": "Yalnızca {{learningPartnerName}}'ın zamanı vardır",
+            "editAvailability": "Zaman aralıklarınızı düzenleyin"
         }
     },
     "course": {
@@ -1718,7 +1749,8 @@
             "instructors": "Bir veya daha fazla eğitmen eklenemedi.",
             "lectures": "Bir veya daha fazla tarih eklenemedi.",
             "tags": "Etiketleriniz eklenemedi.",
-            "appointments": "Hiçbir tarih belirlenmedi"
+            "appointments": "Hiçbir tarih belirlenmedi",
+            "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı."
         },
         "CourseDate": {
             "step": {
@@ -1846,7 +1878,8 @@
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
         "all_participants": "tüm katılımcılar",
-        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi."
+        "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi.",
+        "alternatingInstructors": "Yardımcıların değiştirilmesi"
     },
     "notification": {
         "timedifference": {
@@ -1947,7 +1980,13 @@
             "yourMail": "E-postanız: ",
             "closeButton": "Kapat"
         },
-        "send": "Bildirim gönderildi"
+        "send": "Bildirim gönderildi",
+        "activateNotificationsModal": {
+            "title": "Yeni mesajla ilgili not",
+            "description": "Sohbetteki yeni mesajlar veya yeni randevularla ilgili bildirimleri doğrudan cihazınızdan alabilirsiniz (\"anlık bildirim\").",
+            "confirmButton": "Şimdi etkinleştirin",
+            "cancelButton": "Daha sonra"
+        }
     },
     "chat": {
         "modal": {
@@ -2074,7 +2113,8 @@
             "editCourse": "Kursu düzenle",
             "referral": "Yönlendirme",
             "certificates": "Sertifikalar",
-            "lesson": "Yapay zeka ile ders planlayıcı (Beta)"
+            "lesson": "Yapay zeka ile ders planlayıcı (Beta)",
+            "calendarPreferences": "Ne zaman vaktin var?"
         }
     },
     "screening": {
@@ -2333,7 +2373,17 @@
                 "content": "Lern-Fair Ne yazık ki, bu taahhüdün size uygun olmadığına karar verdik. Kararla ilgili herhangi bir sorunuz varsa bizimle iletişime geçin."
             }
         },
-        "contactSupport": "İletişim desteği"
+        "contactSupport": "İletişim desteği",
+        "appointment": {
+            "joinMeeting": "Görüntülü sohbete katıl",
+            "joinMeetingHint": "Toplantıyı yalnızca randevudan 5 dakika önce başlatabilirsin.",
+            "changeAppointment": "Randevuyu değiştir",
+            "cancelAppointment": "Randevuyu iptal et",
+            "title": "Randevu oluşturuldu ✅",
+            "yourAppointment": "Randevun",
+            "optionsDescription": "Vaktin yok mu? Randevuyu değiştirmek veya iptal etmek mi istiyorsun?",
+            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin."
+        }
     },
     "contactSupport": {
         "title": "İletişim desteği",
@@ -2548,7 +2598,8 @@
             "Spanisch": "İspanyolca",
             "Technik": "Teknoloji",
             "Wirtschaft": "Ekonomi",
-            "Lernen lernen": "Öğrenmeyi öğrenmek"
+            "Lernen lernen": "Öğrenmeyi öğrenmek",
+            "Steuerlehre": "Vergi teorisi"
         },
         "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
     },
@@ -2568,7 +2619,12 @@
             },
             "title": "Benzersiz bağlantınızı paylaşın",
             "description": "Yönlendirmeye başlamak için kişisel bağlantınızı ağınızla paylaşın! Yönlendirme bağlantınızı paylaşmanın üç kolay yolu var:",
-            "share": "Paylaş"
+            "share": "Paylaş",
+            "materials": {
+                "title": "El ilanları ve reklam materyalleri dağıtın",
+                "description": "Ücretsiz çok dilli el ilanları, posterler ve diğer tanıtım materyallerini indirerek çıktı alabilir ve örneğin bir okulda, gençlik merkezinde veya kütüphanede sergileyebilirsiniz.",
+                "button": "Reklam medyasına"
+            }
         },
         "reward": {
             "title": "Benim Etkim",
@@ -2595,5 +2651,14 @@
             "title": "Bireysel kanıt"
         },
         "title": "Sertifikalarım"
+    },
+    "weekdays": {
+        "monday": "Pazartesi",
+        "tuesday": "Salı",
+        "wednesday": "Çarşamba",
+        "thursday": "Perşembe",
+        "friday": "Cuma",
+        "saturday": "Cumartesi",
+        "sunday": "Pazar"
     }
 }

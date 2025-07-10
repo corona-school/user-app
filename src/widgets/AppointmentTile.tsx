@@ -13,12 +13,10 @@ import AppointmentDate from '@/widgets/AppointmentDate';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { DateTime } from 'luxon';
 import { Button } from '@/components/Button';
+import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
 
 type Props = {
-    start: string;
-    duration: number;
     title: string;
-    description?: string;
     isCurrentlyTakingPlace: boolean;
     organizers?: Organizer[];
     participants?: AppointmentParticipant[];
@@ -37,6 +35,9 @@ type Props = {
     onEdit?: () => void;
     onDuplicate?: () => void;
     onDelete?: () => void;
+    description?: Appointment['description'];
+    duration: Appointment['duration'];
+    start: Appointment['start'];
 };
 
 const AppointmentTile: React.FC<Props> = ({
@@ -86,6 +87,10 @@ const AppointmentTile: React.FC<Props> = ({
     const avatars = useMemo(() => {
         return [...(organizers?.map((e) => 'student') || []), ...(participants?.map((e) => 'pupil') || [])].slice(0, 5);
     }, [organizers?.length, participants?.length]);
+
+    const isPastAppointment = useMemo(() => {
+        return DateTime.fromISO(start).toMillis() + duration * 60000 < DateTime.now().toMillis();
+    }, [duration, start]);
 
     return (
         <div
@@ -167,6 +172,13 @@ const AppointmentTile: React.FC<Props> = ({
                         appointmentId={appointmentId}
                         appointmentType={appointmentType}
                         className={cn('w-full lg:w-[300px] mt-4')}
+                    />
+                )}
+                {appointmentId && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
+                    <AddToCalendarDropdown
+                        buttonVariant="optional"
+                        buttonClasses="w-full lg:w-[300px]"
+                        appointment={{ id: appointmentId, displayName, title, start, duration, description: description ?? '' }}
                     />
                 )}
             </div>
