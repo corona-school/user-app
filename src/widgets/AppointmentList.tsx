@@ -54,9 +54,12 @@ interface AppointmentItemProps {
     previousAppointment?: Appointment;
     index: number;
     isReadOnly: boolean;
+    onEdit?: () => void;
+    onDuplicate?: () => void;
+    onDelete?: () => void;
 }
 
-const AppointmentItem = React.memo(({ appointment, previousAppointment, index, isReadOnly }: AppointmentItemProps) => {
+const AppointmentItem = React.memo(({ appointment, previousAppointment, index, isReadOnly, onEdit, onDuplicate, onDelete }: AppointmentItemProps) => {
     const navigate = useNavigate();
     const { i18n } = useTranslation();
     const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
@@ -110,6 +113,9 @@ const AppointmentItem = React.memo(({ appointment, previousAppointment, index, i
                     displayName={appointment.displayName}
                     appointmentId={appointment.id}
                     declinedBy={appointment.declinedBy}
+                    onEdit={onEdit}
+                    onDuplicate={onDuplicate}
+                    onDelete={onDelete}
                 />
             </div>
         </div>
@@ -127,6 +133,9 @@ type AppointmentListProps = {
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
     height?: number | string;
+    onAppointmentEdit?: (id: number) => void;
+    onAppointmentDuplicate?: (id: number) => void;
+    onAppointmentDelete?: (id: number) => void;
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -150,6 +159,9 @@ const AppointmentList = ({
     loadMoreAppointments,
     lastAppointmentId,
     height = 100,
+    onAppointmentEdit,
+    onAppointmentDuplicate,
+    onAppointmentDelete,
 }: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
 
@@ -213,6 +225,9 @@ const AppointmentList = ({
                         previousAppointment={appointments[index - 1]}
                         index={index}
                         isReadOnly={isReadOnlyList}
+                        onEdit={() => onAppointmentEdit && onAppointmentEdit(appointment.id)}
+                        onDuplicate={() => onAppointmentDuplicate && onAppointmentDuplicate(appointment.id)}
+                        onDelete={() => onAppointmentDelete && onAppointmentDelete(appointment.id)}
                     />
                 ))}
             </InfiniteScroll>

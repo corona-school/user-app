@@ -10,6 +10,8 @@ import { CreateCourseContext } from '../CreateCourse';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
+import AppointmentEdit from '@/pages/edit-appointment/AppointmentEdit';
+import EditCourseAppointmentModal from '@/pages/course-creation/EditCourseAppointmentModal';
 
 type Props = {
     isEditing?: boolean;
@@ -19,6 +21,8 @@ type Props = {
 const CourseAppointments: React.FC<Props> = ({ isEditing, appointments }) => {
     const { t } = useTranslation();
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [showEditModal, setShowEditModal] = useState<boolean>(false);
+    const [editId, setEditId] = useState<number>(0);
 
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
     const { dispatchCreateAppointment } = useCreateAppointment();
@@ -28,6 +32,14 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments }) => {
 
     const handleOnOpenChange = (open: boolean) => {
         setShowModal(open);
+        if (!open) {
+            dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
+            dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
+        }
+    };
+
+    const handleEditOnOpenChange = (open: boolean) => {
+        setShowEditModal(open);
         if (!open) {
             dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
             dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
@@ -92,10 +104,19 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments }) => {
             <Typography variant="h3">{t('course.CourseDate.step.appointments')}</Typography>
 
             <CreateCourseAppointmentModal isOpen={showModal} onOpenChange={handleOnOpenChange} total={allAppointmentsToShow.length} />
+            <EditCourseAppointmentModal id={editId} isOpen={showEditModal} onOpenChange={handleEditOnOpenChange} />
             <div>
                 {(isEditing || allAppointmentsToShow.length !== 0) && (
                     <div className="mb-2">
-                        <AppointmentList height="100%" isReadOnlyList={true} appointments={allAppointmentsToShow} />
+                        <AppointmentList
+                            height="100%"
+                            isReadOnlyList={true}
+                            appointments={allAppointmentsToShow}
+                            onAppointmentEdit={(id) => {
+                                setEditId(id);
+                                setShowEditModal(true);
+                            }}
+                        />
                     </div>
                 )}
                 <Button onClick={() => setShowModal(true)} variant={'default'} className="w-full p-6">

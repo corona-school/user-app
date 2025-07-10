@@ -26,6 +26,9 @@ type Props = {
     appointmentId: Appointment['id'];
     canJoinVideochat?: boolean;
     declinedBy: Appointment['declinedBy'];
+    onEdit?: () => void;
+    onDuplicate?: () => void;
+    onDelete?: () => void;
 };
 
 const AppointmentDay: React.FC<Props> = ({
@@ -47,6 +50,9 @@ const AppointmentDay: React.FC<Props> = ({
     appointmentId,
     canJoinVideochat,
     declinedBy,
+    onEdit,
+    onDuplicate,
+    onDelete,
 }) => {
     const { t } = useTranslation();
     const isCurrentMonth = useCallback((start: string): boolean => {
@@ -87,6 +93,9 @@ const AppointmentDay: React.FC<Props> = ({
                                 appointmentId={appointmentId}
                                 wasRejected={wasRejected}
                                 declinedBy={declinedBy}
+                                onEdit={onEdit}
+                                onDuplicate={onDuplicate}
+                                onDelete={onDelete}
                             />
                         </div>
                     </div>
