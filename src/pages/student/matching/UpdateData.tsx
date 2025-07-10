@@ -127,7 +127,7 @@ const UpdateData = ({ refetchQuery, profile, onNext, onBack }: UpdateDataProps) 
                             setIsModalOpen(false);
                         }}
                     >
-                        {t('back')}
+                        {t('done')}
                     </Button>
                 </ModalFooter>
             </Modal>

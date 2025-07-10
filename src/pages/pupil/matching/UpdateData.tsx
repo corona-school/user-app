@@ -164,7 +164,7 @@ const UpdateData: React.FC<Props> = ({ refetchQuery, profile }) => {
                             setIsModalOpen(false);
                         }}
                     >
-                        {t('back')}
+                        {t('done')}
                     </Button>
                 </ModalFooter>
             </Modal>
