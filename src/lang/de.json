@@ -625,7 +625,7 @@
         "editprofile": "Profilbild ändern",
         "birthday": "Geburtsdatum ändern",
         "type": "Art der Unterstützung:",
-        "availability": "Verfügbarkeit verwalten",
+        "availability": "Wann hast du Zeit?",
         "noInfo": "Keine Angabe",
         "ProfileCompletion": {
             "name": "Profilvollständigkeit"
@@ -651,8 +651,9 @@
                 "label": "Dein Text"
             }
         },
-        "FluentLanguagenalData": {
-            "label": "Fließende Sprache",
+        "Languages": {
+            "labelPupil": "Welche Sprachen sprichst du zuhause?",
+            "labelStudent": "In welchen Sprachen kannst du helfen?",
             "empty": "Keine Angabe",
             "single": {
                 "header": "Sprache ändern",
@@ -667,7 +668,7 @@
         "State": {
             "empty": "Keine Angabe",
             "label": "Schulort",
-            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
+            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner:in nur als optionales Kriterium. Je nach kann es passieren, dass dein:e zukünftige:r Lernpartner:in aus einer anderen Region kommt.",
             "single": {
                 "selectedStates": "Mein Schulort",
                 "otherStates": "Weitere (Bundes-)Länder",
@@ -970,7 +971,7 @@
         "general": {
             "title": "Allgemein",
             "profile": "Profil",
-            "calendarPreferences": "Zeitliche Verfügbarkeit",
+            "calendarPreferences": "Wann hast du Zeit?",
             "certificates": "Bescheinigungen",
             "languageVersion": "Sprachversion",
             "notifications": "Benachrichtigungen",
@@ -1459,10 +1460,10 @@
             "createAppointment": "Termin erstellen"
         },
         "availability": {
-            "title": "Verfügbarkeit",
+            "title": "Mögliche Zeitfenster",
             "bothOfYouHaveTime": "Ihr habt beide Zeit",
-            "youDoNotHaveTime": "Du hast keine Zeit",
-            "editAvailability": "Zeiten bearbeiten",
+            "youDoNotHaveTime": "Nur {{learningPartnerName}} hat Zeit",
+            "editAvailability": "Deine Zeitfenster bearbeiten",
             "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} hat noch keine Zeitfenster eingegeben (sende ihm/ihr einen <chatLink>Link</chatLink> zu)",
             "setupPreferencesChatMessage": "Hallo 👋, hier ist {{myName}}, vielleicht möchtest du deine Tage an denen du Zeit hast mit mir teilen. Du findest das hier: {{link}}",
             "createAppointmentModal": {
@@ -1609,7 +1610,8 @@
                 "profile": {
                     "title": "Profil aktualisieren",
                     "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
-                    "personalData": "Persönliche Daten"
+                    "personalData": "Persönliche Daten",
+                    "availabilityRequirement": "Bitte richte zuerst deine Verfügbarkeit ein, um fortzufahren."
                 },
                 "success": {
                     "title": "Geschafft, du bist ein:e Held:in!",
@@ -2199,7 +2201,7 @@
             "systemNotifications": "System-Benachrichtigungen",
             "newsletterNotifications": "Newsletter-Benachrichtigungen",
             "profile": "Profil",
-            "calendarPreferences": "Zeitliche Verfügbarkeit",
+            "calendarPreferences": "Wann hast du Zeit?",
             "manageSessions": "Geräte verwalten",
             "helpCenter": "Hilfebereich",
             "newEmail": "E-Mail ändern",

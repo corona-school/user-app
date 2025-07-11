@@ -13,13 +13,16 @@ import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { getGradeLabel } from '../../../Utility';
 import { Slider } from '@/components/Slider';
 
-type Props = {};
+interface SchoolClassesProps {
+    onNext: () => void;
+    onBack: () => void;
+}
 
-const SchoolClasses: React.FC<Props> = () => {
+const SchoolClasses = ({ onBack, onNext }: SchoolClassesProps) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const toast = useToast();
-    const { matchRequest, setSubject, setCurrentIndex, isEdit } = useContext(RequestMatchContext);
+    const { matchRequest, setSubject, isEdit } = useContext(RequestMatchContext);
     const navigate = useNavigate();
     const { show, hide } = useModal();
 
@@ -108,7 +111,7 @@ const SchoolClasses: React.FC<Props> = () => {
                     <SubjectGradeSlider subject={subject} setSubject={setSubject} />
                 ))}
             </VStack>
-            <NextPrevButtons isLoading={isLoading} onPressPrev={() => setCurrentIndex(1)} onPressNext={submit} />
+            <NextPrevButtons isLoading={isLoading} onPressPrev={onBack} onPressNext={submit} />
         </VStack>
     );
 };
