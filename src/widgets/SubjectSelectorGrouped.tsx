@@ -56,7 +56,7 @@ const SingleSubjectSelector = ({
             </Text>
             {selectableSubjects.map((subject) => {
                 return (
-                    <Box margin={space['0.5']} height={'110px'} flex={'0 0 120px'}>
+                    <Box margin={space['0.5']} height={'110px'} flex={'1 0 120px'}>
                         <IconTagList
                             key={subject}
                             initial={chosenSubjects.includes(subject)}

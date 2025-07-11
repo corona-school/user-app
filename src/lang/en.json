@@ -257,7 +257,8 @@
             "Ethik": "Ethics",
             "Gesundheit": "Health",
             "Technik": "Technology",
-            "Steuerlehre": "Tax theory"
+            "Steuerlehre": "Tax theory",
+            "Rechnungswesen": "Accounting"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2603,7 +2604,8 @@
             "Technik": "Technology",
             "Wirtschaft": "Economy",
             "Lernen lernen": "Learning to learn",
-            "Steuerlehre": "Tax theory"
+            "Steuerlehre": "Tax theory",
+            "Rechnungswesen": "Accounting"
         },
         "placeholderImageDescription": "Fill out the form to create a lesson plan"
     },

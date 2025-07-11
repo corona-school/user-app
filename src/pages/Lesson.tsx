@@ -103,6 +103,7 @@ const subjectMapping: SubjectMapping = {
     Wirtschaft: 'Wirtschaft',
     Lernen_lernen: 'Lernen lernen',
     Steuerlehre: 'Steuerlehre',
+    Rechnungswesen: 'Rechnungswesen',
 };
 
 const subjects = Object.keys(subjectMapping);
