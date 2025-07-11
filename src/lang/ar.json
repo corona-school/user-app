@@ -257,7 +257,8 @@
             "Ethik": "الأخلاقيات",
             "Gesundheit": "الصحة",
             "Technik": "التكنولوجيا",
-            "Steuerlehre": "النظرية الضريبية"
+            "Steuerlehre": "النظرية الضريبية",
+            "Rechnungswesen": "المحاسبة"
         },
         "states": {
             "bw": "بادن فورتمبيرغ",
@@ -2595,7 +2596,8 @@
             "Technik": "التكنولوجيا",
             "Wirtschaft": "اقتصاد",
             "Lernen lernen": "تعلّم كيف تتعلم",
-            "Steuerlehre": "النظرية الضريبية"
+            "Steuerlehre": "النظرية الضريبية",
+            "Rechnungswesen": "المحاسبة"
         },
         "placeholderImageDescription": "املأ النموذج لإنشاء خطة الدرس"
     },

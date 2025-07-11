@@ -257,7 +257,8 @@
             "Ethik": "Etik",
             "Gesundheit": "Sağlık",
             "Technik": "Teknoloji",
-            "Steuerlehre": "Vergi teorisi"
+            "Steuerlehre": "Vergi teorisi",
+            "Rechnungswesen": "Muhasebe"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2599,7 +2600,8 @@
             "Technik": "Teknoloji",
             "Wirtschaft": "Ekonomi",
             "Lernen lernen": "Öğrenmeyi öğrenmek",
-            "Steuerlehre": "Vergi teorisi"
+            "Steuerlehre": "Vergi teorisi",
+            "Rechnungswesen": "Muhasebe"
         },
         "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
     },
