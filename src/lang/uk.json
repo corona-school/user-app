@@ -257,7 +257,8 @@
             "Ethik": "Етика",
             "Gesundheit": "Здоров'я",
             "Technik": "Технологія",
-            "Steuerlehre": "Теорія податків"
+            "Steuerlehre": "Теорія податків",
+            "Rechnungswesen": "Бухгалтерський облік"
         },
         "states": {
             "bw": "Баден-Вюртемберг",
@@ -2599,7 +2600,8 @@
             "Technik": "Технологія",
             "Wirtschaft": "Економіка",
             "Lernen lernen": "Вчимося вчитися",
-            "Steuerlehre": "Теорія податків"
+            "Steuerlehre": "Теорія податків",
+            "Rechnungswesen": "Бухгалтерський облік"
         },
         "placeholderImageDescription": "Заповніть форму для створення плану уроку"
     },

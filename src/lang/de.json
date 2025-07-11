@@ -323,7 +323,8 @@
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
             "Lernen lernen": "Lernen lernen",
-            "Steuerlehre": "Steuerlehre"
+            "Steuerlehre": "Steuerlehre",
+            "Rechnungswesen": "Rechnungswesen"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -2574,7 +2575,8 @@
             "Technik": "Technik",
             "Wirtschaft": "Wirtschaft",
             "Lernen lernen": "Lernen lernen",
-            "Steuerlehre": "Steuerlehre"
+            "Steuerlehre": "Steuerlehre",
+            "Rechnungswesen": "Rechnungswesen"
         }
     },
     "logout": "Abmelden",
