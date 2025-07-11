@@ -688,7 +688,11 @@
         "type": "Type of support:",
         "noInfo": "Not specified",
         "PersonalData": "Personal data",
-        "availability": "When do you have time?"
+        "availability": "When do you have time?",
+        "ZipCode": {
+            "zipCode": "Zip code",
+            "requiredLength": "The zip code must have {{length}} digits."
+        }
     },
     "single": {
         "global": {

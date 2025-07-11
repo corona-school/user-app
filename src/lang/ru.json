@@ -688,7 +688,11 @@
         "type": "Тип поддержки:",
         "noInfo": "Не указано",
         "PersonalData": "Персональные данные",
-        "availability": "Когда у вас есть время?"
+        "availability": "Когда у вас есть время?",
+        "ZipCode": {
+            "zipCode": "Почтовый индекс",
+            "requiredLength": "Почтовый индекс должен содержать {{length}} цифр."
+        }
     },
     "single": {
         "global": {

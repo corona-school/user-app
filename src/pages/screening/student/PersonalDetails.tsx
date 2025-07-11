@@ -19,6 +19,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ButtonField } from '../components/ButtonField';
+import { Input } from '@/components/Input';
 import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityModal';
 
 interface PersonalDetailsProps {
@@ -55,6 +56,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [hasSpecialExperience, setHasSpecialExperience] = useState<CheckedState>(student.hasSpecialExperience);
     const [descriptionForMatch, setDescriptionForMatch] = useState(student.descriptionForMatch);
     const [descriptionForScreening, setDescriptionForScreening] = useState(student.descriptionForScreening);
+    const [zipCode, setZipCode] = useState(student.zipCode ?? '');
 
     const [errors, setErrors] = useState<FormErrors>({});
 
@@ -73,6 +75,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         gender: (gender as Gender) || undefined,
                         descriptionForMatch,
                         descriptionForScreening,
+                        zipCode,
                         calendarPreferences: student.calendarPreferences
                             ? {
                                   ...student.calendarPreferences,
@@ -128,18 +131,27 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
             </div>
             <div>
                 {!student.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
-                <div className="flex flex-col gap-y-2 mb-6">
-                    <Label>Geschlecht</Label>
-                    <SelectInput
-                        className="w-[200px]"
-                        value={gender}
-                        onValueChange={setGender}
-                        options={[
-                            { label: 'Weiblich', value: Gender.Female },
-                            { label: 'Männlich', value: Gender.Male },
-                            { label: 'Unbekannt', value: Gender.Other },
-                        ]}
-                    />
+                <div className="flex flex-wrap gap-6">
+                    <div className="flex flex-col gap-y-2 mb-6">
+                        <Label>Geschlecht</Label>
+                        <SelectInput
+                            className="w-[200px]"
+                            value={gender}
+                            onValueChange={setGender}
+                            options={[
+                                { label: 'Weiblich', value: Gender.Female },
+                                { label: 'Männlich', value: Gender.Male },
+                                { label: 'Unbekannt', value: Gender.Other },
+                            ]}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-y-2 mb-6">
+                        <Label>Postleitzahl</Label>
+                        <Input
+                            value={zipCode}
+                            onChange={(e) => setZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only digits can pe typed in
+                        />
+                    </div>
                 </div>
                 <div className="flex flex-wrap gap-6">
                     <div className="flex flex-col gap-y-2 flex-1">

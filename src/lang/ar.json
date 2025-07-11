@@ -684,7 +684,11 @@
         "type": "نوع الدعم:",
         "noInfo": "غير محدد",
         "PersonalData": "البيانات الشخصية",
-        "availability": "متى يكون لديك وقت؟"
+        "availability": "متى يكون لديك وقت؟",
+        "ZipCode": {
+            "zipCode": "الرمز البريدي",
+            "requiredLength": "يجب أن يحتوي الرمز البريدي على {{length}} أرقاماً."
+        }
     },
     "single": {
         "global": {

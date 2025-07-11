@@ -688,7 +688,11 @@
         "type": "Тип підтримки:",
         "noInfo": "Не вказано",
         "PersonalData": "Персональні дані",
-        "availability": "Коли у вас є час?"
+        "availability": "Коли у вас є час?",
+        "ZipCode": {
+            "zipCode": "Поштовий індекс",
+            "requiredLength": "Поштовий індекс повинен містити {{length}} цифр."
+        }
     },
     "single": {
         "global": {
