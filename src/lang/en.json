@@ -198,7 +198,8 @@
             "passwordDescription": "Please log in again with your password to complete the linking process. Note that you only need to do this once."
         },
         "continueWith": "Continue with {{idp}}",
-        "linkAccountWithIdpError": "Linking your account to an identity provider requires a password. Please set a password first"
+        "linkAccountWithIdpError": "Linking your account to an identity provider requires a password. Please set a password first",
+        "loginWith": "Log in with {{method}}"
     },
     "lernfair": {
         "languages": {
