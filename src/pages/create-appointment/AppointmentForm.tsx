@@ -12,6 +12,9 @@ import { Typography } from '@/components/Typography';
 import { DatePicker } from '@/components/DatePicker';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
 import { TextArea } from '@/components/TextArea';
+import { Box, Tooltip } from 'native-base';
+import InformationBadge from '@/components/notifications/preferences/InformationBadge';
+import useInterval from '@/hooks/useInterval';
 
 type FormProps = {
     errors: FormErrors;
@@ -24,6 +27,13 @@ type FormProps = {
     defaultDate?: string;
     defaultTime?: string;
 };
+
+const currentTimeToShow = () => {
+    let date = DateTime.now();
+    let time = date.setZone('Europe/Berlin').toFormat('HH:mm');
+    return time;
+};
+
 const AppointmentForm: React.FC<FormProps> = ({
     errors,
     onSetDate,
@@ -41,9 +51,14 @@ const AppointmentForm: React.FC<FormProps> = ({
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [date, setDate] = useState('');
+    const [currentTime, setCurrentTimeToShow] = useState(currentTimeToShow());
     const [time, setTime] = useState('15:00');
     const [meetingLink, setMeetingLink] = useState(overrideMeetingLink ?? undefined);
     const [isToday, setIsToday] = useState<boolean>(false);
+
+    useInterval(() => {
+        setCurrentTimeToShow(currentTimeToShow());
+    }, 30_000);
 
     const handleTitleInput = (e: any) => {
         setTitle(e.target.value);
@@ -134,7 +149,22 @@ const AppointmentForm: React.FC<FormProps> = ({
                     )}
                 </div>
                 <div className="flex flex-col gap-y-1">
-                    <Label htmlFor="time">{t('appointment.create.timeLabel')}</Label>
+                    <div className="flex flex-row gap-x-1">
+                        <Label htmlFor="time">{t('appointment.create.timeLabel')}</Label>
+                        <Tooltip
+                            maxW={500}
+                            label={t('appointment.create.toolTipTimeLabel', { currentTime })}
+                            bg={'primary.900'}
+                            _text={{ textAlign: 'center' }}
+                            p={3}
+                            hasArrow
+                            children={
+                                <Box ml={2}>
+                                    <InformationBadge ml={0} bg="danger.900" />
+                                </Box>
+                            }
+                        ></Tooltip>
+                    </div>
                     <Input
                         className="w-full"
                         id="time"

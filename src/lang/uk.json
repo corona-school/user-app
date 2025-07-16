@@ -72,7 +72,8 @@
             "wrongVideoUrlError": "Будь ласка, введіть дійсне відеопосилання.",
             "courseImageAltText": "Зображення курсу",
             "videoChatLabel": "Відео чат",
-            "videoChatPlaceholder": "Додайте власне посилання на відеочат"
+            "videoChatPlaceholder": "Додайте власне посилання на відеочат",
+            "toolTipTimeLabel": "Весь час на Lern-Fair створюється в часовому поясі \"Центральноєвропейський час (CET), Європа/Берлін\" (поточний час: {{currentTime}})."
         },
         "detail": {
             "reasonDisabled": {
