@@ -682,6 +682,10 @@
                 "others": "Schulort wählen"
             }
         },
+        "ZipCode": {
+            "zipCode": "Postleitzahl",
+            "requiredLength": "Die Postleitzahl muss {{length}} Ziffern haben."
+        },
         "SchoolType": {
             "label": "Schulform",
             "empty": "Keine Angabe",

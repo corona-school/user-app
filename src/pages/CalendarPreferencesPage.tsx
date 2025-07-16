@@ -37,7 +37,7 @@ const CalendarPreferencesPage = () => {
 
     useEffect(() => {
         if (!loading && data) {
-            setCalendarPreferences(data?.me?.calendarPreferences ?? {});
+            setCalendarPreferences(data?.me?.calendarPreferences);
         }
     }, [data, loading]);
 

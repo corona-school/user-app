@@ -692,7 +692,11 @@
         "type": "Destek türü:",
         "noInfo": "Bilgi yok",
         "PersonalData": "Kişisel veriler",
-        "availability": "Ne zaman vaktin var?"
+        "availability": "Ne zaman vaktin var?",
+        "ZipCode": {
+            "zipCode": "Posta kodu",
+            "requiredLength": "Posta kodu {{length}} olmalıdır rakamlar."
+        }
     },
     "single": {
         "global": {
