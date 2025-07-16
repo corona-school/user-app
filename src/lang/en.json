@@ -183,7 +183,6 @@
         "error": "Your login details do not match our information. Please check your details.",
         "forgotPassword": "Forgotten your password?",
         "signupNew": "Register new",
-        "noaccount": "Don't have an account yet? Click here to register!",
         "currentEmail": "Current e-mail",
         "setNewEmail": "Reset e-mail",
         "changeEmail": "Change e-mail",
@@ -199,7 +198,11 @@
         },
         "continueWith": "Continue with {{idp}}",
         "linkAccountWithIdpError": "Linking your account to an identity provider requires a password. Please set a password first",
-        "loginWith": "Log in with {{method}}"
+        "loginWith": "Log in with {{method}}",
+        "noaccount": "Don't have an account yet?",
+        "contactSupport": "Contact us",
+        "needHelp": "Do you need help?",
+        "registerHere": "Register here"
     },
     "lernfair": {
         "languages": {

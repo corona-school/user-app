@@ -183,7 +183,6 @@
         "error": "Giriş bilgileriniz bizim bilgilerimizle eşleşmiyor. Lütfen bilgilerinizi kontrol edin.",
         "forgotPassword": "Şifrenizi mi unuttunuz?",
         "signupNew": "Yeni kayıt oluştur",
-        "noaccount": "Henüz bir hesabınız yok mu? Kaydolmak için buraya tıklayın!",
         "currentEmail": "Güncel e-posta",
         "setNewEmail": "E-postayı yeniden ayarla",
         "changeEmail": "E-posta değiştir",
@@ -199,7 +198,11 @@
         },
         "continueWith": "{{idp}} ile devam edin",
         "linkAccountWithIdpError": "Hesabınızı bir kimlik sağlayıcısına bağlamak için bir parola gerekir. Lütfen önce bir parola belirleyin",
-        "loginWith": "{{method}} ile giriş yap"
+        "loginWith": "{{method}} ile giriş yap",
+        "noaccount": "Henüz bir hesabınız yok mu?",
+        "contactSupport": "Bize ulaşın",
+        "needHelp": "Yardıma ihtiyacınız var mı?",
+        "registerHere": "Buradan kayıt olun"
     },
     "lernfair": {
         "languages": {

@@ -192,7 +192,9 @@
         "loginWith": "Einloggen mit {{method}}",
         "continueWith": "Weiter mit {{idp}}",
         "linkAccountWithIdpError": "Die Verknüpfung deines Kontos mit einem Identitätsanbieter erfordert ein Passwort. Bitte setze zuerst ein Passwort",
-        "noaccount": "Du hast noch keinen Account? Hier geht es zur Registrierung!",
+        "noaccount": "Du hast noch keinen Account?",
+        "registerHere": "Hier registrieren",
+        "contactSupport": "Kontaktiere uns",
         "currentEmail": "Aktuelle E-Mail",
         "newEmail": "Neue E-Mail",
         "setNewEmail": "E-Mail neu setzen",
@@ -201,6 +203,7 @@
         "succesEmailVerification": "Deine E-Mail wurde erfolgreich geändert!",
         "changeEmailConfirmation": "Wir haben dir an die neue Adresse eine E-Mail zur Bestätigung gesendet",
         "invalidToken": "Token ungültig",
+        "needHelp": "Brauchst du Hilfe?",
         "email": {
             "sent": "Wir haben dir eine E-Mail zum Login geschickt"
         },
