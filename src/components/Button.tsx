@@ -60,12 +60,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
         const handleOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             if (disabled && !reasonDisabled) {
+                e.preventDefault();
                 e.stopPropagation();
                 return;
             }
 
             if (disabled && reasonDisabled) {
                 setIsTooltipOpen(true);
+                e.preventDefault();
                 e.stopPropagation();
                 return;
             }
