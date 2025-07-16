@@ -281,18 +281,20 @@ const Login = () => {
                             >
                                 {t('login.loginWith', { method: t('email') })}
                             </Button>
-                            <Typography className="font-medium capitalize">{t('or')}</Typography>
                             {GOOGLE_CLIENT_ID && (
-                                <Button
-                                    disabled={isDeterminingLoginOptions || isRequestingToken || isAuthenticating}
-                                    type="button"
-                                    className="w-full"
-                                    variant="optional"
-                                    rightIcon={<IconBrandGoogleFilled size={16} />}
-                                    onClick={loginWithGoogle}
-                                >
-                                    {t('login.loginWith', { method: 'Google' })}
-                                </Button>
+                                <>
+                                    <Typography className="font-medium capitalize">{t('or')}</Typography>
+                                    <Button
+                                        disabled={isDeterminingLoginOptions || isRequestingToken || isAuthenticating}
+                                        type="button"
+                                        className="w-full"
+                                        variant="optional"
+                                        rightIcon={<IconBrandGoogleFilled size={16} />}
+                                        onClick={loginWithGoogle}
+                                    >
+                                        {t('login.loginWith', { method: 'Google' })}
+                                    </Button>
+                                </>
                             )}
                         </div>
                     </form>
