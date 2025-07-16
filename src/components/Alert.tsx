@@ -7,6 +7,7 @@ const alertVariants = cva('flex items-center w-fit rounded-lg px-4 py-3 text-bas
         variant: {
             default: 'border-primary bg-primary-lighter text-foreground',
             destructive: 'bg-destructive-lighter text-destructive',
+            success: 'bg-green-50 text-green-600',
         },
         direction: {
             row: 'flex-row gap-x-4',
