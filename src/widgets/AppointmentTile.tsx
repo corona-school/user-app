@@ -61,6 +61,7 @@ const AppointmentTile: React.FC<Props> = ({
     onEdit,
     onDuplicate,
     onDelete,
+    title,
 }) => {
     const { t } = useTranslation();
     const { userID } = useUser();
@@ -149,17 +150,17 @@ const AppointmentTile: React.FC<Props> = ({
                     )}
                 </div>
                 <div className="flex flex-grow w-full justify-end gap-1">
-                    {onEdit && (
+                    {!isReadOnly && onEdit && (
                         <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit}>
                             <IconPencil />
                         </Button>
                     )}
-                    {onDuplicate && (
+                    {!isReadOnly && onDuplicate && (
                         <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate}>
                             <IconCopy />
                         </Button>
                     )}
-                    {onDelete && (
+                    {!isReadOnly && onDelete && (
                         <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete}>
                             <IconTrash />
                         </Button>

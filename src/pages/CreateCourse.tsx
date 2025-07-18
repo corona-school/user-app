@@ -20,6 +20,7 @@ import { Instructor } from '@/gql/graphql';
 import CourseSettings from './course-creation/CourseSettings';
 import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
+import { useCreateCourseAppointments } from '@/context/AppointmentContext';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
@@ -155,6 +156,7 @@ const CreateCourse: React.FC = () => {
     const state = location.state as { courseId?: number; currentStep?: number };
     const prefillCourseId = state?.courseId;
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
+    const { appointmentsToBeCreated } = useCreateCourseAppointments();
 
     const [courseId, setCourseId] = useState<string>('');
     const [courseName, setCourseName] = useState<string>('');
@@ -245,6 +247,8 @@ const CreateCourse: React.FC = () => {
         if (prefillCourseId != null) queryCourse();
     }, [prefillCourseId, queryCourse]);
 
+    const submit = () => {};
+
     return (
         <>
             <WithNavigation
@@ -310,7 +314,7 @@ const CreateCourse: React.FC = () => {
                             <Button variant="outline" className="w-full">
                                 Abbrechen
                             </Button>
-                            <Button leftIcon={<IconCheck />} className="w-full">
+                            <Button leftIcon={<IconCheck />} className="w-full" onClick={submit}>
                                 Entwurf speichern
                             </Button>
                             <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full">

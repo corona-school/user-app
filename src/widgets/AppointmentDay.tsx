@@ -120,6 +120,9 @@ const AppointmentDay: React.FC<Props> = ({
                                 appointmentId={appointmentId}
                                 wasRejected={wasRejected}
                                 declinedBy={declinedBy}
+                                onEdit={onEdit}
+                                onDuplicate={onDuplicate}
+                                onDelete={onDelete}
                             />
                         </div>
                     </div>

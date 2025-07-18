@@ -14,6 +14,7 @@ import { Separator } from '@/components/Separator';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { cn } from '@/lib/Tailwind';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
+import CourseAppointmentForm from '@/pages/course-creation/CourseAppointmentForm';
 
 interface HeaderProps {
     hasMoreOldAppointments: boolean;
@@ -54,7 +55,7 @@ interface AppointmentItemProps {
     previousAppointment?: Appointment;
     index: number;
     isReadOnly: boolean;
-    onEdit?: () => void;
+    onEdit?: (edited: DisplayAppointment) => void;
     onDuplicate?: () => void;
     onDelete?: () => void;
 }
@@ -62,6 +63,8 @@ interface AppointmentItemProps {
 const AppointmentItem = React.memo(({ appointment, previousAppointment, index, isReadOnly, onEdit, onDuplicate, onDelete }: AppointmentItemProps) => {
     const navigate = useNavigate();
     const { i18n } = useTranslation();
+    const [editing, setEditing] = React.useState(false);
+
     const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
         if (!previousAppointment) {
             return false;
@@ -83,6 +86,11 @@ const AppointmentItem = React.memo(({ appointment, previousAppointment, index, i
     };
 
     const monthDivider = showMonthDivider(appointment, previousAppointment);
+
+    const onSubmit = (updatedAppointment: DisplayAppointment) => {
+        if (onEdit) onEdit(updatedAppointment);
+        setEditing(false);
+    };
     return (
         <div>
             {monthDivider && (
@@ -96,34 +104,45 @@ const AppointmentItem = React.memo(({ appointment, previousAppointment, index, i
                 </>
             )}
             <div>
-                <AppointmentDay
-                    start={appointment.start}
-                    duration={appointment.duration}
-                    title={appointment.title}
-                    description={appointment.description}
-                    organizers={appointment.organizers}
-                    participants={appointment.participants}
-                    onPress={() => navigate(`/appointment/${appointment.id}`)}
-                    isReadOnly={isReadOnly}
-                    isFullWidth
-                    appointmentType={appointment.appointmentType}
-                    position={appointment.position}
-                    total={appointment.total}
-                    isOrganizer={appointment.isOrganizer}
-                    displayName={appointment.displayName}
-                    appointmentId={appointment.id}
-                    declinedBy={appointment.declinedBy}
-                    onEdit={onEdit}
-                    onDuplicate={onDuplicate}
-                    onDelete={onDelete}
-                />
+                {editing ? (
+                    <div className="flex flex-col p-4 rounded-md border border-gray-200 mt-6">
+                        <CourseAppointmentForm appointmentPrefill={appointment} onSubmit={onSubmit} onCancel={() => setEditing(false)} />
+                    </div>
+                ) : (
+                    <AppointmentDay
+                        start={appointment.start}
+                        duration={appointment.duration}
+                        title={appointment.title}
+                        description={appointment.description}
+                        organizers={appointment.organizers}
+                        participants={appointment.participants}
+                        onPress={() => navigate(`/appointment/${appointment.id}`)}
+                        isReadOnly={isReadOnly}
+                        isFullWidth
+                        appointmentType={appointment.appointmentType}
+                        position={appointment.position}
+                        total={appointment.total}
+                        isOrganizer={appointment.isOrganizer}
+                        displayName={appointment.displayName}
+                        appointmentId={appointment.id}
+                        declinedBy={appointment.declinedBy}
+                        onEdit={() => setEditing(true)}
+                        onDuplicate={onDuplicate}
+                        onDelete={onDelete}
+                    />
+                )}
             </div>
         </div>
     );
 });
 
+export interface DisplayAppointment extends Appointment {
+    isNew?: boolean; // false => existing appointment, true => new appointment
+    newIndex?: number; // index of the new appointment in the appointmentsToBeCreated array
+}
+
 type AppointmentListProps = {
-    appointments: Appointment[];
+    appointments: DisplayAppointment[];
     isReadOnlyList: boolean;
     disableScroll?: boolean;
     isFullWidth?: boolean;
@@ -133,9 +152,9 @@ type AppointmentListProps = {
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
     height?: number | string;
-    onAppointmentEdit?: (id: number) => void;
-    onAppointmentDuplicate?: (id: number) => void;
-    onAppointmentDelete?: (id: number) => void;
+    onAppointmentEdit?: (updated: DisplayAppointment) => void;
+    onAppointmentDuplicate?: (index: number, isNew: boolean) => void;
+    onAppointmentDelete?: (index: number, isNew: boolean) => void;
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -220,14 +239,18 @@ const AppointmentList = ({
                 <Header hasMoreOldAppointments={!noOldAppointments} isLoading={!!isLoadingAppointments} onLoadMoreOldAppointments={handleLoadPast} />
                 {appointments.map((appointment, index) => (
                     <AppointmentItem
-                        key={appointment.id}
+                        key={appointment.id < 0 ? appointment.newIndex : appointment.id}
                         appointment={appointment}
                         previousAppointment={appointments[index - 1]}
                         index={index}
                         isReadOnly={isReadOnlyList}
-                        onEdit={() => onAppointmentEdit && onAppointmentEdit(appointment.id)}
-                        onDuplicate={() => onAppointmentDuplicate && onAppointmentDuplicate(appointment.id)}
-                        onDelete={() => onAppointmentDelete && onAppointmentDelete(appointment.id)}
+                        onEdit={(updated) => onAppointmentEdit && onAppointmentEdit(updated)}
+                        onDuplicate={() =>
+                            onAppointmentDuplicate && onAppointmentDuplicate(!appointment.isNew ? appointment.id : appointment.newIndex!, !!appointment.isNew)
+                        }
+                        onDelete={() =>
+                            onAppointmentDelete && onAppointmentDelete(!appointment.isNew ? appointment.id : appointment.newIndex!, !!appointment.isNew)
+                        }
                     />
                 ))}
             </InfiniteScroll>

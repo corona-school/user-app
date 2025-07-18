@@ -1,57 +1,40 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { Appointment } from '../../types/lernfair/Appointment';
-import AppointmentList from '../../widgets/AppointmentList';
-import CreateCourseAppointmentModal from './CreateCourseAppointmentModal';
+import AppointmentList, { DisplayAppointment } from '../../widgets/AppointmentList';
 import { DateTime } from 'luxon';
 import { CreateCourseContext } from '../CreateCourse';
 import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
-import AppointmentEdit from '@/pages/edit-appointment/AppointmentEdit';
-import EditCourseAppointmentModal from '@/pages/course-creation/EditCourseAppointmentModal';
 
 type Props = {
     isEditing?: boolean;
-    appointments: Appointment[];
+    appointments: DisplayAppointment[];
+    subcourseId?: number;
 };
 
-const CourseAppointments: React.FC<Props> = ({ isEditing, appointments }) => {
+const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcourseId }) => {
     const { t } = useTranslation();
-    const [showModal, setShowModal] = useState<boolean>(false);
-    const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const [editId, setEditId] = useState<number>(0);
+    const [editId, setEditId] = useState<number | undefined>(undefined);
 
-    const { appointmentsToBeCreated } = useCreateCourseAppointments();
+    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
     const { dispatchCreateAppointment } = useCreateAppointment();
     const { dispatchWeeklyAppointment } = useWeeklyAppointments();
 
     const { courseName } = useContext(CreateCourseContext);
+    const [creating, setCreating] = useState<boolean>(false);
 
-    const handleOnOpenChange = (open: boolean) => {
-        setShowModal(open);
-        if (!open) {
-            dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
-            dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
-        }
-    };
+    const convertAppointments = (creating: boolean) => {
+        let convertedAppointments: DisplayAppointment[] = [];
 
-    const handleEditOnOpenChange = (open: boolean) => {
-        setShowEditModal(open);
-        if (!open) {
-            dispatchCreateAppointment({ type: FormReducerActionType.CLEAR_DATA });
-            dispatchWeeklyAppointment({ type: WeeklyReducerActionType.CLEAR_WEEKLIES });
-        }
-    };
-
-    const convertAppointments = () => {
-        let convertedAppointments: Appointment[] = [];
-
-        appointmentsToBeCreated.forEach((appointment) => {
+        appointmentsToBeCreated.forEach((appointment, index) => {
             convertedAppointments.push({
-                id: 1,
+                isNew: true,
+                newIndex: index,
+                id: -1,
                 start: appointment.start,
                 duration: appointment.duration,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
@@ -61,28 +44,45 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments }) => {
             });
         });
 
+        // insert empty appointment in front of sortedAppointments
+        if (creating) {
+            console.log('Creating new appointment, inserting empty appointment at the front');
+            convertedAppointments.push({
+                isNew: true,
+                newIndex: appointmentsToBeCreated.length,
+                id: -1,
+                start: DateTime.now().plus({ days: 7 }).toISO(),
+                duration: 60,
+                appointmentType: Lecture_Appointmenttype_Enum.Group,
+                displayName: courseName,
+                title: '',
+                description: '',
+            });
+        }
+
         return convertedAppointments;
     };
     const canGoFurther = () => {
         return allAppointmentsToShow.length === 0 ? true : false;
     };
-    const getAllAppointmentsToShow = () => {
+    const getAllAppointmentsToShow = (creating: boolean) => {
         if (isEditing) {
-            const convertedAppointments = convertAppointments();
+            const convertedAppointments = convertAppointments(creating);
             const allAppointments = appointments.concat(convertedAppointments);
             const sortedAppointments = allAppointments.sort((a, b) => {
                 const _a = DateTime.fromISO(a.start).toMillis();
                 const _b = DateTime.fromISO(b.start).toMillis();
                 return _a - _b;
             });
-            let sortedWithPosition: Appointment[] = [];
+            let sortedWithPosition: DisplayAppointment[] = [];
             sortedAppointments.forEach((appointment, index) => {
                 sortedWithPosition.push({ ...appointment, position: index + 1 });
             });
+            console.log('sortedWithPosition', sortedWithPosition);
             return sortedWithPosition;
         }
-        const newAppointments: Appointment[] = [];
-        const convertedAppointments = convertAppointments();
+        const newAppointments: DisplayAppointment[] = [];
+        const convertedAppointments = convertAppointments(creating);
         const allAppointments = newAppointments.concat(convertedAppointments);
         const sortedAppointments = allAppointments.sort((a, b) => {
             const _a = DateTime.fromISO(a.start).toMillis();
@@ -90,36 +90,56 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments }) => {
             return _a - _b;
         });
 
-        let sortedWithPosition: Appointment[] = [];
+        let sortedWithPosition: DisplayAppointment[] = [];
         sortedAppointments.forEach((appointment, index) => {
             sortedWithPosition.push({ ...appointment, position: index + 1 });
         });
 
         return sortedWithPosition;
     };
-    const allAppointmentsToShow = getAllAppointmentsToShow();
+    const [allAppointmentsToShow, setAllAppointmentsToShow] = useState<DisplayAppointment[]>(getAllAppointmentsToShow(false));
+
+    const onCreateAppointment = () => {
+        setCreating(true);
+        setAllAppointmentsToShow(getAllAppointmentsToShow(true));
+    };
+
+    useEffect(() => {
+        setCreating(false);
+        setAllAppointmentsToShow(getAllAppointmentsToShow(false));
+    }, [appointmentsToBeCreated]);
 
     return (
         <>
             <Typography variant="h3">{t('course.CourseDate.step.appointments')}</Typography>
-
-            <CreateCourseAppointmentModal isOpen={showModal} onOpenChange={handleOnOpenChange} total={allAppointmentsToShow.length} />
-            <EditCourseAppointmentModal id={editId} isOpen={showEditModal} onOpenChange={handleEditOnOpenChange} />
             <div>
                 {(isEditing || allAppointmentsToShow.length !== 0) && (
                     <div className="mb-2">
                         <AppointmentList
                             height="100%"
-                            isReadOnlyList={true}
+                            isReadOnlyList={false}
                             appointments={allAppointmentsToShow}
-                            onAppointmentEdit={(id) => {
-                                setEditId(id);
-                                setShowEditModal(true);
+                            onAppointmentEdit={(updated) => {
+                                // todo what if existing appointment is edited?
+                                if (updated.isNew) {
+                                    console.log('edited new appointment with newIndex:', updated.newIndex, updated);
+                                    setAppointmentsToBeCreated((prev) => {
+                                        const newAppointments = [...prev];
+                                        newAppointments[updated.newIndex!] = {
+                                            ...updated,
+                                            appointmentType: Lecture_Appointmenttype_Enum.Group,
+                                            subcourseId: subcourseId ?? -1,
+                                        };
+                                        return newAppointments;
+                                    });
+                                } else {
+                                    console.log('Editing existing appointment');
+                                }
                             }}
                         />
                     </div>
                 )}
-                <Button onClick={() => setShowModal(true)} variant={'default'} className="w-full p-6">
+                <Button onClick={onCreateAppointment} variant={'default'} className="w-full p-6" disabled={creating}>
                     {allAppointmentsToShow.length === 0 ? t('course.appointments.addFirstAppointment') : t('course.appointments.addOtherAppointment')}
                 </Button>
             </div>
