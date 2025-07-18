@@ -232,7 +232,7 @@ const Login = () => {
                     )}
                     <form
                         onSubmit={handleOnLoginFormSubmit}
-                        className="flex flex-col justify-center px-6 gap-y-4 w-full max-w-[534px] justify-self-center mb-16"
+                        className="flex flex-col justify-center px-6 gap-y-4 w-full max-w-[342px] justify-self-center mb-16"
                     >
                         <div className="flex flex-col gap-y-[6px] w-full">
                             <Label htmlFor="email">{t('email')}</Label>
