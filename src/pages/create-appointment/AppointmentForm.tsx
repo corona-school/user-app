@@ -12,8 +12,7 @@ import { Typography } from '@/components/Typography';
 import { DatePicker } from '@/components/DatePicker';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
 import { TextArea } from '@/components/TextArea';
-import { InfoTooltipButton, TooltipButton } from '@/components/Tooltip';
-import InformationBadge from '@/components/notifications/preferences/InformationBadge';
+import { InfoTooltipButton } from '@/components/Tooltip';
 import useInterval from '@/hooks/useInterval';
 
 type FormProps = {
