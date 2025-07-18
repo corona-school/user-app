@@ -170,7 +170,7 @@
         },
         "accountNotFound": {
             "title": "Login failed",
-            "alert_html": "No account with the email address {{email}} could be found. Please check the email address you entered and try again."
+            "alert_html": "No account with the email address {{email}} could be found."
         },
         "accountDeactivated": {
             "title": "Login failed",
@@ -202,7 +202,8 @@
         "noaccount": "Don't have an account yet?",
         "contactSupport": "Contact us",
         "needHelp": "Do you need help?",
-        "registerHere": "Register here"
+        "registerHere": "Register here",
+        "invalidPasswordError": "Oops! Your password is incorrect."
     },
     "lernfair": {
         "languages": {

@@ -187,6 +187,7 @@
     "login": {
         "title": "Einloggen",
         "error": "Deine Login-Daten stimmen nicht mit unseren Informationen überein. Bitte überprüfe deine Angaben.",
+        "invalidPasswordError": "Ups! Dein Passwort stimmt nicht.",
         "forgotPassword": "Passwort vergessen?",
         "signupNew": "Neu registrieren",
         "loginWith": "Einloggen mit {{method}}",
@@ -218,7 +219,7 @@
         },
         "accountNotFound": {
             "title": "Anmeldung fehlgeschlagen",
-            "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden. Bitte kontrolliere die eingegebene E-Mail-Adresse und versuche es erneut."
+            "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden."
         },
         "accountDeactivated": {
             "title": "Anmeldung fehlgeschlagen",

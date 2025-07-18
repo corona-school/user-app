@@ -170,7 +170,7 @@
         },
         "accountNotFound": {
             "title": "Giriş başarısız",
-            "alert_html": "{{email}} e-posta adresiyle bir hesap bulunamadı. Lütfen girilen e-posta adresini kontrol edin ve tekrar deneyin."
+            "alert_html": "E-posta adresi {{email}} olan bir hesap bulunamadı."
         },
         "accountDeactivated": {
             "title": "Giriş başarısız",
@@ -202,7 +202,8 @@
         "noaccount": "Henüz bir hesabınız yok mu?",
         "contactSupport": "Bize ulaşın",
         "needHelp": "Yardıma ihtiyacınız var mı?",
-        "registerHere": "Buradan kayıt olun"
+        "registerHere": "Buradan kayıt olun",
+        "invalidPasswordError": "Oops! Şifreniz yanlış."
     },
     "lernfair": {
         "languages": {

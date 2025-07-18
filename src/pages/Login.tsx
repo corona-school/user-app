@@ -46,11 +46,11 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loginEmail, setLoginEmail] = useState('');
-    const [loginErrors, setLoginErrors] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
     const [loginMethod, setLoginMethod] = useState<LoginOption>();
     const [resetPasswordResult, setResetPasswordResult] = useState<ResetPasswordResult>();
     const [showDeactivatedModal, setShowDeactivatedModal] = useState(false);
-    const [showNoAccountModal, setShowNoAccountModal] = useState(false);
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
     const [showEmailSent, setShowEmailSent] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(false);
@@ -98,7 +98,7 @@ const Login = () => {
         } else if (loginOption === 'email') {
             await handleOnLoginWithEmailToken();
         } else {
-            setShowNoAccountModal(true);
+            setEmailError(t('login.accountNotFound.alert_html', { email: email }));
         }
     };
 
@@ -112,7 +112,7 @@ const Login = () => {
         setIsAuthenticating(true);
         const response = await loginWithPassword(email!, password!, getOrCreateDeviceId());
         if (response.errors) {
-            setLoginErrors(t('login.error'));
+            setPasswordError(t('login.invalidPasswordError'));
         }
         setIsAuthenticating(false);
     };
@@ -130,7 +130,7 @@ const Login = () => {
             setShowEmailSent(true);
         } else if (response.errors) {
             if (response.errors[0]?.message.includes('Unknown User')) {
-                setShowNoAccountModal(true);
+                setEmailError(t('login.accountNotFound.alert_html', { email: email }));
             } else {
                 setShowEmailSent(true);
             }
@@ -191,10 +191,11 @@ const Login = () => {
         }
         setResetPasswordResult(undefined);
         setShowEmailSent(false);
+        setEmailError('');
     }, [email, loginEmail]);
 
     useEffect(() => {
-        setLoginErrors('');
+        setPasswordError('');
         setResetPasswordResult(undefined);
     }, [password]);
 
@@ -235,13 +236,21 @@ const Login = () => {
                     >
                         <div className="flex flex-col gap-y-[6px] w-full">
                             <Label htmlFor="email">{t('email')}</Label>
-                            <Input variant="white" id="email" placeholder="email@example.com" value={email} onChangeText={setEmail} />
+                            <Input errorMessage={emailError} variant="white" id="email" placeholder="email@example.com" value={email} onChangeText={setEmail} />
                         </div>
                         {loginMethod === 'password' && (
                             <div className="flex flex-col gap-y-[6px] w-full">
                                 <div className="flex flex-col gap-y-[6px] w-full">
                                     <Label htmlFor="password">{t('password')}</Label>
-                                    <Input autoFocus type="password" variant="white" id="password" value={password} onChangeText={setPassword} />
+                                    <Input
+                                        errorMessage={passwordError}
+                                        autoFocus
+                                        type="password"
+                                        variant="white"
+                                        id="password"
+                                        value={password}
+                                        onChangeText={setPassword}
+                                    />
                                 </div>
                                 <Button
                                     type="button"
@@ -252,11 +261,6 @@ const Login = () => {
                                     <span className="underline underline-offset-[1px] decoration-1">{t('login.forgotPassword')}</span>
                                 </Button>
                             </div>
-                        )}
-                        {loginErrors && (
-                            <Alert className="w-full" variant="destructive" title="">
-                                {loginErrors}
-                            </Alert>
                         )}
                         {resetPasswordResult && (
                             <Alert className="w-full" variant={resetPasswordResult === 'success' ? 'success' : 'destructive'}>
@@ -336,14 +340,6 @@ const Login = () => {
                 headline={<span className="block text-center">{t('login.accountDeactivated.title')}</span>}
             >
                 <Typography className="text-pretty text-center">{t('login.accountDeactivated.alert_html')}</Typography>
-            </InformationModal>
-            <InformationModal
-                variant="destructive"
-                isOpen={showNoAccountModal}
-                onOpenChange={setShowNoAccountModal}
-                headline={<span className="block text-center">{t('login.accountNotFound.title')}</span>}
-            >
-                <Typography className="text-pretty text-center">{t('login.accountNotFound.alert_html', { email: email })}</Typography>
             </InformationModal>
             <ConfirmationModal
                 isOpen={showForgotPasswordModal}
