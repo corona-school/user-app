@@ -18,8 +18,8 @@ const LeavePageModal = ({ isOpen, onOpenChange, url, messageType, navigateTo }: 
             <ModalHeader>
                 <ModalTitle>{t('notification.panel.leavePageModal.text')}</ModalTitle>
             </ModalHeader>
-            <div className="flex flex-col">
-                <Icon className="scale-[0.5]" />
+            <div className="flex flex-col overflow-hidden">
+                <Icon className="scale-[0.5] mx-auto" />
                 <Typography className="mb-1">{t('notification.panel.leavePageModal.description')}:</Typography>
                 <Typography className="italic">{url}</Typography>
             </div>

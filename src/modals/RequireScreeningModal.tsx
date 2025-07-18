@@ -16,9 +16,12 @@ import { PublicFooter } from '@/components/PublicFooter';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import { InlineWidget, useCalendlyEventListener } from 'react-calendly';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { cn } from '@/lib/Tailwind';
 import TruncatedText from '@/components/TruncatedText';
+import { DateTime } from 'luxon';
+import { IconEdit, IconTrash, IconVideo } from '@tabler/icons-react';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 
 const EXISTING_SCREENINGS_QUERY = gql(`  
     query ExistingScreenings {
@@ -27,15 +30,36 @@ const EXISTING_SCREENINGS_QUERY = gql(`
                 grade
                 subjectsFormatted { name }
 
-                screenings { status }
+                screenings {
+                    status,
+                    appointment {
+                        start,
+                        override_meeting_link,
+                        duration,
+                        actionUrls {
+                            cancelUrl
+                            rescheduleUrl
+                        }
+                    }
+                }
             }
             student {
-                tutorScreenings { success }
-                instructorScreenings { success }
+                tutorScreenings { status, appointment { start, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
+                instructorScreenings { status, appointment { start, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
             }
         }
     }
 `);
+
+interface ScreeningAppointment {
+    start?: string | null;
+    override_meeting_link?: string | null;
+    duration?: number | null;
+    actionUrls?: {
+        cancelUrl?: string | null;
+        rescheduleUrl?: string | null;
+    } | null;
+}
 
 export function RequireScreeningModal() {
     const { t } = useTranslation();
@@ -47,19 +71,34 @@ export function RequireScreeningModal() {
     const { trackEvent } = useMatomo();
     const [showCalendar, setShowCalendar] = useState(false);
     const [isLoadingCalendar, setIsLoadingCalendar] = useState(true);
+    const [shouldReload, setShouldReload] = useState(false);
 
     const pupilScreenings = data?.me.pupil?.screenings ?? [];
-    const needsPupilScreening = () => !pupilScreenings.length || pupilScreenings.some((e) => e.status === 'pending');
+    const needsPupilScreening = () => !pupilScreenings.length || pupilScreenings.some((e) => e.status === 'pending' && !e.appointment);
     const wasPupilRejected = () => !needsPupilScreening() && pupilScreenings.some((it) => it.status === 'rejection');
-    const wasPupilScreened = () => !needsPupilScreening() && pupilScreenings.some((it) => it.status === 'dispute');
+    const wasPupilScreened = () => pupilScreenings.some((it) => it.status === 'dispute');
+    const getPupilScreeningAppointment = () => {
+        const currentBookedScreening = pupilScreenings.find((e) => ['pending', 'dispute'].includes(e.status));
+        if (!currentBookedScreening?.appointment) return null;
+        return currentBookedScreening.appointment;
+    };
+
+    const getStudentScreeningAppointment = () => {
+        const bookedInstructorScreenings = instructorScreenings.find((e) => e.status === 'pending');
+        const bookedTutorScreenings = tutorScreenings.find((e) => e.status === 'pending');
+
+        if (bookedInstructorScreenings?.appointment) return bookedInstructorScreenings.appointment;
+        if (bookedTutorScreenings?.appointment) return bookedTutorScreenings.appointment;
+        return null;
+    };
 
     const instructorScreenings = data?.me.student?.instructorScreenings ?? [];
     const tutorScreenings = data?.me.student?.tutorScreenings ?? [];
-    const needsStudentScreening = () => !instructorScreenings.length && !tutorScreenings.length;
+    const studentScreenings = [...instructorScreenings, ...tutorScreenings];
+    const needsStudentScreening = () => !studentScreenings.length || studentScreenings.some((e) => e.status === 'pending' && !e.appointment);
     const wasStudentRejected = () => {
-        const rejectedForInstructor = instructorScreenings.some((e) => !e.success);
-        const rejectedForTutor = tutorScreenings.some((e) => !e.success);
-        return !needsStudentScreening() && (rejectedForInstructor || rejectedForTutor);
+        const rejected = studentScreenings.some((e) => e.status === 'rejection');
+        return !needsStudentScreening() && rejected;
     };
 
     const calendlyLink = isPupil
@@ -110,6 +149,21 @@ export function RequireScreeningModal() {
             setIsLoadingCalendar(false);
         },
     });
+
+    useEffect(() => {
+        const onFocus = () => {
+            if (!shouldReload) return;
+            window.location.reload();
+        };
+
+        window.addEventListener('focus', onFocus);
+
+        return () => {
+            window.removeEventListener('focus', onFocus);
+        };
+    }, [shouldReload]);
+
+    const currentBookedScreeningAppointment = isPupil ? getPupilScreeningAppointment() : getStudentScreeningAppointment();
 
     return (
         <div className="flex flex-col flex-1 items-center justify-center bg-primary p-4">
@@ -164,14 +218,17 @@ export function RequireScreeningModal() {
                         </Button>
                     </div>
                 )}
-                {data && isPupil && wasPupilScreened() && (
+                {data && !needScreening() && currentBookedScreeningAppointment && (
+                    <AppointmentDetail appointment={currentBookedScreeningAppointment} onAction={() => setShouldReload(true)} />
+                )}
+                {data && isPupil && wasPupilScreened() && !showCalendar && !currentBookedScreeningAppointment && (
                     <div className="flex flex-col max-w-96 gap-y-4 flex-1 items-center justify-center">
                         <TimeIcon className="size-16" />
                         <Typography variant="h4" className="text-center text-white">
                             {t('requireScreening.pupil.hasScreening.title')}
                         </Typography>
                         <Typography className="text-white text-center">{t('requireScreening.pupil.hasScreening.content')}</Typography>
-                        <Button variant="ghost" onClick={() => window.open(calendlyLink, '_blank')}>
+                        <Button variant="optional" onClick={() => setShowCalendar(true)}>
                             {t('requireScreening.pupil.hasScreening.makeAnotherAppointment')}
                         </Button>
                     </div>
@@ -198,3 +255,61 @@ export function RequireScreeningModal() {
         </div>
     );
 }
+
+const AppointmentDetail = ({ appointment, onAction }: { appointment: ScreeningAppointment; onAction: () => void }) => {
+    const { t, i18n } = useTranslation();
+    const canStartMeeting = useCanJoinMeeting(5, appointment.start!, appointment.duration!);
+    return (
+        <div className="flex flex-col max-w-[400px] w-full gap-y-10 flex-1 items-center justify-center">
+            <Typography variant="h4" className="text-center text-white">
+                {t('requireScreening.appointment.title')}
+            </Typography>
+            <Typography className="text-white text-center">
+                {t('requireScreening.appointment.yourAppointment')}:
+                <Typography className="text-white text-center" variant="h4">
+                    {DateTime.fromISO(appointment.start!).toFormat('cccc dd. MMM, HH:mm', { locale: i18n.language })}
+                </Typography>
+            </Typography>
+            <div className="flex flex-col gap-y-4">
+                <Typography className="text-white text-center">{t('requireScreening.appointment.description')}</Typography>
+                <Typography className="text-white text-center">{t('requireScreening.appointment.optionsDescription')}</Typography>
+            </div>
+            <div className="flex flex-col gap-2 w-full">
+                <Button
+                    disabled={!appointment?.override_meeting_link || !canStartMeeting}
+                    reasonDisabled={`${t('requireScreening.appointment.joinMeetingHint')}`}
+                    onClick={() => appointment?.override_meeting_link && window.open(appointment?.override_meeting_link, '_blank')}
+                    variant="secondary"
+                    leftIcon={<IconVideo />}
+                    className="w-full"
+                >
+                    {t('appointment.tile.videoButton')}
+                </Button>
+                <div className="flex gap-x-2">
+                    <Button
+                        variant="optional"
+                        className="w-full"
+                        leftIcon={<IconEdit />}
+                        onClick={() => {
+                            onAction();
+                            appointment?.actionUrls?.rescheduleUrl && window.open(appointment.actionUrls.rescheduleUrl, '_blank');
+                        }}
+                    >
+                        {t('requireScreening.appointment.changeAppointment')}
+                    </Button>
+                    <Button
+                        variant="destructive"
+                        className="w-full"
+                        leftIcon={<IconTrash />}
+                        onClick={() => {
+                            onAction();
+                            appointment?.actionUrls?.cancelUrl && window.open(appointment.actionUrls.cancelUrl, '_blank');
+                        }}
+                    >
+                        {t('requireScreening.appointment.cancelAppointment')}
+                    </Button>
+                </div>
+            </div>
+        </div>
+    );
+};

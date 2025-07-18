@@ -34,6 +34,38 @@ const StudentGroup: React.FC = () => {
                             allowed
                             reason
                         }
+                        subcoursesMentoring {
+                            id
+                            published
+                            cancelled
+                            participantsCount
+                            maxParticipants
+                            minGrade
+                            maxGrade
+                            firstLecture {
+                                start
+                                duration
+                            }
+                            nextLecture {
+                                start
+                                duration
+                            }
+                            lectures {
+                                start
+                                duration
+                            }
+                            course {
+                                courseState
+                                name
+                                description
+                                image
+                                category
+                                tags {
+                                    id
+                                    name
+                                }
+                            }
+                        }
                         subcoursesInstructing {
                             id
                             published
@@ -165,11 +197,20 @@ const StudentGroup: React.FC = () => {
         () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.Focus)),
         [data?.subcoursesPublic]
     );
+    const homeworkHelpCourses = useMemo(
+        () => sortByDate(data?.subcoursesPublic?.filter((subcourse) => subcourse.course.category === Course_Category_Enum.HomeworkHelp)),
+        [data?.subcoursesPublic]
+    );
+    const mentoringCourses = useMemo(() => sortByDate(data?.me.student?.subcoursesMentoring), [data?.me.student?.subcoursesMentoring]);
+
     const revisionCourses = useMemo(
         () =>
             sortByDate(
                 data?.subcoursesPublic?.filter(
-                    (subcourse) => subcourse.course.category !== Course_Category_Enum.Language && subcourse.course.category !== Course_Category_Enum.Focus
+                    (subcourse) =>
+                        subcourse.course.category !== Course_Category_Enum.Language &&
+                        subcourse.course.category !== Course_Category_Enum.Focus &&
+                        subcourse.course.category !== Course_Category_Enum.HomeworkHelp
                 )
             ),
         [data?.subcoursesPublic]
@@ -273,6 +314,7 @@ const StudentGroup: React.FC = () => {
                                                         currentCourses={publishedSubcourses as Subcourse[]}
                                                         draftCourses={unpublishedOrDraftedSubcourses as Subcourse[]}
                                                         pastCourses={pastOrCancelledSubcourses as Subcourse[]}
+                                                        homeworkHelpCourses={mentoringCourses as Subcourse[]}
                                                     />
                                                 </>
                                             ),
@@ -281,7 +323,12 @@ const StudentGroup: React.FC = () => {
                                             title: t('matching.group.helper.course.tabs.tab2.title'),
                                             content: (
                                                 <>
-                                                    <AllSubcourses languageCourses={languageCourses} courses={revisionCourses} focusCourses={focusCourses} />
+                                                    <AllSubcourses
+                                                        languageCourses={languageCourses}
+                                                        courses={revisionCourses}
+                                                        focusCourses={focusCourses}
+                                                        homeworkHelpCourses={homeworkHelpCourses}
+                                                    />
                                                 </>
                                             ),
                                         },

@@ -73,12 +73,17 @@ import { SystemNotifications } from '../components/notifications/preferences/Sys
 import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
 import ForStudents from '../pages/ForStudents';
 import ForPupils from '../pages/ForPupils';
-import { useBreakpointValue, Stack } from 'native-base';
-import SwitchLanguageButton from '../components/SwitchLanguageButton';
-import NotificationAlert from '../components/notifications/NotificationAlert';
+import { useBreakpointValue } from 'native-base';
 import SessionManager from '../pages/SessionManager';
 import useApollo from '@/hooks/useApollo';
 import InstallApp from '@/pages/InstallApp';
+import Lesson from '@/pages/Lesson';
+import EthicsOnboardingSlides from '@/pages/onboarding/ethical-standards/EthicsOnboardingSlides';
+import EthicsOnboardingWelcome from '@/pages/onboarding/ethical-standards/EthicsOnboardingWelcome';
+import Referrals from '@/pages/Referrals';
+import CertificatesPage from '@/pages/student/Certificates';
+import { HOMEWORK_HELP_COURSE } from '@/config';
+import CalendarPreferencesPage from '@/pages/CalendarPreferencesPage';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -142,6 +147,14 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<ProfilePupil />} studentComponent={<ProfileStudent />} />
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/certificates"
+                element={
+                    <RequireAuth>
+                        <CertificatesPage />
                     </RequireAuth>
                 }
             />
@@ -232,6 +245,21 @@ export default function NavigatorLazy() {
                 <Route path="students" element={<OnBoardingStudentWelcome />} />
                 <Route path="helper" element={<OnBoardingHelperWelcome />} />
                 <Route path="helpermatching" element={<OnBoardingHelperMatchingWelcome />} />
+                <Route path="ethics" />
+            </Route>
+
+            {/* Ethics Onboarding for HuHs */}
+            <Route
+                path="/onboarding/ethics"
+                element={
+                    <RequireAuth>
+                        <Outlet />
+                    </RequireAuth>
+                }
+            >
+                <Route path="welcome" element={<EthicsOnboardingWelcome />} />
+                <Route path="wizard" element={<EthicsOnboardingSlides />} />
+                <Route path="*" element={<EthicsOnboardingWelcome />} />
             </Route>
 
             {/* Onboarding Students */}
@@ -370,6 +398,16 @@ export default function NavigatorLazy() {
                 }
             />
 
+            {/* Referral Center */}
+            <Route
+                path="referral"
+                element={
+                    <RequireAuth>
+                        <Referrals />
+                    </RequireAuth>
+                }
+            />
+
             <Route
                 path="/matching"
                 element={
@@ -422,6 +460,19 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             />
+
+            {/* Lesson Plan Generator */}
+            <Route
+                path="lesson"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['STUDENT']}>
+                            <Lesson />
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+
             {/* Knowledge Center */}
             <Route
                 path="/knowledge-helper"
@@ -481,20 +532,20 @@ export default function NavigatorLazy() {
                 }
             />
             <Route
+                path="/calendar-preferences"
+                element={
+                    <RequireAuth>
+                        <CalendarPreferencesPage />
+                    </RequireAuth>
+                }
+            />
+            <Route
                 path="/datenschutz"
                 element={
                     <WithNavigation
                         showBack={isMobileSM}
                         hideMenu={isMobileSM || sessionState !== 'logged-in'}
                         previousFallbackRoute="/settings"
-                        headerLeft={
-                            !isMobileSM && (
-                                <Stack alignItems="center" direction="row">
-                                    <SwitchLanguageButton />
-                                    <NotificationAlert />
-                                </Stack>
-                            )
-                        }
                         headerTitle="Datenschutz"
                     >
                         <IFrame title="datenschutz" src="https://www.lern-fair.de/iframe/datenschutz" />
@@ -516,20 +567,13 @@ export default function NavigatorLazy() {
                         showBack={isMobileSM}
                         hideMenu={isMobileSM || sessionState !== 'logged-in'}
                         previousFallbackRoute="/settings"
-                        headerLeft={
-                            !isMobileSM && (
-                                <Stack alignItems="center" direction="row">
-                                    <SwitchLanguageButton />
-                                    <NotificationAlert />
-                                </Stack>
-                            )
-                        }
                         headerTitle="Impressum"
                     >
                         <IFrame title="impressum" src="https://www.lern-fair.de/iframe/impressum" />
                     </WithNavigation>
                 }
             />
+            {HOMEWORK_HELP_COURSE && <Route path="/hausaufgabenhilfe" element={<Navigate to={`/single-course/${HOMEWORK_HELP_COURSE}`} />} />}
             {/* Fallback */}
             <Route path="*" element={<Navigate to="/start" />} />
         </Routes>

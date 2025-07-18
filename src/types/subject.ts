@@ -33,6 +33,8 @@ export const SUBJECTS = [
     'Technik',
     'Wirtschaft',
     'Lernen lernen',
+    'Steuerlehre',
+    'Rechnungswesen',
 ] as const;
 
 export type SingleSubject = typeof SUBJECTS[number];
@@ -57,6 +59,8 @@ export const SUBJECTS_RARE: SingleSubject[] = [
     'Ethik',
     'Gesundheit',
     'Technik',
+    'Steuerlehre',
+    'Rechnungswesen',
 ];
 
 // Unfortunately this mapping is necessary as paths need to be ASCII to work reliably in the build setup
@@ -92,6 +96,8 @@ export const SUBJECT_TO_ICON: { [subject in SingleSubject]: string } = {
     Technik: 'technik',
     Wirtschaft: 'wirtschaft',
     'Lernen lernen': 'lernen_lernen',
+    Steuerlehre: 'sachkunde',
+    Rechnungswesen: 'wirtschaft',
 };
 
 // Unfortunately this mapping is necessary as our two ORMs have problems with non ASCII chars:
@@ -127,6 +133,8 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in SingleSubject]: Course_Sub
     Technik: Course_Subject_Enum.Technik,
     Wirtschaft: Course_Subject_Enum.Wirtschaft,
     'Lernen lernen': Course_Subject_Enum.LernenLernen, // TODO
+    Steuerlehre: Course_Subject_Enum.Steuerlehre,
+    Rechnungswesen: Course_Subject_Enum.Rechnungswesen,
 };
 
 export const DAZ = 'Deutsch als Zweitsprache';

@@ -8,6 +8,7 @@ import TwoColGrid from '../../widgets/TwoColGrid';
 import WarningIcon from '../../assets/icons/lernfair/ic_warning.svg';
 import { RegistrationContext } from '../Registration';
 import { usePageTitle } from '../../hooks/usePageTitle';
+import useApollo from '@/hooks/useApollo';
 
 interface BarrierModalProps {
     onSelect: (selection: boolean) => void;
@@ -69,6 +70,7 @@ const UserType: React.FC = () => {
     const { userType, setUserType, onNext } = useContext(RegistrationContext);
     const { space } = useTheme();
     const { show, hide } = useModal();
+    const { roles, logout } = useApollo();
 
     const onBarrierSolved = useCallback(
         (isUserFit: boolean) => {
@@ -85,6 +87,14 @@ const UserType: React.FC = () => {
     const showBarrier = useCallback(() => {
         show({ variant: 'dark' }, <BarrierModal onSelect={onBarrierSolved} />);
     }, [onBarrierSolved, show]);
+
+    const handleOnBack = async () => {
+        // If user was trying to register with SSO but cancels, logout
+        if (roles.includes('SSO_REGISTERING_USER')) {
+            await logout();
+        }
+        navigate('/welcome');
+    };
 
     return (
         <VStack w="100%">
@@ -110,15 +120,7 @@ const UserType: React.FC = () => {
                 <Box alignItems="center" marginTop={space['2']}>
                     <Row space={space['1']} justifyContent="center">
                         <Column width="100%">
-                            <Button
-                                width="100%"
-                                height="100%"
-                                variant="ghost"
-                                colorScheme="blueGray"
-                                onPress={() => {
-                                    navigate('/welcome');
-                                }}
-                            >
+                            <Button width="100%" height="100%" variant="ghost" colorScheme="blueGray" onPress={handleOnBack}>
                                 {t('back')}
                             </Button>
                         </Column>

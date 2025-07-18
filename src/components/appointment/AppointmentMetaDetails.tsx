@@ -37,6 +37,7 @@ type MetaProps = {
     isOrganizer?: Appointment['isOrganizer'];
     overrideMeetingLink?: Appointment['override_meeting_link'];
     zoomMeetingUrl?: Appointment['zoomMeetingUrl'];
+    showParticipants?: boolean;
 };
 const AppointmentMetaDetails: React.FC<MetaProps> = ({
     date,
@@ -55,6 +56,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     isOrganizer,
     overrideMeetingLink,
     zoomMeetingUrl,
+    showParticipants = true,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [loginURL, setLoginURL] = useState<string>('empty');
@@ -70,6 +72,13 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         base: 'full',
         lg: '300',
     });
+
+    const lectureDetailWidth = useBreakpointValue({
+        base: '100%',
+        lg: '40%',
+        xl: '45%',
+    });
+
     useInterval(() => {
         setCurrentTime(new Date().getTime());
     }, 30_000);
@@ -108,8 +117,8 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
             </Modal>
 
             <HStack alignItems={'flex-start'} space={4} flexWrap="wrap" mt="-20px" flexShrink={1}>
-                <VStack alignItems={'flex-start'} mt="20px" flexShrink={1}>
-                    <Stack space={isMobile ? 5 : 7} alignItems="flex-start" flexWrap={'wrap'} flexShrink={1} direction={isMobile ? 'column' : 'row'} mt="-10px">
+                <VStack alignItems={'flex-start'} mt="20px" flexShrink={1} width={lectureDetailWidth}>
+                    <Stack space={isMobile ? 5 : 7} alignItems="flex-start" flexWrap={'wrap'} flexShrink={1} direction={'column'} mt="-10px">
                         <HStack space={2} alignItems="center">
                             <DateIcon />
                             <Text fontWeight="normal">{date}</Text>
@@ -122,17 +131,19 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                             <RepeatIcon />
                             <Text fontWeight="normal">{t('appointment.detail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}</Text>
                         </HStack>
-                        <HStack space={2} alignItems="center">
-                            <PersonIcon />
-                            <Text fontWeight="normal">
-                                {t('appointment.detail.participants', {
-                                    participantsTotal: attendeesCount,
-                                })}
-                            </Text>
-                            <Pressable onPress={() => setShowModal(true)}>
-                                <InformationBadge />
-                            </Pressable>
-                        </HStack>
+                        {showParticipants && (
+                            <HStack space={2} alignItems="center">
+                                <PersonIcon />
+                                <Text fontWeight="normal">
+                                    {t('appointment.detail.participants', {
+                                        participantsTotal: attendeesCount,
+                                    })}
+                                </Text>
+                                <Pressable onPress={() => setShowModal(true)}>
+                                    <InformationBadge />
+                                </Pressable>
+                            </HStack>
+                        )}
                     </Stack>
                     <Spacer py={3} />
                     {(overrideMeetingLink || zoomMeetingUrl) && (

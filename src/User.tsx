@@ -1,6 +1,6 @@
 import { useLocation, Navigate } from 'react-router-dom';
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
-import useApollo, { ExtendedApolloContext, LFApollo, useRoles } from './hooks/useApollo';
+import useApollo, { ExtendedApolloContext, LFApollo, TEMPORARY_LOGIN, useRoles } from './hooks/useApollo';
 import VerifyEmailModal from './modals/VerifyEmailModal';
 import { useApolloClient } from '@apollo/client';
 import { ERole, Role } from './types/lernfair/User';
@@ -19,6 +19,7 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
 
     if (sessionState === 'logged-in') {
         // Blocking Modals that require the user from accessing the UserApp:
+        sessionStorage.setItem('userID', user.userID);
 
         // Require pupils and students to be verified
         if (user && !user.screener && !(user.pupil ?? user.student)!.verifiedAt) {
@@ -29,6 +30,15 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
         const requiresInitialScreening = ![ERole.TUTEE, ERole.PARTICIPANT, ERole.INSTRUCTOR, ERole.TUTOR].some((role) => roles.includes(role));
         if (user && (user.pupil || user.student) && requiresInitialScreening) {
             return <RequireScreeningModal />;
+        }
+
+        // Require the ethics onboarding for newly-screened students
+        if (
+            !TEMPORARY_LOGIN &&
+            !location.pathname.startsWith('/onboarding/ethics/') &&
+            user?.student?.hasDoneEthicsOnboarding === false /* Important to write it like this, as a null value must not to trigger this redirect */
+        ) {
+            return <Navigate to="/onboarding/ethics/welcome" replace />;
         }
 
         return children;
@@ -47,6 +57,17 @@ export function RequireRole({ roles, children }: { roles: Role[]; children: JSX.
 
     return <Navigate to="/" replace />;
 }
+
+export const VisitorsOnly = ({ children }: { children: JSX.Element }) => {
+    const actualRoles = useRoles();
+    const { sessionState } = useApollo();
+
+    if (actualRoles.includes('USER') && sessionState === 'logged-in') {
+        return <Navigate to="/" replace />;
+    }
+
+    return children;
+};
 
 export const SwitchUserType = ({
     pupilComponent,
@@ -86,6 +107,8 @@ export function MockScreener({ children }: React.PropsWithChildren<{}>) {
         logout: () => Promise.resolve(),
         loginWithPassword: () => Promise.resolve({}),
         refreshUser: () => {},
+        loginWithSSO: () => Promise.resolve(undefined),
+        refreshSessionState: () => Promise.resolve(),
         sessionState: 'logged-in',
         roles: ['SCREENER', 'TRUSTED_SCREENER'],
         user: {
@@ -108,6 +131,8 @@ export function MockStudent({ children }: React.PropsWithChildren<{}>) {
         logout: () => Promise.resolve(),
         loginWithPassword: () => Promise.resolve({}),
         refreshUser: () => {},
+        loginWithSSO: () => Promise.resolve(undefined),
+        refreshSessionState: () => Promise.resolve(),
         sessionState: 'logged-in',
         roles: ['STUDENT'],
         user: {

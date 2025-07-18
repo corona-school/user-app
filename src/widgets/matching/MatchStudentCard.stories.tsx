@@ -1,5 +1,6 @@
 // @ts-nocheck
 import { MatchStudentCard } from './MatchStudentCard';
+import { Dissolve_Reason } from '../../gql/graphql';
 
 export default {
     title: 'Organisms/Match/MatchStudentCard',
@@ -49,7 +50,7 @@ export const MatchStudentCardDissolved = {
                 ],
 
                 dissolvedBy: 'pupil',
-                dissolveReasonEnum: 'noMoreHelpNeeded',
+                dissolveReasons: [Dissolve_Reason.NoMoreHelpNeeded],
             }}
         />
     ),

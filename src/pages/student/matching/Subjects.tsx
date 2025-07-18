@@ -6,10 +6,15 @@ import { SubjectSelectorGrouped } from '../../../widgets/SubjectSelectorGrouped'
 import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { SingleSubject } from '../../../types/subject';
 
-const Subjects: React.FC = () => {
+interface SubjectsProps {
+    onNext: () => void;
+    onBack: () => void;
+}
+
+const Subjects = ({ onBack, onNext }: SubjectsProps) => {
     const { space } = useTheme();
     const { t } = useTranslation();
-    const { matchRequest, removeSubject, setSubject, setCurrentIndex } = useContext(RequestMatchContext);
+    const { matchRequest, removeSubject, setSubject } = useContext(RequestMatchContext);
 
     return (
         <VStack paddingX={space['1']} space={space['0.5']}>
@@ -22,8 +27,8 @@ const Subjects: React.FC = () => {
             />
             <NextPrevButtons
                 disablingNext={{ is: matchRequest.subjects.length === 0, reason: t('matching.wizard.student.subjects.reason_btn_disabled') }}
-                onPressPrev={() => setCurrentIndex(0)}
-                onPressNext={() => setCurrentIndex(2)}
+                onPressPrev={onBack}
+                onPressNext={onNext}
             />
         </VStack>
     );

@@ -19,7 +19,6 @@ type Props = {
     isDisabled?: boolean;
     reasonDisabled?: string;
     isError?: boolean;
-    courseId?: number;
     isEditing?: boolean;
     createAndSubmit?: () => void;
     createOnly?: () => void;
@@ -27,18 +26,7 @@ type Props = {
     appointments: Appointment[];
 };
 
-const CoursePreview: React.FC<Props> = ({
-    onBack,
-    isDisabled,
-    isError,
-    courseId,
-    appointments,
-    reasonDisabled,
-    isEditing,
-    createAndSubmit,
-    createOnly,
-    update,
-}) => {
+const CoursePreview: React.FC<Props> = ({ onBack, isDisabled, isError, appointments, reasonDisabled, isEditing, createAndSubmit, createOnly, update }) => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
     const { appointmentsToBeCreated } = useCreateCourseAppointments();
@@ -203,7 +191,7 @@ const CoursePreview: React.FC<Props> = ({
                 {t('course.CourseDate.Preview.appointmentHeadline')}
             </Heading>
             <Box minH={300} maxH={maxHeight} flex="1" mb="10">
-                <AppointmentList isReadOnlyList={true} appointments={allAppointmentsToShow} />
+                <AppointmentList height="100%" isReadOnlyList={true} appointments={allAppointmentsToShow} />
             </Box>
             {isError && (
                 <Box mt={space['1']}>

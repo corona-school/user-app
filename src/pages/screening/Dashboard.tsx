@@ -8,11 +8,11 @@ import WithNavigation from '../../components/WithNavigation';
 import { gql } from '../../gql';
 import { useUser } from '../../hooks/useApollo';
 import { PupilForScreening, StudentForScreening } from '../../types';
-import { ScreenPupilCard } from '../../widgets/screening/ScreenPupilCard';
-import { ScreenStudentCard } from '../../widgets/screening/ScreenStudentCard';
 import { useShortcut } from '../../helper/keyboard';
 import UserCard from './components/UserCard';
 import { Typography } from '@/components/Typography';
+import PupilDetail from './pupil/PupilDetail';
+import { StudentDetail } from './student/StudentDetail';
 
 const greetings = ['Wilkommen', 'Bonjour', 'Hola', 'Salve', 'asalaam alaikum', 'konnichiwa'];
 
@@ -44,6 +44,20 @@ export function ScreeningDashboard() {
                     gradeAsInt
                     openMatchRequestCount
                     verifiedAt
+                    state
+                    schooltype
+                    onlyMatchWith
+                    hasSpecialNeeds
+                    descriptionForScreening
+                    descriptionForMatch
+                    calendarPreferences
+                    school {
+                        id
+                        name
+                        zip
+                        city
+                        email
+                    }
                     matches {
                         createdAt
                         student { firstname lastname }
@@ -64,6 +78,14 @@ export function ScreeningDashboard() {
                         updatedAt
                         screeners { firstname lastname }
                     }
+                    user {
+                        receivedScreeningSuggestions {
+                            sentAt
+                            notification {
+                                description
+                            }
+                        }
+                    }
                 }
 
                 student {
@@ -74,11 +96,17 @@ export function ScreeningDashboard() {
                     firstname
                     lastname
                     languages
+                    zipCode
                     subjectsFormatted { name grade { min max } }
                     certificateOfConductDeactivationDate
                     certificateOfConduct {
                         id
                     }
+                    hasSpecialExperience
+                    gender
+                    descriptionForMatch
+                    descriptionForScreening
+                    calendarPreferences
                     matches {
                         createdAt
                         pupil { firstname lastname }
@@ -89,7 +117,6 @@ export function ScreeningDashboard() {
                         studentFirstMatchRequest
                         subjectsFormatted { name }
                     }
-                    
                     subcoursesInstructing {
                         id
                         published
@@ -97,8 +124,16 @@ export function ScreeningDashboard() {
                         nextLecture { start duration }
                     }
 
-                    tutorScreenings { id createdAt success comment screener { firstname lastname } }
-                    instructorScreenings { id createdAt success comment screener { firstname lastname } }
+                    tutorScreenings { id createdAt status comment, jobStatus,  knowsCoronaSchoolFrom, screener { firstname lastname } }
+                    instructorScreenings { id createdAt status comment, jobStatus, knowsCoronaSchoolFrom, screener { firstname lastname } }
+                    user {
+                        receivedScreeningSuggestions {
+                            sentAt
+                            notification {
+                                description
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -121,6 +156,15 @@ export function ScreeningDashboard() {
                 grade
                 gradeAsInt
                 openMatchRequestCount
+                state
+                schooltype
+                onlyMatchWith
+                hasSpecialNeeds
+                descriptionForScreening
+                descriptionForMatch
+                school {
+                    name
+                }
                 matches {
                     createdAt
                     student { firstname lastname }
@@ -140,6 +184,14 @@ export function ScreeningDashboard() {
                     createdAt
                     updatedAt
                     screeners { firstname lastname }
+                }
+                user {
+                    receivedScreeningSuggestions {
+                        sentAt
+                        notification {
+                            description
+                        }
+                    }
                 }
             }
         }
@@ -201,7 +253,7 @@ export function ScreeningDashboard() {
 
     return (
         <WithNavigation headerTitle={t('screening.title')}>
-            <div className="px-2 mx-auto w-full max-w-7xl">
+            <div className="px-2 mx-auto w-full max-w-6xl">
                 <SearchBar
                     inputRef={searchbarRef}
                     placeholder={t('screening.search.placeholder')}
@@ -228,12 +280,12 @@ export function ScreeningDashboard() {
                         {searchResult?.usersSearch
                             .filter((it) => it.student)
                             .map((it, id) => (
-                                <UserCard key={`pupil/${it.student?.id}`} onClick={() => setSelectedStudent(it.student!)} type="student" user={it.student!} />
+                                <UserCard key={`student/${it.student?.id}`} onClick={() => setSelectedStudent(it.student!)} type="student" user={it.student!} />
                             ))}
                     </div>
                 )}
-                {selectedPupil && <ScreenPupilCard pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
-                {selectedStudent && <ScreenStudentCard student={selectedStudent} refresh={handleOnRefreshStudents} />}
+                {selectedPupil && <PupilDetail pupil={selectedPupil} refresh={handleOnRefreshPupils} />}
+                {selectedStudent && <StudentDetail student={selectedStudent} refresh={handleOnRefreshStudents} />}
 
                 {!searchQuery && !selectedPupil && !selectedStudent && (
                     <>
@@ -247,7 +299,10 @@ export function ScreeningDashboard() {
                                         disputedScreenings.pupilsToBeScreened.map((it, id) => (
                                             <UserCard
                                                 key={`pupil/${it?.id}`}
-                                                onClick={() => setSelectedPupil(it!)}
+                                                onClick={() => {
+                                                    setSelectedPupil(it!);
+                                                    setSearchQuery(it.firstname!);
+                                                }}
                                                 type="pupil"
                                                 user={{ ...it!, pupilScreenings: it?.screenings }}
                                             />

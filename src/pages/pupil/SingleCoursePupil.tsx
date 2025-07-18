@@ -2,13 +2,13 @@ import { useQuery } from '@apollo/client';
 import { gql } from '../../gql';
 import { DateTime } from 'luxon';
 import { useTranslation } from 'react-i18next';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import WithNavigation from '../../components/WithNavigation';
 import PupilCourseButtons from './single-course/PupilCourseButtons';
 import SubcourseData from '../subcourse/SubcourseData';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import ParticipantRow from '../subcourse/ParticipantRow';
 import PupilJoinedCourseBanner from '../../widgets/PupilJoinedCourseBanner';
 import { getTrafficStatus } from '../../Utility';
@@ -19,6 +19,8 @@ import { Typography } from '@/components/Typography';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
+import { Lecture } from '@/gql/graphql';
+import { toast } from 'sonner';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -126,6 +128,7 @@ const SingleCoursePupil = () => {
     const { id: _subcourseId } = useParams();
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const breadcrumbRoutes = useBreadcrumbRoutes();
 
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
@@ -136,7 +139,22 @@ const SingleCoursePupil = () => {
 
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
-    const appointments = subcourse?.appointments ?? [];
+    const appointments = useMemo(() => {
+        return subcourse?.appointments ?? [];
+    }, [subcourse?.appointments]);
+
+    const myNextAppointment = useMemo(() => {
+        const now = DateTime.now();
+        const next = appointments.find((appointment) => {
+            const appointmentStart = DateTime.fromISO(appointment.start);
+            const appointmentEnd = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
+
+            const isWithinTimeFrame = appointmentStart.diff(now, 'minutes').minutes <= 240 && appointmentEnd.diff(now, 'minutes').minutes >= -5;
+            return isWithinTimeFrame;
+        });
+
+        return next;
+    }, [appointments]);
 
     const isInPast = useMemo(
         () =>
@@ -159,6 +177,12 @@ const SingleCoursePupil = () => {
     const showParticipantsTab = subcourse?.isParticipant;
     const showTabsControls = showParticipantsTab;
 
+    useEffect(() => {
+        if (!loading && isInPast && !subcourse?.isParticipant) {
+            navigate('/group');
+            toast.error(t('course.error.isInPastOrInvalid'));
+        }
+    }, [loading, isInPast, subcourse?.isParticipant]);
     return (
         <WithNavigation
             headerTitle={course?.name.substring(0, 20)}
@@ -176,7 +200,14 @@ const SingleCoursePupil = () => {
                     <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name! }]} />
                     {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
                 </div>
-                {course && subcourse && !isInPast && <PupilCourseButtons subcourse={subcourse} refresh={refetch} isActiveSubcourse={isActiveSubcourse} />}
+                {course && subcourse && !isInPast && (
+                    <PupilCourseButtons
+                        appointment={myNextAppointment as Lecture}
+                        subcourse={subcourse}
+                        refresh={refetch}
+                        isActiveSubcourse={isActiveSubcourse}
+                    />
+                )}
                 {subcourse?.isParticipant && !isInPast && (
                     <PupilJoinedCourseBanner
                         courseStatus={getTrafficStatus(subcourse?.participantsCount, subcourse?.maxParticipants)}

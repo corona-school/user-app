@@ -22,7 +22,7 @@ import {
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import { getGradeLabel, toTimerString } from '../Utility';
+import { formatDate, getGradeLabel, toTimerString } from '../Utility';
 import useInterval from '../hooks/useInterval';
 import { TrafficStatus } from '../types/lernfair/Course';
 import { DateTime } from 'luxon';
@@ -35,9 +35,11 @@ import { useTranslation } from 'react-i18next';
 import { useUserType } from '../hooks/useApollo';
 import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
-import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { Instructor, Lecture, Lecture_Appointmenttype_Enum, Course_Category_Enum } from '../gql/graphql';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
+import { Typography } from '@/components/Typography';
+import { asTranslationKey } from '@/helper/string-helper';
 
 type Props = {
     appointmentId?: number;
@@ -75,7 +77,11 @@ type Props = {
     showStatus?: boolean;
     showCourseTraffic?: boolean;
     showSchoolclass?: boolean;
+    showInformationForScreeners?: boolean;
     trafficLightStatus?: TrafficStatus;
+    instructors?: Instructor[];
+    firstLecture?: Lecture;
+    courseCategory?: Course_Category_Enum;
 };
 
 const AppointmentCard: React.FC<Props> = ({
@@ -112,9 +118,13 @@ const AppointmentCard: React.FC<Props> = ({
     showStatus,
     showCourseTraffic,
     showSchoolclass,
+    showInformationForScreeners,
     trafficLightStatus,
     hasVideoButton,
     isOrganizer,
+    instructors,
+    firstLecture,
+    courseCategory,
 }) => {
     const { space, sizes } = useTheme();
     const { t, i18n } = useTranslation();
@@ -220,6 +230,7 @@ const AppointmentCard: React.FC<Props> = ({
     const today = new Date();
     const aWeekAgo = today.setDate(today.getDate() - 7);
     const isCourseNewlyAdded = publishedAt?.getTime() ?? new Date(0).getTime() > aWeekAgo;
+    const showHomeworkHelpInformation = courseCategory === Course_Category_Enum.HomeworkHelp;
 
     return (
         <View ref={rootRef} height={isFullHeight ? '100%' : 'auto'}>
@@ -333,6 +344,37 @@ const AppointmentCard: React.FC<Props> = ({
                                         {!!(minGrade && maxGrade) &&
                                             t('single.courseInfo.class', { minGrade: getGradeLabel(minGrade), maxGrade: getGradeLabel(maxGrade) })}
                                     </Text>
+                                )}
+
+                                {showHomeworkHelpInformation && (
+                                    <>
+                                        {duration && (
+                                            <Typography>
+                                                <Typography className="font-bold inline">{t('duration')}: </Typography>
+                                                {t(asTranslationKey(`lesson.durations.${duration}`))}
+                                            </Typography>
+                                        )}
+                                        <Typography>
+                                            <Typography className="font-bold">{t('single.courseInfo.timesAWeek', { times: 4 })}</Typography>
+                                        </Typography>
+                                    </>
+                                )}
+
+                                {showInformationForScreeners && (
+                                    <div className="flex flex-col gap-y-2">
+                                        {firstLecture ? (
+                                            <Typography>
+                                                <span className="font-bold">Kursstart:</span> {formatDate(firstLecture?.start)}
+                                            </Typography>
+                                        ) : null}
+                                        <Typography>
+                                            {instructors && instructors?.length ? (
+                                                <span>
+                                                    <span className="font-bold">Kursleiter:</span> {instructors[0].firstname} {instructors[0].lastname}
+                                                </span>
+                                            ) : null}
+                                        </Typography>
+                                    </div>
                                 )}
 
                                 {showStatus && (

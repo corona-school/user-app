@@ -11,14 +11,19 @@ const buttonVariants = cva(
         variants: {
             variant: {
                 default: 'bg-primary text-primary-foreground hover:bg-primary/90',
+                success: 'bg-green-500 text-white hover:bg-green-600',
                 destructive: 'bg-destructive text-destructive-foreground hover:bg-destructive/90',
                 outline: 'border border-primary text-primary bg-transparent hover:bg-accent hover:text-accent-foreground',
-                'outline-light': 'border border-primary-light text-primary-light bg-transparent hover:bg-primary-lighter hover:text-primary',
+                'outline-light': 'border border-white text-white bg-transparent hover:bg-white hover:text-primary',
                 secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
                 ghost: 'hover:bg-accent hover:text-accent-foreground',
+                'ghost-light': 'text-white hover:text-primary hover:bg-white',
                 link: 'text-primary underline-offset-4 hover:underline',
                 none: 'text-primary',
                 input: 'border border-input justify-between bg-transparent text-form font-normal ring-offset-background placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:w-full [&>span]:justify-between',
+                linkedIn: 'bg-blue-700 text-white hover:bg-blue-600/90',
+                optional: 'bg-white text-primary border border-primary hover:bg-primary-lighter hover:border-primary-light',
+                tertiary: 'bg-gray-100 hover:bg-gray-50 text-primary',
             },
             size: {
                 default: 'h-10 px-4 text-form',

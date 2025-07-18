@@ -12,10 +12,13 @@ import { useMutation, useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AlertMessage from '../../widgets/AlertMessage';
 import CSSWrapper from '../../components/CSSWrapper';
-import { MatchCertificateCard } from '../../widgets/certificates/MatchCertificateCard';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
+import { Input } from '@/components/Input';
+import { Button as NewButton } from '@/components/Button';
+import { Student_State_Enum } from '@/gql/graphql';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { WarningIcon } from 'native-base';
 
 type Props = {};
 
@@ -29,6 +32,7 @@ const query = gql(`
                 state
                 aboutMe
                 languages
+                zipCode
                 subjectsFormatted {
                     name
                 }
@@ -94,6 +98,76 @@ function StudentAboutMeModal({ aboutMe, onSave, onClose }: { aboutMe: string; on
     );
 }
 
+function ZipCodeInput({
+    hideInput,
+    currentZipCode,
+    zipCodeLength,
+    onSave,
+}: {
+    hideInput: () => void;
+    currentZipCode: string | null | undefined;
+    zipCodeLength: number | null;
+    onSave: () => void;
+}) {
+    /* Extracted so that the whole profile page component doesn't rerender on every keystroke here */
+
+    const { t } = useTranslation();
+
+    const [zipCodeInput, setInputZipCode] = useState<string>('');
+    const [showWarning, setShowWarning] = useState<boolean>(false);
+
+    /* Fill in the users current zipCode */
+    useEffect(() => {
+        setInputZipCode(`${currentZipCode ?? ''}`);
+    }, []);
+
+    const [changeZipCode] = useMutation(
+        gql(`
+            mutation changeZipCode($zipCode: String!) {
+                meUpdate(update: { student: { zipCode: $zipCode } })
+            }
+        `),
+        { refetchQueries: [query] }
+    );
+
+    return (
+        <form
+            onSubmit={(e) => {
+                e.preventDefault();
+
+                if (zipCodeLength && zipCodeInput?.length !== zipCodeLength) {
+                    setShowWarning(true);
+                } else {
+                    changeZipCode({ variables: { zipCode: zipCodeInput } }).then(onSave);
+                    hideInput();
+                }
+            }}
+        >
+            <Row>
+                <Input
+                    maxLength={zipCodeLength ?? undefined}
+                    type="text"
+                    autoFocus
+                    value={zipCodeInput}
+                    onChange={(e) => setInputZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only digits can pe typed in
+                    size={8}
+                />
+                <NewButton className="mx-1" type="submit">
+                    {t('save')}
+                </NewButton>
+            </Row>
+            {showWarning ? (
+                <Row>
+                    <WarningIcon m={1} color="danger.100" />
+                    <Text color="danger.100">{t('profile.ZipCode.requiredLength', { length: zipCodeLength })}</Text>
+                </Row>
+            ) : (
+                <></>
+            )}
+        </form>
+    );
+}
+
 const ProfileStudent: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
@@ -102,6 +176,7 @@ const ProfileStudent: React.FC<Props> = () => {
     const [divRef, setDivRef] = useState<Element | null>(null);
 
     const [aboutMeModalVisible, setAboutMeModalVisible] = useState<boolean>(false);
+    const [editZipCode, setEditZipCode] = useState<boolean>(false);
 
     const [userSettingChanged, setUserSettings] = useState<boolean>(false);
     const onSave = useCallback(() => setUserSettings(true), [setUserSettings]);
@@ -156,6 +231,17 @@ const ProfileStudent: React.FC<Props> = () => {
         }
     }, [showSuccessfulChangeAlert, userSettingChanged]);
 
+    const zipCodeLength = () => {
+        switch (data?.me?.student?.state) {
+            case Student_State_Enum.At:
+            case Student_State_Enum.Ch:
+                return 4;
+            case Student_State_Enum.Other:
+                return null;
+            default:
+                return 5;
+        }
+    };
     if (divRef) goToRef();
 
     return (
@@ -193,16 +279,19 @@ const ProfileStudent: React.FC<Props> = () => {
                     )}
                     <VStack paddingX={space['1.5']} space={space['1']}>
                         <ProfileSettingRow title={t('profile.PersonalData')}>
+                            {/* NAME */}
                             <ProfileSettingItem title={t('profile.UserName.label.title')} isIcon={false}>
                                 <Text>
                                     {data?.me?.firstname} {data?.me?.lastname}
                                 </Text>
                             </ProfileSettingItem>
 
+                            {/* E-MAIL */}
                             <ProfileSettingItem title={t('profile.UserName.label.email')} isIcon={false}>
                                 <Text>{data?.me?.email}</Text>
                             </ProfileSettingItem>
 
+                            {/* ABOUT ME */}
                             <ProfileSettingItem
                                 title={t('profile.AboutMe.label')}
                                 href={() => {
@@ -215,15 +304,15 @@ const ProfileStudent: React.FC<Props> = () => {
                                 <StudentAboutMeModal aboutMe={data.me.student!.aboutMe} onSave={onSave} onClose={() => setAboutMeModalVisible(false)} />
                             )}
 
-                            <ProfileSettingItem title={t('profile.FluentLanguagenalData.label')} href={() => navigate('/change-setting/language')}>
+                            <ProfileSettingItem title={t('profile.Languages.labelStudent')} href={() => navigate('/change-setting/language')}>
                                 {(data?.me?.student?.languages?.length && (
                                     <Row flexWrap="wrap" w="100%">
-                                        {data?.me?.student?.languages.map((lang: string, i: number) => (
-                                            <Column marginRight={3} mb={space['0.5']} key={i}>
+                                        {data?.me?.student?.languages.map((lang: string) => (
+                                            <Column marginRight={3} mb={space['0.5']} key={lang}>
                                                 <CSSWrapper className="profil-tab-link">
                                                     <IconTagList
                                                         isDisabled
-                                                        iconPath={`languages/icon_${lang.toLowerCase()}.svg`}
+                                                        icon={lang.toLowerCase()}
                                                         text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                     />
                                                 </CSSWrapper>
@@ -233,6 +322,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                 )) || <Text>{t('profile.Notice.noLanguage')}</Text>}
                             </ProfileSettingItem>
 
+                            {/* SCHOOL LOCATION */}
                             <ProfileSettingItem
                                 title={t('profile.State.label')}
                                 href={() =>
@@ -257,17 +347,25 @@ const ProfileStudent: React.FC<Props> = () => {
                                     )) || <Text>{t('profile.State.empty')}</Text>}
                                 </Row>
                             </ProfileSettingItem>
-                        </ProfileSettingRow>
-                        <ProfileSettingRow title={t('profile.Helper.certificate.title')}>
-                            <div ref={(el) => setDivRef(el)}></div>
-                            <Button marginY={space['1']} onPress={() => navigate('/request-certificate')} maxWidth="300px">
-                                {t('profile.Helper.certificate.button')}
-                            </Button>
-                            <VStack display="flex" flexDirection="row" flexWrap="wrap">
-                                {data?.me.student?.participationCertificates.map((certificate, i) => (
-                                    <MatchCertificateCard certificate={certificate} key={i} />
-                                ))}
-                            </VStack>
+
+                            {/* ZIPCODE */}
+                            <ProfileSettingItem
+                                title={t('profile.ZipCode.zipCode')}
+                                href={() => {
+                                    setEditZipCode(!editZipCode);
+                                }}
+                            >
+                                {!editZipCode ? (
+                                    data?.me?.student?.zipCode ?? '-'
+                                ) : (
+                                    <ZipCodeInput
+                                        hideInput={() => setEditZipCode(false)}
+                                        currentZipCode={data?.me?.student?.zipCode}
+                                        zipCodeLength={zipCodeLength()}
+                                        onSave={onSave}
+                                    />
+                                )}
+                            </ProfileSettingItem>
                         </ProfileSettingRow>
                     </VStack>
                 </VStack>

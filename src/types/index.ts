@@ -1,4 +1,5 @@
 import {
+    CalendarPreferences,
     Certificate_Of_Conduct,
     Course,
     Course_Tag,
@@ -7,6 +8,7 @@ import {
     Match,
     Pupil,
     Pupil_Screening,
+    School,
     Screener,
     Screening,
     Student,
@@ -31,6 +33,13 @@ export type PupilScreening = Opt<Pick<Pupil_Screening, 'id' | 'createdAt' | 'upd
     screeners: Pick<Screener, 'firstname' | 'lastname'>[];
 };
 
+export type ReceivedScreeningSuggestions = {
+    sentAt: Date;
+    notification: {
+        description: string;
+    };
+};
+
 export type PupilForScreening = Pick<
     Pupil,
     | 'active'
@@ -45,16 +54,29 @@ export type PupilForScreening = Pick<
     | 'gradeAsInt'
     | 'openMatchRequestCount'
     | 'verifiedAt'
+    | 'state'
+    | 'schooltype'
+    | 'onlyMatchWith'
+    | 'hasSpecialNeeds'
+    | 'descriptionForMatch'
+    | 'descriptionForScreening'
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];
+    school?: Pick<School, 'name'> | null;
+    user?: {
+        receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
+    };
+    calendarPreferences?: CalendarPreferences;
 };
 
-export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'success' | 'createdAt' | 'comment'> & {
+export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'status' | 'createdAt' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus'> & {
     screener: Pick<Screener, 'firstname' | 'lastname'>;
 };
 
-export type TutorScreening = Pick<Screening, 'id' | 'createdAt' | 'success' | 'comment'> & { screener: Pick<Screener, 'firstname' | 'lastname'> };
+export type TutorScreening = Pick<Screening, 'id' | 'createdAt' | 'status' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus'> & {
+    screener: Pick<Screener, 'firstname' | 'lastname'>;
+};
 
 export type SubcourseForScreening = Pick<Subcourse, 'id' | 'published'> & {
     course: Pick<Course, 'name' | 'image'> & { tags: Pick<Course_Tag, 'name'>[] };
@@ -63,11 +85,29 @@ export type SubcourseForScreening = Pick<Subcourse, 'id' | 'published'> & {
 
 export type StudentForScreening = Pick<
     Student,
-    'active' | 'id' | 'email' | 'firstname' | 'lastname' | 'createdAt' | 'subjectsFormatted' | 'languages' | 'certificateOfConductDeactivationDate'
+    | 'active'
+    | 'id'
+    | 'email'
+    | 'firstname'
+    | 'lastname'
+    | 'createdAt'
+    | 'zipCode'
+    | 'subjectsFormatted'
+    | 'languages'
+    | 'certificateOfConductDeactivationDate'
+    | 'hasDoneEthicsOnboarding'
+    | 'hasSpecialExperience'
+    | 'gender'
+    | 'descriptionForMatch'
+    | 'descriptionForScreening'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];
     matches: MatchWithPupil[];
     subcoursesInstructing: SubcourseForScreening[];
     certificateOfConduct?: Opt<Pick<Certificate_Of_Conduct, 'id'>>;
+    user?: {
+        receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
+    };
+    calendarPreferences?: CalendarPreferences;
 };

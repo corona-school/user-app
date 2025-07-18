@@ -8,19 +8,19 @@ import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import FloatingActionButton from '../components/FloatingActionButton';
 import LFAddChatIcon from '../assets/icons/lernfair/lf-add-chat.svg';
 import { useChat } from '../context/ChatContext';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import ChatContactsModal from '../modals/ChatContactsModal';
 import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { ChatContactSupportModal, ReportInfos } from '../modals/ChatContactSupportModal';
 import { Inbox, MessageActionEvent } from 'talkjs/all';
 import { DateTime } from 'luxon';
+import { useUser } from '@/hooks/useApollo';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
     const inboxObject = useRef<null | Inbox>(null);
     const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
     const [isSupportContactModalOpen, setIsSupportContactModalOpen] = useState<boolean>(false);
-    const [selectedChatId, setSelectedChatId] = useState<string>('');
     const [isConverstationSelected, setIsConversationSelected] = useState<boolean>(false);
     const [reportInfos, setReportInfos] = useState<ReportInfos>({
         message: '',
@@ -37,9 +37,27 @@ const Chat: React.FC = () => {
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const location = useLocation();
+    const [searchParams] = useSearchParams();
+    const conversationIdParam = searchParams.get('conversationId');
+    const messageTemplateId = searchParams.get('messageTemplateId');
+    const { firstname } = useUser();
+
+    const messageTemplates: Record<string, (params: any) => string> = {
+        setupCalendarPreferences: (params) => t('matching.availability.setupPreferencesChatMessage', params),
+    };
 
     const locationState = location.state as { conversationId: string };
-    const conversationId = locationState?.conversationId;
+    const conversationId = locationState?.conversationId ?? conversationIdParam;
+    const messageTemplate = messageTemplateId ? messageTemplates[messageTemplateId] : null;
+    const [selectedChatId, setSelectedChatId] = useState<string>(conversationId);
+
+    useEffect(() => {
+        if (conversationIdParam) {
+            searchParams.delete('conversationId');
+            window.history.replaceState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [conversationId]);
 
     const paddingRight = useBreakpointValue({
         base: '2',
@@ -93,8 +111,15 @@ const Chat: React.FC = () => {
         });
 
         inbox.mount(inboxRef.current);
-        inbox.select(selectedChatId || conversationId);
+        inbox.select(selectedChatId);
         inbox.onCustomMessageAction('contact-support', (event) => handleContactSupport(event));
+
+        if (inbox?.isAlive && messageTemplate) {
+            inbox.messageField.setText(messageTemplate({ myName: firstname, link: `${window.origin}/calendar-preferences` }));
+            searchParams.delete('messageTemplateId');
+            window.history.replaceState({}, '', `${window.location.pathname}?${searchParams.toString()}`);
+        }
+
         inbox.onConversationSelected((event) => {
             if (!event.conversation?.id) return;
             setSelectedChatId(event.conversation?.id.toString());
@@ -107,7 +132,7 @@ const Chat: React.FC = () => {
                 setIsConversationSelected(false);
             });
         }
-    }, [t, conversationId, isMobile, selectedChatId, session]);
+    }, [isMobile, selectedChatId, session]);
 
     return (
         <AsNavigationItem path="chat">

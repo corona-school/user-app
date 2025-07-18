@@ -1,68 +1,64 @@
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from '../../gql';
-import { Button, HStack, Select, VStack, useTheme } from 'native-base';
-import { useEffect, useState } from 'react';
-import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
-import { InfoCard } from '../../components/InfoCard';
-import DisableableButton from '../../components/DisablebleButton';
+import { useState } from 'react';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
+import { Button } from '@/components/Button';
+import { toast } from 'sonner';
 
-export function ScreeningSuggestionCard({ userID }: { userID: string }) {
-    const { space } = useTheme();
-
-    const { data: suggesionsData } = useQuery(
-        gql(`
-                query GetPossibleSuggestions {
-                    notifications(where: { onActions: { has: "screening_suggestion" }, active: { equals: true } }, take: 100) {
-                        id
-                        description
-                    }
-                }
-            `)
-    );
-
-    const suggestions = suggesionsData?.notifications;
-
-    const [chosenSuggestion, setChosenSuggestion] = useState<number>(0);
-    const [send, { loading, data: sendDone, reset }] = useMutation(
-        gql(`
-                    mutation SendSuggestion($userID: String!, $suggestion: Int!) {
-                        screenerSuggest(userID: $userID, suggestionNotificationId: $suggestion)
-                    }
-                `)
-    );
-
-    // After one second, show the suggestions again
-    useEffect(() => {
-        if (sendDone) {
-            const timer = setTimeout(() => {
-                reset();
-                setChosenSuggestion(0);
-            }, 5000);
-            return () => clearTimeout(timer);
-        }
-    }, [sendDone, reset]);
-
-    if (!suggestions || suggestions.length === 0) return null;
-    if (loading) return <CenterLoadingSpinner />;
-    if (sendDone) {
-        return <InfoCard icon="yes" title="Empfehlung verschickt" message="" />;
+const MUTATION_SEND_SUGGESTION = gql(`
+    mutation SendSuggestion($userID: String!, $suggestion: Int!) {
+        screenerSuggest(userID: $userID, suggestionNotificationId: $suggestion)
     }
+`);
+
+const QUERY_GET_SUGGESTIONS = gql(`
+    query GetPossibleSuggestions {
+        notifications(where: { onActions: { has: "screening_suggestion" }, active: { equals: true } }, take: 100) {
+            id
+            description
+        }
+    }
+`);
+
+interface ScreeningSuggestionCardProps {
+    userID: string;
+    variant: 'pupil' | 'student';
+    refresh: () => Promise<void>;
+}
+
+export function ScreeningSuggestionCard({ userID, variant, refresh }: ScreeningSuggestionCardProps) {
+    const [chosenSuggestion, setChosenSuggestion] = useState<number>(0);
+    const [send, { loading, reset }] = useMutation(MUTATION_SEND_SUGGESTION);
+    const { data: suggestionsData } = useQuery(QUERY_GET_SUGGESTIONS);
+    const suggestions = suggestionsData?.notifications.filter((e) => (variant === 'pupil' ? e.description.startsWith('SuS') : e.description.startsWith('HuH')));
+
+    const handleOnSend = async () => {
+        await send({ variables: { userID, suggestion: chosenSuggestion } });
+        toast.success('Empfehlung verschickt');
+        reset();
+        setChosenSuggestion(0);
+        await refresh();
+    };
 
     return (
-        <HStack paddingTop="20px" space={space['2']} display="flex">
-            <Select onValueChange={(it) => setChosenSuggestion(+it)} selectedValue={'' + chosenSuggestion}>
-                <Select.Item key="0" value={'' + 0} label="Keine Empfehlung" />
-                {suggestions.map((it) => (
-                    <Select.Item key={it.id} value={'' + it.id} label={it.description} />
-                ))}
+        <div className="flex gap-x-5">
+            <Select value={'' + chosenSuggestion} onValueChange={(it) => setChosenSuggestion(+it)}>
+                <SelectTrigger className="h-10 min-w-[500px]" placeholder="Auswählen">
+                    <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                    <SelectItem value={'' + 0}>Keine Empfehlung</SelectItem>
+                    {suggestions?.map((option) => (
+                        <SelectItem key={option.id} value={'' + option.id}>
+                            {option.description.replace(/SuS Empfehlung|HuH Empfehlung/, '')}
+                        </SelectItem>
+                    ))}
+                </SelectContent>
             </Select>
-            <DisableableButton
-                isDisabled={!chosenSuggestion}
-                reasonDisabled="Du musst eine Empfehlung auswählen"
-                onPress={() => send({ variables: { userID, suggestion: chosenSuggestion } })}
-            >
+
+            <Button isLoading={loading} disabled={!chosenSuggestion} reasonDisabled="Du musst eine Empfehlung auswählen" onClick={handleOnSend}>
                 Empfehlung senden
-            </DisableableButton>
-        </HStack>
+            </Button>
+        </div>
     );
 }

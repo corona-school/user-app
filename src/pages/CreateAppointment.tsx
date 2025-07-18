@@ -98,7 +98,7 @@ const CreateAppointment = () => {
                             />
                         )}
                         {currentIndex === 2 && (
-                            <Box mt="10" flex={1}>
+                            <Box mt="4" flex={1}>
                                 <AppointmentCreation
                                     back={noAppointments ? returnToStepOne : onBack}
                                     courseOrMatchId={courseOrMatchId}

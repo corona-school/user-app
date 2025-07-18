@@ -8,7 +8,6 @@ import {
     Flex,
     Heading,
     Image,
-    Modal,
     Row,
     Text,
     useBreakpointValue,
@@ -35,6 +34,10 @@ import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import InformationModal from '@/modals/InformationModal';
 import { Typography } from '@/components/Typography';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { Button as LFButton } from '@/components/Button';
+import { IconBrandGoogleFilled } from '@tabler/icons-react';
+import useLoginWithIDP from '@/hooks/useLoginWithIDP';
+import { GOOGLE_CLIENT_ID } from '@/config';
 
 export default function Login() {
     const { t } = useTranslation();
@@ -51,6 +54,7 @@ export default function Login() {
     const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
     const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
     const [loginResult, setLoginResult] = useState<FetchResult>();
+    const { loginWithGoogle } = useLoginWithIDP();
     const toast = useToast();
 
     const location = useLocation();
@@ -296,6 +300,14 @@ export default function Login() {
         }
     }, [email, loginEmail]);
 
+    const { roles, logout } = useApollo();
+
+    useEffect(() => {
+        if (roles.includes('SSO_REGISTERING_USER')) {
+            logout();
+        }
+    }, [roles]);
+
     return (
         <>
             <VStack overflowY={'auto'} height="100dvh">
@@ -389,6 +401,11 @@ export default function Login() {
                         >
                             {t('signin')}
                         </DisableableButton>
+                        {GOOGLE_CLIENT_ID && (
+                            <LFButton variant="outline" className="mt-4" onClick={loginWithGoogle} rightIcon={<IconBrandGoogleFilled size={16} />}>
+                                {t('login.continueWith', { idp: 'Google' })}
+                            </LFButton>
+                        )}
                     </Box>
 
                     <Box paddingTop={10} paddingBottom={1}>
