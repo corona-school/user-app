@@ -63,3 +63,10 @@
 .tabler-icon-thick {
     stroke-width: 2;
 }
+
+.hide-password-toggle::-ms-reveal,
+.hide-password-toggle::-ms-clear {
+    visibility: hidden;
+    pointer-events: none;
+    display: none;
+}

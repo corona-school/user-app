@@ -185,13 +185,17 @@
     "openchat": "Chat beginnen",
     "openmatch": "Ansehen",
     "login": {
-        "title": "Anmeldung",
+        "title": "Einloggen",
         "error": "Deine Login-Daten stimmen nicht mit unseren Informationen überein. Bitte überprüfe deine Angaben.",
+        "invalidPasswordError": "Ups! Dein Passwort stimmt nicht.",
         "forgotPassword": "Passwort vergessen?",
         "signupNew": "Neu registrieren",
+        "loginWith": "Einloggen mit {{method}}",
         "continueWith": "Weiter mit {{idp}}",
         "linkAccountWithIdpError": "Die Verknüpfung deines Kontos mit einem Identitätsanbieter erfordert ein Passwort. Bitte setze zuerst ein Passwort",
-        "noaccount": "Du hast noch keinen Account? Hier geht es zur Registrierung!",
+        "noaccount": "Du hast noch keinen Account?",
+        "registerHere": "Hier registrieren",
+        "contactSupport": "Kontaktiere uns",
         "currentEmail": "Aktuelle E-Mail",
         "newEmail": "Neue E-Mail",
         "setNewEmail": "E-Mail neu setzen",
@@ -200,6 +204,7 @@
         "succesEmailVerification": "Deine E-Mail wurde erfolgreich geändert!",
         "changeEmailConfirmation": "Wir haben dir an die neue Adresse eine E-Mail zur Bestätigung gesendet",
         "invalidToken": "Token ungültig",
+        "needHelp": "Brauchst du Hilfe?",
         "email": {
             "sent": "Wir haben dir eine E-Mail zum Login geschickt"
         },
@@ -214,7 +219,7 @@
         },
         "accountNotFound": {
             "title": "Anmeldung fehlgeschlagen",
-            "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden. Bitte kontrolliere die eingegebene E-Mail-Adresse und versuche es erneut."
+            "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden."
         },
         "accountDeactivated": {
             "title": "Anmeldung fehlgeschlagen",
