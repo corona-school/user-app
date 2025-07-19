@@ -1,7 +1,6 @@
 import { DisplayAppointment } from '@/widgets/AppointmentList';
 import { Label } from '@/components/Label';
 import { Input } from '@/components/Input';
-import { FormReducerActionType } from '@/types/lernfair/CreateAppointment';
 import { DatePicker } from '@/components/DatePicker';
 import { DateTime } from 'luxon';
 import { Typography } from '@/components/Typography';
@@ -9,8 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import CustomVideoInput from '@/widgets/CustomVideoInput';
 import { TextArea } from '@/components/TextArea';
 import { useTranslation } from 'react-i18next';
-import { useCallback, useEffect, useState } from 'react';
-import { isDateToday } from '@/helper/appointment-helper';
+import { useState } from 'react';
 import { VideoChatTypeEnum } from '@/pages/create-appointment/AppointmentCreation';
 import { Button } from '@/components/Button';
 

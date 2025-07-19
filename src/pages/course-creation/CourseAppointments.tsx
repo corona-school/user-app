@@ -26,7 +26,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcours
 
     const { courseName } = useContext(CreateCourseContext);
     const [creating, setCreating] = useState<boolean>(false);
-
+    const [editingIdInit, setEditingIdInit] = useState<number | undefined>(undefined);
     const convertAppointments = (creating: boolean) => {
         let convertedAppointments: DisplayAppointment[] = [];
 
@@ -58,6 +58,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcours
                 title: '',
                 description: '',
             });
+            setEditingIdInit(appointmentsToBeCreated.length);
         }
 
         return convertedAppointments;
@@ -119,7 +120,8 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcours
                             height="100%"
                             isReadOnlyList={false}
                             appointments={allAppointmentsToShow}
-                            onAppointmentEdit={(updated) => {
+                            noOldAppointments={subcourseId === undefined}
+                            onAppointmentEdited={(updated) => {
                                 // todo what if existing appointment is edited?
                                 if (updated.isNew) {
                                     console.log('edited new appointment with newIndex:', updated.newIndex, updated);
@@ -136,6 +138,27 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcours
                                     console.log('Editing existing appointment');
                                 }
                             }}
+                            onAppointmentCanceledEdit={() => {
+                                setCreating(false);
+                                setAllAppointmentsToShow(getAllAppointmentsToShow(false));
+                            }}
+                            onAppointmentDuplicate={
+                                !creating
+                                    ? (duplicate) => {
+                                          console.log('Duplicating appointment');
+                                          setAppointmentsToBeCreated((prev) => {
+                                              const newAppointments = [...prev];
+                                              newAppointments.push({
+                                                  ...duplicate,
+                                                  appointmentType: Lecture_Appointmenttype_Enum.Group,
+                                                  subcourseId: subcourseId ?? -1,
+                                              });
+                                              return newAppointments;
+                                          });
+                                      }
+                                    : undefined
+                            }
+                            editingIdInit={editingIdInit}
                         />
                     </div>
                 )}

@@ -54,87 +54,97 @@ interface AppointmentItemProps {
     appointment: Appointment;
     previousAppointment?: Appointment;
     index: number;
+    total: number;
     isReadOnly: boolean;
+    editingInit?: boolean; // If true, the item will be in editing mode initially
     onEdit?: (edited: DisplayAppointment) => void;
+    onCancelEdit?: () => void;
     onDuplicate?: () => void;
     onDelete?: () => void;
 }
 
-const AppointmentItem = React.memo(({ appointment, previousAppointment, index, isReadOnly, onEdit, onDuplicate, onDelete }: AppointmentItemProps) => {
-    const navigate = useNavigate();
-    const { i18n } = useTranslation();
-    const [editing, setEditing] = React.useState(false);
+const AppointmentItem = React.memo(
+    ({ appointment, previousAppointment, index, total, editingInit, isReadOnly, onEdit, onCancelEdit, onDuplicate, onDelete }: AppointmentItemProps) => {
+        const navigate = useNavigate();
+        const { i18n } = useTranslation();
+        const [editing, setEditing] = React.useState(!!editingInit);
 
-    const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
-        if (!previousAppointment) {
-            return false;
-        }
+        const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
+            if (!previousAppointment) {
+                return false;
+            }
 
-        const currentDate = DateTime.fromISO(currentAppointment.start);
-        const previousDate = DateTime.fromISO(previousAppointment.start);
-        return currentDate.year !== previousDate.year || currentDate.weekNumber !== previousDate.weekNumber;
-    };
+            const currentDate = DateTime.fromISO(currentAppointment.start);
+            const previousDate = DateTime.fromISO(previousAppointment.start);
+            return currentDate.year !== previousDate.year || currentDate.weekNumber !== previousDate.weekNumber;
+        };
 
-    const showMonthDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
-        if (!previousAppointment) {
-            return true;
-        }
+        const showMonthDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
+            if (!previousAppointment) {
+                return true;
+            }
 
-        const currentDate = DateTime.fromISO(currentAppointment.start);
-        const previousDate = DateTime.fromISO(previousAppointment.start);
-        return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
-    };
+            const currentDate = DateTime.fromISO(currentAppointment.start);
+            const previousDate = DateTime.fromISO(previousAppointment.start);
+            return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
+        };
 
-    const monthDivider = showMonthDivider(appointment, previousAppointment);
+        const monthDivider = showMonthDivider(appointment, previousAppointment);
 
-    const onSubmit = (updatedAppointment: DisplayAppointment) => {
-        if (onEdit) onEdit(updatedAppointment);
-        setEditing(false);
-    };
-    return (
-        <div>
-            {monthDivider && (
-                <>
-                    <div className="flex items-center justify-center mt-3">
-                        <Typography>{`${DateTime.fromISO(appointment.start).setLocale(i18n.language).monthLong} ${
-                            DateTime.fromISO(appointment.start).year
-                        }`}</Typography>
-                    </div>
-                    <Separator className="my-3 w-full" />
-                </>
-            )}
+        const onSubmit = (updatedAppointment: DisplayAppointment) => {
+            if (onEdit) onEdit(updatedAppointment);
+            setEditing(false);
+        };
+
+        const onCancel = () => {
+            setEditing(false);
+            if (onCancelEdit) onCancelEdit();
+        };
+        return (
             <div>
-                {editing ? (
-                    <div className="flex flex-col p-4 rounded-md border border-gray-200 mt-6">
-                        <CourseAppointmentForm appointmentPrefill={appointment} onSubmit={onSubmit} onCancel={() => setEditing(false)} />
-                    </div>
-                ) : (
-                    <AppointmentDay
-                        start={appointment.start}
-                        duration={appointment.duration}
-                        title={appointment.title}
-                        description={appointment.description}
-                        organizers={appointment.organizers}
-                        participants={appointment.participants}
-                        onPress={() => navigate(`/appointment/${appointment.id}`)}
-                        isReadOnly={isReadOnly}
-                        isFullWidth
-                        appointmentType={appointment.appointmentType}
-                        position={appointment.position}
-                        total={appointment.total}
-                        isOrganizer={appointment.isOrganizer}
-                        displayName={appointment.displayName}
-                        appointmentId={appointment.id}
-                        declinedBy={appointment.declinedBy}
-                        onEdit={() => setEditing(true)}
-                        onDuplicate={onDuplicate}
-                        onDelete={onDelete}
-                    />
+                {monthDivider && (
+                    <>
+                        <div className="flex items-center justify-center mt-3">
+                            <Typography>{`${DateTime.fromISO(appointment.start).setLocale(i18n.language).monthLong} ${
+                                DateTime.fromISO(appointment.start).year
+                            }`}</Typography>
+                        </div>
+                        <Separator className="my-3 w-full" />
+                    </>
                 )}
+                <div>
+                    {editing ? (
+                        <div className="flex flex-col p-4 rounded-md border border-gray-200 mt-6">
+                            <CourseAppointmentForm appointmentPrefill={appointment} onSubmit={onSubmit} onCancel={onCancel} />
+                        </div>
+                    ) : (
+                        <AppointmentDay
+                            start={appointment.start}
+                            duration={appointment.duration}
+                            title={appointment.title}
+                            description={appointment.description}
+                            organizers={appointment.organizers}
+                            participants={appointment.participants}
+                            onPress={() => isReadOnly && navigate(`/appointment/${appointment.id}`)} // todo confirm if (isReadOnly => clickable) holds
+                            isReadOnly={isReadOnly}
+                            isFullWidth
+                            appointmentType={appointment.appointmentType}
+                            position={index}
+                            total={total}
+                            isOrganizer={appointment.isOrganizer}
+                            displayName={appointment.displayName || appointment.title}
+                            appointmentId={appointment.id}
+                            declinedBy={appointment.declinedBy}
+                            onEdit={onEdit ? () => setEditing(true) : undefined}
+                            onDuplicate={onDuplicate}
+                            onDelete={onDelete}
+                        />
+                    )}
+                </div>
             </div>
-        </div>
-    );
-});
+        );
+    }
+);
 
 export interface DisplayAppointment extends Appointment {
     isNew?: boolean; // false => existing appointment, true => new appointment
@@ -152,9 +162,11 @@ type AppointmentListProps = {
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
     height?: number | string;
-    onAppointmentEdit?: (updated: DisplayAppointment) => void;
-    onAppointmentDuplicate?: (index: number, isNew: boolean) => void;
+    onAppointmentEdited?: (updated: DisplayAppointment) => void;
+    onAppointmentCanceledEdit?: () => void;
+    onAppointmentDuplicate?: (duplicate: DisplayAppointment) => void;
     onAppointmentDelete?: (index: number, isNew: boolean) => void;
+    editingIdInit?: number; // If provided, the appointment with this ID will be in editing mode initially
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -178,9 +190,11 @@ const AppointmentList = ({
     loadMoreAppointments,
     lastAppointmentId,
     height = 100,
-    onAppointmentEdit,
+    onAppointmentEdited,
+    onAppointmentCanceledEdit,
     onAppointmentDuplicate,
     onAppointmentDelete,
+    editingIdInit,
 }: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
 
@@ -242,14 +256,19 @@ const AppointmentList = ({
                         key={appointment.id < 0 ? appointment.newIndex : appointment.id}
                         appointment={appointment}
                         previousAppointment={appointments[index - 1]}
-                        index={index}
+                        index={index + 1}
+                        total={appointments.length}
                         isReadOnly={isReadOnlyList}
-                        onEdit={(updated) => onAppointmentEdit && onAppointmentEdit(updated)}
-                        onDuplicate={() =>
-                            onAppointmentDuplicate && onAppointmentDuplicate(!appointment.isNew ? appointment.id : appointment.newIndex!, !!appointment.isNew)
-                        }
-                        onDelete={() =>
-                            onAppointmentDelete && onAppointmentDelete(!appointment.isNew ? appointment.id : appointment.newIndex!, !!appointment.isNew)
+                        editingInit={appointment.newIndex === editingIdInit}
+                        onEdit={(updated) => onAppointmentEdited && onAppointmentEdited(updated)}
+                        onCancelEdit={onAppointmentCanceledEdit}
+                        onDuplicate={onAppointmentDuplicate ? () => onAppointmentDuplicate(appointment) : undefined}
+                        onDelete={
+                            onAppointmentDelete
+                                ? () =>
+                                      onAppointmentDelete &&
+                                      onAppointmentDelete(!appointment.isNew ? appointment.id : appointment.newIndex!, !!appointment.isNew)
+                                : undefined
                         }
                     />
                 ))}

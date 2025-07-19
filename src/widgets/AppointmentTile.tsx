@@ -149,19 +149,19 @@ const AppointmentTile: React.FC<Props> = ({
                         </div>
                     )}
                 </div>
-                <div className="flex flex-grow w-full justify-end gap-1">
-                    {!isReadOnly && onEdit && (
-                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit}>
+                <div className="flex flex-grow w-full justify-end gap-1 mb-2">
+                    {!isReadOnly && (
+                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit} disabled={!onEdit}>
                             <IconPencil />
                         </Button>
                     )}
-                    {!isReadOnly && onDuplicate && (
-                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate}>
+                    {!isReadOnly && (
+                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate} disabled={!onDuplicate}>
                             <IconCopy />
                         </Button>
                     )}
-                    {!isReadOnly && onDelete && (
-                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete}>
+                    {!isReadOnly && (
+                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete} disabled={!onDelete}>
                             <IconTrash />
                         </Button>
                     )}
