@@ -214,7 +214,7 @@ const Login = () => {
     }, [roles, logout]);
 
     return (
-        <div className="bg-primary-lighter flex flex-col h-full justify-between flex-1">
+        <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1 overflow-y-auto">
             <div className="flex flex-col flex-1">
                 <div className="py-2 pr-4 pl-6 flex justify-end mb-6">
                     <SwitchLanguageButton variant="dropdown" />
@@ -304,7 +304,7 @@ const Login = () => {
                     </form>
                 </div>
             </div>
-            <div className="flex flex-col gap-y-4 text-center pb-10">
+            <div className="flex flex-col gap-y-4 text-center pb-5 md:pb-10">
                 <Typography className="text-form">
                     {`${t('login.noaccount')} `}
                     <Link to="/registration" onClick={handleTrackToRegistration} className="underline decoration-1 underline-offset-[5px]">
