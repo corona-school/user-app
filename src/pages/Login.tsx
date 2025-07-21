@@ -1,130 +1,179 @@
-import { useCallback, useEffect, useState } from 'react';
-import { gql } from '../gql';
-import { FetchResult, useMutation } from '@apollo/client';
-import Logo from '../assets/icons/lernfair/lf-logo.svg';
-import {
-    Box,
-    Button,
-    Flex,
-    Heading,
-    Image,
-    Row,
-    Text,
-    useBreakpointValue,
-    useTheme,
-    VStack,
-    FormControl,
-    Alert,
-    HStack,
-    useToast,
-    CloseIcon,
-} from 'native-base';
-import useApollo, { getOrCreateDeviceId } from '../hooks/useApollo';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { NativeSyntheticEvent, TextInputKeyPressEventData } from 'react-native';
+import { Input } from '@/components/Input';
+import { Label } from '@/components/Label';
+import SwitchLanguageButton from '@/components/SwitchLanguageButton';
+import { FormEvent, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import TextInput from '../components/TextInput';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import PasswordInput from '../components/PasswordInput';
-import AlertMessage from '../widgets/AlertMessage';
-import { REDIRECT_PASSWORD } from '../Utility';
-import isEmail from 'validator/lib/isEmail';
-import DisableableButton from '../components/DisablebleButton';
-import SwitchLanguageButton from '../components/SwitchLanguageButton';
-import InformationModal from '@/modals/InformationModal';
+import WelcomeLoki from '@/assets/icons/welcome-loki.svg';
+import { Button } from '@/components/Button';
+import { IconBrandGoogleFilled, IconMail } from '@tabler/icons-react';
 import { Typography } from '@/components/Typography';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { gql } from '@/gql';
+import { useMutation } from '@apollo/client';
+import isEmail from 'validator/lib/isEmail';
+import { toast } from 'sonner';
+import InformationModal from '@/modals/InformationModal';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import useApollo, { getOrCreateDeviceId } from '@/hooks/useApollo';
+import { Alert } from '@/components/Alert';
 import ConfirmationModal from '@/modals/ConfirmationModal';
-import { Button as LFButton } from '@/components/Button';
-import { IconBrandGoogleFilled } from '@tabler/icons-react';
-import useLoginWithIDP from '@/hooks/useLoginWithIDP';
+import { REDIRECT_PASSWORD } from '@/Utility';
 import { GOOGLE_CLIENT_ID } from '@/config';
+import useLoginWithIDP from '@/hooks/useLoginWithIDP';
 
-export default function Login() {
-    const { t } = useTranslation();
-    const { sessionState, loginWithPassword } = useApollo();
-    const { space, sizes } = useTheme();
-    const [showNoAccountModal, setShowNoAccountModal] = useState(false);
-    const [showAccountDeactivatedModal, setShowAccountDeactivatedModal] = useState(false);
-    const [email, setEmail] = useState<string>();
+const DETERMINE_LOGIN_OPTIONS_MUTATION = gql(`
+    mutation determineLoginOptions($email: String!) {
+        userDetermineLoginOptions(email: $email)
+    }
+`);
+
+const RESET_PASSWORD_MUTATION = gql(`
+    mutation PasswordReset($email: String!, $redirectTo: String!) {
+        tokenRequest(email: $email, action: "user-password-reset", redirectTo: $redirectTo)
+    }
+`);
+
+const REQUEST_TOKEN_MUTATION = gql(`
+    mutation Authenticate($email: String!, $redirectTo: String!) {
+        tokenRequest(email: $email, action: "user-authenticate", redirectTo: $redirectTo)
+    }
+`);
+
+type LoginOption = 'deactivated' | 'none' | 'email' | 'password';
+type ResetPasswordResult = 'success' | 'error' | 'notFound';
+
+const Login = () => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [loginEmail, setLoginEmail] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [loginMethod, setLoginMethod] = useState<LoginOption>();
+    const [resetPasswordResult, setResetPasswordResult] = useState<ResetPasswordResult>();
+    const [showDeactivatedModal, setShowDeactivatedModal] = useState(false);
+    const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
     const [showEmailSent, setShowEmailSent] = useState(false);
-    const [loginEmail, setLoginEmail] = useState<string>();
-    const [password, setPassword] = useState<string>();
-    const [isInvalidEmail, setIsInvalidEmail] = useState(false);
-    const [showPasswordField, setShowPasswordField] = useState<boolean>(false);
-    const [showPasswordModal, setShowPasswordModal] = useState<boolean>(false);
-    const [showPasswordResetResult, setShowPasswordResetResult] = useState<'success' | 'error' | 'unknown' | undefined>();
-    const [loginResult, setLoginResult] = useState<FetchResult>();
+    const [isAuthenticating, setIsAuthenticating] = useState(false);
+    const { t } = useTranslation();
+    const { trackEvent, trackPageView } = useMatomo();
     const { loginWithGoogle } = useLoginWithIDP();
-    const toast = useToast();
-
     const location = useLocation();
+    const navigate = useNavigate();
+    const { sessionState, loginWithPassword, roles, logout } = useApollo();
+    const [determineLoginOptions, { loading: isDeterminingLoginOptions }] = useMutation(DETERMINE_LOGIN_OPTIONS_MUTATION);
+    const [resetPassword, { loading: isResettingPassword }] = useMutation(RESET_PASSWORD_MUTATION);
+    const [requestToken, { loading: isRequestingToken }] = useMutation(REQUEST_TOKEN_MUTATION);
+
     const locationState = location.state as { retainPath?: string; error?: 'token-invalid' };
     const retainPath = locationState?.retainPath ?? '/start';
     const error = locationState?.error;
 
-    const navigate = useNavigate();
-    const { trackPageView, trackEvent } = useMatomo();
-
-    const [determineLoginOptions, _determineLoginOptions] = useMutation(
-        gql(`
-            mutation determineLoginOptions($email: String!) {
-                userDetermineLoginOptions(email: $email)
-            }
-        `)
-    );
-
-    const [resetPW, _resetPW] = useMutation(
-        gql(`
-        mutation PasswordReset($email: String!, $redirectTo: String!) {
-            tokenRequest(email: $email, action: "user-password-reset", redirectTo: $redirectTo)
+    const getFormDisabledReason = () => {
+        if (!email) {
+            return t('reasonsDisabled.fieldEmpty');
         }
-    `)
-    );
-    const [sendToken, _sendToken] = useMutation(
-        gql(`
-        mutation Authenticate($email: String!, $redirectTo: String!) {
-            tokenRequest(email: $email, action: "user-authenticate", redirectTo: $redirectTo)
+        if (!isEmail(email)) {
+            return t('reasonsDisabled.invalidEMail');
         }
-    `)
-    );
+        if (loginMethod === 'password' && !password) {
+            return t('reasonsDisabled.formIncomplete');
+        }
+        return '';
+    };
 
-    const onChangeEmail = useCallback(
-        (text: string) => {
-            if (isInvalidEmail) {
-                setIsInvalidEmail(false);
+    const handleOnLoginFormSubmit = async (event: FormEvent) => {
+        event.preventDefault();
+        if (loginMethod === 'password') {
+            await handleOnLoginWithPassword();
+            return;
+        }
+
+        const response = await determineLoginOptions({ variables: { email } });
+        const loginOption = response.data?.userDetermineLoginOptions;
+        if (loginOption === 'deactivated') {
+            setShowDeactivatedModal(true);
+        } else if (loginOption === 'password') {
+            setLoginMethod('password');
+            setLoginEmail(email);
+        } else if (loginOption === 'email') {
+            await handleOnLoginWithEmailToken();
+        } else {
+            setEmailError(t('login.accountNotFound.alert_html', { email: email }));
+        }
+    };
+
+    const handleOnLoginWithPassword = async () => {
+        trackEvent({
+            category: 'login',
+            action: 'click-event',
+            name: 'Login Button auf Login Page',
+            documentTitle: 'Login Page',
+        });
+        setIsAuthenticating(true);
+        const response = await loginWithPassword(email!, password!, getOrCreateDeviceId());
+        if (response.errors) {
+            setPasswordError(t('login.invalidPasswordError'));
+        }
+        setIsAuthenticating(false);
+    };
+
+    const handleOnLoginWithEmailToken = async () => {
+        const response = await requestToken({
+            variables: {
+                email: email!,
+                redirectTo: retainPath,
+            },
+        });
+        const tokenRequest = response.data?.tokenRequest;
+
+        if (tokenRequest) {
+            setShowEmailSent(true);
+        } else if (response.errors) {
+            if (response.errors[0]?.message.includes('Unknown User')) {
+                setEmailError(t('login.accountNotFound.alert_html', { email: email }));
+            } else {
+                setShowEmailSent(true);
             }
-            setEmail(text);
-        },
-        [isInvalidEmail]
-    );
+        }
+    };
 
-    useEffect(() => {
-        if (sessionState === 'logged-in') navigate(retainPath, { replace: true });
-        if (error && error === 'token-invalid') {
-            toast.show({
-                render: ({ id }) => {
-                    return (
-                        <Alert w="100%" status="error" colorScheme="error" backgroundColor={'danger.50'}>
-                            <VStack space={2} flexShrink={1} w="100%">
-                                <HStack flexShrink={1} space={2} alignItems="center" justifyContent="space-between">
-                                    <HStack space={2} flexShrink={1} alignItems="center">
-                                        <Alert.Icon />
-                                        <Text>{t('login.invalidTokenAlert.text')}</Text>
-                                        <Button onPress={() => toast.close(id)} variant="subtle" backgroundColor={'danger.50'}>
-                                            <CloseIcon size="sm" />
-                                        </Button>
-                                    </HStack>
-                                </HStack>
-                            </VStack>
-                        </Alert>
-                    );
+    const handleOnResetPassword = async () => {
+        try {
+            const res = await resetPassword({
+                variables: {
+                    email,
+                    redirectTo: REDIRECT_PASSWORD,
                 },
-                duration: null,
-                placement: 'bottom',
             });
+
+            if (res.data!.tokenRequest) {
+                setResetPasswordResult('success');
+            } else if (res.errors) {
+                if (res.errors[0].message.includes('Unknown User')) {
+                    setResetPasswordResult('notFound');
+                } else {
+                    setResetPasswordResult('error');
+                }
+            }
+        } catch (e: any) {
+            if (e.message.includes('Unknown User')) {
+                setResetPasswordResult('notFound');
+            } else {
+                setResetPasswordResult('error');
+            }
+        } finally {
+            setShowForgotPasswordModal(false);
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate, sessionState]);
+    };
+
+    const handleTrackToRegistration = () => {
+        trackEvent({
+            category: 'login',
+            action: 'click-event',
+            name: 'Registrierung auf Login Page',
+            documentTitle: 'Login Page – Registrierung Link',
+        });
+    };
 
     useEffect(() => {
         trackPageView({
@@ -133,312 +182,176 @@ export default function Login() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const loginButton = useCallback(() => {
-        trackEvent({
-            category: 'login',
-            action: 'click-event',
-            name: 'Login Button auf Login Page',
-            documentTitle: 'Login Page',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const loginRegisterLink = useCallback(() => {
-        trackEvent({
-            category: 'login',
-            action: 'click-event',
-            name: 'Registrierung auf Login Page',
-            documentTitle: 'Login Page – Registrierung Link',
-        });
-        navigate('/registration');
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [navigate]);
-
-    const requestToken = useCallback(async () => {
-        const res = await sendToken({
-            variables: {
-                email: email!,
-                redirectTo: retainPath,
-            },
-        });
-
-        if (res.data!.tokenRequest) {
-            setShowEmailSent(true);
-        } else if (res.errors) {
-            if (res.errors[0].message.includes('Unknown User')) {
-                setShowNoAccountModal(true);
-            } else {
-                setShowEmailSent(true);
-            }
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [email, sendToken]);
-
-    const attemptLogin = useCallback(async () => {
-        loginButton();
-        const res = await loginWithPassword(email!, password!, getOrCreateDeviceId());
-        setLoginResult(res);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [email, loginButton, password]);
-
-    const getLoginOption = useCallback(async () => {
-        if (!email || !isEmail(email)) {
-            setIsInvalidEmail(true);
-            return;
-        }
-        let res = await determineLoginOptions({ variables: { email } });
-        if (res.data!.userDetermineLoginOptions === 'deactivated') {
-            setShowAccountDeactivatedModal(true);
-        } else if (res.data!.userDetermineLoginOptions === 'password') {
-            setShowPasswordField(true);
-            setLoginEmail(email);
-        } else if (res.data!.userDetermineLoginOptions === 'email') {
-            requestToken();
-        } else {
-            setShowNoAccountModal(true);
-        }
-    }, [determineLoginOptions, email, requestToken]);
-
-    const handleKeyPress = useCallback(
-        (e: NativeSyntheticEvent<TextInputKeyPressEventData>) => {
-            if (e.nativeEvent.key === 'Enter') {
-                if (!showPasswordField) {
-                    getLoginOption();
-                } else {
-                    attemptLogin();
-                }
-            }
-        },
-        [attemptLogin, getLoginOption, showPasswordField]
-    );
-
-    const ContainerWidth = useBreakpointValue({
-        base: '90%',
-        lg: sizes['smallWidth'],
-    });
-
-    const resetPassword = async (pw: string) => {
-        try {
-            const res = await resetPW({
-                variables: {
-                    email: pw,
-                    redirectTo: REDIRECT_PASSWORD,
-                },
-            });
-
-            if (res.data!.tokenRequest) {
-                setShowPasswordResetResult('success');
-            } else if (res.errors) {
-                if (res.errors[0].message.includes('Unknown User')) {
-                    setShowPasswordResetResult('unknown');
-                } else {
-                    setShowPasswordResetResult('error');
-                }
-            }
-        } catch (e: any) {
-            if (e.message.includes('Unknown User')) {
-                setShowPasswordResetResult('unknown');
-            } else {
-                setShowPasswordResetResult('unknown');
-            }
-        } finally {
-            setShowPasswordModal(false);
-        }
-    };
-
-    const PasswordModal: React.FC<{ showModal: boolean; email: string }> = ({ showModal, email: pwEmail }) => {
-        return (
-            <ConfirmationModal
-                isOpen={showModal}
-                onOpenChange={setShowPasswordModal}
-                headline={t('login.passwordReset.btn')}
-                description={t('login.passwordReset.description', { email: pwEmail })}
-                confirmButtonText={t('login.passwordReset.btn')}
-                onConfirm={() => resetPassword(pwEmail)}
-                isLoading={_resetPW?.loading}
-            />
-        );
-    };
-
-    const NoAccountModal: React.FC<{
-        email: string;
-        showModal: boolean;
-    }> = ({ email, showModal }) => {
-        return (
-            <InformationModal
-                variant="destructive"
-                isOpen={showModal}
-                onOpenChange={setShowNoAccountModal}
-                headline={<span className="block text-center">{t('login.accountNotFound.title')}</span>}
-            >
-                <Typography className="text-pretty text-center">{t('login.accountNotFound.alert_html', { email: email })}</Typography>
-            </InformationModal>
-        );
-    };
-
-    const AccountDeactivatedModal: React.FC<{
-        showModal: boolean;
-    }> = ({ showModal }) => {
-        return (
-            <InformationModal
-                variant="destructive"
-                isOpen={showModal}
-                onOpenChange={setShowAccountDeactivatedModal}
-                headline={<span className="block text-center">{t('login.accountDeactivated.title')}</span>}
-            >
-                <Typography className="text-pretty text-center">{t('login.accountDeactivated.alert_html')}</Typography>
-            </InformationModal>
-        );
-    };
-
     useEffect(() => {
         if (loginEmail) {
             if (loginEmail !== email) {
+                setLoginMethod(undefined);
                 setPassword('');
-                setShowPasswordField(false);
             }
         }
+        setResetPasswordResult(undefined);
+        setShowEmailSent(false);
+        setEmailError('');
     }, [email, loginEmail]);
 
-    const { roles, logout } = useApollo();
+    useEffect(() => {
+        setPasswordError('');
+        setResetPasswordResult(undefined);
+    }, [password]);
+
+    useEffect(() => {
+        if (sessionState === 'logged-in') navigate(retainPath, { replace: true });
+        if (error && error === 'token-invalid') {
+            toast.error(t('login.invalidTokenAlert.text'));
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [navigate, sessionState]);
 
     useEffect(() => {
         if (roles.includes('SSO_REGISTERING_USER')) {
             logout();
         }
-    }, [roles]);
+    }, [roles, logout]);
 
     return (
-        <>
-            <VStack overflowY={'auto'} height="100dvh">
-                <Row flexDirection="column" justifyContent="center" alignItems="center">
-                    <Box position="relative" width="100%" justifyContent="center" paddingY={6} marginBottom={space['5']}>
-                        <Image
-                            alt="Lernfair"
-                            position="absolute"
-                            zIndex="-1"
-                            borderBottomRightRadius={15}
-                            borderBottomLeftRadius={15}
-                            width="100%"
-                            height="100%"
-                            source={{
-                                uri: require('../assets/images/globals/lf-bg.png'),
-                            }}
-                        />
-                        <Box textAlign="center" alignItems="center" justifyContent="center">
-                            <Logo />
-                        </Box>
-                        <Heading width="100%" textAlign="center" paddingTop={space['1.5']} paddingBottom={space['0.5']}>
+        <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1 overflow-y-auto">
+            <div className="flex flex-col flex-1">
+                <div className="py-2 pr-4 pl-6 flex justify-end mb-6">
+                    <SwitchLanguageButton variant="dropdown" />
+                </div>
+                <div className="flex flex-1 flex-col items-center justify-center">
+                    {!loginMethod && (
+                        <div className="flex justify-center mb-14 ml-24">
+                            <WelcomeLoki />
+                        </div>
+                    )}
+                    {!!loginMethod && (
+                        <Typography className="mb-[60px]" variant="h2">
                             {t('login.title')}
-                        </Heading>
-                    </Box>
-
-                    <Box marginX="90px" maxWidth={ContainerWidth} width="100%">
-                        <Row marginBottom={3}>
-                            <FormControl isInvalid={isInvalidEmail}>
-                                <TextInput
-                                    width="100%"
-                                    isRequired={true}
-                                    placeholder={t('email')}
-                                    onChangeText={onChangeEmail}
-                                    onKeyPress={handleKeyPress}
-                                    isInvalid={isInvalidEmail}
-                                />
-                                <FormControl.ErrorMessage>{t('login.invalidMailMessage')}</FormControl.ErrorMessage>
-                            </FormControl>
-                        </Row>
-                        {showEmailSent && <AlertMessage content={t('login.email.sent')} />}
-                        {(showPasswordField && (
-                            <Row marginBottom={3}>
-                                <PasswordInput
-                                    width="100%"
-                                    type="password"
-                                    isRequired={true}
-                                    placeholder={t('password')}
-                                    onChangeText={setPassword}
-                                    onKeyPress={handleKeyPress}
-                                    autoFocus
-                                />
-                            </Row>
-                        )) || <input type="password" style={{ display: 'none' }} />}
-                    </Box>
-                    {loginResult?.errors && (
-                        <Text paddingTop={4} color="danger.700" maxWidth={360} bold textAlign="center">
-                            {t('login.error')}
-                        </Text>
+                        </Typography>
                     )}
-                    {showPasswordResetResult && (
-                        <Box maxWidth={ContainerWidth} width="100%">
-                            <AlertMessage
-                                content={
-                                    showPasswordResetResult === 'success'
-                                        ? t('login.passwordReset.alert.success')
-                                        : showPasswordResetResult === 'error'
-                                        ? t('login.passwordReset.alert.error')
-                                        : t('login.passwordReset.alert.mailNotFound')
-                                }
-                            />
-                        </Box>
-                    )}
-                    {showPasswordField && (
-                        <Button marginY={4} variant="link" onPress={() => setShowPasswordModal(true)}>
-                            {t('login.forgotPassword')}
-                        </Button>
-                    )}
-
-                    <Box paddingTop={4} marginX="90px" display="block">
-                        <DisableableButton
-                            isDisabled={!email || email.length < 6 || _determineLoginOptions.loading || _sendToken.loading || (showPasswordField && !password)}
-                            reasonDisabled={
-                                _sendToken.loading || _determineLoginOptions.loading
-                                    ? t('reasonsDisabled.loading')
-                                    : !email || email.length < 6
-                                    ? t('reasonsDisabled.invalidEMail')
-                                    : t('reasonsDisabled.formIncomplete')
-                            }
-                            onPress={showPasswordField ? attemptLogin : getLoginOption}
-                            width={'100%'}
-                        >
-                            {t('signin')}
-                        </DisableableButton>
-                        {GOOGLE_CLIENT_ID && (
-                            <LFButton variant="outline" className="mt-4" onClick={loginWithGoogle} rightIcon={<IconBrandGoogleFilled size={16} />}>
-                                {t('login.continueWith', { idp: 'Google' })}
-                            </LFButton>
+                    <form
+                        onSubmit={handleOnLoginFormSubmit}
+                        className="flex flex-col justify-center px-6 gap-y-4 w-full sm:max-w-[342px] justify-self-center mb-16"
+                    >
+                        <div className="flex flex-col gap-y-[6px] w-full">
+                            <Label htmlFor="email">{t('email')}</Label>
+                            <Input errorMessage={emailError} variant="white" id="email" placeholder="email@example.com" value={email} onChangeText={setEmail} />
+                        </div>
+                        {loginMethod === 'password' && (
+                            <div className="flex flex-col gap-y-[6px] w-full">
+                                <div className="flex flex-col gap-y-[6px] w-full">
+                                    <Label htmlFor="password">{t('password')}</Label>
+                                    <Input
+                                        errorMessage={passwordError}
+                                        autoFocus
+                                        type="password"
+                                        variant="white"
+                                        id="password"
+                                        value={password}
+                                        onChangeText={setPassword}
+                                    />
+                                </div>
+                                <Button
+                                    type="button"
+                                    variant="link"
+                                    className="font-normal text-form inline size-auto p-0 w-fit"
+                                    onClick={() => setShowForgotPasswordModal(true)}
+                                >
+                                    <span className="underline underline-offset-[1px] decoration-1">{t('login.forgotPassword')}</span>
+                                </Button>
+                            </div>
                         )}
-                    </Box>
-
-                    <Box paddingTop={10} paddingBottom={1}>
-                        <Text textAlign="center">{t('login.noaccount')}</Text>
-
-                        <Button onPress={loginRegisterLink} variant="link">
-                            {t('login.signupNew')}
-                        </Button>
-                        <Flex flexDirection="row" justifyContent="center" paddingTop="70px">
+                        {resetPasswordResult && (
+                            <Alert className="w-full" variant={resetPasswordResult === 'success' ? 'success' : 'destructive'}>
+                                {resetPasswordResult === 'success' && t('login.passwordReset.alert.success')}
+                                {resetPasswordResult === 'notFound' && t('login.passwordReset.alert.mailNotFound')}
+                                {resetPasswordResult === 'error' && t('login.passwordReset.alert.error')}
+                            </Alert>
+                        )}
+                        {showEmailSent && (
+                            <Alert className="w-full" variant="success">
+                                {t('login.email.sent')}
+                            </Alert>
+                        )}
+                        <div className="flex flex-col gap-y-5 w-full text-center">
                             <Button
-                                onPress={() => window.open('/datenschutz', '_blank')}
-                                variant={'link'}
-                                colorScheme={'primary.700'}
-                                _text={{ fontWeight: 'medium' }}
+                                type="submit"
+                                className="w-full"
+                                rightIcon={<IconMail size={16} />}
+                                disabled={!!getFormDisabledReason()}
+                                reasonDisabled={getFormDisabledReason()}
+                                isLoading={isDeterminingLoginOptions || isRequestingToken || isAuthenticating}
                             >
-                                {t('settings.legal.datapolicy')}
+                                {t('login.loginWith', { method: t('email') })}
                             </Button>
-                            <Button
-                                onPress={() => window.open('/impressum', '_blank')}
-                                variant={'link'}
-                                colorScheme={'primary.700'}
-                                _text={{ fontWeight: 'medium' }}
-                            >
-                                {t('settings.legal.imprint')}
-                            </Button>
-                            <SwitchLanguageButton />
-                        </Flex>
-                    </Box>
-                </Row>
-            </VStack>
-            <PasswordModal showModal={showPasswordModal} email={email || ''} />
-            <NoAccountModal showModal={showNoAccountModal} email={email || ''} />
-            <AccountDeactivatedModal showModal={showAccountDeactivatedModal} />
-        </>
+                            {GOOGLE_CLIENT_ID && (
+                                <>
+                                    <Typography className="font-medium capitalize">{t('or')}</Typography>
+                                    <Button
+                                        disabled={isDeterminingLoginOptions || isRequestingToken || isAuthenticating}
+                                        type="button"
+                                        className="w-full"
+                                        variant="optional"
+                                        rightIcon={<IconBrandGoogleFilled size={16} />}
+                                        onClick={loginWithGoogle}
+                                    >
+                                        {t('login.loginWith', { method: 'Google' })}
+                                    </Button>
+                                </>
+                            )}
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div className="flex flex-col gap-y-4 text-center pb-5 md:pb-10">
+                <Typography className="text-form">
+                    {`${t('login.noaccount')} `}
+                    <Link to="/registration" onClick={handleTrackToRegistration} className="underline decoration-1 underline-offset-[5px]">
+                        {t('login.registerHere')}
+                    </Link>
+                </Typography>
+                <div className="flex justify-center">
+                    <Typography className="text-form">{t('login.needHelp')}&nbsp;</Typography>
+                    <Button
+                        className="font-normal text-form inline size-auto p-0"
+                        onClick={() =>
+                            (window.location.href = 'mailto:support@lern-fair.de?subject=Probleme%20bei%20der%20Anmeldung%20im%20neuen%20Userbereich')
+                        }
+                        variant="link"
+                    >
+                        <span className="underline decoration-1">{t('login.contactSupport')}</span>
+                    </Button>
+                </div>
+                <Typography className="text-form">
+                    <a className="underline decoration-1 underline-offset-4" href={`${window.origin}/datenschutz`} target="_blank" rel="noreferrer">
+                        {t('settings.legal.datapolicy')}
+                    </a>
+                    &nbsp; & &nbsp;
+                    <a className="underline decoration-1 underline-offset-4" href={`${window.origin}/impressum`} target="_blank" rel="noreferrer">
+                        {t('settings.legal.imprint')}
+                    </a>
+                </Typography>
+            </div>
+            <InformationModal
+                variant="destructive"
+                isOpen={showDeactivatedModal}
+                onOpenChange={setShowDeactivatedModal}
+                headline={<span className="block text-center">{t('login.accountDeactivated.title')}</span>}
+            >
+                <Typography className="text-pretty text-center">{t('login.accountDeactivated.alert_html')}</Typography>
+            </InformationModal>
+            <ConfirmationModal
+                isOpen={showForgotPasswordModal}
+                onOpenChange={setShowForgotPasswordModal}
+                headline={t('login.passwordReset.btn')}
+                description={t('login.passwordReset.description', { email })}
+                confirmButtonText={t('login.passwordReset.btn')}
+                onConfirm={handleOnResetPassword}
+                isLoading={isResettingPassword}
+            />
+        </div>
     );
-}
+};
+
+export default Login;
