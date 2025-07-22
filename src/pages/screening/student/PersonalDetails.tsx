@@ -15,12 +15,14 @@ import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { ApolloError, useMutation } from '@apollo/client';
 import { IconCheck, IconDeviceFloppy, IconKey, IconTestPipe } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ButtonField } from '../components/ButtonField';
 import { Input } from '@/components/Input';
 import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityModal';
+import { EditLocationModal } from '../components/EditLocationModal';
+import zipStateMapping from '../../../assets/data/plz_to_state.json';
 
 interface PersonalDetailsProps {
     student: StudentForScreening;
@@ -66,15 +68,25 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
 
     const zipCodeLength = () => {
-        switch (student.state) {
+        switch (location) {
             case Student_State_Enum.At:
             case Student_State_Enum.Ch:
                 return 4;
             case Student_State_Enum.Other:
+            case undefined:
                 return null;
             default:
                 return 5;
         }
+    };
+
+    // Range check here purposefully lexicographic to allow comparisons with codes with leading zeros
+    // Currently just takes the first found match
+    // => TBD discuss on how to handle zipcodes with multiple occurences
+    const zipCodeToState = () => {
+        if (!zipCode || zipCode.length < 5) return;
+
+        setLocation((zipStateMapping.find((state) => state.min <= zipCode && state.max >= zipCode)?.state as Student_State_Enum) ?? Student_State_Enum.Other);
     };
 
     const handleOnSaveStudent = async () => {
@@ -160,20 +172,28 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         />
                     </div>
                     <div className="flex flex-col gap-y-2 mb-6">
-                        <ButtonField className="min-w-full" label="Ort" onClick={() => setShowEditLocation(true)}>
-                            {t(asTranslationKey(`lernfair.states.${location}`))}
-                        </ButtonField>
-                    </div>
-                    <div className="flex flex-col gap-y-2 mb-6">
                         <Label>Postleitzahl</Label>
                         <Input
                             maxLength={zipCodeLength() ?? undefined}
                             value={zipCode}
-                            onChange={(e) => setZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only digits can pe typed in
+                            onChange={(e) => setZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only digits can be typed in
                         />
-                        <Typography variant="sm" className="text-destructive">
+                        {/* <Typography variant="sm" className="text-destructive">
                             {`Postleitzahl für ${t(asTranslationKey(`lernfair.states.${student?.state}`))} muss ${zipCodeLength()} Ziffern haben.`}
-                        </Typography>
+                        </Typography> */}
+                    </div>
+                </div>
+                <div className="flex flex-wrap gap-6 items-end">
+                    <div className="flex flex-col gap-y-2 mb-6">
+                        <Label>Ort</Label>
+                        <Button size="sm" variant="outline" onClick={zipCodeToState}>
+                            Ort aus PLZ ermitteln
+                        </Button>
+                    </div>
+                    <div className="flex flex-col gap-y-2 mb-6">
+                        <ButtonField className="min-w-full" onClick={() => setShowEditLocation(true)}>
+                            {t(asTranslationKey(`lernfair.states.${location}`))}
+                        </ButtonField>
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-6">
@@ -262,6 +282,12 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                     onSave={setWeeklyAvailability}
                     onOpenChange={setShowEditAvailability}
                     isOpen={showEditAvailability}
+                />
+                <EditLocationModal
+                    isOpen={showEditLocation}
+                    onOpenChange={setShowEditLocation}
+                    state={location as Student_State_Enum}
+                    onSave={setLocation as any}
                 />
             </div>
         </>
