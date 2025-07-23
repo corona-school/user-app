@@ -60,45 +60,44 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
         searchConfig,
     }: SelectorProps<Enum>) {
         const { t } = useTranslation();
-        const gridItems = maxVisibleItems ?? Object.values(values).length;
-        const searchItems = Object.values(values).slice(gridItems, Object.values(values).length);
+        const gridItemsCount = maxVisibleItems ?? Object.values(values).length;
+        const gridItems = Object.values(values).slice(0, gridItemsCount);
+        const searchItems = Object.values(values).slice(gridItemsCount, Object.values(values).length);
         const [search, setSearch] = useState('');
         return (
             <div className={cn('flex flex-wrap gap-2', className)}>
-                {Object.values(values)
-                    .slice(0, gridItems)
-                    .map((it) => {
-                        const enumValue = it as Enum;
-                        const translation = getTranslation(enumValue);
+                {gridItems.map((it) => {
+                    const enumValue = it as Enum;
+                    const translation = getTranslation(enumValue);
 
-                        const isSelected = multiple ? (value as Enum[] | undefined)?.includes(enumValue) : enumValue === value;
-                        const handleChange = () => {
-                            if (multiple) {
-                                const current = (value as Enum[] | null) ?? [];
-                                const exists = current.includes(enumValue);
-                                const updated = exists ? current.filter((v) => v !== enumValue) : [...current, enumValue];
-                                setValue(updated);
-                            } else {
-                                setValue(enumValue);
-                            }
-                        };
+                    const isSelected = multiple ? (value as Enum[] | undefined)?.includes(enumValue) : enumValue === value;
+                    const handleChange = () => {
+                        if (multiple) {
+                            const current = (value as Enum[] | null) ?? [];
+                            const exists = current.includes(enumValue);
+                            const updated = exists ? current.filter((v) => v !== enumValue) : [...current, enumValue];
+                            setValue(updated);
+                        } else {
+                            setValue(enumValue);
+                        }
+                    };
 
-                        return (
-                            <Toggle
-                                pressed={isSelected}
-                                variant={toggleConfig.variant}
-                                onPressedChange={handleChange}
-                                key={it}
-                                size={toggleConfig.size}
-                                className={cn('justify-center gap-2', toggleConfig.className)}
-                            >
-                                <>
-                                    {getIcon && getIcon(it as Enum)}
-                                    {Array.isArray(translation) ? t(...translation) : t(asTranslationKey(translation))}
-                                </>
-                            </Toggle>
-                        );
-                    })}
+                    return (
+                        <Toggle
+                            pressed={isSelected}
+                            variant={toggleConfig.variant}
+                            onPressedChange={handleChange}
+                            key={it}
+                            size={toggleConfig.size}
+                            className={cn('justify-center gap-2', toggleConfig.className)}
+                        >
+                            <>
+                                {getIcon && getIcon(it as Enum)}
+                                {Array.isArray(translation) ? t(...translation) : t(asTranslationKey(translation))}
+                            </>
+                        </Toggle>
+                    );
+                })}
                 {searchConfig && (
                     <div className={searchConfig?.containerClassName}>
                         <Combobox
@@ -109,7 +108,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                                     return { value: e, label: `${t(asTranslationKey(translation as any))}`, icon: getIcon?.(enumValue) };
                                 })
                                 .filter((e) => e.label.includes(search))}
-                            value={value as any}
+                            value={multiple ? value?.filter((e) => !gridItems.includes(e)) : (value as any)}
                             onSearch={setSearch}
                             search={search}
                             multiple={multiple}
