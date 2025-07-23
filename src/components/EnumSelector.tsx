@@ -112,7 +112,14 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                             onSearch={setSearch}
                             search={search}
                             multiple={multiple}
-                            onSelect={(e: any) => setValue(e)}
+                            onSelect={(e: any) => {
+                                if (multiple) {
+                                    const selectedItemsFromGrid = (value ?? []).filter((e) => gridItems.includes(e));
+                                    setValue(selectedItemsFromGrid.concat(e));
+                                } else {
+                                    setValue(e);
+                                }
+                            }}
                             className={cn(searchConfig?.className)}
                             isLoading={false}
                             placeholder={searchConfig?.placeholder}
