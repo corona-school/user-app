@@ -271,6 +271,7 @@
     "grade": "Klasse",
     "since": "seit",
     "till": "bis",
+    "otherLanguages": "andere Sprachen",
     "lernfair": {
         "languages": {
             "albanisch": "Albanisch",
@@ -290,6 +291,7 @@
             "polnisch": "Polnisch",
             "portugiesisch": "Portugiesisch",
             "russisch": "Russisch",
+            "rum_nisch": "Rumänisch",
             "spanisch": "Spanisch",
             "ukrainisch": "Ukrainisch",
             "vietnamesisch": "Vietnamesisch",
@@ -412,27 +414,9 @@
             "16OrOlder": "Schüler:in ist 16 oder älter"
         },
         "emailOwnerOptions": {
-            "pupil": "Schüler:in E-mail",
-            "parent": "Elternteil E-mail",
-            "other": "Hilfsperson E-mail"
-        },
-        "barrier": {
-            "title": "Wichtig",
-            "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen / Azubi. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
-            "point_0": "● Du brauchst Hilfe in der Schule",
-            "point_1": "● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
-            "point_2": "● Deine Familie kann keine Nachhilfe für dich bezahlen",
-            "btn": {
-                "yes": "Ja, die Punkte treffen zu",
-                "no": "Nein, die Punkte treffen nicht zu"
-            }
-        },
-        "barrier_failed": {
-            "title": "Registrierung fehlgeschlagen!",
-            "subtitle": "Da Du unsere Teilnahmebedingungen abgelehnt hast, können wir Dir leider keine Registrierung ermöglichen.",
-            "subtitle2": "Erst nach dem Bestätigen unserer Teilnahmebedingungen können wir Dir gerne die Registrierung gewähren.",
-            "retry": "Registrierung erneut beginnen",
-            "alternatives": "Weitere Infos erhalten"
+            "pupil": "Schüler:in / Azubi",
+            "parent": "Elternteil",
+            "other": "Hilfsperson"
         },
         "hint": {
             "name": "Bitte gebe deinen vollen Namen an",
@@ -478,8 +462,36 @@
         },
         "steps": {
             "userType": {
-                "title": "Deine Rolle",
-                "subtitle": "Ich bin"
+                "title": "In welcher Rolle meldest du dich bei Lern-Fair an?"
+            },
+            "acceptanceCheck": {
+                "title": "Bist du bei uns richtig?",
+                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildene.\nTreffen zwei oder mehr Punkte auf dich zu?",
+                "needHelpInSchool": "Du brauchst Hilfe in der Schule",
+                "familyCannotHelp": "Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
+                "familyCannotAffordTutoring": "Deine Familie kann keine Nachhilfe für dich bezahlen",
+                "doNotApplyToMe": "Es treffen keine zwei Punkte auf mich zu"
+            },
+            "acceptanceCheckFailed": {
+                "title": "Wie schade.",
+                "description": "Tut uns leid, dass wir dir nicht weiterhelfen können. Probiere es nochmal oder schaue  nach anderen Angeboten die für dich interessant sein könnten.",
+                "seeOtherOffers": "Andere Angebote anschauen",
+                "tryAgain": "Nochmal probieren"
+            },
+            "userName": {
+                "congratsHint": "Wunderbar.\nDu kannst unsere Angebote nutzen!",
+                "title": "Wie heißt du?"
+            },
+            "userAge": {
+                "title": "Wie alt bist du?"
+            },
+            "languages": {
+                "title": "Welche Sprachen sprichst du zu Hause?",
+                "tooltip": "Dies ist eine wichtige Information um passende Helfer zu finden"
+            },
+            "emailOwner": {
+                "title": "Wessen Email-Adresse nutzen wir?",
+                "description": "Wir schicken alle Informationen zum Start an diese E-Mail-Adresse. Man kann sie später auch ändern."
             },
             "personalData": {
                 "title": "Persönliche Daten",
