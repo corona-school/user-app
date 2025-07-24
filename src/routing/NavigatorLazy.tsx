@@ -33,7 +33,6 @@ import DashboardStudent from '../pages/student/DashboardStudent';
 import ProfileStudent from '../pages/student/ProfileStudent';
 import RequestCertificate from '../pages/RequestCertificate';
 import PupilGroup from '../pages/pupil/Group';
-import NoAcceptRegistration from '../pages/NoAcceptRegistration';
 import VerifyEmail from '../pages/VerifyEmail';
 import VerifyEmailModal from '../modals/VerifyEmailModal';
 import ResetPassword from '../pages/ResetPassword';
@@ -114,8 +113,6 @@ export default function NavigatorLazy() {
             <Route path="/registration" element={<Outlet />}>
                 <Route path="*" element={<Registration />} />
             </Route>
-
-            <Route path="/registration-rejected" element={<NoAcceptRegistration />} />
 
             {/* Private */}
             <Route
