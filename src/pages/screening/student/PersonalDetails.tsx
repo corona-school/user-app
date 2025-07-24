@@ -15,7 +15,7 @@ import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { ApolloError, useMutation } from '@apollo/client';
 import { IconCheck, IconDeviceFloppy, IconKey, IconTestPipe } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ButtonField } from '../components/ButtonField';
@@ -32,6 +32,7 @@ interface PersonalDetailsProps {
 interface FormErrors {
     languages?: string;
     subjects?: string;
+    zipCode?: string;
 }
 
 const CREATE_LOGIN_TOKEN_MUTATION = gql(`
@@ -83,10 +84,16 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     // Range check here purposefully lexicographic to allow comparisons with codes with leading zeros
     // Currently just takes the first found match
     // => TBD discuss on how to handle zipcodes with multiple occurences
-    const zipCodeToState = () => {
-        if (!zipCode || zipCode.length < 5) return;
+    const zipCodeToState = (input: string) => {
+        if (!input || input.length < 5) return;
 
-        setLocation((zipStateMapping.find((state) => state.min <= zipCode && state.max >= zipCode)?.state as Student_State_Enum) ?? Student_State_Enum.Other);
+        const state = zipStateMapping.find((state) => state.min <= input && state.max >= input)?.state;
+        if (state) {
+            setLocation(state as Student_State_Enum);
+            setErrors({ ...errors, zipCode: '' });
+        } else {
+            setErrors({ ...errors, zipCode: 'Keine gültige deutsche PLZ' });
+        }
     };
 
     const handleOnSaveStudent = async () => {
@@ -176,22 +183,18 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         <Input
                             maxLength={zipCodeLength() ?? undefined}
                             value={zipCode}
-                            onChange={(e) => setZipCode(e.target.value.replace(/\D/g, ''))} // Ensures that only digits can be typed in
+                            onChange={(e) => {
+                                setZipCode(e.target.value.replace(/\D/g, '')); // Ensures that only digits can be typed in
+                                zipCodeToState(e.target.value);
+                            }}
                         />
-                        {/* <Typography variant="sm" className="text-destructive">
-                            {`Postleitzahl für ${t(asTranslationKey(`lernfair.states.${student?.state}`))} muss ${zipCodeLength()} Ziffern haben.`}
-                        </Typography> */}
-                    </div>
-                </div>
-                <div className="flex flex-wrap gap-6 items-end">
-                    <div className="flex flex-col gap-y-2 mb-6">
-                        <Label>Ort</Label>
-                        <Button size="sm" variant="outline" onClick={zipCodeToState}>
-                            Ort aus PLZ ermitteln
-                        </Button>
+                        <Typography variant="sm" className="text-destructive">
+                            {errors.zipCode}
+                            {/* {`Postleitzahl für ${t(asTranslationKey(`lernfair.states.${student?.state}`))} muss ${zipCodeLength()} Ziffern haben.`} */}
+                        </Typography>
                     </div>
                     <div className="flex flex-col gap-y-2 mb-6">
-                        <ButtonField className="min-w-full" onClick={() => setShowEditLocation(true)}>
+                        <ButtonField className="min-w-full" label="Ort" onClick={() => setShowEditLocation(true)}>
                             {t(asTranslationKey(`lernfair.states.${location}`))}
                         </ButtonField>
                     </div>
