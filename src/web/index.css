@@ -30,6 +30,8 @@
 
         --accent: var(--primary-lighter);
         --accent-foreground: var(--primary);
+        --accent-dark: 171 24% 83%;
+        --accent-medium: 171 23% 88%;
 
         --destructive-lighter: 0 77% 93%;
         --destructive: 0 73.7% 41.8%;
