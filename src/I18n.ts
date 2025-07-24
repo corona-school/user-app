@@ -1,6 +1,6 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { AL, AM, AZ, BA, BG, CN, DE, ES, FR, GB, IR, KZ, PL, PT, SA, TR, UA, VN, RU, IT } from 'country-flag-icons/react/1x1';
+import { AL, AM, AZ, BA, BG, CN, DE, ES, FR, GB, IR, KZ, PL, PT, SA, TR, UA, VN, RU, IT, RO } from 'country-flag-icons/react/1x1';
 import de from './lang/de.json';
 import { Settings } from 'luxon';
 
@@ -41,6 +41,7 @@ export const languageList = [
     { short: 'pl', long: 'polnisch' },
     { short: 'pt', long: 'portugiesisch' },
     { short: 'ru', long: 'russisch' },
+    { short: 'ro', long: 'rum_nisch' },
     { short: 'tr', long: 't_rkisch' },
     { short: 'uk', long: 'ukrainisch' },
     { short: 'vn', long: 'vietnamesisch' },
@@ -64,6 +65,7 @@ export const languageIcons = {
     pl: PL,
     pt: PT,
     ru: RU,
+    ro: RO,
     tr: TR,
     uk: UA,
     vn: VN,
