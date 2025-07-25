@@ -228,7 +228,8 @@
             "ukrainisch": "Ukraynaca",
             "vietnamesisch": "Vietnamca",
             "other": "Diğer",
-            "andere": "Diğer"
+            "andere": "Diğer",
+            "rum_nisch": "Romence"
         },
         "subjects": {
             "Altgriechisch": "Antik Yunan",
@@ -339,24 +340,6 @@
         "contactSupport": "Bize ulaşın"
     },
     "registration": {
-        "barrier": {
-            "btn": {
-                "yes": "Evet, puanlar geçerlidir",
-                "no": "Hayır, puanlar geçerli değil"
-            },
-            "title": "Önemli",
-            "text": "Programlarımız eğitim açısından dezavantajlı öğrencilere / stajyerlere yöneliktir. Bu hedef gruba dahil olup olmadığınızdan emin değil misiniz?\n\nO halde aşağıdaki noktalara bir göz atın. Bunlardan iki veya daha fazlasına \"evet\" cevabı verebilir misiniz? Lern-Fair O zaman 'den tüm teklifleri kullanabilirsiniz.",
-            "point_0": "Okulda yardıma ihtiyacınız var",
-            "point_1": "Aileniz ödevlerinizde size yardımcı olamaz",
-            "point_2": "Aileniz sizin için özel ders ücretini ödeyemez"
-        },
-        "barrier_failed": {
-            "title": "Kayıt başarısız oldu!",
-            "subtitle": "Katılım koşullarımızı reddettiğiniz için maalesef kayıt olmanıza izin veremiyoruz.",
-            "subtitle2": "Size ancak katılım koşullarımızı onayladıktan sonra kayıt olma izni verebiliriz.",
-            "retry": "Yeniden kaydolmaya başla",
-            "alternatives": "Daha fazla bilgi alın"
-        },
         "hint": {
             "schoolClassSelectionMissing": "Lütfen bir okul sınıfı seçin.",
             "schoolTypeSelectionMissing": "Lütfen bir okul türü seçiniz.",
@@ -401,8 +384,7 @@
         },
         "steps": {
             "userType": {
-                "title": "Sizin rolünüz",
-                "subtitle": "Ben"
+                "title": "Lern-Fair 'e hangi görevle kayıt yaptırıyorsunuz?"
             },
             "personalData": {
                 "title": "Kişisel veriler",
@@ -431,6 +413,35 @@
                 "helperText": "Okul türünüzü ve okul konumunuzu belirlemek için okul bilgilerini kullanırız",
                 "schoolFound": "Okul bulundu",
                 "otherSchoolFound": "Tanınan diğer okullar"
+            },
+            "acceptanceCheck": {
+                "title": "Doğru yerde misiniz?",
+                "description": "Programlarımız eğitim açısından dezavantajlı öğrencilere ve stajyerlere yöneliktir.\nİki veya daha fazla nokta sizin için geçerli mi?",
+                "needHelpInSchool": "Okulda yardıma ihtiyacınız var",
+                "familyCannotHelp": "Aileniz ev ödevlerinizde size yardımcı olamaz",
+                "familyCannotAffordTutoring": "Aileniz sizin için özel ders ücretini ödeyemez",
+                "doNotApplyToMe": "Benim için geçerli olan iki nokta yok"
+            },
+            "acceptanceCheckFailed": {
+                "title": "Ne yazık.",
+                "description": "Size yardımcı olamadığımız için üzgünüz. Tekrar deneyin veya ilginizi çekebilecek diğer tekliflere bakın.",
+                "seeOtherOffers": "Diğer teklifleri görüntüle",
+                "tryAgain": "Tekrar deneyin"
+            },
+            "userName": {
+                "congratsHint": "Harika.\nTekliflerimizden yararlanabilirsiniz!",
+                "title": "Adın ne senin?"
+            },
+            "userAge": {
+                "title": "Kaç yaşındasın sen?"
+            },
+            "languages": {
+                "title": "Evde hangi dilleri konuşuyorsunuz?",
+                "tooltip": "Bu, uygun yardımcıları bulmak için önemli bir bilgidir"
+            },
+            "emailOwner": {
+                "title": "Kimin e-posta adresini kullanıyoruz?",
+                "description": "Başlangıçla ilgili tüm bilgileri bu e-posta adresine göndereceğiz. Daha sonra da değiştirebilirsiniz."
             }
         },
         "pupil": {
@@ -2671,5 +2682,6 @@
         "friday": "Cuma",
         "saturday": "Cumartesi",
         "sunday": "Pazar"
-    }
+    },
+    "otherLanguages": "diğer diller"
 }

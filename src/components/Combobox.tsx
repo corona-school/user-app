@@ -81,7 +81,7 @@ export const Combobox = ({
                     className={cn('w-full', (!value || !value?.length) && 'text-muted-foreground overflow-hidden', className)}
                     rightIcon={<IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />}
                 >
-                    <div className="text-ellipsis overflow-hidden w-[90%] text-left">{value ? getCurrentValueLabels() : placeholder}</div>
+                    <div className="text-ellipsis overflow-hidden w-[90%] text-left">{value?.length ? getCurrentValueLabels() : placeholder}</div>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className={cn('max-w-full p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]')}>

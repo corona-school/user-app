@@ -228,7 +228,8 @@
             "ukrainisch": "Ukrainian",
             "vietnamesisch": "Vietnamese",
             "other": "Other",
-            "andere": "Other"
+            "andere": "Other",
+            "rum_nisch": "Romanian"
         },
         "subjects": {
             "Altgriechisch": "Ancient Greek",
@@ -339,24 +340,6 @@
         "contactSupport": "Contact us"
     },
     "registration": {
-        "barrier": {
-            "btn": {
-                "yes": "Yes, the points apply",
-                "no": "No, the points do not apply"
-            },
-            "title": "Important",
-            "text": "Our offers are aimed at educationally disadvantaged pupils / trainees. Not sure if you belong to this target group?\n\nThen take a look at the following points. Can you answer \"yes\" to two or more of them? Then you are welcome to use all the services offered by Lern-Fair .",
-            "point_0": "● You need help at school",
-            "point_1": "● Your family can't help you with your homework",
-            "point_2": "● Your family can't pay for tutoring for you"
-        },
-        "barrier_failed": {
-            "title": "Registration failed!",
-            "subtitle": "As you have rejected our conditions of participation, we are unfortunately unable to allow you to register.",
-            "subtitle2": "We can only grant you registration after you have confirmed our conditions of participation.",
-            "retry": "Start registration again",
-            "alternatives": "Get more information"
-        },
         "hint": {
             "schoolClassSelectionMissing": "Please select a school class.",
             "schoolTypeSelectionMissing": "Please select a school type.",
@@ -401,8 +384,7 @@
         },
         "steps": {
             "userType": {
-                "title": "Your role",
-                "subtitle": "I am"
+                "title": "In which role are you registering for Lern-Fair?"
             },
             "personalData": {
                 "title": "Personal data",
@@ -431,6 +413,35 @@
                 "helperText": "We use the school details to determine your school type and location",
                 "schoolFound": "School found",
                 "otherSchoolFound": "Other school recognized"
+            },
+            "acceptanceCheck": {
+                "title": "Are you in the right place?",
+                "description": "Our offers are aimed at educationally disadvantaged pupils and trainees.\nDo two or more points apply to you?",
+                "needHelpInSchool": "You need help at school",
+                "familyCannotHelp": "Your family can't help you with your homework",
+                "familyCannotAffordTutoring": "Your family can't pay for tutoring for you",
+                "doNotApplyToMe": "There are no two points that apply to me"
+            },
+            "acceptanceCheckFailed": {
+                "title": "What a pity.",
+                "description": "We're sorry we can't help you. Try again or look for other offers that might be of interest to you.",
+                "seeOtherOffers": "View other offers",
+                "tryAgain": "Try again"
+            },
+            "userName": {
+                "congratsHint": "Wonderful.\nYou can take advantage of our offers!",
+                "title": "What is your name?"
+            },
+            "userAge": {
+                "title": "How old are you?"
+            },
+            "languages": {
+                "title": "What languages do you speak at home?",
+                "tooltip": "This is important information for finding suitable helpers"
+            },
+            "emailOwner": {
+                "title": "Whose email address do we use?",
+                "description": "We will send all information about the start to this e-mail address. You can also change it later."
             }
         },
         "pupil": {
@@ -2675,5 +2686,6 @@
         "friday": "Friday",
         "saturday": "Saturday",
         "sunday": "Sunday"
-    }
+    },
+    "otherLanguages": "other languages"
 }
