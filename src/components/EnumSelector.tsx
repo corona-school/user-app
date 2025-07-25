@@ -107,7 +107,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                                     const translation = getTranslation(enumValue);
                                     return { value: e, label: `${t(asTranslationKey(translation as any))}`, icon: getIcon?.(enumValue) };
                                 })
-                                .filter((e) => e.label.includes(search))}
+                                .filter((e) => e.label.toLowerCase().includes(search.toLowerCase()))}
                             value={multiple ? value?.filter((e) => !gridItems.includes(e)) : (value as any)}
                             onSearch={setSearch}
                             search={search}
