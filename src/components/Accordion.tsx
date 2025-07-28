@@ -1,80 +1,44 @@
-import { View, Pressable, Heading, Box, useTheme, Row, Column, ChevronDownIcon, PresenceTransition } from 'native-base';
-import { ReactNode, useState } from 'react';
-import CSSWrapper from './CSSWrapper';
+import * as React from 'react';
+import * as AccordionPrimitive from '@radix-ui/react-accordion';
+import { cn } from '@/lib/Tailwind';
+import { IconChevronDown } from '@tabler/icons-react';
 
-import '../web/scss/components/Accordion.scss';
+function Accordion({ ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
+    return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
+}
 
-type Props = {
-    title: string;
-    children: ReactNode;
-};
+function AccordionItem({ className, ...props }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
+    return <AccordionPrimitive.Item data-slot="accordion-item" className={cn('border-b last:border-b-0', className)} {...props} />;
+}
 
-const Accordion: React.FC<Props> = ({ title, children }) => {
-    const { space } = useTheme();
-    const [isActive, setIsActive] = useState(false);
-
+function AccordionTrigger({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
     return (
-        <View marginBottom={space['1']}>
-            <Box>
-                <CSSWrapper className={isActive ? 'accordion__item-header accordion__item-header--open' : 'accordion__item-header'}>
-                    <Pressable onPress={() => setIsActive(!isActive)}>
-                        <Row
-                            paddingX={space['1.5']}
-                            paddingY={space['1']}
-                            borderRadius={10}
-                            borderBottomRadius={isActive ? 0 : ''}
-                            backgroundColor={isActive ? 'primary.800' : 'primary.200'}
-                            justifyContent="space-between"
-                            width="100%"
-                            alignItems="center"
-                        >
-                            <Column>
-                                <Heading maxWidth="200" fontSize="sm" color={isActive ? 'white' : 'primary.900'}>
-                                    {title}
-                                </Heading>
-                            </Column>
-                            <Column>
-                                <PresenceTransition
-                                    visible={isActive}
-                                    initial={{
-                                        rotate: '0deg',
-                                    }}
-                                    animate={{
-                                        rotate: '180deg',
-                                        transition: {
-                                            duration: 250,
-                                        },
-                                    }}
-                                >
-                                    <Box
-                                        width="28px"
-                                        height="28px"
-                                        backgroundColor={isActive ? 'primary.100' : 'primary.800'}
-                                        justifyContent="center"
-                                        alignItems="center"
-                                        padding={space['0.5']}
-                                        borderRadius="50%"
-                                    >
-                                        <ChevronDownIcon color={isActive ? 'primary.900' : 'white'} />
-                                    </Box>
-                                </PresenceTransition>
-                            </Column>
-                        </Row>
-                    </Pressable>
-                </CSSWrapper>
-            </Box>
-            <CSSWrapper className={isActive ? 'accordion__item-content accordion__item-content--open' : 'accordion__item-content'}>
-                <Box
-                    backgroundColor="primary.800"
-                    paddingBottom={space['1.5']}
-                    paddingX={space['1.5']}
-                    borderBottomLeftRadius={10}
-                    borderBottomRightRadius={10}
-                >
-                    {children}
-                </Box>
-            </CSSWrapper>
-        </View>
+        <AccordionPrimitive.Header className="flex">
+            <AccordionPrimitive.Trigger
+                data-slot="accordion-trigger"
+                className={cn(
+                    'focus-visible:border-ring focus-visible:ring-ring/50 flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left text-sm font-medium transition-all outline-none focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180',
+                    className
+                )}
+                {...props}
+            >
+                {children}
+                <IconChevronDown className="text-muted-foreground pointer-events-none size-6 shrink-0 translate-y-0.5 transition-transform duration-200" />
+            </AccordionPrimitive.Trigger>
+        </AccordionPrimitive.Header>
     );
-};
-export default Accordion;
+}
+
+function AccordionContent({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
+    return (
+        <AccordionPrimitive.Content
+            data-slot="accordion-content"
+            className="data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down overflow-hidden text-sm"
+            {...props}
+        >
+            <div className={cn('pt-0 pb-4', className)}>{children}</div>
+        </AccordionPrimitive.Content>
+    );
+}
+
+export { Accordion, AccordionItem, AccordionTrigger, AccordionContent };
