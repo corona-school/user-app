@@ -1,5 +1,6 @@
 import { Language, PupilEmailOwner } from '@/gql/graphql';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { useState } from 'react';
 
 export interface RegistrationForm {
     userType?: 'pupil' | 'student';
@@ -8,32 +9,45 @@ export interface RegistrationForm {
         familyCannotHelp?: boolean;
         familyCannotAffordTutoring?: boolean;
     };
-    firstname?: string;
-    lastname?: string;
+    firstname: string;
+    lastname: string;
     age?: number;
     languages: Language[];
     emailOwner?: PupilEmailOwner;
+    email: string;
+    password: string;
+    isRegisteringManually?: boolean;
+    privacyConsent: boolean;
 }
+
+const emptyState: RegistrationForm = {
+    acceptanceCheck: {},
+    languages: [],
+    email: '',
+    password: '',
+    firstname: '',
+    lastname: '',
+    privacyConsent: false,
+};
 
 export const useRegistrationForm = () => {
     const [values, setValues] = useLocalStorage<RegistrationForm>({
         key: 'registration',
-        initialValue: {
-            acceptanceCheck: {},
-            languages: [],
-        },
+        initialValue: emptyState,
     });
+    const [password, setPassword] = useState('');
 
-    const handleOnChange = (data: Partial<RegistrationForm>) => {
+    const handleOnChange = ({ password, ...data }: Partial<RegistrationForm>) => {
+        if (password !== undefined) {
+            setPassword(password);
+        }
         setValues({ ...values, ...data });
     };
 
     const reset = () => {
-        setValues({
-            acceptanceCheck: {},
-            languages: [],
-        });
+        setValues(emptyState);
+        setPassword('');
     };
 
-    return { form: values, onFormChange: handleOnChange, reset };
+    return { form: { ...values, password }, onFormChange: handleOnChange, reset };
 };
