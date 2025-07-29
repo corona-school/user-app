@@ -433,15 +433,38 @@
                 "title": "What is your name?"
             },
             "userAge": {
-                "title": "How old are you?"
+                "title": "How old are you?",
+                "description": "We use this information for registration and assignment to courses and learning partners."
             },
             "languages": {
                 "title": "What languages do you speak at home?",
-                "tooltip": "This is important information for finding suitable helpers"
+                "tooltip": "This is important information for finding suitable helpers",
+                "description": "So that we know in which languages volunteers can communicate with you."
             },
             "emailOwner": {
                 "title": "Whose email address do we use?",
                 "description": "We will send all information about the start to this e-mail address. You can also change it later."
+            },
+            "authenticationInfo": {
+                "title": "Login",
+                "description": "With your account, you can attend group courses, 1-to-1 tutoring and homework help free of charge.",
+                "pupilEmail": "Email from pupil / trainee",
+                "passwordPlaceholder": "Enter password",
+                "emailPlaceholder": "Email address",
+                "registerWith": "Log in with {{method}}"
+            },
+            "dataPrivacy": {
+                "usageBullets": {
+                    "1": "We store your data for as long as your account at Lern-Fair is active and delete it no later than 3 years after your account is deactivated",
+                    "2": "We share your personal information (name, school type, grade, state, subjects) with volunteers who will support you",
+                    "3": "We use products from Heroku, Mailjet, Datadog and Google to process your data, which may not be able to guarantee the European level of data protection"
+                },
+                "title": "Consent to data protection",
+                "dataUsageInfoLabel": "This is what happens to your data when you register at Lern-Fair :",
+                "dataUsageUSA": "Data processing by processors in the USA",
+                "labelTermsAndPrivacy": "I have taken note of the privacy policy and terms and conditions.",
+                "accordionUsDataProcessors": "I acknowledge that the processing of my personal data is carried out by our US-based processors Google and Heroku, which cannot guarantee compliance with the European level of data protection due to the possibility of requests from US intelligence services. For this purpose, Lern-Fair has concluded standard contractual clauses and agreed further security measures, Art. 46 para. 2 lit. c GDPR.",
+                "sendRegistration": "Submit registration"
             }
         },
         "pupil": {

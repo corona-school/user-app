@@ -483,15 +483,38 @@
                 "title": "Wie heißt du?"
             },
             "userAge": {
-                "title": "Wie alt bist du?"
+                "title": "Wie alt bist du?",
+                "description": "Diese Info nutzen wir für die Anmeldung und Zuordnung zu Kursen und Lernpartner:innen."
             },
             "languages": {
                 "title": "Welche Sprachen sprichst du zu Hause?",
+                "description": "Damit wir wissen, in welchen Sprachen Helfer:innen mit dir kommunizieren können.",
                 "tooltip": "Dies ist eine wichtige Information um passende Helfer zu finden"
             },
             "emailOwner": {
                 "title": "Wessen Email-Adresse nutzen wir?",
                 "description": "Wir schicken alle Informationen zum Start an diese E-Mail-Adresse. Man kann sie später auch ändern."
+            },
+            "authenticationInfo": {
+                "title": "Anmeldung",
+                "description": "Mit deinem Konto kannst du kostenlos Gruppenkurse, 1zu1 Nachhilfe und die Hausaufgabenhilfe besuchen.",
+                "pupilEmail": "Email von Schüler:in / Azubi",
+                "passwordPlaceholder": "Passwort eingeben",
+                "emailPlaceholder": "Email-Adresse",
+                "registerWith": "Anmelden mit {{method}}"
+            },
+            "dataPrivacy": {
+                "title": "Einwilligung Datenschutz",
+                "dataUsageInfoLabel": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
+                "dataUsageUSA": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
+                "labelTermsAndPrivacy": "Ich habe die Datenschutzbestimmungen und AGB zur Kenntnis genommen.",
+                "usageBullets": {
+                    "1": "Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts",
+                    "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",
+                    "3": "Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können"
+                },
+                "accordionUsDataProcessors": "Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO.",
+                "sendRegistration": "Registrierung abschicken"
             },
             "personalData": {
                 "title": "Persönliche Daten",

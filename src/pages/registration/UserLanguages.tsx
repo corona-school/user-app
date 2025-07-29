@@ -34,6 +34,9 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
                     </TooltipButton>
                 </span>
             </RegistrationStepTitle>
+            <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
+                {t('registration.steps.languages.description')}
+            </Typography>
             <div className="w-full pb-32 md:pb-0">
                 <LanguageSelector
                     maxVisibleItems={8}
