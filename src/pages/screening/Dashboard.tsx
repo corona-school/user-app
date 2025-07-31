@@ -152,18 +152,24 @@ export function ScreeningDashboard() {
                 lastname
                 email
                 languages
-                subjectsFormatted { name }
+                subjectsFormatted { name mandatory }
                 grade
                 gradeAsInt
                 openMatchRequestCount
+                verifiedAt
                 state
                 schooltype
                 onlyMatchWith
                 hasSpecialNeeds
                 descriptionForScreening
                 descriptionForMatch
+                calendarPreferences
                 school {
+                    id
                     name
+                    zip
+                    city
+                    email
                 }
                 matches {
                     createdAt
