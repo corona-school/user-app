@@ -15,7 +15,7 @@ import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { ApolloError, useMutation } from '@apollo/client';
 import { IconCheck, IconDeviceFloppy, IconKey, IconTestPipe } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ButtonField } from '../components/ButtonField';
@@ -32,7 +32,6 @@ interface PersonalDetailsProps {
 interface FormErrors {
     languages?: string;
     subjects?: string;
-    zipCode?: string;
 }
 
 const CREATE_LOGIN_TOKEN_MUTATION = gql(`
@@ -62,11 +61,20 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [descriptionForScreening, setDescriptionForScreening] = useState(student.descriptionForScreening);
     const [location, setLocation] = useState(student.state);
     const [zipCode, setZipCode] = useState(student.zipCode ?? '');
+    const [zipCodeError, setZipCodeError] = useState('');
 
     const [errors, setErrors] = useState<FormErrors>({});
 
     const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
+
+    useEffect(() => {
+        if (!location || location === Student_State_Enum.Other) return;
+
+        if (zipCode.length !== zipCodeLength()) {
+            setZipCodeError(`Postleitzahl für ${t(asTranslationKey(`lernfair.states.${location}`))} muss ${zipCodeLength()} Ziffern haben.`);
+        }
+    }, [zipCode, location]);
 
     const zipCodeLength = () => {
         switch (location) {
@@ -82,17 +90,22 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     };
 
     // Range check here purposefully lexicographic to allow comparisons with codes with leading zeros
-    // Currently just takes the first found match
-    // => TBD discuss on how to handle zipcodes with multiple occurences
     const zipCodeToState = (input: string) => {
-        if (!input || input.length < 5) return;
+        if (!input || input.length !== 5) return;
 
-        const state = zipStateMapping.find((state) => state.min <= input && state.max >= input)?.state;
-        if (state) {
-            setLocation(state as Student_State_Enum);
-            setErrors({ ...errors, zipCode: '' });
+        // Finds all states where the zipCode occurs in
+        const states = zipStateMapping.filter((range) => range.min <= input && range.max >= input).map((range) => range.state);
+
+        if (states.length === 0) {
+            setZipCodeError('Keine gültige deutsche PLZ');
+        } else if (!states.every((state) => state === states[0])) {
+            const statesUnique = states.filter((item, index) => states.indexOf(item) === index);
+
+            setZipCodeError(`PLZ gibt es in mehreren Bundesländern: ${statesUnique.map((s) => t(asTranslationKey(`lernfair.states.${s}`))).join(', ')}`);
         } else {
-            setErrors({ ...errors, zipCode: 'Keine gültige deutsche PLZ' });
+            setZipCodeError('');
+
+            setLocation(states[0] as Student_State_Enum);
         }
     };
 
@@ -108,7 +121,8 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         gender: (gender as Gender) || undefined,
                         descriptionForMatch,
                         descriptionForScreening,
-                        zipCode,
+                        state: location as any,
+                        zipCode: zipCode !== '' ? zipCode : null,
                         calendarPreferences: student.calendarPreferences
                             ? {
                                   ...student.calendarPreferences,
@@ -188,9 +202,8 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                                 zipCodeToState(e.target.value);
                             }}
                         />
-                        <Typography variant="sm" className="text-destructive">
-                            {errors.zipCode}
-                            {/* {`Postleitzahl für ${t(asTranslationKey(`lernfair.states.${student?.state}`))} muss ${zipCodeLength()} Ziffern haben.`} */}
+                        <Typography variant="sm" className="text-destructive max-w-60">
+                            {zipCodeError}
                         </Typography>
                     </div>
                     <div className="flex flex-col gap-y-2 mb-6">
@@ -286,12 +299,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                     onOpenChange={setShowEditAvailability}
                     isOpen={showEditAvailability}
                 />
-                <EditLocationModal
-                    isOpen={showEditLocation}
-                    onOpenChange={setShowEditLocation}
-                    state={location as Student_State_Enum}
-                    onSave={setLocation as any}
-                />
+                <EditLocationModal isOpen={showEditLocation} onOpenChange={setShowEditLocation} state={location as Student_State_Enum} onSave={setLocation} />
             </div>
         </>
     );
