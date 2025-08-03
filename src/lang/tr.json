@@ -257,7 +257,8 @@
             "Ethik": "Etik",
             "Gesundheit": "Sağlık",
             "Technik": "Teknoloji",
-            "Steuerlehre": "Vergi teorisi"
+            "Steuerlehre": "Vergi teorisi",
+            "Rechnungswesen": "Muhasebe"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -560,7 +561,7 @@
             "label": "Benim hakkımda",
             "empty": "Bilgi yok"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Diğer okul türleri",
@@ -570,8 +571,9 @@
                 "title": "Benim dillerim",
                 "others": "Diğer diller"
             },
-            "label": "Akıcı dil",
-            "empty": "Bilgi yok"
+            "empty": "Bilgi yok",
+            "labelPupil": "Evde hangi dilleri konuşuyorsunuz?",
+            "labelStudent": "Hangi dillerde yardımcı olabilirsiniz?"
         },
         "State": {
             "single": {
@@ -684,9 +686,9 @@
         "editprofile": "Profil resmini değiştir",
         "birthday": "Doğum tarihini değiştir",
         "type": "Destek türü:",
-        "availability": "Kullanılabilirliği yönetin",
         "noInfo": "Bilgi yok",
         "PersonalData": "Kişisel veriler",
+        "availability": "Ne zaman vaktin var?",
         "ZipCode": {
             "zipCode": "Posta kodu",
             "requiredLength": "Posta kodu {{length}} olmalıdır rakamlar."
@@ -897,7 +899,7 @@
             "faq": "SSS & İletişim",
             "manageSessions": "Cihazları yönetme",
             "certificates": "Sertifikalar",
-            "calendarPreferences": "Zaman uygunluğu"
+            "calendarPreferences": "Ne zaman vaktin var?"
         },
         "account": {
             "title": "Hesap",
@@ -1511,7 +1513,8 @@
                 "profile": {
                     "title": "Profili güncelle",
                     "subtitle": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
-                    "personalData": "Kişisel veriler"
+                    "personalData": "Kişisel veriler",
+                    "availabilityRequirement": "Devam etmek için lütfen önce müsaitlik durumunuzu ayarlayın."
                 },
                 "success": {
                     "title": "Başardın, sen bir kahramansın!",
@@ -1675,12 +1678,15 @@
             "button": "Sertifikalara"
         },
         "availability": {
-            "title": "Kullanılabilirlik",
-            "sharedTimeSlots": "{{count}} ortak zaman aralığı",
-            "otherTimeSlots": "{{count}} daha fazla zaman dilimi",
             "createAppointmentModal": {
                 "title": "Bu zaman aralığı için bir randevu oluşturmak ister misiniz?"
-            }
+            },
+            "bothOfYouHaveTime": "İkinizin de zamanı var.",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} henüz zaman aralıklarını girmedi (ona bir <chatLink>bağlantı</chatLink> gönder)",
+            "setupPreferencesChatMessage": "Merhaba 👋, ben {{myName}}, belki zamanınız olduğunda günlerinizi benimle paylaşmak istersiniz. Burada bulabilirsiniz: {{link}}",
+            "title": "Olası zaman aralıkları",
+            "youDoNotHaveTime": "Yalnızca {{learningPartnerName}}'ın zamanı vardır",
+            "editAvailability": "Zaman aralıklarınızı düzenleyin"
         }
     },
     "course": {
@@ -2113,7 +2119,7 @@
             "referral": "Yönlendirme",
             "certificates": "Sertifikalar",
             "lesson": "Yapay zeka ile ders planlayıcı (Beta)",
-            "calendarPreferences": "Zaman uygunluğu"
+            "calendarPreferences": "Ne zaman vaktin var?"
         }
     },
     "screening": {
@@ -2598,7 +2604,8 @@
             "Technik": "Teknoloji",
             "Wirtschaft": "Ekonomi",
             "Lernen lernen": "Öğrenmeyi öğrenmek",
-            "Steuerlehre": "Vergi teorisi"
+            "Steuerlehre": "Vergi teorisi",
+            "Rechnungswesen": "Muhasebe"
         },
         "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
     },

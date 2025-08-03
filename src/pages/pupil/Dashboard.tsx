@@ -208,6 +208,17 @@ const Dashboard: React.FC<Props> = () => {
         return data?.me?.pupil?.matches?.filter((match) => !match.dissolved);
     }, [data?.me?.pupil?.matches]);
 
+    const canRequestMatch = () => {
+        if (DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true') {
+            return false;
+        }
+
+        if (data?.me?.pupil?.canRequestMatch?.reason === 'no-subjects-selected') {
+            return true;
+        }
+        return data?.me?.pupil?.canRequestMatch?.allowed;
+    };
+
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -231,9 +242,7 @@ const Dashboard: React.FC<Props> = () => {
                             <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
-                                ((activeMatches?.length ?? 0) > 0 ||
-                                    (data?.me?.pupil?.canRequestMatch?.allowed && DEACTIVATE_PUPIL_MATCH_REQUESTS !== 'true') ||
-                                    (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (
+                                ((activeMatches?.length ?? 0) > 0 || canRequestMatch() || (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (
                                     <HSection
                                         marginBottom={space['1.5']}
                                         title={t('dashboard.learningpartner.header')}
@@ -251,7 +260,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 </Box>
                                             ))}
                                         </Flex>
-                                        {data?.me?.pupil?.canRequestMatch?.allowed && DEACTIVATE_PUPIL_MATCH_REQUESTS !== 'true' && (
+                                        {canRequestMatch() && (
                                             <Button
                                                 width={ButtonContainer}
                                                 onPress={() => {

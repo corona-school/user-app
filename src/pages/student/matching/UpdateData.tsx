@@ -1,154 +1,137 @@
-import { gql } from './../../../gql';
 import { useMutation } from '@apollo/client';
 import { DocumentNode } from 'graphql';
-import { Text, VStack, useTheme, Heading, Row, Column, Modal, useToast } from 'native-base';
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import CSSWrapper from '../../../components/CSSWrapper';
-import { StudentState, Student_State_Enum } from '../../../gql/graphql';
-import { states } from '../../../types/lernfair/State';
-import IconTagList from '../../../widgets/IconTagList';
-import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
-import ProfileSettingItem from '../../../widgets/ProfileSettingItem';
-import { RequestMatchContext } from './RequestMatch';
-import DisableableButton from '../../../components/DisablebleButton';
+import { CalendarPreferences, Language, StudentLanguage } from '@/gql/graphql';
+import { gql } from '@/gql';
+import { Label } from '@/components/Label';
+import { LanguageIcon, LanguageSelector } from '@/components/LanguageSelector';
+import { Typography } from '@/components/Typography';
+import { WeeklyAvailabilitySelector } from '@/components/availability/WeeklyAvailabilitySelector';
+import { NextPrevButtons } from '@/widgets/NextPrevButtons';
+import { toast } from 'sonner';
+import { logError } from '@/log';
+import { Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
+import { asTranslationKey } from '@/helper/string-helper';
 
-const UpdateData = ({ state, refetchQuery }: { state?: Student_State_Enum | null; refetchQuery: DocumentNode }) => {
-    const { setCurrentIndex } = useContext(RequestMatchContext);
-    const { space } = useTheme();
+const ME_UPDATE_MUTATION = gql(`
+    mutation changeStudentStateData($languages: [StudentLanguage!], $calendarPreferences: CalendarPreferences) {
+        meUpdate(update: { student: { languages: $languages, calendarPreferences: $calendarPreferences } })
+    }
+`);
+
+interface UpdateDataProps {
+    refetchQuery: DocumentNode;
+    profile?: {
+        languages?: Language[];
+        calendarPreferences?: CalendarPreferences;
+        aboutMe?: string;
+    };
+    onNext: () => void;
+    onBack: () => void;
+}
+
+type ModalType = 'languages';
+
+const UpdateData = ({ refetchQuery, profile, onNext, onBack }: UpdateDataProps) => {
     const { t } = useTranslation();
-    const toast = useToast();
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const isLoading = !profile;
+    const [selectedLanguages, setSelectedLanguages] = useState<Language[]>(profile?.languages ?? []);
+    const [calendarPreferences, setCalendarPreferences] = useState<CalendarPreferences | undefined>(profile?.calendarPreferences);
+    const [modalType, setModalType] = useState<ModalType>();
+    const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const [showModal, setShowModal] = useState<boolean>();
-    const [modalType, setModalType] = useState<'states'>();
-    const [modalSelection, setModalSelection] = useState<Student_State_Enum>();
-
-    const [meUpdateState] = useMutation(
-        gql(`
-            mutation changeStudentStateData($data: StudentState!) {
-                meUpdate(update: { student: { state: $data } })
-            }
-        `),
-        { refetchQueries: [refetchQuery] }
-    );
-
-    const listItems = useMemo(() => {
-        switch (modalType) {
-            case 'states':
-                return states;
-            default:
-                return [];
-        }
-    }, [modalType]);
-
-    const data = useMemo(() => {
-        switch (modalType) {
-            case 'states':
-                return state;
-        }
-    }, [modalType, state]);
+    const [meUpdate, { loading: isUpdating }] = useMutation(ME_UPDATE_MUTATION, { refetchQueries: [refetchQuery] });
 
     useEffect(() => {
-        if (!data) {
-            return;
-        }
-        setModalSelection(data);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [modalType]);
+        if (isLoading) return;
 
-    const changeData = useCallback(async () => {
-        if (!modalSelection) return;
-        setIsLoading(true);
+        if (profile?.languages) setSelectedLanguages(profile.languages);
+        if (profile?.calendarPreferences) setCalendarPreferences(profile?.calendarPreferences);
+    }, [profile, isLoading]);
+
+    const getIsNextDisabled = () => {
+        // const availabilitySlots = Object.values(calendarPreferences?.weeklyAvailability ?? {}).some((e) => !!e.length);
+        // if (!isLoading && !availabilitySlots) {
+        //     return {
+        //         is: true,
+        //         reason: t('matching.wizard.student.profile.availabilityRequirement'),
+        //     };
+        // }
+        return { is: false, reason: '' };
+    };
+
+    const handleOnNext = async () => {
         try {
-            switch (modalType) {
-                case 'states':
-                    await meUpdateState({ variables: { data: modalSelection as unknown as StudentState } });
-                    break;
-                default:
-                    break;
-            }
-            toast.show({ description: t('matching.request.updateData'), placement: 'top' });
-        } catch (e) {
-            toast.show({ description: t('error'), placement: 'top' });
+            await meUpdate({ variables: { languages: selectedLanguages as unknown as StudentLanguage[], calendarPreferences } });
+            toast.success(t('changesWereSaved'));
+            onNext();
+        } catch (error: any) {
+            logError('[matchRequest]', error?.message, error);
+            toast.error(t('error'));
         }
-        setShowModal(false);
-        setIsLoading(false);
-    }, [meUpdateState, modalSelection, modalType, t, toast]);
+    };
+
+    const handleOnOpenModal = (type: ModalType) => {
+        setModalType(type);
+        setIsModalOpen(true);
+    };
 
     return (
-        <>
-            <VStack space={space['0.5']}>
-                <Heading fontSize="2xl">{t('matching.wizard.student.profile.title')}</Heading>
-                <Text></Text>
-                <Heading>{t('matching.wizard.student.profile.personalData')}</Heading>
-
-                <ProfileSettingItem
-                    title={t('profile.State.label')}
-                    href={() => {
-                        setModalType('states');
-                        setShowModal(true);
-                    }}
-                >
-                    <Row flexWrap="wrap" w="100%">
-                        <Text marginBottom={3} flexBasis={'100%'}>
-                            {t('profile.State.weightingNote')}
-                        </Text>
-                        {(state && (
-                            <Column marginRight={3} mb={space['0.5']}>
-                                {(state && (
-                                    <CSSWrapper className="profil-tab-link">
-                                        <IconTagList
-                                            isDisabled
-                                            iconPath={`states/icon_${state}.svg`}
-                                            text={t(`lernfair.states.${state}` as unknown as TemplateStringsArray)}
-                                        />
-                                    </CSSWrapper>
-                                )) || <Text>{t('profile.noInfo')}</Text>}
-                            </Column>
-                        )) || <Text>{t('profile.Notice.noState')}</Text>}
-                    </Row>
-                </ProfileSettingItem>
-
-                {/*                      1 = subjects */}
-                <NextPrevButtons onPressNext={() => setCurrentIndex(1)} onlyNext />
-            </VStack>
-            <Modal
-                isOpen={showModal}
-                onClose={() => {
-                    setShowModal(false);
-                    setModalSelection(undefined);
-                }}
-            >
-                <Modal.Content>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('change')}</Modal.Header>
-                    <Modal.Body>
-                        <Row flexWrap="wrap">
-                            {listItems.map((item: { label: string; key: string }) => (
-                                <Column mb={space['1']} mr={space['1']}>
-                                    <IconTagList
-                                        initial={modalSelection === item.key}
-                                        text={item.label}
-                                        onPress={() => setModalSelection(item.key as unknown as Student_State_Enum)}
-                                        iconPath={`${modalType}/icon_${item.key}.svg`}
-                                    />
-                                </Column>
-                            ))}
-                        </Row>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <DisableableButton
-                            isDisabled={data === modalSelection || isLoading}
-                            reasonDisabled={isLoading ? t('reasonsDisabled.loading') : t('reasonsDisabled.newFieldSameAsOld')}
-                            onPress={changeData}
-                        >
-                            {t('change')}
-                        </DisableableButton>
-                    </Modal.Footer>
-                </Modal.Content>
+        <div className="flex flex-col gap-y-6">
+            <div>
+                <Typography variant="h4">{t('matching.wizard.student.profile.title')}</Typography>
+                <Typography className="mb-2">{t('matching.wizard.student.profile.subtitle')}</Typography>
+            </div>
+            <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full">
+                <Label>{t('profile.Languages.labelStudent')}</Label>
+                <Button className="w-full h-auto py-2 min-h-10" variant="input" size="input" onClick={() => handleOnOpenModal('languages')}>
+                    <div className="w-full flex items-center gap-x-4 min-w-[200px] flex-wrap gap-y-4">
+                        {!selectedLanguages && t('edit')}
+                        {selectedLanguages.map((e) => (
+                            <span className="flex items-center gap-x-1">
+                                <LanguageIcon className="size-4" languageName={e} />
+                                {t(asTranslationKey(`lernfair.languages.${e.toLowerCase()}`))}
+                            </span>
+                        ))}
+                    </div>
+                </Button>
+            </div>
+            <div className="flex flex-col gap-y-2">
+                <Label>{t('profile.availability')}</Label>
+                <WeeklyAvailabilitySelector
+                    onChange={(weeklyAvailability) => setCalendarPreferences({ ...calendarPreferences, weeklyAvailability })}
+                    availability={calendarPreferences?.weeklyAvailability}
+                    isLoading={isLoading}
+                />
+            </div>
+            <NextPrevButtons isLoading={isUpdating} onlyNext disablingNext={getIsNextDisabled()} onPressPrev={onBack} onPressNext={handleOnNext} />
+            <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
+                <ModalHeader>
+                    <ModalTitle>{t('change')}</ModalTitle>
+                </ModalHeader>
+                <div>
+                    {modalType === 'languages' && (
+                        <div className="flex flex-col gap-y-2">
+                            <Label>{t('profile.Languages.labelStudent')}</Label>
+                            <LanguageSelector multiple value={selectedLanguages} setValue={setSelectedLanguages} />
+                        </div>
+                    )}
+                </div>
+                <ModalFooter>
+                    <Button
+                        className="w-full lg:w-fit"
+                        variant="outline"
+                        onClick={() => {
+                            setIsModalOpen(false);
+                        }}
+                    >
+                        {t('done')}
+                    </Button>
+                </ModalFooter>
             </Modal>
-        </>
+        </div>
     );
 };
 export default UpdateData;

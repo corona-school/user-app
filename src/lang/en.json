@@ -257,7 +257,8 @@
             "Ethik": "Ethics",
             "Gesundheit": "Health",
             "Technik": "Technology",
-            "Steuerlehre": "Tax theory"
+            "Steuerlehre": "Tax theory",
+            "Rechnungswesen": "Accounting"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -560,7 +561,7 @@
             "label": "About me",
             "empty": "Not specified"
         },
-        "FluentLanguagenalData": {
+        "Languages": {
             "single": {
                 "optional": {
                     "label": "Other type of school",
@@ -570,8 +571,9 @@
                 "title": "My languages",
                 "others": "Other languages"
             },
-            "label": "Fluent language",
-            "empty": "Not specified"
+            "empty": "Not specified",
+            "labelPupil": "What languages do you speak at home?",
+            "labelStudent": "In which languages can you help?"
         },
         "State": {
             "single": {
@@ -684,9 +686,9 @@
         "editprofile": "Change profile picture",
         "birthday": "Change date of birth",
         "type": "Type of support:",
-        "availability": "Manage availability",
         "noInfo": "Not specified",
         "PersonalData": "Personal data",
+        "availability": "When do you have time?",
         "ZipCode": {
             "zipCode": "Zip code",
             "requiredLength": "The zip code must have {{length}} digits."
@@ -897,7 +899,7 @@
             "faq": "FAQ & Contact",
             "manageSessions": "Manage devices",
             "certificates": "Certificates",
-            "calendarPreferences": "Time availability"
+            "calendarPreferences": "When do you have time?"
         },
         "account": {
             "title": "Account",
@@ -1511,7 +1513,8 @@
                 "profile": {
                     "title": "Update profile",
                     "subtitle": "So that we can assign you an optimal learning partner, we ask you to check and complete your personal information once again.",
-                    "personalData": "Personal data"
+                    "personalData": "Personal data",
+                    "availabilityRequirement": "Please set up your availability first to continue."
                 },
                 "success": {
                     "title": "You've done it, you're a hero!",
@@ -1675,12 +1678,15 @@
             "button": "About the certificates"
         },
         "availability": {
-            "title": "Availability",
-            "sharedTimeSlots": "{{count}} common time slot",
-            "otherTimeSlots": "{{count}} further time slots",
             "createAppointmentModal": {
                 "title": "Would you like to create a lecture for this time slot?"
-            }
+            },
+            "bothOfYouHaveTime": "You both have time",
+            "matchHasNotSetupPreferencesYet": "{{learningPartnerName}} has not entered any time slots yet (send them a <chatLink>link</chatLink>)",
+            "setupPreferencesChatMessage": "Hi 👋, this is {{myName}}, maybe you would like to share your days when you have time with me. You can find it here: {{link}}",
+            "title": "Possible time slots",
+            "youDoNotHaveTime": "Only {{learningPartnerName}} has time",
+            "editAvailability": "Edit your time slots"
         }
     },
     "course": {
@@ -2113,7 +2119,7 @@
             "referral": "Referral",
             "certificates": "Certificates",
             "lesson": "Lesson planner with AI (Beta)",
-            "calendarPreferences": "Time availability"
+            "calendarPreferences": "When do you have time?"
         }
     },
     "screening": {
@@ -2598,7 +2604,8 @@
             "Technik": "Technology",
             "Wirtschaft": "Economy",
             "Lernen lernen": "Learning to learn",
-            "Steuerlehre": "Tax theory"
+            "Steuerlehre": "Tax theory",
+            "Rechnungswesen": "Accounting"
         },
         "placeholderImageDescription": "Fill out the form to create a lesson plan"
     },

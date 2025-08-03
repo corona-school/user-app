@@ -1,24 +1,23 @@
-import { Button, FormControl, Modal, Row, Text, TextArea, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useEffect, useState } from 'react';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
-import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import DisableableButton from '../components/DisablebleButton';
 import { useUserType } from '../hooks/useApollo';
+import { toast } from 'sonner';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
+import { asTranslationKey } from '@/helper/string-helper';
+import { Label } from '@/components/Label';
+import { TextArea } from '@/components/TextArea';
 
-type ReportMatchModalProps = {
-    isOpen?: boolean;
-    onClose: () => void;
+interface ReportMatchModalProps extends BaseModalProps {
     matchName?: string;
     matchId: number;
-};
+}
 
-const ReportMatchModal = ({ onClose, isOpen, matchName, matchId }: ReportMatchModalProps) => {
+const ReportMatchModal = ({ onOpenChange, isOpen, matchName, matchId }: ReportMatchModalProps) => {
     const { t } = useTranslation();
-    const { space } = useTheme();
-    const toast = useToast();
-    const { isMobile } = useLayoutHelper();
     const [description, setDescription] = useState('');
     const userType = useUserType();
 
@@ -43,47 +42,41 @@ const ReportMatchModal = ({ onClose, isOpen, matchName, matchId }: ReportMatchMo
         });
 
         if (response.data?.matchReport) {
-            toast.show({ description: t('matching.report.success'), placement: 'top' });
-            onClose();
+            toast.success(t('matching.report.success'));
+            onOpenChange(false);
         } else {
-            toast.show({ description: t('matching.report.failure') });
+            toast.error(t('matching.report.failure'));
         }
     };
 
     const userShouldIncludeDescription = userType === 'student';
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <Modal.Content minW={isMobile ? '90vw' : 800}>
-                <Modal.CloseButton />
-                <Modal.Header>{t('matching.report.modal.title', { firstName: matchName })}</Modal.Header>
-                <Modal.Body>
-                    <Text paddingBottom={space['1']}>
-                        {t(`matching.report.modal.${userType}.description` as unknown as TemplateStringsArray, { firstName: matchName })}
-                    </Text>
-                    <FormControl>
-                        <Row flexDirection="column" paddingY={space['0.5']}>
-                            <FormControl.Label>{t('matching.report.modal.problemDescription')}</FormControl.Label>
-                            <TextArea value={description} onChangeText={setDescription} h={200} autoCompleteType={{}} />
-                        </Row>
-                    </FormControl>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Row space={space['2']}>
-                        <Button variant="outline" onPress={onClose}>
-                            {t('cancel')}
-                        </Button>
-                        <DisableableButton
-                            isDisabled={loading || (userShouldIncludeDescription && !description)}
-                            marginX="auto"
-                            reasonDisabled={t('reasonsDisabled.fieldEmpty')}
-                            onPress={sendReportMessage}
-                        >
-                            {t('matching.report.modal.submitButton')}
-                        </DisableableButton>
-                    </Row>
-                </Modal.Footer>
-            </Modal.Content>
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen}>
+            <ModalHeader>
+                <ModalTitle>{t('matching.report.modal.title', { firstName: matchName })}</ModalTitle>
+            </ModalHeader>
+            <div className="flex flex-col gap-y-4">
+                <Typography>{t(asTranslationKey(`matching.report.modal.${userType}.description`), { firstName: matchName })}</Typography>
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="description">{t('matching.report.modal.problemDescription')}</Label>
+                    <TextArea className="resize-none h-20 w-full" id="description" value={description} onChange={(e) => setDescription(e.target.value)} />
+                </div>
+                <ModalFooter>
+                    <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                        {t('back')}
+                    </Button>
+                    <Button
+                        className="w-full lg:w-fit"
+                        isLoading={loading}
+                        disabled={userShouldIncludeDescription && !description}
+                        reasonDisabled={t('reasonsDisabled.fieldEmpty')}
+                        onClick={sendReportMessage}
+                    >
+                        {t('matching.report.modal.submitButton')}
+                    </Button>
+                </ModalFooter>
+            </div>
         </Modal>
     );
 };
