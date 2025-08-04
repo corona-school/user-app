@@ -22,7 +22,7 @@ export const UserAge = ({ onBack, onNext }: UserAgeProps) => {
             </Typography>
             <div className="flex flex-col gap-y-3 w-full max-w-20 pb-32 md:pb-0">
                 <div className="w-full flex flex-col justify-center gap-y-1">
-                    <Input autoFocus variant="white" className="w-full h-12" value={form.age} onChangeText={onChange} />
+                    <Input autoFocus variant="white" className="w-full h-12" value={form.age || ''} onChangeText={onChange} />
                 </div>
             </div>
         </RegistrationStep>
