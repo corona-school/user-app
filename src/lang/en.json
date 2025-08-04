@@ -465,6 +465,13 @@
                 "labelTermsAndPrivacy": "I have taken note of the privacy policy and terms and conditions.",
                 "accordionUsDataProcessors": "I acknowledge that the processing of my personal data is carried out by our US-based processors Google and Heroku, which cannot guarantee compliance with the European level of data protection due to the possibility of requests from US intelligence services. For this purpose, Lern-Fair has concluded standard contractual clauses and agreed further security measures, Art. 46 para. 2 lit. c GDPR.",
                 "sendRegistration": "Submit registration"
+            },
+            "confirmEmail": {
+                "title": "Please confirm your email",
+                "description": "We have sent a message to\n\n<b>{{email}}</b>\n\nto activate your account. Check your spam folder first in case you didn't receive it.",
+                "changeEmail": "Change email address",
+                "resendConfirmation": "Send confirmation again",
+                "doYouHaveProblems": "Having problems with your registration?"
             }
         },
         "pupil": {

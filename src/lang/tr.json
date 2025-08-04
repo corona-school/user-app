@@ -465,6 +465,13 @@
                 "labelTermsAndPrivacy": "Gizlilik politikasını ve hüküm ve koşulları dikkate aldım.",
                 "accordionUsDataProcessors": "Kişisel verilerimin işlenmesinin, ABD istihbarat servislerinden gelen talepler nedeniyle Avrupa veri koruma düzeyine uygunluğu garanti edemeyen ABD merkezli işleyicilerimiz Google ve Heroku tarafından gerçekleştirildiğini kabul ediyorum. Lern-Fair Bu amaçla, standart sözleşme hükümleri imzalanmış ve GDPR Madde 46 paragraf 2 lit. c uyarınca ilave güvenlik önlemleri kabul edilmiştir.",
                 "sendRegistration": "Kayıt gönderin"
+            },
+            "confirmEmail": {
+                "title": "Lütfen e-postanızı onaylayın",
+                "description": "Bir mesaj gönderdik\n\n<b>{{email}}</b>\n\nhesabınızı etkinleştirmek için. Eğer almadıysanız lütfen önce spam klasörünüzü kontrol edin.",
+                "changeEmail": "E-posta adresini değiştir",
+                "resendConfirmation": "Onayı tekrar gönderin",
+                "doYouHaveProblems": "Giriş yaparken sorun mu yaşıyorsunuz?"
             }
         },
         "pupil": {

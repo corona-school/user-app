@@ -516,6 +516,13 @@
                 "accordionUsDataProcessors": "Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO.",
                 "sendRegistration": "Registrierung abschicken"
             },
+            "confirmEmail": {
+                "title": "Bitte bestätige deine Email",
+                "description": "Wir haben eine Nachricht an\n\n<b>{{email}}</b>\n\nzur Aktivierung deines Kontos gesendet. Schau’ zuerst im Spam Ordner nach, falls du sie nicht bekommen hast.",
+                "changeEmail": "Email-Adresse ändern",
+                "resendConfirmation": "Bestätigung nochmal senden",
+                "doYouHaveProblems": "Du hast Probleme mit der Anmeldung?"
+            },
             "personalData": {
                 "title": "Persönliche Daten",
                 "subtitle": "Persönliche Daten"
