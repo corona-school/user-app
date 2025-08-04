@@ -11,8 +11,16 @@ import { IconBrandGoogleFilled } from '@tabler/icons-react';
 import useLoginWithIDP from '@/hooks/useLoginWithIDP';
 import isEmail from 'validator/lib/isEmail';
 import { cn } from '@/lib/Tailwind';
+import { gql } from '@/gql';
+import { useMutation } from '@apollo/client';
 
 interface AuthenticationInfoProps extends RegistrationStepProps {}
+
+const IS_EMAIL_AVAILABLE_QUERY = gql(`
+    mutation isEmailAvailable($email: String!) {
+        isEmailAvailable(email: $email)
+    }
+`);
 
 export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) => {
     const { form, onFormChange } = useRegistrationForm();
@@ -20,6 +28,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
     const { loginWithGoogle } = useLoginWithIDP();
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
+    const [isEmailAvailable] = useMutation(IS_EMAIL_AVAILABLE_QUERY);
     const [areInputsDirty, setAreInputsDirty] = useState<Record<string, boolean>>({
         email: false,
         password: false,
@@ -61,12 +70,22 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
         [setAreInputsDirty]
     );
 
+    const handleOnNext = async () => {
+        const validMail = form.email.toLowerCase();
+        const res = await isEmailAvailable({ variables: { email: validMail } });
+
+        if (res.data?.isEmailAvailable && onNext) {
+            onNext();
+        }
+        setEmailError(t('registration.hint.email.unavailable'));
+    };
+
     const isNextDisabled = () => {
         return !!emailError || !form.email || !!passwordError || !form.password;
     };
 
     return (
-        <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={isNextDisabled()}>
+        <RegistrationStep onBack={onBack} onNext={handleOnNext} isNextDisabled={isNextDisabled()}>
             <RegistrationStepTitle className="md:mb-4">{t('registration.steps.authenticationInfo.title')}</RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-10 whitespace-pre-line text-balance">
                 {t('registration.steps.authenticationInfo.description')}
