@@ -2,7 +2,7 @@ import { Button } from '@/components/Button';
 import { LocationSelector } from '@/components/LocationSelector';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
 import { Pupil_State_Enum, Student_State_Enum } from '@/gql/graphql';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 type State = Pupil_State_Enum | Student_State_Enum;
@@ -15,6 +15,10 @@ interface EditLocationModalProps<T> extends BaseModalProps {
 export function EditLocationModal<T extends State>({ state, onOpenChange, isOpen, onSave }: EditLocationModalProps<T>) {
     const [selectedValue, setSelectedValue] = useState(state);
     const { t } = useTranslation();
+
+    useEffect(() => {
+        setSelectedValue(state);
+    }, [state]);
 
     const handleOnSave = async () => {
         onSave(selectedValue);
