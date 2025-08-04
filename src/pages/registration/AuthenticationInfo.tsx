@@ -40,6 +40,8 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
             setEmailError(t('reasonsDisabled.fieldEmpty'));
         } else if (!isEmail(form.email)) {
             setEmailError(t('reasonsDisabled.invalidEMail'));
+        } else {
+            setEmailError('');
         }
     }, [form.email, areInputsDirty.email, t]);
 
@@ -47,6 +49,8 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
         if (!areInputsDirty.password) return;
         if (!form.password) {
             setPasswordError(t('reasonsDisabled.fieldEmpty'));
+        } else {
+            setPasswordError('');
         }
     }, [form.password, areInputsDirty.password, t]);
 
