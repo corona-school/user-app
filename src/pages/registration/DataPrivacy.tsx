@@ -7,6 +7,7 @@ import { Label } from '@/components/Label';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/Accordion';
 import { Button } from '@/components/Button';
 import { IconSend } from '@tabler/icons-react';
+import { useState } from 'react';
 
 interface DataPrivacyProps extends RegistrationStepProps {
     onRegisterWithPassword: () => Promise<void>;
@@ -15,9 +16,16 @@ interface DataPrivacyProps extends RegistrationStepProps {
 export const DataPrivacy = ({ onBack, onRegisterWithPassword }: DataPrivacyProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
+    const [isLoading, setIsLoading] = useState(false);
 
     const onChange = (consent: CheckedState) => {
         onFormChange({ privacyConsent: !!consent });
+    };
+
+    const handleOnRegisterWithPassword = async () => {
+        setIsLoading(true);
+        await onRegisterWithPassword();
+        setIsLoading(false);
     };
 
     return (
@@ -66,7 +74,14 @@ export const DataPrivacy = ({ onBack, onRegisterWithPassword }: DataPrivacyProps
                         </AccordionItem>
                     </Accordion>
                 </div>
-                <Button size="lg" className="w-full mt-10" rightIcon={<IconSend size={16} />} disabled={!form.privacyConsent} onClick={onRegisterWithPassword}>
+                <Button
+                    size="lg"
+                    className="w-full mt-10"
+                    rightIcon={<IconSend size={16} />}
+                    disabled={!form.privacyConsent}
+                    isLoading={isLoading}
+                    onClick={handleOnRegisterWithPassword}
+                >
                     {t('registration.steps.dataPrivacy.sendRegistration')}
                 </Button>
             </div>
