@@ -39,17 +39,15 @@ function App() {
                                             <GlobalModalsProvider>
                                                 <InstallationProvider>
                                                     <NotificationsProvider>
-                                                        <RegistrationProvider>
-                                                            <RecommendationsProvider>
-                                                                <LFChatProvider>
-                                                                    <NavigationStackProvider>
-                                                                        <Navigator />
-                                                                        <ToastNotifications />
-                                                                        <Toaster />
-                                                                    </NavigationStackProvider>
-                                                                </LFChatProvider>
-                                                            </RecommendationsProvider>
-                                                        </RegistrationProvider>
+                                                        <RecommendationsProvider>
+                                                            <LFChatProvider>
+                                                                <NavigationStackProvider>
+                                                                    <Navigator />
+                                                                    <ToastNotifications />
+                                                                    <Toaster />
+                                                                </NavigationStackProvider>
+                                                            </LFChatProvider>
+                                                        </RecommendationsProvider>
                                                     </NotificationsProvider>
                                                 </InstallationProvider>
                                             </GlobalModalsProvider>

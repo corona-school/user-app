@@ -51,9 +51,9 @@ const RegistrationContext = createContext<RegistrationContextValue>({
 });
 
 export const RegistrationProvider = ({ children }: { children: React.ReactNode }) => {
-    const {} = useApollo();
+    const { user, sessionState } = useApollo();
     const location = useLocation();
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(sessionState === 'unknown');
 
     const [values, setValues, removeValues] = useLocalStorage<RegistrationForm>({
         key: 'registration',
@@ -76,34 +76,34 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         setPassword('');
     };
 
-    const computeCurrentState = () => {
+    useEffect(() => {
+        if (isLoading) return;
         if (values.currentStep) {
             if (values.currentStep === RegistrationStep.dataPrivacy && !password) {
-                handleOnChange({ currentStep: RegistrationStep.authenticationInfo });
-                return RegistrationStep.authenticationInfo;
+                return handleOnChange({ currentStep: RegistrationStep.authenticationInfo });
             }
-            return values.currentStep;
+            if (values.currentStep === RegistrationStep.confirmEmail && !!(user?.pupil ?? user?.student)?.verifiedAt) {
+                return handleOnChange({ currentStep: RegistrationStep.bookAppointment });
+            }
+            return;
         }
 
         if (values.userType === 'pupil') {
-            handleOnChange({ currentStep: RegistrationStep.acceptanceCheck });
-            return RegistrationStep.acceptanceCheck;
+            return handleOnChange({ currentStep: RegistrationStep.acceptanceCheck });
         }
         if (values.userType === 'student') {
-            handleOnChange({ currentStep: RegistrationStep.userName });
-            return RegistrationStep.userName;
+            return handleOnChange({ currentStep: RegistrationStep.userName });
         }
 
-        handleOnChange({ currentStep: RegistrationStep.userType });
-        return RegistrationStep.userType;
-    };
+        return handleOnChange({ currentStep: RegistrationStep.userType });
+    }, [isLoading]);
 
     useEffect(() => {
         if (location.pathname !== '/registration') {
             reset();
         }
 
-        if (location?.pathname === '/registration/student' || location?.pathname === '/registration/helper') {
+        if (['/registration/student', '/registration/helper'].includes(location?.pathname)) {
             handleOnChange({ userType: 'student' });
         }
         if (location?.pathname === '/registration/pupil') {
@@ -111,10 +111,14 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         }
     }, [location.pathname]);
 
+    useEffect(() => {
+        if (sessionState !== 'unknown') {
+            setIsLoading(false);
+        }
+    }, [sessionState]);
+
     return (
-        <RegistrationContext.Provider
-            value={{ form: { ...values, password, currentStep: computeCurrentState() }, onFormChange: handleOnChange, reset, isLoading }}
-        >
+        <RegistrationContext.Provider value={{ form: { ...values, password }, onFormChange: handleOnChange, reset, isLoading }}>
             {children}
         </RegistrationContext.Provider>
     );
