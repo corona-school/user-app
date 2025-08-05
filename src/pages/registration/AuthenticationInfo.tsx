@@ -80,8 +80,9 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
 
         if (res.data?.isEmailAvailable && onNext) {
             onNext();
+        } else {
+            setEmailError(t('registration.hint.email.unavailable'));
         }
-        setEmailError(t('registration.hint.email.unavailable'));
     };
 
     const isNextDisabled = () => {
