@@ -2,6 +2,7 @@ import React, { useState, useRef, DragEvent, ChangeEvent } from 'react';
 import { IconCloudUpload } from '@tabler/icons-react';
 import { Button } from '@/components/Button';
 import { cn } from '@/lib/Tailwind';
+import UnsplashModal from '@/modals/Unsplash';
 
 export interface FileItem {
     name: string;
@@ -18,6 +19,7 @@ interface DropzoneProps {
 const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
+    const [showModal, setShowModal] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
 
     const handleDragEnter = (e: DragEvent<HTMLDivElement>): void => {
@@ -95,8 +97,19 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
         }
     };
 
-    const redirectToUnsplash = (): void => {
-        window.open('https://unsplash.com', '_blank');
+    const onUrlSelect = (url: string): void => {
+        if (!url) return;
+        fetch(url)
+            .then((response) => response.blob())
+            .then((blob) => {
+                const file = new File([blob], 'unsplash-image.jpg', { type: blob.type });
+                readFile(file);
+            })
+            .catch((err) => {
+                console.error('Error fetching image from Unsplash:', err);
+                setError('Fehler beim Laden des Bildes von Unsplash.');
+            });
+        setShowModal(false);
     };
 
     return (
@@ -131,7 +144,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                                 <Button variant="outline" onClick={openFilePicker}>
                                     Eigene Datei
                                 </Button>
-                                <Button variant="outline" onClick={redirectToUnsplash}>
+                                <Button variant="outline" onClick={() => setShowModal(true)}>
                                     Datenbank
                                 </Button>
                             </div>
@@ -150,6 +163,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                     )}
                 </div>
             </div>
+            <UnsplashModal isOpen={showModal} onOpenChange={() => setShowModal(false)} onPhotoSelected={onUrlSelect} />
         </div>
     );
 };

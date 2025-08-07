@@ -27,7 +27,7 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
         setAllowParticipantContact,
         allowChatWritting,
         setAllowChatWritting,
-        addedInstructors,
+        existingInstructors,
         newInstructors,
         myself,
     } = useContext(CreateCourseContext);
@@ -62,8 +62,8 @@ const FurtherInstructors: React.FC<InstructorProps> = ({ onRemove, onNext, onBac
                     <VStack mt={space['1']}>
                         <Heading fontSize="md">{t('course.CourseDate.form.CourseInstructors')}</Heading>
                         {myself && <InstructorRow instructor={myself}></InstructorRow>}
-                        {addedInstructors &&
-                            addedInstructors.map((instructor: LFInstructor, index: number) => (
+                        {existingInstructors &&
+                            existingInstructors.map((instructor: LFInstructor, index: number) => (
                                 <InstructorRow instructor={instructor} onPressDelete={() => onRemove(index, true)} />
                             ))}
                         {newInstructors &&

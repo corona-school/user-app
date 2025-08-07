@@ -14,7 +14,7 @@ const CourseSettings: React.FC = (props) => {
                 <Label htmlFor="1" className="inline flex-grow text-base">
                     {t('course.CourseDate.form.otherOptionStart')}
                 </Label>
-                <Switch id="1" />
+                <Switch id="1" className="flex-shrink-0" />
             </div>
             <div className="flex justify-between">
                 <Label htmlFor="2" className="inline flex-grow text-base">
@@ -25,19 +25,19 @@ const CourseSettings: React.FC = (props) => {
                 <Label htmlFor="3" className="inline flex-grow text-base">
                     {t('course.CourseDate.form.otherProspects')}
                 </Label>
-                <Switch id="3" />
+                <Switch id="3" className="flex-shrink-0" />
             </div>
             <div className="flex justify-between ml-5">
                 <Label htmlFor="4" className="inline flex-grow text-base">
                     {t('course.CourseDate.form.otherParticipants')}
                 </Label>
-                <Switch id="4" />
+                <Switch id="4" className="flex-shrink-0" />
             </div>
             <div className="flex justify-between">
                 <Label htmlFor="5" className="inline flex-grow text-base">
                     {t('course.CourseDate.form.allowChatContact')}
                 </Label>
-                <Switch id="5" />
+                <Switch id="5" className="flex-shrink-0" />
             </div>
         </div>
     );

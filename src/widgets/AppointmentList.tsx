@@ -148,7 +148,7 @@ const AppointmentItem = React.memo(
 
 export interface DisplayAppointment extends Appointment {
     isNew?: boolean; // false => existing appointment, true => new appointment
-    newIndex?: number; // index of the new appointment in the appointmentsToBeCreated array
+    newId?: number; // UUID for new appointments, not created in backend yet.
 }
 
 type AppointmentListProps = {
@@ -232,6 +232,12 @@ const AppointmentList = ({
 
     const canLoadMoreAppointments = !isReadOnlyList && !noNewAppointments && !isLoadingAppointments;
     const isFullHeight = height === '100%';
+    useEffect(() => {
+        console.log(
+            'appointments',
+            appointments.map((x) => ({ id: x.id, newId: x.newId, title: x.title }))
+        );
+    }, [appointments]);
     return (
         <div
             id="scrollable"
@@ -253,21 +259,20 @@ const AppointmentList = ({
                 <Header hasMoreOldAppointments={!noOldAppointments} isLoading={!!isLoadingAppointments} onLoadMoreOldAppointments={handleLoadPast} />
                 {appointments.map((appointment, index) => (
                     <AppointmentItem
-                        key={appointment.id < 0 ? appointment.newIndex : appointment.id}
+                        key={appointment.id <= 0 ? appointment.newId : appointment.id}
                         appointment={appointment}
                         previousAppointment={appointments[index - 1]}
                         index={index + 1}
                         total={appointments.length}
                         isReadOnly={isReadOnlyList}
-                        editingInit={appointment.newIndex === editingIdInit}
+                        editingInit={appointment.isNew && appointment.newId === editingIdInit}
                         onEdit={(updated) => onAppointmentEdited && onAppointmentEdited(updated)}
                         onCancelEdit={onAppointmentCanceledEdit}
                         onDuplicate={onAppointmentDuplicate ? () => onAppointmentDuplicate(appointment) : undefined}
                         onDelete={
                             onAppointmentDelete
                                 ? () =>
-                                      onAppointmentDelete &&
-                                      onAppointmentDelete(!appointment.isNew ? appointment.id : appointment.newIndex!, !!appointment.isNew)
+                                      onAppointmentDelete && onAppointmentDelete(!appointment.isNew ? appointment.id : appointment.newId!, !!appointment.isNew)
                                 : undefined
                         }
                     />

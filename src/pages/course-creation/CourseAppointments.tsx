@@ -11,65 +11,47 @@ import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 
 type Props = {
-    isEditing?: boolean;
-    appointments: DisplayAppointment[];
+    isEditingCourse?: boolean;
+    existingAppointments: DisplayAppointment[];
     subcourseId?: number;
 };
 
-const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcourseId }) => {
+const CourseAppointments: React.FC<Props> = ({ isEditingCourse, existingAppointments, subcourseId }) => {
     const { t } = useTranslation();
     const [editId, setEditId] = useState<number | undefined>(undefined);
 
-    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
-    const { dispatchCreateAppointment } = useCreateAppointment();
-    const { dispatchWeeklyAppointment } = useWeeklyAppointments();
+    const [appointmentsToBeCreated, setAppointmentsToBeCreated] = useState<DisplayAppointment[]>([]);
 
     const { courseName } = useContext(CreateCourseContext);
     const [creating, setCreating] = useState<boolean>(false);
     const [editingIdInit, setEditingIdInit] = useState<number | undefined>(undefined);
-    const convertAppointments = (creating: boolean) => {
-        let convertedAppointments: DisplayAppointment[] = [];
 
-        appointmentsToBeCreated.forEach((appointment, index) => {
-            convertedAppointments.push({
-                isNew: true,
-                newIndex: index,
-                id: -1,
-                start: appointment.start,
-                duration: appointment.duration,
-                appointmentType: Lecture_Appointmenttype_Enum.Group,
-                displayName: courseName,
-                ...(appointment?.title ? { title: appointment?.title } : { title: '' }),
-                ...(appointment?.description ? { description: appointment?.description } : { description: '' }),
-            });
-        });
-
-        // insert empty appointment in front of sortedAppointments
-        if (creating) {
-            console.log('Creating new appointment, inserting empty appointment at the front');
-            convertedAppointments.push({
-                isNew: true,
-                newIndex: appointmentsToBeCreated.length,
-                id: -1,
-                start: DateTime.now().plus({ days: 7 }).toISO(),
-                duration: 60,
-                appointmentType: Lecture_Appointmenttype_Enum.Group,
-                displayName: courseName,
-                title: '',
-                description: '',
-            });
-            setEditingIdInit(appointmentsToBeCreated.length);
-        }
-
-        return convertedAppointments;
-    };
-    const canGoFurther = () => {
-        return allAppointmentsToShow.length === 0 ? true : false;
-    };
     const getAllAppointmentsToShow = (creating: boolean) => {
-        if (isEditing) {
-            const convertedAppointments = convertAppointments(creating);
-            const allAppointments = appointments.concat(convertedAppointments);
+        if (isEditingCourse) {
+            const appointmentsToBeCreatedWithIndex = [];
+            for (let i = 0; i < appointmentsToBeCreated.length; i++) {
+                appointmentsToBeCreatedWithIndex.push({
+                    ...appointmentsToBeCreated[i],
+                    newId: i,
+                });
+            }
+            const allAppointments = existingAppointments.concat(appointmentsToBeCreatedWithIndex);
+
+            if (creating) {
+                console.log('Creating new appointment, inserting empty appointment at the front');
+                allAppointments.push({
+                    isNew: true,
+                    newId: appointmentsToBeCreated.length,
+                    id: -1,
+                    start: DateTime.now().plus({ days: 7 }).toISO(),
+                    duration: 60,
+                    appointmentType: Lecture_Appointmenttype_Enum.Group,
+                    displayName: courseName,
+                    title: '',
+                    description: '',
+                });
+                setEditingIdInit(appointmentsToBeCreated.length);
+            }
             const sortedAppointments = allAppointments.sort((a, b) => {
                 const _a = DateTime.fromISO(a.start).toMillis();
                 const _b = DateTime.fromISO(b.start).toMillis();
@@ -79,24 +61,11 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcours
             sortedAppointments.forEach((appointment, index) => {
                 sortedWithPosition.push({ ...appointment, position: index + 1 });
             });
-            console.log('sortedWithPosition', sortedWithPosition);
             return sortedWithPosition;
+        } else {
+            return [];
         }
-        const newAppointments: DisplayAppointment[] = [];
-        const convertedAppointments = convertAppointments(creating);
-        const allAppointments = newAppointments.concat(convertedAppointments);
-        const sortedAppointments = allAppointments.sort((a, b) => {
-            const _a = DateTime.fromISO(a.start).toMillis();
-            const _b = DateTime.fromISO(b.start).toMillis();
-            return _a - _b;
-        });
-
-        let sortedWithPosition: DisplayAppointment[] = [];
-        sortedAppointments.forEach((appointment, index) => {
-            sortedWithPosition.push({ ...appointment, position: index + 1 });
-        });
-
-        return sortedWithPosition;
+        // TODO
     };
     const [allAppointmentsToShow, setAllAppointmentsToShow] = useState<DisplayAppointment[]>(getAllAppointmentsToShow(false));
 
@@ -114,7 +83,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcours
         <>
             <Typography variant="h3">{t('course.CourseDate.step.appointments')}</Typography>
             <div>
-                {(isEditing || allAppointmentsToShow.length !== 0) && (
+                {(isEditingCourse || allAppointmentsToShow.length !== 0) && (
                     <div className="mb-2">
                         <AppointmentList
                             height="100%"
@@ -124,10 +93,10 @@ const CourseAppointments: React.FC<Props> = ({ isEditing, appointments, subcours
                             onAppointmentEdited={(updated) => {
                                 // todo what if existing appointment is edited?
                                 if (updated.isNew) {
-                                    console.log('edited new appointment with newIndex:', updated.newIndex, updated);
+                                    console.log('edited new appointment with newIndex:', updated.newId, updated);
                                     setAppointmentsToBeCreated((prev) => {
                                         const newAppointments = [...prev];
-                                        newAppointments[updated.newIndex!] = {
+                                        newAppointments[updated.newId!] = {
                                             ...updated,
                                             appointmentType: Lecture_Appointmenttype_Enum.Group,
                                             subcourseId: subcourseId ?? -1,

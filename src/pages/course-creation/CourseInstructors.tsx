@@ -34,15 +34,16 @@ const CourseInstructors: React.FC<Props> = (props) => {
     const [searchInstructorsQuery, { data, loading }] = useLazyQuery(INSTRUCTORS_QUERY);
     const [searchString, setSearchString] = useState<string>('');
     const [searchResults, setSearchResults] = useState<LFInstructor[]>([]);
-    const [instructorToAdd, setInstructorToAdd] = useState<number | null>(null);
+
     const searchInstructors = async (query: string) => {
         setSearchString(query);
-        const instructors = await searchInstructorsQuery({ variables: { search: searchString, take: 10 } });
+        const instructors = await searchInstructorsQuery({ variables: { search: query, take: 10 } });
         if (instructors.data) {
-            setSearchResults(instructors.data.otherInstructors.map((i) => ({ id: i.id, firstname: i.firstname, lastname: i.lastname })));
+            const rawResults = instructors.data.otherInstructors.map((i) => ({ id: i.id, firstname: i.firstname, lastname: i.lastname }));
+            const results = rawResults.filter((x) => !props.instructors.some((i) => i.id === x.id) && !props.mentors.some((m) => m.id === x.id));
+            setSearchResults(results);
         }
     };
-    const addInstructor = (query: string) => {};
     const changeRole = (id: number, wasInstructor: boolean, type: 'instructor' | 'mentor') => {
         if ((wasInstructor && type === 'instructor') || (!wasInstructor && type === 'mentor')) return;
 
@@ -60,10 +61,24 @@ const CourseInstructors: React.FC<Props> = (props) => {
             }
         }
     };
+
+    const onSearchSelect = (instructor: LFInstructor) => {
+        props.setInstructors([...props.instructors, instructor]);
+        setSearchResults([]); // Clear search results after selection
+    };
+
+    const removeManager = (isInstructor: boolean, id: number) => {
+        if (isInstructor) {
+            props.setInstructors((prev: LFInstructor[]) => prev.filter((i) => i.id !== id));
+        } else {
+            props.setMentors((prev: LFInstructor[]) => prev.filter((m) => m.id !== id));
+        }
+    };
+
     return (
         <div>
             <div className="inline-flex align-baseline gap-1.5">
-                <Label className="text-base">Kursleitung</Label>
+                <Label className="text-base">Kursleitung & Mentoren</Label>
                 <InfoTooltipButton tooltipContent="TODO" />
             </div>
             <p>Füge weitere Kursleiter oder Mentoren hinzu</p>
@@ -75,28 +90,25 @@ const CourseInstructors: React.FC<Props> = (props) => {
                         className="flex-grow"
                         onSearch={searchInstructors}
                         search={searchString}
-                        values={searchResults.map((r) => ({ value: String(r.id), label: `${r.firstname} ${r.lastname}` }))}
-                        onSelect={(v) => setInstructorToAdd(Number(v))}
+                        values={searchResults.map((r) => ({ value: JSON.stringify(r), label: `${r.firstname} ${r.lastname}` }))}
+                        onSelect={(v) => onSearchSelect(JSON.parse(v) as LFInstructor)}
                     />
-                    <Button variant="default" size="icon">
-                        <IconCirclePlus />
-                    </Button>
                 </div>
 
                 {[...props.instructors.map((i) => ({ isInstructor: true, ...i })), ...props.mentors.map((m) => ({ isInstructor: false, ...m }))].map(
-                    (instructor) => (
-                        <div key={instructor.id} className="flex gap-2.5 items-center">
+                    (manager) => (
+                        <div key={manager.id} className="flex gap-2.5 items-center">
                             <div className="bg-primary-lighter w-full h-11 rounded-md flex items-center px-4 gap-2.5">
                                 <span>
-                                    {instructor.firstname} {instructor.lastname}
+                                    {manager.firstname} {manager.lastname}
                                 </span>
                                 <Select
-                                    value={instructor.isInstructor ? 'instructor' : 'mentor'}
-                                    onValueChange={(v) => changeRole(instructor.id!, instructor.isInstructor, v as 'mentor' | 'instructor')}
+                                    value={manager.isInstructor ? 'instructor' : 'mentor'}
+                                    onValueChange={(v) => changeRole(manager.id!, manager.isInstructor, v as 'mentor' | 'instructor')}
                                 >
                                     <SelectTrigger
                                         id="duration"
-                                        className={cn('px-2 h-7 text-white border-0', instructor.isInstructor ? 'bg-green-600' : 'bg-blue-600')}
+                                        className={cn('px-2 h-7 text-white border-0', manager.isInstructor ? 'bg-green-600' : 'bg-blue-600')}
                                     >
                                         <SelectValue />
                                     </SelectTrigger>
@@ -106,7 +118,7 @@ const CourseInstructors: React.FC<Props> = (props) => {
                                     </SelectContent>
                                 </Select>
                             </div>
-                            <Button size="icon" className="flex-shrink-0">
+                            <Button size="icon" className="flex-shrink-0" onClick={() => manager.id && removeManager(manager.isInstructor, manager.id)}>
                                 <IconTrash />
                             </Button>
                         </div>

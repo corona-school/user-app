@@ -176,7 +176,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                             override_meeting_link: meetingLink,
                             duration,
                             isNew: appointmentPrefill?.isNew,
-                            newIndex: appointmentPrefill?.newIndex,
+                            newId: appointmentPrefill?.newId,
                             id: !appointmentPrefill?.isNew ? appointmentPrefill!.id : -1, // -1 indicates a new appointment
                         })
                     }

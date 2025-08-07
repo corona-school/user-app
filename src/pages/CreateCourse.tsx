@@ -20,7 +20,7 @@ import { Instructor } from '@/gql/graphql';
 import CourseSettings from './course-creation/CourseSettings';
 import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
-import { useCreateCourseAppointments } from '@/context/AppointmentContext';
+import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 
 export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
 
@@ -64,9 +64,12 @@ type ICreateCourseContext = {
     setNewLectures?: Dispatch<SetStateAction<Lecture[]>>;
     pickedPhoto?: FileItem | null;
     setPickedPhoto?: Dispatch<SetStateAction<FileItem | null>>;
-    addedInstructors?: LFInstructor[];
-    setAddedInstructors?: Dispatch<SetStateAction<LFInstructor[]>>;
+    existingInstructors?: LFInstructor[];
+    setExistingInstructors?: Dispatch<SetStateAction<LFInstructor[]>>;
+    existingMentors?: LFInstructor[];
+    setExistingMentors?: Dispatch<SetStateAction<LFInstructor[]>>;
     newInstructors?: LFInstructor[];
+    newMentors?: LFInstructor[];
     image?: string;
     myself?: LFInstructor;
 };
@@ -153,10 +156,9 @@ const CreateCourse: React.FC = () => {
     const breadcrumbRoutes = useBreadcrumbRoutes();
     const { t } = useTranslation();
 
-    const state = location.state as { courseId?: number; currentStep?: number };
-    const prefillCourseId = state?.courseId;
+    const state = location.state as { subcourseId?: number; currentStep?: number };
+    const prefillCourseId = state?.subcourseId;
     const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
-    const { appointmentsToBeCreated } = useCreateCourseAppointments();
 
     const [courseId, setCourseId] = useState<string>('');
     const [courseName, setCourseName] = useState<string>('');
@@ -173,14 +175,16 @@ const CreateCourse: React.FC = () => {
     const [lectures, setLectures] = useState<LFLecture[]>([]);
     const [newLectures, setNewLectures] = useState<Lecture[]>([]);
     const [pickedPhoto, setPickedPhoto] = useState<FileItem | null>(null);
-    const [addedInstructors, setAddedInstructors] = useState<Instructor[]>([]);
-    const [newInstructors, setNewInstructors] = useState<Instructor[]>([]);
+    const [existingInstructors, setExistingInstructors] = useState<LFInstructor[]>([]); // existing instructors already added to the course
+    const [existingMentors, setExistingMentors] = useState<LFInstructor[]>([]); // existing mentors already added to the course
+    const [draftInstructors, setDraftInstructors] = useState<LFInstructor[]>([]); // new instructors list, to be applied when submitting the course
+    const [draftMentors, setDraftMentors] = useState<LFInstructor[]>([]); // new mentors list, to be applied when submitting the course
     const [image, setImage] = useState<string>('');
     const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
     const [studentMyself, setStudentMyself] = useState<{ firstname: string; lastname: string }>();
     const [studentId, setStudentId] = useState<number>();
 
-    const [loadingCourse, setLoadingCourse] = useState<boolean>(false);
+    const [loadingCourse, setLoadingCourse] = useState<boolean>(isEditing);
     const [loadingStudent, setLoadingStudent] = useState<boolean>(false);
 
     const [courseQuery] = useLazyQuery(COURSE_QUERY);
@@ -233,7 +237,8 @@ const CreateCourse: React.FC = () => {
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
             console.log('prefillCourse.instructors', prefillCourse.instructors);
             const arr = prefillCourse.instructors.filter((instructor: Instructor) => instructor.id !== studentId);
-            setAddedInstructors(arr);
+            setExistingInstructors(arr);
+            setDraftInstructors(arr);
         }
 
         if (prefillCourse.course.tags && Array.isArray(prefillCourse.course.tags)) {
@@ -249,6 +254,9 @@ const CreateCourse: React.FC = () => {
 
     const submit = () => {};
 
+    if (loadingCourse || loadingStudent) {
+        return <CenterLoadingSpinner />;
+    }
     return (
         <>
             <WithNavigation
@@ -299,16 +307,21 @@ const CreateCourse: React.FC = () => {
                         setNewLectures,
                         pickedPhoto,
                         setPickedPhoto,
-                        addedInstructors,
-                        newInstructors,
+                        existingInstructors: existingInstructors,
+                        newInstructors: draftInstructors,
                         image,
                         myself: studentMyself,
                     }}
                 >
                     <div className="flex flex-col gap-4 max-w-xl w-full">
                         <CourseDetails />
-                        <CourseInstructors instructors={addedInstructors} mentors={[]} setInstructors={() => {}} setMentors={() => {}} />
-                        <CourseAppointments isEditing={true} appointments={courseAppointments ?? []} />
+                        <CourseInstructors
+                            instructors={draftInstructors}
+                            mentors={draftMentors}
+                            setInstructors={(x) => setDraftInstructors(x)}
+                            setMentors={(x) => setDraftMentors(x)}
+                        />
+                        <CourseAppointments isEditingCourse={true} existingAppointments={courseAppointments ?? []} />
                         <CourseSettings />
                         <div className="flex flex-col gap-2">
                             <Button variant="outline" className="w-full">

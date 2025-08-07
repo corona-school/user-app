@@ -112,13 +112,13 @@ const CourseDetails: React.FC = () => {
                     <Label className="text-base">{t('course.CourseDate.step.attendees')}</Label>
                     <InfoTooltipButton tooltipContent="TODO" />
                 </div>
-                <div className="flex gap-2.5">
+                <div className="flex gap-2.5 flex-wrap">
                     {[5, 10, 20, 30, 40, 50, 100].map((item) => (
-                        <Button className="w-16" key={item} variant={maxAttendees === item ? 'default' : 'outline'} onClick={() => setMaxAttendees(item)}>
+                        <Button className="flex-grow" key={item} variant={maxAttendees === item ? 'default' : 'outline'} onClick={() => setMaxAttendees(item)}>
                             {item}
                         </Button>
                     ))}
-                    <Button variant={maxAttendees === 'custom' ? 'default' : 'outline'} onClick={() => setMaxAttendees('custom')}>
+                    <Button variant={maxAttendees === 'custom' ? 'default' : 'outline'} className="flex-grow" onClick={() => setMaxAttendees('custom')}>
                         Eigene
                     </Button>
                 </div>

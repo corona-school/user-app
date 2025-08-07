@@ -12,10 +12,10 @@ type WidgetProps = {
 const AddInstructorWidget: React.FC<WidgetProps> = ({ addInstructor }) => {
     const { t } = useTranslation();
     const { show, hide } = useModal();
-    const { addedInstructors = [] } = useContext(CreateCourseContext);
+    const { existingInstructors = [] } = useContext(CreateCourseContext);
 
     const showAddInstructor = useCallback(() => {
-        show({ variant: 'light' }, <AddCourseInstructor addedInstructors={addedInstructors} onInstructorAdded={addInstructor} onClose={hide} />);
+        show({ variant: 'light' }, <AddCourseInstructor addedInstructors={existingInstructors} onInstructorAdded={addInstructor} onClose={hide} />);
     }, [addInstructor, show, hide]);
 
     return (
