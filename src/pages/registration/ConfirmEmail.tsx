@@ -7,7 +7,7 @@ import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
 import ChangeEmailModal from '@/modals/ChangeEmailModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 interface ConfirmEmailProps extends RegistrationStepProps {
     retainPath: string;
@@ -43,6 +43,18 @@ export const ConfirmEmail = ({ onNext, retainPath }: ConfirmEmailProps) => {
     const onEmailChanged = (email: string) => {
         onFormChange({ email });
     };
+
+    useEffect(() => {
+        const onFocus = () => {
+            window.location.reload();
+        };
+
+        window.addEventListener('focus', onFocus);
+
+        return () => {
+            window.removeEventListener('focus', onFocus);
+        };
+    }, []);
 
     return (
         <RegistrationStep onNext={onNext} isNextDisabled>
