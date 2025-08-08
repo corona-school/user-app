@@ -407,6 +407,14 @@
                 "title": "Onaylar",
                 "subtitle": "Onaylar"
             },
+            "authenticationInfo": {
+                "registerWith": "{{method}} ile giriş yap",
+                "title": "Kayıt",
+                "description": "Hesabınızla grup kurslarına, bire bir özel derslere ve ev ödevi yardımına ücretsiz olarak katılabilirsiniz.",
+                "pupilEmail": "Öğrenciden / stajyerden gelen e-posta",
+                "passwordPlaceholder": "Şifre girin",
+                "emailPlaceholder": "E-posta adresi"
+            },
             "school": {
                 "title": "Okul konumu",
                 "subtitle": "Okulunuzun adı nedir?",
@@ -433,15 +441,37 @@
                 "title": "Adın ne senin?"
             },
             "userAge": {
-                "title": "Kaç yaşındasın sen?"
+                "title": "Kaç yaşındasın sen?",
+                "description": "Bu bilgileri kurslara ve öğrenim ortaklarına kayıt ve atama için kullanırız."
             },
             "languages": {
                 "title": "Evde hangi dilleri konuşuyorsunuz?",
-                "tooltip": "Bu, uygun yardımcıları bulmak için önemli bir bilgidir"
+                "tooltip": "Bu, uygun yardımcıları bulmak için önemli bir bilgidir",
+                "description": "Böylece yardımcıların sizinle hangi dillerde iletişim kurabileceğini bilebiliriz."
             },
             "emailOwner": {
                 "title": "Kimin e-posta adresini kullanıyoruz?",
                 "description": "Başlangıçla ilgili tüm bilgileri bu e-posta adresine göndereceğiz. Daha sonra da değiştirebilirsiniz."
+            },
+            "dataPrivacy": {
+                "usageBullets": {
+                    "1": "Lern-Fair Verilerinizi hesabınız aktif olduğu sürece saklarız ve hesabınız devre dışı bırakıldıktan sonra en geç 3 yıl içinde sileriz",
+                    "2": "Kişisel bilgilerinizi (isim, okul türü, sınıf, federal eyalet, konular) size destek olacak yardımcılarla paylaşıyoruz",
+                    "3": "Verilerinizi işlemek için Heroku, Mailjet, Datadog ve Google'ın tekliflerini kullanıyoruz, bunlar Avrupa veri koruma düzeyini garanti edemeyebilir"
+                },
+                "title": "Veri koruma onayı",
+                "dataUsageInfoLabel": "Lern-Fair 'a kaydolduğunuzda verilerinize bu şekilde olur:",
+                "dataUsageUSA": "ABD'deki işleyiciler tarafından veri işleme",
+                "labelTermsAndPrivacy": "Gizlilik politikasını ve hüküm ve koşulları dikkate aldım.",
+                "accordionUsDataProcessors": "Kişisel verilerimin işlenmesinin, ABD istihbarat servislerinden gelen talepler nedeniyle Avrupa veri koruma düzeyine uygunluğu garanti edemeyen ABD merkezli işleyicilerimiz Google ve Heroku tarafından gerçekleştirildiğini kabul ediyorum. Lern-Fair Bu amaçla, standart sözleşme hükümleri imzalanmış ve GDPR Madde 46 paragraf 2 lit. c uyarınca ilave güvenlik önlemleri kabul edilmiştir.",
+                "sendRegistration": "Kayıt gönderin"
+            },
+            "confirmEmail": {
+                "title": "Lütfen e-postanızı onaylayın",
+                "description": "Bir mesaj gönderdik\n\n<b>{{email}}</b>\n\nhesabınızı etkinleştirmek için. Eğer almadıysanız lütfen önce spam klasörünüzü kontrol edin.",
+                "changeEmail": "E-posta adresini değiştir",
+                "resendConfirmation": "Onayı tekrar gönderin",
+                "doYouHaveProblems": "Giriş yaparken sorun mu yaşıyorsunuz?"
             }
         },
         "pupil": {

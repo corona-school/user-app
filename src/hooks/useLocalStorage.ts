@@ -77,5 +77,5 @@ export function useLocalStorage<T>({ key, initialValue }: UseLocalStorageArgs<T>
         };
     }, []);
 
-    return [storedValue, setValue, removeValue] as [T, (value: T) => void, (key: string) => void];
+    return [storedValue, setValue, removeValue] as [T, (value: T) => void, () => void];
 }
