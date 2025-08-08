@@ -500,7 +500,19 @@
                 "description": "In a short, friendly video call (approx. 15 minutes) we would like to get to know you a little - completely relaxed and without preparation. This way we can offer you the right support.",
                 "message": "\"You can ask us anything - we're here for you.\"",
                 "pupilScreenersNames": "Ronja, Paula or Charlotte",
-                "bookAppointmentButton": "Arrange a meeting"
+                "bookAppointmentButton": "Arrange a meeting",
+                "faqStudent": [
+                    {
+                        "question": "How long does the meeting take?",
+                        "answer": "About 30 minutes."
+                    }
+                ]
+            },
+            "appointmentDetails": {
+                "title": "lecture created!",
+                "description": "A few final steps are necessary to put together the best possible offer for you.",
+                "changeAppointment": "Reschedule meeting",
+                "cancelAppointment": "Cancel meeting"
             }
         },
         "pupil": {
