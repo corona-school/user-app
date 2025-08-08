@@ -472,6 +472,35 @@
                 "changeEmail": "E-posta adresini değiştir",
                 "resendConfirmation": "Onayı tekrar gönderin",
                 "doYouHaveProblems": "Giriş yaparken sorun mu yaşıyorsunuz?"
+            },
+            "bookAppointment": {
+                "faqPupil": [
+                    {
+                        "question": "Kameramı açmam gerekiyor mu?",
+                        "answer": "Hayır, sadece sen istersen."
+                    },
+                    {
+                        "question": "Görüşme ne kadar sürüyor?",
+                        "answer": "Yaklaşık 15 dakika."
+                    },
+                    {
+                        "question": "Kim var orada?",
+                        "answer": "Bizden biri, başka kimse değil. Ancak ebeveynlerinizden birini veya her ikisini de yanınızda getirebilirsiniz."
+                    },
+                    {
+                        "question": "Bu neden gerekli?",
+                        "answer": "Böylece hangi konularda destek istediğinizi anlayabilir ve sizin için uygun teklifler bulabiliriz."
+                    },
+                    {
+                        "question": "Hangi dil konuşuluyor?",
+                        "answer": "Çoğunlukla Almanca, ancak İngilizce veya diğer dilleri de konuşabiliriz. İyi Almanca konuşamıyorsanız, bize bir e-posta gönderin ve bir çözüm bulalım."
+                    }
+                ],
+                "title": "Tanışma toplantısı",
+                "description": "Kısa, samimi bir video görüşmesinde (yaklaşık 15 dakika) sizi biraz tanımak istiyoruz - tamamen rahat ve hazırlıksız. Bu şekilde size doğru desteği sunabiliriz.",
+                "message": "\"Bize her şeyi sorabilirsiniz - sizin için buradayız.\"",
+                "pupilScreenersNames": "Ronja, Paula veya Charlotte",
+                "bookAppointmentButton": "Bir toplantı düzenleyin"
             }
         },
         "pupil": {
@@ -2713,5 +2742,7 @@
         "saturday": "Cumartesi",
         "sunday": "Pazar"
     },
-    "otherLanguages": "diğer diller"
+    "otherLanguages": "diğer diller",
+    "close": "Kapat",
+    "moreInfos": "Daha fazla bilgi"
 }

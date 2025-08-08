@@ -16,6 +16,8 @@
     "show": "Anzeigen",
     "showMore": "Mehr anzeigen",
     "showLess": "Weniger anzeigen",
+    "close": "Schließen",
+    "moreInfos": "Mehr Infos",
     "weekdays": {
         "monday": "Montag",
         "tuesday": "Dienstag",
@@ -490,6 +492,35 @@
                 "title": "Welche Sprachen sprichst du zu Hause?",
                 "description": "Damit wir wissen, in welchen Sprachen Helfer:innen mit dir kommunizieren können.",
                 "tooltip": "Dies ist eine wichtige Information um passende Helfer zu finden"
+            },
+            "bookAppointment": {
+                "title": "Kennenlern-Gespräch",
+                "description": "In einem kurzen, freundlichen Video-Call (ca. 15 Minuten) möchten wir dich ein bischen kennenlernen – ganz entspannt und ohne Vorbereitung. So können wir dir passende Unterstützung anbieten.",
+                "message": ",,Du kannst uns alles fragen - wir sind für dich da.“",
+                "pupilScreenersNames": "Ronja, Paula oder Charlotte",
+                "bookAppointmentButton": "Gespräch vereinbaren",
+                "faqPupil": [
+                    {
+                        "question": "Muss ich meine Kamera anschalten?",
+                        "answer": "Nein, nur wenn du möchtest."
+                    },
+                    {
+                        "question": "Wie lange dauert das Gespräch?",
+                        "answer": "Etwa 15 Minuten."
+                    },
+                    {
+                        "question": "Wer ist dabei?",
+                        "answer": "Eine:r von uns, niemand sonst. Du kannst aber sehr gerne ein Elternteil oder beide mitbringen."
+                    },
+                    {
+                        "question": "Warum ist das nötig?",
+                        "answer": "Damit wir verstehen in welchen Fächern du Unterstützung möchtest und passende Angebote für dich finden können."
+                    },
+                    {
+                        "question": "Welche Sprache wird gesprochen?",
+                        "answer": "Meistens Deutsch, aber wir können auch Englisch oder andere Sprachen. Falls du nicht gut Deutsch sprichst, schreibe uns einfach eine Email, dann finden wir eine Lösung."
+                    }
+                ]
             },
             "emailOwner": {
                 "title": "Wessen Email-Adresse nutzen wir?",

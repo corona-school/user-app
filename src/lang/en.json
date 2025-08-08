@@ -472,6 +472,35 @@
                 "changeEmail": "Change email address",
                 "resendConfirmation": "Send confirmation again",
                 "doYouHaveProblems": "Having problems with your registration?"
+            },
+            "bookAppointment": {
+                "faqPupil": [
+                    {
+                        "question": "Do I have to turn on my camera?",
+                        "answer": "No, only if you want to."
+                    },
+                    {
+                        "question": "How long does the interview take?",
+                        "answer": "About 15 minutes."
+                    },
+                    {
+                        "question": "Who is there?",
+                        "answer": "One of us, no one else. But you are very welcome to bring one or both parents with you."
+                    },
+                    {
+                        "question": "Why is this necessary?",
+                        "answer": "So that we understand in which subjects you would like support and can find suitable offers for you."
+                    },
+                    {
+                        "question": "What language is spoken?",
+                        "answer": "Mostly German, but we can also speak English or other languages. If you don't speak German well, just send us an email and we'll find a solution."
+                    }
+                ],
+                "title": "Introductory meeting",
+                "description": "In a short, friendly video call (approx. 15 minutes) we would like to get to know you a little - completely relaxed and without preparation. This way we can offer you the right support.",
+                "message": "\"You can ask us anything - we're here for you.\"",
+                "pupilScreenersNames": "Ronja, Paula or Charlotte",
+                "bookAppointmentButton": "Arrange a meeting"
             }
         },
         "pupil": {
@@ -2717,5 +2746,7 @@
         "saturday": "Saturday",
         "sunday": "Sunday"
     },
-    "otherLanguages": "other languages"
+    "otherLanguages": "other languages",
+    "close": "Close",
+    "moreInfos": "More info"
 }
