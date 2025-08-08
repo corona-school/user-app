@@ -64,6 +64,7 @@ const RegistrationContext = createContext<RegistrationContextValue>({
 const REGISTRATION_PROFILE_QUERY = gql(`  
     query RegistrationProfile {
         me {
+            userID
             firstname
             lastname
             email
@@ -98,7 +99,7 @@ const REGISTRATION_PROFILE_QUERY = gql(`
 `);
 
 export const RegistrationProvider = ({ children }: { children: React.ReactNode }) => {
-    const { sessionState } = useApollo();
+    const { sessionState, user } = useApollo();
     const location = useLocation();
     const [isLoading, setIsLoading] = useState(true);
     const { data, refetch, networkStatus } = useQuery(REGISTRATION_PROFILE_QUERY, { skip: sessionState !== 'logged-in', notifyOnNetworkStatusChange: true });
@@ -128,8 +129,10 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
     useEffect(() => {
         // At this point we still don't know what to do with the user as we're checking if it's already logged in or not
         if (sessionState === 'unknown' || networkStatus !== NetworkStatus.ready) return;
-        // If it's logged in but we don't have their profile yet, we need to wait a bit more
-        if (sessionState === 'logged-in' && !registrationProfile) return;
+        // Login with IDP Scenario / User has a temporary session
+        if (sessionState === 'logged-out' && !!user?.userID && !(!!user.pupil || !!user.student)) {
+            handleOnChange({ isRegisteringManually: false, email: user.email, currentStep: RegistrationStep.dataPrivacy });
+        }
         // If it's authenticated, we update the form state with the user information
         if (!!registrationProfile) {
             const screeningAppointment = registrationProfile?.pupil
@@ -167,8 +170,8 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         // Rules for when the user is not authenticated
         if (!registrationProfile) {
             if (values.currentStep) {
-                // User was on dataPrivacy step and reloaded the page, need to enter the password again
-                if (values.currentStep === RegistrationStep.dataPrivacy && !password) {
+                // Data Privacy step can only be completed if there is a password or if the user is registering via IDP
+                if (values.currentStep === RegistrationStep.dataPrivacy && !password && values.isRegisteringManually) {
                     return handleOnChange({ currentStep: RegistrationStep.authenticationInfo });
                 }
                 return;
