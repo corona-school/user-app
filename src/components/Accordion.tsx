@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as AccordionPrimitive from '@radix-ui/react-accordion';
 import { cn } from '@/lib/Tailwind';
-import { IconChevronDown } from '@tabler/icons-react';
+import { Icon, IconChevronDown, IconProps } from '@tabler/icons-react';
 
 function Accordion({ ...props }: React.ComponentProps<typeof AccordionPrimitive.Root>) {
     return <AccordionPrimitive.Root data-slot="accordion" {...props} />;
@@ -11,7 +11,16 @@ function AccordionItem({ className, ...props }: React.ComponentProps<typeof Acco
     return <AccordionPrimitive.Item data-slot="accordion-item" className={cn('border-b last:border-b-0', className)} {...props} />;
 }
 
-function AccordionTrigger({ className, children, ...props }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
+function AccordionTrigger({
+    className,
+    IconComponent = IconChevronDown,
+    iconClasses,
+    children,
+    ...props
+}: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
+    IconComponent?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<Icon>>;
+    iconClasses?: string;
+}) {
     return (
         <AccordionPrimitive.Header className="flex">
             <AccordionPrimitive.Trigger
@@ -23,7 +32,9 @@ function AccordionTrigger({ className, children, ...props }: React.ComponentProp
                 {...props}
             >
                 {children}
-                <IconChevronDown className="text-muted-foreground pointer-events-none size-6 shrink-0 translate-y-0.5 transition-transform duration-200" />
+                <IconComponent
+                    className={cn('text-muted-foreground pointer-events-none size-6 shrink-0 translate-y-0.5 transition-transform duration-200', iconClasses)}
+                />
             </AccordionPrimitive.Trigger>
         </AccordionPrimitive.Header>
     );
