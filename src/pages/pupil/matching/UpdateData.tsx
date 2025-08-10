@@ -19,6 +19,7 @@ import { Button } from '@/components/Button';
 import { getGradeLabel } from '@/Utility';
 import { asTranslationKey } from '@/helper/string-helper';
 import { IconLoader } from '@/components/IconLoader';
+import { DAZ } from '@/types/subject';
 
 type Props = {
     refetchQuery: DocumentNode;
@@ -39,7 +40,7 @@ const ME_UPDATE_MUTATION = gql(`
 type ModalType = 'grade' | 'schoolType' | 'languages';
 
 const UpdateData: React.FC<Props> = ({ refetchQuery, profile }) => {
-    const { setCurrentStep } = useContext(RequestMatchContext);
+    const { setCurrentStep, removeSubject, setSkipGerman } = useContext(RequestMatchContext);
     const { t } = useTranslation();
     const [meUpdate, { loading: isUpdating }] = useMutation(ME_UPDATE_MUTATION, { refetchQueries: [refetchQuery] });
     const [newCalendarPreferences, setNewCalendarPreferences] = useState<CalendarPreferences | undefined>(profile?.calendarPreferences);
@@ -54,7 +55,15 @@ const UpdateData: React.FC<Props> = ({ refetchQuery, profile }) => {
         try {
             await meUpdate({ variables: { calendarPreferences: newCalendarPreferences, languages: selectedLanguages } });
             toast.success(t('changesWereSaved'));
-            setCurrentStep(RequestMatchStep.german);
+
+            if (selectedLanguages.includes(Language.Deutsch)) {
+                removeSubject(DAZ);
+                setSkipGerman(true);
+                setCurrentStep(RequestMatchStep.subjects);
+            } else {
+                setSkipGerman(false);
+                setCurrentStep(RequestMatchStep.german);
+            }
         } catch (error: any) {
             logError('[matchRequest]', error?.message, error);
             toast.error(t('error'));

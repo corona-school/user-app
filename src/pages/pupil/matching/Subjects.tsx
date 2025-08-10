@@ -8,8 +8,17 @@ import { useTranslation } from 'react-i18next';
 
 const Subjects: React.FC = () => {
     const { space } = useTheme();
-    const { matchRequest, setSubject, removeSubject, setCurrentStep, setSkippedSubjectPriority, skippedSubjectPriority, setSubjectPriority, requestMatch } =
-        useContext(RequestMatchContext);
+    const {
+        matchRequest,
+        setSubject,
+        removeSubject,
+        setCurrentStep,
+        setSkippedSubjectPriority,
+        skippedSubjectPriority,
+        setSubjectPriority,
+        requestMatch,
+        skipGerman,
+    } = useContext(RequestMatchContext);
     const { t } = useTranslation();
 
     const isDAZ = containsDAZ(matchRequest.subjects);
@@ -36,7 +45,7 @@ const Subjects: React.FC = () => {
                     is: matchRequest.subjects.length === 0 || (matchRequest.subjects.length === 1 && isDAZ),
                     reason: isDAZ ? t('matching.wizard.pupil.subjects.reason_btn_disabled_DAZ') : t('matching.wizard.pupil.subjects.reason_btn_disabled'),
                 }}
-                onPressPrev={() => setCurrentStep(RequestMatchStep.german)}
+                onPressPrev={() => setCurrentStep(skipGerman ? RequestMatchStep.updateData : RequestMatchStep.german)}
                 onPressNext={() => {
                     skippedSubjectPriority ? requestMatch() : setCurrentStep(RequestMatchStep.priority);
                 }}

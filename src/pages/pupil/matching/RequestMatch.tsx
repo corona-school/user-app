@@ -64,6 +64,8 @@ type RequestMatchContextType = {
     currentStep: RequestMatchStep;
     setCurrentStep: (step: RequestMatchStep) => void;
     requestMatch: () => Promise<void>;
+    skipGerman: boolean;
+    setSkipGerman: Dispatch<SetStateAction<boolean>>;
 };
 export const RequestMatchContext = createContext<RequestMatchContextType>({
     matchRequest: { subjects: [], message: '' },
@@ -79,6 +81,8 @@ export const RequestMatchContext = createContext<RequestMatchContextType>({
     currentStep: RequestMatchStep.updateData,
     setCurrentStep: () => {},
     requestMatch: () => Promise.resolve(),
+    skipGerman: false,
+    setSkipGerman: () => () => {},
 });
 
 const RequestMatch: React.FC = () => {
@@ -88,6 +92,7 @@ const RequestMatch: React.FC = () => {
     const [skippedSubjectPriority, setSkippedSubjectPriority] = useState<boolean>(false);
     const [skippedSubjectList, setSkippedSubjectList] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
+    const [skipGerman, setSkipGerman] = useState<boolean>(false);
     const [matchRequest, setMatchRequest] = useState<MatchRequest>({
         subjects: [],
         message: '',
@@ -207,6 +212,8 @@ const RequestMatch: React.FC = () => {
                         skippedSubjectPriority,
                         setSkippedSubjectList,
                         skippedSubjectList,
+                        skipGerman,
+                        setSkipGerman,
                         setMessage,
                         setSubjectPriority,
                         currentStep,
