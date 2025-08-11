@@ -200,7 +200,7 @@ const Referrals: React.FC<{}> = () => {
                 {/* Mobile View */}
                 <div className="block lg:hidden">
                     <div className="min-w-[300px] max-w-[768px] space-y-4 mx-auto">
-                        <div className="h-[220px]">
+                        <div className="min-h-[220px]">
                             <BGMobile style={{ position: 'absolute', right: 0 }}></BGMobile>
                             <Character style={{ position: 'absolute', top: '135px', right: 16 }}></Character>
                             <div>
@@ -210,8 +210,8 @@ const Referrals: React.FC<{}> = () => {
                                 <Typography className="mb-3 w-2/5">{t('referral.description')}</Typography>
                             </div>
                         </div>
-                        <div className="h-[140px] bg-white rounded-md shadow-lg p-5">
-                            <ConfettiMobile style={{ position: 'absolute', top: '320px', right: '10px', transform: 'scale(.6)' }}></ConfettiMobile>
+                        <div className="relative h-[140px] bg-white rounded-md shadow-lg p-5">
+                            <ConfettiMobile style={{ position: 'absolute', top: '-30px', right: '-10px', transform: 'scale(.4)' }}></ConfettiMobile>
 
                             <Typography variant="h5" className="font-bold mb-3">
                                 {t('referral.reward.title')}
