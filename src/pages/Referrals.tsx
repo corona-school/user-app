@@ -71,7 +71,7 @@ const Referrals: React.FC<{}> = () => {
 
     // Share Variables
     const referralMessage = t('referral.referralMessage');
-    const [linkedinButtonText, setLinkedinButtonText] = useState(t('referral.share.option3.option'));
+    const [linkedinButtonText, setLinkedinButtonText] = useState(t('referral.share.option3'));
 
     // Fetch referral count and supported hours
     const { data: referralData, error: referralError } = useQuery(ReferralCountQuery);
@@ -107,7 +107,7 @@ const Referrals: React.FC<{}> = () => {
 
         setTimeout(() => {
             window.open(linkedinURL, '_blank');
-            setLinkedinButtonText(t('referral.share.option3.option'));
+            setLinkedinButtonText(t('referral.share.option3'));
         }, 2000);
     };
 
@@ -165,30 +165,6 @@ const Referrals: React.FC<{}> = () => {
                             </Typography>
                             <Typography className="mb-3">{t('referral.share.description')}</Typography>
 
-                            {/* Options */}
-                            <div className="flex space-x-2 m-3 mb-8 mt-8 items-center">
-                                <IconCircleNumber1Filled className="w-6 h-6 flex-shrink-0" />
-                                <Typography variant="h5">
-                                    {t('referral.share.option1.option')}
-                                    <Typography className="inline">{t('referral.share.option1.description')}</Typography>
-                                </Typography>
-                            </div>
-
-                            <div className="flex space-x-2 m-3 mb-8 items-center">
-                                <IconCircleNumber2Filled className="w-6 h-6 flex-shrink-0" />
-                                <Typography variant="h5">
-                                    {t('referral.share.option2.option')}
-                                    <Typography className="inline">{t('referral.share.option2.description')}</Typography>
-                                </Typography>
-                            </div>
-
-                            <div className="flex space-x-2 m-3 mb-4 items-center">
-                                <IconCircleNumber3Filled className="w-6 h-6 flex-shrink-0" />
-                                <Typography variant="h5">
-                                    {t('referral.share.option3.option')}
-                                    <Typography className="inline">{t('referral.share.option3.description')}</Typography>
-                                </Typography>
-                            </div>
                             {/* Share Buttons */}
                             <SocialOptions
                                 uniqueReferralLink={uniqueReferralLink}
