@@ -1,5 +1,5 @@
-import { Text, Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
-import { useEffect, useMemo, useState } from 'react';
+import { Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
+import { useEffect, useMemo } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import CTACard from '../../widgets/CTACard';
