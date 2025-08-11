@@ -18,7 +18,6 @@ import AsNavigationItem from '../../components/AsNavigationItem';
 import CSSWrapper from '../../components/CSSWrapper';
 import AlertMessage from '../../widgets/AlertMessage';
 import ImportantInformation from '../../widgets/ImportantInformation';
-import RecommendModal from '../../modals/RecommendModal';
 import { gql } from './../../gql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
@@ -131,7 +130,6 @@ const DashboardStudent: React.FC<Props> = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const [showRecommendModal, setShowRecommendModal] = useState<boolean>(false);
     const { trackPageView, trackEvent } = useMatomo();
 
     useEffect(() => {
@@ -183,7 +181,7 @@ const DashboardStudent: React.FC<Props> = () => {
     }, [publishedSubcourses]);
 
     const handleOnRecommendClick = () => {
-        setShowRecommendModal(true);
+        navigate('/referral');
         trackEvent({
             category: 'Recommend Section on Start Page',
             action: 'Click Button “Recommend Now”',
@@ -347,7 +345,6 @@ const DashboardStudent: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <RecommendModal isOpen={showRecommendModal} onOpenChange={setShowRecommendModal} />
         </AsNavigationItem>
     );
 };
