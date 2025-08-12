@@ -26,7 +26,7 @@ interface MultiSelectorProps<Enum> {
     multiple: true;
 }
 
-type SelectorProps<Enum> = (SingleSelectorProps<Enum> | MultiSelectorProps<Enum>) & {
+export type SelectorProps<Enum> = (SingleSelectorProps<Enum> | MultiSelectorProps<Enum>) & {
     className?: string;
     maxVisibleItems?: number;
     toggleConfig?: {
@@ -93,7 +93,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                         >
                             <>
                                 {getIcon && getIcon(it as Enum)}
-                                {Array.isArray(translation) ? t(...translation) : t(asTranslationKey(translation))}
+                                <span>{Array.isArray(translation) ? (t(...translation) as any) : t(asTranslationKey(translation))}</span>
                             </>
                         </Toggle>
                     );
