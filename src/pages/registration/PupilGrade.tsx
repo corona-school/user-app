@@ -24,7 +24,7 @@ const PupilGrade = ({ onBack, onNext }: PupilGradeProps) => {
                     toggleConfig={{
                         variant: 'white-primary',
                         size: 'lg',
-                        className: 'justify-start w-[150px]',
+                        className: 'w-[150px] [&>*:nth-child(1)]:hidden',
                     }}
                     grade={form.grade}
                     onGradeChange={onChange}
