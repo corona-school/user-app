@@ -8,6 +8,7 @@ import { useRegistrationForm } from './useRegistrationForm';
 import { Combobox } from '@/components/Combobox';
 import { cn } from '@/lib/Tailwind';
 import { Typography } from '@/components/Typography';
+import { schooltypes } from '@/types/lernfair/SchoolType';
 
 interface SchoolSearchProps extends RegistrationStepProps {}
 
@@ -21,7 +22,15 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
     const handleOnSelect = (id: string) => {
         const newSelectedSchool = schools.find((e) => e.id === id);
         if (newSelectedSchool) {
-            onFormChange({ school: newSelectedSchool });
+            let schoolType = newSelectedSchool.schooltype;
+            if (!schoolType) {
+                schoolType = schooltypes.find((e) => {
+                    const schoolTypeLabel = e.label.toLowerCase();
+                    const selectedSchoolName = newSelectedSchool.name.toLowerCase();
+                    return selectedSchoolName.includes(schoolTypeLabel);
+                })?.key as any;
+            }
+            onFormChange({ school: { ...newSelectedSchool, schooltype: schoolType } });
         }
     };
 
