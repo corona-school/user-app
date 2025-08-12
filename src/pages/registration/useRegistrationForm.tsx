@@ -1,5 +1,5 @@
 import { gql } from '@/gql';
-import { Language, PupilEmailOwner } from '@/gql/graphql';
+import { Language, PupilEmailOwner, SchoolType } from '@/gql/graphql';
 import useApollo from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Appointment } from '@/types/lernfair/Appointment';
@@ -31,6 +31,19 @@ export interface RegistrationForm {
             rescheduleUrl?: string | null;
         };
     };
+    grade: number;
+    school: {
+        id?: string;
+        name: string;
+        zip?: string | null;
+        city?: string | null;
+        schooltype?: SchoolType | null;
+    };
+    zipCode: number;
+    notificationPreferences: {
+        importantInformation: boolean;
+        recommendations: boolean;
+    };
 }
 
 interface RegistrationContextValue {
@@ -51,6 +64,15 @@ const emptyState: RegistrationForm = {
     privacyConsent: false,
     isRegisteringManually: true,
     age: 0,
+    grade: 0,
+    school: {
+        name: '',
+    },
+    zipCode: 0,
+    notificationPreferences: {
+        importantInformation: true,
+        recommendations: false,
+    },
 };
 
 const RegistrationContext = createContext<RegistrationContextValue>({
@@ -82,6 +104,7 @@ const REGISTRATION_PROFILE_QUERY = gql(`
                             cancelUrl
                             rescheduleUrl
                         }
+                        appointmentType
                     }
                 }
                 verifiedAt
@@ -89,8 +112,8 @@ const REGISTRATION_PROFILE_QUERY = gql(`
                 emailOwner
             }
             student {
-                tutorScreenings { status, appointment { id, title, description, start, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
-                instructorScreenings { status, appointment { id, title, description, start, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
+                tutorScreenings { status, appointment { id, title, description, start, appointmentType, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
+                instructorScreenings { status, appointment { id, title, description, start, appointmentType, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
                 verifiedAt
                 languages
             }
