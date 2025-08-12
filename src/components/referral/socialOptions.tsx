@@ -24,7 +24,6 @@ const SocialOptions: React.FC<Props> = ({ uniqueReferralLink, referralMessage, o
     const userType = useUserType();
     return (
         <div className="space-y-2">
-            <label className="block text-[var(--Primary-Base, #2A4A50)] font-outfit font-bold text-base leading-[24px]"> {t('referral.share.title')}</label>
             <div className="relative">
                 <input value={uniqueReferralLink} readOnly placeholder="Enter link" className="w-full p-2 bg-gray-100 border border-gray-300 rounded-lg" />
                 <button
@@ -63,7 +62,7 @@ const SocialOptions: React.FC<Props> = ({ uniqueReferralLink, referralMessage, o
                     >
                         <Button variant="success" className="w-full -ml-8">
                             <WhatsAppIcon />
-                            {t('referral.share.option2.option')}
+                            {t('referral.share.option2')}
                         </Button>
                     </WhatsappShareButton>
 
