@@ -25,8 +25,8 @@ export const RegistrationStepTitle = ({ className, variant = 'h2', children, ...
 
 export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisabled, className, children }: _RegistrationStepProps) => {
     return (
-        <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-[800px] w-full mx-auto md:pb-24', className)}>
-            <div className="z-10 flex flex-1 flex-col items-center justify-center max-w-[536px] mx-auto px-[23px] md:px-0">{children}</div>
+        <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-full md:max-w-[800px] w-full mx-auto md:pb-24', className)}>
+            <div className="z-10 flex flex-1 flex-col items-center justify-center max-w-full md:max-w-[536px] mx-auto px-[23px] md:px-0">{children}</div>
             <div className="md:absolute bottom-0 px-10 flex justify-between w-full pb-8 md:bottom-1/2 md:px-0">
                 <Button
                     disabled={isBackDisabled}
