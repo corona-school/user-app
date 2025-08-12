@@ -1,4 +1,4 @@
-import { RefObject, useCallback, useLayoutEffect, useState } from 'react';
+import { RefObject, useCallback, useEffect, useLayoutEffect, useState } from 'react';
 
 export function useRestoration({ restore, scrollGroup }: { restore: (id: string) => void; scrollGroup: string }) {
     useLayoutEffect(() => {
@@ -66,4 +66,13 @@ export function useRestoredNumberState(initial: number, scrollGroup: string) {
     );
 
     return [value, setValue] as const;
+}
+
+// On component mount, scroll #root (the element defined in index.html that scrolls) to the top
+// This overrides the browser behaviour of restoring the scroll position while navigating between pages.
+export function useScrollToTop() {
+    useEffect(() => {
+        const el = document.getElementById('root')!;
+        el.scrollTo(0, 0);
+    }, []);
 }

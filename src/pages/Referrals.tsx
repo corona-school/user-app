@@ -23,6 +23,7 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { useUserType } from '@/hooks/useApollo';
 import { Button } from '@/components/Button';
 import { SHARING_MATERIALS_URL } from '@/config';
+import { useScrollToTop } from '@/hooks/useScrollRestoration';
 
 const ReferralCountQuery = gql(`
     query ReferralCount {
@@ -55,6 +56,8 @@ const Referrals: React.FC<{}> = () => {
             console.error('Failed to copy: ', error);
         }
     };
+
+    useScrollToTop();
 
     useEffect(() => {
         trackPageView({
