@@ -30,7 +30,6 @@ export function ScreeningSuggestionCard({ userID, variant, refresh }: ScreeningS
     const [chosenSuggestion, setChosenSuggestion] = useState<number>(0);
     const [send, { loading, reset }] = useMutation(MUTATION_SEND_SUGGESTION);
     const { data: suggestionsData } = useQuery(QUERY_GET_SUGGESTIONS);
-
     const suggestions = suggestionsData?.notifications.filter((e) => (variant === 'pupil' ? e.description.startsWith('SuS') : e.description.startsWith('HuH')));
 
     const handleOnSend = async () => {
