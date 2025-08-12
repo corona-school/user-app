@@ -571,19 +571,28 @@
                 "subtitle": "Persönliche Daten"
             },
             "grade": {
-                "title": "Klasse",
-                "subtitle": "In welcher Klasse bist du?"
+                "title": "In welcher Klasse bist du?"
             },
             "school": {
-                "title": "Schulort",
-                "subtitle": "Wie heißt deine Schule?",
+                "title": "Auf welche Schule\ngehst du?",
                 "helperText": "Schule nicht gefunden? Ergänze den Ort oder schreibe den Schulnamen mit bzw. ohne Bindestrich oder Leerstelle.",
                 "schoolFound": "Schule aus Liste gewählt",
                 "otherSchoolFound": "Schule selbst eingetragen"
             },
             "schoolType": {
-                "title": "Schulform",
-                "subtitle": "Auf welche Schulform gehst du?"
+                "title": "Welche Schulform"
+            },
+            "zipCode": {
+                "title": "Bitte teile uns deine Postleitzahl mit",
+                "doNotKnow": "Weiß nicht"
+            },
+            "notifications": {
+                "title": "Email-Benachrichtigungen einstellen",
+                "description": "Wir haben verschiedene Möglichkeiten dich auf dem Laufenden zu halten. Du kannst deine Auswahl später auch wieder ändern.",
+                "importantInformationDescription": "Ich möchte per Email oder Telefon bei wichtigen Nachrichten (z.B. neuer Termin, neue Chat-Nachricht) informiert werden.",
+                "importantInformationBadge": "Wichtige Infos",
+                "recommendationsBadge": "Hilfreiches & Tipps",
+                "recommendationsDescription": "Ich möchte über neue Angebote und allgemeine Nachrichten informiert werden."
             },
             "state": {
                 "title": "Schulort",

@@ -391,12 +391,10 @@
                 "subtitle": "Personal data"
             },
             "grade": {
-                "title": "Class",
-                "subtitle": "What grade are you in?"
+                "title": "Class"
             },
             "schoolType": {
-                "title": "Type of school",
-                "subtitle": "What type of school do you go to?"
+                "title": "Which type of school"
             },
             "state": {
                 "title": "School location",
@@ -409,7 +407,6 @@
             },
             "school": {
                 "title": "School location",
-                "subtitle": "What is the name of your school?",
                 "helperText": "We use the school details to determine your school type and location",
                 "schoolFound": "School found",
                 "otherSchoolFound": "Other school recognized"

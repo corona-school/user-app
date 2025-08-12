@@ -391,12 +391,10 @@
                 "subtitle": "Kişisel veriler"
             },
             "grade": {
-                "title": "Sınıf",
-                "subtitle": "Hangi sınıftasın?"
+                "title": "Sınıf"
             },
             "schoolType": {
-                "title": "Okul türü",
-                "subtitle": "Ne tür bir okula gidiyorsunuz?"
+                "title": "Hangi okul türü"
             },
             "state": {
                 "title": "Okul konumu",
@@ -417,7 +415,6 @@
             },
             "school": {
                 "title": "Okul konumu",
-                "subtitle": "Okulunuzun adı nedir?",
                 "helperText": "Okul türünüzü ve okul konumunuzu belirlemek için okul bilgilerini kullanırız",
                 "schoolFound": "Okul bulundu",
                 "otherSchoolFound": "Tanınan diğer okullar"
