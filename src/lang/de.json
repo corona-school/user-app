@@ -520,6 +520,12 @@
                         "question": "Welche Sprache wird gesprochen?",
                         "answer": "Meistens Deutsch, aber wir können auch Englisch oder andere Sprachen. Falls du nicht gut Deutsch sprichst, schreibe uns einfach eine Email, dann finden wir eine Lösung."
                     }
+                ],
+                "faqStudent": [
+                    {
+                        "question": "Wie lange dauert das Gespräch?",
+                        "answer": "Etwa 30 Minuten."
+                    }
                 ]
             },
             "emailOwner": {
@@ -553,6 +559,12 @@
                 "changeEmail": "Email-Adresse ändern",
                 "resendConfirmation": "Bestätigung nochmal senden",
                 "doYouHaveProblems": "Du hast Probleme mit der Anmeldung?"
+            },
+            "appointmentDetails": {
+                "title": "Termin erstellt!",
+                "description": "Um unser Angebot bestmöglich für dich zusammenzustellen, sind noch ein paar letzte Schritte nötig.",
+                "changeAppointment": "Termin ändern",
+                "cancelAppointment": "Termin absagen"
             },
             "personalData": {
                 "title": "Persönliche Daten",

@@ -500,7 +500,19 @@
                 "description": "Kısa, samimi bir video görüşmesinde (yaklaşık 15 dakika) sizi biraz tanımak istiyoruz - tamamen rahat ve hazırlıksız. Bu şekilde size doğru desteği sunabiliriz.",
                 "message": "\"Bize her şeyi sorabilirsiniz - sizin için buradayız.\"",
                 "pupilScreenersNames": "Ronja, Paula veya Charlotte",
-                "bookAppointmentButton": "Bir toplantı düzenleyin"
+                "bookAppointmentButton": "Bir toplantı düzenleyin",
+                "faqStudent": [
+                    {
+                        "question": "Görüşme ne kadar sürüyor?",
+                        "answer": "Yaklaşık 30 dakika."
+                    }
+                ]
+            },
+            "appointmentDetails": {
+                "title": "Randevu oluşturuldu!",
+                "description": "Sizin için mümkün olan en iyi teklifi bir araya getirmek için birkaç son adım gereklidir.",
+                "changeAppointment": "Tarih değiştir",
+                "cancelAppointment": "Randevuyu iptal et"
             }
         },
         "pupil": {

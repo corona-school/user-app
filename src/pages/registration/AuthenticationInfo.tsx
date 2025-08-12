@@ -86,7 +86,10 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
     };
 
     const isNextDisabled = () => {
-        return !!emailError || !form.email || !!passwordError || !form.password;
+        if (form.isRegisteringManually) {
+            return !!emailError || !form.email || !!passwordError || !form.password;
+        }
+        return false;
     };
 
     return (
@@ -96,7 +99,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                 {t('registration.steps.authenticationInfo.description')}
             </Typography>
             <div className="flex flex-col gap-y-8 w-full max-w-[339px] md:pb-0">
-                {GOOGLE_CLIENT_ID && (
+                {GOOGLE_CLIENT_ID && form.isRegisteringManually && (
                     <>
                         <Button type="button" className="w-full" variant="optional" rightIcon={<IconBrandGoogleFilled size={16} />} onClick={loginWithGoogle}>
                             {t('registration.steps.authenticationInfo.registerWith', { method: 'Google' })}
@@ -117,23 +120,26 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                             onChangeText={makeOnChangeHandler('email')}
                             errorMessage={emailError}
                             placeholder={t('registration.steps.authenticationInfo.emailPlaceholder')}
+                            readOnly={!form.isRegisteringManually}
                         />
                     </div>
-                    <div className="w-full flex flex-col justify-center gap-y-1">
-                        <Label htmlFor="password">{t('password')}</Label>
-                        <Input
-                            onBlur={makeOnBlurHandler('password')}
-                            type="password"
-                            variant="white"
-                            id="password"
-                            value={form.password}
-                            onChangeText={makeOnChangeHandler('password')}
-                            placeholder={t('registration.steps.authenticationInfo.passwordPlaceholder')}
-                        />
-                        <Typography className={cn('mt-[2px]', { 'text-destructive': areInputsDirty.password && form.password.length < 6 })} variant="sm">
-                            {t('registration.hint.password.length')}
-                        </Typography>
-                    </div>
+                    {form.isRegisteringManually && (
+                        <div className="w-full flex flex-col justify-center gap-y-1">
+                            <Label htmlFor="password">{t('password')}</Label>
+                            <Input
+                                onBlur={makeOnBlurHandler('password')}
+                                type="password"
+                                variant="white"
+                                id="password"
+                                value={form.password}
+                                onChangeText={makeOnChangeHandler('password')}
+                                placeholder={t('registration.steps.authenticationInfo.passwordPlaceholder')}
+                            />
+                            <Typography className={cn('mt-[2px]', { 'text-destructive': areInputsDirty.password && form.password.length < 6 })} variant="sm">
+                                {t('registration.hint.password.length')}
+                            </Typography>
+                        </div>
+                    )}
                 </div>
             </div>
         </RegistrationStep>

@@ -1,9 +1,12 @@
+import { gql } from '@/gql';
 import { Language, PupilEmailOwner } from '@/gql/graphql';
 import useApollo from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { Appointment } from '@/types/lernfair/Appointment';
+import { NetworkStatus, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { RegistrationStep } from './util';
+import { getPupilScreeningAppointment, getStudentScreeningAppointment, PUPIL_FLOW, RegistrationStep, STUDENT_FLOW } from './util';
 
 export interface RegistrationForm {
     userType?: 'pupil' | 'student';
@@ -22,6 +25,12 @@ export interface RegistrationForm {
     isRegisteringManually: boolean;
     privacyConsent: boolean;
     currentStep?: RegistrationStep;
+    screeningAppointment?: Appointment & {
+        actionUrls: {
+            cancelUrl?: string | null;
+            rescheduleUrl?: string | null;
+        };
+    };
 }
 
 interface RegistrationContextValue {
@@ -29,6 +38,7 @@ interface RegistrationContextValue {
     onFormChange: (data: Partial<RegistrationForm>) => void;
     reset: () => void;
     isLoading: boolean;
+    refetchProfile: () => void;
 }
 
 const emptyState: RegistrationForm = {
@@ -48,12 +58,52 @@ const RegistrationContext = createContext<RegistrationContextValue>({
     isLoading: false,
     onFormChange: () => {},
     reset: () => {},
+    refetchProfile: () => {},
 });
 
+const REGISTRATION_PROFILE_QUERY = gql(`  
+    query RegistrationProfile {
+        me {
+            userID
+            firstname
+            lastname
+            email
+            pupil {
+                screenings {
+                    status,
+                    appointment {
+                        id,
+                        title,
+                        description,
+                        start,
+                        override_meeting_link,
+                        duration,
+                        actionUrls {
+                            cancelUrl
+                            rescheduleUrl
+                        }
+                    }
+                }
+                verifiedAt
+                languages
+                emailOwner
+            }
+            student {
+                tutorScreenings { status, appointment { id, title, description, start, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
+                instructorScreenings { status, appointment { id, title, description, start, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
+                verifiedAt
+                languages
+            }
+        }
+    }
+`);
+
 export const RegistrationProvider = ({ children }: { children: React.ReactNode }) => {
-    const { user, sessionState } = useApollo();
+    const { sessionState, user } = useApollo();
     const location = useLocation();
-    const [isLoading, setIsLoading] = useState(sessionState === 'unknown');
+    const [isLoading, setIsLoading] = useState(true);
+    const { data, refetch, networkStatus } = useQuery(REGISTRATION_PROFILE_QUERY, { skip: sessionState !== 'logged-in', notifyOnNetworkStatusChange: true });
+    const registrationProfile = data?.me;
 
     const [values, setValues, removeValues] = useLocalStorage<RegistrationForm>({
         key: 'registration',
@@ -72,31 +122,86 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
 
     const reset = () => {
         removeValues();
-        setValues(emptyState);
+        setValues({ ...emptyState, currentStep: RegistrationStep.userType });
         setPassword('');
     };
 
     useEffect(() => {
+        // At this point we still don't know what to do with the user as we're checking if it's already logged in or not
+        if (sessionState === 'unknown' || networkStatus !== NetworkStatus.ready) return;
+        // Login with IDP Scenario / User has a temporary session
+        if (sessionState === 'logged-out' && !!user?.userID && !(!!user.pupil || !!user.student)) {
+            handleOnChange({ isRegisteringManually: false, email: user.email, currentStep: RegistrationStep.dataPrivacy });
+        }
+        // If it's authenticated, we update the form state with the user information
+        if (!!registrationProfile) {
+            const screeningAppointment = registrationProfile?.pupil
+                ? getPupilScreeningAppointment(registrationProfile?.pupil?.screenings ?? [])
+                : getStudentScreeningAppointment(registrationProfile?.student?.instructorScreenings ?? [], registrationProfile?.student?.tutorScreenings ?? []);
+            handleOnChange({
+                email: registrationProfile.email,
+                firstname: registrationProfile.firstname,
+                lastname: registrationProfile.lastname,
+                userType: registrationProfile.pupil ? 'pupil' : 'student',
+                screeningAppointment: screeningAppointment ?? undefined,
+            });
+        }
+        // And stop showing the loader, this should trigger the next effect
+        setIsLoading(false);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [sessionState, registrationProfile, networkStatus]);
+
+    useEffect(() => {
         if (isLoading) return;
-        if (values.currentStep) {
-            if (values.currentStep === RegistrationStep.dataPrivacy && !password) {
-                return handleOnChange({ currentStep: RegistrationStep.authenticationInfo });
+
+        const isPupil = !!registrationProfile?.pupil;
+        const isVerified = !!(registrationProfile?.pupil ?? registrationProfile?.student)?.verifiedAt;
+        const hasScreeningAppointment = !!values.screeningAppointment?.start;
+
+        const currentStepIsLessThan = (minStep: RegistrationStep) => {
+            if (isPupil) {
+                return PUPIL_FLOW.indexOf(values.currentStep!) < PUPIL_FLOW.indexOf(minStep);
             }
-            if (values.currentStep === RegistrationStep.confirmEmail && !!(user?.pupil ?? user?.student)?.verifiedAt) {
-                return handleOnChange({ currentStep: RegistrationStep.bookAppointment });
+            return STUDENT_FLOW.indexOf(values.currentStep!) < STUDENT_FLOW.indexOf(minStep);
+        };
+
+        // From here we determine in which step the user should land on
+
+        // Rules for when the user is not authenticated
+        if (!registrationProfile) {
+            if (values.currentStep) {
+                // Data Privacy step can only be completed if there is a password or if the user is registering via IDP
+                if (values.currentStep === RegistrationStep.dataPrivacy && !password && values.isRegisteringManually) {
+                    return handleOnChange({ currentStep: RegistrationStep.authenticationInfo });
+                }
+                return;
             }
-            return;
+
+            if (values.userType === 'pupil') {
+                return handleOnChange({ currentStep: RegistrationStep.acceptanceCheck });
+            }
+            if (values.userType === 'student') {
+                return handleOnChange({ currentStep: RegistrationStep.userName });
+            }
+            return handleOnChange({ currentStep: RegistrationStep.userType });
         }
 
-        if (values.userType === 'pupil') {
-            return handleOnChange({ currentStep: RegistrationStep.acceptanceCheck });
-        }
-        if (values.userType === 'student') {
-            return handleOnChange({ currentStep: RegistrationStep.userName });
+        // Blocker to verify email
+        if (!isVerified) {
+            return handleOnChange({ currentStep: RegistrationStep.confirmEmail });
         }
 
-        return handleOnChange({ currentStep: RegistrationStep.userType });
-    }, [isLoading]);
+        // Blocker to book a screening appointment
+        if (!hasScreeningAppointment) {
+            return handleOnChange({ currentStep: RegistrationStep.bookAppointment });
+        }
+
+        // Minimum step for verified users with an screening appointment
+        if (currentStepIsLessThan(RegistrationStep.screeningAppointmentDetail)) {
+            return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoading, registrationProfile]);
 
     useEffect(() => {
         if (location.pathname !== '/registration') {
@@ -109,16 +214,11 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (location?.pathname === '/registration/pupil') {
             handleOnChange({ userType: 'pupil' });
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname]);
 
-    useEffect(() => {
-        if (sessionState !== 'unknown') {
-            setIsLoading(false);
-        }
-    }, [sessionState]);
-
     return (
-        <RegistrationContext.Provider value={{ form: { ...values, password }, onFormChange: handleOnChange, reset, isLoading }}>
+        <RegistrationContext.Provider value={{ form: { ...values, password }, onFormChange: handleOnChange, reset, isLoading, refetchProfile: refetch }}>
             {children}
         </RegistrationContext.Provider>
     );
