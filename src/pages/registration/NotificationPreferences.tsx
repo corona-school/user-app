@@ -20,12 +20,20 @@ export const NotificationPreferences = ({ onBack, onNext }: NotificationPreferen
 
     return (
         <RegistrationStep onBack={onBack} onNext={onNext}>
-            <RegistrationStepTitle className="md:mb-4 mb-4">{t('registration.steps.notifications.title')}</RegistrationStepTitle>
+            <RegistrationStepTitle className="md:mb-4 mb-4">
+                <span className="md:hidden">{t('registration.steps.notifications.titleShort')}</span>
+                <span className="hidden md:block">{t('registration.steps.notifications.title')}</span>
+            </RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
                 {t('registration.steps.notifications.description')}
             </Typography>
-            <div className="flex flex-col gap-y-2 w-full">
-                <div className="w-full bg-white p-4 gap-x-4 flex items-center rounded-md">
+            <div className="flex flex-col gap-y-5 w-full">
+                <div className="w-full bg-white p-4 gap-x-4 flex items-center rounded-md relative">
+                    <div className="absolute -top-3 left-4 bg-green-500 p-2 rounded-sm flex items-center justify-center h-6">
+                        <Typography variant="sm" className="text-white">
+                            {t('registration.steps.notifications.importantInformationBadge')}
+                        </Typography>
+                    </div>
                     <Checkbox
                         checked={form.notificationPreferences.importantInformation}
                         onCheckedChange={makeOnChangeHandler('importantInformation')}
@@ -36,7 +44,12 @@ export const NotificationPreferences = ({ onBack, onNext }: NotificationPreferen
                         {t('registration.steps.notifications.importantInformationDescription')}
                     </Label>
                 </div>
-                <div className="w-full bg-white p-4 gap-x-4 flex items-center rounded-md">
+                <div className="w-full bg-white p-4 gap-x-4 flex items-center rounded-md relative">
+                    <div className="absolute -top-3 left-4 bg-green-500 p-2 rounded-sm flex items-center justify-center h-6">
+                        <Typography variant="sm" className="text-white">
+                            {t('registration.steps.notifications.recommendationsBadge')}
+                        </Typography>
+                    </div>
                     <Checkbox
                         checked={form.notificationPreferences.recommendations}
                         onCheckedChange={makeOnChangeHandler('recommendations')}
