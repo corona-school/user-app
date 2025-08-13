@@ -588,6 +588,7 @@
             },
             "notifications": {
                 "title": "Email-Benachrichtigungen einstellen",
+                "titleShort": "Nachrichten",
                 "description": "Wir haben verschiedene Möglichkeiten dich auf dem Laufenden zu halten. Du kannst deine Auswahl später auch wieder ändern.",
                 "importantInformationDescription": "Ich möchte per Email oder Telefon bei wichtigen Nachrichten (z.B. neuer Termin, neue Chat-Nachricht) informiert werden.",
                 "importantInformationBadge": "Wichtige Infos",

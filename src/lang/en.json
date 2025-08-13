@@ -510,6 +510,19 @@
                 "description": "A few final steps are necessary to put together the best possible offer for you.",
                 "changeAppointment": "Reschedule meeting",
                 "cancelAppointment": "Cancel meeting"
+            },
+            "zipCode": {
+                "title": "Please let us know your zip code",
+                "doNotKnow": "Don't know"
+            },
+            "notifications": {
+                "title": "Set email notifications",
+                "titleShort": "News",
+                "description": "We have various ways of keeping you up to date. You can also change your selection later.",
+                "importantInformationDescription": "I would like to be informed by email or telephone about important news (e.g. new lecture, new chat message).",
+                "importantInformationBadge": "Important information",
+                "recommendationsBadge": "Helpful hints & tips",
+                "recommendationsDescription": "I would like to be informed about new offers and general news."
             }
         },
         "pupil": {

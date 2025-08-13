@@ -510,6 +510,19 @@
                 "description": "هناك بعض الخطوات النهائية الضرورية لتقديم أفضل عرض ممكن لك.",
                 "changeAppointment": "تغيير موعد التغيير",
                 "cancelAppointment": "إلغاء موعد"
+            },
+            "zipCode": {
+                "title": "يرجى إعلامنا بالرمز البريدي الخاص بك",
+                "doNotKnow": "لا أعرف"
+            },
+            "notifications": {
+                "title": "تعيين إشعارات البريد الإلكتروني",
+                "titleShort": "الأخبار",
+                "description": "لدينا طرق مختلفة لإبقائك على اطلاع دائم. يمكنك أيضاً تغيير اختيارك لاحقاً.",
+                "importantInformationDescription": "أرغب في أن يتم إعلامي عن طريق البريد الإلكتروني أو الهاتف بالرسائل المهمة (مثل: موعد جديد، رسالة دردشة جديدة).",
+                "importantInformationBadge": "معلومات مهمة",
+                "recommendationsBadge": "تلميحات ونصائح مفيدة",
+                "recommendationsDescription": "أود أن أكون على علم بالعروض الجديدة والأخبار العامة."
             }
         },
         "pupil": {

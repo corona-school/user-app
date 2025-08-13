@@ -510,6 +510,19 @@
                 "description": "Sizin için mümkün olan en iyi teklifi bir araya getirmek için birkaç son adım gereklidir.",
                 "changeAppointment": "Tarih değiştir",
                 "cancelAppointment": "Randevuyu iptal et"
+            },
+            "zipCode": {
+                "title": "Lütfen posta kodunuzu bize bildirin",
+                "doNotKnow": "Bilmiyorum."
+            },
+            "notifications": {
+                "title": "E-posta bildirimlerini ayarlama",
+                "titleShort": "Haberler",
+                "description": "Sizi güncel tutmak için çeşitli yöntemlerimiz var. Seçiminizi daha sonra da değiştirebilirsiniz.",
+                "importantInformationDescription": "Önemli haberler (örneğin yeni randevu, yeni sohbet mesajı) hakkında e-posta veya telefon yoluyla bilgilendirilmek istiyorum.",
+                "importantInformationBadge": "Önemli bilgiler",
+                "recommendationsBadge": "Yararlı ipuçları ve püf noktaları",
+                "recommendationsDescription": "Yeni teklifler ve genel haberler hakkında bilgilendirilmek istiyorum."
             }
         },
         "pupil": {
