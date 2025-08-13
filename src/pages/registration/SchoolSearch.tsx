@@ -1,14 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
-import { ExternalSchoolSearch, SchoolType } from '../../gql/graphql';
+import { School } from '../../gql/graphql';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useMemo, useState } from 'react';
-import { useRegistrationForm } from './useRegistrationForm';
+import { RegistrationForm, useRegistrationForm } from './useRegistrationForm';
 import { Combobox } from '@/components/Combobox';
 import { cn } from '@/lib/Tailwind';
 import { Typography } from '@/components/Typography';
 import { schooltypes } from '@/types/lernfair/SchoolType';
+import { Maybe } from 'graphql/jsutils/Maybe';
 
 interface SchoolSearchProps extends RegistrationStepProps {}
 
@@ -16,21 +17,21 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
     usePageTitle('Lern-Fair - Registrierung: Schulname');
-    const [search, setSearch] = useState(form.school.name);
+    const [search, setSearch] = useState(form.school.name ?? '');
     const { schools, isLoading } = useSchoolSearch({ name: search });
 
     const handleOnSelect = (id: string) => {
         const newSelectedSchool = schools.find((e) => e.id === id);
         if (newSelectedSchool) {
-            let schoolType = newSelectedSchool.schooltype;
+            let schoolType: Maybe<string> = newSelectedSchool.schooltype;
             if (!schoolType) {
                 schoolType = schooltypes.find((e) => {
                     const schoolTypeLabel = e.label.toLowerCase();
                     const selectedSchoolName = newSelectedSchool.name.toLowerCase();
                     return selectedSchoolName.includes(schoolTypeLabel);
-                })?.key as SchoolType;
+                })?.key;
             }
-            onFormChange({ school: { ...newSelectedSchool, schooltype: schoolType } });
+            onFormChange({ school: { ...newSelectedSchool, schooltype: schoolType } as unknown as School });
         }
     };
 
@@ -38,7 +39,7 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
         onFormChange({ school: { name } });
     };
 
-    const getLabel = (school: Partial<ExternalSchoolSearch>) => {
+    const getLabel = (school: Partial<RegistrationForm['school']>) => {
         let label = school.name;
         if (school.city) label += `, ${school.city}`;
         return label ?? '';
@@ -57,7 +58,7 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
             <div className="w-full md:w-[396px] flex flex-col gap-y-2">
                 <Combobox
                     values={mappedSchools}
-                    value={form.school?.id}
+                    value={form.school?.id?.toString()}
                     onSearch={setSearch}
                     search={search}
                     onCreate={handleOnCreate}
