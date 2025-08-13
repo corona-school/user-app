@@ -3,7 +3,7 @@ import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
 import { ExternalSchoolSearch, SchoolType } from '../../gql/graphql';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useRegistrationForm } from './useRegistrationForm';
 import { Combobox } from '@/components/Combobox';
 import { cn } from '@/lib/Tailwind';
@@ -44,12 +44,19 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
         return label ?? '';
     };
 
+    const mappedSchools = useMemo(() => {
+        return schools.map((school) => ({
+            value: school.id,
+            label: getLabel(school),
+        }));
+    }, [schools]);
+
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>
             <RegistrationStepTitle className="md:mb-10 whitespace-pre">{t('registration.steps.school.title')} </RegistrationStepTitle>
             <div className="w-full md:w-[396px] flex flex-col gap-y-2">
                 <Combobox
-                    values={schools.map((e) => ({ value: e.id, label: getLabel(e) }))}
+                    values={mappedSchools}
                     value={form.school?.id}
                     onSearch={setSearch}
                     search={search}
