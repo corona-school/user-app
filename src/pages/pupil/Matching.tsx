@@ -132,6 +132,13 @@ const Matching: React.FC<Props> = () => {
         return t('lernfair.reason.matching.pupil.deactivated_tooltip');
     };
 
+    const canRequestMatch = () => {
+        if (data?.me.pupil?.canRequestMatch.reason === 'no-subjects-selected') {
+            return true; // pupils can still do it because they'll selected subjects before submitting the request
+        }
+        return data?.me.pupil?.canRequestMatch.allowed;
+    };
+
     const matchRequestCount = data?.me?.pupil?.openMatchRequestCount ?? 0;
 
     return (
@@ -174,7 +181,7 @@ const Matching: React.FC<Props> = () => {
                                     <Matches activeMatches={activeMatches as Match[]} />
                                     <VStack marginTop={space['1.5']}>
                                         <DisableableButton
-                                            isDisabled={!data?.me?.pupil?.canRequestMatch?.allowed || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
+                                            isDisabled={!canRequestMatch() || DEACTIVATE_PUPIL_MATCH_REQUESTS === 'true'}
                                             reasonDisabled={reasonDisabled()}
                                             onPress={() => navigate('/request-match')}
                                             width={ButtonContainer}
@@ -185,7 +192,7 @@ const Matching: React.FC<Props> = () => {
                                                     : 'dashboard.helpers.buttons.requestFirstMatchPupil'
                                             )}
                                         </DisableableButton>
-                                        {(!data?.me?.pupil?.canRequestMatch?.allowed && (
+                                        {(!canRequestMatch() && (
                                             <AlertMessage
                                                 content={t(
                                                     `lernfair.reason.matching.pupil.${data?.me?.pupil?.canRequestMatch?.reason}` as unknown as TemplateStringsArray

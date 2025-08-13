@@ -252,7 +252,12 @@ const ProfilePupil: React.FC<Props> = () => {
                                 />
                             )}
 
-                            <ProfileSettingItem title={t('profile.UserName.label.email')} isIcon={false}>
+                            <ProfileSettingItem
+                                title={t('profile.UserName.label.email')}
+                                href={() => {
+                                    navigate('/new-email');
+                                }}
+                            >
                                 <Text>{data?.me?.email}</Text>
                             </ProfileSettingItem>
                             <ProfileSettingItem
