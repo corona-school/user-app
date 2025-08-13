@@ -37,7 +37,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
             <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
                 {t('registration.steps.languages.description')}
             </Typography>
-            <div className="w-full pb-32 md:pb-0">
+            <div className="w-full sm:pb-32 md:pb-0">
                 <LanguageSelector
                     maxVisibleItems={8}
                     className="flex flex-wrap justify-center"
@@ -49,7 +49,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
                     toggleConfig={{
                         variant: 'white-primary',
                         size: 'lg',
-                        className: 'justify-start w-[168px]',
+                        className: 'justify-start w-[48%] sm:w-[168px]',
                     }}
                     multiple
                     value={form.languages}

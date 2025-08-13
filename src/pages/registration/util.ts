@@ -13,11 +13,13 @@ export enum RegistrationStep {
     confirmEmail = 'confirmEmail',
     bookAppointment = 'bookAppointment',
     screeningAppointmentDetail = 'screeningAppointmentDetail',
+    grade = 'grade',
+    school = 'school',
+    schoolType = 'schoolType',
+    zipCode = 'zipCode',
+    notifications = 'notifications',
 
     personalData = 'personalData',
-    grade = 'grade',
-    schoolType = 'schoolType',
-    school = 'school',
     state = 'state',
     legal = 'legal',
 }
@@ -45,6 +47,11 @@ export const PUPIL_FLOW = [
     RegistrationStep.confirmEmail,
     RegistrationStep.bookAppointment,
     RegistrationStep.screeningAppointmentDetail,
+    RegistrationStep.grade,
+    RegistrationStep.school,
+    RegistrationStep.schoolType,
+    RegistrationStep.zipCode,
+    RegistrationStep.notifications,
 ];
 
 type PupilScreenings = Array<Pick<PupilScreening, 'status'> & { appointment?: any }>;
