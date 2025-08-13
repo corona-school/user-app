@@ -40,7 +40,6 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
 
     const getLabel = (school: Partial<ExternalSchoolSearch>) => {
         let label = school.name;
-        if (school.zip) label += `, ${school.zip}`;
         if (school.city) label += `, ${school.city}`;
         return label ?? '';
     };
