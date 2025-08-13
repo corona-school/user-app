@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
-import { School } from '../../gql/graphql';
+import { ExternalSchoolSearch } from '../../gql/graphql';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useMemo, useState } from 'react';
@@ -31,7 +31,7 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
                     return selectedSchoolName.includes(schoolTypeLabel);
                 })?.key;
             }
-            onFormChange({ school: { ...newSelectedSchool, schooltype: schoolType } as unknown as School });
+            onFormChange({ school: { ...newSelectedSchool, schooltype: schoolType } as unknown as ExternalSchoolSearch });
         }
     };
 
