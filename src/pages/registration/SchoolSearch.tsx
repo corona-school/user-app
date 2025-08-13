@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
-import { ExternalSchoolSearch } from '../../gql/graphql';
+import { ExternalSchoolSearch, SchoolType } from '../../gql/graphql';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useState } from 'react';
@@ -28,7 +28,7 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
                     const schoolTypeLabel = e.label.toLowerCase();
                     const selectedSchoolName = newSelectedSchool.name.toLowerCase();
                     return selectedSchoolName.includes(schoolTypeLabel);
-                })?.key as any;
+                })?.key as SchoolType;
             }
             onFormChange({ school: { ...newSelectedSchool, schooltype: schoolType } });
         }
