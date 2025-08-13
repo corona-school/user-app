@@ -11,7 +11,8 @@ export const ZipCode = ({ onBack, onNext }: ZipCodeProps) => {
     const { t } = useTranslation();
 
     const onChange = (value: string) => {
-        onFormChange({ zipCode: Number(value.replace(/\D/g, '')) });
+        const zipCode = value.replace(/\D/g, '');
+        onFormChange({ zipCode, school: { ...form.school, zip: zipCode } });
     };
 
     return (

@@ -31,7 +31,10 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
                     return selectedSchoolName.includes(schoolTypeLabel);
                 })?.key;
             }
-            onFormChange({ school: { ...newSelectedSchool, schooltype: schoolType } as unknown as ExternalSchoolSearch });
+            onFormChange({
+                school: { ...newSelectedSchool, schooltype: schoolType } as unknown as ExternalSchoolSearch,
+                zipCode: newSelectedSchool.zip ?? form.zipCode,
+            });
         }
     };
 
