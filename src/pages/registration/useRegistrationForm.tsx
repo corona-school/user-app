@@ -3,10 +3,11 @@ import { Language, PupilEmailOwner, SchoolType } from '@/gql/graphql';
 import useApollo from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Appointment } from '@/types/lernfair/Appointment';
-import { NetworkStatus, useQuery } from '@apollo/client';
+import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { getPupilScreeningAppointment, getStudentScreeningAppointment, PUPIL_FLOW, RegistrationStep, STUDENT_FLOW } from './util';
+import { TRAINEE_GRADE } from '@/Utility';
 
 export interface RegistrationForm {
     userType?: 'pupil' | 'student';
@@ -37,13 +38,10 @@ export interface RegistrationForm {
         name: string;
         zip?: string | null;
         city?: string | null;
-        schooltype?: SchoolType | null;
+        schooltype?: string | null;
     };
-    zipCode: number;
-    notificationPreferences: {
-        importantInformation: boolean;
-        recommendations: boolean;
-    };
+    zipCode: string;
+    hasAcceptedRules: boolean;
 }
 
 interface RegistrationContextValue {
@@ -52,6 +50,9 @@ interface RegistrationContextValue {
     reset: () => void;
     isLoading: boolean;
     refetchProfile: () => void;
+    flow: RegistrationStep[];
+    goNext: () => void;
+    goBack: () => void;
 }
 
 const emptyState: RegistrationForm = {
@@ -68,11 +69,8 @@ const emptyState: RegistrationForm = {
     school: {
         name: '',
     },
-    zipCode: 0,
-    notificationPreferences: {
-        importantInformation: true,
-        recommendations: false,
-    },
+    zipCode: '',
+    hasAcceptedRules: false,
 };
 
 const RegistrationContext = createContext<RegistrationContextValue>({
@@ -81,6 +79,9 @@ const RegistrationContext = createContext<RegistrationContextValue>({
     onFormChange: () => {},
     reset: () => {},
     refetchProfile: () => {},
+    flow: [],
+    goNext: () => {},
+    goBack: () => {},
 });
 
 const REGISTRATION_PROFILE_QUERY = gql(`  
@@ -107,27 +108,43 @@ const REGISTRATION_PROFILE_QUERY = gql(`
                         appointmentType
                     }
                 }
+                school {
+                    name
+                    zip
+                    city
+                    state
+                    schooltype
+                }
                 verifiedAt
                 languages
                 emailOwner
+                gradeAsInt
             }
             student {
                 tutorScreenings { status, appointment { id, title, description, start, appointmentType, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
                 instructorScreenings { status, appointment { id, title, description, start, appointmentType, override_meeting_link, duration, actionUrls { cancelUrl rescheduleUrl } } }
                 verifiedAt
                 languages
+                zipCode
             }
         }
     }
 `);
 
+const ME_UPDATE_MUTATION = gql(`
+    mutation meUpdateRegistrationProfile($gradeAsInt: Int, $school: RegistrationSchool) {
+        meUpdate(update: { pupil: { gradeAsInt: $gradeAsInt, school: $school } })
+    }
+`);
+
 export const RegistrationProvider = ({ children }: { children: React.ReactNode }) => {
-    const { sessionState, user } = useApollo();
     const location = useLocation();
+    const navigate = useNavigate();
+    const { sessionState, user } = useApollo();
     const [isLoading, setIsLoading] = useState(true);
     const { data, refetch, networkStatus } = useQuery(REGISTRATION_PROFILE_QUERY, { skip: sessionState !== 'logged-in', notifyOnNetworkStatusChange: true });
     const registrationProfile = data?.me;
-
+    const [updateProfile] = useMutation(ME_UPDATE_MUTATION);
     const [values, setValues, removeValues] = useLocalStorage<RegistrationForm>({
         key: 'registration',
         initialValue: {
@@ -135,12 +152,70 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         },
     });
     const [password, setPassword] = useState('');
+    const flow = values.userType === 'pupil' ? PUPIL_FLOW : STUDENT_FLOW;
+    const currentStepIndex = values.currentStep ? flow.indexOf(values.currentStep) : -1;
+
+    const getNextStepFrom = (step: RegistrationStep) => {
+        const currentIndex = flow.indexOf(step);
+        return flow[currentIndex + 1];
+    };
 
     const handleOnChange = ({ password, ...data }: Partial<RegistrationForm>) => {
         if (password !== undefined) {
             setPassword(password);
         }
         setValues({ ...values, ...data });
+    };
+
+    const handleOnNext = async () => {
+        if (currentStepIndex === -1 || !values.currentStep) return;
+
+        if (values.userType === 'pupil') {
+            if (values.currentStep === RegistrationStep.grade) {
+                await updateProfile({ variables: { gradeAsInt: values.grade } });
+            } else if ([RegistrationStep.school, RegistrationStep.schoolType, RegistrationStep.zipCode].includes(values.currentStep)) {
+                await updateProfile({
+                    variables: {
+                        school: {
+                            schooltype: values.school.schooltype as unknown as SchoolType,
+                            zip: values.school.zip ?? values.zipCode.toString(),
+                            city: values.school.city,
+                            name: values.school.name,
+                        },
+                    },
+                });
+            }
+        }
+
+        let nextStep = getNextStepFrom(values.currentStep);
+
+        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE;
+        if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
+
+        handleOnChange({ currentStep: nextStep });
+    };
+    const handleOnBack = async () => {
+        if (currentStepIndex === -1 || !values.currentStep) return;
+
+        if (values.currentStep === RegistrationStep.userType) {
+            reset();
+            navigate('/login');
+            return;
+        }
+
+        const getPrevStepFrom = (step: RegistrationStep) => {
+            const currentIndex = flow.indexOf(step);
+            return flow[currentIndex - 1];
+        };
+        let prevStep = getPrevStepFrom(values.currentStep);
+
+        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE;
+        if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
+        handleOnChange({ currentStep: prevStep });
     };
 
     const reset = () => {
@@ -167,6 +242,9 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                 lastname: registrationProfile.lastname,
                 userType: registrationProfile.pupil ? 'pupil' : 'student',
                 screeningAppointment: screeningAppointment ?? undefined,
+                grade: registrationProfile.pupil?.gradeAsInt,
+                school: registrationProfile.pupil?.school ?? emptyState.school,
+                zipCode: registrationProfile.student?.zipCode ?? registrationProfile.pupil?.school?.zip ?? '',
             });
         }
         // And stop showing the loader, this should trigger the next effect
@@ -241,7 +319,18 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
     }, [location.pathname]);
 
     return (
-        <RegistrationContext.Provider value={{ form: { ...values, password }, onFormChange: handleOnChange, reset, isLoading, refetchProfile: refetch }}>
+        <RegistrationContext.Provider
+            value={{
+                form: { ...values, password },
+                onFormChange: handleOnChange,
+                reset,
+                isLoading,
+                refetchProfile: refetch,
+                flow,
+                goNext: handleOnNext,
+                goBack: handleOnBack,
+            }}
+        >
             {children}
         </RegistrationContext.Provider>
     );
