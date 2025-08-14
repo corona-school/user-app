@@ -18,6 +18,7 @@ export enum RegistrationStep {
     schoolType = 'schoolType',
     zipCode = 'zipCode',
     notifications = 'notifications',
+    rules = 'rules',
 
     personalData = 'personalData',
     state = 'state',
@@ -52,6 +53,7 @@ export const PUPIL_FLOW = [
     RegistrationStep.schoolType,
     RegistrationStep.zipCode,
     RegistrationStep.notifications,
+    RegistrationStep.rules,
 ];
 
 type PupilScreenings = Array<Pick<PupilScreening, 'status'> & { appointment?: any }>;
