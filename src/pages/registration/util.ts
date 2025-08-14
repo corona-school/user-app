@@ -20,10 +20,6 @@ export enum RegistrationStep {
     notifications = 'notifications',
     rules = 'rules',
     registrationCompleted = 'registrationCompleted',
-
-    personalData = 'personalData',
-    state = 'state',
-    legal = 'legal',
 }
 
 export const STUDENT_FLOW = [
