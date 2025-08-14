@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
+import { TRAINEE_GRADE } from '@/Utility';
+import { SchoolType } from '@/gql/graphql';
 
 interface PupilGradeProps extends RegistrationStepProps {}
 
@@ -12,7 +14,7 @@ const PupilGrade = ({ onBack, onNext }: PupilGradeProps) => {
     usePageTitle('Lern-Fair - Registrierung: Klasse');
 
     const onChange = (grade: number) => {
-        onFormChange({ grade });
+        onFormChange({ grade, school: { ...form.school, schooltype: grade === TRAINEE_GRADE ? SchoolType.Berufsschule : form.school.schooltype } });
     };
 
     return (
