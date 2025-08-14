@@ -523,6 +523,17 @@
                 "importantInformationBadge": "Important information",
                 "recommendationsBadge": "Helpful hints & tips",
                 "recommendationsDescription": "I would like to be informed about new offers and general news."
+            },
+            "ourRules": {
+                "rules": [
+                    "🔥⏳ Respect the time, energy and effort they invest in this.",
+                    "️📅 ⌚This also includes punctuality and reliability for lectures.",
+                    "😊 Be friendly in your dealings with others.",
+                    "❌ Discrimination (e.g. racism, sexism, religious affiliation or age discrimination) is not permitted."
+                ],
+                "title": "Our rules",
+                "description": "Our volunteers support the pupils in their free time 😎👍.",
+                "acceptLabel": "I will comply with the above points"
             }
         },
         "pupil": {

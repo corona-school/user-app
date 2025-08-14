@@ -595,6 +595,17 @@
                 "recommendationsBadge": "Hilfreiches & Tipps",
                 "recommendationsDescription": "Ich möchte über neue Angebote und allgemeine Nachrichten informiert werden."
             },
+            "ourRules": {
+                "title": "Unsere Regeln",
+                "description": "Unsere Helfer:innen unterstützen die Schüler:innen in ihrer Freizeit 😎👍.",
+                "rules": [
+                    "🔥⏳ Respektiere die Zeit, Energie und den Aufwand den sie dafür investieren.",
+                    "️📅 ⌚Dazu gehört auch Pünktlichkeit und Zuverlässigkeit für Termine.",
+                    "😊 Sei freundlich im Umgang mit anderen.",
+                    "❌ Diskriminierung (z.B. Rassismus, Sexismus, Religionszugehörigkeit oder Altersdiskriminierung) ist nicht erlaubt."
+                ],
+                "acceptLabel": "Ich werde die genannten Punkte einhalten"
+            },
             "state": {
                 "title": "Schulort",
                 "subtitle": "Wo gehst du zur Schule?",
