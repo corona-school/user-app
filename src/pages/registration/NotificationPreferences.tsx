@@ -1,19 +1,23 @@
 import { useTranslation } from 'react-i18next';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
-import { RegistrationForm, useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { Checkbox, CheckedState } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
+import { useUserPreferences } from '@/hooks/useNotificationPreferences';
 
 interface NotificationPreferencesProps extends RegistrationStepProps {}
 
 export const NotificationPreferences = ({ onBack, onNext }: NotificationPreferencesProps) => {
-    const { form, onFormChange } = useRegistrationForm();
+    const { hasMarketingPreferencesEnabled, hasSystemPreferencesEnabled, toggleMarketingNotifications, toggleSystemNotifications } = useUserPreferences();
     const { t } = useTranslation();
 
-    const makeOnChangeHandler = (key: keyof RegistrationForm['notificationPreferences']) => {
+    const makeOnChangeHandler = (key: 'importantInformation' | 'recommendations') => {
         const onChange = (checked: CheckedState) => {
-            onFormChange({ notificationPreferences: { ...form.notificationPreferences, [key]: !!checked } });
+            if (key === 'importantInformation') {
+                toggleSystemNotifications(!!checked);
+            } else {
+                toggleMarketingNotifications(!!checked);
+            }
         };
         return onChange;
     };
@@ -35,7 +39,7 @@ export const NotificationPreferences = ({ onBack, onNext }: NotificationPreferen
                         </Typography>
                     </div>
                     <Checkbox
-                        checked={form.notificationPreferences.importantInformation}
+                        checked={hasSystemPreferencesEnabled}
                         onCheckedChange={makeOnChangeHandler('importantInformation')}
                         className="size-4"
                         id="importantInformation"
@@ -51,7 +55,7 @@ export const NotificationPreferences = ({ onBack, onNext }: NotificationPreferen
                         </Typography>
                     </div>
                     <Checkbox
-                        checked={form.notificationPreferences.recommendations}
+                        checked={hasMarketingPreferencesEnabled}
                         onCheckedChange={makeOnChangeHandler('recommendations')}
                         className="size-4"
                         id="recommendations"
