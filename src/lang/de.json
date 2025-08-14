@@ -566,6 +566,10 @@
                 "changeAppointment": "Termin ändern",
                 "cancelAppointment": "Termin absagen"
             },
+            "registrationCompleted": {
+                "title": "Du hast es geschafft!",
+                "description": "Wir freuen uns auf das Kennenlerngespräch mit dir per Zoom am"
+            },
             "personalData": {
                 "title": "Persönliche Daten",
                 "subtitle": "Persönliche Daten"

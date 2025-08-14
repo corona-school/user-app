@@ -534,6 +534,10 @@
                 "title": "Kurallarımız",
                 "description": "Yardımcılarımız boş zamanlarında öğrencilere destek oluyor 😎👍.",
                 "acceptLabel": "Yukarıdaki hususlara uyacağım"
+            },
+            "registrationCompleted": {
+                "title": "Başardın!",
+                "description": "Zoom aracılığıyla sizi tanımak için sabırsızlanıyoruz"
             }
         },
         "pupil": {

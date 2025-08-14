@@ -10,9 +10,11 @@ import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { DateTime } from 'luxon';
 import i18next from 'i18next';
 
-interface ScreeningAppointmentDetailProps extends RegistrationStepProps {}
+interface ScreeningAppointmentDetailProps extends RegistrationStepProps {
+    variant?: 'registered' | 'completed';
+}
 
-export const ScreeningAppointmentDetail = ({ onNext }: ScreeningAppointmentDetailProps) => {
+export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: ScreeningAppointmentDetailProps) => {
     const { form } = useRegistrationForm();
     const { t } = useTranslation();
     const [shouldReload, setShouldReload] = useState(false);
@@ -36,8 +38,20 @@ export const ScreeningAppointmentDetail = ({ onNext }: ScreeningAppointmentDetai
 
     return (
         <RegistrationStep onNext={onNext}>
-            <IconCircleCheckFilled size={100} className="fill-green-500 mb-2" />
-            <RegistrationStepTitle className="md:mb-5 mb-5">{t('registration.steps.appointmentDetails.title')}</RegistrationStepTitle>
+            {variant === 'registered' ? (
+                <>
+                    <IconCircleCheckFilled size={100} className="fill-green-500 mb-2" />
+                    <RegistrationStepTitle className="md:mb-5 mb-5">{t('registration.steps.appointmentDetails.title')}</RegistrationStepTitle>
+                </>
+            ) : (
+                <div className="md:max-w-[440px] flex flex-col justify-center items-center mx-auto gap-y-4">
+                    <RegistrationStepTitle className="md:mb-5 mb-5">{t('registration.steps.registrationCompleted.title')}</RegistrationStepTitle>
+                    <div className="text-3xl">🥳</div>
+                    <Typography variant="body-lg" className="text-center mb-5">
+                        {t('registration.steps.registrationCompleted.description')}
+                    </Typography>
+                </div>
+            )}
             <Typography variant="h5" className="text-center mb-10 whitespace-pre-line text-balance">
                 {DateTime.fromISO(form.screeningAppointment.start).toFormat('EEEE, dd. MMMM', { locale: i18next.language })} {'\n'}
                 {DateTime.fromISO(form.screeningAppointment.start).toFormat('t', { locale: i18next.language })} {t('clock')}
@@ -69,12 +83,16 @@ export const ScreeningAppointmentDetail = ({ onNext }: ScreeningAppointmentDetai
                     {t('registration.steps.appointmentDetails.cancelAppointment')}
                 </Button>
             </div>
-            <Typography variant="body-lg" className="text-center mb-5">
-                {t('registration.steps.appointmentDetails.description')}
-            </Typography>
-            <Button className="w-full md:max-w-[250px]" onClick={onNext}>
-                {t('next')}
-            </Button>
+            {onNext && (
+                <>
+                    <Typography variant="body-lg" className="text-center mb-5">
+                        {t('registration.steps.appointmentDetails.description')}
+                    </Typography>
+                    <Button className="w-full md:max-w-[250px]" onClick={onNext}>
+                        {t('next')}
+                    </Button>
+                </>
+            )}
         </RegistrationStep>
     );
 };
