@@ -33,13 +33,13 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
             }
             onFormChange({
                 school: { ...newSelectedSchool, schooltype: schoolType as School_Schooltype_Enum },
-                zipCode: newSelectedSchool.zip ?? form.zipCode,
+                zipCode: newSelectedSchool.zip ?? undefined,
             });
         }
     };
 
     const handleOnCreate = (name: string) => {
-        onFormChange({ school: { name } });
+        onFormChange({ school: { name }, zipCode: undefined });
     };
 
     const getLabel = (school: Pick<RegistrationForm['school'], 'name' | 'city'>) => {
