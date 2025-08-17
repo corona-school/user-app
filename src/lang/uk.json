@@ -595,7 +595,8 @@
             "pupil": "Студент:в Email",
             "parent": "Електронна пошта батьків",
             "other": "Допоміжна особа Email"
-        }
+        },
+        "stepStateCount": "{{current}} з {{total}}"
     },
     "helpcenter": {
         "subtitle": {

@@ -5,6 +5,7 @@ import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
 import useApollo from '@/hooks/useApollo';
 import { useMutation } from '@apollo/client';
+import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { AcceptanceCheck } from './registration/AcceptanceCheck';
 import { AcceptanceCheckFailed } from './registration/AcceptanceCheckFailed';
@@ -78,6 +79,7 @@ const Registration = () => {
     const [registerPupil] = useMutation(MUTATION_REGISTER_PUPIL);
     const [registerStudent] = useMutation(MUTATION_REGISTER_STUDENT);
     const [createCredentials] = useMutation(MUTATION_CREATE_CREDENTIALS);
+    const { t } = useTranslation();
 
     const { form, reset, onFormChange, isLoading: isLoadingRegistrationForm, flow, goBack, goNext } = useRegistrationForm();
 
@@ -152,7 +154,7 @@ const Registration = () => {
                         {getCurrentStepNumber() > 0 && (
                             <>
                                 <Typography className="text-[14px] whitespace-pre min-w-14">
-                                    {getCurrentStepNumber()} von {getStepsCount()}
+                                    {t('registration.stepStateCount', { current: getCurrentStepNumber(), total: getStepsCount() })}
                                 </Typography>
                                 <ProgressBar className="h-4" value={(currentStepIndex / (flow.length - 1)) * 100} />
                             </>

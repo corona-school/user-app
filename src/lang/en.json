@@ -595,7 +595,8 @@
             "pupil": "Pupil email",
             "parent": "Parent Email",
             "other": "Support person Email"
-        }
+        },
+        "stepStateCount": "{{current}} of {{total}}"
     },
     "helpcenter": {
         "subtitle": {

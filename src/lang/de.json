@@ -462,6 +462,7 @@
                 }
             }
         },
+        "stepStateCount": "{{current}} von {{total}}",
         "steps": {
             "userType": {
                 "title": "In welcher Rolle meldest du dich bei Lern-Fair an?"

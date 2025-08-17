@@ -595,7 +595,8 @@
             "pupil": "Öğrenci: E-postada",
             "parent": "Ebeveyn E-postası",
             "other": "Yardımcı kişi E-posta"
-        }
+        },
+        "stepStateCount": "{{total}}'in {{current}}'ı"
     },
     "helpcenter": {
         "subtitle": {

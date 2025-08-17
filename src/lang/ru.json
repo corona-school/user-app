@@ -595,7 +595,8 @@
             "pupil": "ученик e-mail",
             "parent": "Электронная почта родителей",
             "other": "Вспомогательное лицо Электронная почта"
-        }
+        },
+        "stepStateCount": "{{current}} из {{total}}"
     },
     "helpcenter": {
         "subtitle": {
