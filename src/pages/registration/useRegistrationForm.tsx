@@ -1,5 +1,5 @@
 import { gql } from '@/gql';
-import { Language, PupilEmailOwner, SchoolType } from '@/gql/graphql';
+import { Language, PupilEmailOwner, SchoolType, School_Schooltype_Enum } from '@/gql/graphql';
 import useApollo from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Appointment } from '@/types/lernfair/Appointment';
@@ -38,7 +38,7 @@ export interface RegistrationForm {
         name: string;
         zip?: string | null;
         city?: string | null;
-        schooltype?: string | null;
+        schooltype?: School_Schooltype_Enum | null;
     };
     zipCode: string;
     hasAcceptedRules: boolean;
