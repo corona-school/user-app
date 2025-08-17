@@ -3,7 +3,7 @@ import { usePageTitle } from '../../hooks/usePageTitle';
 import { useRegistrationForm } from './useRegistrationForm';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { SchoolTypeSelector } from '@/components/SchoolTypeSelector';
-import { SchoolType as ISchoolType } from '@/gql/graphql';
+import { SchoolType as ISchoolType, School_Schooltype_Enum } from '@/gql/graphql';
 
 interface SchoolTypeProps extends RegistrationStepProps {}
 
@@ -13,7 +13,7 @@ const SchoolType = ({ onBack, onNext }: SchoolTypeProps) => {
     usePageTitle('Lern-Fair - Registrierung: Schulform');
 
     const onChange = (schooltype: ISchoolType) => {
-        onFormChange({ school: { ...form.school, schooltype } });
+        onFormChange({ school: { ...form.school, schooltype: schooltype as unknown as School_Schooltype_Enum } });
     };
 
     return (

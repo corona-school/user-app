@@ -4,7 +4,7 @@ import { usePageTitle } from '../../hooks/usePageTitle';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { TRAINEE_GRADE } from '@/Utility';
-import { SchoolType } from '@/gql/graphql';
+import { School_Schooltype_Enum as SchoolType } from '@/gql/graphql';
 
 interface PupilGradeProps extends RegistrationStepProps {}
 
