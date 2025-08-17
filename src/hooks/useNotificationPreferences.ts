@@ -56,14 +56,14 @@ const useUserPreferences = () => {
     const currentSystemPreferences = Object.entries(userPreferences).filter(([key]) => getSystemNotificationPreferenceCategories().includes(key));
     const currentMarketingPreferences = Object.entries(userPreferences).filter(([key]) => getMarketingNotificationPreferenceCategories().includes(key));
 
-    const hasPushSystemNotificationsEnabled = currentSystemPreferences.every(([key, value]) => {
+    const hasPushSystemNotificationsEnabled = currentSystemPreferences.some(([key, value]) => {
         return value.push === true;
     });
 
-    const hasSystemPreferencesEnabled = currentSystemPreferences.every(([key, value]) => {
+    const hasSystemPreferencesEnabled = currentSystemPreferences.some(([key, value]) => {
         return value.email === true || value.push === true;
     });
-    const hasMarketingPreferencesEnabled = currentMarketingPreferences.every(([key, value]) => {
+    const hasMarketingPreferencesEnabled = currentMarketingPreferences.some(([key, value]) => {
         return value.email === true || value.push === true;
     });
 
