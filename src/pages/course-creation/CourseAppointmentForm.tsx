@@ -16,9 +16,10 @@ type Props = {
     appointmentPrefill: DisplayAppointment | undefined;
     onSubmit: (appointment: DisplayAppointment) => void;
     onCancel: () => void;
+    errors: string[];
 };
 
-const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel }) => {
+const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors }) => {
     const { t } = useTranslation();
 
     const [title, setTitle] = useState(appointmentPrefill?.title ?? '');
@@ -33,7 +34,6 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
     const [videoChatType, setVideoChatType] = useState<VideoChatTypeEnum>(
         appointmentPrefill?.override_meeting_link ? VideoChatTypeEnum.LINK : VideoChatTypeEnum.ZOOM
     );
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
 
     const handleTitleInput = (e: any) => {
         setTitle(e.target.value);
@@ -79,12 +79,12 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         onChange={handleDateInput}
                         disabled={{ before: minDate.toJSDate() }}
                     />
-                    {'date' in errors && (
+                    {errors && errors.includes('date') && (
                         <Typography variant="sm" className="text-red-500">
                             {t('appointment.create.emptyDateError')}
                         </Typography>
                     )}
-                    {'dateNotInOneWeek' in errors && (
+                    {errors && errors.includes('dateNotInOneWeek') && (
                         <Typography variant="sm" className="text-red-500">
                             {t('appointment.create.wrongDateError')}
                         </Typography>
@@ -101,12 +101,12 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         onChange={handleTimeInput}
                         min={minDate.toFormat('HH:mm')}
                     />
-                    {'time' in errors && (
+                    {errors && errors.includes('time') && (
                         <Typography variant="sm" className="text-red-500">
                             {t('appointment.create.emptyTimeError')}
                         </Typography>
                     )}
-                    {'timeNotInFiveMin' in errors && (
+                    {errors && errors.includes('timeNotInFiveMin') && (
                         <Typography variant="sm" className="text-red-500">
                             {t('appointment.errors.timeNotInFiveMin')}
                         </Typography>
@@ -129,7 +129,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                             <SelectItem value="240">{t('course.selectOptions._4hour')}</SelectItem>
                         </SelectContent>
                     </Select>
-                    {'duration' in errors && (
+                    {errors && errors.includes('duration') && (
                         <Typography variant="sm" className="text-red-500">
                             {t('appointment.create.emptySelectError')}
                         </Typography>
@@ -144,7 +144,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         setVideoChatType={setVideoChatType}
                         videoChatType={videoChatType}
                     />
-                    {'invalidLink' in errors && (
+                    {errors && errors.includes('invalidLink') && (
                         <Typography variant="sm" className="text-red-500">
                             {t('appointment.create.wrongVideoUrlError')}
                         </Typography>

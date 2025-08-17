@@ -9,11 +9,12 @@ export interface FileItem {
     size: number;
     type: string;
     content: string | ArrayBuffer | null;
+    blob: File;
 }
 
 interface DropzoneProps {
     onUpload: (file: FileItem | null) => void;
-    file?: FileItem | null;
+    file?: FileItem | string | null;
 }
 
 const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
@@ -62,6 +63,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                     size: file.size,
                     type: file.type,
                     content: fileContent,
+                    blob: file,
                 });
             } else {
                 onUpload(null);
@@ -151,10 +153,18 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                         </div>
                     ) : (
                         <div className="flex flex-col items-center justify-center gap-4 pb-4">
-                            <img src={file.content as string} alt={file.name} className="w-full object-cover rounded-md" />
+                            <img
+                                src={typeof file === 'string' ? file : (file.content as string)}
+                                alt={typeof file === 'string' ? file : file.name}
+                                className="w-full object-cover rounded-md"
+                            />
                             <div className="flex gap-2.5 content-between items-baseline">
-                                <span className="font-medium text-gray-700">{file.name}</span>
-                                <span className="text-sm text-gray-500">{Math.round(file.size / 1024)} KB</span>
+                                {typeof file !== 'string' && (
+                                    <>
+                                        <span className="font-medium text-gray-700">{file.name}</span>
+                                        <span className="text-sm text-gray-500">{Math.round(file.size / 1024)} KB</span>
+                                    </>
+                                )}
                                 <Button onClick={() => onUpload(null)} variant="destructive">
                                     Datei entfernen
                                 </Button>

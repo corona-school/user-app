@@ -9,20 +9,36 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
 import { useTranslation } from 'react-i18next';
-import { LFInstructor, LFLecture, LFSubCourse, LFTag } from '@/types/lernfair/Course';
-import { Appointment } from '@/types/lernfair/Appointment';
+import { LFInstructor, LFSubCourse, LFTag } from '@/types/lernfair/Course';
 import { gql, useLazyQuery } from '@apollo/client';
 import CourseDetails from '@/pages/course-creation/CourseDetails';
 import { FileItem } from '@/components/Dropzone';
 import CourseAppointments from '@/pages/course-creation/CourseAppointments';
 import CourseInstructors from '@/pages/course-creation/CourseInstructors';
-import { Instructor } from '@/gql/graphql';
+import { Course_Category_Enum, Course_Subject_Enum, Instructor } from '@/gql/graphql';
 import CourseSettings from './course-creation/CourseSettings';
 import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
+import { COURSE_SUBJECT_TO_SUBJECT } from '@/types/subject';
+import { getCourseDelta, useUpdateCourse } from './course-creation/update';
+import { DisplayAppointment } from '@/widgets/AppointmentList';
 
-export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
+export type CreateCourseError =
+    | 'course'
+    | 'subcourse'
+    | 'set_image'
+    | 'upload_image'
+    | 'instructors'
+    | 'lectures'
+    | 'tags'
+    | 'appointments'
+    | 'course-name'
+    | 'description'
+    | 'category'
+    | 'subject'
+    | 'grade-range'
+    | 'participant-count';
 
 export enum ChatType {
     NORMAL = 'NORMAL',
@@ -35,46 +51,6 @@ export type Lecture = {
     time: string;
     duration: string;
 };
-type ICreateCourseContext = {
-    courseName?: string;
-    setCourseName?: Dispatch<SetStateAction<string>>;
-    courseCategory?: string;
-    setCourseCategory?: Dispatch<SetStateAction<string>>;
-    subject?: string | null;
-    setSubject?: Dispatch<SetStateAction<string | null>>;
-    classRange?: [number, number];
-    setClassRange?: Dispatch<SetStateAction<[number, number]>>;
-    description?: string;
-    setDescription?: Dispatch<SetStateAction<string>>;
-    tags?: LFTag[];
-    setTags?: Dispatch<SetStateAction<LFTag[]>>;
-    maxParticipantCount?: string;
-    setMaxParticipantCount?: Dispatch<SetStateAction<string>>;
-    joinAfterStart?: boolean;
-    setJoinAfterStart?: Dispatch<SetStateAction<boolean>>;
-    allowProspectContact?: boolean;
-    setAllowProspectContact?: Dispatch<SetStateAction<boolean>>;
-    allowParticipantContact?: boolean;
-    setAllowParticipantContact?: Dispatch<SetStateAction<boolean>>;
-    allowChatWritting?: boolean;
-    setAllowChatWritting?: Dispatch<SetStateAction<boolean>>;
-    lectures?: LFLecture[];
-    setLectures?: Dispatch<SetStateAction<LFLecture[]>>;
-    newLectures?: Lecture[];
-    setNewLectures?: Dispatch<SetStateAction<Lecture[]>>;
-    pickedPhoto?: FileItem | null;
-    setPickedPhoto?: Dispatch<SetStateAction<FileItem | null>>;
-    existingInstructors?: LFInstructor[];
-    setExistingInstructors?: Dispatch<SetStateAction<LFInstructor[]>>;
-    existingMentors?: LFInstructor[];
-    setExistingMentors?: Dispatch<SetStateAction<LFInstructor[]>>;
-    newInstructors?: LFInstructor[];
-    newMentors?: LFInstructor[];
-    image?: string;
-    myself?: LFInstructor;
-};
-
-export const CreateCourseContext = createContext<ICreateCourseContext>({});
 
 const COURSE_QUERY = gql(`
         query GetSubcourse($id: Int!) {
@@ -86,6 +62,12 @@ const COURSE_QUERY = gql(`
                 maxGrade
                 published
                 instructors {
+                    id
+                    firstname
+                    lastname
+                    aboutMe
+                }
+                mentors {
                     id
                     firstname
                     lastname
@@ -149,39 +131,35 @@ const STUDENT_QUERY = gql(`
 `);
 
 const CreateCourse: React.FC = () => {
-    const { roles } = useApollo();
     const userType = useUserType();
-    const toast = useToast();
     const location = useLocation();
     const breadcrumbRoutes = useBreadcrumbRoutes();
     const { t } = useTranslation();
 
     const state = location.state as { subcourseId?: number; currentStep?: number };
-    const prefillCourseId = state?.subcourseId;
-    const isEditing = useMemo(() => !!prefillCourseId, [prefillCourseId]);
+    const prefillSubcourseId = state?.subcourseId;
+    const [prefillCourse, setPrefillCourse] = useState<LFSubCourse | null>(null); // used for delta calculation
+    const isEditing = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
 
-    const [courseId, setCourseId] = useState<string>('');
+    const [errors, setErrors] = useState<CreateCourseError[]>([]);
+
+    const [courseId, setCourseId] = useState<number | undefined>(undefined);
     const [courseName, setCourseName] = useState<string>('');
-    const [courseCategory, setCourseCategory] = useState<string>('');
+    const [courseCategory, setCourseCategory] = useState<Course_Category_Enum>(Course_Category_Enum.Revision);
     const [subject, setSubject] = useState<string | null>(null);
-    const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 14]);
+    const [gradeRange, setGradeRange] = useState<[number, number]>([1, 14]);
     const [description, setDescription] = useState<string>('');
     const [tags, setTags] = useState<LFTag[]>([]);
-    const [maxParticipantCount, setMaxParticipantCount] = useState<string>('');
-    const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false);
-    const [allowProspectContact, setAllowProspectContact] = useState<boolean>(false);
+    const [maxParticipantCount, setMaxParticipantCount] = useState<number>(50); // default max participants
+    const [joinAfterStart, setJoinAfterStart] = useState<boolean>(true);
+    const [allowProspectContact, setAllowProspectContact] = useState<boolean>(true);
     const [allowParticipantContact, setAllowParticipantContact] = useState<boolean>(true);
-    const [allowChatWriting, setAllowChatWriting] = useState<boolean>(false);
-    const [lectures, setLectures] = useState<LFLecture[]>([]);
-    const [newLectures, setNewLectures] = useState<Lecture[]>([]);
-    const [pickedPhoto, setPickedPhoto] = useState<FileItem | null>(null);
-    const [existingInstructors, setExistingInstructors] = useState<LFInstructor[]>([]); // existing instructors already added to the course
-    const [existingMentors, setExistingMentors] = useState<LFInstructor[]>([]); // existing mentors already added to the course
-    const [draftInstructors, setDraftInstructors] = useState<LFInstructor[]>([]); // new instructors list, to be applied when submitting the course
-    const [draftMentors, setDraftMentors] = useState<LFInstructor[]>([]); // new mentors list, to be applied when submitting the course
+    const [allowChatWriting, setAllowChatWriting] = useState<boolean>(true);
+    const [instructors, setInstructors] = useState<LFInstructor[]>([]);
+    const [mentors, setMentors] = useState<LFInstructor[]>([]);
     const [image, setImage] = useState<string>('');
-    const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
-    const [studentMyself, setStudentMyself] = useState<{ firstname: string; lastname: string }>();
+    const [pickedPhoto, setPickedPhoto] = useState<FileItem | null | undefined>(undefined); // overrides image if set, used for image upload.
+    const [courseAppointments, setCourseAppointments] = useState<DisplayAppointment[]>();
     const [studentId, setStudentId] = useState<number>();
 
     const [loadingCourse, setLoadingCourse] = useState<boolean>(isEditing);
@@ -191,14 +169,10 @@ const CreateCourse: React.FC = () => {
 
     const [studentQuery] = useLazyQuery(STUDENT_QUERY);
 
+    const updateCourse = useUpdateCourse();
+
     const queryStudent = useCallback(async () => {
         const { data } = await studentQuery();
-
-        setStudentMyself({
-            firstname: data.me.firstname,
-            lastname: data.me.lastname,
-        });
-        // setCanCreateCourse(data.me.student.canCreateCourse);
         setStudentId(data.me.student.id);
         setLoadingStudent(false);
     }, [studentQuery]);
@@ -209,50 +183,89 @@ const CreateCourse: React.FC = () => {
 
     const queryCourse = useCallback(async () => {
         console.log('location.state', location.state, studentId);
-        if (!prefillCourseId) return;
+        if (!prefillSubcourseId) return;
         if (userType === 'student' && !studentId) return;
-        console.log('PREFILLING');
         setLoadingCourse(true);
         const {
             data: { subcourse: prefillCourse },
         } = (await courseQuery({
-            variables: { id: prefillCourseId },
+            variables: { id: prefillSubcourseId },
         })) as { data: { subcourse: LFSubCourse } };
+        console.log('PREFILLING', prefillCourse);
+        setPrefillCourse(prefillCourse);
 
-        setCourseId(prefillCourse.course.id || '');
+        setCourseId(prefillCourse.course.id);
         setCourseName(prefillCourse.course.name);
-        setSubject(prefillCourse.course.subject);
-        setCourseCategory(prefillCourse.course.category);
+        setSubject(COURSE_SUBJECT_TO_SUBJECT[prefillCourse.course.subject as Course_Subject_Enum]);
+        setCourseCategory(prefillCourse.course.category as Course_Category_Enum);
         setDescription(prefillCourse.course.description);
-        setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
+        setMaxParticipantCount(prefillCourse.maxParticipants!);
         setJoinAfterStart(!!prefillCourse.joinAfterStart);
         setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
         setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
-        setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
-        setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 14]);
+        setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL);
+        setGradeRange([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 14]);
         setCourseAppointments(prefillCourse.appointments ?? []);
-        console.log('prefillCourse.appointments', prefillCourse.appointments);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
-            console.log('prefillCourse.instructors', prefillCourse.instructors);
             const arr = prefillCourse.instructors.filter((instructor: Instructor) => instructor.id !== studentId);
-            setExistingInstructors(arr);
-            setDraftInstructors(arr);
+            setInstructors(arr);
+        }
+
+        if (prefillCourse.mentors && Array.isArray(prefillCourse.mentors)) {
+            const arr = prefillCourse.mentors.filter((mentor: Instructor) => mentor.id !== studentId);
+            setMentors(arr);
         }
 
         if (prefillCourse.course.tags && Array.isArray(prefillCourse.course.tags)) {
             setTags(prefillCourse.course.tags);
+            console.log('Set tags to', prefillCourse.course.tags);
         }
 
         setLoadingCourse(false);
-    }, [courseQuery, prefillCourseId, studentId]);
+    }, [courseQuery, prefillSubcourseId, studentId]);
 
     useEffect(() => {
-        if (prefillCourseId != null) queryCourse();
-    }, [prefillCourseId, queryCourse]);
+        if (prefillSubcourseId != null) queryCourse();
+    }, [prefillSubcourseId, queryCourse]);
 
-    const submit = () => {};
+    const submit = async () => {
+        const delta = getCourseDelta(
+            prefillCourse ?? {},
+            {
+                courseName,
+                courseCategory,
+                subject,
+                gradeRange,
+                description,
+                tags,
+                maxParticipantCount: maxParticipantCount,
+                joinAfterStart,
+                allowProspectContact,
+                allowParticipantContact,
+                allowChatWriting,
+                // instructors does not include the student itself, so we need to add it manually for delta
+                instructors: [...instructors.map((x) => x.id!), studentId!],
+                mentors: mentors.map((x) => x.id!),
+                pickedPhoto,
+                image,
+                courseAppointments,
+            },
+            studentId!
+        );
+
+        console.log('DELTA', delta);
+
+        const res = await updateCourse(prefillSubcourseId!, courseId, delta);
+        if (res && res.errors) {
+            setErrors(res.errors);
+        } else if (res && res.subcourseId) {
+            setErrors([]);
+            // Navigate to the course page after successful creation
+            window.location.href = `/single-course/${res.subcourseId}`;
+        }
+    };
 
     if (loadingCourse || loadingStudent) {
         return <CenterLoadingSpinner />;
@@ -277,65 +290,56 @@ const CreateCourse: React.FC = () => {
                 <Typography variant="h2" className="mb-4">
                     {isEditing ? t('course.edit') : t('course.header')}
                 </Typography>
-                <CreateCourseContext.Provider
-                    value={{
-                        courseName,
-                        setCourseName,
-                        courseCategory,
-                        setCourseCategory,
-                        classRange: courseClasses,
-                        setClassRange: setCourseClasses,
-                        subject,
-                        setSubject,
-                        description,
-                        setDescription,
-                        tags,
-                        setTags,
-                        maxParticipantCount,
-                        setMaxParticipantCount,
-                        joinAfterStart,
-                        setJoinAfterStart,
-                        allowProspectContact,
-                        setAllowProspectContact,
-                        allowParticipantContact,
-                        setAllowParticipantContact,
-                        allowChatWritting: allowChatWriting,
-                        setAllowChatWritting: setAllowChatWriting,
-                        lectures,
-                        setLectures,
-                        newLectures,
-                        setNewLectures,
-                        pickedPhoto,
-                        setPickedPhoto,
-                        existingInstructors: existingInstructors,
-                        newInstructors: draftInstructors,
-                        image,
-                        myself: studentMyself,
-                    }}
-                >
-                    <div className="flex flex-col gap-4 max-w-xl w-full">
-                        <CourseDetails />
-                        <CourseInstructors
-                            instructors={draftInstructors}
-                            mentors={draftMentors}
-                            setInstructors={(x) => setDraftInstructors(x)}
-                            setMentors={(x) => setDraftMentors(x)}
-                        />
-                        <CourseAppointments isEditingCourse={true} existingAppointments={courseAppointments ?? []} />
-                        <CourseSettings />
-                        <div className="flex flex-col gap-2">
-                            <Button variant="outline" className="w-full">
-                                Abbrechen
-                            </Button>
-                            <Button leftIcon={<IconCheck />} className="w-full" onClick={submit}>
-                                Entwurf speichern
-                            </Button>
-                            <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full">
-                                zur Prüfung freigeben
-                            </Button>
-                        </div>
+                <div className="flex flex-col gap-4 max-w-xl w-full">
+                    <CourseDetails
+                        courseName={courseName}
+                        setCourseName={setCourseName}
+                        description={description}
+                        setDescription={setDescription}
+                        pickedPhoto={pickedPhoto}
+                        setPickedPhoto={setPickedPhoto}
+                        existingPhoto={image}
+                        maxParticipantCount={maxParticipantCount}
+                        setMaxParticipantCount={setMaxParticipantCount}
+                        subject={subject}
+                        setSubject={setSubject}
+                        gradeRange={gradeRange}
+                        setGradeRange={setGradeRange}
+                        category={courseCategory}
+                        setCategory={setCourseCategory}
+                        selectedTags={tags}
+                        setSelectedTags={setTags}
+                        errors={errors}
+                    />
+                    <CourseInstructors
+                        instructors={instructors}
+                        mentors={mentors}
+                        setInstructors={(x) => setInstructors(x)}
+                        setMentors={(x) => setMentors(x)}
+                    />
+                    <CourseAppointments isEditingCourse={true} appointments={courseAppointments ?? []} setAppointments={setCourseAppointments} />
+                    <CourseSettings
+                        allowParticipantContact={allowParticipantContact}
+                        setAllowParticipantContact={setAllowParticipantContact}
+                        allowProspectContact={allowProspectContact}
+                        setAllowProspectContact={setAllowProspectContact}
+                        allowChatWriting={allowChatWriting}
+                        setAllowChatWriting={setAllowChatWriting}
+                        joinAfterStart={joinAfterStart}
+                        setJoinAfterStart={setJoinAfterStart}
+                    />
+                    <div className="flex flex-col gap-2">
+                        <Button variant="outline" className="w-full">
+                            Abbrechen
+                        </Button>
+                        <Button leftIcon={<IconCheck />} className="w-full" onClick={submit}>
+                            Entwurf speichern
+                        </Button>
+                        <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full">
+                            zur Prüfung freigeben
+                        </Button>
                     </div>
-                </CreateCourseContext.Provider>
+                </div>
             </WithNavigation>
         </>
     );

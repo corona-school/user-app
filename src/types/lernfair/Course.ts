@@ -7,7 +7,7 @@ import { LFPupil } from './User';
 
 export type LFCourse = {
     subject: string;
-    id?: string;
+    id?: number;
     name: string;
     description: string;
     tags?: LFTag[];
@@ -31,6 +31,7 @@ export interface LFSubCourse {
     cancelled?: boolean;
     joinAfterStart?: boolean;
     instructors?: Instructor[];
+    mentors?: Instructor[];
     isInstructor?: boolean;
     firstLecture?: LFLecture;
     minGrade?: number;

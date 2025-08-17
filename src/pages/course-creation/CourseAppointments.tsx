@@ -1,138 +1,147 @@
-import { useContext, useEffect, useState } from 'react';
+import { Dispatch, SetStateAction, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useCreateAppointment, useCreateCourseAppointments, useWeeklyAppointments } from '../../context/AppointmentContext';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
-import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentList, { DisplayAppointment } from '../../widgets/AppointmentList';
 import { DateTime } from 'luxon';
-import { CreateCourseContext } from '../CreateCourse';
-import { FormReducerActionType, WeeklyReducerActionType } from '../../types/lernfair/CreateAppointment';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 
 type Props = {
     isEditingCourse?: boolean;
-    existingAppointments: DisplayAppointment[];
     subcourseId?: number;
+    appointments: DisplayAppointment[];
+    setAppointments: Dispatch<SetStateAction<DisplayAppointment[] | undefined>>;
 };
 
-const CourseAppointments: React.FC<Props> = ({ isEditingCourse, existingAppointments, subcourseId }) => {
+const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, subcourseId, setAppointments }) => {
     const { t } = useTranslation();
-    const [editId, setEditId] = useState<number | undefined>(undefined);
 
-    const [appointmentsToBeCreated, setAppointmentsToBeCreated] = useState<DisplayAppointment[]>([]);
-
-    const { courseName } = useContext(CreateCourseContext);
     const [creating, setCreating] = useState<boolean>(false);
-    const [editingIdInit, setEditingIdInit] = useState<number | undefined>(undefined);
+    // const [_draftAppointments, setDraftAppointments] = useState<DisplayAppointment[]>(appointments);
+    const [placeholderId, setPlaceholderId] = useState<string | undefined>(undefined);
 
-    const getAllAppointmentsToShow = (creating: boolean) => {
-        if (isEditingCourse) {
-            const appointmentsToBeCreatedWithIndex = [];
-            for (let i = 0; i < appointmentsToBeCreated.length; i++) {
-                appointmentsToBeCreatedWithIndex.push({
-                    ...appointmentsToBeCreated[i],
-                    newId: i,
-                });
-            }
-            const allAppointments = existingAppointments.concat(appointmentsToBeCreatedWithIndex);
-
-            if (creating) {
-                console.log('Creating new appointment, inserting empty appointment at the front');
-                allAppointments.push({
+    const getDraftAppointments = useMemo(() => {
+        const draftAppointments = [...appointments].sort((a, b) => DateTime.fromISO(a.start).toMillis() - DateTime.fromISO(b.start).toMillis());
+        if (creating) {
+            return [
+                ...draftAppointments,
+                {
                     isNew: true,
-                    newId: appointmentsToBeCreated.length,
+                    newId: placeholderId,
                     id: -1,
                     start: DateTime.now().plus({ days: 7 }).toISO(),
                     duration: 60,
                     appointmentType: Lecture_Appointmenttype_Enum.Group,
-                    displayName: courseName,
+                    displayName: '',
                     title: '',
                     description: '',
-                });
-                setEditingIdInit(appointmentsToBeCreated.length);
-            }
-            const sortedAppointments = allAppointments.sort((a, b) => {
-                const _a = DateTime.fromISO(a.start).toMillis();
-                const _b = DateTime.fromISO(b.start).toMillis();
-                return _a - _b;
-            });
-            let sortedWithPosition: DisplayAppointment[] = [];
-            sortedAppointments.forEach((appointment, index) => {
-                sortedWithPosition.push({ ...appointment, position: index + 1 });
-            });
-            return sortedWithPosition;
-        } else {
-            return [];
+                },
+            ];
         }
-        // TODO
-    };
-    const [allAppointmentsToShow, setAllAppointmentsToShow] = useState<DisplayAppointment[]>(getAllAppointmentsToShow(false));
+        return draftAppointments;
+    }, [appointments, creating, placeholderId]);
 
     const onCreateAppointment = () => {
+        setPlaceholderId(crypto.randomUUID());
         setCreating(true);
-        setAllAppointmentsToShow(getAllAppointmentsToShow(true));
     };
 
-    useEffect(() => {
-        setCreating(false);
-        setAllAppointmentsToShow(getAllAppointmentsToShow(false));
-    }, [appointmentsToBeCreated]);
+    const validateInputs = (appointment: DisplayAppointment): string[] => {
+        // check if date field is valid date
+        const errors = [];
+        if (!DateTime.fromISO(appointment.start).isValid) {
+            errors.push('invalidDate');
+        }
+
+        // check if appointment is at least 7 days in the future
+        if (DateTime.fromISO(appointment.start).startOf('day').diffNow('days').days < 7) {
+            errors.push('dateNotInOneWeek');
+        }
+
+        // check if link is valid
+        if (appointment.override_meeting_link) {
+            const urlRegex = /^(https?):\/\/(?:www\.)?[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}(?:\/[^\s]*)?$/;
+            if (!urlRegex.test(appointment.override_meeting_link)) {
+                errors.push('invalidLink');
+            }
+        }
+        return errors;
+    };
+
+    const onAppointmentEdited = (updated: DisplayAppointment) => {
+        const errors = validateInputs(updated);
+
+        if (errors.length > 0) {
+            return { errors };
+        }
+
+        if (updated.isNew) {
+            setCreating(false);
+            console.log('Edited new appointment with newId:', updated.newId, updated);
+            const edited = getDraftAppointments.findIndex((x) => x.newId === updated.newId);
+            // update the edited appointment
+            setAppointments(() => {
+                const newAppointments = [...getDraftAppointments];
+                newAppointments[edited] = {
+                    ...updated,
+                    appointmentType: Lecture_Appointmenttype_Enum.Group,
+                    subcourseId: subcourseId ?? -1,
+                };
+                return newAppointments;
+            });
+        } else {
+            console.log('Editing existing appointment');
+            const edited = getDraftAppointments.findIndex((x) => x.id === updated.id);
+            // update the edited appointment
+            setAppointments(() => {
+                const newAppointments = [...getDraftAppointments];
+                newAppointments[edited] = {
+                    ...updated,
+                    appointmentType: Lecture_Appointmenttype_Enum.Group,
+                    subcourseId: subcourseId ?? -1,
+                };
+                return newAppointments;
+            });
+        }
+    };
+
+    const onAppointmentDuplicate = (duplicate: DisplayAppointment) => {
+        console.log('Duplicating appointment');
+        const newId = crypto.randomUUID();
+        setAppointments((prev) => [
+            ...(prev ?? []),
+            {
+                ...duplicate,
+                isNew: true,
+                newId,
+                id: -1, // Temporary ID until saved
+            },
+        ]);
+        setPlaceholderId(newId);
+    };
 
     return (
         <>
             <Typography variant="h3">{t('course.CourseDate.step.appointments')}</Typography>
             <div>
-                {(isEditingCourse || allAppointmentsToShow.length !== 0) && (
+                {(isEditingCourse || getDraftAppointments.length !== 0) && (
                     <div className="mb-2">
                         <AppointmentList
                             height="100%"
                             isReadOnlyList={false}
-                            appointments={allAppointmentsToShow}
+                            appointments={getDraftAppointments}
                             noOldAppointments={subcourseId === undefined}
-                            onAppointmentEdited={(updated) => {
-                                // todo what if existing appointment is edited?
-                                if (updated.isNew) {
-                                    console.log('edited new appointment with newIndex:', updated.newId, updated);
-                                    setAppointmentsToBeCreated((prev) => {
-                                        const newAppointments = [...prev];
-                                        newAppointments[updated.newId!] = {
-                                            ...updated,
-                                            appointmentType: Lecture_Appointmenttype_Enum.Group,
-                                            subcourseId: subcourseId ?? -1,
-                                        };
-                                        return newAppointments;
-                                    });
-                                } else {
-                                    console.log('Editing existing appointment');
-                                }
-                            }}
+                            onAppointmentEdited={onAppointmentEdited}
                             onAppointmentCanceledEdit={() => {
                                 setCreating(false);
-                                setAllAppointmentsToShow(getAllAppointmentsToShow(false));
                             }}
-                            onAppointmentDuplicate={
-                                !creating
-                                    ? (duplicate) => {
-                                          console.log('Duplicating appointment');
-                                          setAppointmentsToBeCreated((prev) => {
-                                              const newAppointments = [...prev];
-                                              newAppointments.push({
-                                                  ...duplicate,
-                                                  appointmentType: Lecture_Appointmenttype_Enum.Group,
-                                                  subcourseId: subcourseId ?? -1,
-                                              });
-                                              return newAppointments;
-                                          });
-                                      }
-                                    : undefined
-                            }
-                            editingIdInit={editingIdInit}
+                            onAppointmentDuplicate={!creating ? onAppointmentDuplicate : undefined}
+                            editingIdInit={placeholderId}
                         />
                     </div>
                 )}
                 <Button onClick={onCreateAppointment} variant={'default'} className="w-full p-6" disabled={creating}>
-                    {allAppointmentsToShow.length === 0 ? t('course.appointments.addFirstAppointment') : t('course.appointments.addOtherAppointment')}
+                    {getDraftAppointments.length === 0 ? t('course.appointments.addFirstAppointment') : t('course.appointments.addOtherAppointment')}
                 </Button>
             </div>
         </>

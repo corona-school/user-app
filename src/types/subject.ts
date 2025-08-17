@@ -34,6 +34,7 @@ export const SUBJECTS = [
     'Wirtschaft',
     'Lernen lernen',
     'Steuerlehre',
+    'Rechnungswesen',
 ] as const;
 
 export type SingleSubject = typeof SUBJECTS[number];
@@ -95,6 +96,7 @@ export const SUBJECT_TO_ICON: { [subject in SingleSubject]: string } = {
     Wirtschaft: 'wirtschaft',
     'Lernen lernen': 'lernen_lernen',
     Steuerlehre: 'sachkunde',
+    Rechnungswesen: 'rechnungswesen',
 };
 
 // Unfortunately this mapping is necessary as our two ORMs have problems with non ASCII chars:
@@ -131,6 +133,42 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in SingleSubject]: Course_Sub
     Wirtschaft: Course_Subject_Enum.Wirtschaft,
     'Lernen lernen': Course_Subject_Enum.LernenLernen, // TODO
     Steuerlehre: Course_Subject_Enum.Steuerlehre,
+    Rechnungswesen: Course_Subject_Enum.Rechnungswesen,
+};
+
+export const COURSE_SUBJECT_TO_SUBJECT: { [subject in Course_Subject_Enum]: SingleSubject } = {
+    [Course_Subject_Enum.DeutschAlsZweitsprache]: 'Deutsch als Zweitsprache',
+    [Course_Subject_Enum.Deutsch]: 'Deutsch',
+    [Course_Subject_Enum.Altgriechisch]: 'Altgriechisch', // Note: 'Chinesisch' also maps here in original
+    [Course_Subject_Enum.Arbeitslehre]: 'Arbeitslehre',
+    [Course_Subject_Enum.Biologie]: 'Biologie',
+    [Course_Subject_Enum.Chemie]: 'Chemie',
+    [Course_Subject_Enum.Englisch]: 'Englisch',
+    [Course_Subject_Enum.Erdkunde]: 'Erdkunde',
+    [Course_Subject_Enum.Ethik]: 'Ethik',
+    [Course_Subject_Enum.FranzSisch]: 'Französisch',
+    [Course_Subject_Enum.Gesundheit]: 'Gesundheit',
+    [Course_Subject_Enum.Geschichte]: 'Geschichte',
+    [Course_Subject_Enum.Informatik]: 'Informatik',
+    [Course_Subject_Enum.Italienisch]: 'Italienisch',
+    [Course_Subject_Enum.Kunst]: 'Kunst',
+    [Course_Subject_Enum.Latein]: 'Latein',
+    [Course_Subject_Enum.Mathematik]: 'Mathematik',
+    [Course_Subject_Enum.Musik]: 'Musik',
+    [Course_Subject_Enum.NiederlNdisch]: 'Niederländisch',
+    [Course_Subject_Enum.Philosophie]: 'Philosophie',
+    [Course_Subject_Enum.Physik]: 'Physik',
+    [Course_Subject_Enum.Politik]: 'Politik',
+    [Course_Subject_Enum.PDagogik]: 'Pädagogik',
+    [Course_Subject_Enum.Religion]: 'Religion',
+    [Course_Subject_Enum.Russisch]: 'Russisch',
+    [Course_Subject_Enum.Sachkunde]: 'Sachkunde',
+    [Course_Subject_Enum.Spanisch]: 'Spanisch',
+    [Course_Subject_Enum.Technik]: 'Technik',
+    [Course_Subject_Enum.Wirtschaft]: 'Wirtschaft',
+    [Course_Subject_Enum.LernenLernen]: 'Lernen lernen',
+    [Course_Subject_Enum.Steuerlehre]: 'Steuerlehre',
+    [Course_Subject_Enum.Rechnungswesen]: 'Rechnungswesen',
 };
 
 export const DAZ = 'Deutsch als Zweitsprache';
