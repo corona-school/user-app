@@ -173,7 +173,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (values.userType === 'pupil') {
             if (values.currentStep === RegistrationStep.grade) {
                 await updateProfile({ variables: { gradeAsInt: values.grade } });
-            } else if ([RegistrationStep.school, RegistrationStep.schoolType, RegistrationStep.zipCode].includes(values.currentStep)) {
+            } else if (values.currentStep === RegistrationStep.zipCode) {
                 await updateProfile({
                     variables: {
                         school: {
