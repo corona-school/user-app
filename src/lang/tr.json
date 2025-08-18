@@ -438,9 +438,9 @@
             },
             "school": {
                 "title": "Okul konumu",
-                "helperText": "Okul türünüzü ve okul konumunuzu belirlemek için okul bilgilerini kullanırız",
                 "schoolFound": "Okul bulundu",
-                "otherSchoolFound": "Tanınan diğer okullar"
+                "otherSchoolFound": "Tanınan diğer okullar",
+                "helperText": "Okulunuz bulunamazsa, okulun adını ve yerini girmeniz yeterlidir - ne yazık ki veritabanımızda tüm okullar bulunmamaktadır"
             },
             "acceptanceCheck": {
                 "title": "Doğru yerde misiniz?",
@@ -462,7 +462,8 @@
             },
             "userAge": {
                 "title": "Kaç yaşındasın sen?",
-                "description": "Bu bilgileri kurslara ve öğrenim ortaklarına kayıt ve atama için kullanırız."
+                "description": "Sizin veya ebeveynlerinizin kaydı kabul etmek zorunda olup olmadığını bilmemiz için gereklidir.",
+                "tooYoungError": "Lern-Fair 'de, {{minAge}} ücretsiz özel ders sunabileceğimiz minimum yaştır."
             },
             "languages": {
                 "title": "Evde hangi dilleri konuşuyorsunuz?",

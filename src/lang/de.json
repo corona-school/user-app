@@ -510,7 +510,8 @@
             },
             "userAge": {
                 "title": "Wie alt bist du?",
-                "description": "Diese Info nutzen wir für die Anmeldung und Zuordnung zu Kursen und Lernpartner:innen."
+                "description": "Notwendig damit wir wissen, ob du selber oder deine Eltern der Anmeldung zustimmen müssen.",
+                "tooYoungError": "Bei Lern-Fair ist {{minAge}} Jahre das Mindestalter, für das wir kostenlose Nachhilfe anbieten können."
             },
             "languages": {
                 "title": "Welche Sprachen sprichst du zu Hause?",
@@ -603,9 +604,9 @@
             },
             "school": {
                 "title": "Auf welche Schule\ngehst du?",
-                "helperText": "Schule nicht gefunden? Ergänze den Ort oder schreibe den Schulnamen mit bzw. ohne Bindestrich oder Leerstelle.",
+                "helperText": "Falls deine Schule nicht gefunden wird, trag einfach Namen und Ort der Schule ein - Leider haben wir nicht alle Schulen in unserer Datenbank",
                 "schoolFound": "Schule aus Liste gewählt",
-                "otherSchoolFound": "Schule selbst eingetragen"
+                "otherSchoolFound": "Schule eingetragen"
             },
             "schoolType": {
                 "title": "Welche Schulform"

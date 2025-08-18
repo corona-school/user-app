@@ -430,9 +430,9 @@
             },
             "school": {
                 "title": "School location",
-                "helperText": "We use the school details to determine your school type and location",
                 "schoolFound": "School found",
-                "otherSchoolFound": "Other school recognized"
+                "otherSchoolFound": "Other school recognized",
+                "helperText": "If your school is not found, simply enter the name and location of the school - unfortunately we do not have all schools in our database"
             },
             "acceptanceCheck": {
                 "title": "Are you in the right place?",
@@ -454,7 +454,8 @@
             },
             "userAge": {
                 "title": "How old are you?",
-                "description": "We use this information for registration and assignment to courses and learning partners."
+                "description": "Necessary so that we know whether you or your parents have to agree to the registration.",
+                "tooYoungError": "At Lern-Fair , {{minAge}} years is the minimum age for which we can offer free tutoring."
             },
             "languages": {
                 "title": "What languages do you speak at home?",

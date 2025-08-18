@@ -23,10 +23,11 @@ const inputVariants = cva(
 export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>, VariantProps<typeof inputVariants> {
     onChangeText?: (text: string) => void;
     errorMessage?: string;
+    errorMessageClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ className, type, onChange, onChangeText, variant = 'default', errorMessage, ...props }, ref) => {
+    ({ className, type, onChange, onChangeText, variant = 'default', errorMessage, errorMessageClassName, ...props }, ref) => {
         const [showPassword, setShowPassword] = React.useState(false);
         const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             if (onChange) {
@@ -67,7 +68,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                         </Button>
                     </div>
                     {errorMessage && (
-                        <Typography variant="sm" className="text-destructive px-1">
+                        <Typography variant="sm" className={cn('text-destructive px-1', errorMessageClassName)}>
                             {errorMessage}
                         </Typography>
                     )}
@@ -84,11 +85,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     onChange={handleOnChange}
                     {...props}
                 />
-                {errorMessage && (
-                    <Typography variant="sm" className="text-destructive px-1">
-                        {errorMessage}
-                    </Typography>
-                )}
+                <Typography
+                    variant="sm"
+                    className={cn(
+                        'text-destructive px-1 min-h-5',
+                        {
+                            invisible: !errorMessage,
+                        },
+                        errorMessageClassName
+                    )}
+                >
+                    {errorMessage}
+                </Typography>
             </>
         );
     }
