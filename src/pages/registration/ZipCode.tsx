@@ -18,7 +18,9 @@ export const ZipCode = ({ onBack, onNext }: ZipCodeProps) => {
     return (
         <RegistrationStep onBack={onBack} onNext={onNext}>
             <RegistrationStepTitle className="md:mb-10">{t('registration.steps.zipCode.title')}</RegistrationStepTitle>
-            <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance"></Typography>
+            <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
+                {t('registration.steps.zipCode.description')}
+            </Typography>
             <div className="flex flex-col gap-y-3 w-full max-w-20 pb-32 md:pb-0">
                 <div className="w-full flex flex-col justify-center gap-y-1">
                     <Input autoFocus variant="white" className="w-full h-12" value={form.zipCode || ''} onChangeText={onChange} />

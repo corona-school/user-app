@@ -612,6 +612,7 @@
             },
             "zipCode": {
                 "title": "Bitte teile uns deine Postleitzahl mit",
+                "description": "Wir verwenden diese Info da wir unseren Förderern mitteilen müssen, woher ihr kommt",
                 "doNotKnow": "Weiß nicht"
             },
             "notifications": {

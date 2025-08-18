@@ -536,7 +536,8 @@
             },
             "zipCode": {
                 "title": "Please let us know your zip code",
-                "doNotKnow": "Don't know"
+                "doNotKnow": "Don't know",
+                "description": "We use this information because we need to tell our sponsors where you are from"
             },
             "notifications": {
                 "title": "Set email notifications",
