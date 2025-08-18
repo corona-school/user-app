@@ -32,7 +32,7 @@ export interface RegistrationForm {
             rescheduleUrl?: string | null;
         };
     };
-    grade: number;
+    grade?: number | null;
     school: {
         id?: string;
         name: string;

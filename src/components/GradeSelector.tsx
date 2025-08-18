@@ -17,7 +17,7 @@ export const GradeTag = ({ grade, isSelected, onSelect }: GradeTagProps) => {
 };
 
 interface GradeSelectorProps<T> extends Omit<SelectorProps<T>, 'setValue' | 'value'> {
-    grade?: number;
+    grade?: number | null;
     onGradeChange: (grade: number) => void;
     omitGrades?: number[];
     className?: string;
