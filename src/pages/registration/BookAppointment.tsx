@@ -89,6 +89,7 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
             clearInterval(timerId);
             onNext();
         }
+        return () => clearInterval(timerId);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentBookedScreeningAppointment?.start, timerId]);
 
