@@ -510,12 +510,12 @@
             },
             "userAge": {
                 "title": "Wie alt bist du?",
-                "description": "Diese Info nutzen wir für die Anmeldung und Zuordnung zu Kursen und Lernpartner:innen."
+                "description": "Notwendig damit wir wissen, ob du selber oder deine Eltern der Anmeldung zustimmen müssen.",
+                "tooYoungError": "Bei Lern-Fair ist {{minAge}} Jahre das Mindestalter, für das wir kostenlose Nachhilfe anbieten können."
             },
             "languages": {
                 "title": "Welche Sprachen sprichst du zu Hause?",
-                "description": "Damit wir wissen, in welchen Sprachen Helfer:innen mit dir kommunizieren können.",
-                "tooltip": "Dies ist eine wichtige Information um passende Helfer zu finden"
+                "description": "Damit wir wissen, in welchen Sprachen Helfer:innen mit dir kommunizieren können."
             },
             "bookAppointment": {
                 "title": "Kennenlern-Gespräch",
@@ -603,15 +603,16 @@
             },
             "school": {
                 "title": "Auf welche Schule\ngehst du?",
-                "helperText": "Schule nicht gefunden? Ergänze den Ort oder schreibe den Schulnamen mit bzw. ohne Bindestrich oder Leerstelle.",
+                "helperText": "Falls deine Schule nicht gefunden wird, trag einfach Namen und Ort der Schule ein - Leider haben wir nicht alle Schulen in unserer Datenbank",
                 "schoolFound": "Schule aus Liste gewählt",
-                "otherSchoolFound": "Schule selbst eingetragen"
+                "otherSchoolFound": "Schule eingetragen"
             },
             "schoolType": {
                 "title": "Welche Schulform"
             },
             "zipCode": {
                 "title": "Bitte teile uns deine Postleitzahl mit",
+                "description": "Wir verwenden diese Info da wir unseren Förderern mitteilen müssen, woher ihr kommt",
                 "doNotKnow": "Weiß nicht"
             },
             "notifications": {
