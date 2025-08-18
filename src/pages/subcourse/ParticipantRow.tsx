@@ -46,7 +46,7 @@ const ParticipantRow = ({ participant, isInstructor, contactParticipant, contact
                 <ParticipantFact icon={<IconBackpack size={18} />}>
                     <Typography variant="sm">
                         {participant.schooltype && `${getSchoolTypeKey(participant.schooltype)}, `}
-                        {getGradeLabel(participant.gradeAsInt)}
+                        {participant.gradeAsInt && getGradeLabel(participant.gradeAsInt)}
                     </Typography>
                 </ParticipantFact>
             </div>

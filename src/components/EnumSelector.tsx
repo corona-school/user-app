@@ -29,7 +29,7 @@ interface MultiSelectorProps<Enum> {
     variant?: ToggleVariants;
 }
 
-type SelectorProps<Enum> = SingleSelectorProps<Enum> | MultiSelectorProps<Enum>;
+export type SelectorProps<Enum> = SingleSelectorProps<Enum> | MultiSelectorProps<Enum>;
 
 export function EnumSelector<EnumValue extends Record<string, string>, Enum extends string = EnumValue[keyof EnumValue]>(
     values: EnumValue,

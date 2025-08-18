@@ -1,6 +1,6 @@
 import IconTagList from '../widgets/IconTagList';
 import { getGradeLabel } from '../Utility';
-import { EnumSelector } from './EnumSelector';
+import { EnumSelector, SelectorProps } from './EnumSelector';
 import { Typography } from './Typography';
 import { cn } from '@/lib/Tailwind';
 
@@ -16,8 +16,8 @@ export const GradeTag = ({ grade, isSelected, onSelect }: GradeTagProps) => {
     );
 };
 
-interface GradeSelectorProps {
-    grade?: number;
+interface GradeSelectorProps<T> extends Omit<SelectorProps<T>, 'setValue' | 'value'> {
+    grade?: number | null;
     onGradeChange: (grade: number) => void;
     omitGrades?: number[];
     className?: string;
@@ -45,6 +45,6 @@ export const GradeIcon = ({ grade, className }: { grade?: number; className?: st
         </div>
     ) : null;
 
-export function GradeSelector({ grade, onGradeChange, omitGrades = [], className }: GradeSelectorProps) {
+export function GradeSelector<T>({ grade, onGradeChange, omitGrades = [], className }: GradeSelectorProps<T>) {
     return <Selector value={grade} setValue={onGradeChange} className={className} />;
 }
