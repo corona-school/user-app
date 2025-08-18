@@ -462,6 +462,7 @@
                 }
             }
         },
+        "stepStateCount": "{{current}} von {{total}}",
         "steps": {
             "userType": {
                 "title": "In welcher Rolle meldest du dich bei Lern-Fair an?"
@@ -566,6 +567,10 @@
                 "changeAppointment": "Termin ändern",
                 "cancelAppointment": "Termin absagen"
             },
+            "registrationCompleted": {
+                "title": "Du hast es geschafft!",
+                "description": "Wir freuen uns auf das Kennenlerngespräch mit dir per Zoom am"
+            },
             "personalData": {
                 "title": "Persönliche Daten",
                 "subtitle": "Persönliche Daten"
@@ -594,6 +599,17 @@
                 "importantInformationBadge": "Wichtige Infos",
                 "recommendationsBadge": "Hilfreiches & Tipps",
                 "recommendationsDescription": "Ich möchte über neue Angebote und allgemeine Nachrichten informiert werden."
+            },
+            "ourRules": {
+                "title": "Unsere Regeln",
+                "description": "Unsere Helfer:innen unterstützen die Schüler:innen in ihrer Freizeit 😎👍.",
+                "rules": [
+                    "🔥⏳ Respektiere die Zeit, Energie und den Aufwand den sie dafür investieren.",
+                    "️📅 ⌚Dazu gehört auch Pünktlichkeit und Zuverlässigkeit für Termine.",
+                    "😊 Sei freundlich im Umgang mit anderen.",
+                    "❌ Diskriminierung (z.B. Rassismus, Sexismus, Religionszugehörigkeit oder Altersdiskriminierung) ist nicht erlaubt."
+                ],
+                "acceptLabel": "Ich werde die genannten Punkte einhalten"
             },
             "state": {
                 "title": "Schulort",

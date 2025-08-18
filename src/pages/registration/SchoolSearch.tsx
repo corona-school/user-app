@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
-import { ExternalSchoolSearch } from '../../gql/graphql';
+import { School_Schooltype_Enum } from '../../gql/graphql';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useMemo, useState } from 'react';
@@ -32,17 +32,17 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
                 })?.key;
             }
             onFormChange({
-                school: { ...newSelectedSchool, schooltype: schoolType } as unknown as ExternalSchoolSearch,
-                zipCode: newSelectedSchool.zip ?? form.zipCode,
+                school: { ...newSelectedSchool, schooltype: schoolType as School_Schooltype_Enum },
+                zipCode: newSelectedSchool.zip ?? undefined,
             });
         }
     };
 
     const handleOnCreate = (name: string) => {
-        onFormChange({ school: { name } });
+        onFormChange({ school: { name }, zipCode: undefined });
     };
 
-    const getLabel = (school: Partial<RegistrationForm['school']>) => {
+    const getLabel = (school: Pick<RegistrationForm['school'], 'name' | 'city'>) => {
         let label = school.name;
         if (school.city) label += `, ${school.city}`;
         return label ?? '';

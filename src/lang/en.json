@@ -523,6 +523,21 @@
                 "importantInformationBadge": "Important information",
                 "recommendationsBadge": "Helpful hints & tips",
                 "recommendationsDescription": "I would like to be informed about new offers and general news."
+            },
+            "ourRules": {
+                "rules": [
+                    "🔥⏳ Respect the time, energy and effort they invest in this.",
+                    "️📅 ⌚This also includes punctuality and reliability for lectures.",
+                    "😊 Be friendly in your dealings with others.",
+                    "❌ Discrimination (e.g. racism, sexism, religious affiliation or age discrimination) is not permitted."
+                ],
+                "title": "Our rules",
+                "description": "Our volunteers support the pupils in their free time 😎👍.",
+                "acceptLabel": "I will comply with the above points"
+            },
+            "registrationCompleted": {
+                "title": "You have made it!",
+                "description": "We look forward to getting to know you via Zoom on"
             }
         },
         "pupil": {
@@ -580,7 +595,8 @@
             "pupil": "Pupil email",
             "parent": "Parent Email",
             "other": "Support person Email"
-        }
+        },
+        "stepStateCount": "{{current}} of {{total}}"
     },
     "helpcenter": {
         "subtitle": {

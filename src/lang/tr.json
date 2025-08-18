@@ -523,6 +523,21 @@
                 "importantInformationBadge": "Önemli bilgiler",
                 "recommendationsBadge": "Yararlı ipuçları ve püf noktaları",
                 "recommendationsDescription": "Yeni teklifler ve genel haberler hakkında bilgilendirilmek istiyorum."
+            },
+            "ourRules": {
+                "rules": [
+                    "🔥⏳ Bunun için harcadıkları zaman, enerji ve çabaya saygı gösterin.",
+                    "️📅 ⌚Bu, randevular için dakiklik ve güvenilirliği de içerir.",
+                    "😊 Başkalarıyla ilişkilerinizde arkadaşça davranın.",
+                    "❌ Ayrımcılığa (örneğin ırkçılık, cinsiyetçilik, dini aidiyet veya yaş ayrımcılığı) izin verilmez."
+                ],
+                "title": "Kurallarımız",
+                "description": "Yardımcılarımız boş zamanlarında öğrencilere destek oluyor 😎👍.",
+                "acceptLabel": "Yukarıdaki hususlara uyacağım"
+            },
+            "registrationCompleted": {
+                "title": "Başardın!",
+                "description": "Zoom aracılığıyla sizi tanımak için sabırsızlanıyoruz"
             }
         },
         "pupil": {
@@ -580,7 +595,8 @@
             "pupil": "Öğrenci: E-postada",
             "parent": "Ebeveyn E-postası",
             "other": "Yardımcı kişi E-posta"
-        }
+        },
+        "stepStateCount": "{{total}}'in {{current}}'ı"
     },
     "helpcenter": {
         "subtitle": {
