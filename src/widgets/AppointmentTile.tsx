@@ -14,6 +14,8 @@ import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { DateTime } from 'luxon';
 import { Button } from '@/components/Button';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
+import { Simulate } from 'react-dom/test-utils';
+import click = Simulate.click;
 
 type Props = {
     title: string;
@@ -38,6 +40,8 @@ type Props = {
     description?: Appointment['description'];
     duration: Appointment['duration'];
     start: Appointment['start'];
+    editable: boolean;
+    clickable: boolean;
 };
 
 const AppointmentTile: React.FC<Props> = ({
@@ -62,6 +66,8 @@ const AppointmentTile: React.FC<Props> = ({
     onDuplicate,
     onDelete,
     title,
+    editable,
+    clickable,
 }) => {
     const { t } = useTranslation();
     const { userID } = useUser();
@@ -95,8 +101,8 @@ const AppointmentTile: React.FC<Props> = ({
 
     return (
         <div
-            className={cn('w-full', isFullWidth ? 'lg:w-[92%]' : 'lg:w-90%', isReadOnly ? 'cursor-auto' : 'cursor-pointer')}
-            onClick={isReadOnly ? undefined : onPress}
+            className={cn('w-full', isFullWidth ? 'lg:w-[92%]' : 'lg:w-90%', clickable ? 'cursor-pointer' : 'cursor-auto')}
+            onClick={clickable ? onPress : undefined}
         >
             <div className={cn('flex flex-col p-4 rounded-md border border-gray-200', isHighlighted && 'bg-primary')}>
                 <div className="flex gap-2 mb-2">
@@ -149,23 +155,25 @@ const AppointmentTile: React.FC<Props> = ({
                         </div>
                     )}
                 </div>
-                <div className="flex flex-grow w-full justify-end gap-1 mb-2">
-                    {!isReadOnly && (
-                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit} disabled={!onEdit}>
-                            <IconPencil />
-                        </Button>
-                    )}
-                    {!isReadOnly && (
-                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate} disabled={!onDuplicate}>
-                            <IconCopy />
-                        </Button>
-                    )}
-                    {!isReadOnly && (
-                        <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete} disabled={!onDelete}>
-                            <IconTrash />
-                        </Button>
-                    )}
-                </div>
+                {editable && (
+                    <div className="flex flex-grow w-full justify-end gap-1 mb-2">
+                        {!isReadOnly && (
+                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit} disabled={!onEdit}>
+                                <IconPencil />
+                            </Button>
+                        )}
+                        {!isReadOnly && (
+                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate} disabled={!onDuplicate}>
+                                <IconCopy />
+                            </Button>
+                        )}
+                        {!isReadOnly && (
+                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete} disabled={!onDelete}>
+                                <IconTrash />
+                            </Button>
+                        )}
+                    </div>
+                )}
                 {isHighlighted && appointmentId && appointmentType && (
                     <VideoButton
                         isInstructor={isOrganizer}

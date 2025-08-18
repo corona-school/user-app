@@ -137,6 +137,8 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                             }}
                             onAppointmentDuplicate={!creating ? onAppointmentDuplicate : undefined}
                             editingIdInit={placeholderId}
+                            clickable={false}
+                            editable={true}
                         />
                     </div>
                 )}

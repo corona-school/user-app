@@ -61,10 +61,25 @@ interface AppointmentItemProps {
     onCancelEdit?: () => void;
     onDuplicate?: () => void;
     onDelete?: () => void;
+    clickable: boolean; // If true, the item is clickable and navigates to the appointment detail page
+    editable: boolean; // If true, shows buttons for edit, duplicate, and delete
 }
 
 const AppointmentItem = React.memo(
-    ({ appointment, previousAppointment, index, total, editingInit, isReadOnly, onEdit, onCancelEdit, onDuplicate, onDelete }: AppointmentItemProps) => {
+    ({
+        appointment,
+        previousAppointment,
+        index,
+        total,
+        editingInit,
+        isReadOnly,
+        onEdit,
+        onCancelEdit,
+        onDuplicate,
+        onDelete,
+        clickable,
+        editable,
+    }: AppointmentItemProps) => {
         const navigate = useNavigate();
         const { i18n } = useTranslation();
         const [editing, setEditing] = React.useState(!!editingInit);
@@ -123,7 +138,7 @@ const AppointmentItem = React.memo(
                             description={appointment.description}
                             organizers={appointment.organizers}
                             participants={appointment.participants}
-                            onPress={() => isReadOnly && navigate(`/appointment/${appointment.id}`)} // todo confirm if (isReadOnly => clickable) holds
+                            onPress={() => clickable && navigate(`/appointment/${appointment.id}`)}
                             isReadOnly={isReadOnly}
                             isFullWidth
                             appointmentType={appointment.appointmentType}
@@ -136,6 +151,8 @@ const AppointmentItem = React.memo(
                             onEdit={onEdit ? () => setEditing(true) : onEdit}
                             onDuplicate={onDuplicate}
                             onDelete={onDelete}
+                            clickable={clickable}
+                            editable={editable}
                         />
                     )}
                 </div>
@@ -166,6 +183,8 @@ type AppointmentListProps = {
     onAppointmentDuplicate?: (duplicate: DisplayAppointment) => void;
     onAppointmentDelete?: (id: number | string, isNew: boolean) => void; // id is UUID string if isNew is true, otherwise it's the ID number
     editingIdInit?: string; // If provided, the appointment with this ID will be in editing mode initially
+    clickable: boolean; // If true, the appointment items are clickable and navigate to the appointment detail page
+    editable: boolean; // If true, the appointment items show edit, duplicate, and delete buttons
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -193,6 +212,8 @@ const AppointmentList = ({
     onAppointmentDuplicate,
     onAppointmentDelete,
     editingIdInit,
+    clickable,
+    editable,
 }: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
 
@@ -277,6 +298,8 @@ const AppointmentList = ({
                                       onAppointmentDelete && onAppointmentDelete(!appointment.isNew ? appointment.id : appointment.newId!, !!appointment.isNew)
                                 : undefined
                         }
+                        clickable={clickable}
+                        editable={editable}
                     />
                 ))}
             </InfiniteScroll>

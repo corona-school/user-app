@@ -329,7 +329,7 @@ const CreateCourse: React.FC = () => {
                         setJoinAfterStart={setJoinAfterStart}
                     />
                     <div className="flex flex-col gap-2">
-                        <Button variant="outline" className="w-full">
+                        <Button variant="outline" className="w-full" onClick={() => window.history.back()}>
                             Abbrechen
                         </Button>
                         <Button leftIcon={<IconCheck />} className="w-full" onClick={submit}>

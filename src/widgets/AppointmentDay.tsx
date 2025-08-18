@@ -6,6 +6,8 @@ import AppointmentTile from './AppointmentTile';
 import { Appointment } from '../types/lernfair/Appointment';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useTranslation } from 'react-i18next';
+import { Simulate } from 'react-dom/test-utils';
+import click = Simulate.click;
 
 type Props = {
     start: string;
@@ -23,12 +25,13 @@ type Props = {
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
     appointmentId: Appointment['id'];
-    canJoinVideochat?: boolean;
     declinedBy: Appointment['declinedBy'];
     description?: Appointment['description'];
     onEdit?: () => void;
     onDuplicate?: () => void;
     onDelete?: () => void;
+    clickable: boolean;
+    editable: boolean;
 };
 
 const AppointmentDay: React.FC<Props> = ({
@@ -48,13 +51,13 @@ const AppointmentDay: React.FC<Props> = ({
     isOrganizer,
     displayName,
     appointmentId,
-    canJoinVideochat,
     declinedBy,
     onEdit,
     onDuplicate,
     onDelete,
+    clickable,
+    editable,
 }) => {
-    const { t } = useTranslation();
     const isCurrentMonth = useCallback((start: string): boolean => {
         const now = DateTime.now();
         const startDate = DateTime.fromISO(start);
@@ -96,6 +99,8 @@ const AppointmentDay: React.FC<Props> = ({
                                 onEdit={onEdit}
                                 onDuplicate={onDuplicate}
                                 onDelete={onDelete}
+                                clickable={clickable}
+                                editable={editable}
                             />
                         </div>
                     </div>
@@ -123,6 +128,8 @@ const AppointmentDay: React.FC<Props> = ({
                                 onEdit={onEdit}
                                 onDuplicate={onDuplicate}
                                 onDelete={onDelete}
+                                clickable={clickable}
+                                editable={editable}
                             />
                         </div>
                     </div>

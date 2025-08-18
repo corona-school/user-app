@@ -149,7 +149,14 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
             <Box flex={1} display="flex" justifyContent="space-between">
                 {(!errorCourseAppointments || errorMatchAppointments) && (
                     <div className="max-h-[400px] h-full overflow-y-auto mb-8">
-                        <AppointmentList height="100%" noOldAppointments isReadOnlyList={true} appointments={appointments as Appointment[]} />
+                        <AppointmentList
+                            height="100%"
+                            noOldAppointments
+                            isReadOnlyList={true}
+                            appointments={appointments as Appointment[]}
+                            clickable={true}
+                            editable={false}
+                        />
                     </div>
                 )}
                 <Stack direction={isMobile ? 'column' : 'row'} alignItems="center" space={3}>
