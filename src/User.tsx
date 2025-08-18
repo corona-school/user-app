@@ -9,9 +9,9 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
 
     const { sessionState, user, roles } = useApollo();
 
-    if (sessionState === 'logged-out') return <Navigate to="/welcome" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
+    if (sessionState === 'logged-out') return <Navigate to="/login" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
 
-    if (sessionState === 'error') return <Navigate to="/welcome" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
+    if (sessionState === 'error') return <Navigate to="/login" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
 
     if (sessionState === 'unknown' || !user) return <CenterLoadingSpinner />;
 
@@ -42,7 +42,7 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
         return children;
     }
 
-    return <Navigate to="/welcome" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
 };
 
 // Always wrap in a RequireAuth component

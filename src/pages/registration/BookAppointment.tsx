@@ -3,7 +3,6 @@ import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from '
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import { Fragment, useEffect, useState } from 'react';
-import useApollo from '@/hooks/useApollo';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { createPupilScreeningLink, createStudentScreeningLink } from '@/helper/screening-helper';
@@ -25,7 +24,6 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
     const [isFaqModalOpen, setIsFaqModalOpen] = useState(false);
     const [isLoadingCalendar, setIsLoadingCalendar] = useState(true);
     const { t } = useTranslation();
-    const { user } = useApollo();
     const { form, refetchProfile } = useRegistrationForm();
     const { trackEvent } = useMatomo();
     const [timerId, setTimerId] = useState<NodeJS.Timer>();
@@ -35,14 +33,14 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
     const calendlyLink = isPupil
         ? createPupilScreeningLink({
               isFirstScreening: true,
-              firstName: user?.firstname,
-              lastName: user?.lastname,
-              email: user?.email,
+              firstName: form?.firstname,
+              lastName: form?.lastname,
+              email: form?.email,
           })
         : createStudentScreeningLink({
-              firstName: user?.firstname,
-              lastName: user?.lastname,
-              email: user?.email,
+              firstName: form?.firstname,
+              lastName: form?.lastname,
+              email: form?.email,
           });
 
     const eventCategory = `${isPupil ? 'SuS' : 'HuH'} Registration`;
@@ -104,10 +102,10 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                     )}
                     <InlineWidget
                         pageSettings={{ primaryColor: '#2A4A50', textColor: '#000000' }}
-                        prefill={{ name: `${user?.firstname} ${user?.lastname}` }}
+                        prefill={{ name: `${form?.firstname} ${form?.lastname}` }}
                         styles={{ width: '100%', height: '100%', opacity: isLoadingCalendar ? 0 : 1 }}
                         url={calendlyLink}
-                        iframeTitle={t(asTranslationKey(`requireScreening.${form.userType}.noScreening.title`), { firstname: user?.firstname })}
+                        iframeTitle={t(asTranslationKey(`requireScreening.${form.userType}.noScreening.title`), { firstname: form?.firstname })}
                     />
                 </div>
             </div>

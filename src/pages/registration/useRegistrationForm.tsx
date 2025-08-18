@@ -231,8 +231,15 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (sessionState === 'logged-out' && !!user?.userID && !(!!user.pupil || !!user.student)) {
             handleOnChange({ isRegisteringManually: false, email: user.email, currentStep: RegistrationStep.dataPrivacy });
         }
-        // If it's authenticated, we update the form state with the user information
+
+        if (sessionState === 'error') {
+            if (currentStepIndex >= flow.indexOf(RegistrationStep.confirmEmail)) {
+                reset();
+            }
+        }
+
         if (!!registrationProfile) {
+            // If it's authenticated, we update the form state with the user information
             const screeningAppointment = registrationProfile?.pupil
                 ? getPupilScreeningAppointment(registrationProfile?.pupil?.screenings ?? [])
                 : getStudentScreeningAppointment(registrationProfile?.student?.instructorScreenings ?? [], registrationProfile?.student?.tutorScreenings ?? []);
