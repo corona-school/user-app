@@ -42,7 +42,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
                     maxVisibleItems={8}
                     className="flex flex-wrap justify-center"
                     searchConfig={{
-                        containerClassName: 'w-full max-w-[342px] md:w-[227px]',
+                        containerClassName: 'w-full sm:max-w-[342px] md:w-[227px]',
                         className: 'bg-white',
                         placeholder: t('otherLanguages'),
                     }}

@@ -1,6 +1,49 @@
 import i18next from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import { AL, AM, AZ, BA, BG, CN, DE, ES, FR, GB, IR, KZ, PL, PT, SA, TR, UA, VN, RU, IT, RO } from 'country-flag-icons/react/1x1';
+import {
+    AL,
+    AM,
+    AZ,
+    BA,
+    BG,
+    CN,
+    DE,
+    ES,
+    FR,
+    GB,
+    IR,
+    KZ,
+    PL,
+    PT,
+    SA,
+    TR,
+    UA,
+    VN,
+    RU,
+    IT,
+    RO,
+    EE,
+    GE,
+    GR,
+    NG,
+    IL,
+    IN,
+    HR,
+    CD,
+    LT,
+    MK,
+    NL,
+    RS,
+    SK,
+    SO,
+    TJ,
+    TH,
+    ER,
+    CZ,
+    HU,
+    PK,
+    ET,
+} from 'country-flag-icons/react/1x1';
 import de from './lang/de.json';
 import { Settings } from 'luxon';
 
@@ -24,51 +67,97 @@ export const languageListSelectionModal = [
 ];
 
 export const languageList = [
-    { short: 'al', long: 'albanisch' },
-    { short: 'am', long: 'armenisch' },
+    { short: 'sq', long: 'albanisch' },
+    { short: 'am', long: 'amharisch' },
     { short: 'ar', long: 'arabisch' },
+    { short: 'hy', long: 'armenisch' },
     { short: 'az', long: 'aserbaidschanisch' },
-    { short: 'ba', long: 'bosnisch' },
+    { short: 'bs', long: 'bosnisch' },
     { short: 'bg', long: 'bulgarisch' },
-    { short: 'cn', long: 'chinesisch' },
+    { short: 'zh', long: 'chinesisch' },
     { short: 'de', long: 'deutsch' },
     { short: 'en', long: 'englisch' },
-    { short: 'es', long: 'spanisch' },
+    { short: 'et', long: 'estnisch' },
     { short: 'fr', long: 'franz_sisch' },
+    { short: 'ka', long: 'georgisch' },
+    { short: 'el', long: 'griechisch' },
+    { short: 'ha', long: 'hausa' },
+    { short: 'he', long: 'hebr_isch' },
+    { short: 'hi', long: 'hindi' },
     { short: 'it', long: 'italienisch' },
-    { short: 'ir', long: 'kurdisch' },
-    { short: 'kz', long: 'kasachisch' },
+    { short: 'kk', long: 'kasachisch' },
+    { short: 'hr', long: 'kroatisch' },
+    { short: 'ku', long: 'kurdisch' },
+    { short: 'ln', long: 'lingala' },
+    { short: 'lt', long: 'litauisch' },
+    { short: 'ml', long: 'malayalam' },
+    { short: 'mk', long: 'mazedonisch' },
+    { short: 'nl', long: 'niederl_ndisch' },
+    { short: 'fa', long: 'persisch' },
     { short: 'pl', long: 'polnisch' },
     { short: 'pt', long: 'portugiesisch' },
-    { short: 'ru', long: 'russisch' },
     { short: 'ro', long: 'rum_nisch' },
+    { short: 'ru', long: 'russisch' },
+    { short: 'sr', long: 'serbisch' },
+    { short: 'sk', long: 'slowakisch' },
+    { short: 'so', long: 'somali' },
+    { short: 'es', long: 'spanisch' },
+    { short: 'tg', long: 'tadschikisch' },
+    { short: 'th', long: 'thail_ndisch' },
+    { short: 'ti', long: 'tigrinya' },
+    { short: 'cs', long: 'tschechisch' },
     { short: 'tr', long: 't_rkisch' },
     { short: 'uk', long: 'ukrainisch' },
-    { short: 'vn', long: 'vietnamesisch' },
+    { short: 'hu', long: 'ungarisch' },
+    { short: 'ur', long: 'urdu' },
+    { short: 'vi', long: 'vietnamesisch' },
 ];
 
 export const languageIcons = {
-    al: AL,
-    am: AM,
-    ar: SA,
-    az: AZ,
-    ba: BA,
-    bg: BG,
-    cn: CN,
-    de: DE,
-    en: GB,
-    es: ES,
-    fr: FR,
-    it: IT,
-    ir: IR,
-    kz: KZ,
-    pl: PL,
-    pt: PT,
-    ru: RU,
-    ro: RO,
-    tr: TR,
-    uk: UA,
-    vn: VN,
+    sq: AL, // Albanian → Albania
+    am: ET, // Amharic → Ethiopia
+    ar: SA, // Arabic → Saudi Arabia
+    hy: AM, // Armenian → Armenia
+    az: AZ, // Azerbaijani → Azerbaijan
+    bs: BA, // Bosnian → Bosnia
+    bg: BG, // Bulgarian → Bulgaria
+    zh: CN, // Chinese → China
+    de: DE, // German → Germany
+    en: GB, // English → Great Britain
+    et: EE, // Estonian → Estonia
+    fr: FR, // French → France
+    ka: GE, // Georgian → Georgia
+    el: GR, // Greek → Greece
+    ha: NG, // Hausa → Nigeria (main Hausa-speaking country)
+    he: IL, // Hebrew → Israel
+    hi: IN, // Hindi → India
+    it: IT, // Italian → Italy
+    kk: KZ, // Kazakh → Kazakhstan
+    hr: HR, // Croatian → Croatia
+    ku: TR, // Kurdish → Turkey (could also be IQ, IR, SY, but pick one)
+    ln: CD, // Lingala → Congo (Democratic Republic)
+    lt: LT, // Lithuanian → Lithuania
+    ml: IN, // Malayalam → India
+    mk: MK, // Macedonian → North Macedonia
+    nl: NL, // Dutch → Netherlands
+    fa: IR, // Persian → Iran
+    pl: PL, // Polish → Poland
+    pt: PT, // Portuguese → Portugal
+    ro: RO, // Romanian → Romania
+    ru: RU, // Russian → Russia
+    sr: RS, // Serbian → Serbia
+    sk: SK, // Slovak → Slovakia
+    so: SO, // Somali → Somalia
+    es: ES, // Spanish → Spain
+    tg: TJ, // Tajik → Tajikistan
+    th: TH, // Thai → Thailand
+    ti: ER, // Tigrinya → Eritrea
+    cs: CZ, // Czech → Czech Republic
+    tr: TR, // Turkish → Turkey
+    uk: UA, // Ukrainian → Ukraine
+    hu: HU, // Hungarian → Hungary
+    ur: PK, // Urdu → Pakistan
+    vi: VN, // Vietnamese → Vietnam
 };
 
 export const defaultLang = 'de';

@@ -19,8 +19,13 @@ const getSortedLanguages = () => {
 
     const priorityEntries = priorityLanguages.map((val) => entries.find(([_, v]) => v === val)!);
 
-    const remainingEntries = entries.filter(([_, v]) => !priorityLanguages.includes(v)).sort((a, b) => a[1].localeCompare(b[1]));
-
+    const remainingEntries = entries
+        .filter(([_, v]) => !priorityLanguages.includes(v))
+        .sort((a, b) => {
+            if (a[1] === Language.Andere) return 1;
+            if (b[1] === Language.Andere) return -1;
+            return a[1].localeCompare(b[1]);
+        });
     const sortedEntries = [...priorityEntries, ...remainingEntries];
 
     return Object.fromEntries(sortedEntries);
