@@ -88,9 +88,6 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                     <Typography variant="body-lg" className="text-center mb-5">
                         {t('registration.steps.appointmentDetails.description')}
                     </Typography>
-                    <Button className="w-full md:max-w-[250px]" onClick={onNext}>
-                        {t('next')}
-                    </Button>
                 </>
             )}
         </RegistrationStep>
