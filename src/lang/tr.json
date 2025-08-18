@@ -467,7 +467,6 @@
             },
             "languages": {
                 "title": "Evde hangi dilleri konuşuyorsunuz?",
-                "tooltip": "Bu, uygun yardımcıları bulmak için önemli bir bilgidir",
                 "description": "Böylece yardımcıların sizinle hangi dillerde iletişim kurabileceğini bilebiliriz."
             },
             "emailOwner": {

@@ -515,8 +515,7 @@
             },
             "languages": {
                 "title": "Welche Sprachen sprichst du zu Hause?",
-                "description": "Damit wir wissen, in welchen Sprachen Helfer:innen mit dir kommunizieren können.",
-                "tooltip": "Dies ist eine wichtige Information um passende Helfer zu finden"
+                "description": "Damit wir wissen, in welchen Sprachen Helfer:innen mit dir kommunizieren können."
             },
             "bookAppointment": {
                 "title": "Kennenlern-Gespräch",

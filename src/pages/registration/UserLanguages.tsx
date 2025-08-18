@@ -3,8 +3,6 @@ import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from '
 import { useRegistrationForm } from './useRegistrationForm';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { Language } from '@/gql/graphql';
-import { IconInfoCircleFilled } from '@tabler/icons-react';
-import { TooltipButton } from '@/components/Tooltip';
 import { Typography } from '@/components/Typography';
 
 interface UserLanguagesProps extends RegistrationStepProps {}
@@ -19,21 +17,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
 
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={!form.languages.length}>
-            <RegistrationStepTitle className="md:mb-10">
-                {t('registration.steps.languages.title')}{' '}
-                <span className="inline-block">
-                    <TooltipButton
-                        className="max-w-[168px]"
-                        tooltipContent={
-                            <Typography className="text-balance" variant="subtle">
-                                {t('registration.steps.languages.tooltip')}
-                            </Typography>
-                        }
-                    >
-                        <IconInfoCircleFilled size={24} />
-                    </TooltipButton>
-                </span>
-            </RegistrationStepTitle>
+            <RegistrationStepTitle className="md:mb-10">{t('registration.steps.languages.title')} </RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
                 {t('registration.steps.languages.description')}
             </Typography>

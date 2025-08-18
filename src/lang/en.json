@@ -459,7 +459,6 @@
             },
             "languages": {
                 "title": "What languages do you speak at home?",
-                "tooltip": "This is important information for finding suitable helpers",
                 "description": "So that we know in which languages volunteers can communicate with you."
             },
             "emailOwner": {
