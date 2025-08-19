@@ -3,7 +3,7 @@ import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from '
 import { useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
-import { IconCircleCheckFilled } from '@tabler/icons-react';
+import { IconCheck, IconCircleCheckFilled } from '@tabler/icons-react';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
 import { useEffect, useState } from 'react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
@@ -40,7 +40,9 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
         <RegistrationStep onNext={onNext}>
             {variant === 'registered' ? (
                 <>
-                    <IconCircleCheckFilled size={100} className="fill-green-500 mb-2" />
+                    <div className="bg-green-500 rounded-full w-[100px] h-[100px] flex justify-center items-center mx-auto mb-5">
+                        <IconCheck size={50} className="stroke-white !stroke-[2px]" />
+                    </div>
                     <RegistrationStepTitle className="md:mb-5 mb-5">{t('registration.steps.appointmentDetails.title')}</RegistrationStepTitle>
                 </>
             ) : (

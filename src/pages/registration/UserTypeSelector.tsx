@@ -24,7 +24,7 @@ export const UserTypeSelector = ({ onBack, onNext }: UserTypeSelectorProps) => {
 
     return (
         <RegistrationStep onBack={handleOnBack} onNext={onNext} isNextDisabled={!form.userType}>
-            <RegistrationStepTitle>{t('registration.steps.userType.title')}</RegistrationStepTitle>
+            <RegistrationStepTitle className="mb-10 md:mb-[60px]">{t('registration.steps.userType.title')}</RegistrationStepTitle>
             <div className="flex flex-col md:flex-row gap-y-4 gap-x-4">
                 <Toggle size="2xl" variant="white-primary" pressed={form.userType === 'pupil'} onPressedChange={() => onFormChange({ userType: 'pupil' })}>
                     <IconBackpack size={32} />

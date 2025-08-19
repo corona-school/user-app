@@ -17,7 +17,7 @@ export type RegistrationStepProps = Omit<_RegistrationStepProps, 'children'>;
 
 export const RegistrationStepTitle = ({ className, variant = 'h2', children, ...rest }: TypographyProps) => {
     return (
-        <Typography className={cn('text-center text-balance mb-10 md:mb-[60px]', className)} variant={variant} {...rest}>
+        <Typography className={cn('text-center text-balance mb-4', className)} variant={variant} {...rest}>
             {children}
         </Typography>
     );

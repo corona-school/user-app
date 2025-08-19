@@ -20,10 +20,12 @@ export const OurRules = ({ onNext, onBack }: OurRulesProps) => {
     return (
         <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={!form.hasAcceptedRules}>
             <div className="flex flex-col gap-y-10 justify-center items-center md:max-w-[400px]">
-                <RegistrationStepTitle className="md:mb-0 mb-0">{t('registration.steps.ourRules.title')}</RegistrationStepTitle>
-                <Typography variant="body-lg" className="text-center md:whitespace-pre-line text-balance">
-                    {t('registration.steps.ourRules.description')}
-                </Typography>
+                <div className="flex flex-col gap-y-4 justify-center items-center w-full">
+                    <RegistrationStepTitle>{t('registration.steps.ourRules.title')}</RegistrationStepTitle>
+                    <Typography variant="body-lg" className="text-center md:whitespace-pre-line text-balance">
+                        {t('registration.steps.ourRules.description')}
+                    </Typography>
+                </div>
                 <ol className="flex flex-col gap-y-4 mb-10 list-decimal pl-4 md:pl-6">
                     {bullets.map((bullet, index) => (
                         <li key={index}>

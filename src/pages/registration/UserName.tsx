@@ -27,7 +27,7 @@ export const UserName = ({ onBack, onNext }: UserNameProps) => {
             <Typography variant="body-lg" className="text-center mb-10 whitespace-pre-line text-balance">
                 {t('registration.steps.userName.congratsHint')}
             </Typography>
-            <RegistrationStepTitle className="md:mb-10">{t('registration.steps.userName.title')}</RegistrationStepTitle>
+            <RegistrationStepTitle className="mb-10">{t('registration.steps.userName.title')}</RegistrationStepTitle>
             <div className="flex flex-col gap-y-3 w-full max-w-[268px] pb-32 md:pb-0">
                 <div className="w-full flex flex-col justify-center gap-y-1">
                     <Label htmlFor="firstName" className="text-subtle w-full text-center">
@@ -40,13 +40,21 @@ export const UserName = ({ onBack, onNext }: UserNameProps) => {
                         id="firstName"
                         value={form.firstname}
                         onChangeText={makeOnChangeHandler('firstname')}
+                        errorMessageClassName="hidden"
                     />
                 </div>
                 <div className="w-full flex flex-col justify-center gap-y-1">
                     <Label htmlFor="lastName" className="text-subtle w-full text-center">
                         {t('lastname')}
                     </Label>
-                    <Input variant="white" className="w-full h-12" id="lastName" value={form.lastname} onChangeText={makeOnChangeHandler('lastname')} />
+                    <Input
+                        variant="white"
+                        className="w-full h-12"
+                        id="lastName"
+                        value={form.lastname}
+                        onChangeText={makeOnChangeHandler('lastname')}
+                        errorMessageClassName="hidden"
+                    />
                 </div>
             </div>
         </RegistrationStep>

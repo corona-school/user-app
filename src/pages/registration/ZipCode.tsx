@@ -17,7 +17,7 @@ export const ZipCode = ({ onBack, onNext }: ZipCodeProps) => {
 
     return (
         <RegistrationStep onBack={onBack} onNext={onNext}>
-            <RegistrationStepTitle className="md:mb-10">{t('registration.steps.zipCode.title')}</RegistrationStepTitle>
+            <RegistrationStepTitle>{t('registration.steps.zipCode.title')}</RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
                 {t('registration.steps.zipCode.description')}
             </Typography>
