@@ -7,7 +7,7 @@ import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { TEST_STUDENT_ID } from '@/config';
 import { gql } from '@/gql';
-import { Gender } from '@/gql/graphql';
+import { Gender, Student_State_Enum } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { useRoles } from '@/hooks/useApollo';
 import { StudentForScreening } from '@/types';
@@ -15,11 +15,14 @@ import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
 import { ApolloError, useMutation } from '@apollo/client';
 import { IconCheck, IconDeviceFloppy, IconKey, IconTestPipe } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { ButtonField } from '../components/ButtonField';
+import { Input } from '@/components/Input';
 import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityModal';
+import { EditLocationModal } from '../components/EditLocationModal';
+import zipStateMapping from '../../../assets/data/plz_to_state.json';
 
 interface PersonalDetailsProps {
     student: StudentForScreening;
@@ -47,6 +50,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [showEditSubjects, setShowEditSubjects] = useState(false);
     const [showEditLanguages, setShowEditLanguages] = useState(false);
     const [showEditAvailability, setShowEditAvailability] = useState(false);
+    const [showEditLocation, setShowEditLocation] = useState(false);
 
     const [gender, setGender] = useState(student.gender ?? '');
     const [subjects, setSubjects] = useState(student.subjectsFormatted);
@@ -55,11 +59,55 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [hasSpecialExperience, setHasSpecialExperience] = useState<CheckedState>(student.hasSpecialExperience);
     const [descriptionForMatch, setDescriptionForMatch] = useState(student.descriptionForMatch);
     const [descriptionForScreening, setDescriptionForScreening] = useState(student.descriptionForScreening);
+    const [location, setLocation] = useState(student.state);
+    const [zipCode, setZipCode] = useState(student.zipCode ?? '');
+    const [zipCodeError, setZipCodeError] = useState('');
 
     const [errors, setErrors] = useState<FormErrors>({});
 
     const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
+
+    useEffect(() => {
+        if (!location || location === Student_State_Enum.Other) return;
+
+        if (zipCode.length !== zipCodeLength()) {
+            setZipCodeError(`Postleitzahl für ${t(asTranslationKey(`lernfair.states.${location}`))} muss ${zipCodeLength()} Ziffern haben.`);
+        }
+    }, [zipCode, location]);
+
+    const zipCodeLength = () => {
+        switch (location) {
+            case Student_State_Enum.At:
+            case Student_State_Enum.Ch:
+                return 4;
+            case Student_State_Enum.Other:
+            case undefined:
+                return null;
+            default:
+                return 5;
+        }
+    };
+
+    // Range check here purposefully lexicographic to allow comparisons with codes with leading zeros
+    const zipCodeToState = (input: string) => {
+        if (!input || input.length !== 5) return;
+
+        // Finds all states where the zipCode occurs in
+        const states = zipStateMapping.filter((range) => range.min <= input && range.max >= input).map((range) => range.state);
+
+        if (states.length === 0) {
+            setZipCodeError('Keine gültige deutsche PLZ');
+        } else if (!states.every((state) => state === states[0])) {
+            const statesUnique = states.filter((item, index) => states.indexOf(item) === index);
+
+            setZipCodeError(`PLZ gibt es in mehreren Bundesländern: ${statesUnique.map((s) => t(asTranslationKey(`lernfair.states.${s}`))).join(', ')}`);
+        } else {
+            setZipCodeError('');
+
+            setLocation(states[0] as Student_State_Enum);
+        }
+    };
 
     const handleOnSaveStudent = async () => {
         try {
@@ -73,6 +121,8 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         gender: (gender as Gender) || undefined,
                         descriptionForMatch,
                         descriptionForScreening,
+                        state: location as any,
+                        zipCode: zipCode !== '' ? zipCode : null,
                         calendarPreferences: student.calendarPreferences
                             ? {
                                   ...student.calendarPreferences,
@@ -128,18 +178,39 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
             </div>
             <div>
                 {!student.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
-                <div className="flex flex-col gap-y-2 mb-6">
-                    <Label>Geschlecht</Label>
-                    <SelectInput
-                        className="w-[200px]"
-                        value={gender}
-                        onValueChange={setGender}
-                        options={[
-                            { label: 'Weiblich', value: Gender.Female },
-                            { label: 'Männlich', value: Gender.Male },
-                            { label: 'Unbekannt', value: Gender.Other },
-                        ]}
-                    />
+                <div className="flex flex-wrap gap-6">
+                    <div className="flex flex-col gap-y-2 mb-6">
+                        <Label>Geschlecht</Label>
+                        <SelectInput
+                            className="w-[200px]"
+                            value={gender}
+                            onValueChange={setGender}
+                            options={[
+                                { label: 'Weiblich', value: Gender.Female },
+                                { label: 'Männlich', value: Gender.Male },
+                                { label: 'Unbekannt', value: Gender.Other },
+                            ]}
+                        />
+                    </div>
+                    <div className="flex flex-col gap-y-2 mb-6">
+                        <Label>Postleitzahl</Label>
+                        <Input
+                            maxLength={zipCodeLength() ?? undefined}
+                            value={zipCode}
+                            onChange={(e) => {
+                                setZipCode(e.target.value.replace(/\D/g, '')); // Ensures that only digits can be typed in
+                                zipCodeToState(e.target.value);
+                            }}
+                        />
+                        <Typography variant="sm" className="text-destructive max-w-60">
+                            {zipCodeError}
+                        </Typography>
+                    </div>
+                    <div className="flex flex-col gap-y-2 mb-6">
+                        <ButtonField className="min-w-full" label="Ort" onClick={() => setShowEditLocation(true)}>
+                            {t(asTranslationKey(`lernfair.states.${location}`))}
+                        </ButtonField>
+                    </div>
                 </div>
                 <div className="flex flex-wrap gap-6">
                     <div className="flex flex-col gap-y-2 flex-1">
@@ -228,6 +299,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                     onOpenChange={setShowEditAvailability}
                     isOpen={showEditAvailability}
                 />
+                <EditLocationModal isOpen={showEditLocation} onOpenChange={setShowEditLocation} state={location as Student_State_Enum} onSave={setLocation} />
             </div>
         </>
     );

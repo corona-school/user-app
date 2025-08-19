@@ -91,6 +91,8 @@ export type StudentForScreening = Pick<
     | 'firstname'
     | 'lastname'
     | 'createdAt'
+    | 'zipCode'
+    | 'state'
     | 'subjectsFormatted'
     | 'languages'
     | 'certificateOfConductDeactivationDate'

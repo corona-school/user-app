@@ -60,6 +60,7 @@ export const SUBJECTS_RARE: SingleSubject[] = [
     'Gesundheit',
     'Technik',
     'Steuerlehre',
+    'Rechnungswesen',
 ];
 
 // Unfortunately this mapping is necessary as paths need to be ASCII to work reliably in the build setup
@@ -96,7 +97,7 @@ export const SUBJECT_TO_ICON: { [subject in SingleSubject]: string } = {
     Wirtschaft: 'wirtschaft',
     'Lernen lernen': 'lernen_lernen',
     Steuerlehre: 'sachkunde',
-    Rechnungswesen: 'rechnungswesen',
+    Rechnungswesen: 'wirtschaft',
 };
 
 // Unfortunately this mapping is necessary as our two ORMs have problems with non ASCII chars:

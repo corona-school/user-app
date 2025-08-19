@@ -691,7 +691,11 @@
         "type": "Type of support:",
         "noInfo": "Not specified",
         "PersonalData": "Personal data",
-        "availability": "When do you have time?"
+        "availability": "When do you have time?",
+        "ZipCode": {
+            "zipCode": "Zip code",
+            "requiredLength": "The zip code must have {{length}} digits."
+        }
     },
     "single": {
         "global": {
@@ -2610,46 +2614,10 @@
             "Technik": "Technology",
             "Wirtschaft": "Economy",
             "Lernen lernen": "Learning to learn",
-            "Steuerlehre": "Tax theory"
+            "Steuerlehre": "Tax theory",
+            "Rechnungswesen": "Accounting"
         },
         "placeholderImageDescription": "Fill out the form to create a lesson plan"
-    },
-    "referral": {
-        "share": {
-            "option1": {
-                "option": "Copy and Share Link",
-                "description": "- share to your favorite social apps"
-            },
-            "option2": {
-                "option": "Share on WhatsApp",
-                "description": "- directly share to your contacts"
-            },
-            "option3": {
-                "option": "Share on LinkedIn",
-                "description": "- Click on \"Share on LinkedIn\" and insert the link into a post."
-            },
-            "title": "Share your unique link",
-            "description": "Share your personal link with your network to start referring! You have three easy ways to share your referral link:",
-            "share": "Share",
-            "materials": {
-                "title": "Distribute flyers & advertising material",
-                "description": "You can download free multilingual flyers, posters and other promotional materials to print out and display at a school, youth center or library, for example.",
-                "button": "To the advertising media"
-            }
-        },
-        "reward": {
-            "title": "My Impact",
-            "description": "For every volunteer that joins, you earn points towards your own personal certificate, showcasing your experience to your network on LinkedIn. Let's make an impact today!",
-            "RegisteredUsers": "Registered users",
-            "HoursSupported": "Hours supported",
-            "tooltip": "to unlock this you need to have 3 or more registered users"
-        },
-        "title": "Referral program",
-        "description": "Know someone who can help make a difference to young people? Spread the word! find out more here",
-        "referralMessage": "📣 HIRING VOLUNTEERS 📣Want to give back to the community? Now is the perfect time! We are currently looking for volunteers to teach german school children grade 1- 13. #lernfair #education #e-learning",
-        "copy": "Copy",
-        "copied": "Copied",
-        "copiedReferralLink": "Recommendation link copied"
     },
     "certificates": {
         "instantCertificate": {
@@ -2675,5 +2643,32 @@
         "friday": "Friday",
         "saturday": "Saturday",
         "sunday": "Sunday"
+    },
+    "referral": {
+        "share": {
+            "materials": {
+                "title": "Display flyers & posters",
+                "description": "For example, you can display flyers or put up posters - at school, the youth center, the library or in stores. Receive flyers, posters and other advertising material free of charge to your home.",
+                "button": "Order free of charge"
+            },
+            "share": "Share",
+            "title": "Share your personal link",
+            "description": "",
+            "option2": "Share on WhatsApp",
+            "option3": "Share on LinkedIn"
+        },
+        "reward": {
+            "title": "My contribution",
+            "description": "If you use your personal link, you can follow your contribution here.",
+            "RegisteredUsers": "Registered users",
+            "HoursSupported": "hours of tutoring",
+            "tooltip": "To unlock this info, 3 or more users must have registered"
+        },
+        "title": "Help us to grow",
+        "description": "Many come to us through recommendations. Help us to make Lern-Fair better known! You can send us a referral link or use posters and flyers.",
+        "referralMessage": "I volunteer at Lern-Fair, where educationally disadvantaged pupils (grades 1 to 13 & trainees) receive free tutoring - digital & flexible via Zoom #educational equity #volunteering",
+        "copy": "Copy",
+        "copied": "Copied",
+        "copiedReferralLink": "Recommendation link copied"
     }
 }
