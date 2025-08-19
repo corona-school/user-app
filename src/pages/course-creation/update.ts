@@ -76,7 +76,7 @@ export function getCourseDelta(
     if (state.allowProspectContact !== !!prefillCourse.allowChatContactProspects) delta.allowProspectContact = state.allowProspectContact;
     if (state.allowParticipantContact !== !!prefillCourse.allowChatContactParticipants) delta.allowParticipantContact = state.allowParticipantContact;
     if (state.allowChatWriting !== (prefillCourse.groupChatType === ChatType.NORMAL)) delta.allowChatWriting = state.allowChatWriting;
-    if (state.gradeRange[0] !== (prefillCourse.minGrade ?? 1) || state.gradeRange[1] !== (prefillCourse.maxGrade ?? 14)) {
+    if (state.gradeRange[0] !== prefillCourse.minGrade || state.gradeRange[1] !== prefillCourse.maxGrade) {
         delta.gradeRange = state.gradeRange;
     }
 
@@ -275,12 +275,7 @@ export function useUpdateCourse() {
         `)
     );
 
-    return async (
-        _subcourseId: number | undefined,
-        _courseId: number | undefined,
-        delta: CourseDelta
-    ): Promise<{ subcourseId?: number; errors?: CreateCourseError[] } | void> => {
-        const errors: CreateCourseError[] = [];
+    return async (_subcourseId: number | undefined, _courseId: number | undefined, delta: CourseDelta): Promise<{ subcourseId?: number } | void> => {
         const promises: Promise<any>[] = [];
 
         let courseId: number | undefined = _courseId;
@@ -288,28 +283,6 @@ export function useUpdateCourse() {
 
         if (subcourseId === undefined || courseId === undefined) {
             console.log('Creating new course & subcourse');
-
-            if (!delta.courseName) {
-                errors.push('course-name');
-            }
-            if (!delta.description) {
-                errors.push('description');
-            }
-            if (!delta.courseCategory) {
-                errors.push('category');
-            }
-            if (!delta.subject) {
-                errors.push('subject');
-            }
-            if (!delta.gradeRange || delta.gradeRange[0] > delta.gradeRange[1]) {
-                errors.push('grade-range');
-            }
-            if (!delta.maxParticipantCount || delta.maxParticipantCount <= 0) {
-                errors.push('participant-count');
-            }
-            if (errors.length > 0) {
-                return { errors };
-            }
 
             const subcourseData: PublicSubcourseCreateInput = {
                 joinAfterStart: delta.joinAfterStart!,

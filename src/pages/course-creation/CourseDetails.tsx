@@ -134,7 +134,7 @@ const CourseDetails: React.FC<Props> = ({
                     className="w-full"
                 />
                 {errors && errors.includes('course-name') && (
-                    <Typography variant="sm" className="text-red-500">
+                    <Typography variant="sm" className="text-red-500 error">
                         Course name missing
                     </Typography>
                 )}

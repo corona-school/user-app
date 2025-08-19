@@ -231,6 +231,30 @@ const CreateCourse: React.FC = () => {
     }, [prefillSubcourseId, queryCourse]);
 
     const submit = async () => {
+        const errors: CreateCourseError[] = [];
+        if (!courseName || courseName.length < 3) {
+            errors.push('course-name');
+        }
+        if (!description || description.length < 10) {
+            errors.push('description');
+        }
+        if (!courseCategory) {
+            errors.push('category');
+        }
+        if (!subject) {
+            errors.push('subject');
+        }
+        if (!gradeRange || gradeRange[0] > gradeRange[1]) {
+            errors.push('grade-range');
+        }
+        if (!maxParticipantCount || maxParticipantCount <= 0) {
+            errors.push('participant-count');
+        }
+        if (errors.length > 0) {
+            setErrors(errors);
+            return;
+        }
+
         const delta = getCourseDelta(
             prefillCourse ?? {},
             {
@@ -258,18 +282,30 @@ const CreateCourse: React.FC = () => {
         console.log('DELTA', delta);
 
         const res = await updateCourse(prefillSubcourseId!, courseId, delta);
-        if (res && res.errors) {
-            setErrors(res.errors);
-        } else if (res && res.subcourseId) {
+        if (res && res.subcourseId) {
             setErrors([]);
             // Navigate to the course page after successful creation
             window.location.href = `/single-course/${res.subcourseId}`;
         }
     };
 
+    useEffect(() => {
+        if (errors.length > 0) {
+            // get element with id "form", search for first element with class "error" and scroll its parent into view
+            const formElement = document.getElementById('form');
+            if (formElement) {
+                const errorElement = formElement.querySelector('.error');
+                if (errorElement?.parentElement) {
+                    errorElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+    }, [errors]);
+
     if (loadingCourse || loadingStudent) {
         return <CenterLoadingSpinner />;
     }
+
     return (
         <>
             <WithNavigation
@@ -290,7 +326,7 @@ const CreateCourse: React.FC = () => {
                 <Typography variant="h2" className="mb-4">
                     {isEditing ? t('course.edit') : t('course.header')}
                 </Typography>
-                <div className="flex flex-col gap-4 max-w-xl w-full">
+                <div className="flex flex-col gap-4 max-w-xl w-full" id="form">
                     <CourseDetails
                         courseName={courseName}
                         setCourseName={setCourseName}
