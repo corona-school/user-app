@@ -118,12 +118,18 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
 
     return (
         <>
-            <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-                <RejectAppointmentModal onDelete={() => handleCancelClick()} close={() => setShowDeleteModal(false)} rejectType={RejectType.CANCEL} />
-            </Modal>
-            <Modal isOpen={showDeclineModal} onClose={() => setShowDeclineModal(false)}>
-                <RejectAppointmentModal onDelete={() => handleDeclineClick()} close={() => setShowDeclineModal(false)} rejectType={RejectType.DECLINE} />
-            </Modal>
+            <RejectAppointmentModal
+                isOpen={showDeleteModal}
+                onDelete={() => handleCancelClick()}
+                onOpenChange={(open) => setShowDeleteModal(!open)}
+                rejectType={RejectType.CANCEL}
+            />
+            <RejectAppointmentModal
+                isOpen={showDeclineModal}
+                onDelete={() => handleDeclineClick()}
+                onOpenChange={(open) => setShowDeclineModal(!open)}
+                rejectType={RejectType.DECLINE}
+            />
             <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
                 <Avatars attendees={attendees} />
                 <Header appointmentTitle={appointment.title} displayName={appointment.displayName} position={appointment.position} />
