@@ -200,7 +200,7 @@ const CourseDetails: React.FC<Props> = ({
                     <div className="flex gap-2.5 flex-wrap">
                         {SUBJECTS.map((s) => (
                             <Button key={s} variant={s === subject ? 'default' : 'outline'} onClick={() => setSubject && setSubject(s)}>
-                                {t(`lernfair.subjects.${s}`)}
+                                {t(`lernfair.subjects.${s}` as unknown as TemplateStringsArray)}
                             </Button>
                         ))}
                     </div>
