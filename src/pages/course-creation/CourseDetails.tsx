@@ -101,21 +101,21 @@ const CourseDetails: React.FC<Props> = ({
                             <RadioGroupItem id="revision" value={Course_Category_Enum.Revision} />
                             <div className="inline-flex align-baseline gap-1.5">
                                 <Label htmlFor="revision">{t('course.CourseDate.form.revision')}</Label>
-                                <InfoTooltipButton tooltipContent="TODO" />
+                                <InfoTooltipButton tooltipContent="Du unterstützt deine Teilnehmer:innen bei den klassischen Schulfächern. In den Kursen wiederholt und übt ihr gemeinsam spezielle Themen aus der Schule." />
                             </div>
                         </div>
                         <div className="flex gap-x-2 items-center">
                             <RadioGroupItem id="language" value={Course_Category_Enum.Language} />
                             <div className="inline-flex align-baseline gap-1.5">
                                 <Label htmlFor="language">{t('course.CourseDate.form.language')}</Label>
-                                <InfoTooltipButton tooltipContent="TODO" />
+                                <InfoTooltipButton tooltipContent="In diesen Kursen hilfst du Lernenden, sich schnell im deutschen Alltag besser zurechtzufinden. Gemeinsam übt ihr Aussprache, erweitert den Wortschatz oder trainiert Grammatik." />
                             </div>
                         </div>
                         <div className="flex gap-x-2 items-center">
                             <RadioGroupItem id="focus" value={Course_Category_Enum.Focus} />
                             <div className="inline-flex align-baseline gap-1.5">
                                 <Label htmlFor="focus">{t('course.CourseDate.form.focus')}</Label>
-                                <InfoTooltipButton tooltipContent="TODO" />
+                                <InfoTooltipButton tooltipContent="Du begleitest deine Teilnehmer:innen durch spannende Kurse zu wichtigen Themen, die sie im Alltag und für ihre Zukunft stärken. Über das Jahr verteilt behandeln die Kurse wichtige Inhalte wie z.B. Social Media, Ausbildung, Mobbing oder Mental Health." />
                             </div>
                         </div>
                     </RadioGroup>
