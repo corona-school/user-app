@@ -41,7 +41,7 @@ type CourseDelta = {
 };
 
 export function getCourseDelta(
-    prefillCourse: Partial<LFSubCourse>,
+    prefillCourse: Partial<LFSubCourse> | null,
     state: {
         courseName: string;
         courseCategory: Course_Category_Enum;
@@ -62,47 +62,49 @@ export function getCourseDelta(
     },
     studentId: number
 ): CourseDelta {
+    const create = prefillCourse === null;
     const delta: Partial<CourseDelta> = {};
 
     const changed = (a: any, b: any) => JSON.stringify(a) !== JSON.stringify(b);
 
     // Simple fields
-    if (state.courseName !== prefillCourse.course?.name) delta.courseName = state.courseName;
-    if (state.courseCategory !== prefillCourse.course?.category) delta.courseCategory = state.courseCategory;
-    if (state.subject !== COURSE_SUBJECT_TO_SUBJECT[prefillCourse.course?.subject as Course_Subject_Enum]) delta.subject = state.subject;
-    if (state.description !== prefillCourse.course?.description) delta.description = state.description;
-    if (state.maxParticipantCount !== prefillCourse.maxParticipants) delta.maxParticipantCount = state.maxParticipantCount;
-    if (state.joinAfterStart !== !!prefillCourse.joinAfterStart) delta.joinAfterStart = state.joinAfterStart;
-    if (state.allowProspectContact !== !!prefillCourse.allowChatContactProspects) delta.allowProspectContact = state.allowProspectContact;
-    if (state.allowParticipantContact !== !!prefillCourse.allowChatContactParticipants) delta.allowParticipantContact = state.allowParticipantContact;
-    if (state.allowChatWriting !== (prefillCourse.groupChatType === ChatType.NORMAL)) delta.allowChatWriting = state.allowChatWriting;
-    if (state.gradeRange[0] !== prefillCourse.minGrade || state.gradeRange[1] !== prefillCourse.maxGrade) {
+    if (state.courseName !== prefillCourse?.course?.name || create) delta.courseName = state.courseName;
+    if (state.courseCategory !== prefillCourse?.course?.category || create) delta.courseCategory = state.courseCategory;
+    if (state.subject !== COURSE_SUBJECT_TO_SUBJECT[prefillCourse?.course?.subject as Course_Subject_Enum] || create) delta.subject = state.subject;
+    if (state.description !== prefillCourse?.course?.description || create) delta.description = state.description;
+    if (state.maxParticipantCount !== prefillCourse?.maxParticipants || create) delta.maxParticipantCount = state.maxParticipantCount;
+    if (state.joinAfterStart !== !!prefillCourse?.joinAfterStart || create) delta.joinAfterStart = state.joinAfterStart;
+    if (state.allowProspectContact !== !!prefillCourse?.allowChatContactProspects || create) delta.allowProspectContact = state.allowProspectContact;
+    if (state.allowParticipantContact !== !!prefillCourse?.allowChatContactParticipants || create)
+        delta.allowParticipantContact = state.allowParticipantContact;
+    if (state.allowChatWriting !== (prefillCourse?.groupChatType === ChatType.NORMAL) || create) delta.allowChatWriting = state.allowChatWriting;
+    if (state.gradeRange[0] !== prefillCourse?.minGrade || state.gradeRange[1] !== prefillCourse?.maxGrade || create) {
         delta.gradeRange = state.gradeRange;
     }
 
     // Tags
-    const prefillTagIds = (prefillCourse.course?.tags ?? []).map((t) => t.id).sort();
+    const prefillTagIds = (prefillCourse?.course?.tags ?? []).map((t) => t.id).sort();
     const stateTagIds = state.tags.map((t) => t.id).sort();
     if (changed(prefillTagIds, stateTagIds)) {
         delta.tags = state.tags;
     }
 
     // Instructors
-    const prefillInstructorIds = (prefillCourse.instructors ?? []).map((i) => i);
+    const prefillInstructorIds = (prefillCourse?.instructors ?? []).map((i) => i);
     const stateInstructorIds = state.instructors.map((i) => i);
 
     delta.addedInstructors = state.instructors.filter((i) => i !== studentId && !prefillInstructorIds.some((x) => x.id === i));
-    delta.removedInstructors = prefillCourse.instructors?.filter((i) => !stateInstructorIds.includes(i.id)).map((x) => x.id) ?? [];
+    delta.removedInstructors = prefillCourse?.instructors?.filter((i) => !stateInstructorIds.includes(i.id)).map((x) => x.id) ?? [];
 
     // Mentors
-    const prefillMentorIds = (prefillCourse.mentors ?? []).map((i) => i);
+    const prefillMentorIds = (prefillCourse?.mentors ?? []).map((i) => i);
     const stateMentorIds = state.mentors.map((i) => i).sort();
 
     delta.addedMentors = state.mentors.filter((i) => !prefillMentorIds.some((x) => (x.id = i)));
-    delta.removedMentors = prefillCourse.mentors?.filter((i) => !stateMentorIds.includes(i.id)).map((x) => x.id) ?? [];
+    delta.removedMentors = prefillCourse?.mentors?.filter((i) => !stateMentorIds.includes(i.id)).map((x) => x.id) ?? [];
 
     const prefillMap = new Map(
-        (prefillCourse.appointments ?? []).map((a) => [
+        (prefillCourse?.appointments ?? []).map((a) => [
             a.id,
             {
                 start: a.start,
@@ -147,12 +149,12 @@ export function getCourseDelta(
     }
     delta.changedAppointments = changedAppointments;
     // appointments that are not in state but in prefillCourse
-    delta.cancelledAppointments = (prefillCourse.appointments ?? []).filter((a) => !state.courseAppointments?.some((x) => x.id === a.id)).map((a) => a.id);
+    delta.cancelledAppointments = (prefillCourse?.appointments ?? []).filter((a) => !state.courseAppointments?.some((x) => x.id === a.id)).map((a) => a.id);
 
     // Image
     if (state.pickedPhoto) {
         delta.uploadImage = state.pickedPhoto;
-    } else if (state.image !== (prefillCourse.course?.image ?? '')) {
+    } else if (state.image !== (prefillCourse?.course?.image ?? '')) {
         delta.image = state.image;
     }
 
@@ -283,7 +285,11 @@ export function useUpdateCourse() {
         `)
     );
 
-    return async (_subcourseId: number | undefined, _courseId: number | undefined, delta: CourseDelta): Promise<{ subcourseId?: number } | void> => {
+    return async (
+        _subcourseId: number | undefined,
+        _courseId: number | undefined,
+        delta: CourseDelta
+    ): Promise<{ subcourseId: number; courseId: number } | void> => {
         const promises: Promise<any>[] = [];
 
         let courseId: number | undefined = _courseId;
@@ -327,10 +333,12 @@ export function useUpdateCourse() {
                 minGrade: delta.gradeRange?.[0],
                 maxGrade: delta.gradeRange?.[1],
                 maxParticipants: delta.maxParticipantCount,
+                allowChatContactProspects: delta.allowProspectContact,
+                allowChatContactParticipants: delta.allowParticipantContact, //TODO
             };
 
             const courseData: PublicCourseEditInput = {
-                allowContact: delta.allowParticipantContact,
+                allowContact: delta.allowParticipantContact, // TODO
                 category: delta.courseCategory ? (delta.courseCategory! as unknown as CourseCategory) : undefined,
                 description: delta.description,
                 name: delta.courseName,
@@ -405,7 +413,7 @@ export function useUpdateCourse() {
         }
 
         return Promise.all(promises).then(() => {
-            return { subcourseId };
+            return { subcourseId: subcourseId!, courseId: courseId! };
         });
     };
 }

@@ -25,7 +25,7 @@ const TAGS_QUERY = gql(`
     }
 `);
 
-const SUBJECTS = [...SUBJECTS_MAIN, ...SUBJECTS_MINOR, ...SUBJECTS_RARE];
+const SUBJECTS = ['Deutsch', 'Englisch', 'Mathematik', ...SUBJECTS_MINOR, ...SUBJECTS_RARE];
 
 interface Props {
     courseName: string;

@@ -1,8 +1,7 @@
-import useApollo, { useUserType } from '@/hooks/useApollo';
-import { useToast } from 'native-base';
-import { useLocation } from 'react-router-dom';
+import { useUserType } from '@/hooks/useApollo';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
-import React, { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
 import { Breadcrumb } from '@/components/Breadcrumb';
@@ -10,12 +9,13 @@ import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
 import { useTranslation } from 'react-i18next';
 import { LFInstructor, LFSubCourse, LFTag } from '@/types/lernfair/Course';
-import { gql, useLazyQuery } from '@apollo/client';
+import { gql } from '@/gql';
+import { useLazyQuery, useMutation } from '@apollo/client';
 import CourseDetails from '@/pages/course-creation/CourseDetails';
 import { FileItem } from '@/components/Dropzone';
 import CourseAppointments from '@/pages/course-creation/CourseAppointments';
 import CourseInstructors from '@/pages/course-creation/CourseInstructors';
-import { Course_Category_Enum, Course_Subject_Enum, Instructor } from '@/gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum, Course_Subject_Enum, Instructor } from '@/gql/graphql';
 import CourseSettings from './course-creation/CourseSettings';
 import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
@@ -85,6 +85,7 @@ const COURSE_QUERY = gql(`
                     description
                     subject
                     allowContact
+                    courseState
                     tags {
                         id
                         name
@@ -134,12 +135,13 @@ const CreateCourse: React.FC = () => {
     const userType = useUserType();
     const location = useLocation();
     const breadcrumbRoutes = useBreadcrumbRoutes();
+    const navigate = useNavigate();
     const { t } = useTranslation();
 
     const state = location.state as { subcourseId?: number; currentStep?: number };
     const prefillSubcourseId = state?.subcourseId;
     const [prefillCourse, setPrefillCourse] = useState<LFSubCourse | null>(null); // used for delta calculation
-    const isEditing = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
+    const editingExistingCourse = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
 
     const [errors, setErrors] = useState<CreateCourseError[]>([]);
 
@@ -162,18 +164,26 @@ const CreateCourse: React.FC = () => {
     const [courseAppointments, setCourseAppointments] = useState<DisplayAppointment[]>();
     const [studentId, setStudentId] = useState<number>();
 
-    const [loadingCourse, setLoadingCourse] = useState<boolean>(isEditing);
+    const [loadingCourse, setLoadingCourse] = useState<boolean>(editingExistingCourse);
     const [loadingStudent, setLoadingStudent] = useState<boolean>(false);
 
     const [courseQuery] = useLazyQuery(COURSE_QUERY);
 
     const [studentQuery] = useLazyQuery(STUDENT_QUERY);
 
+    const [submitCourse] = useMutation(
+        gql(`
+        mutation CourseSubmit($courseId: Float!) { 
+            courseSubmit(courseId: $courseId)
+        }
+    `)
+    );
+
     const updateCourse = useUpdateCourse();
 
     const queryStudent = useCallback(async () => {
         const { data } = await studentQuery();
-        setStudentId(data.me.student.id);
+        setStudentId(data?.me?.student?.id);
         setLoadingStudent(false);
     }, [studentQuery]);
 
@@ -187,40 +197,39 @@ const CreateCourse: React.FC = () => {
         if (userType === 'student' && !studentId) return;
         setLoadingCourse(true);
         const {
-            data: { subcourse: prefillCourse },
+            data: { subcourse: prefillSubcourse },
         } = (await courseQuery({
             variables: { id: prefillSubcourseId },
-        })) as { data: { subcourse: LFSubCourse } };
-        console.log('PREFILLING', prefillCourse);
-        setPrefillCourse(prefillCourse);
+        })) as unknown as { data: { subcourse: LFSubCourse } };
+        console.log('PREFILLING', prefillSubcourse);
+        setPrefillCourse(prefillSubcourse);
 
-        setCourseId(prefillCourse.course.id);
-        setCourseName(prefillCourse.course.name);
-        setSubject(COURSE_SUBJECT_TO_SUBJECT[prefillCourse.course.subject as Course_Subject_Enum]);
-        setCourseCategory(prefillCourse.course.category as Course_Category_Enum);
-        setDescription(prefillCourse.course.description);
-        setMaxParticipantCount(prefillCourse.maxParticipants!);
-        setJoinAfterStart(!!prefillCourse.joinAfterStart);
-        setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
-        setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
-        setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL);
-        setGradeRange([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 14]);
-        setCourseAppointments(prefillCourse.appointments ?? []);
-        prefillCourse.course.image && setImage(prefillCourse.course.image);
+        setCourseId(prefillSubcourse.course.id);
+        setCourseName(prefillSubcourse.course.name);
+        setSubject(COURSE_SUBJECT_TO_SUBJECT[prefillSubcourse.course.subject as Course_Subject_Enum]);
+        setCourseCategory(prefillSubcourse.course.category as Course_Category_Enum);
+        setDescription(prefillSubcourse.course.description);
+        setMaxParticipantCount(prefillSubcourse.maxParticipants!);
+        setJoinAfterStart(!!prefillSubcourse.joinAfterStart);
+        setAllowProspectContact(!!prefillSubcourse.allowChatContactProspects);
+        setAllowParticipantContact(!!prefillSubcourse.allowChatContactParticipants);
+        setAllowChatWriting(prefillSubcourse.groupChatType === ChatType.NORMAL);
+        setGradeRange([prefillSubcourse.minGrade || 1, prefillSubcourse.maxGrade || 14]);
+        setCourseAppointments(prefillSubcourse.appointments ?? []);
+        prefillSubcourse.course.image && setImage(prefillSubcourse.course.image);
 
-        if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
-            const arr = prefillCourse.instructors.filter((instructor: Instructor) => instructor.id !== studentId);
+        if (prefillSubcourse.instructors && Array.isArray(prefillSubcourse.instructors)) {
+            const arr = prefillSubcourse.instructors.filter((instructor: Instructor) => instructor.id !== studentId);
             setInstructors(arr);
         }
 
-        if (prefillCourse.mentors && Array.isArray(prefillCourse.mentors)) {
-            const arr = prefillCourse.mentors.filter((mentor: Instructor) => mentor.id !== studentId);
+        if (prefillSubcourse.mentors && Array.isArray(prefillSubcourse.mentors)) {
+            const arr = prefillSubcourse.mentors.filter((mentor: Instructor) => mentor.id !== studentId);
             setMentors(arr);
         }
 
-        if (prefillCourse.course.tags && Array.isArray(prefillCourse.course.tags)) {
-            setTags(prefillCourse.course.tags);
-            console.log('Set tags to', prefillCourse.course.tags);
+        if (prefillSubcourse.course.tags && Array.isArray(prefillSubcourse.course.tags)) {
+            setTags(prefillSubcourse.course.tags);
         }
 
         setLoadingCourse(false);
@@ -230,7 +239,7 @@ const CreateCourse: React.FC = () => {
         if (prefillSubcourseId != null) queryCourse();
     }, [prefillSubcourseId, queryCourse]);
 
-    const submit = async () => {
+    const save = async (doSubmit: boolean) => {
         const errors: CreateCourseError[] = [];
         if (!courseName || courseName.length < 3) {
             errors.push('course-name');
@@ -256,7 +265,7 @@ const CreateCourse: React.FC = () => {
         }
 
         const delta = getCourseDelta(
-            prefillCourse ?? {},
+            prefillCourse,
             {
                 courseName,
                 courseCategory,
@@ -284,8 +293,16 @@ const CreateCourse: React.FC = () => {
         const res = await updateCourse(prefillSubcourseId!, courseId, delta);
         if (res && res.subcourseId) {
             setErrors([]);
-            // Navigate to the course page after successful creation
-            window.location.href = `/single-course/${res.subcourseId}`;
+
+            if (doSubmit) {
+                await submitCourse({ variables: { courseId: res.courseId } });
+            }
+
+            navigate(`/single-course/${res.subcourseId}`, {
+                state: {
+                    wasEdited: editingExistingCourse,
+                },
+            });
         }
     };
 
@@ -318,13 +335,13 @@ const CreateCourse: React.FC = () => {
                     </div>
                 }
             >
-                {isEditing ? (
+                {editingExistingCourse ? (
                     <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: courseName, route: `single-course/${courseId}` }, breadcrumbRoutes.EDIT_COURSE]} />
                 ) : (
                     <Breadcrumb />
                 )}
                 <Typography variant="h2" className="mb-4">
-                    {isEditing ? t('course.edit') : t('course.header')}
+                    {editingExistingCourse ? t('course.edit') : t('course.header')}
                 </Typography>
                 <div className="flex flex-col gap-4 max-w-xl w-full" id="form">
                     <CourseDetails
@@ -368,12 +385,14 @@ const CreateCourse: React.FC = () => {
                         <Button variant="outline" className="w-full" onClick={() => window.history.back()}>
                             Abbrechen
                         </Button>
-                        <Button leftIcon={<IconCheck />} className="w-full" onClick={submit}>
-                            Entwurf speichern
+                        <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)}>
+                            {prefillCourse ? 'Kurs speichern' : 'Entwurf speichern'}
                         </Button>
-                        <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full">
-                            zur Prüfung freigeben
-                        </Button>
+                        {(!prefillCourse || prefillCourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
+                            <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full" onClick={() => save(true)}>
+                                Zur Prüfung freigeben
+                            </Button>
+                        )}
                     </div>
                 </div>
             </WithNavigation>
