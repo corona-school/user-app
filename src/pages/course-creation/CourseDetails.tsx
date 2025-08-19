@@ -135,7 +135,7 @@ const CourseDetails: React.FC<Props> = ({
                 />
                 {errors && errors.includes('course-name') && (
                     <Typography variant="sm" className="text-red-500 error">
-                        Course name missing
+                        Bitte gib einen Kursnamen ein.
                     </Typography>
                 )}
             </div>
@@ -153,7 +153,7 @@ const CourseDetails: React.FC<Props> = ({
                 />
                 {errors && errors.includes('description') && (
                     <Typography variant="sm" className="text-red-500">
-                        Description missing
+                        Bitte gib eine Kursbeschreibung ein.
                     </Typography>
                 )}
             </div>
@@ -206,7 +206,7 @@ const CourseDetails: React.FC<Props> = ({
                     </div>
                     {errors && errors.includes('subject') && (
                         <Typography variant="sm" className="text-red-500">
-                            Subject missing
+                            Bitte wähle ein Fach aus.
                         </Typography>
                     )}
                 </div>
@@ -256,7 +256,7 @@ const CourseDetails: React.FC<Props> = ({
                 </Label>
                 {errors && errors.includes('grade-range') && (
                     <Typography variant="sm" className="text-red-500">
-                        Invalid grade range
+                        Bitte gib einen Klassenbereich an.
                     </Typography>
                 )}
             </div>

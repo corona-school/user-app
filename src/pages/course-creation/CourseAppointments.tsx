@@ -57,7 +57,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
         }
 
         // check if appointment is at least 7 days in the future
-        if (DateTime.fromISO(appointment.start).startOf('day').diffNow('days').days < 7) {
+        if (DateTime.fromISO(appointment.start).endOf('day').diffNow('days').days < 7) {
             errors.push('dateNotInOneWeek');
         }
 

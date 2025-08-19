@@ -241,7 +241,7 @@ const CreateCourse: React.FC = () => {
         if (!courseCategory) {
             errors.push('category');
         }
-        if (!subject) {
+        if (courseCategory === Course_Category_Enum.Revision && !subject) {
             errors.push('subject');
         }
         if (!gradeRange || gradeRange[0] > gradeRange[1]) {
