@@ -211,6 +211,14 @@ export function useUpdateCourse() {
         `)
     );
 
+    const [setTags] = useMutation(
+        gql(`
+            mutation setCourseTags($courseId: Float!, $tags: [Float!]!) {
+                courseSetTags(courseId: $courseId, courseTagIds: $tags)
+            }
+        `)
+    );
+
     const [setImage] = useMutation(
         gql(`
             mutation setCourseImage($courseId: Float!, $imageId: String!) {
@@ -339,6 +347,11 @@ export function useUpdateCourse() {
 
         if (!courseId || !subcourseId) {
             throw new Error('Course or subcourse ID is undefined');
+        }
+
+        if (delta.tags) {
+            const tagIds = delta.tags.map((tag) => tag.id);
+            promises.push(setTags({ variables: { courseId, tags: tagIds } }));
         }
 
         if (delta.uploadImage) {
