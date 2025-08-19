@@ -33,7 +33,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
                     toggleConfig={{
                         variant: 'white-primary',
                         size: 'lg',
-                        className: 'justify-start w-[48%] sm:w-[168px]',
+                        className: 'justify-start w-[48%] sm:w-[168px] font-semibold',
                     }}
                     multiple
                     value={form.languages}
