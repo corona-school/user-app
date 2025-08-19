@@ -5,6 +5,8 @@ import AppointmentList, { DisplayAppointment } from '../../widgets/AppointmentLi
 import { DateTime } from 'luxon';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
+import RejectAppointmentModal, { RejectType } from '@/modals/RejectAppointmentModal';
+import { Modal } from '@/components/Modal';
 
 type Props = {
     isEditingCourse?: boolean;
@@ -19,6 +21,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
     const [creating, setCreating] = useState<boolean>(false);
     // const [_draftAppointments, setDraftAppointments] = useState<DisplayAppointment[]>(appointments);
     const [placeholderId, setPlaceholderId] = useState<string | undefined>(undefined);
+    const [appointmentToDelete, setAppointmentToDelete] = useState<DisplayAppointment | undefined>(undefined);
 
     const getDraftAppointments = useMemo(() => {
         const draftAppointments = [...appointments].sort((a, b) => DateTime.fromISO(a.start).toMillis() - DateTime.fromISO(b.start).toMillis());
@@ -120,8 +123,32 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
         setPlaceholderId(newId);
     };
 
+    const onAppointmentDelete = (deleted: DisplayAppointment | undefined) => {
+        if (!deleted) {
+            throw new Error('Cannot delete appointment, no appointment provided');
+        }
+        if (deleted.isNew) {
+            // If it's a new appointment, just remove it from the list
+            setAppointments((prev) => prev?.filter((x) => x.newId !== deleted.newId));
+        } else {
+            // decline appointment
+            setAppointments((prev) => prev?.filter((x) => x.id !== deleted.id));
+        }
+        setAppointmentToDelete(undefined);
+    };
+
+    useEffect(() => {
+        console.log('appointmenttodelete', appointmentToDelete);
+    }, [appointmentToDelete]);
+
     return (
         <>
+            <RejectAppointmentModal
+                isOpen={appointmentToDelete != null}
+                onDelete={() => onAppointmentDelete(appointmentToDelete)}
+                onOpenChange={(open) => !open && setAppointmentToDelete(undefined)}
+                rejectType={RejectType.CANCEL}
+            />
             <Typography variant="h3">{t('course.CourseDate.step.appointments')}</Typography>
             <div>
                 {(isEditingCourse || getDraftAppointments.length !== 0) && (
@@ -136,6 +163,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                                 setCreating(false);
                             }}
                             onAppointmentDuplicate={!creating ? onAppointmentDuplicate : undefined}
+                            onAppointmentDelete={(x) => (x.isNew ? onAppointmentDelete(x) : setAppointmentToDelete(x))}
                             editingIdInit={placeholderId}
                             clickable={false}
                             editable={true}

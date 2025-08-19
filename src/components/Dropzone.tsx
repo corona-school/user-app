@@ -86,7 +86,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
         if (e.dataTransfer.items.length > 0) {
             const item = e.dataTransfer.items[0];
             if (item.kind === 'file') {
-                if (item.type.startsWith('image/')) {
+                if (item.type === 'image/png' || item.type === 'image/jpeg') {
                     readFile(e.dataTransfer.files[0]);
                 }
             }
@@ -166,7 +166,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                                     </>
                                 )}
                                 <Button onClick={() => onUpload(null)} variant="destructive">
-                                    Datei entfernen
+                                    Bild ändern
                                 </Button>
                             </div>
                         </div>

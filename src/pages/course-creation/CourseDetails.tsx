@@ -90,41 +90,37 @@ const CourseDetails: React.FC<Props> = ({
     return (
         <>
             <Typography variant="h3">{t('course.CourseDate.step.general')}</Typography>
-            <div className="flex flex-col gap-2.5">
-                <Label htmlFor="courseCategory" className="text-base">
-                    {t('course.CourseDate.form.courseCategory')}
-                </Label>
-                {/*Don't allow homework help courses to change category, as they cannot change it back (hidden category)*/}
-                <RadioGroup
-                    className="px-4"
-                    id="courseCategory"
-                    value={category}
-                    disabled={category === Course_Category_Enum.HomeworkHelp}
-                    onValueChange={(v) => setCategory(v as Course_Category_Enum)}
-                >
-                    <div className="flex gap-x-2 items-center">
-                        <RadioGroupItem id="revision" value={Course_Category_Enum.Revision} />
-                        <div className="inline-flex align-baseline gap-1.5">
-                            <Label htmlFor="revision">{t('course.CourseDate.form.revision')}</Label>
-                            <InfoTooltipButton tooltipContent="TODO" />
+            {/*Don't allow homework help courses to change category, as they cannot change it back (hidden category)*/}
+            {category !== Course_Category_Enum.HomeworkHelp && (
+                <div className="flex flex-col gap-2.5">
+                    <Label htmlFor="courseCategory" className="text-base">
+                        {t('course.CourseDate.form.courseCategory')}
+                    </Label>
+                    <RadioGroup className="px-4" id="courseCategory" value={category} onValueChange={(v) => setCategory(v as Course_Category_Enum)}>
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="revision" value={Course_Category_Enum.Revision} />
+                            <div className="inline-flex align-baseline gap-1.5">
+                                <Label htmlFor="revision">{t('course.CourseDate.form.revision')}</Label>
+                                <InfoTooltipButton tooltipContent="TODO" />
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex gap-x-2 items-center">
-                        <RadioGroupItem id="language" value={Course_Category_Enum.Language} />
-                        <div className="inline-flex align-baseline gap-1.5">
-                            <Label htmlFor="language">{t('course.CourseDate.form.language')}</Label>
-                            <InfoTooltipButton tooltipContent="TODO" />
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="language" value={Course_Category_Enum.Language} />
+                            <div className="inline-flex align-baseline gap-1.5">
+                                <Label htmlFor="language">{t('course.CourseDate.form.language')}</Label>
+                                <InfoTooltipButton tooltipContent="TODO" />
+                            </div>
                         </div>
-                    </div>
-                    <div className="flex gap-x-2 items-center">
-                        <RadioGroupItem id="focus" value={Course_Category_Enum.Focus} />
-                        <div className="inline-flex align-baseline gap-1.5">
-                            <Label htmlFor="focus">{t('course.CourseDate.form.focus')}</Label>
-                            <InfoTooltipButton tooltipContent="TODO" />
+                        <div className="flex gap-x-2 items-center">
+                            <RadioGroupItem id="focus" value={Course_Category_Enum.Focus} />
+                            <div className="inline-flex align-baseline gap-1.5">
+                                <Label htmlFor="focus">{t('course.CourseDate.form.focus')}</Label>
+                                <InfoTooltipButton tooltipContent="TODO" />
+                            </div>
                         </div>
-                    </div>
-                </RadioGroup>
-            </div>
+                    </RadioGroup>
+                </div>
+            )}
 
             <div className="flex flex-col gap-2.5">
                 <Label htmlFor="courseName" className="text-base">
@@ -217,7 +213,7 @@ const CourseDetails: React.FC<Props> = ({
             )}
 
             {/*Tag selection for non-revision courses*/}
-            {category && category !== Course_Category_Enum.Revision && (
+            {category && category !== Course_Category_Enum.Revision && category !== Course_Category_Enum.HomeworkHelp && (
                 <div className="flex flex-col gap-2.5">
                     <div className="inline-flex align-baseline gap-1.5">
                         <Label className="text-base">{t('course.CourseDate.form.tagsLabel')}</Label>

@@ -36,6 +36,7 @@ const UnsplashPagination: React.FC<Props> = ({ currentIndex, totalPagesCount, on
                         <Button
                             variant="ghost"
                             size="icon"
+                            key={pageNumber}
                             className={cn(pageNumber === currentIndex ? 'text-primary' : 'text-primary-light')}
                             onClick={() => {
                                 if (typeof pageNumber === 'number') onPageChange(pageNumber);

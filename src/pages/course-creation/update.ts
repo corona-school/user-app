@@ -10,13 +10,12 @@ import {
     PublicSubcourseEditInput,
 } from '@/gql/graphql';
 import { ChatType, CreateCourseError } from '../CreateCourse';
-import { LFInstructor, LFSubCourse, LFTag } from '@/types/lernfair/Course';
+import { LFSubCourse, LFTag } from '@/types/lernfair/Course';
 import { FileItem } from '@/components/Dropzone';
 import { Appointment } from '@/types/lernfair/Appointment';
 import { useMutation } from '@apollo/client';
 import { gql } from '@/gql';
 import { BACKEND_URL } from '@/config';
-import courseInstructors from '@/pages/course-creation/CourseInstructors';
 
 type CourseDelta = {
     courseName?: string;
@@ -36,6 +35,7 @@ type CourseDelta = {
     removedMentors: number[];
     changedAppointments?: Record<string, any>;
     newAppointments: Appointment[];
+    cancelledAppointments: number[]; // IDs of appointments that were cancelled
     uploadImage?: FileItem | null; // overrides `image`
     image?: string;
 };
@@ -146,6 +146,8 @@ export function getCourseDelta(
         }
     }
     delta.changedAppointments = changedAppointments;
+    // appointments that are not in state but in prefillCourse
+    delta.cancelledAppointments = (prefillCourse.appointments ?? []).filter((a) => !state.courseAppointments?.some((x) => x.id === a.id)).map((a) => a.id);
 
     // Image
     if (state.pickedPhoto) {
@@ -261,6 +263,14 @@ export function useUpdateCourse() {
         gql(`
             mutation createAppointments($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
                 appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
+            }
+        `)
+    );
+
+    const [cancelAppointment] = useMutation(
+        gql(`
+            mutation cancelAppointment($appointmentId: Float!) {
+                appointmentCancel(appointmentId: $appointmentId)
             }
         `)
     );
@@ -402,6 +412,10 @@ export function useUpdateCourse() {
         }));
         if (appointmentsToCreate.length > 0) {
             promises.push(createAppointments({ variables: { appointments: appointmentsToCreate, subcourseId } }));
+        }
+
+        for (const appointmentId of delta.cancelledAppointments) {
+            promises.push(cancelAppointment({ variables: { appointmentId } }));
         }
 
         return Promise.all(promises).then(() => {

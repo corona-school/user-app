@@ -58,12 +58,14 @@
             "nowToEnd": "Jetzt - {{end}} Uhr"
         },
         "deleteModal": {
+            "heading": "Termin löschen",
             "title": "Bist du dir sicher, dass du diesen Termin löschen möchtest?",
             "description": "Der Termin wird dadurch für alle Teilnehmer:innen abgesagt. Du kannst dies nicht rückgängig machen.",
             "delete": "Termin löschen",
             "cancel": "Abbrechen"
         },
         "declineModal": {
+            "heading": "Termin absagen",
             "title": "Bist du dir sicher, dass du diesen Termin absagen möchtest?",
             "description": "Du kannst dem Termin nicht wieder beitreten.",
             "decline": "Termin absagen"
@@ -1862,7 +1864,7 @@
                 "checker": "Überprüfung"
             },
             "form": {
-                "courseNameHeadline": "Kursname",
+                "courseNameHeadline": "Name",
                 "courseNamePlaceholder": "Kursname eingeben",
                 "courseCategory": "Kategorie",
                 "categoryPlaceholder": "Bitte wähle eine Kategorie",
@@ -1870,7 +1872,7 @@
                 "language": "Deutsch für Anfänger Kurs",
                 "focus": "Fokus-Kurs",
                 "courseSubjectLabel": "Fächer",
-                "coursePhotoLabel": "Foto",
+                "coursePhotoLabel": "Bild",
                 "changeImage": "Bild ändern",
                 "CourseInstructors": "Kursleiter:innen",
                 "courseAddOntherLeadText": "Weitere Kursleiter:innen hinzufügen",

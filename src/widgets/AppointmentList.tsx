@@ -181,7 +181,7 @@ type AppointmentListProps = {
     onAppointmentEdited?: (updated: DisplayAppointment) => { errors: string[] } | void;
     onAppointmentCanceledEdit?: () => void;
     onAppointmentDuplicate?: (duplicate: DisplayAppointment) => void;
-    onAppointmentDelete?: (id: number | string, isNew: boolean) => void; // id is UUID string if isNew is true, otherwise it's the ID number
+    onAppointmentDelete?: (appointment: DisplayAppointment) => void; // id is UUID string if isNew is true, otherwise it's the ID number
     editingIdInit?: string; // If provided, the appointment with this ID will be in editing mode initially
     clickable: boolean; // If true, the appointment items are clickable and navigate to the appointment detail page
     editable: boolean; // If true, the appointment items show edit, duplicate, and delete buttons
@@ -293,9 +293,10 @@ const AppointmentList = ({
                         onCancelEdit={onAppointmentCanceledEdit}
                         onDuplicate={onAppointmentDuplicate ? () => onAppointmentDuplicate(appointment) : undefined}
                         onDelete={
-                            onAppointmentDelete
-                                ? () =>
-                                      onAppointmentDelete && onAppointmentDelete(!appointment.isNew ? appointment.id : appointment.newId!, !!appointment.isNew)
+                            appointmentInPast(appointment)
+                                ? undefined
+                                : onAppointmentDelete
+                                ? () => onAppointmentDelete && onAppointmentDelete(appointment)
                                 : undefined
                         }
                         clickable={clickable}
