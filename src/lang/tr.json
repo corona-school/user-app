@@ -25,17 +25,20 @@
             "title": "Bu randevuyu silmek istediğinizden emin misiniz?",
             "description": "Bu, tüm katılımcılar için randevunun iptal edilmesine neden olacak. Bu işlemi geri alamazsın.",
             "delete": "Randevu sil",
-            "cancel": "İptal et"
+            "cancel": "İptal et",
+            "heading": "Randevu sil"
         },
         "declineModal": {
             "title": "Bu randevuyu iptal etmek istediğinizden emin misiniz?",
             "description": "Randevuya tekrar katılamazsınız.",
-            "decline": "Randevuyu iptal et"
+            "decline": "Randevuyu iptal et",
+            "heading": "Randevuyu iptal et"
         },
         "appointmentTile": {
             "lecture": "Ders #{{position}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "{{name}} tarafından iptal edildi"
+            "cancelledBy": "{{name}} tarafından iptal edildi",
+            "lectureWithTotal": "Ders #{{position}} of {{total}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -257,7 +260,8 @@
             "Ethik": "Etik",
             "Gesundheit": "Sağlık",
             "Technik": "Teknoloji",
-            "Steuerlehre": "Vergi teorisi"
+            "Steuerlehre": "Vergi teorisi",
+            "Rechnungswesen": "Muhasebe"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -1739,7 +1743,8 @@
             "check": "Bilgileri kontrol edin",
             "saveDraft": "Taslak olarak kaydet",
             "prevPage": " Önceki sayfaya dön",
-            "existingAppointments": "Mevcut tarih(ler)"
+            "existingAppointments": "Mevcut tarih(ler)",
+            "addFirstAppointment": "İlk randevuyu oluşturun"
         },
         "error": {
             "course": "Üzgünüz, kursunuz oluşturulamadı. Lütfen tekrar deneyin.",
@@ -1750,7 +1755,13 @@
             "lectures": "Bir veya daha fazla tarih eklenemedi.",
             "tags": "Etiketleriniz eklenemedi.",
             "appointments": "Hiçbir tarih belirlenmedi",
-            "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı."
+            "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı.",
+            "course-name": "Geçersiz kurs adı",
+            "description": "Lütfen bir kurs açıklaması girin.",
+            "category": "Geçersiz kategori",
+            "subject": "Lütfen bir konu seçiniz.",
+            "grade-range": "Lütfen geçerli bir not aralığı girin.",
+            "participant-count": "Lütfen geçerli bir katılımcı sayısı girin."
         },
         "CourseDate": {
             "step": {

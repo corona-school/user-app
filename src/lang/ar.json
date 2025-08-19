@@ -25,17 +25,20 @@
             "title": "هل أنت متأكد من رغبتك في حذف هذا الحدث؟",
             "description": "نتيجة لذلك ، سيتم إلغاء الموعد لجميع المشاركين. لا يمكنك التراجع عن هذا.",
             "delete": "حذف موعد",
-            "cancel": "أجهض"
+            "cancel": "أجهض",
+            "heading": "حذف موعد الحذف"
         },
         "declineModal": {
             "title": "هل أنت متأكد من رغبتك في إلغاء هذا الموعد؟",
             "description": "لن تتمكن من الانضمام مرة أخرى إلى الحدث.",
-            "decline": "إلغاء موعد"
+            "decline": "إلغاء موعد",
+            "heading": "إلغاء موعد"
         },
         "appointmentTile": {
             "lecture": "الدرس #{{position}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "تم إلغاؤه بواسطة {{name}}"
+            "cancelledBy": "تم إلغاؤه بواسطة {{name}}",
+            "lectureWithTotal": "الدرس رقم{{position}} من {{total}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -257,7 +260,8 @@
             "Ethik": "الأخلاقيات",
             "Gesundheit": "الصحة",
             "Technik": "التكنولوجيا",
-            "Steuerlehre": "النظرية الضريبية"
+            "Steuerlehre": "النظرية الضريبية",
+            "Rechnungswesen": "المحاسبة"
         },
         "states": {
             "bw": "بادن فورتمبيرغ",
@@ -1735,7 +1739,8 @@
             "check": "التحقق من المعلومات",
             "saveDraft": "حفظ كمسودة",
             "prevPage": " إلى الصفحة السابقة",
-            "existingAppointments": "الموعد (المواعيد) الحالية"
+            "existingAppointments": "الموعد (المواعيد) الحالية",
+            "addFirstAppointment": "إنشاء موعد الأول"
         },
         "error": {
             "course": "عذرا، تعذر إنشاء دورتك التدريبية. يرجى المحاولة مرة أخرى.",
@@ -1746,7 +1751,13 @@
             "lectures": "تعذر إضافة موعد واحد أو أكثر.",
             "tags": "تعذر إضافة علاماتك.",
             "appointments": "لم يتم إنشاء مواعيد.",
-            "isInPastOrInvalid": "لم نتمكن من العثور على هذه الدورة التدريبية أو أنها من الماضي."
+            "isInPastOrInvalid": "لم نتمكن من العثور على هذه الدورة التدريبية أو أنها من الماضي.",
+            "course-name": "اسم المقرر الدراسي غير صالح",
+            "description": "يُرجى إدخال وصف المقرر الدراسي.",
+            "category": "فئة غير صالحة",
+            "subject": "يرجى اختيار مادة دراسية.",
+            "grade-range": "يُرجى إدخال نطاق تقدير صحيح.",
+            "participant-count": "يرجى إدخال عدد صحيح للمشاركين."
         },
         "CourseDate": {
             "step": {

@@ -25,17 +25,20 @@
             "title": "Are you sure you want to delete this lecture ?",
             "description": "The lecture is thereby canceled for all participants. You cannot undo this.",
             "delete": "Delete lecture",
-            "cancel": "Cancel"
+            "cancel": "Cancel",
+            "heading": "Lecture delete"
         },
         "declineModal": {
             "title": "Are you sure you want to cancel this lecture ?",
             "description": "You cannot rejoin lecture .",
-            "decline": "Cancel lecture"
+            "decline": "Cancel lecture",
+            "heading": "Cancel lecture"
         },
         "appointmentTile": {
             "lecture": "Lesson #{{position}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "Canceled by {{name}}"
+            "cancelledBy": "Canceled by {{name}}",
+            "lectureWithTotal": "Lesson #{{position}} of {{total}}"
         },
         "create": {
             "videoSelectOptions": {
@@ -257,7 +260,8 @@
             "Ethik": "Ethics",
             "Gesundheit": "Health",
             "Technik": "Technology",
-            "Steuerlehre": "Tax theory"
+            "Steuerlehre": "Tax theory",
+            "Rechnungswesen": "Accounting"
         },
         "states": {
             "bw": "Baden-Württemberg",
@@ -1739,7 +1743,8 @@
             "check": "Check details",
             "saveDraft": "Save as draft",
             "prevPage": " To the previous page",
-            "existingAppointments": "Existing lectures"
+            "existingAppointments": "Existing lectures",
+            "addFirstAppointment": "Create first lecture "
         },
         "error": {
             "course": "Sorry, your course could not be created. Please try again.",
@@ -1750,7 +1755,13 @@
             "lectures": "One or more lectures could not be added.",
             "tags": "Your tags could not be added.",
             "appointments": "No lectures created.",
-            "isInPastOrInvalid": "We could not find this course or it is in the past."
+            "isInPastOrInvalid": "We could not find this course or it is in the past.",
+            "course-name": "Invalid course name",
+            "description": "Please enter a course description.",
+            "category": "Invalid category",
+            "subject": "Please select a subject.",
+            "grade-range": "Please enter a valid grade range.",
+            "participant-count": "Please enter a valid number of participants."
         },
         "CourseDate": {
             "step": {
