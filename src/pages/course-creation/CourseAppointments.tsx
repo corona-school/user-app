@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import AppointmentList, { DisplayAppointment } from '../../widgets/AppointmentList';
@@ -6,16 +6,16 @@ import { DateTime } from 'luxon';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import RejectAppointmentModal, { RejectType } from '@/modals/RejectAppointmentModal';
-import { Modal } from '@/components/Modal';
 
 type Props = {
     isEditingCourse?: boolean;
     subcourseId?: number;
     appointments: DisplayAppointment[];
     setAppointments: Dispatch<SetStateAction<DisplayAppointment[] | undefined>>;
+    errors: string[];
 };
 
-const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, subcourseId, setAppointments }) => {
+const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, subcourseId, setAppointments, errors }) => {
     const { t } = useTranslation();
 
     const [creating, setCreating] = useState<boolean>(false);
@@ -137,10 +137,6 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
         setAppointmentToDelete(undefined);
     };
 
-    useEffect(() => {
-        console.log('appointmenttodelete', appointmentToDelete);
-    }, [appointmentToDelete]);
-
     return (
         <>
             <RejectAppointmentModal
@@ -174,6 +170,11 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                     {getDraftAppointments.length === 0 ? t('course.appointments.addFirstAppointment') : t('course.appointments.addOtherAppointment')}
                 </Button>
             </div>
+            {errors.includes('no-appointments') && (
+                <Typography variant="sm" className="text-red-500 error">
+                    {t('course.error.no-appointments')}
+                </Typography>
+            )}
         </>
     );
 };

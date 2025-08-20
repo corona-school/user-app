@@ -38,7 +38,8 @@ export type CreateCourseError =
     | 'category'
     | 'subject'
     | 'grade-range'
-    | 'participant-count';
+    | 'participant-count'
+    | 'no-appointments';
 
 export enum ChatType {
     NORMAL = 'NORMAL',
@@ -259,6 +260,9 @@ const CreateCourse: React.FC = () => {
         if (!maxParticipantCount || maxParticipantCount <= 0) {
             errors.push('participant-count');
         }
+        if (courseAppointments?.length === 0) {
+            errors.push('no-appointments');
+        }
         if (errors.length > 0) {
             setErrors(errors);
             return;
@@ -312,8 +316,8 @@ const CreateCourse: React.FC = () => {
             const formElement = document.getElementById('form');
             if (formElement) {
                 const errorElement = formElement.querySelector('.error');
-                if (errorElement?.parentElement) {
-                    errorElement.parentElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                if (errorElement) {
+                    errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             }
         }
@@ -370,7 +374,12 @@ const CreateCourse: React.FC = () => {
                         setInstructors={(x) => setInstructors(x)}
                         setMentors={(x) => setMentors(x)}
                     />
-                    <CourseAppointments isEditingCourse={true} appointments={courseAppointments ?? []} setAppointments={setCourseAppointments} />
+                    <CourseAppointments
+                        isEditingCourse={true}
+                        appointments={courseAppointments ?? []}
+                        setAppointments={setCourseAppointments}
+                        errors={errors}
+                    />
                     <CourseSettings
                         allowParticipantContact={allowParticipantContact}
                         setAllowParticipantContact={setAllowParticipantContact}

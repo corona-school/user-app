@@ -1855,7 +1855,8 @@
             "category": "Ungültige Kategorie",
             "subject": "Bitte wähle ein Fach aus.",
             "grade-range": "Bitte gib einen gültigen Jahrgangsstufenbereich an.",
-            "participant-count": "Bitte gib eine gültige Teilnehmer:innenzahl an."
+            "participant-count": "Bitte gib eine gültige Teilnehmer:innenzahl an.",
+            "no-appointments": "Bitte lege mindestens einen Termin an."
         },
         "CourseDate": {
             "headline": "Kursdetails",

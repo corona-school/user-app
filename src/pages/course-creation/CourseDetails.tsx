@@ -45,7 +45,7 @@ interface Props {
     setSelectedTags: Dispatch<SetStateAction<LFTag[]>>;
     category: Course_Category_Enum;
     setCategory: Dispatch<SetStateAction<Course_Category_Enum>>;
-    errors?: string[];
+    errors: string[];
 }
 
 const PREDEFINED_PARTICIPANTS = [5, 10, 20, 30, 40, 50, 100];
@@ -133,7 +133,7 @@ const CourseDetails: React.FC<Props> = ({
                     onChange={(e) => setCourseName?.(e.target.value)}
                     className="w-full"
                 />
-                {errors && errors.includes('course-name') && (
+                {errors.includes('course-name') && (
                     <Typography variant="sm" className="text-red-500 error">
                         Bitte gib einen Kursnamen ein.
                     </Typography>
@@ -151,7 +151,7 @@ const CourseDetails: React.FC<Props> = ({
                     onChange={(e) => setDescription?.(e.target.value)}
                     className="resize-none h-24 w-full"
                 />
-                {errors && errors.includes('description') && (
+                {errors.includes('description') && (
                     <Typography variant="sm" className="text-red-500 error">
                         Bitte gib eine Kursbeschreibung ein.
                     </Typography>
@@ -204,7 +204,7 @@ const CourseDetails: React.FC<Props> = ({
                             </Button>
                         ))}
                     </div>
-                    {errors && errors.includes('subject') && (
+                    {errors.includes('subject') && (
                         <Typography variant="sm" className="text-red-500 error">
                             Bitte wähle ein Fach aus.
                         </Typography>
@@ -254,7 +254,7 @@ const CourseDetails: React.FC<Props> = ({
                         maxRange: getGradeLabel(gradeRange[1]),
                     })}
                 </Label>
-                {errors && errors.includes('grade-range') && (
+                {errors.includes('grade-range') && (
                     <Typography variant="sm" className="text-red-500 error">
                         Bitte gib einen Klassenbereich an.
                     </Typography>
