@@ -152,7 +152,7 @@ const CourseDetails: React.FC<Props> = ({
                     className="resize-none h-24 w-full"
                 />
                 {errors && errors.includes('description') && (
-                    <Typography variant="sm" className="text-red-500">
+                    <Typography variant="sm" className="text-red-500 error">
                         Bitte gib eine Kursbeschreibung ein.
                     </Typography>
                 )}
@@ -205,7 +205,7 @@ const CourseDetails: React.FC<Props> = ({
                         ))}
                     </div>
                     {errors && errors.includes('subject') && (
-                        <Typography variant="sm" className="text-red-500">
+                        <Typography variant="sm" className="text-red-500 error">
                             Bitte wähle ein Fach aus.
                         </Typography>
                     )}
@@ -255,7 +255,7 @@ const CourseDetails: React.FC<Props> = ({
                     })}
                 </Label>
                 {errors && errors.includes('grade-range') && (
-                    <Typography variant="sm" className="text-red-500">
+                    <Typography variant="sm" className="text-red-500 error">
                         Bitte gib einen Klassenbereich an.
                     </Typography>
                 )}
