@@ -15,9 +15,9 @@ interface _RegistrationStepProps {
 
 export type RegistrationStepProps = Omit<_RegistrationStepProps, 'children'>;
 
-export const RegistrationStepTitle = ({ className, variant = 'h2', children, ...rest }: TypographyProps) => {
+export const RegistrationStepTitle = ({ className, variant = 'h3', children, ...rest }: TypographyProps) => {
     return (
-        <Typography className={cn('text-center text-balance mb-4', className)} variant={variant} {...rest}>
+        <Typography className={cn('text-center text-balance mb-4 md:text-3xl md:leading-9 md:tracking-tighter', className)} variant={variant} {...rest}>
             {children}
         </Typography>
     );
@@ -25,9 +25,14 @@ export const RegistrationStepTitle = ({ className, variant = 'h2', children, ...
 
 export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisabled, className, children }: _RegistrationStepProps) => {
     return (
-        <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-full md:max-w-[800px] w-full mx-auto md:pb-24', className)}>
+        <div
+            className={cn(
+                'animate-in fade-in-5 duration-300 relative flex flex-col justify-between flex-1 max-w-full md:max-w-[800px] w-full mx-auto md:pb-24',
+                className
+            )}
+        >
             <div className="z-10 flex flex-1 flex-col items-center justify-center max-w-full md:max-w-[536px] mx-auto px-[23px] md:px-0">{children}</div>
-            <div className="md:absolute bottom-0 px-10 flex justify-between w-full pb-8 md:bottom-1/2 md:px-0">
+            <div className="md:absolute bottom-0 px-10 flex justify-between w-full pb-2 md:pb-8 md:bottom-1/2 md:px-0">
                 <Button
                     disabled={isBackDisabled}
                     onClick={onBack}

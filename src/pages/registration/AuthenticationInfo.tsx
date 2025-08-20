@@ -98,7 +98,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
             <Typography variant="body-lg" className="text-center mb-10 whitespace-pre-line text-balance">
                 {t('registration.steps.authenticationInfo.description')}
             </Typography>
-            <div className="flex flex-col gap-y-8 w-full max-w-[339px] md:pb-0">
+            <div className="flex flex-col gap-y-4 w-full max-w-[339px] md:pb-0">
                 {GOOGLE_CLIENT_ID && form.isRegisteringManually && (
                     <>
                         <Button type="button" className="w-full" variant="optional" rightIcon={<IconBrandGoogleFilled size={16} />} onClick={loginWithGoogle}>
@@ -107,7 +107,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                         <Typography className="font-medium capitalize text-center">{t('or')}</Typography>
                     </>
                 )}
-                <div className="flex flex-col gap-y-4">
+                <div className="flex flex-col gap-y-2">
                     <div className="w-full flex flex-col justify-center gap-y-1">
                         <Label htmlFor="email" className="text-subtle w-full">
                             {t('registration.steps.authenticationInfo.pupilEmail')}
