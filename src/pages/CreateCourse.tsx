@@ -92,7 +92,7 @@ const COURSE_QUERY = gql(`
                         name
                     }
                 }
-                appointments {
+                joinedAppointments {
                     id
                     start
                     duration
@@ -216,7 +216,7 @@ const CreateCourse: React.FC = () => {
         setAllowParticipantContact(!!prefillSubcourse.allowChatContactParticipants);
         setAllowChatWriting(prefillSubcourse.groupChatType === ChatType.NORMAL);
         setGradeRange([prefillSubcourse.minGrade || 1, prefillSubcourse.maxGrade || 14]);
-        setCourseAppointments(prefillSubcourse.appointments ?? []);
+        setCourseAppointments(prefillSubcourse.joinedAppointments ?? []);
         prefillSubcourse.course.image && setImage(prefillSubcourse.course.image);
 
         if (prefillSubcourse.instructors && Array.isArray(prefillSubcourse.instructors)) {
