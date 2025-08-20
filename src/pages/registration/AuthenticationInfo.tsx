@@ -121,6 +121,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                             errorMessage={emailError}
                             placeholder={t('registration.steps.authenticationInfo.emailPlaceholder')}
                             readOnly={!form.isRegisteringManually}
+                            type="email"
                         />
                     </div>
                     {form.isRegisteringManually && (
