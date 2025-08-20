@@ -20,6 +20,7 @@ import ConfirmationModal from '@/modals/ConfirmationModal';
 import { REDIRECT_PASSWORD } from '@/Utility';
 import { GOOGLE_CLIENT_ID } from '@/config';
 import useLoginWithIDP from '@/hooks/useLoginWithIDP';
+import { cn } from '@/lib/Tailwind';
 
 const DETERMINE_LOGIN_OPTIONS_MUTATION = gql(`
     mutation determineLoginOptions($email: String!) {
@@ -232,30 +233,42 @@ const Login = () => {
                     )}
                     <form
                         onSubmit={handleOnLoginFormSubmit}
-                        className="flex flex-col justify-center px-6 gap-y-4 w-full sm:max-w-[342px] justify-self-center mb-16"
+                        className="flex flex-col justify-center px-6 gap-y-4 w-full sm:max-w-[342px] justify-self-center mb-14"
                     >
                         <div className="flex flex-col gap-y-[6px] w-full">
                             <Label htmlFor="email">{t('email')}</Label>
-                            <Input errorMessage={emailError} variant="white" id="email" placeholder="email@example.com" value={email} onChangeText={setEmail} />
+                            <Input
+                                errorMessage={emailError}
+                                errorMessageClassName={cn('min-h-[36px] md:min-h-auto', { hidden: loginMethod === 'password' })}
+                                variant="white"
+                                id="email"
+                                placeholder="email@example.com"
+                                value={email}
+                                onChangeText={setEmail}
+                            />
                         </div>
                         {loginMethod === 'password' && (
-                            <div className="flex flex-col gap-y-[6px] w-full">
-                                <div className="flex flex-col gap-y-[6px] w-full">
+                            <div className="flex flex-col w-full">
+                                <div className="flex flex-col w-full">
                                     <Label htmlFor="password">{t('password')}</Label>
-                                    <Input
-                                        errorMessage={passwordError}
-                                        autoFocus
-                                        type="password"
-                                        variant="white"
-                                        id="password"
-                                        value={password}
-                                        onChangeText={setPassword}
-                                    />
+                                    <div className="flex flex-col">
+                                        <Input
+                                            errorMessage={passwordError}
+                                            errorMessageClassName={cn({ hidden: !passwordError })}
+                                            autoFocus
+                                            type="password"
+                                            variant="white"
+                                            id="password"
+                                            value={password}
+                                            onChangeText={setPassword}
+                                            className="mb-[6px]"
+                                        />
+                                    </div>
                                 </div>
                                 <Button
                                     type="button"
                                     variant="link"
-                                    className="font-normal text-form inline size-auto p-0 w-fit"
+                                    className={cn('font-normal text-form inline size-auto p-0 w-fit', { 'mb-5': !passwordError })}
                                     onClick={() => setShowForgotPasswordModal(true)}
                                 >
                                     <span className="underline underline-offset-[1px] decoration-1">{t('login.forgotPassword')}</span>

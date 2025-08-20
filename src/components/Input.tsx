@@ -67,11 +67,18 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                             <span className="sr-only">{showPassword ? 'Hide password' : 'Show password'}</span>
                         </Button>
                     </div>
-                    {errorMessage && (
-                        <Typography variant="sm" className={cn('text-destructive px-1', errorMessageClassName)}>
-                            {errorMessage}
-                        </Typography>
-                    )}
+                    <Typography
+                        variant="sm"
+                        className={cn(
+                            'text-destructive px-1 min-h-5 leading-1',
+                            {
+                                invisible: !errorMessage,
+                            },
+                            errorMessageClassName
+                        )}
+                    >
+                        {errorMessage}
+                    </Typography>
                 </>
             );
         }
