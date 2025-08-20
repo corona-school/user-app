@@ -6,12 +6,12 @@ import { IconEye, IconEyeOff } from '@tabler/icons-react';
 import { Typography } from './Typography';
 
 const inputVariants = cva(
-    'flex h-10 rounded-md px-3 py-1 text-form font-normal text-primary transition-colors file:border-0 file:bg-transparent file:text-form file:py-2 placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50 relative',
+    'flex h-10 rounded-md px-3 py-1 text-form font-normal text-primary transition-colors file:border-0 file:bg-transparent file:text-form  file:py-2 placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 relative',
     {
         variants: {
             variant: {
-                default: 'border border-input bg-transparent',
-                white: 'bg-white',
+                default: 'border border-gray-300 focus:border-primary-light bg-transparent',
+                white: 'bg-white border border-transparent focus:border-primary-light',
             },
         },
         defaultVariants: {
@@ -88,7 +88,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <Typography
                     variant="sm"
                     className={cn(
-                        'text-destructive px-1 min-h-5',
+                        'text-destructive px-1 min-h-5 leading-1',
                         {
                             invisible: !errorMessage,
                         },
