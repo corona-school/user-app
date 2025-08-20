@@ -39,6 +39,7 @@ export interface LFSubCourse {
     allowChatContactParticipants?: boolean;
     groupChatType?: ChatType;
     appointments?: Appointment[];
+    joinedAppointments?: Appointment[];
 }
 
 export type LFLecture = {
