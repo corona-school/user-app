@@ -483,7 +483,8 @@
                 "dataUsageInfoLabel": "Lern-Fair 'a kaydolduğunuzda verilerinize bu şekilde olur:",
                 "dataUsageUSA": "ABD'deki işleyiciler tarafından veri işleme",
                 "accordionUsDataProcessors": "Kişisel verilerimin işlenmesinin, ABD istihbarat servislerinden gelen talepler nedeniyle Avrupa veri koruma düzeyine uygunluğu garanti edemeyen ABD merkezli işleyicilerimiz Google ve Heroku tarafından gerçekleştirildiğini kabul ediyorum. Lern-Fair Bu amaçla, standart sözleşme hükümleri imzalanmış ve GDPR Madde 46 paragraf 2 lit. c uyarınca ilave güvenlik önlemleri kabul edilmiştir.",
-                "sendRegistration": "Kayıt gönderin"
+                "sendRegistration": "Kayıt gönderin",
+                "labelTermsAndPrivacy": "<privacy>Gizlilik Politikasını</privacy> ve <agb>Şartlar ve Koşulları</agb> okudum ve kabul ettim."
             },
             "confirmEmail": {
                 "title": "Lütfen e-postanızı onaylayın",
