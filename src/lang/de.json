@@ -542,7 +542,7 @@
                     },
                     {
                         "question": "Welche Sprache wird gesprochen?",
-                        "answer": "Meistens Deutsch, aber wir können auch Englisch oder andere Sprachen. Falls du nicht gut Deutsch sprichst, schreibe uns einfach eine Email, dann finden wir eine Lösung."
+                        "answer": "Meistens Deutsch, aber wir können auch Englisch oder andere Sprachen. Falls du nicht gut Deutsch sprichst, schreibe uns einfach eine E-Mail, dann finden wir eine Lösung."
                     }
                 ],
                 "faqStudent": [
@@ -553,15 +553,15 @@
                 ]
             },
             "emailOwner": {
-                "title": "Wessen Email-Adresse nutzen wir?",
+                "title": "Wessen E-Mail-Adresse nutzen wir?",
                 "description": "Wir schicken alle Informationen zum Start an diese E-Mail-Adresse. Man kann sie später auch ändern."
             },
             "authenticationInfo": {
                 "title": "Anmeldung",
                 "description": "Mit deinem Konto kannst du kostenlos Gruppenkurse, 1zu1 Nachhilfe und die Hausaufgabenhilfe besuchen.",
-                "pupilEmail": "Email von Schüler:in / Azubi",
+                "pupilEmail": "E-Mail von Schüler:in / Azubi",
                 "passwordPlaceholder": "Passwort eingeben",
-                "emailPlaceholder": "Email-Adresse",
+                "emailPlaceholder": "E-Mail-Adresse",
                 "registerWith": "Anmelden mit {{method}}"
             },
             "dataPrivacy": {
@@ -578,9 +578,9 @@
                 "sendRegistration": "Registrierung abschicken"
             },
             "confirmEmail": {
-                "title": "Bitte bestätige deine Email",
+                "title": "Bitte bestätige deine E-Mail",
                 "description": "Wir haben eine Nachricht an\n\n<b>{{email}}</b>\n\nzur Aktivierung deines Kontos gesendet. Schau’ zuerst im Spam Ordner nach, falls du sie nicht bekommen hast.",
-                "changeEmail": "Email-Adresse ändern",
+                "changeEmail": "E-Mail-Adresse ändern",
                 "resendConfirmation": "Bestätigung nochmal senden",
                 "doYouHaveProblems": "Du hast Probleme mit der Anmeldung?"
             },
@@ -616,10 +616,10 @@
                 "doNotKnow": "Weiß nicht"
             },
             "notifications": {
-                "title": "Email-Benachrichtigungen einstellen",
+                "title": "E-Mail-Benachrichtigungen einstellen",
                 "titleShort": "Nachrichten",
                 "description": "Wir haben verschiedene Möglichkeiten dich auf dem Laufenden zu halten. Du kannst deine Auswahl später auch wieder ändern.",
-                "importantInformationDescription": "Ich möchte per Email oder Telefon bei wichtigen Nachrichten (z.B. neuer Termin, neue Chat-Nachricht) informiert werden.",
+                "importantInformationDescription": "Ich möchte per E-Mail oder Telefon bei wichtigen Nachrichten (z.B. neuer Termin, neue Chat-Nachricht) informiert werden.",
                 "importantInformationBadge": "Wichtige Infos",
                 "recommendationsBadge": "Hilfreiches & Tipps",
                 "recommendationsDescription": "Ich möchte über neue Angebote und allgemeine Nachrichten informiert werden."
@@ -2618,7 +2618,7 @@
             "title": "Termin erstellt ✅",
             "yourAppointment": "Dein Termin",
             "optionsDescription": "Du hast doch keine Zeit und möchtest den Termin verschieben oder absagen?",
-            "description": "Du erhältst an deine Email-Adresse eine Terminbestätigung. Du kannst dir den Termin per Klick in deinen Kalender eintragen."
+            "description": "Du erhältst an deine E-Mail-Adresse eine Terminbestätigung. Du kannst dir den Termin per Klick in deinen Kalender eintragen."
         }
     },
     "contactSupport": {
