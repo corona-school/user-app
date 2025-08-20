@@ -249,7 +249,7 @@ const Login = () => {
                         </div>
                         {loginMethod === 'password' && (
                             <div className="flex flex-col w-full">
-                                <div className="flex flex-col w-full">
+                                <div className="flex flex-col w-full gap-y-[6px]">
                                     <Label htmlFor="password">{t('password')}</Label>
                                     <div className="flex flex-col">
                                         <Input
