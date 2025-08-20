@@ -8,13 +8,14 @@ import { TextArea } from '@/components/TextArea';
 import Dropzone, { FileItem } from '@/components/Dropzone';
 import { Button } from '@/components/Button';
 import { Slider } from '@/components/Slider';
-import { SUBJECTS_MAIN, SUBJECTS_MINOR, SUBJECTS_RARE } from '@/types/subject';
+import { SUBJECTS_MINOR, SUBJECTS_RARE } from '@/types/subject';
 import { useQuery } from '@apollo/client';
 import { gql } from '@/gql';
 import { getGradeLabel } from '@/Utility';
 import { Typography } from '@/components/Typography';
 import { InfoTooltipButton } from '@/components/Tooltip';
 import { LFTag } from '@/types/lernfair/Course';
+import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 
 const TAGS_QUERY = gql(`
     query GetCourseTags($category: String!) {
@@ -77,7 +78,7 @@ const CourseDetails: React.FC<Props> = ({
     );
     const [customMaxAttendees, setCustomMaxAttendees] = useState<number>(maxParticipantCount);
 
-    const { data, loading: isLoading } = useQuery(TAGS_QUERY, { variables: { category } });
+    const { data, loading: tagsLoading } = useQuery(TAGS_QUERY, { variables: { category } });
 
     useEffect(() => {
         if (draftMaxParticipantCount === 'custom') {
@@ -101,21 +102,21 @@ const CourseDetails: React.FC<Props> = ({
                             <RadioGroupItem id="revision" value={Course_Category_Enum.Revision} />
                             <div className="inline-flex align-baseline gap-1.5">
                                 <Label htmlFor="revision">{t('course.CourseDate.form.revision')}</Label>
-                                <InfoTooltipButton tooltipContent="Du unterstützt deine Teilnehmer:innen bei den klassischen Schulfächern. In den Kursen wiederholt und übt ihr gemeinsam spezielle Themen aus der Schule." />
+                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.revisionTooltip')} />
                             </div>
                         </div>
                         <div className="flex gap-x-2 items-center">
                             <RadioGroupItem id="language" value={Course_Category_Enum.Language} />
                             <div className="inline-flex align-baseline gap-1.5">
                                 <Label htmlFor="language">{t('course.CourseDate.form.language')}</Label>
-                                <InfoTooltipButton tooltipContent="In diesen Kursen hilfst du Lernenden, sich schnell im deutschen Alltag besser zurechtzufinden. Gemeinsam übt ihr Aussprache, erweitert den Wortschatz oder trainiert Grammatik." />
+                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.languageTooltip')} />
                             </div>
                         </div>
                         <div className="flex gap-x-2 items-center">
                             <RadioGroupItem id="focus" value={Course_Category_Enum.Focus} />
                             <div className="inline-flex align-baseline gap-1.5">
                                 <Label htmlFor="focus">{t('course.CourseDate.form.focus')}</Label>
-                                <InfoTooltipButton tooltipContent="Du begleitest deine Teilnehmer:innen durch spannende Kurse zu wichtigen Themen, die sie im Alltag und für ihre Zukunft stärken. Über das Jahr verteilt behandeln die Kurse wichtige Inhalte wie z.B. Social Media, Ausbildung, Mobbing oder Mental Health." />
+                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.focusTooltip')} />
                             </div>
                         </div>
                     </RadioGroup>
@@ -135,7 +136,7 @@ const CourseDetails: React.FC<Props> = ({
                 />
                 {errors.includes('course-name') && (
                     <Typography variant="sm" className="text-red-500 error">
-                        Bitte gib einen Kursnamen ein.
+                        {t('course.error.course-name')}
                     </Typography>
                 )}
             </div>
@@ -153,7 +154,7 @@ const CourseDetails: React.FC<Props> = ({
                 />
                 {errors.includes('description') && (
                     <Typography variant="sm" className="text-red-500 error">
-                        Bitte gib eine Kursbeschreibung ein.
+                        {t('course.error.description')}
                     </Typography>
                 )}
             </div>
@@ -179,7 +180,7 @@ const CourseDetails: React.FC<Props> = ({
                         className="flex-grow"
                         onClick={() => setDraftMaxParticipantCount('custom')}
                     >
-                        Eigene
+                        {t('course.CourseDate.form.customMembersCount')}
                     </Button>
                 </div>
                 {draftMaxParticipantCount === 'custom' && (
@@ -206,7 +207,7 @@ const CourseDetails: React.FC<Props> = ({
                     </div>
                     {errors.includes('subject') && (
                         <Typography variant="sm" className="text-red-500 error">
-                            Bitte wähle ein Fach aus.
+                            {t('course.error.subject')}
                         </Typography>
                     )}
                 </div>
@@ -220,6 +221,7 @@ const CourseDetails: React.FC<Props> = ({
                         <InfoTooltipButton tooltipContent="TODO" />
                     </div>
                     <div className="flex gap-2.5 flex-wrap">
+                        {tagsLoading && <CenterLoadingSpinner />}
                         {data?.courseTags.map((tag) => (
                             <Button
                                 key={tag.id}
@@ -256,7 +258,7 @@ const CourseDetails: React.FC<Props> = ({
                 </Label>
                 {errors.includes('grade-range') && (
                     <Typography variant="sm" className="text-red-500 error">
-                        Bitte gib einen Klassenbereich an.
+                        {t('course.error.grade-range')}
                     </Typography>
                 )}
             </div>

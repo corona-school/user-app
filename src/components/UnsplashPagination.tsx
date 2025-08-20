@@ -1,7 +1,7 @@
 import { cn } from '@/lib/Tailwind';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useCallback, useMemo } from 'react';
-import { usePagination } from '../hooks/usePagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Button } from './Button';
 
 type Props = {

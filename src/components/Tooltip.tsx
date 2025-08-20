@@ -2,7 +2,6 @@ import * as React from 'react';
 import * as TooltipPrimitive from '@radix-ui/react-tooltip';
 
 import { cn } from '@/lib/Tailwind';
-import InfoGreen from '@/assets/icons/icon_info_dk_green.svg';
 import { IconInfoCircleFilled } from '@tabler/icons-react';
 
 const TooltipProvider = TooltipPrimitive.Provider;

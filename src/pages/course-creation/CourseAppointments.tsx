@@ -1,6 +1,6 @@
-import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { Lecture_Appointmenttype_Enum } from '@/gql/graphql';
 import AppointmentList, { DisplayAppointment } from '../../widgets/AppointmentList';
 import { DateTime } from 'luxon';
 import { Typography } from '@/components/Typography';
@@ -19,7 +19,6 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
     const { t } = useTranslation();
 
     const [creating, setCreating] = useState<boolean>(false);
-    // const [_draftAppointments, setDraftAppointments] = useState<DisplayAppointment[]>(appointments);
     const [placeholderId, setPlaceholderId] = useState<string | undefined>(undefined);
     const [appointmentToDelete, setAppointmentToDelete] = useState<DisplayAppointment | undefined>(undefined);
 
