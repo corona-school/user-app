@@ -568,7 +568,7 @@
                 "title": "Einwilligung Datenschutz",
                 "dataUsageInfoLabel": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
                 "dataUsageUSA": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
-                "labelTermsAndPrivacy": "Ich habe die Datenschutzbestimmungen und AGB zur Kenntnis genommen.",
+                "labelTermsAndPrivacy": "Ich habe die <privacy>Datenschutzbestimmungen</privacy> und <agb>AGB</agb> zur Kenntnis genommen.",
                 "usageBullets": {
                     "1": "Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts",
                     "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",

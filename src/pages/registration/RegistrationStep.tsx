@@ -32,9 +32,12 @@ export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisable
                     disabled={isBackDisabled}
                     onClick={onBack}
                     variant="ghost"
-                    className={cn('size-[70px] rounded-full border border-transparent hover:border-primary transition-colors duration-300 ease-in-out px-0', {
-                        invisible: !onBack,
-                    })}
+                    className={cn(
+                        'size-[70px] rounded-full border border-transparent md:hover:border-primary transition-colors duration-300 ease-in-out px-0',
+                        {
+                            invisible: !onBack,
+                        }
+                    )}
                 >
                     <IconArrowLeft size={48} className="!stroke-[2px]" />
                 </Button>
@@ -42,9 +45,12 @@ export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisable
                     disabled={isNextDisabled}
                     onClick={onNext}
                     variant="ghost"
-                    className={cn('size-[70px] rounded-full border border-transparent hover:border-primary transition-colors duration-300 ease-in-out px-0', {
-                        invisible: !onNext,
-                    })}
+                    className={cn(
+                        'size-[70px] rounded-full border border-transparent md:hover:border-primary transition-colors duration-300 ease-in-out px-0',
+                        {
+                            invisible: !onNext,
+                        }
+                    )}
                 >
                     <IconArrowRight size={48} className="!stroke-[2px]" />
                 </Button>

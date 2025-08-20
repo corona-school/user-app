@@ -147,7 +147,7 @@ const Registration = () => {
     };
 
     return (
-        <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1">
+        <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1 overflow-y-auto overflow-x-hidden">
             <div className="flex flex-col flex-1">
                 <div className="py-2 pr-4 pl-6 flex justify-end items-center">
                     <div className="flex gap-x-2 w-full items-center">
