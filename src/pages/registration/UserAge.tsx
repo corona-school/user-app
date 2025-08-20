@@ -33,7 +33,7 @@ export const UserAge = ({ onBack, onNext }: UserAgeProps) => {
             <div className="flex flex-col items-center gap-y-3 w-full pb-32 md:pb-0">
                 <div className="w-full flex flex-col items-center justify-center gap-y-1 max-w-[300px] text-center">
                     <Input
-                        autoFocus
+                        autoFocus={!form.age}
                         variant="white"
                         className="w-full h-12 max-w-20"
                         value={form.age || ''}

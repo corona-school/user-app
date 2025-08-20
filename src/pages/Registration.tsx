@@ -5,6 +5,7 @@ import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
 import useApollo from '@/hooks/useApollo';
 import { useMutation } from '@apollo/client';
+import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation } from 'react-router-dom';
 import { AcceptanceCheck } from './registration/AcceptanceCheck';
@@ -80,6 +81,7 @@ const Registration = () => {
     const [registerStudent] = useMutation(MUTATION_REGISTER_STUDENT);
     const [createCredentials] = useMutation(MUTATION_CREATE_CREDENTIALS);
     const { t } = useTranslation();
+    const container = useRef<HTMLDivElement>(null);
 
     const { form, reset, onFormChange, isLoading: isLoadingRegistrationForm, flow, goBack, goNext } = useRegistrationForm();
 
@@ -146,8 +148,12 @@ const Registration = () => {
         goNext();
     };
 
+    useEffect(() => {
+        container.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [currentStepIndex]);
+
     return (
-        <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1">
+        <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1 overflow-y-auto overflow-x-hidden" ref={container}>
             <div className="flex flex-col flex-1">
                 <div className="py-2 pr-4 pl-6 flex justify-end items-center">
                     <div className="flex gap-x-2 w-full items-center">

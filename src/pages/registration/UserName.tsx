@@ -28,13 +28,13 @@ export const UserName = ({ onBack, onNext }: UserNameProps) => {
                 {t('registration.steps.userName.congratsHint')}
             </Typography>
             <RegistrationStepTitle className="mb-10">{t('registration.steps.userName.title')}</RegistrationStepTitle>
-            <div className="flex flex-col gap-y-3 w-full max-w-[268px] pb-32 md:pb-0">
+            <div className="flex flex-col gap-y-3 w-full max-w-[268px]">
                 <div className="w-full flex flex-col justify-center gap-y-1">
                     <Label htmlFor="firstName" className="text-subtle w-full text-center">
                         {t('firstname')}
                     </Label>
                     <Input
-                        autoFocus
+                        autoFocus={!form.firstname}
                         variant="white"
                         className="w-full h-12"
                         id="firstName"

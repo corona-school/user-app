@@ -31,7 +31,7 @@ export const AcceptanceCheck = ({ onBack, onNext, onFail }: AcceptanceCheckProps
     return (
         <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={!hasCheckedAtLeastTwo()}>
             <RegistrationStepTitle className="md:mb-4 mb-4">{t('registration.steps.acceptanceCheck.title')}</RegistrationStepTitle>
-            <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
+            <Typography variant="body-lg" className="text-center mb-4 md:whitespace-pre-line text-balance">
                 {t('registration.steps.acceptanceCheck.description')}
             </Typography>
             <div className="flex flex-col gap-y-2 w-full">
@@ -70,7 +70,7 @@ export const AcceptanceCheck = ({ onBack, onNext, onFail }: AcceptanceCheckProps
                 </div>
             </div>
             <div className="w-full px-3">
-                <Button variant="accent-dark" shape="rounded" className="mt-8 w-full" onClick={onFail}>
+                <Button variant="link" className="mt-4 md:mt-8 w-full underline decoration-1" onClick={onFail}>
                     {t('registration.steps.acceptanceCheck.doNotApplyToMe')}
                 </Button>
             </div>
