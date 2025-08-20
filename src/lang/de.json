@@ -221,7 +221,7 @@
         },
         "accountNotFound": {
             "title": "Anmeldung fehlgeschlagen",
-            "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden."
+            "alert_html": "Es konnte kein Konto mit dieser E-Mail-Adresse gefunden werden."
         },
         "accountDeactivated": {
             "title": "Anmeldung fehlgeschlagen",

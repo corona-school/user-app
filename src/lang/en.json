@@ -170,7 +170,7 @@
         },
         "accountNotFound": {
             "title": "Login failed",
-            "alert_html": "No account with the email address {{email}} could be found."
+            "alert_html": "No account with this e-mail address could be found."
         },
         "accountDeactivated": {
             "title": "Login failed",

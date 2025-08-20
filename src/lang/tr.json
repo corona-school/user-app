@@ -170,7 +170,7 @@
         },
         "accountNotFound": {
             "title": "Giriş başarısız",
-            "alert_html": "E-posta adresi {{email}} olan bir hesap bulunamadı."
+            "alert_html": "Bu e-posta adresine sahip bir hesap bulunamadı."
         },
         "accountDeactivated": {
             "title": "Giriş başarısız",
