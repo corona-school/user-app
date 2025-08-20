@@ -61,13 +61,18 @@ export const ConfirmEmail = ({ onNext, retainPath }: ConfirmEmailProps) => {
             <div className="flex flex-col gap-y-10 justify-center items-center">
                 <RegistrationStepTitle className="md:mb-0 mb-0">{t('registration.steps.confirmEmail.title')}</RegistrationStepTitle>
                 <Typography variant="body-lg" className="text-center md:whitespace-pre-line text-balance">
-                    <Trans t={t} i18nKey="registration.steps.confirmEmail.description" values={{ email: form.email }} components={{ b: <b />, br: <br /> }} />
+                    <Trans
+                        t={t}
+                        i18nKey="registration.steps.confirmEmail.description"
+                        values={{ email: form.email }}
+                        components={{ b: <span className="font-semibold"></span>, br: <br /> }}
+                    />
                 </Typography>
-                <div className="flex flex-col gap-y-5 w-full items-center justify-center">
-                    <Button variant="accent-dark" shape="rounded" onClick={() => setIsOpen(true)}>
+                <div className="flex flex-col gap-y-2 w-full items-center justify-center">
+                    <Button className="w-[244px]" variant="accent-dark" shape="rounded" onClick={() => setIsOpen(true)}>
                         {t('registration.steps.confirmEmail.changeEmail')}
                     </Button>
-                    <Button variant="accent-dark" shape="rounded" onClick={requestEmailVerification} isLoading={isSendingVerification}>
+                    <Button className="w-[244px]" variant="accent-dark" shape="rounded" onClick={requestEmailVerification} isLoading={isSendingVerification}>
                         {t('registration.steps.confirmEmail.resendConfirmation')}
                     </Button>
                 </div>
