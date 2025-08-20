@@ -214,14 +214,14 @@ const Login = () => {
     }, [roles, logout]);
 
     return (
-        <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1 overflow-y-auto">
+        <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1 overflow-y-auto pb-10">
             <div className="flex flex-col flex-1">
                 <div className="py-2 pr-4 pl-6 flex justify-end mb-6">
                     <SwitchLanguageButton variant="dropdown" />
                 </div>
                 <div className="flex flex-1 flex-col items-center justify-center">
                     {!loginMethod && (
-                        <div className="flex justify-center mb-14 ml-24">
+                        <div className="flex justify-center mb-8 ml-24">
                             <WelcomeLoki />
                         </div>
                     )}
@@ -276,6 +276,7 @@ const Login = () => {
                         )}
                         <div className="flex flex-col gap-y-5 w-full text-center">
                             <Button
+                                size="lg"
                                 type="submit"
                                 className="w-full"
                                 rightIcon={<IconMail size={16} />}
@@ -289,6 +290,7 @@ const Login = () => {
                                 <>
                                     <Typography className="font-medium capitalize">{t('or')}</Typography>
                                     <Button
+                                        size="lg"
                                         disabled={isDeterminingLoginOptions || isRequestingToken || isAuthenticating}
                                         type="button"
                                         className="w-full"
@@ -304,7 +306,7 @@ const Login = () => {
                     </form>
                 </div>
             </div>
-            <div className="flex flex-col gap-y-4 text-center pb-5 md:pb-10">
+            <div className="flex flex-col gap-y-4 text-center">
                 <Typography className="text-form">
                     {`${t('login.noaccount')} `}
                     <Link to="/registration" onClick={handleTrackToRegistration} className="underline decoration-1 underline-offset-[5px]">
