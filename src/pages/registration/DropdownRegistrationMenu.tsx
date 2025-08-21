@@ -10,9 +10,10 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useRegistrationForm } from './useRegistrationForm';
+import { RegistrationStep } from './util';
 
 export const DropdownRegistrationMenu = () => {
-    const { reset } = useRegistrationForm();
+    const { reset, form } = useRegistrationForm();
     const { t } = useTranslation();
     const navigate = useNavigate();
     const [isContactSupportOpen, setIsContactSupportOpen] = useState(false);
@@ -36,18 +37,24 @@ export const DropdownRegistrationMenu = () => {
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="border-none rounded-xl flex flex-col gap-y-2 p-2 min-w-[235px]">
                     <DropdownMenuArrow />
-                    <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsNotificationPreferencesOpen(true)}>
-                        <IconBell className="!size-6" />
-                        <Typography className="font-semibold leading-3">{t('registration.menu.notifications')}</Typography>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsContactSupportOpen(true)}>
-                        <IconLifebuoy className="!size-6" />
-                        <Typography className="font-semibold leading-3">{t('registration.menu.contactSupport')}</Typography>
-                    </DropdownMenuItem>
-                    <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsDeactivateAccountOpen(true)}>
-                        <IconUserOff className="!size-6" />
-                        <Typography className="font-semibold leading-3">{t('registration.menu.deactivateAccount')}</Typography>
-                    </DropdownMenuItem>
+                    {form.currentStep !== RegistrationStep.confirmEmail && (
+                        <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsNotificationPreferencesOpen(true)}>
+                            <IconBell className="!size-6" />
+                            <Typography className="font-semibold leading-3">{t('registration.menu.notifications')}</Typography>
+                        </DropdownMenuItem>
+                    )}
+                    {form.currentStep !== RegistrationStep.confirmEmail && (
+                        <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsContactSupportOpen(true)}>
+                            <IconLifebuoy className="!size-6" />
+                            <Typography className="font-semibold leading-3">{t('registration.menu.contactSupport')}</Typography>
+                        </DropdownMenuItem>
+                    )}
+                    {form.currentStep !== RegistrationStep.confirmEmail && (
+                        <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsDeactivateAccountOpen(true)}>
+                            <IconUserOff className="!size-6" />
+                            <Typography className="font-semibold leading-3">{t('registration.menu.deactivateAccount')}</Typography>
+                        </DropdownMenuItem>
+                    )}
                     <DropdownMenuItem className="gap-x-[10px] h-12" onClick={handleOnLogout}>
                         <IconLogout className="!size-6" />
                         <Typography className="font-semibold leading-3">{t('registration.menu.logout')}</Typography>
