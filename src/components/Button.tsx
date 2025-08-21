@@ -24,7 +24,7 @@ const buttonVariants = cva(
                 linkedIn: 'bg-blue-700 text-white hover:bg-blue-600/90',
                 optional: 'bg-white text-primary border border-primary hover:bg-primary-lighter hover:border-primary-light',
                 tertiary: 'bg-gray-100 hover:bg-gray-50 text-primary',
-                'accent-dark': 'bg-accent-dark hover:bg-accent-medium font-normal text-primary active:bg-primary active:text-white active:underline',
+                'accent-dark': 'bg-accent-medium hover:bg-accent-dark font-normal text-primary active:bg-primary active:text-white active:underline',
             },
             size: {
                 default: 'h-10 px-4 text-form',
