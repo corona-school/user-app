@@ -402,7 +402,7 @@ export default function NavigatorLazy() {
 
             {/* Referral Center */}
             <Route
-                path="referral"
+                path="/referral"
                 element={
                     <RequireAuth>
                         <Referrals />

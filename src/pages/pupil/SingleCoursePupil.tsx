@@ -105,6 +105,20 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
         published
         publishedAt
         appointments {
+            id
+            appointmentType
+            title
+            description
+            start
+            duration
+            displayName
+            position
+            total
+            subcourse {
+                published
+            }
+        }
+        joinedAppointments {
               id
               appointmentType
               title
@@ -140,8 +154,8 @@ const SingleCoursePupil = () => {
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
     const appointments = useMemo(() => {
-        return subcourse?.appointments ?? [];
-    }, [subcourse?.appointments]);
+        return (subcourse?.isParticipant ? subcourse?.joinedAppointments : subcourse?.appointments) ?? [];
+    }, [subcourse?.joinedAppointments, subcourse?.appointments, subcourse?.isParticipant]);
 
     const myNextAppointment = useMemo(() => {
         const now = DateTime.now();

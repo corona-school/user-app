@@ -6,9 +6,6 @@ import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
-// Icons
-import { IconCircleNumber1Filled, IconCircleNumber2Filled, IconCircleNumber3Filled } from '@tabler/icons-react';
-
 // Importing Assests
 import Confetti from '../assets/images/referral/Confetti.svg';
 import ConfettiMobile from '../assets/images/referral/ConfettiMobile.svg';
@@ -26,6 +23,7 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { useUserType } from '@/hooks/useApollo';
 import { Button } from '@/components/Button';
 import { SHARING_MATERIALS_URL } from '@/config';
+import { useScrollToTop } from '@/hooks/useScrollRestoration';
 
 const ReferralCountQuery = gql(`
     query ReferralCount {
@@ -59,6 +57,8 @@ const Referrals: React.FC<{}> = () => {
         }
     };
 
+    useScrollToTop();
+
     useEffect(() => {
         trackPageView({
             documentTitle: 'Referrals',
@@ -71,7 +71,7 @@ const Referrals: React.FC<{}> = () => {
 
     // Share Variables
     const referralMessage = t('referral.referralMessage');
-    const [linkedinButtonText, setLinkedinButtonText] = useState(t('referral.share.option3.option'));
+    const [linkedinButtonText, setLinkedinButtonText] = useState(t('referral.share.option3'));
 
     // Fetch referral count and supported hours
     const { data: referralData, error: referralError } = useQuery(ReferralCountQuery);
@@ -107,7 +107,7 @@ const Referrals: React.FC<{}> = () => {
 
         setTimeout(() => {
             window.open(linkedinURL, '_blank');
-            setLinkedinButtonText(t('referral.share.option3.option'));
+            setLinkedinButtonText(t('referral.share.option3'));
         }, 2000);
     };
 
@@ -150,50 +150,110 @@ const Referrals: React.FC<{}> = () => {
                 </div>
             }
         >
-            <Breadcrumb className="md:mx-2" />
-            {/* Desktop View */}
-            <div className="hidden lg:block mt-8">
-                <div className={`flex items-center px-2 my-3 max-w-full space-x-12`}>
-                    <div className="flex flex-col w-[48%] z-1">
-                        <div>
-                            <Typography variant="h3" className="mb-2">
-                                {t('referral.title')}
+            <div className="max-w-full overflow-hidden">
+                <Breadcrumb className="md:mx-2" />
+                {/* Desktop View */}
+                <div className="hidden lg:block mt-8">
+                    <div className={`flex items-center px-2 my-3 max-w-full space-x-12`}>
+                        <div className="flex flex-col w-[48%] z-1">
+                            <div>
+                                <Typography variant="h3" className="mb-2">
+                                    {t('referral.title')}
+                                </Typography>
+                                <Typography className="mb-3">{t('referral.description')}</Typography>
+                                <Typography variant="h4" className="mb-1.5 font-bold">
+                                    {t('referral.share.title')}
+                                </Typography>
+                                <Typography className="mb-3">{t('referral.share.description')}</Typography>
+
+                                {/* Share Buttons */}
+                                <SocialOptions
+                                    uniqueReferralLink={uniqueReferralLink}
+                                    referralMessage={referralMessage}
+                                    onCopy={(text) => handleOnCopy(text, 'Desktop')}
+                                    hasCopied={hasCopied}
+                                    linkedinButtonText={linkedinButtonText}
+                                    t={t}
+                                    shareToLinkedIn={shareToLinkedIn}
+                                    handleShare={handleShare}
+                                />
+                            </div>
+                        </div>
+                        <div className="flex flex-col w-[52%] relative">
+                            <BGDesktop style={{ position: 'absolute', top: '-140px', left: 'calc(-380px + (100% - 686px) / 2)', zIndex: -1 }}></BGDesktop>
+
+                            <div className="w-[480px] mx-auto bg-white rounded-md shadow-lg p-10 pb-0 relative">
+                                <Confetti style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.8)' }}></Confetti>
+
+                                <Rewards referralCount={referralCount} supportedHours={supportedHours} t={t} />
+                            </div>
+                        </div>
+                    </div>
+                    <div className="flex flex-col px-2 max-w-[40%]">
+                        <Typography variant="h4" className="mt-14 mb-1.5 font-bold">
+                            {t('referral.share.materials.title')}
+                        </Typography>
+                        <Typography>{t('referral.share.materials.description')}</Typography>
+                        <Button className="mt-4" variant="outline" onClick={() => window.open(SHARING_MATERIALS_URL, '_blank')}>
+                            {t('referral.share.materials.button')}
+                        </Button>
+                    </div>
+                </div>
+
+                {/* Mobile View */}
+                <div className="block lg:hidden">
+                    <div className="min-w-[300px] max-w-[768px] space-y-4 mx-auto">
+                        <div className="min-h-[220px]">
+                            <BGMobile style={{ position: 'absolute', right: 0 }}></BGMobile>
+                            <Character style={{ position: 'absolute', top: '135px', right: 16 }}></Character>
+                            <div>
+                                <Typography variant="h5" className="font-bold mt-4 mb-3">
+                                    {t('referral.title')}
+                                </Typography>
+                                <Typography className="mb-3 w-2/5">{t('referral.description')}</Typography>
+                            </div>
+                        </div>
+                        <div className="relative h-[140px] bg-white rounded-md shadow-lg p-5">
+                            <ConfettiMobile style={{ position: 'absolute', top: '-30px', right: '-10px', transform: 'scale(.4)' }}></ConfettiMobile>
+
+                            <Typography variant="h5" className="font-bold mb-3">
+                                {t('referral.reward.title')}
                             </Typography>
-                            <Typography className="mb-3">{t('referral.description')}</Typography>
-                            <Typography variant="h4" className="mb-1.5 font-bold">
-                                {t('referral.share.title')}
-                            </Typography>
-                            <Typography className="mb-3">{t('referral.share.description')}</Typography>
-
-                            {/* Options */}
-                            <div className="flex space-x-2 m-3 mb-8 mt-8 items-center">
-                                <IconCircleNumber1Filled className="w-6 h-6 flex-shrink-0" />
-                                <Typography variant="h5">
-                                    {t('referral.share.option1.option')}
-                                    <Typography className="inline">{t('referral.share.option1.description')}</Typography>
+                            <div className="flex space-x-5">
+                                <Typography variant="h6" className="font-bold mb-3">
+                                    {t('referral.reward.RegisteredUsers')}
+                                </Typography>
+                                <Typography variant="h5" className="font-bold mb-3 text-primary-400">
+                                    {referralCount}
                                 </Typography>
                             </div>
-
-                            <div className="flex space-x-2 m-3 mb-8 items-center">
-                                <IconCircleNumber2Filled className="w-6 h-6 flex-shrink-0" />
-                                <Typography variant="h5">
-                                    {t('referral.share.option2.option')}
-                                    <Typography className="inline">{t('referral.share.option2.description')}</Typography>
+                            <div className="flex space-x-5">
+                                <Typography variant="h6" className="font-bold">
+                                    {t('referral.reward.HoursSupported')}
+                                </Typography>
+                                <Typography variant="h5" className="font-bold text-primary-400">
+                                    {referralCount >= 3 ? (
+                                        supportedHours
+                                    ) : (
+                                        <div className="group relative">
+                                            <LOCK className="w-[20px] h-[20px]" />
+                                            <div className="absolute left-full top-[-10px] hidden group-hover:block w-[180px] p-3 flex flex-col items-start gap-1 bg-[#ECF3F2] text-primary-700 font-outfit text-xs font-normal leading-[10px] rounded-[6px] ml-2">
+                                                <div className="text-primary-700 font-outfit text-xs font-normal leading-[10px]">
+                                                    {t('referral.reward.tooltip')}
+                                                </div>
+                                                <div className="absolute left-[-10px] top-[50%] transform -translate-y-[60%] w-0 h-0 border-t-[5px] border-r-[10px] border-b-[5px] border-transparent border-r-[#ECF3F2]"></div>
+                                            </div>
+                                        </div>
+                                    )}
                                 </Typography>
                             </div>
-
-                            <div className="flex space-x-2 m-3 mb-4 items-center">
-                                <IconCircleNumber3Filled className="w-6 h-6 flex-shrink-0" />
-                                <Typography variant="h5">
-                                    {t('referral.share.option3.option')}
-                                    <Typography className="inline">{t('referral.share.option3.description')}</Typography>
-                                </Typography>
-                            </div>
+                        </div>
+                        <div className="h-[170px] bg-white rounded-md shadow-lg p-5">
                             {/* Share Buttons */}
                             <SocialOptions
                                 uniqueReferralLink={uniqueReferralLink}
                                 referralMessage={referralMessage}
-                                onCopy={(text) => handleOnCopy(text, 'Desktop')}
+                                onCopy={(text) => handleOnCopy(text, 'Mobile')}
                                 hasCopied={hasCopied}
                                 linkedinButtonText={linkedinButtonText}
                                 t={t}
@@ -201,98 +261,16 @@ const Referrals: React.FC<{}> = () => {
                                 handleShare={handleShare}
                             />
                         </div>
-                    </div>
-                    <div className="flex flex-col w-[52%] relative">
-                        <BGDesktop style={{ position: 'absolute', top: '-140px', left: 'calc(-380px + (100% - 686px) / 2)', zIndex: -1 }}></BGDesktop>
-
-                        <div className="w-[480px] mx-auto bg-white rounded-md shadow-lg p-10 pb-0 relative">
-                            <Confetti style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.8)' }}></Confetti>
-
-                            <Rewards referralCount={referralCount} supportedHours={supportedHours} t={t} />
-                        </div>
-                    </div>
-                </div>
-                <div className="flex flex-col px-2 max-w-[40%]">
-                    <Typography variant="h4" className="mt-14 mb-1.5 font-bold">
-                        {t('referral.share.materials.title')}
-                    </Typography>
-                    <Typography>{t('referral.share.materials.description')}</Typography>
-                    <Button className="mt-4" variant="outline" onClick={() => window.open(SHARING_MATERIALS_URL, '_blank')}>
-                        {t('referral.share.materials.button')}
-                    </Button>
-                </div>
-            </div>
-
-            {/* Mobile View */}
-            <div className="block lg:hidden">
-                <div className="min-w-[300px] max-w-[768px] space-y-4 mx-auto">
-                    <div className="h-[220px]">
-                        <BGMobile style={{ position: 'absolute', right: 0 }}></BGMobile>
-                        <Character style={{ position: 'absolute', top: '135px', right: 16 }}></Character>
-                        <div>
-                            <Typography variant="h5" className="font-bold mt-4 mb-3">
-                                {t('referral.title')}
-                            </Typography>
-                            <Typography className="mb-3 w-2/5">{t('referral.description')}</Typography>
-                        </div>
-                    </div>
-                    <div className="h-[140px] bg-white rounded-md shadow-lg p-5">
-                        <ConfettiMobile style={{ position: 'absolute', top: '320px', right: '10px', transform: 'scale(.6)' }}></ConfettiMobile>
-
-                        <Typography variant="h5" className="font-bold mb-3">
-                            {t('referral.reward.title')}
-                        </Typography>
-                        <div className="flex space-x-5">
-                            <Typography variant="h6" className="font-bold mb-3">
-                                {t('referral.reward.RegisteredUsers')}
-                            </Typography>
-                            <Typography variant="h5" className="font-bold mb-3 text-primary-400">
-                                {referralCount}
-                            </Typography>
-                        </div>
-                        <div className="flex space-x-5">
-                            <Typography variant="h6" className="font-bold">
-                                {t('referral.reward.HoursSupported')}
-                            </Typography>
-                            <Typography variant="h5" className="font-bold text-primary-400">
-                                {referralCount >= 3 ? (
-                                    supportedHours
-                                ) : (
-                                    <div className="group relative">
-                                        <LOCK className="w-[20px] h-[20px]" />
-                                        <div className="absolute left-full top-[-10px] hidden group-hover:block w-[180px] p-3 flex flex-col items-start gap-1 bg-[#ECF3F2] text-primary-700 font-outfit text-xs font-normal leading-[10px] rounded-[6px] ml-2">
-                                            <div className="text-primary-700 font-outfit text-xs font-normal leading-[10px]">
-                                                {t('referral.reward.tooltip')}
-                                            </div>
-                                            <div className="absolute left-[-10px] top-[50%] transform -translate-y-[60%] w-0 h-0 border-t-[5px] border-r-[10px] border-b-[5px] border-transparent border-r-[#ECF3F2]"></div>
-                                        </div>
-                                    </div>
-                                )}
-                            </Typography>
-                        </div>
-                    </div>
-                    <div className="h-[170px] bg-white rounded-md shadow-lg p-5">
-                        {/* Share Buttons */}
-                        <SocialOptions
-                            uniqueReferralLink={uniqueReferralLink}
-                            referralMessage={referralMessage}
-                            onCopy={(text) => handleOnCopy(text, 'Mobile')}
-                            hasCopied={hasCopied}
-                            linkedinButtonText={linkedinButtonText}
-                            t={t}
-                            shareToLinkedIn={shareToLinkedIn}
-                            handleShare={handleShare}
-                        />
-                    </div>
-                    <div className="bg-white rounded-md shadow-lg p-5">
-                        <div className="flex flex-col">
-                            <Typography variant="h6" className="mb-1.5 font-bold">
-                                {t('referral.share.materials.title')}
-                            </Typography>
-                            <Typography>{t('referral.share.materials.description')}</Typography>
-                            <Button className="mt-4 w-full" variant="outline" onClick={handleOnShare}>
-                                {t('referral.share.materials.button')}
-                            </Button>
+                        <div className="bg-white rounded-md shadow-lg p-5">
+                            <div className="flex flex-col">
+                                <Typography variant="h6" className="mb-1.5 font-bold">
+                                    {t('referral.share.materials.title')}
+                                </Typography>
+                                <Typography>{t('referral.share.materials.description')}</Typography>
+                                <Button className="mt-4 w-full" variant="outline" onClick={handleOnShare}>
+                                    {t('referral.share.materials.button')}
+                                </Button>
+                            </div>
                         </div>
                     </div>
                 </div>

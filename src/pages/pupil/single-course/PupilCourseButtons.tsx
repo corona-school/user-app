@@ -33,7 +33,7 @@ type PupilCourseButtonsProps = {
         | 'canJoinWaitinglist'
         | 'isParticipant'
         | 'isOnWaitingList'
-    > & { instructors: Pick<Instructor, 'id'>[]; appointments: Pick<Lecture, 'id' | 'duration' | 'start' | 'appointmentType' | 'override_meeting_link'>[] };
+    > & { instructors: Pick<Instructor, 'id'>[] };
     refresh: () => Promise<ApolloQueryResult<unknown>>;
     isActiveSubcourse: boolean;
     appointment?: Lecture;
