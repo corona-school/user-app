@@ -1,33 +1,34 @@
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Text, VStack, useTheme, useToast, Radio, Button, TextArea, Modal } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useUserType } from '../hooks/useApollo';
-import DisableableButton from '../components/DisablebleButton';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
+import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
+import { Label } from '@/components/Label';
+import { TextArea } from '@/components/TextArea';
+import { toast } from 'sonner';
 
 // corresponding dissolve reason ids in translation file
 // for now just loop through 0-5 and 0-6 (+1 in loop)
 const pupilReasons = new Array(6).fill(0);
 const studentReasons = new Array(7).fill(0);
 
-type Props = {
-    isOpen?: boolean;
-    onCloseModal?: () => any;
-};
+interface DeactivateAccountModalProps extends BaseModalProps {
+    onDeactivated?: () => void;
+}
 
-const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
-    const [reason, setReason] = useState<string>();
-    const [other, setOther] = useState<string>('');
-    const { space } = useTheme();
+const DeactivateAccountModal = ({ isOpen, onOpenChange, onDeactivated }: DeactivateAccountModalProps) => {
+    const [reason, setReason] = useState('');
+    const [other, setOther] = useState('');
     const navigate = useNavigate();
     const { trackEvent } = useMatomo();
     const { t } = useTranslation();
-
     const userType = useUserType();
-    const toast = useToast();
 
     const [deactivateAccount, { loading: loadingDeactivate }] = useMutation(
         gql(`
@@ -50,14 +51,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
         !isOther && setOther('');
     }, [isOther, reason, reasons.length]);
 
-    const showError = useCallback(() => {
-        toast.show({
-            description: t('profile.Deactivate.error'),
-            placement: 'top',
-        });
-    }, [t, toast]);
-
-    const deactivate = useCallback(async () => {
+    const deactivate = async () => {
         if (reason === undefined) return;
         try {
             const res = await deactivateAccount({
@@ -66,7 +60,7 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
                 },
             });
 
-            onCloseModal && onCloseModal();
+            onOpenChange(false);
             if (res.data?.meDeactivate) {
                 trackEvent({
                     category: 'profil',
@@ -75,13 +69,15 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
                     documentTitle: 'Deactivate',
                 });
                 navigate('/logout', { state: { deactivated: true } });
+                onDeactivated && onDeactivated();
+                toast.success(t('profile.Deactivate.success'));
             } else {
-                showError();
+                toast.error(t('profile.Deactivate.error'));
             }
         } catch (e) {
-            showError();
+            toast.error(t('profile.Deactivate.error'));
         }
-    }, [reason, deactivateAccount, isOther, t, userType, other, onCloseModal, trackEvent, navigate, toast]);
+    };
 
     const isValidInput = useMemo(() => {
         if (!reason) return false;
@@ -94,43 +90,33 @@ const DeactivateAccountModal: React.FC<Props> = ({ isOpen, onCloseModal }) => {
     }, [other.length, reason, reasons.length]);
 
     return (
-        <Modal isOpen={isOpen} onClose={onCloseModal}>
-            <Modal.Content>
-                <Modal.CloseButton />
-                <Modal.Header>{t('profile.Deactivate.modal.title')}</Modal.Header>
-                <Modal.Body>
-                    <VStack space={space['1']}>
-                        <Text>{desc}</Text>
-                        <Radio.Group name="reasons" onChange={setReason}>
-                            <VStack space={space['0.5']}>
-                                {reasons.map((_, index: number) => (
-                                    <Radio key={index} value={`${index + 1}`}>
-                                        {t(`profile.Deactivate.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
-                                    </Radio>
-                                ))}
-                            </VStack>
-                        </Radio.Group>
-
-                        {isOther && (
-                            <TextArea
-                                value={other}
-                                onChangeText={setOther}
-                                autoCompleteType={'normal'}
-                                placeholder={t('profile.Deactivate.modal.other.placeholder')}
-                            />
-                        )}
-                    </VStack>
-                </Modal.Body>
-                <Modal.Footer>
-                    <DisableableButton
-                        isDisabled={!isValidInput || loadingDeactivate}
-                        reasonDisabled={t('profile.Deactivate.modal.tooltip')}
-                        onPress={deactivate}
-                    >
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+            <div>
+                <ModalHeader>
+                    <ModalTitle>{t('profile.Deactivate.modal.title')}</ModalTitle>
+                </ModalHeader>
+                <div className="flex flex-col gap-y-1 pt-4">
+                    <Typography className="mb-6 text-pretty">{desc}</Typography>
+                    <RadioGroup name="reasons" value={reason} onValueChange={setReason} className="flex flex-col gap-y-4">
+                        {reasons.map((_, index) => (
+                            <div className="flex gap-x-2 items-center" key={`content-${index}`}>
+                                <RadioGroupItem id={`item-${index}`} value={`${index + 1}`} />
+                                <Label htmlFor={`item-${index}`} className="cursor-pointer">
+                                    {t(`profile.Deactivate.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
+                                </Label>
+                            </div>
+                        ))}
+                    </RadioGroup>
+                    {isOther && (
+                        <TextArea className="mt-4" value={other} onChangeText={setOther} placeholder={t('profile.Deactivate.modal.other.placeholder')} />
+                    )}
+                </div>
+                <ModalFooter className="mt-4">
+                    <Button variant="destructive" disabled={!isValidInput} className="w-full lg:w-fit" isLoading={loadingDeactivate} onClick={deactivate}>
                         {t('profile.Deactivate.modal.btn')}
-                    </DisableableButton>
-                </Modal.Footer>
-            </Modal.Content>
+                    </Button>
+                </ModalFooter>
+            </div>
         </Modal>
     );
 };
