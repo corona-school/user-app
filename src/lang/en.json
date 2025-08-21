@@ -821,7 +821,8 @@
                 "6": "I do not meet the entry requirements for the projects.",
                 "7": "Other"
             },
-            "error": "Your account could not be deactivated."
+            "error": "Your account could not be deactivated.",
+            "success": "Your account has been deactivated."
         },
         "title": "My profile",
         "successmessage": "Changes have been saved successfully.",
