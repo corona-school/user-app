@@ -620,7 +620,13 @@
             "parent": "البريد الإلكتروني للوالدين",
             "other": "البريد الإلكتروني للشخص المساعد"
         },
-        "stepStateCount": "{{current}} من {{total}}]"
+        "stepStateCount": "{{current}} من {{total}}]",
+        "menu": {
+            "notifications": "الإشعارات",
+            "contactSupport": "الاتصال بالدعم",
+            "deactivateAccount": "تعطيل الحساب",
+            "logout": "تسجيل الخروج"
+        }
     },
     "helpcenter": {
         "subtitle": {

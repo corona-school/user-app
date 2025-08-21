@@ -620,7 +620,13 @@
             "parent": "Parent Email",
             "other": "Support person Email"
         },
-        "stepStateCount": "{{current}} of {{total}}"
+        "stepStateCount": "{{current}} of {{total}}",
+        "menu": {
+            "notifications": "Notifications",
+            "contactSupport": "Contact support",
+            "deactivateAccount": "Deactivate account",
+            "logout": "Log out"
+        }
     },
     "helpcenter": {
         "subtitle": {

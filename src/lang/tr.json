@@ -620,7 +620,13 @@
             "parent": "Ebeveyn E-postası",
             "other": "Yardımcı kişi E-posta"
         },
-        "stepStateCount": "{{total}}'in {{current}}'ı"
+        "stepStateCount": "{{total}}'in {{current}}'ı",
+        "menu": {
+            "notifications": "Bildirimler",
+            "contactSupport": "İletişim desteği",
+            "deactivateAccount": "Hesabı devre dışı bırak",
+            "logout": "Oturumu kapat"
+        }
     },
     "helpcenter": {
         "subtitle": {

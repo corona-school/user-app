@@ -620,7 +620,13 @@
             "parent": "Электронная почта родителей",
             "other": "Вспомогательное лицо Электронная почта"
         },
-        "stepStateCount": "{{current}} из {{total}}"
+        "stepStateCount": "{{current}} из {{total}}",
+        "menu": {
+            "notifications": "Уведомления",
+            "contactSupport": "Контактная поддержка",
+            "deactivateAccount": "Деактивировать учетную запись",
+            "logout": "Выход из системы"
+        }
     },
     "helpcenter": {
         "subtitle": {

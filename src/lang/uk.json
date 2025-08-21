@@ -620,7 +620,13 @@
             "parent": "Електронна пошта батьків",
             "other": "Допоміжна особа Email"
         },
-        "stepStateCount": "{{current}} з {{total}}"
+        "stepStateCount": "{{current}} з {{total}}",
+        "menu": {
+            "notifications": "Сповіщення",
+            "contactSupport": "Зверніться до служби підтримки",
+            "deactivateAccount": "Деактивувати обліковий запис",
+            "logout": "Вийдіть з системи"
+        }
     },
     "helpcenter": {
         "subtitle": {

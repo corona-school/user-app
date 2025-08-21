@@ -443,6 +443,12 @@
             "parent": "Elternteil",
             "other": "Hilfsperson"
         },
+        "menu": {
+            "notifications": "Benachrichtigungen",
+            "contactSupport": "Support kontaktieren",
+            "deactivateAccount": "Konto deaktivieren",
+            "logout": "Abmelden"
+        },
         "hint": {
             "name": "Bitte gebe deinen vollen Namen an",
             "schoolClassSelectionMissing": "Bitte wähle eine Klasse aus.",
