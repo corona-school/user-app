@@ -11,6 +11,7 @@ const priorityLanguages: Language[] = [
     Language.Ukrainisch,
     Language.Russisch,
     Language.Polnisch,
+    Language.RumNisch,
     Language.Englisch,
 ];
 

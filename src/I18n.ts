@@ -114,50 +114,50 @@ export const languageList = [
 ];
 
 export const languageIcons = {
-    sq: AL, // Albanian → Albania
-    am: ET, // Amharic → Ethiopia
-    ar: SA, // Arabic → Saudi Arabia
-    hy: AM, // Armenian → Armenia
-    az: AZ, // Azerbaijani → Azerbaijan
-    bs: BA, // Bosnian → Bosnia
-    bg: BG, // Bulgarian → Bulgaria
-    zh: CN, // Chinese → China
-    de: DE, // German → Germany
-    en: GB, // English → Great Britain
-    et: EE, // Estonian → Estonia
-    fr: FR, // French → France
-    ka: GE, // Georgian → Georgia
-    el: GR, // Greek → Greece
-    ha: NG, // Hausa → Nigeria (main Hausa-speaking country)
-    he: IL, // Hebrew → Israel
-    hi: IN, // Hindi → India
-    it: IT, // Italian → Italy
-    kk: KZ, // Kazakh → Kazakhstan
-    hr: HR, // Croatian → Croatia
-    ku: TR, // Kurdish → Turkey (could also be IQ, IR, SY, but pick one)
-    ln: CD, // Lingala → Congo (Democratic Republic)
-    lt: LT, // Lithuanian → Lithuania
-    ml: IN, // Malayalam → India
-    mk: MK, // Macedonian → North Macedonia
-    nl: NL, // Dutch → Netherlands
-    fa: IR, // Persian → Iran
-    pl: PL, // Polish → Poland
-    pt: PT, // Portuguese → Portugal
-    ro: RO, // Romanian → Romania
-    ru: RU, // Russian → Russia
-    sr: RS, // Serbian → Serbia
-    sk: SK, // Slovak → Slovakia
-    so: SO, // Somali → Somalia
-    es: ES, // Spanish → Spain
-    tg: TJ, // Tajik → Tajikistan
-    th: TH, // Thai → Thailand
-    ti: ER, // Tigrinya → Eritrea
-    cs: CZ, // Czech → Czech Republic
-    tr: TR, // Turkish → Turkey
-    uk: UA, // Ukrainian → Ukraine
-    hu: HU, // Hungarian → Hungary
-    ur: PK, // Urdu → Pakistan
-    vi: VN, // Vietnamese → Vietnam
+    sq: AL, // Albanian -> Albania
+    am: ET, // Amharic -> Ethiopia
+    ar: SA, // Arabic -> Saudi Arabia
+    hy: AM, // Armenian -> Armenia
+    az: AZ, // Azerbaijani -> Azerbaijan
+    bs: BA, // Bosnian -> Bosnia
+    bg: BG, // Bulgarian -> Bulgaria
+    zh: CN, // Chinese -> China
+    de: DE, // German -> Germany
+    en: GB, // English -> Great Britain
+    et: EE, // Estonian -> Estonia
+    fr: FR, // French -> France
+    ka: GE, // Georgian -> Georgia
+    el: GR, // Greek -> Greece
+    ha: NG, // Hausa -> Nigeria
+    he: IL, // Hebrew -> Israel
+    hi: IN, // Hindi -> India
+    it: IT, // Italian -> Italy
+    kk: KZ, // Kazakh -> Kazakhstan
+    hr: HR, // Croatian -> Croatia
+    ku: TR, // Kurdish -> Turkey
+    ln: CD, // Lingala -> Congo
+    lt: LT, // Lithuanian -> Lithuania
+    ml: IN, // Malayalam -> India
+    mk: MK, // Macedonian -> North Macedonia
+    nl: NL, // Dutch -> Netherlands
+    fa: IR, // Persian -> Iran
+    pl: PL, // Polish -> Poland
+    pt: PT, // Portuguese -> Portugal
+    ro: RO, // Romanian -> Romania
+    ru: RU, // Russian -> Russia
+    sr: RS, // Serbian -> Serbia
+    sk: SK, // Slovak -> Slovakia
+    so: SO, // Somali -> Somalia
+    es: ES, // Spanish -> Spain
+    tg: TJ, // Tajik -> Tajikistan
+    th: TH, // Thai -> Thailand
+    ti: ER, // Tigrinya -> Eritrea
+    cs: CZ, // Czech -> Czech Republic
+    tr: TR, // Turkish -> Turkey
+    uk: UA, // Ukrainian -> Ukraine
+    hu: HU, // Hungarian -> Hungary
+    ur: PK, // Urdu -> Pakistan
+    vi: VN, // Vietnamese -> Vietnam
 };
 
 export const defaultLang = 'de';
