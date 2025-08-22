@@ -115,7 +115,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
         canEdit { allowed reason }
         canContactParticipants { allowed reason }
         canCancel { allowed reason }
-        joinedAppointments(as: "organizer") {
+        joinedAppointments(as: organizer) {
             id
             appointmentType
             title
