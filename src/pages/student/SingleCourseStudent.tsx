@@ -64,6 +64,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             tags{
             name
             }
+            isInstructor
             allowContact
         }
         lectures{
@@ -191,6 +192,11 @@ const SingleCourseStudent = () => {
         if (data?.subcourse?.isInstructor) return true;
         return false;
     }, [data?.subcourse?.isInstructor]);
+
+    const isInstructorOfCourse = useMemo(() => {
+        if (data?.subcourse?.course?.isInstructor) return true;
+        return false;
+    }, [data?.subcourse?.course?.isInstructor]);
 
     const {
         data: instructorSubcourse,
@@ -430,7 +436,7 @@ const SingleCourseStudent = () => {
                                     </Button>
                                 )}
                             </div>
-                            {!isInPast && isInstructorOfSubcourse && (
+                            {!isInPast && isInstructorOfCourse && (
                                 <Banner
                                     courseState={course.courseState}
                                     isCourseCancelled={subcourse.cancelled}
@@ -439,7 +445,7 @@ const SingleCourseStudent = () => {
                                 />
                             )}
                         </div>
-                        {isInstructorOfSubcourse && instructorSubcourse?.subcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
+                        {isInstructorOfCourse && instructorSubcourse?.subcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                             <PromoteBanner
                                 onPromoted={handleOnPromoted}
                                 subcourse={{
