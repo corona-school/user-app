@@ -186,7 +186,7 @@ const CreateCourse: React.FC = () => {
                         name
                     }
                 }
-                joinedAppointments {
+                joinedAppointments(as: organizer) {
                     id
                     start
                     duration
