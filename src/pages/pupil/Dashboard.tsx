@@ -1,4 +1,5 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack } from 'native-base';
+import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading } from 'native-base';
+import { Button as NewButton } from '@/components/Button';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
@@ -23,6 +24,9 @@ import DisableableButton from '../../components/DisablebleButton';
 import { useRoles } from '../../hooks/useApollo';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Typography } from '@/components/Typography';
+import CTACard from '@/widgets/CTACard';
+import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
+import TruncatedText from '@/components/TruncatedText';
 
 type Props = {};
 
@@ -219,6 +223,15 @@ const Dashboard: React.FC<Props> = () => {
         return data?.me?.pupil?.canRequestMatch?.allowed;
     };
 
+    const handleOnRecommendClick = () => {
+        navigate('/referral');
+        trackEvent({
+            category: 'Recommend Section on Start Page',
+            action: 'Click Button “Recommend Now”',
+            name: 'sus',
+        });
+    };
+
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -350,6 +363,26 @@ const Dashboard: React.FC<Props> = () => {
                                     ))}
                                 </HSection>
                             )}
+                            <VStack marginBottom={space['1.5']}>
+                                <Heading marginBottom={space['1']}>{t('dashboard.helpers.headlines.recommend')}</Heading>
+                                <CTACard
+                                    title={t('dashboard.helpers.headlines.recommendFriends')}
+                                    button={
+                                        <NewButton variant="outline" className="w-full lg:w-fit" onClick={handleOnRecommendClick}>
+                                            {t('dashboard.helpers.buttons.recommend')}
+                                        </NewButton>
+                                    }
+                                    icon={<BooksIcon className="size-10" />}
+                                >
+                                    <div>
+                                        <TruncatedText asChild maxLines={4}>
+                                            <Typography className="whitespace-break-spaces text-pretty w-full">
+                                                {t('dashboard.helpers.contents.recommendFriends')}
+                                            </Typography>
+                                        </TruncatedText>
+                                    </div>
+                                </CTACard>
+                            </VStack>
                         </VStack>
                     </VStack>
                 )}

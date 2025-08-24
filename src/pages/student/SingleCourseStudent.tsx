@@ -64,6 +64,7 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             tags{
             name
             }
+            isInstructor
             allowContact
         }
         lectures{
@@ -115,7 +116,7 @@ query GetInstructorSubcourse($subcourseId: Int!) {
         canEdit { allowed reason }
         canContactParticipants { allowed reason }
         canCancel { allowed reason }
-        appointments {
+        joinedAppointments(as: organizer) {
             id
             appointmentType
             title
@@ -192,6 +193,11 @@ const SingleCourseStudent = () => {
         return false;
     }, [data?.subcourse?.isInstructor]);
 
+    const isInstructorOfCourse = useMemo(() => {
+        if (data?.subcourse?.course?.isInstructor) return true;
+        return false;
+    }, [data?.subcourse?.course?.isInstructor]);
+
     const {
         data: instructorSubcourse,
         loading: subLoading,
@@ -208,13 +214,13 @@ const SingleCourseStudent = () => {
     const isMentor = !!data?.subcourse?.isMentor;
     const isHomeworkHelp = course?.category === Course_Category_Enum.HomeworkHelp;
     const appointments = useMemo(() => {
-        if (isInstructorOfSubcourse) return (instructorSubcourse?.subcourse?.appointments || []) as Appointment[];
+        if (isInstructorOfSubcourse) return (instructorSubcourse?.subcourse?.joinedAppointments || []) as Appointment[];
         return ((subcourse?.appointments || []) as Appointment[]).filter((e) => {
             const appointmentStart = DateTime.fromISO(e.start);
             const appointmentEnd = appointmentStart.plus({ minutes: e.duration });
             return appointmentEnd > DateTime.now();
         });
-    }, [instructorSubcourse?.subcourse?.appointments, isInstructorOfSubcourse, subcourse?.appointments]);
+    }, [instructorSubcourse?.subcourse?.joinedAppointments, isInstructorOfSubcourse, subcourse?.appointments]);
 
     const myNextAppointment = useMemo(() => {
         const now = DateTime.now();
@@ -430,7 +436,7 @@ const SingleCourseStudent = () => {
                                     </Button>
                                 )}
                             </div>
-                            {!isInPast && isInstructorOfSubcourse && (
+                            {!isInPast && isInstructorOfCourse && (
                                 <Banner
                                     courseState={course.courseState}
                                     isCourseCancelled={subcourse.cancelled}
@@ -439,7 +445,7 @@ const SingleCourseStudent = () => {
                                 />
                             )}
                         </div>
-                        {isInstructorOfSubcourse && instructorSubcourse?.subcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
+                        {isInstructorOfCourse && instructorSubcourse?.subcourse && subcourse.published && !subLoading && !isInPast && canPromoteCourse && (
                             <PromoteBanner
                                 onPromoted={handleOnPromoted}
                                 subcourse={{

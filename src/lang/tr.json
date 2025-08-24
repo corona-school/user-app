@@ -2610,43 +2610,6 @@
         },
         "placeholderImageDescription": "Bir ders planı oluşturmak için formu doldurun"
     },
-    "referral": {
-        "share": {
-            "option1": {
-                "option": "Bağlantıyı Kopyala ve Paylaş",
-                "description": "- favori sosyal uygulamalarınızda paylaşın"
-            },
-            "option2": {
-                "option": "WhatsApp'ta Paylaş",
-                "description": "- kişilerinizle doğrudan paylaşın"
-            },
-            "option3": {
-                "option": "LinkedIn'de Paylaş",
-                "description": "- \"LinkedIn'de Paylaş \"a tıklayın ve bağlantıyı bir gönderiye ekleyin."
-            },
-            "title": "Benzersiz bağlantınızı paylaşın",
-            "description": "Yönlendirmeye başlamak için kişisel bağlantınızı ağınızla paylaşın! Yönlendirme bağlantınızı paylaşmanın üç kolay yolu var:",
-            "share": "Paylaş",
-            "materials": {
-                "title": "El ilanları ve reklam materyalleri dağıtın",
-                "description": "Ücretsiz çok dilli el ilanları, posterler ve diğer tanıtım materyallerini indirerek çıktı alabilir ve örneğin bir okulda, gençlik merkezinde veya kütüphanede sergileyebilirsiniz.",
-                "button": "Reklam medyasına"
-            }
-        },
-        "reward": {
-            "title": "Benim Etkim",
-            "description": "Katılan her gönüllü için, kendi kişisel sertifikanız için puan kazanırsınız ve deneyiminizi LinkedIn'deki ağınızda sergilersiniz. Hadi bugün bir etki yaratalım!",
-            "RegisteredUsers": "Kayıtlı kullanıcılar",
-            "HoursSupported": "Desteklenen saatler",
-            "tooltip": "Bu kilidi açmak için 3 veya daha fazla kayıtlı kullanıcıya sahip olmanız gerekir"
-        },
-        "title": "Yönlendirme programı",
-        "description": "Gençler için fark yaratmaya yardımcı olabilecek birini mi tanıyorsunuz? Herkese duyurun! buradan daha fazlasını öğrenin",
-        "referralMessage": "📣 GÖNÜLLÜLER ARANIYOR 📣Topluma geri vermek ister misiniz? Şimdi tam zamanı! Şu anda 1-13. sınıf Alman okul çocuklarına ders verecek gönüllüler arıyoruz. #lernfair #eğitim #e-öğrenme",
-        "copy": "Anlaşıldı",
-        "copied": "Kopyalandı",
-        "copiedReferralLink": "Tavsiye bağlantısı kopyalandı"
-    },
     "certificates": {
         "instantCertificate": {
             "bullets": ["hemen temin edilebilir", "bireysel öğrenme ortaklarını listelemez", "Destek türü, toplam süre ve ders sayısı listelenmiştir"],
@@ -2667,5 +2630,32 @@
         "friday": "Cuma",
         "saturday": "Cumartesi",
         "sunday": "Pazar"
+    },
+    "referral": {
+        "share": {
+            "materials": {
+                "title": "El ilanları ve posterler sergileyin",
+                "description": "Örneğin, okulda, gençlik merkezinde, kütüphanede veya mağazalarda el ilanları sergileyebilir veya posterler asabilirsiniz. El ilanları, posterler ve diğer reklam materyallerini evinize ücretsiz olarak alabilirsiniz.",
+                "button": "Ücretsiz sipariş verin"
+            },
+            "share": "Paylaş",
+            "title": "Kişisel bağlantınızı paylaşın",
+            "description": "",
+            "option2": "WhatsApp'ta Paylaş",
+            "option3": "LinkedIn'de Paylaş"
+        },
+        "reward": {
+            "title": "Benim katkım",
+            "description": "Kişisel bağlantınızı kullanırsanız, katkınızı buradan takip edebilirsiniz.",
+            "RegisteredUsers": "Kayıtlı kullanıcılar",
+            "HoursSupported": "özel ders saatleri",
+            "tooltip": "Bu bilgiyi etkinleştirmek için 3 veya daha fazla kullanıcının kayıt yaptırmış olması gerekir"
+        },
+        "title": "Büyümemize yardımcı olun",
+        "description": "Birçoğu bize tavsiye yoluyla geliyor. Lern-Fair ' Lern-Fair daha iyi tanınması için bize yardımcı olun! Bize bir tavsiye linki gönderebilir veya posterler ve el ilanları kullanabilirsiniz.",
+        "referralMessage": "Eğitim açısından dezavantajlı öğrencilerin (1 ila 13. sınıflar ve stajyerler) ücretsiz özel ders aldığı Lern-Fair'de gönüllüyüm - Zoom aracılığıyla dijital ve esnek #eğitim eşitliği #gönüllülük",
+        "copy": "Anlaşıldı",
+        "copied": "Kopyalandı",
+        "copiedReferralLink": "Tavsiye bağlantısı kopyalandı"
     }
 }
