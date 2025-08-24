@@ -18,7 +18,7 @@ import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { AppointmentUpdateInput, Lecture_Appointmenttype_Enum } from '@/gql/graphql';
 import { convertStartDate } from '@/helper/appointment-helper';
-import AddTimeWithTooltip from '@/widgets/ToolTipTimeZone';
+import AddTimeWithTooltip from '@/components/ToolTipTimeZone';
 
 type FormErrors = {
     title?: string;

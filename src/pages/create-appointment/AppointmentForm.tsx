@@ -12,7 +12,7 @@ import { Typography } from '@/components/Typography';
 import { DatePicker } from '@/components/DatePicker';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
 import { TextArea } from '@/components/TextArea';
-import AddTimeWithTooltip from '@/widgets/ToolTipTimeZone';
+import AddTimeWithTooltip from '@/components/ToolTipTimeZone';
 
 type FormProps = {
     errors: FormErrors;
