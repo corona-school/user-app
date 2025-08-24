@@ -21,12 +21,9 @@ const AddTimeWithTooltip: React.FC = ({}) => {
     }, 30_000);
 
     return (
-        <div className="flex flex-col gap-y-1">
+        <div className="flex flex-row gap-x-1">
             <Label htmlFor="time">{t('appointment.create.timeLabel')}</Label>
-            <div className="flex flex-row gap-x-1">
-                <Label htmlFor="time">{t('appointment.create.timeLabel')}</Label>
-                <InfoTooltipButton tooltipContent={t('appointment.create.toolTipTimeLabel', { currentTime })} />
-            </div>
+            <InfoTooltipButton tooltipContent={t('appointment.create.toolTipTimeLabel', { currentTime })} />
         </div>
     );
 };
