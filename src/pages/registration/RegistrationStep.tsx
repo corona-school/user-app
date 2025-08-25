@@ -24,12 +24,20 @@ export const RegistrationStepTitle = ({ className, variant = 'h3', children, ...
 };
 
 export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisabled, className, children }: _RegistrationStepProps) => {
+    const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        if (!isNextDisabled && onNext) {
+            onNext();
+        }
+    };
+
     return (
-        <div
+        <form
             className={cn(
                 'animate-in fade-in-5 duration-300 relative flex flex-col justify-between flex-1 max-w-full md:max-w-[800px] w-full mx-auto md:pb-24',
                 className
             )}
+            onSubmit={handleOnSubmit}
         >
             <div className="z-10 flex flex-1 flex-col items-center justify-center max-w-full md:max-w-[536px] mx-auto px-[23px] md:px-0">{children}</div>
             <div className="md:absolute bottom-0 px-10 flex justify-between w-full pb-2 md:pb-8 md:bottom-1/2 md:px-0">
@@ -43,6 +51,7 @@ export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisable
                             invisible: !onBack,
                         }
                     )}
+                    type="button"
                 >
                     <IconArrowLeft size={48} className="!stroke-[2px]" />
                 </Button>
@@ -56,10 +65,11 @@ export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisable
                             invisible: !onNext,
                         }
                     )}
+                    type="submit"
                 >
                     <IconArrowRight size={48} className="!stroke-[2px]" />
                 </Button>
             </div>
-        </div>
+        </form>
     );
 };
