@@ -18,6 +18,7 @@ import { EmailOwner } from './registration/EmailOwner';
 import { NotificationPreferences } from './registration/NotificationPreferences';
 import { OurRules } from './registration/OurRules';
 import PupilGrade from './registration/PupilGrade';
+import { DropdownRegistrationMenu } from './registration/DropdownRegistrationMenu';
 import SchoolSearch from './registration/SchoolSearch';
 import SchoolType from './registration/SchoolType';
 import { ScreeningAppointmentDetail } from './registration/ScreeningAppointmentDetails';
@@ -74,7 +75,7 @@ const MUTATION_CREATE_CREDENTIALS = gql(`
 
 const Registration = () => {
     const location = useLocation();
-    const { refreshSessionState } = useApollo();
+    const { refreshSessionState, sessionState } = useApollo();
     const locState = location.state as { retainPath?: string };
     const retainPath = locState?.retainPath ?? '/start';
     const [registerPupil] = useMutation(MUTATION_REGISTER_PUPIL);
@@ -166,8 +167,9 @@ const Registration = () => {
                             </>
                         )}
                     </div>
-                    <div className="ml-5 w-16">
+                    <div className="flex ml-5 ">
                         <SwitchLanguageButton variant="dropdown" />
+                        {sessionState === 'logged-in' && <DropdownRegistrationMenu />}
                     </div>
                 </div>
                 {isLoadingRegistrationForm ? (

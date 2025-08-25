@@ -889,6 +889,7 @@
         },
         "Deactivate": {
             "error": "Dein Account konnte nicht deaktiviert werden.",
+            "success": "Dein Account wurde deaktiviert.",
             "modal": {
                 "title": "Account deaktivieren",
                 "btn": "Account deaktivieren",
