@@ -43,18 +43,14 @@ export const DropdownRegistrationMenu = () => {
                             <Typography className="font-semibold leading-3">{t('registration.menu.notifications')}</Typography>
                         </DropdownMenuItem>
                     )}
-                    {form.currentStep !== RegistrationStep.confirmEmail && (
-                        <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsContactSupportOpen(true)}>
-                            <IconLifebuoy className="!size-6" />
-                            <Typography className="font-semibold leading-3">{t('registration.menu.contactSupport')}</Typography>
-                        </DropdownMenuItem>
-                    )}
-                    {form.currentStep !== RegistrationStep.confirmEmail && (
-                        <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsDeactivateAccountOpen(true)}>
-                            <IconUserOff className="!size-6" />
-                            <Typography className="font-semibold leading-3">{t('registration.menu.deactivateAccount')}</Typography>
-                        </DropdownMenuItem>
-                    )}
+                    <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsContactSupportOpen(true)}>
+                        <IconLifebuoy className="!size-6" />
+                        <Typography className="font-semibold leading-3">{t('registration.menu.contactSupport')}</Typography>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsDeactivateAccountOpen(true)}>
+                        <IconUserOff className="!size-6" />
+                        <Typography className="font-semibold leading-3">{t('registration.menu.deactivateAccount')}</Typography>
+                    </DropdownMenuItem>
                     <DropdownMenuItem className="gap-x-[10px] h-12" onClick={handleOnLogout}>
                         <IconLogout className="!size-6" />
                         <Typography className="font-semibold leading-3">{t('registration.menu.logout')}</Typography>
