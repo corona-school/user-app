@@ -17,7 +17,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
 
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={!form.languages.length}>
-            <RegistrationStepTitle className="md:mb-10">{t('registration.steps.languages.title')} </RegistrationStepTitle>
+            <RegistrationStepTitle>{t('registration.steps.languages.title')} </RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-4 md:whitespace-pre-line md:px-14">
                 {t('registration.steps.languages.description')}
             </Typography>
