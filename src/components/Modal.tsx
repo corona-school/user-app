@@ -47,10 +47,6 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
                         e.preventDefault();
                     }
                 }}
-                onCloseAutoFocus={(event) => {
-                    event.preventDefault();
-                    document.body.style.pointerEvents = '';
-                }}
             >
                 {children}
                 <DialogPrimitive.Close

@@ -27,7 +27,7 @@ export const DropdownRegistrationMenu = () => {
 
     return (
         <>
-            <DropdownMenu>
+            <DropdownMenu modal={false}>
                 <DropdownMenuTrigger asChild>
                     <Button className={cn('group rounded-full hover:bg-primary-light hover:brightness-105')} variant="none" size="icon">
                         <span className="rounded-full">
