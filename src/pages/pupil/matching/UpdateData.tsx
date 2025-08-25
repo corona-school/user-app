@@ -25,7 +25,7 @@ type Props = {
     profile?: {
         languages?: Language[];
         schooltype?: SchoolType;
-        gradeAsInt?: number;
+        gradeAsInt?: number | null;
         calendarPreferences?: CalendarPreferences;
     };
 };

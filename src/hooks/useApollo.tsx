@@ -238,7 +238,7 @@ export type LFApollo = {
 
     loginWithPassword: (email: string, password: string, deviceId: string) => Promise<FetchResult>;
 
-    loginWithSSO: (code: string) => Promise<SsoAuthStatus | undefined>;
+    loginWithSSO: (code: string, referrer: string) => Promise<SsoAuthStatus | undefined>;
 
     refreshSessionState: () => Promise<void>;
 
@@ -672,7 +672,6 @@ const useApolloInternal = () => {
                 await loginWithSecretToken(secretToken, getOrCreateDeviceId());
                 return;
             }
-
             setSessionState('error');
             log('GraphQL', 'No Device Token present, need to log in again');
         })();
@@ -753,20 +752,22 @@ const useApolloInternal = () => {
 
     // ------------ Login with SSO -------------
     const loginWithSSO = useCallback(
-        async (code: string) => {
+        async (code: string, referrer: string) => {
             log('GraphQL', 'Logging in with SSO');
             const LOGIN_WITH_SSO_MUTATION = gql(`
             mutation MutationLoginWithSSO($code: String!, $referrer: String!) {
                 loginWithSSO(code: $code, referrer: $referrer)
             }
         `);
-            const { data } = await client.mutate({ mutation: LOGIN_WITH_SSO_MUTATION, variables: { code, referrer: document.referrer } });
+            const { data } = await client.mutate({ mutation: LOGIN_WITH_SSO_MUTATION, variables: { code, referrer } });
             const result = data?.loginWithSSO;
             if (result && ['register', 'success', 'link'].includes(result)) {
                 await determineUser();
                 if (result === 'success') {
                     log('GraphQL', 'Logged in successfully');
                     setSessionState('logged-in');
+                } else if (result === 'register') {
+                    setSessionState('logged-out');
                 }
             }
             return result;
