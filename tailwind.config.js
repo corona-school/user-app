@@ -18,7 +18,9 @@ module.exports = {
             '2xl': '1.953125rem',
             xl: '1.5625rem',
             lg: '1.25rem',
+            'medium': '1.125rem',
             base: '1rem',
+            subtle: '0.875rem',
             sm: '0.8rem',
             xs: '0.64rem',
         },
@@ -63,6 +65,8 @@ module.exports = {
                 accent: {
                     DEFAULT: 'hsl(var(--accent))',
                     foreground: 'hsl(var(--accent-foreground))',
+                    medium: 'hsl(var(--accent-medium))',
+                    dark: 'hsl(var(--accent-dark))',
                 },
                 popover: {
                     DEFAULT: 'hsl(var(--background))',
@@ -141,7 +145,7 @@ module.exports = {
                 },
                 'skeleton': {
                     '0%': { backgroundColor: '#222222' },
-                    '100%': { backgroundColor: '#2A2A2A' }, 
+                    '100%': { backgroundColor: '#2A2A2A' },
                 },
             },
             animation: {

@@ -170,7 +170,7 @@
         },
         "accountNotFound": {
             "title": "Giriş başarısız",
-            "alert_html": "{{email}} e-posta adresiyle bir hesap bulunamadı. Lütfen girilen e-posta adresini kontrol edin ve tekrar deneyin."
+            "alert_html": "Bu e-posta adresine sahip bir hesap bulunamadı."
         },
         "accountDeactivated": {
             "title": "Giriş başarısız",
@@ -183,7 +183,6 @@
         "error": "Giriş bilgileriniz bizim bilgilerimizle eşleşmiyor. Lütfen bilgilerinizi kontrol edin.",
         "forgotPassword": "Şifrenizi mi unuttunuz?",
         "signupNew": "Yeni kayıt oluştur",
-        "noaccount": "Henüz bir hesabınız yok mu? Kaydolmak için buraya tıklayın!",
         "currentEmail": "Güncel e-posta",
         "setNewEmail": "E-postayı yeniden ayarla",
         "changeEmail": "E-posta değiştir",
@@ -198,32 +197,62 @@
             "passwordDescription": "Bağlama işlemini tamamlamak için lütfen şifrenizle tekrar giriş yapın. Lütfen bunu yalnızca bir kez yapmanız gerektiğini unutmayın."
         },
         "continueWith": "{{idp}} ile devam edin",
-        "linkAccountWithIdpError": "Hesabınızı bir kimlik sağlayıcısına bağlamak için bir parola gerekir. Lütfen önce bir parola belirleyin"
+        "linkAccountWithIdpError": "Hesabınızı bir kimlik sağlayıcısına bağlamak için bir parola gerekir. Lütfen önce bir parola belirleyin",
+        "loginWith": "{{method}} ile giriş yap",
+        "noaccount": "Henüz bir hesabınız yok mu?",
+        "contactSupport": "Bize ulaşın",
+        "needHelp": "Yardıma ihtiyacınız var mı?",
+        "registerHere": "Buradan kayıt olun",
+        "invalidPasswordError": "Oops! Şifreniz yanlış."
     },
     "lernfair": {
         "languages": {
             "albanisch": "Arnavutça",
+            "amharisch": "Amharca",
+            "andere": "Diğer",
             "arabisch": "Arapça",
             "armenisch": "Ermenice",
             "aserbaidschanisch": "Azerice",
             "bosnisch": "Boşnakça",
             "bulgarisch": "Bulgarca",
             "chinesisch": "Çince",
-            "deutsch": "Alman",
+            "deutsch": "Almanca",
             "englisch": "İngilizce",
+            "estnisch": "Estonca",
             "franz_sisch": "Fransızca",
-            "t_rkisch": "Türkçe",
-            "italienisch": "İtalyan",
+            "georgisch": "Gürcüce",
+            "griechisch": "Yunanca",
+            "hausa": "Hausa",
+            "hebr_isch": "İbranice",
+            "hindi": "Hintçe",
+            "italienisch": "İtalyanca",
             "kasachisch": "Kazakça",
+            "kroatisch": "Hırvatça",
             "kurdisch": "Kürtçe",
+            "lingala": "Lingala",
+            "litauisch": "Litvanca",
+            "malayalam": "Malayalam",
+            "mazedonisch": "Makedonca",
+            "niederl_ndisch": "Felemenkçe",
+            "persisch": "Farsça",
             "polnisch": "Lehçe",
             "portugiesisch": "Portekizce",
+            "rum_nisch": "Rumence",
             "russisch": "Rusça",
+            "serbisch": "Sırpça",
+            "slowakisch": "Slovakça",
+            "somali": "Somalice",
             "spanisch": "İspanyolca",
+            "tadschikisch": "Tacikçe",
+            "thail_ndisch": "Tayca",
+            "tigrinya": "Tigrinya",
+            "tschechisch": "Çekçe",
+            "t_rkisch": "Türkçe",
             "ukrainisch": "Ukraynaca",
+            "ungarisch": "Macarca",
+            "urdu": "Urduca",
             "vietnamesisch": "Vietnamca",
-            "other": "Diğer",
-            "andere": "Diğer"
+            "other": "Diğer"
         },
         "subjects": {
             "Altgriechisch": "Antik Yunan",
@@ -334,24 +363,6 @@
         "contactSupport": "Bize ulaşın"
     },
     "registration": {
-        "barrier": {
-            "btn": {
-                "yes": "Evet, puanlar geçerlidir",
-                "no": "Hayır, puanlar geçerli değil"
-            },
-            "title": "Önemli",
-            "text": "Programlarımız eğitim açısından dezavantajlı öğrencilere / stajyerlere yöneliktir. Bu hedef gruba dahil olup olmadığınızdan emin değil misiniz?\n\nO halde aşağıdaki noktalara bir göz atın. Bunlardan iki veya daha fazlasına \"evet\" cevabı verebilir misiniz? Lern-Fair O zaman 'den tüm teklifleri kullanabilirsiniz.",
-            "point_0": "Okulda yardıma ihtiyacınız var",
-            "point_1": "Aileniz ödevlerinizde size yardımcı olamaz",
-            "point_2": "Aileniz sizin için özel ders ücretini ödeyemez"
-        },
-        "barrier_failed": {
-            "title": "Kayıt başarısız oldu!",
-            "subtitle": "Katılım koşullarımızı reddettiğiniz için maalesef kayıt olmanıza izin veremiyoruz.",
-            "subtitle2": "Size ancak katılım koşullarımızı onayladıktan sonra kayıt olma izni verebiliriz.",
-            "retry": "Yeniden kaydolmaya başla",
-            "alternatives": "Daha fazla bilgi alın"
-        },
         "hint": {
             "schoolClassSelectionMissing": "Lütfen bir okul sınıfı seçin.",
             "schoolTypeSelectionMissing": "Lütfen bir okul türü seçiniz.",
@@ -396,20 +407,17 @@
         },
         "steps": {
             "userType": {
-                "title": "Sizin rolünüz",
-                "subtitle": "Ben"
+                "title": "Lern-Fair 'e hangi görevle kayıt yaptırıyorsunuz?"
             },
             "personalData": {
                 "title": "Kişisel veriler",
                 "subtitle": "Kişisel veriler"
             },
             "grade": {
-                "title": "Sınıf",
-                "subtitle": "Hangi sınıftasın?"
+                "title": "Sınıf"
             },
             "schoolType": {
-                "title": "Okul türü",
-                "subtitle": "Ne tür bir okula gidiyorsunuz?"
+                "title": "Hangi okul türü"
             },
             "state": {
                 "title": "Okul konumu",
@@ -420,12 +428,140 @@
                 "title": "Onaylar",
                 "subtitle": "Onaylar"
             },
+            "authenticationInfo": {
+                "registerWith": "{{method}} ile giriş yap",
+                "title": "Kayıt",
+                "description": "Hesabınızla grup kurslarına, bire bir özel derslere ve ev ödevi yardımına ücretsiz olarak katılabilirsiniz.",
+                "pupilEmail": "Öğrenciden / stajyerden gelen e-posta",
+                "passwordPlaceholder": "Şifre girin",
+                "emailPlaceholder": "E-posta adresi"
+            },
             "school": {
                 "title": "Okul konumu",
-                "subtitle": "Okulunuzun adı nedir?",
-                "helperText": "Okul türünüzü ve okul konumunuzu belirlemek için okul bilgilerini kullanırız",
                 "schoolFound": "Okul bulundu",
-                "otherSchoolFound": "Tanınan diğer okullar"
+                "otherSchoolFound": "Tanınan diğer okullar",
+                "helperText": "Okulunuz bulunamazsa, okulun adını ve yerini girmeniz yeterlidir - ne yazık ki veritabanımızda tüm okullar bulunmamaktadır"
+            },
+            "acceptanceCheck": {
+                "title": "Doğru yerde misiniz?",
+                "description": "Programlarımız eğitim açısından dezavantajlı öğrencilere ve stajyerlere yöneliktir.\nİki veya daha fazla nokta sizin için geçerli mi?",
+                "needHelpInSchool": "Okulda yardıma ihtiyacınız var",
+                "familyCannotHelp": "Aileniz ev ödevlerinizde size yardımcı olamaz",
+                "familyCannotAffordTutoring": "Aileniz sizin için özel ders ücretini ödeyemez",
+                "doNotApplyToMe": "Benim için geçerli olan iki nokta yok"
+            },
+            "acceptanceCheckFailed": {
+                "title": "Ne yazık.",
+                "description": "Size yardımcı olamadığımız için üzgünüz. Tekrar deneyin veya ilginizi çekebilecek diğer tekliflere bakın.",
+                "seeOtherOffers": "Diğer teklifleri görüntüle",
+                "tryAgain": "Tekrar deneyin"
+            },
+            "userName": {
+                "congratsHint": "Harika.\nTekliflerimizden yararlanabilirsiniz!",
+                "title": "Adın ne senin?"
+            },
+            "userAge": {
+                "title": "Kaç yaşındasın sen?",
+                "description": "Sizin veya ebeveynlerinizin kaydı kabul etmek zorunda olup olmadığını bilmemiz için gereklidir.",
+                "tooYoungError": "Lern-Fair 'de, {{minAge}} ücretsiz özel ders sunabileceğimiz minimum yaştır."
+            },
+            "languages": {
+                "title": "Evde hangi dilleri konuşuyorsunuz?",
+                "description": "Böylece yardımcıların sizinle hangi dillerde iletişim kurabileceğini bilebiliriz."
+            },
+            "emailOwner": {
+                "title": "Kimin e-posta adresini kullanıyoruz?",
+                "description": "Başlangıçla ilgili tüm bilgileri bu e-posta adresine göndereceğiz. Daha sonra da değiştirebilirsiniz."
+            },
+            "dataPrivacy": {
+                "usageBullets": {
+                    "1": "Lern-Fair Verilerinizi hesabınız aktif olduğu sürece saklarız ve hesabınız devre dışı bırakıldıktan sonra en geç 3 yıl içinde sileriz",
+                    "2": "Kişisel bilgilerinizi (isim, okul türü, sınıf, federal eyalet, konular) size destek olacak yardımcılarla paylaşıyoruz",
+                    "3": "Verilerinizi işlemek için Heroku, Mailjet, Datadog ve Google'ın tekliflerini kullanıyoruz, bunlar Avrupa veri koruma düzeyini garanti edemeyebilir"
+                },
+                "title": "Veri koruma onayı",
+                "dataUsageInfoLabel": "Lern-Fair 'a kaydolduğunuzda verilerinize bu şekilde olur:",
+                "dataUsageUSA": "ABD'deki işleyiciler tarafından veri işleme",
+                "accordionUsDataProcessors": "Kişisel verilerimin işlenmesinin, ABD istihbarat servislerinden gelen talepler nedeniyle Avrupa veri koruma düzeyine uygunluğu garanti edemeyen ABD merkezli işleyicilerimiz Google ve Heroku tarafından gerçekleştirildiğini kabul ediyorum. Lern-Fair Bu amaçla, standart sözleşme hükümleri imzalanmış ve GDPR Madde 46 paragraf 2 lit. c uyarınca ilave güvenlik önlemleri kabul edilmiştir.",
+                "sendRegistration": "Kayıt gönderin",
+                "labelTermsAndPrivacy": "<privacy>Gizlilik Politikasını</privacy> ve <agb>Şartlar ve Koşulları</agb> okudum ve kabul ettim."
+            },
+            "confirmEmail": {
+                "title": "Lütfen e-postanızı onaylayın",
+                "description": "Bir mesaj gönderdik\n\n<b>{{email}}</b>\n\nhesabınızı etkinleştirmek için. Eğer almadıysanız lütfen önce spam klasörünüzü kontrol edin.",
+                "changeEmail": "E-posta adresini değiştir",
+                "resendConfirmation": "Onayı tekrar gönderin",
+                "doYouHaveProblems": "Giriş yaparken sorun mu yaşıyorsunuz?"
+            },
+            "bookAppointment": {
+                "faqPupil": [
+                    {
+                        "question": "Kameramı açmam gerekiyor mu?",
+                        "answer": "Hayır, sadece sen istersen."
+                    },
+                    {
+                        "question": "Görüşme ne kadar sürüyor?",
+                        "answer": "Yaklaşık 15 dakika."
+                    },
+                    {
+                        "question": "Kim var orada?",
+                        "answer": "Bizden biri, başka kimse değil. Ancak ebeveynlerinizden birini veya her ikisini de yanınızda getirebilirsiniz."
+                    },
+                    {
+                        "question": "Bu neden gerekli?",
+                        "answer": "Böylece hangi konularda destek istediğinizi anlayabilir ve sizin için uygun teklifler bulabiliriz."
+                    },
+                    {
+                        "question": "Hangi dil konuşuluyor?",
+                        "answer": "Çoğunlukla Almanca, ancak İngilizce veya diğer dilleri de konuşabiliriz. İyi Almanca konuşamıyorsanız, bize bir e-posta gönderin ve bir çözüm bulalım."
+                    }
+                ],
+                "title": "Tanışma toplantısı",
+                "description": "Kısa, samimi bir video görüşmesinde (yaklaşık 15 dakika) sizi biraz tanımak istiyoruz - tamamen rahat ve hazırlıksız. Bu şekilde size doğru desteği sunabiliriz.",
+                "message": "\"Bize her şeyi sorabilirsiniz - sizin için buradayız.\"",
+                "pupilScreenersNames": "Ronja, Paula veya Charlotte",
+                "bookAppointmentButton": "Bir toplantı düzenleyin",
+                "faqStudent": [
+                    {
+                        "question": "Görüşme ne kadar sürüyor?",
+                        "answer": "Yaklaşık 30 dakika."
+                    }
+                ]
+            },
+            "appointmentDetails": {
+                "title": "Randevu oluşturuldu!",
+                "description": "Sizin için mümkün olan en iyi teklifi bir araya getirmek için birkaç son adım gereklidir.",
+                "changeAppointment": "Tarih değiştir",
+                "cancelAppointment": "Randevuyu iptal et"
+            },
+            "zipCode": {
+                "title": "Lütfen posta kodunuzu bize bildirin",
+                "doNotKnow": "Bilmiyorum.",
+                "description": "Bu bilgileri kullanıyoruz çünkü sponsorlarımıza nereden geldiğinizi söylememiz gerekiyor"
+            },
+            "notifications": {
+                "title": "E-posta bildirimlerini ayarlama",
+                "titleShort": "Haberler",
+                "description": "Sizi güncel tutmak için çeşitli yöntemlerimiz var. Seçiminizi daha sonra da değiştirebilirsiniz.",
+                "importantInformationDescription": "Önemli haberler (örneğin yeni randevu, yeni sohbet mesajı) hakkında e-posta veya telefon yoluyla bilgilendirilmek istiyorum.",
+                "importantInformationBadge": "Önemli bilgiler",
+                "recommendationsBadge": "Yararlı ipuçları ve püf noktaları",
+                "recommendationsDescription": "Yeni teklifler ve genel haberler hakkında bilgilendirilmek istiyorum."
+            },
+            "ourRules": {
+                "rules": [
+                    "🔥⏳ Bunun için harcadıkları zaman, enerji ve çabaya saygı gösterin.",
+                    "️📅 ⌚Bu, randevular için dakiklik ve güvenilirliği de içerir.",
+                    "😊 Başkalarıyla ilişkilerinizde arkadaşça davranın.",
+                    "❌ Ayrımcılığa (örneğin ırkçılık, cinsiyetçilik, dini aidiyet veya yaş ayrımcılığı) izin verilmez."
+                ],
+                "title": "Kurallarımız",
+                "description": "Yardımcılarımız boş zamanlarında öğrencilere destek oluyor 😎👍.",
+                "acceptLabel": "Yukarıdaki hususlara uyacağım"
+            },
+            "registrationCompleted": {
+                "title": "Başardın!",
+                "description": "Zoom aracılığıyla sizi tanımak için sabırsızlanıyoruz"
             }
         },
         "pupil": {
@@ -483,7 +619,8 @@
             "pupil": "Öğrenci: E-postada",
             "parent": "Ebeveyn E-postası",
             "other": "Yardımcı kişi E-posta"
-        }
+        },
+        "stepStateCount": "{{total}}'in {{current}}'ı"
     },
     "helpcenter": {
         "subtitle": {
@@ -2630,6 +2767,9 @@
         "saturday": "Cumartesi",
         "sunday": "Pazar"
     },
+    "otherLanguages": "diğer diller",
+    "close": "Kapat",
+    "moreInfos": "Daha fazla bilgi",
     "referral": {
         "share": {
             "materials": {
