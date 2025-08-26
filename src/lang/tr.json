@@ -821,7 +821,8 @@
                 "6": "Projeler için giriş koşullarını karşılamıyorum.",
                 "7": "Diğer"
             },
-            "error": "Hesabınız devre dışı bırakılamadı."
+            "error": "Hesabınız devre dışı bırakılamadı.",
+            "success": "Hesabınız devre dışı bırakıldı."
         },
         "title": "Benim profilim",
         "successmessage": "Değişiklikler başarıyla kaydedildi.",

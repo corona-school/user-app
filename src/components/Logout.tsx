@@ -32,7 +32,7 @@ export default function Logout() {
 
     const logout = useLogout();
     useEffect(() => {
-        logout().then(() => navigate('/welcome', { state: locState }));
+        logout().then(() => navigate('/login', { state: locState }));
     }, []);
 
     return <CenterLoadingSpinner />;

@@ -1,50 +1,46 @@
-import { Modal, Button, Row, useTheme, VStack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import Tabs from '../components/Tabs';
 import { SystemNotifications } from '../components/notifications/preferences/SystemNotifications';
 import { MarketingNotifications } from '../components/notifications/preferences/MarketingNotifications';
 import { NotificationPreferencesContext } from '../pages/notification/NotficationControlPanel';
 import { useUserPreferences } from '../hooks/useNotificationPreferences';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { Button } from '@/components/Button';
 
-interface NotificationPreferencesModalProps {
-    onClose: () => void;
-    isOpen: boolean;
-}
+interface NotificationPreferencesModalProps extends BaseModalProps {}
 
-const NotificationPreferencesModal = ({ isOpen, onClose }: NotificationPreferencesModalProps) => {
-    const { space } = useTheme();
+const NotificationPreferencesModal = ({ isOpen, onOpenChange }: NotificationPreferencesModalProps) => {
     const { t } = useTranslation();
     const userPreferences = useUserPreferences();
 
     return (
-        <Modal onClose={onClose} isOpen={isOpen} size="full">
-            <Modal.Content maxH={700}>
+        <Modal className="w-full md:max-w-[800px] px-2 md:px-6" onOpenChange={onOpenChange} isOpen={isOpen}>
+            <ModalHeader>
+                <ModalTitle>{t('notification.controlPanel.title')}</ModalTitle>
+            </ModalHeader>
+            <div className="md:max-h-[500px] overflow-auto">
                 <NotificationPreferencesContext.Provider value={{ ...userPreferences, channels: ['email'] }}>
-                    <Modal.CloseButton />
-                    <Modal.Header>{t('notification.controlPanel.title')}</Modal.Header>
-                    <Modal.Body>
-                        <VStack ml={3}>
-                            <Tabs
-                                tabs={[
-                                    {
-                                        title: t('notification.controlPanel.tabs.system.title'),
-                                        content: <SystemNotifications />,
-                                    },
-                                    {
-                                        title: t('notification.controlPanel.tabs.newsletter.title'),
-                                        content: <MarketingNotifications />,
-                                    },
-                                ]}
-                            />
-                        </VStack>
-                    </Modal.Body>
-                    <Modal.Footer>
-                        <Row space={space['1']}>
-                            <Button onPress={onClose}>{t('cancel')}</Button>
-                        </Row>
-                    </Modal.Footer>
+                    <div className="flex">
+                        <Tabs
+                            tabs={[
+                                {
+                                    title: t('notification.controlPanel.tabs.system.title'),
+                                    content: <SystemNotifications />,
+                                },
+                                {
+                                    title: t('notification.controlPanel.tabs.newsletter.title'),
+                                    content: <MarketingNotifications />,
+                                },
+                            ]}
+                        />
+                    </div>
+                    <ModalFooter>
+                        <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                            {t('cancel')}
+                        </Button>
+                    </ModalFooter>
                 </NotificationPreferencesContext.Provider>
-            </Modal.Content>
+            </div>
         </Modal>
     );
 };
