@@ -135,6 +135,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                                 value={form.password}
                                 onChangeText={makeOnChangeHandler('password')}
                                 placeholder={t('registration.steps.authenticationInfo.passwordPlaceholder')}
+                                errorMessageClassName={'hidden'}
                             />
                             <Typography className={cn('mt-[2px]', { 'text-destructive': areInputsDirty.password && form.password.length < 6 })} variant="sm">
                                 {t('registration.hint.password.length')}
