@@ -169,7 +169,7 @@ const Registration = () => {
                     </div>
                     <div className="flex ml-5 ">
                         <SwitchLanguageButton variant="dropdown" />
-                        {sessionState === 'logged-in' && <DropdownRegistrationMenu />}
+                        {(sessionState === 'logged-in' || form.currentStep === RegistrationStep.confirmEmail) && <DropdownRegistrationMenu />}
                     </div>
                 </div>
                 {isLoadingRegistrationForm ? (
