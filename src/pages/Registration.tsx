@@ -143,6 +143,7 @@ const Registration = () => {
         sessionStorage.removeItem('cooperationTag');
         if (form.isRegisteringManually) {
             await createCredentials({ variables: { email: form.email, password: form.password, retainPath: retainPath } });
+            await refreshSessionState();
         } else {
             await refreshSessionState();
         }
@@ -169,7 +170,7 @@ const Registration = () => {
                     </div>
                     <div className="flex ml-5 ">
                         <SwitchLanguageButton variant="dropdown" />
-                        {(sessionState === 'logged-in' || form.currentStep === RegistrationStep.confirmEmail) && <DropdownRegistrationMenu />}
+                        {sessionState === 'logged-in' && <DropdownRegistrationMenu />}
                     </div>
                 </div>
                 {isLoadingRegistrationForm ? (
