@@ -206,6 +206,26 @@ const CreateCourse: React.FC = () => {
                         lastname
                     }
                 }
+                appointments {
+                    id
+                    start
+                    duration
+                    title
+                    description
+                    displayName
+                    position
+                    total
+                    appointmentType
+                    participants(skip: 0, take: 10) {
+                        firstname
+                        lastname
+                      
+                    }
+                    organizers(skip: 0, take: 10) {
+                        firstname
+                        lastname
+                    }
+                }
             }
         }
     `)
@@ -358,7 +378,7 @@ const CreateCourse: React.FC = () => {
         setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
         setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
         setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 14]);
-        setCourseAppointments(prefillCourse.joinedAppointments ?? []);
+        setCourseAppointments((userType === 'student' ? prefillCourse.joinedAppointments : prefillCourse.appointments) || []);
         prefillCourse.course.image && setImage(prefillCourse.course.image);
 
         if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
