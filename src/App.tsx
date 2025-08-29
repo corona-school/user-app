@@ -23,6 +23,7 @@ import WebPushProvider from './context/WebPushProvider';
 import { Toaster } from '@/components/Toaster';
 import { GlobalModalsProvider } from './context/GlobalModalsProvider';
 import { RecommendationsProvider } from './context/RecommendationsContext';
+import { RegistrationProvider } from './pages/registration/useRegistrationForm';
 
 function App() {
     return (

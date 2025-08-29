@@ -142,7 +142,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                 </div>
                 <div className="flex flex-col gap-y-2">
                     <ButtonField label="Klassenstufe" onClick={() => setShowEditGrade(true)}>
-                        {getGradeLabel(grade) ?? 'Klassenstufe bearbeiten'}
+                        {grade ? getGradeLabel(grade) : 'Klassenstufe bearbeiten'}
                     </ButtonField>
                     <Typography variant="sm" className="text-destructive">
                         {errors.grade}
@@ -235,7 +235,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
             </div>
             <EditLocationModal state={pupilLocation} onSave={setPupilLocation} isOpen={showEditLocation} onOpenChange={setShowEditLocation} />
             <EditSchoolTypeModal schoolType={schoolType} onSave={setSchoolType} isOpen={showEditSchoolType} onOpenChange={setShowEditSchoolType} />
-            <EditGradeModal grade={grade} onSave={setGrade} onOpenChange={setShowEditGrade} isOpen={showEditGrade} />
+            <EditGradeModal grade={grade ?? 0} onSave={setGrade} onOpenChange={setShowEditGrade} isOpen={showEditGrade} />
             <EditSubjectsModal type="pupil" subjects={subjects} onSave={setSubjects} onOpenChange={setShowEditSubjects} isOpen={showEditSubjects} />
             <EditLanguagesModal languages={languages} onSave={setLanguages} onOpenChange={setShowEditLanguages} isOpen={showEditLanguages} />
             <EditWeeklyAvailabilityModal

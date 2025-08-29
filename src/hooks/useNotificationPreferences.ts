@@ -1,7 +1,13 @@
-import { getSystemNotificationPreferenceCategories } from '@/helper/notification-preferences';
+import {
+    getMarketingNotificationPreferenceCategories,
+    getSystemNotificationPreferenceCategories,
+    marketingNotificationCategories,
+    systemNotificationCategories,
+} from '@/helper/notification-preferences';
 import { gql, useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { NotificationPreferences, PreferencesType } from '../types/lernfair/NotificationPreferences';
+import { getAllPreferencesInCategorySetToValue } from '@/helper/notification-helper';
 
 const notificationPreferencesQuery = gql`
     query GetNotificationPreferences {
@@ -47,18 +53,37 @@ const useUserPreferences = () => {
         }
     }, [loading, error, data?.me?.notificationPreferences]);
 
-    const systemNotificationCategories = getSystemNotificationPreferenceCategories();
-    const currentSystemPreferences = Object.entries(userPreferences).filter(([key]) => systemNotificationCategories.includes(key));
+    const currentSystemPreferences = Object.entries(userPreferences).filter(([key]) => getSystemNotificationPreferenceCategories().includes(key));
+    const currentMarketingPreferences = Object.entries(userPreferences).filter(([key]) => getMarketingNotificationPreferenceCategories().includes(key));
 
-    const hasPushSystemNotificationsEnabled = currentSystemPreferences.every(([key, value]) => {
+    const hasPushSystemNotificationsEnabled = currentSystemPreferences.some(([key, value]) => {
         return value.push === true;
     });
 
+    const hasSystemPreferencesEnabled = currentSystemPreferences.some(([key, value]) => {
+        return value.email === true || value.push === true;
+    });
+    const hasMarketingPreferencesEnabled = currentMarketingPreferences.some(([key, value]) => {
+        return value.email === true || value.push === true;
+    });
+
+    const toggleSystemNotifications = (value: boolean) => {
+        updateUserPreferences(getAllPreferencesInCategorySetToValue(userPreferences, value, systemNotificationCategories, ['email', 'push']));
+    };
+
+    const toggleMarketingNotifications = (value: boolean) => {
+        updateUserPreferences(getAllPreferencesInCategorySetToValue(userPreferences, value, marketingNotificationCategories, ['email', 'push']));
+    };
+
     return {
+        hasSystemPreferencesEnabled,
+        hasMarketingPreferencesEnabled,
         hasPushSystemNotificationsEnabled,
         userPreferences,
         updateUserPreference,
         updateUserPreferences,
+        toggleSystemNotifications,
+        toggleMarketingNotifications,
     };
 };
 

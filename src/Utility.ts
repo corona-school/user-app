@@ -3,13 +3,13 @@ import { ClassRange } from './types/lernfair/SchoolClass';
 import { DateTime } from 'luxon';
 import { Course_Coursestate_Enum } from './gql/graphql';
 import i18next from 'i18next';
-import { TRAINEE_GRADE } from './pages/Registration';
 
 export const TIME_THRESHOLD = 2 * 60 * 60 * 1000;
 export const TOKEN_LENGTH = 32;
 // eslint-disable-next-line no-restricted-globals
 export const REDIRECT_PASSWORD = `/login`;
 export const MIN_MAX_GRADE_RANGE = { min: 1, max: 14 };
+export const TRAINEE_GRADE = 14;
 
 export const toTimerString = (referenceDate: DateTime, theDate: DateTime) => {
     const inPast = theDate < referenceDate;
