@@ -47,7 +47,7 @@ export const MatchButtons = ({ match, isLoading, refresh }: MatchButtonsProps) =
     const [dissolveMatch, { loading: isDissolvingMatch }] = useMutation(DISSOLVE_MATCH_MUTATION);
 
     const isActiveMatch = useMemo(() => {
-        if (match?.dissolved) return true;
+        if (!match?.dissolved) return true;
         const today = DateTime.now().endOf('day');
         const dissolvedAtPlus30Days = DateTime.fromISO(match?.dissolvedAt).plus({ days: 30 });
         const before = dissolvedAtPlus30Days < today;
