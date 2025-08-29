@@ -154,7 +154,12 @@ const SingleCoursePupil = () => {
     const { subcourse } = data ?? {};
     const { course } = subcourse ?? {};
     const appointments = useMemo(() => {
-        return (subcourse?.isParticipant ? subcourse?.joinedAppointments : subcourse?.appointments) ?? [];
+        const appointmentsList = (subcourse?.isParticipant ? subcourse?.joinedAppointments : subcourse?.appointments) ?? [];
+        return appointmentsList.filter((e) => {
+            const appointmentStart = DateTime.fromISO(e.start);
+            const appointmentEnd = appointmentStart.plus({ minutes: e.duration });
+            return appointmentEnd > DateTime.now();
+        });
     }, [subcourse?.joinedAppointments, subcourse?.appointments, subcourse?.isParticipant]);
 
     const myNextAppointment = useMemo(() => {
