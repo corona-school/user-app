@@ -150,7 +150,7 @@ const UpdateData: React.FC<Props> = ({ refetchQuery, profile }) => {
                         </div>
                     )}
                     {modalType === 'languages' && (
-                        <div className="flex flex-col gap-y-2">
+                        <div className="flex flex-col gap-y-2 max-h-[500px] overflow-y-auto">
                             <Label>{t('profile.Languages.labelPupil')}</Label>
                             <LanguageSelector multiple value={selectedLanguages} setValue={setSelectedLanguages} />
                         </div>

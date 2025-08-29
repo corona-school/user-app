@@ -113,7 +113,7 @@ const UpdateData = ({ refetchQuery, profile, onNext, onBack }: UpdateDataProps) 
                 </ModalHeader>
                 <div>
                     {modalType === 'languages' && (
-                        <div className="flex flex-col gap-y-2">
+                        <div className="flex flex-col gap-y-2 max-h-[500px] overflow-y-auto">
                             <Label>{t('profile.Languages.labelStudent')}</Label>
                             <LanguageSelector multiple value={selectedLanguages} setValue={setSelectedLanguages} />
                         </div>
