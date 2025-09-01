@@ -49,6 +49,8 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
         if (!areInputsDirty.password) return;
         if (!form.password) {
             setPasswordError(t('reasonsDisabled.fieldEmpty'));
+        } else if (form.password.length < 6) {
+            setPasswordError(t('registration.hint.password.length'));
         } else {
             setPasswordError('');
         }
@@ -58,20 +60,11 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
         (key: 'email' | 'password') => {
             const onChange = (text: string) => {
                 onFormChange({ [key]: text });
+                setAreInputsDirty({ [key]: true });
             };
             return onChange;
         },
         [onFormChange]
-    );
-
-    const makeOnBlurHandler = useCallback(
-        (key: 'email' | 'password') => {
-            const onBlur = () => {
-                setAreInputsDirty({ [key]: true });
-            };
-            return onBlur;
-        },
-        [setAreInputsDirty]
     );
 
     const handleOnNext = async () => {
@@ -113,7 +106,6 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                             {t('registration.steps.authenticationInfo.pupilEmail')}
                         </Label>
                         <Input
-                            onBlur={makeOnBlurHandler('email')}
                             variant="white"
                             id="email"
                             value={form.email}
@@ -128,7 +120,6 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                         <div className="w-full flex flex-col justify-center gap-y-1">
                             <Label htmlFor="password">{t('password')}</Label>
                             <Input
-                                onBlur={makeOnBlurHandler('password')}
                                 type="password"
                                 variant="white"
                                 id="password"
