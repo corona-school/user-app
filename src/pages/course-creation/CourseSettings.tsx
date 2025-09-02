@@ -26,21 +26,21 @@ const CourseSettings: React.FC<Props> = ({
 }) => {
     const { t } = useTranslation();
     return (
-        <div className="flex flex-col gap-1.5 w-full">
-            <Typography variant="h3">{t('course.CourseDate.form.otherHeadline')}</Typography>
+        <div className="flex flex-col gap-2.5 w-full">
+            <Typography variant="h4">{t('course.CourseDate.form.otherHeadline')}</Typography>
             <div className="flex justify-between">
-                <Label htmlFor="1" className="inline flex-grow text-base">
+                <Label htmlFor="1" className="inline flex-grow text-base font-normal">
                     {t('course.CourseDate.form.otherOptionStart')}
                 </Label>
                 <Switch id="1" className="flex-shrink-0" checked={!!joinAfterStart} onCheckedChange={(c) => setJoinAfterStart && setJoinAfterStart(c)} />
             </div>
             <div className="flex justify-between">
-                <Label htmlFor="2" className="inline flex-grow text-base">
+                <Label htmlFor="2" className="inline flex-grow text-base font-normal">
                     {t('course.CourseDate.form.otherOptionContact')}
                 </Label>
             </div>
             <div className="flex justify-between ml-5">
-                <Label htmlFor="3" className="inline flex-grow text-base">
+                <Label htmlFor="3" className="inline flex-grow text-base font-normal">
                     {t('course.CourseDate.form.otherProspects')}
                 </Label>
                 <Switch
@@ -51,7 +51,7 @@ const CourseSettings: React.FC<Props> = ({
                 />
             </div>
             <div className="flex justify-between ml-5">
-                <Label htmlFor="4" className="inline flex-grow text-base">
+                <Label htmlFor="4" className="inline flex-grow text-base font-normal">
                     {t('course.CourseDate.form.otherParticipants')}
                 </Label>
                 <Switch
@@ -62,7 +62,7 @@ const CourseSettings: React.FC<Props> = ({
                 />
             </div>
             <div className="flex justify-between">
-                <Label htmlFor="5" className="inline flex-grow text-base">
+                <Label htmlFor="5" className="inline flex-grow text-base font-normal">
                     {t('course.CourseDate.form.allowChatContact')}
                 </Label>
                 <Switch id="5" className="flex-shrink-0" checked={allowChatWriting} onCheckedChange={(c) => setAllowChatWriting && setAllowChatWriting(c)} />

@@ -1,9 +1,6 @@
 import { Label } from '@/components/Label';
 import { Button } from '@/components/Button';
-import { IconCirclePlus, IconSettingsFilled, IconTrash, IconTrashFilled, IconTrashX } from '@tabler/icons-react';
-import { Input } from '@/components/Input';
-import { Instructor } from '@/gql/graphql';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/Dropdown';
+import { IconTrash } from '@tabler/icons-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
 import { useState } from 'react';
 import { cn } from '@/lib/Tailwind';
@@ -12,6 +9,7 @@ import { useLazyQuery } from '@apollo/client';
 import { gql } from '@/gql';
 import { LFInstructor } from '@/types/lernfair/Course';
 import { InfoTooltipButton } from '@/components/Tooltip';
+import { useTranslation } from 'react-i18next';
 
 interface Props {
     instructors: LFInstructor[];
@@ -31,9 +29,10 @@ const INSTRUCTORS_QUERY = gql(`
     `);
 
 const CourseInstructors: React.FC<Props> = (props) => {
-    const [searchInstructorsQuery, { data, loading }] = useLazyQuery(INSTRUCTORS_QUERY);
+    const [searchInstructorsQuery] = useLazyQuery(INSTRUCTORS_QUERY);
     const [searchString, setSearchString] = useState<string>('');
     const [searchResults, setSearchResults] = useState<LFInstructor[]>([]);
+    const { t } = useTranslation();
 
     const searchInstructors = async (query: string) => {
         setSearchString(query);
@@ -78,15 +77,15 @@ const CourseInstructors: React.FC<Props> = (props) => {
     return (
         <div>
             <div className="inline-flex align-baseline gap-1.5">
-                <Label className="text-base">Kursleitung & Mentoren</Label>
+                <Label className="text-base">{t('course.CourseDate.form.otherInstructors')}</Label>
                 <InfoTooltipButton tooltipContent="TODO" />
             </div>
-            <p>Füge weitere Kursleiter oder Mentoren hinzu</p>
+            <p>{t('course.CourseDate.form.otherInstructorsDescription')}</p>
 
             <div className="flex flex-col gap-2.5">
                 <div className="flex gap-2.5">
                     <Combobox
-                        placeholder="Namen suchen oder E-Mail eingeben"
+                        placeholder={t('course.CourseDate.form.searchInstructorsPlaceholder')}
                         className="flex-grow"
                         onSearch={searchInstructors}
                         search={searchString}
@@ -113,8 +112,8 @@ const CourseInstructors: React.FC<Props> = (props) => {
                                         <SelectValue />
                                     </SelectTrigger>
                                     <SelectContent>
-                                        <SelectItem value="instructor">Kursleiter</SelectItem>
-                                        <SelectItem value="mentor">Mentor</SelectItem>
+                                        <SelectItem value="instructor">{t('course.CourseDate.form.instructor')}</SelectItem>
+                                        <SelectItem value="mentor">{t('course.CourseDate.form.mentor')}</SelectItem>
                                     </SelectContent>
                                 </Select>
                             </div>

@@ -75,7 +75,8 @@
             "wrongVideoUrlError": "Lütfen geçerli bir video bağlantısı girin.",
             "courseImageAltText": "Kurs görüntüsü",
             "videoChatLabel": "Görüntülü sohbet",
-            "videoChatPlaceholder": "Görüntülü sohbete kendi bağlantınızı ekleyin"
+            "videoChatPlaceholder": "Görüntülü sohbete kendi bağlantınızı ekleyin",
+            "save": "Randevuyu kaydet"
         },
         "detail": {
             "reasonDisabled": {
@@ -886,6 +887,12 @@
                 "title": "Çıkış",
                 "description": "Ev ödevi yardımı derslerine artık erişmeniz gerekmiyorsa oturumu kapatın."
             }
+        },
+        "dropzone": {
+            "description": "Resminizi buraya sürükleyin veya tıklayın:",
+            "customImage": "Kendi resminiz",
+            "database": "Veritabanı",
+            "changeImage": "Resmi değiştir"
         }
     },
     "settings": {
@@ -1765,7 +1772,8 @@
             "category": "Geçersiz kategori",
             "subject": "Lütfen bir konu seçiniz.",
             "grade-range": "Lütfen geçerli bir not aralığı girin.",
-            "participant-count": "Lütfen geçerli bir katılımcı sayısı girin."
+            "participant-count": "Lütfen geçerli bir katılımcı sayısı girin.",
+            "no-appointments": "Lütfen en az bir randevu oluşturun."
         },
         "CourseDate": {
             "step": {
@@ -1787,8 +1795,6 @@
                 "courseSubjectLabel": "Alan",
                 "coursePhotoLabel": "Fotoğraf",
                 "changeImage": "Resmi değiştir",
-                "CourseInstructors": "Eğitmenler",
-                "courseAddOntherLeadText": "Daha fazla eğitmen ekleyin",
                 "courseAlreadyaAddedLead": "Bu kişiyi zaten eklemişsiniz.",
                 "shortDescriptionLabel": "Kısa açıklama",
                 "shortDescriptionPlaceholder": "Kursunuzun ne hakkında olduğuna dair kısa bir cümle ...",
@@ -1813,7 +1819,16 @@
                 "allowChatContact": "Katılımcıların sohbette yazmasına izin verin",
                 "prospectContactTooltip": "Kursunuzla ilgilenen öğrenciler ve yardımcılar (kurs başlamadan önce)",
                 "participantsContactTooltip": "Kursunuz için kayıt yaptıran öğrenciler",
-                "otherOptionStartToolTip": "Eğer bu seçeneği etkinleştirirsen, öğrenciler her zaman kursuna kaydolabilirler. Özellikle bir veya daha fazla ders yapılmış olsa bile kaydolabilirler."
+                "otherOptionStartToolTip": "Eğer bu seçeneği etkinleştirirsen, öğrenciler her zaman kursuna kaydolabilirler. Özellikle bir veya daha fazla ders yapılmış olsa bile kaydolabilirler.",
+                "revisionTooltip": "Katılımcılarınızı geleneksel okul derslerinde destekliyorsunuz. Kurslarda, okuldaki belirli konuları birlikte tekrar eder ve uygularsınız.",
+                "languageTooltip": "Bu kurslarda, öğrencilerin Almanca günlük yaşamda hızlı bir şekilde yollarını bulmalarına yardımcı olursunuz. Birlikte telaffuz pratiği yapacak, kelime dağarcığınızı genişletecek ve dilbilgisi alıştırmaları yapacaksınız.",
+                "focusTooltip": "Katılımcılarınıza, onları günlük yaşamlarında ve gelecekleri için güçlendirecek önemli konularda heyecan verici kurslarda eşlik ediyorsunuz. Kurslar yıl boyunca sosyal medya, eğitim, zorbalık ve ruh sağlığı gibi önemli konuları kapsamaktadır.",
+                "otherInstructors": "Kurs yönetimi ve danışmanlar",
+                "otherInstructorsDescription": "Ek eğitmenler veya danışmanlar ekleyin:",
+                "instructor": "Eğitmen",
+                "mentor": "Mentor: içinde",
+                "searchInstructorsPlaceholder": "İsim arayın veya e-posta girin",
+                "customMembersCount": "Kendi"
             },
             "tags": {
                 "header": "Etiketleri seçin",
@@ -1856,7 +1871,9 @@
                 "publishCourse": "Incelemeye gönder",
                 "saveCourse": "Kurs oluşturun ve daha sonra yayınlayın",
                 "editCourse": "Verileri düzenle",
-                "updateCourse": "Değişiklikleri kaydet"
+                "updateCourse": "Değişiklikleri kaydet",
+                "saveDraft": "Taslağı kaydet",
+                "cancel": "İptal et"
             },
             "modal": {
                 "headline": "Tamamdır!",

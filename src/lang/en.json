@@ -75,7 +75,8 @@
             "wrongVideoUrlError": "Please enter a valid video link.",
             "courseImageAltText": "Course image",
             "videoChatLabel": "Video chat",
-            "videoChatPlaceholder": "Add your own link to the video chat"
+            "videoChatPlaceholder": "Add your own link to the video chat",
+            "save": "save lecture "
         },
         "detail": {
             "reasonDisabled": {
@@ -886,6 +887,12 @@
                 "title": "Logout",
                 "description": "Log out if you no longer need access to the homework help lessons."
             }
+        },
+        "dropzone": {
+            "description": "Drag your picture here or click:",
+            "customImage": "Own picture",
+            "database": "Database",
+            "changeImage": "Change image"
         }
     },
     "settings": {
@@ -1765,7 +1772,8 @@
             "category": "Invalid category",
             "subject": "Please select a subject.",
             "grade-range": "Please enter a valid grade range.",
-            "participant-count": "Please enter a valid number of participants."
+            "participant-count": "Please enter a valid number of participants.",
+            "no-appointments": "Please create at least one lecture ."
         },
         "CourseDate": {
             "step": {
@@ -1787,8 +1795,6 @@
                 "courseSubjectLabel": "Subject",
                 "coursePhotoLabel": "Image",
                 "changeImage": "Change image",
-                "CourseInstructors": "Instructors",
-                "courseAddOntherLeadText": "Add more instructors",
                 "courseAlreadyaAddedLead": "You have already added this person.",
                 "shortDescriptionLabel": "Brief description",
                 "shortDescriptionPlaceholder": "A short sentence about what your course is about ...",
@@ -1813,7 +1819,16 @@
                 "allowChatContact": "Allow participants to write in the chat",
                 "prospectContactTooltip": "pupils and volunteers who are interested in your course (before the course starts)",
                 "participantsContactTooltip": "pupilswho have registered for your course",
-                "otherOptionStartToolTip": "If you activate this option, pupils can register for your course at any time. In particular, you can also register if one or more lessons have already taken place."
+                "otherOptionStartToolTip": "If you activate this option, pupils can register for your course at any time. In particular, you can also register if one or more lessons have already taken place.",
+                "revisionTooltip": "You support your participants in the traditional school subjects. In the courses, you repeat and practise specific topics from school together.",
+                "languageTooltip": "In these courses, you will help learners to quickly find their way around everyday life in German. Together you will practise pronunciation, expand your vocabulary and practise grammar.",
+                "focusTooltip": "You accompany your participants through exciting courses on important topics that will strengthen them in their everyday lives and for their future. Throughout the year, the courses cover important topics such as social media, education, bullying and mental health.",
+                "otherInstructors": "Course management & mentors",
+                "otherInstructorsDescription": "Add additional instructors or mentors:",
+                "instructor": "Instructor",
+                "mentor": "Mentor:in",
+                "searchInstructorsPlaceholder": "Search for name or enter e-mail",
+                "customMembersCount": "Own"
             },
             "tags": {
                 "header": "Select tags",
@@ -1856,7 +1871,9 @@
                 "publishCourse": "Save for approval",
                 "saveCourse": "Create course and release later",
                 "editCourse": "Edit",
-                "updateCourse": "Save changes"
+                "updateCourse": "Save changes",
+                "saveDraft": "Save draft",
+                "cancel": "Cancel"
             },
             "modal": {
                 "headline": "Done!",

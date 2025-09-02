@@ -90,7 +90,7 @@ const CourseDetails: React.FC<Props> = ({
 
     return (
         <>
-            <Typography variant="h3">{t('course.CourseDate.step.general')}</Typography>
+            <Typography variant="h4">{t('course.CourseDate.step.general')}</Typography>
             {/*Don't allow homework help courses to change category, as they cannot change it back (hidden category)*/}
             {category !== Course_Category_Enum.HomeworkHelp && (
                 <div className="flex flex-col gap-2.5">
@@ -150,7 +150,7 @@ const CourseDetails: React.FC<Props> = ({
                     value={description}
                     placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
                     onChange={(e) => setDescription?.(e.target.value)}
-                    className="resize-none h-24 w-full"
+                    className="resize-none h-40 w-full"
                 />
                 {errors.includes('description') && (
                     <Typography variant="sm" className="text-red-500 error">
@@ -169,14 +169,14 @@ const CourseDetails: React.FC<Props> = ({
                         <Button
                             className="flex-grow"
                             key={item}
-                            variant={draftMaxParticipantCount === item.toString() ? 'default' : 'outline'}
+                            variant={draftMaxParticipantCount === item.toString() ? 'default' : 'outline-inactive'}
                             onClick={() => setDraftMaxParticipantCount(item.toString())}
                         >
                             {item}
                         </Button>
                     ))}
                     <Button
-                        variant={draftMaxParticipantCount === 'custom' ? 'default' : 'outline'}
+                        variant={draftMaxParticipantCount === 'custom' ? 'default' : 'outline-inactive'}
                         className="flex-grow"
                         onClick={() => setDraftMaxParticipantCount('custom')}
                     >
@@ -200,7 +200,7 @@ const CourseDetails: React.FC<Props> = ({
                     </div>
                     <div className="flex gap-2.5 flex-wrap">
                         {SUBJECTS.map((s) => (
-                            <Button key={s} variant={s === subject ? 'default' : 'outline'} onClick={() => setSubject && setSubject(s)}>
+                            <Button key={s} variant={s === subject ? 'default' : 'outline-inactive'} onClick={() => setSubject && setSubject(s)}>
                                 {t(`lernfair.subjects.${s}` as unknown as TemplateStringsArray)}
                             </Button>
                         ))}
@@ -225,7 +225,7 @@ const CourseDetails: React.FC<Props> = ({
                         {data?.courseTags.map((tag) => (
                             <Button
                                 key={tag.id}
-                                variant={selectedTags.some((x) => x.id === tag.id) ? 'default' : 'outline'}
+                                variant={selectedTags.some((x) => x.id === tag.id) ? 'default' : 'outline-inactive'}
                                 onClick={() => {
                                     if (selectedTags.some((x) => x.id === tag.id)) {
                                         setSelectedTags(selectedTags.filter((t) => t.id !== tag.id));
@@ -249,13 +249,13 @@ const CourseDetails: React.FC<Props> = ({
             {/*  Grade selection  */}
             <div className="flex flex-col gap-2.5">
                 <Label className="text-base">{t('course.CourseDate.form.detailsContent')}</Label>
-                <Slider id="gradeSlider" min={1} max={14} value={gradeRange} onValueChange={(range) => setGradeRange([range[0], range[1]])} />
-                <Label htmlFor="gradeSlider" className="text-center">
+                <Label htmlFor="gradeSlider">
                     {t('course.CourseDate.form.classRange', {
                         minRange: getGradeLabel(gradeRange[0]),
                         maxRange: getGradeLabel(gradeRange[1]),
                     })}
                 </Label>
+                <Slider id="gradeSlider" min={1} max={14} value={gradeRange} onValueChange={(range) => setGradeRange([range[0], range[1]])} />
                 {errors.includes('grade-range') && (
                     <Typography variant="sm" className="text-red-500 error">
                         {t('course.error.grade-range')}

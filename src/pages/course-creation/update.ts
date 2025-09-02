@@ -9,7 +9,7 @@ import {
     PublicSubcourseCreateInput,
     PublicSubcourseEditInput,
 } from '@/gql/graphql';
-import { ChatType, CreateCourseError } from '../CreateCourse';
+import { ChatType } from '../CreateCourse';
 import { LFSubCourse, LFTag } from '@/types/lernfair/Course';
 import { FileItem } from '@/components/Dropzone';
 import { Appointment } from '@/types/lernfair/Appointment';
@@ -104,7 +104,7 @@ export function getCourseDelta(
     delta.removedMentors = prefillCourse?.mentors?.filter((i) => !stateMentorIds.includes(i.id)).map((x) => x.id) ?? [];
 
     const prefillMap = new Map(
-        (prefillCourse?.appointments ?? []).map((a) => [
+        (prefillCourse?.joinedAppointments ?? []).map((a) => [
             a.id,
             {
                 start: a.start,
@@ -149,7 +149,9 @@ export function getCourseDelta(
     }
     delta.changedAppointments = changedAppointments;
     // appointments that are not in state but in prefillCourse
-    delta.cancelledAppointments = (prefillCourse?.appointments ?? []).filter((a) => !state.courseAppointments?.some((x) => x.id === a.id)).map((a) => a.id);
+    delta.cancelledAppointments = (prefillCourse?.joinedAppointments ?? [])
+        .filter((a) => !state.courseAppointments?.some((x) => x.id === a.id))
+        .map((a) => a.id);
 
     // Image
     if (state.pickedPhoto) {

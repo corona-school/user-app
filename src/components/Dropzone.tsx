@@ -3,6 +3,7 @@ import { IconCloudUpload } from '@tabler/icons-react';
 import { Button } from '@/components/Button';
 import { cn } from '@/lib/Tailwind';
 import UnsplashModal from '@/modals/Unsplash';
+import { useTranslation } from 'react-i18next';
 
 export interface FileItem {
     name: string;
@@ -22,6 +23,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
     const [error, setError] = useState<string | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const fileInputRef = useRef<HTMLInputElement>(null);
+    const { t } = useTranslation();
 
     const handleDragEnter = (e: DragEvent<HTMLDivElement>): void => {
         e.preventDefault();
@@ -140,14 +142,14 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                             <div className={cn('w-16 h-16 mb-2', isDragging ? 'text-blue-500' : 'text-gray-400')}>
                                 <IconCloudUpload width={64} height={64} stroke={2} />
                             </div>
-                            <p className="font-medium text-gray-700">Ziehe dein Bild hierher oder klicke:</p>
+                            <p className="font-medium text-gray-700">{t('single.dropzone.description')}</p>
 
                             <div className="mt-2 flex space-x-4 justify-center">
                                 <Button variant="outline" onClick={openFilePicker}>
-                                    Eigene Datei
+                                    {t('single.dropzone.customImage')}
                                 </Button>
                                 <Button variant="outline" onClick={() => setShowModal(true)}>
-                                    Datenbank
+                                    {t('single.dropzone.database')}
                                 </Button>
                             </div>
                         </div>
@@ -166,7 +168,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                                     </>
                                 )}
                                 <Button onClick={() => onUpload(null)} variant="destructive">
-                                    Bild ändern
+                                    {t('single.dropzone.changeImage')}
                                 </Button>
                             </div>
                         </div>

@@ -144,7 +144,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                 onOpenChange={(open) => !open && setAppointmentToDelete(undefined)}
                 rejectType={RejectType.CANCEL}
             />
-            <Typography variant="h3">{t('course.CourseDate.step.appointments')}</Typography>
+            <Typography variant="h4">{t('course.CourseDate.step.appointments')}</Typography>
             <div>
                 {(isEditingCourse || getDraftAppointments.length !== 0) && (
                     <div className="mb-2">

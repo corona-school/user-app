@@ -91,11 +91,11 @@
             "backButton": "zur vorherigen Seite",
             "lecture": "Lektion",
             "add_lecture": "Lektion #{{position}} hinzufügen",
-            "titleLabel": "Titel",
+            "titleLabel": "Lektionstitel (optional)",
             "dateLabel": "Datum",
             "timeLabel": "Uhrzeit",
             "durationLabel": "Dauer",
-            "descriptionLabel": "Beschreibung (optional)",
+            "descriptionLabel": "Lektionsbeschreibung (optional)",
             "descriptionPlaceholder": "Füge eine prägnante und verständliche Beschreibung hinzu...",
             "inputPlaceholder": "Thema (optional)",
             "weeklyRepeat": "wöchentlich wiederholen...",
@@ -111,7 +111,8 @@
             "videoSelectOptions": {
                 "zoom": "          Automatischer Zoom-Link (ohne Zeitbegrenzung)",
                 "link": "Eigener Meeting-Link"
-            }
+            },
+            "save": "Termin speichern"
         },
         "detail": {
             "group": "Gruppentermin mit {{instructor}}",
@@ -968,7 +969,13 @@
             "error": "Schüler:in konnte nicht entfernt werden"
         },
         "removeFromCourse": "Aus dem Kurs entfernen",
-        "addToCourse": "Zum Kurs hinzufügen"
+        "addToCourse": "Zum Kurs hinzufügen",
+        "dropzone": {
+            "description": "Ziehe dein Bild hierher oder klicke:",
+            "customImage": "Eigenes Bild",
+            "database": "Datenbank",
+            "changeImage": "Bild ändern"
+        }
     },
     "settings": {
         "header": "Einstellungen",
@@ -1775,7 +1782,7 @@
         }
     },
     "course": {
-        "header": "Kurs erstellen",
+        "header": "Neuen Kurs erstellen",
         "edit": "Kurs bearbeiten",
         "uploadImage": "Foto hochladen",
         "noticeDate": "Bitte fülle alle Felder korrekt aus",
@@ -1882,8 +1889,11 @@
                 "courseSubjectLabel": "Fächer",
                 "coursePhotoLabel": "Bild",
                 "changeImage": "Bild ändern",
-                "CourseInstructors": "Kursleiter:innen",
-                "courseAddOntherLeadText": "Weitere Kursleiter:innen hinzufügen",
+                "otherInstructors": "Kursleitung & Mentor:innen",
+                "otherInstructorsDescription": "Füge weitere Kursleiter:innen oder Mentor:innen hinzu:",
+                "instructor": "Kursleiter:in",
+                "mentor": "Mentor:in",
+                "searchInstructorsPlaceholder": "Namen suchen oder E-Mail eingeben",
                 "courseAlreadyaAddedLead": "Du hast diese Person bereits hinzugefügt.",
                 "shortDescriptionLabel": "Kurzbeschreibung",
                 "shortDescriptionPlaceholder": "Kurzer Satz, um was es in deinem Kurs geht …",
@@ -1894,7 +1904,7 @@
                 "tagsPlaceholder": "Damit dein Kurs besser gefunden wird",
                 "tagsInfo": "Die einzelnen Tags müssen durch ein Komma (,) getrennt werden",
                 "detailsHeadline": "Details",
-                "detailsContent": "Für welche Klassen ist der Kurs geeignet?",
+                "detailsContent": "Jahrgangsstufe",
                 "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Max. Teilnehmer:innenzahl",
                 "maxMembersInfo": "Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.",
@@ -1950,7 +1960,9 @@
                 "appointmentLabel": "Termin",
                 "appointmentDate": "Datum:",
                 "publishCourse": "Zur Prüfung freigeben",
-                "saveCourse": "Entwurf speichern",
+                "saveCourse": "Kurs speichern",
+                "saveDraft": "Entwurf speichern",
+                "cancel": "Abbrechen",
                 "editCourse": "Bearbeiten",
                 "updateCourse": "Änderungen speichern"
             },
@@ -2209,7 +2221,7 @@
             "lesson": "Lektionsplaner mit KI (Beta)",
             "requestMatch": "Ein neues Lernpaar bilden",
             "createCourse": "Kurse anlegen",
-            "editCourse": "Kurs editieren",
+            "editCourse": "Kurs bearbeiten",
             "createAppointment": "Termin erstellen",
             "editAppointment": "Termin bearbeiten",
             "settings": "Einstellungen",

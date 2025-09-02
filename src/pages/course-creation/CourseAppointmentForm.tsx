@@ -68,10 +68,6 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                 <div className="flex flex-col gap-y-1">
-                    <Label htmlFor="title">{t('appointment.create.titleLabel')}</Label>
-                    <Input className="w-full" id="title" value={title} placeholder={t('appointment.create.inputPlaceholder')} onChange={handleTitleInput} />
-                </div>
-                <div className="flex flex-col gap-y-1">
                     <Label htmlFor="date">{t('appointment.create.dateLabel')}</Label>
                     <DatePicker
                         id="date"
@@ -150,7 +146,10 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         </Typography>
                     )}
                 </div>
-                <div className="flex flex-1"></div>
+                <div className="flex flex-col gap-y-1">
+                    <Label htmlFor="title">{t('appointment.create.titleLabel')}</Label>
+                    <Input className="w-full" id="title" value={title} placeholder={t('appointment.create.inputPlaceholder')} onChange={handleTitleInput} />
+                </div>
                 <div className="flex flex-col gap-y-1 flex-1 lg:col-span-2">
                     <Label htmlFor="description">{t('appointment.create.descriptionLabel')}</Label>
                     <TextArea
@@ -163,7 +162,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
             </div>
             <div className="flex w-full gap-x-5 mt-4">
                 <Button onClick={onCancel} variant={'outline'} className="flex-grow">
-                    Abbrechen
+                    {t('cancel')}
                 </Button>
                 <Button
                     onClick={() =>
@@ -182,10 +181,8 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                     }
                     className="flex-grow"
                 >
-                    Speichern
+                    {t('appointment.create.save')}
                 </Button>
-
-                {/*    TODO: override link isn't being saved, implement form errors */}
             </div>
         </div>
     );

@@ -190,7 +190,7 @@ const CreateCourse: React.FC = () => {
 
     useEffect(() => {
         if (userType === 'student') queryStudent();
-    }, [queryStudent]);
+    }, [queryStudent, userType]);
 
     const queryCourse = useCallback(async () => {
         console.log('location.state', location.state, studentId);
@@ -234,7 +234,7 @@ const CreateCourse: React.FC = () => {
         }
 
         setLoadingCourse(false);
-    }, [courseQuery, prefillSubcourseId, studentId]);
+    }, [courseQuery, location.state, prefillSubcourseId, studentId, userType]);
 
     useEffect(() => {
         if (prefillSubcourseId != null) queryCourse();
@@ -260,7 +260,7 @@ const CreateCourse: React.FC = () => {
         if (!maxParticipantCount || maxParticipantCount <= 0) {
             errors.push('participant-count');
         }
-        if (courseAppointments?.length === 0) {
+        if (!courseAppointments || courseAppointments?.length === 0) {
             errors.push('no-appointments');
         }
         if (errors.length > 0) {
@@ -347,7 +347,7 @@ const CreateCourse: React.FC = () => {
                 <Typography variant="h2" className="mb-4">
                     {editingExistingCourse ? t('course.edit') : t('course.header')}
                 </Typography>
-                <div className="flex flex-col gap-4 max-w-xl w-full" id="form">
+                <div className="flex flex-col gap-5 max-w-xl w-full" id="form">
                     <CourseDetails
                         courseName={courseName}
                         setCourseName={setCourseName}
@@ -392,14 +392,14 @@ const CreateCourse: React.FC = () => {
                     />
                     <div className="flex flex-col gap-2">
                         <Button variant="outline" className="w-full" onClick={() => window.history.back()}>
-                            Abbrechen
+                            {t('course.CourseDate.Preview.cancel')}
                         </Button>
                         <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)}>
-                            {prefillCourse ? 'Kurs speichern' : 'Entwurf speichern'}
+                            {prefillCourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
                         </Button>
                         {(!prefillCourse || prefillCourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
                             <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full" onClick={() => save(true)}>
-                                Zur Prüfung freigeben
+                                {t('course.CourseDate.Preview.publishCourse')}
                             </Button>
                         )}
                     </div>
