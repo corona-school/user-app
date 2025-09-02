@@ -1,13 +1,9 @@
 import { DateTime } from 'luxon';
 import { useCallback } from 'react';
-import { AppointmentParticipant, Organizer } from '../gql/graphql';
-import AppointmentDate from './AppointmentDate';
+import { AppointmentParticipant, Organizer } from '@/gql/graphql';
 import AppointmentTile from './AppointmentTile';
-import { Appointment } from '../types/lernfair/Appointment';
+import { Appointment } from '@/types/lernfair/Appointment';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
-import { useTranslation } from 'react-i18next';
-import { Simulate } from 'react-dom/test-utils';
-import click = Simulate.click;
 
 type Props = {
     start: string;

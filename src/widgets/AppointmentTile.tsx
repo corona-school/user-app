@@ -10,12 +10,9 @@ import { cn } from '@/lib/Tailwind';
 import { useUser } from '@/hooks/useApollo';
 import { useMemo } from 'react';
 import AppointmentDate from '@/widgets/AppointmentDate';
-import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { DateTime } from 'luxon';
 import { Button } from '@/components/Button';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
-import { Simulate } from 'react-dom/test-utils';
-import click = Simulate.click;
 
 type Props = {
     title: string;
