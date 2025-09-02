@@ -15,7 +15,6 @@ import {
     KZ,
     PL,
     PT,
-    SA,
     TR,
     UA,
     VN,
@@ -43,6 +42,8 @@ import {
     HU,
     PK,
     ET,
+    IQ,
+    PS,
 } from 'country-flag-icons/react/1x1';
 import de from './lang/de.json';
 import { Settings } from 'luxon';
@@ -116,7 +117,7 @@ export const languageList = [
 export const languageIcons = {
     sq: AL, // Albanian -> Albania
     am: ET, // Amharic -> Ethiopia
-    ar: SA, // Arabic -> Saudi Arabia
+    ar: PS, // Arabic -> Palestine
     hy: AM, // Armenian -> Armenia
     az: AZ, // Azerbaijani -> Azerbaijan
     bs: BA, // Bosnian -> Bosnia
@@ -134,7 +135,7 @@ export const languageIcons = {
     it: IT, // Italian -> Italy
     kk: KZ, // Kazakh -> Kazakhstan
     hr: HR, // Croatian -> Croatia
-    ku: TR, // Kurdish -> Turkey
+    ku: IQ, // Kurdish -> Iraq
     ln: CD, // Lingala -> Congo
     lt: LT, // Lithuanian -> Lithuania
     ml: IN, // Malayalam -> India
