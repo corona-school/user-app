@@ -97,10 +97,7 @@ const AppointmentTile: React.FC<Props> = ({
     }, [duration, start]);
 
     return (
-        <div
-            className={cn('w-full', isFullWidth ? 'lg:w-[92%]' : 'lg:w-90%', clickable ? 'cursor-pointer' : 'cursor-auto')}
-            onClick={clickable ? onPress : undefined}
-        >
+        <div className={cn('w-full', clickable ? 'cursor-pointer' : 'cursor-auto')} onClick={clickable ? onPress : undefined}>
             <div className={cn('flex flex-col p-4 rounded-md border border-gray-200', isHighlighted && 'bg-primary')}>
                 <div className="flex gap-2 mb-2">
                     <AppointmentDate current={isCurrentlyTakingPlace} date={start} isReadOnly={isReadOnly} className="bg-primary-lighter" />
@@ -141,8 +138,14 @@ const AppointmentTile: React.FC<Props> = ({
                     )}
                 </div>
                 <div>
-                    <Typography className={cn('font-bold', isHighlighted ? 'text-white' : 'text-primary')}>{displayName}</Typography>
-                    {description && <Typography>{description.length > 100 ? description.slice(0, 100) + '...' : description}</Typography>}
+                    <Typography className={cn('font-bold whitespace-normal break-words', isHighlighted ? 'text-white' : 'text-primary')}>
+                        {displayName && displayName.length > 80 ? displayName.slice(0, 80) + '...' : displayName}
+                    </Typography>
+                    {description && (
+                        <Typography className="whitespace-normal break-words">
+                            {description.length > 100 ? description.slice(0, 100) + '...' : description}
+                        </Typography>
+                    )}
                     {wasRejectedByMatch && (
                         <div className="flex gap-x-1 items-center pt-1">
                             <IconInfoCircle className="text-red-600" size={17} />
