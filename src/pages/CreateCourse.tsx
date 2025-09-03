@@ -236,7 +236,7 @@ const CreateCourse: React.FC = () => {
         setAllowParticipantContact(!!prefillSubcourse.allowChatContactParticipants);
         setAllowChatWriting(prefillSubcourse.groupChatType === ChatType.NORMAL);
         setGradeRange([prefillSubcourse.minGrade || 1, prefillSubcourse.maxGrade || 14]);
-        setCourseAppointments((userType === 'student' ? prefillSubcourse.joinedAppointments : prefillCourse.appointments) ?? []);
+        setCourseAppointments((userType === 'student' ? prefillSubcourse.joinedAppointments : prefillSubcourse.appointments) ?? []);
         prefillSubcourse.course.image && setImage(prefillSubcourse.course.image);
 
         if (prefillSubcourse.instructors && Array.isArray(prefillSubcourse.instructors)) {
