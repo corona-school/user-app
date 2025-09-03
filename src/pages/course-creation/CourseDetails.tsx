@@ -14,8 +14,9 @@ import { gql } from '@/gql';
 import { getGradeLabel } from '@/Utility';
 import { Typography } from '@/components/Typography';
 import { InfoTooltipButton } from '@/components/Tooltip';
-import { LFTag } from '@/types/lernfair/Course';
+import { LFInstructor, LFTag } from '@/types/lernfair/Course';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
+import CourseInstructors from '@/pages/course-creation/CourseInstructors';
 
 const TAGS_QUERY = gql(`
     query GetCourseTags($category: String!) {
@@ -47,6 +48,10 @@ interface Props {
     category: Course_Category_Enum;
     setCategory: Dispatch<SetStateAction<Course_Category_Enum>>;
     errors: string[];
+    instructors: LFInstructor[];
+    setInstructors: (instructors: LFInstructor[] | ((prev: LFInstructor[]) => LFInstructor[])) => void;
+    mentors: LFInstructor[];
+    setMentors: (mentors: LFInstructor[] | ((prev: LFInstructor[]) => LFInstructor[])) => void;
 }
 
 const PREDEFINED_PARTICIPANTS = [5, 10, 20, 30, 40, 50, 100];
@@ -69,6 +74,10 @@ const CourseDetails: React.FC<Props> = ({
     setSelectedTags,
     category,
     setCategory,
+    instructors,
+    mentors,
+    setInstructors,
+    setMentors,
     errors,
 }) => {
     const { t } = useTranslation();
@@ -98,152 +107,169 @@ const CourseDetails: React.FC<Props> = ({
                         {t('course.CourseDate.form.courseCategory')}
                     </Label>
                     <RadioGroup className="px-4" id="courseCategory" value={category} onValueChange={(v) => setCategory(v as Course_Category_Enum)}>
-                        <div className="flex gap-x-2 items-center">
-                            <RadioGroupItem id="revision" value={Course_Category_Enum.Revision} />
-                            <div className="inline-flex align-baseline gap-1.5">
-                                <Label htmlFor="revision">{t('course.CourseDate.form.revision')}</Label>
-                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.revisionTooltip')} />
+                        <div className="flex sm:flex-row flex-col gap-5">
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id="revision" value={Course_Category_Enum.Revision} />
+                                <div className="inline-flex align-baseline gap-1.5">
+                                    <Label htmlFor="revision">{t('course.CourseDate.form.revision')}</Label>
+                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.revisionTooltip')} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex gap-x-2 items-center">
-                            <RadioGroupItem id="language" value={Course_Category_Enum.Language} />
-                            <div className="inline-flex align-baseline gap-1.5">
-                                <Label htmlFor="language">{t('course.CourseDate.form.language')}</Label>
-                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.languageTooltip')} />
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id="language" value={Course_Category_Enum.Language} />
+                                <div className="inline-flex align-baseline gap-1.5">
+                                    <Label htmlFor="language">{t('course.CourseDate.form.language')}</Label>
+                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.languageTooltip')} />
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex gap-x-2 items-center">
-                            <RadioGroupItem id="focus" value={Course_Category_Enum.Focus} />
-                            <div className="inline-flex align-baseline gap-1.5">
-                                <Label htmlFor="focus">{t('course.CourseDate.form.focus')}</Label>
-                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.focusTooltip')} />
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id="focus" value={Course_Category_Enum.Focus} />
+                                <div className="inline-flex align-baseline gap-1.5">
+                                    <Label htmlFor="focus">{t('course.CourseDate.form.focus')}</Label>
+                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.focusTooltip')} />
+                                </div>
                             </div>
                         </div>
                     </RadioGroup>
                 </div>
             )}
-
-            <div className="flex flex-col gap-2.5">
-                <Label htmlFor="courseName" className="text-base">
-                    {t('course.CourseDate.form.courseNameHeadline')}
-                </Label>
-                <Input
-                    id="courseName"
-                    value={courseName}
-                    placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
-                    onChange={(e) => setCourseName?.(e.target.value)}
-                    className="w-full"
-                />
-                {errors.includes('course-name') && (
-                    <Typography variant="sm" className="text-red-500 error">
-                        {t('course.error.course-name')}
-                    </Typography>
-                )}
-            </div>
-
-            <div className="flex flex-col gap-2.5">
-                <Label htmlFor="description" className="text-base">
-                    {t('course.CourseDate.form.descriptionLabel')}
-                </Label>
-                <TextArea
-                    id="description"
-                    value={description}
-                    placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
-                    onChange={(e) => setDescription?.(e.target.value)}
-                    className="resize-none h-40 w-full"
-                />
-                {errors.includes('description') && (
-                    <Typography variant="sm" className="text-red-500 error">
-                        {t('course.error.description')}
-                    </Typography>
-                )}
-            </div>
-
-            <div className="flex flex-col gap-2.5">
-                <div className="inline-flex align-baseline gap-1.5">
-                    <Label className="text-base">{t('course.CourseDate.step.attendees')}</Label>
-                    <InfoTooltipButton tooltipContent="TODO" />
-                </div>
-                <div className="flex gap-2.5 flex-wrap">
-                    {PREDEFINED_PARTICIPANTS.map((item) => (
-                        <Button
-                            className="flex-grow"
-                            key={item}
-                            variant={draftMaxParticipantCount === item.toString() ? 'default' : 'outline-inactive'}
-                            onClick={() => setDraftMaxParticipantCount(item.toString())}
-                        >
-                            {item}
-                        </Button>
-                    ))}
-                    <Button
-                        variant={draftMaxParticipantCount === 'custom' ? 'default' : 'outline-inactive'}
-                        className="flex-grow"
-                        onClick={() => setDraftMaxParticipantCount('custom')}
-                    >
-                        {t('course.CourseDate.form.customMembersCount')}
-                    </Button>
-                </div>
-                {draftMaxParticipantCount === 'custom' && (
-                    <div className="w-full flex items-center gap-2.5">
-                        <Slider value={[customMaxAttendees]} onValueChange={(v) => setCustomMaxAttendees(v[0])} />
-                        <span className="w-8 text-center">{customMaxAttendees}</span>
+            <div className="flex sm:flex-row flex-col gap-5">
+                <div className="flex-1 flex flex-col gap-5">
+                    <div className="flex flex-col gap-2.5">
+                        <Label htmlFor="courseName" className="text-base">
+                            {t('course.CourseDate.form.courseNameHeadline')}
+                        </Label>
+                        <Input
+                            id="courseName"
+                            value={courseName}
+                            placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
+                            onChange={(e) => setCourseName?.(e.target.value)}
+                            className="w-full"
+                        />
+                        {errors.includes('course-name') && (
+                            <Typography variant="sm" className="text-red-500 error">
+                                {t('course.error.course-name')}
+                            </Typography>
+                        )}
                     </div>
-                )}
-            </div>
 
-            {/*Subject selection for revision courses*/}
-            {category === Course_Category_Enum.Revision && (
-                <div className="flex flex-col gap-2.5">
-                    <div className="inline-flex align-baseline gap-1.5">
-                        <Label className="text-base">{t('course.CourseDate.form.courseSubjectLabel')}</Label>
-                        <InfoTooltipButton tooltipContent="TODO" />
+                    <div className="flex flex-col gap-2.5 h-[80%] min-h-48">
+                        <Label htmlFor="description" className="text-base">
+                            {t('course.CourseDate.form.descriptionLabel')}
+                        </Label>
+                        <TextArea
+                            id="description"
+                            value={description}
+                            placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
+                            onChange={(e) => setDescription?.(e.target.value)}
+                            className="resize-none h-full flex-grow w-full"
+                        />
+                        {errors.includes('description') && (
+                            <Typography variant="sm" className="text-red-500 error">
+                                {t('course.error.description')}
+                            </Typography>
+                        )}
                     </div>
-                    <div className="flex gap-2.5 flex-wrap">
-                        {SUBJECTS.map((s) => (
-                            <Button key={s} variant={s === subject ? 'default' : 'outline-inactive'} onClick={() => setSubject && setSubject(s)}>
-                                {t(`lernfair.subjects.${s}` as unknown as TemplateStringsArray)}
+                </div>
+                <div className="flex-1 flex flex-col gap-5">
+                    <div className="flex flex-col gap-2.5">
+                        <div className="inline-flex align-baseline gap-1.5">
+                            <Label className="text-base">{t('course.CourseDate.step.attendees')}</Label>
+                            <InfoTooltipButton tooltipContent="TODO" />
+                        </div>
+                        <div className="flex gap-2.5 flex-wrap">
+                            {PREDEFINED_PARTICIPANTS.map((item) => (
+                                <Button
+                                    className="flex-grow"
+                                    key={item}
+                                    variant={draftMaxParticipantCount === item.toString() ? 'default' : 'outline-inactive'}
+                                    onClick={() => setDraftMaxParticipantCount(item.toString())}
+                                >
+                                    {item}
+                                </Button>
+                            ))}
+                            <Button
+                                variant={draftMaxParticipantCount === 'custom' ? 'default' : 'outline-inactive'}
+                                className="flex-grow"
+                                onClick={() => setDraftMaxParticipantCount('custom')}
+                            >
+                                {t('course.CourseDate.form.customMembersCount')}
                             </Button>
-                        ))}
+                        </div>
+                        {draftMaxParticipantCount === 'custom' && (
+                            <div className="w-full flex items-center gap-2.5">
+                                <Slider value={[customMaxAttendees]} onValueChange={(v) => setCustomMaxAttendees(v[0])} />
+                                <span className="w-8 text-center">{customMaxAttendees}</span>
+                            </div>
+                        )}
                     </div>
-                    {errors.includes('subject') && (
-                        <Typography variant="sm" className="text-red-500 error">
-                            {t('course.error.subject')}
-                        </Typography>
+
+                    {/*Subject selection for revision courses*/}
+                    {category === Course_Category_Enum.Revision && (
+                        <div className="flex flex-col gap-2.5">
+                            <div className="inline-flex align-baseline gap-1.5">
+                                <Label className="text-base">{t('course.CourseDate.form.courseSubjectLabel')}</Label>
+                                <InfoTooltipButton tooltipContent="TODO" />
+                            </div>
+                            <div className="flex gap-2.5 flex-wrap">
+                                {SUBJECTS.map((s) => (
+                                    <Button key={s} variant={s === subject ? 'default' : 'outline-inactive'} onClick={() => setSubject && setSubject(s)}>
+                                        {t(`lernfair.subjects.${s}` as unknown as TemplateStringsArray)}
+                                    </Button>
+                                ))}
+                            </div>
+                            {errors.includes('subject') && (
+                                <Typography variant="sm" className="text-red-500 error">
+                                    {t('course.error.subject')}
+                                </Typography>
+                            )}
+                        </div>
+                    )}
+
+                    {/*Tag selection for non-revision courses*/}
+                    {category && category !== Course_Category_Enum.Revision && category !== Course_Category_Enum.HomeworkHelp && (
+                        <div className="flex flex-col gap-2.5">
+                            <div className="inline-flex align-baseline gap-1.5">
+                                <Label className="text-base">{t('course.CourseDate.form.tagsLabel')}</Label>
+                                <InfoTooltipButton tooltipContent="TODO" />
+                            </div>
+                            <div className="flex gap-2.5 flex-wrap">
+                                {tagsLoading && <CenterLoadingSpinner />}
+                                {data?.courseTags.map((tag) => (
+                                    <Button
+                                        key={tag.id}
+                                        variant={selectedTags.some((x) => x.id === tag.id) ? 'default' : 'outline-inactive'}
+                                        onClick={() => {
+                                            if (selectedTags.some((x) => x.id === tag.id)) {
+                                                setSelectedTags(selectedTags.filter((t) => t.id !== tag.id));
+                                            } else {
+                                                setSelectedTags([...selectedTags, tag]);
+                                            }
+                                        }}
+                                    >
+                                        {tag.name}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
                     )}
                 </div>
-            )}
+            </div>
 
-            {/*Tag selection for non-revision courses*/}
-            {category && category !== Course_Category_Enum.Revision && category !== Course_Category_Enum.HomeworkHelp && (
-                <div className="flex flex-col gap-2.5">
-                    <div className="inline-flex align-baseline gap-1.5">
-                        <Label className="text-base">{t('course.CourseDate.form.tagsLabel')}</Label>
-                        <InfoTooltipButton tooltipContent="TODO" />
-                    </div>
-                    <div className="flex gap-2.5 flex-wrap">
-                        {tagsLoading && <CenterLoadingSpinner />}
-                        {data?.courseTags.map((tag) => (
-                            <Button
-                                key={tag.id}
-                                variant={selectedTags.some((x) => x.id === tag.id) ? 'default' : 'outline-inactive'}
-                                onClick={() => {
-                                    if (selectedTags.some((x) => x.id === tag.id)) {
-                                        setSelectedTags(selectedTags.filter((t) => t.id !== tag.id));
-                                    } else {
-                                        setSelectedTags([...selectedTags, tag]);
-                                    }
-                                }}
-                            >
-                                {tag.name}
-                            </Button>
-                        ))}
-                    </div>
+            <div className="flex flex-col gap-5 sm:flex-row">
+                <div className="flex flex-1 flex-col gap-2.5">
+                    <Label className="text-base">{t('course.CourseDate.form.coursePhotoLabel')}</Label>
+                    <Dropzone onUpload={(file) => setPickedPhoto && setPickedPhoto(file)} file={pickedPhoto === undefined ? existingPhoto : pickedPhoto} />
                 </div>
-            )}
 
-            <div className="flex flex-col gap-2.5">
-                <Label className="text-base">{t('course.CourseDate.form.coursePhotoLabel')}</Label>
-                <Dropzone onUpload={(file) => setPickedPhoto && setPickedPhoto(file)} file={pickedPhoto === undefined ? existingPhoto : pickedPhoto} />
+                <div className="flex-1">
+                    <CourseInstructors
+                        instructors={instructors}
+                        mentors={mentors}
+                        setInstructors={(x) => setInstructors(x)}
+                        setMentors={(x) => setMentors(x)}
+                    />
+                </div>
             </div>
 
             {/*  Grade selection  */}

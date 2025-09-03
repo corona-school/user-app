@@ -367,7 +367,7 @@ const CreateCourse: React.FC = () => {
                 <Typography variant="h2" className="mb-4">
                     {editingExistingCourse ? t('course.edit') : t('course.header')}
                 </Typography>
-                <div className="flex flex-col gap-5 max-w-xl w-full" id="form">
+                <div className="flex flex-col gap-5 w-full sm:max-w-5xl" id="form">
                     <CourseDetails
                         courseName={courseName}
                         setCourseName={setCourseName}
@@ -387,12 +387,10 @@ const CreateCourse: React.FC = () => {
                         selectedTags={tags}
                         setSelectedTags={setTags}
                         errors={errors}
-                    />
-                    <CourseInstructors
                         instructors={instructors}
                         mentors={mentors}
-                        setInstructors={(x) => setInstructors(x)}
-                        setMentors={(x) => setMentors(x)}
+                        setInstructors={setInstructors}
+                        setMentors={setMentors}
                     />
                     <CourseAppointments
                         isEditingCourse={true}
