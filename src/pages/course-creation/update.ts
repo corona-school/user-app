@@ -60,7 +60,8 @@ export function getCourseDelta(
         image: string;
         courseAppointments?: Appointment[];
     },
-    studentId: number
+    studentId: number | undefined,
+    userType: 'pupil' | 'student' | 'screener'
 ): CourseDelta {
     const create = prefillCourse === null;
     const delta: Partial<CourseDelta> = {};
@@ -103,8 +104,10 @@ export function getCourseDelta(
     delta.addedMentors = state.mentors.filter((i) => !prefillMentorIds.some((x) => (x.id = i)));
     delta.removedMentors = prefillCourse?.mentors?.filter((i) => !stateMentorIds.includes(i.id)).map((x) => x.id) ?? [];
 
+    const existingAppointments = (userType === 'student' ? prefillCourse?.joinedAppointments : prefillCourse?.appointments) ?? [];
+
     const prefillMap = new Map(
-        (prefillCourse?.joinedAppointments ?? []).map((a) => [
+        existingAppointments.map((a) => [
             a.id,
             {
                 start: a.start,
@@ -149,9 +152,7 @@ export function getCourseDelta(
     }
     delta.changedAppointments = changedAppointments;
     // appointments that are not in state but in prefillCourse
-    delta.cancelledAppointments = (prefillCourse?.joinedAppointments ?? [])
-        .filter((a) => !state.courseAppointments?.some((x) => x.id === a.id))
-        .map((a) => a.id);
+    delta.cancelledAppointments = existingAppointments.filter((a) => !state.courseAppointments?.some((x) => x.id === a.id)).map((a) => a.id);
 
     // Image
     if (state.pickedPhoto) {

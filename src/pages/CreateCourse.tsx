@@ -213,7 +213,6 @@ const CreateCourse: React.FC = () => {
     }, [queryStudent, userType]);
 
     const queryCourse = useCallback(async () => {
-        console.log('location.state', location.state, studentId);
         if (!prefillSubcourseId) return;
         if (userType === 'student' && !studentId) return;
         setLoadingCourse(true);
@@ -254,7 +253,7 @@ const CreateCourse: React.FC = () => {
         }
 
         setLoadingCourse(false);
-    }, [courseQuery, location.state, prefillSubcourseId, studentId, userType]);
+    }, [courseQuery, prefillSubcourseId, studentId, userType]);
 
     useEffect(() => {
         if (prefillSubcourseId != null) queryCourse();
@@ -303,13 +302,14 @@ const CreateCourse: React.FC = () => {
                 allowParticipantContact,
                 allowChatWriting,
                 // instructors does not include the student itself, so we need to add it manually for delta
-                instructors: [...instructors.map((x) => x.id!), studentId!],
+                instructors: [...instructors.map((x) => x.id!), ...(studentId ? [studentId] : [])],
                 mentors: mentors.map((x) => x.id!),
                 pickedPhoto,
                 image,
                 courseAppointments,
             },
-            studentId!
+            studentId,
+            userType
         );
 
         console.log('DELTA', delta);

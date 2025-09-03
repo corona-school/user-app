@@ -251,12 +251,6 @@ const AppointmentList = ({
 
     const canLoadMoreAppointments = !isReadOnlyList && !noNewAppointments && !isLoadingAppointments;
     const isFullHeight = height === '100%';
-    useEffect(() => {
-        console.log(
-            'appointments',
-            appointments.map((x) => ({ id: x.id, newId: x.newId, title: x.title }))
-        );
-    }, [appointments]);
 
     const appointmentInPast = (appointment: Appointment) =>
         DateTime.fromISO(appointment.start).toMillis() + appointment.duration * 60000 < DateTime.now().toMillis();
