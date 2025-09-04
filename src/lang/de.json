@@ -384,7 +384,7 @@
                 "pupil": {
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
                     "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
-                    "max-requests": "Du bist bereits auf der Warteliste.",
+                    "max-requests": "Wir suchen bereits nach einer Person, die dich unterstützen kann. Du kannst keine weiteren Anfragen stellen.",
                     "max-matches": "Aktuell kannst du maximal 2 Lernpartner:innen gleichzeitig haben. Solltest du nicht mehr mit allen Lernpartner:innen aktiv arbeiten, löse am besten das Lernpaar auf.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
@@ -1316,9 +1316,9 @@
             "buttons": ["Kurse ansehen", "Nachhilfe beantragen"]
         },
         "statusSchüler": {
-            "title": "Auf der Warteliste ⏳",
+            "title": "Wir vermitteln dich ⏳",
             "subtitle": "Neue:r Lernpartner:in",
-            "content": "Deine Anfrage wurde am {{date}} gestellt. Wir informieren dich per E-Mail wenn du auf der Warteliste dran bist. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
+            "content": "Die Anfrage wurde am {{date}} gestellt. Wir informieren dich per E-Mail, wenn du eine:n Lernpartner:in erhalten hast. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
             "buttons": ["Kurse ansehen", "Anfrage zurücknehmen"]
         },
         "interestconfirmation": {
@@ -1328,9 +1328,9 @@
             "buttons": ["Ja", "Nein"]
         },
         "kontaktSchüler": {
-            "subtitle": "Neue:r Lernpartner:in",
-            "title": "Hilfe gefunden 🤗",
-            "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
+            "subtitle": "1:1 Nachhilfe",
+            "title": "Neue Helfer:in ✅",
+            "content": "Wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte schreib {{nameHelfer}} per Chat an und vereinbare ein ersten Termin für euer Kennenlernen.",
             "buttons": ["Lernpartner:in ansehen"]
         },
         "angeforderteBescheinigung": {
@@ -1367,9 +1367,9 @@
             "actionDescription": "Möglichkeiten ansehen"
         },
         "kontaktStudent": {
-            "title": "Neue Lernpartner:in 🤗",
+            "title": "Neue Schüler:in ✅",
             "subtitle": "1:1 Nachhilfe ",
-            "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
+            "content": "Wir haben dich mit {{nameSchüler}} vermittelt! Du kannst jetzt im Chat mit {{nameSchüler}} schreiben, um einen ersten Kennenlern-Termin zu vereinbaren.",
             "buttons": ["Lernpartner:in ansehen"]
         },
         "homeworkHelpStudent": {
@@ -1524,7 +1524,7 @@
                 "content": "In der Nachhilfe hilfst du bildungsbenachteiligten Schüler:innen einzeln und individuell. Die Zeit, Dauer und Inhalte eurer digitalen Treffen vereinbart ihr in eurem Lernpaar untereinander. Du kannst mehrere Lernpaare parallel bilden und wir würden uns freuen, wenn du im Rahmen deiner zeitlichen Möglichkeiten eine:n weitere:n Schüler:in unterstützen kannst. Wenn du eine Nachhilfe nicht mehr fortführen kannst oder möchtest, kannst du das entsprechende Lernpaar hier auflösen.",
                 "tabs": {
                     "tab1": "Lernpaare",
-                    "tab2": "Anfragen",
+                    "tab2": "Offene Anfragen",
                     "tab3": "Aufgelöste Lernpaare"
                 },
                 "request": "Anfrage",
@@ -1533,7 +1533,7 @@
                 "deleteRequest": "Anfrage löschen",
                 "areyousuretodelete": "Möchtest du die Anfrage wirklich löschen?",
                 "deleteSucess": "Die Anfrage wurde gelöscht",
-                "noMatches": "Du hast (noch) keine Lernpartner:in.",
+                "noMatches": "Du hast keine:n aktive:n Lernpartner:in.",
                 "noDissolvedMatches": "Du hast keine aufgelösten Lernpaare.",
                 "editRequestDescription": " Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.",
                 "noRequestsTutee": "Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.",
