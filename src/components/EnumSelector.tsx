@@ -1,6 +1,6 @@
 import { cn } from '@/lib/Tailwind';
 import { StringMap, TOptions } from 'i18next';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
 import { TFuncKey, useTranslation } from 'react-i18next';
 import { asTranslationKey } from '../helper/string-helper';
 import { Combobox } from './Combobox';
@@ -62,8 +62,20 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
         const { t } = useTranslation();
         const gridItemsCount = maxVisibleItems ?? Object.values(values).length;
         const gridItems = Object.values(values).slice(0, gridItemsCount);
-        const searchItems = Object.values(values).slice(gridItemsCount, Object.values(values).length);
         const [search, setSearch] = useState('');
+
+        const memoizedSearchItems = useMemo(() => {
+            const searchItems = Object.values(values).slice(gridItemsCount, Object.values(values).length);
+            return searchItems
+                .map((e) => {
+                    const enumValue = e as Enum;
+                    const translation = getTranslation(enumValue);
+                    return { value: e, label: `${t(asTranslationKey(translation as any))}`, icon: getIcon?.(enumValue) };
+                })
+                .filter((e) => e.label.toLowerCase().includes(search.toLowerCase()));
+            // eslint-disable-next-line react-hooks/exhaustive-deps
+        }, [search, gridItemsCount]);
+
         return (
             <div className={cn('flex flex-wrap gap-2', className)}>
                 {gridItems.map((it) => {
@@ -101,13 +113,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                 {searchConfig && (
                     <div className={searchConfig?.containerClassName}>
                         <Combobox
-                            values={searchItems
-                                .map((e) => {
-                                    const enumValue = e as Enum;
-                                    const translation = getTranslation(enumValue);
-                                    return { value: e, label: `${t(asTranslationKey(translation as any))}`, icon: getIcon?.(enumValue) };
-                                })
-                                .filter((e) => e.label.toLowerCase().includes(search.toLowerCase()))}
+                            values={memoizedSearchItems}
                             value={multiple ? value?.filter((e) => !gridItems.includes(e)) : (value as any)}
                             onSearch={setSearch}
                             search={search}
