@@ -3,7 +3,7 @@ import { cn } from '@/lib/Tailwind';
 import { Button } from '@/components/Button';
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from '@/components/Command';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/Popover';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
 
 interface ComboboxItem {
@@ -66,6 +66,33 @@ export const Combobox = ({
         return value.includes(e);
     };
 
+    const memoizedOptions = useMemo(
+        () =>
+            options.map((e) => (
+                <CommandItem
+                    key={`${e.value}-${e.label}}`}
+                    value={e.value}
+                    onSelect={(itemValue) => {
+                        if (multiple) {
+                            const current = (value as string[] | null) ?? [];
+                            const exists = current.includes(itemValue);
+                            const updated = exists ? current.filter((v) => v !== itemValue) : [...current, itemValue];
+                            onSelect(updated);
+                        } else {
+                            onSelect(itemValue === (value as unknown as string) ? '' : itemValue);
+                        }
+                        setOpen(false);
+                    }}
+                >
+                    <IconCheck className={cn('mr-2 h-4 w-4', getIsItemChecked(e.value) ? 'opacity-100' : 'opacity-0')} />
+                    {e.icon}
+                    {e.label}
+                </CommandItem>
+            )),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [options, multiple, value]
+    );
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -100,29 +127,7 @@ export const Combobox = ({
                             )}
                             <div className="flex cursor-pointer items-center justify-center gap-1">{!onSearch && emptyText}</div>
                         </CommandEmpty>
-                        <CommandGroup>
-                            {options.map((e) => (
-                                <CommandItem
-                                    key={`${e.value}-${e.label}}`}
-                                    value={e.value}
-                                    onSelect={(itemValue) => {
-                                        if (multiple) {
-                                            const current = (value as string[] | null) ?? [];
-                                            const exists = current.includes(itemValue);
-                                            const updated = exists ? current.filter((v) => v !== itemValue) : [...current, itemValue];
-                                            onSelect(updated);
-                                        } else {
-                                            onSelect(itemValue === (value as unknown as string) ? '' : itemValue);
-                                        }
-                                        setOpen(false);
-                                    }}
-                                >
-                                    <IconCheck className={cn('mr-2 h-4 w-4', getIsItemChecked(e.value) ? 'opacity-100' : 'opacity-0')} />
-                                    {e.icon}
-                                    {e.label}
-                                </CommandItem>
-                            ))}
-                        </CommandGroup>
+                        <CommandGroup>{memoizedOptions}</CommandGroup>
                     </CommandList>
                     {isLoading && <CenterLoadingSpinner className="my-2" />}
                 </Command>
