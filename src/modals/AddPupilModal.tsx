@@ -55,7 +55,7 @@ const AddPupilModal = ({ isOpen, onOpenChange, subcourseId, pupil, onPupilAdded,
                             {pupil.firstname} {pupil.lastname}
                         </Typography>
                         {pupil.schooltype && `${getSchoolTypeKey(pupil.schooltype)}, `}
-                        {getGradeLabel(pupil.gradeAsInt)}
+                        {pupil.gradeAsInt && getGradeLabel(pupil.gradeAsInt)}
                     </Typography>
                 </div>
             )}

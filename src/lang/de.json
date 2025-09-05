@@ -16,6 +16,8 @@
     "show": "Anzeigen",
     "showMore": "Mehr anzeigen",
     "showLess": "Weniger anzeigen",
+    "close": "Schließen",
+    "moreInfos": "Mehr Infos",
     "weekdays": {
         "monday": "Montag",
         "tuesday": "Dienstag",
@@ -185,13 +187,17 @@
     "openchat": "Chat beginnen",
     "openmatch": "Ansehen",
     "login": {
-        "title": "Anmeldung",
+        "title": "Einloggen",
         "error": "Deine Login-Daten stimmen nicht mit unseren Informationen überein. Bitte überprüfe deine Angaben.",
+        "invalidPasswordError": "Ups! Dein Passwort stimmt nicht.",
         "forgotPassword": "Passwort vergessen?",
         "signupNew": "Neu registrieren",
+        "loginWith": "Einloggen mit {{method}}",
         "continueWith": "Weiter mit {{idp}}",
         "linkAccountWithIdpError": "Die Verknüpfung deines Kontos mit einem Identitätsanbieter erfordert ein Passwort. Bitte setze zuerst ein Passwort",
-        "noaccount": "Du hast noch keinen Account? Hier geht es zur Registrierung!",
+        "noaccount": "Du hast noch keinen Account?",
+        "registerHere": "Hier registrieren",
+        "contactSupport": "Kontaktiere uns",
         "currentEmail": "Aktuelle E-Mail",
         "newEmail": "Neue E-Mail",
         "setNewEmail": "E-Mail neu setzen",
@@ -200,6 +206,7 @@
         "succesEmailVerification": "Deine E-Mail wurde erfolgreich geändert!",
         "changeEmailConfirmation": "Wir haben dir an die neue Adresse eine E-Mail zur Bestätigung gesendet",
         "invalidToken": "Token ungültig",
+        "needHelp": "Brauchst du Hilfe?",
         "email": {
             "sent": "Wir haben dir eine E-Mail zum Login geschickt"
         },
@@ -214,7 +221,7 @@
         },
         "accountNotFound": {
             "title": "Anmeldung fehlgeschlagen",
-            "alert_html": "Es konnte kein Account mit der E-Mail-Adresse {{email}} gefunden werden. Bitte kontrolliere die eingegebene E-Mail-Adresse und versuche es erneut."
+            "alert_html": "Es konnte kein Konto mit dieser E-Mail-Adresse gefunden werden."
         },
         "accountDeactivated": {
             "title": "Anmeldung fehlgeschlagen",
@@ -266,9 +273,12 @@
     "grade": "Klasse",
     "since": "seit",
     "till": "bis",
+    "otherLanguages": "andere Sprachen",
     "lernfair": {
         "languages": {
             "albanisch": "Albanisch",
+            "amharisch": "Amharisch",
+            "andere": "Andere",
             "arabisch": "Arabisch",
             "armenisch": "Armenisch",
             "aserbaidschanisch": "Aserbaidschanisch",
@@ -277,19 +287,41 @@
             "chinesisch": "Chinesisch",
             "deutsch": "Deutsch",
             "englisch": "Englisch",
+            "estnisch": "Estnisch",
             "franz_sisch": "Französisch",
-            "t_rkisch": "Türkisch",
+            "georgisch": "Georgisch",
+            "griechisch": "Griechisch",
+            "hausa": "Hausa",
+            "hebr_isch": "Hebräisch",
+            "hindi": "Hindi",
             "italienisch": "Italienisch",
             "kasachisch": "Kasachisch",
+            "kroatisch": "Kroatisch",
             "kurdisch": "Kurdisch",
+            "lingala": "Lingala",
+            "litauisch": "Litauisch",
+            "malayalam": "Malayalam",
+            "mazedonisch": "Mazedonisch",
+            "niederl_ndisch": "Niederländisch",
+            "persisch": "Persisch",
             "polnisch": "Polnisch",
             "portugiesisch": "Portugiesisch",
+            "rum_nisch": "Rumänisch",
             "russisch": "Russisch",
+            "serbisch": "Serbisch",
+            "slowakisch": "Slowakisch",
+            "somali": "Somali",
             "spanisch": "Spanisch",
+            "tadschikisch": "Tadschikisch",
+            "thail_ndisch": "Thailändisch",
+            "tigrinya": "Tigrinya",
+            "tschechisch": "Tschechisch",
+            "t_rkisch": "Türkisch",
             "ukrainisch": "Ukrainisch",
+            "ungarisch": "Ungarisch",
+            "urdu": "Urdu",
             "vietnamesisch": "Vietnamesisch",
-            "other": "Andere",
-            "andere": "Andere"
+            "other": "Andere"
         },
         "subjects": {
             "Altgriechisch": "Altgriechisch",
@@ -407,27 +439,15 @@
             "16OrOlder": "Schüler:in ist 16 oder älter"
         },
         "emailOwnerOptions": {
-            "pupil": "Schüler:in E-mail",
-            "parent": "Elternteil E-mail",
-            "other": "Hilfsperson E-mail"
+            "pupil": "Schüler:in / Azubi",
+            "parent": "Elternteil",
+            "other": "Hilfsperson"
         },
-        "barrier": {
-            "title": "Wichtig",
-            "text": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen / Azubi. Du weißt nicht genau ob die zu dieser Zielgruppe gehörst?\n\nDann schaue dir die nachfolgenden Punkte an. Kannst du zwei oder mehr von ihnen mit \"ja\" beantworten? Dann darfst du gerne alle Angebote von Lern-Fair nutzen.",
-            "point_0": "● Du brauchst Hilfe in der Schule",
-            "point_1": "● Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
-            "point_2": "● Deine Familie kann keine Nachhilfe für dich bezahlen",
-            "btn": {
-                "yes": "Ja, die Punkte treffen zu",
-                "no": "Nein, die Punkte treffen nicht zu"
-            }
-        },
-        "barrier_failed": {
-            "title": "Registrierung fehlgeschlagen!",
-            "subtitle": "Da Du unsere Teilnahmebedingungen abgelehnt hast, können wir Dir leider keine Registrierung ermöglichen.",
-            "subtitle2": "Erst nach dem Bestätigen unserer Teilnahmebedingungen können wir Dir gerne die Registrierung gewähren.",
-            "retry": "Registrierung erneut beginnen",
-            "alternatives": "Weitere Infos erhalten"
+        "menu": {
+            "notifications": "Benachrichtigungen",
+            "contactSupport": "Support kontaktieren",
+            "deactivateAccount": "Konto deaktivieren",
+            "logout": "Abmelden"
         },
         "hint": {
             "name": "Bitte gebe deinen vollen Namen an",
@@ -471,29 +491,155 @@
                 }
             }
         },
+        "stepStateCount": "{{current}} von {{total}}",
         "steps": {
             "userType": {
-                "title": "Deine Rolle",
-                "subtitle": "Ich bin"
+                "title": "In welcher Rolle meldest du dich bei Lern-Fair an?"
+            },
+            "acceptanceCheck": {
+                "title": "Bist du bei uns richtig?",
+                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildene.\nTreffen zwei oder mehr Punkte auf dich zu?",
+                "needHelpInSchool": "Du brauchst Hilfe in der Schule",
+                "familyCannotHelp": "Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
+                "familyCannotAffordTutoring": "Deine Familie kann keine Nachhilfe für dich bezahlen",
+                "doNotApplyToMe": "Es treffen keine zwei Punkte auf mich zu"
+            },
+            "acceptanceCheckFailed": {
+                "title": "Wie schade.",
+                "description": "Tut uns leid, dass wir dir nicht weiterhelfen können. Probiere es nochmal oder schaue  nach anderen Angeboten die für dich interessant sein könnten.",
+                "seeOtherOffers": "Andere Angebote anschauen",
+                "tryAgain": "Nochmal probieren"
+            },
+            "userName": {
+                "congratsHint": "Wunderbar.\nDu kannst unsere Angebote nutzen!",
+                "title": "Wie heißt du?"
+            },
+            "userAge": {
+                "title": "Wie alt bist du?",
+                "description": "Notwendig damit wir wissen, ob du selber oder deine Eltern der Anmeldung zustimmen müssen.",
+                "tooYoungError": "Bei Lern-Fair ist {{minAge}} Jahre das Mindestalter, für das wir kostenlose Nachhilfe anbieten können."
+            },
+            "languages": {
+                "title": "Welche Sprachen sprichst du zu Hause?",
+                "description": "Damit wir wissen, in welchen Sprachen Helfer:innen mit dir kommunizieren können."
+            },
+            "bookAppointment": {
+                "title": "Kennenlern-Gespräch",
+                "description": "In einem kurzen, freundlichen Video-Call (ca. 15 Minuten) möchten wir dich ein bischen kennenlernen – ganz entspannt und ohne Vorbereitung. So können wir dir passende Unterstützung anbieten.",
+                "message": ",,Du kannst uns alles fragen - wir sind für dich da.“",
+                "pupilScreenersNames": "Ronja, Paula oder Charlotte",
+                "bookAppointmentButton": "Gespräch vereinbaren",
+                "faqPupil": [
+                    {
+                        "question": "Muss ich meine Kamera anschalten?",
+                        "answer": "Nein, nur wenn du möchtest."
+                    },
+                    {
+                        "question": "Wie lange dauert das Gespräch?",
+                        "answer": "Etwa 15 Minuten."
+                    },
+                    {
+                        "question": "Wer ist dabei?",
+                        "answer": "Eine:r von uns, niemand sonst. Du kannst aber sehr gerne ein Elternteil oder beide mitbringen."
+                    },
+                    {
+                        "question": "Warum ist das nötig?",
+                        "answer": "Damit wir verstehen in welchen Fächern du Unterstützung möchtest und passende Angebote für dich finden können."
+                    },
+                    {
+                        "question": "Welche Sprache wird gesprochen?",
+                        "answer": "Meistens Deutsch, aber wir können auch Englisch oder andere Sprachen. Falls du nicht gut Deutsch sprichst, schreibe uns einfach eine E-Mail, dann finden wir eine Lösung."
+                    }
+                ],
+                "faqStudent": [
+                    {
+                        "question": "Wie lange dauert das Gespräch?",
+                        "answer": "Etwa 30 Minuten."
+                    }
+                ]
+            },
+            "emailOwner": {
+                "title": "Wessen E-Mail-Adresse nutzen wir?",
+                "description": "Wir schicken alle Informationen zum Start an diese E-Mail-Adresse. Man kann sie später auch ändern."
+            },
+            "authenticationInfo": {
+                "title": "Anmeldung",
+                "description": "Mit deinem Konto kannst du kostenlos Gruppenkurse, 1zu1 Nachhilfe und die Hausaufgabenhilfe besuchen.",
+                "pupilEmail": "E-Mail von Schüler:in / Azubi",
+                "passwordPlaceholder": "Passwort eingeben",
+                "emailPlaceholder": "E-Mail-Adresse",
+                "registerWith": "Anmelden mit {{method}}"
+            },
+            "dataPrivacy": {
+                "title": "Einwilligung Datenschutz",
+                "dataUsageInfoLabel": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
+                "dataUsageUSA": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
+                "labelTermsAndPrivacy": "Ich habe die <privacy>Datenschutzbestimmungen</privacy> und <agb>AGB</agb> zur Kenntnis genommen.",
+                "usageBullets": {
+                    "1": "Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts",
+                    "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",
+                    "3": "Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können"
+                },
+                "accordionUsDataProcessors": "Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO.",
+                "sendRegistration": "Registrierung abschicken"
+            },
+            "confirmEmail": {
+                "title": "Bitte bestätige deine E-Mail",
+                "description": "Wir haben eine Nachricht an\n\n<b>{{email}}</b>\n\nzur Aktivierung deines Kontos gesendet. Schau’ zuerst im Spam Ordner nach, falls du sie nicht bekommen hast.",
+                "changeEmail": "E-Mail-Adresse ändern",
+                "resendConfirmation": "Bestätigung nochmal senden",
+                "doYouHaveProblems": "Du hast Probleme mit der Anmeldung?"
+            },
+            "appointmentDetails": {
+                "title": "Termin erstellt!",
+                "description": "Um unser Angebot bestmöglich für dich zusammenzustellen, sind noch ein paar letzte Schritte nötig.",
+                "changeAppointment": "Termin ändern",
+                "cancelAppointment": "Termin absagen"
+            },
+            "registrationCompleted": {
+                "title": "Du hast es geschafft!",
+                "description": "Wir freuen uns auf das Kennenlerngespräch mit dir per Zoom am"
             },
             "personalData": {
                 "title": "Persönliche Daten",
                 "subtitle": "Persönliche Daten"
             },
             "grade": {
-                "title": "Klasse",
-                "subtitle": "In welcher Klasse bist du?"
+                "title": "In welcher Klasse bist du?"
             },
             "school": {
-                "title": "Schulort",
-                "subtitle": "Wie heißt deine Schule?",
-                "helperText": "Schule nicht gefunden? Ergänze den Ort oder schreibe den Schulnamen mit bzw. ohne Bindestrich oder Leerstelle.",
+                "title": "Auf welche Schule\ngehst du?",
+                "helperText": "Falls deine Schule nicht gefunden wird, trag einfach Namen und Ort der Schule ein - Leider haben wir nicht alle Schulen in unserer Datenbank",
                 "schoolFound": "Schule aus Liste gewählt",
-                "otherSchoolFound": "Schule selbst eingetragen"
+                "otherSchoolFound": "Schule eingetragen"
             },
             "schoolType": {
-                "title": "Schulform",
-                "subtitle": "Auf welche Schulform gehst du?"
+                "title": "Welche Schulform"
+            },
+            "zipCode": {
+                "title": "Bitte teile uns deine Postleitzahl mit",
+                "description": "Wir verwenden diese Info da wir unseren Förderern mitteilen müssen, woher ihr kommt",
+                "doNotKnow": "Weiß nicht"
+            },
+            "notifications": {
+                "title": "E-Mail-Benachrichtigungen einstellen",
+                "titleShort": "Nachrichten",
+                "description": "Wir haben verschiedene Möglichkeiten dich auf dem Laufenden zu halten. Du kannst deine Auswahl später auch wieder ändern.",
+                "importantInformationDescription": "Ich möchte per E-Mail oder Telefon bei wichtigen Nachrichten (z.B. neuer Termin, neue Chat-Nachricht) informiert werden.",
+                "importantInformationBadge": "Wichtige Infos",
+                "recommendationsBadge": "Hilfreiches & Tipps",
+                "recommendationsDescription": "Ich möchte über neue Angebote und allgemeine Nachrichten informiert werden."
+            },
+            "ourRules": {
+                "title": "Unsere Regeln",
+                "description": "Unsere Helfer:innen unterstützen die Schüler:innen in ihrer Freizeit 😎👍.",
+                "rules": [
+                    "🔥⏳ Respektiere die Zeit, Energie und den Aufwand den sie dafür investieren.",
+                    "️📅 ⌚Dazu gehört auch Pünktlichkeit und Zuverlässigkeit für Termine.",
+                    "😊 Sei freundlich im Umgang mit anderen.",
+                    "❌ Diskriminierung (z.B. Rassismus, Sexismus, Religionszugehörigkeit oder Altersdiskriminierung) ist nicht erlaubt."
+                ],
+                "acceptLabel": "Ich werde die genannten Punkte einhalten"
             },
             "state": {
                 "title": "Schulort",
@@ -743,6 +889,7 @@
         },
         "Deactivate": {
             "error": "Dein Account konnte nicht deaktiviert werden.",
+            "success": "Dein Account wurde deaktiviert.",
             "modal": {
                 "title": "Account deaktivieren",
                 "btn": "Account deaktivieren",
@@ -2478,7 +2625,7 @@
             "title": "Termin erstellt ✅",
             "yourAppointment": "Dein Termin",
             "optionsDescription": "Du hast doch keine Zeit und möchtest den Termin verschieben oder absagen?",
-            "description": "Du erhältst an deine Email-Adresse eine Terminbestätigung. Du kannst dir den Termin per Klick in deinen Kalender eintragen."
+            "description": "Du erhältst an deine E-Mail-Adresse eine Terminbestätigung. Du kannst dir den Termin per Klick in deinen Kalender eintragen."
         }
     },
     "contactSupport": {
