@@ -56,12 +56,8 @@ export const Combobox = ({
     const getCurrentValueLabels = () => {
         if (!value) return;
         return options
-            .reduce<string[]>((labels, current) => {
-                if (value.includes(current.value)) {
-                    return labels.concat(current.label);
-                }
-                return labels;
-            }, [])
+            .filter((opt) => value.includes(opt.value))
+            .map((opt) => opt.label)
             .join(', ');
     };
 
