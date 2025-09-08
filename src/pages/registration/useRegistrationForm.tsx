@@ -170,10 +170,15 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
     const handleOnNext = async () => {
         if (currentStepIndex === -1 || !values.currentStep) return;
 
+        let nextStep = getNextStepFrom(values.currentStep);
+
+        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE || (values.school.id && values.school.schooltype);
+        const shouldSkipZipCode = values.school.zip && values.zipCode;
+
         if (values.userType === 'pupil') {
             if (values.currentStep === RegistrationStep.grade) {
                 await updateProfile({ variables: { gradeAsInt: values.grade } });
-            } else if (values.currentStep === RegistrationStep.zipCode) {
+            } else if (values.currentStep === RegistrationStep.zipCode || (values.currentStep === RegistrationStep.school && shouldSkipZipCode)) {
                 await updateProfile({
                     variables: {
                         school: {
@@ -187,10 +192,11 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             }
         }
 
-        let nextStep = getNextStepFrom(values.currentStep);
-
-        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE;
         if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
+
+        if (nextStep === RegistrationStep.zipCode && shouldSkipZipCode) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
 
@@ -211,8 +217,13 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         };
         let prevStep = getPrevStepFrom(values.currentStep);
 
-        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE;
+        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE || (values.school.id && values.school.schooltype);
+        const shouldSkipZipCode = values.school.zip && values.zipCode;
+
         if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
+        if (prevStep === RegistrationStep.zipCode && shouldSkipZipCode) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
         handleOnChange({ currentStep: prevStep });
@@ -304,7 +315,15 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             return handleOnChange({ currentStep: RegistrationStep.bookAppointment });
         }
 
-        // Minimum step for verified users with an screening appointment
+        // Minimum step for verified users that already completed all the post-appointment-booking steps
+        if (values.grade && values.school.name && values.school.schooltype && values.hasAcceptedRules) {
+            return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
+        }
+        // Minimum step for verified users that already completed all the post-appointment-booking steps (Except rules)
+        if (values.grade && values.school.name && values.school.schooltype && !values.hasAcceptedRules) {
+            return handleOnChange({ currentStep: RegistrationStep.rules });
+        }
+        // Minimum step for verified users with an screening appointment (but no post-appointment-booking steps)
         if (currentStepIsLessThan(RegistrationStep.screeningAppointmentDetail)) {
             return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
         }

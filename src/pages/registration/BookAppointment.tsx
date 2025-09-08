@@ -16,6 +16,8 @@ import { Separator } from '@/components/Separator';
 import { IconCircleChevronDown } from '@tabler/icons-react';
 import { useRegistrationForm } from './useRegistrationForm';
 import { DialogTitle } from '@radix-ui/react-dialog';
+import PortraitsStudentScreeners from '@/assets/images/registration/portraits_huh.png';
+import PortraitsPupilScreeners from '@/assets/images/registration/portraits_sus.png';
 
 interface BookAppointmentProps extends RegistrationStepProps {}
 
@@ -123,13 +125,15 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                 {t('registration.steps.bookAppointment.description')}
             </Typography>
             <div className="flex relative mb-5 mt-7">
-                <div className="h-[139px] w-[104px] bg-primary-light -rotate-3 z-10 relative left-4"></div>
-                <div className="h-[139px] w-[104px] bg-red-400 rotate-3 z-0 relative bottom-2"></div>
-                <div className="h-[139px] w-[104px] bg-blue-400 -z-10 -rotate-3 relative right-2"></div>
+                <img
+                    src={form.userType === 'pupil' ? PortraitsPupilScreeners : PortraitsStudentScreeners}
+                    alt="Lern-Fair Team"
+                    className="h-[150px] md:h-[160px]"
+                />
             </div>
             <Typography variant="body-lg" className="text-center mb-5">
                 <span className="font-semibold">{t('registration.steps.bookAppointment.message')}</span>
-                <span className="block">{t('registration.steps.bookAppointment.pupilScreenersNames')}</span>
+                <span className="block">{t('registration.steps.bookAppointment.lernFairTeam')}</span>
             </Typography>
             <div className="flex flex-col gap-y-5 w-full items-center justify-center">
                 <Button variant="accent-dark" shape="rounded" onClick={() => setIsFaqModalOpen(true)}>
