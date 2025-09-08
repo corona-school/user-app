@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { Input } from '@/components/Input';
 import { Typography } from '@/components/Typography';
@@ -17,6 +17,7 @@ export const ZipCode = ({ onBack, onNext }: ZipCodeProps) => {
 
     return (
         <RegistrationStep onBack={onBack} onNext={onNext}>
+            <OptionalBadge />
             <RegistrationStepTitle>{t('registration.steps.zipCode.title')}</RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
                 {t('registration.steps.zipCode.description')}
