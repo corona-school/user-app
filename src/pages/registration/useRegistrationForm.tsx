@@ -240,7 +240,13 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (sessionState === 'unknown' || networkStatus !== NetworkStatus.ready) return;
         // Login with IDP Scenario / User has a temporary session
         if (sessionState === 'logged-out' && !!user?.userID && !(!!user.pupil || !!user.student)) {
-            handleOnChange({ isRegisteringManually: false, email: user.email, currentStep: RegistrationStep.dataPrivacy });
+            handleOnChange({
+                isRegisteringManually: false,
+                email: user.email,
+                firstname: currentStepIndex > 0 ? values.firstname : user.firstname,
+                lastname: currentStepIndex > 0 ? values.lastname : user.lastname,
+                currentStep: currentStepIndex > 0 ? RegistrationStep.dataPrivacy : RegistrationStep.userType,
+            });
         }
 
         if (sessionState === 'error') {
