@@ -1,7 +1,7 @@
 import { GradeSelector } from '@/components/GradeSelector';
 import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { TRAINEE_GRADE } from '@/Utility';
 import { School_Schooltype_Enum as SchoolType } from '@/gql/graphql';
@@ -19,6 +19,7 @@ const PupilGrade = ({ onBack, onNext }: PupilGradeProps) => {
 
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={!form.grade}>
+            <OptionalBadge />
             <RegistrationStepTitle className="md:mb-10">{t('registration.steps.grade.title')} </RegistrationStepTitle>
             <div className="w-full md:pb-0">
                 <GradeSelector

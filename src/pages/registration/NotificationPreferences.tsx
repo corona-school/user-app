@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { Typography } from '@/components/Typography';
 import { Checkbox, CheckedState } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
@@ -24,6 +24,7 @@ export const NotificationPreferences = ({ onBack, onNext }: NotificationPreferen
 
     return (
         <RegistrationStep onBack={onBack} onNext={onNext}>
+            <OptionalBadge />
             <RegistrationStepTitle className="md:mb-4 mb-4">
                 <span className="md:hidden">{t('registration.steps.notifications.titleShort')}</span>
                 <span className="hidden md:block">{t('registration.steps.notifications.title')}</span>

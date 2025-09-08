@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { useRegistrationForm } from './useRegistrationForm';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { SchoolTypeSelector } from '@/components/SchoolTypeSelector';
 import { SchoolType as ISchoolType, School_Schooltype_Enum } from '@/gql/graphql';
 
@@ -18,6 +18,7 @@ const SchoolType = ({ onBack, onNext }: SchoolTypeProps) => {
 
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={!form.school.schooltype}>
+            <OptionalBadge />
             <RegistrationStepTitle className="md:mb-10">{t('registration.steps.schoolType.title')} </RegistrationStepTitle>
             <div className="w-full md:pb-0">
                 <SchoolTypeSelector

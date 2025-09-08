@@ -1,3 +1,4 @@
+import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { Typography, TypographyProps } from '@/components/Typography';
 import { cn } from '@/lib/Tailwind';
@@ -14,6 +15,14 @@ interface _RegistrationStepProps {
 }
 
 export type RegistrationStepProps = Omit<_RegistrationStepProps, 'children'>;
+
+export const OptionalBadge = () => (
+    <Badge className="bg-green-500 h-[25px] px-2 mb-4">
+        <Typography className="text-white text-[12px] font-semibold" variant="sm">
+            Optional
+        </Typography>
+    </Badge>
+);
 
 export const RegistrationStepTitle = ({ className, variant = 'h3', children, ...rest }: TypographyProps) => {
     return (

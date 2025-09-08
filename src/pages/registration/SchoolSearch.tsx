@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
 import { School_Schooltype_Enum } from '../../gql/graphql';
 import { usePageTitle } from '../../hooks/usePageTitle';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useMemo, useState } from 'react';
 import { RegistrationForm, useRegistrationForm } from './useRegistrationForm';
 import { Combobox } from '@/components/Combobox';
@@ -57,6 +57,7 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
 
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>
+            <OptionalBadge />
             <RegistrationStepTitle className="md:mb-10 whitespace-pre">{t('registration.steps.school.title')} </RegistrationStepTitle>
             <div className="w-full md:w-[396px] flex flex-col gap-y-2">
                 <Combobox
