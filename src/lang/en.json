@@ -2807,5 +2807,6 @@
         "copy": "Copy",
         "copied": "Copied",
         "copiedReferralLink": "Recommendation link copied"
-    }
+    },
+    "optional": "Optional"
 }

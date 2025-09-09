@@ -2803,5 +2803,6 @@
         "copy": "Anlaşıldı",
         "copied": "Kopyalandı",
         "copiedReferralLink": "Tavsiye bağlantısı kopyalandı"
-    }
+    },
+    "optional": "Opsiyonel"
 }

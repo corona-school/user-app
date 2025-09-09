@@ -17,7 +17,7 @@ const SchoolType = ({ onBack, onNext }: SchoolTypeProps) => {
     };
 
     return (
-        <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={!form.school.schooltype}>
+        <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>
             <OptionalBadge />
             <RegistrationStepTitle className="md:mb-10">{t('registration.steps.schoolType.title')} </RegistrationStepTitle>
             <div className="w-full md:pb-0">
