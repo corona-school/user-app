@@ -336,15 +336,11 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         // Pupils have post-screening-appointment steps
         if (values.userType === 'pupil') {
             // Minimum step for verified pupils that already completed all the post-appointment-booking steps
-            if (values.grade && values.school.name && values.school.schooltype && values.hasAcceptedRules) {
+            if (values.grade && values.school.name && values.school.schooltype) {
                 return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
             }
-            // Minimum step for verified pupils that already completed all the post-appointment-booking steps (Except rules)
-            if (values.grade && values.school.name && values.school.schooltype && !values.hasAcceptedRules) {
-                return handleOnChange({ currentStep: RegistrationStep.rules });
-            }
             // Minimum step for verified pupils with an screening appointment (but no post-appointment-booking steps)
-            if (currentStepIsLessThan(RegistrationStep.screeningAppointmentDetail)) {
+            if (currentStepIsLessThan(RegistrationStep.registrationCompleted)) {
                 return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
             }
         }
