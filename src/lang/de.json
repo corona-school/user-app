@@ -601,6 +601,10 @@
                 "title": "Du hast es geschafft!",
                 "description": "Wir freuen uns auf das Kennenlerngespräch mit dir per Zoom am"
             },
+            "screeningInProgress": {
+                "title": "Du hörst bald von uns!",
+                "description": "Normalerweise dauert es eine Woche..."
+            },
             "personalData": {
                 "title": "Persönliche Daten",
                 "subtitle": "Persönliche Daten"

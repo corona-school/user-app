@@ -6,7 +6,14 @@ import { Appointment } from '@/types/lernfair/Appointment';
 import { NetworkStatus, useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { getPupilScreeningAppointment, getStudentScreeningAppointment, PUPIL_FLOW, RegistrationStep, STUDENT_FLOW } from './util';
+import {
+    getIsPupilWaitingScreeningResults,
+    getPupilScreeningAppointment,
+    getStudentScreeningAppointment,
+    PUPIL_FLOW,
+    RegistrationStep,
+    STUDENT_FLOW,
+} from './util';
 import { TRAINEE_GRADE } from '@/Utility';
 
 export interface RegistrationForm {
@@ -42,6 +49,7 @@ export interface RegistrationForm {
     };
     zipCode: string;
     hasAcceptedRules: boolean;
+    isWaitingScreeningResults?: boolean;
 }
 
 interface RegistrationContextValue {
@@ -53,6 +61,7 @@ interface RegistrationContextValue {
     flow: RegistrationStep[];
     goNext: () => void;
     goBack: () => void;
+    isWaitingScreeningResults?: boolean;
 }
 
 const emptyState: RegistrationForm = {
@@ -94,6 +103,7 @@ const REGISTRATION_PROFILE_QUERY = gql(`
             pupil {
                 screenings {
                     status,
+                    invalidated
                     appointment {
                         id,
                         title,
@@ -269,6 +279,8 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                 grade: registrationProfile.pupil?.gradeAsInt,
                 school: registrationProfile.pupil?.school ?? emptyState.school,
                 zipCode: registrationProfile.student?.zipCode ?? registrationProfile.pupil?.school?.zip ?? '',
+                // Students don't have a "waiting results" (dispute) state
+                isWaitingScreeningResults: registrationProfile.pupil ? getIsPupilWaitingScreeningResults(registrationProfile.pupil.screenings ?? []) : false,
             });
         }
         // And stop showing the loader, this should trigger the next effect
@@ -324,15 +336,11 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         // Pupils have post-screening-appointment steps
         if (values.userType === 'pupil') {
             // Minimum step for verified pupils that already completed all the post-appointment-booking steps
-            if (values.grade && values.school.name && values.school.schooltype && values.hasAcceptedRules) {
+            if (values.grade && values.school.name && values.school.schooltype) {
                 return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
             }
-            // Minimum step for verified pupils that already completed all the post-appointment-booking steps (Except rules)
-            if (values.grade && values.school.name && values.school.schooltype && !values.hasAcceptedRules) {
-                return handleOnChange({ currentStep: RegistrationStep.rules });
-            }
             // Minimum step for verified pupils with an screening appointment (but no post-appointment-booking steps)
-            if (currentStepIsLessThan(RegistrationStep.screeningAppointmentDetail)) {
+            if (currentStepIsLessThan(RegistrationStep.registrationCompleted)) {
                 return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
             }
         }

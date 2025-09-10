@@ -55,7 +55,7 @@ export const PUPIL_FLOW = [
     RegistrationStep.registrationCompleted,
 ];
 
-type PupilScreenings = Array<Pick<PupilScreening, 'status'> & { appointment?: any }>;
+type PupilScreenings = Array<Pick<PupilScreening, 'status' | 'invalidated'> & { appointment?: any }>;
 type StudentScreenings = Array<Pick<TutorScreening, 'status'> & { appointment?: any }>;
 
 export const getPupilScreeningAppointment = (pupilScreenings: PupilScreenings) => {
@@ -71,4 +71,8 @@ export const getStudentScreeningAppointment = (instructorScreenings: StudentScre
     if (bookedInstructorScreenings?.appointment) return bookedInstructorScreenings.appointment;
     if (bookedTutorScreenings?.appointment) return bookedTutorScreenings.appointment;
     return null;
+};
+
+export const getIsPupilWaitingScreeningResults = (pupilScreenings: PupilScreenings) => {
+    return pupilScreenings.some((it) => it.status === 'dispute' && !it.invalidated);
 };

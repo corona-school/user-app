@@ -562,6 +562,10 @@
             "registrationCompleted": {
                 "title": "Başardın!",
                 "description": "Zoom aracılığıyla sizi tanımak için sabırsızlanıyoruz"
+            },
+            "screeningInProgress": {
+                "title": "Yakında bizden haber alacaksınız!",
+                "description": "Normalde bir hafta sürer."
             }
         },
         "pupil": {
