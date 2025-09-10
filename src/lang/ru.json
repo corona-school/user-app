@@ -562,6 +562,10 @@
             "registrationCompleted": {
                 "title": "Вы сделали это!",
                 "description": "Мы с нетерпением ждем возможности познакомиться с вами через Zoom на"
+            },
+            "screeningInProgress": {
+                "title": "Скоро вы получите от нас весточку!",
+                "description": "Обычно на это уходит неделя..."
             }
         },
         "pupil": {

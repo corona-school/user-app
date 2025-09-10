@@ -562,6 +562,10 @@
             "registrationCompleted": {
                 "title": "لقد فعلتها!",
                 "description": "نتطلع إلى التعرف عليك عبر تطبيق Zoom على"
+            },
+            "screeningInProgress": {
+                "title": "ستسمع منا قريباً!",
+                "description": "عادةً ما يستغرق الأمر أسبوعاً..."
             }
         },
         "pupil": {

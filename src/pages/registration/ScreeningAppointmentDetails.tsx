@@ -3,12 +3,13 @@ import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from '
 import { useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
-import { IconCheck, IconCircleCheckFilled } from '@tabler/icons-react';
+import { IconCheck } from '@tabler/icons-react';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { DateTime } from 'luxon';
 import i18next from 'i18next';
+import Logo from '@/assets/icons/logo.svg';
 
 interface ScreeningAppointmentDetailProps extends RegistrationStepProps {
     variant?: 'registered' | 'completed';
@@ -32,8 +33,23 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
         };
     }, [shouldReload]);
 
+    const isPastAppointment = useMemo(() => {
+        if (!form.screeningAppointment) return false;
+        return DateTime.fromISO(form.screeningAppointment?.start).toMillis() + form.screeningAppointment?.duration * 60000 < DateTime.now().toMillis();
+    }, [form.screeningAppointment]);
+
     if (!form.screeningAppointment) {
         return <CenterLoadingSpinner />;
+    }
+
+    if (isPastAppointment) {
+        return (
+            <RegistrationStep>
+                <Logo />
+                <RegistrationStepTitle className="mb-4 mt-11">{t('registration.steps.screeningInProgress.title')}</RegistrationStepTitle>
+                <Typography>{t('registration.steps.screeningInProgress.description')}</Typography>
+            </RegistrationStep>
+        );
     }
 
     return (

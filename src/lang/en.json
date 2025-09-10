@@ -562,6 +562,10 @@
             "registrationCompleted": {
                 "title": "You have made it!",
                 "description": "We look forward to getting to know you via Zoom on"
+            },
+            "screeningInProgress": {
+                "title": "You'll hear from us soon!",
+                "description": "Normally it takes a week..."
             }
         },
         "pupil": {
