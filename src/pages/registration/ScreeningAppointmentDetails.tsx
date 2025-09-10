@@ -5,7 +5,7 @@ import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import { IconCheck } from '@tabler/icons-react';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { DateTime } from 'luxon';
 import i18next from 'i18next';
@@ -33,16 +33,11 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
         };
     }, [shouldReload]);
 
-    const isPastAppointment = useMemo(() => {
-        if (!form.screeningAppointment) return false;
-        return DateTime.fromISO(form.screeningAppointment?.start).toMillis() + form.screeningAppointment?.duration * 60000 < DateTime.now().toMillis();
-    }, [form.screeningAppointment]);
-
     if (!form.screeningAppointment) {
         return <CenterLoadingSpinner />;
     }
 
-    if (isPastAppointment) {
+    if (form.isWaitingScreeningResults) {
         return (
             <RegistrationStep>
                 <Logo />
