@@ -26,6 +26,7 @@ export const STUDENT_FLOW = [
     RegistrationStep.userType,
     RegistrationStep.userName,
     RegistrationStep.languages,
+    RegistrationStep.zipCode,
     RegistrationStep.authenticationInfo,
     RegistrationStep.dataPrivacy,
     RegistrationStep.confirmEmail,

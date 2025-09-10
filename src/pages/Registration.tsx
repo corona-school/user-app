@@ -56,13 +56,18 @@ const MUTATION_REGISTER_PUPIL = gql(`
 `);
 
 const MUTATION_REGISTER_STUDENT = gql(`
-    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $cooperationTag: String, $referredById: String) {
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String) {
         meRegisterStudent(
             noEmail: true
             data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById }
         ) {
             id
         }
+        meUpdate(update:  {
+           student:  {
+              zipCode: $zipCode
+           }
+        })
     }
 `);
 
@@ -135,7 +140,7 @@ const Registration = () => {
             });
         } else {
             await registerStudent({
-                variables: { ...basicData, cooperationTag: cooperation, referredById: referredBy },
+                variables: { ...basicData, cooperationTag: cooperation, referredById: referredBy, zipCode: form.zipCode },
             });
         }
 

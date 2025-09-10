@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
-import { useRegistrationForm } from './useRegistrationForm';
+import { RegistrationForm, useRegistrationForm } from './useRegistrationForm';
 import { Input } from '@/components/Input';
 import { Typography } from '@/components/Typography';
 
@@ -12,7 +12,11 @@ export const ZipCode = ({ onBack, onNext }: ZipCodeProps) => {
 
     const onChange = (value: string) => {
         const zipCode = value.replace(/\D/g, '');
-        onFormChange({ zipCode, school: { ...form.school, zip: zipCode } });
+        const change: Partial<RegistrationForm> = { zipCode };
+        if (form.userType === 'pupil') {
+            change.school = { ...form.school, zip: zipCode };
+        }
+        onFormChange(change);
     };
 
     return (
