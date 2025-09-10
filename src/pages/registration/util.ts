@@ -30,7 +30,7 @@ export const STUDENT_FLOW = [
     RegistrationStep.dataPrivacy,
     RegistrationStep.confirmEmail,
     RegistrationStep.bookAppointment,
-    RegistrationStep.screeningAppointmentDetail,
+    RegistrationStep.registrationCompleted,
 ];
 
 export const PUPIL_FLOW = [

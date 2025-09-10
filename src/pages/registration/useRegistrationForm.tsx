@@ -321,18 +321,23 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             return handleOnChange({ currentStep: RegistrationStep.bookAppointment });
         }
 
-        // Minimum step for verified users that already completed all the post-appointment-booking steps
-        if (values.grade && values.school.name && values.school.schooltype && values.hasAcceptedRules) {
-            return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
+        // Pupils have post-screening-appointment steps
+        if (values.userType === 'pupil') {
+            // Minimum step for verified pupils that already completed all the post-appointment-booking steps
+            if (values.grade && values.school.name && values.school.schooltype && values.hasAcceptedRules) {
+                return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
+            }
+            // Minimum step for verified pupils that already completed all the post-appointment-booking steps (Except rules)
+            if (values.grade && values.school.name && values.school.schooltype && !values.hasAcceptedRules) {
+                return handleOnChange({ currentStep: RegistrationStep.rules });
+            }
+            // Minimum step for verified pupils with an screening appointment (but no post-appointment-booking steps)
+            if (currentStepIsLessThan(RegistrationStep.screeningAppointmentDetail)) {
+                return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
+            }
         }
-        // Minimum step for verified users that already completed all the post-appointment-booking steps (Except rules)
-        if (values.grade && values.school.name && values.school.schooltype && !values.hasAcceptedRules) {
-            return handleOnChange({ currentStep: RegistrationStep.rules });
-        }
-        // Minimum step for verified users with an screening appointment (but no post-appointment-booking steps)
-        if (currentStepIsLessThan(RegistrationStep.screeningAppointmentDetail)) {
-            return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
-        }
+        // If everything is done, then go to the registration completed step
+        handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoading, registrationProfile]);
 
