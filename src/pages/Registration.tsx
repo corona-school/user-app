@@ -177,7 +177,7 @@ const Registration = () => {
             <div className="flex flex-col flex-1">
                 <div className="py-2 pr-4 pl-6 flex justify-end items-center">
                     <div className="flex gap-x-2 w-full items-center">
-                        {getCurrentStepNumber() > 0 && (
+                        {getCurrentStepNumber() > 0 && !form.isWaitingScreeningResults && (
                             <>
                                 <Typography className="text-[14px] whitespace-pre min-w-14">
                                     {t('registration.stepStateCount', { current: getCurrentStepNumber(), total: getStepsCount() })}
