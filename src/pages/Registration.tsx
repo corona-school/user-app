@@ -7,7 +7,7 @@ import useApollo from '@/hooks/useApollo';
 import { useMutation } from '@apollo/client';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AcceptanceCheck } from './registration/AcceptanceCheck';
 import { AcceptanceCheckFailed } from './registration/AcceptanceCheckFailed';
 import { AuthenticationInfo } from './registration/AuthenticationInfo';
@@ -29,6 +29,7 @@ import { UserName } from './registration/UserName';
 import { UserTypeSelector } from './registration/UserTypeSelector';
 import { PUPIL_FLOW, RegistrationStep, STUDENT_FLOW } from './registration/util';
 import { ZipCode } from './registration/ZipCode';
+import { ERole } from '@/types/lernfair/User';
 
 export const TRAINEE_GRADE = 14;
 
@@ -80,13 +81,14 @@ const MUTATION_CREATE_CREDENTIALS = gql(`
 
 const Registration = () => {
     const location = useLocation();
-    const { refreshSessionState, sessionState } = useApollo();
+    const { user, refreshSessionState, sessionState, roles } = useApollo();
     const locState = location.state as { retainPath?: string };
     const retainPath = locState?.retainPath ?? '/start';
     const [registerPupil] = useMutation(MUTATION_REGISTER_PUPIL);
     const [registerStudent] = useMutation(MUTATION_REGISTER_STUDENT);
     const [createCredentials] = useMutation(MUTATION_CREATE_CREDENTIALS);
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const container = useRef<HTMLDivElement>(null);
 
     const { form, reset, onFormChange, isLoading: isLoadingRegistrationForm, flow, goBack, goNext } = useRegistrationForm();
@@ -158,6 +160,17 @@ const Registration = () => {
     useEffect(() => {
         container.current?.scrollTo({ top: 0, behavior: 'smooth' });
     }, [currentStepIndex]);
+
+    useEffect(() => {
+        if (sessionState === 'logged-in') {
+            const wasScreened = [ERole.TUTEE, ERole.PARTICIPANT, ERole.INSTRUCTOR, ERole.TUTOR].some((role) => roles.includes(role));
+            if (user && (user.pupil || user.student) && wasScreened) {
+                reset();
+                navigate('/start', { replace: true });
+            }
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [user, roles, sessionState]);
 
     return (
         <div className="bg-primary-lighter flex flex-col h-dvh justify-between flex-1 overflow-y-auto overflow-x-hidden" ref={container}>
