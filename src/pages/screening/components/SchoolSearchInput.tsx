@@ -46,7 +46,7 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
             <div className="flex gap-x-2 items-center justify-center">
                 <Combobox
                     values={schools.map((e) => ({ value: e.id, label: getLabel(e) }))}
-                    value={school?.id}
+                    value={school?.id?.toString()}
                     onSearch={setSearch}
                     search={search}
                     onCreate={handleOnCreate}
