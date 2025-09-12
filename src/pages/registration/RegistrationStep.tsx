@@ -66,7 +66,6 @@ export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisable
                 </Button>
                 <Button
                     disabled={isNextDisabled}
-                    onClick={onNext}
                     variant="ghost"
                     className={cn(
                         'size-[70px] rounded-full border border-transparent md:hover:border-primary transition-colors duration-300 ease-in-out px-0',
