@@ -12,6 +12,7 @@ import isEmail from 'validator/es/lib/isEmail';
 
 interface ChangeEmailModalProps extends BaseModalProps {
     currentEmail: string;
+    onChanged?: (newEmail: string) => void;
 }
 
 const CHANGE_EMAIL_MUTATION = gql(`
@@ -26,7 +27,7 @@ const IS_EMAIL_AVAILABLE_MUTATION = gql(`
     }
 `);
 
-const ChangeEmailModal = ({ isOpen, onOpenChange, currentEmail }: ChangeEmailModalProps) => {
+const ChangeEmailModal = ({ isOpen, onOpenChange, currentEmail, onChanged }: ChangeEmailModalProps) => {
     const { t } = useTranslation();
     const [newEmail, setNewEmail] = useState('');
     const [changeEmail, { loading: isUpdating }] = useMutation(CHANGE_EMAIL_MUTATION);
@@ -49,6 +50,9 @@ const ChangeEmailModal = ({ isOpen, onOpenChange, currentEmail }: ChangeEmailMod
         setNewEmail('');
         setError('');
         onOpenChange(false);
+        if (onChanged) {
+            onChanged(newEmail);
+        }
     };
 
     return (

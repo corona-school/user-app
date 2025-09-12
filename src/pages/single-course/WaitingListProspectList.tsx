@@ -64,7 +64,7 @@ const WaitingListProspectList: React.FC<WaitingListProps> = ({ subcourseId, pupi
                                     firstname: pupil.firstname!,
                                     lastname: pupil.lastname!,
                                     grade: pupil.grade!,
-                                    gradeAsInt: pupil.gradeAsInt,
+                                    gradeAsInt: pupil.gradeAsInt!,
                                     id: pupil.id,
                                     schooltype: pupil.schooltype!,
                                 }}

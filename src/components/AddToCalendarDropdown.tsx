@@ -8,9 +8,10 @@ import IconGoogle from '@/assets/icons/google.svg';
 import IconOutlook from '@/assets/icons/outlook.svg';
 import { formatDate } from '@/Utility';
 import { DateTime } from 'luxon';
+import { Lecture_Appointmenttype_Enum } from '@/gql/graphql';
 
 interface AddToCalendarDropdownProps {
-    appointment: Pick<Appointment, 'displayName' | 'title' | 'description' | 'start' | 'duration' | 'id'>;
+    appointment: Pick<Appointment, 'displayName' | 'title' | 'description' | 'start' | 'duration' | 'id' | 'override_meeting_link' | 'appointmentType'>;
     buttonClasses?: string;
     buttonVariant?: ButtonProps['variant'];
 }
@@ -22,7 +23,10 @@ const AddToCalendarDropdown = ({ appointment, buttonClasses, buttonVariant = 'ou
         start: appointment.start,
         duration: [appointment.duration, 'minutes'],
         description: appointment.description,
-        location: `${window.location.origin}/appointment/${appointment.id}`,
+        location:
+            appointment.appointmentType === Lecture_Appointmenttype_Enum.Screening
+                ? appointment.override_meeting_link!
+                : `${window.location.origin}/appointment/${appointment.id}`,
     };
 
     return (
