@@ -181,8 +181,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (currentStepIndex === -1 || !values.currentStep) return;
 
         let nextStep = getNextStepFrom(values.currentStep);
-
-        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE || (values.school.id && values.school.schooltype);
+        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE || values.school.schooltype;
         const shouldSkipZipCode = values.school.zip && values.zipCode;
 
         if (values.userType === 'pupil') {
@@ -227,13 +226,13 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         };
         let prevStep = getPrevStepFrom(values.currentStep);
 
-        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE || (values.school.id && values.school.schooltype);
+        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE || values.school.schooltype;
         const shouldSkipZipCode = values.school.zip && values.zipCode;
 
-        if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+        if (prevStep === RegistrationStep.zipCode && shouldSkipZipCode) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
-        if (prevStep === RegistrationStep.zipCode && shouldSkipZipCode) {
+        if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
         handleOnChange({ currentStep: prevStep });
@@ -288,11 +287,12 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [sessionState, registrationProfile, networkStatus]);
 
+    const hasRegistrationProfile = !!registrationProfile;
+    const isPupil = !!registrationProfile?.pupil;
+    const isVerified = !!(registrationProfile?.pupil ?? registrationProfile?.student)?.verifiedAt;
     useEffect(() => {
         if (isLoading) return;
 
-        const isPupil = !!registrationProfile?.pupil;
-        const isVerified = !!(registrationProfile?.pupil ?? registrationProfile?.student)?.verifiedAt;
         const hasScreeningAppointment = !!values.screeningAppointment?.start;
 
         const currentStepIsLessThan = (minStep: RegistrationStep) => {
@@ -335,10 +335,6 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
 
         // Pupils have post-screening-appointment steps
         if (values.userType === 'pupil') {
-            // Minimum step for verified pupils that already completed all the post-appointment-booking steps
-            if (values.grade && values.school.name && values.school.schooltype) {
-                return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
-            }
             // Minimum step for verified pupils with an screening appointment (but no post-appointment-booking steps)
             if (currentStepIsLessThan(RegistrationStep.registrationCompleted)) {
                 return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
@@ -347,7 +343,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         // If everything is done, then go to the registration completed step
         handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLoading, registrationProfile]);
+    }, [isLoading, hasRegistrationProfile, isVerified, isPupil]);
 
     useEffect(() => {
         if (location.pathname !== '/registration') {
