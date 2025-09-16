@@ -495,14 +495,14 @@
         "stepStateCount": "{{current}} von {{total}}",
         "steps": {
             "userType": {
-                "title": "In welcher Rolle meldest du dich bei Lern-Fair an?"
+                "title": "Bist du Schüler:in/Azubi oder Helfer:in?"
             },
             "acceptanceCheck": {
                 "title": "Bist du bei uns richtig?",
-                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildene.\nTreffen zwei oder mehr Punkte auf dich zu?",
-                "needHelpInSchool": "Du brauchst Hilfe in der Schule",
-                "familyCannotHelp": "Deine Familie kann dir nicht bei deinen Hausaufgaben helfen",
-                "familyCannotAffordTutoring": "Deine Familie kann keine Nachhilfe für dich bezahlen",
+                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildene.\nWelche Aussagen treffen auf dich zu?",
+                "needHelpInSchool": "Ich brauche Hilfe in der Schule",
+                "familyCannotHelp": "Meine Familie kann mir nicht bei Schulaufgaben helfen",
+                "familyCannotAffordTutoring": "Meine Familie kann nicht Nachhilfe für mich bezahlen",
                 "doNotApplyToMe": "Es treffen keine zwei Punkte auf mich zu"
             },
             "acceptanceCheckFailed": {
@@ -512,21 +512,21 @@
                 "tryAgain": "Nochmal probieren"
             },
             "userName": {
-                "congratsHint": "Wunderbar.\nDu kannst unsere Angebote nutzen!",
+                "congratsHint": "Wunderbar.\nDu kannst unsere kostenlosen Angebote nutzen.",
                 "title": "Wie heißt du?"
             },
             "userAge": {
                 "title": "Wie alt bist du?",
-                "description": "Notwendig damit wir wissen, ob du selber oder deine Eltern der Anmeldung zustimmen müssen.",
-                "tooYoungError": "Bei Lern-Fair ist {{minAge}} Jahre das Mindestalter, für das wir kostenlose Nachhilfe anbieten können."
+                "description": "Das Mindestalter ist 7. Wenn du unter 18 bist, müssen deine Eltern später noch zustimmen.",
+                "tooYoungError": "{{minAge}} Jahre ist das Mindestalter, für das wir kostenlose Nachhilfe anbieten können."
             },
             "languages": {
                 "title": "Welche Sprachen sprichst du zu Hause?",
-                "description": "Damit wir wissen, in welchen Sprachen Helfer:innen mit dir kommunizieren können."
+                "description": "Wir versuchen, dich mit Helfer:innen zusammenzubringen, die ähnliche Sprachen sprechen."
             },
             "bookAppointment": {
                 "title": "Kennenlern-Gespräch",
-                "description": "In einem kurzen, freundlichen Video-Call (ca. 15 Minuten) möchten wir dich ein bischen kennenlernen – ganz entspannt und ohne Vorbereitung. So können wir dir passende Unterstützung anbieten.",
+                "description": "In einem kurzen, freundlichen Video-Gespräch (15 Minuten) möchten wir dich ein bisschen kennenlernen. So finden wir die richtige Hilfe für dich. Du musst nichts vorbereiten.",
                 "message": ",,Du kannst uns alles fragen - wir sind für dich da.“",
                 "lernFairTeam": "Das Lern-Fair Team",
                 "bookAppointmentButton": "Gespräch vereinbaren",
@@ -541,11 +541,11 @@
                     },
                     {
                         "question": "Wer ist dabei?",
-                        "answer": "Eine:r von uns, niemand sonst. Du kannst aber sehr gerne ein Elternteil oder beide mitbringen."
+                        "answer": "Eine Person von Lern-Fair. Du kannst auch deine Eltern mitbringen. Oder eine andere Person, die dir hilft."
                     },
                     {
                         "question": "Warum ist das nötig?",
-                        "answer": "Damit wir verstehen in welchen Fächern du Unterstützung möchtest und passende Angebote für dich finden können."
+                        "answer": "Damit wir verstehen, in welchen Fächern du Hilfe möchtest und passende Angebote für dich finden können."
                     },
                     {
                         "question": "Welche Sprache wird gesprochen?",
@@ -560,12 +560,12 @@
                 ]
             },
             "emailOwner": {
-                "title": "Wessen E-Mail-Adresse nutzen wir?",
-                "description": "Wir schicken alle Informationen zum Start an diese E-Mail-Adresse. Man kann sie später auch ändern."
+                "title": "Welche E-Mail Adresse nutzen wir?",
+                "description": "Wir schicken alle Informationen zum Start an diese E-Mail-Adresse. Du kannst diese später ändern."
             },
             "authenticationInfo": {
-                "title": "Anmeldung",
-                "description": "Mit deinem Konto kannst du kostenlos Gruppenkurse, 1zu1 Nachhilfe und die Hausaufgabenhilfe besuchen.",
+                "title": "Kostenlos registrieren",
+                "description": "Mit diesem Nutzerkonto kannst du kostenlos Gruppenkurse, die 1:1-Nachhilfe und die Hausaufgabenhilfe besuchen.",
                 "pupilEmail": "E-Mail von Schüler:in / Azubi",
                 "passwordPlaceholder": "Passwort eingeben",
                 "emailPlaceholder": "E-Mail-Adresse",
@@ -586,14 +586,14 @@
             },
             "confirmEmail": {
                 "title": "Bitte bestätige deine E-Mail",
-                "description": "Wir haben eine Nachricht an\n\n<b>{{email}}</b>\n\nzur Aktivierung deines Kontos gesendet. Schau’ zuerst im Spam Ordner nach, falls du sie nicht bekommen hast.",
+                "description": "Wir haben dir eine Nachricht an\n\n<b>{{email}}</b>\n\ngeschickt. In der Nachricht ist ein Link. Mit diesem Link kannst du dein Konto aktivieren. Schau auch im Spam-Ordner nach. Manchmal landet die Nachricht dort.",
                 "changeEmail": "E-Mail-Adresse ändern",
                 "resendConfirmation": "Bestätigung nochmal senden",
                 "doYouHaveProblems": "Du hast Probleme mit der Anmeldung?"
             },
             "appointmentDetails": {
                 "title": "Termin erstellt!",
-                "description": "Um unser Angebot bestmöglich für dich zusammenzustellen, sind noch ein paar letzte Schritte nötig.",
+                "description": "Es gibt noch ein paar letzte Schritte. Dann können wir richtig gut starten.",
                 "changeAppointment": "Termin ändern",
                 "cancelAppointment": "Termin absagen"
             },
@@ -614,37 +614,37 @@
             },
             "school": {
                 "title": "Auf welche Schule\ngehst du?",
-                "helperText": "Falls deine Schule nicht gefunden wird, trag einfach Namen und Ort der Schule ein - Leider haben wir nicht alle Schulen in unserer Datenbank",
+                "helperText": "Du findest deine Schule nicht in der Liste? Dann trage einfach Namen und den Ort deiner Schule ein.",
                 "schoolFound": "Schule aus Liste gewählt",
                 "otherSchoolFound": "Schule eingetragen"
             },
             "schoolType": {
-                "title": "Welche Schulform"
+                "title": "Welche Art von Schule?"
             },
             "zipCode": {
-                "title": "Bitte teile uns deine Postleitzahl mit",
-                "description": "Wir verwenden diese Info da wir unseren Förderern mitteilen müssen, woher ihr kommt",
+                "title": "Wie ist deine Postleitzahl?",
+                "description": "Die Postleitzahl zeigt uns, aus welcher Gegend ihr euch anmeldet. Deine Postleitzahl bleibt geheim. Die Helfer sehen sie nicht.",
                 "doNotKnow": "Weiß nicht"
             },
             "notifications": {
                 "title": "E-Mail-Benachrichtigungen einstellen",
                 "titleShort": "Nachrichten",
-                "description": "Wir haben verschiedene Möglichkeiten dich auf dem Laufenden zu halten. Du kannst deine Auswahl später auch wieder ändern.",
-                "importantInformationDescription": "Ich möchte per E-Mail oder Telefon bei wichtigen Nachrichten (z.B. neuer Termin, neue Chat-Nachricht) informiert werden.",
+                "description": "Wie möchtest du - per E-mail und App - von uns informiert werden? Du kannst diese Auswahl später ändern.",
+                "importantInformationDescription": "Ich möchte Nachrichten bekommen, wenn es wichtig ist. Zum Beispiel: Ein neuer Termin oder eine neue Chat-Nachricht.",
                 "importantInformationBadge": "Wichtige Infos",
                 "recommendationsBadge": "Hilfreiches & Tipps",
-                "recommendationsDescription": "Ich möchte über neue Angebote und allgemeine Nachrichten informiert werden."
+                "recommendationsDescription": "Ich möchte auch Informationen über neue Angebote und Tipps bekommen."
             },
             "ourRules": {
                 "title": "Unsere Regeln",
-                "description": "Unsere Helfer:innen unterstützen die Schüler:innen in ihrer Freizeit 😎👍.",
+                "description": "Unsere Helfer:innen unterstützen euch in ihrer Freizeit ☺️",
                 "rules": [
-                    "🔥⏳ Respektiere die Zeit, Energie und den Aufwand den sie dafür investieren.",
-                    "️📅 ⌚Dazu gehört auch Pünktlichkeit und Zuverlässigkeit für Termine.",
-                    "😊 Sei freundlich im Umgang mit anderen.",
-                    "❌ Diskriminierung (z.B. Rassismus, Sexismus, Religionszugehörigkeit oder Altersdiskriminierung) ist nicht erlaubt."
+                    "🔋 Respektiere Zeit und Energie der Helfer:innen.",
+                    "️⌚ Sei pünktlich und halte dich an die Termine.",
+                    "😊 Sei freundlich zu allen.",
+                    "❌ Keine Diskriminierung. Das heißt keine Beleidigungen. Kein Rassismus. Kein Sexismus. Respekt vor allen Religionen und jedem Alter."
                 ],
-                "acceptLabel": "Ich werde die genannten Punkte einhalten"
+                "acceptLabel": "Ich halte mich an die Regeln."
             },
             "state": {
                 "title": "Schulort",

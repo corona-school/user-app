@@ -407,167 +407,168 @@
         },
         "steps": {
             "userType": {
-                "title": "In which role are you registering for Lern-Fair?"
-            },
-            "personalData": {
-                "title": "Personal data",
-                "subtitle": "Personal data"
-            },
-            "grade": {
-                "title": "Class"
-            },
-            "schoolType": {
-                "title": "Which type of school"
-            },
-            "state": {
-                "title": "School location",
-                "subtitle": "Where do you go to school?",
-                "weightingNote": "We only consider the school location as an optional criterion when placing a learning partner. Depending on availability, your future learning partner may come from a different region."
-            },
-            "legal": {
-                "title": "Consents",
-                "subtitle": "Consents"
-            },
-            "school": {
-                "title": "School location",
-                "schoolFound": "School found",
-                "otherSchoolFound": "Other school recognized",
-                "helperText": "If your school is not found, simply enter the name and location of the school - unfortunately we do not have all schools in our database"
+                "title": "Are you a student/apprentice or a helper?"
             },
             "acceptanceCheck": {
                 "title": "Are you in the right place?",
-                "description": "Our offers are aimed at educationally disadvantaged pupils and trainees.\nDo two or more points apply to you?",
-                "needHelpInSchool": "You need help at school",
-                "familyCannotHelp": "Your family can't help you with your homework",
-                "familyCannotAffordTutoring": "Your family can't pay for tutoring for you",
-                "doNotApplyToMe": "There are no two points that apply to me"
+                "description": "Our offers are aimed at educationally disadvantaged students and apprentices.\nWhich statements apply to you?",
+                "needHelpInSchool": "I need help at school",
+                "familyCannotHelp": "My family cannot help me with schoolwork",
+                "familyCannotAffordTutoring": "My family cannot afford tutoring for me",
+                "doNotApplyToMe": "None of these two points apply to me"
             },
             "acceptanceCheckFailed": {
                 "title": "What a pity.",
-                "description": "We're sorry we can't help you. Try again or look for other offers that might be of interest to you.",
-                "seeOtherOffers": "View other offers",
+                "description": "We’re sorry that we can’t help you further. Try again or check out other offers that might interest you.",
+                "seeOtherOffers": "See other offers",
                 "tryAgain": "Try again"
             },
             "userName": {
-                "congratsHint": "Wonderful.\nYou can take advantage of our offers!",
+                "congratsHint": "Wonderful.\nYou can use our free offers.",
                 "title": "What is your name?"
             },
             "userAge": {
                 "title": "How old are you?",
-                "description": "Necessary so that we know whether you or your parents have to agree to the registration.",
-                "tooYoungError": "At Lern-Fair , {{minAge}} years is the minimum age for which we can offer free tutoring."
+                "description": "The minimum age is 7. If you are under 18, your parents will also need to give their consent later.",
+                "tooYoungError": "{{minAge}} years is the minimum age for which we can offer free tutoring."
             },
             "languages": {
-                "title": "What languages do you speak at home?",
-                "description": "So that we know in which languages volunteers can communicate with you."
-            },
-            "emailOwner": {
-                "title": "Whose email address do we use?",
-                "description": "We will send all information about the start to this e-mail address. You can also change it later."
-            },
-            "authenticationInfo": {
-                "title": "Login",
-                "description": "With your account, you can attend group courses, 1-to-1 tutoring and homework help free of charge.",
-                "pupilEmail": "Email from pupil / trainee",
-                "passwordPlaceholder": "Enter password",
-                "emailPlaceholder": "Email address",
-                "registerWith": "Log in with {{method}}"
-            },
-            "dataPrivacy": {
-                "usageBullets": {
-                    "1": "We store your data for as long as your account at Lern-Fair is active and delete it no later than 3 years after your account is deactivated",
-                    "2": "We share your personal information (name, school type, grade, state, subjects) with volunteers who will support you",
-                    "3": "We use products from Heroku, Mailjet, Datadog and Google to process your data, which may not be able to guarantee the European level of data protection"
-                },
-                "title": "Consent to data protection",
-                "dataUsageInfoLabel": "This is what happens to your data when you register at Lern-Fair :",
-                "dataUsageUSA": "Data processing by processors in the USA",
-                "accordionUsDataProcessors": "I acknowledge that the processing of my personal data is carried out by our US-based processors Google and Heroku, which cannot guarantee compliance with the European level of data protection due to the possibility of requests from US intelligence services. For this purpose, Lern-Fair has concluded standard contractual clauses and agreed further security measures, Art. 46 para. 2 lit. c GDPR.",
-                "sendRegistration": "Submit registration",
-                "labelTermsAndPrivacy": "I have read and acknowledged the <privacy>Privacy Policy</privacy> and <agb>Terms and Conditions</agb>."
-            },
-            "confirmEmail": {
-                "title": "Please confirm your email",
-                "description": "We have sent a message to\n\n<b>{{email}}</b>\n\nto activate your account. Check your spam folder first in case you didn't receive it.",
-                "changeEmail": "Change email address",
-                "resendConfirmation": "Send confirmation again",
-                "doYouHaveProblems": "Having problems with your registration?"
+                "title": "Which languages do you speak at home?",
+                "description": "We try to match you with helpers who speak similar languages."
             },
             "bookAppointment": {
+                "title": "Introductory Meeting",
+                "description": "In a short, friendly video call (15 minutes) we’d like to get to know you a bit. This helps us find the right support for you. You don’t need to prepare anything.",
+                "message": "“You can ask us anything – we’re here for you.”",
+                "lernFairTeam": "The Lern-Fair Team",
+                "bookAppointmentButton": "Schedule meeting",
                 "faqPupil": [
                     {
                         "question": "Do I have to turn on my camera?",
                         "answer": "No, only if you want to."
                     },
                     {
-                        "question": "How long does the interview take?",
+                        "question": "How long does the meeting last?",
                         "answer": "About 15 minutes."
                     },
                     {
-                        "question": "Who is there?",
-                        "answer": "One of us, no one else. But you are very welcome to bring one or both parents with you."
+                        "question": "Who will be there?",
+                        "answer": "One person from Lern-Fair. You can also bring your parents. Or another person who helps you."
                     },
                     {
                         "question": "Why is this necessary?",
-                        "answer": "So that we understand in which subjects you would like support and can find suitable offers for you."
+                        "answer": "So we understand which subjects you’d like help in and can find suitable offers for you."
                     },
                     {
-                        "question": "What language is spoken?",
-                        "answer": "Mostly German, but we can also speak English or other languages. If you don't speak German well, just send us an email and we'll find a solution."
+                        "question": "Which language will be spoken?",
+                        "answer": "Mostly German, but we can also speak English or other languages. If you don’t speak German well, just write us an email and we’ll find a solution."
                     }
                 ],
-                "title": "Introductory meeting",
-                "description": "In a short, friendly video call (approx. 15 minutes) we would like to get to know you a little - completely relaxed and without preparation. This way we can offer you the right support.",
-                "message": "\"You can ask us anything - we're here for you.\"",
-                "bookAppointmentButton": "Arrange a meeting",
                 "faqStudent": [
                     {
-                        "question": "How long does the meeting take?",
+                        "question": "How long does the meeting last?",
                         "answer": "About 30 minutes."
                     }
-                ],
-                "lernFairTeam": "The Lern-Fair team"
+                ]
+            },
+            "emailOwner": {
+                "title": "Which email address should we use?",
+                "description": "We’ll send all the starting information to this email address. You can change it later."
+            },
+            "authenticationInfo": {
+                "title": "Register for free",
+                "description": "With this user account, you can access free group courses, 1:1 tutoring, and homework help.",
+                "pupilEmail": "Email of student/apprentice",
+                "passwordPlaceholder": "Enter password",
+                "emailPlaceholder": "Email address",
+                "registerWith": "Register with {{method}}"
+            },
+            "dataPrivacy": {
+                "title": "Data Privacy Consent",
+                "dataUsageInfoLabel": "This is what happens with your data when you register with Lern-Fair:",
+                "dataUsageUSA": "Data processing by processors in the USA",
+                "labelTermsAndPrivacy": "I have read the <privacy>privacy policy</privacy> and <agb>terms and conditions</agb>.",
+                "usageBullets": {
+                    "1": "We store your data as long as your account at Lern-Fair is active and delete it at the latest 3 years after deactivation.",
+                    "2": "We share information about you (name, school type, grade, federal state, subjects) with helpers who will support you.",
+                    "3": "We use services from Heroku, Mailjet, Datadog, and Google to process your data, which may not guarantee the European data protection level."
+                },
+                "accordionUsDataProcessors": "I acknowledge that the processing of my personal data takes place via our processors Google and Heroku located in the USA, which cannot guarantee compliance with the European data protection level due to possible requests from US intelligence services. For this purpose, Lern-Fair has concluded standard contractual clauses and agreed on additional security measures, Art. 46 para. 2 lit. c GDPR.",
+                "sendRegistration": "Submit registration"
+            },
+            "confirmEmail": {
+                "title": "Please confirm your email",
+                "description": "We have sent a message to\n\n<b>{{email}}</b>\n\nThe message contains a link. With this link, you can activate your account. Also check your spam folder – sometimes the message ends up there.",
+                "changeEmail": "Change email address",
+                "resendConfirmation": "Resend confirmation",
+                "doYouHaveProblems": "Having trouble signing up?"
             },
             "appointmentDetails": {
-                "title": "lecture created!",
-                "description": "A few final steps are necessary to put together the best possible offer for you.",
-                "changeAppointment": "Reschedule meeting",
-                "cancelAppointment": "Cancel meeting"
+                "title": "Appointment created!",
+                "description": "There are just a few last steps. Then we can really get started.",
+                "changeAppointment": "Change appointment",
+                "cancelAppointment": "Cancel appointment"
+            },
+            "registrationCompleted": {
+                "title": "You did it!",
+                "description": "We look forward to the introductory meeting with you via Zoom on"
+            },
+            "screeningInProgress": {
+                "title": "You’ll hear from us soon!",
+                "description": "Normally it takes about a week..."
+            },
+            "personalData": {
+                "title": "Personal Data",
+                "subtitle": "Personal Data"
+            },
+            "grade": {
+                "title": "Which grade are you in?"
+            },
+            "school": {
+                "title": "Which school\ndo you attend?",
+                "helperText": "Can’t find your school in the list? Then just enter the name and location of your school.",
+                "schoolFound": "School chosen from list",
+                "otherSchoolFound": "School entered manually"
+            },
+            "schoolType": {
+                "title": "What type of school?"
             },
             "zipCode": {
-                "title": "Please let us know your zip code",
-                "doNotKnow": "Don't know",
-                "description": "We use this information because we need to tell our sponsors where you are from"
+                "title": "What is your postal code?",
+                "description": "The postal code shows us where you’re registering from. Your postal code remains private. Helpers will not see it.",
+                "doNotKnow": "Don’t know"
             },
             "notifications": {
                 "title": "Set email notifications",
-                "titleShort": "News",
-                "description": "We have various ways of keeping you up to date. You can also change your selection later.",
-                "importantInformationDescription": "I would like to be informed by email or telephone about important news (e.g. new lecture, new chat message).",
-                "importantInformationBadge": "Important information",
-                "recommendationsBadge": "Helpful hints & tips",
-                "recommendationsDescription": "I would like to be informed about new offers and general news."
+                "titleShort": "Messages",
+                "description": "How would you like to be informed – by email and app? You can change this later.",
+                "importantInformationDescription": "I want to receive messages when it’s important. For example: a new appointment or a new chat message.",
+                "importantInformationBadge": "Important Info",
+                "recommendationsBadge": "Helpful & Tips",
+                "recommendationsDescription": "I also want to receive information about new offers and tips."
             },
             "ourRules": {
+                "title": "Our Rules",
+                "description": "Our helpers support you in their free time ☺️",
                 "rules": [
-                    "🔥⏳ Respect the time, energy and effort they invest in this.",
-                    "️📅 ⌚This also includes punctuality and reliability for lectures.",
-                    "😊 Be friendly in your dealings with others.",
-                    "❌ Discrimination (e.g. racism, sexism, religious affiliation or age discrimination) is not permitted."
+                    "🔋 Respect the time and energy of the helpers.",
+                    "⌚ Be punctual and keep your appointments.",
+                    "😊 Be kind to everyone.",
+                    "❌ No discrimination. That means no insults. No racism. No sexism. Respect all religions and all ages."
                 ],
-                "title": "Our rules",
-                "description": "Our volunteers support the pupils in their free time 😎👍.",
-                "acceptLabel": "I will comply with the above points"
+                "acceptLabel": "I agree to follow the rules."
             },
-            "registrationCompleted": {
-                "title": "You have made it!",
-                "description": "We look forward to getting to know you via Zoom on"
+            "state": {
+                "title": "School Location",
+                "subtitle": "Where do you go to school?",
+                "weightingNote": "We only consider the school location as an optional factor when matching you with a learning partner. Depending on availability, your future learning partner may come from another region."
             },
-            "screeningInProgress": {
-                "title": "You'll hear from us soon!",
-                "description": "Normally it takes a week..."
+            "legal": {
+                "title": "Consents",
+                "subtitle": "Consents"
             }
         },
+
         "pupil": {
             "label": "pupil / Apprentice"
         },
