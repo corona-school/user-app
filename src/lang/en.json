@@ -443,8 +443,6 @@
             },
             "bookAppointment": {
                 "title": "Introductory Meeting",
-                "description": "In a short, friendly video call (15 minutes) we’d like to get to know you a bit. This helps us find the right support for you. You don’t need to prepare anything.",
-                "message": "“You can ask us anything – we’re here for you.”",
                 "lernFairTeam": "The Lern-Fair Team",
                 "bookAppointmentButton": "Schedule meeting",
                 "faqPupil": [
@@ -473,8 +471,40 @@
                     {
                         "question": "How long does the meeting last?",
                         "answer": "About 30 minutes."
+                    },
+                    {
+                        "question": "What commitments am I making?",
+                        "answer": "We'll start with a non-binding discussion to find out together how you can best get involved. There is no obligation for you to get started immediately."
+                    },
+                    {
+                        "question": "What do I need to bring with me?",
+                        "answer": "Please have an identification document with your address ready (e.g. identity card, residence certificate or registration certificate)."
+                    },
+                    {
+                        "question": "Do I have to switch on my camera?",
+                        "answer": "Only if we carry out the ID check."
+                    },
+                    {
+                        "question": "Do I need to prepare for the interview?",
+                        "answer": "No, but if you’d like, you can already take a look at our offers <clarificationVideo>(here you’ll find an explainer video)</clarificationVideo>"
+                    },
+                    {
+                        "question": "How long does the interview take?",
+                        "answer": "About 30 minutes."
+                    },
+                    {
+                        "question": "Who is there?",
+                        "answer": "A person from Lern-Fair."
+                    },
+                    {
+                        "question": "What language is spoken?",
+                        "answer": "Tutoring is usually provided in German, as our services are aimed at pupils in the German school system. We therefore also conduct the introductory meeting in German. This allows us to see together whether the language level is suitable."
                     }
-                ]
+                ],
+                "descriptionPupil": "In a short, friendly video call (15 minutes) we would like to get to know you a little. This will help us find the right help for you. You don't have to prepare anything.",
+                "descriptionStudent": "In a short, friendly video call\n(approx. 30 minutes) we would like to get to know you a little.",
+                "messagePupil": "\"You can ask us anything - we're here for you.\"",
+                "messageStudent": "\"We will answer all your questions and\ndiscuss the engagement opportunities.\""
             },
             "emailOwner": {
                 "title": "Which email address should we use?",

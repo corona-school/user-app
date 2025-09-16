@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
@@ -122,7 +122,7 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
         <RegistrationStep>
             <RegistrationStepTitle className="mb-4 md:mb-4">{t('registration.steps.bookAppointment.title')}</RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center md:whitespace-pre-line text-balance">
-                {t('registration.steps.bookAppointment.description')}
+                {t(form.userType === 'pupil' ? 'registration.steps.bookAppointment.descriptionPupil' : 'registration.steps.bookAppointment.descriptionStudent')}
             </Typography>
             <div className="flex relative mb-5 mt-7">
                 <img
@@ -132,7 +132,9 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                 />
             </div>
             <Typography variant="body-lg" className="text-center mb-5">
-                <span className="font-semibold">{t('registration.steps.bookAppointment.message')}</span>
+                <span className="font-semibold whitespace-pre">
+                    {t(form.userType === 'pupil' ? 'registration.steps.bookAppointment.messagePupil' : 'registration.steps.bookAppointment.messageStudent')}
+                </span>
                 <span className="block">{t('registration.steps.bookAppointment.lernFairTeam')}</span>
             </Typography>
             <div className="flex flex-col gap-y-5 w-full items-center justify-center">
@@ -159,7 +161,27 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                                         </Typography>
                                     </AccordionTrigger>
                                     <AccordionContent className="flex flex-col pt-5">
-                                        <Typography>{answer}</Typography>
+                                        <Typography>
+                                            <Trans
+                                                i18nKey={
+                                                    `registration.steps.bookAppointment.${
+                                                        form.userType === 'pupil' ? 'faqPupil' : 'faqStudent'
+                                                    }.${index}.answer` as any
+                                                }
+                                                components={{
+                                                    clarificationVideo: (
+                                                        <a
+                                                            target="_blank"
+                                                            href={'https://drive.google.com/file/d/1TTaWphKiSw9C8j8J4TLko4cGXV-KrTEi/view'}
+                                                            rel="noreferrer"
+                                                            className="underline"
+                                                        >
+                                                            hier findest du ein Erklärvideo
+                                                        </a>
+                                                    ),
+                                                }}
+                                            />
+                                        </Typography>
                                     </AccordionContent>
                                 </AccordionItem>
                             </Fragment>

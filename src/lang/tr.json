@@ -443,8 +443,6 @@
             },
             "bookAppointment": {
                 "title": "Tanışma Görüşmesi",
-                "description": "Kısa, samimi bir görüntülü görüşmede (15 dakika) seni biraz tanımak istiyoruz. Böylece sana uygun yardımı bulabiliriz. Hiçbir hazırlık yapmana gerek yok.",
-                "message": "“Bize her şeyi sorabilirsin – biz senin için buradayız.”",
                 "lernFairTeam": "Lern-Fair Ekibi",
                 "bookAppointmentButton": "Görüşme ayarla",
                 "faqPupil": [
@@ -473,8 +471,40 @@
                     {
                         "question": "Görüşme ne kadar sürüyor?",
                         "answer": "Yaklaşık 30 dakika."
+                    },
+                    {
+                        "question": "Ne gibi taahhütlerde bulunuyorum?",
+                        "answer": "En iyi şekilde nasıl dahil olabileceğinizi birlikte öğrenmek için bağlayıcı olmayan bir görüşme ile başlayacağız. Hemen başlamanız için herhangi bir zorunluluk yoktur."
+                    },
+                    {
+                        "question": "Yanımda ne getirmem gerekiyor?",
+                        "answer": "Lütfen adresinizi içeren bir kimlik belgesini hazır bulundurun (örneğin nüfus cüzdanı, ikamet belgesi veya kayıt belgesi)."
+                    },
+                    {
+                        "question": "Kameramı açmam gerekiyor mu?",
+                        "answer": "Sadece kimlik kontrolü yaparsak."
+                    },
+                    {
+                        "question": "Mülakat için hazırlanmam gerekiyor mu?",
+                        "answer": "Hayır, ama istersen şimdiden tekliflerimize göz atabilirsin <clarificationVideo>(burada bir açıklayıcı video bulacaksın)</clarificationVideo>"
+                    },
+                    {
+                        "question": "Görüşme ne kadar sürüyor?",
+                        "answer": "Yaklaşık 30 dakika."
+                    },
+                    {
+                        "question": "Kim var orada?",
+                        "answer": "Lern-Fair'den bir kişi."
+                    },
+                    {
+                        "question": "Hangi dil konuşuluyor?",
+                        "answer": "Hizmetlerimiz Alman okul sistemindeki öğrencilere yönelik olduğu için özel dersler genellikle Almanca verilmektedir. Bu nedenle tanışma toplantısını da Almanca yapıyoruz. Bu sayede dil seviyesinin uygun olup olmadığını birlikte görebiliyoruz."
                     }
-                ]
+                ],
+                "descriptionPupil": "Kısa, arkadaşça bir video görüşmesinde (15 dakika) sizi biraz tanımak istiyoruz. Bu, sizin için doğru yardımı bulmamıza yardımcı olacaktır. Hiçbir şey hazırlamanıza gerek yok.",
+                "descriptionStudent": "Kısa, dostça bir video görüşmesinde\n(yaklaşık 30 dakika) sizi biraz tanımak isteriz.",
+                "messagePupil": "\"Bize her şeyi sorabilirsiniz - sizin için buradayız.\"",
+                "messageStudent": "\"Tüm sorularınızı yanıtlayacağız ve\nkatılım fırsatlarını görüşmek üzere.\""
             },
             "emailOwner": {
                 "title": "Hangi e-posta adresini kullanacağız?",
