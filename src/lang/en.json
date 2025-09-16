@@ -482,11 +482,12 @@
             },
             "authenticationInfo": {
                 "title": "Register for free",
-                "description": "With this user account, you can access free group courses, 1:1 tutoring, and homework help.",
                 "pupilEmail": "Email of student/apprentice",
                 "passwordPlaceholder": "Enter password",
                 "emailPlaceholder": "Email address",
-                "registerWith": "Register with {{method}}"
+                "registerWith": "Register with {{method}}",
+                "descriptionPupil": "With this user account, you can attend group courses, 1:1 tutoring and homework help free of charge.",
+                "descriptionStudent": "With your user account, you have access to your learning pairs, can chat with learning partners and create lectures for you."
             },
             "dataPrivacy": {
                 "title": "Data Privacy Consent",

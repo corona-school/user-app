@@ -570,7 +570,8 @@
             },
             "authenticationInfo": {
                 "title": "Kostenlos registrieren",
-                "description": "Mit diesem Nutzerkonto kannst du kostenlos Gruppenkurse, die 1:1-Nachhilfe und die Hausaufgabenhilfe besuchen.",
+                "descriptionPupil": "Mit diesem Nutzerkonto kannst du kostenlos Gruppenkurse, die 1:1-Nachhilfe und die Hausaufgabenhilfe besuchen.",
+                "descriptionStudent": "Mit deinem Nutzerkonto hast du Zugang zu deinen Lernpaaren, kannst mit Lernpartner:innen chatten und Termine für euch erstellen.",
                 "pupilEmail": "E-Mail von Schüler:in / Azubi",
                 "passwordPlaceholder": "Passwort eingeben",
                 "emailPlaceholder": "E-Mail-Adresse",
