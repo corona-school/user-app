@@ -524,8 +524,10 @@
                 "adultAge": "18 oder älter"
             },
             "languages": {
-                "title": "Welche Sprachen sprichst du zu Hause?",
-                "description": "Wir versuchen, dich mit Helfer:innen zusammenzubringen, die ähnliche Sprachen sprechen."
+                "titlePupil": "Welche Sprachen sprichst du zu Hause?",
+                "titleStudent": "Welche Sprachen sprichst du fließend?",
+                "descriptionPupil": "Wir versuchen, dich mit Helfer:innen zusammenzubringen, die ähnliche Sprachen sprechen.",
+                "descriptionStudent": "Wir versuchen, dich mit Schüler:innen zusammenzubringen, die ähnliche Sprachen sprechen."
             },
             "bookAppointment": {
                 "title": "Kennenlern-Gespräch",

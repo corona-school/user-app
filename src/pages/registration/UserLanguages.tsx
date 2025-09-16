@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { Language } from '@/gql/graphql';
@@ -15,11 +15,16 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
         onFormChange({ languages: values });
     };
 
+    const isNextDisabled = form.userType === 'pupil' ? form.languages.length === 0 : false;
+
     return (
-        <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={!form.languages.length}>
-            <RegistrationStepTitle>{t('registration.steps.languages.title')} </RegistrationStepTitle>
+        <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={isNextDisabled}>
+            {form.userType === 'student' && <OptionalBadge />}
+            <RegistrationStepTitle>
+                {t(form.userType === 'pupil' ? 'registration.steps.languages.titlePupil' : 'registration.steps.languages.titleStudent')}
+            </RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-4 md:whitespace-pre-line md:px-14">
-                {t('registration.steps.languages.description')}
+                {t(form.userType === 'pupil' ? 'registration.steps.languages.descriptionPupil' : 'registration.steps.languages.descriptionStudent')}
             </Typography>
             <div className="w-full sm:pb-32 md:pb-0">
                 <LanguageSelector

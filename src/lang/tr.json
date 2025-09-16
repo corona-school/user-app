@@ -436,8 +436,10 @@
                 "adultAge": "18 yaş ve üstü"
             },
             "languages": {
-                "title": "Evde hangi dilleri konuşuyorsun?",
-                "description": "Seni, benzer dilleri konuşan yardımcılarla eşleştirmeye çalışıyoruz."
+                "titlePupil": "Evde hangi dilleri konuşuyorsunuz?",
+                "titleStudent": "Hangi dilleri akıcı bir şekilde konuşabiliyorsunuz?",
+                "descriptionPupil": "Sizi benzer dilleri konuşan yardımcılarla bir araya getirmeye çalışıyoruz.",
+                "descriptionStudent": "Sizi benzer dilleri konuşan öğrencilerle bir araya getirmeye çalışıyoruz."
             },
             "bookAppointment": {
                 "title": "Tanışma Görüşmesi",
