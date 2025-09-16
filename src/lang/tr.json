@@ -407,165 +407,165 @@
         },
         "steps": {
             "userType": {
-                "title": "Lern-Fair 'e hangi görevle kayıt yaptırıyorsunuz?"
-            },
-            "personalData": {
-                "title": "Kişisel veriler",
-                "subtitle": "Kişisel veriler"
-            },
-            "grade": {
-                "title": "Sınıf"
-            },
-            "schoolType": {
-                "title": "Hangi okul türü"
-            },
-            "state": {
-                "title": "Okul konumu",
-                "subtitle": "Hangi okula gidiyorsun?",
-                "weightingNote": "Bir öğrenim partneri yerleştirirken okulun bulunduğu yeri yalnızca isteğe bağlı bir kriter olarak değerlendiriyoruz. Müsaitlik durumuna bağlı olarak, gelecekteki öğrenim ortağınız farklı bir bölgeden gelebilir."
-            },
-            "legal": {
-                "title": "Onaylar",
-                "subtitle": "Onaylar"
-            },
-            "authenticationInfo": {
-                "registerWith": "{{method}} ile giriş yap",
-                "title": "Kayıt",
-                "description": "Hesabınızla grup kurslarına, bire bir özel derslere ve ev ödevi yardımına ücretsiz olarak katılabilirsiniz.",
-                "pupilEmail": "Öğrenciden / stajyerden gelen e-posta",
-                "passwordPlaceholder": "Şifre girin",
-                "emailPlaceholder": "E-posta adresi"
-            },
-            "school": {
-                "title": "Okul konumu",
-                "schoolFound": "Okul bulundu",
-                "otherSchoolFound": "Tanınan diğer okullar",
-                "helperText": "Okulunuz bulunamazsa, okulun adını ve yerini girmeniz yeterlidir - ne yazık ki veritabanımızda tüm okullar bulunmamaktadır"
+                "title": "Sen öğrenci/çırak mısın yoksa yardımcı mı?"
             },
             "acceptanceCheck": {
-                "title": "Doğru yerde misiniz?",
-                "description": "Programlarımız eğitim açısından dezavantajlı öğrencilere ve stajyerlere yöneliktir.\nİki veya daha fazla nokta sizin için geçerli mi?",
-                "needHelpInSchool": "Okulda yardıma ihtiyacınız var",
-                "familyCannotHelp": "Aileniz ev ödevlerinizde size yardımcı olamaz",
-                "familyCannotAffordTutoring": "Aileniz sizin için özel ders ücretini ödeyemez",
-                "doNotApplyToMe": "Benim için geçerli olan iki nokta yok"
+                "title": "Doğru yerde misin?",
+                "description": "Tekliflerimiz eğitimde dezavantajlı öğrenciler ve çıraklar içindir.\nSana hangi ifadeler uyuyor?",
+                "needHelpInSchool": "Okulda yardıma ihtiyacım var",
+                "familyCannotHelp": "Ailem bana ödevlerde yardımcı olamıyor",
+                "familyCannotAffordTutoring": "Ailem benim için özel ders karşılayamıyor",
+                "doNotApplyToMe": "Bana iki madde de uymuyor"
             },
             "acceptanceCheckFailed": {
                 "title": "Ne yazık.",
-                "description": "Size yardımcı olamadığımız için üzgünüz. Tekrar deneyin veya ilginizi çekebilecek diğer tekliflere bakın.",
-                "seeOtherOffers": "Diğer teklifleri görüntüle",
-                "tryAgain": "Tekrar deneyin"
+                "description": "Üzgünüz, sana yardımcı olamıyoruz. Tekrar dene ya da ilgini çekebilecek diğer tekliflere göz at.",
+                "seeOtherOffers": "Diğer teklifleri gör",
+                "tryAgain": "Tekrar dene"
             },
             "userName": {
-                "congratsHint": "Harika.\nTekliflerimizden yararlanabilirsiniz!",
-                "title": "Adın ne senin?"
+                "congratsHint": "Harika.\nÜcretsiz tekliflerimizden faydalanabilirsin.",
+                "title": "Adın ne?"
             },
             "userAge": {
-                "title": "Kaç yaşındasın sen?",
-                "description": "Sizin veya ebeveynlerinizin kaydı kabul etmek zorunda olup olmadığını bilmemiz için gereklidir.",
-                "tooYoungError": "Lern-Fair 'de, {{minAge}} ücretsiz özel ders sunabileceğimiz minimum yaştır."
+                "title": "Kaç yaşındasın?",
+                "description": "Minimum yaş 7’dir. 18 yaşından küçüksen, ebeveynlerinin daha sonra onay vermesi gerekir.",
+                "tooYoungError": "{{minAge}} yaş, ücretsiz ders verebileceğimiz minimum yaştır."
             },
             "languages": {
-                "title": "Evde hangi dilleri konuşuyorsunuz?",
-                "description": "Böylece yardımcıların sizinle hangi dillerde iletişim kurabileceğini bilebiliriz."
-            },
-            "emailOwner": {
-                "title": "Kimin e-posta adresini kullanıyoruz?",
-                "description": "Başlangıçla ilgili tüm bilgileri bu e-posta adresine göndereceğiz. Daha sonra da değiştirebilirsiniz."
-            },
-            "dataPrivacy": {
-                "usageBullets": {
-                    "1": "Lern-Fair Verilerinizi hesabınız aktif olduğu sürece saklarız ve hesabınız devre dışı bırakıldıktan sonra en geç 3 yıl içinde sileriz",
-                    "2": "Kişisel bilgilerinizi (isim, okul türü, sınıf, federal eyalet, konular) size destek olacak yardımcılarla paylaşıyoruz",
-                    "3": "Verilerinizi işlemek için Heroku, Mailjet, Datadog ve Google'ın tekliflerini kullanıyoruz, bunlar Avrupa veri koruma düzeyini garanti edemeyebilir"
-                },
-                "title": "Veri koruma onayı",
-                "dataUsageInfoLabel": "Lern-Fair 'a kaydolduğunuzda verilerinize bu şekilde olur:",
-                "dataUsageUSA": "ABD'deki işleyiciler tarafından veri işleme",
-                "accordionUsDataProcessors": "Kişisel verilerimin işlenmesinin, ABD istihbarat servislerinden gelen talepler nedeniyle Avrupa veri koruma düzeyine uygunluğu garanti edemeyen ABD merkezli işleyicilerimiz Google ve Heroku tarafından gerçekleştirildiğini kabul ediyorum. Lern-Fair Bu amaçla, standart sözleşme hükümleri imzalanmış ve GDPR Madde 46 paragraf 2 lit. c uyarınca ilave güvenlik önlemleri kabul edilmiştir.",
-                "sendRegistration": "Kayıt gönderin",
-                "labelTermsAndPrivacy": "<privacy>Gizlilik Politikasını</privacy> ve <agb>Şartlar ve Koşulları</agb> okudum ve kabul ettim."
-            },
-            "confirmEmail": {
-                "title": "Lütfen e-postanızı onaylayın",
-                "description": "Bir mesaj gönderdik\n\n<b>{{email}}</b>\n\nhesabınızı etkinleştirmek için. Eğer almadıysanız lütfen önce spam klasörünüzü kontrol edin.",
-                "changeEmail": "E-posta adresini değiştir",
-                "resendConfirmation": "Onayı tekrar gönderin",
-                "doYouHaveProblems": "Giriş yaparken sorun mu yaşıyorsunuz?"
+                "title": "Evde hangi dilleri konuşuyorsun?",
+                "description": "Seni, benzer dilleri konuşan yardımcılarla eşleştirmeye çalışıyoruz."
             },
             "bookAppointment": {
+                "title": "Tanışma Görüşmesi",
+                "description": "Kısa, samimi bir görüntülü görüşmede (15 dakika) seni biraz tanımak istiyoruz. Böylece sana uygun yardımı bulabiliriz. Hiçbir hazırlık yapmana gerek yok.",
+                "message": "“Bize her şeyi sorabilirsin – biz senin için buradayız.”",
+                "lernFairTeam": "Lern-Fair Ekibi",
+                "bookAppointmentButton": "Görüşme ayarla",
                 "faqPupil": [
                     {
-                        "question": "Kameramı açmam gerekiyor mu?",
-                        "answer": "Hayır, sadece sen istersen."
+                        "question": "Kameramı açmak zorunda mıyım?",
+                        "answer": "Hayır, sadece istersen."
                     },
                     {
                         "question": "Görüşme ne kadar sürüyor?",
                         "answer": "Yaklaşık 15 dakika."
                     },
                     {
-                        "question": "Kim var orada?",
-                        "answer": "Bizden biri, başka kimse değil. Ancak ebeveynlerinizden birini veya her ikisini de yanınızda getirebilirsiniz."
+                        "question": "Kim katılacak?",
+                        "answer": "Lern-Fair’den bir kişi. İstersen aileni de getirebilirsin. Ya da sana yardımcı olan başka birini."
                     },
                     {
-                        "question": "Bu neden gerekli?",
-                        "answer": "Böylece hangi konularda destek istediğinizi anlayabilir ve sizin için uygun teklifler bulabiliriz."
+                        "question": "Neden gerekli?",
+                        "answer": "Hangi derslerde yardıma ihtiyacın olduğunu anlayalım ve sana uygun teklifleri bulalım diye."
                     },
                     {
-                        "question": "Hangi dil konuşuluyor?",
-                        "answer": "Çoğunlukla Almanca, ancak İngilizce veya diğer dilleri de konuşabiliriz. İyi Almanca konuşamıyorsanız, bize bir e-posta gönderin ve bir çözüm bulalım."
+                        "question": "Hangi dil konuşulacak?",
+                        "answer": "Genellikle Almanca, ama İngilizce veya başka diller de olabilir. Eğer Almanca bilmiyorsan, bize e-posta yaz; bir çözüm buluruz."
                     }
                 ],
-                "title": "Tanışma toplantısı",
-                "description": "Kısa, samimi bir video görüşmesinde (yaklaşık 15 dakika) sizi biraz tanımak istiyoruz - tamamen rahat ve hazırlıksız. Bu şekilde size doğru desteği sunabiliriz.",
-                "message": "\"Bize her şeyi sorabilirsiniz - sizin için buradayız.\"",
-                "bookAppointmentButton": "Bir toplantı düzenleyin",
                 "faqStudent": [
                     {
                         "question": "Görüşme ne kadar sürüyor?",
                         "answer": "Yaklaşık 30 dakika."
                     }
-                ],
-                "lernFairTeam": "Lern-Fair ekibi"
+                ]
+            },
+            "emailOwner": {
+                "title": "Hangi e-posta adresini kullanacağız?",
+                "description": "Başlangıçla ilgili tüm bilgileri bu e-posta adresine göndereceğiz. Daha sonra değiştirebilirsin."
+            },
+            "authenticationInfo": {
+                "title": "Ücretsiz kayıt ol",
+                "description": "Bu hesap ile ücretsiz grup derslerine, birebir derslere (1:1) ve ödev yardımına katılabilirsin.",
+                "pupilEmail": "Öğrenci/Çırak e-postası",
+                "passwordPlaceholder": "Şifre gir",
+                "emailPlaceholder": "E-posta adresi",
+                "registerWith": "{{method}} ile kayıt ol"
+            },
+            "dataPrivacy": {
+                "title": "Veri Gizliliği Onayı",
+                "dataUsageInfoLabel": "Lern-Fair’e kayıt olduğunda verilerinle ne olur:",
+                "dataUsageUSA": "ABD’deki hizmet sağlayıcılar tarafından veri işleme",
+                "labelTermsAndPrivacy": "<privacy>Gizlilik politikasını</privacy> ve <agb>şartları</agb> okudum.",
+                "usageBullets": {
+                    "1": "Verilerini hesabın Lern-Fair’de aktif olduğu sürece saklıyoruz ve en geç hesabın kapatılmasından 3 yıl sonra siliyoruz.",
+                    "2": "Hakkındaki bilgileri (isim, okul türü, sınıf, eyalet, dersler) seni destekleyecek yardımcılarla paylaşıyoruz.",
+                    "3": "Verilerini işlemek için Heroku, Mailjet, Datadog ve Google hizmetlerini kullanıyoruz; bunlar Avrupa veri koruma seviyesini garanti etmeyebilir."
+                },
+                "accordionUsDataProcessors": "Kişisel verilerimin ABD’deki Google ve Heroku sağlayıcılarımız aracılığıyla işlendiğini biliyorum. ABD istihbarat kurumlarının talepleri nedeniyle Avrupa veri koruma standartlarına uyum garanti edilemeyebilir. Bu amaçla Lern-Fair standart sözleşme maddeleri imzaladı ve ek güvenlik önlemleri aldı, GDPR Madde 46(2)(c).",
+                "sendRegistration": "Kaydı gönder"
+            },
+            "confirmEmail": {
+                "title": "Lütfen e-postanı onayla",
+                "description": "Bir mesaj gönderdik:\n\n<b>{{email}}</b>\n\nMesajda bir bağlantı var. Bu bağlantıyla hesabını aktive edebilirsin. Spam klasörünü de kontrol et, bazen mesaj oraya düşebilir.",
+                "changeEmail": "E-posta adresini değiştir",
+                "resendConfirmation": "Onayı tekrar gönder",
+                "doYouHaveProblems": "Kayıtta sorun mu yaşıyorsun?"
             },
             "appointmentDetails": {
                 "title": "Randevu oluşturuldu!",
-                "description": "Sizin için mümkün olan en iyi teklifi bir araya getirmek için birkaç son adım gereklidir.",
-                "changeAppointment": "Tarih değiştir",
+                "description": "Birkaç adım kaldı. Sonra gerçekten başlayabiliriz.",
+                "changeAppointment": "Randevuyu değiştir",
                 "cancelAppointment": "Randevuyu iptal et"
-            },
-            "zipCode": {
-                "title": "Lütfen posta kodunuzu bize bildirin",
-                "doNotKnow": "Bilmiyorum.",
-                "description": "Bu bilgileri kullanıyoruz çünkü sponsorlarımıza nereden geldiğinizi söylememiz gerekiyor"
-            },
-            "notifications": {
-                "title": "E-posta bildirimlerini ayarlama",
-                "titleShort": "Haberler",
-                "description": "Sizi güncel tutmak için çeşitli yöntemlerimiz var. Seçiminizi daha sonra da değiştirebilirsiniz.",
-                "importantInformationDescription": "Önemli haberler (örneğin yeni randevu, yeni sohbet mesajı) hakkında e-posta veya telefon yoluyla bilgilendirilmek istiyorum.",
-                "importantInformationBadge": "Önemli bilgiler",
-                "recommendationsBadge": "Yararlı ipuçları ve püf noktaları",
-                "recommendationsDescription": "Yeni teklifler ve genel haberler hakkında bilgilendirilmek istiyorum."
-            },
-            "ourRules": {
-                "rules": [
-                    "🔥⏳ Bunun için harcadıkları zaman, enerji ve çabaya saygı gösterin.",
-                    "️📅 ⌚Bu, randevular için dakiklik ve güvenilirliği de içerir.",
-                    "😊 Başkalarıyla ilişkilerinizde arkadaşça davranın.",
-                    "❌ Ayrımcılığa (örneğin ırkçılık, cinsiyetçilik, dini aidiyet veya yaş ayrımcılığı) izin verilmez."
-                ],
-                "title": "Kurallarımız",
-                "description": "Yardımcılarımız boş zamanlarında öğrencilere destek oluyor 😎👍.",
-                "acceptLabel": "Yukarıdaki hususlara uyacağım"
             },
             "registrationCompleted": {
                 "title": "Başardın!",
-                "description": "Zoom aracılığıyla sizi tanımak için sabırsızlanıyoruz"
+                "description": "Seninle Zoom üzerinden tanışma görüşmesini dört gözle bekliyoruz"
             },
             "screeningInProgress": {
-                "title": "Yakında bizden haber alacaksınız!",
-                "description": "Normalde bir hafta sürer."
+                "title": "Yakında senden haber alacaksın!",
+                "description": "Genelde yaklaşık bir hafta sürüyor..."
+            },
+            "personalData": {
+                "title": "Kişisel Bilgiler",
+                "subtitle": "Kişisel Bilgiler"
+            },
+            "grade": {
+                "title": "Hangi sınıftasın?"
+            },
+            "school": {
+                "title": "Hangi okulda\nokuyorsun?",
+                "helperText": "Okulunu listede bulamadın mı? Sadece okulun adını ve yerini yaz.",
+                "schoolFound": "Okul listeden seçildi",
+                "otherSchoolFound": "Okul manuel girildi"
+            },
+            "schoolType": {
+                "title": "Okulun türü nedir?"
+            },
+            "zipCode": {
+                "title": "Posta kodun nedir?",
+                "description": "Posta kodu bize hangi bölgeden kayıt olduğunu gösterir. Gizli kalır, yardımcılar görmez.",
+                "doNotKnow": "Bilmiyorum"
+            },
+            "notifications": {
+                "title": "E-posta bildirimlerini ayarla",
+                "titleShort": "Mesajlar",
+                "description": "Nasıl bilgilendirilmek istersin – e-posta ve uygulama ile? Bunu daha sonra değiştirebilirsin.",
+                "importantInformationDescription": "Önemli olduğunda mesaj almak istiyorum. Örneğin: yeni bir randevu ya da yeni bir sohbet mesajı.",
+                "importantInformationBadge": "Önemli Bilgi",
+                "recommendationsBadge": "Faydalı & İpuçları",
+                "recommendationsDescription": "Yeni teklifler ve ipuçları hakkında da bilgi almak istiyorum."
+            },
+            "ourRules": {
+                "title": "Kurallarımız",
+                "description": "Yardımcılarımız size boş zamanlarında destek oluyor ☺️",
+                "rules": [
+                    "🔋 Yardımcıların zamanına ve enerjisine saygı göster.",
+                    "⌚ Dakik ol ve randevulara uy.",
+                    "😊 Herkese karşı nazik ol.",
+                    "❌ Ayrımcılık yok. Yani hakaret yok. Irkçılık yok. Cinsiyetçilik yok. Tüm dinlere ve her yaşa saygı göster."
+                ],
+                "acceptLabel": "Kurallara uymayı kabul ediyorum."
+            },
+            "state": {
+                "title": "Okul Yeri",
+                "subtitle": "Nerede okula gidiyorsun?",
+                "weightingNote": "Okul yerini sadece opsiyonel bir kriter olarak dikkate alıyoruz. Uygunluğa göre, öğrenme partnerin başka bir bölgeden olabilir."
+            },
+            "legal": {
+                "title": "Onaylar",
+                "subtitle": "Onaylar"
             }
         },
         "pupil": {
