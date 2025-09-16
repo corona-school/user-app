@@ -30,6 +30,7 @@ import { UserTypeSelector } from './registration/UserTypeSelector';
 import { PUPIL_FLOW, RegistrationStep, STUDENT_FLOW } from './registration/util';
 import { ZipCode } from './registration/ZipCode';
 import { ERole } from '@/types/lernfair/User';
+import { StudentLanguage } from '@/gql/graphql';
 
 export const TRAINEE_GRADE = 14;
 
@@ -57,16 +58,17 @@ const MUTATION_REGISTER_PUPIL = gql(`
 `);
 
 const MUTATION_REGISTER_STUDENT = gql(`
-    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String) {
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String, $languages: [StudentLanguage!], $isAdult: Boolean!) {
         meRegisterStudent(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
         ) {
             id
         }
         meUpdate(update:  {
            student:  {
               zipCode: $zipCode
+              languages: $languages
            }
         })
     }
@@ -142,7 +144,14 @@ const Registration = () => {
             });
         } else {
             await registerStudent({
-                variables: { ...basicData, cooperationTag: cooperation, referredById: referredBy, zipCode: form.zipCode },
+                variables: {
+                    ...basicData,
+                    cooperationTag: cooperation,
+                    referredById: referredBy,
+                    zipCode: form.zipCode,
+                    isAdult: !!form.isAdult,
+                    languages: form.languages as unknown as StudentLanguage[],
+                },
             });
         }
 
