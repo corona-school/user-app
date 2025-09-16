@@ -540,8 +540,9 @@
             },
             "zipCode": {
                 "title": "Posta kodun nedir?",
-                "description": "Posta kodu bize hangi bölgeden kayıt olduğunu gösterir. Gizli kalır, yardımcılar görmez.",
-                "doNotKnow": "Bilmiyorum"
+                "doNotKnow": "Bilmiyorum",
+                "descriptionPupil": "Posta kodu bize hangi bölgeden kayıt yaptırdığınızı gösterir. Posta kodunuz gizli kalacaktır. Yardımcılar bunu görmeyecektir.",
+                "descriptionStudent": "Bu bilgileri asla öğrencilere aktarmayız. Posta kodunuz iç değerlendirmede bize yardımcı olur."
             },
             "notifications": {
                 "title": "E-posta bildirimlerini ayarla",

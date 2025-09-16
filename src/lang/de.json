@@ -628,7 +628,8 @@
             },
             "zipCode": {
                 "title": "Wie ist deine Postleitzahl?",
-                "description": "Die Postleitzahl zeigt uns, aus welcher Gegend ihr euch anmeldet. Deine Postleitzahl bleibt geheim. Die Helfer sehen sie nicht.",
+                "descriptionPupil": "Die Postleitzahl zeigt uns, aus welcher Gegend ihr euch anmeldet. Deine Postleitzahl bleibt geheim. Die Helfer sehen sie nicht.",
+                "descriptionStudent": "Wir geben diese Info niemals an Schüler:innen weiter. Deine PLZ hilft uns bei der internen Auswertung.",
                 "doNotKnow": "Weiß nicht"
             },
             "notifications": {

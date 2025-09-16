@@ -540,8 +540,9 @@
             },
             "zipCode": {
                 "title": "What is your postal code?",
-                "description": "The postal code shows us where you’re registering from. Your postal code remains private. Helpers will not see it.",
-                "doNotKnow": "Don’t know"
+                "doNotKnow": "Don’t know",
+                "descriptionPupil": "The zip code shows us which area you are registering from. Your zip code remains secret. The helpers will not see it.",
+                "descriptionStudent": "We never pass this information on to pupils . Your zip code helps us with the internal evaluation."
             },
             "notifications": {
                 "title": "Set email notifications",
