@@ -429,8 +429,11 @@
             },
             "userAge": {
                 "title": "Kaç yaşındasın?",
-                "description": "Minimum yaş 7’dir. 18 yaşından küçüksen, ebeveynlerinin daha sonra onay vermesi gerekir.",
-                "tooYoungError": "{{minAge}} yaş, ücretsiz ders verebileceğimiz minimum yaştır."
+                "tooYoungError": "{{minAge}} yaş, ücretsiz ders verebileceğimiz minimum yaştır.",
+                "descriptionPupil": "Minimum yaş 7'dir, ancak 18 yaşın altındaysanız, ebeveynleriniz daha sonra onay vermelidir.",
+                "descriptionStudent": "Asgari yaş 14'tür. 18 yaşından küçükseniz, daha sonra yasal bir temsilcinin (örneğin ebeveyn) onayına ihtiyacımız olacaktır.",
+                "underAgeRange": "14 ila 17",
+                "adultAge": "18 yaş ve üstü"
             },
             "languages": {
                 "title": "Evde hangi dilleri konuşuyorsun?",

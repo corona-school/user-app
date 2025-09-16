@@ -517,8 +517,11 @@
             },
             "userAge": {
                 "title": "Wie alt bist du?",
-                "description": "Das Mindestalter ist 7. Wenn du unter 18 bist, müssen deine Eltern später noch zustimmen.",
-                "tooYoungError": "{{minAge}} Jahre ist das Mindestalter, für das wir kostenlose Nachhilfe anbieten können."
+                "descriptionPupil": "Das Mindestalter ist 7. Wenn du unter 18 bist, müssen deine Eltern später noch zustimmen.",
+                "descriptionStudent": "Das Mindestalter ist 14 Jahre. Wenn du unter 18 bist, brauchen wir später das Einverständnis eines gesetzlichen Vertreters (z.B. Elternteil)",
+                "tooYoungError": "{{minAge}} Jahre ist das Mindestalter, für das wir kostenlose Nachhilfe anbieten können.",
+                "underAgeRange": "14 bis 17",
+                "adultAge": "18 oder älter"
             },
             "languages": {
                 "title": "Welche Sprachen sprichst du zu Hause?",

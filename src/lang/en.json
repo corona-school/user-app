@@ -429,8 +429,11 @@
             },
             "userAge": {
                 "title": "How old are you?",
-                "description": "The minimum age is 7. If you are under 18, your parents will also need to give their consent later.",
-                "tooYoungError": "{{minAge}} years is the minimum age for which we can offer free tutoring."
+                "tooYoungError": "{{minAge}} years is the minimum age for which we can offer free tutoring.",
+                "descriptionPupil": "The minimum age is 7. If you are under 18, your parents must give their consent later.",
+                "descriptionStudent": "The minimum age is 14 years. If you are under 18, we will later need the consent of a legal representative (e.g. parent)",
+                "underAgeRange": "14 to 17",
+                "adultAge": "18 or older"
             },
             "languages": {
                 "title": "Which languages do you speak at home?",
@@ -568,7 +571,6 @@
                 "subtitle": "Consents"
             }
         },
-
         "pupil": {
             "label": "pupil / Apprentice"
         },
