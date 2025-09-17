@@ -5,11 +5,13 @@ import { IconBackpack, IconHeartHandshake, IconUser } from '@tabler/icons-react'
 import { useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { PupilEmailOwner } from '@/gql/graphql';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface EmailOwnerProps extends RegistrationStepProps {}
 
 export const EmailOwner = ({ onBack, onNext }: EmailOwnerProps) => {
     const { form, onFormChange } = useRegistrationForm();
+    usePageTitle('Registrierung: Email-Besitzer (Schüler:in)');
     const { t } = useTranslation();
 
     return (

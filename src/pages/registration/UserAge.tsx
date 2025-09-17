@@ -5,6 +5,7 @@ import { Input } from '@/components/Input';
 import { Typography } from '@/components/Typography';
 import { useState } from 'react';
 import { Toggle } from '@/components/Toggle';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface UserAgeProps extends RegistrationStepProps {}
 
@@ -12,6 +13,7 @@ const MIN_AGE_PUPIL = 7;
 
 export const UserAge = ({ onBack, onNext }: UserAgeProps) => {
     const { form, onFormChange } = useRegistrationForm();
+    usePageTitle(`Registrierung: Alter (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`);
     const { t } = useTranslation();
     const [error, setError] = useState(!!form.age && form.age < MIN_AGE_PUPIL ? t('registration.steps.userAge.tooYoungError', { minAge: MIN_AGE_PUPIL }) : '');
 

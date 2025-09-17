@@ -9,7 +9,7 @@ import { useRegistrationForm } from './useRegistrationForm';
 interface UserTypeSelectorProps extends RegistrationStepProps {}
 
 export const UserTypeSelector = ({ onBack, onNext }: UserTypeSelectorProps) => {
-    usePageTitle('Lern-Fair: Nachhilfe für benachteiligte Schüler:innen - Registrierung: Jetzt kostenlos anmelden');
+    usePageTitle('Registrierung: Schüler:in/Azubi oder Helfer:in');
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
     const { roles, logout } = useApollo();

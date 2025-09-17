@@ -8,6 +8,7 @@ import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
 import ChangeEmailModal from '@/modals/ChangeEmailModal';
 import { useEffect, useState } from 'react';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface ConfirmEmailProps extends RegistrationStepProps {
     retainPath: string;
@@ -21,6 +22,7 @@ const SEND_VERIFICATION_MUTATION = gql(`
 
 export const ConfirmEmail = ({ onNext, retainPath }: ConfirmEmailProps) => {
     const { form, onFormChange } = useRegistrationForm();
+    usePageTitle(`Registrierung: Email bestätigen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`);
     const { t } = useTranslation();
     const [sendVerification, { loading: isSendingVerification }] = useMutation(SEND_VERIFICATION_MUTATION);
     const [isOpen, setIsOpen] = useState(false);

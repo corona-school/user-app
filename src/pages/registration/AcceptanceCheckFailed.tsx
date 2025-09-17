@@ -9,7 +9,7 @@ interface AcceptanceCheckFailedProps {
 }
 
 export const AcceptanceCheckFailed = ({ onTryAgain }: AcceptanceCheckFailedProps) => {
-    usePageTitle('Lern-Fair - Registrierung: Registrierung abgelehnt für Schüler:innen');
+    usePageTitle('Registrierung: Keine Unterstützung möglich (Schüler:in)');
     const { t } = useTranslation();
 
     return (

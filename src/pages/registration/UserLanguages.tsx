@@ -4,11 +4,13 @@ import { useRegistrationForm } from './useRegistrationForm';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { Language } from '@/gql/graphql';
 import { Typography } from '@/components/Typography';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface UserLanguagesProps extends RegistrationStepProps {}
 
 export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
     const { form, onFormChange } = useRegistrationForm();
+    usePageTitle(`Registrierung: Sprachen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`);
     const { t } = useTranslation();
 
     const onChange = (values: Language[]) => {

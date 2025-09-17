@@ -4,12 +4,14 @@ import { useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { Checkbox } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface OurRulesProps extends RegistrationStepProps {}
 
 export const OurRules = ({ onNext, onBack }: OurRulesProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
+    usePageTitle('Registrierung: Community Regeln (Schüler:in)');
 
     const onChange = (hasAcceptedRules: boolean) => {
         onFormChange({ hasAcceptedRules });

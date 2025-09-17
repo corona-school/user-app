@@ -16,7 +16,7 @@ interface SchoolSearchProps extends RegistrationStepProps {}
 const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
-    usePageTitle('Lern-Fair - Registrierung: Schulname');
+    usePageTitle('Registrierung: Schule - optional');
     const [search, setSearch] = useState(form.school.name ?? '');
     const { schools, isLoading } = useSchoolSearch({ name: search });
 
