@@ -25,6 +25,7 @@ export enum RegistrationStep {
 export const STUDENT_FLOW = [
     RegistrationStep.userType,
     RegistrationStep.userName,
+    RegistrationStep.userAge,
     RegistrationStep.languages,
     RegistrationStep.zipCode,
     RegistrationStep.authenticationInfo,

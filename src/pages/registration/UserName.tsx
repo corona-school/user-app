@@ -24,9 +24,11 @@ export const UserName = ({ onBack, onNext }: UserNameProps) => {
 
     return (
         <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={!form.firstname || !form.lastname}>
-            <Typography variant="body-lg" className="text-center mb-10 whitespace-pre-line text-balance">
-                {t('registration.steps.userName.congratsHint')}
-            </Typography>
+            {form.userType === 'pupil' && (
+                <Typography variant="body-lg" className="text-center mb-10 whitespace-pre-line text-balance">
+                    {t('registration.steps.userName.congratsHint')}
+                </Typography>
+            )}
             <RegistrationStepTitle className="mb-10">{t('registration.steps.userName.title')}</RegistrationStepTitle>
             <div className="flex flex-col gap-y-3 w-full max-w-[268px]">
                 <div className="w-full flex flex-col justify-center gap-y-1">

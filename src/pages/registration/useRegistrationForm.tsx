@@ -26,6 +26,7 @@ export interface RegistrationForm {
     firstname: string;
     lastname: string;
     age: number;
+    isAdult?: boolean;
     languages: Language[];
     emailOwner?: PupilEmailOwner;
     email: string;

@@ -429,17 +429,20 @@
             },
             "userAge": {
                 "title": "Kaç yaşındasın?",
-                "description": "Minimum yaş 7’dir. 18 yaşından küçüksen, ebeveynlerinin daha sonra onay vermesi gerekir.",
-                "tooYoungError": "{{minAge}} yaş, ücretsiz ders verebileceğimiz minimum yaştır."
+                "tooYoungError": "{{minAge}} yaş, ücretsiz ders verebileceğimiz minimum yaştır.",
+                "descriptionPupil": "Minimum yaş 7'dir, ancak 18 yaşın altındaysanız, ebeveynleriniz daha sonra onay vermelidir.",
+                "descriptionStudent": "Asgari yaş 14'tür. 18 yaşından küçükseniz, daha sonra yasal bir temsilcinin (örneğin ebeveyn) onayına ihtiyacımız olacaktır.",
+                "underAgeRange": "14 ila 17",
+                "adultAge": "18 yaş ve üstü"
             },
             "languages": {
-                "title": "Evde hangi dilleri konuşuyorsun?",
-                "description": "Seni, benzer dilleri konuşan yardımcılarla eşleştirmeye çalışıyoruz."
+                "titlePupil": "Evde hangi dilleri konuşuyorsunuz?",
+                "titleStudent": "Hangi dilleri akıcı bir şekilde konuşabiliyorsunuz?",
+                "descriptionPupil": "Sizi benzer dilleri konuşan yardımcılarla bir araya getirmeye çalışıyoruz.",
+                "descriptionStudent": "Sizi benzer dilleri konuşan öğrencilerle bir araya getirmeye çalışıyoruz."
             },
             "bookAppointment": {
                 "title": "Tanışma Görüşmesi",
-                "description": "Kısa, samimi bir görüntülü görüşmede (15 dakika) seni biraz tanımak istiyoruz. Böylece sana uygun yardımı bulabiliriz. Hiçbir hazırlık yapmana gerek yok.",
-                "message": "“Bize her şeyi sorabilirsin – biz senin için buradayız.”",
                 "lernFairTeam": "Lern-Fair Ekibi",
                 "bookAppointmentButton": "Görüşme ayarla",
                 "faqPupil": [
@@ -468,8 +471,40 @@
                     {
                         "question": "Görüşme ne kadar sürüyor?",
                         "answer": "Yaklaşık 30 dakika."
+                    },
+                    {
+                        "question": "Ne gibi taahhütlerde bulunuyorum?",
+                        "answer": "En iyi şekilde nasıl dahil olabileceğinizi birlikte öğrenmek için bağlayıcı olmayan bir görüşme ile başlayacağız. Hemen başlamanız için herhangi bir zorunluluk yoktur."
+                    },
+                    {
+                        "question": "Yanımda ne getirmem gerekiyor?",
+                        "answer": "Lütfen adresinizi içeren bir kimlik belgesini hazır bulundurun (örneğin nüfus cüzdanı, ikamet belgesi veya kayıt belgesi)."
+                    },
+                    {
+                        "question": "Kameramı açmam gerekiyor mu?",
+                        "answer": "Sadece kimlik kontrolü yaparsak."
+                    },
+                    {
+                        "question": "Mülakat için hazırlanmam gerekiyor mu?",
+                        "answer": "Hayır, ama istersen şimdiden tekliflerimize göz atabilirsin <clarificationVideo>(burada bir açıklayıcı video bulacaksın)</clarificationVideo>"
+                    },
+                    {
+                        "question": "Görüşme ne kadar sürüyor?",
+                        "answer": "Yaklaşık 30 dakika."
+                    },
+                    {
+                        "question": "Kim var orada?",
+                        "answer": "Lern-Fair'den bir kişi."
+                    },
+                    {
+                        "question": "Hangi dil konuşuluyor?",
+                        "answer": "Hizmetlerimiz Alman okul sistemindeki öğrencilere yönelik olduğu için özel dersler genellikle Almanca verilmektedir. Bu nedenle tanışma toplantısını da Almanca yapıyoruz. Bu sayede dil seviyesinin uygun olup olmadığını birlikte görebiliyoruz."
                     }
-                ]
+                ],
+                "descriptionPupil": "Kısa, arkadaşça bir video görüşmesinde (15 dakika) sizi biraz tanımak istiyoruz. Bu, sizin için doğru yardımı bulmamıza yardımcı olacaktır. Hiçbir şey hazırlamanıza gerek yok.",
+                "descriptionStudent": "Kısa, dostça bir video görüşmesinde\n(yaklaşık 30 dakika) sizi biraz tanımak isteriz.",
+                "messagePupil": "\"Bize her şeyi sorabilirsiniz - sizin için buradayız.\"",
+                "messageStudent": "\"Tüm sorularınızı yanıtlayacağız ve\nkatılım fırsatlarını görüşmek üzere.\""
             },
             "emailOwner": {
                 "title": "Hangi e-posta adresini kullanacağız?",
@@ -477,11 +512,12 @@
             },
             "authenticationInfo": {
                 "title": "Ücretsiz kayıt ol",
-                "description": "Bu hesap ile ücretsiz grup derslerine, birebir derslere (1:1) ve ödev yardımına katılabilirsin.",
                 "pupilEmail": "Öğrenci/Çırak e-postası",
                 "passwordPlaceholder": "Şifre gir",
                 "emailPlaceholder": "E-posta adresi",
-                "registerWith": "{{method}} ile kayıt ol"
+                "registerWith": "{{method}} ile kayıt ol",
+                "descriptionPupil": "Bu kullanıcı hesabıyla grup kurslarına, 1:1 özel derslere ve ev ödevi yardımına ücretsiz olarak katılabilirsiniz.",
+                "descriptionStudent": "Kullanıcı hesabınızla öğrenim çiftlerinize erişebilir, öğrenim ortaklarınızla sohbet edebilir ve sizin için randevular oluşturabilirsiniz."
             },
             "dataPrivacy": {
                 "title": "Veri Gizliliği Onayı",
@@ -535,8 +571,9 @@
             },
             "zipCode": {
                 "title": "Posta kodun nedir?",
-                "description": "Posta kodu bize hangi bölgeden kayıt olduğunu gösterir. Gizli kalır, yardımcılar görmez.",
-                "doNotKnow": "Bilmiyorum"
+                "doNotKnow": "Bilmiyorum",
+                "descriptionPupil": "Posta kodu bize hangi bölgeden kayıt yaptırdığınızı gösterir. Posta kodunuz gizli kalacaktır. Yardımcılar bunu görmeyecektir.",
+                "descriptionStudent": "Bu bilgileri asla öğrencilere aktarmayız. Posta kodunuz iç değerlendirmede bize yardımcı olur."
             },
             "notifications": {
                 "title": "E-posta bildirimlerini ayarla",

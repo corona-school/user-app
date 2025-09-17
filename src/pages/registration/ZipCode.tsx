@@ -24,7 +24,7 @@ export const ZipCode = ({ onBack, onNext }: ZipCodeProps) => {
             <OptionalBadge />
             <RegistrationStepTitle>{t('registration.steps.zipCode.title')}</RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
-                {t('registration.steps.zipCode.description')}
+                {t(form.userType === 'pupil' ? 'registration.steps.zipCode.descriptionPupil' : 'registration.steps.zipCode.descriptionStudent')}
             </Typography>
             <div className="flex flex-col gap-y-3 w-full max-w-20 pb-32 md:pb-0">
                 <div className="w-full flex flex-col justify-center gap-y-1">

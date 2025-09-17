@@ -89,7 +89,11 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
         <RegistrationStep onBack={onBack} onNext={handleOnNext} isNextDisabled={isNextDisabled()}>
             <RegistrationStepTitle className="md:mb-4">{t('registration.steps.authenticationInfo.title')}</RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center mb-10 whitespace-pre-line text-balance">
-                {t('registration.steps.authenticationInfo.description')}
+                {t(
+                    form.userType === 'pupil'
+                        ? 'registration.steps.authenticationInfo.descriptionPupil'
+                        : 'registration.steps.authenticationInfo.descriptionStudent'
+                )}
             </Typography>
             <div className="flex flex-col gap-y-4 w-full max-w-[339px] md:pb-0">
                 {GOOGLE_CLIENT_ID && form.isRegisteringManually && (
@@ -103,7 +107,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                 <div className="flex flex-col gap-y-2">
                     <div className="w-full flex flex-col justify-center gap-y-1">
                         <Label htmlFor="email" className="text-subtle w-full">
-                            {t('registration.steps.authenticationInfo.pupilEmail')}
+                            {t(form.userType === 'pupil' ? 'registration.steps.authenticationInfo.pupilEmail' : 'email')}
                         </Label>
                         <Input
                             variant="white"

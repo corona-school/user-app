@@ -517,17 +517,24 @@
             },
             "userAge": {
                 "title": "Wie alt bist du?",
-                "description": "Das Mindestalter ist 7. Wenn du unter 18 bist, müssen deine Eltern später noch zustimmen.",
-                "tooYoungError": "{{minAge}} Jahre ist das Mindestalter, für das wir kostenlose Nachhilfe anbieten können."
+                "descriptionPupil": "Das Mindestalter ist 7. Wenn du unter 18 bist, müssen deine Eltern später noch zustimmen.",
+                "descriptionStudent": "Das Mindestalter ist 14 Jahre. Wenn du unter 18 bist, brauchen wir später das Einverständnis eines gesetzlichen Vertreters (z.B. Elternteil)",
+                "tooYoungError": "{{minAge}} Jahre ist das Mindestalter, für das wir kostenlose Nachhilfe anbieten können.",
+                "underAgeRange": "14 bis 17",
+                "adultAge": "18 oder älter"
             },
             "languages": {
-                "title": "Welche Sprachen sprichst du zu Hause?",
-                "description": "Wir versuchen, dich mit Helfer:innen zusammenzubringen, die ähnliche Sprachen sprechen."
+                "titlePupil": "Welche Sprachen sprichst du zu Hause?",
+                "titleStudent": "Welche Sprachen sprichst du fließend?",
+                "descriptionPupil": "Wir versuchen, dich mit Helfer:innen zusammenzubringen, die ähnliche Sprachen sprechen.",
+                "descriptionStudent": "Wir versuchen, dich mit Schüler:innen zusammenzubringen, die ähnliche Sprachen sprechen."
             },
             "bookAppointment": {
                 "title": "Kennenlern-Gespräch",
-                "description": "In einem kurzen, freundlichen Video-Gespräch (15 Minuten) möchten wir dich ein bisschen kennenlernen. So finden wir die richtige Hilfe für dich. Du musst nichts vorbereiten.",
-                "message": ",,Du kannst uns alles fragen - wir sind für dich da.“",
+                "descriptionPupil": "In einem kurzen, freundlichen Video-Gespräch (15 Minuten) möchten wir dich ein bisschen kennenlernen. So finden wir die richtige Hilfe für dich. Du musst nichts vorbereiten.",
+                "descriptionStudent": "In einem kurzen, freundlichen Video-Gespräch\n(ca. 30 Minuten) möchten wir dich ein bisschen kennenlernen.",
+                "messagePupil": ",,Du kannst uns alles fragen - wir sind für dich da.“",
+                "messageStudent": ",,Wir beantworten dir alle offenen Fragen und\nbesprechen die Engagement-Möglichkeiten.“",
                 "lernFairTeam": "Das Lern-Fair Team",
                 "bookAppointmentButton": "Gespräch vereinbaren",
                 "faqPupil": [
@@ -554,8 +561,36 @@
                 ],
                 "faqStudent": [
                     {
+                        "question": "Warum ist das nötig?",
+                        "answer": "Um dich persönlich kennenzulernen und dich gut beraten zu können."
+                    },
+                    {
+                        "question": "Welche Verpflichtungen gehe ich ein?",
+                        "answer": "Wir führen erstmal nur ein unverbindliches Gespräch, in dem wir gemeinsam herausfinden wollen, wie du dich am besten einbringen kannst. Es gibt keine Verpflichtung, dass du dann sofort loslegen musst."
+                    },
+                    {
+                        "question": "Was muss ich mitbringen?",
+                        "answer": "Bitte halte ein Ausweisdokument mit deiner Adresse bereit (z.B. Personalausweis, Aufenthaltsbescheinigung oder Meldebescheinigung)."
+                    },
+                    {
+                        "question": "Muss ich meine Kamera einschalten?",
+                        "answer": "Nur, wenn wir die Ausweiskontrolle durchführen."
+                    },
+                    {
+                        "question": "Muss ich mich auf das Gespräch vorbereiten?",
+                        "answer": "Nein, aber wenn du möchtest kannst du dich gerne schon mal mit unseren Angeboten vertraut machen <clarificationVideo>(hier findest du ein Erklärvideo)</clarificationVideo>"
+                    },
+                    {
                         "question": "Wie lange dauert das Gespräch?",
                         "answer": "Etwa 30 Minuten."
+                    },
+                    {
+                        "question": "Wer ist dabei?",
+                        "answer": "Eine Person von Lern-Fair."
+                    },
+                    {
+                        "question": "Welche Sprache wird gesprochen?",
+                        "answer": "Die Nachhilfe findet in der Regel auf Deutsch statt, da sich unser Angebot an Schüler:innen im deutschen Schulsystem richtet. Auch das Kennenlerngespräch führen wir daher auf Deutsch. So können wir auch gleich gemeinsam schauen, ob das Sprachniveau passt."
                     }
                 ]
             },
@@ -565,7 +600,8 @@
             },
             "authenticationInfo": {
                 "title": "Kostenlos registrieren",
-                "description": "Mit diesem Nutzerkonto kannst du kostenlos Gruppenkurse, die 1:1-Nachhilfe und die Hausaufgabenhilfe besuchen.",
+                "descriptionPupil": "Mit diesem Nutzerkonto kannst du kostenlos Gruppenkurse, die 1:1-Nachhilfe und die Hausaufgabenhilfe besuchen.",
+                "descriptionStudent": "Mit deinem Nutzerkonto hast du Zugang zu deinen Lernpaaren, kannst mit Lernpartner:innen chatten und Termine für euch erstellen.",
                 "pupilEmail": "E-Mail von Schüler:in / Azubi",
                 "passwordPlaceholder": "Passwort eingeben",
                 "emailPlaceholder": "E-Mail-Adresse",
@@ -623,7 +659,8 @@
             },
             "zipCode": {
                 "title": "Wie ist deine Postleitzahl?",
-                "description": "Die Postleitzahl zeigt uns, aus welcher Gegend ihr euch anmeldet. Deine Postleitzahl bleibt geheim. Die Helfer sehen sie nicht.",
+                "descriptionPupil": "Die Postleitzahl zeigt uns, aus welcher Gegend ihr euch anmeldet. Deine Postleitzahl bleibt geheim. Die Helfer sehen sie nicht.",
+                "descriptionStudent": "Wir geben diese Info niemals an Schüler:innen weiter. Deine PLZ hilft uns bei der internen Auswertung.",
                 "doNotKnow": "Weiß nicht"
             },
             "notifications": {
