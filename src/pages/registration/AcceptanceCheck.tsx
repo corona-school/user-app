@@ -12,7 +12,7 @@ interface AcceptanceCheckProps extends RegistrationStepProps {
 }
 
 export const AcceptanceCheck = ({ onBack, onNext, onFail }: AcceptanceCheckProps) => {
-    usePageTitle('Lern-Fair - Registrierung: Wichtige Frage');
+    usePageTitle('Registrierung: Wichtige Frage');
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
 

@@ -10,7 +10,7 @@ interface SchoolTypeProps extends RegistrationStepProps {}
 const SchoolType = ({ onBack, onNext }: SchoolTypeProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
-    usePageTitle('Lern-Fair - Registrierung: Schulform');
+    usePageTitle('Registrierung: Schulform - optional');
 
     const onChange = (schooltype: ISchoolType) => {
         onFormChange({ school: { ...form.school, schooltype: schooltype as unknown as School_Schooltype_Enum } });

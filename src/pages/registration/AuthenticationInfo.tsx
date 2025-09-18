@@ -13,6 +13,8 @@ import isEmail from 'validator/lib/isEmail';
 import { cn } from '@/lib/Tailwind';
 import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 interface AuthenticationInfoProps extends RegistrationStepProps {}
 
@@ -24,8 +26,10 @@ const IS_EMAIL_AVAILABLE_QUERY = gql(`
 
 export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) => {
     const { form, onFormChange } = useRegistrationForm();
+    usePageTitle(`Registrierung: Email (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`);
     const { t } = useTranslation();
     const { loginWithGoogle } = useLoginWithIDP();
+    const { trackEvent } = useMatomo();
     const [emailError, setEmailError] = useState('');
     const [passwordError, setPasswordError] = useState('');
     const [isEmailAvailable] = useMutation(IS_EMAIL_AVAILABLE_QUERY);
@@ -73,6 +77,11 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
 
         if (res.data?.isEmailAvailable && onNext) {
             onNext();
+            trackEvent({
+                category: form.userType === 'pupil' ? 'SuS Registration' : 'HuH Registration',
+                action: 'Page "Enter Email"',
+                name: 'Button Click - Regular Signup (Arrow right)',
+            });
         } else {
             setEmailError(t('registration.hint.email.unavailable'));
         }
@@ -83,6 +92,15 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
             return !!emailError || !form.email || !!passwordError || !form.password;
         }
         return false;
+    };
+
+    const handleOnLoginWithGoogle = () => {
+        trackEvent({
+            category: form.userType === 'pupil' ? 'SuS Registration' : 'HuH Registration',
+            action: 'Page "Enter Email"',
+            name: 'Button Click - Signup with Google',
+        });
+        loginWithGoogle();
     };
 
     return (
@@ -98,7 +116,13 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
             <div className="flex flex-col gap-y-4 w-full max-w-[339px] md:pb-0">
                 {GOOGLE_CLIENT_ID && form.isRegisteringManually && (
                     <>
-                        <Button type="button" className="w-full" variant="optional" rightIcon={<IconBrandGoogleFilled size={16} />} onClick={loginWithGoogle}>
+                        <Button
+                            type="button"
+                            className="w-full"
+                            variant="optional"
+                            rightIcon={<IconBrandGoogleFilled size={16} />}
+                            onClick={handleOnLoginWithGoogle}
+                        >
                             {t('registration.steps.authenticationInfo.registerWith', { method: 'Google' })}
                         </Button>
                         <Typography className="font-medium capitalize text-center">{t('or')}</Typography>

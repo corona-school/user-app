@@ -5,11 +5,13 @@ import { Typography } from '@/components/Typography';
 import { Label } from '@/components/Label';
 import { Input } from '@/components/Input';
 import { useCallback } from 'react';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface UserNameProps extends RegistrationStepProps {}
 
 export const UserName = ({ onBack, onNext }: UserNameProps) => {
     const { form, onFormChange } = useRegistrationForm();
+    usePageTitle(`Registrierung: Name (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`);
     const { t } = useTranslation();
 
     const makeOnChangeHandler = useCallback(

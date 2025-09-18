@@ -3,12 +3,14 @@ import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationSte
 import { RegistrationForm, useRegistrationForm } from './useRegistrationForm';
 import { Input } from '@/components/Input';
 import { Typography } from '@/components/Typography';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface ZipCodeProps extends RegistrationStepProps {}
 
 export const ZipCode = ({ onBack, onNext }: ZipCodeProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
+    usePageTitle(`Registrierung: PLZ (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'}) - optional`);
 
     const onChange = (value: string) => {
         const zipCode = value.replace(/\D/g, '');

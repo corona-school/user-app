@@ -10,6 +10,8 @@ import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { DateTime } from 'luxon';
 import i18next from 'i18next';
 import Logo from '@/assets/icons/logo.svg';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 interface ScreeningAppointmentDetailProps extends RegistrationStepProps {
     variant?: 'registered' | 'completed';
@@ -19,6 +21,12 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
     const { form } = useRegistrationForm();
     const { t } = useTranslation();
     const [shouldReload, setShouldReload] = useState(false);
+    const pageTitles: Record<string, string> = {
+        registered: `Registrierung: Termin bestätigt (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`,
+        completed: `Registrierung: Funnel abgeschlossen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`,
+    };
+    usePageTitle(pageTitles[variant]);
+    const { trackEvent } = useMatomo();
 
     useEffect(() => {
         const onFocus = () => {
@@ -47,6 +55,9 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
         );
     }
 
+    const eventCategory = `${form.userType === 'pupil' ? 'SuS' : 'HuH'} Registration`;
+    const eventAction = `Page "${variant === 'registered' ? 'Appointment confirmed' : 'Funnel completed'}"`;
+
     return (
         <RegistrationStep onNext={onNext}>
             {variant === 'registered' ? (
@@ -70,7 +81,12 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                 {DateTime.fromISO(form.screeningAppointment.start).toFormat('t', { locale: i18next.language })} {t('clock')}
             </Typography>
             {form.screeningAppointment && (
-                <AddToCalendarDropdown buttonVariant="optional" buttonClasses="w-full lg:w-[306px]" appointment={form.screeningAppointment} />
+                <AddToCalendarDropdown
+                    buttonVariant="optional"
+                    buttonClasses="w-full lg:w-[306px]"
+                    appointment={form.screeningAppointment}
+                    onSelect={() => trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Add to Calendar' })}
+                />
             )}
             <div className="flex gap-x-2 mt-4 mb-10 lg:max-w-[306px] w-full">
                 <Button
@@ -79,6 +95,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                     className="w-full"
                     onClick={() => {
                         setShouldReload(true);
+                        trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Edit Appointment' });
                         form.screeningAppointment?.actionUrls?.rescheduleUrl && window.open(form.screeningAppointment?.actionUrls.rescheduleUrl, '_blank');
                     }}
                 >
@@ -90,6 +107,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                     className="w-full"
                     onClick={() => {
                         setShouldReload(true);
+                        trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Cancel Appointment' });
                         form.screeningAppointment?.actionUrls?.cancelUrl && window.open(form.screeningAppointment.actionUrls.cancelUrl, '_blank');
                     }}
                 >

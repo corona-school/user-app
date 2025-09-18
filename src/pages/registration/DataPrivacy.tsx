@@ -8,6 +8,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Button } from '@/components/Button';
 import { IconCircleChevronDown, IconSend } from '@tabler/icons-react';
 import { useState } from 'react';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface DataPrivacyProps extends RegistrationStepProps {
     onRegisterWithPassword: () => Promise<void>;
@@ -15,6 +16,7 @@ interface DataPrivacyProps extends RegistrationStepProps {
 
 export const DataPrivacy = ({ onBack, onRegisterWithPassword }: DataPrivacyProps) => {
     const { form, onFormChange } = useRegistrationForm();
+    usePageTitle(`Registrierung: Einwilligungen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`);
     const { t } = useTranslation();
     const [isLoading, setIsLoading] = useState(false);
 

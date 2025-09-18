@@ -14,9 +14,10 @@ interface AddToCalendarDropdownProps {
     appointment: Pick<Appointment, 'displayName' | 'title' | 'description' | 'start' | 'duration' | 'id' | 'override_meeting_link' | 'appointmentType'>;
     buttonClasses?: string;
     buttonVariant?: ButtonProps['variant'];
+    onSelect?: (calendar: 'google' | 'outlook' | 'ics') => void;
 }
 
-const AddToCalendarDropdown = ({ appointment, buttonClasses, buttonVariant = 'outline' }: AddToCalendarDropdownProps) => {
+const AddToCalendarDropdown = ({ appointment, buttonClasses, buttonVariant = 'outline', onSelect }: AddToCalendarDropdownProps) => {
     const { t } = useTranslation();
     const event: CalendarEvent = {
         title: appointment.displayName ?? appointment.title,
@@ -41,6 +42,7 @@ const AddToCalendarDropdown = ({ appointment, buttonClasses, buttonVariant = 'ou
                     onClick={(e) => {
                         e.stopPropagation();
                         window.open(google(event));
+                        onSelect?.('google');
                     }}
                 >
                     <IconGoogle width={16} height={16} /> Google
@@ -49,6 +51,7 @@ const AddToCalendarDropdown = ({ appointment, buttonClasses, buttonVariant = 'ou
                     onClick={(e) => {
                         e.stopPropagation();
                         window.open(outlook(event));
+                        onSelect?.('outlook');
                     }}
                 >
                     <IconOutlook /> Outlook
@@ -62,6 +65,7 @@ const AddToCalendarDropdown = ({ appointment, buttonClasses, buttonVariant = 'ou
                         document.body.appendChild(link);
                         link.click();
                         link.remove();
+                        onSelect?.('ics');
                     }}
                 >
                     <IconCalendarDown /> ICS

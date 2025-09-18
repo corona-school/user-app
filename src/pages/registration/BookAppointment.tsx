@@ -27,10 +27,10 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
     const [isLoadingCalendar, setIsLoadingCalendar] = useState(true);
     const { t } = useTranslation();
     const { form, refetchProfile } = useRegistrationForm();
-    const { trackEvent } = useMatomo();
+    const { trackEvent, trackPageView } = useMatomo();
     const [timerId, setTimerId] = useState<NodeJS.Timer>();
     const isPupil = form.userType === 'pupil';
-    usePageTitle(`Lern-Fair - Registrierung: Termin vereinbaren für ${isPupil ? 'Schüler:innen' : 'Helfer:innen'}`);
+    usePageTitle(`Registrierung: Kennenlerngespräch buchen (${isPupil ? 'Schüler:in' : 'Helfer:in'})`);
 
     const calendlyLink = isPupil
         ? createPupilScreeningLink({
@@ -51,8 +51,17 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
         setShowCalendar(true);
         trackEvent({
             category: eventCategory,
-            action: 'Button Click',
-            name: 'CTA TERMIN BUCHEN geklickt, und Calendly Widget geöffnet',
+            action: 'Page "Book Appointment"',
+            name: 'Button Click - Book an appointment',
+        });
+    };
+
+    const handleOnOpenFaqModal = () => {
+        setIsFaqModalOpen(true);
+        trackEvent({
+            category: eventCategory,
+            action: 'Page "Book Appointment"',
+            name: 'Button Click - More Infos',
         });
     };
 
@@ -79,6 +88,9 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
         },
         onEventTypeViewed: () => {
             setIsLoadingCalendar(false);
+            trackPageView({
+                documentTitle: `Registrierung: Termin auswählen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`,
+            });
         },
     });
 
@@ -138,7 +150,7 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                 <span className="block">{t('registration.steps.bookAppointment.lernFairTeam')}</span>
             </Typography>
             <div className="flex flex-col gap-y-5 w-full items-center justify-center">
-                <Button variant="accent-dark" shape="rounded" onClick={() => setIsFaqModalOpen(true)}>
+                <Button variant="accent-dark" shape="rounded" onClick={handleOnOpenFaqModal}>
                     {t('moreInfos')}
                 </Button>
                 <Button className="min-w-[250px]" onClick={handleOnOpenCalendly}>
@@ -175,6 +187,13 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                                                             href={'https://drive.google.com/file/d/1TTaWphKiSw9C8j8J4TLko4cGXV-KrTEi/view'}
                                                             rel="noreferrer"
                                                             className="underline"
+                                                            onClick={() => {
+                                                                trackEvent({
+                                                                    category: 'HuH Registration',
+                                                                    action: 'Page "Book Appointment"',
+                                                                    name: 'Link Click - Explanation Video',
+                                                                });
+                                                            }}
                                                         >
                                                             hier findest du ein Erklärvideo
                                                         </a>

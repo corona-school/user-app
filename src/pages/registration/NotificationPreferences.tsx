@@ -4,12 +4,16 @@ import { Typography } from '@/components/Typography';
 import { Checkbox, CheckedState } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
 import { useUserPreferences } from '@/hooks/useNotificationPreferences';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useRegistrationForm } from './useRegistrationForm';
 
 interface NotificationPreferencesProps extends RegistrationStepProps {}
 
 export const NotificationPreferences = ({ onBack, onNext }: NotificationPreferencesProps) => {
     const { hasMarketingPreferencesEnabled, hasSystemPreferencesEnabled, toggleMarketingNotifications, toggleSystemNotifications } = useUserPreferences();
     const { t } = useTranslation();
+    const { form } = useRegistrationForm();
+    usePageTitle(`Registrierung: Benachrichtigungen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`);
 
     const makeOnChangeHandler = (key: 'importantInformation' | 'recommendations') => {
         const onChange = (checked: CheckedState) => {
