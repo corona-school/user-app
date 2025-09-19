@@ -21,6 +21,7 @@ import { REDIRECT_PASSWORD } from '@/Utility';
 import { GOOGLE_CLIENT_ID } from '@/config';
 import useLoginWithIDP from '@/hooks/useLoginWithIDP';
 import { cn } from '@/lib/Tailwind';
+import { asTranslationKey } from '@/helper/string-helper';
 
 const DETERMINE_LOGIN_OPTIONS_MUTATION = gql(`
     mutation determineLoginOptions($email: String!) {
@@ -53,6 +54,7 @@ const Login = () => {
     const [resetPasswordResult, setResetPasswordResult] = useState<ResetPasswordResult>();
     const [showDeactivatedModal, setShowDeactivatedModal] = useState(false);
     const [showForgotPasswordModal, setShowForgotPasswordModal] = useState(false);
+    const [showForgotPasswordResultModal, setShowForgotPasswordResultModal] = useState(false);
     const [showEmailSent, setShowEmailSent] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(false);
     const { t } = useTranslation();
@@ -164,6 +166,7 @@ const Login = () => {
             }
         } finally {
             setShowForgotPasswordModal(false);
+            setShowForgotPasswordResultModal(true);
         }
     };
 
@@ -275,13 +278,6 @@ const Login = () => {
                                 </Button>
                             </div>
                         )}
-                        {resetPasswordResult && (
-                            <Alert className="w-full" variant={resetPasswordResult === 'success' ? 'success' : 'destructive'}>
-                                {resetPasswordResult === 'success' && t('login.passwordReset.alert.success')}
-                                {resetPasswordResult === 'notFound' && t('login.passwordReset.alert.mailNotFound')}
-                                {resetPasswordResult === 'error' && t('login.passwordReset.alert.error')}
-                            </Alert>
-                        )}
                         {showEmailSent && (
                             <Alert className="w-full" variant="success">
                                 {t('login.email.sent')}
@@ -355,6 +351,18 @@ const Login = () => {
                 headline={<span className="block text-center">{t('login.accountDeactivated.title')}</span>}
             >
                 <Typography className="text-pretty text-center">{t('login.accountDeactivated.alert_html')}</Typography>
+            </InformationModal>
+            <InformationModal
+                isOpen={showForgotPasswordResultModal}
+                onOpenChange={setShowForgotPasswordResultModal}
+                headline={<span className="block text-center">{t(asTranslationKey(`login.passwordReset.modal.${resetPasswordResult}.title`))}</span>}
+                showCloseButton
+            >
+                {resetPasswordResult && (
+                    <Typography className="text-pretty text-center">
+                        {t(asTranslationKey(`login.passwordReset.modal.${resetPasswordResult}.description`))}
+                    </Typography>
+                )}
             </InformationModal>
             <ConfirmationModal
                 isOpen={showForgotPasswordModal}
