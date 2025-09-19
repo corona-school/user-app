@@ -19,8 +19,8 @@ const InformationModal = ({ headline, children, isOpen, onOpenChange, showCloseB
             </ModalHeader>
             <div>{children}</div>
             {showCloseButton && (
-                <ModalFooter>
-                    <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                <ModalFooter className="lg:flex lg:justify-center">
+                    <Button className="w-full lg:w-fit" onClick={() => onOpenChange(false)}>
                         {t('back')}
                     </Button>
                 </ModalFooter>

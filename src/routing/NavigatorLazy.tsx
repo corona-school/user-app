@@ -33,7 +33,6 @@ import DashboardStudent from '../pages/student/DashboardStudent';
 import ProfileStudent from '../pages/student/ProfileStudent';
 import RequestCertificate from '../pages/RequestCertificate';
 import PupilGroup from '../pages/pupil/Group';
-import NoAcceptRegistration from '../pages/NoAcceptRegistration';
 import VerifyEmail from '../pages/VerifyEmail';
 import VerifyEmailModal from '../modals/VerifyEmailModal';
 import ResetPassword from '../pages/ResetPassword';
@@ -84,6 +83,8 @@ import Referrals from '@/pages/Referrals';
 import CertificatesPage from '@/pages/student/Certificates';
 import { HOMEWORK_HELP_COURSE } from '@/config';
 import CalendarPreferencesPage from '@/pages/CalendarPreferencesPage';
+import { RegistrationProvider } from '@/pages/registration/useRegistrationForm';
+import ForgotPassword from '@/pages/ForgotPassword';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -110,12 +111,14 @@ export default function NavigatorLazy() {
         <Routes>
             {/* Public */}
 
-            <Route path="/registration/" element={<Registration />} />
-            <Route path="/registration" element={<Outlet />}>
-                <Route path="*" element={<Registration />} />
-            </Route>
-
-            <Route path="/registration-rejected" element={<NoAcceptRegistration />} />
+            <Route
+                path="/registration/"
+                element={
+                    <RegistrationProvider>
+                        <Registration />
+                    </RegistrationProvider>
+                }
+            />
 
             {/* Private */}
             <Route
@@ -519,7 +522,7 @@ export default function NavigatorLazy() {
                 }
             />
             <Route path="/new-password" element={<ResetPassword layout="new-pw" />} />
-            <Route path="/reset-password" element={<ResetPassword layout="reset-pw" />} />
+            <Route path="/reset-password" element={<ForgotPassword />} />
 
             <Route path="/install" element={<InstallApp />} />
 
