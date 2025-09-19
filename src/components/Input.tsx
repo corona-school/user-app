@@ -24,10 +24,12 @@ export interface InputProps extends React.InputHTMLAttributes<HTMLInputElement>,
     onChangeText?: (text: string) => void;
     errorMessage?: string;
     errorMessageClassName?: string;
+    helperText?: string;
+    helperTextClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-    ({ className, type, onChange, onChangeText, variant = 'default', errorMessage, errorMessageClassName, ...props }, ref) => {
+    ({ className, type, onChange, onChangeText, variant = 'default', errorMessage, errorMessageClassName, helperText, helperTextClassName, ...props }, ref) => {
         const [showPassword, setShowPassword] = React.useState(false);
         const handleOnChange = (event: React.ChangeEvent<HTMLInputElement>) => {
             if (onChange) {
@@ -79,6 +81,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                     >
                         {errorMessage}
                     </Typography>
+                    {helperText && (
+                        <Typography variant="sm" className={cn('px-1 min-h-5 leading-1', helperTextClassName)}>
+                            {helperText}
+                        </Typography>
+                    )}
                 </>
             );
         }
@@ -95,7 +102,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 <Typography
                     variant="sm"
                     className={cn(
-                        'text-destructive px-1 min-h-5 leading-1',
+                        'text-destructive text-[12px] px-1 min-h-5 leading-1',
                         {
                             invisible: !errorMessage,
                         },
@@ -104,6 +111,11 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
                 >
                     {errorMessage}
                 </Typography>
+                {helperText && (
+                    <Typography variant="sm" className={cn('text-[12px] px-1 min-h-5 leading-1', helperTextClassName)}>
+                        {helperText}
+                    </Typography>
+                )}
             </>
         );
     }
