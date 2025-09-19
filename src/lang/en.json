@@ -160,13 +160,22 @@
             "sent": "We have sent you an email to log in"
         },
         "passwordReset": {
-            "alert": {
-                "success": "We have sent you an email in which you can reset your password. Click on the link in our email. If you have not received an email, please wait a moment and check your spam folder.",
-                "error": "Unfortunately your password could not be reset. Please try again later.",
-                "mailNotFound": "No account is registered for this email address. If you think this is a mistake, please contact support (support@lern-fair.de)."
-            },
             "btn": "Reset password",
-            "description": "Do you really want to reset your password? We will send an email to {{email}}"
+            "description": "Do you really want to reset your password? We will send an email to {{email}}",
+            "modal": {
+                "success": {
+                    "title": "Password reset requested",
+                    "description": "We have sent you an e-mail with a link. Click on the link. This will allow you to change your password. If you haven't received an e-mail, wait a moment. If you can't find it, it may be in your spam folder."
+                },
+                "error": {
+                    "title": "An error has occurred",
+                    "description": "Unfortunately your password could not be reset. Please try again later."
+                },
+                "mailNotFound": {
+                    "title": "E-mail address unknown",
+                    "description": "Unfortunately, we do not have a user account with this e-mail address. Either you have to register first or you can contact our support."
+                }
+            }
         },
         "accountNotFound": {
             "title": "Login failed",
@@ -2849,5 +2858,13 @@
         "copied": "Copied",
         "copiedReferralLink": "Recommendation link copied"
     },
-    "optional": "Optional"
+    "optional": "Optional",
+    "resetPassword": {
+        "title": "Change password",
+        "newPassword": "New password",
+        "repeatNewPassword": "Repeat new password",
+        "changePassword": "Change password now",
+        "success": "Your password has been successfully changed. You can now log in with the new password",
+        "error": "An error occurred when changing the password"
+    }
 }

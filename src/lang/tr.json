@@ -160,13 +160,22 @@
             "sent": "Giriş yapmanız için size bir e-posta gönderdik"
         },
         "passwordReset": {
-            "alert": {
-                "success": "Size şifrenizi sıfırlayabileceğiniz bir e-posta gönderdik. E-postamızdaki bağlantıya tıklayın. Eğer e-posta almadıysanız, lütfen biraz bekleyin ve spam klasörünüzü kontrol edin.",
-                "error": "Maalesef şifreniz sıfırlanamadı. Lütfen daha sonra tekrar deneyin.",
-                "mailNotFound": "Bu e-posta adresi için kayıtlı bir hesap yok.lern-fair Bunun bir hata olduğunu düşünüyorsanız, lütfen destek ile iletişime geçin (support@ .de)."
-            },
             "btn": "Şifreyi sıfırla",
-            "description": "Şifrenizi gerçekten sıfırlamak istiyor musunuz? {{email}} adresine bir e-posta göndereceğiz"
+            "description": "Şifrenizi gerçekten sıfırlamak istiyor musunuz? {{email}} adresine bir e-posta göndereceğiz",
+            "modal": {
+                "success": {
+                    "title": "Şifre sıfırlama talep edildi",
+                    "description": "Size bir bağlantı içeren bir e-posta gönderdik. Bağlantıya tıklayın. Bu, şifrenizi değiştirmenize olanak sağlayacaktır. Eğer bir e-posta almadıysanız, biraz bekleyin. Eğer bulamazsanız, spam klasörünüzde olabilir."
+                },
+                "error": {
+                    "title": "Bir hata oluştu",
+                    "description": "Maalesef şifreniz sıfırlanamadı. Lütfen daha sonra tekrar deneyin."
+                },
+                "mailNotFound": {
+                    "title": "E-posta adresi bilinmiyor",
+                    "description": "Ne yazık ki, bu e-posta adresine sahip bir kullanıcı hesabımız yok. Ya önce kayıt olmanız ya da destek ekibimizle iletişime geçmeniz gerekiyor."
+                }
+            }
         },
         "accountNotFound": {
             "title": "Giriş başarısız",
@@ -2845,5 +2854,13 @@
         "copied": "Kopyalandı",
         "copiedReferralLink": "Tavsiye bağlantısı kopyalandı"
     },
-    "optional": "Opsiyonel"
+    "optional": "Opsiyonel",
+    "resetPassword": {
+        "title": "Şifre değiştirme",
+        "newPassword": "Yeni şifre",
+        "repeatNewPassword": "Yeni şifreyi tekrarla",
+        "changePassword": "Şifreyi şimdi değiştir",
+        "success": "Parolanız başarıyla değiştirildi. Şimdi yeni şifre ile giriş yapabilirsiniz",
+        "error": "Parola değiştirilirken bir hata oluştu"
+    }
 }
