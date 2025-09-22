@@ -526,7 +526,9 @@
                 "emailPlaceholder": "E-posta adresi",
                 "registerWith": "{{method}} ile kayıt ol",
                 "descriptionPupil": "Bu kullanıcı hesabıyla grup kurslarına, 1:1 özel derslere ve ev ödevi yardımına ücretsiz olarak katılabilirsiniz.",
-                "descriptionStudent": "Kullanıcı hesabınızla öğrenim çiftlerinize erişebilir, öğrenim ortaklarınızla sohbet edebilir ve sizin için randevular oluşturabilirsiniz."
+                "descriptionStudent": "Kullanıcı hesabınızla öğrenim çiftlerinize erişebilir, öğrenim ortaklarınızla sohbet edebilir ve sizin için randevular oluşturabilirsiniz.",
+                "supportPersonEmail": "Asistandan gelen e-posta",
+                "parentEmail": "Ebeveynden gelen e-posta"
             },
             "dataPrivacy": {
                 "title": "Veri Gizliliği Onayı",

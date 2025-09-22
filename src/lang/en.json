@@ -526,7 +526,9 @@
                 "emailPlaceholder": "Email address",
                 "registerWith": "Register with {{method}}",
                 "descriptionPupil": "With this user account, you can attend group courses, 1:1 tutoring and homework help free of charge.",
-                "descriptionStudent": "With your user account, you have access to your learning pairs, can chat with learning partners and create lectures for you."
+                "descriptionStudent": "With your user account, you have access to your learning pairs, can chat with learning partners and create lectures for you.",
+                "supportPersonEmail": "E-mail of auxiliary person",
+                "parentEmail": "E-mail of parent"
             },
             "dataPrivacy": {
                 "title": "Data Privacy Consent",

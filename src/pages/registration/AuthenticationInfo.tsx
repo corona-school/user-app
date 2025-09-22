@@ -15,6 +15,7 @@ import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { PupilEmailOwner } from '@/gql/graphql';
 
 interface AuthenticationInfoProps extends RegistrationStepProps {}
 
@@ -103,6 +104,19 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
         loginWithGoogle();
     };
 
+    const getEmailLabel = () => {
+        if (form.userType === 'student') {
+            return t('email');
+        }
+        if (form.emailOwner === PupilEmailOwner.Pupil) {
+            return t('registration.steps.authenticationInfo.pupilEmail');
+        }
+        if (form.emailOwner === PupilEmailOwner.Parent) {
+            return t('registration.steps.authenticationInfo.parentEmail');
+        }
+        return t('registration.steps.authenticationInfo.supportPersonEmail');
+    };
+
     return (
         <RegistrationStep onBack={onBack} onNext={handleOnNext} isNextDisabled={isNextDisabled()}>
             <RegistrationStepTitle className="md:mb-4">{t('registration.steps.authenticationInfo.title')}</RegistrationStepTitle>
@@ -131,7 +145,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                 <div className="flex flex-col gap-y-2">
                     <div className="w-full flex flex-col justify-center gap-y-1">
                         <Label htmlFor="email" className="text-subtle w-full">
-                            {t(form.userType === 'pupil' ? 'registration.steps.authenticationInfo.pupilEmail' : 'email')}
+                            {getEmailLabel()}
                         </Label>
                         <Input
                             variant="white"
