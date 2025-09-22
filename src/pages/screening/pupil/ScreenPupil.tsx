@@ -150,17 +150,17 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh, onAfter
     };
 
     const handleOnMissedScreening = async () => {
-        const resultComment = `${comment ? `\n${comment}` : ''}[${screener.firstname} ${screener.lastname}]: Screening verpasst\n`;
         setShowConfirmMissedScreening(false);
+
         try {
             await mutationMarkScreeningAsMissed({
                 variables: {
                     pupilScreeningId: screening!.id,
-                    comment: resultComment,
+                    comment,
                 },
             });
             await onAfterSaveScreening();
-            setComment(resultComment);
+
             toast.success(t('screening.screening_saved'));
         } catch (error) {
             toast.error(t('error'));

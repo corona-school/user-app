@@ -60,6 +60,7 @@ export type PupilForScreening = Pick<
     | 'hasSpecialNeeds'
     | 'descriptionForMatch'
     | 'descriptionForScreening'
+    | 'systemMessagesForScreening'
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];

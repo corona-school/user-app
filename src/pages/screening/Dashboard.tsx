@@ -48,7 +48,8 @@ export function ScreeningDashboard() {
                     schooltype
                     onlyMatchWith
                     hasSpecialNeeds
-                    descriptionForScreening
+                    descriptionForScreening,
+                    systemMessagesForScreening
                     descriptionForMatch
                     calendarPreferences
                     school {
@@ -106,7 +107,8 @@ export function ScreeningDashboard() {
                     hasSpecialExperience
                     gender
                     descriptionForMatch
-                    descriptionForScreening
+                    descriptionForScreening,
+                    systemMessagesForScreening
                     calendarPreferences
                     matches {
                         createdAt
@@ -162,7 +164,8 @@ export function ScreeningDashboard() {
                 schooltype
                 onlyMatchWith
                 hasSpecialNeeds
-                descriptionForScreening
+                descriptionForScreening,
+                systemMessagesForScreening
                 descriptionForMatch
                 calendarPreferences
                 school {

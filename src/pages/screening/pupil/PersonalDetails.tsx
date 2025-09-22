@@ -195,9 +195,13 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                         </Typography>
                         <div className="flex flex-col gap-6">
                             <div className="flex flex-col gap-y-2">
-                                <Label>
-                                    Gespeicherte Notiz - <span className="font-bold">(Wird für spätere Screenings gespeichert)</span>
-                                </Label>
+                                <Label>Automatisch gespeichert</Label>
+                                <TextArea disabled className="resize-none h-24 w-full !text-primary" value={pupil.systemMessagesForScreening.join('\n')} />
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-6">
+                            <div className="flex flex-col gap-y-2">
+                                <Label>Manuell gespeichert</Label>
                                 <TextArea
                                     className="resize-none h-24 w-full"
                                     value={descriptionForScreening}
