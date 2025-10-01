@@ -5,7 +5,7 @@ import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import { IconCheck } from '@tabler/icons-react';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { DateTime } from 'luxon';
 import i18next from 'i18next';
@@ -20,7 +20,6 @@ interface ScreeningAppointmentDetailProps extends RegistrationStepProps {
 export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: ScreeningAppointmentDetailProps) => {
     const { form } = useRegistrationForm();
     const { t } = useTranslation();
-    const [shouldReload, setShouldReload] = useState(false);
     const pageTitles: Record<string, string> = {
         registered: `Registrierung: Termin bestätigt (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`,
         completed: `Registrierung: Funnel abgeschlossen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`,
@@ -30,7 +29,6 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
 
     useEffect(() => {
         const onFocus = () => {
-            if (!shouldReload) return;
             window.location.reload();
         };
 
@@ -39,7 +37,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
         return () => {
             window.removeEventListener('focus', onFocus);
         };
-    }, [shouldReload]);
+    }, []);
 
     if (!form.screeningAppointment) {
         return <CenterLoadingSpinner />;
@@ -93,7 +91,6 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                     className="w-full"
                     type="button"
                     onClick={() => {
-                        setShouldReload(true);
                         trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Edit Appointment' });
                         form.screeningAppointment?.actionUrls?.rescheduleUrl && window.open(form.screeningAppointment?.actionUrls.rescheduleUrl, '_blank');
                     }}
@@ -106,7 +103,6 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                     className="w-full"
                     type="button"
                     onClick={() => {
-                        setShouldReload(true);
                         trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Cancel Appointment' });
                         form.screeningAppointment?.actionUrls?.cancelUrl && window.open(form.screeningAppointment.actionUrls.cancelUrl, '_blank');
                     }}
