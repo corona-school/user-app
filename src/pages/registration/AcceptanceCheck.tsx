@@ -1,8 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { RegistrationForm, useRegistrationForm } from './useRegistrationForm';
-import { Typography } from '@/components/Typography';
 import { Checkbox, CheckedState } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
 import { Button } from '@/components/Button';
@@ -31,9 +30,7 @@ export const AcceptanceCheck = ({ onBack, onNext, onFail }: AcceptanceCheckProps
     return (
         <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={!hasCheckedAtLeastTwo()}>
             <RegistrationStepTitle className="md:mb-4 mb-4">{t('registration.steps.acceptanceCheck.title')}</RegistrationStepTitle>
-            <Typography variant="body-lg" className="text-center mb-4 md:whitespace-pre-line text-balance">
-                {t('registration.steps.acceptanceCheck.description')}
-            </Typography>
+            <RegistrationStepDescription className="mb-4">{t('registration.steps.acceptanceCheck.description')}</RegistrationStepDescription>
             <div className="flex flex-col gap-y-2 w-full">
                 <div className="w-full bg-white p-4 gap-x-4 flex items-center rounded-md">
                     <Checkbox

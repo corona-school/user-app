@@ -32,6 +32,20 @@ export const RegistrationStepTitle = ({ className, variant = 'h3', children, ...
     );
 };
 
+export const RegistrationStepDescription = ({ className, variant = 'body-lg', children, ...rest }: TypographyProps) => {
+    return (
+        <Typography
+            className={cn(
+                'text-base leading-4 md:text-medium md:leading-5 md:font-normal md:tracking-normal text-center md:whitespace-pre-line text-balance',
+                className
+            )}
+            {...rest}
+        >
+            {children}
+        </Typography>
+    );
+};
+
 export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisabled, className, children }: _RegistrationStepProps) => {
     const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -49,35 +63,39 @@ export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisable
             onSubmit={handleOnSubmit}
         >
             <div className="z-10 flex flex-1 flex-col items-center justify-center max-w-full md:max-w-[536px] mx-auto px-[23px] md:px-0">{children}</div>
-            <div className="md:absolute bottom-0 px-10 flex justify-between w-full pb-2 md:pb-8 md:bottom-1/2 md:px-0">
-                <Button
-                    disabled={isBackDisabled}
-                    onClick={onBack}
-                    variant="ghost"
-                    className={cn(
-                        'size-[70px] rounded-full border border-transparent md:hover:border-primary transition-colors duration-300 ease-in-out px-0',
-                        {
-                            invisible: !onBack,
-                        }
-                    )}
-                    type="button"
-                >
-                    <IconArrowLeft size={48} className="!stroke-[2px]" />
-                </Button>
-                <Button
-                    disabled={isNextDisabled}
-                    variant="ghost"
-                    className={cn(
-                        'size-[70px] rounded-full border border-transparent md:hover:border-primary transition-colors duration-300 ease-in-out px-0',
-                        {
-                            invisible: !onNext,
-                        }
-                    )}
-                    type="submit"
-                >
-                    <IconArrowRight size={48} className="!stroke-[2px]" />
-                </Button>
-            </div>
+            {onBack || onNext ? (
+                <div className="md:absolute bottom-0 px-10 flex justify-between w-full pb-2 md:pb-8 md:bottom-1/2 md:px-0">
+                    <Button
+                        disabled={isBackDisabled}
+                        onClick={onBack}
+                        variant="ghost"
+                        className={cn(
+                            'size-[70px] rounded-full border border-transparent md:hover:border-primary transition-colors duration-300 ease-in-out px-0',
+                            {
+                                invisible: !onBack,
+                            }
+                        )}
+                        type="button"
+                    >
+                        <IconArrowLeft size={48} className="!stroke-[2px]" />
+                    </Button>
+                    <Button
+                        disabled={isNextDisabled}
+                        variant="ghost"
+                        className={cn(
+                            'size-[70px] rounded-full border border-transparent md:hover:border-primary transition-colors duration-300 ease-in-out px-0',
+                            {
+                                invisible: !onNext,
+                            }
+                        )}
+                        type="submit"
+                    >
+                        <IconArrowRight size={48} className="!stroke-[2px]" />
+                    </Button>
+                </div>
+            ) : (
+                <div className="h-3"></div>
+            )}
         </form>
     );
 };

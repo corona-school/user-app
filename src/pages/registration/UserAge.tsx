@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { Input } from '@/components/Input';
 import { Typography } from '@/components/Typography';
@@ -32,9 +32,9 @@ export const UserAge = ({ onBack, onNext }: UserAgeProps) => {
     return (
         <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={isNextDisabled}>
             <RegistrationStepTitle>{t('registration.steps.userAge.title')}</RegistrationStepTitle>
-            <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
+            <RegistrationStepDescription className="mb-10">
                 {t(form.userType === 'pupil' ? 'registration.steps.userAge.descriptionPupil' : 'registration.steps.userAge.descriptionStudent')}
-            </Typography>
+            </RegistrationStepDescription>
             {form.userType === 'pupil' && (
                 <div className="flex flex-col items-center gap-y-3 w-full pb-32 md:pb-0">
                     <div className="w-full flex flex-col items-center justify-center gap-y-1 max-w-[300px] text-center">

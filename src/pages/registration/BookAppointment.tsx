@@ -144,7 +144,7 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                 />
             </div>
             <Typography variant="body-lg" className="text-center mb-5">
-                <span className="font-semibold whitespace-pre">
+                <span className="font-semibold whitespace-pre text-wrap">
                     {t(form.userType === 'pupil' ? 'registration.steps.bookAppointment.messagePupil' : 'registration.steps.bookAppointment.messageStudent')}
                 </span>
                 <span className="block">{t('registration.steps.bookAppointment.lernFairTeam')}</span>
