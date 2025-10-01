@@ -33,7 +33,7 @@ const AddToCalendarDropdown = ({ appointment, buttonClasses, buttonVariant = 'ou
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
-                <Button className={buttonClasses} variant={buttonVariant} leftIcon={<IconCalendarPlus />}>
+                <Button type="button" className={buttonClasses} variant={buttonVariant} leftIcon={<IconCalendarPlus />}>
                     {t('appointment.addToCalendar')}
                 </Button>
             </DropdownMenuTrigger>

@@ -91,6 +91,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                     variant="accent-dark"
                     shape="rounded"
                     className="w-full"
+                    type="button"
                     onClick={() => {
                         setShouldReload(true);
                         trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Edit Appointment' });
@@ -103,6 +104,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                     variant="accent-dark"
                     shape="rounded"
                     className="w-full"
+                    type="button"
                     onClick={() => {
                         setShouldReload(true);
                         trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Cancel Appointment' });
