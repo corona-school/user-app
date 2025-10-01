@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { Label } from '@/components/Label';
@@ -120,13 +120,13 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
     return (
         <RegistrationStep onBack={onBack} onNext={handleOnNext} isNextDisabled={isNextDisabled()}>
             <RegistrationStepTitle className="md:mb-4">{t('registration.steps.authenticationInfo.title')}</RegistrationStepTitle>
-            <Typography variant="body-lg" className="text-center mb-10 whitespace-pre-line text-balance">
+            <RegistrationStepDescription className="mb-10">
                 {t(
                     form.userType === 'pupil'
                         ? 'registration.steps.authenticationInfo.descriptionPupil'
                         : 'registration.steps.authenticationInfo.descriptionStudent'
                 )}
-            </Typography>
+            </RegistrationStepDescription>
             <div className="flex flex-col gap-y-4 w-full max-w-[339px] md:pb-0">
                 {GOOGLE_CLIENT_ID && form.isRegisteringManually && (
                     <>

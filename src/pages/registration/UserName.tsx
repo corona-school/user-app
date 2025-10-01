@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { Label } from '@/components/Label';
@@ -27,9 +27,7 @@ export const UserName = ({ onBack, onNext }: UserNameProps) => {
     return (
         <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={!form.firstname || !form.lastname}>
             {form.userType === 'pupil' && (
-                <Typography variant="body-lg" className="text-center mb-10 whitespace-pre-line text-balance">
-                    {t('registration.steps.userName.congratsHint')}
-                </Typography>
+                <RegistrationStepDescription className="mb-10">{t('registration.steps.userName.congratsHint')}</RegistrationStepDescription>
             )}
             <RegistrationStepTitle className="mb-10">{t('registration.steps.userName.title')}</RegistrationStepTitle>
             <div className="flex flex-col gap-y-3 w-full max-w-[268px]">

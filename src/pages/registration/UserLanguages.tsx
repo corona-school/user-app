@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { OptionalBadge, RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { Language } from '@/gql/graphql';
@@ -25,9 +25,9 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
             <RegistrationStepTitle>
                 {t(form.userType === 'pupil' ? 'registration.steps.languages.titlePupil' : 'registration.steps.languages.titleStudent')}
             </RegistrationStepTitle>
-            <Typography variant="body-lg" className="text-center mb-4 md:whitespace-pre-line md:px-14">
+            <RegistrationStepDescription className="mb-4 md:px-14">
                 {t(form.userType === 'pupil' ? 'registration.steps.languages.descriptionPupil' : 'registration.steps.languages.descriptionStudent')}
-            </Typography>
+            </RegistrationStepDescription>
             <div className="w-full sm:pb-32 md:pb-0">
                 <LanguageSelector
                     maxVisibleItems={8}

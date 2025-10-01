@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { OptionalBadge, RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { Typography } from '@/components/Typography';
 import { Checkbox, CheckedState } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
@@ -33,9 +33,9 @@ export const NotificationPreferences = ({ onBack, onNext }: NotificationPreferen
                 <span className="md:hidden">{t('registration.steps.notifications.titleShort')}</span>
                 <span className="hidden md:block">{t('registration.steps.notifications.title')}</span>
             </RegistrationStepTitle>
-            <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
+            <RegistrationStepDescription className="mb-10 md:whitespace-pre-line text-balance">
                 {t('registration.steps.notifications.description')}
-            </Typography>
+            </RegistrationStepDescription>
             <div className="flex flex-col gap-y-5 w-full">
                 <div className="w-full bg-white p-4 gap-x-4 flex items-center rounded-md relative">
                     <div className="absolute -top-3 left-4 bg-green-500 p-2 rounded-sm flex items-center justify-center h-6">

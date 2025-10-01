@@ -1,9 +1,8 @@
 import { useTranslation } from 'react-i18next';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { Toggle } from '@/components/Toggle';
 import { IconBackpack, IconHeartHandshake, IconUser } from '@tabler/icons-react';
 import { useRegistrationForm } from './useRegistrationForm';
-import { Typography } from '@/components/Typography';
 import { PupilEmailOwner } from '@/gql/graphql';
 import { usePageTitle } from '@/hooks/usePageTitle';
 
@@ -17,9 +16,7 @@ export const EmailOwner = ({ onBack, onNext }: EmailOwnerProps) => {
     return (
         <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={!form.emailOwner}>
             <RegistrationStepTitle>{t('registration.steps.emailOwner.title')}</RegistrationStepTitle>
-            <Typography variant="body-lg" className="text-center mb-10 md:whitespace-pre-line text-balance">
-                {t('registration.steps.emailOwner.description')}
-            </Typography>
+            <RegistrationStepDescription className="mb-10">{t('registration.steps.emailOwner.description')}</RegistrationStepDescription>
             <div className="flex flex-col md:flex-row flex-wrap justify-center place-items-center gap-y-2 md:gap-y-4 gap-x-4 w-full">
                 <Toggle
                     size="2xl"

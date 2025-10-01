@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
@@ -71,9 +71,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                 <div className="md:max-w-[440px] flex flex-col justify-center items-center mx-auto gap-y-4">
                     <RegistrationStepTitle className="md:mb-5 mb-5">{t('registration.steps.registrationCompleted.title')}</RegistrationStepTitle>
                     <div className="text-3xl">🥳</div>
-                    <Typography variant="body-lg" className="text-center mb-5">
-                        {t('registration.steps.registrationCompleted.description')}
-                    </Typography>
+                    <RegistrationStepDescription className="mb-5">{t('registration.steps.registrationCompleted.description')}</RegistrationStepDescription>
                 </div>
             )}
             <Typography variant="h5" className="text-center mb-10 whitespace-pre-line text-balance">
@@ -116,9 +114,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
             </div>
             {onNext && (
                 <>
-                    <Typography variant="body-lg" className="text-center mb-5">
-                        {t('registration.steps.appointmentDetails.description')}
-                    </Typography>
+                    <RegistrationStepDescription className="mb-5">{t('registration.steps.appointmentDetails.description')}</RegistrationStepDescription>
                 </>
             )}
         </RegistrationStep>
