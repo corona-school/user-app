@@ -556,6 +556,32 @@ export default function NavigatorLazy() {
                 }
             />
             <Route
+                path="/agb-schueler"
+                element={
+                    <WithNavigation
+                        showBack={isMobileSM}
+                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
+                        previousFallbackRoute="/settings"
+                        headerTitle="AGB Schüler"
+                    >
+                        <IFrame title="agb-schueler" src="https://www.lern-fair.de/iframe/agb-schueler" />
+                    </WithNavigation>
+                }
+            />
+            <Route
+                path="/agb-helfer"
+                element={
+                    <WithNavigation
+                        showBack={isMobileSM}
+                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
+                        previousFallbackRoute="/settings"
+                        headerTitle="AGB Helfer"
+                    >
+                        <IFrame title="agb-helfer" src="https://www.lern-fair.de/iframe/agb-helfer" />
+                    </WithNavigation>
+                }
+            />
+            <Route
                 path="/selbstverpflichtungserklaerung"
                 element={
                     <WithNavigation showBack previousFallbackRoute="/start" headerTitle="Selbstverpflichtungserklärung" hideMenu>
