@@ -79,7 +79,11 @@ export const DataPrivacy = ({ onBack, onRegisterWithPassword }: DataPrivacyProps
                                             <a
                                                 className="underline decoration-1 !cursor-pointer"
                                                 target="_blank"
-                                                href="https://lern-fair.de/datenschutz"
+                                                href={
+                                                    form.userType === 'pupil'
+                                                        ? 'https://www.lern-fair.de/iframe/agb-schueler'
+                                                        : 'https://www.lern-fair.de/iframe/agb-helfer'
+                                                }
                                                 rel="noreferrer"
                                             >
                                                 AGB
