@@ -93,19 +93,8 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
         return <Navigate to="/settings" />;
     }
 
-    return (
-        <WithNavigation
-            hideMenu={isMobileSM}
-            previousFallbackRoute="/settings"
-            headerLeft={
-                !isMobileSM && (
-                    <Stack alignItems="center" direction="row">
-                        <SwitchLanguageButton />
-                        <NotificationAlert />
-                    </Stack>
-                )
-            }
-        >
+    const Content = (
+        <>
             <Flex overflowY={'auto'} height="100dvh">
                 <>
                     {layout === 'new-pw' ? (
@@ -186,6 +175,28 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
                     </Modal.Footer>
                 </Modal.Content>
             </Modal>
+        </>
+    );
+
+    // Public page, doesn't need sidebar/header, etc...
+    if (layout === 'reset-pw') {
+        return Content;
+    }
+
+    return (
+        <WithNavigation
+            hideMenu={isMobileSM}
+            previousFallbackRoute={'/settings'}
+            headerLeft={
+                !isMobileSM && (
+                    <Stack alignItems="center" direction="row">
+                        <SwitchLanguageButton />
+                        <NotificationAlert />
+                    </Stack>
+                )
+            }
+        >
+            {Content}
         </WithNavigation>
     );
 };

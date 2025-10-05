@@ -12,6 +12,7 @@ interface ConfirmationModalProps extends BaseModalProps {
     onConfirm: () => void;
     variant?: 'default' | 'destructive';
     isLoading?: boolean;
+    showCancelButton?: boolean;
 }
 const ConfirmationModal = ({
     headline,
@@ -23,6 +24,7 @@ const ConfirmationModal = ({
     onOpenChange,
     variant = 'default',
     isLoading,
+    showCancelButton = true,
 }: ConfirmationModalProps) => {
     const { t } = useTranslation();
 
@@ -35,9 +37,11 @@ const ConfirmationModal = ({
                 <Typography className="mb-1">{description}</Typography>
             </div>
             <ModalFooter variant={variant}>
-                <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
-                    {cancelButtonText ? cancelButtonText : t('cancel')}
-                </Button>
+                {showCancelButton && (
+                    <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                        {cancelButtonText ? cancelButtonText : t('cancel')}
+                    </Button>
+                )}
                 <Button className="w-full lg:w-fit" variant={variant} onClick={onConfirm} isLoading={isLoading}>
                     {confirmButtonText}
                 </Button>

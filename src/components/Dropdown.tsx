@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as DropdownMenuPrimitive from '@radix-ui/react-dropdown-menu';
 import { cn } from '@/lib/Tailwind';
-import { CheckIcon, ChevronRightIcon, CircleIcon } from 'native-base';
+import { IconCheck, IconChevronRight, IconCircle } from '@tabler/icons-react';
 
 const DropdownMenu = DropdownMenuPrimitive.Root;
 
@@ -31,7 +31,7 @@ const DropdownMenuSubTrigger = React.forwardRef<
         {...props}
     >
         {children}
-        <ChevronRightIcon className="ml-auto" />
+        <IconChevronRight className="ml-auto" />
     </DropdownMenuPrimitive.SubTrigger>
 ));
 
@@ -99,7 +99,7 @@ const DropdownMenuCheckboxItem = React.forwardRef<
     >
         <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
             <DropdownMenuPrimitive.ItemIndicator>
-                <CheckIcon className="h-4 w-4" />
+                <IconCheck className="h-4 w-4" />
             </DropdownMenuPrimitive.ItemIndicator>
         </span>
         {children}
@@ -120,7 +120,7 @@ const DropdownMenuRadioItem = React.forwardRef<
     >
         <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
             <DropdownMenuPrimitive.ItemIndicator>
-                <CircleIcon className="h-2 w-2 fill-current" />
+                <IconCircle className="h-2 w-2 fill-current" />
             </DropdownMenuPrimitive.ItemIndicator>
         </span>
         {children}
@@ -145,6 +145,11 @@ const DropdownMenuShortcut = ({ className, ...props }: React.HTMLAttributes<HTML
     return <span className={cn('ml-auto text-xs tracking-widest opacity-60', className)} {...props} />;
 };
 
+const DropdownMenuArrow = React.forwardRef<
+    React.ElementRef<typeof DropdownMenuPrimitive.Arrow>,
+    React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Arrow>
+>(({ className, ...props }, ref) => <DropdownMenuPrimitive.Arrow ref={ref} className={cn('fill-white', className)} {...props} />);
+
 export {
     DropdownMenu,
     DropdownMenuTrigger,
@@ -161,4 +166,5 @@ export {
     DropdownMenuSubContent,
     DropdownMenuSubTrigger,
     DropdownMenuRadioGroup,
+    DropdownMenuArrow,
 };
