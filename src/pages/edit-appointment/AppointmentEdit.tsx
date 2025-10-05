@@ -18,6 +18,7 @@ import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { AppointmentUpdateInput, Lecture_Appointmenttype_Enum } from '@/gql/graphql';
 import { convertStartDate } from '@/helper/appointment-helper';
+import AddTimeWithTooltip from '@/components/ToolTipTimeZone';
 
 type FormErrors = {
     title?: string;
@@ -193,7 +194,7 @@ const AppointmentEdit: React.FC<EditProps> = ({ appointmentId }) => {
                                 )}
                             </div>
                             <div className="flex flex-col gap-y-1">
-                                <Label htmlFor="time">{t('appointment.create.timeLabel')}</Label>
+                                <AddTimeWithTooltip />
                                 <Input
                                     className="w-full"
                                     id="time"
