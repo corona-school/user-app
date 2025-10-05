@@ -1,0 +1,54 @@
+import { useTranslation } from 'react-i18next';
+import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { Toggle } from '@/components/Toggle';
+import { IconBackpack, IconHeartHandshake, IconUser } from '@tabler/icons-react';
+import { useRegistrationForm } from './useRegistrationForm';
+import { PupilEmailOwner } from '@/gql/graphql';
+import { usePageTitle } from '@/hooks/usePageTitle';
+
+interface EmailOwnerProps extends RegistrationStepProps {}
+
+export const EmailOwner = ({ onBack, onNext }: EmailOwnerProps) => {
+    const { form, onFormChange } = useRegistrationForm();
+    usePageTitle('Registrierung: Email-Besitzer (Schüler:in)');
+    const { t } = useTranslation();
+
+    return (
+        <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={!form.emailOwner}>
+            <RegistrationStepTitle>{t('registration.steps.emailOwner.title')}</RegistrationStepTitle>
+            <RegistrationStepDescription className="mb-10">{t('registration.steps.emailOwner.description')}</RegistrationStepDescription>
+            <div className="flex flex-col md:flex-row flex-wrap justify-center place-items-center gap-y-2 md:gap-y-4 gap-x-4 w-full">
+                <Toggle
+                    size="2xl"
+                    className="md:w-[260px] h-[80px] md:h-[100px]"
+                    variant="white-primary"
+                    pressed={form.emailOwner === PupilEmailOwner.Pupil}
+                    onPressedChange={() => onFormChange({ emailOwner: PupilEmailOwner.Pupil })}
+                >
+                    <IconBackpack size={32} />
+                    {t('registration.emailOwnerOptions.pupil')}
+                </Toggle>
+                <Toggle
+                    size="2xl"
+                    className="md:w-[260px] h-[80px] md:h-[100px]"
+                    variant="white-primary"
+                    pressed={form.emailOwner === PupilEmailOwner.Parent}
+                    onPressedChange={() => onFormChange({ emailOwner: PupilEmailOwner.Parent })}
+                >
+                    <IconUser size={32} />
+                    {t('registration.emailOwnerOptions.parent')}
+                </Toggle>
+                <Toggle
+                    size="2xl"
+                    className="md:w-[260px] h-[80px] md:h-[100px]"
+                    variant="white-primary"
+                    pressed={form.emailOwner === PupilEmailOwner.Other}
+                    onPressedChange={() => onFormChange({ emailOwner: PupilEmailOwner.Other })}
+                >
+                    <IconHeartHandshake size={32} />
+                    {t('registration.emailOwnerOptions.other')}
+                </Toggle>
+            </div>
+        </RegistrationStep>
+    );
+};

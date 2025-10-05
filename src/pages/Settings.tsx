@@ -154,7 +154,7 @@ const Settings: React.FC = () => {
                     </ProfileSettingRow>
                 </VStack>
             </WithNavigation>
-            <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
+            <DeactivateAccountModal isOpen={showDeactivate} onOpenChange={setShowDeactivate} />
             <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
         </>
     );

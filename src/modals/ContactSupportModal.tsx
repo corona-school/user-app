@@ -1,23 +1,19 @@
-import { Button, Checkbox, FormControl, Heading, Input, Link, Modal, Row, Text, TextArea, useTheme, useToast } from 'native-base';
 import { Trans, useTranslation } from 'react-i18next';
 import { useState } from 'react';
-import useApollo from '../hooks/useApollo';
 import { useMutation } from '@apollo/client';
 import { gql } from '../gql';
-import AlertMessage from '../widgets/AlertMessage';
-import { useLayoutHelper } from '../hooks/useLayoutHelper';
-import DisableableButton from '../components/DisablebleButton';
+import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
+import { toast } from 'sonner';
+import { Typography } from '@/components/Typography';
+import { Label } from '@/components/Label';
+import { Input } from '@/components/Input';
+import { TextArea } from '@/components/TextArea';
+import { Button } from '@/components/Button';
 
-type ModalProps = {
-    isOpen?: boolean;
-    onClose: () => void;
-};
+interface ContactModalProps extends BaseModalProps {}
 
-export const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen }) => {
+export const ContactSupportModal = ({ isOpen, onOpenChange }: ContactModalProps) => {
     const { t } = useTranslation();
-    const { space } = useTheme();
-    const toast = useToast();
-    const { isMobile } = useLayoutHelper();
 
     const [subject, setSubject] = useState('');
     const [message, setMessage] = useState('');
@@ -39,53 +35,49 @@ export const ContactSupportModal: React.FC<ModalProps> = ({ onClose, isOpen }) =
         });
 
         if (response.data?.userContactSupport) {
-            toast.show({ description: t('contactSupport.success'), placement: 'top' });
-            onClose();
-        } else toast.show({ description: t('contactSupport.failure') });
+            toast.success(t('contactSupport.success'));
+            onOpenChange(false);
+        } else toast.error(t('contactSupport.failure'));
     };
 
     return (
-        <Modal isOpen={isOpen} onClose={onClose}>
-            <Modal.Content minW={isMobile ? '90vw' : 800}>
-                <Modal.CloseButton />
-                <Modal.Header>{t('contactSupport.title')}</Modal.Header>
-                <Modal.Body>
-                    <Text paddingBottom={space['1.5']}>{t('contactSupport.content')}</Text>
-                    <Text italic paddingBottom={space['1.5']}>
-                        <Trans i18nKey="contactSupport.legal" components={{ privacy: <Link href="https://lern-fair.de/datenschutz" /> }} />
-                    </Text>
-
-                    <FormControl>
-                        <Row flexDirection="column" paddingY={space['0.5']}>
-                            <FormControl.Label>{t('contactSupport.titleLabel')}</FormControl.Label>
-                            <Input value={subject} onChangeText={setSubject} />
-                        </Row>
-                        <Row flexDirection="column" paddingY={space['0.5']}>
-                            <FormControl.Label>{t('contactSupport.contentLabel')}</FormControl.Label>
-                            <TextArea
-                                value={message}
-                                onChangeText={setMessage}
-                                h={500}
-                                placeholder={t('contactSupport.contentPlaceholder')}
-                                autoCompleteType={{}}
-                            />
-                        </Row>
-                    </FormControl>
-                </Modal.Body>
-                <Modal.Footer>
-                    <Row space={space['2']}>
-                        <DisableableButton
-                            isDisabled={loading || !subject || !message}
-                            marginX="auto"
-                            reasonDisabled={t('contactSupport.disabled')}
-                            onPress={sendReportMessage}
-                        >
-                            {t('contactSupport.submit')}
-                        </DisableableButton>
-                        <Button onPress={onClose}>{t('cancel')}</Button>
-                    </Row>
-                </Modal.Footer>
-            </Modal.Content>
+        <Modal className="w-full md:max-w-[800px] px-2 md:px-6" onOpenChange={onOpenChange} isOpen={isOpen}>
+            <ModalHeader className="px-2">
+                <ModalTitle>{t('contactSupport.title')}</ModalTitle>
+            </ModalHeader>
+            <div className="md:max-h-[500px] overflow-auto px-2">
+                <Typography className="pb-1.5">{t('contactSupport.content')}</Typography>
+                <Typography className="italic pb-1.5">
+                    <Trans
+                        i18nKey="contactSupport.legal"
+                        components={{
+                            privacy: (
+                                <a target="_blank" href="https://lern-fair.de/datenschutz" rel="noreferrer">
+                                    Datenschutz
+                                </a>
+                            ),
+                        }}
+                    />
+                </Typography>
+                <div className="mb-10">
+                    <div className="flex flex-col py-0.5">
+                        <Label>{t('contactSupport.titleLabel')}</Label>
+                        <Input value={subject} onChangeText={setSubject} />
+                    </div>
+                    <div className="flex flex-col py-0.5">
+                        <Label>{t('contactSupport.contentLabel')}</Label>
+                        <TextArea value={message} onChangeText={setMessage} placeholder={t('contactSupport.contentPlaceholder')} className="resize-none" />
+                    </div>
+                </div>
+                <ModalFooter>
+                    <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                        {t('cancel')}
+                    </Button>
+                    <Button disabled={!subject || !message} className="w-full lg:w-fit" isLoading={loading} onClick={sendReportMessage}>
+                        {t('contactSupport.submit')}
+                    </Button>
+                </ModalFooter>
+            </div>
         </Modal>
     );
 };

@@ -133,7 +133,7 @@ const AppointmentAssignment: React.FC<AssignmentProps> = ({ next, skipStepTwo })
                                                             key={match.id}
                                                             matchId={match.id}
                                                             schooltype={match?.pupil?.schooltype}
-                                                            grade={getGradeLabel(match?.pupil?.gradeAsInt) || ''}
+                                                            grade={match?.pupil?.gradeAsInt ? getGradeLabel(match?.pupil?.gradeAsInt) : ''}
                                                             pupil={{ firstname: match?.pupil?.firstname || '', lastname: match?.pupil?.lastname || '' }}
                                                             subjects={match?.pupil?.subjectsFormatted.map((subject: { name: string }) => subject.name)}
                                                             next={match.appointments && match.appointments.length === 0 ? skipStepTwo : next}
