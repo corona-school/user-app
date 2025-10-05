@@ -675,9 +675,9 @@
                 "doNotKnow": "Weiß nicht"
             },
             "notifications": {
-                "title": "E-Mail-Benachrichtigungen einstellen",
+                "title": "Benachrichtigungen",
                 "titleShort": "Nachrichten",
-                "description": "Wie möchtest du - per E-mail und App - von uns informiert werden? Du kannst diese Auswahl später ändern.",
+                "description": "Wie möchtest du - per E-Mail und App - von uns informiert werden? Du kannst diese Auswahl später ändern.",
                 "importantInformationDescription": "Ich möchte Nachrichten bekommen, wenn es wichtig ist. Zum Beispiel: Ein neuer Termin oder eine neue Chat-Nachricht.",
                 "importantInformationBadge": "Wichtige Infos",
                 "recommendationsBadge": "Hilfreiches & Tipps",
