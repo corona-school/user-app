@@ -198,7 +198,7 @@
         "linkAccountWithIdpError": "Die Verknüpfung deines Kontos mit einem Identitätsanbieter erfordert ein Passwort. Bitte setze zuerst ein Passwort",
         "noaccount": "Du hast noch keinen Account?",
         "registerHere": "Hier registrieren",
-        "contactSupport": "Kontaktiere uns",
+        "contactSupport": "Schick uns eine E-Mail",
         "currentEmail": "Aktuelle E-Mail",
         "newEmail": "Neue E-Mail",
         "setNewEmail": "E-Mail neu setzen",
@@ -439,7 +439,7 @@
         "subtitle": "Hast du bereits einen Account?\nOder bist du neu bei uns und möchtest dich registrieren?",
         "deactivationAlert": "Dein Account wurde deaktiviert",
         "needHelp": "Brauchst du Hilfe?",
-        "contactSupport": "Kontaktiere uns"
+        "contactSupport": "Schick uns eine E-Mail"
     },
     "registration": {
         "password_repeat": "Passwort wiederholen",
@@ -508,7 +508,7 @@
             },
             "acceptanceCheck": {
                 "title": "Bist du bei uns richtig?",
-                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildene.\nWelche Aussagen treffen auf dich zu?",
+                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildende.\nWelche Aussagen treffen auf dich zu?",
                 "needHelpInSchool": "Ich brauche Hilfe in der Schule",
                 "familyCannotHelp": "Meine Familie kann mir nicht bei Schulaufgaben helfen",
                 "familyCannotAffordTutoring": "Meine Familie kann nicht Nachhilfe für mich bezahlen",
@@ -619,7 +619,7 @@
                 "registerWith": "Anmelden mit {{method}}"
             },
             "dataPrivacy": {
-                "title": "Einwilligung Datenschutz",
+                "title": "Datenschutz & Regeln",
                 "dataUsageInfoLabel": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
                 "dataUsageUSA": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
                 "labelTermsAndPrivacy": "Ich habe die <privacy>Datenschutzbestimmungen</privacy> und <agb>AGB</agb> zur Kenntnis genommen.",
