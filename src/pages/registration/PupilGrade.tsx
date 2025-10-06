@@ -18,7 +18,7 @@ const PupilGrade = ({ onBack, onNext }: PupilGradeProps) => {
     };
 
     return (
-        <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={!form.grade}>
+        <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>
             <OptionalBadge />
             <RegistrationStepTitle className="md:mb-10">{t('registration.steps.grade.title')} </RegistrationStepTitle>
             <div className="w-full md:pb-0">
