@@ -192,10 +192,10 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                 await updateProfile({
                     variables: {
                         school: {
-                            schooltype: values.school.schooltype as unknown as SchoolType,
-                            zip: values.school.zip ?? values.zipCode.toString(),
-                            city: values.school.city,
-                            name: values.school.name,
+                            schooltype: values.school?.schooltype as unknown as SchoolType,
+                            zip: values.school?.zip ?? values.zipCode?.toString(),
+                            city: values.school?.city,
+                            name: values.school?.name,
                         },
                     },
                 });
