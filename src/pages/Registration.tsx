@@ -42,6 +42,7 @@ const MUTATION_REGISTER_PUPIL = gql(`
         $referredById: String
         $emailOwner: PupilEmailOwner!
         $languages: [Language!]
+        $age: Int!
     ) {
         meRegisterPupil(
             noEmail: true
@@ -52,6 +53,7 @@ const MUTATION_REGISTER_PUPIL = gql(`
         meUpdate(update:  {
            pupil:  {
               languages: $languages
+              age: $age
            }
         })
     }
@@ -140,6 +142,7 @@ const Registration = () => {
                     ...basicData,
                     emailOwner: form.emailOwner!,
                     referredById: referredBy,
+                    age: form.age,
                 },
             });
         } else {
