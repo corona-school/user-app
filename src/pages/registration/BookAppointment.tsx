@@ -198,6 +198,11 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                                                             hier findest du ein Erklärvideo
                                                         </a>
                                                     ),
+                                                    supportEmail: (
+                                                        <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
+                                                            support@lern-fair.de
+                                                        </a>
+                                                    ),
                                                 }}
                                             />
                                         </Typography>

@@ -472,8 +472,8 @@
                         "answer": "Hangi derslerde yardıma ihtiyacın olduğunu anlayalım ve sana uygun teklifleri bulalım diye."
                     },
                     {
-                        "question": "Hangi dil konuşulacak?",
-                        "answer": "Genellikle Almanca, ama İngilizce veya başka diller de olabilir. Eğer Almanca bilmiyorsan, bize e-posta yaz; bir çözüm buluruz."
+                        "question": "Hangi dil konuşuluyor?",
+                        "answer": "Genellikle Almanca konuşuyoruz, ancak İngilizce veya diğer dilleri de konuşabiliriz. Almanca bilmiyorsanız, bize <supportEmail>support@lern-fair.de</supportEmail> adresine e-posta gönderin, bir çözüm buluruz."
                     }
                 ],
                 "faqStudent": [

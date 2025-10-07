@@ -457,7 +457,8 @@
             "notifications": "Benachrichtigungen",
             "contactSupport": "Support kontaktieren",
             "deactivateAccount": "Konto deaktivieren",
-            "logout": "Abmelden"
+            "logout": "Abmelden",
+            "agb": "AGB"
         },
         "hint": {
             "name": "Bitte gebe deinen vollen Namen an",
@@ -565,7 +566,7 @@
                     },
                     {
                         "question": "Welche Sprache wird gesprochen?",
-                        "answer": "Meistens Deutsch, aber wir können auch Englisch oder andere Sprachen. Falls du nicht gut Deutsch sprichst, schreibe uns einfach eine E-Mail, dann finden wir eine Lösung."
+                        "answer": "Meistens Deutsch, aber wir können auch Englisch oder andere Sprachen. Falls du nicht gut Deutsch sprichst, schreibe uns einfach eine E-Mail an <supportEmail>support@lern-fair.de</supportEmail>, dann finden wir eine Lösung."
                     }
                 ],
                 "faqStudent": [
