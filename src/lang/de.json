@@ -196,7 +196,7 @@
         "loginWith": "Einloggen mit {{method}}",
         "continueWith": "Weiter mit {{idp}}",
         "linkAccountWithIdpError": "Die Verknüpfung deines Kontos mit einem Identitätsanbieter erfordert ein Passwort. Bitte setze zuerst ein Passwort",
-        "noaccount": "Du hast noch keinen Account?",
+        "noaccount": "Du hast noch kein Nutzerkonto?",
         "registerHere": "Hier registrieren",
         "contactSupport": "Schick uns eine E-Mail",
         "currentEmail": "Aktuelle E-Mail",
@@ -230,12 +230,12 @@
             }
         },
         "accountNotFound": {
-            "title": "Anmeldung fehlgeschlagen",
+            "title": "Anmeldung hat nicht funktioniert",
             "alert_html": "Es konnte kein Konto mit dieser E-Mail-Adresse gefunden werden."
         },
         "accountDeactivated": {
-            "title": "Anmeldung fehlgeschlagen",
-            "alert_html": "Dein Account wurde deaktiviert. Bitte kontaktiere den Support (support@lern-fair.de) für weitere Informationen."
+            "title": "Anmeldung hat nicht funktioniert",
+            "alert_html": "Dein Nutzerkonto wurde deaktiviert. Bitte kontaktiere den Support (support@lern-fair.de) für weitere Informationen."
         },
         "invalidMailMessage": "Die eingegebene E-Mail-Adresse ist fehlerhaft.",
         "invalidTokenAlert": {
@@ -414,7 +414,7 @@
                     "no-lectures": "Du kannst dich nicht anmelden, da keine Lektionen für diesen Kurs angelegt wurden.",
                     "already-started": "Du kannst dich nicht mehr zum Kurs anmelden, da er bereits gestartet ist.",
                     "already-participant": "Du bist bereits für diesen Kurs angemeldet.",
-                    "not-participant": "Du kannst dich nicht anmelden, weil dein Account für Gruppen-Kurse nicht freigeschaltet ist. Bitte wende dich an support@lern-fair.de, wenn du an diesem Kurs teilnehmen möchtest."
+                    "not-participant": "Du kannst dich nicht anmelden, weil dein Nutzerkonto für Gruppen-Kurse nicht freigeschaltet ist. Bitte wende dich an support@lern-fair.de, wenn du an diesem Kurs teilnehmen möchtest."
                 }
             },
             "matching": {
@@ -436,14 +436,14 @@
     },
     "welcome": {
         "title": "Herzlich Willkommen bei Lern-Fair",
-        "subtitle": "Hast du bereits einen Account?\nOder bist du neu bei uns und möchtest dich registrieren?",
-        "deactivationAlert": "Dein Account wurde deaktiviert",
+        "subtitle": "Hast du bereits ein Nutzerkonto?\nOder bist du neu bei uns und möchtest dich registrieren?",
+        "deactivationAlert": "Dein Nutzerkonto wurde deaktiviert",
         "needHelp": "Brauchst du Hilfe?",
         "contactSupport": "Schick uns eine E-Mail"
     },
     "registration": {
         "password_repeat": "Passwort wiederholen",
-        "to_login": "Ich habe bereits einen Account",
+        "to_login": "Ich habe bereits ein Nutzerkonto",
         "ageOptions": {
             "15OrYounger": "Schüler:in ist 15 oder jünger",
             "16OrOlder": "Schüler:in ist 16 oder älter"
@@ -488,16 +488,16 @@
         "result": {
             "success": {
                 "title": "Erledigt!",
-                "text": "Dein Account wurde erfolgreich erstellt. Du kannst nun das Angebot von Lern-Fair nutzen!",
+                "text": "Dein Nutzerkonto wurde erfolgreich erstellt. Du kannst nun das Angebot von Lern-Fair nutzen!",
                 "btn": "Zur Anwendung"
             },
             "error": {
                 "tryagain": "Erneut versuchen",
                 "message": {
-                    "Email is already used by another account": "Diese E-mail ist bereits in Verwendung",
+                    "Email is already used by another account": "Diese E-Mail ist bereits in Verwendung",
                     "Response not successful: Received status code 400": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.",
                     "RateLimit Enforcement": "Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.",
-                    "Unknown User Type": "Dein Account-Typ konnte nicht bestimmt werden. Bitte versuche versuche einen einfachen Login."
+                    "Unknown User Type": "Dein Nutzerkonto-Typ konnte nicht bestimmt werden. Bitte versuche versuche einen einfachen Login."
                 }
             }
         },
@@ -624,7 +624,7 @@
                 "dataUsageUSA": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
                 "labelTermsAndPrivacy": "Ich habe die <privacy>Datenschutzbestimmungen</privacy> und <agb>AGB</agb> zur Kenntnis genommen.",
                 "usageBullets": {
-                    "1": "Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts",
+                    "1": "Wir speichern deine Daten solange dein Nutzerkonto bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Nutzerkontos",
                     "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",
                     "3": "Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können"
                 },
@@ -729,7 +729,7 @@
             "privacy": "Datenschutz",
             "whatHappensWithData": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
             "usageBullets": {
-                "1": "Wir speichern deine Daten solange dein Account bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Accounts",
+                "1": "Wir speichern deine Daten solange dein Nutzerkonto bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Nutzerkontos",
                 "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",
                 "3": "Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können"
             },
@@ -941,18 +941,18 @@
             "noSchoolSubject": "Es wurden keine Fächer angegeben"
         },
         "Deactivate": {
-            "error": "Dein Account konnte nicht deaktiviert werden.",
-            "success": "Dein Account wurde deaktiviert.",
+            "error": "Dein Nutzerkonto konnte nicht deaktiviert werden.",
+            "success": "Dein Nutzerkonto wurde deaktiviert.",
             "modal": {
-                "title": "Account deaktivieren",
-                "btn": "Account deaktivieren",
+                "title": "Nutzerkonto deaktivieren",
+                "btn": "Nutzerkonto deaktivieren",
                 "tooltip": "Du musst einen Grund angeben.",
                 "other": {
                     "placeholder": "Deaktivierungsgrund"
                 },
                 "description": {
-                    "pupil": "Sobald du deinen Account deaktivierst, werden deine Lernpaare aufgelöst und du von allen Kursen abgemeldet. Wir informieren deine:n aktive:n Lernpartner:in automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.",
-                    "student": "Sobald du deinen Account deaktivierst, werden deine Lernpaare aufgelöst und deine Kurse abgesagt. Wir informieren deine aktiven Lernpartner:innen automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden."
+                    "pupil": "Sobald du dein Nutzerkonto deaktivierst, werden deine Lernpaare aufgelöst und du von allen Kursen abgemeldet. Wir informieren deine:n aktive:n Lernpartner:in automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden.",
+                    "student": "Sobald du dein Nutzerkonto deaktivierst, werden deine Lernpaare aufgelöst und deine Kurse abgesagt. Wir informieren deine aktiven Lernpartner:innen automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden."
                 }
             },
             "pupil": {
@@ -1505,7 +1505,7 @@
         "passwort": {
             "subtitle": "Passwort",
             "title": "Passwort einrichten",
-            "content": "Es ist endlich so weit, wir stellen unser Login-System um! Du kannst ab sofort ein Passwort für deinen Lern-Fair Account vergeben und dich damit zukünftig einloggen.",
+            "content": "Es ist endlich so weit, wir stellen unser Login-System um! Du kannst ab sofort ein Passwort für dein Lern-Fair Nutzerkonto vergeben und dich damit zukünftig einloggen.",
             "buttons": ["Passwort einrichten"]
         },
         "willkommen": {
@@ -2277,7 +2277,7 @@
     },
     "sessionManager": {
         "title": "Geräte verwalten",
-        "description": "Hier kannst du alle Geräte sehen, die mit deinem Account verbunden sind. Du kannst Geräte entfernen, die du nicht mehr benutzt.",
+        "description": "Hier kannst du alle Geräte sehen, die mit deinem Nutzerkonto verbunden sind. Du kannst Geräte entfernen, die du nicht mehr benutzt.",
         "lastUsed": "Zuletzt benutzt:",
         "toast": "Gerät erfolgreich entfernt",
         "thisDevice": "Dieses Gerät",
@@ -2427,8 +2427,8 @@
         "recommend_acceptance": "Annahme empfehlen",
         "recommend_rejection": "Ablehnung empfehlen",
         "screening_saved": "Screening gespeichert",
-        "account_deactivated": "Account deaktiviert",
-        "account_deactivated_details": "Der Nutzer kann sich nicht mehr im Userbereich anmelden. Der Support kann Accounts reaktivieren.",
+        "account_deactivated": "Nutzerkonto deaktiviert",
+        "account_deactivated_details": "Der Nutzer kann sich nicht mehr im Userbereich anmelden. Der Support kann dein Nutzerkonto reaktivieren.",
         "save_and_four_eyes": "Speichern & Vier Augen",
         "success": "Annehmen",
         "rejection": "Ablehnen",
@@ -2591,9 +2591,9 @@
     },
     "certificateOfConduct": {
         "header": "Führungszeugnis einreichen",
-        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Um deinen Account aktiv zu halten, bitten wir dich, das erweiterte Führungszeugnis zeitnah zu beantragen und bis zur Frist bei uns einzureichen. Mithilfe der Bescheinigung kannst du das erweiterte Führungszeugnis kostenlos beantragen.",
+        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Um dein Nutzerkonto aktiv zu halten, bitten wir dich, das erweiterte Führungszeugnis zeitnah zu beantragen und bis zur Frist bei uns einzureichen. Mithilfe der Bescheinigung kannst du das erweiterte Führungszeugnis kostenlos beantragen.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
-        "tooltip": "Nach diesem Datum wird dein Account bei uns automatisch deaktiviert. \nSolltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
+        "tooltip": "Nach diesem Datum wird dein Nutzerkonto bei uns automatisch deaktiviert. \nSolltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
         "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
         "download": "Vordruck herunterladen",
         "reason_download_disabled": "Bitte warte kurz, der Download sollte gleich starten.",
@@ -2610,7 +2610,7 @@
     },
     "verify_email": {
         "title": "E-Mail Verifizierung",
-        "success": "Dein Account wurde aktiviert!",
+        "success": "Dein Nutzerkonto wurde aktiviert!",
         "proceed": "Fortfahren",
         "invalid": "Token ungültig"
     },
@@ -2659,7 +2659,7 @@
             },
             "hasScreening": {
                 "title": "Bitte warte ein bisschen",
-                "content": "Wir haben uns sehr gefreut dich kennenzulernen. Dein Account wurde noch nicht freigeschaltet. Wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
+                "content": "Wir haben uns sehr gefreut dich kennenzulernen. Dein Nutzerkonto wurde noch nicht freigeschaltet. Wir informieren dich per E-Mail sobald wir eine Entscheidung getroffen haben.",
                 "makeAnotherAppointment": "Erneut Termin vereinbaren"
             },
             "rejectedScreening": {
