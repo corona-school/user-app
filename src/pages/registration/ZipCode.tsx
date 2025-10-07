@@ -30,7 +30,16 @@ export const ZipCode = ({ onBack, onNext }: ZipCodeProps) => {
             </Typography>
             <div className="flex flex-col gap-y-3 w-full max-w-20 pb-32 md:pb-0">
                 <div className="w-full flex flex-col justify-center gap-y-1">
-                    <Input autoFocus={!form.zipCode} variant="white" className="w-full h-12" value={form.zipCode || ''} onChangeText={onChange} />
+                    <Input
+                        autoFocus={!form.zipCode}
+                        variant="white"
+                        type="number"
+                        className="w-full h-12"
+                        value={form.zipCode || ''}
+                        onChangeText={onChange}
+                        onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
+                        maxLength={5}
+                    />
                 </div>
             </div>
         </RegistrationStep>
