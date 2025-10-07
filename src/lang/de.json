@@ -436,7 +436,7 @@
     },
     "welcome": {
         "title": "Herzlich Willkommen bei Lern-Fair",
-        "subtitle": "Hast du bereits einen Nutzerkonto?\nOder bist du neu bei uns und möchtest dich registrieren?",
+        "subtitle": "Hast du bereits ein Nutzerkonto?\nOder bist du neu bei uns und möchtest dich registrieren?",
         "deactivationAlert": "Dein Nutzerkonto wurde deaktiviert",
         "needHelp": "Brauchst du Hilfe?",
         "contactSupport": "Schick uns eine E-Mail"
