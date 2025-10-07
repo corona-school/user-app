@@ -78,7 +78,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
             </Typography>
             {form.screeningAppointment && (
                 <AddToCalendarDropdown
-                    buttonVariant="optional"
+                    buttonVariant="optional-dark"
                     buttonClasses="w-full lg:w-[306px]"
                     appointment={form.screeningAppointment}
                     onSelect={() => trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Add to Calendar' })}
