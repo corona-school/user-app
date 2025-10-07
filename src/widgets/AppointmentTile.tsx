@@ -133,7 +133,7 @@ const AppointmentTile: React.FC<Props> = ({
                         )}
                         {appointmentId && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
                             <AddToCalendarDropdown
-                                buttonVariant="optional"
+                                buttonVariant="optional-dark"
                                 buttonClasses="w-full lg:w-[300px]"
                                 appointment={{ id: appointmentId, displayName, title, start, duration, description: description ?? '' }}
                             />
