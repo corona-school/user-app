@@ -554,7 +554,8 @@
                 "title": "Зустріч створена!",
                 "description": "Залишилося кілька кроків – і ми зможемо почати.",
                 "changeAppointment": "Змінити зустріч",
-                "cancelAppointment": "Скасувати зустріч"
+                "cancelAppointment": "Скасувати зустріч",
+                "joinCall": "Почніть відеодзвінок зараз"
             },
             "registrationCompleted": {
                 "title": "Тобі вдалося!",

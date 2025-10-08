@@ -554,7 +554,8 @@
                 "title": "تم إنشاء الموعد!",
                 "description": "تبقّت خطوات قليلة فقط. بعدها يمكننا أن نبدأ بشكل جيد.",
                 "changeAppointment": "تغيير الموعد",
-                "cancelAppointment": "إلغاء الموعد"
+                "cancelAppointment": "إلغاء الموعد",
+                "joinCall": "ابدأ مكالمة الفيديو الآن"
             },
             "registrationCompleted": {
                 "title": "لقد نجحت!",

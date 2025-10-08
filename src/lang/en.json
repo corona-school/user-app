@@ -554,7 +554,8 @@
                 "title": "Appointment created!",
                 "description": "There are just a few last steps. Then we can really get started.",
                 "changeAppointment": "Change appointment",
-                "cancelAppointment": "Cancel appointment"
+                "cancelAppointment": "Cancel appointment",
+                "joinCall": "Start video call now"
             },
             "registrationCompleted": {
                 "title": "You did it!",

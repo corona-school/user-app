@@ -554,7 +554,8 @@
                 "title": "Randevu oluşturuldu!",
                 "description": "Birkaç adım kaldı. Sonra gerçekten başlayabiliriz.",
                 "changeAppointment": "Randevuyu değiştir",
-                "cancelAppointment": "Randevuyu iptal et"
+                "cancelAppointment": "Randevuyu iptal et",
+                "joinCall": "Görüntülü aramayı şimdi başlatın"
             },
             "registrationCompleted": {
                 "title": "Başardın!",

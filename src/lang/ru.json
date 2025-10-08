@@ -554,7 +554,8 @@
                 "title": "Встреча назначена!",
                 "description": "Осталось ещё несколько шагов. И мы сможем хорошо начать.",
                 "changeAppointment": "Изменить встречу",
-                "cancelAppointment": "Отменить встречу"
+                "cancelAppointment": "Отменить встречу",
+                "joinCall": "Начните видеозвонок прямо сейчас"
             },
             "registrationCompleted": {
                 "title": "Ты справился!",

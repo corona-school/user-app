@@ -643,7 +643,9 @@
                 "title": "Termin erstellt!",
                 "description": "Es gibt noch ein paar letzte Schritte. Dann können wir richtig gut starten.",
                 "changeAppointment": "Termin ändern",
-                "cancelAppointment": "Termin absagen"
+                "cancelAppointment": "Termin absagen",
+                "joinCall": "Jetzt Videocall starten",
+                "joinMeetingHint": "Du kannst das Meeting erst 5 Minuten vor Beginn des Termins starten."
             },
             "registrationCompleted": {
                 "title": "Du hast es geschafft!",
