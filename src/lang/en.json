@@ -472,8 +472,8 @@
                         "answer": "So we understand which subjects you’d like help in and can find suitable offers for you."
                     },
                     {
-                        "question": "Which language will be spoken?",
-                        "answer": "Mostly German, but we can also speak English or other languages. If you don’t speak German well, just write us an email and we’ll find a solution."
+                        "question": "Which language is spoken?",
+                        "answer": "Mostly German, but we can also speak English or other languages. If you don’t speak German well, just send us an email at <supportEmail>support@lern-fair.de</supportEmail>, and we’ll find a solution."
                     }
                 ],
                 "faqStudent": [
@@ -554,7 +554,8 @@
                 "title": "Appointment created!",
                 "description": "There are just a few last steps. Then we can really get started.",
                 "changeAppointment": "Change appointment",
-                "cancelAppointment": "Cancel appointment"
+                "cancelAppointment": "Cancel appointment",
+                "joinCall": "Start video call now"
             },
             "registrationCompleted": {
                 "title": "You did it!",
@@ -677,7 +678,8 @@
             "notifications": "Notifications",
             "contactSupport": "Contact support",
             "deactivateAccount": "Deactivate account",
-            "logout": "Log out"
+            "logout": "Log out",
+            "agb": "General Terms and Conditions"
         }
     },
     "helpcenter": {
@@ -1109,7 +1111,8 @@
             "title": "Legal matters",
             "imprint": "Imprint",
             "datapolicy": "Data protection",
-            "terms": "Terms of use"
+            "terms": "Terms of use",
+            "agb": "General Terms and Conditions"
         },
         "header": "Settings"
     },

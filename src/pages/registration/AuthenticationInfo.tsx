@@ -133,7 +133,7 @@ export const AuthenticationInfo = ({ onBack, onNext }: AuthenticationInfoProps) 
                         <Button
                             type="button"
                             className="w-full"
-                            variant="optional"
+                            variant="optional-dark"
                             rightIcon={<IconBrandGoogleFilled size={16} />}
                             onClick={handleOnLoginWithGoogle}
                         >

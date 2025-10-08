@@ -151,6 +151,9 @@ const Settings: React.FC = () => {
                         <Column mb={tabspace}>
                             <ListItem label={t('settings.legal.datapolicy')} onPress={() => navigate('/datenschutz')} />
                         </Column>
+                        <Column mb={tabspace}>
+                            <ListItem label={t('settings.legal.agb')} onPress={() => navigate(`/${userType === 'pupil' ? 'agb-schueler' : 'agb-helfer'}`)} />
+                        </Column>
                     </ProfileSettingRow>
                 </VStack>
             </WithNavigation>

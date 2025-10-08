@@ -20,7 +20,7 @@ export const AcceptanceCheckFailed = ({ onTryAgain }: AcceptanceCheckFailedProps
                 <Button className="w-full" onClick={() => window.open('https://digitale-lernangebote.de/', '_blank')}>
                     {t('registration.steps.acceptanceCheckFailed.seeOtherOffers')}
                 </Button>
-                <Button className="w-full" variant="optional" onClick={onTryAgain}>
+                <Button className="w-full" variant="optional-dark" onClick={onTryAgain}>
                     {t('registration.steps.acceptanceCheckFailed.tryAgain')}
                 </Button>
             </div>

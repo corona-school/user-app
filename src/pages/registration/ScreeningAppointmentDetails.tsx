@@ -3,7 +3,7 @@ import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, R
 import { useRegistrationForm } from './useRegistrationForm';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
-import { IconCheck } from '@tabler/icons-react';
+import { IconCheck, IconVideo } from '@tabler/icons-react';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
 import { useEffect } from 'react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
@@ -12,6 +12,7 @@ import i18next from 'i18next';
 import Logo from '@/assets/icons/logo.svg';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 
 interface ScreeningAppointmentDetailProps extends RegistrationStepProps {
     variant?: 'registered' | 'completed';
@@ -25,6 +26,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
         completed: `Registrierung: Funnel abgeschlossen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`,
     };
     usePageTitle(pageTitles[variant]);
+    const canStartMeeting = useCanJoinMeeting(5, form.screeningAppointment?.start!, form.screeningAppointment?.duration!);
     const { trackEvent } = useMatomo();
 
     useEffect(() => {
@@ -77,12 +79,25 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                 {DateTime.fromISO(form.screeningAppointment.start).toFormat('t', { locale: i18next.language })} {t('clock')}
             </Typography>
             {form.screeningAppointment && (
-                <AddToCalendarDropdown
-                    buttonVariant="optional"
-                    buttonClasses="w-full lg:w-[306px]"
-                    appointment={form.screeningAppointment}
-                    onSelect={() => trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Add to Calendar' })}
-                />
+                <div className="flex flex-col gap-y-2 w-full lg:w-[306px]">
+                    <AddToCalendarDropdown
+                        buttonVariant="optional-dark"
+                        buttonClasses="w-full lg:w-[306px]"
+                        appointment={form.screeningAppointment}
+                        onSelect={() => trackEvent({ category: eventCategory, action: eventAction, name: 'Button Click - Add to Calendar' })}
+                    />
+                    <Button
+                        disabled={!form.screeningAppointment?.override_meeting_link || !canStartMeeting}
+                        reasonDisabled={`${t('registration.steps.appointmentDetails.joinMeetingHint')}`}
+                        onClick={() =>
+                            form.screeningAppointment?.override_meeting_link && window.open(form.screeningAppointment?.override_meeting_link, '_blank')
+                        }
+                        leftIcon={<IconVideo />}
+                        className="w-full lg:w-[306px]"
+                    >
+                        {t('registration.steps.appointmentDetails.joinCall')}
+                    </Button>
+                </div>
             )}
             <div className="flex gap-x-2 mt-4 mb-10 lg:max-w-[306px] w-full">
                 <Button
