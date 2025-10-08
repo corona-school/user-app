@@ -46,7 +46,12 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
             </div>
             <div className="flex w-full flex-wrap gap-2 mt-4">
                 {!!user?.matches?.length && <Badge>{t('screening.has_matches')}</Badge>}
-
+                {user?.pupilScreenings?.some((it) => !it!.comment?.toLowerCase().includes('fallberatung') && ['dispute', 'pending'].includes(it!.status)) && (
+                    <Badge variant="destructive">Fallberatung 💬</Badge>
+                )}
+                {user?.pupilScreenings?.some((it) => !it!.comment?.toLowerCase().includes('bitte warten') && ['dispute', 'pending'].includes(it!.status)) && (
+                    <Badge className="bg-[#C67200]">Bitte warten ⏳</Badge>
+                )}
                 {/** Pupil specific tags */}
                 {user?.pupilScreenings?.some((it) => !it!.invalidated && it!.status === 'dispute') && (
                     <Badge variant="unclear">{t('screening.dispute_screening')}</Badge>
