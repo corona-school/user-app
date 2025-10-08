@@ -5,9 +5,8 @@ import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 
 // These Pages are loaded initially:
 import Login from '../pages/Login';
-import Welcome from '../pages/Welcome';
 import LoginToken from '../pages/LoginToken';
-import { RequireAuth, VisitorsOnly } from '../User';
+import { RequireAuth } from '../User';
 import FullPageModal from '../modals/FullPageModal';
 import { lazyWithRetry } from '../lazy';
 import Logout from '../components/Logout';
@@ -29,14 +28,7 @@ export default function Navigator() {
                 <Route path="/login-token" element={<LoginToken />} />
                 <Route path="/login-with" element={<LoginWithIDP />} />
                 <Route path="/logout" element={<Logout />} />
-                <Route
-                    path="/welcome"
-                    element={
-                        <VisitorsOnly>
-                            <Welcome />
-                        </VisitorsOnly>
-                    }
-                />
+                <Route path="/welcome" element={<Navigate to="/login" />} />
 
                 <Route
                     path="/"
