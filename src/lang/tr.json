@@ -677,7 +677,8 @@
             "notifications": "Bildirimler",
             "contactSupport": "İletişim desteği",
             "deactivateAccount": "Hesabı devre dışı bırak",
-            "logout": "Oturumu kapat"
+            "logout": "Oturumu kapat",
+            "agb": "Genel Hüküm ve Koşullar"
         }
     },
     "helpcenter": {
@@ -1109,7 +1110,8 @@
             "title": "Yasal konular",
             "imprint": "Künye",
             "datapolicy": "Veri koruma",
-            "terms": "Kullanım Koşulları"
+            "terms": "Kullanım Koşulları",
+            "agb": "Genel Hüküm ve Koşullar"
         },
         "header": "Ayarlar"
     },

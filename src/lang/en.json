@@ -677,7 +677,8 @@
             "notifications": "Notifications",
             "contactSupport": "Contact support",
             "deactivateAccount": "Deactivate account",
-            "logout": "Log out"
+            "logout": "Log out",
+            "agb": "General Terms and Conditions"
         }
     },
     "helpcenter": {
@@ -1109,7 +1110,8 @@
             "title": "Legal matters",
             "imprint": "Imprint",
             "datapolicy": "Data protection",
-            "terms": "Terms of use"
+            "terms": "Terms of use",
+            "agb": "General Terms and Conditions"
         },
         "header": "Settings"
     },

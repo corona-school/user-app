@@ -1197,7 +1197,8 @@
             "title": "Rechtliches",
             "imprint": "Impressum",
             "datapolicy": "Datenschutz",
-            "terms": "Nutzungsbedingungen"
+            "terms": "Nutzungsbedingungen",
+            "agb": "AGB"
         }
     },
     "onboardingList": {

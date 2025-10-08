@@ -677,7 +677,8 @@
             "notifications": "الإشعارات",
             "contactSupport": "الاتصال بالدعم",
             "deactivateAccount": "تعطيل الحساب",
-            "logout": "تسجيل الخروج"
+            "logout": "تسجيل الخروج",
+            "agb": "الشروط والأحكام العامة"
         }
     },
     "helpcenter": {
@@ -1105,7 +1106,8 @@
             "title": "قانوني",
             "imprint": "بصمه",
             "datapolicy": "الخصوصيه",
-            "terms": "حيث"
+            "terms": "حيث",
+            "agb": "الشروط والأحكام العامة"
         },
         "header": "اعدادات"
     },

@@ -545,12 +545,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/datenschutz"
                 element={
-                    <WithNavigation
-                        showBack={isMobileSM}
-                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
-                        previousFallbackRoute="/settings"
-                        headerTitle="Datenschutz"
-                    >
+                    <WithNavigation showBack hideMenu previousFallbackRoute="/settings" headerTitle="Datenschutz">
                         <IFrame title="datenschutz" src="https://www.lern-fair.de/iframe/datenschutz" />
                     </WithNavigation>
                 }
@@ -558,12 +553,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/agb-schueler"
                 element={
-                    <WithNavigation
-                        showBack={isMobileSM}
-                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
-                        previousFallbackRoute="/settings"
-                        headerTitle="AGB Schüler"
-                    >
+                    <WithNavigation showBack hideMenu previousFallbackRoute="/settings" headerTitle="AGB Schüler">
                         <IFrame title="agb-schueler" src="https://www.lern-fair.de/iframe/agb-schueler" />
                     </WithNavigation>
                 }
@@ -571,12 +561,7 @@ export default function NavigatorLazy() {
             <Route
                 path="/agb-helfer"
                 element={
-                    <WithNavigation
-                        showBack={isMobileSM}
-                        hideMenu={isMobileSM || sessionState !== 'logged-in'}
-                        previousFallbackRoute="/settings"
-                        headerTitle="AGB Helfer"
-                    >
+                    <WithNavigation showBack hideMenu previousFallbackRoute="/settings" headerTitle="AGB Helfer">
                         <IFrame title="agb-helfer" src="https://www.lern-fair.de/iframe/agb-helfer" />
                     </WithNavigation>
                 }
