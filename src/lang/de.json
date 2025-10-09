@@ -2263,12 +2263,12 @@
             },
             "tabs": {
                 "system": {
-                    "title": "System",
-                    "description": "Benachrichtigungen werden dir immer oben rechts - und optional als App-Mitteilung oder E-mail angezeigt."
+                    "title": "Wichtige Infos",
+                    "description": "Diese Infos werden oben rechts auf der Glocke - und optional als App-Mitteilung / E-Mail angezeigt."
                 },
                 "newsletter": {
-                    "title": "Newsletter",
-                    "description": "Newsletter werden ausschließlich per Mail versendet."
+                    "title": "Hilfreiches & Tipps",
+                    "description": "Diese Infos werden ausschließlich per E-Mail versendet."
                 }
             }
         },
