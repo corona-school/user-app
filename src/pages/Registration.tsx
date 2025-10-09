@@ -4,8 +4,8 @@ import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
 import useApollo from '@/hooks/useApollo';
-import { useMutation } from '@apollo/client';
-import { useEffect, useRef } from 'react';
+import { useMutation, useQuery } from '@apollo/client';
+import { useEffect, useMemo, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { AcceptanceCheck } from './registration/AcceptanceCheck';
@@ -33,6 +33,18 @@ import { ERole } from '@/types/lernfair/User';
 import { StudentLanguage } from '@/gql/graphql';
 
 export const TRAINEE_GRADE = 14;
+
+const QUERY_COOPERATIONS = gql(`
+    query Cooperations {
+        cooperations {
+            id
+            tag
+            name
+            welcomeTitle
+            welcomeMessage
+        }
+    }
+`);
 
 const MUTATION_REGISTER_PUPIL = gql(`
     mutation registerPupil(
@@ -94,6 +106,9 @@ const Registration = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const container = useRef<HTMLDivElement>(null);
+    const { data: corpData } = useQuery(QUERY_COOPERATIONS);
+    const cooperationTag = new URL(window.location.toString()).searchParams.get('cooperation');
+    const referredById = new URL(window.location.toString()).searchParams.get('referredById');
 
     const { form, reset, onFormChange, isLoading: isLoadingRegistrationForm, flow, goBack, goNext } = useRegistrationForm();
 
@@ -168,6 +183,20 @@ const Registration = () => {
         }
         goNext();
     };
+
+    const cooperation = useMemo(() => {
+        const result = corpData?.cooperations?.find((it) => it.tag === cooperationTag);
+        return result;
+    }, [cooperationTag, corpData]);
+
+    useEffect(() => {
+        if (cooperation?.tag) {
+            sessionStorage.setItem('cooperationTag', cooperation.tag);
+        }
+        if (referredById) {
+            sessionStorage.setItem('referredById', referredById);
+        }
+    }, [referredById, cooperation?.tag]);
 
     useEffect(() => {
         container.current?.scrollTo({ top: 0, behavior: 'smooth' });
