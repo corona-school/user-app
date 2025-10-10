@@ -555,7 +555,8 @@
                 "description": "Birkaç adım kaldı. Sonra gerçekten başlayabiliriz.",
                 "changeAppointment": "Randevuyu değiştir",
                 "cancelAppointment": "Randevuyu iptal et",
-                "joinCall": "Görüntülü aramayı şimdi başlatın"
+                "joinCall": "Görüntülü aramayı şimdi başlatın",
+                "joinMeetingHint": "Toplantıyı sadece randevunun başlamasından 5 dakika önce başlatabilirsiniz."
             },
             "registrationCompleted": {
                 "title": "Başardın!",
