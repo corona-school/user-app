@@ -555,7 +555,8 @@
                 "description": "تبقّت خطوات قليلة فقط. بعدها يمكننا أن نبدأ بشكل جيد.",
                 "changeAppointment": "تغيير الموعد",
                 "cancelAppointment": "إلغاء الموعد",
-                "joinCall": "ابدأ مكالمة الفيديو الآن"
+                "joinCall": "ابدأ مكالمة الفيديو الآن",
+                "joinMeetingHint": "يمكنك بدء الاجتماع قبل 5 دقائق فقط من بدء الموعد."
             },
             "registrationCompleted": {
                 "title": "لقد نجحت!",
