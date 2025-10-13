@@ -1773,7 +1773,8 @@
             "subject": "Lütfen bir konu seçiniz.",
             "grade-range": "Lütfen geçerli bir not aralığı girin.",
             "participant-count": "Lütfen geçerli bir katılımcı sayısı girin.",
-            "no-appointments": "Lütfen en az bir randevu oluşturun."
+            "no-appointments": "Lütfen en az bir randevu oluşturun.",
+            "unfinished-appointment": "Lütfen tamamlanmamış randevuyu kaydedin veya silin."
         },
         "CourseDate": {
             "step": {

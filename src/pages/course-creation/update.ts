@@ -401,9 +401,6 @@ export function useUpdateCourse() {
             duration: x.duration,
             title: x.title,
             description: x.description,
-            displayName: x.displayName,
-            position: x.position,
-            total: x.total,
             appointmentType: x.appointmentType!,
             subcourseId: subcourseId!,
         }));

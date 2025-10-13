@@ -76,12 +76,12 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         disabled={{ before: minDate.toJSDate() }}
                     />
                     {errors && errors.includes('date') && (
-                        <Typography variant="sm" className="text-red-500">
+                        <Typography variant="sm" className="text-red-500 error">
                             {t('appointment.create.emptyDateError')}
                         </Typography>
                     )}
                     {errors && errors.includes('dateNotInOneWeek') && (
-                        <Typography variant="sm" className="text-red-500">
+                        <Typography variant="sm" className="text-red-500 error">
                             {t('appointment.create.wrongDateError')}
                         </Typography>
                     )}
@@ -98,12 +98,12 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         min={minDate.toFormat('HH:mm')}
                     />
                     {errors && errors.includes('time') && (
-                        <Typography variant="sm" className="text-red-500">
+                        <Typography variant="sm" className="text-red-500 error">
                             {t('appointment.create.emptyTimeError')}
                         </Typography>
                     )}
                     {errors && errors.includes('timeNotInFiveMin') && (
-                        <Typography variant="sm" className="text-red-500">
+                        <Typography variant="sm" className="text-red-500 error">
                             {t('appointment.errors.timeNotInFiveMin')}
                         </Typography>
                     )}
@@ -126,7 +126,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         </SelectContent>
                     </Select>
                     {errors && errors.includes('duration') && (
-                        <Typography variant="sm" className="text-red-500">
+                        <Typography variant="sm" className="text-red-500 error">
                             {t('appointment.create.emptySelectError')}
                         </Typography>
                     )}
@@ -141,7 +141,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         videoChatType={videoChatType}
                     />
                     {errors && errors.includes('invalidLink') && (
-                        <Typography variant="sm" className="text-red-500">
+                        <Typography variant="sm" className="text-red-500 error">
                             {t('appointment.create.wrongVideoUrlError')}
                         </Typography>
                     )}

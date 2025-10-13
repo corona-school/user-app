@@ -57,6 +57,7 @@ interface AppointmentItemProps {
     total: number;
     isReadOnly: boolean;
     editingInit?: boolean; // If true, the item will be in editing mode initially
+    onBeginEdit?: (editing: DisplayAppointment) => void;
     onEdit?: (edited: DisplayAppointment) => { errors: string[] } | void;
     onCancelEdit?: () => void;
     onDuplicate?: () => void;
@@ -73,6 +74,7 @@ const AppointmentItem = React.memo(
         total,
         editingInit,
         isReadOnly,
+        onBeginEdit,
         onEdit,
         onCancelEdit,
         onDuplicate,
@@ -148,7 +150,14 @@ const AppointmentItem = React.memo(
                             displayName={appointment.displayName || appointment.title}
                             appointmentId={appointment.id}
                             declinedBy={appointment.declinedBy}
-                            onEdit={onEdit ? () => setEditing(true) : onEdit}
+                            onEdit={
+                                onEdit
+                                    ? () => {
+                                          setEditing(true);
+                                          onBeginEdit && onBeginEdit(appointment);
+                                      }
+                                    : onEdit
+                            }
                             onDuplicate={onDuplicate}
                             onDelete={onDelete}
                             clickable={clickable}
@@ -164,7 +173,6 @@ const AppointmentItem = React.memo(
 export interface DisplayAppointment extends Appointment {
     isNew?: boolean; // false => existing appointment, true => new appointment
     newId?: string; // UUID for new appointments, not created in backend yet.
-    index?: number; // Position in the list, used for display purposes
 }
 
 type AppointmentListProps = {
@@ -178,10 +186,11 @@ type AppointmentListProps = {
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
     height?: number | string;
+    onAppointmentBeginEdit?: (editing: DisplayAppointment) => void;
     onAppointmentEdited?: (updated: DisplayAppointment) => { errors: string[] } | void;
     onAppointmentCanceledEdit?: () => void;
     onAppointmentDuplicate?: (duplicate: DisplayAppointment) => void;
-    onAppointmentDelete?: (appointment: DisplayAppointment) => void; // id is UUID string if isNew is true, otherwise it's the ID number
+    onAppointmentDelete?: (appointment: DisplayAppointment) => void;
     editingIdInit?: string; // If provided, the appointment with this ID will be in editing mode initially
     clickable: boolean; // If true, the appointment items are clickable and navigate to the appointment detail page
     editable: boolean; // If true, the appointment items show edit, duplicate, and delete buttons
@@ -207,6 +216,7 @@ const AppointmentList = ({
     loadMoreAppointments,
     lastAppointmentId,
     height = 100,
+    onAppointmentBeginEdit,
     onAppointmentEdited,
     onAppointmentCanceledEdit,
     onAppointmentDuplicate,
@@ -283,6 +293,7 @@ const AppointmentList = ({
                         total={appointments.length}
                         isReadOnly={isReadOnlyList}
                         editingInit={appointment.isNew && appointment.newId === editingIdInit}
+                        onBeginEdit={onAppointmentBeginEdit}
                         onEdit={appointmentInPast(appointment) ? undefined : (updated) => onAppointmentEdited && onAppointmentEdited(updated)}
                         onCancelEdit={onAppointmentCanceledEdit}
                         onDuplicate={onAppointmentDuplicate ? () => onAppointmentDuplicate(appointment) : undefined}

@@ -1773,7 +1773,8 @@
             "subject": "Please select a subject.",
             "grade-range": "Please enter a valid grade range.",
             "participant-count": "Please enter a valid number of participants.",
-            "no-appointments": "Please create at least one lecture ."
+            "no-appointments": "Please create at least one lecture .",
+            "unfinished-appointment": "Please save or delete the incomplete lecture."
         },
         "CourseDate": {
             "step": {

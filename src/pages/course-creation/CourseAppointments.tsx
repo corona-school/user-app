@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Lecture_Appointmenttype_Enum } from '@/gql/graphql';
 import AppointmentList, { DisplayAppointment } from '../../widgets/AppointmentList';
@@ -13,14 +13,26 @@ type Props = {
     appointments: DisplayAppointment[];
     setAppointments: Dispatch<SetStateAction<DisplayAppointment[] | undefined>>;
     errors: string[];
+    setAppointmentErrors: (hasErrors: boolean) => void;
 };
 
-const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, subcourseId, setAppointments, errors }) => {
+const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, subcourseId, setAppointments, errors, setAppointmentErrors }) => {
     const { t } = useTranslation();
 
     const [creating, setCreating] = useState<boolean>(false);
     const [placeholderId, setPlaceholderId] = useState<string | undefined>(undefined);
     const [appointmentToDelete, setAppointmentToDelete] = useState<DisplayAppointment | undefined>(undefined);
+
+    const [appointmentsWithErrors, setAppointmentsWithErrors] = useState<string[]>([]);
+
+    // inform parent about errors
+    useEffect(() => {
+        if (appointmentsWithErrors.length > 0) {
+            setAppointmentErrors(true);
+        } else {
+            setAppointmentErrors(false);
+        }
+    }, [appointmentsWithErrors, setAppointmentErrors]);
 
     const getDraftAppointments = useMemo(() => {
         const draftAppointments = [...appointments].sort((a, b) => DateTime.fromISO(a.start).toMillis() - DateTime.fromISO(b.start).toMillis());
@@ -44,7 +56,9 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
     }, [appointments, creating, placeholderId]);
 
     const onCreateAppointment = () => {
-        setPlaceholderId(crypto.randomUUID());
+        const newId = crypto.randomUUID();
+        setPlaceholderId(newId);
+        setAppointmentsWithErrors((prev) => [...prev, newId]); // unfinished appointment => error (gets cleared in onAppointmentEdited)
         setCreating(true);
     };
 
@@ -74,7 +88,10 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
         const errors = validateInputs(updated);
 
         if (errors.length > 0) {
+            setAppointmentsWithErrors((prev) => [...prev, updated.isNew ? updated.newId! : updated.id.toString()]);
             return { errors };
+        } else {
+            setAppointmentsWithErrors((prev) => prev.filter((id) => id !== (updated.isNew ? updated.newId! : updated.id.toString())));
         }
 
         if (updated.isNew) {
@@ -119,6 +136,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                 id: -1, // Temporary ID until saved
             },
         ]);
+        setAppointmentsWithErrors((prev) => [...prev, newId]); // add error for unfinished appointment
         setPlaceholderId(newId);
     };
 
@@ -153,9 +171,13 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                             isReadOnlyList={false}
                             appointments={getDraftAppointments}
                             noOldAppointments={subcourseId === undefined}
+                            onAppointmentBeginEdit={(appointment) => {
+                                setAppointmentsWithErrors((prev) => [...prev, appointment.isNew ? appointment.newId! : appointment.id.toString()]); // add error for unfinished appointment
+                            }}
                             onAppointmentEdited={onAppointmentEdited}
                             onAppointmentCanceledEdit={() => {
                                 setCreating(false);
+                                setAppointmentsWithErrors((prev) => prev.filter((id) => id !== placeholderId)); // remove error for unfinished appointment
                             }}
                             onAppointmentDuplicate={!creating ? onAppointmentDuplicate : undefined}
                             onAppointmentDelete={(x) => (x.isNew ? onAppointmentDelete(x) : setAppointmentToDelete(x))}
@@ -172,6 +194,12 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
             {errors.includes('no-appointments') && (
                 <Typography variant="sm" className="text-red-500 error">
                     {t('course.error.no-appointments')}
+                </Typography>
+            )}
+
+            {errors.includes('unfinished-appointment') && (
+                <Typography variant="sm" className="text-red-500 error">
+                    {t('course.error.unfinished-appointment')}
                 </Typography>
             )}
         </>

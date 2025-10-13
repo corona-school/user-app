@@ -39,7 +39,8 @@ export type CreateCourseError =
     | 'subject'
     | 'grade-range'
     | 'participant-count'
-    | 'no-appointments';
+    | 'no-appointments'
+    | 'unfinished-appointment';
 
 export enum ChatType {
     NORMAL = 'NORMAL',
@@ -165,6 +166,7 @@ const CreateCourse: React.FC = () => {
     const editingExistingCourse = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
 
     const [errors, setErrors] = useState<CreateCourseError[]>([]);
+    const [appointmentErrors, setAppointmentErrors] = useState<boolean>(false);
 
     const [courseId, setCourseId] = useState<number | undefined>(undefined);
     const [courseName, setCourseName] = useState<string>('');
@@ -282,6 +284,10 @@ const CreateCourse: React.FC = () => {
         if (!courseAppointments || courseAppointments?.length === 0) {
             errors.push('no-appointments');
         }
+        if (appointmentErrors) {
+            errors.push('unfinished-appointment');
+        }
+
         if (errors.length > 0) {
             setErrors(errors);
             return;
@@ -397,6 +403,7 @@ const CreateCourse: React.FC = () => {
                         appointments={courseAppointments ?? []}
                         setAppointments={setCourseAppointments}
                         errors={errors}
+                        setAppointmentErrors={setAppointmentErrors}
                     />
                     <CourseSettings
                         allowParticipantContact={allowParticipantContact}
