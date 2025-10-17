@@ -473,8 +473,8 @@
                         "answer": "Hangi derslerde yardıma ihtiyacın olduğunu anlayalım ve sana uygun teklifleri bulalım diye."
                     },
                     {
-                        "question": "Hangi dil konuşulacak?",
-                        "answer": "Genellikle Almanca, ama İngilizce veya başka diller de olabilir. Eğer Almanca bilmiyorsan, bize e-posta yaz; bir çözüm buluruz."
+                        "question": "Hangi dil konuşuluyor?",
+                        "answer": "Genellikle Almanca konuşuyoruz, ancak İngilizce veya diğer dilleri de konuşabiliriz. Almanca bilmiyorsanız, bize <supportEmail>support@lern-fair.de</supportEmail> adresine e-posta gönderin, bir çözüm buluruz."
                     }
                 ],
                 "faqStudent": [
@@ -555,7 +555,9 @@
                 "title": "Randevu oluşturuldu!",
                 "description": "Birkaç adım kaldı. Sonra gerçekten başlayabiliriz.",
                 "changeAppointment": "Randevuyu değiştir",
-                "cancelAppointment": "Randevuyu iptal et"
+                "cancelAppointment": "Randevuyu iptal et",
+                "joinCall": "Görüntülü aramayı şimdi başlatın",
+                "joinMeetingHint": "Toplantıyı sadece randevunun başlamasından 5 dakika önce başlatabilirsiniz."
             },
             "registrationCompleted": {
                 "title": "Başardın!",
@@ -678,7 +680,8 @@
             "notifications": "Bildirimler",
             "contactSupport": "İletişim desteği",
             "deactivateAccount": "Hesabı devre dışı bırak",
-            "logout": "Oturumu kapat"
+            "logout": "Oturumu kapat",
+            "agb": "Genel Hüküm ve Koşullar"
         }
     },
     "helpcenter": {
@@ -1110,7 +1113,8 @@
             "title": "Yasal konular",
             "imprint": "Künye",
             "datapolicy": "Veri koruma",
-            "terms": "Kullanım Koşulları"
+            "terms": "Kullanım Koşulları",
+            "agb": "Genel Hüküm ve Koşullar"
         },
         "header": "Ayarlar"
     },

@@ -29,8 +29,8 @@ export const AcceptanceCheck = ({ onBack, onNext, onFail }: AcceptanceCheckProps
 
     return (
         <RegistrationStep onBack={onBack} onNext={onNext} isNextDisabled={!hasCheckedAtLeastTwo()}>
-            <RegistrationStepTitle className="md:mb-4 mb-4">{t('registration.steps.acceptanceCheck.title')}</RegistrationStepTitle>
-            <RegistrationStepDescription className="mb-4">{t('registration.steps.acceptanceCheck.description')}</RegistrationStepDescription>
+            <RegistrationStepTitle className="md:mb-4 mb-3">{t('registration.steps.acceptanceCheck.title')}</RegistrationStepTitle>
+            <RegistrationStepDescription className="mb-5">{t('registration.steps.acceptanceCheck.description')}</RegistrationStepDescription>
             <div className="flex flex-col gap-y-2 w-full">
                 <div className="w-full bg-white p-4 gap-x-4 flex items-center rounded-md">
                     <Checkbox

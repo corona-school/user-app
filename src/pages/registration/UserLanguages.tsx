@@ -22,7 +22,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={isNextDisabled}>
             {form.userType === 'student' && <OptionalBadge />}
-            <RegistrationStepTitle>
+            <RegistrationStepTitle className="mb-3">
                 {t(form.userType === 'pupil' ? 'registration.steps.languages.titlePupil' : 'registration.steps.languages.titleStudent')}
             </RegistrationStepTitle>
             <RegistrationStepDescription className="mb-4 md:px-14">

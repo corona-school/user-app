@@ -5,7 +5,7 @@ import { cn } from '@/lib/Tailwind';
 import { ContactSupportModal } from '@/modals/ContactSupportModal';
 import DeactivateAccountModal from '@/modals/DeactivateAccountModal';
 import NotificationPreferencesModal from '@/modals/NotificationPreferencesModal';
-import { IconMenu2, IconBell, IconLifebuoy, IconUserOff, IconLogout } from '@tabler/icons-react';
+import { IconMenu2, IconBell, IconLifebuoy, IconUserOff, IconLogout, IconSectionSign } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -50,6 +50,13 @@ export const DropdownRegistrationMenu = () => {
                     <DropdownMenuItem className="gap-x-[10px] h-12" onClick={() => setIsDeactivateAccountOpen(true)}>
                         <IconUserOff className="!size-6" />
                         <Typography className="font-semibold leading-3">{t('registration.menu.deactivateAccount')}</Typography>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem
+                        className="gap-x-[10px] h-12"
+                        onClick={() => window.open(form.userType === 'pupil' ? `${window.origin}/agb-schueler` : `${window.origin}/agb-helfer`, '_blank')}
+                    >
+                        <IconSectionSign className="!size-6" />
+                        <Typography className="font-semibold leading-3">{t('registration.menu.agb')}</Typography>
                     </DropdownMenuItem>
                     <DropdownMenuItem className="gap-x-[10px] h-12" onClick={handleOnLogout}>
                         <IconLogout className="!size-6" />

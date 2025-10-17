@@ -47,6 +47,8 @@ export const UserAge = ({ onBack, onNext }: UserAgeProps) => {
                             errorMessage={error}
                             errorMessageClassName="min-h-10"
                             min={MIN_AGE_PUPIL}
+                            type="number"
+                            onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
                         />
                     </div>
                 </div>

@@ -143,7 +143,7 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                     className="h-[150px] md:h-[160px]"
                 />
             </div>
-            <Typography variant="body-lg" className="text-center mb-5">
+            <Typography variant="body-lg" className="text-center mb-5 max-w-[495px]">
                 <span className="font-semibold whitespace-pre text-wrap">
                     {t(form.userType === 'pupil' ? 'registration.steps.bookAppointment.messagePupil' : 'registration.steps.bookAppointment.messageStudent')}
                 </span>
@@ -157,11 +157,11 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                     {t('registration.steps.bookAppointment.bookAppointmentButton')}
                 </Button>
             </div>
-            <Modal className="max-w-[800px] w-full border-none" isOpen={isFaqModalOpen} onOpenChange={setIsFaqModalOpen}>
+            <Modal className="max-w-[800px] w-full border-none max-h-full overflow-y-auto" isOpen={isFaqModalOpen} onOpenChange={setIsFaqModalOpen}>
                 <ModalHeader>
                     <DialogTitle className="sr-only">FAQ</DialogTitle>
                 </ModalHeader>
-                <div>
+                <div className="overflow-y-auto">
                     <Accordion type="single" collapsible className="w-full my-4">
                         {faq.map(({ question, answer }, index) => (
                             <Fragment key={question}>
@@ -196,6 +196,11 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
                                                             }}
                                                         >
                                                             hier findest du ein Erklärvideo
+                                                        </a>
+                                                    ),
+                                                    supportEmail: (
+                                                        <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
+                                                            support@lern-fair.de
                                                         </a>
                                                     ),
                                                 }}
