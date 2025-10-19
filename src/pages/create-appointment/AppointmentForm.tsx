@@ -12,6 +12,7 @@ import { Typography } from '@/components/Typography';
 import { DatePicker } from '@/components/DatePicker';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
 import { TextArea } from '@/components/TextArea';
+import AddTimeWithTooltip from '@/components/ToolTipTimeZone';
 
 type FormProps = {
     errors: FormErrors;
@@ -24,6 +25,7 @@ type FormProps = {
     defaultDate?: string;
     defaultTime?: string;
 };
+
 const AppointmentForm: React.FC<FormProps> = ({
     errors,
     onSetDate,
@@ -134,7 +136,7 @@ const AppointmentForm: React.FC<FormProps> = ({
                     )}
                 </div>
                 <div className="flex flex-col gap-y-1">
-                    <Label htmlFor="time">{t('appointment.create.timeLabel')}</Label>
+                    <AddTimeWithTooltip />
                     <Input
                         className="w-full"
                         id="time"
