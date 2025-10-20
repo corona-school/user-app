@@ -112,13 +112,13 @@ export default function NavigatorLazy() {
             {/* Public */}
 
             <Route
-                path="/registration/"
+                path="/registration/*"
                 element={
                     <RegistrationProvider>
                         <Registration />
                     </RegistrationProvider>
                 }
-            />
+            ></Route>
 
             {/* Private */}
             <Route
