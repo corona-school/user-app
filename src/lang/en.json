@@ -72,7 +72,8 @@
             "wrongVideoUrlError": "Please enter a valid video link.",
             "courseImageAltText": "Course image",
             "videoChatLabel": "Video chat",
-            "videoChatPlaceholder": "Add your own link to the video chat"
+            "videoChatPlaceholder": "Add your own link to the video chat",
+            "toolTipTimeLabel": "All times at Lern-Fair are created in the time zone \"Central European Time (CET), Europe/Berlin\" (current time: {{currentTime}})."
         },
         "detail": {
             "reasonDisabled": {
@@ -555,7 +556,8 @@
                 "description": "There are just a few last steps. Then we can really get started.",
                 "changeAppointment": "Change appointment",
                 "cancelAppointment": "Cancel appointment",
-                "joinCall": "Start video call now"
+                "joinCall": "Start video call now",
+                "joinMeetingHint": "You can only start the meeting 5 minutes before the start of the appointment."
             },
             "registrationCompleted": {
                 "title": "You did it!",

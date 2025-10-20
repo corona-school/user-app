@@ -72,7 +72,8 @@
             "wrongVideoUrlError": "Пожалуйста, введите правильную ссылку на видео.",
             "courseImageAltText": "Изображение курса",
             "videoChatLabel": "Видеочат",
-            "videoChatPlaceholder": "Добавьте собственную ссылку на видеочат"
+            "videoChatPlaceholder": "Добавьте собственную ссылку на видеочат",
+            "toolTipTimeLabel": "Все время на Lern-Fair указано в часовом поясе \"Центральное европейское время (CET), Европа/Берлин\" (текущее время: {{currentTime}})."
         },
         "detail": {
             "reasonDisabled": {
@@ -555,7 +556,8 @@
                 "description": "Осталось ещё несколько шагов. И мы сможем хорошо начать.",
                 "changeAppointment": "Изменить встречу",
                 "cancelAppointment": "Отменить встречу",
-                "joinCall": "Начните видеозвонок прямо сейчас"
+                "joinCall": "Начните видеозвонок прямо сейчас",
+                "joinMeetingHint": "Вы можете начать встречу только за 5 минут до ее начала."
             },
             "registrationCompleted": {
                 "title": "Ты справился!",

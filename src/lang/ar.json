@@ -72,7 +72,8 @@
             "wrongVideoUrlError": "الرجاء إدخال رابط فيديو صالح.",
             "courseImageAltText": "صورة الدورة",
             "videoChatLabel": "دردشة الفيديو",
-            "videoChatPlaceholder": "أضف الرابط الخاص بك إلى محادثة الفيديو"
+            "videoChatPlaceholder": "أضف الرابط الخاص بك إلى محادثة الفيديو",
+            "toolTipTimeLabel": "يتم إنشاء جميع الأوقات في Lern-Fair في المنطقة الزمنية \"توقيت وسط أوروبا (CET، أوروبا/برلين\" (التوقيت الحالي: {{currentTime}})."
         },
         "detail": {
             "reasonDisabled": {
@@ -555,7 +556,8 @@
                 "description": "تبقّت خطوات قليلة فقط. بعدها يمكننا أن نبدأ بشكل جيد.",
                 "changeAppointment": "تغيير الموعد",
                 "cancelAppointment": "إلغاء الموعد",
-                "joinCall": "ابدأ مكالمة الفيديو الآن"
+                "joinCall": "ابدأ مكالمة الفيديو الآن",
+                "joinMeetingHint": "يمكنك بدء الاجتماع قبل 5 دقائق فقط من بدء الموعد."
             },
             "registrationCompleted": {
                 "title": "لقد نجحت!",
