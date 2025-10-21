@@ -113,7 +113,7 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Typography className="font-semibold line-clamp-2 leading-3">{headline}</Typography>
+                                <Typography className="font-semibold leading-3">{headline}</Typography>
                             </TooltipTrigger>
                             <TooltipContent side="bottom" className="bg-primary text-primary-foreground border-transparent max-w-80">
                                 {headline}
@@ -123,9 +123,7 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
-                                <Typography className="line-clamp-5 lg:line-clamp-2" variant="sm">
-                                    {body}
-                                </Typography>
+                                <Typography variant="sm">{body}</Typography>
                             </TooltipTrigger>
                             <TooltipContent side="bottom" className="bg-primary text-primary-foreground border-transparent max-w-80">
                                 {body}
