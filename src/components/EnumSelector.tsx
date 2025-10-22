@@ -66,13 +66,11 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
 
         const memoizedSearchItems = useMemo(() => {
             const searchItems = Object.values(values).slice(gridItemsCount, Object.values(values).length);
-            return searchItems
-                .map((e) => {
-                    const enumValue = e as Enum;
-                    const translation = getTranslation(enumValue);
-                    return { value: e, label: `${t(asTranslationKey(translation as any))}`, icon: getIcon?.(enumValue) };
-                })
-                .filter((e) => e.label.toLowerCase().includes(search.toLowerCase()));
+            return searchItems.map((e) => {
+                const enumValue = e as Enum;
+                const translation = getTranslation(enumValue);
+                return { value: e, label: `${t(asTranslationKey(translation as any))}`, icon: getIcon?.(enumValue) };
+            });
             // eslint-disable-next-line react-hooks/exhaustive-deps
         }, [search, gridItemsCount]);
 
@@ -125,6 +123,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                                 } else {
                                     setValue(e);
                                 }
+                                setSearch('');
                             }}
                             className={cn(searchConfig?.className)}
                             isLoading={false}

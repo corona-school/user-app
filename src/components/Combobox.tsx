@@ -68,29 +68,31 @@ export const Combobox = ({
 
     const memoizedOptions = useMemo(
         () =>
-            options.map((e) => (
-                <CommandItem
-                    key={`${e.value}-${e.label}}`}
-                    value={e.value}
-                    onSelect={(itemValue) => {
-                        if (multiple) {
-                            const current = (value as string[] | null) ?? [];
-                            const exists = current.includes(itemValue);
-                            const updated = exists ? current.filter((v) => v !== itemValue) : [...current, itemValue];
-                            onSelect(updated);
-                        } else {
-                            onSelect(itemValue === (value as unknown as string) ? '' : itemValue);
-                        }
-                        setOpen(false);
-                    }}
-                >
-                    <IconCheck className={cn('mr-2 h-4 w-4', getIsItemChecked(e.value) ? 'opacity-100' : 'opacity-0')} />
-                    {e.icon}
-                    {e.label}
-                </CommandItem>
-            )),
+            options
+                .filter((e) => (search ? e.label.toLowerCase().includes(search.toLowerCase()) : true))
+                .map((e) => (
+                    <CommandItem
+                        key={`${e.value}-${e.label}}`}
+                        value={e.value}
+                        onSelect={(itemValue) => {
+                            if (multiple) {
+                                const current = (value as string[] | null) ?? [];
+                                const exists = current.includes(itemValue);
+                                const updated = exists ? current.filter((v) => v !== itemValue) : [...current, itemValue];
+                                onSelect(updated);
+                            } else {
+                                onSelect(itemValue === (value as unknown as string) ? '' : itemValue);
+                            }
+                            setOpen(false);
+                        }}
+                    >
+                        <IconCheck className={cn('mr-2 h-4 w-4', getIsItemChecked(e.value) ? 'opacity-100' : 'opacity-0')} />
+                        {e.icon}
+                        {e.label}
+                    </CommandItem>
+                )),
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [options, multiple, value]
+        [options, multiple, value, search]
     );
 
     return (
