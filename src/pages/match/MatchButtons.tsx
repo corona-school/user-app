@@ -46,14 +46,6 @@ export const MatchButtons = ({ match, isLoading, refresh }: MatchButtonsProps) =
     const [createMatcheeChat, { loading: isCreatingChat }] = useMutation(CREATE_MATCH_CHAT_MUTATION);
     const [dissolveMatch, { loading: isDissolvingMatch }] = useMutation(DISSOLVE_MATCH_MUTATION);
 
-    const isActiveMatch = useMemo(() => {
-        if (!match?.dissolved) return true;
-        const today = DateTime.now().endOf('day');
-        const dissolvedAtPlus30Days = DateTime.fromISO(match?.dissolvedAt).plus({ days: 30 });
-        const before = dissolvedAtPlus30Days < today;
-        return !before;
-    }, [match?.dissolved, match?.dissolvedAt]);
-
     const openChatContact = async () => {
         let contactId: string = '';
         if (userType === 'student' && match?.pupil.id) contactId = pupilIdToUserId(match?.pupil.id);
@@ -89,7 +81,7 @@ export const MatchButtons = ({ match, isLoading, refresh }: MatchButtonsProps) =
         <>
             <div className="flex flex-col gap-y-2">
                 <div className="flex flex-col gap-y-2 md:flex-row gap-x-2">
-                    {isActiveMatch && (
+                    {match?.isChatActive && (
                         <Button
                             className="md:max-w-[270px] w-full"
                             isLoading={isCreatingChat || isLoading}
@@ -113,7 +105,7 @@ export const MatchButtons = ({ match, isLoading, refresh }: MatchButtonsProps) =
                     )}
                 </div>
                 <div className="flex gap-x-2">
-                    {isActiveMatch && (
+                    {!match?.dissolved && (
                         <Button
                             className="md:max-w-[270px] w-full"
                             isLoading={isLoading}
