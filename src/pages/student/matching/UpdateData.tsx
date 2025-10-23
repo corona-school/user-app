@@ -86,7 +86,7 @@ const UpdateData = ({ refetchQuery, profile, onNext, onBack }: UpdateDataProps) 
                         toggleConfig={{
                             variant: 'outline',
                             size: 'lg',
-                            className: 'justify-start w-[49%] font-semibold h-[48px]',
+                            className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
                         }}
                         multiple
                         value={selectedLanguages}
