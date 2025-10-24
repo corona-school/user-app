@@ -185,7 +185,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                     )}
                 </VStack>
                 {/* QR Code */}
-                {canStartMeeting && !isMobilePhone && (
+                {!isMobilePhone && (
                     <HStack backgroundColor={'primary.100'} padding="16px" borderRadius="15px" space={4} mt="20px" flexWrap="wrap">
                         <VStack>
                             <HStack alignItems={'center'} space={2} mb={2} ml={-1}>
