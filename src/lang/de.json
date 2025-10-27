@@ -857,7 +857,7 @@
         },
         "Languages": {
             "labelPupil": "Welche Sprachen sprichst du zuhause?",
-            "labelStudent": "In welchen Sprachen kannst du helfen?",
+            "labelStudent": "Welche Sprachen sprichst du fließend?",
             "empty": "Keine Angabe",
             "single": {
                 "header": "Sprache ändern",
