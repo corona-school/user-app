@@ -29,7 +29,9 @@ export type MatchWithPupil = Opt<
     }
 >;
 
-export type PupilScreening = Opt<Pick<Pupil_Screening, 'id' | 'createdAt' | 'updatedAt' | 'comment' | 'status' | 'invalidated' | 'knowsCoronaSchoolFrom'>> & {
+export type PupilScreening = Opt<
+    Pick<Pupil_Screening, 'id' | 'createdAt' | 'updatedAt' | 'comment' | 'status' | 'invalidated' | 'knowsCoronaSchoolFrom' | 'systemMessages'>
+> & {
     screeners: Pick<Screener, 'firstname' | 'lastname'>[];
 };
 
@@ -70,11 +72,14 @@ export type PupilForScreening = Pick<
     calendarPreferences?: CalendarPreferences;
 };
 
-export type InstructorScreening = Pick<Instructor_Screening, 'id' | 'status' | 'createdAt' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus'> & {
+export type InstructorScreening = Pick<
+    Instructor_Screening,
+    'id' | 'status' | 'createdAt' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus' | 'systemMessages'
+> & {
     screener: Pick<Screener, 'firstname' | 'lastname'>;
 };
 
-export type TutorScreening = Pick<Screening, 'id' | 'createdAt' | 'status' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus'> & {
+export type TutorScreening = Pick<Screening, 'id' | 'createdAt' | 'status' | 'comment' | 'knowsCoronaSchoolFrom' | 'jobStatus' | 'systemMessages'> & {
     screener: Pick<Screener, 'firstname' | 'lastname'>;
 };
 

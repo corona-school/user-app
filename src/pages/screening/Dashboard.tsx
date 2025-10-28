@@ -74,6 +74,7 @@ export function ScreeningDashboard() {
                         status
                         comment
                         knowsCoronaSchoolFrom
+                        systemMessages
                         createdAt
                         updatedAt
                         screeners { firstname lastname }
@@ -125,8 +126,8 @@ export function ScreeningDashboard() {
                         nextLecture { start duration }
                     }
 
-                    tutorScreenings { id createdAt status comment, jobStatus,  knowsCoronaSchoolFrom, screener { firstname lastname } }
-                    instructorScreenings { id createdAt status comment, jobStatus, knowsCoronaSchoolFrom, screener { firstname lastname } }
+                    tutorScreenings { id createdAt status comment, jobStatus,  knowsCoronaSchoolFrom, screener { firstname lastname } systemMessages }
+                    instructorScreenings { id createdAt status comment, jobStatus, knowsCoronaSchoolFrom, screener { firstname lastname } systemMessages }
                     user {
                         receivedScreeningSuggestions {
                             sentAt
@@ -191,6 +192,7 @@ export function ScreeningDashboard() {
                     createdAt
                     updatedAt
                     screeners { firstname lastname }
+                    systemMessages
                 }
                 user {
                     receivedScreeningSuggestions {
