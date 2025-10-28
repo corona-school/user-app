@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
 import { IconQuestionMark, IconThumbUp, IconThumbDown, IconGhost } from '@tabler/icons-react';
@@ -224,11 +224,13 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh, onAfter
                         type="pupil"
                     />
                 </div>
+
                 <div className="flex flex-col gap-y-2">
-                    <Label>
-                        Gesprächsdokumentation für 4-Augen-Entscheidung - <span className="font-bold">(Wird nach Annahme/Ablehnung gelöscht)</span>
-                    </Label>
+                    <Typography variant="h5">Gesprächsdokumentation für 4-Augen-Entscheidung - (Wird nach Annahme/Ablehnung gelöscht)</Typography>
+                    <Label>Manuell gespeichert:</Label>
                     <TextArea className="resize-none h-24 w-full" value={comment} onChange={(e) => setComment(e.target.value)} />
+                    <Label>Automatisch gespeichert:</Label>
+                    <TextArea className="resize-none h-24 w-full" value={screening.systemMessages.join('\n')} disabled />
                 </div>
             </div>
             <div className="mt-8">
