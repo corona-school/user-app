@@ -933,7 +933,7 @@
         },
         "Helper": {
             "certificate": {
-                "title": "Meine Bescheinigungen",
+                "title": "Ehrenamts-Bescheinigung",
                 "button": "Bescheinigung anfordern"
             }
         },
@@ -1177,7 +1177,7 @@
             "title": "Allgemein",
             "profile": "Profil",
             "calendarPreferences": "Wann hast du Zeit?",
-            "certificates": "Bescheinigungen",
+            "certificates": "Ehrenamts-Bescheinigung",
             "languageVersion": "Sprachversion",
             "notifications": "Benachrichtigungen",
             "onboarding": "Onboarding-Tour",
