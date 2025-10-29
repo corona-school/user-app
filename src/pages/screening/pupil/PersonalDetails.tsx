@@ -2,6 +2,7 @@ import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
 import { TextArea } from '@/components/TextArea';
+import { Toggle } from '@/components/Toggle';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
 import { ExternalSchoolSearch } from '@/gql/graphql';
@@ -225,6 +226,44 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                                 />
                             </div>
                         </div>
+                    </div>
+                </div>
+                <div className="mt-4">
+                    <Typography variant="h5" className="mb-5">
+                        Rollen
+                    </Typography>
+                    <div className="flex gap-6 w-full">
+                        <Toggle
+                            variant="outline"
+                            size="lg"
+                            className="p-8 h-auto"
+                            pressed={form.canHaveMatches}
+                            onPressedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}
+                            asChild
+                            role="button"
+                        >
+                            <div className="flex gap-x-4">
+                                <Checkbox checked={form.canHaveMatches} onCheckedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}></Checkbox>
+                                Kann einen Lernpaar haben
+                            </div>
+                        </Toggle>
+                        <Toggle
+                            variant="outline"
+                            size="lg"
+                            className="p-8 h-auto"
+                            pressed={form.canParticipateInCourses}
+                            onPressedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
+                            asChild
+                            role="button"
+                        >
+                            <div className="flex gap-x-4">
+                                <Checkbox
+                                    checked={form.canParticipateInCourses}
+                                    onCheckedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
+                                ></Checkbox>
+                                Kann an Kursen teilnehmen
+                            </div>
+                        </Toggle>
                     </div>
                 </div>
             </div>

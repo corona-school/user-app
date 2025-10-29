@@ -62,6 +62,8 @@ export type PupilForScreening = Pick<
     | 'hasSpecialNeeds'
     | 'descriptionForMatch'
     | 'descriptionForScreening'
+    | 'isPupil'
+    | 'isParticipant'
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];
