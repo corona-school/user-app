@@ -51,6 +51,8 @@ export function ScreeningDashboard() {
                     descriptionForScreening
                     descriptionForMatch
                     calendarPreferences
+                    isPupil
+                    isParticipant
                     school {
                         id
                         name
@@ -165,6 +167,8 @@ export function ScreeningDashboard() {
                 descriptionForScreening
                 descriptionForMatch
                 calendarPreferences
+                isPupil
+                isParticipant
                 school {
                     id
                     name
