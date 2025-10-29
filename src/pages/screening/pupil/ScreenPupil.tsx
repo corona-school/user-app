@@ -227,10 +227,16 @@ export const ScreenPupil = ({ screening, needsScreening, pupil, refresh, onAfter
 
                 <div className="flex flex-col gap-y-2">
                     <Typography variant="h5">Gesprächsdokumentation für 4-Augen-Entscheidung - (Wird nach Annahme/Ablehnung gelöscht)</Typography>
-                    <Label>Manuell gespeichert:</Label>
-                    <TextArea className="resize-none h-24 w-full" value={comment} onChange={(e) => setComment(e.target.value)} />
-                    <Label>Automatisch gespeichert:</Label>
-                    <TextArea className="resize-none h-24 w-full" value={screening.systemMessages.join('\n')} disabled />
+                    <div className="flex flex-row gap-x-4 w-full">
+                        <div className="w-full">
+                            <Label>Manuell gespeichert:</Label>
+                            <TextArea className="resize-none h-24 w-full" value={comment} onChange={(e) => setComment(e.target.value)} />
+                        </div>
+                        <div className="w-full">
+                            <Label>Automatisch gespeichert:</Label>
+                            <TextArea className="resize-none h-24 w-full" value={screening.systemMessages.join('\n')} disabled />
+                        </div>
+                    </div>
                 </div>
             </div>
             <div className="mt-8">
