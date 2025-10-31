@@ -51,7 +51,7 @@ const KnowledgeCenter = () => {
                                 <Outlet />
                             </TabsContent>
                             <TabsContent value="online-training" className="h-full">
-                                <div className="px-4 h-full">
+                                <div className="px-4 h-full pb-16">
                                     <Outlet />
                                 </div>
                             </TabsContent>

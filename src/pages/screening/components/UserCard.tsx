@@ -26,6 +26,7 @@ interface UserCardProps {
 
 const UserCard = ({ user, type, onClick }: UserCardProps) => {
     const { t } = useTranslation();
+    const activeMatches = (user?.matches as any[])?.filter((it) => !it.dissolved).length;
     return (
         <div
             className="flex flex-col items-center w-full h-full py-4 px-4 border-[0.5px] rounded-sm border-primary-light bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground"
@@ -45,7 +46,7 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
                 </Typography>
             </div>
             <div className="flex w-full flex-wrap gap-2 mt-4">
-                {!!user?.matches?.length && <Badge>{t('screening.has_matches')}</Badge>}
+                {!!activeMatches && <Badge>{t('screening.has_matches', { count: activeMatches })}</Badge>}
                 {user?.pupilScreenings?.some((it) => it!.comment?.toLowerCase().includes('fallberatung') && ['dispute', 'pending'].includes(it!.status)) && (
                     <Badge variant="destructive">Fallberatung 💬</Badge>
                 )}
