@@ -34,6 +34,7 @@ export function ScreeningDashboard() {
                 pupil {
                     active
                     id
+                    age
                     createdAt
                     firstname
                     lastname
@@ -101,6 +102,7 @@ export function ScreeningDashboard() {
                     languages
                     zipCode
                     state
+                    isAdult
                     subjectsFormatted { name grade { min max } }
                     certificateOfConductDeactivationDate
                     certificateOfConduct {
@@ -149,6 +151,7 @@ export function ScreeningDashboard() {
         gql(`
         query GetDisputedScreenings {
             pupilsToBeScreened(onlyDisputed: true) {
+                age
                 active
                 id
                 createdAt
