@@ -2452,7 +2452,7 @@
         "rejection_screening": "Abgelehntes Screening",
         "dispute_screening": "Unklares Screening",
         "pending_screening": "Ausstehendes Screening",
-        "has_matches": "Hat Lernpaar",
+        "has_matches": "{{count}} Lernpaare",
         "registered_since": "registriert seit",
         "dissolved_by": "Aufgelöst von: {{dissolver}}",
         "login_as_user": "Als Nutzer:in anmelden",
