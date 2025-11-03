@@ -12,6 +12,7 @@ const useLoginWithIDP = () => {
                 scope: 'openid profile email',
                 enable_granular_consent: 'true',
                 redirect_uri: `${window.location.origin}/login-with`,
+                state: JSON.stringify({ referrer: 'https://accounts.google.com/' }),
             }).toString()}`;
             window.location.href = AUTH_URL;
         }, 0);

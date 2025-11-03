@@ -174,22 +174,26 @@ const AppointmentTile: React.FC<Props> = ({
                         )}
                     </div>
                 )}
-                {isHighlighted && appointmentId && appointmentType && (
-                    <VideoButton
-                        isInstructor={isOrganizer}
-                        canJoin
-                        appointmentId={appointmentId}
-                        appointmentType={appointmentType}
-                        className={cn('w-full lg:w-[300px] mt-4')}
-                    />
-                )}
-                {appointmentId && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
-                    <AddToCalendarDropdown
-                        buttonVariant="optional"
-                        buttonClasses="w-full lg:w-[300px]"
-                        appointment={{ id: appointmentId, displayName, title, start, duration, description: description ?? '' }}
-                    />
-                )}
+                <div className="flex flex-col gap-y-4 lg:flex-row lg:justify-between align-top mt-4">
+                    {isHighlighted && appointmentId && appointmentType ? (
+                        <VideoButton
+                            isInstructor={isOrganizer}
+                            canJoin
+                            appointmentId={appointmentId}
+                            appointmentType={appointmentType}
+                            className={cn('w-full lg:w-[300px] mt-4')}
+                        />
+                    ) : (
+                        <div />
+                    )}
+                    {appointmentId && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
+                        <AddToCalendarDropdown
+                            buttonVariant="optional-dark"
+                            buttonClasses="w-full lg:w-[300px]"
+                            appointment={{ id: appointmentId, displayName, title, start, duration, description: description ?? '' }}
+                        />
+                    )}
+                </div>
             </div>
         </div>
     );

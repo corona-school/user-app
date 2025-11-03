@@ -96,6 +96,22 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
         return { can: true, reason: '' };
     };
 
+    const getEstimatedAgeRange = () => {
+        if (pupil.age === null || pupil.age === undefined) {
+            return 'Alter unbekannt';
+        }
+        const created = DateTime.fromISO(pupil.createdAt);
+        const now = DateTime.now();
+
+        const diff = now.diff(created, ['years', 'months']).toObject();
+        const yearsPassed = Math.floor(diff.years ?? 0);
+
+        const minAge = pupil.age + yearsPassed;
+        const maxAge = minAge + 1;
+
+        return `${minAge} bis ${maxAge} Jahre alt`;
+    };
+
     return (
         <div className="mt-8">
             <div className="mb-6">
@@ -107,6 +123,9 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                 </Typography>
                 <Typography>
                     <span className="font-bold">Registiert</span>: {formatDate(pupil.createdAt, DateTime.DATE_MED)}
+                </Typography>
+                <Typography>
+                    <span className="font-bold">Alter</span>: {getEstimatedAgeRange()}
                 </Typography>
                 <Typography>
                     <span className="font-bold">Aktiv</span>:{' '}

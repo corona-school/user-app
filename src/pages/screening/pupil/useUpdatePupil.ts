@@ -29,6 +29,8 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [descriptionForScreening, setDescriptionForScreening] = useState(pupil.descriptionForScreening);
     const [descriptionForMatch, setDescriptionForMatch] = useState(pupil.descriptionForMatch);
     const [weeklyAvailability, setWeeklyAvailability] = useState(pupil.calendarPreferences?.weeklyAvailability);
+    const [canHaveMatches, setCanHaveMatches] = useState(pupil.isPupil);
+    const [canParticipateInCourses, setCanParticipateInCourses] = useState(pupil.isParticipant);
 
     const updatePupil = async () => {
         try {
@@ -50,6 +52,8 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         },
                         descriptionForMatch,
                         descriptionForScreening,
+                        isPupil: canHaveMatches,
+                        isParticipant: canParticipateInCourses,
                         calendarPreferences: pupil.calendarPreferences
                             ? {
                                   ...pupil.calendarPreferences,
@@ -91,6 +95,10 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             setDescriptionForMatch,
             weeklyAvailability,
             setWeeklyAvailability,
+            canHaveMatches,
+            setCanHaveMatches,
+            canParticipateInCourses,
+            setCanParticipateInCourses,
         },
     };
 };

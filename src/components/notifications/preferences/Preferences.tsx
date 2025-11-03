@@ -1,4 +1,4 @@
-import { Box, Flex, Text, useBreakpointValue, useToast } from 'native-base';
+import { Box, Flex, Text, useBreakpointValue } from 'native-base';
 import PreferenceItem from './PreferenceItem';
 import { FC, useContext } from 'react';
 import { NotificationCategories, NotificationChannel } from '../../../helper/notification-preferences';
@@ -6,6 +6,7 @@ import { NotificationPreferencesContext } from '../../../pages/notification/Notf
 import { ToggleAll } from './ToggleAll';
 import { useTranslation } from 'react-i18next';
 import { PreferencesType } from '../../../types/lernfair/NotificationPreferences';
+import { toast } from 'sonner';
 
 type Props = {
     title: string;
@@ -17,8 +18,6 @@ type Props = {
 export const Preferences: FC<Props> = ({ title, notificationCategories, enableToggleAll, channels }) => {
     const { userPreferences, updateUserPreference } = useContext(NotificationPreferencesContext);
     const { t } = useTranslation();
-    const toast = useToast();
-
     const marginBottom = useBreakpointValue({
         base: 5,
         lg: 3,
@@ -33,7 +32,7 @@ export const Preferences: FC<Props> = ({ title, notificationCategories, enableTo
 
     const handleOnUpdatePreference = (category: string, value: PreferencesType) => {
         updateUserPreference(category, value).then(() => {
-            toast.show({ description: t('notification.controlPanel.preference.preferencesUpdated') });
+            toast.success(t('notification.controlPanel.preference.preferencesUpdated'));
         });
     };
 

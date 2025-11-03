@@ -34,6 +34,7 @@ export function ScreeningDashboard() {
                 pupil {
                     active
                     id
+                    age
                     createdAt
                     firstname
                     lastname
@@ -51,6 +52,8 @@ export function ScreeningDashboard() {
                     descriptionForScreening
                     descriptionForMatch
                     calendarPreferences
+                    isPupil
+                    isParticipant
                     school {
                         id
                         name
@@ -74,6 +77,7 @@ export function ScreeningDashboard() {
                         status
                         comment
                         knowsCoronaSchoolFrom
+                        systemMessages
                         createdAt
                         updatedAt
                         screeners { firstname lastname }
@@ -98,6 +102,7 @@ export function ScreeningDashboard() {
                     languages
                     zipCode
                     state
+                    isAdult
                     subjectsFormatted { name grade { min max } }
                     certificateOfConductDeactivationDate
                     certificateOfConduct {
@@ -125,8 +130,8 @@ export function ScreeningDashboard() {
                         nextLecture { start duration }
                     }
 
-                    tutorScreenings { id createdAt status comment, jobStatus,  knowsCoronaSchoolFrom, screener { firstname lastname } }
-                    instructorScreenings { id createdAt status comment, jobStatus, knowsCoronaSchoolFrom, screener { firstname lastname } }
+                    tutorScreenings { id createdAt status comment, jobStatus,  knowsCoronaSchoolFrom, screener { firstname lastname } systemMessages }
+                    instructorScreenings { id createdAt status comment, jobStatus, knowsCoronaSchoolFrom, screener { firstname lastname } systemMessages }
                     user {
                         receivedScreeningSuggestions {
                             sentAt
@@ -146,6 +151,7 @@ export function ScreeningDashboard() {
         gql(`
         query GetDisputedScreenings {
             pupilsToBeScreened(onlyDisputed: true) {
+                age
                 active
                 id
                 createdAt
@@ -165,6 +171,8 @@ export function ScreeningDashboard() {
                 descriptionForScreening
                 descriptionForMatch
                 calendarPreferences
+                isPupil
+                isParticipant
                 school {
                     id
                     name
@@ -191,6 +199,7 @@ export function ScreeningDashboard() {
                     createdAt
                     updatedAt
                     screeners { firstname lastname }
+                    systemMessages
                 }
                 user {
                     receivedScreeningSuggestions {

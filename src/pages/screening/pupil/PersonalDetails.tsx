@@ -2,6 +2,7 @@ import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
 import { TextArea } from '@/components/TextArea';
+import { Toggle } from '@/components/Toggle';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
 import { ExternalSchoolSearch } from '@/gql/graphql';
@@ -142,7 +143,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                 </div>
                 <div className="flex flex-col gap-y-2">
                     <ButtonField label="Klassenstufe" onClick={() => setShowEditGrade(true)}>
-                        {getGradeLabel(grade) ?? 'Klassenstufe bearbeiten'}
+                        {grade ? getGradeLabel(grade) : 'Klassenstufe bearbeiten'}
                     </ButtonField>
                     <Typography variant="sm" className="text-destructive">
                         {errors.grade}
@@ -227,6 +228,44 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                         </div>
                     </div>
                 </div>
+                <div className="mt-4">
+                    <Typography variant="h5" className="mb-5">
+                        Rollen
+                    </Typography>
+                    <div className="flex gap-6 w-full">
+                        <Toggle
+                            variant="outline"
+                            size="lg"
+                            className="p-8 h-auto"
+                            pressed={form.canHaveMatches}
+                            onPressedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}
+                            asChild
+                            role="button"
+                        >
+                            <div className="flex gap-x-4">
+                                <Checkbox checked={form.canHaveMatches} onCheckedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}></Checkbox>
+                                Kann einen Lernpaar haben
+                            </div>
+                        </Toggle>
+                        <Toggle
+                            variant="outline"
+                            size="lg"
+                            className="p-8 h-auto"
+                            pressed={form.canParticipateInCourses}
+                            onPressedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
+                            asChild
+                            role="button"
+                        >
+                            <div className="flex gap-x-4">
+                                <Checkbox
+                                    checked={form.canParticipateInCourses}
+                                    onCheckedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
+                                ></Checkbox>
+                                Kann an Kursen teilnehmen
+                            </div>
+                        </Toggle>
+                    </div>
+                </div>
             </div>
             <div className="mt-10 flex items-center gap-x-4">
                 <Button variant="outline" onClick={updatePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
@@ -235,7 +274,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
             </div>
             <EditLocationModal state={pupilLocation} onSave={setPupilLocation} isOpen={showEditLocation} onOpenChange={setShowEditLocation} />
             <EditSchoolTypeModal schoolType={schoolType} onSave={setSchoolType} isOpen={showEditSchoolType} onOpenChange={setShowEditSchoolType} />
-            <EditGradeModal grade={grade} onSave={setGrade} onOpenChange={setShowEditGrade} isOpen={showEditGrade} />
+            <EditGradeModal grade={grade ?? 0} onSave={setGrade} onOpenChange={setShowEditGrade} isOpen={showEditGrade} />
             <EditSubjectsModal type="pupil" subjects={subjects} onSave={setSubjects} onOpenChange={setShowEditSubjects} isOpen={showEditSubjects} />
             <EditLanguagesModal languages={languages} onSave={setLanguages} onOpenChange={setShowEditLanguages} isOpen={showEditLanguages} />
             <EditWeeklyAvailabilityModal

@@ -7,7 +7,6 @@ import { gql } from '../gql';
 import { useQuery } from '@apollo/client';
 import useApollo, { useUserType } from '../hooks/useApollo';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import RequireScreeningSettingsDropdown from '../widgets/RequireScreeningSettingsDropdown';
 import { asTranslationKey } from '../helper/string-helper';
 import { createPupilScreeningLink, createStudentScreeningLink } from '../helper/screening-helper';
 import { usePageTitle } from '../hooks/usePageTitle';
@@ -167,9 +166,7 @@ export function RequireScreeningModal() {
 
     return (
         <div className="flex flex-col flex-1 items-center justify-center bg-primary p-4">
-            <div className="flex w-full gap-2 items-center justify-end px-4 pt-2 z-50">
-                <RequireScreeningSettingsDropdown />
-            </div>
+            <div className="flex w-full gap-2 items-center justify-end px-4 pt-2 z-50"></div>
             <div
                 className={cn(
                     'flex flex-col flex-1 w-full lg:max-w-2xl items-center justify-center gap-y-6 relative',

@@ -66,6 +66,7 @@ query SingleMatch($matchId: Int! ) {
         aboutMe
         calendarPreferences
     }
+    isChatActive
   }
 }
 `);

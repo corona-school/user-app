@@ -30,6 +30,8 @@
 
         --accent: var(--primary-lighter);
         --accent-foreground: var(--primary);
+        --accent-dark: 171 24% 83%;
+        --accent-medium: 171 23% 88%;
 
         --destructive-lighter: 0 77% 93%;
         --destructive: 0 73.7% 41.8%;
@@ -54,6 +56,11 @@
         right: 10px;
         opacity: 0.3;
     }
+    input[type='number']::-webkit-inner-spin-button,
+    input[type='number']::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
 }
 
 .tabler-icon {
@@ -62,4 +69,11 @@
 }
 .tabler-icon-thick {
     stroke-width: 2;
+}
+
+.hide-password-toggle::-ms-reveal,
+.hide-password-toggle::-ms-clear {
+    visibility: hidden;
+    pointer-events: none;
+    display: none;
 }

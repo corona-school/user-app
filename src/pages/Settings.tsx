@@ -151,10 +151,13 @@ const Settings: React.FC = () => {
                         <Column mb={tabspace}>
                             <ListItem label={t('settings.legal.datapolicy')} onPress={() => navigate('/datenschutz')} />
                         </Column>
+                        <Column mb={tabspace}>
+                            <ListItem label={t('settings.legal.agb')} onPress={() => navigate(`/${userType === 'pupil' ? 'agb-schueler' : 'agb-helfer'}`)} />
+                        </Column>
                     </ProfileSettingRow>
                 </VStack>
             </WithNavigation>
-            <DeactivateAccountModal isOpen={showDeactivate} onCloseModal={() => setShowDeactivate(false)} />
+            <DeactivateAccountModal isOpen={showDeactivate} onOpenChange={setShowDeactivate} />
             <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
         </>
     );

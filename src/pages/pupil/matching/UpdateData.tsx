@@ -11,13 +11,12 @@ import { Label } from '@/components/Label';
 import { WeeklyAvailabilitySelector } from '@/components/availability/WeeklyAvailabilitySelector';
 import { toast } from 'sonner';
 import { logError } from '@/log';
-import { LanguageIcon, LanguageSelector } from '@/components/LanguageSelector';
+import { LanguageSelector } from '@/components/LanguageSelector';
 import { SchoolTypeSelector } from '@/components/SchoolTypeSelector';
 import { Typography } from '@/components/Typography';
 import { Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import { getGradeLabel } from '@/Utility';
-import { asTranslationKey } from '@/helper/string-helper';
 import { IconLoader } from '@/components/IconLoader';
 
 type Props = {
@@ -25,7 +24,7 @@ type Props = {
     profile?: {
         languages?: Language[];
         schooltype?: SchoolType;
-        gradeAsInt?: number;
+        gradeAsInt?: number | null;
         calendarPreferences?: CalendarPreferences;
     };
 };
@@ -104,18 +103,26 @@ const UpdateData: React.FC<Props> = ({ refetchQuery, profile }) => {
                 </div>
             </div>
             <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full">
-                <Label>{t('profile.Languages.labelPupil')}</Label>
-                <Button className="w-full h-auto py-2 min-h-10" variant="input" size="input" onClick={() => handleOnOpenModal('languages')}>
-                    <div className="w-full flex items-center gap-x-4 min-w-[200px] flex-wrap gap-y-4">
-                        {!selectedLanguages && t('edit')}
-                        {selectedLanguages.map((e) => (
-                            <span className="flex items-center gap-x-1">
-                                <LanguageIcon className="size-4" languageName={e} />
-                                {t(asTranslationKey(`lernfair.languages.${e.toLowerCase()}`))}
-                            </span>
-                        ))}
-                    </div>
-                </Button>
+                <div className="flex flex-col gap-y-2">
+                    <Label>{t('profile.Languages.labelPupil')}</Label>
+                    <LanguageSelector
+                        maxVisibleItems={8}
+                        className="flex flex-wrap justify-center p-1"
+                        searchConfig={{
+                            containerClassName: 'w-full',
+                            className: 'bg-white',
+                            placeholder: t('otherLanguages'),
+                        }}
+                        toggleConfig={{
+                            variant: 'outline',
+                            size: 'lg',
+                            className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
+                        }}
+                        multiple
+                        value={selectedLanguages}
+                        setValue={setSelectedLanguages}
+                    />
+                </div>
             </div>
             <div className="flex flex-col gap-y-2">
                 <Label>{t('profile.availability')}</Label>
@@ -147,12 +154,6 @@ const UpdateData: React.FC<Props> = ({ refetchQuery, profile }) => {
                         <div className="flex flex-col gap-y-2">
                             <Label>{t('grade')}</Label>
                             <GradeSelector grade={grade} onGradeChange={setGrade} />
-                        </div>
-                    )}
-                    {modalType === 'languages' && (
-                        <div className="flex flex-col gap-y-2">
-                            <Label>{t('profile.Languages.labelPupil')}</Label>
-                            <LanguageSelector multiple value={selectedLanguages} setValue={setSelectedLanguages} />
                         </div>
                     )}
                 </div>

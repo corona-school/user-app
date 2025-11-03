@@ -194,7 +194,7 @@ const Referrals: React.FC<{}> = () => {
                             {t('referral.share.materials.title')}
                         </Typography>
                         <Typography>{t('referral.share.materials.description')}</Typography>
-                        <Button className="mt-4" variant="outline" onClick={() => window.open(SHARING_MATERIALS_URL, '_blank')}>
+                        <Button className="mt-4" variant="outline" onClick={handleOnShare}>
                             {t('referral.share.materials.button')}
                         </Button>
                     </div>

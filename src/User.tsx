@@ -1,19 +1,17 @@
 import { useLocation, Navigate } from 'react-router-dom';
 import CenterLoadingSpinner from './components/CenterLoadingSpinner';
 import useApollo, { ExtendedApolloContext, LFApollo, TEMPORARY_LOGIN, useRoles } from './hooks/useApollo';
-import VerifyEmailModal from './modals/VerifyEmailModal';
 import { useApolloClient } from '@apollo/client';
 import { ERole, Role } from './types/lernfair/User';
-import { RequireScreeningModal } from './modals/RequireScreeningModal';
 
 export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.Element; isRetainPath?: boolean }) => {
     const location = useLocation();
 
     const { sessionState, user, roles } = useApollo();
 
-    if (sessionState === 'logged-out') return <Navigate to="/welcome" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
+    if (sessionState === 'logged-out') return <Navigate to="/login" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
 
-    if (sessionState === 'error') return <Navigate to="/welcome" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
+    if (sessionState === 'error') return <Navigate to="/login" state={{ from: isRetainPath ? location : { pathname: '/start' } }} replace />;
 
     if (sessionState === 'unknown' || !user) return <CenterLoadingSpinner />;
 
@@ -23,13 +21,13 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
 
         // Require pupils and students to be verified
         if (user && !user.screener && !(user.pupil ?? user.student)!.verifiedAt) {
-            return <VerifyEmailModal email={user.email} userType={user.pupil ? 'pupil' : 'student'} />;
+            return <Navigate to="/registration" />;
         }
 
         // Require an initial screening for newly-registered pupils
         const requiresInitialScreening = ![ERole.TUTEE, ERole.PARTICIPANT, ERole.INSTRUCTOR, ERole.TUTOR].some((role) => roles.includes(role));
         if (user && (user.pupil || user.student) && requiresInitialScreening) {
-            return <RequireScreeningModal />;
+            return <Navigate to="/registration" />;
         }
 
         // Require the ethics onboarding for newly-screened students
@@ -44,7 +42,7 @@ export const RequireAuth = ({ children, isRetainPath = true }: { children: JSX.E
         return children;
     }
 
-    return <Navigate to="/welcome" state={{ from: location }} replace />;
+    return <Navigate to="/login" state={{ from: location }} replace />;
 };
 
 // Always wrap in a RequireAuth component

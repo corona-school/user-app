@@ -18,10 +18,12 @@ const LoginWithIDP = () => {
 
     const code = searchParams.get('code');
     const error = searchParams.get('error');
+    const state = searchParams.get('state');
 
     const handleOnLoginWithSSO = async (idpCode: string) => {
         try {
-            const ssoStatus = await loginWithSSO(idpCode);
+            const { referrer } = state ? JSON.parse(state) : { referrer: '' };
+            const ssoStatus = await loginWithSSO(idpCode, referrer);
             if (ssoStatus === SsoAuthStatus.Register) {
                 navigate('/registration');
             }

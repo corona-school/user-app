@@ -1,8 +1,8 @@
 {
     "appointment": {
         "toast": {
-            "createOneAppointmentSuccess": "lecture has been successfully created and pupil has been informed by e-mail.",
-            "createAppointmentsSuccess": "Lectures has been successfully created and pupil has been informed by e-mail."
+            "createOneAppointmentSuccess": "lecture has been successfully created and pupil has been informed by email.",
+            "createAppointmentsSuccess": "Lectures has been successfully created and pupil has been informed by email."
         },
         "empty": {
             "noAppointments": "No lectures",
@@ -76,7 +76,8 @@
             "courseImageAltText": "Course image",
             "videoChatLabel": "Video chat",
             "videoChatPlaceholder": "Add your own link to the video chat",
-            "save": "save lecture"
+            "save": "save lecture",
+            "toolTipTimeLabel": "All times at Lern-Fair are created in the time zone \"Central European Time (CET), Europe/Berlin\" (current time: {{currentTime}})."
         },
         "detail": {
             "reasonDisabled": {
@@ -161,20 +162,29 @@
     },
     "login": {
         "email": {
-            "sent": "We have sent you an e-mail to log in"
+            "sent": "We have sent you an email to log in"
         },
         "passwordReset": {
-            "alert": {
-                "success": "We have sent you an e-mail in which you can reset your password. Click on the link in our e-mail. If you have not received an e-mail, please wait a moment and check your spam folder.",
-                "error": "Unfortunately your password could not be reset. Please try again later.",
-                "mailNotFound": "No account is registered for this e-mail address. If you think this is a mistake, please contact support (support@lern-fair.de)."
-            },
             "btn": "Reset password",
-            "description": "Do you really want to reset your password? We will send an e-mail to {{email}}"
+            "description": "Do you really want to reset your password? We will send an email to {{email}}",
+            "modal": {
+                "success": {
+                    "title": "Password reset requested",
+                    "description": "We have sent you an e-mail with a link. Click on the link. This will allow you to change your password. If you haven't received an e-mail, wait a moment. If you can't find it, it may be in your spam folder."
+                },
+                "error": {
+                    "title": "An error has occurred",
+                    "description": "Unfortunately your password could not be reset. Please try again later."
+                },
+                "mailNotFound": {
+                    "title": "E-mail address unknown",
+                    "description": "Unfortunately, we do not have a user account with this e-mail address. Either you have to register first or you can contact our support."
+                }
+            }
         },
         "accountNotFound": {
             "title": "Login failed",
-            "alert_html": "No account with the e-mail address {{email}} could be found. Please check the e-mail address you entered and try again."
+            "alert_html": "No account with this e-mail address could be found."
         },
         "accountDeactivated": {
             "title": "Login failed",
@@ -185,28 +195,35 @@
         },
         "title": "Login",
         "error": "Your login details do not match our information. Please check your details.",
-        "forgotPassword": "Forgotten your password?",
+        "forgotPassword": "Forgot password?",
         "signupNew": "Register new",
-        "noaccount": "Don't have an account yet? Click here to register!",
-        "currentEmail": "Current e-mail",
-        "setNewEmail": "Reset e-mail",
-        "changeEmail": "Change e-mail",
-        "emailVerification": "E-mail verification",
-        "succesEmailVerification": "Your e-mail has been successfully changed!",
+        "currentEmail": "Current email",
+        "setNewEmail": "Reset email",
+        "changeEmail": "Change email",
+        "emailVerification": "Email verification",
+        "succesEmailVerification": "Your email has been successfully changed!",
         "invalidToken": "Token invalid",
-        "invalidMailMessage": "The e-mail address you entered is incorrect.",
-        "newEmail": "New e-mail",
+        "invalidMailMessage": "The email address you entered is incorrect.",
+        "newEmail": "New email",
         "changeEmailConfirmation": "We have sent you a confirmation email to the new email address",
         "reauthenticate": {
             "title": "Register again",
             "passwordDescription": "Please log in again with your password to complete the linking process. Note that you only need to do this once."
         },
         "continueWith": "Continue with {{idp}}",
-        "linkAccountWithIdpError": "Linking your account to an identity provider requires a password. Please set a password first"
+        "linkAccountWithIdpError": "Linking your account to an identity provider requires a password. Please set a password first",
+        "loginWith": "Log in with {{method}}",
+        "noaccount": "Don't have an account yet?",
+        "contactSupport": "Contact us",
+        "needHelp": "Do you need help?",
+        "registerHere": "Register here",
+        "invalidPasswordError": "Oops! Your password is incorrect."
     },
     "lernfair": {
         "languages": {
             "albanisch": "Albanian",
+            "amharisch": "Amharic",
+            "andere": "Other",
             "arabisch": "Arabic",
             "armenisch": "Armenian",
             "aserbaidschanisch": "Azerbaijani",
@@ -215,19 +232,41 @@
             "chinesisch": "Chinese",
             "deutsch": "German",
             "englisch": "English",
+            "estnisch": "Estonian",
             "franz_sisch": "French",
-            "t_rkisch": "Turkish",
+            "georgisch": "Georgian",
+            "griechisch": "Greek",
+            "hausa": "Hausa",
+            "hebr_isch": "Hebrew",
+            "hindi": "Hindi",
             "italienisch": "Italian",
             "kasachisch": "Kazakh",
+            "kroatisch": "Croatian",
             "kurdisch": "Kurdish",
+            "lingala": "Lingala",
+            "litauisch": "Lithuanian",
+            "malayalam": "Malayalam",
+            "mazedonisch": "Macedonian",
+            "niederl_ndisch": "Dutch",
+            "persisch": "Persian",
             "polnisch": "Polish",
             "portugiesisch": "Portuguese",
+            "rum_nisch": "Romanian",
             "russisch": "Russian",
+            "serbisch": "Serbian",
+            "slowakisch": "Slovak",
+            "somali": "Somali",
             "spanisch": "Spanish",
+            "tadschikisch": "Tajik",
+            "thail_ndisch": "Thai",
+            "tigrinya": "Tigrinya",
+            "tschechisch": "Czech",
+            "t_rkisch": "Turkish",
             "ukrainisch": "Ukrainian",
+            "ungarisch": "Hungarian",
+            "urdu": "Urdu",
             "vietnamesisch": "Vietnamese",
-            "other": "Other",
-            "andere": "Other"
+            "other": "Other"
         },
         "subjects": {
             "Altgriechisch": "Ancient Greek",
@@ -338,24 +377,6 @@
         "contactSupport": "Contact us"
     },
     "registration": {
-        "barrier": {
-            "btn": {
-                "yes": "Yes, the points apply",
-                "no": "No, the points do not apply"
-            },
-            "title": "Important",
-            "text": "Our offers are aimed at educationally disadvantaged pupils / trainees. Not sure if you belong to this target group?\n\nThen take a look at the following points. Can you answer \"yes\" to two or more of them? Then you are welcome to use all the services offered by Lern-Fair .",
-            "point_0": "● You need help at school",
-            "point_1": "● Your family can't help you with your homework",
-            "point_2": "● Your family can't pay for tutoring for you"
-        },
-        "barrier_failed": {
-            "title": "Registration failed!",
-            "subtitle": "As you have rejected our conditions of participation, we are unfortunately unable to allow you to register.",
-            "subtitle2": "We can only grant you registration after you have confirmed our conditions of participation.",
-            "retry": "Start registration again",
-            "alternatives": "Get more information"
-        },
         "hint": {
             "schoolClassSelectionMissing": "Please select a school class.",
             "schoolTypeSelectionMissing": "Please select a school type.",
@@ -365,8 +386,8 @@
                 "nomatch": "The passwords do not match"
             },
             "email": {
-                "invalid": "Invalid e-mail address",
-                "unavailable": "This e-mail address is already taken"
+                "invalid": "Invalid email address",
+                "unavailable": "This email address is already taken"
             },
             "userType": {
                 "missing": "Please identify your role"
@@ -400,36 +421,206 @@
         },
         "steps": {
             "userType": {
-                "title": "Your role",
-                "subtitle": "I am"
+                "title": "Are you a student/apprentice or a helper?"
+            },
+            "acceptanceCheck": {
+                "title": "Are you in the right place?",
+                "description": "Our offers are aimed at educationally disadvantaged students and apprentices.\nWhich statements apply to you?",
+                "needHelpInSchool": "I need help at school",
+                "familyCannotHelp": "My family cannot help me with schoolwork",
+                "familyCannotAffordTutoring": "My family cannot afford tutoring for me",
+                "doNotApplyToMe": "None of these two points apply to me"
+            },
+            "acceptanceCheckFailed": {
+                "title": "What a pity.",
+                "description": "We’re sorry that we can’t help you further. Try again or check out other offers that might interest you.",
+                "seeOtherOffers": "See other offers",
+                "tryAgain": "Try again"
+            },
+            "userName": {
+                "congratsHint": "Wonderful.\nYou can use our free offers.",
+                "title": "What is your name?"
+            },
+            "userAge": {
+                "title": "How old are you?",
+                "tooYoungError": "{{minAge}} years is the minimum age for which we can offer free tutoring.",
+                "descriptionPupil": "The minimum age is 7. If you are under 18, your parents must give their consent later.",
+                "descriptionStudent": "The minimum age is 14 years. If you are under 18, we will later need the consent of a legal representative (e.g. parent)",
+                "underAgeRange": "14 to 17",
+                "adultAge": "18 or older"
+            },
+            "languages": {
+                "titlePupil": "What languages do you speak at home?",
+                "titleStudent": "Which languages do you speak fluently?",
+                "descriptionPupil": "We try to bring you together with volunteers who speak similar languages.",
+                "descriptionStudent": "We try to bring you together with pupils who speak similar languages."
+            },
+            "bookAppointment": {
+                "title": "Introductory Meeting",
+                "lernFairTeam": "The Lern-Fair Team",
+                "bookAppointmentButton": "Schedule meeting",
+                "faqPupil": [
+                    {
+                        "question": "Do I have to turn on my camera?",
+                        "answer": "No, only if you want to."
+                    },
+                    {
+                        "question": "How long does the meeting last?",
+                        "answer": "About 15 minutes."
+                    },
+                    {
+                        "question": "Who will be there?",
+                        "answer": "One person from Lern-Fair. You can also bring your parents. Or another person who helps you."
+                    },
+                    {
+                        "question": "Why is this necessary?",
+                        "answer": "So we understand which subjects you’d like help in and can find suitable offers for you."
+                    },
+                    {
+                        "question": "Which language is spoken?",
+                        "answer": "Mostly German, but we can also speak English or other languages. If you don’t speak German well, just send us an email at <supportEmail>support@lern-fair.de</supportEmail>, and we’ll find a solution."
+                    }
+                ],
+                "faqStudent": [
+                    {
+                        "question": "How long does the meeting last?",
+                        "answer": "About 30 minutes."
+                    },
+                    {
+                        "question": "What commitments am I making?",
+                        "answer": "We'll start with a non-binding discussion to find out together how you can best get involved. There is no obligation for you to get started immediately."
+                    },
+                    {
+                        "question": "What do I need to bring with me?",
+                        "answer": "Please have an identification document with your address ready (e.g. identity card, residence certificate or registration certificate)."
+                    },
+                    {
+                        "question": "Do I have to switch on my camera?",
+                        "answer": "Only if we carry out the ID check."
+                    },
+                    {
+                        "question": "Do I need to prepare for the interview?",
+                        "answer": "No, but if you’d like, you can already take a look at our offers <clarificationVideo>(here you’ll find an explainer video)</clarificationVideo>"
+                    },
+                    {
+                        "question": "How long does the interview take?",
+                        "answer": "About 30 minutes."
+                    },
+                    {
+                        "question": "Who is there?",
+                        "answer": "A person from Lern-Fair."
+                    },
+                    {
+                        "question": "What language is spoken?",
+                        "answer": "Tutoring is usually provided in German, as our services are aimed at pupils in the German school system. We therefore also conduct the introductory meeting in German. This allows us to see together whether the language level is suitable."
+                    }
+                ],
+                "descriptionPupil": "In a short, friendly video call (15 minutes) we would like to get to know you a little. This will help us find the right help for you. You don't have to prepare anything.",
+                "descriptionStudent": "In a short, friendly video call\n(approx. 30 minutes) we would like to get to know you a little.",
+                "messagePupil": "\"You can ask us anything - we're here for you.\"",
+                "messageStudent": "\"We will answer all your questions and\ndiscuss the engagement opportunities.\""
+            },
+            "emailOwner": {
+                "title": "Which email address should we use?",
+                "description": "We’ll send all the starting information to this email address. You can change it later."
+            },
+            "authenticationInfo": {
+                "title": "Register for free",
+                "pupilEmail": "Email of student/apprentice",
+                "passwordPlaceholder": "Enter password",
+                "emailPlaceholder": "Email address",
+                "registerWith": "Register with {{method}}",
+                "descriptionPupil": "With this user account, you can attend group courses, 1:1 tutoring and homework help free of charge.",
+                "descriptionStudent": "With your user account, you have access to your learning pairs, can chat with learning partners and create lectures for you.",
+                "supportPersonEmail": "E-mail of auxiliary person",
+                "parentEmail": "E-mail of parent"
+            },
+            "dataPrivacy": {
+                "title": "Data Privacy Consent",
+                "dataUsageInfoLabel": "This is what happens with your data when you register with Lern-Fair:",
+                "dataUsageUSA": "Data processing by processors in the USA",
+                "labelTermsAndPrivacy": "I have read the <privacy>privacy policy</privacy> and <agb>terms and conditions</agb>.",
+                "usageBullets": {
+                    "1": "We store your data as long as your account at Lern-Fair is active and delete it at the latest 3 years after deactivation.",
+                    "2": "We share information about you (name, school type, grade, federal state, subjects) with helpers who will support you.",
+                    "3": "We use services from Heroku, Mailjet, Datadog, and Google to process your data, which may not guarantee the European data protection level."
+                },
+                "accordionUsDataProcessors": "I acknowledge that the processing of my personal data takes place via our processors Google and Heroku located in the USA, which cannot guarantee compliance with the European data protection level due to possible requests from US intelligence services. For this purpose, Lern-Fair has concluded standard contractual clauses and agreed on additional security measures, Art. 46 para. 2 lit. c GDPR.",
+                "sendRegistration": "Submit registration"
+            },
+            "confirmEmail": {
+                "title": "Please confirm your email",
+                "description": "We have sent a message to\n\n<b>{{email}}</b>\n\nThe message contains a link. With this link, you can activate your account. Also check your spam folder – sometimes the message ends up there.",
+                "changeEmail": "Change email address",
+                "resendConfirmation": "Resend confirmation",
+                "doYouHaveProblems": "Having trouble signing up?"
+            },
+            "appointmentDetails": {
+                "title": "Appointment created!",
+                "description": "There are just a few last steps. Then we can really get started.",
+                "changeAppointment": "Change appointment",
+                "cancelAppointment": "Cancel appointment",
+                "joinCall": "Start video call now",
+                "joinMeetingHint": "You can only start the meeting 5 minutes before the start of the appointment."
+            },
+            "registrationCompleted": {
+                "title": "You did it!",
+                "description": "We look forward to the introductory meeting with you via Zoom on"
+            },
+            "screeningInProgress": {
+                "title": "You’ll hear from us soon!",
+                "description": "Normally it takes about a week..."
             },
             "personalData": {
-                "title": "Personal data",
-                "subtitle": "Personal data"
+                "title": "Personal Data",
+                "subtitle": "Personal Data"
             },
             "grade": {
-                "title": "Class",
-                "subtitle": "What grade are you in?"
+                "title": "Which grade are you in?"
+            },
+            "school": {
+                "title": "Which school\ndo you attend?",
+                "helperText": "Can’t find your school in the list? Then just enter the name and location of your school.",
+                "schoolFound": "School chosen from list",
+                "otherSchoolFound": "School entered manually"
             },
             "schoolType": {
-                "title": "Type of school",
-                "subtitle": "What type of school do you go to?"
+                "title": "What type of school?"
+            },
+            "zipCode": {
+                "title": "What is your postal code?",
+                "doNotKnow": "Don’t know",
+                "descriptionPupil": "The zip code shows us which area you are registering from. Your zip code remains secret. The helpers will not see it.",
+                "descriptionStudent": "We never pass this information on to pupils . Your zip code helps us with the internal evaluation."
+            },
+            "notifications": {
+                "title": "Set email notifications",
+                "titleShort": "Messages",
+                "description": "How would you like to be informed – by email and app? You can change this later.",
+                "importantInformationDescription": "I want to receive messages when it’s important. For example: a new appointment or a new chat message.",
+                "importantInformationBadge": "Important Info",
+                "recommendationsBadge": "Helpful & Tips",
+                "recommendationsDescription": "I also want to receive information about new offers and tips."
+            },
+            "ourRules": {
+                "title": "Our Rules",
+                "description": "Our helpers support you in their free time ☺️",
+                "rules": [
+                    "🔋 Respect the time and energy of the helpers.",
+                    "⌚ Be punctual and keep your appointments.",
+                    "😊 Be kind to everyone.",
+                    "❌ No discrimination. That means no insults. No racism. No sexism. Respect all religions and all ages."
+                ],
+                "acceptLabel": "I agree to follow the rules."
             },
             "state": {
-                "title": "School location",
+                "title": "School Location",
                 "subtitle": "Where do you go to school?",
-                "weightingNote": "We only consider the school location as an optional criterion when placing a learning partner. Depending on availability, your future learning partner may come from a different region."
+                "weightingNote": "We only consider the school location as an optional factor when matching you with a learning partner. Depending on availability, your future learning partner may come from another region."
             },
             "legal": {
                 "title": "Consents",
                 "subtitle": "Consents"
-            },
-            "school": {
-                "title": "School location",
-                "subtitle": "What is the name of your school?",
-                "helperText": "We use the school details to determine your school type and location",
-                "schoolFound": "School found",
-                "otherSchoolFound": "Other school recognized"
             }
         },
         "pupil": {
@@ -474,7 +665,7 @@
             "noInvestigation": "I declare that I have not been convicted of a criminal offense as defined in § 72a para. 1 sentence 1 SGB VII and that there are currently no preliminary proceedings against me for such an offense.",
             "selfCommitment": "Declaration of commitment",
             "newsletter": "Newsletter",
-            "newsletterAgreement": "I would like to receive information about offers, promotions and other support opportunities from Lern-Fair by e-mail.",
+            "newsletterAgreement": "I would like to receive information about offers, promotions and other support opportunities from Lern-Fair by email.",
             "underageDisclaimer": "Note: In the event that the person giving consent has not yet reached the age of 18, the holder of parental responsibility for the person must give their consent."
         },
         "password_repeat": "Repeat password",
@@ -487,6 +678,14 @@
             "pupil": "Pupil email",
             "parent": "Parent Email",
             "other": "Support person Email"
+        },
+        "stepStateCount": "{{current}} of {{total}}",
+        "menu": {
+            "notifications": "Notifications",
+            "contactSupport": "Contact support",
+            "deactivateAccount": "Deactivate account",
+            "logout": "Log out",
+            "agb": "General Terms and Conditions"
         }
     },
     "helpcenter": {
@@ -550,7 +749,7 @@
                 "title": "Your name",
                 "firstname": "First name",
                 "lastname": "Last name",
-                "email": "Your e-mail"
+                "email": "Your email"
             },
             "popup": {
                 "header": "Change name",
@@ -682,7 +881,8 @@
                 "6": "I do not meet the entry requirements for the projects.",
                 "7": "Other"
             },
-            "error": "Your account could not be deactivated."
+            "error": "Your account could not be deactivated.",
+            "success": "Your account has been deactivated."
         },
         "title": "My profile",
         "successmessage": "Changes have been saved successfully.",
@@ -775,8 +975,8 @@
         },
         "modals": {
             "contactMessage": {
-                "alertParticipants": " We will provide your course instructor with your e-mail address so that you can continue to communicate via e-mail if necessary.",
-                "alertInstructors": " We will share your e-mail address with pupils so that you can continue to communicate via e-mail if necessary."
+                "alertParticipants": " We will provide your course instructor with your email address so that you can continue to communicate via email if necessary.",
+                "alertInstructors": " We will share your email address with pupils so that you can continue to communicate via email if necessary."
             }
         },
         "buttonPromote": {
@@ -843,7 +1043,7 @@
         },
         "waitinglist": {
             "modal": {
-                "info": "We will inform you by e-mail if a place becomes available for you in this course. Would you like to be put on the waiting list?",
+                "info": "We will inform you by email if a place becomes available for you in this course. Would you like to be put on the waiting list?",
                 "success": "You are on the waiting list!",
                 "button": "On the waiting list",
                 "cancel": "Cancel"
@@ -918,7 +1118,7 @@
         },
         "account": {
             "title": "Account",
-            "changeEmail": "Change e-mail",
+            "changeEmail": "Change email",
             "changePassword": "Change password",
             "changeUser": "Change user",
             "deactivateAccount": "Deactivate account",
@@ -928,7 +1128,8 @@
             "title": "Legal matters",
             "imprint": "Imprint",
             "datapolicy": "Data protection",
-            "terms": "Terms of use"
+            "terms": "Terms of use",
+            "agb": "General Terms and Conditions"
         },
         "header": "Settings"
     },
@@ -998,7 +1199,7 @@
                 },
                 "settings": {
                     "title": "Settings",
-                    "content": "In this section you can make general changes and changes to your account (e-mail address, password). You will also find legal information on using the platform here."
+                    "content": "In this section you can make general changes and changes to your account (email address, password). You will also find legal information on using the platform here."
                 },
                 "notification": {
                     "title": "Notification",
@@ -1047,7 +1248,7 @@
                 },
                 "settings": {
                     "title": "Settings",
-                    "content": "In this section you can make general changes and changes to your account (e-mail address, password). You will also find legal information on using the platform here."
+                    "content": "In this section you can make general changes and changes to your account (email address, password). You will also find legal information on using the platform here."
                 },
                 "notification": {
                     "title": "Notification",
@@ -1143,7 +1344,7 @@
                 },
                 "screen5": {
                     "title": "Dealing with inquiries, complaints and violations",
-                    "content1": "The Executive Board of Lern-Fair e.V. decides on measures to be taken in the event of breaches of the ethics guidelines. In certain cases, this may mean exclusion from the project, which will be communicated with a reason. Inquiries, complaints or reports of violations can be sent by e-mail to support@lern-fair.de.",
+                    "content1": "The Executive Board of Lern-Fair e.V. decides on measures to be taken in the event of breaches of the ethics guidelines. In certain cases, this may mean exclusion from the project, which will be communicated with a reason. Inquiries, complaints or reports of violations can be sent by email to support@lern-fair.de.",
                     "checkboxText": "I have read the ethics guidelines carefully and agree to them."
                 }
             }
@@ -1213,7 +1414,7 @@
             "channels": {
                 "whatsApp": "WhatsApp",
                 "signal": "Signal",
-                "email": "e-mail"
+                "email": "email"
             },
             "badges": {
                 "new": "NEW"
@@ -1228,10 +1429,10 @@
     },
     "helperwizard": {
         "verifizierung": {
-            "buttons": ["Resend e-mail"],
+            "buttons": ["Resend email"],
             "subtitle": "Verification",
-            "title": "Verify your e-mail address",
-            "content": "\"Before you can start at Lern-Fair , you must first confirm your e-mail address. We sent you an email to {{email}} on {{date}}. You haven't received an email from us?\""
+            "title": "Verify your email address",
+            "content": "\"Before you can start at Lern-Fair , you must first confirm your email address. We sent you an email to {{email}} on {{date}}. You haven't received an email from us?\""
         },
         "passwort": {
             "buttons": ["Set up password"],
@@ -1250,7 +1451,7 @@
             "buttons": ["View courses", "Withdraw request"],
             "title": "You are on the waiting list!",
             "subtitle": "Waiting list",
-            "content": "As soon as it is your turn, we will inform you by e-mail. Your request was made on {{date}}. In the meantime, you can take part in our group courses."
+            "content": "As soon as it is your turn, we will inform you by email. Your request was made on {{date}}. In the meantime, you can take part in our group courses."
         },
         "interestconfirmation": {
             "buttons": ["Yes", "No"],
@@ -1501,7 +1702,7 @@
                         "ver2": "Done, changes saved!"
                     },
                     "text": {
-                        "ver1": "Next, we will invite you to an interview by e-mail. Then we'll discuss everything else in person. - Why don't you drop by our group courses while you're here?",
+                        "ver1": "Next, we will invite you to an interview by email. Then we'll discuss everything else in person. - Why don't you drop by our group courses while you're here?",
                         "ver2": "Your changes have been saved. This will not change your waiting time."
                     },
                     "groupCourses": "To the group courses"
@@ -1534,7 +1735,7 @@
                 "success": {
                     "title": "You've done it, you're a hero!",
                     "subtitle": "Thank you for wanting to support a:n (more:n) pupil !",
-                    "subtitle2": "We are now looking for a:n suitable:n pupil for you. The search usually takes a maximum of one week. As soon as we have found someone for you, we will notify you directly by e-mail. If you have any questions, you can contact us at any time."
+                    "subtitle2": "We are now looking for a:n suitable:n pupil for you. The search usually takes a maximum of one week. As soon as we have found someone for you, we will notify you directly by email. If you have any questions, you can contact us at any time."
                 },
                 "grades": {
                     "title": "Grades",
@@ -1896,8 +2097,8 @@
             "tooltipBtn": "You must select a picture."
         },
         "addCourseInstructor": {
-            "search": "Name or e-mail address",
-            "notFound": "No search results - Enter the full name or e-mail of the instructor"
+            "search": "Name or email address",
+            "notFound": "No search results - Enter the full name or email of the instructor"
         },
         "empty": {
             "nocourses": "You are not currently offering a course.",
@@ -1943,7 +2144,7 @@
             "preference": {
                 "chat": {
                     "title": "Chat messages",
-                    "modalBody": "We will send you an e-mail for every chat message you receive."
+                    "modalBody": "We will send you an email for every chat message you receive."
                 },
                 "survey": {
                     "title": "Feedback & surveys",
@@ -1993,7 +2194,7 @@
                 "enableAllTooltip": "You have already activated all newsletters.",
                 "disableAllTooltip": "You have already deactivated all newsletters.",
                 "channel": {
-                    "email": "e-mail",
+                    "email": "email",
                     "push": "App message"
                 },
                 "pushNotifications": "App messages",
@@ -2011,11 +2212,11 @@
                 },
                 "newsletter": {
                     "title": "Newsletter",
-                    "description": "Newsletters are only sent by e-mail.\nHere you can set which types of emails you would like to receive."
+                    "description": "Newsletters are only sent by email.\nHere you can set which types of emails you would like to receive."
                 }
             },
-            "title": "E-mail notifications",
-            "yourMail": "Your e-mail: ",
+            "title": "Email notifications",
+            "yourMail": "Your email: ",
             "closeButton": "Close"
         },
         "send": "Notification sent",
@@ -2077,7 +2278,7 @@
             "headline": "New role",
             "buttonInstructor": "Become a course instructor",
             "buttonTutor": "Become a course instructor",
-            "desc": "We are delighted that you are interested in continuing your involvement at Lern-Fair . As you have already had an introductory meeting with us, you know your way around. We will get back to you by e-mail as soon as we have activated the additional role for you."
+            "desc": "We are delighted that you are interested in continuing your involvement at Lern-Fair . As you have already had an introductory meeting with us, you know your way around. We will get back to you by email as soon as we have activated the additional role for you."
         },
         "matchDescription": {
             "first": "Together you determine topics and content",
@@ -2112,7 +2313,7 @@
         "banner": {
             "instuctorTitle": "Role as course instructor requested",
             "tutorTitle": "Role as tutor requested",
-            "text": "We will get back to you by e-mail as soon as we have activated the additional role for you."
+            "text": "We will get back to you by email as soon as we have activated the additional role for you."
         },
         "groupCourses": "Group courses",
         "match": "1:1 learning support",
@@ -2144,7 +2345,7 @@
             "profile": "Profile",
             "manageSessions": "Manage devices",
             "helpCenter": "Help area",
-            "newEmail": "Change e-mail",
+            "newEmail": "Change email",
             "newPassword": "Change password",
             "install": "The Lern-Fair app",
             "progress": "Successes & progress",
@@ -2157,8 +2358,8 @@
     },
     "screening": {
         "search": {
-            "placeholder": "Name or e-mail of a pupil or helper",
-            "not_found": "Search for the full name or e-mail of a pupil or helper"
+            "placeholder": "Name or email of a pupil or helper",
+            "not_found": "Search for the full name or email of a pupil or helper"
         },
         "courses": {
             "toast": {
@@ -2335,7 +2536,7 @@
         "header": "Submit certificate of good conduct",
         "description": "The protection of children and young people is very important to us, which is why we require an extended certificate of good conduct from all volunteers within eight weeks of the introductory meeting. In order to keep your account active, we ask you to apply for the extended certificate of good conduct promptly and submit it to us by the deadline. You can use the certificate to apply for the extended certificate of good conduct free of charge.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
-        "tooltip": "After this date, your account with us will be automatically deactivated. \nIf you need more time to apply, please send us an e-mail to support@lern-fair.de.",
+        "tooltip": "After this date, your account with us will be automatically deactivated. \nIf you need more time to apply, please send us an email to support@lern-fair.de.",
         "alert_message": "<strong>Please note:</strong> Applying for an extended certificate of good conduct can take several weeks in some cases!",
         "download": "Download form",
         "reason_download_disabled": "Please wait a moment, the download should start soon.",
@@ -2351,7 +2552,7 @@
         "continue": "Continue anyway"
     },
     "verify_email": {
-        "title": "E-mail verification",
+        "title": "Email verification",
         "success": "Your account has been activated!",
         "proceed": "Continue",
         "invalid": "Token invalid"
@@ -2363,7 +2564,7 @@
         "success_title": "Password changed successfully",
         "success_subtitle": "Your password has been successfully changed. You can now log in with the new password",
         "failure_title": "Error: Password not changed",
-        "failure_subtitle": "Sorry, your password could not be changed. Please try again. If the error persists, please send a new e-mail or contact support."
+        "failure_subtitle": "Sorry, your password could not be changed. Please try again. If the error persists, please send a new email or contact support."
     },
     "job_status": {
         "Employee": "Employed",
@@ -2374,7 +2575,7 @@
     },
     "reasonsDisabled": {
         "loading": "Data is still being loaded...",
-        "invalidEMail": "Please enter a valid e-mail address.",
+        "invalidEMail": "Please enter a valid email address.",
         "formIncomplete": "You must fill in all fields.",
         "fieldEmpty": "Enter something in this field.",
         "questionUnaswerd": "Please answer the question.",
@@ -2392,7 +2593,7 @@
             },
             "hasScreening": {
                 "title": "Please wait a bit",
-                "content": "We were very pleased to meet you. Your account has not yet been activated. We will inform you by e-mail as soon as we have made a decision.",
+                "content": "We were very pleased to meet you. Your account has not yet been activated. We will inform you by email as soon as we have made a decision.",
                 "makeAnotherAppointment": "Agree again lecture "
             },
             "rejectedScreening": {
@@ -2420,7 +2621,7 @@
             "title": "Appointment created ✅",
             "yourAppointment": "Your appointment",
             "optionsDescription": "You don't have time and want to postpone or cancel the appointment?",
-            "description": "You will receive an appointment confirmation to your e-mail address. You can add the appointment to your calendar with a click."
+            "description": "You will receive an appointment confirmation to your email address. You can add the appointment to your calendar with a click."
         }
     },
     "contactSupport": {
@@ -2435,8 +2636,8 @@
         "failure": "An error has occurred",
         "legal": "Ich bin damit einverstanden, dass Lern-Fair die hier gemachten Angaben entsprechend meines Anliegens verarbeitet und nehme die Übermittlung an unsere Dienstleister in die USA und die <privacy>Datenschutzerklärung</privacy> zur Kenntnis."
     },
-    "email": "e-mail",
-    "password": "password",
+    "email": "Email",
+    "password": "Password",
     "hallo": "Hello",
     "clock": "Clock",
     "time": "Time",
@@ -2667,6 +2868,9 @@
         "saturday": "Saturday",
         "sunday": "Sunday"
     },
+    "otherLanguages": "other languages",
+    "close": "Close",
+    "moreInfos": "More info",
     "referral": {
         "share": {
             "materials": {
@@ -2693,5 +2897,14 @@
         "copy": "Copy",
         "copied": "Copied",
         "copiedReferralLink": "Recommendation link copied"
+    },
+    "optional": "Optional",
+    "resetPassword": {
+        "title": "Change password",
+        "newPassword": "New password",
+        "repeatNewPassword": "Repeat new password",
+        "changePassword": "Change password now",
+        "success": "Your password has been successfully changed. You can now log in with the new password",
+        "error": "An error occurred when changing the password"
     }
 }

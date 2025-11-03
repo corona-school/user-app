@@ -30,6 +30,9 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                     <span className="font-bold">Registiert</span>: {formatDate(student.createdAt, DateTime.DATE_MED)}
                 </Typography>
                 <Typography>
+                    <span className="font-bold">Alter</span>: {student.isAdult ? '18 oder älter' : '14 bis 17'}
+                </Typography>
+                <Typography>
                     <span className="font-bold">Aktiv</span>:{' '}
                     {student.active ? <IconCheck className="inline text-green-500" /> : <IconX className="inline text-red-500" />}
                 </Typography>

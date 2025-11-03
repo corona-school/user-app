@@ -24,7 +24,9 @@ const buttonVariants = cva(
                 input: 'border border-input justify-between bg-transparent text-form font-normal ring-offset-background placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:w-full [&>span]:justify-between',
                 linkedIn: 'bg-blue-700 text-white hover:bg-blue-600/90',
                 optional: 'bg-white text-primary border border-primary hover:bg-primary-lighter hover:border-primary-light',
+                'optional-dark': 'bg-white text-primary border border-primary hover:bg-accent-dark hover:border-primary',
                 tertiary: 'bg-gray-100 hover:bg-gray-50 text-primary',
+                'accent-dark': 'bg-accent-medium hover:bg-accent-dark font-normal text-primary active:bg-primary active:text-white active:underline',
             },
             size: {
                 default: 'h-10 px-4 text-form',
@@ -33,6 +35,9 @@ const buttonVariants = cva(
                 input: 'h-10 px-3 py-1',
                 icon: 'h-10 w-10',
                 auto: 'h-auto w-auto',
+            },
+            shape: {
+                rounded: 'rounded-full',
             },
         },
         defaultVariants: {
@@ -53,7 +58,22 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
 
 const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     (
-        { className, variant, size, asChild = false, reasonDisabled, disabledContent, disabled, isLoading, children, leftIcon, rightIcon, onClick, ...props },
+        {
+            className,
+            variant,
+            shape,
+            size,
+            asChild = false,
+            reasonDisabled,
+            disabledContent,
+            disabled,
+            isLoading,
+            children,
+            leftIcon,
+            rightIcon,
+            onClick,
+            ...props
+        },
         ref
     ) => {
         const SlotContent = asChild ? Slot : 'button';
@@ -61,12 +81,14 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 
         const handleOnClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
             if (disabled && !reasonDisabled) {
+                e.preventDefault();
                 e.stopPropagation();
                 return;
             }
 
             if (disabled && reasonDisabled) {
                 setIsTooltipOpen(true);
+                e.preventDefault();
                 e.stopPropagation();
                 return;
             }
@@ -81,7 +103,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
             <SlotContent
                 onClick={handleOnClick}
                 className={cn(
-                    buttonVariants({ variant, size, className }),
+                    buttonVariants({ variant, size, className, shape }),
                     disabled ? 'opacity-50 cursor-auto' : '',
                     disabled && variant === 'input' ? 'cursor-auto pointer-events-none' : ''
                 )}
