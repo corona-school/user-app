@@ -87,7 +87,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
         e.stopPropagation();
         setIsDragging(false);
         setError(null);
-        if (e.dataTransfer.items.length > 0) {
+        if (e.dataTransfer.items.length === 1) {
             const item = e.dataTransfer.items[0];
             if (item.kind === 'file') {
                 if (item.type === 'image/png' || item.type === 'image/jpeg') {
