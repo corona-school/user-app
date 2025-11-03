@@ -974,7 +974,12 @@
             "description": "Ziehe dein Bild hierher oder klicke:",
             "customImage": "Eigenes Bild",
             "database": "Datenbank",
-            "changeImage": "Bild ändern"
+            "changeImage": "Bild ändern",
+            "error": {
+                "imagesOnly": "Bitte nur Bilder hochladen.",
+                "onlyOneFile": "Bitte nur eine Datei hochladen.",
+                "unsplash": "Fehler beim Laden des Bildes von Unsplash."
+            }
         }
     },
     "settings": {

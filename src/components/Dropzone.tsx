@@ -43,15 +43,17 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
         e.stopPropagation();
         if (!isDragging) setIsDragging(true);
         // if filetype is not image, set error
-        if (e.dataTransfer.items.length > 0) {
+        if (e.dataTransfer.items.length === 1) {
             const item = e.dataTransfer.items[0];
             if (item.kind === 'file') {
                 if (!(item.type === 'image/png' || item.type === 'image/jpeg')) {
-                    setError('Bitte nur Bilder hochladen.');
+                    setError(t('single.dropzone.error.imagesOnly'));
                 } else {
                     setError(null);
                 }
             }
+        } else if (e.dataTransfer.items.length > 1) {
+            setError('single.dropzone.error.onlyOneFile');
         }
     };
 
@@ -111,7 +113,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
             })
             .catch((err) => {
                 console.error('Error fetching image from Unsplash:', err);
-                setError('Fehler beim Laden des Bildes von Unsplash.');
+                setError(t('single.dropzone.error.unsplash'));
             });
         setShowModal(false);
     };
@@ -164,7 +166,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                                 {typeof file !== 'string' && (
                                     <>
                                         <span className="font-medium text-gray-700">{file.name}</span>
-                                        <span className="text-sm text-gray-500">{Math.round(file.size / 1024)} KB</span>
+                                        <span className="text-sm text-gray-500">{Math.round(file.size / 1024)} KiB</span>
                                     </>
                                 )}
                                 <Button onClick={() => onUpload(null)} variant="destructive">
