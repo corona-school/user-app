@@ -889,6 +889,11 @@
             }
         },
         "dropzone": {
+            "error": {
+                "imagesOnly": "Lütfen sadece resim yükleyin.",
+                "onlyOneFile": "Lütfen yalnızca bir dosya yükleyin.",
+                "unsplash": "Unsplash'tan görsel yüklenirken hata oluştu."
+            },
             "description": "Resminizi buraya sürükleyin veya tıklayın:",
             "customImage": "Kendi resminiz",
             "database": "Veritabanı",
@@ -1767,11 +1772,11 @@
             "tags": "Etiketleriniz eklenemedi.",
             "appointments": "Hiçbir tarih belirlenmedi",
             "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı.",
-            "course-name": "Geçersiz kurs adı",
+            "course-name": "Lütfen bir kurs adı girin.",
             "description": "Lütfen bir kurs açıklaması girin.",
             "category": "Geçersiz kategori",
             "subject": "Lütfen bir konu seçiniz.",
-            "grade-range": "Lütfen geçerli bir not aralığı girin.",
+            "grade-range": "Lütfen geçerli bir sınıf aralığı girin.",
             "participant-count": "Lütfen geçerli bir katılımcı sayısı girin.",
             "no-appointments": "Lütfen en az bir randevu oluşturun.",
             "unfinished-appointment": "Lütfen tamamlanmamış randevuyu kaydedin veya silin."

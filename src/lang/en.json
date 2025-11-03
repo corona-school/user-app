@@ -76,7 +76,7 @@
             "courseImageAltText": "Course image",
             "videoChatLabel": "Video chat",
             "videoChatPlaceholder": "Add your own link to the video chat",
-            "save": "save lecture "
+            "save": "save lecture"
         },
         "detail": {
             "reasonDisabled": {
@@ -889,6 +889,11 @@
             }
         },
         "dropzone": {
+            "error": {
+                "imagesOnly": "Please only upload pictures.",
+                "onlyOneFile": "Please upload only one file.",
+                "unsplash": "Error loading image from Unsplash."
+            },
             "description": "Drag your picture here or click:",
             "customImage": "Own picture",
             "database": "Database",
@@ -1755,7 +1760,7 @@
             "saveDraft": "Save as draft",
             "prevPage": " To the previous page",
             "existingAppointments": "Existing lectures",
-            "addFirstAppointment": "Create first lecture "
+            "addFirstAppointment": "Create first lecture"
         },
         "error": {
             "course": "Sorry, your course could not be created. Please try again.",
@@ -1767,11 +1772,11 @@
             "tags": "Your tags could not be added.",
             "appointments": "No lectures created.",
             "isInPastOrInvalid": "We could not find this course or it is in the past.",
-            "course-name": "Invalid course name",
+            "course-name": "Please enter a course name.",
             "description": "Please enter a course description.",
             "category": "Invalid category",
             "subject": "Please select a subject.",
-            "grade-range": "Please enter a valid grade range.",
+            "grade-range": "Please enter a valid class range.",
             "participant-count": "Please enter a valid number of participants.",
             "no-appointments": "Please create at least one lecture .",
             "unfinished-appointment": "Please save or delete the incomplete lecture."
