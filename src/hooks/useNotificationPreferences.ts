@@ -8,6 +8,7 @@ import { gql, useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { NotificationPreferences, PreferencesType } from '../types/lernfair/NotificationPreferences';
 import { getAllPreferencesInCategorySetToValue } from '@/helper/notification-helper';
+import useApollo from './useApollo';
 
 const notificationPreferencesQuery = gql`
     query GetNotificationPreferences {
@@ -25,8 +26,10 @@ const notificationPreferencesMutation = gql`
 
 const useUserPreferences = () => {
     const [userPreferences, setUserPreferencesPrivate] = useState<NotificationPreferences>({});
-
-    const { data, loading, error } = useQuery(notificationPreferencesQuery);
+    const { sessionState } = useApollo();
+    const { data, loading, error } = useQuery(notificationPreferencesQuery, {
+        skip: sessionState !== 'logged-in',
+    });
 
     const [mutateUserPreferences] = useMutation(notificationPreferencesMutation);
 

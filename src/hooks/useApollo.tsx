@@ -275,6 +275,13 @@ const STORAGE = TEMPORARY_LOGIN ? sessionStorage : localStorage;
 
 // -------------- Global User State -------------------
 // ----- Session Token ---------------------
+
+// Whether a Session Token was present from a previous session when the page loaded
+// We cannot check this at runtime, as getSessionToken() fills it
+// This avoids an unneccessary backend request to determine the session if the UserApp is opened the first time.
+// Afterwards the session token is present, even if the user did not log-in or finish registration yet.
+const hadSessionTokenOnLoad = !!STORAGE.getItem('lernfair:token');
+
 //  Authenticates the user during a session
 export const getSessionToken = () => {
     const token = STORAGE.getItem('lernfair:token');
@@ -654,12 +661,16 @@ const useApolloInternal = () => {
                 return;
             }
 
-            // Maybe the session already works?
-            try {
-                await refreshSessionState();
-                return;
-            } catch (error) {
-                log('GraphQL', 'Could not query user, need to log in');
+            if (hadSessionTokenOnLoad) {
+                // Maybe the session already works?
+                try {
+                    await refreshSessionState();
+                    return;
+                } catch (error) {
+                    log('GraphQL', 'Could not query user, need to log in');
+                }
+            } else {
+                log('GraphQL', 'No Session Token present from previous session');
             }
 
             // If not, log in using the various methods
