@@ -1,8 +1,7 @@
 import { Language } from '@/gql/graphql';
-import { languageIcons, languageList } from '@/I18n';
 import { cn } from '@/lib/Tailwind';
-import { IconQuestionMark } from '@tabler/icons-react';
 import { EnumSelector } from './EnumSelector';
+import { IconLoader } from './IconLoader';
 
 const priorityLanguages: Language[] = [
     Language.Deutsch,
@@ -39,9 +38,5 @@ export const LanguageSelector = EnumSelector(
 );
 
 export const LanguageIcon = ({ languageName, className }: { languageName: string; className?: string }) => {
-    const item = languageList.find((e) => e.long === languageName.toLowerCase());
-    if (!item) return <IconQuestionMark className="size-6" />;
-    const short = item.short as keyof typeof languageIcons;
-    const Icon = languageIcons[short];
-    return <Icon className={cn('rounded-full size-6 flex-shrink-0', className)} />;
+    return <IconLoader icon={languageName.toLowerCase()} className={cn('rounded-full size-6 flex-shrink-0', className)} />;
 };
