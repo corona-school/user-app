@@ -35,7 +35,8 @@
         "appointmentTile": {
             "lecture": "Ders #{{position}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "{{name}} tarafından iptal edildi"
+            "cancelledBy": "{{name}} tarafından iptal edildi",
+            "lectureHomeworkHelp": "Pazartesiden Perşembeye - spontane katılım"
         },
         "create": {
             "videoSelectOptions": {

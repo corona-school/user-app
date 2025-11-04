@@ -35,7 +35,8 @@
         "appointmentTile": {
             "lecture": "Lesson #{{position}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "Canceled by {{name}}"
+            "cancelledBy": "Canceled by {{name}}",
+            "lectureHomeworkHelp": "Mondays to Thursdays - spontaneous participation"
         },
         "create": {
             "videoSelectOptions": {
