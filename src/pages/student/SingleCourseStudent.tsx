@@ -480,7 +480,12 @@ const SingleCourseStudent = () => {
                         )}
                         <TabsContent value="lectures">
                             <div className="mt-8 max-h-full overflow-y-scroll">
-                                <AppointmentList appointments={appointments} isReadOnly={!canAccessLectures} disableScroll />
+                                <AppointmentList
+                                    appointments={appointments}
+                                    isReadOnly={!canAccessLectures}
+                                    disableScroll
+                                    isHomeworkHelp={course?.category === Course_Category_Enum.HomeworkHelp}
+                                />
                             </div>
                         </TabsContent>
                         <TabsContent value="participants">
