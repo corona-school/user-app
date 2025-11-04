@@ -39,7 +39,6 @@ import ResetPassword from '../pages/ResetPassword';
 import { RequireAuth, RequireRole, SwitchUserType } from '../User';
 import IFrame from '../components/IFrame';
 import WithNavigation from '../components/WithNavigation';
-import Registration from '../pages/Registration';
 
 import RequestMatchStudent from '../pages/student/matching/RequestMatch';
 import RequestMatch from '../pages/pupil/matching/RequestMatch';
@@ -83,7 +82,6 @@ import Referrals from '@/pages/Referrals';
 import CertificatesPage from '@/pages/student/Certificates';
 import { HOMEWORK_HELP_COURSE } from '@/config';
 import CalendarPreferencesPage from '@/pages/CalendarPreferencesPage';
-import { RegistrationProvider } from '@/pages/registration/useRegistrationForm';
 import ForgotPassword from '@/pages/ForgotPassword';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
@@ -110,15 +108,6 @@ export default function NavigatorLazy() {
     return (
         <Routes>
             {/* Public */}
-
-            <Route
-                path="/registration/*"
-                element={
-                    <RegistrationProvider>
-                        <Registration />
-                    </RegistrationProvider>
-                }
-            ></Route>
 
             {/* Private */}
             <Route
