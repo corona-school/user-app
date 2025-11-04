@@ -21,9 +21,10 @@ interface AppointmentListProps {
     // Pagination
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
+    isHomeworkHelp?: boolean;
 }
 
-export const AppointmentList = ({ appointments, isReadOnly, isLoading }: AppointmentListProps) => {
+export const AppointmentList = ({ appointments, isReadOnly, isLoading, isHomeworkHelp }: AppointmentListProps) => {
     const { t } = useTranslation();
     if (!isLoading && !appointments.length) {
         return (
@@ -38,7 +39,7 @@ export const AppointmentList = ({ appointments, isReadOnly, isLoading }: Appoint
             {appointments.map((appointment, index) => (
                 <div key={appointment.id}>
                     <AppointmentDivider appointments={appointments} index={index} />
-                    <AppointmentCard appointment={appointment} isReadOnly={isReadOnly} />
+                    <AppointmentCard appointment={appointment} isReadOnly={isReadOnly} isHomeworkHelp={isHomeworkHelp} />
                 </div>
             ))}
         </div>
