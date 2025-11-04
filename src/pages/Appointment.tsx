@@ -6,7 +6,7 @@ import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { useUserType } from '../hooks/useApollo';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
-import { Lecture_Appointmenttype_Enum } from '../gql/graphql';
+import { Course_Category_Enum, Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import { useTranslation } from 'react-i18next';
@@ -88,6 +88,9 @@ export const PUPIL_APPOINTMENT = gql(`
             zoomMeetingId
             subcourse {
                 published
+                course {
+                    category
+                }
             }
         }
     }
@@ -145,7 +148,13 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
                 items={[breadcrumbRoutes.APPOINTMENTS, { label: data?.appointment?.displayName, route: getDefaultPreviousPath() }, { label: appointmentTile }]}
             />
             {loading && <CenterLoadingSpinner />}
-            {!error && data?.appointment && <AppointmentDetail appointment={data?.appointment} startMeeting={startMeeting} />}
+            {!error && data?.appointment && (
+                <AppointmentDetail
+                    appointment={data?.appointment}
+                    startMeeting={startMeeting}
+                    isHomeworkHelp={data?.appointment.subcourse.course.category === Course_Category_Enum.HomeworkHelp}
+                />
+            )}
         </WithNavigation>
     );
 };

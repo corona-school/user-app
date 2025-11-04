@@ -37,7 +37,7 @@ type MetaProps = {
     isOrganizer?: Appointment['isOrganizer'];
     overrideMeetingLink?: Appointment['override_meeting_link'];
     zoomMeetingUrl?: Appointment['zoomMeetingUrl'];
-    showParticipants?: boolean;
+    isHomeworkHelp?: boolean;
 };
 const AppointmentMetaDetails: React.FC<MetaProps> = ({
     date,
@@ -56,7 +56,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     isOrganizer,
     overrideMeetingLink,
     zoomMeetingUrl,
-    showParticipants = true,
+    isHomeworkHelp,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [loginURL, setLoginURL] = useState<string>('empty');
@@ -127,22 +127,24 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                             <TimeIcon />
                             <Text fontWeight="normal">{t('appointment.detail.time', { start: startTime, end: endTime, duration: duration })}</Text>
                         </HStack>
-                        <HStack space={2} alignItems="center">
-                            <RepeatIcon />
-                            <Text fontWeight="normal">{t('appointment.detail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}</Text>
-                        </HStack>
-                        {showParticipants && (
-                            <HStack space={2} alignItems="center">
-                                <PersonIcon />
-                                <Text fontWeight="normal">
-                                    {t('appointment.detail.participants', {
-                                        participantsTotal: attendeesCount,
-                                    })}
-                                </Text>
-                                <Pressable onPress={() => setShowModal(true)}>
-                                    <InformationBadge />
-                                </Pressable>
-                            </HStack>
+                        {!isHomeworkHelp && (
+                            <>
+                                <HStack space={2} alignItems="center">
+                                    <RepeatIcon />
+                                    <Text fontWeight="normal">{t('appointment.detail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}</Text>
+                                </HStack>
+                                <HStack space={2} alignItems="center">
+                                    <PersonIcon />
+                                    <Text fontWeight="normal">
+                                        {t('appointment.detail.participants', {
+                                            participantsTotal: attendeesCount,
+                                        })}
+                                    </Text>
+                                    <Pressable onPress={() => setShowModal(true)}>
+                                        <InformationBadge />
+                                    </Pressable>
+                                </HStack>
+                            </>
                         )}
                     </Stack>
                     <Spacer py={3} />
