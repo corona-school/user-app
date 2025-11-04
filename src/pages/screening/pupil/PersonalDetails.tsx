@@ -229,9 +229,14 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     </div>
                 </div>
                 <div className="mt-4">
-                    <Typography variant="h5" className="mb-5">
-                        Rollen
-                    </Typography>
+                    <div className="mb-5">
+                        <Typography variant="h5" className="mb-2">
+                            Rollen
+                        </Typography>
+                        <Typography variant="subtle">
+                            Rollen können jederzeit geändert werden. SuS werden per Email informiert über ihre Rolle wenn Screening abgeschlossen wird
+                        </Typography>
+                    </div>
                     <div className="flex gap-6 w-full">
                         <Toggle
                             variant="outline"
@@ -244,20 +249,22 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                         >
                             <div className="flex gap-x-4">
                                 <Checkbox checked={form.canHaveMatches} onCheckedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}></Checkbox>
-                                Kann einen Lernpaar haben
+                                Kann Lernpaare haben
                             </div>
                         </Toggle>
                         <Toggle
                             variant="outline"
                             size="lg"
-                            className="p-8 h-auto"
+                            className="p-8 h-auto cursor-not-allowed"
                             pressed={form.canParticipateInCourses}
                             onPressedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
                             asChild
                             role="button"
+                            disabled
                         >
                             <div className="flex gap-x-4">
                                 <Checkbox
+                                    disabled
                                     checked={form.canParticipateInCourses}
                                     onCheckedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
                                 ></Checkbox>
