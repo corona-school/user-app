@@ -35,7 +35,8 @@
         "appointmentTile": {
             "lecture": "Урок #{{position}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "Скасовано {{name}}"
+            "cancelledBy": "Скасовано {{name}}",
+            "lectureHomeworkHelp": "З понеділка по четвер - спонтанна участь"
         },
         "create": {
             "videoSelectOptions": {

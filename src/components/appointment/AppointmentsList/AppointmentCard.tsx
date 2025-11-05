@@ -10,6 +10,7 @@ import { useNavigate } from 'react-router-dom';
 interface AppointmentCardProps {
     appointment: Appointment;
     isReadOnly?: boolean;
+    isHomeworkHelp?: boolean;
 }
 
 interface AppointmentFactProps {
@@ -24,7 +25,7 @@ const AppointmentFact = ({ children, icon }: AppointmentFactProps) => (
     </div>
 );
 
-export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProps) => {
+export const AppointmentCard = ({ appointment, isReadOnly, isHomeworkHelp }: AppointmentCardProps) => {
     const { t, i18n } = useTranslation();
     const navigate = useNavigate();
     const getAppointmentTimeText = (start: string, duration: number): string => {
@@ -43,9 +44,10 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
 
     const totalParticipants = appointment.participantIds?.length || 0;
     const declinedParticipants = appointment.declinedBy?.length || 0;
-    const appointmentTitle =
-        t('appointment.appointmentTile.lecture', { position: appointment.position }) +
-        (appointment.title ? t('appointment.appointmentTile.title', { appointmentTitle: appointment.title }) : '');
+    const appointmentTitle = isHomeworkHelp
+        ? t('appointment.appointmentTile.lectureHomeworkHelp')
+        : t('appointment.appointmentTile.lecture', { position: appointment.position }) +
+          (appointment.title ? t('appointment.appointmentTile.title', { appointmentTitle: appointment.title }) : '');
     return (
         <div className="flex flex-col lg:flex-row items-center lg:h-[84px] max-w-[980px] py-4 px-4 lg:pl-9 lg:pr-7 border border-gray-300 rounded">
             <div className="flex flex-col">
@@ -64,7 +66,7 @@ export const AppointmentCard = ({ appointment, isReadOnly }: AppointmentCardProp
                         {appointment.displayName}
                     </Typography>
                 </AppointmentFact>
-                {appointment.participantIds && appointment.declinedBy && (
+                {!isHomeworkHelp && appointment.participantIds && appointment.declinedBy && (
                     <AppointmentFact icon={<IconUsersGroup size={18} />}>
                         <Typography variant="sm">
                             {t('single.global.status.lastSeats', { seatsFull: totalParticipants - declinedParticipants, seatsMax: totalParticipants })}

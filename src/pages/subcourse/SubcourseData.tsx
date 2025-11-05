@@ -76,7 +76,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                     </TruncatedText>
                 </div>
                 <div className="flex flex-col gap-y-4">
-                    {subcourse?.lectures.length > 0 && (
+                    {!(course.category === Course_Category_Enum.HomeworkHelp) && subcourse?.lectures.length > 0 && (
                         <SubcourseFactRow>
                             <IconCalendarClock />
                             <Typography>

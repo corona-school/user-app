@@ -74,7 +74,8 @@
         "appointmentTile": {
             "lecture": "Lektion #{{position}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "Abgesagt von {{name}}"
+            "cancelledBy": "Abgesagt von {{name}}",
+            "lectureHomeworkHelp": "Montags bis Donnerstags - spontan teilnehmen"
         },
         "create": {
             "assignmentHeader": "Für welches Lernangebot soll dieser Termin erstellt werden?",

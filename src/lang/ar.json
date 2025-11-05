@@ -35,7 +35,8 @@
         "appointmentTile": {
             "lecture": "الدرس #{{position}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "تم إلغاؤه بواسطة {{name}}"
+            "cancelledBy": "تم إلغاؤه بواسطة {{name}}",
+            "lectureHomeworkHelp": "أيام الاثنين إلى الخميس - المشاركة التلقائية"
         },
         "create": {
             "videoSelectOptions": {
