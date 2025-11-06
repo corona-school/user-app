@@ -1555,7 +1555,7 @@
         "zeugnis": {
             "subtitle": "Notwendige Unterlage",
             "title": "Führungszeugnis ",
-            "content": "Wir benötigen von dir - spätestens alle 3 Jahre - eine aktuelle Version des erweiterten Führungszeugnisses. So können wir einen lückenlosen Kinderschutz ermöglichen. Das Führungszeugnis ist unter Vorlage unseres Vordrucks vor Ort oder online kostenlos. Du kannst Schüler:innen weiterhin unterstützen, aber wenn du dein Führungszeugnis am Ende der Frist nicht eingereicht hast, müssen wir leider dein Konto deaktivieren. Frist für die Einreichung / Deaktivierung deines Kontos: {{cocDate}}",
+            "content": "Wir benötigen von dir spätestens alle 3 Jahre eine aktuelle Version des erweiterten Führungszeugnisses, um den lückenlosen Kinderschutz zu gewährleisten. Das Führungszeugnis kannst du unter Vorlage des Vordrucks vor Ort oder online kostenlos beantragen. Du kannst Schüler:innen weiterhin unterstützen. Bitte reiche dein Führungszeugnis rechtzeitig ein – andernfalls müssen wir dein Konto leider deaktivieren. Frist für die Einreichung / Deaktivierung deines Kontos: {{cocDate}}",
             "buttons": ["Infos zu Beantragung & Einreichen"],
             "actionDescription": "Weitere Informationen"
         },
