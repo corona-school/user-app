@@ -152,7 +152,7 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
                 <AppointmentDetail
                     appointment={data?.appointment}
                     startMeeting={startMeeting}
-                    isHomeworkHelp={data?.appointment.subcourse.course.category === Course_Category_Enum.HomeworkHelp}
+                    isHomeworkHelp={data?.appointment?.subcourse?.course?.category === Course_Category_Enum.HomeworkHelp}
                 />
             )}
         </WithNavigation>
