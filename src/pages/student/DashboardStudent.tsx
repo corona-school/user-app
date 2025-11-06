@@ -214,7 +214,7 @@ const DashboardStudent: React.FC<Props> = () => {
                             {/* Next Appointment */}
                             <VStack marginBottom={space['1.5']}>
                                 <VStack space={space['1']}>
-                                    <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
+                                    <NextAppointmentCard appointments={(data?.me?.appointments ?? []) as Lecture[]} />
 
                                     {(isSummerVacation || process.env.REACT_APP_HOMEWORKHELP !== '') && userType === 'student' && (
                                         <div className="flex flex-col ">
