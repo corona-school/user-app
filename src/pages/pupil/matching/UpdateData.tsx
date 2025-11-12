@@ -30,8 +30,8 @@ type Props = {
 };
 
 const ME_UPDATE_MUTATION = gql(`
-    mutation changePupilMatchingInfoData($languages: [Language!], $calendarPreferences: CalendarPreferences) {
-        meUpdate(update: { pupil: { languages: $languages, calendarPreferences: $calendarPreferences } })
+    mutation changePupilMatchingInfoData($languages: [Language!], $calendarPreferences: CalendarPreferences, $gradeAsInt: Int, $schooltype: SchoolType) {
+        meUpdate(update: { pupil: { languages: $languages, calendarPreferences: $calendarPreferences, gradeAsInt: $gradeAsInt, schooltype: $schooltype } })
     }
 `);
 
@@ -51,7 +51,9 @@ const UpdateData: React.FC<Props> = ({ refetchQuery, profile }) => {
 
     const handleOnNext = async () => {
         try {
-            await meUpdate({ variables: { calendarPreferences: newCalendarPreferences, languages: selectedLanguages } });
+            await meUpdate({
+                variables: { calendarPreferences: newCalendarPreferences, languages: selectedLanguages, gradeAsInt: grade, schooltype: schoolType },
+            });
             toast.success(t('changesWereSaved'));
             setCurrentStep(RequestMatchStep.german);
         } catch (error: any) {
