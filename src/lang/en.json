@@ -1078,7 +1078,9 @@
         "homeworkHelp": {
             "signIn": {
                 "title": "Non-binding registration",
-                "description": "As soon as you have registered, you can spontaneously support individual homework help lessons. Registration does not commit you to anything, but helps us to roughly gauge interest."
+                "description": "As soon as you have registered, you can spontaneously support individual homework help lessons. Registration does not commit you to anything, but helps us to roughly gauge interest.",
+                "pupilDescription": "Register now for the course without obligation. You can then come to the homework help on individual days as and when it suits you.",
+                "button": "Register without obligation"
             },
             "signOut": {
                 "title": "Logout",
