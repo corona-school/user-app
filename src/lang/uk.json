@@ -1470,8 +1470,8 @@
             "buttons": ["Інформація про довідку про несудимість"],
             "subtitle": "Це важливо!",
             "title": "Розширена довідка про несудимість",
-            "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "actionDescription": "Все про довідку про несудимість"
+            "actionDescription": "Все про довідку про несудимість",
+            "content": "Ми вимагаємо оновлену версію розширеної довідки про хорошу поведінку не пізніше, ніж кожні 3 роки, щоб забезпечити повний захист дитини. Ви можете подати заявку на отримання довідки про несудимість безкоштовно, заповнивши форму на місці або онлайн. Ви можете продовжувати підтримувати учнів. Будь ласка, подайте довідку про несудимість вчасно - в іншому випадку ми, на жаль, будемо змушені деактивувати ваш обліковий запис. Кінцевий термін подачі / деактивації акаунта: {{cocDate}}"
         },
         "statusStudent": {
             "buttons": ["Повідомити про проблему"],

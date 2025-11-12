@@ -1470,8 +1470,8 @@
             "buttons": ["Информация о сертификате хорошего поведения"],
             "subtitle": "Важно!",
             "title": "Продленный сертификат хорошего поведения",
-            "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "actionDescription": "Все о сертификате хорошего поведения"
+            "actionDescription": "Все о сертификате хорошего поведения",
+            "content": "Для обеспечения полной защиты детей нам требуется обновленная версия расширенного сертификата хорошего поведения не реже одного раза в 3 года. Вы можете подать заявку на получение сертификата хорошего поведения бесплатно, заполнив форму на месте или онлайн. Вы можете продолжать оказывать поддержку студентам. Пожалуйста, своевременно подайте заявку на получение сертификата хорошего поведения - в противном случае мы, к сожалению, будем вынуждены деактивировать вашу учетную запись. Крайний срок подачи / деактивации учетной записи: {{cocDate}}"
         },
         "statusStudent": {
             "buttons": ["Сообщить о проблеме"],

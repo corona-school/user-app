@@ -1470,8 +1470,8 @@
             "buttons": ["Information on the certificate of good conduct"],
             "subtitle": "Important!",
             "title": "Extended certificate of good conduct",
-            "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "actionDescription": "Everything about the certificate of good conduct"
+            "actionDescription": "Everything about the certificate of good conduct",
+            "content": "We require an up-to-date version of the extended certificate of good conduct every 3 years at the latest in order to ensure complete child protection. You can apply for the certificate of good conduct free of charge by submitting the form on site or online. You can continue to support pupils . Please submit your certificate of good conduct in good time - otherwise we will unfortunately have to deactivate your account. Deadline for submitting / deactivating your account: {{cocDate}}"
         },
         "statusStudent": {
             "buttons": ["Report a problem"],
