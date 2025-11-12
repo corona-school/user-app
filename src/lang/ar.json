@@ -1464,8 +1464,8 @@
             "buttons": ["معلومات عن شهادة حسن السيرة والسلوك"],
             "subtitle": "مهم!",
             "title": "شهادة حسن سيرة وسلوك ممتدة",
-            "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "actionDescription": "كل ما يتعلق بشهادة حسن السيرة والسلوك"
+            "actionDescription": "كل ما يتعلق بشهادة حسن السيرة والسلوك",
+            "content": "نحن نطلب نسخة محدثة من شهادة حسن السيرة والسلوك الممددة كل 3 سنوات على الأكثر من أجل ضمان الحماية الكاملة للطفل. يمكنك التقدم بطلب للحصول على شهادة حسن السيرة والسلوك مجانًا باستخدام نموذج في الموقع أو عبر الإنترنت. يمكنك الاستمرار في دعم تلاميذ . يرجى تقديم شهادة حسن السيرة والسلوك في الوقت المناسب - وإلا سنضطر للأسف إلى إلغاء تنشيط حسابك. الموعد النهائي لتقديم/إلغاء تنشيط حسابك: {{cocDate}}"
         },
         "statusStudent": {
             "buttons": ["الإبلاغ عن مشكلة"],
