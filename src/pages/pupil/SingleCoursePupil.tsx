@@ -225,6 +225,7 @@ const SingleCoursePupil = () => {
                         subcourse={subcourse}
                         refresh={refetch}
                         isActiveSubcourse={isActiveSubcourse}
+                        isHomeworkHelp={course.category === Course_Category_Enum.HomeworkHelp}
                     />
                 )}
                 {subcourse?.isParticipant && !isInPast && (

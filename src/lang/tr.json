@@ -1078,7 +1078,9 @@
         "homeworkHelp": {
             "signIn": {
                 "title": "Bağlayıcı olmayan kayıt",
-                "description": "Kayıt olur olmaz, bireysel ev ödevi yardım derslerini kendiliğinden destekleyebilirsiniz. Kayıt yaptırmak sizi herhangi bir taahhüt altına sokmaz, ancak ilgiyi kabaca ölçmemize yardımcı olur."
+                "description": "Kayıt olur olmaz, bireysel ev ödevi yardım derslerini kendiliğinden destekleyebilirsiniz. Kayıt yaptırmak sizi herhangi bir taahhüt altına sokmaz, ancak ilgiyi kabaca ölçmemize yardımcı olur.",
+                "pupilDescription": "Hiçbir yükümlülük altına girmeden kursa şimdi kaydolun. Daha sonra size uygun olan günlerde spontane olarak ev ödevi yardımına gelebilirsiniz.",
+                "button": "Yükümlülük olmadan kayıt olun"
             },
             "signOut": {
                 "title": "Çıkış",
