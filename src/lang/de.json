@@ -1105,7 +1105,7 @@
             "signIn": {
                 "title": "Unverbindliche Anmeldung",
                 "description": "Sobald du dich angemeldet hast, kannst du spontan einzelne Hausaufgabenhilfe-Stunden unterstützen. Die Anmeldung verpflichtet dich zu nichts, sondern hilft uns ganz grob das Interesse zu erfassen.",
-                "pupilDescription": "Melde dich jetzt unverbindlich für den Kurs an. Du kannst danach spontan an einzelnen Tagen in die Hausaufgabenhilfe kommen, wie es dir passt.",
+                "pupilDescription": "Melde dich jetzt unverbindlich für die Hausaufgabenhilfe an. Du kannst danach spontan an einzelnen Tagen in die Hausaufgabenhilfe kommen, wie es dir passt.",
                 "button": "Unverbindlich anmelden"
             },
             "signOut": {
