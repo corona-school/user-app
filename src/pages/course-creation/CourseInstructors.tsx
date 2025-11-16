@@ -7,23 +7,24 @@ import { cn } from '@/lib/Tailwind';
 import { Combobox } from '@/components/Combobox';
 import { useLazyQuery } from '@apollo/client';
 import { gql } from '@/gql';
-import { LFInstructor } from '@/types/lernfair/Course';
 import { InfoTooltipButton } from '@/components/Tooltip';
 import { useTranslation } from 'react-i18next';
+import { Instructor } from '@/gql/graphql';
 
 interface Props {
-    instructors: LFInstructor[];
-    setInstructors: (instructors: LFInstructor[] | ((prev: LFInstructor[]) => LFInstructor[])) => void;
-    mentors: LFInstructor[];
-    setMentors: (mentors: LFInstructor[] | ((prev: LFInstructor[]) => LFInstructor[])) => void;
+    instructors: Instructor[];
+    setInstructors: (instructors: Instructor[]) => void;
+    mentors: Instructor[];
+    setMentors: (instructors: Instructor[]) => void;
 }
 
 const INSTRUCTORS_QUERY = gql(`
-        query searchInstructors($search: String!, $take: Int!) {
+        query otherInstructors($search: String!, $take: Int!) {
             otherInstructors(take: $take, skip: 0, search: $search) {
                 id
                 firstname
                 lastname
+                aboutMe
             }
         }
     `);
@@ -31,14 +32,14 @@ const INSTRUCTORS_QUERY = gql(`
 const CourseInstructors: React.FC<Props> = (props) => {
     const [searchInstructorsQuery] = useLazyQuery(INSTRUCTORS_QUERY);
     const [searchString, setSearchString] = useState<string>('');
-    const [searchResults, setSearchResults] = useState<LFInstructor[]>([]);
+    const [searchResults, setSearchResults] = useState<Instructor[]>([]);
     const { t } = useTranslation();
 
     const searchInstructors = async (query: string) => {
         setSearchString(query);
         const instructors = await searchInstructorsQuery({ variables: { search: query, take: 10 } });
         if (instructors.data) {
-            const rawResults = instructors.data.otherInstructors.map((i) => ({ id: i.id, firstname: i.firstname, lastname: i.lastname }));
+            const rawResults = instructors.data.otherInstructors;
             const results = rawResults.filter((x) => !props.instructors.some((i) => i.id === x.id) && !props.mentors.some((m) => m.id === x.id));
             setSearchResults(results);
         }
@@ -49,28 +50,28 @@ const CourseInstructors: React.FC<Props> = (props) => {
         if (wasInstructor) {
             const instructor = props.instructors.find((i) => i.id === id);
             if (instructor) {
-                props.setInstructors((prev: LFInstructor[]) => prev.filter((i) => i.id !== id));
-                props.setMentors((prev: LFInstructor[]) => [...prev, instructor]);
+                props.setInstructors(props.instructors.filter((i) => i.id !== id));
+                props.setMentors([...props.mentors, instructor]);
             }
         } else {
             const mentor = props.mentors.find((m) => m.id === id);
             if (mentor) {
-                props.setMentors((prev: LFInstructor[]) => prev.filter((m) => m.id !== id));
-                props.setInstructors((prev: LFInstructor[]) => [...prev, mentor]);
+                props.setMentors(props.mentors.filter((m) => m.id !== id));
+                props.setInstructors([...props.instructors, mentor]);
             }
         }
     };
 
-    const onSearchSelect = (instructor: LFInstructor) => {
+    const onSearchSelect = (instructor: Instructor) => {
         props.setInstructors([...props.instructors, instructor]);
         setSearchResults([]); // Clear search results after selection
     };
 
     const removeManager = (isInstructor: boolean, id: number) => {
         if (isInstructor) {
-            props.setInstructors((prev: LFInstructor[]) => prev.filter((i) => i.id !== id));
+            props.setInstructors(props.instructors.filter((i) => i.id !== id));
         } else {
-            props.setMentors((prev: LFInstructor[]) => prev.filter((m) => m.id !== id));
+            props.setMentors(props.mentors.filter((m) => m.id !== id));
         }
     };
 
@@ -90,7 +91,7 @@ const CourseInstructors: React.FC<Props> = (props) => {
                         onSearch={searchInstructors}
                         search={searchString}
                         values={searchResults.map((r) => ({ value: JSON.stringify(r), label: `${r.firstname} ${r.lastname}` }))}
-                        onSelect={(v) => onSearchSelect(JSON.parse(v) as LFInstructor)}
+                        onSelect={(v) => onSearchSelect(JSON.parse(v) as Instructor)}
                     />
                 </div>
 

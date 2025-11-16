@@ -2,28 +2,15 @@ import { Label } from '@/components/Label';
 import { Switch } from '@/components/Switch';
 import { useTranslation } from 'react-i18next';
 import { Typography } from '@/components/Typography';
+import { LFSubCourse } from '@/types/lernfair/Course';
+import { Dispatch, SetStateAction } from 'react';
 
 interface Props {
-    allowParticipantContact: boolean;
-    setAllowParticipantContact: (value: boolean) => void;
-    allowChatWriting: boolean;
-    setAllowChatWriting: (value: boolean) => void;
-    joinAfterStart?: boolean;
-    setJoinAfterStart?: (value: boolean) => void;
-    allowProspectContact?: boolean;
-    setAllowProspectContact?: (value: boolean) => void;
+    subcourse: LFSubCourse;
+    setSubcourse: Dispatch<SetStateAction<LFSubCourse>>;
 }
 
-const CourseSettings: React.FC<Props> = ({
-    allowParticipantContact,
-    setAllowParticipantContact,
-    allowChatWriting,
-    setAllowChatWriting,
-    joinAfterStart,
-    setJoinAfterStart,
-    allowProspectContact,
-    setAllowProspectContact,
-}) => {
+const CourseSettings: React.FC<Props> = ({ subcourse, setSubcourse }) => {
     const { t } = useTranslation();
     return (
         <div className="flex flex-col gap-2.5 w-full">
@@ -32,7 +19,12 @@ const CourseSettings: React.FC<Props> = ({
                 <Label htmlFor="1" className="inline flex-grow text-base font-normal">
                     {t('course.CourseDate.form.otherOptionStart')}
                 </Label>
-                <Switch id="1" className="flex-shrink-0" checked={!!joinAfterStart} onCheckedChange={(c) => setJoinAfterStart && setJoinAfterStart(c)} />
+                <Switch
+                    id="1"
+                    className="flex-shrink-0"
+                    checked={!!subcourse.joinAfterStart}
+                    onCheckedChange={(c) => setSubcourse((s) => ({ ...s, joinAfterStart: c }))}
+                />
             </div>
             <div className="flex justify-between">
                 <Label htmlFor="2" className="inline flex-grow text-base font-normal">
@@ -46,8 +38,8 @@ const CourseSettings: React.FC<Props> = ({
                 <Switch
                     id="3"
                     className="flex-shrink-0"
-                    checked={!!allowProspectContact}
-                    onCheckedChange={(c) => setAllowProspectContact && setAllowProspectContact(c)}
+                    checked={!!subcourse.allowChatContactProspects}
+                    onCheckedChange={(c) => setSubcourse((s) => ({ ...s, allowChatContactProspects: c }))}
                 />
             </div>
             <div className="flex justify-between ml-5">
@@ -57,15 +49,9 @@ const CourseSettings: React.FC<Props> = ({
                 <Switch
                     id="4"
                     className="flex-shrink-0"
-                    checked={allowParticipantContact}
-                    onCheckedChange={(c) => setAllowParticipantContact && setAllowParticipantContact(c)}
+                    checked={!!subcourse.allowChatContactParticipants}
+                    onCheckedChange={(c) => setSubcourse((s) => ({ ...s, allowChatContactParticipants: c }))}
                 />
-            </div>
-            <div className="flex justify-between">
-                <Label htmlFor="5" className="inline flex-grow text-base font-normal">
-                    {t('course.CourseDate.form.allowChatContact')}
-                </Label>
-                <Switch id="5" className="flex-shrink-0" checked={allowChatWriting} onCheckedChange={(c) => setAllowChatWriting && setAllowChatWriting(c)} />
             </div>
         </div>
     );

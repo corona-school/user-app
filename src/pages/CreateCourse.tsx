@@ -8,19 +8,17 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
 import { useTranslation } from 'react-i18next';
-import { LFInstructor, LFSubCourse, LFTag } from '@/types/lernfair/Course';
+import { LFSubCourse } from '@/types/lernfair/Course';
 import { gql } from '@/gql';
 import { useLazyQuery, useMutation } from '@apollo/client';
 import CourseDetails from '@/pages/course-creation/CourseDetails';
 import { FileItem } from '@/components/Dropzone';
 import CourseAppointments from '@/pages/course-creation/CourseAppointments';
-import CourseInstructors from '@/pages/course-creation/CourseInstructors';
-import { Course_Category_Enum, Course_Coursestate_Enum, Course_Subject_Enum, Instructor } from '@/gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum, Instructor } from '@/gql/graphql';
 import CourseSettings from './course-creation/CourseSettings';
 import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
-import { COURSE_SUBJECT_TO_SUBJECT } from '@/types/subject';
 import { getCourseDelta, useUpdateCourse } from './course-creation/update';
 import { DisplayAppointment } from '@/widgets/AppointmentList';
 
@@ -162,28 +160,35 @@ const CreateCourse: React.FC = () => {
 
     const state = location.state as { subcourseId?: number; currentStep?: number };
     const prefillSubcourseId = state?.subcourseId;
-    const [prefillCourse, setPrefillCourse] = useState<LFSubCourse | null>(null); // used for delta calculation
+    const [prefillSubcourse, setPrefillSubcourse] = useState<LFSubCourse | null>(null); // used for delta calculation
+    const [updatedSubcourse, setUpdatedSubcourse] = useState<LFSubCourse>({
+        id: -1,
+        lectures: [],
+        course: {
+            name: '',
+            category: Course_Category_Enum.Revision,
+            subject: '',
+            description: '',
+            allowContact: true,
+        },
+        maxParticipants: 50,
+        allowChatContactParticipants: true,
+        allowChatContactProspects: true,
+        joinAfterStart: false,
+        maxGrade: 14,
+        minGrade: 1,
+        instructors: [],
+        mentors: [],
+        groupChatType: ChatType.NORMAL,
+    }); // used for delta calculation
+
     const editingExistingCourse = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
 
     const [errors, setErrors] = useState<CreateCourseError[]>([]);
     const [appointmentErrors, setAppointmentErrors] = useState<boolean>(false);
 
     const [courseId, setCourseId] = useState<number | undefined>(undefined);
-    const [courseName, setCourseName] = useState<string>('');
-    const [courseCategory, setCourseCategory] = useState<Course_Category_Enum>(Course_Category_Enum.Revision);
-    const [subject, setSubject] = useState<string | null>(null);
-    const [gradeRange, setGradeRange] = useState<[number, number]>([1, 14]);
-    const [description, setDescription] = useState<string>('');
-    const [tags, setTags] = useState<LFTag[]>([]);
-    const [maxParticipantCount, setMaxParticipantCount] = useState<number>(50); // default max participants
-    const [joinAfterStart, setJoinAfterStart] = useState<boolean>(true);
-    const [allowProspectContact, setAllowProspectContact] = useState<boolean>(true);
-    const [allowParticipantContact, setAllowParticipantContact] = useState<boolean>(true);
-    const [allowChatWriting, setAllowChatWriting] = useState<boolean>(true);
-    const [instructors, setInstructors] = useState<LFInstructor[]>([]);
-    const [mentors, setMentors] = useState<LFInstructor[]>([]);
-    const [image, setImage] = useState<string>('');
-    const [pickedPhoto, setPickedPhoto] = useState<FileItem | null | undefined>(undefined); // overrides image if set, used for image upload.
+    const [uploadImage, setUploadImage] = useState<FileItem | null | undefined>(undefined); // overrides image if set, used for image upload.
     const [courseAppointments, setCourseAppointments] = useState<DisplayAppointment[]>();
     const [studentId, setStudentId] = useState<number>();
 
@@ -224,36 +229,21 @@ const CreateCourse: React.FC = () => {
             variables: { id: prefillSubcourseId },
         })) as unknown as { data: { subcourse: LFSubCourse } };
         console.log('PREFILLING', prefillSubcourse);
-        setPrefillCourse(prefillSubcourse);
+        setPrefillSubcourse(prefillSubcourse);
 
         setCourseId(prefillSubcourse.course.id);
-        setCourseName(prefillSubcourse.course.name);
-        setSubject(COURSE_SUBJECT_TO_SUBJECT[prefillSubcourse.course.subject as Course_Subject_Enum]);
-        setCourseCategory(prefillSubcourse.course.category as Course_Category_Enum);
-        setDescription(prefillSubcourse.course.description);
-        setMaxParticipantCount(prefillSubcourse.maxParticipants!);
-        setJoinAfterStart(!!prefillSubcourse.joinAfterStart);
-        setAllowProspectContact(!!prefillSubcourse.allowChatContactProspects);
-        setAllowParticipantContact(!!prefillSubcourse.allowChatContactParticipants);
-        setAllowChatWriting(prefillSubcourse.groupChatType === ChatType.NORMAL);
-        setGradeRange([prefillSubcourse.minGrade || 1, prefillSubcourse.maxGrade || 14]);
+
+        let updatedCourse = { ...prefillSubcourse };
         setCourseAppointments((userType === 'student' ? prefillSubcourse.joinedAppointments : prefillSubcourse.appointments) ?? []);
-        prefillSubcourse.course.image && setImage(prefillSubcourse.course.image);
 
         if (prefillSubcourse.instructors && Array.isArray(prefillSubcourse.instructors)) {
-            const arr = prefillSubcourse.instructors.filter((instructor: Instructor) => instructor.id !== studentId);
-            setInstructors(arr);
+            updatedCourse.instructors = prefillSubcourse.instructors.filter((instructor: Instructor) => instructor.id !== studentId);
         }
 
         if (prefillSubcourse.mentors && Array.isArray(prefillSubcourse.mentors)) {
-            const arr = prefillSubcourse.mentors.filter((mentor: Instructor) => mentor.id !== studentId);
-            setMentors(arr);
+            updatedCourse.mentors = prefillSubcourse.mentors.filter((mentor: Instructor) => mentor.id !== studentId);
         }
-
-        if (prefillSubcourse.course.tags && Array.isArray(prefillSubcourse.course.tags)) {
-            setTags(prefillSubcourse.course.tags);
-        }
-
+        setUpdatedSubcourse(updatedCourse);
         setLoadingCourse(false);
     }, [courseQuery, prefillSubcourseId, studentId, userType]);
 
@@ -263,22 +253,29 @@ const CreateCourse: React.FC = () => {
 
     const save = async (doSubmit: boolean) => {
         const errors: CreateCourseError[] = [];
-        if (!courseName || courseName.length < 3) {
+        if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 3) {
             errors.push('course-name');
         }
-        if (!description || description.length < 10) {
+        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 10) {
             errors.push('description');
         }
-        if (!courseCategory) {
+        if (!updatedSubcourse?.course.category) {
             errors.push('category');
         }
-        if (courseCategory === Course_Category_Enum.Revision && !subject) {
+        if (updatedSubcourse?.course.category === Course_Category_Enum.Revision && !updatedSubcourse?.course.subject) {
             errors.push('subject');
         }
-        if (!gradeRange || gradeRange[0] > gradeRange[1]) {
+        if (
+            updatedSubcourse?.course.category !== Course_Category_Enum.Revision &&
+            updatedSubcourse?.course.category !== Course_Category_Enum.HomeworkHelp &&
+            (!updatedSubcourse?.course.tags || updatedSubcourse?.course.tags!.length === 0)
+        ) {
+            errors.push('tags');
+        }
+        if (!updatedSubcourse?.minGrade || !updatedSubcourse?.maxGrade || updatedSubcourse?.minGrade > updatedSubcourse?.maxGrade) {
             errors.push('grade-range');
         }
-        if (!maxParticipantCount || maxParticipantCount <= 0) {
+        if (!updatedSubcourse?.maxParticipants || updatedSubcourse?.maxParticipants <= 0) {
             errors.push('participant-count');
         }
         if (!courseAppointments || courseAppointments?.length === 0) {
@@ -294,25 +291,14 @@ const CreateCourse: React.FC = () => {
         }
 
         const delta = getCourseDelta(
-            prefillCourse,
             {
-                courseName,
-                courseCategory,
-                subject,
-                gradeRange,
-                description,
-                tags,
-                maxParticipantCount: maxParticipantCount,
-                joinAfterStart,
-                allowProspectContact,
-                allowParticipantContact,
-                allowChatWriting,
-                // instructors does not include the student itself, so we need to add it manually for delta
-                instructors: [...instructors.map((x) => x.id!), ...(studentId ? [studentId] : [])],
-                mentors: mentors.map((x) => x.id!),
-                pickedPhoto,
-                image,
-                courseAppointments,
+                course: prefillSubcourse?.course,
+                subcourse: prefillSubcourse ?? undefined,
+            },
+            {
+                course: updatedSubcourse?.course!,
+                subcourse: { ...updatedSubcourse!, appointments: courseAppointments }, // here we don't need newId anymore
+                uploadImage,
             },
             studentId,
             userType
@@ -366,7 +352,13 @@ const CreateCourse: React.FC = () => {
                 }
             >
                 {editingExistingCourse ? (
-                    <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: courseName, route: `single-course/${courseId}` }, breadcrumbRoutes.EDIT_COURSE]} />
+                    <Breadcrumb
+                        items={[
+                            breadcrumbRoutes.COURSES,
+                            { label: updatedSubcourse?.course.name!, route: `single-course/${courseId}` },
+                            breadcrumbRoutes.EDIT_COURSE,
+                        ]}
+                    />
                 ) : (
                     <Breadcrumb />
                 )}
@@ -375,54 +367,29 @@ const CreateCourse: React.FC = () => {
                 </Typography>
                 <div className="flex flex-col gap-5 w-full sm:max-w-5xl" id="form">
                     <CourseDetails
-                        courseName={courseName}
-                        setCourseName={setCourseName}
-                        description={description}
-                        setDescription={setDescription}
-                        pickedPhoto={pickedPhoto}
-                        setPickedPhoto={setPickedPhoto}
-                        existingPhoto={image}
-                        maxParticipantCount={maxParticipantCount}
-                        setMaxParticipantCount={setMaxParticipantCount}
-                        subject={subject}
-                        setSubject={setSubject}
-                        gradeRange={gradeRange}
-                        setGradeRange={setGradeRange}
-                        category={courseCategory}
-                        setCategory={setCourseCategory}
-                        selectedTags={tags}
-                        setSelectedTags={setTags}
+                        subcourse={updatedSubcourse!}
+                        setSubcourse={setUpdatedSubcourse}
+                        pickedPhoto={uploadImage}
+                        setPickedPhoto={setUploadImage}
                         errors={errors}
-                        instructors={instructors}
-                        mentors={mentors}
-                        setInstructors={setInstructors}
-                        setMentors={setMentors}
                     />
                     <CourseAppointments
+                        subcourseId={updatedSubcourse!.id}
                         isEditingCourse={true}
-                        appointments={courseAppointments ?? []}
-                        setAppointments={setCourseAppointments}
                         errors={errors}
                         setAppointmentErrors={setAppointmentErrors}
+                        appointments={courseAppointments ?? []}
+                        setAppointments={setCourseAppointments}
                     />
-                    <CourseSettings
-                        allowParticipantContact={allowParticipantContact}
-                        setAllowParticipantContact={setAllowParticipantContact}
-                        allowProspectContact={allowProspectContact}
-                        setAllowProspectContact={setAllowProspectContact}
-                        allowChatWriting={allowChatWriting}
-                        setAllowChatWriting={setAllowChatWriting}
-                        joinAfterStart={joinAfterStart}
-                        setJoinAfterStart={setJoinAfterStart}
-                    />
+                    <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
                     <div className="flex flex-col gap-2">
                         <Button variant="outline" className="w-full" onClick={() => window.history.back()}>
                             {t('course.CourseDate.Preview.cancel')}
                         </Button>
                         <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)}>
-                            {prefillCourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
+                            {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
                         </Button>
-                        {(!prefillCourse || prefillCourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
+                        {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
                             <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full" onClick={() => save(true)}>
                                 {t('course.CourseDate.Preview.publishCourse')}
                             </Button>

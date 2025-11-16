@@ -2064,7 +2064,7 @@
             "set_image": "Dein Bild konnte leider nicht als Kursbild gesetzt werden.",
             "instructors": "Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.",
             "lectures": "Ein oder mehrere Termine konnten nicht hinzugefügt werden.",
-            "tags": "Deine Tags konnten nicht hinzugefügt werden.",
+            "tags": "Bitte wähle Tags aus.",
             "appointments": "Keine Termine angelegt.",
             "isInPastOrInvalid": "Wir konnten diesen Kurs nicht finden oder er liegt in der Vergangenheit.",
             "course-name": "Bitte gib einen Kursnamen ein.",

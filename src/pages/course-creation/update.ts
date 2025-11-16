@@ -1,7 +1,6 @@
-import { COURSE_SUBJECT_TO_SUBJECT, SUBJECT_TO_COURSE_SUBJECT } from '@/types/subject';
+import { SUBJECT_TO_COURSE_SUBJECT } from '@/types/subject';
 import {
     AppointmentCreateGroupInput,
-    Course_Category_Enum,
     Course_Subject_Enum,
     CourseCategory,
     PublicCourseCreateInput,
@@ -9,26 +8,20 @@ import {
     PublicSubcourseCreateInput,
     PublicSubcourseEditInput,
 } from '@/gql/graphql';
-import { ChatType } from '../CreateCourse';
-import { LFSubCourse, LFTag } from '@/types/lernfair/Course';
+import { LFCourse, LFSubCourse } from '@/types/lernfair/Course';
 import { FileItem } from '@/components/Dropzone';
 import { Appointment } from '@/types/lernfair/Appointment';
 import { useMutation } from '@apollo/client';
 import { gql } from '@/gql';
 import { BACKEND_URL } from '@/config';
 
-type CourseDelta = {
-    courseName?: string;
-    courseCategory?: Course_Category_Enum;
-    subject?: string | null;
-    gradeRange?: [number, number];
-    description?: string;
-    tags?: LFTag[];
-    maxParticipantCount?: number;
-    joinAfterStart?: boolean;
-    allowProspectContact?: boolean;
-    allowParticipantContact?: boolean;
-    allowChatWriting?: boolean;
+type CourseState = {
+    subcourse: Omit<Partial<LFSubCourse>, 'course'>;
+    course: Omit<Partial<LFCourse>, 'courseState'>;
+    uploadImage?: FileItem | null | undefined; // image to be uploaded; will overwrite `course.image` once uploaded
+};
+
+type CourseDelta = CourseState & {
     addedInstructors: number[];
     removedInstructors: number[];
     addedMentors: number[];
@@ -36,132 +29,78 @@ type CourseDelta = {
     changedAppointments?: Record<string, any>;
     newAppointments: Appointment[];
     cancelledAppointments: number[]; // IDs of appointments that were cancelled
-    uploadImage?: FileItem | null; // overrides `image`
-    image?: string;
 };
 
 export function getCourseDelta(
-    prefillCourse: Partial<LFSubCourse> | null,
-    state: {
-        courseName: string;
-        courseCategory: Course_Category_Enum;
-        subject: string | null;
-        gradeRange: [number, number];
-        description: string;
-        tags: LFTag[];
-        maxParticipantCount: number;
-        joinAfterStart: boolean;
-        allowProspectContact: boolean;
-        allowParticipantContact: boolean;
-        allowChatWriting: boolean;
-        instructors: number[];
-        mentors: number[];
-        pickedPhoto: FileItem | null | undefined;
-        image: string;
-        courseAppointments?: Appointment[];
-    },
+    oldState: Partial<CourseState>, // subcourse/course might be null if we're creating a course
+    newState: CourseState,
     studentId: number | undefined,
     userType: 'pupil' | 'student' | 'screener'
 ): CourseDelta {
-    const create = prefillCourse === null;
-    const delta: Partial<CourseDelta> = {};
-
     const changed = (a: any, b: any) => JSON.stringify(a) !== JSON.stringify(b);
 
-    // Simple fields
-    if (state.courseName !== prefillCourse?.course?.name || create) delta.courseName = state.courseName;
-    if (state.courseCategory !== prefillCourse?.course?.category || create) delta.courseCategory = state.courseCategory;
-    if (state.subject !== COURSE_SUBJECT_TO_SUBJECT[prefillCourse?.course?.subject as Course_Subject_Enum] || create) delta.subject = state.subject;
-    if (state.description !== prefillCourse?.course?.description || create) delta.description = state.description;
-    if (state.maxParticipantCount !== prefillCourse?.maxParticipants || create) delta.maxParticipantCount = state.maxParticipantCount;
-    if (state.joinAfterStart !== !!prefillCourse?.joinAfterStart || create) delta.joinAfterStart = state.joinAfterStart;
-    if (state.allowProspectContact !== !!prefillCourse?.allowChatContactProspects || create) delta.allowProspectContact = state.allowProspectContact;
-    if (state.allowParticipantContact !== !!prefillCourse?.allowChatContactParticipants || create)
-        delta.allowParticipantContact = state.allowParticipantContact;
-    if (state.allowChatWriting !== (prefillCourse?.groupChatType === ChatType.NORMAL) || create) delta.allowChatWriting = state.allowChatWriting;
-    if (state.gradeRange[0] !== prefillCourse?.minGrade || state.gradeRange[1] !== prefillCourse?.maxGrade || create) {
-        delta.gradeRange = state.gradeRange;
-    }
+    let delta: CourseDelta = {
+        addedInstructors: [],
+        addedMentors: [],
+        removedInstructors: [],
+        removedMentors: [],
+        changedAppointments: [],
+        cancelledAppointments: [],
+        newAppointments: [],
+        subcourse: Object.fromEntries(
+            Object.entries(newState.subcourse).filter(([k, v]) => !oldState.subcourse || changed(oldState.subcourse[k as keyof Omit<LFSubCourse, 'course'>], v))
+        ),
+        course: Object.fromEntries(
+            Object.entries(newState.course).filter(([k, v]) => !oldState.course || changed(oldState.course[k as keyof Omit<LFCourse, 'courseState'>], v))
+        ),
+    };
+    //todo exclude id
 
     // Tags
-    const prefillTagIds = (prefillCourse?.course?.tags ?? []).map((t) => t.id).sort();
-    const stateTagIds = state.tags.map((t) => t.id).sort();
+    const prefillTagIds = (oldState?.course?.tags ?? []).map((t) => t.id).sort();
+    const stateTagIds = newState.course?.tags?.map((t) => t.id).sort();
     if (changed(prefillTagIds, stateTagIds)) {
-        delta.tags = state.tags;
+        delta.course.tags = newState.course.tags;
     }
 
     // Instructors
-    const prefillInstructorIds = (prefillCourse?.instructors ?? []).map((i) => i);
-    const stateInstructorIds = state.instructors.map((i) => i);
+    const prefillInstructorIds = (oldState?.subcourse?.instructors ?? []).map((i) => i);
+    const stateInstructorIds = newState.subcourse.instructors?.map((i) => i) ?? [];
 
-    delta.addedInstructors = state.instructors.filter((i) => i !== studentId && !prefillInstructorIds.some((x) => x.id === i));
-    delta.removedInstructors = prefillCourse?.instructors?.filter((i) => !stateInstructorIds.includes(i.id)).map((x) => x.id) ?? [];
+    delta.addedInstructors =
+        newState.subcourse.instructors?.filter((i) => i.id !== studentId && !prefillInstructorIds.some((x) => x.id === i.id)).map((i) => i.id) ?? [];
+    delta.removedInstructors = oldState?.subcourse?.instructors?.filter((i) => !stateInstructorIds.some((x) => x.id === i.id)).map((x) => x.id) ?? [];
 
     // Mentors
-    const prefillMentorIds = (prefillCourse?.mentors ?? []).map((i) => i);
-    const stateMentorIds = state.mentors.map((i) => i).sort();
+    const prefillMentorIds = (oldState?.subcourse?.mentors ?? []).map((i) => i);
+    const stateMentorIds = newState.subcourse.mentors?.map((i) => i) ?? [];
 
-    delta.addedMentors = state.mentors.filter((i) => !prefillMentorIds.some((x) => (x.id = i)));
-    delta.removedMentors = prefillCourse?.mentors?.filter((i) => !stateMentorIds.includes(i.id)).map((x) => x.id) ?? [];
+    delta.addedMentors = newState.subcourse.mentors?.filter((i) => !prefillMentorIds.some((x) => (x.id = i.id))).map((x) => x.id) ?? [];
+    delta.removedMentors = oldState?.subcourse?.mentors?.filter((i) => !stateMentorIds.some((x) => x.id === i.id)).map((x) => x.id) ?? [];
 
-    const existingAppointments = (userType === 'student' ? prefillCourse?.joinedAppointments : prefillCourse?.appointments) ?? [];
+    const existingAppointments: Appointment[] = (userType === 'student' ? oldState?.subcourse?.joinedAppointments : oldState?.subcourse?.appointments) ?? [];
+    const prefillMap: Map<number, Appointment> = new Map(existingAppointments.map((a) => [a.id, a]));
 
-    const prefillMap = new Map(
-        existingAppointments.map((a) => [
-            a.id,
-            {
-                start: a.start,
-                duration: a.duration,
-                title: a.title,
-                description: a.description,
-                displayName: a.displayName,
-                position: a.position,
-                total: a.total,
-                appointmentType: a.appointmentType,
-            },
-        ])
-    );
-
+    delta.newAppointments = (newState.subcourse.appointments ?? []).filter((a) => !prefillMap.has(a.id));
     const changedAppointments: Record<string, any> = {};
-    delta.newAppointments = (state.courseAppointments ?? []).filter((a) => !prefillMap.has(a.id));
-    for (const a of state.courseAppointments ?? []) {
+    for (const a of newState.subcourse.appointments ?? []) {
         const prev = prefillMap.get(a.id);
-        if (
-            prev &&
-            changed(prev, {
-                start: a.start,
-                duration: a.duration,
-                title: a.title,
-                description: a.description,
-                displayName: a.displayName,
-                position: a.position,
-                total: a.total,
-                appointmentType: a.appointmentType,
-            })
-        ) {
-            changedAppointments[a.id] = {
-                start: a.start,
-                duration: a.duration,
-                title: a.title,
-                description: a.description,
-                displayName: a.displayName,
-                position: a.position,
-                total: a.total,
-            };
+        if (prev && changed(prev, a)) {
+            changedAppointments[a.id] = a;
         }
     }
     delta.changedAppointments = changedAppointments;
     // appointments that are not in state but in prefillCourse
-    delta.cancelledAppointments = existingAppointments.filter((a) => !state.courseAppointments?.some((x) => x.id === a.id)).map((a) => a.id);
+    delta.cancelledAppointments = existingAppointments.filter((a) => !newState.subcourse.appointments?.some((x) => x.id === a.id)).map((a) => a.id);
 
     // Image
-    if (state.pickedPhoto) {
-        delta.uploadImage = state.pickedPhoto;
-    } else if (state.image !== (prefillCourse?.course?.image ?? '')) {
-        delta.image = state.image;
+    if (newState.uploadImage) {
+        delta.uploadImage = newState.uploadImage;
+    } else if (newState.course.image !== (oldState?.course?.image ?? '')) {
+        delta.course.image = newState.course.image;
     }
 
-    return delta as CourseDelta;
+    return delta;
 }
 
 function objectHasNonUndefinedValues(obj: Record<string, any>): boolean {
@@ -289,31 +228,28 @@ export function useUpdateCourse() {
     );
 
     return async (
-        _subcourseId: number | undefined,
-        _courseId: number | undefined,
+        subcourseId: number | undefined,
+        courseId: number | undefined,
         delta: CourseDelta
     ): Promise<{ subcourseId: number; courseId: number } | void> => {
         const promises: Promise<any>[] = [];
-
-        let courseId: number | undefined = _courseId;
-        let subcourseId: number | undefined = _subcourseId;
 
         if (subcourseId === undefined || courseId === undefined) {
             console.log('Creating new course & subcourse');
 
             const subcourseData: PublicSubcourseCreateInput = {
-                joinAfterStart: delta.joinAfterStart!,
-                minGrade: delta.gradeRange![0],
-                maxGrade: delta.gradeRange![1],
-                maxParticipants: delta.maxParticipantCount!,
+                joinAfterStart: delta.subcourse.joinAfterStart!,
+                minGrade: delta.subcourse.minGrade!,
+                maxGrade: delta.subcourse.maxGrade!,
+                maxParticipants: delta.subcourse.maxParticipants!,
             };
 
             const courseData: PublicCourseCreateInput = {
-                allowContact: delta.allowParticipantContact!,
-                category: delta.courseCategory! as unknown as CourseCategory,
-                description: delta.description!,
-                name: delta.courseName!,
-                subject: delta.subject ? (SUBJECT_TO_COURSE_SUBJECT as { [key: string]: Course_Subject_Enum })[delta.subject!] : undefined,
+                allowContact: delta.subcourse.allowChatContactParticipants!,
+                category: delta.course.category as CourseCategory,
+                description: delta.course.description!,
+                name: delta.course.name!,
+                subject: delta.course.subject ? (SUBJECT_TO_COURSE_SUBJECT as { [key: string]: Course_Subject_Enum })[delta.course.subject!] : undefined,
                 outline: '',
             };
 
@@ -322,30 +258,30 @@ export function useUpdateCourse() {
                     data: courseData,
                 },
             });
-            courseId = createCourseRes.data?.courseCreate.id;
+            courseId = createCourseRes.data?.courseCreate.id!;
             const createSubcourseRes = await createSubcourse({
                 variables: {
                     data: subcourseData,
                     courseId: courseId!,
                 },
             });
-            subcourseId = createSubcourseRes.data?.subcourseCreate.id;
+            subcourseId = createSubcourseRes.data?.subcourseCreate.id!;
         } else {
             const subcourseData: PublicSubcourseEditInput = {
-                joinAfterStart: delta.joinAfterStart,
-                minGrade: delta.gradeRange?.[0],
-                maxGrade: delta.gradeRange?.[1],
-                maxParticipants: delta.maxParticipantCount,
-                allowChatContactProspects: delta.allowProspectContact,
-                allowChatContactParticipants: delta.allowParticipantContact, //TODO
+                joinAfterStart: delta.subcourse.joinAfterStart,
+                minGrade: delta.subcourse.minGrade,
+                maxGrade: delta.subcourse.maxGrade,
+                maxParticipants: delta.subcourse.maxParticipants,
+                allowChatContactProspects: delta.subcourse.allowChatContactProspects,
+                allowChatContactParticipants: delta.subcourse.allowChatContactParticipants,
             };
 
             const courseData: PublicCourseEditInput = {
-                allowContact: delta.allowParticipantContact, // TODO
-                category: delta.courseCategory ? (delta.courseCategory! as unknown as CourseCategory) : undefined,
-                description: delta.description,
-                name: delta.courseName,
-                subject: delta.subject ? (SUBJECT_TO_COURSE_SUBJECT as { [key: string]: Course_Subject_Enum })[delta.subject!] : undefined,
+                allowContact: delta.course.allowContact,
+                category: delta.course.category ? (delta.course.category! as unknown as CourseCategory) : undefined,
+                description: delta.course.description,
+                name: delta.course.name,
+                subject: delta.course.subject ? (SUBJECT_TO_COURSE_SUBJECT as { [key: string]: Course_Subject_Enum })[delta.course.subject!] : undefined,
             };
 
             if (objectHasNonUndefinedValues(subcourseData)) {
@@ -356,12 +292,8 @@ export function useUpdateCourse() {
             }
         }
 
-        if (!courseId || !subcourseId) {
-            throw new Error('Course or subcourse ID is undefined');
-        }
-
-        if (delta.tags) {
-            const tagIds = delta.tags.map((tag) => tag.id);
+        if (delta.course.tags) {
+            const tagIds = delta.course.tags.map((tag) => tag.id);
             promises.push(setTags({ variables: { courseId, tags: tagIds } }));
         }
 
