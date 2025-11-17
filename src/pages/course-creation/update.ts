@@ -54,7 +54,6 @@ export function getCourseDelta(
             Object.entries(newState.course).filter(([k, v]) => !oldState.course || changed(oldState.course[k as keyof Omit<LFCourse, 'courseState'>], v))
         ),
     };
-    //todo exclude id
 
     // Tags
     const prefillTagIds = (oldState?.course?.tags ?? []).map((t) => t.id).sort();
@@ -69,13 +68,14 @@ export function getCourseDelta(
 
     delta.addedInstructors =
         newState.subcourse.instructors?.filter((i) => i.id !== studentId && !prefillInstructorIds.some((x) => x.id === i.id)).map((i) => i.id) ?? [];
-    delta.removedInstructors = oldState?.subcourse?.instructors?.filter((i) => !stateInstructorIds.some((x) => x.id === i.id)).map((x) => x.id) ?? [];
-
+    // don't remove current student as instructor (is removed from instructors when showing course instructors)
+    delta.removedInstructors =
+        oldState?.subcourse?.instructors?.filter((i) => !stateInstructorIds.some((x) => x.id === i.id) && i.id !== studentId).map((x) => x.id) ?? [];
     // Mentors
     const prefillMentorIds = (oldState?.subcourse?.mentors ?? []).map((i) => i);
     const stateMentorIds = newState.subcourse.mentors?.map((i) => i) ?? [];
 
-    delta.addedMentors = newState.subcourse.mentors?.filter((i) => !prefillMentorIds.some((x) => (x.id = i.id))).map((x) => x.id) ?? [];
+    delta.addedMentors = newState.subcourse.mentors?.filter((i) => !prefillMentorIds.some((x) => x.id === i.id)).map((x) => x.id) ?? [];
     delta.removedMentors = oldState?.subcourse?.mentors?.filter((i) => !stateMentorIds.some((x) => x.id === i.id)).map((x) => x.id) ?? [];
 
     const existingAppointments: Appointment[] = (userType === 'student' ? oldState?.subcourse?.joinedAppointments : oldState?.subcourse?.appointments) ?? [];

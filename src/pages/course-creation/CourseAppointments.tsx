@@ -191,11 +191,6 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                     {getDraftAppointments.length === 0 ? t('course.appointments.addFirstAppointment') : t('course.appointments.addOtherAppointment')}
                 </Button>
             </div>
-            {errors.includes('no-appointments') && (
-                <Typography variant="sm" className="text-red-500 error">
-                    {t('course.error.no-appointments')}
-                </Typography>
-            )}
 
             {errors.includes('unfinished-appointment') && (
                 <Typography variant="sm" className="text-red-500 error">

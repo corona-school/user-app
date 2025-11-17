@@ -2073,7 +2073,6 @@
             "subject": "Bitte wähle ein Fach aus.",
             "grade-range": "Bitte gib einen gültigen Klassenbereich an.",
             "participant-count": "Bitte gib eine gültige Teilnehmer:innenzahl an.",
-            "no-appointments": "Bitte lege mindestens einen Termin an.",
             "unfinished-appointment": "Bitte speichere oder lösche den unvollständigen Termin."
         },
         "CourseDate": {

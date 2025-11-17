@@ -21,6 +21,7 @@ import { IconArrowRight, IconCheck } from '@tabler/icons-react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { getCourseDelta, useUpdateCourse } from './course-creation/update';
 import { DisplayAppointment } from '@/widgets/AppointmentList';
+import { toast } from 'sonner';
 
 export type CreateCourseError =
     | 'course'
@@ -37,7 +38,6 @@ export type CreateCourseError =
     | 'subject'
     | 'grade-range'
     | 'participant-count'
-    | 'no-appointments'
     | 'unfinished-appointment';
 
 export enum ChatType {
@@ -170,6 +170,7 @@ const CreateCourse: React.FC = () => {
             subject: '',
             description: '',
             allowContact: true,
+            tags: [],
         },
         maxParticipants: 50,
         allowChatContactParticipants: true,
@@ -278,9 +279,6 @@ const CreateCourse: React.FC = () => {
         if (!updatedSubcourse?.maxParticipants || updatedSubcourse?.maxParticipants <= 0) {
             errors.push('participant-count');
         }
-        if (!courseAppointments || courseAppointments?.length === 0) {
-            errors.push('no-appointments');
-        }
         if (appointmentErrors) {
             errors.push('unfinished-appointment');
         }
@@ -306,19 +304,23 @@ const CreateCourse: React.FC = () => {
 
         console.log('DELTA', delta);
 
-        const res = await updateCourse(prefillSubcourseId!, courseId, delta);
-        if (res && res.subcourseId) {
-            setErrors([]);
+        try {
+            const res = await updateCourse(prefillSubcourseId!, courseId, delta);
+            if (res && res.subcourseId) {
+                setErrors([]);
 
-            if (doSubmit) {
-                await submitCourse({ variables: { courseId: res.courseId } });
+                if (doSubmit) {
+                    await submitCourse({ variables: { courseId: res.courseId } });
+                }
+
+                navigate(`/single-course/${res.subcourseId}`, {
+                    state: {
+                        wasEdited: editingExistingCourse,
+                    },
+                });
             }
-
-            navigate(`/single-course/${res.subcourseId}`, {
-                state: {
-                    wasEdited: editingExistingCourse,
-                },
-            });
+        } catch (e) {
+            toast.error(t(`course.error.subcourse`));
         }
     };
 
