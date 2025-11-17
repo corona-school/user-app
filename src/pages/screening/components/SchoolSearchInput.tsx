@@ -55,6 +55,7 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
                     isLoading={isLoading}
                     searchPlaceholder="z.B Erich-Kästner-Schule"
                     placeholder={defaultValue ? getLabel(defaultValue) : ''}
+                    filterSearchResult={(e, s) => e.label.toLowerCase().includes(s.toLowerCase())}
                 />
 
                 {school?.name && !school.zip && !school.city && (
