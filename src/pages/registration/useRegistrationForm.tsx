@@ -51,7 +51,7 @@ export interface RegistrationForm {
     zipCode: string;
     hasAcceptedRules: boolean;
     isWaitingScreeningResults?: boolean;
-    gender: Gender;
+    gender?: Gender;
 }
 
 interface RegistrationContextValue {
@@ -82,7 +82,6 @@ const emptyState: RegistrationForm = {
     },
     zipCode: '',
     hasAcceptedRules: false,
-    gender: Gender.Other,
 };
 
 const RegistrationContext = createContext<RegistrationContextValue>({

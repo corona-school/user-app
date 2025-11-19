@@ -73,7 +73,7 @@ const MUTATION_REGISTER_PUPIL = gql(`
 `);
 
 const MUTATION_REGISTER_STUDENT = gql(`
-    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String, $languages: [StudentLanguage!], $isAdult: Boolean!, $gender: Gender!) {
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String, $gender: Gender, $languages: [StudentLanguage!], $isAdult: Boolean!) {
         meRegisterStudent(
             noEmail: true
             data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
