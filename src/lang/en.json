@@ -907,7 +907,8 @@
         "ZipCode": {
             "zipCode": "Zip code",
             "requiredLength": "The zip code must have {{length}} digits."
-        }
+        },
+        "Gender": "Gender"
     },
     "single": {
         "global": {

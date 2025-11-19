@@ -870,6 +870,7 @@
                 "label": "Dein Text"
             }
         },
+        "Gender": "Geschlecht",
         "Languages": {
             "labelPupil": "Welche Sprachen sprichst du zuhause?",
             "labelStudent": "Welche Sprachen sprichst du fließend?",

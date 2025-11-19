@@ -907,7 +907,8 @@
         "ZipCode": {
             "zipCode": "Почтовый индекс",
             "requiredLength": "Почтовый индекс должен содержать {{length}} цифр."
-        }
+        },
+        "Gender": "Гендер"
     },
     "single": {
         "global": {

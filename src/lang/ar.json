@@ -903,7 +903,8 @@
         "ZipCode": {
             "zipCode": "الرمز البريدي",
             "requiredLength": "يجب أن يحتوي الرمز البريدي على {{length}} أرقاماً."
-        }
+        },
+        "Gender": "الجنس"
     },
     "single": {
         "global": {

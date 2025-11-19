@@ -907,7 +907,8 @@
         "ZipCode": {
             "zipCode": "Posta kodu",
             "requiredLength": "Posta kodu {{length}} olmalıdır rakamlar."
-        }
+        },
+        "Gender": "Cinsiyet"
     },
     "single": {
         "global": {
