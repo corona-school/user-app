@@ -4,6 +4,7 @@ import { useRegistrationForm } from './useRegistrationForm';
 import { Toggle } from '@/components/Toggle';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { Gender } from '@/gql/graphql';
+import { IconGenderBigender, IconGenderFemale, IconGenderMale, IconX } from '@tabler/icons-react';
 
 interface UserGenderProps extends RegistrationStepProps {}
 
@@ -25,6 +26,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     pressed={form.gender === Gender.Female}
                     onPressedChange={() => onFormChange({ gender: Gender.Female })}
                 >
+                    <IconGenderFemale size={32} />
                     {t('registration.steps.userGender.female')}
                 </Toggle>
                 <Toggle
@@ -34,6 +36,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     pressed={form.gender === Gender.Male}
                     onPressedChange={() => onFormChange({ gender: Gender.Male })}
                 >
+                    <IconGenderMale size={32} />
                     {t('registration.steps.userGender.male')}
                 </Toggle>
                 <Toggle
@@ -43,6 +46,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     pressed={form.gender === Gender.Diverse}
                     onPressedChange={() => onFormChange({ gender: Gender.Diverse })}
                 >
+                    <IconGenderBigender size={32} />
                     {t('registration.steps.userGender.diverse')}
                 </Toggle>
                 <Toggle
@@ -52,6 +56,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     pressed={form.gender === Gender.Other}
                     onPressedChange={() => onFormChange({ gender: Gender.Other })}
                 >
+                    <IconX size={32} />
                     {t('registration.steps.userGender.other')}
                 </Toggle>
             </div>
