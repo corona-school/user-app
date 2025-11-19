@@ -618,6 +618,14 @@
             "legal": {
                 "title": "Onaylar",
                 "subtitle": "Onaylar"
+            },
+            "userGender": {
+                "title": "Kendinizi hangi cinsiyette görüyorsunuz?",
+                "description": "Bu bilgileri, belirli öğrencileri bireysel durumlarda yalnızca istenen cinsiyetteki yardımcılarla eşleştirmek için kullanıyoruz. Bu bilgi gönüllülük esasına dayanmaktadır.",
+                "male": "Erkek",
+                "female": "Kadın",
+                "diverse": "Farklı / ikili olmayan",
+                "other": "Bilgi yok"
             }
         },
         "pupil": {

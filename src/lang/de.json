@@ -535,6 +535,14 @@
                 "underAgeRange": "14 bis 17",
                 "adultAge": "18 oder älter"
             },
+            "userGender": {
+                "title": "Welchem Geschlecht ordnest du dich zu?",
+                "description": "Wir verwenden diese Information, um in Einzelfällen bestimmte Schüler:innen nur mit Helfer:innen des gewünschten Geschlechts zu matchen. Die Angabe ist freiwillig.",
+                "male": "Männlich",
+                "female": "Weiblich",
+                "diverse": "Divers / Nicht-binär",
+                "other": "Keine Angabe"
+            },
             "languages": {
                 "titlePupil": "Welche Sprachen sprichst du zu Hause?",
                 "titleStudent": "Welche Sprachen sprichst du fließend?",

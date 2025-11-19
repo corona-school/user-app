@@ -618,6 +618,14 @@
             "legal": {
                 "title": "Consents",
                 "subtitle": "Consents"
+            },
+            "userGender": {
+                "title": "Which gender do you consider yourself to be?",
+                "description": "We use this information to match certain pupils only with volunteers of the desired gender in individual cases. This information is voluntary.",
+                "male": "Male",
+                "female": "Female",
+                "diverse": "Diverse / non-binary",
+                "other": "Not specified"
             }
         },
         "pupil": {

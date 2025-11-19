@@ -31,6 +31,7 @@ import { PUPIL_FLOW, RegistrationStep, STUDENT_FLOW } from './registration/util'
 import { ZipCode } from './registration/ZipCode';
 import { ERole } from '@/types/lernfair/User';
 import { StudentLanguage } from '@/gql/graphql';
+import { UserGender } from './registration/UserGender';
 
 export const TRAINEE_GRADE = 14;
 
@@ -72,7 +73,7 @@ const MUTATION_REGISTER_PUPIL = gql(`
 `);
 
 const MUTATION_REGISTER_STUDENT = gql(`
-    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String, $languages: [StudentLanguage!], $isAdult: Boolean!) {
+    mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String, $languages: [StudentLanguage!], $isAdult: Boolean!, $gender: Gender!) {
         meRegisterStudent(
             noEmail: true
             data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
@@ -83,6 +84,7 @@ const MUTATION_REGISTER_STUDENT = gql(`
            student:  {
               zipCode: $zipCode
               languages: $languages
+              gender: $gender
            }
         })
     }
@@ -169,6 +171,7 @@ const Registration = () => {
                     zipCode: form.zipCode,
                     isAdult: !!form.isAdult,
                     languages: form.languages as unknown as StudentLanguage[],
+                    gender: form.gender,
                 },
             });
         }
@@ -243,6 +246,7 @@ const Registration = () => {
                         {form.currentStep === RegistrationStep.acceptanceCheckFailed && <AcceptanceCheckFailed onTryAgain={onResetFunnel} />}
                         {form.currentStep === RegistrationStep.userName && <UserName onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.userAge && <UserAge onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.userGender && <UserGender onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.languages && <UserLanguages onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.emailOwner && <EmailOwner onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.authenticationInfo && <AuthenticationInfo onBack={goBack} onNext={goNext} />}
