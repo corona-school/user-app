@@ -364,7 +364,13 @@
                 }
             }
         },
-        "schoolclass": "{{class}}. Sınıf"
+        "schoolclass": "{{class}}. Sınıf",
+        "genders": {
+            "male": "Erkek",
+            "female": "Kadın",
+            "diverse": "Farklı / ikili olmayan",
+            "other": "Bilgi yok"
+        }
     },
     "welcome": {
         "title": "Hoş geldiniz Lern-Fair",

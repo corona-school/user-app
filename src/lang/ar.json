@@ -364,7 +364,13 @@
                 }
             }
         },
-        "schoolclass": "{{class}}. فئة"
+        "schoolclass": "{{class}}. فئة",
+        "genders": {
+            "male": "الذكور",
+            "female": "أنثى",
+            "diverse": "متنوع/غير ثنائي",
+            "other": "غير محدد"
+        }
     },
     "welcome": {
         "title": "مرحباً بك في Lern-Fair",

@@ -27,7 +27,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     onPressedChange={() => onFormChange({ gender: Gender.Female })}
                 >
                     <IconGenderFemale size={32} />
-                    {t('registration.steps.userGender.female')}
+                    {t('lernfair.genders.female')}
                 </Toggle>
                 <Toggle
                     size="2xl"
@@ -37,7 +37,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     onPressedChange={() => onFormChange({ gender: Gender.Male })}
                 >
                     <IconGenderMale size={32} />
-                    {t('registration.steps.userGender.male')}
+                    {t('lernfair.genders.male')}
                 </Toggle>
                 <Toggle
                     size="2xl"
@@ -47,7 +47,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     onPressedChange={() => onFormChange({ gender: Gender.Diverse })}
                 >
                     <IconGenderBigender size={32} />
-                    {t('registration.steps.userGender.diverse')}
+                    {t('lernfair.genders.diverse')}
                 </Toggle>
                 <Toggle
                     size="2xl"
@@ -57,7 +57,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     onPressedChange={() => onFormChange({ gender: Gender.Other })}
                 >
                     <IconX size={32} />
-                    {t('registration.steps.userGender.other')}
+                    {t('lernfair.genders.other')}
                 </Toggle>
             </div>
         </RegistrationStep>

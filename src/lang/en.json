@@ -364,7 +364,13 @@
                 }
             }
         },
-        "schoolclass": "{{class}}. Grade"
+        "schoolclass": "{{class}}. Grade",
+        "genders": {
+            "male": "Male",
+            "female": "Female",
+            "diverse": "Diverse / non-binary",
+            "other": "Not specified"
+        }
     },
     "welcome": {
         "title": "Welcome to Lern-Fair",

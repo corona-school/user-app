@@ -364,7 +364,13 @@
                 }
             }
         },
-        "schoolclass": "{{class}}. Клас"
+        "schoolclass": "{{class}}. Клас",
+        "genders": {
+            "male": "Чоловік",
+            "female": "Жінка",
+            "diverse": "Різноманітні / не бінарні",
+            "other": "Не вказано"
+        }
     },
     "welcome": {
         "title": "Ласкаво просимо до Lern-Fair",
