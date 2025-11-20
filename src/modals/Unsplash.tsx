@@ -69,7 +69,7 @@ const UnsplashModal = ({ isOpen, onOpenChange, onPhotoSelected }: UnsplashModalP
                         />
                     </div>
                 </div>
-                <div className="mt-2 md:pt-0 md:h-[400px] overflow-scroll flex-1">
+                <div className="mt-2 md:pt-0 md:h-[400px] overflow-auto flex-1">
                     {isLoading && <CenterLoadingSpinner />}
                     {!isLoading && (
                         <div className="flex flex-col">
