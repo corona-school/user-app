@@ -1,4 +1,4 @@
-import { LFLecture, LFSubCourse, TrafficStatus } from './types/lernfair/Course';
+import { TrafficStatus } from './types/lernfair/Course';
 import { ClassRange } from './types/lernfair/SchoolClass';
 import { DateTime } from 'luxon';
 import { Course_Coursestate_Enum } from './gql/graphql';
