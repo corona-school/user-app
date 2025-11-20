@@ -49,16 +49,6 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     <IconGenderBigender size={32} />
                     {t('lernfair.genders.diverse')}
                 </Toggle>
-                <Toggle
-                    size="2xl"
-                    className="md:w-[260px] h-[80px] md:h-[100px]"
-                    variant="white-primary"
-                    pressed={form.gender === Gender.Other}
-                    onPressedChange={() => onFormChange({ gender: Gender.Other })}
-                >
-                    <IconX size={32} />
-                    {t('lernfair.genders.other')}
-                </Toggle>
             </div>
         </RegistrationStep>
     );
