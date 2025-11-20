@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { languageIcons, languageListSelectionModal, switchLanguage } from '../I18n';
+import { languageListSelectionModal, switchLanguage } from '../I18n';
 import { Button } from './Button';
 import { cn } from '@/lib/Tailwind';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuArrow } from './Dropdown';
 import { Typography } from './Typography';
+import { IconLoader } from './IconLoader';
 
 interface SwitchLanguageButtonProps {
     className?: string;
@@ -14,7 +15,6 @@ interface SwitchLanguageButtonProps {
 const SwitchLanguageButton = ({ className, variant = 'modal' }: SwitchLanguageButtonProps) => {
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
     const storageLanguage = localStorage.getItem('lernfair-language');
-    const Icon = languageIcons[storageLanguage as keyof typeof languageIcons];
 
     if (variant === 'modal') {
         return (
@@ -26,7 +26,7 @@ const SwitchLanguageButton = ({ className, variant = 'modal' }: SwitchLanguageBu
                     size="icon"
                 >
                     <span className="rounded-full">
-                        <Icon className={`rounded-full h-5 w-5`} />
+                        <IconLoader icon={storageLanguage ?? ''} className={`rounded-full h-5 w-5`} />
                     </span>
                 </Button>
                 <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
@@ -40,15 +40,13 @@ const SwitchLanguageButton = ({ className, variant = 'modal' }: SwitchLanguageBu
                 <DropdownMenuTrigger asChild>
                     <Button className={cn('group rounded-full hover:bg-primary-light hover:brightness-105', className)} variant="none" size="icon">
                         <span className="rounded-full">
-                            <Icon className={`rounded-full h-[22px] w-[22px]`} />
+                            <IconLoader icon={storageLanguage ?? ''} className={`rounded-full h-[22px] w-[22px]`} />
                         </span>
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="border-none rounded-xl flex flex-col gap-y-2 p-2">
                     <DropdownMenuArrow />
                     {languageListSelectionModal.map((button, i) => {
-                        const Icon = languageIcons[button.short as keyof typeof languageIcons];
-
                         return (
                             <DropdownMenuItem
                                 onClick={() => switchLanguage(button.short)}
@@ -59,7 +57,7 @@ const SwitchLanguageButton = ({ className, variant = 'modal' }: SwitchLanguageBu
                                 })}
                             >
                                 <span className="rounded-full">
-                                    <Icon className={`rounded-full h-6 w-6`} />
+                                    <IconLoader icon={button.short} className={`rounded-full h-6 w-6`} />
                                 </span>
                                 <Typography className="min-w-[18%] font-semibold text-left">{button.name}</Typography>
                             </DropdownMenuItem>

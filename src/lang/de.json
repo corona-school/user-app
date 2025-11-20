@@ -77,7 +77,8 @@
             "lecture": "Lektion #{{position}}",
             "lectureWithTotal": "Lektion #{{position}} von {{total}}",
             "title": ": {{appointmentTitle}}",
-            "cancelledBy": "Abgesagt von {{name}}"
+            "cancelledBy": "Abgesagt von {{name}}",
+            "lectureHomeworkHelp": "Montags bis Donnerstags - spontan teilnehmen"
         },
         "create": {
             "assignmentHeader": "Für welches Lernangebot soll dieser Termin erstellt werden?",
@@ -937,7 +938,7 @@
         },
         "Helper": {
             "certificate": {
-                "title": "Meine Bescheinigungen",
+                "title": "Ehrenamts-Bescheinigung",
                 "button": "Bescheinigung anfordern"
             }
         },
@@ -1107,7 +1108,9 @@
         "homeworkHelp": {
             "signIn": {
                 "title": "Unverbindliche Anmeldung",
-                "description": "Sobald du dich angemeldet hast, kannst du spontan einzelne Hausaufgabenhilfe-Stunden unterstützen. Die Anmeldung verpflichtet dich zu nichts, sondern hilft uns ganz grob das Interesse zu erfassen."
+                "description": "Sobald du dich angemeldet hast, kannst du spontan einzelne Hausaufgabenhilfe-Stunden unterstützen. Die Anmeldung verpflichtet dich zu nichts, sondern hilft uns ganz grob das Interesse zu erfassen.",
+                "pupilDescription": "Melde dich jetzt unverbindlich für die Hausaufgabenhilfe an. Du kannst danach spontan an einzelnen Tagen in die Hausaufgabenhilfe kommen, wie es dir passt.",
+                "button": "Unverbindlich anmelden"
             },
             "signOut": {
                 "title": "Abmeldung",
@@ -1192,7 +1195,7 @@
             "title": "Allgemein",
             "profile": "Profil",
             "calendarPreferences": "Wann hast du Zeit?",
-            "certificates": "Bescheinigungen",
+            "certificates": "Ehrenamts-Bescheinigung",
             "languageVersion": "Sprachversion",
             "notifications": "Benachrichtigungen",
             "onboarding": "Onboarding-Tour",
@@ -1569,7 +1572,7 @@
         "zeugnis": {
             "subtitle": "Notwendige Unterlage",
             "title": "Führungszeugnis ",
-            "content": "Wir benötigen von dir innerhalb von 8 Wochen ein sogenanntes erweitertes Führungszeugnis. Das erweiterte Führungszeugnis ist kostenlos, wenn du das unter Vorlage des Vordrucks vor Ort oder online beantragst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
+            "content": "Wir benötigen von dir spätestens alle 3 Jahre eine aktuelle Version des erweiterten Führungszeugnisses, um den lückenlosen Kinderschutz zu gewährleisten. Das Führungszeugnis kannst du unter Vorlage des Vordrucks vor Ort oder online kostenlos beantragen. Du kannst Schüler:innen weiterhin unterstützen. Bitte reiche dein Führungszeugnis rechtzeitig ein – andernfalls müssen wir dein Konto leider deaktivieren. Frist für die Einreichung / Deaktivierung deines Kontos: {{cocDate}}",
             "buttons": ["Infos zu Beantragung & Einreichen"],
             "actionDescription": "Weitere Informationen"
         },

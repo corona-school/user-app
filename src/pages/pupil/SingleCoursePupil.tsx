@@ -19,7 +19,7 @@ import { Typography } from '@/components/Typography';
 import { AppointmentList } from '@/components/appointment/AppointmentsList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
-import { Lecture } from '@/gql/graphql';
+import { Course_Category_Enum, Lecture } from '@/gql/graphql';
 import { toast } from 'sonner';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
@@ -225,6 +225,7 @@ const SingleCoursePupil = () => {
                         subcourse={subcourse}
                         refresh={refetch}
                         isActiveSubcourse={isActiveSubcourse}
+                        isHomeworkHelp={course.category === Course_Category_Enum.HomeworkHelp}
                     />
                 )}
                 {subcourse?.isParticipant && !isInPast && (
@@ -243,7 +244,12 @@ const SingleCoursePupil = () => {
                     )}
                     <TabsContent value="lectures">
                         <div className="mt-8 max-h-full overflow-y-scroll">
-                            <AppointmentList appointments={appointments as Appointment[]} isReadOnly={!subcourse?.isParticipant} disableScroll />
+                            <AppointmentList
+                                appointments={appointments as Appointment[]}
+                                isReadOnly={!subcourse?.isParticipant}
+                                disableScroll
+                                isHomeworkHelp={course?.category === Course_Category_Enum.HomeworkHelp}
+                            />
                         </div>
                     </TabsContent>
                     <TabsContent value="participants">{subcourse && showParticipantsTab && <OtherParticipants subcourseId={subcourseId} />}</TabsContent>

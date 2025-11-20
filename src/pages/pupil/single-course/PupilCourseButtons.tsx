@@ -36,6 +36,7 @@ type PupilCourseButtonsProps = {
     > & { instructors: Pick<Instructor, 'id'>[] };
     refresh: () => Promise<ApolloQueryResult<unknown>>;
     isActiveSubcourse: boolean;
+    isHomeworkHelp?: boolean;
     appointment?: Lecture;
 };
 
@@ -57,7 +58,7 @@ query totalSubcoursesJoined {
 }
 `);
 
-const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment }: PupilCourseButtonsProps) => {
+const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment, isHomeworkHelp }: PupilCourseButtonsProps) => {
     const [signInModal, setSignInModal] = useState(false);
     const [signOutModal, setSignOutModal] = useState(false);
     const [joinWaitinglistModal, setJoinWaitinglistModal] = useState(false);
@@ -288,8 +289,13 @@ const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment
 
             <ConfirmationModal
                 headline={t('registrationTitle')}
-                confirmButtonText={t('single.signIn.button')}
-                description={<Trans i18nKey="single.signIn.description" components={{ b: <b />, br: <br /> }} />}
+                confirmButtonText={isHomeworkHelp ? t('single.homeworkHelp.signIn.button') : t('single.signIn.button')}
+                description={
+                    <Trans
+                        i18nKey={isHomeworkHelp ? 'single.homeworkHelp.signIn.pupilDescription' : 'single.signIn.description'}
+                        components={{ b: <b />, br: <br /> }}
+                    />
+                }
                 onOpenChange={setSignInModal}
                 isOpen={signInModal}
                 onConfirm={handleSignInCourse}

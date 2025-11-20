@@ -252,7 +252,7 @@ const Dashboard: React.FC<Props> = () => {
                         </div>
                         <ImportantInformation variant="dark" />
                         <VStack>
-                            <NextAppointmentCard appointments={data?.me?.appointments as Lecture[]} />
+                            <NextAppointmentCard appointments={(data?.me?.appointments ?? []) as Lecture[]} />
                             {/* Matches */}
                             {data?.myRoles?.includes('TUTEE') &&
                                 ((activeMatches?.length ?? 0) > 0 || canRequestMatch() || (data?.me?.pupil?.openMatchRequestCount ?? 0) > 0) && (

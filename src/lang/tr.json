@@ -38,7 +38,8 @@
             "lecture": "Ders #{{position}}",
             "title": ": {{appointmentTitle}}",
             "cancelledBy": "{{name}} tarafından iptal edildi",
-            "lectureWithTotal": "Ders #{{position}} of {{total}}"
+            "lectureWithTotal": "Ders #{{position}} of {{total}}",
+            "lectureHomeworkHelp": "Pazartesiden Perşembeye - spontane katılım"
         },
         "create": {
             "videoSelectOptions": {
@@ -1081,7 +1082,9 @@
         "homeworkHelp": {
             "signIn": {
                 "title": "Bağlayıcı olmayan kayıt",
-                "description": "Kayıt olur olmaz, bireysel ev ödevi yardım derslerini kendiliğinden destekleyebilirsiniz. Kayıt yaptırmak sizi herhangi bir taahhüt altına sokmaz, ancak ilgiyi kabaca ölçmemize yardımcı olur."
+                "description": "Kayıt olur olmaz, bireysel ev ödevi yardım derslerini kendiliğinden destekleyebilirsiniz. Kayıt yaptırmak sizi herhangi bir taahhüt altına sokmaz, ancak ilgiyi kabaca ölçmemize yardımcı olur.",
+                "pupilDescription": "Hiçbir yükümlülük altına girmeden kursa şimdi kaydolun. Daha sonra size uygun olan günlerde spontane olarak ev ödevi yardımına gelebilirsiniz.",
+                "button": "Yükümlülük olmadan kayıt olun"
             },
             "signOut": {
                 "title": "Çıkış",
@@ -1482,8 +1485,8 @@
             "buttons": ["İyi hal belgesi hakkında bilgi"],
             "subtitle": "Önemli!",
             "title": "Genişletilmiş iyi hal sertifikası",
-            "content": "Wie im Kennenlerngespräch erläutert, brauchen wir von dir ein erweitertes Führungszeugnis, welches du unter Vorlage des Vordrucks kostenlos vor Ort oder online beantragen kannst. Du kannst dennoch sofort mit deinem Engagement bei uns beginnen und Schüler:innen unterstützen. Frist für die Einreichung: {{cocDate}}",
-            "actionDescription": "İyi hal belgesi hakkında her şey"
+            "actionDescription": "İyi hal belgesi hakkında her şey",
+            "content": "Çocukların tam olarak korunmasını sağlamak için en geç 3 yılda bir genişletilmiş iyi davranış sertifikasının güncel bir versiyonunu talep ediyoruz. Formu yerinde veya çevrimiçi olarak göndererek iyi davranış sertifikası için ücretsiz olarak başvurabilirsiniz. Öğrencileri desteklemeye devam edebilirsiniz. Lütfen iyi hal belgenizi zamanında gönderin - aksi takdirde maalesef hesabınızı devre dışı bırakmak zorunda kalacağız. Hesabınızı göndermek / devre dışı bırakmak için son tarih: {{cocDate}}"
         },
         "statusStudent": {
             "buttons": ["Sorun bildir"],

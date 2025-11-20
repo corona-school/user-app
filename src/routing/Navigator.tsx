@@ -13,7 +13,8 @@ import Logout from '../components/Logout';
 import LoginWithIDP from '@/pages/LoginWithIDP';
 
 // All other pages load lazy:
-const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: true });
+const RegistrationLazy = lazyWithRetry(() => import('./RegistrationLazy'), { prefetch: false });
+const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: !window.location.pathname.startsWith('/registration') });
 
 // This component only exists to reliably test our support process:
 function CrashMe() {
@@ -29,6 +30,15 @@ export default function Navigator() {
                 <Route path="/login-with" element={<LoginWithIDP />} />
                 <Route path="/logout" element={<Logout />} />
                 <Route path="/welcome" element={<Navigate to="/login" />} />
+
+                <Route
+                    path="/registration/*"
+                    element={
+                        <Suspense fallback={<CenterLoadingSpinner />}>
+                            <RegistrationLazy />
+                        </Suspense>
+                    }
+                />
 
                 <Route
                     path="/"

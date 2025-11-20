@@ -23,9 +23,10 @@ import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 type AppointmentDetailProps = {
     appointment: Appointment;
     startMeeting?: boolean;
+    isHomeworkHelp?: boolean;
 };
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) => {
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHomeworkHelp }) => {
     const { t, i18n } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
@@ -150,7 +151,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
                     isOrganizer={appointment.isOrganizer}
                     overrideMeetingLink={appointment.override_meeting_link}
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
-                    showParticipants={appointment.subcourse?.course?.category !== Course_Category_Enum.HomeworkHelp}
+                    isHomeworkHelp={isHomeworkHelp}
                 />
                 {wasRejectedByMatch && (
                     <>
