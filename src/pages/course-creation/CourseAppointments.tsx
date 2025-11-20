@@ -171,6 +171,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                         <AppointmentList
                             height="100%"
                             isReadOnlyList={false}
+                            noOldAppointments={true}
                             appointments={getDraftAppointments}
                             onAppointmentBeginEdit={(appointment) => {
                                 setAppointmentsWithErrors((prev) => [...prev, appointment.isNew ? appointment.newId! : appointment.id.toString()]); // add error for unfinished appointment

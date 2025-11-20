@@ -6,7 +6,6 @@ import { Label } from '@/components/Label';
 import { Input } from '@/components/Input';
 import { TextArea } from '@/components/TextArea';
 import Dropzone, { FileItem } from '@/components/Dropzone';
-import { Button } from '@/components/Button';
 import { Slider } from '@/components/Slider';
 import { SUBJECTS_MINOR, SUBJECTS_RARE } from '@/types/subject';
 import { useQuery } from '@apollo/client';
@@ -17,6 +16,7 @@ import { InfoTooltipButton } from '@/components/Tooltip';
 import { LFSubCourse } from '@/types/lernfair/Course';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import CourseInstructors from '@/pages/course-creation/CourseInstructors';
+import { Toggle } from '@/components/Toggle';
 
 const TAGS_QUERY = gql(`
     query GetCourseTags($category: String!) {
@@ -70,7 +70,9 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                         className="px-4"
                         id="courseCategory"
                         value={subcourse.course.category}
-                        onValueChange={(v) => setSubcourse((s) => ({ ...s, course: { ...s.course, category: v as Course_Category_Enum, tags: [] } }))}
+                        onValueChange={(v) =>
+                            setSubcourse((s) => ({ ...s, course: { ...s.course, category: v as Course_Category_Enum, tags: [], subject: '' } }))
+                        }
                     >
                         <div className="flex sm:flex-row flex-col gap-5">
                             <div className="flex gap-x-2 items-center">
@@ -144,22 +146,24 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                         </div>
                         <div className="flex gap-2.5 flex-wrap">
                             {PREDEFINED_PARTICIPANTS.map((item) => (
-                                <Button
+                                <Toggle
                                     className="flex-grow"
                                     key={item}
-                                    variant={draftMaxParticipantCount === item.toString() ? 'default' : 'outline-inactive'}
-                                    onClick={() => setDraftMaxParticipantCount(item.toString())}
+                                    variant="primary"
+                                    pressed={draftMaxParticipantCount === item.toString()}
+                                    onPressedChange={() => setDraftMaxParticipantCount(item.toString())}
                                 >
                                     {item}
-                                </Button>
+                                </Toggle>
                             ))}
-                            <Button
-                                variant={draftMaxParticipantCount === 'custom' ? 'default' : 'outline-inactive'}
+                            <Toggle
+                                pressed={draftMaxParticipantCount === 'custom'}
                                 className="flex-grow"
-                                onClick={() => setDraftMaxParticipantCount('custom')}
+                                variant="primary"
+                                onPressedChange={() => setDraftMaxParticipantCount('custom')}
                             >
                                 {t('course.CourseDate.form.customMembersCount')}
-                            </Button>
+                            </Toggle>
                         </div>
                         {draftMaxParticipantCount === 'custom' && (
                             <div className="w-full flex items-center gap-2.5">
@@ -178,13 +182,14 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             </div>
                             <div className="flex gap-2.5 flex-wrap">
                                 {SUBJECTS.map((s) => (
-                                    <Button
+                                    <Toggle
                                         key={s}
-                                        variant={s === subcourse.course.subject ? 'default' : 'outline-inactive'}
-                                        onClick={() => setSubcourse((sc) => ({ ...sc, course: { ...sc.course, subject: s } }))}
+                                        pressed={s === subcourse.course.subject}
+                                        variant="primary"
+                                        onPressedChange={() => setSubcourse((sc) => ({ ...sc, course: { ...sc.course, subject: s } }))}
                                     >
                                         {t(`lernfair.subjects.${s}` as unknown as TemplateStringsArray)}
-                                    </Button>
+                                    </Toggle>
                                 ))}
                             </div>
                             {errors.includes('subject') && (
@@ -207,10 +212,11 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                                 <div className="flex gap-2.5 flex-wrap">
                                     {tagsLoading && <CenterLoadingSpinner />}
                                     {data?.courseTags.map((tag) => (
-                                        <Button
+                                        <Toggle
                                             key={tag.id}
-                                            variant={subcourse.course.tags?.some((x) => x.id === tag.id) ? 'default' : 'outline-inactive'}
-                                            onClick={() => {
+                                            variant="primary"
+                                            pressed={subcourse.course.tags?.some((x) => x.id === tag.id)}
+                                            onPressedChange={() => {
                                                 if (subcourse.course.tags?.some((x) => x.id === tag.id)) {
                                                     setSubcourse((s) => ({
                                                         ...s,
@@ -222,7 +228,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                                             }}
                                         >
                                             {tag.name}
-                                        </Button>
+                                        </Toggle>
                                     ))}
                                 </div>
                             </div>

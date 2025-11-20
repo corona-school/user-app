@@ -121,7 +121,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
             <RejectAppointmentModal
                 isOpen={showDeleteModal}
                 onDelete={() => handleCancelClick()}
-                onOpenChange={(open) => setShowDeleteModal(!open)}
+                onOpenChange={setShowDeleteModal}
                 rejectType={RejectType.CANCEL}
             />
             <RejectAppointmentModal
