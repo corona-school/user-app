@@ -127,7 +127,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment }) =>
             <RejectAppointmentModal
                 isOpen={showDeclineModal}
                 onDelete={() => handleDeclineClick()}
-                onOpenChange={(open) => setShowDeclineModal(!open)}
+                onOpenChange={setShowDeclineModal}
                 rejectType={RejectType.DECLINE}
             />
             <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
