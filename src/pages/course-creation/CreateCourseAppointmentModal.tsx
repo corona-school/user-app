@@ -16,7 +16,7 @@ const CreateCourseAppointmentModal: React.FC<ModalProps> = ({ total, isOpen, onO
             <ModalHeader>
                 <ModalTitle>{t('appointment.title')}</ModalTitle>
             </ModalHeader>
-            <div className="flex flex-col p-4 overflow-scroll">
+            <div className="flex flex-col p-4 overflow-auto">
                 <AppointmentCreation appointmentsTotal={total} isCourseCreation={true} back={handleOnClose} closeModal={handleOnClose} />
             </div>
         </Modal>
