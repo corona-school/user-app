@@ -113,7 +113,7 @@ export const WeeklyAvailabilitySelector = ({
                     <IconChevronRight />
                 </Button>
             </div>
-            <div className="block overflow-x-scroll" ref={gridRef}>
+            <div className="block overflow-x-auto" ref={gridRef}>
                 {/* Header row with weekdays */}
                 <div className="grid grid-cols-[100px_repeat(7,40px)] bg-white gap-y-1 gap-x-2 mb-1">
                     {/* Empty corner cell */}
