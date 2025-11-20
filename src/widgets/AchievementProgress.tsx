@@ -95,7 +95,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
     });
     const streakContainerOverflow = useBreakpointValue({
         base: 'unset',
-        md: 'scroll',
+        md: 'auto',
     });
     const achievementContainerWidth = useBreakpointValue({
         base: '100%',
