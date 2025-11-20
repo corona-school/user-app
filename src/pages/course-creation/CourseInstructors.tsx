@@ -79,7 +79,7 @@ const CourseInstructors: React.FC<Props> = (props) => {
         <>
             <div className="inline-flex align-baseline gap-1.5">
                 <Label className="text-base">{t('course.CourseDate.form.otherInstructors')}</Label>
-                <InfoTooltipButton tooltipContent="TODO" />
+                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.otherInstructorsTooltip')} />
             </div>
             <p>{t('course.CourseDate.form.otherInstructorsDescription')}</p>
 

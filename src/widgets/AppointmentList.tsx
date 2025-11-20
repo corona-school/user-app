@@ -188,7 +188,7 @@ type AppointmentListProps = {
     height?: number | string;
     onAppointmentBeginEdit?: (editing: DisplayAppointment) => void;
     onAppointmentEdited?: (updated: DisplayAppointment) => { errors: string[] } | void;
-    onAppointmentCanceledEdit?: () => void;
+    onAppointmentCanceledEdit?: (edited: DisplayAppointment) => void;
     onAppointmentDuplicate?: (duplicate: DisplayAppointment) => void;
     onAppointmentDelete?: (appointment: DisplayAppointment) => void;
     editingIdInit?: string; // If provided, the appointment with this ID will be in editing mode initially
@@ -295,7 +295,7 @@ const AppointmentList = ({
                         editingInit={appointment.isNew && appointment.newId === editingIdInit}
                         onBeginEdit={onAppointmentBeginEdit}
                         onEdit={appointmentInPast(appointment) ? undefined : (updated) => onAppointmentEdited && onAppointmentEdited(updated)}
-                        onCancelEdit={onAppointmentCanceledEdit}
+                        onCancelEdit={() => onAppointmentCanceledEdit && onAppointmentCanceledEdit(appointment)}
                         onDuplicate={onAppointmentDuplicate ? () => onAppointmentDuplicate(appointment) : undefined}
                         onDelete={
                             appointmentInPast(appointment)

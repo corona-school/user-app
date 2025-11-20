@@ -22,6 +22,7 @@ import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { getCourseDelta, useUpdateCourse } from './course-creation/update';
 import { DisplayAppointment } from '@/widgets/AppointmentList';
 import { toast } from 'sonner';
+import { logError } from '@/log';
 
 export type CreateCourseError =
     | 'course'
@@ -30,7 +31,6 @@ export type CreateCourseError =
     | 'upload_image'
     | 'instructors'
     | 'lectures'
-    | 'tags'
     | 'appointments'
     | 'course-name'
     | 'description'
@@ -100,6 +100,7 @@ const COURSE_QUERY = gql(`
                     displayName
                     position
                     total
+                    override_meeting_link
                     appointmentType
                     participants(skip: 0, take: 10) {
                         firstname
@@ -120,6 +121,7 @@ const COURSE_QUERY = gql(`
                     displayName
                     position
                     total
+                    override_meeting_link
                     appointmentType
                     participants(skip: 0, take: 10) {
                         firstname
@@ -148,6 +150,12 @@ const STUDENT_QUERY = gql(`
                 lastname
             }
         }
+    }
+`);
+
+const SUBMIT_COURSE_QUERY = gql(`
+    mutation CourseSubmit($courseId: Float!) { 
+        courseSubmit(courseId: $courseId)
     }
 `);
 
@@ -200,15 +208,11 @@ const CreateCourse: React.FC = () => {
 
     const [studentQuery] = useLazyQuery(STUDENT_QUERY);
 
-    const [submitCourse] = useMutation(
-        gql(`
-        mutation CourseSubmit($courseId: Float!) { 
-            courseSubmit(courseId: $courseId)
-        }
-    `)
-    );
+    const [submitCourse] = useMutation(SUBMIT_COURSE_QUERY);
 
     const updateCourse = useUpdateCourse();
+
+    const [updatingCourse, setUpdatingCourse] = useState(false);
 
     const queryStudent = useCallback(async () => {
         const { data } = await studentQuery();
@@ -263,15 +267,11 @@ const CreateCourse: React.FC = () => {
         if (!updatedSubcourse?.course.category) {
             errors.push('category');
         }
-        if (updatedSubcourse?.course.category === Course_Category_Enum.Revision && !updatedSubcourse?.course.subject) {
-            errors.push('subject');
-        }
         if (
-            updatedSubcourse?.course.category !== Course_Category_Enum.Revision &&
-            updatedSubcourse?.course.category !== Course_Category_Enum.HomeworkHelp &&
-            (!updatedSubcourse?.course.tags || updatedSubcourse?.course.tags!.length === 0)
+            updatedSubcourse?.course.category === Course_Category_Enum.Revision &&
+            (!updatedSubcourse?.course.subject || updatedSubcourse?.course.subject === '')
         ) {
-            errors.push('tags');
+            errors.push('subject');
         }
         if (!updatedSubcourse?.minGrade || !updatedSubcourse?.maxGrade || updatedSubcourse?.minGrade > updatedSubcourse?.maxGrade) {
             errors.push('grade-range');
@@ -305,6 +305,7 @@ const CreateCourse: React.FC = () => {
         console.log('DELTA', delta);
 
         try {
+            setUpdatingCourse(true);
             const res = await updateCourse(prefillSubcourseId!, courseId, delta);
             if (res && res.subcourseId) {
                 setErrors([]);
@@ -320,7 +321,10 @@ const CreateCourse: React.FC = () => {
                 });
             }
         } catch (e) {
+            logError('CourseCreation', String(e));
             toast.error(t(`course.error.subcourse`));
+        } finally {
+            setUpdatingCourse(false);
         }
     };
 
@@ -385,14 +389,14 @@ const CreateCourse: React.FC = () => {
                     />
                     <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
                     <div className="flex flex-col gap-2">
-                        <Button variant="outline" className="w-full" onClick={() => window.history.back()}>
+                        <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
                             {t('course.CourseDate.Preview.cancel')}
                         </Button>
-                        <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)}>
+                        <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)} isLoading={updatingCourse}>
                             {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
                         </Button>
                         {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
-                            <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full" onClick={() => save(true)}>
+                            <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full" onClick={() => save(true)} isLoading={updatingCourse}>
                                 {t('course.CourseDate.Preview.publishCourse')}
                             </Button>
                         )}

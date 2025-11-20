@@ -70,7 +70,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                         className="px-4"
                         id="courseCategory"
                         value={subcourse.course.category}
-                        onValueChange={(v) => setSubcourse((s) => ({ ...s, course: { ...s.course, category: v as Course_Category_Enum } }))}
+                        onValueChange={(v) => setSubcourse((s) => ({ ...s, course: { ...s.course, category: v as Course_Category_Enum, tags: [] } }))}
                     >
                         <div className="flex sm:flex-row flex-col gap-5">
                             <div className="flex gap-x-2 items-center">
@@ -101,7 +101,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
             <div className="flex sm:flex-row flex-col gap-5">
                 <div className="flex-1 flex flex-col gap-5">
                     <div className="flex flex-col gap-2.5">
-                        <Label htmlFor="courseName" className="text-base">
+                        <Label htmlFor="courseName" className="text-base required">
                             {t('course.CourseDate.form.courseNameHeadline')}
                         </Label>
                         <Input
@@ -119,7 +119,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     </div>
 
                     <div className="flex flex-col gap-2.5 h-[80%] min-h-48">
-                        <Label htmlFor="description" className="text-base">
+                        <Label htmlFor="description" className="text-base required">
                             {t('course.CourseDate.form.descriptionLabel')}
                         </Label>
                         <TextArea
@@ -140,7 +140,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     <div className="flex flex-col gap-2.5">
                         <div className="inline-flex align-baseline gap-1.5">
                             <Label className="text-base">{t('course.CourseDate.step.attendees')}</Label>
-                            <InfoTooltipButton tooltipContent="TODO" />
+                            <InfoTooltipButton tooltipContent={t('course.CourseDate.form.maxMembersTooltip')} />
                         </div>
                         <div className="flex gap-2.5 flex-wrap">
                             {PREDEFINED_PARTICIPANTS.map((item) => (
@@ -173,8 +173,8 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     {subcourse.course.category === Course_Category_Enum.Revision && (
                         <div className="flex flex-col gap-2.5">
                             <div className="inline-flex align-baseline gap-1.5">
-                                <Label className="text-base">{t('course.CourseDate.form.courseSubjectLabel')}</Label>
-                                <InfoTooltipButton tooltipContent="TODO" />
+                                <Label className="text-base required">{t('course.CourseDate.form.courseSubjectLabel')}</Label>
+                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.courseSubjectTooltip')} />
                             </div>
                             <div className="flex gap-2.5 flex-wrap">
                                 {SUBJECTS.map((s) => (
@@ -202,7 +202,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             <div className="flex flex-col gap-2.5">
                                 <div className="inline-flex align-baseline gap-1.5">
                                     <Label className="text-base">{t('course.CourseDate.form.tagsLabel')}</Label>
-                                    <InfoTooltipButton tooltipContent="TODO" />
+                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.tagsTooltip')} />
                                 </div>
                                 <div className="flex gap-2.5 flex-wrap">
                                     {tagsLoading && <CenterLoadingSpinner />}
@@ -225,11 +225,6 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                                         </Button>
                                     ))}
                                 </div>
-                                {errors.includes('tags') && (
-                                    <Typography variant="sm" className="text-red-500 error">
-                                        {t('course.error.tags')}
-                                    </Typography>
-                                )}
                             </div>
                         )}
                 </div>

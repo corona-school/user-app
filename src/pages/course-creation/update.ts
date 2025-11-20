@@ -1,6 +1,7 @@
 import { SUBJECT_TO_COURSE_SUBJECT } from '@/types/subject';
 import {
     AppointmentCreateGroupInput,
+    AppointmentUpdateInput,
     Course_Subject_Enum,
     CourseCategory,
     PublicCourseCreateInput,
@@ -26,7 +27,7 @@ type CourseDelta = CourseState & {
     removedInstructors: number[];
     addedMentors: number[];
     removedMentors: number[];
-    changedAppointments?: Record<string, any>;
+    changedAppointments: Record<string, any>;
     newAppointments: Appointment[];
     cancelledAppointments: number[]; // IDs of appointments that were cancelled
 };
@@ -171,58 +172,22 @@ export function useUpdateCourse() {
         `)
     );
 
-    const [addInstructor] = useMutation(
+    const [mutateInstructorsMentors] = useMutation(
         gql(`
-            mutation addInstructorToSubcourse($subcourseId: Float!, $instructorId: Float!) {
-                subcourseAddInstructor(subcourseId: $subcourseId, studentId: $instructorId)
+            mutation addInstructorToSubcourse($subcourseId: Float!, $addInstructors: [Float!]!, $addMentors: [Float!]!, $removeInstructors: [Float!]!, $removeMentors: [Float!]!) {
+                subcourseBulkMutateInstructorsMentors(subcourseId: $subcourseId, 
+                    addInstructors: $addInstructors,
+                    addMentors: $addMentors,
+                    removeInstructors: $removeInstructors,
+                    removeMentors: $removeMentors)
             }
         `)
     );
 
-    const [removeInstructor] = useMutation(
+    const [mutateAppointments] = useMutation(
         gql(`
-            mutation removeInstructorFromSubcourse($subcourseId: Float!, $instructorId: Float!) {
-                subcourseDeleteInstructor(subcourseId: $subcourseId, studentId: $instructorId)
-            }
-        `)
-    );
-
-    const [addMentor] = useMutation(
-        gql(`
-            mutation addMentorToSubcourse($subcourseId: Float!, $mentorId: Float!) {
-                subcourseAddMentor(subcourseId: $subcourseId, studentId: $mentorId)
-            }
-        `)
-    );
-
-    const [removeMentor] = useMutation(
-        gql(`
-            mutation removeMentorFromSubcourse($subcourseId: Float!, $mentorId: Float!) {
-                subcourseMentorLeave(subcourseId: $subcourseId, studentId: $mentorId)
-            }
-        `)
-    );
-
-    const [updateAppointment] = useMutation(
-        gql(`
-            mutation updateAppointmentCourse($appointment: AppointmentUpdateInput!) {
-                appointmentUpdate(appointmentToBeUpdated: $appointment)
-            }
-        `)
-    );
-
-    const [createAppointments] = useMutation(
-        gql(`
-            mutation createAppointments($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
-                appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
-            }
-        `)
-    );
-
-    const [cancelAppointment] = useMutation(
-        gql(`
-            mutation cancelAppointment($appointmentId: Float!) {
-                appointmentCancel(appointmentId: $appointmentId)
+            mutation mutateAppointments($subcourseId: Float!, $createAppointments: [AppointmentCreateGroupInput!]!, $updateAppointments: [AppointmentUpdateInput!]!, $cancelAppointments: [Float!]!) {
+                appointmentSubcourseBulkMutate(subcourseId: $subcourseId, createAppointments: $createAppointments, updateAppointments: $updateAppointments, cancelAppointments: $cancelAppointments)
             }
         `)
     );
@@ -232,8 +197,6 @@ export function useUpdateCourse() {
         courseId: number | undefined,
         delta: CourseDelta
     ): Promise<{ subcourseId: number; courseId: number } | void> => {
-        const promises: Promise<any>[] = [];
-
         if (subcourseId === undefined || courseId === undefined) {
             console.log('Creating new course & subcourse');
 
@@ -285,67 +248,66 @@ export function useUpdateCourse() {
             };
 
             if (objectHasNonUndefinedValues(subcourseData)) {
-                promises.push(updateSubcourse({ variables: { data: subcourseData, id: subcourseId } }));
+                await updateSubcourse({ variables: { data: subcourseData, id: subcourseId } });
             }
             if (objectHasNonUndefinedValues(courseData)) {
-                promises.push(updateCourse({ variables: { data: courseData, id: courseId } }));
+                await updateCourse({ variables: { data: courseData, id: courseId } });
             }
         }
 
         if (delta.course.tags) {
             const tagIds = delta.course.tags.map((tag) => tag.id);
-            promises.push(setTags({ variables: { courseId, tags: tagIds } }));
+            await setTags({ variables: { courseId, tags: tagIds } });
         }
 
         if (delta.uploadImage) {
-            promises.push(uploadImage(delta.uploadImage).then((imageId) => setImage({ variables: { courseId: courseId!, imageId } })));
+            await uploadImage(delta.uploadImage).then((imageId) => setImage({ variables: { courseId: courseId!, imageId } }));
         }
 
-        const removals: Promise<any>[] = [];
-        for (const instructor of delta.removedInstructors) {
-            removals.push(removeInstructor({ variables: { subcourseId, instructorId: instructor } }));
-        }
-        for (const mentor of delta.removedMentors) {
-            removals.push(removeMentor({ variables: { subcourseId, mentorId: mentor } }));
-        }
-
-        // Ensure that we remove the desired people before adding new ones, to avoid race condition
-        // to avoid running eagerly, store functions and execute them once removals are done
-        const additions: (() => Promise<any>)[] = [];
-        for (const instructor of delta.addedInstructors) {
-            additions.push(() => addInstructor({ variables: { subcourseId: subcourseId!, instructorId: instructor } }));
-        }
-        for (const mentor of delta.addedMentors) {
-            additions.push(() => addMentor({ variables: { subcourseId: subcourseId!, mentorId: mentor } }));
+        if (delta.addedInstructors.length > 0 || delta.addedMentors.length > 0 || delta.removedInstructors.length > 0 || delta.removedMentors.length > 0) {
+            await mutateInstructorsMentors({
+                variables: {
+                    subcourseId: subcourseId,
+                    addInstructors: delta.addedInstructors,
+                    addMentors: delta.addedMentors,
+                    removeInstructors: delta.removedInstructors,
+                    removeMentors: delta.removedMentors,
+                },
+            });
         }
 
-        promises.push(
-            Promise.all(removals).then(async () => {
-                return Promise.all(additions.map((add) => add()));
-            })
-        );
+        if (delta.newAppointments.length > 0 || delta.cancelledAppointments.length > 0 || Object.entries(delta.changedAppointments).length > 0) {
+            const createAppointments: AppointmentCreateGroupInput[] = delta.newAppointments.map((x) => ({
+                start: x.start,
+                duration: x.duration,
+                title: x.title,
+                description: x.description,
+                appointmentType: x.appointmentType!,
+                subcourseId: subcourseId!,
+                meetingLink: x.override_meeting_link,
+            }));
 
-        for (const [id, appointment] of Object.entries(delta.changedAppointments ?? {})) {
-            promises.push(updateAppointment({ variables: { appointment: { ...appointment, id: parseInt(id) } } }));
+            const updateAppointments: AppointmentUpdateInput[] = Object.values(delta.changedAppointments).map((x) => ({
+                id: x.id,
+                start: x.start,
+                duration: x.duration,
+                title: x.title,
+                description: x.description,
+                override_meeting_link: x.override_meeting_link,
+            }));
+
+            await mutateAppointments({
+                variables: {
+                    subcourseId,
+                    createAppointments,
+                    updateAppointments,
+                    cancelAppointments: delta.cancelledAppointments,
+                },
+            });
         }
-        const appointmentsToCreate: AppointmentCreateGroupInput[] = delta.newAppointments.map((x) => ({
-            start: x.start,
-            duration: x.duration,
-            title: x.title,
-            description: x.description,
-            appointmentType: x.appointmentType!,
+        return {
             subcourseId: subcourseId!,
-        }));
-        if (appointmentsToCreate.length > 0) {
-            promises.push(createAppointments({ variables: { appointments: appointmentsToCreate, subcourseId } }));
-        }
-
-        for (const appointmentId of delta.cancelledAppointments) {
-            promises.push(cancelAppointment({ variables: { appointmentId } }));
-        }
-
-        return Promise.all(promises).then(() => {
-            return { subcourseId: subcourseId!, courseId: courseId! };
-        });
+            courseId: courseId!,
+        };
     };
 }

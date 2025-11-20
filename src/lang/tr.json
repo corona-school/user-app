@@ -2014,7 +2014,6 @@
                 "detailsContent": "Bu kurs hangi sınıflar için uygundur?",
                 "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Maks. katılımcı sayısı",
-                "maxMembersInfo": "Genellikle kayıtlı öğrencilerin yarısı gelmediği için daha yüksek bir sayı belirtebilirsiniz.",
                 "otherHeadline": "Diğer",
                 "otherContactHeadline": "iletişim kurun",
                 "otherOptionStart": "Öğrenciler ilk kurs tarihinden sonra kayıt yaptırabilirler",
@@ -2034,7 +2033,11 @@
                 "instructor": "Eğitmen",
                 "mentor": "Mentor: içinde",
                 "searchInstructorsPlaceholder": "İsim arayın veya e-posta girin",
-                "customMembersCount": "Kendi"
+                "customMembersCount": "Kendi",
+                "courseSubjectTooltip": "Bu kursa en uygun okul dersini seçin. Yalnızca bir ders seçebilirsiniz.",
+                "otherInstructorsTooltip": "Kendiniz otomatik olarak bir kurs liderisiniz. Burada tam haklara sahip diğer liderleri ekleyebilirsiniz. Ya da sadece katılabilecek danışmanlar. Alana tam e-posta adresinizi veya adınızı ve soyadınızı girin.",
+                "tagsTooltip": "Kursunuza uygun bir konu seçebilirsiniz.",
+                "maxMembersTooltip": "Maksimum katılımcı sayısını seçin. Burada biraz daha fazla izin vermek daha iyidir çünkü bazı insanlar tarihte gelmeyebilir."
             },
             "tags": {
                 "header": "Etiketleri seçin",

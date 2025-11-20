@@ -2014,7 +2014,6 @@
                 "detailsContent": "For which grades is the course suitable?",
                 "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Max. Number of participants",
-                "maxMembersInfo": "Please indicate a higher number, as usually only half of the registered pupils appear.",
                 "otherHeadline": "Other",
                 "otherContactHeadline": "Contact us",
                 "otherOptionStart": "pupils can register after the first course date",
@@ -2034,7 +2033,11 @@
                 "instructor": "Instructor",
                 "mentor": "Mentor:in",
                 "searchInstructorsPlaceholder": "Search for name or enter e-mail",
-                "customMembersCount": "Own"
+                "customMembersCount": "Own",
+                "courseSubjectTooltip": "Choose the subject that best suits this course. You can only choose one subject.",
+                "otherInstructorsTooltip": "You are automatically a course leader yourself. Here you can add other leaders who have full rights. Or mentors who can only participate. Enter the exact e-mail address or first name and surname in the field.",
+                "tagsTooltip": "You can choose a topic that suits your course.",
+                "maxMembersTooltip": "Select the maximum number of participants. It is better to allow a little more here because some people do not show up at the lecture ."
             },
             "tags": {
                 "header": "Select tags",

@@ -20,6 +20,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
     const { t } = useTranslation();
 
     const [creating, setCreating] = useState<boolean>(false);
+    // a new appointment which is currently being created
     const [placeholderId, setPlaceholderId] = useState<string | undefined>(undefined);
     const [appointmentToDelete, setAppointmentToDelete] = useState<DisplayAppointment | undefined>(undefined);
 
@@ -89,6 +90,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
 
         if (errors.length > 0) {
             setAppointmentsWithErrors((prev) => [...prev, updated.isNew ? updated.newId! : updated.id.toString()]);
+            console.log('Appointment Errors:', errors);
             return { errors };
         } else {
             setAppointmentsWithErrors((prev) => prev.filter((id) => id !== (updated.isNew ? updated.newId! : updated.id.toString())));
@@ -170,14 +172,18 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                             height="100%"
                             isReadOnlyList={false}
                             appointments={getDraftAppointments}
-                            noOldAppointments={subcourseId === undefined}
                             onAppointmentBeginEdit={(appointment) => {
                                 setAppointmentsWithErrors((prev) => [...prev, appointment.isNew ? appointment.newId! : appointment.id.toString()]); // add error for unfinished appointment
                             }}
                             onAppointmentEdited={onAppointmentEdited}
-                            onAppointmentCanceledEdit={() => {
-                                setCreating(false);
-                                setAppointmentsWithErrors((prev) => prev.filter((id) => id !== placeholderId)); // remove error for unfinished appointment
+                            onAppointmentCanceledEdit={(appointment) => {
+                                if (creating) {
+                                    setCreating(false);
+                                    setPlaceholderId(undefined);
+                                    setAppointmentsWithErrors((prev) => prev.filter((id) => id !== placeholderId)); // remove error for unfinished appointment
+                                } else {
+                                    setAppointmentsWithErrors((prev) => prev.filter((id) => id !== appointment.id.toString() && id !== appointment.newId));
+                                }
                             }}
                             onAppointmentDuplicate={!creating ? onAppointmentDuplicate : undefined}
                             onAppointmentDelete={(x) => (x.isNew ? onAppointmentDelete(x) : setAppointmentToDelete(x))}
