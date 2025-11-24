@@ -1,7 +1,7 @@
 import { Gender } from '@/gql/graphql';
 import { cn } from '@/lib/Tailwind';
 import { EnumSelector } from './EnumSelector';
-import { IconGenderBigender, IconGenderFemale, IconGenderMale } from '@tabler/icons-react';
+import { IconGenderGenderqueer, IconGenderFemale, IconGenderMale } from '@tabler/icons-react';
 
 export const GenderSelector = EnumSelector(
     Gender,
@@ -16,7 +16,7 @@ export const GenderIcon = ({ genderName, className }: { genderName: Gender; clas
         case Gender.Female:
             return <IconGenderFemale className={cn('rounded-full size-6 flex-shrink-0', className)} />;
         case Gender.Diverse:
-            return <IconGenderBigender className={cn('rounded-full size-6 flex-shrink-0', className)} />;
+            return <IconGenderGenderqueer className={cn('rounded-full size-6 flex-shrink-0', className)} />;
         default:
             return null;
     }

@@ -4,7 +4,7 @@ import { useRegistrationForm } from './useRegistrationForm';
 import { Toggle } from '@/components/Toggle';
 import { usePageTitle } from '@/hooks/usePageTitle';
 import { Gender } from '@/gql/graphql';
-import { IconGenderBigender, IconGenderFemale, IconGenderMale, IconX } from '@tabler/icons-react';
+import { IconGenderGenderqueer, IconGenderFemale, IconGenderMale } from '@tabler/icons-react';
 
 interface UserGenderProps extends RegistrationStepProps {}
 
@@ -46,7 +46,7 @@ export const UserGender = ({ onBack, onNext }: UserGenderProps) => {
                     pressed={form.gender === Gender.Diverse}
                     onPressedChange={() => onFormChange({ gender: Gender.Diverse })}
                 >
-                    <IconGenderBigender size={32} />
+                    <IconGenderGenderqueer size={32} />
                     {t('lernfair.genders.diverse')}
                 </Toggle>
             </div>
