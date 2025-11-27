@@ -16,9 +16,10 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { Label } from '@/components/Label';
 import { TextArea } from '@/components/TextArea';
 import { LanguageSelector } from '@/components/LanguageSelector';
-import { IconEdit } from '@tabler/icons-react';
+import { IconEdit, IconInfoCircleFilled } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { GenderSelector } from '@/components/GenderSelector';
+import { TooltipButton } from '@/components/Tooltip';
 
 type Props = {};
 
@@ -199,7 +200,12 @@ const ProfileStudent: React.FC<Props> = () => {
                         </div>
                         {/* ZIP CODE */}
                         <div>
-                            <Label>{t('profile.ZipCode.zipCode')}</Label>
+                            <Label>
+                                {t('profile.ZipCode.zipCode')}{' '}
+                                <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.zipCode.descriptionStudent')}>
+                                    <IconInfoCircleFilled size="16px" />
+                                </TooltipButton>
+                            </Label>
                             <Input
                                 maxLength={zipCodeLength()}
                                 type="number"
@@ -213,7 +219,12 @@ const ProfileStudent: React.FC<Props> = () => {
                         {/* GENDER */}
                         <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full mb-3">
                             <div className="flex flex-col gap-y-2">
-                                <Label>{t('profile.Gender')}</Label>
+                                <Label>
+                                    {t('registration.steps.userGender.title')}{' '}
+                                    <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.userGender.description')}>
+                                        <IconInfoCircleFilled size="16px" />
+                                    </TooltipButton>
+                                </Label>
                                 <GenderSelector
                                     className="flex flex-wrap justify-center p-1"
                                     toggleConfig={{
@@ -229,7 +240,12 @@ const ProfileStudent: React.FC<Props> = () => {
                         {/* LANGUAGES */}
                         <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full">
                             <div className="flex flex-col gap-y-2">
-                                <Label>{t('profile.Languages.labelStudent')}</Label>
+                                <Label>
+                                    {t('profile.Languages.labelStudent')}{' '}
+                                    <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.languages.descriptionStudent')}>
+                                        <IconInfoCircleFilled size="16px" />
+                                    </TooltipButton>
+                                </Label>
                                 <LanguageSelector
                                     maxVisibleItems={8}
                                     className="flex flex-wrap justify-center p-1"
