@@ -32,7 +32,7 @@ type ComboboxProps = (SingleComboboxProps | MultiComboboxProps) & {
     searchPlaceholder?: string;
     emptyText?: string;
     onSearch?: (search: string) => void;
-    filterSearchResult?: (item: ComboboxItem, search: string) => boolean;
+    filterSearchResult?: (item: ComboboxItem) => boolean;
     search?: string;
     isLoading?: boolean;
     className?: string;
@@ -71,7 +71,7 @@ export const Combobox = ({
     const memoizedOptions = useMemo(
         () =>
             options
-                .filter((e) => (search && filterSearchResult ? filterSearchResult(e, search) : true))
+                .filter((e) => (search && filterSearchResult ? filterSearchResult(e) : true))
                 .map((e) => (
                     <CommandItem
                         key={`${e.value}-${e.label}}`}
