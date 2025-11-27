@@ -1,4 +1,4 @@
-import { useUserType } from '@/hooks/useApollo';
+import { useUser, useUserType } from '@/hooks/useApollo';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
@@ -199,14 +199,18 @@ const CreateCourse: React.FC = () => {
     const [courseId, setCourseId] = useState<number | undefined>(undefined);
     const [uploadImage, setUploadImage] = useState<FileItem | null | undefined>(undefined); // overrides image if set, used for image upload.
     const [courseAppointments, setCourseAppointments] = useState<DisplayAppointment[]>();
-    const [studentId, setStudentId] = useState<number>();
+    const user = useUser();
 
     const [loadingCourse, setLoadingCourse] = useState<boolean>(editingExistingCourse);
-    const [loadingStudent, setLoadingStudent] = useState<boolean>(false);
+    const [loadingUser, setLoadingUser] = useState<boolean>(true);
+
+    useEffect(() => {
+        if (user) {
+            setLoadingUser(false);
+        }
+    }, [user]);
 
     const [courseQuery] = useLazyQuery(COURSE_QUERY);
-
-    const [studentQuery] = useLazyQuery(STUDENT_QUERY);
 
     const [submitCourse] = useMutation(SUBMIT_COURSE_QUERY);
 
@@ -214,19 +218,9 @@ const CreateCourse: React.FC = () => {
 
     const [updatingCourse, setUpdatingCourse] = useState(false);
 
-    const queryStudent = useCallback(async () => {
-        const { data } = await studentQuery();
-        setStudentId(data?.me?.student?.id);
-        setLoadingStudent(false);
-    }, [studentQuery]);
-
-    useEffect(() => {
-        if (userType === 'student') queryStudent();
-    }, [queryStudent, userType]);
-
     const queryCourse = useCallback(async () => {
         if (!prefillSubcourseId) return;
-        if (userType === 'student' && !studentId) return;
+        if (userType === 'student' && !user.student?.id) return;
         setLoadingCourse(true);
         const {
             data: { subcourse: prefillSubcourse },
@@ -242,15 +236,15 @@ const CreateCourse: React.FC = () => {
         setCourseAppointments((userType === 'student' ? prefillSubcourse.joinedAppointments : prefillSubcourse.appointments) ?? []);
 
         if (prefillSubcourse.instructors && Array.isArray(prefillSubcourse.instructors)) {
-            updatedCourse.instructors = prefillSubcourse.instructors.filter((instructor: Instructor) => instructor.id !== studentId);
+            updatedCourse.instructors = prefillSubcourse.instructors.filter((instructor: Instructor) => instructor.id !== user.student?.id);
         }
 
         if (prefillSubcourse.mentors && Array.isArray(prefillSubcourse.mentors)) {
-            updatedCourse.mentors = prefillSubcourse.mentors.filter((mentor: Instructor) => mentor.id !== studentId);
+            updatedCourse.mentors = prefillSubcourse.mentors.filter((mentor: Instructor) => mentor.id !== user.student?.id);
         }
         setUpdatedSubcourse(updatedCourse);
         setLoadingCourse(false);
-    }, [courseQuery, prefillSubcourseId, studentId, userType]);
+    }, [courseQuery, prefillSubcourseId, user, userType]);
 
     useEffect(() => {
         if (prefillSubcourseId != null) queryCourse();
@@ -298,7 +292,7 @@ const CreateCourse: React.FC = () => {
                 subcourse: { ...updatedSubcourse!, appointments: courseAppointments }, // here we don't need newId anymore
                 uploadImage,
             },
-            studentId,
+            user.student?.id,
             userType
         );
 
@@ -321,7 +315,7 @@ const CreateCourse: React.FC = () => {
                 });
             }
         } catch (e) {
-            logError('CourseCreation', String(e));
+            logError('CourseCreation', 'Encountered exception while submitting course', e);
             toast.error(t(`course.error.subcourse`));
         } finally {
             setUpdatingCourse(false);
@@ -341,7 +335,7 @@ const CreateCourse: React.FC = () => {
         }
     }, [errors]);
 
-    if (loadingCourse || loadingStudent) {
+    if (loadingCourse || loadingUser) {
         return <CenterLoadingSpinner />;
     }
 

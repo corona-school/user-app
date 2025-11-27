@@ -12,7 +12,7 @@ import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
-import { Course_Category_Enum, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 import { Typography } from '../Typography';
 import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/icons-react';

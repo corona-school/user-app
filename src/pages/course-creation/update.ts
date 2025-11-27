@@ -64,8 +64,8 @@ export function getCourseDelta(
     }
 
     // Instructors
-    const prefillInstructorIds = (oldState?.subcourse?.instructors ?? []).map((i) => i);
-    const stateInstructorIds = newState.subcourse.instructors?.map((i) => i) ?? [];
+    const prefillInstructorIds = oldState?.subcourse?.instructors ?? [];
+    const stateInstructorIds = newState.subcourse.instructors ?? [];
 
     delta.addedInstructors =
         newState.subcourse.instructors?.filter((i) => i.id !== studentId && !prefillInstructorIds.some((x) => x.id === i.id)).map((i) => i.id) ?? [];
@@ -73,8 +73,8 @@ export function getCourseDelta(
     delta.removedInstructors =
         oldState?.subcourse?.instructors?.filter((i) => !stateInstructorIds.some((x) => x.id === i.id) && i.id !== studentId).map((x) => x.id) ?? [];
     // Mentors
-    const prefillMentorIds = (oldState?.subcourse?.mentors ?? []).map((i) => i);
-    const stateMentorIds = newState.subcourse.mentors?.map((i) => i) ?? [];
+    const prefillMentorIds = oldState?.subcourse?.mentors ?? [];
+    const stateMentorIds = newState.subcourse.mentors ?? [];
 
     delta.addedMentors = newState.subcourse.mentors?.filter((i) => !prefillMentorIds.some((x) => x.id === i.id)).map((x) => x.id) ?? [];
     delta.removedMentors = oldState?.subcourse?.mentors?.filter((i) => !stateMentorIds.some((x) => x.id === i.id)).map((x) => x.id) ?? [];
