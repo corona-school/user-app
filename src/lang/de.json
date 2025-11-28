@@ -2061,7 +2061,7 @@
             "existingAppointments": "Bestehende Termin(e)"
         },
         "error": {
-            "course": "Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.",
+            "course": "Dein Kurs konnte leider nicht gespeichert werden. Bitte versuche es erneut.",
             "subcourse": "Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.",
             "upload_image": "Dein Bild konnte leider nicht hochgeladen werden.",
             "set_image": "Dein Bild konnte leider nicht als Kursbild gesetzt werden.",

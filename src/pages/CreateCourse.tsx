@@ -168,7 +168,7 @@ const CreateCourse: React.FC = () => {
 
     const state = location.state as { subcourseId?: number; currentStep?: number };
     const prefillSubcourseId = state?.subcourseId;
-    const [prefillSubcourse, setPrefillSubcourse] = useState<LFSubCourse | null>(null); // used for delta calculation
+    const [prefillSubcourse, setPrefillSubcourse] = useState<LFSubCourse | null>(null);
     const [updatedSubcourse, setUpdatedSubcourse] = useState<LFSubCourse>({
         id: -1,
         lectures: [],
@@ -189,7 +189,7 @@ const CreateCourse: React.FC = () => {
         instructors: [],
         mentors: [],
         groupChatType: ChatType.NORMAL,
-    }); // used for delta calculation
+    });
 
     const editingExistingCourse = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
 
@@ -315,7 +315,7 @@ const CreateCourse: React.FC = () => {
                 });
             }
         } catch (e) {
-            logError('CourseCreation', 'Encountered exception while submitting course', e);
+            logError('CourseCreation', 'Encountered exception while saving/submitting course', e);
             toast.error(t(`course.error.subcourse`));
         } finally {
             setUpdatingCourse(false);
