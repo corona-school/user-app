@@ -19,7 +19,7 @@ type Props = {
 
 const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, subcourseId, setAppointments, errors, setAppointmentErrors }) => {
     const { t } = useTranslation();
-    // a new appointment which is currently being created
+    // a new appointment which is currently being created (either by clicking on "New Appointment" button or by duplicating another appointment
     const [placeholderId, setPlaceholderId] = useState<number | undefined>(undefined);
     const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | undefined>(undefined);
 
