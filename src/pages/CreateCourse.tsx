@@ -20,9 +20,9 @@ import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { getCourseDelta, useUpdateCourse } from './course-creation/update';
-import { DisplayAppointment } from '@/widgets/AppointmentList';
 import { toast } from 'sonner';
 import { logError } from '@/log';
+import { Appointment } from '@/types/lernfair/Appointment';
 
 export type CreateCourseError =
     | 'course'
@@ -198,7 +198,7 @@ const CreateCourse: React.FC = () => {
 
     const [courseId, setCourseId] = useState<number | undefined>(undefined);
     const [uploadImage, setUploadImage] = useState<FileItem | null | undefined>(undefined); // overrides image if set, used for image upload.
-    const [courseAppointments, setCourseAppointments] = useState<DisplayAppointment[]>();
+    const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
     const user = useUser();
 
     const [loadingCourse, setLoadingCourse] = useState<boolean>(editingExistingCourse);

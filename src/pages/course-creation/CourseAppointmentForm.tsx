@@ -1,4 +1,3 @@
-import { DisplayAppointment } from '@/widgets/AppointmentList';
 import { Label } from '@/components/Label';
 import { Input } from '@/components/Input';
 import { DatePicker } from '@/components/DatePicker';
@@ -11,10 +10,11 @@ import { useTranslation } from 'react-i18next';
 import { useState } from 'react';
 import { VideoChatTypeEnum } from '@/pages/create-appointment/AppointmentCreation';
 import { Button } from '@/components/Button';
+import { Appointment } from '@/types/lernfair/Appointment';
 
 type Props = {
-    appointmentPrefill: DisplayAppointment | undefined;
-    onSubmit: (appointment: DisplayAppointment) => void;
+    appointmentPrefill: Appointment;
+    onSubmit: (appointment: Appointment) => void;
     onCancel: () => void;
     errors: string[];
 };
@@ -22,17 +22,17 @@ type Props = {
 const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors }) => {
     const { t } = useTranslation();
 
-    const [title, setTitle] = useState(appointmentPrefill?.title ?? '');
-    const [description, setDescription] = useState(appointmentPrefill?.description ?? '');
+    const [title, setTitle] = useState(appointmentPrefill.title ?? '');
+    const [description, setDescription] = useState(appointmentPrefill.description ?? '');
     const [date, setDate] = useState(
-        appointmentPrefill?.start ? DateTime.fromISO(appointmentPrefill?.start).toISODate() : DateTime.now().plus({ days: 7 }).toISODate()
+        appointmentPrefill.start ? DateTime.fromISO(appointmentPrefill.start).toISODate() : DateTime.now().plus({ days: 7 }).toISODate()
     );
-    const [time, setTime] = useState(appointmentPrefill?.start ? DateTime.fromISO(appointmentPrefill?.start).toFormat('HH:mm') : '15:00');
-    const [duration, setDuration] = useState(appointmentPrefill?.duration ?? 60);
-    const [meetingLink, setMeetingLink] = useState(appointmentPrefill?.override_meeting_link ?? undefined);
+    const [time, setTime] = useState(appointmentPrefill.start ? DateTime.fromISO(appointmentPrefill.start).toFormat('HH:mm') : '15:00');
+    const [duration, setDuration] = useState(appointmentPrefill.duration ?? 60);
+    const [meetingLink, setMeetingLink] = useState(appointmentPrefill.override_meeting_link ?? undefined);
 
     const [videoChatType, setVideoChatType] = useState<VideoChatTypeEnum>(
-        appointmentPrefill?.override_meeting_link ? VideoChatTypeEnum.LINK : VideoChatTypeEnum.ZOOM
+        appointmentPrefill.override_meeting_link ? VideoChatTypeEnum.LINK : VideoChatTypeEnum.ZOOM
     );
 
     const handleTitleInput = (e: any) => {
@@ -172,11 +172,9 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                             start: DateTime.fromISO(date)
                                 .set({ hour: parseInt(time.split(':')[0]), minute: parseInt(time.split(':')[1]) })
                                 .toISO(),
-                            override_meeting_link: meetingLink,
+                            override_meeting_link: videoChatType === VideoChatTypeEnum.ZOOM ? null : meetingLink,
                             duration,
-                            isNew: appointmentPrefill?.isNew,
-                            newId: appointmentPrefill?.newId,
-                            id: !appointmentPrefill?.isNew ? appointmentPrefill!.id : -1, // -1 indicates a new appointment
+                            id: appointmentPrefill.id,
                         })
                     }
                     className="flex-grow"

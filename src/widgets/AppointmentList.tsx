@@ -57,8 +57,8 @@ interface AppointmentItemProps {
     total: number;
     isReadOnly: boolean;
     editingInit?: boolean; // If true, the item will be in editing mode initially
-    onBeginEdit?: (editing: DisplayAppointment) => void;
-    onEdit?: (edited: DisplayAppointment) => { errors: string[] } | void;
+    onBeginEdit?: (editing: Appointment) => void;
+    onEdit?: (edited: Appointment) => { errors: string[] } | void;
     onCancelEdit?: () => void;
     onDuplicate?: () => void;
     onDelete?: () => void;
@@ -100,7 +100,7 @@ const AppointmentItem = React.memo(
 
         const monthDivider = showMonthDivider(appointment, previousAppointment);
 
-        const onSubmit = (updatedAppointment: DisplayAppointment) => {
+        const onSubmit = (updatedAppointment: Appointment) => {
             if (onEdit) {
                 const result = onEdit(updatedAppointment);
                 if (result && result.errors) {
@@ -170,13 +170,8 @@ const AppointmentItem = React.memo(
     }
 );
 
-export interface DisplayAppointment extends Appointment {
-    isNew?: boolean; // false => existing appointment, true => new appointment
-    newId?: string; // UUID for new appointments, not created in backend yet.
-}
-
 type AppointmentListProps = {
-    appointments: DisplayAppointment[];
+    appointments: Appointment[];
     isReadOnlyList: boolean;
     disableScroll?: boolean;
     isFullWidth?: boolean;
@@ -186,12 +181,12 @@ type AppointmentListProps = {
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
     height?: number | string;
-    onAppointmentBeginEdit?: (editing: DisplayAppointment) => void;
-    onAppointmentEdited?: (updated: DisplayAppointment) => { errors: string[] } | void;
-    onAppointmentCanceledEdit?: (edited: DisplayAppointment) => void;
-    onAppointmentDuplicate?: (duplicate: DisplayAppointment) => void;
-    onAppointmentDelete?: (appointment: DisplayAppointment) => void;
-    editingIdInit?: string; // If provided, the appointment with this ID will be in editing mode initially
+    onAppointmentBeginEdit?: (editing: Appointment) => void;
+    onAppointmentEdited?: (updated: Appointment) => { errors: string[] } | void;
+    onAppointmentCanceledEdit?: (edited: Appointment) => void;
+    onAppointmentDuplicate?: (duplicate: Appointment) => void;
+    onAppointmentDelete?: (appointment: Appointment) => void;
+    editingIdInit?: number; // If provided, the appointment with this ID will be in editing mode initially
     clickable: boolean; // If true, the appointment items are clickable and navigate to the appointment detail page
     editable: boolean; // If true, the appointment items show edit, duplicate, and delete buttons
 };
@@ -286,13 +281,13 @@ const AppointmentList = ({
                 <Header hasMoreOldAppointments={!noOldAppointments} isLoading={!!isLoadingAppointments} onLoadMoreOldAppointments={handleLoadPast} />
                 {appointments.map((appointment, index) => (
                     <AppointmentItem
-                        key={appointment.id <= 0 ? appointment.newId : appointment.id}
+                        key={appointment.id}
                         appointment={appointment}
                         previousAppointment={appointments[index - 1]}
                         index={index + 1}
                         total={appointments.length}
                         isReadOnly={isReadOnlyList}
-                        editingInit={appointment.isNew && appointment.newId === editingIdInit}
+                        editingInit={appointment.id === editingIdInit}
                         onBeginEdit={onAppointmentBeginEdit}
                         onEdit={appointmentInPast(appointment) ? undefined : (updated) => onAppointmentEdited && onAppointmentEdited(updated)}
                         onCancelEdit={() => onAppointmentCanceledEdit && onAppointmentCanceledEdit(appointment)}

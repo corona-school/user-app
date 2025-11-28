@@ -174,7 +174,7 @@ export function useUpdateCourse() {
 
     const [mutateInstructorsMentors] = useMutation(
         gql(`
-            mutation addInstructorToSubcourse($subcourseId: Float!, $addInstructors: [Float!]!, $addMentors: [Float!]!, $removeInstructors: [Float!]!, $removeMentors: [Float!]!) {
+            mutation addInstructorToSubcourse($subcourseId: Int!, $addInstructors: [Int!]!, $addMentors: [Int!]!, $removeInstructors: [Int!]!, $removeMentors: [Int!]!) {
                 subcourseBulkMutateInstructorsMentors(subcourseId: $subcourseId, 
                     addInstructors: $addInstructors,
                     addMentors: $addMentors,
@@ -186,7 +186,7 @@ export function useUpdateCourse() {
 
     const [mutateAppointments] = useMutation(
         gql(`
-            mutation mutateAppointments($subcourseId: Float!, $createAppointments: [AppointmentCreateGroupInput!]!, $updateAppointments: [AppointmentUpdateInput!]!, $cancelAppointments: [Float!]!) {
+            mutation mutateAppointments($subcourseId: Int!, $createAppointments: [AppointmentCreateGroupInput!]!, $updateAppointments: [AppointmentUpdateInput!]!, $cancelAppointments: [Int!]!) {
                 appointmentSubcourseBulkMutate(subcourseId: $subcourseId, createAppointments: $createAppointments, updateAppointments: $updateAppointments, cancelAppointments: $cancelAppointments)
             }
         `)
