@@ -21,8 +21,9 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
     const { t } = useTranslation();
     // a new appointment which is currently being created (either by clicking on "New Appointment" button or by duplicating another appointment
     const [placeholderId, setPlaceholderId] = useState<number | undefined>(undefined);
+    // contrary to duplicated appointments, when creating a blank appointment, it should stick to the bottom
+    const [stickyBottomId, setStickyBottomId] = useState<number | undefined>(undefined);
     const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | undefined>(undefined);
-
     const [appointmentsWithErrors, setAppointmentsWithErrors] = useState<number[]>([]);
 
     // inform parent about errors
@@ -35,12 +36,24 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
     }, [appointmentsWithErrors, setAppointmentErrors]);
 
     const getDraftAppointments = useMemo(() => {
-        return [...appointments].sort((a, b) => DateTime.fromISO(a.start).toMillis() - DateTime.fromISO(b.start).toMillis());
-    }, [appointments]);
+        let stickyAppointment = undefined;
+        let sorted = [...appointments]
+            .map((a) => {
+                if (a.id === stickyBottomId) stickyAppointment = a;
+                return a;
+            })
+            .filter((a) => a.id !== stickyBottomId)
+            .sort((a, b) => {
+                let aKey = DateTime.fromISO(a.start).toMillis();
+                let bKey = DateTime.fromISO(b.start).toMillis();
+                return aKey - bKey;
+            });
+        if (stickyAppointment) sorted.push(stickyAppointment);
+        return sorted;
+    }, [appointments, stickyBottomId]);
 
     const onCreateAppointment = () => {
         const newId = -Date.now();
-        setPlaceholderId(newId);
         setAppointmentsWithErrors((prev) => [...prev, newId]); // unfinished appointment => error (gets cleared in onAppointmentEdited)
         setAppointments(() => {
             const newAppointments = [...getDraftAppointments];
@@ -55,6 +68,8 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
             });
             return newAppointments;
         });
+        setPlaceholderId(newId);
+        setStickyBottomId(newId);
     };
 
     const validateInputs = (appointment: Appointment): string[] => {
@@ -93,6 +108,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
         if (updated.id < 0) {
             console.log('Edited new appointment with id:', updated.id, updated);
             if (placeholderId === updated.id) setPlaceholderId(undefined);
+            if (stickyBottomId === updated.id) setStickyBottomId(undefined);
             const edited = getDraftAppointments.findIndex((x) => x.id === updated.id);
             // update the edited appointment
             setAppointments(() => {

@@ -52,7 +52,7 @@ export type Lecture = {
     duration: string;
 };
 
-const COURSE_QUERY = gql(`
+const SUBCOURSE_QUERY = gql(`
         query GetSubcourse($id: Int!) {
             subcourse(subcourseId: $id) {
                 id
@@ -210,7 +210,7 @@ const CreateCourse: React.FC = () => {
         }
     }, [user]);
 
-    const [courseQuery] = useLazyQuery(COURSE_QUERY);
+    const [subcourseQuery, { refetch: refetchSubcourse }] = useLazyQuery(SUBCOURSE_QUERY);
 
     const [submitCourse] = useMutation(SUBMIT_COURSE_QUERY);
 
@@ -224,7 +224,7 @@ const CreateCourse: React.FC = () => {
         setLoadingCourse(true);
         const {
             data: { subcourse: prefillSubcourse },
-        } = (await courseQuery({
+        } = (await subcourseQuery({
             variables: { id: prefillSubcourseId },
         })) as unknown as { data: { subcourse: LFSubCourse } };
         console.log('PREFILLING', prefillSubcourse);
@@ -244,7 +244,7 @@ const CreateCourse: React.FC = () => {
         }
         setUpdatedSubcourse(updatedCourse);
         setLoadingCourse(false);
-    }, [courseQuery, prefillSubcourseId, user, userType]);
+    }, [subcourseQuery, prefillSubcourseId, user, userType]);
 
     useEffect(() => {
         if (prefillSubcourseId != null) queryCourse();
@@ -313,6 +313,10 @@ const CreateCourse: React.FC = () => {
                         wasEdited: editingExistingCourse,
                     },
                 });
+            }
+            if (editingExistingCourse) {
+                console.log('Refetching subcourse');
+                await refetchSubcourse({ id: prefillSubcourseId! });
             }
         } catch (e) {
             logError('CourseCreation', 'Encountered exception while saving/submitting course', e);

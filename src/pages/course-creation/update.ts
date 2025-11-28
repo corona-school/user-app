@@ -95,7 +95,7 @@ export function getCourseDelta(
     delta.cancelledAppointments = existingAppointments.filter((a) => !newState.subcourse.appointments?.some((x) => x.id === a.id)).map((a) => a.id);
 
     // Image
-    if (newState.uploadImage) {
+    if (newState.uploadImage !== undefined) {
         delta.uploadImage = newState.uploadImage;
     } else if (newState.course.image !== (oldState?.course?.image ?? '')) {
         delta.course.image = newState.course.image;
@@ -260,8 +260,12 @@ export function useUpdateCourse() {
             await setTags({ variables: { courseId, tags: tagIds } });
         }
 
-        if (delta.uploadImage) {
-            await uploadImage(delta.uploadImage).then((imageId) => setImage({ variables: { courseId: courseId!, imageId } }));
+        if (delta.uploadImage !== undefined) {
+            let imageId = '';
+            if (delta.uploadImage) {
+                imageId = await uploadImage(delta.uploadImage);
+            }
+            await setImage({ variables: { courseId: courseId!, imageId } });
         }
 
         if (delta.addedInstructors.length > 0 || delta.addedMentors.length > 0 || delta.removedInstructors.length > 0 || delta.removedMentors.length > 0) {
