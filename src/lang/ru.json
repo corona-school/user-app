@@ -2103,7 +2103,13 @@
         "select_participant": "участник выберите",
         "all_participants": "все участники",
         "cancelation_error": "Произошла ошибка. Курс не может быть отменен.",
-        "alternatingInstructors": "Смена помощников"
+        "alternatingInstructors": "Смена помощников",
+        "duplicateModal": {
+            "title": "Хотите скопировать этот шаблон?",
+            "description": "Вы можете найти свою копию в разделе \"собственные курсы\".",
+            "name": "Название скопированного курса",
+            "error": "Этот курс невозможно повторить."
+        }
     },
     "notification": {
         "timedifference": {

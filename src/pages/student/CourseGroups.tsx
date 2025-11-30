@@ -7,20 +7,19 @@ import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 
-type SubsetSubcourse = Pick<Subcourse, 'id' | 'course' | 'nextLecture' | 'lectures' | 'maxParticipants' | 'participantsCount' | 'minGrade' | 'maxGrade'>;
-
 type GroupProps = {
-    currentCourses: SubsetSubcourse[] | undefined;
-    draftCourses: SubsetSubcourse[] | undefined;
-    pastCourses: SubsetSubcourse[] | undefined;
-    homeworkHelpCourses: SubsetSubcourse[] | undefined;
+    currentCourses: Subcourse[] | undefined;
+    draftCourses: Subcourse[] | undefined;
+    pastCourses: Subcourse[] | undefined;
+    homeworkHelpCourses: Subcourse[] | undefined;
+    onPressDuplicate: (subcourse: Subcourse) => any;
 };
 
-const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses, homeworkHelpCourses }) => {
+const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses, homeworkHelpCourses, onPressDuplicate }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const renderSubcourse = (subcourse: SubsetSubcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
+    const renderSubcourse = (subcourse: Subcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
         <div>
             <AppointmentCard
                 key={index}
@@ -40,6 +39,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
                 showCourseTraffic
                 trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                 onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
+                onPressDuplicate={() => onPressDuplicate(subcourse)}
                 showSchoolclass
             />
         </div>
