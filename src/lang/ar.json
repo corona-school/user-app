@@ -2099,7 +2099,14 @@
         "select_participant": "حدد مشاركا",
         "all_participants": "جميع المشاركين",
         "cancelation_error": "حدث خطأ. تعذر إلغاء الدورة التدريبية.",
-        "alternatingInstructors": "تغيير متطوعون"
+        "alternatingInstructors": "تغيير متطوعون",
+        "duplicateModal": {
+            "title": "هل ترغب في نسخ هذا نموذج",
+            "description": "يمكنك العثور على نسختك في قسم \"مقرراتي الدراسية\".",
+            "name": "اسم المقرر الدراسي المنسوخ",
+            "error": "لا يمكن تكرار الدورة التدريبية.",
+            "success": "تم نسخ مقررك الدراسي بنجاح."
+        }
     },
     "notification": {
         "timedifference": {

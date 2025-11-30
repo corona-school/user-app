@@ -1,24 +1,24 @@
-import { ReactElement, ReactNode, useMemo, useState, useRef } from 'react';
+import { ReactElement, ReactNode, useMemo, useRef, useState } from 'react';
 import {
-    View,
-    Text,
-    Row,
-    useTheme,
-    Box,
-    Flex,
-    Button,
-    Link,
-    Image,
-    Column,
-    useBreakpointValue,
-    Pressable,
-    Heading,
-    CheckCircleIcon,
-    Tooltip,
-    HStack,
-    VStack,
-    Stack,
     Badge,
+    Box,
+    Button,
+    CheckCircleIcon,
+    Column,
+    Flex,
+    Heading,
+    HStack,
+    Image,
+    Link,
+    Pressable,
+    Row,
+    Stack,
+    Text,
+    Tooltip,
+    useBreakpointValue,
+    useTheme,
+    View,
+    VStack,
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
@@ -35,11 +35,12 @@ import { useTranslation } from 'react-i18next';
 import { useUserType } from '../hooks/useApollo';
 import MatchAvatarImage from '../components/MatchAvatarImage';
 import VideoButton from '../components/VideoButton';
-import { Instructor, Lecture, Lecture_Appointmenttype_Enum, Course_Category_Enum } from '../gql/graphql';
+import { Course_Category_Enum, Instructor, Lecture, Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
 import { Typography } from '@/components/Typography';
 import { asTranslationKey } from '@/helper/string-helper';
+import { IconCopy } from '@tabler/icons-react';
 
 type Props = {
     appointmentId?: number;
@@ -70,6 +71,7 @@ type Props = {
     image?: string;
     isMatch?: boolean;
     onPressToCourse?: () => any;
+    onPressDuplicate?: () => any;
     hasVideoButton?: boolean;
     countCourse?: number;
     statusText?: string;
@@ -114,6 +116,7 @@ const AppointmentCard: React.FC<Props> = ({
     image,
     isMatch,
     onPressToCourse,
+    onPressDuplicate,
     showTrafficLight,
     showStatus,
     showCourseTraffic,
@@ -239,21 +242,35 @@ const AppointmentCard: React.FC<Props> = ({
                     <Pressable onPress={onPress}>
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
                             <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']} mt={isMatch ? '3' : 0}>
-                                {!isMatch && (
-                                    <Image
-                                        position="absolute"
-                                        left={0}
-                                        right={0}
-                                        top={0}
-                                        width="100%"
-                                        bgColor="gray.300"
-                                        height="100%"
-                                        alt={title}
-                                        source={{
-                                            uri: image,
-                                        }}
-                                    />
-                                )}
+                                <VStack position="absolute" left={0} right={0} top={0} width="100%" height="100%">
+                                    {onPressDuplicate && (
+                                        <Button
+                                            position="absolute"
+                                            variant="subtle"
+                                            opacity={0.5}
+                                            top={4}
+                                            right={4}
+                                            zIndex={10}
+                                            borderRadius={1000}
+                                            width={10}
+                                            height={10}
+                                            onPress={onPressDuplicate}
+                                        >
+                                            <IconCopy />
+                                        </Button>
+                                    )}
+                                    {!isMatch && (
+                                        <Image
+                                            width="100%"
+                                            bgColor="gray.300"
+                                            height="100%"
+                                            alt={title}
+                                            source={{
+                                                uri: image,
+                                            }}
+                                        />
+                                    )}
+                                </VStack>
                                 {showTrafficLight && <CourseTrafficLamp status={trafficLightStatus || 'full'} hideText showBorder paddingY={0} />}
                                 {isTeaser && (
                                     <Row space={space['0.5']} flexWrap="wrap" maxWidth="280px">
@@ -342,7 +359,10 @@ const AppointmentCard: React.FC<Props> = ({
                                     <Text maxWidth={sizes['imageHeaderWidth']}>
                                         <Text bold>{t('single.courseInfo.grade')}</Text>
                                         {!!(minGrade && maxGrade) &&
-                                            t('single.courseInfo.class', { minGrade: getGradeLabel(minGrade), maxGrade: getGradeLabel(maxGrade) })}
+                                            t('single.courseInfo.class', {
+                                                minGrade: getGradeLabel(minGrade),
+                                                maxGrade: getGradeLabel(maxGrade),
+                                            })}
                                     </Text>
                                 )}
 
