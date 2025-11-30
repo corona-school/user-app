@@ -2015,7 +2015,7 @@
         },
         "duplicateModal": {
             "title": "Möchtest du diese Vorlage kopieren?",
-            "description": "Du findest deine Kopie im Bereich \"eigene Kurse\".",
+            "description": "Du findest deine Kopie im Bereich \"Meine Kurse\".",
             "name": "Name des kopierten Kurses",
             "success": "Dein Kurs wurde erfolgreich kopiert.",
             "error": "Der Kurs konnte nicht dupliziert werden."
