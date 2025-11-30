@@ -2017,6 +2017,7 @@
             "title": "Möchtest du diese Vorlage kopieren?",
             "description": "Du findest deine Kopie im Bereich \"eigene Kurse\".",
             "name": "Name des kopierten Kurses",
+            "success": "Dein Kurs wurde erfolgreich kopiert.",
             "error": "Der Kurs konnte nicht dupliziert werden."
         },
         "meeting": {

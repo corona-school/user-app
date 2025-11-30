@@ -75,7 +75,7 @@ export const DuplicateCourseModal = ({ isOpen, onOpenChange, subcourse }: Duplic
                     },
                 },
             });
-
+            toast.success(t('course.duplicateModal.success'));
             navigate(`/single-course/${subcourseRes.data?.subcourseCreate.id}`);
         } catch (e) {
             logError('DuplicateSubcourseModal', 'Error while duplicating subcourse', e);

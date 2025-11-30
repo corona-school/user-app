@@ -2108,7 +2108,8 @@
             "title": "Bu şablonu kopyalamak ister misiniz?",
             "description": "Kopyanızı \"kendi kurslarınız\" bölümünde bulabilirsiniz.",
             "name": "Kopyalanan kursun adı",
-            "error": "Kurs tekrarlanamaz."
+            "error": "Kurs tekrarlanamaz.",
+            "success": "Kursunuz başarıyla kopyalanmıştır."
         }
     },
     "notification": {
