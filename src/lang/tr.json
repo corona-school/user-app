@@ -2106,7 +2106,7 @@
         "alternatingInstructors": "Yardımcıların değiştirilmesi",
         "duplicateModal": {
             "title": "Bu şablonu kopyalamak ister misiniz?",
-            "description": "Kopyanızı \"kendi kurslarınız\" bölümünde bulabilirsiniz.",
+            "description": "Kopyanızı \"Kurslarım\" bölümünde bulabilirsiniz.",
             "name": "Kopyalanan kursun adı",
             "error": "Kurs tekrarlanamaz.",
             "success": "Kursunuz başarıyla kopyalanmıştır."

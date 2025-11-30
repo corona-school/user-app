@@ -2106,7 +2106,7 @@
         "alternatingInstructors": "Changing volunteers",
         "duplicateModal": {
             "title": "Would you like to copy this template?",
-            "description": "You can find your copy in the \"own courses\" section.",
+            "description": "You can find your copy in the \"My courses\" section.",
             "name": "Name of the copied course",
             "error": "The course could not be duplicated.",
             "success": "Your course has been successfully copied."
