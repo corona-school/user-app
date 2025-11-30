@@ -1,7 +1,7 @@
 import { Box, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Subcourse } from '../../gql/graphql';
+import { Course_Category_Enum, Subcourse } from '../../gql/graphql';
 import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
@@ -39,7 +39,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
                 showCourseTraffic
                 trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                 onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
-                onPressDuplicate={() => onPressDuplicate(subcourse)}
+                onPressDuplicate={subcourse.course.category !== Course_Category_Enum.HomeworkHelp ? () => onPressDuplicate(subcourse) : undefined}
                 showSchoolclass
             />
         </div>
