@@ -424,7 +424,7 @@
         },
         "steps": {
             "userType": {
-                "title": "Sen öğrenci/çırak mısın yoksa yardımcı mı?"
+                "title": "Sen öğrenci/çırak mısın yoksa gönüllü mü?"
             },
             "acceptanceCheck": {
                 "title": "Doğru yerde misin?",
