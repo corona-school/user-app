@@ -635,10 +635,10 @@
             }
         },
         "pupil": {
-            "label": "Öğrenci / Stajyer"
+            "label": "Öğrenci / Çırak" 
         },
         "student": {
-            "label": "Yardımcı"
+            "label": "Gönüllü"
         },
         "verifyemail": {
             "resend": {
