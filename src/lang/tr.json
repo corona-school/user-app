@@ -424,7 +424,7 @@
         },
         "steps": {
             "userType": {
-                "title": "Sen öğrenci/çırak mısın yoksa yardımcı mı?"
+                "title": "Sen öğrenci/çırak mısın yoksa gönüllü mü?"
             },
             "acceptanceCheck": {
                 "title": "Doğru yerde misin?",
@@ -635,10 +635,10 @@
             }
         },
         "pupil": {
-            "label": "Öğrenci / Stajyer"
+            "label": "Öğrenci / Çırak" 
         },
         "student": {
-            "label": "Yardımcı"
+            "label": "Gönüllü"
         },
         "verifyemail": {
             "resend": {
