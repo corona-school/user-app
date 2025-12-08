@@ -368,7 +368,13 @@
                 }
             }
         },
-        "schoolclass": "{{class}}. فئة"
+        "schoolclass": "{{class}}. فئة",
+        "genders": {
+            "male": "الذكور",
+            "female": "أنثى",
+            "diverse": "متنوع/غير ثنائي",
+            "other": "غير محدد"
+        }
     },
     "welcome": {
         "title": "مرحباً بك في Lern-Fair",
@@ -622,6 +628,14 @@
             "legal": {
                 "title": "الموافقات",
                 "subtitle": "الموافقات"
+            },
+            "userGender": {
+                "title": "أي جنس تعتبرين نفسك من أي جنس أنتِ؟",
+                "description": "نحن نستخدم هذه المعلومات لمطابقة تلاميذ معينين فقط مع متطوعون من الجنس المطلوب في الحالات الفردية. هذه المعلومات طوعية.",
+                "male": "الذكور",
+                "female": "أنثى",
+                "diverse": "متنوع/غير ثنائي",
+                "other": "غير محدد"
             }
         },
         "pupil": {
@@ -893,7 +907,8 @@
         "ZipCode": {
             "zipCode": "الرمز البريدي",
             "requiredLength": "يجب أن يحتوي الرمز البريدي على {{length}} أرقاماً."
-        }
+        },
+        "Gender": "الجنس"
     },
     "single": {
         "global": {
@@ -2119,7 +2134,14 @@
         "select_participant": "حدد مشاركا",
         "all_participants": "جميع المشاركين",
         "cancelation_error": "حدث خطأ. تعذر إلغاء الدورة التدريبية.",
-        "alternatingInstructors": "تغيير متطوعون"
+        "alternatingInstructors": "تغيير متطوعون",
+        "duplicateModal": {
+            "title": "هل ترغب في نسخ هذا نموذج",
+            "description": "يمكنك العثور على نسختك في قسم \"مقرراتي الدراسية\".",
+            "name": "اسم المقرر الدراسي المنسوخ",
+            "error": "لا يمكن تكرار الدورة التدريبية.",
+            "success": "تم نسخ مقررك الدراسي بنجاح."
+        }
     },
     "notification": {
         "timedifference": {

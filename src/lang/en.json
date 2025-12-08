@@ -368,7 +368,13 @@
                 }
             }
         },
-        "schoolclass": "{{class}}. Grade"
+        "schoolclass": "{{class}}. Grade",
+        "genders": {
+            "male": "Male",
+            "female": "Female",
+            "diverse": "Diverse / non-binary",
+            "other": "Not specified"
+        }
     },
     "welcome": {
         "title": "Welcome to Lern-Fair",
@@ -622,6 +628,14 @@
             "legal": {
                 "title": "Consents",
                 "subtitle": "Consents"
+            },
+            "userGender": {
+                "title": "Which gender do you consider yourself to be?",
+                "description": "We use this information to match certain pupils only with volunteers of the desired gender in individual cases. This information is voluntary.",
+                "male": "Male",
+                "female": "Female",
+                "diverse": "Diverse / non-binary",
+                "other": "Not specified"
             }
         },
         "pupil": {
@@ -897,7 +911,8 @@
         "ZipCode": {
             "zipCode": "Zip code",
             "requiredLength": "The zip code must have {{length}} digits."
-        }
+        },
+        "Gender": "Gender"
     },
     "single": {
         "global": {
@@ -2123,7 +2138,14 @@
         "select_participant": "Select participant",
         "all_participants": "all participants",
         "cancelation_error": "An error has occurred. The course could not be canceled.",
-        "alternatingInstructors": "Changing volunteers"
+        "alternatingInstructors": "Changing volunteers",
+        "duplicateModal": {
+            "title": "Would you like to copy this template?",
+            "description": "You can find your copy in the \"My courses\" section.",
+            "name": "Name of the copied course",
+            "error": "The course could not be duplicated.",
+            "success": "Your course has been successfully copied."
+        }
     },
     "notification": {
         "timedifference": {

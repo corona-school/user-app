@@ -73,7 +73,7 @@ const Tabs: React.FC<TabsProps> = ({ tabs, removeSpace = false, onPressTab, tabI
 
     return (
         <VStack flex={1}>
-            <Row overflowX="scroll" flexWrap="nowrap" width="100%" paddingX={tabInset} borderBottomColor="primary.grey" borderBottomWidth={1}>
+            <Row overflowX="auto" flexWrap="nowrap" width="100%" paddingX={tabInset} borderBottomColor="primary.grey" borderBottomWidth={1}>
                 {renderableTabs.map((tab: Tab, i) => (
                     <TabItem key={`tab-${i}`} tab={tab} onPress={() => handleOnPressTab(i)} active={i === currentIndex} />
                 ))}

@@ -264,7 +264,7 @@ const AppointmentList = ({
         <div
             id="scrollable"
             style={{ height: height }}
-            className={cn('flex flex-col overflow-scroll w-full lg:max-w-full', isFullHeight ? 'flex-1 basis-0 max-h-full' : '')}
+            className={cn('flex flex-col overflow-auto w-full lg:max-w-full', isFullHeight ? 'flex-1 basis-0 max-h-full' : '')}
         >
             <InfiniteScroll
                 scrollableTarget="scrollable"

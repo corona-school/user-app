@@ -405,6 +405,12 @@
             "berufsschule": "Berufsschule",
             "f_rderschule": "Förderschule"
         },
+        "genders": {
+            "male": "Männlich",
+            "female": "Weiblich",
+            "diverse": "Divers / Nicht-binär",
+            "other": "Keine Angabe"
+        },
         "schoolclass": "{{class}}. Klasse",
         "reason": {
             "course": {
@@ -538,6 +544,14 @@
                 "tooYoungError": "{{minAge}} Jahre ist das Mindestalter, für das wir kostenlose Nachhilfe anbieten können.",
                 "underAgeRange": "14 bis 17",
                 "adultAge": "18 oder älter"
+            },
+            "userGender": {
+                "title": "Welchem Geschlecht ordnest du dich zu?",
+                "description": "Wir verwenden diese Information, um in Einzelfällen bestimmte Schüler:innen nur mit Helfer:innen des gewünschten Geschlechts zu matchen. Die Angabe ist freiwillig.",
+                "male": "Männlich",
+                "female": "Weiblich",
+                "diverse": "Divers / Nicht-binär",
+                "other": "Keine Angabe"
             },
             "languages": {
                 "titlePupil": "Welche Sprachen sprichst du zu Hause?",
@@ -860,6 +874,7 @@
                 "label": "Dein Text"
             }
         },
+        "Gender": "Geschlecht",
         "Languages": {
             "labelPupil": "Welche Sprachen sprichst du zuhause?",
             "labelStudent": "Welche Sprachen sprichst du fließend?",
@@ -2012,6 +2027,13 @@
             "_2hour": "2 Stunden",
             "_3hour": "3 Stunden",
             "_4hour": "4 Stunden"
+        },
+        "duplicateModal": {
+            "title": "Möchtest du diese Vorlage kopieren?",
+            "description": "Du findest deine Kopie im Bereich \"Meine Kurse\".",
+            "name": "Name des kopierten Kurses",
+            "success": "Dein Kurs wurde erfolgreich kopiert.",
+            "error": "Der Kurs konnte nicht dupliziert werden."
         },
         "meeting": {
             "videobutton": {

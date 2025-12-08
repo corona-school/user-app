@@ -12,6 +12,8 @@ import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE, LESSON_PLAN_GENERATOR_ACTIVE, REFERRALS_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { IconX } from '@tabler/icons-react';
+import { Button } from '@/components/Button';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -49,7 +51,16 @@ const Settings: React.FC = () => {
 
     return (
         <>
-            <WithNavigation headerTitle={t('settings.header')} hideMenu previousFallbackRoute="/start">
+            <WithNavigation
+                headerTitle={t('settings.header')}
+                hideMenu
+                previousFallbackRoute="/start"
+                headerRight={
+                    <Button className="rounded-full hover:bg-primary-light hover:brightness-105" variant="none" onClick={() => navigate(-1)} size="icon">
+                        <IconX />
+                    </Button>
+                }
+            >
                 <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <Breadcrumb />
                     <>

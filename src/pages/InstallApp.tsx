@@ -76,7 +76,7 @@ const InstallApp = () => {
                     </Button>
                 )}
                 {isInstalled && <Typography className="text-green-600">{t('installation.page.installed')}</Typography>}
-                <div className="flex overflow-x-scroll">
+                <div className="flex overflow-x-auto">
                     <img src={Image1} alt="App preview" className="w-[200px]" />
                     <img src={Image2} alt="App preview" className="w-[200px]" />
                     <img src={Image3} alt="App preview" className="w-[200px]" />
