@@ -962,7 +962,8 @@
             "courseCancelled": "Цей курс скасовано.",
             "courseStartedButJoinable": "Цей курс вже розпочався, але ви все ще можете зареєструватися",
             "is_shared": "Цей курс випускається як шаблон",
-            "timesAWeek": "{{times}}x на тиждень"
+            "timesAWeek": "{{times}}x на тиждень",
+            "noAppointments": "Цей курс ще не має дат."
         },
         "card": {
             "time": {

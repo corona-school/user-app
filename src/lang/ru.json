@@ -962,7 +962,8 @@
             "courseCancelled": "Данный курс был отменен.",
             "courseStartedButJoinable": "Курс уже начался, но вы еще можете зарегистрироваться",
             "is_shared": "Этот курс выпущен в качестве шаблона",
-            "timesAWeek": "{{times}}x в неделю"
+            "timesAWeek": "{{times}}x в неделю",
+            "noAppointments": "Этот курс еще не имеет дат."
         },
         "card": {
             "time": {

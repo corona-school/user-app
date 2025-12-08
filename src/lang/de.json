@@ -1045,6 +1045,7 @@
             "class": "{{minGrade}} - {{maxGrade}}",
             "editCourse": "Kurs editieren",
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
+            "noAppointments": "Dieser Kurs hat noch keine Termine.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
             "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden",
             "is_shared": "Dieser Kurs ist als Vorlage freigeben",

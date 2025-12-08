@@ -962,7 +962,8 @@
             "courseCancelled": "Bu kurs iptal edilmiştir.",
             "courseStartedButJoinable": "Bu kurs çoktan başladı, ancak hala kayıt olabilirsiniz",
             "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır",
-            "timesAWeek": "Haftalık {{times}}x"
+            "timesAWeek": "Haftalık {{times}}x",
+            "noAppointments": "Bu kursun henüz tarihi belirlenmemiştir."
         },
         "card": {
             "time": {

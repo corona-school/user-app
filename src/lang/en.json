@@ -962,7 +962,8 @@
             "courseCancelled": "This course has been canceled.",
             "courseStartedButJoinable": "This course has already started, but you can still register",
             "is_shared": "This course is released as a template",
-            "timesAWeek": "{{times}}x per week"
+            "timesAWeek": "{{times}}x per week",
+            "noAppointments": "This course does not have any lectures yet."
         },
         "card": {
             "time": {
