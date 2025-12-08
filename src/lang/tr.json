@@ -2103,7 +2103,14 @@
         "select_participant": "Katılımcı seçin",
         "all_participants": "tüm katılımcılar",
         "cancelation_error": "Bir hata meydana geldi. Kurs iptal edilemedi.",
-        "alternatingInstructors": "Yardımcıların değiştirilmesi"
+        "alternatingInstructors": "Yardımcıların değiştirilmesi",
+        "duplicateModal": {
+            "title": "Bu şablonu kopyalamak ister misiniz?",
+            "description": "Kopyanızı \"Kurslarım\" bölümünde bulabilirsiniz.",
+            "name": "Kopyalanan kursun adı",
+            "error": "Kurs tekrarlanamaz.",
+            "success": "Kursunuz başarıyla kopyalanmıştır."
+        }
     },
     "notification": {
         "timedifference": {
