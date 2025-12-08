@@ -2047,16 +2047,19 @@
                 "revisionTooltip": "You support your participants in the traditional school subjects. In the courses, you repeat and practise specific topics from school together.",
                 "languageTooltip": "In these courses, you will help learners to quickly find their way around everyday life in German. Together you will practise pronunciation, expand your vocabulary and practise grammar.",
                 "focusTooltip": "You accompany your participants through exciting courses on important topics that will strengthen them in their everyday lives and for their future. Throughout the year, the courses cover important topics such as social media, education, bullying and mental health.",
-                "otherInstructors": "Course management & mentors",
-                "otherInstructorsDescription": "Add additional instructors or mentors:",
                 "instructor": "Instructor",
                 "mentor": "Mentor:in",
                 "searchInstructorsPlaceholder": "Search for name or enter e-mail",
                 "customMembersCount": "Own",
                 "courseSubjectTooltip": "Choose the subject that best suits this course. You can only choose one subject.",
-                "otherInstructorsTooltip": "You are automatically a course leader yourself. Here you can add other leaders who have full rights. Or mentors who can only participate. Enter the exact e-mail address or first name and surname in the field.",
                 "tagsTooltip": "You can choose a topic that suits your course.",
-                "maxMembersTooltip": "Select the maximum number of participants. It is better to allow a little more here because some people do not show up at the lecture ."
+                "maxMembersTooltip": "Select the maximum number of participants. It is better to allow a little more here because some people do not show up at the lecture .",
+                "otherInstructorsMentors": "Course management & mentors",
+                "otherInstructorsMentorsDescription": "Add additional instructors or mentors:",
+                "otherInstructorsMentorsTooltip": "You are automatically a course leader yourself. Here you can add other leaders who have full rights. Or mentors who can only participate. Enter the exact e-mail address or first name and surname in the field.",
+                "otherInstructors": "course instructor",
+                "otherInstructorsDescription": "Add more instructors:",
+                "otherInstructorsTooltip": "You are automatically the course instructor. Here you can add additional instructors who have full rights. Enter the exact email address or first and last name in the field."
             },
             "tags": {
                 "header": "Select tags",

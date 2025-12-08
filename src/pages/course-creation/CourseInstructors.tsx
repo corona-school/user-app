@@ -12,6 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { Instructor } from '@/gql/graphql';
 
 interface Props {
+    allowAddingMentors: boolean; // whether we want to allow the user to add mentors
     instructors: Instructor[];
     setInstructors: (instructors: Instructor[]) => void;
     mentors: Instructor[];
@@ -78,10 +79,22 @@ const CourseInstructors: React.FC<Props> = (props) => {
     return (
         <>
             <div className="inline-flex align-baseline gap-1.5">
-                <Label className="text-base">{t('course.CourseDate.form.otherInstructors')}</Label>
-                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.otherInstructorsTooltip')} />
+                <Label className="text-base">
+                    {t(props.allowAddingMentors ? 'course.CourseDate.form.otherInstructorsMentors' : 'course.CourseDate.form.otherInstructors')}
+                </Label>
+                <InfoTooltipButton
+                    tooltipContent={t(
+                        props.allowAddingMentors ? 'course.CourseDate.form.otherInstructorsMentorsTooltip' : 'course.CourseDate.form.otherInstructorsTooltip'
+                    )}
+                />
             </div>
-            <p>{t('course.CourseDate.form.otherInstructorsDescription')}</p>
+            <p>
+                {t(
+                    props.allowAddingMentors
+                        ? 'course.CourseDate.form.otherInstructorsMentorsDescription'
+                        : 'course.CourseDate.form.otherInstructorsDescription'
+                )}
+            </p>
 
             <div className="flex flex-col gap-2.5">
                 <div className="flex gap-2.5">
@@ -102,21 +115,23 @@ const CourseInstructors: React.FC<Props> = (props) => {
                                 <span>
                                     {manager.firstname} {manager.lastname}
                                 </span>
-                                <Select
-                                    value={manager.isInstructor ? 'instructor' : 'mentor'}
-                                    onValueChange={(v) => changeRole(manager.id!, manager.isInstructor, v as 'mentor' | 'instructor')}
-                                >
-                                    <SelectTrigger
-                                        id="duration"
-                                        className={cn('px-2 h-7 text-white border-0', manager.isInstructor ? 'bg-green-600' : 'bg-blue-600')}
+                                {props.allowAddingMentors && (
+                                    <Select
+                                        value={manager.isInstructor ? 'instructor' : 'mentor'}
+                                        onValueChange={(v) => changeRole(manager.id!, manager.isInstructor, v as 'mentor' | 'instructor')}
                                     >
-                                        <SelectValue />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="instructor">{t('course.CourseDate.form.instructor')}</SelectItem>
-                                        <SelectItem value="mentor">{t('course.CourseDate.form.mentor')}</SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                        <SelectTrigger
+                                            id="duration"
+                                            className={cn('px-2 h-7 text-white border-0', manager.isInstructor ? 'bg-green-600' : 'bg-blue-600')}
+                                        >
+                                            <SelectValue />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            <SelectItem value="instructor">{t('course.CourseDate.form.instructor')}</SelectItem>
+                                            <SelectItem value="mentor">{t('course.CourseDate.form.mentor')}</SelectItem>
+                                        </SelectContent>
+                                    </Select>
+                                )}
                             </div>
                             <Button size="icon" className="flex-shrink-0" onClick={() => manager.id && removeManager(manager.isInstructor, manager.id)}>
                                 <IconTrash />
