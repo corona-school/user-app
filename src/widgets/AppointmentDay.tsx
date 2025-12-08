@@ -17,6 +17,7 @@ type Props = {
     onPress: () => void;
     appointmentType: Appointment['appointmentType'];
     position: Appointment['position'];
+    index?: number;
     total: Appointment['total'];
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
@@ -43,6 +44,7 @@ const AppointmentDay: React.FC<Props> = ({
     onPress,
     appointmentType,
     position,
+    index,
     total,
     isOrganizer,
     displayName,
@@ -86,6 +88,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 onPress={onPress}
                                 appointmentType={appointmentType}
                                 position={position}
+                                appointmentIndex={index}
                                 total={total}
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
@@ -113,6 +116,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 isCurrentlyTakingPlace={isCurrent}
                                 appointmentType={appointmentType}
                                 position={position}
+                                appointmentIndex={index}
                                 total={total}
                                 onPress={onPress}
                                 isOrganizer={isOrganizer}

@@ -193,6 +193,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                             editingIdInit={placeholderId}
                             clickable={false}
                             editable={true}
+                            exhaustive={true}
                         />
                     </div>
                 )}

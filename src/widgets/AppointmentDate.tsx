@@ -7,14 +7,14 @@ type Props = {
     current: boolean;
     date: string;
     color?: string;
-    isReadOnly?: boolean;
     className?: string;
+    isOngoing?: boolean;
 };
 
-const AppointmentDate: React.FC<Props> = ({ current, date, color, className, isReadOnly = false }) => {
+const AppointmentDate: React.FC<Props> = ({ current, date, className }) => {
     const { i18n } = useTranslation();
     return (
-        <div className={cn('flex flex-col h-[50%] mr-4 p-4 rounded-md items-center', !isReadOnly && current ? 'bg-primary' : 'bg-transparent', className)}>
+        <div className={cn('flex flex-col h-[50%] mr-4 p-4 rounded-md items-center', current ? 'bg-primary-dark' : 'bg-primary-lighter', className)}>
             <Typography className={cn(current ? 'text-white' : 'text-primary')} variant="sm">
                 {DateTime.fromISO(date).setLocale(i18n.language).toFormat('cccc')}
             </Typography>

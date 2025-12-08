@@ -24,6 +24,7 @@ type Props = {
     onPress?: () => void;
     appointmentType: Appointment['appointmentType'];
     position: Appointment['position'];
+    appointmentIndex?: number;
     total: Appointment['total'];
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
@@ -49,9 +50,8 @@ const AppointmentTile: React.FC<Props> = ({
     organizers,
     participants,
     isReadOnly,
-    isFullWidth,
     onPress,
-    position,
+    appointmentIndex,
     total,
     displayName,
     appointmentId,
@@ -100,8 +100,8 @@ const AppointmentTile: React.FC<Props> = ({
         <div className={cn('w-full', clickable ? 'cursor-pointer' : 'cursor-auto')} onClick={clickable ? onPress : undefined}>
             <div className={cn('flex flex-col p-4 rounded-md border border-gray-200', isHighlighted && 'bg-primary')}>
                 <div className="flex gap-2 mb-2">
-                    <AppointmentDate current={isCurrentlyTakingPlace} date={start} isReadOnly={isReadOnly} className="bg-primary-lighter" />
-                    <div className="flex flex-col gap-1.5">
+                    <AppointmentDate current={isCurrentlyTakingPlace} date={start} />
+                    <div className={cn('flex flex-col gap-1.5', isHighlighted && 'text-white')}>
                         <div className="flex gap-1.5">
                             <IconClock />
                             <p>{timeDescriptionText}</p>
@@ -110,20 +110,25 @@ const AppointmentTile: React.FC<Props> = ({
                             <IconHourglass />
                             <p>{duration} min</p>
                         </div>
-                        <div className="flex gap-1.5">
-                            <IconBook />
-                            <p>{t('appointment.appointmentTile.lectureWithTotal', { position, total })}</p>
-                        </div>
+                        {appointmentIndex && (
+                            <div className="flex gap-1.5">
+                                <IconBook />
+                                <p>{t('appointment.appointmentTile.lectureWithTotal', { position: appointmentIndex, total })}</p>
+                            </div>
+                        )}
                     </div>
                 </div>
                 <div className="flex items-center justify-between">
-                    <div className="flex">
+                    <div className="flex items-center">
                         {isHighlighted && (
                             <div className="relative mr-2">
                                 <span className="absolute animate-[ping_1.5s_infinite] size-4 rounded-full bg-green-300 opacity-75"></span>
                                 <IconPointFilled className="size-4 text-green-400" />
                             </div>
                         )}
+                        <Typography className={cn('font-bold whitespace-normal break-words', isHighlighted ? 'text-white' : 'text-primary')}>
+                            {displayName && displayName.length > 80 ? displayName.slice(0, 80) + '...' : displayName}
+                        </Typography>
                     </div>
                     {avatars.length > 0 && (
                         <div className="flex">
@@ -138,9 +143,6 @@ const AppointmentTile: React.FC<Props> = ({
                     )}
                 </div>
                 <div>
-                    <Typography className={cn('font-bold whitespace-normal break-words', isHighlighted ? 'text-white' : 'text-primary')}>
-                        {displayName && displayName.length > 80 ? displayName.slice(0, 80) + '...' : displayName}
-                    </Typography>
                     {description && (
                         <Typography className="whitespace-normal break-words">
                             {description.length > 100 ? description.slice(0, 100) + '...' : description}

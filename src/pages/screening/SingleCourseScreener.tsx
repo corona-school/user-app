@@ -179,6 +179,7 @@ const SingleCourseScreener: React.FC = () => {
                         appointments={subcourse?.appointments as Appointment[]}
                         clickable={false}
                         editable={false}
+                        exhaustive={false}
                     />
                 </Box>
             ),

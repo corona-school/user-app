@@ -156,6 +156,7 @@ const AppointmentsInsight: React.FC<Props> = ({ id, next, back, isCourse, setApp
                             appointments={appointments as Appointment[]}
                             clickable={true}
                             editable={false}
+                            exhaustive={false}
                         />
                     </div>
                 )}

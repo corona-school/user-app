@@ -47,6 +47,7 @@ const MatchAppointments: React.FC<MatchAppointmentsProps> = ({
                     height="100%"
                     clickable={true}
                     editable={false}
+                    exhaustive={false}
                 />
             ) : (
                 <Box justifyContent="center">

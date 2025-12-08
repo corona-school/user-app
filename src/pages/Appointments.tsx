@@ -153,6 +153,7 @@ const Appointments: React.FC = () => {
                             height="100%"
                             clickable={true}
                             editable={false}
+                            exhaustive={false}
                         />
                     )}
                 </div>

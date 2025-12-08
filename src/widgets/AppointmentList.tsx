@@ -53,7 +53,8 @@ const Footer = ({ hasMoreAppointments, isLoading }: FooterProps) => {
 interface AppointmentItemProps {
     appointment: Appointment;
     previousAppointment?: Appointment;
-    index: number;
+    position: number; // position in the shown list
+    index?: number; // index of an appointment in context: e.g. the index of the appointment within its course
     total: number;
     isReadOnly: boolean;
     editingInit?: boolean; // If true, the item will be in editing mode initially
@@ -71,6 +72,7 @@ const AppointmentItem = React.memo(
         appointment,
         previousAppointment,
         index,
+        position,
         total,
         editingInit,
         isReadOnly,
@@ -144,7 +146,8 @@ const AppointmentItem = React.memo(
                             isReadOnly={isReadOnly}
                             isFullWidth
                             appointmentType={appointment.appointmentType}
-                            position={index}
+                            position={position}
+                            index={index}
                             total={total}
                             isOrganizer={appointment.isOrganizer}
                             displayName={appointment.displayName || appointment.title}
@@ -189,6 +192,7 @@ type AppointmentListProps = {
     editingIdInit?: number; // If provided, the appointment with this ID will be in editing mode initially
     clickable: boolean; // If true, the appointment items are clickable and navigate to the appointment detail page
     editable: boolean; // If true, the appointment items show edit, duplicate, and delete buttons
+    exhaustive: boolean; // if true, show appointment index. E.g. on general appointments page, we have all kinds of appointments, so we can't show an index that is course-specific
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -219,6 +223,7 @@ const AppointmentList = ({
     editingIdInit,
     clickable,
     editable,
+    exhaustive,
 }: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
 
@@ -284,7 +289,8 @@ const AppointmentList = ({
                         key={appointment.id}
                         appointment={appointment}
                         previousAppointment={appointments[index - 1]}
-                        index={index + 1}
+                        index={exhaustive ? index + 1 : undefined}
+                        position={index + 1}
                         total={appointments.length}
                         isReadOnly={isReadOnlyList}
                         editingInit={appointment.id === editingIdInit}
