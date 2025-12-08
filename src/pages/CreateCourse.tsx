@@ -355,49 +355,57 @@ const CreateCourse: React.FC = () => {
                     </div>
                 }
             >
-                {editingExistingCourse ? (
-                    <Breadcrumb
-                        items={[
-                            breadcrumbRoutes.COURSES,
-                            { label: updatedSubcourse?.course.name!, route: `single-course/${courseId}` },
-                            breadcrumbRoutes.EDIT_COURSE,
-                        ]}
-                    />
-                ) : (
-                    <Breadcrumb />
-                )}
-                <Typography variant="h2" className="mb-4">
-                    {editingExistingCourse ? t('course.edit') : t('course.header')}
-                </Typography>
-                <div className="flex flex-col gap-5 w-full sm:max-w-5xl" id="form">
-                    <CourseDetails
-                        subcourse={updatedSubcourse!}
-                        setSubcourse={setUpdatedSubcourse}
-                        pickedPhoto={uploadImage}
-                        setPickedPhoto={setUploadImage}
-                        errors={errors}
-                    />
-                    <CourseAppointments
-                        subcourseId={updatedSubcourse!.id}
-                        isEditingCourse={true}
-                        errors={errors}
-                        setAppointmentErrors={setAppointmentErrors}
-                        appointments={courseAppointments ?? []}
-                        setAppointments={setCourseAppointments}
-                    />
-                    <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
-                    <div className="flex flex-col gap-2">
-                        <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
-                            {t('course.CourseDate.Preview.cancel')}
-                        </Button>
-                        <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)} isLoading={updatingCourse}>
-                            {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
-                        </Button>
-                        {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
-                            <Button variant="secondary" rightIcon={<IconArrowRight />} className="w-full" onClick={() => save(true)} isLoading={updatingCourse}>
-                                {t('course.CourseDate.Preview.publishCourse')}
+                <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
+                    {editingExistingCourse ? (
+                        <Breadcrumb
+                            items={[
+                                breadcrumbRoutes.COURSES,
+                                { label: updatedSubcourse?.course.name!, route: `single-course/${courseId}` },
+                                breadcrumbRoutes.EDIT_COURSE,
+                            ]}
+                        />
+                    ) : (
+                        <Breadcrumb />
+                    )}
+                    <Typography variant="h2" className="mb-4">
+                        {editingExistingCourse ? t('course.edit') : t('course.header')}
+                    </Typography>
+                    <div className="flex flex-col gap-5 w-full" id="form">
+                        <CourseDetails
+                            subcourse={updatedSubcourse!}
+                            setSubcourse={setUpdatedSubcourse}
+                            pickedPhoto={uploadImage}
+                            setPickedPhoto={setUploadImage}
+                            errors={errors}
+                        />
+                        <CourseAppointments
+                            subcourseId={updatedSubcourse!.id}
+                            isEditingCourse={true}
+                            errors={errors}
+                            setAppointmentErrors={setAppointmentErrors}
+                            appointments={courseAppointments ?? []}
+                            setAppointments={setCourseAppointments}
+                        />
+                        <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
+                        <div className="flex flex-col gap-2">
+                            <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
+                                {t('course.CourseDate.Preview.cancel')}
                             </Button>
-                        )}
+                            <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)} isLoading={updatingCourse}>
+                                {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
+                            </Button>
+                            {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
+                                <Button
+                                    variant="secondary"
+                                    rightIcon={<IconArrowRight />}
+                                    className="w-full"
+                                    onClick={() => save(true)}
+                                    isLoading={updatingCourse}
+                                >
+                                    {t('course.CourseDate.Preview.publishCourse')}
+                                </Button>
+                            )}
+                        </div>
                     </div>
                 </div>
             </WithNavigation>
