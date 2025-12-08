@@ -246,13 +246,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                 </div>
 
                 <div className="flex-1">
-                    <CourseInstructors
-                        allowAddingMentors={subcourse.course.category === Course_Category_Enum.HomeworkHelp}
-                        instructors={subcourse.instructors ?? []}
-                        mentors={subcourse.mentors ?? []}
-                        setInstructors={(x) => setSubcourse((s) => ({ ...s, instructors: x }))}
-                        setMentors={(x) => setSubcourse((s) => ({ ...s, mentors: x }))}
-                    />
+                    <CourseInstructors subcourse={subcourse} setSubcourse={setSubcourse} />
                 </div>
             </div>
 

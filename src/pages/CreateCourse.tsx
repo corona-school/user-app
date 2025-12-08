@@ -77,6 +77,7 @@ const SUBCOURSE_QUERY = gql(`
                 allowChatContactParticipants
                 allowChatContactProspects
                 groupChatType
+                allowMentoring
                 course {
                     id
                     name

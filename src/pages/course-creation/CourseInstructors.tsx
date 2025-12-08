@@ -2,7 +2,7 @@ import { Label } from '@/components/Label';
 import { Button } from '@/components/Button';
 import { IconTrash } from '@tabler/icons-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import { cn } from '@/lib/Tailwind';
 import { Combobox } from '@/components/Combobox';
 import { useLazyQuery } from '@apollo/client';
@@ -10,13 +10,11 @@ import { gql } from '@/gql';
 import { InfoTooltipButton } from '@/components/Tooltip';
 import { useTranslation } from 'react-i18next';
 import { Instructor } from '@/gql/graphql';
+import { LFSubCourse } from '@/types/lernfair/Course';
 
 interface Props {
-    allowAddingMentors: boolean; // whether we want to allow the user to add mentors
-    instructors: Instructor[];
-    setInstructors: (instructors: Instructor[]) => void;
-    mentors: Instructor[];
-    setMentors: (instructors: Instructor[]) => void;
+    subcourse: LFSubCourse;
+    setSubcourse: Dispatch<SetStateAction<LFSubCourse>>;
 }
 
 const INSTRUCTORS_QUERY = gql(`
@@ -30,7 +28,7 @@ const INSTRUCTORS_QUERY = gql(`
         }
     `);
 
-const CourseInstructors: React.FC<Props> = (props) => {
+const CourseInstructors: React.FC<Props> = ({ subcourse, setSubcourse }) => {
     const [searchInstructorsQuery] = useLazyQuery(INSTRUCTORS_QUERY);
     const [searchString, setSearchString] = useState<string>('');
     const [searchResults, setSearchResults] = useState<Instructor[]>([]);
@@ -41,38 +39,39 @@ const CourseInstructors: React.FC<Props> = (props) => {
         const instructors = await searchInstructorsQuery({ variables: { search: query, take: 10 } });
         if (instructors.data) {
             const rawResults = instructors.data.otherInstructors;
-            const results = rawResults.filter((x) => !props.instructors.some((i) => i.id === x.id) && !props.mentors.some((m) => m.id === x.id));
+            const results = rawResults.filter((x) => !subcourse.instructors?.some((i) => i.id === x.id) && !subcourse.mentors?.some((m) => m.id === x.id));
             setSearchResults(results);
         }
     };
+
     const changeRole = (id: number, wasInstructor: boolean, type: 'instructor' | 'mentor') => {
         if ((wasInstructor && type === 'instructor') || (!wasInstructor && type === 'mentor')) return;
 
         if (wasInstructor) {
-            const instructor = props.instructors.find((i) => i.id === id);
+            const instructor = subcourse.instructors!.find((i) => i.id === id);
             if (instructor) {
-                props.setInstructors(props.instructors.filter((i) => i.id !== id));
-                props.setMentors([...props.mentors, instructor]);
+                setSubcourse((s) => ({ ...s, instructors: subcourse.instructors!.filter((i) => i.id !== id) }));
+                setSubcourse((s) => ({ ...s, mentors: [...subcourse.mentors!, instructor] }));
             }
         } else {
-            const mentor = props.mentors.find((m) => m.id === id);
+            const mentor = subcourse.mentors!.find((i) => i.id === id);
             if (mentor) {
-                props.setMentors(props.mentors.filter((m) => m.id !== id));
-                props.setInstructors([...props.instructors, mentor]);
+                setSubcourse((s) => ({ ...s, mentors: subcourse.mentors!.filter((i) => i.id !== id) }));
+                setSubcourse((s) => ({ ...s, instructors: [...subcourse.instructors!, mentor] }));
             }
         }
     };
 
     const onSearchSelect = (instructor: Instructor) => {
-        props.setInstructors([...props.instructors, instructor]);
+        setSubcourse((s) => ({ ...s, instructors: [...subcourse.instructors!, instructor] }));
         setSearchResults([]); // Clear search results after selection
     };
 
     const removeManager = (isInstructor: boolean, id: number) => {
         if (isInstructor) {
-            props.setInstructors(props.instructors.filter((i) => i.id !== id));
+            setSubcourse((s) => ({ ...s, instructors: subcourse.instructors!.filter((i) => i.id !== id) }));
         } else {
-            props.setMentors(props.mentors.filter((m) => m.id !== id));
+            setSubcourse((s) => ({ ...s, mentors: subcourse.mentors!.filter((i) => i.id !== id) }));
         }
     };
 
@@ -80,17 +79,17 @@ const CourseInstructors: React.FC<Props> = (props) => {
         <>
             <div className="inline-flex align-baseline gap-1.5">
                 <Label className="text-base">
-                    {t(props.allowAddingMentors ? 'course.CourseDate.form.otherInstructorsMentors' : 'course.CourseDate.form.otherInstructors')}
+                    {t(subcourse.allowMentoring ? 'course.CourseDate.form.otherInstructorsMentors' : 'course.CourseDate.form.otherInstructors')}
                 </Label>
                 <InfoTooltipButton
                     tooltipContent={t(
-                        props.allowAddingMentors ? 'course.CourseDate.form.otherInstructorsMentorsTooltip' : 'course.CourseDate.form.otherInstructorsTooltip'
+                        subcourse.allowMentoring ? 'course.CourseDate.form.otherInstructorsMentorsTooltip' : 'course.CourseDate.form.otherInstructorsTooltip'
                     )}
                 />
             </div>
             <p>
                 {t(
-                    props.allowAddingMentors
+                    subcourse.allowMentoring
                         ? 'course.CourseDate.form.otherInstructorsMentorsDescription'
                         : 'course.CourseDate.form.otherInstructorsDescription'
                 )}
@@ -108,14 +107,14 @@ const CourseInstructors: React.FC<Props> = (props) => {
                     />
                 </div>
 
-                {[...props.instructors.map((i) => ({ isInstructor: true, ...i })), ...props.mentors.map((m) => ({ isInstructor: false, ...m }))].map(
+                {[...subcourse.instructors!.map((i) => ({ isInstructor: true, ...i })), ...subcourse.mentors!.map((m) => ({ isInstructor: false, ...m }))].map(
                     (manager) => (
                         <div key={manager.id} className="flex gap-2.5 items-center">
                             <div className="bg-primary-lighter w-full h-11 rounded-md flex items-center px-4 gap-2.5">
                                 <span>
                                     {manager.firstname} {manager.lastname}
                                 </span>
-                                {props.allowAddingMentors && (
+                                {subcourse.allowMentoring && (
                                     <Select
                                         value={manager.isInstructor ? 'instructor' : 'mentor'}
                                         onValueChange={(v) => changeRole(manager.id!, manager.isInstructor, v as 'mentor' | 'instructor')}

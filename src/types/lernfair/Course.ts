@@ -41,6 +41,7 @@ export interface LFSubCourse {
     groupChatType?: ChatType;
     appointments?: Appointment[];
     joinedAppointments?: Appointment[];
+    allowMentoring?: boolean;
 }
 
 export type LFLecture = {
