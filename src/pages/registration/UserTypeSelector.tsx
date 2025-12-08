@@ -3,7 +3,7 @@ import { usePageTitle } from '../../hooks/usePageTitle';
 import useApollo from '@/hooks/useApollo';
 import { RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { Toggle } from '@/components/Toggle';
-import { IconBackpack, IconSchool } from '@tabler/icons-react';
+import { IconBackpack, IconHeartHandshake } from '@tabler/icons-react';
 import { useRegistrationForm } from './useRegistrationForm';
 
 interface UserTypeSelectorProps extends RegistrationStepProps {}
@@ -31,7 +31,7 @@ export const UserTypeSelector = ({ onBack, onNext }: UserTypeSelectorProps) => {
                     {t('registration.pupil.label')}
                 </Toggle>
                 <Toggle size="2xl" variant="white-primary" pressed={form.userType === 'student'} onPressedChange={() => onFormChange({ userType: 'student' })}>
-                    <IconSchool size={32} />
+                    <IconHeartHandshake size={32} />
                     {t('registration.student.label')}
                 </Toggle>
             </div>
