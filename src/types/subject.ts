@@ -108,7 +108,7 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in SingleSubject]: Course_Sub
     Arbeitslehre: Course_Subject_Enum.Arbeitslehre,
     Biologie: Course_Subject_Enum.Biologie,
     Chemie: Course_Subject_Enum.Chemie,
-    Chinesisch: Course_Subject_Enum.Altgriechisch,
+    Chinesisch: Course_Subject_Enum.Chinesisch,
     Englisch: Course_Subject_Enum.Englisch,
     Erdkunde: Course_Subject_Enum.Erdkunde,
     Ethik: Course_Subject_Enum.Ethik,
@@ -132,7 +132,7 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in SingleSubject]: Course_Sub
     Spanisch: Course_Subject_Enum.Spanisch,
     Technik: Course_Subject_Enum.Technik,
     Wirtschaft: Course_Subject_Enum.Wirtschaft,
-    'Lernen lernen': Course_Subject_Enum.LernenLernen, // TODO
+    'Lernen lernen': Course_Subject_Enum.LernenLernen,
     Steuerlehre: Course_Subject_Enum.Steuerlehre,
     Rechnungswesen: Course_Subject_Enum.Rechnungswesen,
 };

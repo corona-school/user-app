@@ -1,11 +1,9 @@
 import { DateTime } from 'luxon';
 import { useCallback } from 'react';
-import { AppointmentParticipant, Organizer } from '../gql/graphql';
-import AppointmentDate from './AppointmentDate';
+import { AppointmentParticipant, Organizer } from '@/gql/graphql';
 import AppointmentTile from './AppointmentTile';
-import { Appointment } from '../types/lernfair/Appointment';
+import { Appointment } from '@/types/lernfair/Appointment';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
-import { useTranslation } from 'react-i18next';
 
 type Props = {
     start: string;
@@ -19,19 +17,25 @@ type Props = {
     onPress: () => void;
     appointmentType: Appointment['appointmentType'];
     position: Appointment['position'];
+    index?: number;
     total: Appointment['total'];
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
     appointmentId: Appointment['id'];
-    canJoinVideochat?: boolean;
     declinedBy: Appointment['declinedBy'];
     description?: Appointment['description'];
+    onEdit?: () => void;
+    onDuplicate?: () => void;
+    onDelete?: () => void;
+    clickable: boolean;
+    editable: boolean;
 };
 
 const AppointmentDay: React.FC<Props> = ({
     start,
     duration,
     title,
+    description,
     organizers,
     participants,
     scrollToRef,
@@ -40,15 +44,18 @@ const AppointmentDay: React.FC<Props> = ({
     onPress,
     appointmentType,
     position,
+    index,
     total,
     isOrganizer,
     displayName,
     appointmentId,
-    canJoinVideochat,
     declinedBy,
-    description,
+    onEdit,
+    onDuplicate,
+    onDelete,
+    clickable,
+    editable,
 }) => {
-    const { t } = useTranslation();
     const isCurrentMonth = useCallback((start: string): boolean => {
         const now = DateTime.now();
         const startDate = DateTime.fromISO(start);
@@ -56,20 +63,6 @@ const AppointmentDay: React.FC<Props> = ({
         const sameYear = now.hasSame(startDate, 'year');
         return sameMonth && sameYear;
     }, []);
-
-    const getAppointmentTimeText = (start: string, duration: number): string => {
-        const now = DateTime.now();
-        const startDate = DateTime.fromISO(start);
-        const end = startDate.plus({ minutes: duration });
-
-        const startTime = startDate.toFormat('T');
-        const endTime = end.toFormat('T');
-
-        if (startDate <= now && now <= end) {
-            return t('appointment.clock.nowToEnd', { end: endTime });
-        }
-        return t('appointment.clock.startToEnd', { start: startTime, end: endTime });
-    };
 
     const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, start, duration);
     const currentMonth = isCurrentMonth(start);
@@ -82,10 +75,11 @@ const AppointmentDay: React.FC<Props> = ({
                 <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 50 : 100 }}>
                     <div className="w-full mt-6">
                         <div className="flex">
-                            <AppointmentDate current={isCurrent} date={start} />
                             <AppointmentTile
-                                timeDescriptionText={getAppointmentTimeText(start, duration)}
+                                start={start}
+                                duration={duration}
                                 title={title}
+                                description={description}
                                 isCurrentlyTakingPlace={isCurrent}
                                 organizers={organizers}
                                 participants={participants}
@@ -94,15 +88,18 @@ const AppointmentDay: React.FC<Props> = ({
                                 onPress={onPress}
                                 appointmentType={appointmentType}
                                 position={position}
+                                appointmentIndex={index}
                                 total={total}
                                 isOrganizer={isOrganizer}
                                 displayName={displayName}
                                 appointmentId={appointmentId}
                                 wasRejected={wasRejected}
                                 declinedBy={declinedBy}
-                                duration={duration}
-                                description={description}
-                                start={start}
+                                onEdit={onEdit}
+                                onDuplicate={onDuplicate}
+                                onDelete={onDelete}
+                                clickable={clickable}
+                                editable={editable}
                             />
                         </div>
                     </div>
@@ -111,14 +108,15 @@ const AppointmentDay: React.FC<Props> = ({
                 <div key={start} ref={scrollToRef} style={{ scrollMarginTop: currentMonth ? 40 : 100 }}>
                     <div className="w-full mt-6">
                         <div className="flex">
-                            <AppointmentDate current={isCurrent} date={start} isReadOnly={isReadOnly} />
-
                             <AppointmentTile
-                                timeDescriptionText={getAppointmentTimeText(start, duration)}
+                                start={start}
+                                duration={duration}
                                 title={title}
+                                description={description}
                                 isCurrentlyTakingPlace={isCurrent}
                                 appointmentType={appointmentType}
                                 position={position}
+                                appointmentIndex={index}
                                 total={total}
                                 onPress={onPress}
                                 isOrganizer={isOrganizer}
@@ -127,9 +125,11 @@ const AppointmentDay: React.FC<Props> = ({
                                 appointmentId={appointmentId}
                                 wasRejected={wasRejected}
                                 declinedBy={declinedBy}
-                                duration={duration}
-                                description={description}
-                                start={start}
+                                onEdit={onEdit}
+                                onDuplicate={onDuplicate}
+                                onDelete={onDelete}
+                                clickable={clickable}
+                                editable={editable}
                             />
                         </div>
                     </div>
