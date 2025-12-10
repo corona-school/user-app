@@ -439,7 +439,7 @@
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
                     "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
-                    "max-matches": "Aktuell kannst du maximal 2 Lernpartner:innen gleichzeitig haben. Solltest du nicht mehr mit allen Lernpartner:innen aktiv arbeiten, löse am besten das Lernpaar auf.",
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in gleichzeitig haben. Solltest du nicht mehr mit allen Lernpartner:innen aktiv arbeiten, löse am besten das Lernpaar auf.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
