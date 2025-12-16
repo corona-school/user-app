@@ -74,7 +74,10 @@ const query = gql(`
                     course {
                         courseState
                         name
-                        image
+                        image {
+                            url
+                            default
+                        }
                         tags {
                             name
                         }
@@ -114,7 +117,10 @@ const query = gql(`
                 subcourse {
                     published
                     course {
-                        image
+                        image {
+                            url
+                            default
+                        }
                     }
               }
     }
@@ -131,7 +137,10 @@ const query = gql(`
             course {
                 name
                 description
-                image
+                image {
+                    url
+                    default
+                }
                 tags {
                     name
                 }
@@ -337,7 +346,7 @@ const Dashboard: React.FC<Props> = () => {
                                                 description={subcourse.course.description}
                                                 tags={subcourse.course.tags}
                                                 dateNextLecture={subcourse?.nextLecture?.start ?? undefined}
-                                                image={subcourse.course.image ?? undefined}
+                                                image={subcourse.course.image?.url ?? undefined}
                                                 title={subcourse.course.name}
                                                 countCourse={subcourse.lectures.length}
                                                 maxParticipants={subcourse.maxParticipants}

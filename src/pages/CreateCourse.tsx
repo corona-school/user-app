@@ -81,7 +81,10 @@ const SUBCOURSE_QUERY = gql(`
                 course {
                     id
                     name
-                    image
+                    image {
+                        url
+                        default
+                    }
                     category
                     description
                     subject

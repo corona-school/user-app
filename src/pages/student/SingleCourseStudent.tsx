@@ -57,7 +57,10 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             id
             courseState
             name
-            image
+            image {
+                url
+                default
+            }
             category
             description
             subject

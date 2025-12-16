@@ -63,7 +63,10 @@ const StudentGroup: React.FC = () => {
                                 courseState
                                 name
                                 description
-                                image
+                                image {
+                                    url
+                                    default
+                                }
                                 category
                                 outline
                                 allowContact
@@ -102,7 +105,10 @@ const StudentGroup: React.FC = () => {
                                 courseState
                                 name
                                 description
-                                image
+                                image {
+                                    url
+                                    default
+                                }
                                 category
                                 outline
                                 allowContact
@@ -141,7 +147,10 @@ const StudentGroup: React.FC = () => {
                         name
                         courseState
                         description
-                        image
+                        image {
+                            url
+                            default
+                        }
                         category
                         tags {
                             id
