@@ -2103,14 +2103,7 @@
         "select_participant": "Виберіть учасника:в",
         "all_participants": "всі учасники",
         "cancelation_error": "Сталася помилка. Курс не може бути скасований.",
-        "alternatingInstructors": "Зміна помічників",
-        "duplicateModal": {
-            "title": "Бажаєте скопіювати цей шаблон?",
-            "description": "Ви можете знайти свій примірник у розділі \"Мої курси\".",
-            "name": "Назва скопійованого курсу",
-            "error": "Курс неможливо повторити.",
-            "success": "Ваш курс успішно скопійовано."
-        }
+        "alternatingInstructors": "Зміна помічників"
     },
     "notification": {
         "timedifference": {
