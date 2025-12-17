@@ -122,9 +122,8 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
                         </SubcourseFactRow>
                     )}
                 </div>
-                {(subcourse?.cancelled || isInPast || subcourse.lectures.length === 0) && (
+                {(subcourse?.cancelled || isInPast) && (
                     <Alert className="w-full lg:w-fit mt-4" icon={<IconInfoCircleFilled />}>
-                        {!subcourse?.cancelled && subcourse.lectures.length === 0 && t('single.courseInfo.noAppointments')}
                         {!subcourse?.cancelled && isInPast && t('single.courseInfo.courseInPast')}
                         {subcourse.cancelled && t('single.courseInfo.courseCancelled')}
                     </Alert>

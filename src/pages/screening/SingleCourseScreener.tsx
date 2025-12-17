@@ -177,9 +177,6 @@ const SingleCourseScreener: React.FC = () => {
                         disableScroll
                         noOldAppointments
                         appointments={subcourse?.appointments as Appointment[]}
-                        clickable={false}
-                        editable={false}
-                        exhaustive={false}
                     />
                 </Box>
             ),

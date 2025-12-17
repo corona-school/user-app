@@ -72,7 +72,6 @@ export const Base = {
                     },
                 },
             ]}
-            exhaustive={false}
         />
     ),
 

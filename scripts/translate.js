@@ -6,10 +6,7 @@ const path = require("path");
 console.log("+---- Lern-Fair User App Translation -----+");
 
 const command = process.argv[2]?.trim() ?? "";
-// diff-translate also re-translates all strings that aren't part of the de.json in the main branch.
-// This can be used to retranslate strings that are already translated, for example if the german translation changes
-// for a pre-existing translation key.
-if (!["", "check", "translate", "diff-translate", "export", "import"].includes(command))
+if (!["", "check", "translate", "export", "import"].includes(command))
     throw new Error(`Unknown Command '${command}'`)
 
 // -------- File Handling -------------
@@ -399,18 +396,10 @@ for (const languageFile of languageFiles) {
     const missingObjects = missingPaths.filter(it => it.type === "object").map(it => it.path);
     const missingStrings = missingPaths.filter(it => it.type === "string").map(it => it.path);
     const obsoletePaths = findMissingPaths(languageTree, primaryLanguageTree).map(it => it.path);
-
-    if (command === "translate" || command === "" || command === "diff-translate") {
-        let retranslateObjects = [];
-        let retranslateStrings = [];
-        if (command === 'diff-translate') {
-            const onMain = readLanguageFromMain(languageFile) ?? {};
-            const changedPaths = findChangedPaths(languageTree, onMain);
-            retranslateObjects = changedPaths.filter(it => it.type === "object").map(it => it.path);
-            retranslateStrings = changedPaths.filter(it => it.type === "string").map(it => it.path)
-        }
-        addMissingObjects(primaryLanguageTree, languageTree, [...missingObjects, ...retranslateObjects]);
-        await addMissingStrings(primaryLanguageTree, languageTree, [...missingStrings, ...retranslateStrings], language);
+    
+    if (command === "translate" || command === "") {
+        addMissingObjects(primaryLanguageTree, languageTree, missingObjects);
+        await addMissingStrings(primaryLanguageTree, languageTree, missingStrings, language);
         removeObsoletePaths(languageTree, obsoletePaths);
         writeLanguage(languageFile, languageTree);
     }

@@ -77,7 +77,3 @@
     pointer-events: none;
     display: none;
 }
-
-.required {
-    @apply after:content-['*'] after:text-red-700;
-}

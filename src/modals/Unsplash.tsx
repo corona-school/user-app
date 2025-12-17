@@ -79,7 +79,6 @@ const UnsplashModal = ({ isOpen, onOpenChange, onPhotoSelected }: UnsplashModalP
                                         return (
                                             <div
                                                 role="button"
-                                                key={photo.id}
                                                 onClick={() =>
                                                     selectedPhoto === photo.regularImageUrl ? setSelectedPhoto('') : setSelectedPhoto(photo.regularImageUrl)
                                                 }
