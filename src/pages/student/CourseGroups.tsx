@@ -20,7 +20,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
     const navigate = useNavigate();
 
     const renderSubcourse = (subcourse: Subcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
-        <div key={index}>
+        <div>
             <AppointmentCard
                 key={index}
                 subcourseId={subcourse.id}
