@@ -360,7 +360,7 @@
                     "max-requests": "You are already on the waiting list.",
                     "deactivated": "Registration for 1on1 learning support is temporarily closed due to high demand. If you have already submitted a request for learning support, we will contact you by email in the near future to discuss the next steps. In the meantime, please feel free to take advantage of our other offers. ",
                     "deactivated_tooltip": "Registration is temporarily closed due to high demand.",
-                    "max-matches": "You can currently have a maximum of 2 learning partners at the same time. If you are no longer actively working with all learning partners, it is best to dissolve the learning pair."
+                    "max-matches": "Currently, you can have a maximum of one learning partner at a time. If you are no longer actively working with all of your learning partners, it is best to dissolve the learning pair."
                 }
             }
         },

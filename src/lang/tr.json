@@ -360,7 +360,7 @@
                     "max-requests": "Zaten bekleme listesindesiniz.",
                     "deactivated": "Bire bir öğrenme desteği için kayıtlar yoğun talep nedeniyle geçici olarak kapatılmıştır. Öğrenme desteği için daha önce talepte bulunduysanız, sonraki adımları görüşmek üzere yakın gelecekte sizinle e-posta yoluyla iletişime geçeceğiz. Bu arada, lütfen diğer tekliflerimizden yararlanmaktan çekinmeyin. ",
                     "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır.",
-                    "max-matches": "Şu anda aynı anda en fazla 2 öğrenim ortağınız olabilir. Artık tüm öğrenim ortaklarıyla aktif olarak çalışmıyorsanız, en iyisi öğrenim çiftini feshetmektir."
+                    "max-matches": "Şu anda aynı anda en fazla 1 öğrenme partnerine sahip olabilirsin. Artık tüm öğrenme partnerlerinle aktif olarak çalışmıyorsan, öğrenme çiftini en iyi şekilde çöz."
                 }
             }
         },
