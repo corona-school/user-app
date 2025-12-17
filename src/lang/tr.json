@@ -25,17 +25,20 @@
             "title": "Bu randevuyu silmek istediğinizden emin misiniz?",
             "description": "Bu, tüm katılımcılar için randevunun iptal edilmesine neden olacak. Bu işlemi geri alamazsın.",
             "delete": "Randevu sil",
-            "cancel": "İptal et"
+            "cancel": "İptal et",
+            "heading": "Randevu sil"
         },
         "declineModal": {
             "title": "Bu randevuyu iptal etmek istediğinizden emin misiniz?",
             "description": "Randevuya tekrar katılamazsınız.",
-            "decline": "Randevuyu iptal et"
+            "decline": "Randevuyu iptal et",
+            "heading": "Randevuyu iptal et"
         },
         "appointmentTile": {
             "lecture": "Ders #{{position}}",
             "title": ": {{appointmentTitle}}",
             "cancelledBy": "{{name}} tarafından iptal edildi",
+            "lectureWithTotal": "Ders #{{position}} of {{total}}",
             "lectureHomeworkHelp": "Pazartesiden Perşembeye - spontane katılım"
         },
         "create": {
@@ -74,6 +77,7 @@
             "courseImageAltText": "Kurs görüntüsü",
             "videoChatLabel": "Görüntülü sohbet",
             "videoChatPlaceholder": "Görüntülü sohbete kendi bağlantınızı ekleyin",
+            "save": "Randevuyu kaydet",
             "toolTipTimeLabel": "Lern-Fair 'deki tüm saatler \"Central European Time (CET), Europe/Berlin\" saat diliminde oluşturulur (geçerli saat: {{currentTime}})."
         },
         "detail": {
@@ -635,7 +639,7 @@
             }
         },
         "pupil": {
-            "label": "Öğrenci / Çırak" 
+            "label": "Öğrenci / Çırak"
         },
         "student": {
             "label": "Gönüllü"
@@ -958,7 +962,8 @@
             "courseCancelled": "Bu kurs iptal edilmiştir.",
             "courseStartedButJoinable": "Bu kurs çoktan başladı, ancak hala kayıt olabilirsiniz",
             "is_shared": "Bu kurs bir şablon olarak yayınlanmıştır",
-            "timesAWeek": "Haftalık {{times}}x"
+            "timesAWeek": "Haftalık {{times}}x",
+            "noAppointments": "Bu kursun henüz tarihi belirlenmemiştir."
         },
         "card": {
             "time": {
@@ -1101,6 +1106,17 @@
                 "title": "Çıkış",
                 "description": "Ev ödevi yardımı derslerine artık erişmeniz gerekmiyorsa oturumu kapatın."
             }
+        },
+        "dropzone": {
+            "error": {
+                "imagesOnly": "Lütfen sadece resim yükleyin.",
+                "onlyOneFile": "Lütfen yalnızca bir dosya yükleyin.",
+                "unsplash": "Unsplash'tan görsel yüklenirken hata oluştu."
+            },
+            "description": "Resminizi buraya sürükleyin veya tıklayın:",
+            "customImage": "Kendi resminiz",
+            "database": "Veritabanı",
+            "changeImage": "Resmi değiştir"
         }
     },
     "settings": {
@@ -1963,7 +1979,8 @@
             "check": "Bilgileri kontrol edin",
             "saveDraft": "Taslak olarak kaydet",
             "prevPage": " Önceki sayfaya dön",
-            "existingAppointments": "Mevcut tarih(ler)"
+            "existingAppointments": "Mevcut tarih(ler)",
+            "addFirstAppointment": "İlk randevuyu oluşturun"
         },
         "error": {
             "course": "Üzgünüz, kursunuz oluşturulamadı. Lütfen tekrar deneyin.",
@@ -1974,7 +1991,14 @@
             "lectures": "Bir veya daha fazla tarih eklenemedi.",
             "tags": "Etiketleriniz eklenemedi.",
             "appointments": "Hiçbir tarih belirlenmedi",
-            "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı."
+            "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı.",
+            "course-name": "Lütfen bir kurs adı girin.",
+            "description": "Lütfen bir kurs açıklaması girin.",
+            "category": "Geçersiz kategori",
+            "subject": "Lütfen bir konu seçiniz.",
+            "grade-range": "Lütfen geçerli bir sınıf aralığı girin.",
+            "participant-count": "Lütfen geçerli bir katılımcı sayısı girin.",
+            "unfinished-appointment": "Lütfen tamamlanmamış randevuyu kaydedin veya silin."
         },
         "CourseDate": {
             "step": {
@@ -1996,8 +2020,6 @@
                 "courseSubjectLabel": "Alan",
                 "coursePhotoLabel": "Fotoğraf",
                 "changeImage": "Resmi değiştir",
-                "CourseInstructors": "Eğitmenler",
-                "courseAddOntherLeadText": "Daha fazla eğitmen ekleyin",
                 "courseAlreadyaAddedLead": "Bu kişiyi zaten eklemişsiniz.",
                 "shortDescriptionLabel": "Kısa açıklama",
                 "shortDescriptionPlaceholder": "Kursunuzun ne hakkında olduğuna dair kısa bir cümle ...",
@@ -2011,7 +2033,6 @@
                 "detailsContent": "Bu kurs hangi sınıflar için uygundur?",
                 "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Maks. katılımcı sayısı",
-                "maxMembersInfo": "Genellikle kayıtlı öğrencilerin yarısı gelmediği için daha yüksek bir sayı belirtebilirsiniz.",
                 "otherHeadline": "Diğer",
                 "otherContactHeadline": "iletişim kurun",
                 "otherOptionStart": "Öğrenciler ilk kurs tarihinden sonra kayıt yaptırabilirler",
@@ -2022,7 +2043,23 @@
                 "allowChatContact": "Katılımcıların sohbette yazmasına izin verin",
                 "prospectContactTooltip": "Kursunuzla ilgilenen öğrenciler ve yardımcılar (kurs başlamadan önce)",
                 "participantsContactTooltip": "Kursunuz için kayıt yaptıran öğrenciler",
-                "otherOptionStartToolTip": "Eğer bu seçeneği etkinleştirirsen, öğrenciler her zaman kursuna kaydolabilirler. Özellikle bir veya daha fazla ders yapılmış olsa bile kaydolabilirler."
+                "otherOptionStartToolTip": "Eğer bu seçeneği etkinleştirirsen, öğrenciler her zaman kursuna kaydolabilirler. Özellikle bir veya daha fazla ders yapılmış olsa bile kaydolabilirler.",
+                "revisionTooltip": "Katılımcılarınızı geleneksel okul derslerinde destekliyorsunuz. Kurslarda, okuldaki belirli konuları birlikte tekrar eder ve uygularsınız.",
+                "languageTooltip": "Bu kurslarda, öğrencilerin Almanca günlük yaşamda hızlı bir şekilde yollarını bulmalarına yardımcı olursunuz. Birlikte telaffuz pratiği yapacak, kelime dağarcığınızı genişletecek ve dilbilgisi alıştırmaları yapacaksınız.",
+                "focusTooltip": "Katılımcılarınıza, onları günlük yaşamlarında ve gelecekleri için güçlendirecek önemli konularda heyecan verici kurslarda eşlik ediyorsunuz. Kurslar yıl boyunca sosyal medya, eğitim, zorbalık ve ruh sağlığı gibi önemli konuları kapsamaktadır.",
+                "instructor": "Eğitmen",
+                "mentor": "Mentor: içinde",
+                "searchInstructorsPlaceholder": "İsim arayın veya e-posta girin",
+                "customMembersCount": "Kendi",
+                "courseSubjectTooltip": "Bu kursa en uygun okul dersini seçin. Yalnızca bir ders seçebilirsiniz.",
+                "tagsTooltip": "Kursunuza uygun bir konu seçebilirsiniz.",
+                "maxMembersTooltip": "Maksimum katılımcı sayısını seçin. Burada biraz daha fazla izin vermek daha iyidir çünkü bazı insanlar tarihte gelmeyebilir.",
+                "otherInstructorsMentors": "Kurs yönetimi ve danışmanlar",
+                "otherInstructorsMentorsDescription": "Ek eğitmenler veya danışmanlar ekleyin:",
+                "otherInstructorsMentorsTooltip": "Kendiniz otomatik olarak bir kurs liderisiniz. Burada tam haklara sahip diğer liderleri ekleyebilirsiniz. Ya da sadece katılabilecek danışmanlar. Alana tam e-posta adresinizi veya adınızı ve soyadınızı girin.",
+                "otherInstructors": "Kurs yönetimi",
+                "otherInstructorsDescription": "Diğer kurs eğitmenlerini ekle:",
+                "otherInstructorsTooltip": "Sen otomatik olarak kurs yöneticisisin. Burada tam haklara sahip diğer yöneticileri girebilirsin. Alanına tam e-posta adresini veya adı ve soyadını gir."
             },
             "tags": {
                 "header": "Etiketleri seçin",
@@ -2065,7 +2102,9 @@
                 "publishCourse": "Incelemeye gönder",
                 "saveCourse": "Kurs oluşturun ve daha sonra yayınlayın",
                 "editCourse": "Verileri düzenle",
-                "updateCourse": "Değişiklikleri kaydet"
+                "updateCourse": "Değişiklikleri kaydet",
+                "saveDraft": "Taslağı kaydet",
+                "cancel": "İptal et"
             },
             "modal": {
                 "headline": "Tamamdır!",

@@ -71,6 +71,7 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
                     isLoading={isLoading}
                     searchPlaceholder="z.B Erich-Kästner-Schule"
                     placeholder={form.school.name ? getLabel(form.school) : ''}
+                    filterSearchResult={(e) => e.label.toLowerCase().includes(search.toLowerCase())}
                 />
                 <Typography variant="subtle" className="text-center font-medium leading-2">
                     {t('registration.steps.school.helperText')}

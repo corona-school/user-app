@@ -151,6 +151,9 @@ const Appointments: React.FC = () => {
                             noOldAppointments={!hasMoreOldAppointments || !hasAppointments}
                             lastAppointmentId={hasAppointmentsResult?.me?.lastAppointmentId}
                             height="100%"
+                            clickable={true}
+                            editable={false}
+                            exhaustive={false}
                         />
                     )}
                 </div>

@@ -61,18 +61,21 @@
             "nowToEnd": "Jetzt - {{end}} Uhr"
         },
         "deleteModal": {
+            "heading": "Termin löschen",
             "title": "Bist du dir sicher, dass du diesen Termin löschen möchtest?",
             "description": "Der Termin wird dadurch für alle Teilnehmer:innen abgesagt. Du kannst dies nicht rückgängig machen.",
             "delete": "Termin löschen",
             "cancel": "Abbrechen"
         },
         "declineModal": {
+            "heading": "Termin absagen",
             "title": "Bist du dir sicher, dass du diesen Termin absagen möchtest?",
             "description": "Du kannst dem Termin nicht wieder beitreten.",
             "decline": "Termin absagen"
         },
         "appointmentTile": {
             "lecture": "Lektion #{{position}}",
+            "lectureWithTotal": "Lektion #{{position}} von {{total}}",
             "title": ": {{appointmentTitle}}",
             "cancelledBy": "Abgesagt von {{name}}",
             "lectureHomeworkHelp": "Montags bis Donnerstags - spontan teilnehmen"
@@ -92,12 +95,12 @@
             "backButton": "zur vorherigen Seite",
             "lecture": "Lektion",
             "add_lecture": "Lektion #{{position}} hinzufügen",
-            "titleLabel": "Titel",
+            "titleLabel": "Lektionstitel (optional)",
             "dateLabel": "Datum",
             "timeLabel": "Uhrzeit",
             "toolTipTimeLabel": "Alle Uhrzeiten bei Lern-Fair werden in der Zeitzone „Central European Time (CET), Europa/Berlin“ erstellt (Aktuelle Zeit: {{currentTime}}).",
             "durationLabel": "Dauer",
-            "descriptionLabel": "Beschreibung (optional)",
+            "descriptionLabel": "Lektionsbeschreibung (optional)",
             "descriptionPlaceholder": "Füge eine prägnante und verständliche Beschreibung hinzu...",
             "inputPlaceholder": "Thema (optional)",
             "weeklyRepeat": "wöchentlich wiederholen...",
@@ -113,7 +116,8 @@
             "videoSelectOptions": {
                 "zoom": "          Automatischer Zoom-Link (ohne Zeitbegrenzung)",
                 "link": "Eigener Meeting-Link"
-            }
+            },
+            "save": "Termin speichern"
         },
         "detail": {
             "group": "Gruppentermin mit {{instructor}}",
@@ -1041,6 +1045,7 @@
             "class": "{{minGrade}} - {{maxGrade}}",
             "editCourse": "Kurs editieren",
             "courseInPast": "Dieser Kurs ist bereits vorbei.",
+            "noAppointments": "Dieser Kurs hat noch keine Termine.",
             "courseCancelled": "Dieser Kurs wurde abgesagt.",
             "courseStartedButJoinable": "Dieser Kurs ist bereits gestartet, du kannst dich aber trotzdem noch anmelden",
             "is_shared": "Dieser Kurs ist als Vorlage freigeben",
@@ -1187,7 +1192,18 @@
             "error": "Schüler:in konnte nicht entfernt werden"
         },
         "removeFromCourse": "Aus dem Kurs entfernen",
-        "addToCourse": "Zum Kurs hinzufügen"
+        "addToCourse": "Zum Kurs hinzufügen",
+        "dropzone": {
+            "description": "Ziehe dein Bild hierher oder klicke:",
+            "customImage": "Eigenes Bild",
+            "database": "Datenbank",
+            "changeImage": "Bild ändern",
+            "error": {
+                "imagesOnly": "Bitte nur Bilder hochladen.",
+                "onlyOneFile": "Bitte nur eine Datei hochladen.",
+                "unsplash": "Fehler beim Laden des Bildes von Unsplash."
+            }
+        }
     },
     "settings": {
         "header": "Einstellungen",
@@ -1995,7 +2011,7 @@
         }
     },
     "course": {
-        "header": "Kurs erstellen",
+        "header": "Neuen Kurs erstellen",
         "edit": "Kurs bearbeiten",
         "uploadImage": "Foto hochladen",
         "noticeDate": "Bitte fülle alle Felder korrekt aus",
@@ -2060,6 +2076,7 @@
         "appointments": {
             "headline": "Wann soll der Kurs stattfinden?",
             "content": "Termin erstellen",
+            "addFirstAppointment": "Ersten Termin anlegen",
             "addOtherAppointment": "Weiteren Termin anlegen",
             "check": "Angaben prüfen",
             "saveDraft": "Als Entwurf speichern",
@@ -2067,39 +2084,57 @@
             "existingAppointments": "Bestehende Termin(e)"
         },
         "error": {
-            "course": "Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.",
+            "course": "Dein Kurs konnte leider nicht gespeichert werden. Bitte versuche es erneut.",
             "subcourse": "Dein Kurs konnte leider nicht erstellt werden. Bitte versuche es erneut.",
             "upload_image": "Dein Bild konnte leider nicht hochgeladen werden.",
             "set_image": "Dein Bild konnte leider nicht als Kursbild gesetzt werden.",
             "instructors": "Ein oder mehrere Kursleiter:innen konnten nicht hinzugefügt werden.",
             "lectures": "Ein oder mehrere Termine konnten nicht hinzugefügt werden.",
-            "tags": "Deine Tags konnten nicht hinzugefügt werden.",
+            "tags": "Bitte wähle Tags aus.",
             "appointments": "Keine Termine angelegt.",
-            "isInPastOrInvalid": "Wir konnten diesen Kurs nicht finden oder er liegt in der Vergangenheit."
+            "isInPastOrInvalid": "Wir konnten diesen Kurs nicht finden oder er liegt in der Vergangenheit.",
+            "course-name": "Bitte gib einen Kursnamen ein.",
+            "description": "Bitte gib eine Kursbeschreibung ein.",
+            "category": "Ungültige Kategorie",
+            "subject": "Bitte wähle ein Fach aus.",
+            "grade-range": "Bitte gib einen gültigen Klassenbereich an.",
+            "participant-count": "Bitte gib eine gültige Teilnehmer:innenzahl an.",
+            "unfinished-appointment": "Bitte speichere oder lösche den unvollständigen Termin."
         },
         "CourseDate": {
-            "headline": "Allgemeine Informationen zu deinem Kurs",
+            "headline": "Kursdetails",
             "step": {
-                "general": "Allgemeine Informationen",
+                "general": "Kursdetails",
                 "subject": "Einordnung",
                 "attendees": "Teilnehmer:innen",
-                "appointments": "Termin(e)",
+                "appointments": "Termine",
                 "settings": "Einstellungen",
                 "checker": "Überprüfung"
             },
             "form": {
-                "courseNameHeadline": "Kursname",
+                "courseNameHeadline": "Name",
                 "courseNamePlaceholder": "Kursname eingeben",
                 "courseCategory": "Kategorie",
                 "categoryPlaceholder": "Bitte wähle eine Kategorie",
                 "revision": "Nachhilfe-Kurs",
+                "revisionTooltip": "Du unterstützt deine Teilnehmer:innen bei den klassischen Schulfächern. In den Kursen wiederholt und übt ihr gemeinsam spezielle Themen aus der Schule.",
                 "language": "Deutsch für Anfänger Kurs",
+                "languageTooltip": "In diesen Kursen hilfst du Lernenden, sich schnell im deutschen Alltag besser zurechtzufinden. Gemeinsam übt ihr Aussprache, erweitert den Wortschatz oder trainiert Grammatik.",
                 "focus": "Fokus-Kurs",
-                "courseSubjectLabel": "Fach",
-                "coursePhotoLabel": "Foto",
+                "focusTooltip": "Du begleitest deine Teilnehmer:innen durch spannende Kurse zu wichtigen Themen, die sie im Alltag und für ihre Zukunft stärken. Über das Jahr verteilt behandeln die Kurse wichtige Inhalte wie z.B. Social Media, Ausbildung, Mobbing oder Mental Health.",
+                "courseSubjectLabel": "Fächer",
+                "courseSubjectTooltip": "Wähle das Schulfach, das am besten zu diesem Kurs passt. Du kannst nur ein Fach wählen.",
+                "coursePhotoLabel": "Bild",
                 "changeImage": "Bild ändern",
-                "CourseInstructors": "Kursleiter:innen",
-                "courseAddOntherLeadText": "Weitere Kursleiter:innen hinzufügen",
+                "otherInstructors": "Kursleitung",
+                "otherInstructorsMentors": "Kursleitung & Mentor:innen",
+                "otherInstructorsDescription": "Füge weitere Kursleiter:innen hinzu:",
+                "otherInstructorsMentorsDescription": "Füge weitere Kursleiter:innen oder Mentor:innen hinzu:",
+                "otherInstructorsTooltip": "Du bist selber automatisch Kursleiter:in. Hier kannst du weitere Leiter:innen eintragen, die volle Rechte haben. Gib die genaue E-Mail-Adresse oder den Vornamen und Nachnamen in das Feld ein.",
+                "otherInstructorsMentorsTooltip": "Du bist selber automatisch Kursleiter:in. Hier kannst du weitere Leiter:innen eintragen, die volle Rechte haben. Oder Mentor:innen, die nur teilnehmen können. Gib die genaue E-Mail-Adresse oder den Vornamen und Nachnamen in das Feld ein.",
+                "instructor": "Kursleiter:in",
+                "mentor": "Mentor:in",
+                "searchInstructorsPlaceholder": "Namen suchen oder E-Mail eingeben",
                 "courseAlreadyaAddedLead": "Du hast diese Person bereits hinzugefügt.",
                 "shortDescriptionLabel": "Kurzbeschreibung",
                 "shortDescriptionPlaceholder": "Kurzer Satz, um was es in deinem Kurs geht …",
@@ -2107,14 +2142,16 @@
                 "descriptionPlaceholder": "Beschreibung des Kurses",
                 "tagsLabel": "Tags",
                 "tagsEdit": "Tags bearbeiten",
+                "tagsTooltip": "Du kannst ein Thema auswählen, das zu deinem Kurs passt.",
                 "tagsPlaceholder": "Damit dein Kurs besser gefunden wird",
                 "tagsInfo": "Die einzelnen Tags müssen durch ein Komma (,) getrennt werden",
                 "detailsHeadline": "Details",
-                "detailsContent": "Für welche Klassen ist der Kurs geeignet?",
+                "detailsContent": "Jahrgangsstufe",
                 "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Max. Teilnehmer:innenzahl",
-                "maxMembersInfo": "Gerne eine höhere Zahl angeben, da meist nur die Hälfte der angemeldeten Schüler:innen erscheint.",
-                "otherHeadline": "Sonstiges",
+                "maxMembersTooltip": "Wähle die maximale Anzahl Teilnehmer:innen aus. Es ist besser, hier etwas mehr zuzulassen, weil manche am Termin nicht erscheinen.",
+                "customMembersCount": "Eigene",
+                "otherHeadline": "Einstellungen",
                 "otherContactHeadline": "Kontaktaufnahme",
                 "otherOptionStart": "Schüler:innen können sich nach dem ersten Kurstermin anmelden",
                 "otherProspects": "Interessent:innen",
@@ -2165,7 +2202,9 @@
                 "appointmentLabel": "Termin",
                 "appointmentDate": "Datum:",
                 "publishCourse": "Zur Prüfung freigeben",
-                "saveCourse": "Entwurf speichern",
+                "saveCourse": "Kurs speichern",
+                "saveDraft": "Entwurf speichern",
+                "cancel": "Abbrechen",
                 "editCourse": "Bearbeiten",
                 "updateCourse": "Änderungen speichern"
             },
@@ -2424,7 +2463,7 @@
             "lesson": "Lektionsplaner mit KI (Beta)",
             "requestMatch": "Ein neues Lernpaar bilden",
             "createCourse": "Kurse anlegen",
-            "editCourse": "Kurs editieren",
+            "editCourse": "Kurs bearbeiten",
             "createAppointment": "Termin erstellen",
             "editAppointment": "Termin bearbeiten",
             "settings": "Einstellungen",
