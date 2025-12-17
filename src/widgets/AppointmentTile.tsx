@@ -4,17 +4,16 @@ import { AppointmentParticipant, Organizer } from '../gql/graphql';
 import { useTranslation } from 'react-i18next';
 import { Appointment } from '../types/lernfair/Appointment';
 import VideoButton from '../components/VideoButton';
-import { IconBook, IconClock, IconCopy, IconHourglass, IconInfoCircle, IconPencil, IconPointFilled, IconTrash } from '@tabler/icons-react';
+import { IconInfoCircle, IconPointFilled } from '@tabler/icons-react';
 import { Typography } from '@/components/Typography';
 import { cn } from '@/lib/Tailwind';
 import { useUser } from '@/hooks/useApollo';
 import { useMemo } from 'react';
-import AppointmentDate from '@/widgets/AppointmentDate';
-import { DateTime } from 'luxon';
-import { Button } from '@/components/Button';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
+import { DateTime } from 'luxon';
 
 type Props = {
+    timeDescriptionText: string;
     title: string;
     isCurrentlyTakingPlace: boolean;
     organizers?: Organizer[];
@@ -24,7 +23,6 @@ type Props = {
     onPress?: () => void;
     appointmentType: Appointment['appointmentType'];
     position: Appointment['position'];
-    appointmentIndex?: number;
     total: Appointment['total'];
     isOrganizer: Appointment['isOrganizer'];
     displayName: Appointment['displayName'];
@@ -32,39 +30,30 @@ type Props = {
     canJoinVideochat?: boolean;
     wasRejected: boolean;
     declinedBy: Appointment['declinedBy'];
-    onEdit?: () => void;
-    onDuplicate?: () => void;
-    onDelete?: () => void;
     description?: Appointment['description'];
     duration: Appointment['duration'];
     start: Appointment['start'];
-    editable: boolean;
-    clickable: boolean;
 };
 
 const AppointmentTile: React.FC<Props> = ({
-    start,
-    duration,
-    description,
+    timeDescriptionText,
+    title,
     isCurrentlyTakingPlace,
     organizers,
     participants,
     isReadOnly,
+    isFullWidth,
     onPress,
-    appointmentIndex,
-    total,
+    position,
     displayName,
     appointmentId,
     appointmentType,
     isOrganizer,
     wasRejected,
     declinedBy,
-    onEdit,
-    onDuplicate,
-    onDelete,
-    title,
-    editable,
-    clickable,
+    description,
+    duration,
+    start,
 }) => {
     const { t } = useTranslation();
     const { userID } = useUser();
@@ -73,21 +62,6 @@ const AppointmentTile: React.FC<Props> = ({
     const isHighlighted = !isReadOnly && isCurrentlyTakingPlace && !wasRejected;
     const wasRejectedByMatch = appointmentType === 'match' && wasRejected && byMatch;
 
-    const getAppointmentTimeText = (start: string, duration: number): string => {
-        const now = DateTime.now();
-        const startDate = DateTime.fromISO(start);
-        const end = startDate.plus({ minutes: duration });
-
-        const startTime = startDate.toFormat('T');
-        const endTime = end.toFormat('T');
-
-        if (startDate <= now && now <= end) {
-            return t('appointment.clock.nowToEnd', { end: endTime });
-        }
-        return t('appointment.clock.startToEnd', { start: startTime, end: endTime });
-    };
-
-    const timeDescriptionText = getAppointmentTimeText(start, duration);
     const avatars = useMemo(() => {
         return [...(organizers?.map((e) => 'student') || []), ...(participants?.map((e) => 'pupil') || [])].slice(0, 5);
     }, [organizers?.length, participants?.length]);
@@ -97,104 +71,74 @@ const AppointmentTile: React.FC<Props> = ({
     }, [duration, start]);
 
     return (
-        <div className={cn('w-full', clickable ? 'cursor-pointer' : 'cursor-auto')} onClick={clickable ? onPress : undefined}>
-            <div className={cn('flex flex-col p-4 rounded-md border border-gray-200', isHighlighted && 'bg-primary')}>
-                <div className="flex gap-2 mb-2">
-                    <AppointmentDate current={isCurrentlyTakingPlace} date={start} />
-                    <div className={cn('flex flex-col gap-1.5', isHighlighted && 'text-white')}>
-                        <div className="flex gap-1.5">
-                            <IconClock />
-                            <p>{timeDescriptionText}</p>
-                        </div>
-                        <div className="flex gap-1.5">
-                            <IconHourglass />
-                            <p>{duration} min</p>
-                        </div>
-                        {appointmentIndex && (
-                            <div className="flex gap-1.5">
-                                <IconBook />
-                                <p>{t('appointment.appointmentTile.lectureWithTotal', { position: appointmentIndex, total })}</p>
-                            </div>
-                        )}
-                    </div>
-                </div>
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                        {isHighlighted && (
-                            <div className="relative mr-2">
-                                <span className="absolute animate-[ping_1.5s_infinite] size-4 rounded-full bg-green-300 opacity-75"></span>
-                                <IconPointFilled className="size-4 text-green-400" />
-                            </div>
-                        )}
-                        <Typography className={cn('font-bold whitespace-normal break-words', isHighlighted ? 'text-white' : 'text-primary')}>
-                            {displayName && displayName.length > 80 ? displayName.slice(0, 80) + '...' : displayName}
-                        </Typography>
-                    </div>
-                    {avatars.length > 0 && (
+        <div
+            className={cn('w-full', isFullWidth ? 'lg:w-[92%]' : 'lg:w-90%', isReadOnly ? 'cursor-auto' : 'cursor-pointer')}
+            onClick={isReadOnly ? undefined : onPress}
+        >
+            <div className={cn('flex flex-col p-4 rounded-md', isHighlighted ? 'bg-primary' : 'bg-primary-lighter')}>
+                <div className="flex flex-col">
+                    <div className="flex items-center justify-between">
                         <div className="flex">
-                            {avatars?.map((type, i) =>
-                                type === 'student' ? (
-                                    <StudentAvatar className="size-5 mx-[-3px]" key={`student-${i}`} />
-                                ) : (
-                                    <PupilAvatar className="size-5 mx-[-3px]" key={`pupil-${i}`} />
-                                )
+                            {isHighlighted && (
+                                <div className="relative mr-2">
+                                    <span className="absolute animate-[ping_1.5s_infinite] size-4 rounded-full bg-green-300 opacity-75"></span>
+                                    <IconPointFilled className="size-4 text-green-400" />
+                                </div>
                             )}
-                        </div>
-                    )}
-                </div>
-                <div>
-                    {description && (
-                        <Typography className="whitespace-normal break-words">
-                            {description.length > 100 ? description.slice(0, 100) + '...' : description}
-                        </Typography>
-                    )}
-                    {wasRejectedByMatch && (
-                        <div className="flex gap-x-1 items-center pt-1">
-                            <IconInfoCircle className="text-red-600" size={17} />
-                            <Typography variant="sm" className="text-red-600">
-                                {t('appointment.appointmentTile.cancelledBy', { name: displayName })}
+                            <Typography variant="sm" className={cn(wasRejected ? 'line-through' : '', isHighlighted ? 'text-white' : 'text-primary')}>
+                                {timeDescriptionText}
                             </Typography>
                         </div>
-                    )}
-                </div>
-                {editable && (
-                    <div className="flex flex-grow w-full justify-end gap-1 mb-2">
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit} disabled={!onEdit}>
-                                <IconPencil />
-                            </Button>
-                        )}
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate} disabled={!onDuplicate}>
-                                <IconCopy />
-                            </Button>
-                        )}
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete} disabled={!onDelete}>
-                                <IconTrash />
-                            </Button>
+                        {avatars.length > 0 && (
+                            <div className="flex">
+                                {avatars?.map((type, i) =>
+                                    type === 'student' ? (
+                                        <StudentAvatar className="size-5 mx-[-3px]" key={`student-${i}`} />
+                                    ) : (
+                                        <PupilAvatar className="size-5 mx-[-3px]" key={`pupil-${i}`} />
+                                    )
+                                )}
+                            </div>
                         )}
                     </div>
-                )}
-                <div className="flex flex-col gap-y-4 lg:flex-row lg:justify-between align-top mt-4">
-                    {isHighlighted && appointmentId && appointmentType ? (
-                        <VideoButton
-                            isInstructor={isOrganizer}
-                            canJoin
-                            appointmentId={appointmentId}
-                            appointmentType={appointmentType}
-                            className={cn('w-full lg:w-[300px] mt-4')}
-                        />
-                    ) : (
-                        <div />
-                    )}
-                    {appointmentId && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
-                        <AddToCalendarDropdown
-                            buttonVariant="optional-dark"
-                            buttonClasses="w-full lg:w-[300px]"
-                            appointment={{ id: appointmentId, displayName, title, start, duration, description: description ?? '' }}
-                        />
-                    )}
+                    <div>
+                        <Typography className={cn('font-bold', isHighlighted ? 'text-white' : 'text-primary')}>{displayName}</Typography>
+
+                        {position && (
+                            <Typography variant="sm" className={cn('mt-1', isHighlighted ? 'text-white' : 'text-primary')}>
+                                {t('appointment.appointmentTile.lecture', { position: position }) +
+                                    (title ? t('appointment.appointmentTile.title', { appointmentTitle: title }) : '')}
+                            </Typography>
+                        )}
+                        {wasRejectedByMatch && (
+                            <div className="flex gap-x-1 items-center pt-1">
+                                <IconInfoCircle className="text-red-600" size={17} />
+                                <Typography variant="sm" className="text-red-600">
+                                    {t('appointment.appointmentTile.cancelledBy', { name: displayName })}
+                                </Typography>
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex flex-col gap-y-4 lg:flex-row lg:justify-between align-top mt-4">
+                        {isHighlighted && appointmentId && appointmentType ? (
+                            <VideoButton
+                                isInstructor={isOrganizer}
+                                canJoin
+                                appointmentId={appointmentId}
+                                appointmentType={appointmentType}
+                                className={cn('w-full lg:w-[300px]')}
+                            />
+                        ) : (
+                            <div />
+                        )}
+                        {appointmentId && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
+                            <AddToCalendarDropdown
+                                buttonVariant="optional-dark"
+                                buttonClasses="w-full lg:w-[300px]"
+                                appointment={{ id: appointmentId, displayName, title, start, duration, description: description ?? '' }}
+                            />
+                        )}
+                    </div>
                 </div>
             </div>
         </div>

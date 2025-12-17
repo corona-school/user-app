@@ -8,9 +8,8 @@ export default {
 export const Base = {
     render: () => (
         <RejectAppointmentModal
-            isOpen={true}
             onDelete={() => console.log('delete appointment')}
-            onOpenChange={(open) => open && console.log('close modal because canceled')}
+            close={() => console.log('close modal because canceled')}
             rejectType={RejectType.DECLINE}
         />
     ),

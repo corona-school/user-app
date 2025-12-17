@@ -32,7 +32,6 @@ type ComboboxProps = (SingleComboboxProps | MultiComboboxProps) & {
     searchPlaceholder?: string;
     emptyText?: string;
     onSearch?: (search: string) => void;
-    filterSearchResult?: (item: ComboboxItem) => boolean;
     search?: string;
     isLoading?: boolean;
     className?: string;
@@ -47,7 +46,6 @@ export const Combobox = ({
     isLoading,
     onSearch,
     search,
-    filterSearchResult,
     onCreate,
     onSelect,
     className,
@@ -71,7 +69,7 @@ export const Combobox = ({
     const memoizedOptions = useMemo(
         () =>
             options
-                .filter((e) => (search && filterSearchResult ? filterSearchResult(e) : true))
+                .filter((e) => (search ? e.label.toLowerCase().includes(search.toLowerCase()) : true))
                 .map((e) => (
                     <CommandItem
                         key={`${e.value}-${e.label}}`}
@@ -93,6 +91,7 @@ export const Combobox = ({
                         {e.label}
                     </CommandItem>
                 )),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         [options, multiple, value, search]
     );
 
