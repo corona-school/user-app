@@ -142,7 +142,7 @@ const SubcourseData: React.FC<SubcourseDataProps> = ({ course, subcourse, isInPa
             </div>
 
             <div className="lg:ml-11">
-                <img alt={course?.name} className="w-[460px] h-56 rounded-lg object-cover" src={course?.image!} />
+                <img alt={course?.name} className="w-[460px] h-56 rounded-lg object-cover" src={course?.image!.url} />
             </div>
         </div>
     );

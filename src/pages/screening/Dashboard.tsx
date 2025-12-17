@@ -126,7 +126,7 @@ export function ScreeningDashboard() {
                     subcoursesInstructing {
                         id
                         published
-                        course { name image courseState tags { name } }
+                        course { name image { url default } courseState tags { name } }
                         nextLecture { start duration }
                     }
 

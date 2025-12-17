@@ -5,13 +5,18 @@ import { Appointment } from './Appointment';
 import { LFDecision } from './Decision';
 import { LFPupil } from './User';
 
+export type LFCourseImage = {
+    url: string;
+    default?: boolean;
+};
+
 export type LFCourse = {
     subject: string;
     id?: number;
     name: string;
     description: string;
     tags?: LFTag[];
-    image?: string;
+    image?: LFCourseImage;
     category: string;
     allowContact?: boolean;
     courseState?: Course_Coursestate_Enum;

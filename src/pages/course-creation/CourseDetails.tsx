@@ -241,7 +241,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     <Label className="text-base">{t('course.CourseDate.form.coursePhotoLabel')}</Label>
                     <Dropzone
                         onUpload={(file) => setPickedPhoto && setPickedPhoto(file)}
-                        file={pickedPhoto === undefined ? subcourse.course.image : pickedPhoto}
+                        file={pickedPhoto === undefined ? (subcourse.course.image?.default ? undefined : subcourse.course.image?.url) : pickedPhoto}
                     />
                 </div>
 

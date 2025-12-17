@@ -52,7 +52,10 @@ const query = gql(`
                     }
                     course {
                         name
-                        image
+                        image {
+                            url
+                            default
+                        }
                         category
                         tags {
                             name
@@ -84,7 +87,10 @@ const query = gql(`
                     }
                     course {
                         name
-                        image
+                        image {
+                            url
+                            default
+                        }
                         category
                         tags {
                             name
@@ -128,7 +134,10 @@ const queryPast = gql(`
                     }
                     course {
                         name
-                        image
+                        image {
+                            url
+                            default
+                        }
                         category
                         tags {
                             name
@@ -166,7 +175,10 @@ query GetAllSubcourses($search: String) {
         }
         course {
             name
-            image
+            image {
+                url
+                default
+            }
             category
             tags {
                 name
