@@ -1,4 +1,4 @@
-import { Box, Modal, useBreakpointValue, useTheme, useToast } from 'native-base';
+import { Box, useBreakpointValue, useTheme, useToast } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useCallback, useMemo, useState } from 'react';
 import { Appointment } from '../../types/lernfair/Appointment';
@@ -12,7 +12,7 @@ import useApollo from '../../hooks/useApollo';
 import { useNavigate } from 'react-router-dom';
 import RejectAppointmentModal, { RejectType } from '../../modals/RejectAppointmentModal';
 import { gql } from '../../gql';
-import { Course_Category_Enum, Lecture_Appointmenttype_Enum } from '../../gql/graphql';
+import { Lecture_Appointmenttype_Enum } from '../../gql/graphql';
 import { PUPIL_APPOINTMENT } from '../../pages/Appointment';
 import { Typography } from '../Typography';
 import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/icons-react';
@@ -119,12 +119,18 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHo
 
     return (
         <>
-            <Modal isOpen={showDeleteModal} onClose={() => setShowDeleteModal(false)}>
-                <RejectAppointmentModal onDelete={() => handleCancelClick()} close={() => setShowDeleteModal(false)} rejectType={RejectType.CANCEL} />
-            </Modal>
-            <Modal isOpen={showDeclineModal} onClose={() => setShowDeclineModal(false)}>
-                <RejectAppointmentModal onDelete={() => handleDeclineClick()} close={() => setShowDeclineModal(false)} rejectType={RejectType.DECLINE} />
-            </Modal>
+            <RejectAppointmentModal
+                isOpen={showDeleteModal}
+                onDelete={() => handleCancelClick()}
+                onOpenChange={setShowDeleteModal}
+                rejectType={RejectType.CANCEL}
+            />
+            <RejectAppointmentModal
+                isOpen={showDeclineModal}
+                onDelete={() => handleDeclineClick()}
+                onOpenChange={setShowDeclineModal}
+                rejectType={RejectType.DECLINE}
+            />
             <Box paddingX={space['1']} marginX="auto" width="100%" maxW={containerWidth}>
                 <Avatars attendees={attendees} />
                 <Header appointmentTitle={appointment.title} displayName={appointment.displayName} position={appointment.position} />

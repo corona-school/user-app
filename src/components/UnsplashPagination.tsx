@@ -1,7 +1,7 @@
 import { cn } from '@/lib/Tailwind';
 import { IconChevronLeft, IconChevronRight } from '@tabler/icons-react';
 import { useCallback, useMemo } from 'react';
-import { usePagination } from '../hooks/usePagination';
+import { usePagination } from '@/hooks/usePagination';
 import { Button } from './Button';
 
 type Props = {
@@ -36,6 +36,7 @@ const UnsplashPagination: React.FC<Props> = ({ currentIndex, totalPagesCount, on
                         <Button
                             variant="ghost"
                             size="icon"
+                            key={pageNumber}
                             className={cn(pageNumber === currentIndex ? 'text-primary' : 'text-primary-light')}
                             onClick={() => {
                                 if (typeof pageNumber === 'number') onPageChange(pageNumber);

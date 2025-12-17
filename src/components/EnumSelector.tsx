@@ -128,6 +128,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                             className={cn(searchConfig?.className)}
                             isLoading={false}
                             placeholder={searchConfig?.placeholder}
+                            filterSearchResult={(e) => e.label.toLowerCase().includes(search.toLowerCase())}
                         />
                     </div>
                 )}
