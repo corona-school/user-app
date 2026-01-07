@@ -7,6 +7,7 @@ import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import RejectAppointmentModal, { RejectType } from '@/modals/RejectAppointmentModal';
 import { Appointment } from '@/types/lernfair/Appointment';
+import { IconCalendarPlus } from '@tabler/icons-react';
 
 type Props = {
     isEditingCourse?: boolean;
@@ -197,7 +198,13 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                         />
                     </div>
                 )}
-                <Button onClick={onCreateAppointment} variant={'default'} className="w-full p-6" disabled={!!placeholderId}>
+                <Button
+                    variant="outline"
+                    onClick={onCreateAppointment}
+                    className="w-full p-6 border-dashed"
+                    disabled={!!placeholderId}
+                    leftIcon={<IconCalendarPlus />}
+                >
                     {getDraftAppointments.length === 0 ? t('course.appointments.addFirstAppointment') : t('course.appointments.addOtherAppointment')}
                 </Button>
             </div>
