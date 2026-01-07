@@ -391,7 +391,7 @@ const CreateCourse: React.FC = () => {
                             setAppointments={setCourseAppointments}
                         />
                         <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
-                        <div className="flex flex-col gap-2">
+                        <div className="flex flex-row gap-2">
                             <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
                                 {t('course.CourseDate.Preview.cancel')}
                             </Button>
