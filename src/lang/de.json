@@ -2216,7 +2216,7 @@
         "unsplash": {
             "heading": "Wähle ein Bild",
             "placeholder": "Kursthema eingeben",
-            "description": "Suche ein aussagekräftiges Bild für dein Kursthema mithilfe der Suchleiste. Es können aktuell keine eigenen Bilder verwendet werden.",
+            "description": "Nutze die Suche, um ein Bild zu finden, das zur Lernsituation und zum Thema passt.",
             "noSearchoResults": "Keine Suchergebnisse.",
             "choose": "wählen",
             "tooltipBtn": "Du musst ein Bild auswählen."
