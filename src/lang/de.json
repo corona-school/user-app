@@ -2149,7 +2149,7 @@
                 "detailsContent": "Jahrgangsstufe",
                 "classRange": "{{minRange}} - {{maxRange}}",
                 "maxMembersLabel": "Max. Teilnehmer:innenzahl",
-                "maxMembersTooltip": "Wähle die maximale Anzahl Teilnehmer:innen aus. Es ist besser, hier etwas mehr zuzulassen, weil manche am Termin nicht erscheinen.",
+                "maxMembersTooltip": "Wähle die maximale Anzahl Teilnehmer:innen aus. Trage hier lieber mehr ein – erfahrungsgemäß erscheinen rund 50% der Angemeldeten nicht.",
                 "customMembersCount": "Eigene",
                 "otherHeadline": "Einstellungen",
                 "otherContactHeadline": "Kontaktaufnahme",
