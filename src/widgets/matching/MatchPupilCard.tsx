@@ -36,7 +36,10 @@ export function MatchPupilCard({ match }: { match: MatchWithPupil }) {
 
     const reasonForDissolver = (dissolvedBy: Dissolved_By_Enum, reason: Dissolve_Reason) => {
         let userType = dissolvedBy === Dissolved_By_Enum.Pupil ? 'pupil' : 'student';
-        return t(`matching.dissolveReasons.${userType}.${reason}` as unknown as TemplateStringsArray);
+        const reasonText = t(`matching.dissolveReasons.${userType}.${reason}` as unknown as TemplateStringsArray);
+        if (reason === Dissolve_Reason.Other) {
+            return `${reasonText} (${match?.otherDissolveReason})`;
+        }
     };
 
     return (

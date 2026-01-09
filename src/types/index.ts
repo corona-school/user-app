@@ -18,13 +18,19 @@ import {
 export type Opt<T> = T | null | undefined;
 
 export type MatchWithStudent = Opt<
-    Pick<Match, 'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasons' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'> & {
+    Pick<
+        Match,
+        'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasons' | 'otherDissolveReason' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'
+    > & {
         student?: { firstname?: Opt<string>; lastname?: Opt<string> };
     }
 >;
 
 export type MatchWithPupil = Opt<
-    Pick<Match, 'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasons' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'> & {
+    Pick<
+        Match,
+        'createdAt' | 'dissolved' | 'dissolvedAt' | 'dissolveReasons' | 'otherDissolveReason' | 'dissolvedBy' | 'pupilFirstMatchRequest' | 'subjectsFormatted'
+    > & {
         pupil?: { firstname?: Opt<string>; lastname?: Opt<string> };
     }
 >;

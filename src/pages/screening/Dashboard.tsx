@@ -68,6 +68,7 @@ export function ScreeningDashboard() {
                         dissolvedAt
                         dissolveReasons
                         dissolvedBy
+                        otherDissolveReason
                         pupilFirstMatchRequest
                         subjectsFormatted { name }
                     }
@@ -122,6 +123,7 @@ export function ScreeningDashboard() {
                         dissolvedBy
                         studentFirstMatchRequest
                         subjectsFormatted { name }
+                        otherDissolveReason
                     }
                     subcoursesInstructing {
                         id
@@ -187,6 +189,7 @@ export function ScreeningDashboard() {
                     dissolvedAt
                     dissolveReasons
                     dissolvedBy
+                    otherDissolveReason
                     pupilFirstMatchRequest
                     subjectsFormatted { name }
                 }
