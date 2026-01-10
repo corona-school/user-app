@@ -9,10 +9,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Use Node.js 18
+      - name: Use Node.js 24
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 24.11.1
           cache: 'npm'
 
       - name: Check other translations against de.json
