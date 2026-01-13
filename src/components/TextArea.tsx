@@ -3,7 +3,7 @@ import { cn } from '@/lib/Tailwind';
 import { cva, VariantProps } from 'class-variance-authority';
 
 const textAreaVariants = cva(
-    'flex min-h-[60px] rounded-md px-3 py-3 text-form leading-3 font-normal text-primary placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+    'flex min-h-[60px] rounded-md px-3 py-3 text-form leading-3 font-normal text-primary placeholder:text-gray-400 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50 focus:border-primary-light',
     {
         variants: {
             variant: {
