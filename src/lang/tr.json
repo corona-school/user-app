@@ -2059,7 +2059,8 @@
                 "otherInstructorsMentorsTooltip": "Kendiniz otomatik olarak bir kurs liderisiniz. Burada tam haklara sahip diğer liderleri ekleyebilirsiniz. Ya da sadece katılabilecek danışmanlar. Alana tam e-posta adresinizi veya adınızı ve soyadınızı girin.",
                 "otherInstructors": "Kurs yönetimi",
                 "otherInstructorsDescription": "Diğer kurs eğitmenlerini ekle:",
-                "otherInstructorsTooltip": "Sen otomatik olarak kurs yöneticisisin. Burada tam haklara sahip diğer yöneticileri girebilirsin. Alanına tam e-posta adresini veya adı ve soyadını gir."
+                "otherInstructorsTooltip": "Sen otomatik olarak kurs yöneticisisin. Burada tam haklara sahip diğer yöneticileri girebilirsin. Alanına tam e-posta adresini veya adı ve soyadını gir.",
+                "coursePhotoTooltip": "Yalnızca gerekli haklara sahip olduğunuz veya serbestçe kullanılabilen resimleri yükleyin. Açık izin olmadan yabancı kişiler, markalar veya korunan içerikler kullanmayın."
             },
             "tags": {
                 "header": "Etiketleri seçin",

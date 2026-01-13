@@ -237,7 +237,10 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
 
             <div className="flex flex-col gap-5 sm:flex-row">
                 <div className="flex flex-1 flex-col gap-2.5">
-                    <Label className="text-base">{t('course.CourseDate.form.coursePhotoLabel')}</Label>
+                    <div className="inline-flex align-baseline gap-1.5">
+                        <Label className="text-base">{t('course.CourseDate.form.coursePhotoLabel')}</Label>
+                        <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.coursePhotoTooltip')} />
+                    </div>
                     <Dropzone
                         onUpload={(file) => setPickedPhoto && setPickedPhoto(file)}
                         file={pickedPhoto === undefined ? (subcourse.course.image?.default ? undefined : subcourse.course.image?.url) : pickedPhoto}

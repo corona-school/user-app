@@ -2059,7 +2059,8 @@
                 "otherInstructorsMentorsTooltip": "You are automatically a course leader yourself. Here you can add other leaders who have full rights. Or mentors who can only participate. Enter the exact e-mail address or first name and surname in the field.",
                 "otherInstructors": "course instructor",
                 "otherInstructorsDescription": "Add more instructors:",
-                "otherInstructorsTooltip": "You are automatically the course instructor. Here you can add additional instructors who have full rights. Enter the exact email address or first and last name in the field."
+                "otherInstructorsTooltip": "You are automatically the course instructor. Here you can add additional instructors who have full rights. Enter the exact email address or first and last name in the field.",
+                "coursePhotoTooltip": "Only upload images for which you have the necessary rights or which are free to use. No third parties, brands, or protected content without express permission."
             },
             "tags": {
                 "header": "Select tags",

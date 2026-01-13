@@ -2125,6 +2125,7 @@
                 "courseSubjectLabel": "Fächer",
                 "courseSubjectTooltip": "Wähle das Schulfach, das am besten zu diesem Kurs passt. Du kannst nur ein Fach wählen.",
                 "coursePhotoLabel": "Bild",
+                "coursePhotoTooltip": "Lade nur Bilder hoch, an denen du die nötigen Rechte hast oder die frei zur Nutzung sind. Keine fremden Personen, Marken oder geschützten Inhalte ohne ausdrückliche Erlaubnis",
                 "changeImage": "Bild ändern",
                 "otherInstructors": "Kursleitung",
                 "otherInstructorsMentors": "Kursleitung & Mentor:innen",
