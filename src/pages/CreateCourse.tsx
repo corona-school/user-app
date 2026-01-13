@@ -360,20 +360,22 @@ const CreateCourse: React.FC = () => {
                 }
             >
                 <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
-                    {editingExistingCourse ? (
-                        <Breadcrumb
-                            items={[
-                                breadcrumbRoutes.COURSES,
-                                { label: updatedSubcourse?.course.name!, route: `single-course/${courseId}` },
-                                breadcrumbRoutes.EDIT_COURSE,
-                            ]}
-                        />
-                    ) : (
-                        <Breadcrumb />
-                    )}
-                    <Typography variant="h2" className="mb-4">
-                        {editingExistingCourse ? t('course.edit') : t('course.header')}
-                    </Typography>
+                    <div className="flex flex-col gap-y-3">
+                        {editingExistingCourse ? (
+                            <Breadcrumb
+                                items={[
+                                    breadcrumbRoutes.COURSES,
+                                    { label: updatedSubcourse?.course.name!, route: `single-course/${courseId}` },
+                                    breadcrumbRoutes.EDIT_COURSE,
+                                ]}
+                            />
+                        ) : (
+                            <Breadcrumb />
+                        )}
+                        <Typography variant="h2" className="mb-4">
+                            {editingExistingCourse ? t('course.edit') : t('course.header')}
+                        </Typography>
+                    </div>
                     <div className="flex flex-col gap-5 w-full" id="form">
                         <CourseDetails
                             subcourse={updatedSubcourse!}

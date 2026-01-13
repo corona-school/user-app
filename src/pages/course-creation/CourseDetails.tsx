@@ -67,7 +67,6 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                         {t('course.CourseDate.form.courseCategory')}
                     </Label>
                     <RadioGroup
-                        className="px-4"
                         id="courseCategory"
                         value={subcourse.course.category}
                         onValueChange={(v) =>
@@ -76,24 +75,24 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     >
                         <div className="flex sm:flex-row flex-col gap-5">
                             <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id="revision" value={Course_Category_Enum.Revision} />
+                                <RadioGroupItem size="sm" id="revision" value={Course_Category_Enum.Revision} />
                                 <div className="inline-flex align-baseline gap-1.5">
                                     <Label htmlFor="revision">{t('course.CourseDate.form.revision')}</Label>
-                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.revisionTooltip')} />
+                                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.revisionTooltip')} />
                                 </div>
                             </div>
                             <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id="language" value={Course_Category_Enum.Language} />
+                                <RadioGroupItem size="sm" id="language" value={Course_Category_Enum.Language} />
                                 <div className="inline-flex align-baseline gap-1.5">
                                     <Label htmlFor="language">{t('course.CourseDate.form.language')}</Label>
-                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.languageTooltip')} />
+                                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.languageTooltip')} />
                                 </div>
                             </div>
                             <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id="focus" value={Course_Category_Enum.Focus} />
+                                <RadioGroupItem size="sm" id="focus" value={Course_Category_Enum.Focus} />
                                 <div className="inline-flex align-baseline gap-1.5">
                                     <Label htmlFor="focus">{t('course.CourseDate.form.focus')}</Label>
-                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.focusTooltip')} />
+                                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.focusTooltip')} />
                                 </div>
                             </div>
                         </div>

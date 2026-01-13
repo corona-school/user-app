@@ -9,19 +9,32 @@ const RadioGroup = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.
     }
 );
 
-const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.Item>, React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item>>(
-    ({ className, ...props }, ref) => {
+interface RadioGroupItemProps extends React.ComponentPropsWithoutRef<typeof RadioGroupPrimitive.Item> {
+    size?: 'default' | 'sm';
+}
+
+const RadioGroupItem = React.forwardRef<React.ElementRef<typeof RadioGroupPrimitive.Item>, RadioGroupItemProps>(
+    ({ className, size = 'default', ...props }, ref) => {
         return (
             <RadioGroupPrimitive.Item
                 ref={ref}
                 className={cn(
-                    'aspect-square size-6 rounded-full border-[0.5px] border-primary data-[state=checked]:bg-primary text-primary-foreground shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+                    'aspect-square rounded-full border-[0.5px] border-primary data-[state=checked]:bg-primary text-primary-foreground shadow focus:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50',
+                    {
+                        'size-6': size === 'default',
+                        'size-4': size === 'sm',
+                    },
                     className
                 )}
                 {...props}
             >
                 <RadioGroupPrimitive.Indicator className="flex items-center justify-center">
-                    <IconCheck className="size-4 tabler-icon-thick" />
+                    <IconCheck
+                        className={cn('size-4 tabler-icon-thick', {
+                            'size-4': size === 'default',
+                            'size-2': size === 'sm',
+                        })}
+                    />
                 </RadioGroupPrimitive.Indicator>
             </RadioGroupPrimitive.Item>
         );
