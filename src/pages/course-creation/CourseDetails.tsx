@@ -141,7 +141,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     <div className="flex flex-col gap-2.5">
                         <div className="inline-flex align-baseline gap-1.5">
                             <Label className="text-base">{t('course.CourseDate.step.attendees')}</Label>
-                            <InfoTooltipButton tooltipContent={t('course.CourseDate.form.maxMembersTooltip')} />
+                            <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.maxMembersTooltip')} />
                         </div>
                         <div className="flex gap-2.5 flex-wrap">
                             {PREDEFINED_PARTICIPANTS.map((item) => (
@@ -177,7 +177,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                         <div className="flex flex-col gap-2.5">
                             <div className="inline-flex align-baseline gap-1.5">
                                 <Label className="text-base required">{t('course.CourseDate.form.courseSubjectLabel')}</Label>
-                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.courseSubjectTooltip')} />
+                                <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.courseSubjectTooltip')} />
                             </div>
                             <div className="flex gap-2.5 flex-wrap">
                                 {SUBJECTS.map((s) => (
@@ -206,7 +206,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             <div className="flex flex-col gap-2.5">
                                 <div className="inline-flex align-baseline gap-1.5">
                                     <Label className="text-base">{t('course.CourseDate.form.tagsLabel')}</Label>
-                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.tagsTooltip')} />
+                                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.tagsTooltip')} />
                                 </div>
                                 <div className="flex gap-2.5 flex-wrap">
                                     {tagsLoading && <CenterLoadingSpinner />}

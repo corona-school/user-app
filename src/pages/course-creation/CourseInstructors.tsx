@@ -82,6 +82,7 @@ const CourseInstructors: React.FC<Props> = ({ subcourse, setSubcourse }) => {
                     {t(subcourse.allowMentoring ? 'course.CourseDate.form.otherInstructorsMentors' : 'course.CourseDate.form.otherInstructors')}
                 </Label>
                 <InfoTooltipButton
+                    className="size-4"
                     tooltipContent={t(
                         subcourse.allowMentoring ? 'course.CourseDate.form.otherInstructorsMentorsTooltip' : 'course.CourseDate.form.otherInstructorsTooltip'
                     )}

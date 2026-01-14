@@ -21,7 +21,7 @@ const CourseSettings: React.FC<Props> = ({ subcourse, setSubcourse }) => {
                     <Label htmlFor="1" className="inline flex-grow text-base font-medium">
                         {t('course.CourseDate.form.otherOptionStart')}
                     </Label>
-                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.otherOptionStartToolTip')} />
+                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.otherOptionStartToolTip')} />
                 </div>
                 <Switch
                     id="1"
@@ -40,7 +40,7 @@ const CourseSettings: React.FC<Props> = ({ subcourse, setSubcourse }) => {
                     <Label htmlFor="3" className="inline flex-grow text-base font-medium">
                         {t('course.CourseDate.form.otherProspects')}
                     </Label>
-                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.prospectContactTooltip')} />
+                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.prospectContactTooltip')} />
                 </div>
                 <Switch
                     id="3"
@@ -54,7 +54,7 @@ const CourseSettings: React.FC<Props> = ({ subcourse, setSubcourse }) => {
                     <Label htmlFor="4" className="inline flex-grow text-base font-medium">
                         {t('course.CourseDate.form.otherParticipants')}
                     </Label>
-                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.participantsContactTooltip')} />
+                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.participantsContactTooltip')} />
                 </div>
                 <Switch
                     id="4"
@@ -64,11 +64,14 @@ const CourseSettings: React.FC<Props> = ({ subcourse, setSubcourse }) => {
                 />
             </div>
             <div className="flex justify-between">
-                <Label htmlFor="4" className="inline flex-grow text-base font-medium">
-                    {t('course.CourseDate.form.allowChatContact')}
-                </Label>
+                <div className="inline-flex align-baseline gap-1.5">
+                    <Label htmlFor="5" className="inline flex-grow text-base font-medium">
+                        {t('course.CourseDate.form.allowChatContact')}
+                    </Label>
+                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.allowChatContactTooltip')} />
+                </div>
                 <Switch
-                    id="4"
+                    id="5"
                     className="flex-shrink-0"
                     checked={!!subcourse.course.allowContact}
                     onCheckedChange={(c) => setSubcourse((s) => ({ ...s, course: { ...s.course, allowContact: c } }))}
