@@ -7,6 +7,7 @@ import { useEffect } from 'react';
 import { ZOOM_MEETING_SDK_KEY } from '../config';
 import { useQuery } from '@apollo/client';
 import { log, logError } from '../log';
+import { useUser } from '@/hooks/useApollo';
 
 enum ZoomMeetingRole {
     Host = 1,
@@ -32,6 +33,7 @@ query zoomCredentialsOrganizer($meetingId: String!, $role: Float!) {
         zoomZAK
         zoomSDKJWT (meetingId: $meetingId, role: $role)
     }
+    myRoles
 }`);
 
 const getZoomCredentialsParticipant = gql(`
@@ -42,6 +44,7 @@ query zoomCredentialsParticipant($meetingId: String!, $role: Float!) {
         email
         zoomSDKJWT (meetingId: $meetingId, role: $role)
     }
+    myRoles
 }`);
 
 export function removeZoomStyles() {
@@ -50,6 +53,7 @@ export function removeZoomStyles() {
 
 const ZoomMeeting: React.FC = () => {
     const { id, type } = useParams();
+    const {} = useUser();
 
     if (!id) {
         throw new Error('No appointment id provided');
@@ -112,6 +116,16 @@ const ZoomMeeting: React.FC = () => {
         }
 
         const me = (zoomDataOrganizer ?? zoomDataParticipant)?.me;
+        const myRoles = (zoomDataOrganizer ?? zoomDataParticipant)?.myRoles ?? [];
+        const getPrefix = () => {
+            if (myRoles.includes('PUPIL')) {
+                return 'S';
+            }
+            if (myRoles.includes('STUDENT')) {
+                return 'H';
+            }
+            return 'U';
+        };
 
         const credentials = {
             authEndpoint: '',
@@ -120,7 +134,7 @@ const ZoomMeeting: React.FC = () => {
             meetingNumber: meetingId,
             signature: me?.zoomSDKJWT,
             userEmail: me?.email,
-            userName: me?.firstname,
+            userName: `(${getPrefix()}) ${me?.firstname}`,
             leaveUrl: leaveUrl,
             role: appointmentMeetingData?.appointment.isOrganizer ? ZoomMeetingRole.Host : ZoomMeetingRole.Participant,
             ...(appointmentMeetingData.appointment.isOrganizer ? { zak: zoomDataOrganizer?.me.zoomZAK } : {}),
