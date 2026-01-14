@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { ZOOM_MEETING_SDK_KEY } from '../config';
 import { useQuery } from '@apollo/client';
 import { log, logError } from '../log';
-import { useUser } from '@/hooks/useApollo';
 
 enum ZoomMeetingRole {
     Host = 1,
@@ -53,7 +52,6 @@ export function removeZoomStyles() {
 
 const ZoomMeeting: React.FC = () => {
     const { id, type } = useParams();
-    const {} = useUser();
 
     if (!id) {
         throw new Error('No appointment id provided');
