@@ -335,7 +335,7 @@ const CreateCourse: React.FC = () => {
             // get element with id "form", search for first element with class "error" and scroll its parent into view
             const formElement = document.getElementById('form');
             if (formElement) {
-                const errorElement = formElement.querySelector('.error');
+                const errorElement = formElement.querySelector('.error:not(.invisible)');
                 if (errorElement) {
                     errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }

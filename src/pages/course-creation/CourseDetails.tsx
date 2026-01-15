@@ -111,6 +111,8 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             onChange={(e) => setSubcourse((s) => ({ ...s, course: { ...s.course, name: e.target.value } }))}
                             className="w-full"
                             errorMessage={errors.includes('course-name') ? t('course.error.course-name') : undefined}
+                            errorMessageClassName="error"
+                            maxLength={85}
                         />
                     </div>
 
@@ -125,6 +127,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             onChange={(e) => setSubcourse((s) => ({ ...s, course: { ...s.course, description: e.target.value } }))}
                             className="resize-none h-full flex-grow w-full"
                             errorMessage={errors.includes('description') ? t('course.error.description') : undefined}
+                            errorMessageClassName="error"
                         />
                     </div>
                 </div>
@@ -181,7 +184,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                                 ))}
                             </div>
                             {errors.includes('subject') && (
-                                <Typography variant="sm" className={cn('text-destructive text-[12px] px-1 min-h-5 leading-1')}>
+                                <Typography variant="sm" className={cn('text-destructive text-[12px] px-1 min-h-5 leading-1 error')}>
                                     {t('course.error.subject')}
                                 </Typography>
                             )}
@@ -259,7 +262,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     />
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 max-w-[464px]">
                     <CourseInstructors subcourse={subcourse} setSubcourse={setSubcourse} />
                 </div>
             </div>
