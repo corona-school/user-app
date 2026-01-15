@@ -359,7 +359,7 @@ const CreateCourse: React.FC = () => {
                     </div>
                 }
             >
-                <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
+                <div className="flex flex-col gap-y-11 max-w-[848px]">
                     <div className="flex flex-col gap-y-3">
                         {editingExistingCourse ? (
                             <Breadcrumb
@@ -372,11 +372,9 @@ const CreateCourse: React.FC = () => {
                         ) : (
                             <Breadcrumb />
                         )}
-                        <Typography variant="h2" className="mb-4">
-                            {editingExistingCourse ? t('course.edit') : t('course.header')}
-                        </Typography>
+                        <Typography variant="h2">{editingExistingCourse ? t('course.edit') : t('course.header')}</Typography>
                     </div>
-                    <div className="flex flex-col gap-5 w-full" id="form">
+                    <div className="flex flex-col gap-y-9 gap-5 w-full max-w-4xl" id="form">
                         <CourseDetails
                             subcourse={updatedSubcourse!}
                             setSubcourse={setUpdatedSubcourse}
@@ -393,7 +391,7 @@ const CreateCourse: React.FC = () => {
                             setAppointments={setCourseAppointments}
                         />
                         <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
-                        <div className="flex flex-row gap-2">
+                        <div className="flex flex-col md:flex-row gap-2">
                             <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
                                 {t('course.CourseDate.Preview.cancel')}
                             </Button>

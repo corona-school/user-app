@@ -157,26 +157,26 @@ const AppointmentTile: React.FC<Props> = ({
                         </div>
                     )}
                 </div>
-                {editable && (
-                    <div className="flex flex-grow w-full justify-end gap-1 mb-2">
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit} disabled={!onEdit}>
-                                <IconPencil />
-                            </Button>
-                        )}
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate} disabled={!onDuplicate}>
-                                <IconCopy />
-                            </Button>
-                        )}
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete} disabled={!onDelete}>
-                                <IconTrash />
-                            </Button>
-                        )}
-                    </div>
-                )}
-                <div className="flex flex-col gap-y-4 lg:flex-row lg:justify-between align-top mt-4">
+                <div className="flex flex-col gap-y-4 gap-x-2 lg:flex-row lg:justify-between align-top mt-4">
+                    {editable && (
+                        <div className="flex flex-grow w-full justify-end gap-2 mb-2">
+                            {!isReadOnly && (
+                                <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit} disabled={!onEdit}>
+                                    <IconPencil />
+                                </Button>
+                            )}
+                            {!isReadOnly && (
+                                <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate} disabled={!onDuplicate}>
+                                    <IconCopy />
+                                </Button>
+                            )}
+                            {!isReadOnly && (
+                                <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete} disabled={!onDelete}>
+                                    <IconTrash />
+                                </Button>
+                            )}
+                        </div>
+                    )}
                     {isHighlighted && appointmentId && appointmentType ? (
                         <VideoButton
                             isInstructor={isOrganizer}

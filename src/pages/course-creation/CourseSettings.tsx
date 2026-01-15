@@ -15,7 +15,7 @@ const CourseSettings: React.FC<Props> = ({ subcourse, setSubcourse }) => {
     const { t } = useTranslation();
     return (
         <div className="flex flex-col gap-2.5 w-full">
-            <Typography variant="h4">{t('course.CourseDate.form.otherHeadline')}</Typography>
+            <Typography variant="h5">{t('course.CourseDate.form.otherHeadline')}</Typography>
             <div className="flex justify-between">
                 <div className="inline-flex align-baseline gap-1.5">
                     <Label htmlFor="1" className="inline flex-grow text-base font-medium">
