@@ -259,7 +259,7 @@ const CreateCourse: React.FC = () => {
         if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 3) {
             errors.push('course-name');
         }
-        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 10) {
+        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 100) {
             errors.push('description');
         }
         if (!updatedSubcourse?.course.category) {
