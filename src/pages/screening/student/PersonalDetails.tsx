@@ -278,7 +278,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                                     </span>
                                 </Label>
                                 <TextArea
-                                    className="resize-none h-24 w-full"
+                                    className="resize-y h-24 w-full"
                                     value={descriptionForMatch}
                                     onChange={(e) => setDescriptionForMatch(e.target.value)}
                                 />

@@ -200,7 +200,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                                     Gespeicherte Notiz - <span className="font-bold">(Wird für spätere Screenings gespeichert)</span>
                                 </Label>
                                 <TextArea
-                                    className="resize-none h-24 w-full"
+                                    className="resize-y min-h-24 w-full"
                                     value={descriptionForScreening}
                                     onChange={(e) => setDescriptionForScreening(e.target.value)}
                                 />
@@ -220,7 +220,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                                     </span>
                                 </Label>
                                 <TextArea
-                                    className="resize-none h-24 w-full"
+                                    className="resize-y min-h-24 w-full"
                                     value={descriptionForMatch}
                                     onChange={(e) => setDescriptionForMatch(e.target.value)}
                                 />
