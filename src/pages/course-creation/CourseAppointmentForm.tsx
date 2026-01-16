@@ -17,9 +17,10 @@ type Props = {
     onSubmit: (appointment: Appointment) => void;
     onCancel: () => void;
     errors: string[];
+    setErrors?: (errors: string[]) => void;
 };
 
-const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors }) => {
+const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors, setErrors }) => {
     const { t } = useTranslation();
 
     const [title, setTitle] = useState(appointmentPrefill.title ?? '');
@@ -64,6 +65,38 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
 
     const minDate = DateTime.now().plus({ days: 7 });
 
+    const handleOnSubmit = () => {
+        if (!time) {
+            setErrors && setErrors(Array.from(new Set(errors.concat('time'))));
+            return;
+        } else {
+            setErrors && setErrors(errors.filter((error) => error !== 'time'));
+        }
+        onSubmit({
+            title,
+            description,
+            start:
+                date && time
+                    ? DateTime.fromISO(date)
+                          .set({ hour: parseInt(time.split(':')[0]), minute: parseInt(time.split(':')[1]) })
+                          .toISO()
+                    : '',
+            override_meeting_link: videoChatType === VideoChatTypeEnum.ZOOM ? null : meetingLink,
+            duration,
+            id: appointmentPrefill.id,
+        });
+    };
+
+    const getTimeError = () => {
+        if (errors.includes('time')) {
+            return t('appointment.create.emptyTimeError');
+        }
+        if (errors.includes('timeNotInFiveMin')) {
+            return t('appointment.errors.timeNotInFiveMin');
+        }
+        return undefined;
+    };
+
     return (
         <div>
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
@@ -76,12 +109,12 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         disabled={{ before: minDate.toJSDate() }}
                     />
                     {errors && errors.includes('date') && (
-                        <Typography variant="sm" className="text-red-500 error">
+                        <Typography variant="sm" className="text-destructive error">
                             {t('appointment.create.emptyDateError')}
                         </Typography>
                     )}
                     {errors && errors.includes('dateNotInOneWeek') && (
-                        <Typography variant="sm" className="text-red-500 error">
+                        <Typography variant="sm" className="text-destructive error">
                             {t('appointment.create.wrongDateError')}
                         </Typography>
                     )}
@@ -96,17 +129,9 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         defaultValue={time}
                         onChange={handleTimeInput}
                         min={minDate.toFormat('HH:mm')}
+                        errorMessage={errors && getTimeError()}
+                        errorMessageClassName="error"
                     />
-                    {errors && errors.includes('time') && (
-                        <Typography variant="sm" className="text-red-500 error">
-                            {t('appointment.create.emptyTimeError')}
-                        </Typography>
-                    )}
-                    {errors && errors.includes('timeNotInFiveMin') && (
-                        <Typography variant="sm" className="text-red-500 error">
-                            {t('appointment.errors.timeNotInFiveMin')}
-                        </Typography>
-                    )}
                 </div>
                 <div className="flex flex-col gap-y-1">
                     <Label htmlFor="duration">{t('appointment.create.durationLabel')}</Label>
@@ -126,7 +151,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         </SelectContent>
                     </Select>
                     {errors && errors.includes('duration') && (
-                        <Typography variant="sm" className="text-red-500 error">
+                        <Typography variant="sm" className="text-destructive error">
                             {t('appointment.create.emptySelectError')}
                         </Typography>
                     )}
@@ -141,7 +166,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         videoChatType={videoChatType}
                     />
                     {errors && errors.includes('invalidLink') && (
-                        <Typography variant="sm" className="text-red-500 error">
+                        <Typography variant="sm" className="text-destructive error">
                             {t('appointment.create.wrongVideoUrlError')}
                         </Typography>
                     )}
@@ -164,21 +189,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                 <Button onClick={onCancel} variant={'outline'} className="flex-grow">
                     {t('cancel')}
                 </Button>
-                <Button
-                    onClick={() =>
-                        onSubmit({
-                            title,
-                            description,
-                            start: DateTime.fromISO(date)
-                                .set({ hour: parseInt(time.split(':')[0]), minute: parseInt(time.split(':')[1]) })
-                                .toISO(),
-                            override_meeting_link: videoChatType === VideoChatTypeEnum.ZOOM ? null : meetingLink,
-                            duration,
-                            id: appointmentPrefill.id,
-                        })
-                    }
-                    className="flex-grow"
-                >
+                <Button onClick={handleOnSubmit} className="flex-grow">
                     {t('appointment.create.save')}
                 </Button>
             </div>

@@ -132,7 +132,13 @@ const AppointmentItem = React.memo(
                 <div>
                     {editing ? (
                         <div className="flex flex-col p-4 rounded-md border border-gray-200 mt-6">
-                            <CourseAppointmentForm appointmentPrefill={appointment} onSubmit={onSubmit} onCancel={onCancel} errors={errors} />
+                            <CourseAppointmentForm
+                                appointmentPrefill={appointment}
+                                onSubmit={onSubmit}
+                                onCancel={onCancel}
+                                errors={errors}
+                                setErrors={setErrors}
+                            />
                         </div>
                     ) : (
                         <AppointmentDay
