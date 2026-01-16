@@ -85,7 +85,7 @@ const WithNavigation: React.FC<Props> = ({
                                     </div>
                                 )}
                             </>
-                            <div className="p-4 lg:p-6 h-full">{children}</div>
+                            <div className="p-4 lg:px-8 lg:py-4 h-full">{children}</div>
                         </>
                     )) || <CenterLoadingSpinner />}
                 </div>

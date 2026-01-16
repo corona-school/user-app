@@ -1993,12 +1993,12 @@
             "appointments": "No lectures created.",
             "isInPastOrInvalid": "We could not find this course or it is in the past.",
             "course-name": "Please enter a course name.",
-            "description": "Please enter a course description.",
             "category": "Invalid category",
             "subject": "Please select a subject.",
             "grade-range": "Please enter a valid class range.",
             "participant-count": "Please enter a valid number of participants.",
-            "unfinished-appointment": "Please save or delete the incomplete lecture."
+            "unfinished-appointment": "Please save or delete the incomplete lecture.",
+            "description": "The description must be at least 100 characters long."
         },
         "CourseDate": {
             "step": {
@@ -2059,7 +2059,9 @@
                 "otherInstructorsMentorsTooltip": "You are automatically a course leader yourself. Here you can add other leaders who have full rights. Or mentors who can only participate. Enter the exact e-mail address or first name and surname in the field.",
                 "otherInstructors": "course instructor",
                 "otherInstructorsDescription": "Add more instructors:",
-                "otherInstructorsTooltip": "You are automatically the course instructor. Here you can add additional instructors who have full rights. Enter the exact email address or first and last name in the field."
+                "otherInstructorsTooltip": "You are automatically the course instructor. Here you can add additional instructors who have full rights. Enter the exact email address or first and last name in the field.",
+                "coursePhotoTooltip": "Only upload images for which you have the necessary rights or which are free to use. No third parties, brands, or protected content without express permission.",
+                "allowChatContactTooltip": "If you activate this function, the pupils can also write pupils the course chat. If it is deactivated, only you as the course instructor can send messages in the announcement chat."
             },
             "tags": {
                 "header": "Select tags",

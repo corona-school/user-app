@@ -11,6 +11,7 @@ import { InfoTooltipButton } from '@/components/Tooltip';
 import { useTranslation } from 'react-i18next';
 import { Instructor } from '@/gql/graphql';
 import { LFSubCourse } from '@/types/lernfair/Course';
+import { Typography } from '@/components/Typography';
 
 interface Props {
     subcourse: LFSubCourse;
@@ -78,22 +79,21 @@ const CourseInstructors: React.FC<Props> = ({ subcourse, setSubcourse }) => {
     return (
         <>
             <div className="inline-flex align-baseline gap-1.5">
-                <Label className="text-base">
-                    {t(subcourse.allowMentoring ? 'course.CourseDate.form.otherInstructorsMentors' : 'course.CourseDate.form.otherInstructors')}
-                </Label>
+                <Label>{t(subcourse.allowMentoring ? 'course.CourseDate.form.otherInstructorsMentors' : 'course.CourseDate.form.otherInstructors')}</Label>
                 <InfoTooltipButton
+                    className="size-4"
                     tooltipContent={t(
                         subcourse.allowMentoring ? 'course.CourseDate.form.otherInstructorsMentorsTooltip' : 'course.CourseDate.form.otherInstructorsTooltip'
                     )}
                 />
             </div>
-            <p>
+            <Typography className="text-form pb-2 pt-1.5">
                 {t(
                     subcourse.allowMentoring
                         ? 'course.CourseDate.form.otherInstructorsMentorsDescription'
                         : 'course.CourseDate.form.otherInstructorsDescription'
                 )}
-            </p>
+            </Typography>
 
             <div className="flex flex-col gap-2.5">
                 <div className="flex gap-2.5">

@@ -99,96 +99,94 @@ const AppointmentTile: React.FC<Props> = ({
     return (
         <div className={cn('w-full', clickable ? 'cursor-pointer' : 'cursor-auto')} onClick={clickable ? onPress : undefined}>
             <div className={cn('flex flex-col p-4 rounded-md border border-gray-200', isHighlighted && 'bg-primary')}>
-                <div className="flex gap-2 mb-2">
-                    <AppointmentDate current={isCurrentlyTakingPlace} date={start} />
-                    <div className={cn('flex flex-col gap-1.5', isHighlighted && 'text-white')}>
-                        <div className="flex gap-1.5">
-                            <IconClock />
-                            <p>{timeDescriptionText}</p>
-                        </div>
-                        <div className="flex gap-1.5">
-                            <IconHourglass />
-                            <p>{duration} min</p>
-                        </div>
-                        {appointmentIndex && (
+                <div className="flex flex-col md:flex-row mb-2 ">
+                    <div className="flex gap-2 min-w-[289px] mb-5 md:mb-0">
+                        <AppointmentDate current={isCurrentlyTakingPlace} date={start} />
+                        <div className={cn('flex flex-col gap-1.5', isHighlighted && 'text-white')}>
                             <div className="flex gap-1.5">
-                                <IconBook />
-                                <p>{t('appointment.appointmentTile.lectureWithTotal', { position: appointmentIndex, total })}</p>
+                                <IconClock />
+                                <p>{timeDescriptionText}</p>
+                            </div>
+                            <div className="flex gap-1.5">
+                                <IconHourglass />
+                                <p>{duration} min</p>
+                            </div>
+                            {appointmentIndex && (
+                                <div className="flex gap-1.5">
+                                    <IconBook />
+                                    <p>{t('appointment.appointmentTile.lectureWithTotal', { position: appointmentIndex, total })}</p>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                    <div className="flex flex-col justify-between max-h-[100px]">
+                        <Typography className={cn('font-bold whitespace-normal break-words line-clamp-2', isHighlighted ? 'text-white' : 'text-primary')}>
+                            {title ?? displayName}
+                        </Typography>
+                        {description && <Typography className="whitespace-normal break-words line-clamp-2">{description}</Typography>}
+                        {wasRejectedByMatch && (
+                            <div className="flex gap-x-1 items-center pt-1">
+                                <IconInfoCircle className="text-red-600" size={17} />
+                                <Typography variant="sm" className="text-red-600">
+                                    {t('appointment.appointmentTile.cancelledBy', { name: displayName })}
+                                </Typography>
                             </div>
                         )}
                     </div>
                 </div>
-                <div className="flex items-center justify-between">
-                    <div className="flex items-center">
-                        {isHighlighted && (
-                            <div className="relative mr-2">
-                                <span className="absolute animate-[ping_1.5s_infinite] size-4 rounded-full bg-green-300 opacity-75"></span>
-                                <IconPointFilled className="size-4 text-green-400" />
+                <div className="flex flex-col gap-y-4 gap-x-2 lg:flex-row lg:justify-between align-top mt-4">
+                    <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                            {isHighlighted && (
+                                <div className="relative mr-2">
+                                    <span className="absolute animate-[ping_1.5s_infinite] size-4 rounded-full bg-green-300 opacity-75"></span>
+                                    <IconPointFilled className="size-4 text-green-400" />
+                                </div>
+                            )}
+                        </div>
+                        {avatars.length > 0 && (
+                            <div className="flex">
+                                {avatars?.map((type, i) =>
+                                    type === 'student' ? (
+                                        <StudentAvatar className="size-5 mx-[-3px]" key={`student-${i}`} />
+                                    ) : (
+                                        <PupilAvatar className="size-5 mx-[-3px]" key={`pupil-${i}`} />
+                                    )
+                                )}
                             </div>
                         )}
-                        <Typography className={cn('font-bold whitespace-normal break-words', isHighlighted ? 'text-white' : 'text-primary')}>
-                            {displayName && displayName.length > 80 ? displayName.slice(0, 80) + '...' : displayName}
-                        </Typography>
                     </div>
-                    {avatars.length > 0 && (
-                        <div className="flex">
-                            {avatars?.map((type, i) =>
-                                type === 'student' ? (
-                                    <StudentAvatar className="size-5 mx-[-3px]" key={`student-${i}`} />
-                                ) : (
-                                    <PupilAvatar className="size-5 mx-[-3px]" key={`pupil-${i}`} />
-                                )
+                    {editable && (
+                        <div className="flex flex-grow w-full justify-end gap-2 mb-2">
+                            {!isReadOnly && (
+                                <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit} disabled={!onEdit}>
+                                    <IconPencil />
+                                </Button>
+                            )}
+                            {!isReadOnly && (
+                                <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate} disabled={!onDuplicate}>
+                                    <IconCopy />
+                                </Button>
+                            )}
+                            {!isReadOnly && (
+                                <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete} disabled={!onDelete}>
+                                    <IconTrash />
+                                </Button>
                             )}
                         </div>
                     )}
-                </div>
-                <div>
-                    {description && (
-                        <Typography className="whitespace-normal break-words">
-                            {description.length > 100 ? description.slice(0, 100) + '...' : description}
-                        </Typography>
-                    )}
-                    {wasRejectedByMatch && (
-                        <div className="flex gap-x-1 items-center pt-1">
-                            <IconInfoCircle className="text-red-600" size={17} />
-                            <Typography variant="sm" className="text-red-600">
-                                {t('appointment.appointmentTile.cancelledBy', { name: displayName })}
-                            </Typography>
-                        </div>
-                    )}
-                </div>
-                {editable && (
-                    <div className="flex flex-grow w-full justify-end gap-1 mb-2">
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onEdit} disabled={!onEdit}>
-                                <IconPencil />
-                            </Button>
-                        )}
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDuplicate} disabled={!onDuplicate}>
-                                <IconCopy />
-                            </Button>
-                        )}
-                        {!isReadOnly && (
-                            <Button variant="outline" size="icon" className="border rounded-3xl" onClick={onDelete} disabled={!onDelete}>
-                                <IconTrash />
-                            </Button>
-                        )}
-                    </div>
-                )}
-                <div className="flex flex-col gap-y-4 lg:flex-row lg:justify-between align-top mt-4">
                     {isHighlighted && appointmentId && appointmentType ? (
                         <VideoButton
                             isInstructor={isOrganizer}
                             canJoin
                             appointmentId={appointmentId}
                             appointmentType={appointmentType}
-                            className={cn('w-full lg:w-[300px] mt-4')}
+                            className={cn('w-full lg:w-[300px] mt-4 ml-auto')}
                         />
                     ) : (
                         <div />
                     )}
-                    {appointmentId && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
+                    {appointmentId && appointmentId > 0 && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
                         <AddToCalendarDropdown
                             buttonVariant="optional-dark"
                             buttonClasses="w-full lg:w-[300px]"

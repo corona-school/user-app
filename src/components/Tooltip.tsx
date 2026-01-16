@@ -48,10 +48,10 @@ export const TooltipButton = ({ children, tooltipContent, className }: TooltipBu
     );
 };
 
-export const InfoTooltipButton: React.FC<{ tooltipContent: string }> = ({ tooltipContent }) => {
+export const InfoTooltipButton: React.FC<{ tooltipContent: string; className?: string }> = ({ tooltipContent, className }) => {
     return (
         <TooltipButton tooltipContent={tooltipContent}>
-            <IconInfoCircleFilled size="20px" />
+            <IconInfoCircleFilled size="20px" className={className} />
         </TooltipButton>
     );
 };

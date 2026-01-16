@@ -14,7 +14,13 @@ type Props = {
 const AppointmentDate: React.FC<Props> = ({ current, date, className }) => {
     const { i18n } = useTranslation();
     return (
-        <div className={cn('flex flex-col h-[50%] mr-4 p-4 rounded-md items-center', current ? 'bg-primary-dark' : 'bg-primary-lighter', className)}>
+        <div
+            className={cn(
+                'flex flex-col h-full min-w-[100px] mr-4 p-4 rounded-md items-center justify-center',
+                current ? 'bg-primary-dark' : 'bg-primary-lighter',
+                className
+            )}
+        >
             <Typography className={cn(current ? 'text-white' : 'text-primary')} variant="sm">
                 {DateTime.fromISO(date).setLocale(i18n.language).toFormat('cccc')}
             </Typography>
