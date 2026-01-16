@@ -39,7 +39,10 @@ query subcourse($subcourseId: Int!) {
             id
             courseState
             name
-            image
+            image {
+                url
+                default
+            }
             category
             description
             subject
@@ -177,6 +180,9 @@ const SingleCourseScreener: React.FC = () => {
                         disableScroll
                         noOldAppointments
                         appointments={subcourse?.appointments as Appointment[]}
+                        clickable={false}
+                        editable={false}
+                        exhaustive={false}
                     />
                 </Box>
             ),

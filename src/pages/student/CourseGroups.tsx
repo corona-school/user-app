@@ -20,14 +20,14 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
     const navigate = useNavigate();
 
     const renderSubcourse = (subcourse: Subcourse, index: number, showDate: boolean = true, readonly: boolean = false, inPast: boolean = false) => (
-        <div>
+        <div key={index}>
             <AppointmentCard
                 key={index}
                 subcourseId={subcourse.id}
                 description={subcourse.course.description}
                 tags={subcourse.course.tags}
                 dateNextLecture={(showDate && subcourse.nextLecture?.start) || ''}
-                image={subcourse.course.image ?? undefined}
+                image={subcourse.course.image?.url ?? undefined}
                 title={subcourse.course.name}
                 countCourse={subcourse.lectures.length}
                 maxParticipants={subcourse.maxParticipants}

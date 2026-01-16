@@ -79,7 +79,7 @@ const NextAppointmentCard: React.FC<Props> = ({ appointments }) => {
                                     duration={myNextAppointment.duration}
                                     title={myNextAppointment.displayName}
                                     description={myNextAppointment.description ?? ''}
-                                    image={myNextAppointment.subcourse?.course.image ?? ''}
+                                    image={myNextAppointment.subcourse?.course.image?.url ?? ''}
                                     isMatch={myNextAppointment.appointmentType === Lecture_Appointmenttype_Enum.Match ? true : false}
                                     appointmentId={myNextAppointment.id}
                                     appointmentType={myNextAppointment.appointmentType}

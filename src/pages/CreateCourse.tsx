@@ -1,44 +1,45 @@
-// eslint-disable-next-line lernfair-app-linter/typed-gql
-import { gql, useLazyQuery, useMutation } from '@apollo/client';
-import { Box, Button, CloseIcon, Heading, Modal, Row, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
-import { createContext, Dispatch, SetStateAction, useCallback, useEffect, useMemo, useState } from 'react';
+import { useUser, useUserType } from '@/hooks/useApollo';
 import { useLocation, useNavigate } from 'react-router-dom';
-
-import WithNavigation from '../components/WithNavigation';
-
-import InstructionProgress from '../widgets/InstructionProgress';
-
-import CoursePreview from './course-creation/CoursePreview';
-import CourseAppointments from './course-creation/CourseAppointments';
-import { LFInstructor, LFLecture, LFSubCourse, LFTag } from '../types/lernfair/Course';
-import { useTranslation } from 'react-i18next';
-import { Pressable } from 'react-native';
-import LFParty from '../assets/icons/lernfair/lf-party.svg';
-import useModal from '../hooks/useModal';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { GraphQLError } from 'graphql';
-import { BACKEND_URL } from '../config';
-import { SUBJECT_TO_COURSE_SUBJECT } from '../types/subject';
-
-import CourseBlocker from './student/CourseBlocker';
-import AsNavigationItem from '../components/AsNavigationItem';
-import CourseBasics from './course-creation/CourseBasics';
-import CourseClassification from './course-creation/CourseClassification';
-import CourseAttendees from './course-creation/CourseAttendees';
-import FurtherInstructors from './course-creation/FurtherInstructors';
-
-import NotificationAlert from '../components/notifications/NotificationAlert';
-import { useCreateCourseAppointments } from '../context/AppointmentContext';
-import { AppointmentCreateGroupInput } from '../gql/graphql';
-import { Appointment } from '../types/lernfair/Appointment';
-
-import { Course_Category_Enum, Course_Subject_Enum } from '../gql/graphql';
-import SwitchLanguageButton from '../components/SwitchLanguageButton';
-import useApollo, { useUserType } from '../hooks/useApollo';
-import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import SwitchLanguageButton from '@/components/SwitchLanguageButton';
+import NotificationAlert from '@/components/notifications/NotificationAlert';
+import { Breadcrumb } from '@/components/Breadcrumb';
+import { Typography } from '@/components/Typography';
+import WithNavigation from '@/components/WithNavigation';
+import { useTranslation } from 'react-i18next';
+import { LFSubCourse } from '@/types/lernfair/Course';
+import { gql } from '@/gql';
+import { useLazyQuery, useMutation } from '@apollo/client';
+import CourseDetails from '@/pages/course-creation/CourseDetails';
+import { FileItem } from '@/components/Dropzone';
+import CourseAppointments from '@/pages/course-creation/CourseAppointments';
+import { Course_Category_Enum, Course_Coursestate_Enum, Instructor } from '@/gql/graphql';
+import CourseSettings from './course-creation/CourseSettings';
+import { Button } from '@/components/Button';
+import { IconArrowRight, IconCheck } from '@tabler/icons-react';
+import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
+import { getCourseDelta, useUpdateCourse } from './course-creation/update';
+import { toast } from 'sonner';
+import { logError } from '@/log';
+import { Appointment } from '@/types/lernfair/Appointment';
 
-export type CreateCourseError = 'course' | 'subcourse' | 'set_image' | 'upload_image' | 'instructors' | 'lectures' | 'tags' | 'appointments';
+export type CreateCourseError =
+    | 'course'
+    | 'subcourse'
+    | 'set_image'
+    | 'upload_image'
+    | 'instructors'
+    | 'lectures'
+    | 'appointments'
+    | 'course-name'
+    | 'description'
+    | 'category'
+    | 'subject'
+    | 'grade-range'
+    | 'participant-count'
+    | 'unfinished-appointment';
+
 export enum ChatType {
     NORMAL = 'NORMAL',
     ANNOUNCEMENT = 'ANNOUNCEMENT',
@@ -51,111 +52,7 @@ export type Lecture = {
     duration: string;
 };
 
-type ICreateCourseContext = {
-    courseName?: string;
-    setCourseName?: Dispatch<SetStateAction<string>>;
-    courseCategory?: string;
-    setCourseCategory?: Dispatch<SetStateAction<string>>;
-    subject?: string | null;
-    setSubject?: Dispatch<SetStateAction<string | null>>;
-    classRange?: [number, number];
-    setClassRange?: Dispatch<SetStateAction<[number, number]>>;
-    description?: string;
-    setDescription?: Dispatch<SetStateAction<string>>;
-    tags?: LFTag[];
-    setTags?: Dispatch<SetStateAction<LFTag[]>>;
-    maxParticipantCount?: string;
-    setMaxParticipantCount?: Dispatch<SetStateAction<string>>;
-    joinAfterStart?: boolean;
-    setJoinAfterStart?: Dispatch<SetStateAction<boolean>>;
-    allowProspectContact?: boolean;
-    setAllowProspectContact?: Dispatch<SetStateAction<boolean>>;
-    allowParticipantContact?: boolean;
-    setAllowParticipantContact?: Dispatch<SetStateAction<boolean>>;
-    allowChatWritting?: boolean;
-    setAllowChatWritting?: Dispatch<SetStateAction<boolean>>;
-    lectures?: LFLecture[];
-    setLectures?: Dispatch<SetStateAction<LFLecture[]>>;
-    newLectures?: Lecture[];
-    setNewLectures?: Dispatch<SetStateAction<Lecture[]>>;
-    pickedPhoto?: string;
-    setPickedPhoto?: Dispatch<SetStateAction<string>>;
-    addedInstructors?: LFInstructor[];
-    setAddedInstructors?: Dispatch<SetStateAction<LFInstructor[]>>;
-    newInstructors?: LFInstructor[];
-    image?: string;
-    myself?: LFInstructor;
-};
-
-export const CreateCourseContext = createContext<ICreateCourseContext>({});
-
-const CreateCourse: React.FC = () => {
-    const { roles } = useApollo();
-
-    const userType = useUserType();
-
-    const toast = useToast();
-
-    const location = useLocation();
-    const state = location.state as { subcourseId?: number; currentStep?: number };
-    const prefillSubcourseId = state?.subcourseId;
-    const breadcrumbRoutes = useBreadcrumbRoutes();
-
-    const [courseId, setCourseId] = useState<string>('');
-    const [courseName, setCourseName] = useState<string>('');
-    const [courseCategory, setCourseCategory] = useState<string>('');
-    const [subject, setSubject] = useState<string | null>(null);
-    const [courseClasses, setCourseClasses] = useState<[number, number]>([1, 14]);
-    const [description, setDescription] = useState<string>('');
-    const [tags, setTags] = useState<LFTag[]>([]);
-    const [maxParticipantCount, setMaxParticipantCount] = useState<string>('');
-    const [joinAfterStart, setJoinAfterStart] = useState<boolean>(false);
-    const [allowProspectContact, setAllowProspectContact] = useState<boolean>(false);
-    const [allowParticipantContact, setAllowParticipantContact] = useState<boolean>(true);
-    const [allowChatWriting, setAllowChatWriting] = useState<boolean>(false);
-    const [lectures, setLectures] = useState<LFLecture[]>([]);
-    const [newLectures, setNewLectures] = useState<Lecture[]>([]);
-    const [pickedPhoto, setPickedPhoto] = useState<string>('');
-    const [addedInstructors, setAddedInstructors] = useState<LFInstructor[]>([]);
-    const [newInstructors, setNewInstructors] = useState<LFInstructor[]>([]);
-    const [image, setImage] = useState<string>('');
-    const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
-
-    const [loadingCourse, setLoadingCourse] = useState<boolean>();
-    const [showCourseError, setShowCourseError] = useState<boolean>();
-
-    const [imageLoading, setImageLoading] = useState<boolean>(false);
-    const { appointmentsToBeCreated, setAppointmentsToBeCreated } = useCreateCourseAppointments();
-
-    const [currentIndex, setCurrentIndex] = useState<number>(state?.currentStep ? state.currentStep : 0);
-    const isEditing = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
-
-    // Not to be used when the user is a Screener
-    const [loadingStudent, setLoadingStudent] = useState(userType === 'student');
-    const [studentMyself, setStudentMyself] = useState<{ firstname: string; lastname: string }>();
-    const [canCreateCourse, setCanCreateCourse] = useState<{ allowed: boolean; reason: string }>();
-    const [studentId, setStudentId] = useState<number>();
-
-    const [studentQuery] = useLazyQuery(
-        gql(`
-        query StudentCanCreateCourse {
-            me {
-                student {
-                    canCreateCourse {
-                        allowed
-                        reason
-                    }
-                    id
-                    firstname
-                    lastname
-                }
-            }
-        }
-    `)
-    );
-
-    const [subcourseQuery] = useLazyQuery(
-        gql(`
+const SUBCOURSE_QUERY = gql(`
         query GetSubcourse($id: Int!) {
             subcourse(subcourseId: $id) {
                 id
@@ -168,19 +65,31 @@ const CreateCourse: React.FC = () => {
                     id
                     firstname
                     lastname
+                    aboutMe
+                }
+                mentors {
+                    id
+                    firstname
+                    lastname
+                    aboutMe
                 }
                 joinAfterStart
                 allowChatContactParticipants
                 allowChatContactProspects
                 groupChatType
+                allowMentoring
                 course {
                     id
                     name
-                    image
+                    image {
+                        url
+                        default
+                    }
                     category
                     description
                     subject
                     allowContact
+                    courseState
                     tags {
                         id
                         name
@@ -195,6 +104,7 @@ const CreateCourse: React.FC = () => {
                     displayName
                     position
                     total
+                    override_meeting_link
                     appointmentType
                     participants(skip: 0, take: 10) {
                         firstname
@@ -215,6 +125,7 @@ const CreateCourse: React.FC = () => {
                     displayName
                     position
                     total
+                    override_meeting_link
                     appointmentType
                     participants(skip: 0, take: 10) {
                         firstname
@@ -228,802 +139,282 @@ const CreateCourse: React.FC = () => {
                 }
             }
         }
-    `)
-    );
+    `);
 
-    const [createCourse, { reset: resetCourse }] = useMutation(
-        gql(`
-        mutation createCourse($course: PublicCourseCreateInput!) {
-            courseCreate(course: $course) {
-                id
-            }
-        }
-    `)
-    );
-    const [updateCourse, { reset: resetEditCourse }] = useMutation(
-        gql(`
-        mutation updateCourse($course: PublicCourseEditInput!, $id: Float!) {
-            courseEdit(course: $course, courseId: $id) {
-                id
-            }
-        }
-    `)
-    );
-    const [createSubcourse, { reset: resetSubcourse }] = useMutation(
-        gql(`
-        mutation createSubcourse($courseId: Float!, $subcourse: PublicSubcourseCreateInput!) {
-            subcourseCreate(courseId: $courseId, subcourse: $subcourse) {
-                id
-                canPublish {
+const STUDENT_QUERY = gql(`
+    query StudentCanCreateCourse {
+        me {
+            student {
+                canCreateCourse {
                     allowed
                     reason
                 }
-            }
-        }
-    `)
-    );
-
-    const [createGroupAppointments, { reset: resetAppointments }] = useMutation(
-        gql(`
-        mutation appointmentsCourseCreate($appointments: [AppointmentCreateGroupInput!]!, $subcourseId: Float!) {
-            appointmentsGroupCreate(appointments: $appointments, subcourseId: $subcourseId)
-        }
-    `)
-    );
-
-    const [updateSubcourse, { reset: resetEditSubcourse }] = useMutation(
-        gql(`
-        mutation updateSubcourse($course: PublicSubcourseEditInput!, $id: Float!) {
-            subcourseEdit(subcourse: $course, subcourseId: $id) {
                 id
+                firstname
+                lastname
             }
         }
-    `)
-    );
+    }
+`);
 
-    const [setCourseImage] = useMutation(
-        gql(`
-        mutation setCourseImage($courseId: Float!, $fileId: String!) {
-            courseSetImage(courseId: $courseId, fileId: $fileId)
-        }
-    `)
-    );
+const SUBMIT_COURSE_QUERY = gql(`
+    mutation CourseSubmit($courseId: Float!) { 
+        courseSubmit(courseId: $courseId)
+    }
+`);
 
-    const [addSubcourseInstructor] = useMutation(
-        gql(`
-        mutation addSubcourseInstructor($studentId: Float!, $subcourseId: Float!) {
-            subcourseAddInstructor(studentId: $studentId, subcourseId: $subcourseId)
-        }
-    `)
-    );
-    const [removeSubcourseInstructor] = useMutation(
-        gql(`
-        mutation removeSubcourseInstructor($studentId: Float!, $subcourseId: Float!) {
-            subcourseDeleteInstructor(studentId: $studentId, subcourseId: $subcourseId)
-        }
-    `)
-    );
-
-    const [setCourseTags] = useMutation(
-        gql(`
-        mutation SetCourseTags($courseId: Float!, $courseTagIds: [Float!]!) {
-            courseSetTags(courseId: $courseId, courseTagIds: $courseTagIds)
-        }
-    `)
-    );
-
-    const [submitCourse] = useMutation(
-        gql(`
-        mutation SubmitCourse($courseId: Float!) {
-            courseSubmit(courseId: $courseId)
-        }
-    `)
-    );
-
-    const { space, sizes } = useTheme();
+const CreateCourse: React.FC = () => {
+    const userType = useUserType();
+    const location = useLocation();
+    const breadcrumbRoutes = useBreadcrumbRoutes();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const [showModal, setShowModal] = useState(false);
-    const { show, hide } = useModal();
-    const { trackPageView } = useMatomo();
 
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Kurs erstellen',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        return () => setAppointmentsToBeCreated([]);
-    }, []);
-
-    const ContentContainerWidth = useBreakpointValue({
-        base: '100%',
-        lg: sizes['contentContainerWidth'],
+    const state = location.state as { subcourseId?: number; currentStep?: number };
+    const prefillSubcourseId = state?.subcourseId;
+    const [prefillSubcourse, setPrefillSubcourse] = useState<LFSubCourse | null>(null);
+    const [updatedSubcourse, setUpdatedSubcourse] = useState<LFSubCourse>({
+        id: -1,
+        lectures: [],
+        course: {
+            name: '',
+            category: Course_Category_Enum.Revision,
+            subject: '',
+            description: '',
+            allowContact: true,
+            tags: [],
+        },
+        maxParticipants: 50,
+        allowChatContactParticipants: true,
+        allowChatContactProspects: true,
+        joinAfterStart: false,
+        maxGrade: 14,
+        minGrade: 1,
+        instructors: [],
+        mentors: [],
+        groupChatType: ChatType.NORMAL,
     });
 
-    const queryStudent = useCallback(async () => {
-        const { data } = await studentQuery();
+    const editingExistingCourse = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
 
-        setStudentMyself({
-            firstname: data.me.firstname,
-            lastname: data.me.lastname,
-        });
-        setCanCreateCourse(data.me.student.canCreateCourse);
-        setStudentId(data.me.student.id);
-        setLoadingStudent(false);
-    }, [studentQuery]);
+    const [errors, setErrors] = useState<CreateCourseError[]>([]);
+    const [appointmentErrors, setAppointmentErrors] = useState<boolean>(false);
+
+    const [courseId, setCourseId] = useState<number | undefined>(undefined);
+    const [uploadImage, setUploadImage] = useState<FileItem | null | undefined>(undefined); // overrides image if set, used for image upload.
+    const [courseAppointments, setCourseAppointments] = useState<Appointment[]>();
+    const user = useUser();
+
+    const [loadingCourse, setLoadingCourse] = useState<boolean>(editingExistingCourse);
+    const [loadingUser, setLoadingUser] = useState<boolean>(true);
 
     useEffect(() => {
-        if (userType === 'student') queryStudent();
-    }, [queryStudent]);
+        if (user) {
+            setLoadingUser(false);
+        }
+    }, [user]);
+
+    const [subcourseQuery, { refetch: refetchSubcourse }] = useLazyQuery(SUBCOURSE_QUERY);
+
+    const [submitCourse] = useMutation(SUBMIT_COURSE_QUERY);
+
+    const updateCourse = useUpdateCourse();
+
+    const [updatingCourse, setUpdatingCourse] = useState(false);
 
     const queryCourse = useCallback(async () => {
         if (!prefillSubcourseId) return;
-        if (userType === 'student' && !studentId) return;
-
+        if (userType === 'student' && !user.student?.id) return;
         setLoadingCourse(true);
         const {
-            data: { subcourse: prefillCourse },
+            data: { subcourse: prefillSubcourse },
         } = (await subcourseQuery({
             variables: { id: prefillSubcourseId },
-        })) as { data: { subcourse: LFSubCourse } };
+        })) as unknown as { data: { subcourse: LFSubCourse } };
+        console.log('PREFILLING', prefillSubcourse);
+        setPrefillSubcourse(prefillSubcourse);
 
-        setCourseId(prefillCourse.course.id || '');
-        setCourseName(prefillCourse.course.name);
-        setSubject(prefillCourse.course.subject);
-        setCourseCategory(prefillCourse.course.category);
-        setDescription(prefillCourse.course.description);
-        setMaxParticipantCount(prefillCourse.maxParticipants?.toString() || '0');
-        setJoinAfterStart(!!prefillCourse.joinAfterStart);
-        setAllowProspectContact(!!prefillCourse.allowChatContactProspects);
-        setAllowParticipantContact(!!prefillCourse.allowChatContactParticipants);
-        setAllowChatWriting(prefillCourse.groupChatType === ChatType.NORMAL ? true : false);
-        setCourseClasses([prefillCourse.minGrade || 1, prefillCourse.maxGrade || 14]);
-        setCourseAppointments((userType === 'student' ? prefillCourse.joinedAppointments : prefillCourse.appointments) || []);
-        prefillCourse.course.image && setImage(prefillCourse.course.image);
+        setCourseId(prefillSubcourse.course.id);
 
-        if (prefillCourse.instructors && Array.isArray(prefillCourse.instructors)) {
-            const arr = prefillCourse.instructors.filter((instructor: LFInstructor) => instructor.id !== studentId);
-            setAddedInstructors(arr);
+        let updatedCourse = { ...prefillSubcourse };
+        setCourseAppointments((userType === 'student' ? prefillSubcourse.joinedAppointments : prefillSubcourse.appointments) ?? []);
+
+        if (prefillSubcourse.instructors && Array.isArray(prefillSubcourse.instructors)) {
+            updatedCourse.instructors = prefillSubcourse.instructors.filter((instructor: Instructor) => instructor.id !== user.student?.id);
         }
 
-        if (prefillCourse.course.tags && Array.isArray(prefillCourse.course.tags)) {
-            setTags(prefillCourse.course.tags);
+        if (prefillSubcourse.mentors && Array.isArray(prefillSubcourse.mentors)) {
+            updatedCourse.mentors = prefillSubcourse.mentors.filter((mentor: Instructor) => mentor.id !== user.student?.id);
         }
-
+        setUpdatedSubcourse(updatedCourse);
         setLoadingCourse(false);
-    }, [subcourseQuery, prefillSubcourseId, studentId]);
+    }, [subcourseQuery, prefillSubcourseId, user, userType]);
 
     useEffect(() => {
         if (prefillSubcourseId != null) queryCourse();
     }, [prefillSubcourseId, queryCourse]);
 
-    const finishCourseCreation = useCallback(
-        (errors: any[], subcourseId?: string | number) => {
-            setLoadingCourse(false);
-
-            if (errors.includes('course') || errors.includes('subcourse') || errors.includes('appointments')) {
-                setShowCourseError(true);
-            } else {
-                navigate(subcourseId ? `/single-course/${subcourseId}` : '/group', {
-                    state: {
-                        wasEdited: isEditing,
-                        errors,
-                    },
-                });
-            }
-        },
-        [isEditing, navigate]
-    );
-
-    const getSubject = useCallback(() => {
-        if (courseCategory === Course_Category_Enum.Revision) return (SUBJECT_TO_COURSE_SUBJECT as any)[subject!];
-        if (courseCategory === Course_Category_Enum.Language) return Course_Subject_Enum.DeutschAlsZweitsprache;
-    }, [courseCategory, subject]);
-
-    const _getCourseData = useCallback(
-        () => ({
-            description,
-            outline: '', // keep empty for now, unused
-            name: courseName,
-            category: courseCategory,
-            allowContact: false,
-            ...(courseCategory !== Course_Category_Enum.Focus ? { subject: getSubject() } : {}),
-        }),
-        [courseCategory, courseName, description, subject]
-    );
-
-    const _getSubcourseData = useCallback(() => {
-        const subcourse: {
-            minGrade: number;
-            maxGrade: number;
-            maxParticipants: number;
-            joinAfterStart: boolean;
-            lectures?: LFLecture[];
-            allowChatContactProspects: boolean;
-            allowChatContactParticipants: boolean;
-            groupChatType: ChatType;
-        } = {
-            minGrade: courseClasses[0],
-            maxGrade: courseClasses[1],
-            maxParticipants: parseInt(maxParticipantCount),
-            joinAfterStart,
-            allowChatContactProspects: allowProspectContact,
-            allowChatContactParticipants: allowParticipantContact,
-            groupChatType: allowChatWriting ? ChatType.NORMAL : ChatType.ANNOUNCEMENT,
-        };
-
-        return subcourse;
-    }, [allowChatWriting, allowParticipantContact, allowProspectContact, courseClasses, joinAfterStart, maxParticipantCount]);
-
-    const finishCreation = useCallback(
-        async (alsoSubmit: boolean) => {
-            setLoadingCourse(true);
-            const errors: CreateCourseError[] = [];
-            if (appointmentsToBeCreated.length === 0) {
-                errors.push('appointments');
-                finishCourseCreation(errors);
-                return;
-            }
-
-            /**
-             * Course Creation
-             */
-            const course = _getCourseData();
-            const courseData = (await createCourse({
-                variables: {
-                    course,
-                },
-            })) as { data: { courseCreate?: { id: number } }; errors?: GraphQLError[] };
-
-            if (!courseData.data && courseData.errors) {
-                errors.push('course');
-                await resetCourse();
-                finishCourseCreation(errors);
-                return;
-            }
-
-            const courseId = courseData?.data?.courseCreate?.id;
-
-            if (!courseId) {
-                errors.push('course');
-                await resetCourse();
-                finishCourseCreation(errors);
-                setLoadingCourse(false);
-                return;
-            }
-            const tagIds = tags.map((t: LFTag) => t.id);
-            const tagsRes = await setCourseTags({
-                variables: { courseTagIds: tagIds, courseId },
-            });
-            if (!tagsRes.data.courseSetTags && tagsRes.errors) {
-                errors.push('tags');
-            }
-            /**
-             * Subcourse Creation
-             */
-            const subcourse = _getSubcourseData();
-            subcourse.lectures = [];
-
-            const subRes = await createSubcourse({
-                variables: {
-                    courseId: courseId,
-                    subcourse,
-                },
-            });
-
-            const subcourseId = subRes?.data?.subcourseCreate?.id;
-
-            if (!subRes.data && subRes.errors) {
-                errors.push('subcourse');
-                await resetSubcourse();
-                await resetCourse();
-                finishCourseCreation(errors);
-                setLoadingCourse(false);
-                return;
-            }
-
-            if (subRes.data.subcourseCreate && !subRes.errors) {
-                for await (const instructor of newInstructors) {
-                    let res = await addSubcourseInstructor({
-                        variables: {
-                            subcourseId: subcourseId,
-                            studentId: instructor.id,
-                        },
-                    });
-                    if (!res.data && res.errors) {
-                        errors.push('instructors');
-                    }
-                }
-            }
-
-            /**
-             * Submit Course after creation of course and subcourses
-             */
-            if (alsoSubmit) {
-                await submitCourse({ variables: { courseId } });
-            }
-
-            /**
-             * Appointment Creation
-             */
-            const addIdToAppointment = (a: AppointmentCreateGroupInput[], sId: number) => {
-                const appointments = a.map((appointment) => ({
-                    ...appointment,
-                    subcourseId,
-                }));
-                return appointments;
-            };
-
-            const appointments = addIdToAppointment(appointmentsToBeCreated, subcourseId);
-
-            if (appointments.length === 0) {
-                errors.push('appointments');
-            }
-
-            const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
-
-            setAppointmentsToBeCreated([]);
-            if (appointmentsRes.errors) {
-                errors.push('appointments');
-                await resetAppointments();
-                await resetSubcourse();
-                await resetCourse();
-                finishCourseCreation(errors);
-                setLoadingCourse(false);
-                return;
-            }
-
-            if (!appointmentsRes.errors) setAppointmentsToBeCreated([]);
-
-            /**
-             * Image upload
-             */
-            if (!pickedPhoto) {
-                finishCourseCreation(errors, subcourseId);
-                return;
-            }
-            setImageLoading(true);
-            const formData: FormData = new FormData();
-
-            const base64 = pickedPhoto ? await fetch(pickedPhoto) : require('../assets/images/globals/image-placeholder.png');
-            const data = await base64.blob();
-            formData.append('file', data, 'img_course.jpeg');
-
-            let uploadFileId;
-            try {
-                uploadFileId = await (
-                    await fetch(BACKEND_URL + '/api/files/upload', {
-                        method: 'POST',
-                        body: formData,
-                    })
-                ).text();
-
-                if (!uploadFileId) {
-                    errors.push('upload_image');
-                }
-            } catch (e) {
-                console.error(e);
-                errors.push('upload_image');
-            }
-
-            if (!uploadFileId) {
-                finishCourseCreation(errors);
-                return;
-            }
-
-            /**
-             * Set image in course
-             */
-            const imageRes = (await setCourseImage({
-                variables: {
-                    courseId: courseId,
-                    fileId: uploadFileId,
-                },
-            })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
-
-            if (!imageRes.data && imageRes.errors) {
-                errors.push('set_image');
-            }
-
-            setImageLoading(false);
-
-            finishCourseCreation(errors, subcourseId);
-        },
-        [
-            _getCourseData,
-            _getSubcourseData,
-            addSubcourseInstructor,
-            newInstructors,
-            createCourse,
-            createSubcourse,
-            finishCourseCreation,
-            pickedPhoto,
-            resetCourse,
-            resetSubcourse,
-            setCourseImage,
-            setCourseTags,
-            tags,
-            appointmentsToBeCreated,
-        ]
-    );
-
-    const editCourse = useCallback(
-        async (newAppointments?: AppointmentCreateGroupInput[]) => {
-            setLoadingCourse(true);
-            const errors: CreateCourseError[] = [];
-
-            const course = _getCourseData();
-            const courseData = (await updateCourse({
-                variables: {
-                    course,
-                    id: courseId,
-                },
-            })) as { data: { courseEdit?: { id: number } }; errors?: GraphQLError[] };
-
-            if (!courseData.data && courseData.errors) {
-                errors.push('course');
-                await resetEditCourse();
-                finishCourseCreation(errors);
-                return;
-            }
-
-            const _courseId = courseData?.data?.courseEdit?.id;
-
-            if (!_courseId) {
-                errors.push('course');
-                await resetEditCourse();
-                finishCourseCreation(errors);
-                setLoadingCourse(false);
-                return;
-            }
-
-            const tagIds = tags.map((t: LFTag) => t.id);
-            const tagsRes = await setCourseTags({
-                variables: { courseTagIds: tagIds, courseId },
-            });
-            if (!tagsRes.data.courseSetTags && tagsRes.errors) {
-                errors.push('tags');
-            }
-
-            const subcourse = _getSubcourseData();
-            const subRes = await updateSubcourse({
-                variables: {
-                    id: prefillSubcourseId,
-                    course: subcourse,
-                },
-            });
-
-            if (!subRes.data && subRes.errors) {
-                errors.push('subcourse');
-                await resetEditSubcourse();
-                await resetEditCourse();
-                finishCourseCreation(errors, prefillSubcourseId);
-                setLoadingCourse(false);
-                return;
-            }
-
-            for await (const instructor of newInstructors) {
-                let res = await addSubcourseInstructor({
-                    variables: {
-                        subcourseId: prefillSubcourseId,
-                        studentId: instructor.id,
-                    },
-                });
-                if (!res.data && res.errors) {
-                    errors.push('instructors');
-                }
-            }
-
-            const subcourseId = subRes?.data?.subcourseEdit?.id;
-            /**
-             * Appointment Creation
-             */
-            if (newAppointments && newAppointments?.length > 0) {
-                const addIdToAppointment = (a: AppointmentCreateGroupInput[]) => {
-                    const appointments = a.map((appointment) => ({
-                        ...appointment,
-                        subcourseId,
-                    }));
-                    return appointments;
-                };
-
-                const appointments = addIdToAppointment(newAppointments ?? []);
-
-                if (appointments.length === 0) {
-                    errors.push('appointments');
-                }
-
-                const appointmentsRes = await createGroupAppointments({ variables: { appointments, subcourseId } });
-
-                if (appointmentsRes.errors) {
-                    errors.push('appointments');
-                    await resetAppointments();
-                    await resetSubcourse();
-                    await resetCourse();
-                    finishCourseCreation(errors, prefillSubcourseId);
-                    setLoadingCourse(false);
-                    return;
-                }
-
-                if (!appointmentsRes.errors) setAppointmentsToBeCreated([]);
-            }
-            /**
-             * Image upload
-             */
-            if (!pickedPhoto) {
-                setLoadingCourse(false);
-                finishCourseCreation(errors, prefillSubcourseId);
-                return;
-            }
-            setImageLoading(true);
-            const formData: FormData = new FormData();
-
-            const base64 = await fetch(pickedPhoto);
-
-            const data = await base64.blob();
-            formData.append('file', data, 'img_course.jpeg');
-
-            let uploadFileId;
-            try {
-                uploadFileId = await (
-                    await fetch(BACKEND_URL + '/api/files/upload', {
-                        method: 'POST',
-                        body: formData,
-                    })
-                ).text();
-
-                if (!uploadFileId) {
-                    errors.push('upload_image');
-                }
-            } catch (e) {
-                console.error(e);
-                errors.push('upload_image');
-            }
-
-            if (!uploadFileId) {
-                finishCourseCreation(errors, prefillSubcourseId);
-                return;
-            }
-
-            /**
-             * Set image in course
-             */
-            const imageRes = (await setCourseImage({
-                variables: {
-                    courseId: courseId,
-                    fileId: uploadFileId,
-                },
-            })) as { data?: { setCourseImage: boolean }; errors?: GraphQLError[] };
-
-            if (!imageRes.data && imageRes.errors) {
-                errors.push('set_image');
-            }
-
-            setImageLoading(false);
-            finishCourseCreation(errors, prefillSubcourseId);
-        },
-        [
-            _getCourseData,
-            updateCourse,
-            courseId,
-            tags,
-            setCourseTags,
-            _getSubcourseData,
-            updateSubcourse,
-            prefillSubcourseId,
-            pickedPhoto,
-            setCourseImage,
-            finishCourseCreation,
-            resetEditCourse,
-            resetEditSubcourse,
-            newInstructors,
-            addSubcourseInstructor,
-        ]
-    );
-
-    const onNext = useCallback(() => {
-        if (currentIndex >= 6) {
-            return;
-        } else {
-            setCurrentIndex((prev) => prev + 1);
+    const save = async (doSubmit: boolean) => {
+        const errors: CreateCourseError[] = [];
+        if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 3) {
+            errors.push('course-name');
         }
-    }, [currentIndex]);
+        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 100) {
+            errors.push('description');
+        }
+        if (!updatedSubcourse?.course.category) {
+            errors.push('category');
+        }
+        if (
+            updatedSubcourse?.course.category === Course_Category_Enum.Revision &&
+            (!updatedSubcourse?.course.subject || updatedSubcourse?.course.subject === '')
+        ) {
+            errors.push('subject');
+        }
+        if (!updatedSubcourse?.minGrade || !updatedSubcourse?.maxGrade || updatedSubcourse?.minGrade > updatedSubcourse?.maxGrade) {
+            errors.push('grade-range');
+        }
+        if (!updatedSubcourse?.maxParticipants || updatedSubcourse?.maxParticipants <= 0) {
+            errors.push('participant-count');
+        }
+        if (appointmentErrors) {
+            errors.push('unfinished-appointment');
+        }
 
-    const onBack = useCallback(() => {
-        setCurrentIndex((prev) => prev - 1);
-    }, []);
+        if (errors.length > 0) {
+            setErrors(errors);
+            return;
+        }
 
-    const onCancel = useCallback(() => {
-        navigate(-1);
-    }, [navigate]);
+        const delta = getCourseDelta(
+            {
+                course: prefillSubcourse?.course,
+                subcourse: prefillSubcourse ?? undefined,
+            },
+            {
+                course: updatedSubcourse?.course!,
+                subcourse: { ...updatedSubcourse!, appointments: courseAppointments }, // here we don't need newId anymore
+                uploadImage,
+            },
+            user.student?.id,
+            userType
+        );
 
-    const addInstructor = useCallback(
-        (instructor: LFInstructor) => {
-            const instructorExistsInArray = newInstructors.some((e) => e.id === instructor.id);
-            if (!instructorExistsInArray) {
-                // Instructors are only added "locally"
-                setNewInstructors((prev) => [...prev, instructor]);
-            }
-            hide();
-        },
-        [newInstructors, hide]
-    );
+        console.log('DELTA', delta);
 
-    const removeInstructor = useCallback(
-        async (index: number, isSubmitted: boolean) => {
-            if (!isSubmitted) {
-                const arr = [...newInstructors];
-                arr.splice(index, 1);
-                setNewInstructors(arr);
-            } else {
-                const res = await removeSubcourseInstructor({
-                    variables: {
-                        subcourseId: prefillSubcourseId,
-                        studentId: addedInstructors[index].id,
+        try {
+            setUpdatingCourse(true);
+            const res = await updateCourse(prefillSubcourseId!, courseId, delta);
+            if (res && res.subcourseId) {
+                setErrors([]);
+
+                if (doSubmit) {
+                    await submitCourse({ variables: { courseId: res.courseId } });
+                }
+
+                navigate(`/single-course/${res.subcourseId}`, {
+                    state: {
+                        wasEdited: editingExistingCourse,
                     },
                 });
+            }
+            if (editingExistingCourse) {
+                console.log('Refetching subcourse');
+                await refetchSubcourse({ id: prefillSubcourseId! });
+            }
+        } catch (e) {
+            logError('CourseCreation', 'Encountered exception while saving/submitting course', e);
+            toast.error(t(`course.error.subcourse`));
+        } finally {
+            setUpdatingCourse(false);
+        }
+    };
 
-                if (res.data.subcourseDeleteInstructor && !res.errors) {
-                    const arr = [...addedInstructors];
-                    arr.splice(index, 1);
-                    setAddedInstructors(arr);
-                    toast.show({ description: 'Der/Die Kursleiter:in wurde entfernt.', placement: 'top' });
-                } else {
-                    toast.show({
-                        description: 'Der/Die Kursleiter:in konnte nicht entfernt werden.',
-                        placement: 'top',
-                    });
+    useEffect(() => {
+        if (errors.length > 0) {
+            // get element with id "form", search for first element with class "error" and scroll its parent into view
+            const formElement = document.getElementById('form');
+            if (formElement) {
+                const errorElement = formElement.querySelector('.error:not(.invisible)');
+                if (errorElement) {
+                    errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             }
-        },
-        [addedInstructors, newInstructors, prefillSubcourseId, removeSubcourseInstructor, toast]
-    );
+        }
+    }, [errors]);
 
-    const goToStep = useCallback((index: number) => {
-        setCurrentIndex(index);
-    }, []);
+    if (loadingCourse || loadingUser) {
+        return <CenterLoadingSpinner />;
+    }
 
     return (
-        <AsNavigationItem path="group">
+        <>
             <WithNavigation
-                headerTitle={isEditing ? t('course.edit') : t('course.header')}
-                previousFallbackRoute="/group"
-                isLoading={loadingStudent || loadingCourse}
+                headerTitle={t('appointment.title')}
+                previousFallbackRoute="/settings"
                 headerLeft={
-                    <Stack alignItems="center" direction="row">
+                    <div className="flex items-center">
                         <SwitchLanguageButton />
                         <NotificationAlert />
-                    </Stack>
+                    </div>
                 }
             >
-                <CreateCourseContext.Provider
-                    value={{
-                        courseName,
-                        setCourseName,
-                        courseCategory,
-                        setCourseCategory,
-                        classRange: courseClasses,
-                        setClassRange: setCourseClasses,
-                        subject,
-                        setSubject,
-                        description,
-                        setDescription,
-                        tags,
-                        setTags,
-                        maxParticipantCount,
-                        setMaxParticipantCount,
-                        joinAfterStart,
-                        setJoinAfterStart,
-                        allowProspectContact,
-                        setAllowProspectContact,
-                        allowParticipantContact,
-                        setAllowParticipantContact,
-                        allowChatWritting: allowChatWriting,
-                        setAllowChatWritting: setAllowChatWriting,
-                        lectures,
-                        setLectures,
-                        newLectures,
-                        setNewLectures,
-                        pickedPhoto,
-                        setPickedPhoto,
-                        addedInstructors,
-                        newInstructors,
-                        image,
-                        myself: studentMyself,
-                    }}
-                >
-                    {(((roles.includes('INSTRUCTOR') && canCreateCourse?.allowed) || roles.includes('COURSE_SCREENER')) && (
-                        <VStack space={space['1']} marginX="auto" width="100%" maxWidth={ContentContainerWidth}>
-                            {isEditing ? (
-                                <Breadcrumb
-                                    items={[breadcrumbRoutes.COURSES, { label: courseName, route: `single-course/${courseId}` }, breadcrumbRoutes.EDIT_COURSE]}
-                                />
-                            ) : (
-                                <Breadcrumb />
-                            )}
-                            <InstructionProgress
-                                isDark={false}
-                                currentIndex={currentIndex}
-                                goToStep={goToStep}
-                                instructions={[
-                                    {
-                                        label: t('course.CourseDate.step.general'),
-                                    },
-                                    {
-                                        label: t('course.CourseDate.step.subject'),
-                                    },
-                                    {
-                                        label: t('course.CourseDate.step.attendees'),
-                                    },
-                                    {
-                                        label: t('course.CourseDate.step.appointments'),
-                                    },
-                                    {
-                                        label: t('course.CourseDate.step.settings'),
-                                    },
-                                    {
-                                        label: t('course.CourseDate.step.checker'),
-                                    },
+                <div className="flex flex-col gap-y-11 max-w-[848px]">
+                    <div className="flex flex-col gap-y-3">
+                        {editingExistingCourse ? (
+                            <Breadcrumb
+                                items={[
+                                    breadcrumbRoutes.COURSES,
+                                    { label: updatedSubcourse?.course.name!, route: `single-course/${courseId}` },
+                                    breadcrumbRoutes.EDIT_COURSE,
                                 ]}
                             />
-                            {currentIndex === 0 && <CourseBasics onCancel={onCancel} onNext={onNext} />}
-                            {currentIndex === 1 && <CourseClassification onNext={onNext} onBack={onBack} />}
-                            {currentIndex === 2 && <CourseAttendees onNext={onNext} onBack={onBack} />}
-                            {currentIndex === 3 && (
-                                <CourseAppointments next={onNext} back={onBack} isEditing={isEditing} appointments={courseAppointments ?? []} />
+                        ) : (
+                            <Breadcrumb />
+                        )}
+                        <Typography variant="h2">{editingExistingCourse ? t('course.edit') : t('course.header')}</Typography>
+                    </div>
+                    <div className="flex flex-col gap-y-9 gap-5 w-full max-w-4xl" id="form">
+                        <CourseDetails
+                            subcourse={updatedSubcourse!}
+                            setSubcourse={setUpdatedSubcourse}
+                            pickedPhoto={uploadImage}
+                            setPickedPhoto={setUploadImage}
+                            errors={errors}
+                        />
+                        <CourseAppointments
+                            subcourseId={updatedSubcourse!.id}
+                            isEditingCourse={true}
+                            errors={errors}
+                            setAppointmentErrors={setAppointmentErrors}
+                            appointments={courseAppointments ?? []}
+                            setAppointments={setCourseAppointments}
+                        />
+                        <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
+                        <div className="flex flex-col md:flex-row gap-2">
+                            <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
+                                {t('course.CourseDate.Preview.cancel')}
+                            </Button>
+                            <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)} isLoading={updatingCourse}>
+                                {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
+                            </Button>
+                            {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
+                                <Button
+                                    variant="secondary"
+                                    rightIcon={<IconArrowRight />}
+                                    className="w-full"
+                                    onClick={() => save(true)}
+                                    isLoading={updatingCourse}
+                                >
+                                    {t('course.CourseDate.Preview.publishCourse')}
+                                </Button>
                             )}
-                            {currentIndex === 4 && (
-                                <FurtherInstructors onRemove={removeInstructor} addInstructor={addInstructor} onNext={onNext} onBack={onBack} />
-                            )}
-                            {currentIndex === 5 && (
-                                <>
-                                    <CoursePreview
-                                        createAndSubmit={prefillSubcourseId ? undefined : () => finishCreation(/* also submit */ true)}
-                                        createOnly={prefillSubcourseId ? undefined : () => finishCreation(/* also submit */ false)}
-                                        update={prefillSubcourseId ? editCourse : undefined}
-                                        onBack={onBack}
-                                        isEditing={isEditing}
-                                        isError={showCourseError}
-                                        isDisabled={loadingStudent || loadingCourse || imageLoading}
-                                        reasonDisabled={t('reasonsDisabled.loading')}
-                                        appointments={courseAppointments ?? []}
-                                    />
-                                    <Modal isOpen={showModal} onClose={() => setShowModal(false)} background="modalbg">
-                                        <Modal.Content width="307px" marginX="auto" backgroundColor="transparent">
-                                            <Box position="absolute" zIndex="1" right="20px" top="14px">
-                                                <Pressable onPress={() => setShowModal(false)}>
-                                                    <CloseIcon color="white" />
-                                                </Pressable>
-                                            </Box>
-                                            <Modal.Body background="primary.900" padding={space['1']}>
-                                                <Box alignItems="center" marginY={space['1']}>
-                                                    <LFParty />
-                                                </Box>
-                                                <Box paddingY={space['1']}>
-                                                    <Heading maxWidth="330px" marginX="auto" textAlign="center" color="lightText" marginBottom={space['0.5']}>
-                                                        {t('course.CourseDate.modal.headline')}
-                                                    </Heading>
-                                                    <Text textAlign="center" color="lightText" maxWidth="330px" marginX="auto">
-                                                        {t('course.CourseDate.modal.content')}
-                                                    </Text>
-                                                </Box>
-                                                <Box paddingY={space['1']}>
-                                                    <Row marginBottom={space['0.5']}>
-                                                        <Button onPress={() => navigate('/')} width="100%">
-                                                            {t('next')}
-                                                        </Button>
-                                                    </Row>
-                                                </Box>
-                                            </Modal.Body>
-                                        </Modal.Content>
-                                    </Modal>
-                                </>
-                            )}
-                        </VStack>
-                    )) || <CourseBlocker />}
-                </CreateCourseContext.Provider>
+                        </div>
+                    </div>
+                </div>
             </WithNavigation>
-        </AsNavigationItem>
+        </>
     );
 };
+
 export default CreateCourse;

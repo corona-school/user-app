@@ -42,7 +42,10 @@ const ScreenerGroup: React.FC = () => {
                 tags {
                 name
                 }
-                image
+                image {
+                    url
+                    default
+                }
                 category
             }
             minGrade

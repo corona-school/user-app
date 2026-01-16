@@ -34,7 +34,7 @@ export function SubcourseCard({ subcourse, onClick }: { subcourse: SubcourseForS
                                 bg="gray.400"
                                 alt={'Kursbild'}
                                 source={{
-                                    uri: subcourse.course.image!,
+                                    uri: subcourse.course.image!.url,
                                 }}
                                 borderTopLeftRadius="15px"
                                 borderBottomLeftRadius="15px"

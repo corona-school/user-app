@@ -14,6 +14,7 @@ import { Separator } from '@/components/Separator';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { cn } from '@/lib/Tailwind';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
+import CourseAppointmentForm from '@/pages/course-creation/CourseAppointmentForm';
 
 interface HeaderProps {
     hasMoreOldAppointments: boolean;
@@ -52,70 +53,131 @@ const Footer = ({ hasMoreAppointments, isLoading }: FooterProps) => {
 interface AppointmentItemProps {
     appointment: Appointment;
     previousAppointment?: Appointment;
-    index: number;
+    position: number; // position in the shown list
+    index?: number; // index of an appointment in context: e.g. the index of the appointment within its course
+    total: number;
     isReadOnly: boolean;
+    editingInit?: boolean; // If true, the item will be in editing mode initially
+    onBeginEdit?: (editing: Appointment) => void;
+    onEdit?: (edited: Appointment) => { errors: string[] } | void;
+    onCancelEdit?: () => void;
+    onDuplicate?: () => void;
+    onDelete?: () => void;
+    clickable: boolean; // If true, the item is clickable and navigates to the appointment detail page
+    editable: boolean; // If true, shows buttons for edit, duplicate, and delete
 }
 
-const AppointmentItem = React.memo(({ appointment, previousAppointment, index, isReadOnly }: AppointmentItemProps) => {
-    const navigate = useNavigate();
-    const { i18n } = useTranslation();
-    const showWeekDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
-        if (!previousAppointment) {
-            return false;
-        }
+const AppointmentItem = React.memo(
+    ({
+        appointment,
+        previousAppointment,
+        index,
+        position,
+        total,
+        editingInit,
+        isReadOnly,
+        onBeginEdit,
+        onEdit,
+        onCancelEdit,
+        onDuplicate,
+        onDelete,
+        clickable,
+        editable,
+    }: AppointmentItemProps) => {
+        const navigate = useNavigate();
+        const { i18n } = useTranslation();
+        const [editing, setEditing] = React.useState(!!editingInit);
 
-        const currentDate = DateTime.fromISO(currentAppointment.start);
-        const previousDate = DateTime.fromISO(previousAppointment.start);
-        return currentDate.year !== previousDate.year || currentDate.weekNumber !== previousDate.weekNumber;
-    };
+        const [errors, setErrors] = React.useState<string[]>([]);
 
-    const showMonthDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
-        if (!previousAppointment) {
-            return true;
-        }
+        const showMonthDivider = (currentAppointment: Appointment, previousAppointment?: Appointment) => {
+            if (!previousAppointment) {
+                return true;
+            }
 
-        const currentDate = DateTime.fromISO(currentAppointment.start);
-        const previousDate = DateTime.fromISO(previousAppointment.start);
-        return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
-    };
+            const currentDate = DateTime.fromISO(currentAppointment.start);
+            const previousDate = DateTime.fromISO(previousAppointment.start);
+            return currentDate.month !== previousDate.month || currentDate.year !== previousDate.year;
+        };
 
-    const weekDivider = showWeekDivider(appointment, previousAppointment);
-    const monthDivider = showMonthDivider(appointment, previousAppointment);
-    return (
-        <div>
-            {!monthDivider && weekDivider && <Separator className="my-3 w-[95%]" />}
-            {monthDivider && (
-                <>
-                    <div className="flex items-center justify-center mt-3">
-                        <Typography>{`${DateTime.fromISO(appointment.start).setLocale(i18n.language).monthLong} ${
-                            DateTime.fromISO(appointment.start).year
-                        }`}</Typography>
-                    </div>
-                    <Separator className="my-3 w-full" />
-                </>
-            )}
+        const monthDivider = showMonthDivider(appointment, previousAppointment);
+
+        const onSubmit = (updatedAppointment: Appointment) => {
+            if (onEdit) {
+                const result = onEdit(updatedAppointment);
+                if (result && result.errors) {
+                    setErrors(result.errors);
+                    return;
+                }
+            }
+            setEditing(false);
+        };
+
+        const onCancel = () => {
+            setEditing(false);
+            if (onCancelEdit) onCancelEdit();
+        };
+        return (
             <div>
-                <AppointmentDay
-                    start={appointment.start}
-                    duration={appointment.duration}
-                    title={appointment.title}
-                    organizers={appointment.organizers}
-                    participants={appointment.participants}
-                    onPress={() => navigate(`/appointment/${appointment.id}`)}
-                    isReadOnly={isReadOnly}
-                    isFullWidth
-                    appointmentType={appointment.appointmentType}
-                    position={appointment.position}
-                    total={appointment.total}
-                    isOrganizer={appointment.isOrganizer}
-                    displayName={appointment.displayName}
-                    appointmentId={appointment.id}
-                    declinedBy={appointment.declinedBy}
-                />
+                {monthDivider && (
+                    <>
+                        <div className="flex items-center justify-center mt-3">
+                            <Typography>{`${DateTime.fromISO(appointment.start).setLocale(i18n.language).monthLong} ${
+                                DateTime.fromISO(appointment.start).year
+                            }`}</Typography>
+                        </div>
+                        <Separator className="my-3 w-full" />
+                    </>
+                )}
+                <div>
+                    {editing ? (
+                        <div className="flex flex-col p-4 rounded-md border border-gray-200 mt-6">
+                            <CourseAppointmentForm
+                                appointmentPrefill={appointment}
+                                onSubmit={onSubmit}
+                                onCancel={onCancel}
+                                errors={errors}
+                                setErrors={setErrors}
+                            />
+                        </div>
+                    ) : (
+                        <AppointmentDay
+                            start={appointment.start}
+                            duration={appointment.duration}
+                            title={appointment.title}
+                            description={appointment.description}
+                            organizers={appointment.organizers}
+                            participants={appointment.participants}
+                            onPress={() => clickable && navigate(`/appointment/${appointment.id}`)}
+                            isReadOnly={isReadOnly}
+                            isFullWidth
+                            appointmentType={appointment.appointmentType}
+                            position={position}
+                            index={index}
+                            total={total}
+                            isOrganizer={appointment.isOrganizer}
+                            displayName={appointment.displayName || appointment.title}
+                            appointmentId={appointment.id}
+                            declinedBy={appointment.declinedBy}
+                            onEdit={
+                                onEdit
+                                    ? () => {
+                                          setEditing(true);
+                                          onBeginEdit && onBeginEdit(appointment);
+                                      }
+                                    : onEdit
+                            }
+                            onDuplicate={onDuplicate}
+                            onDelete={onDelete}
+                            clickable={clickable}
+                            editable={editable}
+                        />
+                    )}
+                </div>
             </div>
-        </div>
-    );
-});
+        );
+    }
+);
 
 type AppointmentListProps = {
     appointments: Appointment[];
@@ -128,6 +190,15 @@ type AppointmentListProps = {
     loadMoreAppointments?: (skip: number, cursor: number, direction: ScrollDirection) => void;
     lastAppointmentId?: number | null;
     height?: number | string;
+    onAppointmentBeginEdit?: (editing: Appointment) => void;
+    onAppointmentEdited?: (updated: Appointment) => { errors: string[] } | void;
+    onAppointmentCanceledEdit?: (edited: Appointment) => void;
+    onAppointmentDuplicate?: (duplicate: Appointment) => void;
+    onAppointmentDelete?: (appointment: Appointment) => void;
+    editingIdInit?: number; // If provided, the appointment with this ID will be in editing mode initially
+    clickable: boolean; // If true, the appointment items are clickable and navigate to the appointment detail page
+    editable: boolean; // If true, the appointment items show edit, duplicate, and delete buttons
+    exhaustive: boolean; // if true, show appointment index. E.g. on general appointments page, we have all kinds of appointments, so we can't show an index that is course-specific
 };
 
 const getScrollToId = (appointments: Appointment[]): number => {
@@ -144,13 +215,21 @@ const AppointmentList = ({
     appointments,
     isReadOnlyList,
     disableScroll = false,
-    isFullWidth,
     noNewAppointments,
     noOldAppointments,
     isLoadingAppointments,
     loadMoreAppointments,
     lastAppointmentId,
     height = 100,
+    onAppointmentBeginEdit,
+    onAppointmentEdited,
+    onAppointmentCanceledEdit,
+    onAppointmentDuplicate,
+    onAppointmentDelete,
+    editingIdInit,
+    clickable,
+    editable,
+    exhaustive,
 }: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
 
@@ -188,6 +267,10 @@ const AppointmentList = ({
 
     const canLoadMoreAppointments = !isReadOnlyList && !noNewAppointments && !isLoadingAppointments;
     const isFullHeight = height === '100%';
+
+    const appointmentInPast = (appointment: Appointment) =>
+        DateTime.fromISO(appointment.start).toMillis() + appointment.duration * 60000 < DateTime.now().toMillis();
+
     return (
         <div
             id="scrollable"
@@ -212,8 +295,24 @@ const AppointmentList = ({
                         key={appointment.id}
                         appointment={appointment}
                         previousAppointment={appointments[index - 1]}
-                        index={index}
+                        index={exhaustive ? index + 1 : undefined}
+                        position={index + 1}
+                        total={appointments.length}
                         isReadOnly={isReadOnlyList}
+                        editingInit={appointment.id === editingIdInit}
+                        onBeginEdit={onAppointmentBeginEdit}
+                        onEdit={appointmentInPast(appointment) ? undefined : (updated) => onAppointmentEdited && onAppointmentEdited(updated)}
+                        onCancelEdit={() => onAppointmentCanceledEdit && onAppointmentCanceledEdit(appointment)}
+                        onDuplicate={onAppointmentDuplicate ? () => onAppointmentDuplicate(appointment) : undefined}
+                        onDelete={
+                            appointmentInPast(appointment)
+                                ? undefined
+                                : onAppointmentDelete
+                                ? () => onAppointmentDelete && onAppointmentDelete(appointment)
+                                : undefined
+                        }
+                        clickable={clickable}
+                        editable={editable}
                     />
                 ))}
             </InfiniteScroll>

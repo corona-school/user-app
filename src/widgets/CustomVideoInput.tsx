@@ -41,8 +41,9 @@ const CustomVideoInput: React.FC<CustomVideoInputProps> = ({ inputValue, overrid
                     </SelectTrigger>
                     <SelectContent>
                         <SelectItem value={VideoChatTypeEnum.ZOOM}>
-                            <div className="flex gap-x-2 items-center justify-center">
-                                {t('appointment.create.videoSelectOptions.zoom')} <ZoomIcon />
+                            <div className="flex gap-x-2 items-center justify-start md:justify-center">
+                                <span className="overflow-hidden text-ellipsis">{t('appointment.create.videoSelectOptions.zoom')}</span>{' '}
+                                <ZoomIcon className="mr-2" />
                             </div>
                         </SelectItem>
                         <SelectItem value={VideoChatTypeEnum.LINK}>{t('appointment.create.videoSelectOptions.link')}</SelectItem>

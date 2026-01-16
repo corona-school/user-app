@@ -61,7 +61,10 @@ const HOMEWORK_HELP_COURSES = gql(`
                 name
                 courseState
                 description
-                image
+                image {
+                    url
+                    default
+                }
                 category
                 tags {
                     id
@@ -153,7 +156,7 @@ const GroupOnboarding: React.FC<OnboardingProps> = ({ canRequest = false, waitFo
                                             description={homeworkHelpSubcourse.course.description}
                                             tags={[]}
                                             dateNextLecture={homeworkHelpSubcourse.nextLecture?.start}
-                                            image={homeworkHelpSubcourse.course.image ?? undefined}
+                                            image={homeworkHelpSubcourse.course.image?.url ?? undefined}
                                             title={homeworkHelpSubcourse.course.name}
                                             countCourse={homeworkHelpSubcourse.lectures.length}
                                             maxParticipants={homeworkHelpSubcourse.maxParticipants}

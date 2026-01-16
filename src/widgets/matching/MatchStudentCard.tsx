@@ -36,7 +36,10 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
 
     const reasonForDissolver = (dissolvedBy: Dissolved_By_Enum, reason: Dissolve_Reason) => {
         let userType = dissolvedBy === Dissolved_By_Enum.Pupil ? 'pupil' : 'student';
-        return t(`matching.dissolveReasons.${userType}.${reason}` as unknown as TemplateStringsArray);
+        const reasonText = t(`matching.dissolveReasons.${userType}.${reason}` as unknown as TemplateStringsArray);
+        if (reason === Dissolve_Reason.Other) {
+            return `${reasonText} (${match?.otherDissolveReason})`;
+        }
     };
 
     return (
@@ -62,7 +65,7 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
                             <StudentAvatar />
                         </Center>
                     </Box>
-                    <VStack space="1" my="2" maxW="300" minW="200">
+                    <VStack space="1" my="2" maxW="100%" minW="200">
                         <VStack space="2" mb="2" maxW={isMobile ? 200 : 'full'}>
                             <Text bold ellipsizeMode="tail" numberOfLines={5}>
                                 {match!.student!.firstname} {match!.student!.lastname}
