@@ -391,18 +391,18 @@ const CreateCourse: React.FC = () => {
                             setAppointments={setCourseAppointments}
                         />
                         <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
-                        <div className="flex flex-col md:flex-row gap-2">
-                            <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
+                        <div className="flex flex-col md:flex-row gap-2 lg:justify-end">
+                            <Button variant="outline" className="w-full lg:w-auto" onClick={() => window.history.back()} isLoading={updatingCourse}>
                                 {t('course.CourseDate.Preview.cancel')}
                             </Button>
-                            <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)} isLoading={updatingCourse}>
+                            <Button leftIcon={<IconCheck />} className="w-full lg:w-auto" onClick={() => save(false)} isLoading={updatingCourse}>
                                 {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
                             </Button>
                             {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
                                 <Button
                                     variant="secondary"
                                     rightIcon={<IconArrowRight />}
-                                    className="w-full"
+                                    className="w-full lg:w-auto"
                                     onClick={() => save(true)}
                                     isLoading={updatingCourse}
                                 >

@@ -103,17 +103,17 @@ const AppointmentTile: React.FC<Props> = ({
                     <div className="flex gap-2 min-w-[289px] mb-5 md:mb-0">
                         <AppointmentDate current={isCurrentlyTakingPlace} date={start} />
                         <div className={cn('flex flex-col gap-1.5', isHighlighted && 'text-white')}>
-                            <div className="flex gap-1.5">
-                                <IconClock />
+                            <div className="flex gap-1.5 items-center">
+                                <IconClock size={20} />
                                 <p>{timeDescriptionText}</p>
                             </div>
-                            <div className="flex gap-1.5">
-                                <IconHourglass />
+                            <div className="flex gap-1.5 items-center">
+                                <IconHourglass size={20} />
                                 <p>{duration} min</p>
                             </div>
                             {appointmentIndex && (
-                                <div className="flex gap-1.5">
-                                    <IconBook />
+                                <div className="flex gap-1.5 items-center">
+                                    <IconBook size={20} />
                                     <p>{t('appointment.appointmentTile.lectureWithTotal', { position: appointmentIndex, total })}</p>
                                 </div>
                             )}
@@ -181,7 +181,7 @@ const AppointmentTile: React.FC<Props> = ({
                             canJoin
                             appointmentId={appointmentId}
                             appointmentType={appointmentType}
-                            className={cn('w-full lg:w-[300px] mt-4 ml-auto')}
+                            className={cn('w-full lg:w-auto mt-4 ml-auto')}
                         />
                     ) : (
                         <div />
@@ -189,7 +189,7 @@ const AppointmentTile: React.FC<Props> = ({
                     {appointmentId && appointmentId > 0 && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
                         <AddToCalendarDropdown
                             buttonVariant="optional-dark"
-                            buttonClasses="w-full lg:w-[300px]"
+                            buttonClasses="w-full lg:w-auto"
                             appointment={{ id: appointmentId, displayName, title, start, duration, description: description ?? '' }}
                         />
                     )}
