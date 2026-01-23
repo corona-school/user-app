@@ -1992,13 +1992,13 @@
             "tags": "Ваші теги не можуть бути додані.",
             "appointments": "Дати не створено.",
             "isInPastOrInvalid": "Ми не змогли знайти цей курс або він залишився в минулому.",
-            "course-name": "Будь ласка, введіть назву курсу.",
             "category": "Невірна категорія",
             "subject": "Будь ласка, оберіть тему.",
             "grade-range": "Будь ласка, введіть дійсний діапазон класів.",
             "participant-count": "Будь ласка, введіть дійсну кількість учасників.",
             "unfinished-appointment": "Будь ласка, збережіть або видаліть незавершену зустріч.",
-            "description": "Опис повинен містити щонайменше 100 символів."
+            "course-name": "Bitte gib mind. 5 Zeichen ein - du kannst den Titel jederzeit ändern.",
+            "description": "Bitte gib mind. 5 Zeichen ein - du kannst die Beschreibung jederzeit ändern."
         },
         "CourseDate": {
             "step": {
@@ -2024,7 +2024,6 @@
                 "shortDescriptionLabel": "Короткий опис",
                 "shortDescriptionPlaceholder": "Коротке речення про те, про що ваш курс ...",
                 "descriptionLabel": "Опис проекту",
-                "descriptionPlaceholder": "Опис курсу",
                 "tagsLabel": "Теги",
                 "tagsEdit": "Редагування тегів",
                 "tagsPlaceholder": "Щоб ваш курс було легше знайти",
@@ -2061,7 +2060,8 @@
                 "otherInstructorsDescription": "Додати інших викладачів:",
                 "otherInstructorsTooltip": "Ви автоматично стаєте керівником курсу. Тут ви можете ввести інших керівників, які матимуть повні права. Введіть точну адресу електронної пошти або ім'я та прізвище в поле.",
                 "coursePhotoTooltip": "Завантажуйте тільки ті зображення, на які ви маєте необхідні права або які є вільними для використання. Не використовуйте зображення сторонніх осіб, торгових марок або захищеного контенту без явного дозволу.",
-                "allowChatContactTooltip": "Якщо ти активуєш цю функцію, учні також зможуть писати в чаті курсу. Якщо вона деактивована, тільки ти, як керівник курсу, можеш надсилати повідомлення в чаті оголошень."
+                "allowChatContactTooltip": "Якщо ти активуєш цю функцію, учні також зможуть писати в чаті курсу. Якщо вона деактивована, тільки ти, як керівник курсу, можеш надсилати повідомлення в чаті оголошень.",
+                "descriptionPlaceholder": "Beschreibe kurz, worum es im Kurs geht, welche Themen ihr gemeinsam bearbeitet, wie sich die Teilnehmenden einbringen sollen und was sie nach dem Kurs besser können."
             },
             "tags": {
                 "header": "Виберіть теги",
