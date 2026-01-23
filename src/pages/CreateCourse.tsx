@@ -256,10 +256,10 @@ const CreateCourse: React.FC = () => {
 
     const save = async (doSubmit: boolean) => {
         const errors: CreateCourseError[] = [];
-        if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 3) {
+        if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 5) {
             errors.push('course-name');
         }
-        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 100) {
+        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 5) {
             errors.push('description');
         }
         if (!updatedSubcourse?.course.category) {
