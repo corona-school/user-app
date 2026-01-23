@@ -1992,13 +1992,13 @@
             "tags": "Your tags could not be added.",
             "appointments": "No lectures created.",
             "isInPastOrInvalid": "We could not find this course or it is in the past.",
-            "course-name": "Please enter a course name.",
             "category": "Invalid category",
             "subject": "Please select a subject.",
             "grade-range": "Please enter a valid class range.",
             "participant-count": "Please enter a valid number of participants.",
             "unfinished-appointment": "Please save or delete the incomplete lecture.",
-            "description": "The description must be at least 100 characters long."
+            "course-name": "Bitte gib mind. 5 Zeichen ein - du kannst den Titel jederzeit ändern.",
+            "description": "Bitte gib mind. 5 Zeichen ein - du kannst die Beschreibung jederzeit ändern."
         },
         "CourseDate": {
             "step": {
@@ -2024,7 +2024,6 @@
                 "shortDescriptionLabel": "Brief description",
                 "shortDescriptionPlaceholder": "A short sentence about what your course is about ...",
                 "descriptionLabel": "Description",
-                "descriptionPlaceholder": "Description of the course",
                 "tagsLabel": "Tags",
                 "tagsEdit": "Edit tags",
                 "tagsPlaceholder": "So that your course is easier to find",
@@ -2061,7 +2060,8 @@
                 "otherInstructorsDescription": "Add more instructors:",
                 "otherInstructorsTooltip": "You are automatically the course instructor. Here you can add additional instructors who have full rights. Enter the exact email address or first and last name in the field.",
                 "coursePhotoTooltip": "Only upload images for which you have the necessary rights or which are free to use. No third parties, brands, or protected content without express permission.",
-                "allowChatContactTooltip": "If you activate this function, the pupils can also write pupils the course chat. If it is deactivated, only you as the course instructor can send messages in the announcement chat."
+                "allowChatContactTooltip": "If you activate this function, the pupils can also write pupils the course chat. If it is deactivated, only you as the course instructor can send messages in the announcement chat.",
+                "descriptionPlaceholder": "Beschreibe kurz, worum es im Kurs geht, welche Themen ihr gemeinsam bearbeitet, wie sich die Teilnehmenden einbringen sollen und was sie nach dem Kurs besser können."
             },
             "tags": {
                 "header": "Select tags",

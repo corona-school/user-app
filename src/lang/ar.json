@@ -1988,13 +1988,13 @@
             "tags": "تعذر إضافة علاماتك.",
             "appointments": "لم يتم إنشاء مواعيد.",
             "isInPastOrInvalid": "لم نتمكن من العثور على هذه الدورة التدريبية أو أنها من الماضي.",
-            "course-name": "يُرجى إدخال اسم المقرر الدراسي.",
             "category": "فئة غير صالحة",
             "subject": "يرجى اختيار مادة دراسية.",
             "grade-range": "يُرجى إدخال نطاق فئة صالحة.",
             "participant-count": "يرجى إدخال عدد صحيح للمشاركين.",
             "unfinished-appointment": "يُرجى حفظ أو حذف موعد غير المكتمل.",
-            "description": "يجب أن يحتوي الوصف على 100 حرف على الأقل."
+            "course-name": "Bitte gib mind. 5 Zeichen ein - du kannst den Titel jederzeit ändern.",
+            "description": "Bitte gib mind. 5 Zeichen ein - du kannst die Beschreibung jederzeit ändern."
         },
         "CourseDate": {
             "step": {
@@ -2020,7 +2020,6 @@
                 "shortDescriptionLabel": "وصف الدورة",
                 "shortDescriptionPlaceholder": "جملة قصيرة حول ما تدور حوله الدورة التدريبية الخاصة بك ...",
                 "descriptionLabel": "وصف",
-                "descriptionPlaceholder": "وصف الدورة",
                 "tagsLabel": "علامات",
                 "tagsEdit": "تحرير العلامات",
                 "tagsPlaceholder": "لتسهيل العثور على دورتك التدريبية",
@@ -2057,7 +2056,8 @@
                 "otherInstructorsDescription": "أضف مدرسين آخرين:",
                 "otherInstructorsTooltip": "أنت نفسك مدير الدورة تلقائيًا. هنا يمكنك إدخال مديرين آخرين يتمتعون بكامل الصلاحيات. أدخل عنوان البريد الإلكتروني الدقيق أو الاسم الأول واسم العائلة في الحقل.",
                 "coursePhotoTooltip": "قم بتحميل الصور التي تمتلك حقوقها أو التي يمكن استخدامها مجانًا فقط. لا تقم بنشر صور لأشخاص آخرين أو علامات تجارية أو محتويات محمية دون إذن صريح.",
-                "allowChatContactTooltip": "إذا قمت بتفعيل هذه الوظيفة، يمكن تلاميذ أيضًا الكتابة تلاميذ دردشة الدورة التدريبية. إذا تم تعطيلها، يمكنك أنت فقط كمدير الدورة التدريبية إرسال رسائل في دردشة الإعلانات."
+                "allowChatContactTooltip": "إذا قمت بتفعيل هذه الوظيفة، يمكن تلاميذ أيضًا الكتابة تلاميذ دردشة الدورة التدريبية. إذا تم تعطيلها، يمكنك أنت فقط كمدير الدورة التدريبية إرسال رسائل في دردشة الإعلانات.",
+                "descriptionPlaceholder": "Beschreibe kurz, worum es im Kurs geht, welche Themen ihr gemeinsam bearbeitet, wie sich die Teilnehmenden einbringen sollen und was sie nach dem Kurs besser können."
             },
             "tags": {
                 "header": "حدد العلامات",
