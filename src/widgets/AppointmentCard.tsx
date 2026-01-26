@@ -2,7 +2,7 @@ import { ReactElement, ReactNode, useMemo, useRef, useState } from 'react';
 import {
     Badge,
     Box,
-    Button,
+    Button as NativeBaseButton,
     CheckCircleIcon,
     Column,
     Flex,
@@ -40,7 +40,8 @@ import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
 import { Typography } from '@/components/Typography';
 import { asTranslationKey } from '@/helper/string-helper';
-import { IconCopy } from '@tabler/icons-react';
+import { IconCopyPlus } from '@tabler/icons-react';
+import { Button } from '@/components/Button';
 
 type Props = {
     appointmentId?: number;
@@ -245,18 +246,11 @@ const AppointmentCard: React.FC<Props> = ({
                                 <VStack position="absolute" left={0} right={0} top={0} width="100%" height="100%">
                                     {onPressDuplicate && (
                                         <Button
-                                            position="absolute"
-                                            variant="subtle"
-                                            opacity={0.5}
-                                            top={4}
-                                            right={4}
-                                            zIndex={10}
-                                            borderRadius={1000}
-                                            width={10}
-                                            height={10}
-                                            onPress={onPressDuplicate}
+                                            className="absolute top-4 right-4 z-10 rounded-full w-10 h-10 bg-black/20 hover:bg-black/40 active:bg-black/60"
+                                            variant="none"
+                                            onClick={onPressDuplicate}
                                         >
-                                            <IconCopy />
+                                            <IconCopyPlus className="stroke-white" />
                                         </Button>
                                     )}
                                     {!isMatch && (
@@ -426,9 +420,9 @@ const AppointmentCard: React.FC<Props> = ({
 
                                 {button && (
                                     <Link href={buttonlink}>
-                                        <Button width={ButtonContainer} paddingTop={space['1.5']} paddingBottom={space['1.5']}>
+                                        <NativeBaseButton width={ButtonContainer} paddingTop={space['1.5']} paddingBottom={space['1.5']}>
                                             {button}
-                                        </Button>
+                                        </NativeBaseButton>
                                     </Link>
                                 )}
                             </Stack>
