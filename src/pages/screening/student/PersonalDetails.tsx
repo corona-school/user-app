@@ -123,7 +123,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         descriptionForScreening,
                         state: location as any,
                         zipCode: zipCode !== '' ? zipCode : null,
-                        calendarPreferences: student.calendarPreferences
+                        calendarPreferences: weeklyAvailability
                             ? {
                                   ...student.calendarPreferences,
                                   weeklyAvailability: weeklyAvailability!,
