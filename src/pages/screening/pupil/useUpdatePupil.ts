@@ -41,7 +41,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         gradeAsInt: grade,
                         subjects: subjects.map((e) => ({ name: e.name, grade: e.grade, mandatory: e.mandatory })),
                         languages: languages as any,
-                        onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (undefined as any),
+                        onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (null as any),
                         hasSpecialNeeds: hasSpecialNeeds === true,
                         school: {
                             name: school?.name,
@@ -54,7 +54,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         descriptionForScreening,
                         isPupil: canHaveMatches,
                         isParticipant: canParticipateInCourses,
-                        calendarPreferences: pupil.calendarPreferences
+                        calendarPreferences: weeklyAvailability
                             ? {
                                   ...pupil.calendarPreferences,
                                   weeklyAvailability: weeklyAvailability!,
