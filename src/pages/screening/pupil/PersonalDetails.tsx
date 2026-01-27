@@ -13,8 +13,8 @@ import { getGradeLabel } from '@/Utility';
 import { EditGradeModal } from '@/widgets/screening/EditGradeModal';
 import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
-import { useMutation } from '@apollo/client';
-import { IconCheck, IconDeviceFloppy, IconKey } from '@tabler/icons-react';
+import { useMutation, useQuery } from '@apollo/client';
+import { IconCheck, IconCopy, IconDeviceFloppy, IconKey } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonField } from '../components/ButtonField';
@@ -26,6 +26,10 @@ import { UpdatePupilFormState } from './useUpdatePupil';
 
 const CREATE_LOGIN_TOKEN_MUTATION = gql(`
     mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
+`);
+
+const SCHOOL_DETAILS_QUERY = gql(`
+    query SchoolDetails($schoolId: String!) { schoolDetail(schoolId: $schoolId) }
 `);
 
 interface FormErrors {
@@ -78,6 +82,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
 
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
     const [errors, setErrors] = useState<FormErrors>({});
+    const { data: schoolDetails } = useQuery(SCHOOL_DETAILS_QUERY, { variables: { schoolId: school?.id?.toString() ?? '' }, skip: !school?.id });
 
     useEffect(() => {
         const updatedErrors = {};
@@ -130,7 +135,18 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                 )}
             </div>
             <div className="flex flex-wrap gap-6">
-                <SchoolSearchInput onSelect={handleOnSelectSchool} defaultValue={school} />
+                <div className="flex items-end gap-x-2">
+                    <SchoolSearchInput onSelect={handleOnSelectSchool} defaultValue={school} />
+                    <Button
+                        onClick={() => {
+                            navigator.clipboard.writeText(JSON.stringify(schoolDetails, null, 2));
+                        }}
+                        variant="outline"
+                        size="icon"
+                    >
+                        <IconCopy size={16} />
+                    </Button>
+                </div>
                 <div className="flex flex-col gap-y-2">
                     <ButtonField label="Schulort" onClick={() => setShowEditLocation(true)}>
                         {pupilLocation ? t(`lernfair.states.${pupilLocation}`) : 'Schulort bearbeiten'}
