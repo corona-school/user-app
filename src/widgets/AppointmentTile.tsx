@@ -121,7 +121,7 @@ const AppointmentTile: React.FC<Props> = ({
                     </div>
                     <div className="flex flex-col justify-between max-h-[100px]">
                         <Typography className={cn('font-bold whitespace-normal break-words line-clamp-2', isHighlighted ? 'text-white' : 'text-primary')}>
-                            {title ?? displayName}
+                            {title || displayName}
                         </Typography>
                         {description && <Typography className="whitespace-normal break-words line-clamp-2">{description}</Typography>}
                         {wasRejectedByMatch && (
