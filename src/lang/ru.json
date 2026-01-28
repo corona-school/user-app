@@ -2604,7 +2604,8 @@
         "Misc": "Разное",
         "Pupil": "ученик",
         "Retiree": "пенсионер",
-        "Student": "студент"
+        "Student": "студент",
+        "Azubi": "Auszubildende:r"
     },
     "reasonsDisabled": {
         "loading": "Данные все еще загружаются...",

@@ -2604,7 +2604,8 @@
         "Misc": "Other",
         "Pupil": "pupil",
         "Retiree": "Pensioner",
-        "Student": "Student"
+        "Student": "Student",
+        "Azubi": "Auszubildende:r"
     },
     "reasonsDisabled": {
         "loading": "Data is still being loaded...",
