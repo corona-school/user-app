@@ -2707,7 +2707,8 @@
         "Misc": "Sonstiges",
         "Pupil": "Schüler:in",
         "Retiree": "Rentner:in",
-        "Student": "Student:in"
+        "Student": "Student:in",
+        "Azubi": "Auszubildende:r"
     },
     "reasonsDisabled": {
         "loading": "Es werden noch Daten geladen...",
