@@ -1861,7 +1861,12 @@
                 "technicalIssues": "У нас були технічні труднощі",
                 "languageIssues": "У нас були мовні труднощі",
                 "other": "Різне",
-                "unknown": "Невідомо"
+                "unknown": "Невідомо",
+                "internshipEnded": "Meine Unterstüzung war Teil eines Praktikums, welches nun zu Ende ist",
+                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
+                "genderPreference": "Wunsch nach weiblicher Unterstützung",
+                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
+                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
             },
             "pupil": {
                 "ghosted": "Мій партнер по навчанню не зв'язався зі мною",
@@ -1873,7 +1878,12 @@
                 "technicalIssues": "У нас були технічні труднощі",
                 "languageIssues": "У нас були мовні труднощі",
                 "other": "Різне",
-                "unknown": "Невідомо"
+                "unknown": "Невідомо",
+                "internshipEnded": "Das Praktikum zur Lernunterstützung meine:s:r Lernpartner:in ist beendet",
+                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
+                "genderPreference": "Wunsch nach weiblicher Unterstützung",
+                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
+                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
             }
         },
         "certificate": {

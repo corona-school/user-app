@@ -1857,7 +1857,12 @@
                 "technicalIssues": "واجهنا صعوبات تقنية",
                 "languageIssues": "واجهنا صعوبات لغوية",
                 "other": "آخر",
-                "unknown": "غير معروف"
+                "unknown": "غير معروف",
+                "internshipEnded": "Meine Unterstüzung war Teil eines Praktikums, welches nun zu Ende ist",
+                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
+                "genderPreference": "Wunsch nach weiblicher Unterstützung",
+                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
+                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
             },
             "pupil": {
                 "ghosted": "شريكي في التعلم لم يقم بالرد علي",
@@ -1869,7 +1874,12 @@
                 "technicalIssues": "واجهنا صعوبات تقنية",
                 "languageIssues": "واجهنا صعوبات لغوية",
                 "other": "آخر",
-                "unknown": "غير معروف"
+                "unknown": "غير معروف",
+                "internshipEnded": "Das Praktikum zur Lernunterstützung meine:s:r Lernpartner:in ist beendet",
+                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
+                "genderPreference": "Wunsch nach weiblicher Unterstützung",
+                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
+                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
             }
         },
         "certificate": {

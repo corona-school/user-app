@@ -1962,6 +1962,11 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
+                "internshipEnded": "Meine Unterstüzung war Teil eines Praktikums, welches nun zu Ende ist",
+                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
+                "genderPreference": "Wunsch nach weiblicher Unterstützung",
+                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
+                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft",
                 "other": "Sonstiges",
                 "unknown": "Unbekannt"
             },
@@ -1974,6 +1979,11 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
+                "internshipEnded": "Das Praktikum zur Lernunterstützung meine:s:r Lernpartner:in ist beendet",
+                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
+                "genderPreference": "Wunsch nach weiblicher Unterstützung",
+                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
+                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft",
                 "other": "Sonstiges",
                 "unknown": "Unbekannt"
             }
