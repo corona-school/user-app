@@ -28,7 +28,7 @@ const Priority: React.FC = () => {
             <NextPrevButtons
                 disablingNext={{ is: matchRequest.subjects.every((it) => !it.mandatory), reason: t('matching.wizard.pupil.priority.reason_btn_disabled') }}
                 onPressPrev={() => setCurrentStep(RequestMatchStep.subjects)}
-                onPressNext={requestMatch}
+                onPressNext={() => requestMatch()}
             />
         </VStack>
     );
