@@ -2600,7 +2600,8 @@
         "Misc": "آخر",
         "Pupil": "طالب",
         "Retiree": "متقاعد",
-        "Student": "طالب"
+        "Student": "طالب",
+        "Azubi": "متدرب"
     },
     "reasonsDisabled": {
         "loading": "لا تزال البيانات قيد التحميل...",
