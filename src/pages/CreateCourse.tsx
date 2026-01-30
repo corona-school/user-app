@@ -256,10 +256,10 @@ const CreateCourse: React.FC = () => {
 
     const save = async (doSubmit: boolean) => {
         const errors: CreateCourseError[] = [];
-        if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 3) {
+        if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 5) {
             errors.push('course-name');
         }
-        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 10) {
+        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 5) {
             errors.push('description');
         }
         if (!updatedSubcourse?.course.category) {
@@ -335,7 +335,7 @@ const CreateCourse: React.FC = () => {
             // get element with id "form", search for first element with class "error" and scroll its parent into view
             const formElement = document.getElementById('form');
             if (formElement) {
-                const errorElement = formElement.querySelector('.error');
+                const errorElement = formElement.querySelector('.error:not(.invisible)');
                 if (errorElement) {
                     errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
@@ -359,22 +359,22 @@ const CreateCourse: React.FC = () => {
                     </div>
                 }
             >
-                <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
-                    {editingExistingCourse ? (
-                        <Breadcrumb
-                            items={[
-                                breadcrumbRoutes.COURSES,
-                                { label: updatedSubcourse?.course.name!, route: `single-course/${courseId}` },
-                                breadcrumbRoutes.EDIT_COURSE,
-                            ]}
-                        />
-                    ) : (
-                        <Breadcrumb />
-                    )}
-                    <Typography variant="h2" className="mb-4">
-                        {editingExistingCourse ? t('course.edit') : t('course.header')}
-                    </Typography>
-                    <div className="flex flex-col gap-5 w-full" id="form">
+                <div className="flex flex-col gap-y-11 max-w-[848px]">
+                    <div className="flex flex-col gap-y-3">
+                        {editingExistingCourse ? (
+                            <Breadcrumb
+                                items={[
+                                    breadcrumbRoutes.COURSES,
+                                    { label: updatedSubcourse?.course.name!, route: `single-course/${courseId}` },
+                                    breadcrumbRoutes.EDIT_COURSE,
+                                ]}
+                            />
+                        ) : (
+                            <Breadcrumb />
+                        )}
+                        <Typography variant="h2">{editingExistingCourse ? t('course.edit') : t('course.header')}</Typography>
+                    </div>
+                    <div className="flex flex-col gap-y-9 gap-5 w-full max-w-4xl" id="form">
                         <CourseDetails
                             subcourse={updatedSubcourse!}
                             setSubcourse={setUpdatedSubcourse}
@@ -391,18 +391,18 @@ const CreateCourse: React.FC = () => {
                             setAppointments={setCourseAppointments}
                         />
                         <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
-                        <div className="flex flex-row gap-2">
-                            <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
+                        <div className="flex flex-col md:flex-row gap-2 lg:justify-end">
+                            <Button variant="outline" className="w-full lg:w-auto" onClick={() => window.history.back()} isLoading={updatingCourse}>
                                 {t('course.CourseDate.Preview.cancel')}
                             </Button>
-                            <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)} isLoading={updatingCourse}>
+                            <Button leftIcon={<IconCheck />} className="w-full lg:w-auto" onClick={() => save(false)} isLoading={updatingCourse}>
                                 {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
                             </Button>
                             {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
                                 <Button
                                     variant="secondary"
                                     rightIcon={<IconArrowRight />}
-                                    className="w-full"
+                                    className="w-full lg:w-auto"
                                     onClick={() => save(true)}
                                     isLoading={updatingCourse}
                                 >

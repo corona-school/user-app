@@ -67,7 +67,7 @@ const AppointmentDay: React.FC<Props> = ({
     const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, start, duration);
     const currentMonth = isCurrentMonth(start);
 
-    const wasRejected = !!participants?.every((e) => declinedBy?.includes(e.userID!));
+    const wasRejected = !!participants?.length && participants?.every((e) => declinedBy?.includes(e.userID!));
 
     return (
         <>

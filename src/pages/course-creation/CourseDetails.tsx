@@ -17,6 +17,7 @@ import { LFSubCourse } from '@/types/lernfair/Course';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import CourseInstructors from '@/pages/course-creation/CourseInstructors';
 import { Toggle } from '@/components/Toggle';
+import { cn } from '@/lib/Tailwind';
 
 const TAGS_QUERY = gql(`
     query GetCourseTags($category: String!) {
@@ -59,15 +60,12 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
 
     return (
         <>
-            <Typography variant="h4">{t('course.CourseDate.step.general')}</Typography>
+            <Typography variant="h5">{t('course.CourseDate.step.general')}</Typography>
             {/*Don't allow homework help courses to change category, as they cannot change it back (hidden category)*/}
             {subcourse.course.category !== Course_Category_Enum.HomeworkHelp && (
                 <div className="flex flex-col gap-2.5">
-                    <Label htmlFor="courseCategory" className="text-base">
-                        {t('course.CourseDate.form.courseCategory')}
-                    </Label>
+                    <Label htmlFor="courseCategory">{t('course.CourseDate.form.courseCategory')}</Label>
                     <RadioGroup
-                        className="px-4"
                         id="courseCategory"
                         value={subcourse.course.category}
                         onValueChange={(v) =>
@@ -76,34 +74,34 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     >
                         <div className="flex sm:flex-row flex-col gap-5">
                             <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id="revision" value={Course_Category_Enum.Revision} />
+                                <RadioGroupItem size="sm" id="revision" value={Course_Category_Enum.Revision} />
                                 <div className="inline-flex align-baseline gap-1.5">
                                     <Label htmlFor="revision">{t('course.CourseDate.form.revision')}</Label>
-                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.revisionTooltip')} />
+                                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.revisionTooltip')} />
                                 </div>
                             </div>
                             <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id="language" value={Course_Category_Enum.Language} />
+                                <RadioGroupItem size="sm" id="language" value={Course_Category_Enum.Language} />
                                 <div className="inline-flex align-baseline gap-1.5">
                                     <Label htmlFor="language">{t('course.CourseDate.form.language')}</Label>
-                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.languageTooltip')} />
+                                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.languageTooltip')} />
                                 </div>
                             </div>
                             <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id="focus" value={Course_Category_Enum.Focus} />
+                                <RadioGroupItem size="sm" id="focus" value={Course_Category_Enum.Focus} />
                                 <div className="inline-flex align-baseline gap-1.5">
                                     <Label htmlFor="focus">{t('course.CourseDate.form.focus')}</Label>
-                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.focusTooltip')} />
+                                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.focusTooltip')} />
                                 </div>
                             </div>
                         </div>
                     </RadioGroup>
                 </div>
             )}
-            <div className="flex sm:flex-row flex-col gap-5">
-                <div className="flex-1 flex flex-col gap-5">
-                    <div className="flex flex-col gap-2.5">
-                        <Label htmlFor="courseName" className="text-base required">
+            <div className="flex  flex-col gap-5">
+                <div className="flex-1 flex flex-col gap-4">
+                    <div className="flex flex-col gap-1.5">
+                        <Label htmlFor="courseName" className="required">
                             {t('course.CourseDate.form.courseNameHeadline')}
                         </Label>
                         <Input
@@ -112,16 +110,14 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
                             onChange={(e) => setSubcourse((s) => ({ ...s, course: { ...s.course, name: e.target.value } }))}
                             className="w-full"
+                            errorMessage={errors.includes('course-name') ? t('course.error.course-name') : undefined}
+                            errorMessageClassName="error"
+                            maxLength={85}
                         />
-                        {errors.includes('course-name') && (
-                            <Typography variant="sm" className="text-red-500 error">
-                                {t('course.error.course-name')}
-                            </Typography>
-                        )}
                     </div>
 
-                    <div className="flex flex-col gap-2.5 h-[80%] min-h-48">
-                        <Label htmlFor="description" className="text-base required">
+                    <div className="flex flex-col gap-1.5 h-[80%] min-h-48">
+                        <Label htmlFor="description" className="required">
                             {t('course.CourseDate.form.descriptionLabel')}
                         </Label>
                         <TextArea
@@ -130,24 +126,20 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
                             onChange={(e) => setSubcourse((s) => ({ ...s, course: { ...s.course, description: e.target.value } }))}
                             className="resize-none h-full flex-grow w-full"
+                            errorMessage={errors.includes('description') ? t('course.error.description') : undefined}
+                            errorMessageClassName="error"
                         />
-                        {errors.includes('description') && (
-                            <Typography variant="sm" className="text-red-500 error">
-                                {t('course.error.description')}
-                            </Typography>
-                        )}
                     </div>
                 </div>
-                <div className="flex-1 flex flex-col gap-5">
+                <div className="flex-1 flex flex-col gap-8">
                     <div className="flex flex-col gap-2.5">
                         <div className="inline-flex align-baseline gap-1.5">
-                            <Label className="text-base">{t('course.CourseDate.step.attendees')}</Label>
-                            <InfoTooltipButton tooltipContent={t('course.CourseDate.form.maxMembersTooltip')} />
+                            <Label>{t('course.CourseDate.step.attendees')}</Label>
+                            <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.maxMembersTooltip')} />
                         </div>
-                        <div className="flex gap-2.5 flex-wrap">
+                        <div className="flex gap-2 flex-wrap">
                             {PREDEFINED_PARTICIPANTS.map((item) => (
                                 <Toggle
-                                    className="flex-grow"
                                     key={item}
                                     variant="primary"
                                     pressed={draftMaxParticipantCount === item.toString()}
@@ -158,7 +150,6 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             ))}
                             <Toggle
                                 pressed={draftMaxParticipantCount === 'custom'}
-                                className="flex-grow"
                                 variant="primary"
                                 onPressedChange={() => setDraftMaxParticipantCount('custom')}
                             >
@@ -177,8 +168,8 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                     {subcourse.course.category === Course_Category_Enum.Revision && (
                         <div className="flex flex-col gap-2.5">
                             <div className="inline-flex align-baseline gap-1.5">
-                                <Label className="text-base required">{t('course.CourseDate.form.courseSubjectLabel')}</Label>
-                                <InfoTooltipButton tooltipContent={t('course.CourseDate.form.courseSubjectTooltip')} />
+                                <Label className="required">{t('course.CourseDate.form.courseSubjectLabel')}</Label>
+                                <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.courseSubjectTooltip')} />
                             </div>
                             <div className="flex gap-2.5 flex-wrap">
                                 {SUBJECTS.map((s) => (
@@ -193,7 +184,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                                 ))}
                             </div>
                             {errors.includes('subject') && (
-                                <Typography variant="sm" className="text-red-500 error">
+                                <Typography variant="sm" className={cn('text-destructive text-[12px] px-1 min-h-5 leading-1 error')}>
                                     {t('course.error.subject')}
                                 </Typography>
                             )}
@@ -206,8 +197,8 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                         subcourse.course.category !== Course_Category_Enum.HomeworkHelp && (
                             <div className="flex flex-col gap-2.5">
                                 <div className="inline-flex align-baseline gap-1.5">
-                                    <Label className="text-base">{t('course.CourseDate.form.tagsLabel')}</Label>
-                                    <InfoTooltipButton tooltipContent={t('course.CourseDate.form.tagsTooltip')} />
+                                    <Label>{t('course.CourseDate.form.tagsLabel')}</Label>
+                                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.tagsTooltip')} />
                                 </div>
                                 <div className="flex gap-2.5 flex-wrap">
                                     {tagsLoading && <CenterLoadingSpinner />}
@@ -233,44 +224,47 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                                 </div>
                             </div>
                         )}
+
+                    {/*  Grade selection  */}
+                    <div className="flex flex-col gap-2.5 max-w-[668px]">
+                        <Label>{t('course.CourseDate.form.detailsContent')}</Label>
+                        <Label htmlFor="gradeSlider">
+                            {t('course.CourseDate.form.classRange', {
+                                minRange: getGradeLabel(subcourse.minGrade!),
+                                maxRange: getGradeLabel(subcourse.maxGrade!),
+                            })}
+                        </Label>
+                        <Slider
+                            id="gradeSlider"
+                            min={1}
+                            max={14}
+                            value={[subcourse.minGrade!, subcourse.maxGrade!]}
+                            onValueChange={(range) => setSubcourse((s) => ({ ...s, minGrade: range[0], maxGrade: range[1] }))}
+                        />
+                        {errors.includes('grade-range') && (
+                            <Typography variant="sm" className="text-red-500 error">
+                                {t('course.error.grade-range')}
+                            </Typography>
+                        )}
+                    </div>
                 </div>
             </div>
 
-            <div className="flex flex-col gap-5 sm:flex-row">
-                <div className="flex flex-1 flex-col gap-2.5">
-                    <Label className="text-base">{t('course.CourseDate.form.coursePhotoLabel')}</Label>
+            <div className="flex flex-col gap-5">
+                <div className="flex flex-1 flex-col gap-2.5 max-w-[464px]">
+                    <div className="inline-flex align-baseline gap-1.5">
+                        <Label>{t('course.CourseDate.form.coursePhotoLabel')}</Label>
+                        <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.coursePhotoTooltip')} />
+                    </div>
                     <Dropzone
                         onUpload={(file) => setPickedPhoto && setPickedPhoto(file)}
                         file={pickedPhoto === undefined ? (subcourse.course.image?.default ? undefined : subcourse.course.image?.url) : pickedPhoto}
                     />
                 </div>
 
-                <div className="flex-1">
+                <div className="flex-1 max-w-[464px]">
                     <CourseInstructors subcourse={subcourse} setSubcourse={setSubcourse} />
                 </div>
-            </div>
-
-            {/*  Grade selection  */}
-            <div className="flex flex-col gap-2.5">
-                <Label className="text-base">{t('course.CourseDate.form.detailsContent')}</Label>
-                <Label htmlFor="gradeSlider">
-                    {t('course.CourseDate.form.classRange', {
-                        minRange: getGradeLabel(subcourse.minGrade!),
-                        maxRange: getGradeLabel(subcourse.maxGrade!),
-                    })}
-                </Label>
-                <Slider
-                    id="gradeSlider"
-                    min={1}
-                    max={14}
-                    value={[subcourse.minGrade!, subcourse.maxGrade!]}
-                    onValueChange={(range) => setSubcourse((s) => ({ ...s, minGrade: range[0], maxGrade: range[1] }))}
-                />
-                {errors.includes('grade-range') && (
-                    <Typography variant="sm" className="text-red-500 error">
-                        {t('course.error.grade-range')}
-                    </Typography>
-                )}
             </div>
         </>
     );

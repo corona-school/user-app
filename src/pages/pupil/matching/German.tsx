@@ -34,7 +34,7 @@ const German: React.FC = () => {
             case '1-2':
                 for (const subject of matchRequest.subjects) removeSubject(subject.name);
                 setSubject({ name: DAZ, mandatory: true });
-                await requestMatch();
+                await requestMatch([{ name: DAZ, mandatory: true }]);
                 setSkippedSubjectPriority(true);
                 setSkippedSubjectList(true);
                 break;

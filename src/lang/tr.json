@@ -364,7 +364,7 @@
                     "max-requests": "Zaten bekleme listesindesiniz.",
                     "deactivated": "Bire bir öğrenme desteği için kayıtlar yoğun talep nedeniyle geçici olarak kapatılmıştır. Öğrenme desteği için daha önce talepte bulunduysanız, sonraki adımları görüşmek üzere yakın gelecekte sizinle e-posta yoluyla iletişime geçeceğiz. Bu arada, lütfen diğer tekliflerimizden yararlanmaktan çekinmeyin. ",
                     "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır.",
-                    "max-matches": "Şu anda aynı anda en fazla 1 öğrenme partnerine sahip olabilirsin. Artık tüm öğrenme partnerlerinle aktif olarak çalışmıyorsan, öğrenme çiftini en iyi şekilde çöz."
+                    "max-matches": "Şu anda en fazla 1 öğrenme partneriniz olabilir. Öğrenme partnerinizle artık çalışmıyorsanız, öğrenme çiftini sonlandırın. Öğrenme çifti sonlandırıldıktan sonra sohbet 3 gün daha açık kalır. Bu süre içinde birbirinize veda etme fırsatınız olur."
                 }
             }
         },
@@ -1984,13 +1984,13 @@
             "tags": "Etiketleriniz eklenemedi.",
             "appointments": "Hiçbir tarih belirlenmedi",
             "isInPastOrInvalid": "Bu kursu bulamadık ya da geçmişte kaldı.",
-            "course-name": "Lütfen bir kurs adı girin.",
-            "description": "Lütfen bir kurs açıklaması girin.",
             "category": "Geçersiz kategori",
             "subject": "Lütfen bir konu seçiniz.",
             "grade-range": "Lütfen geçerli bir sınıf aralığı girin.",
             "participant-count": "Lütfen geçerli bir katılımcı sayısı girin.",
-            "unfinished-appointment": "Lütfen tamamlanmamış randevuyu kaydedin veya silin."
+            "unfinished-appointment": "Lütfen tamamlanmamış randevuyu kaydedin veya silin.",
+            "course-name": "Bitte gib mind. 5 Zeichen ein - du kannst den Titel jederzeit ändern.",
+            "description": "Bitte gib mind. 5 Zeichen ein - du kannst die Beschreibung jederzeit ändern."
         },
         "CourseDate": {
             "step": {
@@ -2016,7 +2016,6 @@
                 "shortDescriptionLabel": "Kısa açıklama",
                 "shortDescriptionPlaceholder": "Kursunuzun ne hakkında olduğuna dair kısa bir cümle ...",
                 "descriptionLabel": "Açıklama",
-                "descriptionPlaceholder": "Kursun açıklaması",
                 "tagsLabel": "Etiketler",
                 "tagsEdit": "Etiketleri düzenle",
                 "tagsPlaceholder": "Kursunuzun daha kolay bulunabilmesi için",
@@ -2051,7 +2050,10 @@
                 "otherInstructorsMentorsTooltip": "Kendiniz otomatik olarak bir kurs liderisiniz. Burada tam haklara sahip diğer liderleri ekleyebilirsiniz. Ya da sadece katılabilecek danışmanlar. Alana tam e-posta adresinizi veya adınızı ve soyadınızı girin.",
                 "otherInstructors": "Kurs yönetimi",
                 "otherInstructorsDescription": "Diğer kurs eğitmenlerini ekle:",
-                "otherInstructorsTooltip": "Sen otomatik olarak kurs yöneticisisin. Burada tam haklara sahip diğer yöneticileri girebilirsin. Alanına tam e-posta adresini veya adı ve soyadını gir."
+                "otherInstructorsTooltip": "Sen otomatik olarak kurs yöneticisisin. Burada tam haklara sahip diğer yöneticileri girebilirsin. Alanına tam e-posta adresini veya adı ve soyadını gir.",
+                "coursePhotoTooltip": "Yalnızca gerekli haklara sahip olduğunuz veya serbestçe kullanılabilen resimleri yükleyin. Açık izin olmadan yabancı kişiler, markalar veya korunan içerikler kullanmayın.",
+                "allowChatContactTooltip": "Bu işlevi etkinleştirirsen, öğrenciler de kurs sohbetinde yazabilirler. Bu işlev devre dışı bırakılırsa, kurs yöneticisi olarak yalnızca sen duyuru sohbetinde mesaj gönderebilirsin.",
+                "descriptionPlaceholder": "Beschreibe kurz, worum es im Kurs geht, welche Themen ihr gemeinsam bearbeitet, wie sich die Teilnehmenden einbringen sollen und was sie nach dem Kurs besser können."
             },
             "tags": {
                 "header": "Etiketleri seçin",

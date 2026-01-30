@@ -63,7 +63,7 @@ type RequestMatchContextType = {
     isEdit: boolean;
     currentStep: RequestMatchStep;
     setCurrentStep: (step: RequestMatchStep) => void;
-    requestMatch: () => Promise<void>;
+    requestMatch: (subject?: Subject[]) => Promise<void>;
 };
 export const RequestMatchContext = createContext<RequestMatchContextType>({
     matchRequest: { subjects: [], message: '' },
@@ -162,19 +162,22 @@ const RequestMatch: React.FC = () => {
             });
     }, [data]);
 
-    const requestMatch = useCallback(async () => {
-        setIsLoading(true);
-        const resSubs = await update({ variables: { subjects: matchRequest.subjects } });
-        let hasError = !!resSubs.errors;
-        if (resSubs.data && !hasError) {
-            if (!isEdit) {
-                const resRequest = await createMatchRequest();
-                hasError = !!resRequest.errors;
+    const requestMatch = useCallback(
+        async (subjects?: Subject[]) => {
+            setIsLoading(true);
+            const resSubs = await update({ variables: { subjects: subjects ?? matchRequest.subjects } });
+            let hasError = !!resSubs.errors;
+            if (resSubs.data && !hasError) {
+                if (!isEdit) {
+                    const resRequest = await createMatchRequest();
+                    hasError = !!resRequest.errors;
+                }
             }
-        }
-        setIsLoading(false);
-        hasError ? toast.error(t('error')) : setShowSuccessModal(true);
-    }, [createMatchRequest, matchRequest.subjects, showSuccessModal, toast, update, isEdit]);
+            setIsLoading(false);
+            hasError ? toast.error(t('error')) : setShowSuccessModal(true);
+        },
+        [createMatchRequest, matchRequest.subjects, showSuccessModal, toast, update, isEdit]
+    );
 
     const handleOnOpenChange = (open: boolean) => {
         setShowSuccessModal(open);
