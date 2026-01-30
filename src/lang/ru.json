@@ -1862,11 +1862,11 @@
                 "languageIssues": "У нас были языковые трудности",
                 "other": "Разное",
                 "unknown": "Неизвестный",
-                "internshipEnded": "Meine Unterstüzung war Teil eines Praktikums, welches nun zu Ende ist",
-                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
-                "genderPreference": "Wunsch nach weiblicher Unterstützung",
-                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
-                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
+                "internshipEnded": "Моя поддержка была частью стажировки, которая теперь закончилась",
+                "subjectMismatch": "Наши предметы (больше) не совпадают",
+                "genderPreference": "Желание поддержки со стороны женщины",
+                "repeatedNoShows": "Мой партнер по обучению часто не появлялся",
+                "newPartnerFound": "Я или мой партнер по обучению нашли другого партнера по обучению"
             },
             "pupil": {
                 "ghosted": "партнёр по обучению Я не ответил",
@@ -1879,11 +1879,11 @@
                 "languageIssues": "У нас были языковые трудности",
                 "other": "Разное",
                 "unknown": "Неизвестный",
-                "internshipEnded": "Das Praktikum zur Lernunterstützung meine:s:r Lernpartner:in ist beendet",
-                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
-                "genderPreference": "Wunsch nach weiblicher Unterstützung",
-                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
-                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
+                "internshipEnded": "Стажировка по поддержке обучения моего партнера по обучению завершена",
+                "subjectMismatch": "Наши предметы (больше) не совпадают",
+                "genderPreference": "Желание получить помощь от женщины",
+                "repeatedNoShows": "Мой партнер по обучению часто не появлялся",
+                "newPartnerFound": "Я или мой партнер по обучению нашли другого партнера по обучению"
             }
         },
         "certificate": {

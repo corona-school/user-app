@@ -1858,11 +1858,11 @@
                 "languageIssues": "واجهنا صعوبات لغوية",
                 "other": "آخر",
                 "unknown": "غير معروف",
-                "internshipEnded": "Meine Unterstüzung war Teil eines Praktikums, welches nun zu Ende ist",
-                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
-                "genderPreference": "Wunsch nach weiblicher Unterstützung",
-                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
-                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
+                "internshipEnded": "كان دعمي جزءًا من تدريب عملي، والذي انتهى الآن",
+                "subjectMismatch": "موادنا الدراسية لم تعد متطابقة",
+                "genderPreference": "الرغبة في الحصول على دعم من أنثى",
+                "repeatedNoShows": "شريكي في التعلم غالبًا ما يتغيب",
+                "newPartnerFound": "أنا أو شريكي في التعلم لدينا شريك تعلم آخر"
             },
             "pupil": {
                 "ghosted": "شريكي في التعلم لم يقم بالرد علي",
@@ -1875,11 +1875,11 @@
                 "languageIssues": "واجهنا صعوبات لغوية",
                 "other": "آخر",
                 "unknown": "غير معروف",
-                "internshipEnded": "Das Praktikum zur Lernunterstützung meine:s:r Lernpartner:in ist beendet",
-                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
-                "genderPreference": "Wunsch nach weiblicher Unterstützung",
-                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
-                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
+                "internshipEnded": "انتهت فترة التدريب الداخلي لدعم التعلم لشريكي في التعلم",
+                "subjectMismatch": "موادنا الدراسية لم تعد متطابقة",
+                "genderPreference": "الرغبة في الحصول على دعم من أنثى",
+                "repeatedNoShows": "شريكي في التعلم غالبًا ما يتغيب",
+                "newPartnerFound": "أنا أو شريكي في التعلم لدينا شراكة تعليمية أخرى"
             }
         },
         "certificate": {

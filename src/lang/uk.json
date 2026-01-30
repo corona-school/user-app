@@ -1862,11 +1862,11 @@
                 "languageIssues": "У нас були мовні труднощі",
                 "other": "Різне",
                 "unknown": "Невідомо",
-                "internshipEnded": "Meine Unterstüzung war Teil eines Praktikums, welches nun zu Ende ist",
-                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
-                "genderPreference": "Wunsch nach weiblicher Unterstützung",
-                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
-                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
+                "internshipEnded": "Моя підтримка була частиною стажування, яке зараз закінчилося",
+                "subjectMismatch": "Наші предмети (більше) не збігаються",
+                "genderPreference": "Бажання отримати підтримку від жінки",
+                "repeatedNoShows": "Мій партнер по навчанню часто не з'являвся",
+                "newPartnerFound": "Я або мій партнер по навчанню маємо іншого партнера по навчанню"
             },
             "pupil": {
                 "ghosted": "Мій партнер по навчанню не зв'язався зі мною",
@@ -1879,11 +1879,11 @@
                 "languageIssues": "У нас були мовні труднощі",
                 "other": "Різне",
                 "unknown": "Невідомо",
-                "internshipEnded": "Das Praktikum zur Lernunterstützung meine:s:r Lernpartner:in ist beendet",
-                "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
-                "genderPreference": "Wunsch nach weiblicher Unterstützung",
-                "repeatedNoShows": "Mein:e Lernpartner:in ist oft nicht erschienen",
-                "newPartnerFound": "Ich oder mein:e Lernpartner:in haben eine andere Lernpartenschaft"
+                "internshipEnded": "Стажування для підтримки навчання мого партнера по навчанню закінчилося",
+                "subjectMismatch": "Наші предмети (більше) не збігаються",
+                "genderPreference": "Бажання отримати підтримку від жінки",
+                "repeatedNoShows": "Мій партнер по навчанню часто не з'являвся",
+                "newPartnerFound": "Я або мій партнер по навчанню маємо іншого партнера по навчанню"
             }
         },
         "certificate": {
