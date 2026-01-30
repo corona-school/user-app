@@ -24,6 +24,8 @@ const pupilOptions = [
     'Print (Flyer, Poster etc.)',
     'Suchmaschine (Google)',
     'Website',
+    'ChatGPT',
+    'Joblinge',
     'Sonstiges',
 ];
 
@@ -41,6 +43,7 @@ const studentOptions = [
     'Unternehmenskooperation',
     'Universität',
     'Von Schüler:in zu Helfer:in',
+    'ChatGPT',
     'Sonstiges',
 ];
 
