@@ -877,27 +877,19 @@
                 "btn": "Deactivate account",
                 "tooltip": "You must give a reason."
             },
-            "pupil": {
-                "0": "I have no more time.",
-                "1": "I am no longer interested.",
-                "2": "I only registered for test purposes.",
-                "3": "I have found another way to get support.",
-                "4": "I imagined the program to be different.",
-                "5": "I do not meet the entry requirements for the projects.",
-                "6": "Other"
-            },
-            "student": {
-                "0": "I no longer have time to get involved.",
-                "1": "I couldn't/wouldn't attend the introductory meeting.",
-                "2": "I am no longer interested.",
-                "3": "I only registered for test purposes.",
-                "4": "I have found another way to get involved.",
-                "5": "I imagined the program to be different.",
-                "6": "I do not meet the entry requirements for the projects.",
-                "7": "Other"
-            },
             "error": "Your account could not be deactivated.",
-            "success": "Your account has been deactivated."
+            "success": "Your account has been deactivated.",
+            "reasons": {
+                "noMoreTime": "I have no more time.",
+                "noMoreInterest": "I am no longer interested.",
+                "onlyTestAccount": "I only registered for test purposes.",
+                "expectationsDiffered": "I imagined the program to be different.",
+                "didntMeetRequirements": "I do not meet the entry requirements for the projects.",
+                "other": "Other",
+                "otherSupportFound": "I have found another way to get support.",
+                "otherVolunteerWorkFound": "I have found another way to get involved.",
+                "couldntAttendMeeting": "I couldn't/wouldn't attend the introductory meeting."
+            }
         },
         "title": "My profile",
         "successmessage": "Changes have been saved successfully.",
