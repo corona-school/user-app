@@ -2605,7 +2605,7 @@
         "Pupil": "pupil",
         "Retiree": "Pensioner",
         "Student": "Student",
-        "Azubi": "Auszubildende:r"
+        "Azubi": "Aprentice"
     },
     "reasonsDisabled": {
         "loading": "Data is still being loaded...",

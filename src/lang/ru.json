@@ -2605,7 +2605,7 @@
         "Pupil": "ученик",
         "Retiree": "пенсионер",
         "Student": "студент",
-        "Azubi": "Auszubildende:r"
+        "Azubi": "стажер"
     },
     "reasonsDisabled": {
         "loading": "Данные все еще загружаются...",

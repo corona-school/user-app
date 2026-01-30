@@ -2601,7 +2601,7 @@
         "Pupil": "طالب",
         "Retiree": "متقاعد",
         "Student": "طالب",
-        "Azubi": "Auszubildende:r"
+        "Azubi": "متدرب"
     },
     "reasonsDisabled": {
         "loading": "لا تزال البيانات قيد التحميل...",
