@@ -1861,7 +1861,12 @@
                 "technicalIssues": "We had technical difficulties",
                 "languageIssues": "We had language difficulties",
                 "other": "Other",
-                "unknown": "Unknown"
+                "unknown": "Unknown",
+                "internshipEnded": "My support was part of an internship, which has now come to an end",
+                "subjectMismatch": "Our subjects no longer match",
+                "genderPreference": "Preference for female support",
+                "repeatedNoShows": "My learning partner often did not show up",
+                "newPartnerFound": "I or my learning partner have found another learning partner"
             },
             "pupil": {
                 "ghosted": "My learning partner did not get back to me",
@@ -1873,7 +1878,12 @@
                 "technicalIssues": "We had technical difficulties",
                 "languageIssues": "We had language difficulties",
                 "other": "Other",
-                "unknown": "Unknown"
+                "unknown": "Unknown",
+                "internshipEnded": "The tutoring internship of my learning partner has ended",
+                "subjectMismatch": "Our subjects no longer match",
+                "genderPreference": "Preference for female support",
+                "repeatedNoShows": "My learning partner often did not show up",
+                "newPartnerFound": "I or my learning partner have found another learning partner"
             }
         },
         "certificate": {
