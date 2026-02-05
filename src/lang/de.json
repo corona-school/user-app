@@ -1938,7 +1938,8 @@
                 "title": "Warum möchtest du das Lernpaar auflösen?",
                 "btn": "Lernpaar auflösen",
                 "tooltip": "Du musst einen Grund angeben.",
-                "otherFreeText": "Grund:"
+                "otherFreeText": "Grund:",
+                "infoCallout": "Deine Auswahl und dein Kommentar werden nur an Lern-Fair gesendet. Dein:e Lernpartner:in {{partnerName}} kann diese nicht lesen"
             },
             "warningModal": {
                 "title": "Bist du sicher?",
