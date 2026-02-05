@@ -2614,7 +2614,8 @@
         "Misc": "Diğer",
         "Pupil": "Öğrenciler",
         "Retiree": "Emekli",
-        "Student": "Öğrenci"
+        "Student": "Öğrenci",
+        "Azubi": "Stajyer"
     },
     "reasonsDisabled": {
         "loading": "Veriler hala yükleniyor...",
