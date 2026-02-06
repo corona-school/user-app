@@ -27,7 +27,7 @@ const SupportEmail = () => (
 );
 
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack, matchName }) => {
-    const [showedWarning, setShowedWarning] = useState<boolean>(true);
+    const [showedWarning, setShowedWarning] = useState<boolean>(false);
     const { t } = useTranslation();
     const userType = useUserType();
     const [reasons, setReasons] = useState<Dissolve_Reason[]>([]);
