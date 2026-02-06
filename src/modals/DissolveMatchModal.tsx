@@ -9,8 +9,8 @@ import { Button } from '@/components/Button';
 import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
 import { Label } from '@/components/Label';
 import { Input } from '@/components/Input';
-import { Alert, HStack, Text, useTheme } from 'native-base';
 import { IconShieldLockFilled } from '@tabler/icons-react';
+import { Alert } from '@/components/Alert';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
@@ -27,8 +27,7 @@ const SupportEmail = () => (
 );
 
 const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack, matchName }) => {
-    const [showedWarning, setShowedWarning] = useState<boolean>(false);
-    const { space } = useTheme();
+    const [showedWarning, setShowedWarning] = useState<boolean>(true);
     const { t } = useTranslation();
     const userType = useUserType();
     const [reasons, setReasons] = useState<Dissolve_Reason[]>([]);
@@ -116,16 +115,13 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                                 />
                             )}
                         </div>
-                        <Alert alignItems="start" marginBottom={space['1']} marginTop={space['0.5']} colorScheme="info">
-                            <HStack space={2} flexShrink={1} alignItems="center">
-                                <IconShieldLockFilled className="size-4 md:size-5" />
-                                <Text>
-                                    {t('matching.dissolve.modal.infoCallout', {
-                                        partnerName: matchName,
-                                    })}
-                                </Text>
-                            </HStack>
+
+                        <Alert className="w-full md:w-fit mb-4 mt-2" icon={<IconShieldLockFilled />}>
+                            {t('matching.dissolve.modal.infoCallout', {
+                                partnerName: matchName,
+                            })}
                         </Alert>
+
                         <ModalFooter variant="default">
                             <Button onClick={onPressBack} variant="ghost">
                                 {t('back')}
