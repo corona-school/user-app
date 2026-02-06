@@ -521,10 +521,10 @@
             },
             "acceptanceCheck": {
                 "title": "Bist du bei uns richtig?",
-                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildende.\nWelche Aussagen treffen auf dich zu?",
-                "needHelpInSchool": "Ich brauche Hilfe in der Schule",
-                "familyCannotHelp": "Meine Familie kann mir nicht bei Schulaufgaben helfen",
-                "familyCannotAffordTutoring": "Meine Familie kann nicht Nachhilfe für mich bezahlen",
+                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildende in Deutschland.\nWelche Aussagen treffen auf dich zu?",
+                "needHelpInSchool": "Ich besuche eine Schule in Deutschland.",
+                "familyCannotHelp": "Meine Familie kann mir nicht bei Schulaufgaben helfen.",
+                "familyCannotAffordTutoring": "Meine Familie kann mir Nachhilfe nicht bezahlen.",
                 "doNotApplyToMe": "Es treffen keine zwei Punkte auf mich zu"
             },
             "acceptanceCheckFailed": {
