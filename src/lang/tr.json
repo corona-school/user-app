@@ -433,7 +433,7 @@
             "acceptanceCheck": {
                 "title": "Doğru yerde misin?",
                 "description": "Tekliflerimiz eğitimde dezavantajlı öğrenciler ve çıraklar içindir.\nSana hangi ifadeler uyuyor?",
-                "needHelpInSchool": "Okulda yardıma ihtiyacım var",
+                "needHelpInSchool": "Almanya'da bir okula gidiyorum",
                 "familyCannotHelp": "Ailem bana ödevlerde yardımcı olamıyor",
                 "familyCannotAffordTutoring": "Ailem benim için özel ders karşılayamıyor",
                 "doNotApplyToMe": "Bana iki madde de uymuyor"
