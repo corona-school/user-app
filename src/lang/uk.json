@@ -333,7 +333,19 @@
             "gesamtschule": "Загальноосвітня школа",
             "other": "Інше",
             "berufsschule": "Професійно-технічне училище",
-            "f_rderschule": "Спеціальна школа"
+            "f_rderschule": "Спеціальна школа",
+            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "stadtteilschule": "Stadtteilschule",
+            "berufsfachschule": "Berufsfachschule (BFS)",
+            "fachoberschule": "Fachoberschule (FOS)",
+            "berufsoberschule": "Berufsoberschule (BOS)",
+            "oberstufenzentrum": "Oberstufenzentrum (OSZ)",
+            "fachschule": "Fachschule",
+            "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
+            "berufskolleg": "Berufskolleg",
+            "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
+            "auslandsschule": "Ausländische Schule",
+            "privatschule": "Privatschule"
         },
         "reason": {
             "course": {
@@ -592,7 +604,8 @@
                 "otherSchoolFound": "Школу введено вручну"
             },
             "schoolType": {
-                "title": "Який тип школи?"
+                "title": "Який тип школи?",
+                "searchPlaceholder": "Інші типи шкіл"
             },
             "zipCode": {
                 "title": "Який твій поштовий індекс?",
