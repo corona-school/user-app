@@ -14,7 +14,7 @@ const PupilGrade = ({ onBack, onNext }: PupilGradeProps) => {
     usePageTitle('Registrierung: Klasse - optional');
 
     const onChange = (grade: number) => {
-        onFormChange({ grade, school: { ...form.school, schooltype: grade === TRAINEE_GRADE ? SchoolType.Berufsschule : form.school.schooltype } });
+        onFormChange({ grade, school: { ...form.school, schooltype: grade === TRAINEE_GRADE ? SchoolType.Berufsschule : null } });
     };
 
     return (

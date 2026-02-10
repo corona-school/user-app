@@ -19,12 +19,21 @@ export function EditSchoolTypeModal({ schoolType, onOpenChange, onSave, isOpen }
         onOpenChange(false);
     };
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-4xl">
             <ModalHeader>
                 <ModalTitle>Schulform bearbeiten</ModalTitle>
             </ModalHeader>
             <div className="flex flex-col gap-y-4">
-                <SchoolTypeSelector className="grid grid-cols-4" value={selectedValue as any} setValue={setSelectedValue as any} />
+                <SchoolTypeSelector
+                    className="grid grid-cols-4 gap-4"
+                    toggleConfig={{
+                        variant: 'outline',
+                        size: 'sm',
+                        className: 'justify-center h-[48px] w-full px-4 font-semibold',
+                    }}
+                    value={selectedValue as any}
+                    setValue={setSelectedValue as any}
+                />
             </div>
             <ModalFooter>
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
