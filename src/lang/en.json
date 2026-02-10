@@ -344,8 +344,8 @@
                 },
                 "pupil": {
                     "subcourse-full": "This course is unfortunately fully booked.",
-                    "grade-to-high": "You cannot register for this course because you are not in the designated year group. The course is intended for younger pupils .",
-                    "grade-to-low": "You cannot register for this course because you are not in the designated year group. The course is intended for older pupils students.",
+                    "grade-to-high": "You cannot register for this course because you are not in the designated year group. The course is intended for younger pupils.",
+                    "grade-to-low": "You cannot register for this course because you are not in the designated year group. The course is intended for older pupils.",
                     "no-lectures": "You cannot register because no lessons have been created for this course.",
                     "already-started": "You can no longer register for the course as it has already started.",
                     "already-participant": "You are already registered for this course.",
@@ -428,12 +428,12 @@
         },
         "steps": {
             "userType": {
-                "title": "Are you a student/apprentice or a helper?"
+                "title": "Are you a pupil/apprentice or a helper?"
             },
             "acceptanceCheck": {
                 "title": "Are you in the right place?",
-                "description": "Our offers are aimed at educationally disadvantaged students and apprentices.\nWhich statements apply to you?",
-                "needHelpInSchool": "I need help at school",
+                "description": "Our offers are aimed at educationally disadvantaged pupils and apprentices in Germany.\nWhich statements apply to you?",
+                "needHelpInSchool": "I attend a school in Germany",
                 "familyCannotHelp": "My family cannot help me with schoolwork",
                 "familyCannotAffordTutoring": "My family cannot afford tutoring for me",
                 "doNotApplyToMe": "None of these two points apply to me"
@@ -533,7 +533,7 @@
             },
             "authenticationInfo": {
                 "title": "Register for free",
-                "pupilEmail": "Email of student/apprentice",
+                "pupilEmail": "Email of pupil/apprentice",
                 "passwordPlaceholder": "Enter password",
                 "emailPlaceholder": "Email address",
                 "registerWith": "Register with {{method}}",
@@ -639,7 +639,7 @@
             }
         },
         "pupil": {
-            "label": "pupil / Apprentice"
+            "label": "pupil / apprentice"
         },
         "student": {
             "label": "volunteer"
@@ -1065,8 +1065,8 @@
                 "button": "On the waiting list",
                 "cancel": "Cancel"
             },
-            "toast": "Student has been added to the course.",
-            "error": "pupil could not be added.",
+            "toast": "Pupil has been added to the course.",
+            "error": "Pupil could not be added.",
             "onwaitinglist": "Put on waiting list",
             "leaveWaitinglist": "Leave waiting list",
             "leaveSuccess": "You have successfully left the waiting list.",
@@ -1090,7 +1090,7 @@
         "removeFromCourse": "Remove from the course",
         "addToCourse": "Add to course",
         "prospectList": {
-            "toast": "Student has been added to the course.",
+            "toast": "Pupil has been added to the course.",
             "error": "Pupil could not be added.",
             "noProspects": "No interested parties who have contacted you via chat.",
             "description": "Here you can see interested parties who have contacted you via chat."
@@ -1442,7 +1442,7 @@
         "homeworkhelp": {
             "title": "Homework help",
             "catcher": "Do you need help with your homework?",
-            "catcherHelper": "Would you like to help students with their homework?",
+            "catcherHelper": "Would you like to help pupils with their homework?",
             "text": "Every day from Monday - Thursday 17h - 18h we offer homework help on Zoom. You can participate every day if you need help with your homework."
         }
     },
@@ -1974,7 +1974,7 @@
                 },
                 "header": "Create course",
                 "title": "The group courses",
-                "firstContent": "You help an educationally disadvantaged student to close knowledge gaps in a group format. The frequency, frequency and duration of the digital meetings is entirely up to you!",
+                "firstContent": "You help an educationally disadvantaged pupils to close knowledge gaps in a group format. The frequency, frequency and duration of the digital meetings is entirely up to you!",
                 "here": "here",
                 "secContent": "You can find more information about our tutoring courses",
                 "thrContent": "on our website.",
@@ -2456,7 +2456,7 @@
         "dissolved_matches": "Resolved matches",
         "previous_screenings": "Previous screenings",
         "no_open_screening": "No open screening",
-        "no_open_screening_long": "The student does not have an open screening where a case decision is pending.",
+        "no_open_screening_long": "The pupil does not have an open screening where a case decision is pending.",
         "success_screening": "Successful screening",
         "rejection_screening": "Rejected screening",
         "dispute_screening": "Unclear screening",
@@ -2816,7 +2816,7 @@
     "changesWereSaved": "Changes have been saved",
     "lesson": {
         "pageTitle": "Lesson planning with AI",
-        "generatePlanText": "Create a lesson plan to teach your students.",
+        "generatePlanText": "Create a lesson plan to teach your pupils.",
         "generatePlanButton": "Create a lesson plan",
         "lessonGrade": "Class:",
         "subject": "Subject:",
