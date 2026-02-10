@@ -39,6 +39,11 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
         Dissolve_Reason.TechnicalIssues,
         Dissolve_Reason.LanguageIssues,
         Dissolve_Reason.Other,
+        Dissolve_Reason.InternshipEnded,
+        Dissolve_Reason.SubjectMismatch,
+        Dissolve_Reason.GenderPreference,
+        Dissolve_Reason.RepeatedNoShows,
+        Dissolve_Reason.NewPartnerFound,
     ];
 
     return (
