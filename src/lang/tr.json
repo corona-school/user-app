@@ -433,7 +433,7 @@
             "acceptanceCheck": {
                 "title": "Doğru yerde misin?",
                 "description": "Tekliflerimiz eğitimde dezavantajlı öğrenciler ve çıraklar içindir.\nSana hangi ifadeler uyuyor?",
-                "needHelpInSchool": "Okulda yardıma ihtiyacım var",
+                "needHelpInSchool": "Almanya'da bir okula gidiyorum",
                 "familyCannotHelp": "Ailem bana ödevlerde yardımcı olamıyor",
                 "familyCannotAffordTutoring": "Ailem benim için özel ders karşılayamıyor",
                 "doNotApplyToMe": "Bana iki madde de uymuyor"
@@ -1861,7 +1861,12 @@
                 "technicalIssues": "Teknik sorunlar yaşadık",
                 "languageIssues": "Dil sorunlarımız vardı",
                 "other": "Diğer",
-                "unknown": "Bilinmiyor"
+                "unknown": "Bilinmiyor",
+                "internshipEnded": "Desteğim, artık sona ermiş olan bir stajın parçasıydı",
+                "subjectMismatch": "Konularımız (artık) uyuşmuyor",
+                "genderPreference": "Kadın destekçi isteği",
+                "repeatedNoShows": "Öğrenme partnerim sık sık gelmiyor",
+                "newPartnerFound": "Ben veya öğrenme partnerim başka bir öğrenme partneri bulduk"
             },
             "pupil": {
                 "ghosted": "Öğrenme ortağım bana geri dönmedi",
@@ -1873,7 +1878,12 @@
                 "technicalIssues": "Teknik sorunlar yaşadık",
                 "languageIssues": "Dil sorunlarımız vardı",
                 "other": "Diğer",
-                "unknown": "Bilinmiyor"
+                "unknown": "Bilinmiyor",
+                "internshipEnded": "Öğrenme ortağımın öğrenimini desteklemek için yapılan staj sona ermiştir",
+                "subjectMismatch": "Konularımız (artık) uyuşmuyor",
+                "genderPreference": "Kadın destekçi tercihi",
+                "repeatedNoShows": "Öğrenme partnerim sık sık gelmedi",
+                "newPartnerFound": "Ben veya öğrenme partnerim başka bir öğrenme partneri bulduk"
             }
         },
         "certificate": {
@@ -2604,7 +2614,8 @@
         "Misc": "Diğer",
         "Pupil": "Öğrenciler",
         "Retiree": "Emekli",
-        "Student": "Öğrenci"
+        "Student": "Öğrenci",
+        "Azubi": "Stajyer"
     },
     "reasonsDisabled": {
         "loading": "Veriler hala yükleniyor...",
