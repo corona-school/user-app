@@ -401,9 +401,21 @@
             "realschule": "Realschule",
             "gymnasium": "Gymnasium",
             "gesamtschule": "Gesamtschule",
-            "other": "Andere",
             "berufsschule": "Berufsschule",
-            "f_rderschule": "Förderschule"
+            "f_rderschule": "Förderschule",
+            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "stadtteilschule": "Stadtteilschule",
+            "berufsfachschule": "Berufsfachschule (BFS)",
+            "fachoberschule": "Fachoberschule (FOS)",
+            "berufsoberschule": "Berufsoberschule (BOS)",
+            "oberstufenzentrum": "Oberstufenzentrum (OSZ)",
+            "fachschule": "Fachschule",
+            "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
+            "berufskolleg": "Berufskolleg",
+            "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
+            "auslandsschule": "Ausländische Schule",
+            "privatschule": "Privatschule",
+            "other": "Andere"
         },
         "genders": {
             "male": "Männlich",
@@ -689,7 +701,8 @@
                 "otherSchoolFound": "Schule eingetragen"
             },
             "schoolType": {
-                "title": "Welche Art von Schule?"
+                "title": "Welche Art von Schule?",
+                "searchPlaceholder": "Weitere Schulformen"
             },
             "zipCode": {
                 "title": "Wie ist deine Postleitzahl?",

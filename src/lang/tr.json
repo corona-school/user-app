@@ -333,7 +333,19 @@
             "gesamtschule": "Kapsamlı (genel) okul",
             "other": "Diğer",
             "berufsschule": "Meslek okulu",
-            "f_rderschule": " Özel eğitim okulu"
+            "f_rderschule": " Özel eğitim okulu",
+            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "stadtteilschule": "Stadtteilschule",
+            "berufsfachschule": "Berufsfachschule (BFS)",
+            "fachoberschule": "Fachoberschule (FOS)",
+            "berufsoberschule": "Berufsoberschule (BOS)",
+            "oberstufenzentrum": "Oberstufenzentrum (OSZ)",
+            "fachschule": "Fachschule",
+            "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
+            "berufskolleg": "Berufskolleg",
+            "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
+            "auslandsschule": "Ausländische Schule",
+            "privatschule": "Privatschule"
         },
         "reason": {
             "course": {
@@ -592,7 +604,8 @@
                 "otherSchoolFound": "Okul manuel girildi"
             },
             "schoolType": {
-                "title": "Okulun türü nedir?"
+                "title": "Okulun türü nedir?",
+                "searchPlaceholder": "Diğer okul türleri"
             },
             "zipCode": {
                 "title": "Posta kodun nedir?",
