@@ -2567,7 +2567,7 @@
     },
     "certificateOfConduct": {
         "header": "Submit certificate of good conduct",
-        "description": "The protection of children and young people is very important to us, which is why we require an extended certificate of good conduct from all volunteers within eight weeks of the introductory meeting. In order to keep your account active, we ask you to apply for the extended certificate of good conduct promptly and submit it to us by the deadline. You can use the certificate to apply for the extended certificate of good conduct free of charge.",
+        "description": "The protection of children and adolescents is very important to us, therefore we require all volunteers to provide an extended certificate of conduct within eight weeks after the introductory meeting. After this period, we will have to deactivate your account. You can also apply for the certificate of conduct online at <fz>www.fuehrungszeugnis.bund.de</fz> – with the <strong>application for fee exemption</strong>, the extended certificate of conduct is free of charge.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "After this date, your account with us will be automatically deactivated. \nIf you need more time to apply, please send us an email to support@lern-fair.de.",
         "alert_message": "<strong>Please note:</strong> Applying for an extended certificate of good conduct can take several weeks in some cases!",

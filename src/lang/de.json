@@ -2662,7 +2662,7 @@
     },
     "certificateOfConduct": {
         "header": "Führungszeugnis einreichen",
-        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Nach Ablauf dieser Frist müssen wir dein Konto deaktivieren. Du kannst das Führungszeugnis auch online beantragen unter www.fuehrungszeugnis.bund.de - Mit dem \"Antrag auf Gebührenbefreiung\" ist das erweiterte Führungszeugnis kostenlos.",
+        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Nach Ablauf dieser Frist müssen wir dein Konto deaktivieren. Du kannst das Führungszeugnis auch online beantragen unter <fz>www.fuehrungszeugnis.bund.de</fz> - Mit dem <strong>Antrag auf Gebührenbefreiung</strong> ist das erweiterte Führungszeugnis kostenlos.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "Nach diesem Datum wird dein Nutzerkonto bei uns automatisch deaktiviert. \nSolltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
         "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",

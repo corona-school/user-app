@@ -2567,7 +2567,7 @@
     },
     "certificateOfConduct": {
         "header": "İyi hal belgesini ibraz edin",
-        "description": "Çocukların ve gençlerin korunması bizim için çok önemlidir, bu nedenle tanıtım toplantısından sonraki sekiz hafta içinde tüm gönüllülerden genişletilmiş bir iyi davranış sertifikası talep ediyoruz. Hesabınızı aktif tutmak için, genişletilmiş iyi davranış sertifikası için derhal başvurmanızı ve son tarihe kadar bize göndermenizi rica ediyoruz. Sertifikayı, genişletilmiş iyi davranış sertifikasına ücretsiz olarak başvurmak için kullanabilirsiniz.",
+        "description": "Çocukların ve gençlerin korunması bizim için çok önemlidir, bu nedenle tüm gönüllülerden tanışma görüşmesinden sonraki sekiz hafta içinde genişletilmiş sabıka kaydı belgesi talep ediyoruz. Bu sürenin sonunda hesabınızı devre dışı bırakmak zorunda kalacağız. Sabıka kaydı belgesini ayrıca çevrimiçi olarak <fz>www.fuehrungszeugnis.bund.de</fz> üzerinden de başvurabilirsiniz – <strong>ücret muafiyeti başvurusu</strong> ile genişletilmiş sabıka kaydı ücretsizdir.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "Bu tarihten sonra, bizimle olan hesabınız otomatik olarak devre dışı bırakılacaktır. \nlern-fairBaşvuru için daha fazla zamana ihtiyacınız varsa, lütfen bize support@ .de adresine bir e-posta gönderin.",
         "alert_message": "<strong>Lütfen dikkat:</strong> Uzatılmış iyi hal belgesi başvurusu bazı durumlarda birkaç hafta sürebilir!",
