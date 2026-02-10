@@ -63,6 +63,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
         const gridItemsCount = maxVisibleItems ?? Object.values(values).length;
         const gridItems = Object.values(values).slice(0, gridItemsCount);
         const [search, setSearch] = useState('');
+        const shouldShowSearch = maxVisibleItems && Object.values(values).length > maxVisibleItems;
 
         const memoizedSearchItems = useMemo(() => {
             const searchItems = Object.values(values).slice(gridItemsCount, Object.values(values).length);
@@ -108,7 +109,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                         </Toggle>
                     );
                 })}
-                {searchConfig && (
+                {searchConfig && shouldShowSearch && (
                     <div className={searchConfig?.containerClassName}>
                         <Combobox
                             values={memoizedSearchItems}
