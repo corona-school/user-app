@@ -1867,9 +1867,9 @@
                     "availabilityRequirement": "Bitte richte zuerst deine Verfügbarkeit ein, um fortzufahren."
                 },
                 "success": {
-                    "title": "Geschafft, du bist ein:e Held:in!",
+                    "title": "Anfrage erfolgreich erstellt",
                     "subtitle": "Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!",
-                    "subtitle2": "Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche dauert in der Regel maximal eine Woche. Sobald wir jemanden für dich gefunden haben, werden wir dich direkt per E-Mail benachrichtigen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden."
+                    "subtitle2": "Wir suchen nun eine:n passende:n Schüler:in für dich. Häufig finden wir schon innerhalb einer Woche eine geeignete Person. Je nach Fach und aktueller Nachfrage kann es aber auch länger dauern. Sobald wir jemanden für dich gefunden haben, werden wir dich direkt per E-Mail benachrichtigen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden."
                 },
                 "grades": {
                     "title": "Jahrgangsstufen",
