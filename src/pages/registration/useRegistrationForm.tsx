@@ -182,7 +182,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (currentStepIndex === -1 || !values.currentStep) return;
 
         let nextStep = getNextStepFrom(values.currentStep);
-        const shouldSkipSchoolType = values.school.schooltype;
+        const shouldSkipSchoolType = false; //values.school.schooltype;
         const shouldSkipZipCode = values.school.zip && values.zipCode;
 
         if (values.userType === 'pupil') {
@@ -227,7 +227,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         };
         let prevStep = getPrevStepFrom(values.currentStep);
 
-        const shouldSkipSchoolType = values.school.schooltype;
+        const shouldSkipSchoolType = false; // values.school.schooltype;
         const shouldSkipZipCode = values.school.zip && values.zipCode;
 
         if (prevStep === RegistrationStep.zipCode && shouldSkipZipCode) {
