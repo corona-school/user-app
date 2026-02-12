@@ -1,6 +1,6 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useTheme, VStack, Column, useBreakpointValue } from 'native-base';
-import { useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
@@ -12,8 +12,9 @@ import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
 import { GAMIFICATION_ACTIVE, LESSON_PLAN_GENERATOR_ACTIVE, REFERRALS_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import { IconX } from '@tabler/icons-react';
+import { IconChevronRight, IconUser, IconX, IconBell } from '@tabler/icons-react';
 import { Button } from '@/components/Button';
+import { Separator } from '@/components/Separator';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -61,6 +62,25 @@ const Settings: React.FC = () => {
                     </Button>
                 }
             >
+                <div className={'text-2xl font-bold py-2'}>Meine Einstellungen</div>
+                <Separator className="my-3 w-full" />
+                <div id={'sidebar'}>
+                    <div className="hidden md:block min-w-72">
+                        <nav className="flex min-w-72 flex-col h-full fixed  pb-6 justify-between">
+                            <div className="flex flex-col gap-y-4 ">
+                                <SettingRow title={''}>
+                                    <SettingItem title={'Profil'} Icon={IconUser} link={'/profile'} />
+                                    <SettingItem title={'Benachrichtigungen'} Icon={IconBell} link={'/profile'} />
+                                </SettingRow>
+                                <SettingRow title={'Allgemein'}>
+                                    <SettingItem title={'Profil'} Icon={IconUser} link={'/profile'} />
+                                    <SettingItem title={'Profil'} Icon={IconUser} link={'/profile'} />
+                                </SettingRow>
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+
                 <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                     <Breadcrumb />
                     <>
@@ -174,3 +194,26 @@ const Settings: React.FC = () => {
     );
 };
 export default Settings;
+
+const SettingRow = ({ title, children }: { title: string; children: ReactNode }) => {
+    return (
+        <div className={'w-full'}>
+            <div className={'text-sm mb-3'}>{title}</div>
+            <div className={'flex flex-col gap-2 mb-5'}>{children}</div>
+            <Separator className="my-2 w-full" />
+        </div>
+    );
+};
+
+const SettingItem = ({ title, Icon, link }: { title: string; Icon: React.ElementType; link: string }) => {
+    const navigate = useNavigate();
+    return (
+        <div className="inline-flex items-center gap-3 hover:bg-accent rounded-md px-2 py-1 cursor-pointer" onClick={() => navigate(link)}>
+            <Icon size={22} className="text-primary" />
+            <span>{title}</span>
+            <div className={'ml-auto'}>
+                <IconChevronRight />
+            </div>
+        </div>
+    );
+};
