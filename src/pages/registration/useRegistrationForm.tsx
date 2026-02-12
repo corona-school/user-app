@@ -14,7 +14,6 @@ import {
     RegistrationStep,
     STUDENT_FLOW,
 } from './util';
-import { TRAINEE_GRADE } from '@/Utility';
 
 export interface RegistrationForm {
     userType?: 'pupil' | 'student';
@@ -183,7 +182,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (currentStepIndex === -1 || !values.currentStep) return;
 
         let nextStep = getNextStepFrom(values.currentStep);
-        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE || values.school.schooltype;
+        const shouldSkipSchoolType = values.school.schooltype;
         const shouldSkipZipCode = values.school.zip && values.zipCode;
 
         if (values.userType === 'pupil') {
@@ -228,7 +227,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         };
         let prevStep = getPrevStepFrom(values.currentStep);
 
-        const shouldSkipSchoolType = values.grade === TRAINEE_GRADE || values.school.schooltype;
+        const shouldSkipSchoolType = values.school.schooltype;
         const shouldSkipZipCode = values.school.zip && values.zipCode;
 
         if (prevStep === RegistrationStep.zipCode && shouldSkipZipCode) {
