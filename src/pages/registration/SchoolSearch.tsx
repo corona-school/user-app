@@ -8,8 +8,8 @@ import { RegistrationForm, useRegistrationForm } from './useRegistrationForm';
 import { Combobox } from '@/components/Combobox';
 import { cn } from '@/lib/Tailwind';
 import { Typography } from '@/components/Typography';
-import { schooltypes } from '@/types/lernfair/SchoolType';
 import { Maybe } from 'graphql/jsutils/Maybe';
+import { schoolTypeSearchStrings } from '@/components/SchoolTypeSelector';
 
 interface SchoolSearchProps extends RegistrationStepProps {}
 
@@ -25,11 +25,12 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
         if (newSelectedSchool) {
             let schoolType: Maybe<string> = newSelectedSchool.schooltype;
             if (!schoolType) {
-                schoolType = schooltypes.find((e) => {
-                    const schoolTypeLabel = e.label.toLowerCase();
-                    const selectedSchoolName = newSelectedSchool.name.toLowerCase();
-                    return selectedSchoolName.includes(schoolTypeLabel);
-                })?.key;
+                for (const [type, searchStrings] of Object.entries(schoolTypeSearchStrings)) {
+                    if (searchStrings.some((s) => newSelectedSchool.name.toLowerCase().includes(s))) {
+                        schoolType = type;
+                        break;
+                    }
+                }
             }
             onFormChange({
                 school: { ...newSelectedSchool, schooltype: schoolType as School_Schooltype_Enum },
