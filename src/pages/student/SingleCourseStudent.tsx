@@ -70,10 +70,6 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             isInstructor
             allowContact
         }
-        lectures{
-            start
-            duration
-        }
         appointments {
               id
               appointmentType
@@ -312,8 +308,8 @@ const SingleCourseStudent = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            (subcourse.lectures.length !== 0 &&
-                subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis())),
+            (subcourse.appointments.length !== 0 &&
+                subcourse.appointments.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis())),
         [subcourse]
     );
 
@@ -410,7 +406,9 @@ const SingleCourseStudent = () => {
                         <SubcourseData
                             course={course}
                             subcourse={
-                                isInstructorOfSubcourse && instructorSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse.subcourse } : subcourse
+                                isInstructorOfSubcourse && instructorSubcourse && !subLoading
+                                    ? { ...subcourse, ...instructorSubcourse.subcourse, lectures: subcourse.appointments }
+                                    : { ...subcourse, lectures: subcourse.appointments }
                             }
                             isInPast={isInPast}
                         />
