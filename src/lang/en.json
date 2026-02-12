@@ -448,7 +448,7 @@
                 "needHelpInSchool": "I attend a school in Germany",
                 "familyCannotHelp": "My family cannot help me with schoolwork",
                 "familyCannotAffordTutoring": "My family cannot afford tutoring for me",
-                "doNotApplyToMe": "None of these two points apply to me"
+                "doNotApplyToMe": "None of these three points apply to me"
             },
             "acceptanceCheckFailed": {
                 "title": "What a pity.",

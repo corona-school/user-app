@@ -24,7 +24,7 @@ export const AcceptanceCheck = ({ onBack, onNext, onFail }: AcceptanceCheckProps
 
     const hasCheckedAtLeastTwo = () => {
         const selectedCount = Object.values(form.acceptanceCheck).filter(Boolean).length;
-        return selectedCount >= 2;
+        return selectedCount >= 3;
     };
 
     return (

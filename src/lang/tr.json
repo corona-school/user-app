@@ -448,7 +448,7 @@
                 "needHelpInSchool": "Almanya'da bir okula gidiyorum",
                 "familyCannotHelp": "Ailem bana ödevlerde yardımcı olamıyor",
                 "familyCannotAffordTutoring": "Ailem benim için özel ders karşılayamıyor",
-                "doNotApplyToMe": "Bana iki madde de uymuyor"
+                "doNotApplyToMe": "Üç maddenin hepsi benim için geçerli değil."
             },
             "acceptanceCheckFailed": {
                 "title": "Ne yazık.",
