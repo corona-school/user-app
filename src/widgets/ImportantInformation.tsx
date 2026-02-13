@@ -15,6 +15,7 @@ import AchievementModal from '../components/achievements/modals/AchievementModal
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
 import { createPupilScreeningLink, createStudentScreeningLink } from '../helper/screening-helper';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -27,6 +28,8 @@ type Information = {
     btntxt?: string[];
     key?: string;
 };
+
+type ConfigurableInfo = { title: string; desciption: string; language: string; btnfn: (() => void) | null };
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
 query GetOnboardingInfos {
@@ -123,6 +126,7 @@ query GetOnboardingInfos {
 
 const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { t, i18n } = useTranslation();
+    const { trackEvent } = useMatomo();
     const navigate = useNavigate();
 
     const { show } = useModal();
@@ -317,7 +321,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }, [student, sendMail, email, pupil, roles, confirmInterest, refuseInterest, deleteMatchRequest, data, navigate]);
 
     const configurableInfos = useMemo(() => {
-        let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
+        let configurableInfos: ConfigurableInfo[] = [];
 
         // -------- Configurable Important Information -----------
         importantInformations
@@ -335,12 +339,31 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                               window.location.href = info.navigateTo;
                           }
                         : null,
+                    language: info.language,
                 });
             });
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
     if (!infos.length && !configurableInfos.length) return null;
+
+    const handleOnConfigurableInfoClick = (info: ConfigurableInfo) => {
+        trackEvent({
+            category: 'dashboard',
+            action: 'Click Important Information Card',
+            name: `${pupil ? 'SuS' : 'HuH'} - ${info.title} - ${info.language}`,
+        });
+        info.btnfn && info.btnfn();
+    };
+
+    const handleOnInfoClick = (info: Information) => {
+        trackEvent({
+            category: 'dashboard',
+            action: 'Click Important Information Card',
+            name: `${pupil ? 'SuS' : 'HuH'} - ${t(`helperwizard.${info.label}.title` as unknown as TemplateStringsArray, { lng: 'de' })}`,
+        });
+        setSelectedInformation(info);
+    };
 
     return (
         <Box>
@@ -400,7 +423,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             actionDescription={t('moreInfoButton')}
                             actionType={Achievement_Action_Type_Enum.Action}
                             onClick={() => {
-                                info.btnfn && info.btnfn();
+                                handleOnConfigurableInfoClick(info);
                             }}
                         />
                     );
@@ -419,7 +442,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             description={t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
                             actionDescription={actionDescription}
                             actionType={Achievement_Action_Type_Enum.Action}
-                            onClick={() => setSelectedInformation({ ...config, btntxt: buttontexts })}
+                            onClick={() => handleOnInfoClick({ ...config, btntxt: buttontexts })}
                         />
                     );
                 })}

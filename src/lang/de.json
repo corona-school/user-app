@@ -403,7 +403,9 @@
             "gesamtschule": "Gesamtschule",
             "berufsschule": "Berufsschule",
             "f_rderschule": "Förderschule",
-            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "mittelschule": "Mittelschule",
+            "oberschule": "Oberschule",
+            "sekundarschule": "Sekundarschule",
             "stadtteilschule": "Stadtteilschule",
             "berufsfachschule": "Berufsfachschule (BFS)",
             "fachoberschule": "Fachoberschule (FOS)",
@@ -412,6 +414,7 @@
             "fachschule": "Fachschule",
             "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
             "berufskolleg": "Berufskolleg",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
             "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
             "auslandsschule": "Ausländische Schule",
             "privatschule": "Privatschule",
@@ -1951,7 +1954,8 @@
                 "title": "Warum möchtest du das Lernpaar auflösen?",
                 "btn": "Lernpaar auflösen",
                 "tooltip": "Du musst einen Grund angeben.",
-                "otherFreeText": "Grund:"
+                "otherFreeText": "Grund:",
+                "infoCallout": "Deine Auswahl und dein Kommentar werden nur an Lern-Fair gesendet. Dein:e Lernpartner:in {{partnerName}} kann diese nicht lesen"
             },
             "warningModal": {
                 "title": "Bist du sicher?",

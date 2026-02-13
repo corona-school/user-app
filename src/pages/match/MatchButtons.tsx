@@ -136,6 +136,7 @@ export const MatchButtons = ({ match, isLoading, refresh }: MatchButtonsProps) =
                     return await dissolve(reasons, otherFreeText);
                 }}
                 onPressBack={() => setShowDissolveModal(false)}
+                matchName={userType === 'student' ? match?.pupil.firstname : match?.student.firstname}
             />
             {match?.id && <AdHocMeetingModal onOpenChange={setShowAdHocMeetingModal} isOpen={showAdHocMeetingModal} matchId={match.id} />}
             {match?.pupil.firstname && match?.student.firstname && (

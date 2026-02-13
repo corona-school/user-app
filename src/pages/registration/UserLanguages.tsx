@@ -34,7 +34,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
                     className="flex flex-wrap justify-center"
                     searchConfig={{
                         containerClassName: 'w-full sm:max-w-[342px] md:w-[227px]',
-                        className: 'bg-white',
+                        className: '',
                         placeholder: t('otherLanguages'),
                     }}
                     toggleConfig={{
