@@ -333,7 +333,22 @@
             "gesamtschule": "Загальноосвітня школа",
             "other": "Інше",
             "berufsschule": "Професійно-технічне училище",
-            "f_rderschule": "Спеціальна школа"
+            "f_rderschule": "Спеціальна школа",
+            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "stadtteilschule": "Stadtteilschule",
+            "berufsfachschule": "Berufsfachschule (BFS)",
+            "fachoberschule": "Fachoberschule (FOS)",
+            "berufsoberschule": "Berufsoberschule (BOS)",
+            "oberstufenzentrum": "Oberstufenzentrum (OSZ)",
+            "fachschule": "Fachschule",
+            "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
+            "berufskolleg": "Berufskolleg",
+            "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
+            "auslandsschule": "Ausländische Schule",
+            "privatschule": "Privatschule",
+            "sekundarschule": "Sekundarschule",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
+            "oberschule": "Oberschule"
         },
         "reason": {
             "course": {
@@ -433,7 +448,7 @@
             "acceptanceCheck": {
                 "title": "Ти в правильному місці?",
                 "description": "Наші пропозиції призначені для учнів і студентів, які мають освітні труднощі.\nЯкі твердження підходять тобі?",
-                "needHelpInSchool": "Мені потрібна допомога в школі",
+                "needHelpInSchool": "Я навчаюся в школі в Німеччині",
                 "familyCannotHelp": "Моя сім’я не може допомогти мені з домашніми завданнями",
                 "familyCannotAffordTutoring": "Моя сім’я не може оплатити репетитора",
                 "doNotApplyToMe": "Жоден з двох пунктів мені не підходить"
@@ -592,7 +607,8 @@
                 "otherSchoolFound": "Школу введено вручну"
             },
             "schoolType": {
-                "title": "Який тип школи?"
+                "title": "Який тип школи?",
+                "searchPlaceholder": "Інші типи шкіл"
             },
             "zipCode": {
                 "title": "Який твій поштовий індекс?",
@@ -2614,7 +2630,7 @@
     },
     "certificateOfConduct": {
         "header": "Надати довідку про несудимість",
-        "description": "Захист дітей та молоді дуже важливий для нас, тому ми вимагаємо від усіх волонтерів розширену довідку про несудимість протягом восьми тижнів після вступної зустрічі. Для того, щоб ваш обліковий запис залишався активним, ми просимо вас якнайшвидше подати заявку на отримання продовженої довідки про несудимість і надіслати її нам до встановленого терміну. Ви можете використати цей сертифікат для подачі заявки на продовжену довідку про несудимість безкоштовно.",
+        "description": "Захист дітей та підлітків є для нас надзвичайно важливим, тому ми вимагаємо від усіх волонтерів подати розширену довідку про несудимість протягом восьми тижнів після знайомчої зустрічі. Після закінчення цього терміну ми будемо змушені деактивувати ваш обліковий запис. Ви також можете подати заявку на довідку про несудимість онлайн за посиланням <fz>www.fuehrungszeugnis.bund.de</fz> – з <strong>заявою на звільнення від оплати</strong> розширена довідка про несудимість надається безкоштовно.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "Після цієї дати ваш обліковий запис буде автоматично деактивовано. \nlern-fairЯкщо вам потрібно більше часу для подачі заявки, будь ласка, надішліть нам електронного листа на адресу support@ .de.",
         "alert_message": "Зверніть <strong>увагу:</strong> в деяких випадках подання заяви на отримання розширеної довідки про несудимість може зайняти кілька тижнів!",

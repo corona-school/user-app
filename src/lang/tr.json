@@ -333,7 +333,22 @@
             "gesamtschule": "Kapsamlı (genel) okul",
             "other": "Diğer",
             "berufsschule": "Meslek okulu",
-            "f_rderschule": " Özel eğitim okulu"
+            "f_rderschule": " Özel eğitim okulu",
+            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "stadtteilschule": "Stadtteilschule",
+            "berufsfachschule": "Berufsfachschule (BFS)",
+            "fachoberschule": "Fachoberschule (FOS)",
+            "berufsoberschule": "Berufsoberschule (BOS)",
+            "oberstufenzentrum": "Oberstufenzentrum (OSZ)",
+            "fachschule": "Fachschule",
+            "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
+            "berufskolleg": "Berufskolleg",
+            "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
+            "auslandsschule": "Ausländische Schule",
+            "privatschule": "Privatschule",
+            "sekundarschule": "Sekundarschule",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
+            "oberschule": "Oberschule"
         },
         "reason": {
             "course": {
@@ -433,7 +448,7 @@
             "acceptanceCheck": {
                 "title": "Doğru yerde misin?",
                 "description": "Tekliflerimiz eğitimde dezavantajlı öğrenciler ve çıraklar içindir.\nSana hangi ifadeler uyuyor?",
-                "needHelpInSchool": "Okulda yardıma ihtiyacım var",
+                "needHelpInSchool": "Almanya'da bir okula gidiyorum",
                 "familyCannotHelp": "Ailem bana ödevlerde yardımcı olamıyor",
                 "familyCannotAffordTutoring": "Ailem benim için özel ders karşılayamıyor",
                 "doNotApplyToMe": "Bana iki madde de uymuyor"
@@ -592,7 +607,8 @@
                 "otherSchoolFound": "Okul manuel girildi"
             },
             "schoolType": {
-                "title": "Okulun türü nedir?"
+                "title": "Okulun türü nedir?",
+                "searchPlaceholder": "Diğer okul türleri"
             },
             "zipCode": {
                 "title": "Posta kodun nedir?",
@@ -2614,7 +2630,7 @@
     },
     "certificateOfConduct": {
         "header": "İyi hal belgesini ibraz edin",
-        "description": "Çocukların ve gençlerin korunması bizim için çok önemlidir, bu nedenle tanıtım toplantısından sonraki sekiz hafta içinde tüm gönüllülerden genişletilmiş bir iyi davranış sertifikası talep ediyoruz. Hesabınızı aktif tutmak için, genişletilmiş iyi davranış sertifikası için derhal başvurmanızı ve son tarihe kadar bize göndermenizi rica ediyoruz. Sertifikayı, genişletilmiş iyi davranış sertifikasına ücretsiz olarak başvurmak için kullanabilirsiniz.",
+        "description": "Çocukların ve gençlerin korunması bizim için çok önemlidir, bu nedenle tüm gönüllülerden tanışma görüşmesinden sonraki sekiz hafta içinde genişletilmiş sabıka kaydı belgesi talep ediyoruz. Bu sürenin sonunda hesabınızı devre dışı bırakmak zorunda kalacağız. Sabıka kaydı belgesini ayrıca çevrimiçi olarak <fz>www.fuehrungszeugnis.bund.de</fz> üzerinden de başvurabilirsiniz – <strong>ücret muafiyeti başvurusu</strong> ile genişletilmiş sabıka kaydı ücretsizdir.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "Bu tarihten sonra, bizimle olan hesabınız otomatik olarak devre dışı bırakılacaktır. \nlern-fairBaşvuru için daha fazla zamana ihtiyacınız varsa, lütfen bize support@ .de adresine bir e-posta gönderin.",
         "alert_message": "<strong>Lütfen dikkat:</strong> Uzatılmış iyi hal belgesi başvurusu bazı durumlarda birkaç hafta sürebilir!",

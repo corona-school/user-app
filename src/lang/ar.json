@@ -333,7 +333,22 @@
             "gesamtschule": "مدرسة أساسية",
             "other": "آخر",
             "berufsschule": "مدرسة مهنية",
-            "f_rderschule": "مدرسة خاصة"
+            "f_rderschule": "مدرسة خاصة",
+            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "stadtteilschule": "Stadtteilschule",
+            "berufsfachschule": "Berufsfachschule (BFS)",
+            "fachoberschule": "Fachoberschule (FOS)",
+            "berufsoberschule": "Berufsoberschule (BOS)",
+            "oberstufenzentrum": "Oberstufenzentrum (OSZ)",
+            "fachschule": "Fachschule",
+            "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
+            "berufskolleg": "Berufskolleg",
+            "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
+            "auslandsschule": "Ausländische Schule",
+            "privatschule": "Privatschule",
+            "sekundarschule": "Sekundarschule",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
+            "oberschule": "Oberschule"
         },
         "reason": {
             "course": {
@@ -433,7 +448,7 @@
             "acceptanceCheck": {
                 "title": "هل أنت في المكان الصحيح؟",
                 "description": "عروضنا موجّهة للطلاب والمتدرّبين ذوي الفرص التعليمية المحدودة.\nأي من هذه العبارات تنطبق عليك؟",
-                "needHelpInSchool": "أحتاج إلى مساعدة في المدرسة",
+                "needHelpInSchool": "أدرس في ألمانيا",
                 "familyCannotHelp": "عائلتي لا تستطيع مساعدتي في الواجبات المدرسية",
                 "familyCannotAffordTutoring": "عائلتي لا تستطيع دفع تكاليف الدروس الخصوصية لي",
                 "doNotApplyToMe": "لا ينطبق عليّ أي من النقطتين"
@@ -592,7 +607,8 @@
                 "otherSchoolFound": "تم إدخال المدرسة يدويًا"
             },
             "schoolType": {
-                "title": "ما نوع المدرسة؟"
+                "title": "ما نوع المدرسة؟",
+                "searchPlaceholder": "أنواع أخرى من المدارس"
             },
             "zipCode": {
                 "title": "ما هو الرمز البريدي الخاص بك؟",
@@ -2614,7 +2630,7 @@
     },
     "certificateOfConduct": {
         "header": "تقديم شهادة حسن سيرة وسلوك",
-        "description": "إن حماية الأطفال واليافعين مهمة جداً بالنسبة لنا، ولهذا السبب نطلب شهادة حسن سلوك ممتدة من جميع المتطوعين في غضون ثمانية أسابيع من الاجتماع التعريفي. لإبقاء حسابك نشطاً، نطلب منك التقدم بطلب للحصول على شهادة حسن السيرة والسلوك الممددة على الفور وتقديمها لنا قبل الموعد النهائي. يمكنك استخدام الشهادة لتقديم طلب الحصول على شهادة حسن السيرة والسلوك الممددة مجاناً.",
+        "description": "حماية الأطفال والمراهقين مهمة جدًا بالنسبة لنا، لذلك نطلب من جميع المتطوعين تقديم شهادة سلوك موسّعة خلال ثمانية أسابيع بعد لقاء التعارف. بعد انتهاء هذه الفترة، سنضطر إلى تعطيل حسابك. يمكنك أيضًا التقديم للحصول على شهادة السلوك عبر الإنترنت على <fz>www.fuehrungszeugnis.bund.de</fz> – مع <strong>طلب الإعفاء من الرسوم</strong>، تكون شهادة السلوك الموسّعة مجانية.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "بعد هذا التاريخ، سيتم إلغاء تنشيط حسابك معنا تلقائيًا. \nlern-fairإذا كنت بحاجة إلى مزيد من الوقت للتطبيق، يُرجى إرسال بريد إلكتروني إلى البريد الإلكتروني إلى support@ .de.",
         "alert_message": "<strong>يرجى ملاحظة:</strong> قد يستغرق تقديم طلب الحصول على شهادة حسن السيرة والسلوك الممددة عدة أسابيع في بعض الحالات!",

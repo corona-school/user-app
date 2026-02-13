@@ -15,6 +15,7 @@ import thumbnailCoCGeneral from '../assets/images/onboarding/thumbnails/fuehrung
 import thumbnailCoCDigital from '../assets/images/onboarding/thumbnails/digitales-fuehrungszeugnis-thumbnail.png';
 import { useState } from 'react';
 import DisableableButton from '../components/DisablebleButton';
+import { Typography } from '@/components/Typography';
 
 export const COC_DATE_QUERY = gql(`
 query GetCocDate {
@@ -78,7 +79,24 @@ const CertificateOfConduct = () => {
                 <Stack space={3} width="100%" padding={space['1']}>
                     <Heading>{t('certificateOfConduct.header')}</Heading>
                     <Stack space={2} mb="3">
-                        <Text>{t('certificateOfConduct.description')}</Text>
+                        <Typography>
+                            <Trans
+                                i18nKey={'certificateOfConduct.description'}
+                                components={{
+                                    fz: (
+                                        <a
+                                            className="underline decoration-1 underline-offset-4"
+                                            href="https://www.fuehrungszeugnis.bund.de/"
+                                            rel="noopener noreferrer"
+                                            target="_blank"
+                                        >
+                                            www.fuehrungszeugnis.bund.de
+                                        </a>
+                                    ),
+                                    strong: <strong />,
+                                }}
+                            ></Trans>
+                        </Typography>
                         {cocDate ? (
                             <HStack space={2}>
                                 <Text>

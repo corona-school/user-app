@@ -401,9 +401,24 @@
             "realschule": "Realschule",
             "gymnasium": "Gymnasium",
             "gesamtschule": "Gesamtschule",
-            "other": "Andere",
             "berufsschule": "Berufsschule",
-            "f_rderschule": "Förderschule"
+            "f_rderschule": "Förderschule",
+            "mittelschule": "Mittelschule",
+            "oberschule": "Oberschule",
+            "sekundarschule": "Sekundarschule",
+            "stadtteilschule": "Stadtteilschule",
+            "berufsfachschule": "Berufsfachschule (BFS)",
+            "fachoberschule": "Fachoberschule (FOS)",
+            "berufsoberschule": "Berufsoberschule (BOS)",
+            "oberstufenzentrum": "Oberstufenzentrum (OSZ)",
+            "fachschule": "Fachschule",
+            "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
+            "berufskolleg": "Berufskolleg",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
+            "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
+            "auslandsschule": "Ausländische Schule",
+            "privatschule": "Privatschule",
+            "other": "Andere"
         },
         "genders": {
             "male": "Männlich",
@@ -521,10 +536,10 @@
             },
             "acceptanceCheck": {
                 "title": "Bist du bei uns richtig?",
-                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildende.\nWelche Aussagen treffen auf dich zu?",
-                "needHelpInSchool": "Ich brauche Hilfe in der Schule",
-                "familyCannotHelp": "Meine Familie kann mir nicht bei Schulaufgaben helfen",
-                "familyCannotAffordTutoring": "Meine Familie kann nicht Nachhilfe für mich bezahlen",
+                "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildende in Deutschland.\nWelche Aussagen treffen auf dich zu?",
+                "needHelpInSchool": "Ich besuche eine Schule in Deutschland.",
+                "familyCannotHelp": "Meine Familie kann mir nicht bei Schulaufgaben helfen.",
+                "familyCannotAffordTutoring": "Meine Familie kann mir Nachhilfe nicht bezahlen.",
                 "doNotApplyToMe": "Es treffen keine zwei Punkte auf mich zu"
             },
             "acceptanceCheckFailed": {
@@ -689,7 +704,8 @@
                 "otherSchoolFound": "Schule eingetragen"
             },
             "schoolType": {
-                "title": "Welche Art von Schule?"
+                "title": "Welche Art von Schule?",
+                "searchPlaceholder": "Weitere Schulformen"
             },
             "zipCode": {
                 "title": "Wie ist deine Postleitzahl?",
@@ -2673,11 +2689,11 @@
     },
     "certificateOfConduct": {
         "header": "Führungszeugnis einreichen",
-        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Um dein Nutzerkonto aktiv zu halten, bitten wir dich, das erweiterte Führungszeugnis zeitnah zu beantragen und bis zur Frist bei uns einzureichen. Mithilfe der Bescheinigung kannst du das erweiterte Führungszeugnis kostenlos beantragen.",
+        "description": "Der Schutz von Kindern und Jugendlichen liegt uns sehr am Herzen, daher benötigen wir von allen Ehrenamtlichen ein erweitertes Führungszeugnis innerhalb von acht Wochen nach dem Kennenlerngespräch. Nach Ablauf dieser Frist müssen wir dein Konto deaktivieren. Du kannst das Führungszeugnis auch online beantragen unter <fz>www.fuehrungszeugnis.bund.de</fz> - Mit dem <strong>Antrag auf Gebührenbefreiung</strong> ist das erweiterte Führungszeugnis kostenlos.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "Nach diesem Datum wird dein Nutzerkonto bei uns automatisch deaktiviert. \nSolltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
         "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
-        "download": "Vordruck herunterladen",
+        "download": "Antrag auf Gebührenbefreiung runterladen",
         "reason_download_disabled": "Bitte warte kurz, der Download sollte gleich starten.",
         "upload": "Per E-Mail einreichen",
         "request_header": "Wie beantrage ich ein erweitertes Führungszeugnis?",

@@ -333,7 +333,22 @@
             "gesamtschule": "Общеобразовательная школа",
             "other": "Другое",
             "berufsschule": "Профессиональное училище",
-            "f_rderschule": "Специальная школа"
+            "f_rderschule": "Специальная школа",
+            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "stadtteilschule": "Stadtteilschule",
+            "berufsfachschule": "Berufsfachschule (BFS)",
+            "fachoberschule": "Fachoberschule (FOS)",
+            "berufsoberschule": "Berufsoberschule (BOS)",
+            "oberstufenzentrum": "Oberstufenzentrum (OSZ)",
+            "fachschule": "Fachschule",
+            "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
+            "berufskolleg": "Berufskolleg",
+            "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
+            "auslandsschule": "Ausländische Schule",
+            "privatschule": "Privatschule",
+            "sekundarschule": "Sekundarschule",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
+            "oberschule": "Oberschule"
         },
         "reason": {
             "course": {
@@ -433,7 +448,7 @@
             "acceptanceCheck": {
                 "title": "Ты в правильном месте?",
                 "description": "Наши предложения предназначены для учеников и учащихся, которые находятся в менее благоприятных образовательных условиях.\nКакие утверждения подходят тебе?",
-                "needHelpInSchool": "Мне нужна помощь в школе",
+                "needHelpInSchool": "Я учусь в Германии",
                 "familyCannotHelp": "Моя семья не может помочь мне с уроками",
                 "familyCannotAffordTutoring": "Моя семья не может оплатить репетитора для меня",
                 "doNotApplyToMe": "На меня не подходят два пункта"
@@ -592,7 +607,8 @@
                 "otherSchoolFound": "Школа введена вручную"
             },
             "schoolType": {
-                "title": "Какой тип школы?"
+                "title": "Какой тип школы?",
+                "searchPlaceholder": "Другие типы школ"
             },
             "zipCode": {
                 "title": "Какой у тебя почтовый индекс?",
@@ -2614,7 +2630,7 @@
     },
     "certificateOfConduct": {
         "header": "Предоставить сертификат о хорошем поведении",
-        "description": "Защита детей и подростков очень важна для нас, поэтому мы требуем от всех волонтеров расширенный сертификат хорошего поведения в течение восьми недель после ознакомительной встречи. Чтобы ваш аккаунт оставался активным, мы просим вас своевременно подать заявку на получение расширенного сертификата хорошего поведения и предоставить его нам в установленный срок. Вы можете использовать этот сертификат для подачи заявки на продление сертификата хорошего поведения бесплатно.",
+        "description": "Защита детей и подростков для нас крайне важна, поэтому мы требуем от всех волонтёров предоставить расширенную справку о несудимости в течение восьми недель после знакомства. По истечении этого срока мы будем вынуждены деактивировать вашу учетную запись. Вы также можете подать заявку на справку о несудимости онлайн по ссылке <fz>www.fuehrungszeugnis.bund.de</fz> – с <strong>заявлением на освобождение от оплаты</strong> расширенная справка о несудимости предоставляется бесплатно.",
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "После этой даты ваша учетная запись будет автоматически деактивирована. \nlern-fairЕсли вам нужно больше времени для подачи заявки, пожалуйста, отправьте нам электронное письмо на support@ .de.",
         "alert_message": "<strong>Обратите внимание:</strong> подача заявления на продление сертификата хорошего поведения в некоторых случаях может занять несколько недель!",
