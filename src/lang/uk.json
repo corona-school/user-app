@@ -448,7 +448,7 @@
                 "needHelpInSchool": "Я навчаюся в школі в Німеччині",
                 "familyCannotHelp": "Моя сім’я не може допомогти мені з домашніми завданнями",
                 "familyCannotAffordTutoring": "Моя сім’я не може оплатити репетитора",
-                "doNotApplyToMe": "Не всі три пункти стосуються мене."
+                "doNotApplyToMe": "Не всі три пункти застосовуються до мене."
             },
             "acceptanceCheckFailed": {
                 "title": "Шкода.",
