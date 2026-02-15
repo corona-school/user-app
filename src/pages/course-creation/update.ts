@@ -32,6 +32,21 @@ type CourseDelta = CourseState & {
     cancelledAppointments: number[]; // IDs of appointments that were cancelled
 };
 
+export function hasDeltaChanges(delta: CourseDelta): boolean {
+    return (
+        delta.addedInstructors.length !== 0 ||
+        delta.removedInstructors.length !== 0 ||
+        delta.addedMentors.length !== 0 ||
+        delta.removedMentors.length !== 0 ||
+        Object.keys(delta.changedAppointments).length !== 0 ||
+        delta.newAppointments.length !== 0 ||
+        delta.cancelledAppointments.length !== 0 ||
+        objectHasNonUndefinedValues(delta.subcourse) ||
+        objectHasNonUndefinedValues(delta.course) ||
+        delta.uploadImage !== undefined
+    );
+}
+
 export function getCourseDelta(
     oldState: Partial<CourseState>, // subcourse/course might be null if we're creating a course
     newState: CourseState,

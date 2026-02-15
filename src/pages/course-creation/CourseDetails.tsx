@@ -48,6 +48,13 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
     );
     const [customMaxAttendees, setCustomMaxAttendees] = useState<number>(subcourse.maxParticipants ?? 100);
 
+    useEffect(() => {
+        setDraftMaxParticipantCount(
+            subcourse.maxParticipants && PREDEFINED_PARTICIPANTS.includes(subcourse.maxParticipants) ? subcourse.maxParticipants.toString() : 'custom'
+        );
+        setCustomMaxAttendees(subcourse.maxParticipants ?? 100);
+    }, [subcourse.maxParticipants]);
+
     const { data, loading: tagsLoading } = useQuery(TAGS_QUERY, { variables: { category: subcourse.course.category } });
 
     useEffect(() => {
