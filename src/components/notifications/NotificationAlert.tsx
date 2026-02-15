@@ -1,27 +1,46 @@
 import { useContext, useEffect, useState } from 'react';
 import { useLastTimeCheckedNotifications } from '../../hooks/useLastTimeCheckedNotifications';
-import { useConcreteNotifications } from '../../hooks/useConcreteNotifications';
 import NotificationPanel from './NotificationPanel';
 import { NotificationsContext } from '../../context/NotificationsProvider';
-import { getNewNotifications } from '../../helper/notification-helper';
+import { isMessageValid } from '../../helper/notification-helper';
 import { Button } from '../Button';
 import { IconBell, IconX } from '@tabler/icons-react';
 import { Badge } from '../Badge';
 import { Popover, PopoverArrow, PopoverClose, PopoverContent, PopoverTrigger } from '../Popover';
 import { useSearchParams, useLocation } from 'react-router-dom';
+import { useQuery } from '@apollo/client';
+
+const unreadNotificationsQuery = gql(`
+    query UnreadNotifications {
+        me {
+            concreteNotifications(take: 100, onlyUnread: true) {
+                id
+                message {
+                    headline
+                    body
+                    modalText
+                    type
+                    navigateTo
+                }
+                sentAt
+            }
+        }
+    }
+`);
 
 const NotificationAlert: React.FC = () => {
     const [count, setCount] = useState<number>(0);
     const [isOpen, setIsOpen] = useState<boolean>(false);
     const message = useContext(NotificationsContext);
-    const { userNotifications, refetch, loading } = useConcreteNotifications();
     const [searchParams] = useSearchParams();
     const location = useLocation();
     const { pathname } = location;
     const isChat = pathname.includes('/chat');
     const showNotifications = searchParams.has('showNotifications');
 
-    const { lastTimeCheckedNotifications, updateLastTimeChecked } = useLastTimeCheckedNotifications();
+    const { updateLastTimeChecked } = useLastTimeCheckedNotifications();
+    const { data: unreadNotificationsData, loading, refetch } = useQuery(unreadNotificationsQuery);
+    const unreadNotifications = unreadNotificationsData?.filter((it) => isMessageValid(it.message));
 
     useEffect(() => {
         if (message?.id) {
@@ -31,13 +50,12 @@ const NotificationAlert: React.FC = () => {
     }, [message?.id]);
 
     useEffect(() => {
-        if (!userNotifications) {
+        if (!unreadNotifications) {
             return;
         }
 
-        const unreadNotifications = getNewNotifications(userNotifications, lastTimeCheckedNotifications);
         setCount(unreadNotifications.length);
-    }, [lastTimeCheckedNotifications, userNotifications]);
+    }, [unreadNotifications]);
 
     useEffect(() => {
         if (showNotifications) {
@@ -81,12 +99,7 @@ const NotificationAlert: React.FC = () => {
                             <IconX size={18} />
                         </PopoverClose>
                     </div>
-                    <NotificationPanel
-                        loading={loading}
-                        userNotifications={userNotifications || []}
-                        lastTimeCheckedNotifications={lastTimeCheckedNotifications}
-                        updateLastTimeChecked={() => updateLastTimeChecked()}
-                    />
+                    <NotificationPanel unreadNotifications={unreadNotifications ?? []} />
                 </PopoverContent>
             </Popover>
         </>
