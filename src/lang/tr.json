@@ -2141,10 +2141,10 @@
             },
             "headline": "Kursunuz hakkında genel bilgiler",
             "restoreModal": {
-                "title": "Entwurf wiederherstellen",
-                "description": "Wir haben einen Entwurf beim Erstellen des Kurses \"{{courseName}}\" gespeichert. Möchtest du ihn wiederherstellen?",
-                "restore": "Wiederherstellen",
-                "discard": "Verwerfen"
+                "title": "Taslağı geri yükle",
+                "description": "“{{courseName}}” kursunu oluştururken bir taslak kaydettik. Geri yüklemek ister misin?",
+                "restore": "Geri yükle",
+                "discard": "İptal et"
             }
         },
         "unsplash": {

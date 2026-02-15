@@ -2141,10 +2141,10 @@
             },
             "headline": "General information about your course",
             "restoreModal": {
-                "title": "Entwurf wiederherstellen",
-                "description": "Wir haben einen Entwurf beim Erstellen des Kurses \"{{courseName}}\" gespeichert. Möchtest du ihn wiederherstellen?",
-                "restore": "Wiederherstellen",
-                "discard": "Verwerfen"
+                "title": "Restore Draft",
+                "description": "We saved a draft when you were creating the course \"{{courseName}}\". Do you want to restore it?",
+                "restore": "Restore",
+                "discard": "Discard"
             }
         },
         "unsplash": {

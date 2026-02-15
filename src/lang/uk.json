@@ -2141,10 +2141,10 @@
             },
             "headline": "Загальна інформація про ваш курс",
             "restoreModal": {
-                "title": "Entwurf wiederherstellen",
-                "description": "Wir haben einen Entwurf beim Erstellen des Kurses \"{{courseName}}\" gespeichert. Möchtest du ihn wiederherstellen?",
-                "restore": "Wiederherstellen",
-                "discard": "Verwerfen"
+                "title": "Відновити чернетку",
+                "description": "Ми зберегли чернетку під час створення курсу «{{courseName}}». Чи хочете ви її відновити?",
+                "restore": "Відновити",
+                "discard": "Відхилити"
             }
         },
         "unsplash": {

@@ -2137,10 +2137,10 @@
             },
             "headline": "معلومات عامة حول دورتك التدريبية",
             "restoreModal": {
-                "title": "Entwurf wiederherstellen",
-                "description": "Wir haben einen Entwurf beim Erstellen des Kurses \"{{courseName}}\" gespeichert. Möchtest du ihn wiederherstellen?",
-                "restore": "Wiederherstellen",
-                "discard": "Verwerfen"
+                "title": "استعادة المسودة",
+                "description": "لقد قمنا بحفظ مسودة أثناء إنشاء الدورة التدريبية \"{{courseName}}\". هل تريد استعادتها؟",
+                "restore": "استعادة",
+                "discard": "رفض"
             }
         },
         "unsplash": {
