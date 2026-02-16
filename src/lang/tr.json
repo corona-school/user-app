@@ -893,27 +893,19 @@
                 "btn": "Hesabı devre dışı bırak",
                 "tooltip": "Bir sebep göstermelisiniz."
             },
-            "pupil": {
-                "0": "Daha fazla zamanım yok.",
-                "1": "Artık ilgilenmiyorum.",
-                "2": "Sadece test amaçlı kayıt oldum.",
-                "3": "Destek almak için başka bir yol buldum.",
-                "4": "Programın farklı olacağını hayal etmiştim.",
-                "5": "Projeler için giriş koşullarını karşılamıyorum.",
-                "6": "Diğer"
-            },
-            "student": {
-                "0": "Destek verecek vaktim yok.",
-                "1": "Tanıtım toplantısına katılamadım/katılamazdım.",
-                "2": "Artık ilgilenmiyorum.",
-                "3": "Sadece test amaçlı kayıt oldum.",
-                "4": "Desteklemek için başka bir yol buldum.",
-                "5": "Programın farklı olacağını hayal etmiştim.",
-                "6": "Projeler için giriş koşullarını karşılamıyorum.",
-                "7": "Diğer"
-            },
             "error": "Hesabınız devre dışı bırakılamadı.",
-            "success": "Hesabınız devre dışı bırakıldı."
+            "success": "Hesabınız devre dışı bırakıldı.",
+            "reasons": {
+                "noMoreTime": "Daha fazla zamanım yok.",
+                "noMoreInterest": "Artık ilgilenmiyorum.",
+                "onlyTestAccount": "Sadece test amaçlı kayıt oldum.",
+                "expectationsDiffered": "Programın farklı olacağını hayal etmiştim.",
+                "didntMeetRequirements": "Projeler için giriş koşullarını karşılamıyorum.",
+                "other": "Diğer",
+                "otherSupportFound": "Destek almak için başka bir yol buldum.",
+                "otherVolunteerWorkFound": "Desteklemek için başka bir yol buldum.",
+                "couldntAttendMeeting": "Tanıtım toplantısına katılamadım/katılamazdım."
+            }
         },
         "title": "Benim profilim",
         "successmessage": "Değişiklikler başarıyla kaydedildi.",
