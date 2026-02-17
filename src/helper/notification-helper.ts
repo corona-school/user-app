@@ -121,8 +121,6 @@ export {
     getTimeDifference,
     getTimeText,
     isNewNotification,
-    getNewNotifications,
-    getAllNewUserNotificationsButMinimumFiveNotifications,
     getNotificationCategoriesData,
     getAllPreferencesInCategorySetToValue,
     isMessageValid,
