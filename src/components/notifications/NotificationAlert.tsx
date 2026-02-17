@@ -41,7 +41,7 @@ const NotificationAlert: React.FC = () => {
 
     const { updateLastTimeChecked } = useLastTimeCheckedNotifications();
     const { data: unreadNotificationsData, loading, refetch } = useQuery(unreadNotificationsQuery);
-    const unreadNotifications = unreadNotificationsData?.filter((it) => isMessageValid(it.message));
+    const unreadNotifications = unreadNotificationsData?.me.concreteNotifications.filter((it) => isMessageValid(it.message));
 
     useEffect(() => {
         if (message?.id) {

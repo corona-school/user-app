@@ -6,7 +6,7 @@ import { Button } from '../Button';
 import { Typography } from '../Typography';
 
 type NewProps = {
-    notificationsToShow: Concrete_Notification[];
+    notificationsToShow: Pick<Concrete_Notification, 'id' | 'sentAt' | 'message'>[];
     lastTimeChecked: string;
     handleClick: () => void;
     updateLastTimeChecked: () => void;
@@ -36,7 +36,7 @@ const NewNotifications: React.FC<NewProps> = ({ notificationsToShow, lastTimeChe
 };
 
 type AllProps = {
-    userNotifications: Concrete_Notification[];
+    userNotifications: Pick<Concrete_Notification, 'id' | 'sentAt' | 'message'>[];
     lastTimeChecked: string;
 };
 
@@ -44,7 +44,7 @@ const AllNotifications: React.FC<AllProps> = ({ userNotifications, lastTimeCheck
     return (
         <>
             {userNotifications.map(
-                (notification: Concrete_Notification) =>
+                (notification) =>
                     notification.message && (
                         <MessageBox key={notification.id} userNotification={notification} isRead={isNewNotification(notification.sentAt, lastTimeChecked)} />
                     )
