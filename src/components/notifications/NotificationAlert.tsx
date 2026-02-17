@@ -74,8 +74,7 @@ const NotificationAlert: React.FC = () => {
         if (value) {
             refetch();
         } else {
-            updateLastTimeChecked();
-            refetch();
+            updateLastTimeChecked().then(refetch);
         }
     };
 
