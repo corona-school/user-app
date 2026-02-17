@@ -9,6 +9,7 @@ import { Badge } from '../Badge';
 import { Popover, PopoverArrow, PopoverClose, PopoverContent, PopoverTrigger } from '../Popover';
 import { useSearchParams, useLocation } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
+import { gql } from '@/gql';
 
 const unreadNotificationsQuery = gql(`
     query UnreadNotifications {
