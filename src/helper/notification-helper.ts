@@ -77,25 +77,6 @@ const isNewNotification = (sentAt: string, lastOpen: string) => {
     }
 };
 
-const getNewNotifications = (userNotifications: Concrete_Notification[], lastTimeChecked: string) => {
-    const newNotifications = userNotifications.filter((notification) => new Date(notification.sentAt).getTime() > new Date(lastTimeChecked).getTime());
-    return newNotifications;
-};
-
-const getAllNewUserNotificationsButMinimumFiveNotifications = (userNotifications: Concrete_Notification[], lastTimeChecked: string) => {
-    const userNotificationsToRender = getNewNotifications(userNotifications, lastTimeChecked);
-
-    if (userNotifications.length < 5) {
-        return userNotifications;
-    } else {
-        for (let i = userNotificationsToRender.length; i < 5; i++) {
-            userNotificationsToRender.push(userNotifications[i]);
-        }
-    }
-
-    return userNotificationsToRender;
-};
-
 const getNotificationCategoriesData = (category: string) => {
     const all = getAllNotificationPreferenceCategories();
     const allPrefs = { ...systemNotificationCategories, ...marketingNotificationCategories };
@@ -140,8 +121,6 @@ export {
     getTimeDifference,
     getTimeText,
     isNewNotification,
-    getNewNotifications,
-    getAllNewUserNotificationsButMinimumFiveNotifications,
     getNotificationCategoriesData,
     getAllPreferencesInCategorySetToValue,
     isMessageValid,

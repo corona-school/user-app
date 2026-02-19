@@ -13,7 +13,7 @@ import { Button } from '../Button';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 interface MessageBoxProps {
-    userNotification: Concrete_Notification;
+    userNotification: Pick<Concrete_Notification, 'id' | 'sentAt' | 'message'>;
     isStandalone?: boolean;
     isRead?: boolean;
     updateLastTimeChecked?: () => void;
