@@ -95,7 +95,7 @@ const ContactList: React.FC<NewChatProps> = ({ onClose, setChatId }) => {
 
         return (
             <>
-                <Pressable onPress={() => handleContactPress(contact.user.userID)} _hover={{ backgroundColor: 'primary.100' }}>
+                <Pressable data-dd-action-name="Open Chat" onPress={() => handleContactPress(contact.user.userID)} _hover={{ backgroundColor: 'primary.100' }}>
                     <Box m="2" justifyContent="center">
                         <Stack direction="row" space={space['1']} padding="1">
                             {userType === 'student' ? <PupilAvatar /> : <StudentAvatar />}
