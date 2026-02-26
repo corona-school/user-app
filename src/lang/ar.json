@@ -661,15 +661,15 @@
                 "title": "Studierst oder arbeitest du in einem Bereich speziell für Kinder und Jugendliche?",
                 "description": "Keine Sorge. Du kannst Schülern auch helfen wenn das nicht der Fall ist und du keine Erfahrungen hast."
             },
-            "educationExperience": {
-                "title": "Welcher?"
-            },
             "teachingExperience": {
                 "title": "Hast du bereits Unterrichtserfahrungen?",
                 "group": "Gruppenunterricht",
                 "individual": "Einzelunterricht"
             },
-            "specialExperience": {
+            "formalEducation": {
+                "title": "Welcher?"
+            },
+            "specialTeachingExperience": {
                 "title": "Hast du Kentnisse zu speziellen Förderbedarfen?"
             }
         },
