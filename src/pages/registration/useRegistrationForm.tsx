@@ -1,5 +1,8 @@
+import { FormalEducationEnum } from '@/components/FormalEducationSelector';
+import { combineSpecialExperience, SpecialTeachingExperienceEnum, splitSpecialExperience } from '@/components/SpecialTeachingExperienceSelector';
+import { TeachingExperienceLevelEnum } from '@/components/TeachingExperienceLevelSelector';
 import { gql } from '@/gql';
-import { Gender, Language, PupilEmailOwner, SchoolType, School_Schooltype_Enum } from '@/gql/graphql';
+import { Gender, Language, PupilEmailOwner, SchoolType, School_Schooltype_Enum, Screening_Jobstatus_Enum, Student_Jobstatus_Enum } from '@/gql/graphql';
 import useApollo from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Appointment } from '@/types/lernfair/Appointment';
@@ -51,6 +54,17 @@ export interface RegistrationForm {
     hasAcceptedRules: boolean;
     isWaitingScreeningResults?: boolean;
     gender?: Gender;
+    jobStatus?: Student_Jobstatus_Enum;
+    hasWorkingExperienceInEducation?: boolean;
+    formalEducation?: FormalEducationEnum | string;
+    teachingExperience?: {
+        '1:1'?: TeachingExperienceLevelEnum;
+        group?: TeachingExperienceLevelEnum;
+    };
+    specialTeachingExperience: {
+        selectValues: SpecialTeachingExperienceEnum[];
+        freeTextValue?: string;
+    };
 }
 
 interface RegistrationContextValue {
@@ -81,6 +95,10 @@ const emptyState: RegistrationForm = {
     },
     zipCode: '',
     hasAcceptedRules: false,
+    specialTeachingExperience: {
+        selectValues: [],
+        freeTextValue: '',
+    },
 };
 
 const RegistrationContext = createContext<RegistrationContextValue>({
@@ -137,14 +155,23 @@ const REGISTRATION_PROFILE_QUERY = gql(`
                 verifiedAt
                 languages
                 zipCode
+                jobStatus
+                specialTeachingExperience
+                formalEducation
             }
         }
     }
 `);
 
-const ME_UPDATE_MUTATION = gql(`
-    mutation meUpdateRegistrationProfile($gradeAsInt: Int, $school: RegistrationSchool) {
+const ME_UPDATE_PUPIL_MUTATION = gql(`
+    mutation meUpdatePupilRegistrationProfile($gradeAsInt: Int, $school: RegistrationSchool) {
         meUpdate(update: { pupil: { gradeAsInt: $gradeAsInt, school: $school } })
+    }
+`);
+
+const ME_UPDATE_STUDENT_MUTATION = gql(`
+    mutation meUpdateStudentRegistrationProfile($jobStatus: student_jobstatus_enum, $formalEducation: String, $specialTeachingExperience: [String!]) {
+        meUpdate(update: { student: { jobStatus: $jobStatus, formalEducation: $formalEducation, specialTeachingExperience: $specialTeachingExperience } })
     }
 `);
 
@@ -155,7 +182,8 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
     const [isLoading, setIsLoading] = useState(true);
     const { data, refetch, networkStatus } = useQuery(REGISTRATION_PROFILE_QUERY, { skip: sessionState !== 'logged-in', notifyOnNetworkStatusChange: true });
     const registrationProfile = data?.me;
-    const [updateProfile] = useMutation(ME_UPDATE_MUTATION);
+    const [meUpdatePupil] = useMutation(ME_UPDATE_PUPIL_MUTATION);
+    const [meUpdateStudent] = useMutation(ME_UPDATE_STUDENT_MUTATION);
     const [values, setValues, removeValues] = useLocalStorage<RegistrationForm>({
         key: 'registration',
         initialValue: {
@@ -184,12 +212,13 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         let nextStep = getNextStepFrom(values.currentStep);
         const shouldSkipSchoolType = false; //values.school.schooltype;
         const shouldSkipZipCode = values.school.zip && values.zipCode;
+        const shouldSkipFormalEducation = !values.hasWorkingExperienceInEducation;
 
         if (values.userType === 'pupil') {
             if (values.currentStep === RegistrationStep.grade) {
-                await updateProfile({ variables: { gradeAsInt: values.grade } });
+                await meUpdatePupil({ variables: { gradeAsInt: values.grade } });
             } else if (values.currentStep === RegistrationStep.zipCode || (values.currentStep === RegistrationStep.school && shouldSkipZipCode)) {
-                await updateProfile({
+                await meUpdatePupil({
                     variables: {
                         school: {
                             schooltype: values.school?.schooltype as unknown as SchoolType,
@@ -202,11 +231,35 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             }
         }
 
+        if (values.userType === 'student') {
+            if (values.currentStep === RegistrationStep.jobStatus) {
+                await meUpdateStudent({ variables: { jobStatus: values.jobStatus as unknown as Student_Jobstatus_Enum } });
+            } else if (
+                [RegistrationStep.formalEducation, RegistrationStep.teachingExperience, RegistrationStep.hasSpecialNeedsExperience].includes(values.currentStep)
+            ) {
+                await meUpdateStudent({
+                    variables: {
+                        formalEducation: values.formalEducation ?? undefined,
+                        jobStatus: values.jobStatus as unknown as Student_Jobstatus_Enum,
+                        specialTeachingExperience: combineSpecialExperience(
+                            values.specialTeachingExperience?.selectValues ?? [],
+                            values.specialTeachingExperience?.freeTextValue,
+                            values.teachingExperience ?? {}
+                        ),
+                    },
+                });
+            }
+        }
+
         if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
 
         if (nextStep === RegistrationStep.zipCode && shouldSkipZipCode) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
+
+        if (nextStep === RegistrationStep.formalEducation && shouldSkipFormalEducation) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
 
@@ -229,11 +282,15 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
 
         const shouldSkipSchoolType = false; // values.school.schooltype;
         const shouldSkipZipCode = values.school.zip && values.zipCode;
+        const shouldSkipFormalEducation = !values.hasWorkingExperienceInEducation;
 
         if (prevStep === RegistrationStep.zipCode && shouldSkipZipCode) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
         if (prevStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
+        if (prevStep === RegistrationStep.formalEducation && shouldSkipFormalEducation) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
         handleOnChange({ currentStep: prevStep });
@@ -270,6 +327,9 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             const screeningAppointment = registrationProfile?.pupil
                 ? getPupilScreeningAppointment(registrationProfile?.pupil?.screenings ?? [])
                 : getStudentScreeningAppointment(registrationProfile?.student?.instructorScreenings ?? [], registrationProfile?.student?.tutorScreenings ?? []);
+            const { specialTeachingExperience, freeText, teachingExperienceLevel } = splitSpecialExperience(
+                registrationProfile.student?.specialTeachingExperience ?? []
+            );
             handleOnChange({
                 email: registrationProfile.email,
                 firstname: registrationProfile.firstname,
@@ -279,8 +339,16 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                 grade: registrationProfile.pupil?.gradeAsInt,
                 school: registrationProfile.pupil?.school ?? emptyState.school,
                 zipCode: registrationProfile.student?.zipCode ?? registrationProfile.pupil?.school?.zip ?? '',
+                jobStatus: registrationProfile.student?.jobStatus ?? undefined,
+                formalEducation: (registrationProfile.student?.formalEducation as FormalEducationEnum) ?? undefined,
+                hasWorkingExperienceInEducation: !!registrationProfile.student?.formalEducation,
                 // Students don't have a "waiting results" (dispute) state
                 isWaitingScreeningResults: registrationProfile.pupil ? getIsPupilWaitingScreeningResults(registrationProfile.pupil.screenings ?? []) : false,
+                teachingExperience: teachingExperienceLevel,
+                specialTeachingExperience: {
+                    selectValues: specialTeachingExperience,
+                    freeTextValue: freeText,
+                },
             });
         }
         // And stop showing the loader, this should trigger the next effect
@@ -334,12 +402,9 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             return handleOnChange({ currentStep: RegistrationStep.bookAppointment });
         }
 
-        // Pupils have post-screening-appointment steps
-        if (values.userType === 'pupil') {
-            // Minimum step for verified pupils with an screening appointment (but no post-appointment-booking steps)
-            if (currentStepIsLessThan(RegistrationStep.registrationCompleted)) {
-                return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
-            }
+        // Minimum step for verified users with an screening appointment (but no post-appointment-booking steps)
+        if (currentStepIsLessThan(RegistrationStep.registrationCompleted)) {
+            return handleOnChange({ currentStep: RegistrationStep.screeningAppointmentDetail });
         }
         // If everything is done, then go to the registration completed step
         handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
