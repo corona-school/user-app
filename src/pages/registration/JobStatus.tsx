@@ -10,7 +10,7 @@ interface JobStatusProps extends RegistrationStepProps {}
 export const JobStatus = ({ onBack, onNext }: JobStatusProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
-    usePageTitle('Registrierung: JobStatus - optional');
+    usePageTitle('Registrierung: Deine Berufsstatus - optional');
 
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>

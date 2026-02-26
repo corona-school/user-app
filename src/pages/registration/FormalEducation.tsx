@@ -7,7 +7,7 @@ import { FormalEducationEnum, FormalEducationSelector } from '@/components/Forma
 interface FormalEducationProps extends RegistrationStepProps {}
 
 export const FormalEducation = ({ onBack, onNext }: FormalEducationProps) => {
-    usePageTitle('Registrierung: Schüler:in/Azubi oder Helfer:in');
+    usePageTitle('Registrierung: Deine formelle Ausbildung - optional');
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
 
