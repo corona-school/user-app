@@ -475,7 +475,8 @@
                 "titlePupil": "Evde hangi dilleri konuşuyorsunuz?",
                 "titleStudent": "Hangi dilleri akıcı bir şekilde konuşabiliyorsunuz?",
                 "descriptionPupil": "Sizi benzer dilleri konuşan yardımcılarla bir araya getirmeye çalışıyoruz.",
-                "descriptionStudent": "Sizi benzer dilleri konuşan öğrencilerle bir araya getirmeye çalışıyoruz."
+                "descriptionStudent": "Sizi benzer dilleri konuşan öğrencilerle bir araya getirmeye çalışıyoruz.",
+                "germanRequiredError": "Desteğin düzgün çalışabilmesi için ortak dil olarak Almanca gereklidir. Lütfen Almanca’yı seçin."
             },
             "bookAppointment": {
                 "title": "Tanışma Görüşmesi",

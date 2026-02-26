@@ -475,7 +475,8 @@
                 "titlePupil": "What languages do you speak at home?",
                 "titleStudent": "Which languages do you speak fluently?",
                 "descriptionPupil": "We try to bring you together with volunteers who speak similar languages.",
-                "descriptionStudent": "We try to bring you together with pupils who speak similar languages."
+                "descriptionStudent": "We try to bring you together with pupils who speak similar languages.",
+                "germanRequiredError": "For the support to work properly, German is required as the common language. Please select German."
             },
             "bookAppointment": {
                 "title": "Introductory Meeting",
