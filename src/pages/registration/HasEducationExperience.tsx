@@ -8,7 +8,7 @@ import { useRegistrationForm } from './useRegistrationForm';
 interface HasEducationExperienceProps extends RegistrationStepProps {}
 
 export const HasEducationExperience = ({ onBack, onNext }: HasEducationExperienceProps) => {
-    usePageTitle('Registrierung: Schüler:in/Azubi oder Helfer:in');
+    usePageTitle('Registrierung: Arbeit mit Kindern oder Jugendlichen - optional');
     const { form, onFormChange } = useRegistrationForm();
 
     const { t } = useTranslation();

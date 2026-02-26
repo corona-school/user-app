@@ -9,7 +9,7 @@ interface SpecialTeachingExperienceProps extends RegistrationStepProps {}
 export const SpecialTeachingExperience = ({ onBack, onNext }: SpecialTeachingExperienceProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
-    usePageTitle('Registrierung: SpecialTeachingExperience - optional');
+    usePageTitle('Registrierung: Deine spezifischen Kenntnisse - optional');
 
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>

@@ -10,7 +10,7 @@ interface TeachingExperienceLevelProps extends RegistrationStepProps {}
 export const TeachingExperienceLevel = ({ onBack, onNext }: TeachingExperienceLevelProps) => {
     const { form, onFormChange } = useRegistrationForm();
     const { t } = useTranslation();
-    usePageTitle('Registrierung: Teaching Experience - optional');
+    usePageTitle('Registrierung: Deine Unterrichtserfahrung - optional');
 
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>
