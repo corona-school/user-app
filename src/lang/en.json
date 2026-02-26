@@ -379,7 +379,7 @@
                     "max-requests": "You are already on the waiting list.",
                     "deactivated": "Registration for 1on1 learning support is temporarily closed due to high demand. If you have already submitted a request for learning support, we will contact you by email in the near future to discuss the next steps. In the meantime, please feel free to take advantage of our other offers. ",
                     "deactivated_tooltip": "Registration is temporarily closed due to high demand.",
-                    "max-matches": "Currently, you can have a maximum of one learning partner. If you no longer wish to work with your learning partner, dissolve the learning pair. The chat will remain open for three days after the learning pair has been dissolved. During this time, you will have the opportunity to say goodbye to each other."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
                 }
             }
         },
@@ -1456,127 +1456,93 @@
     },
     "helperwizard": {
         "verifizierung": {
-            "buttons": [
-                "Resend email"
-            ],
+            "buttons": ["Resend email"],
             "subtitle": "Verification",
             "title": "Verify your email address",
             "content": "\"Before you can start at Lern-Fair , you must first confirm your email address. We sent you an email to {{email}} on {{date}}. You haven't received an email from us?\""
         },
         "passwort": {
-            "buttons": [
-                "Set up password"
-            ],
+            "buttons": ["Set up password"],
             "subtitle": "password",
             "title": "Set up password",
             "content": "The time has finally come, we are changing our login system! You can now assign a password for your Lern-Fair account and use it to log in in future."
         },
         "willkommen": {
-            "buttons": [
-                "View courses",
-                "Apply for learning support"
-            ],
+            "buttons": ["View courses", "Apply for learning support"],
             "title": "Welcome 👋",
             "subtitle": "Nice to have you here!",
             "content": "We look forward to welcoming you to Lern-Fair ! We offer tutoring courses on various subjects such as German, math and English. If you need individual help, you can also join our waiting list for learning support",
             "actionDescription": "View learning offer"
         },
         "statusSchüler": {
-            "buttons": [
-                "View courses",
-                "Withdraw request"
-            ],
+            "buttons": ["View courses", "Withdraw request"],
             "title": "You are on the waiting list!",
             "subtitle": "Waiting list",
             "content": "As soon as it is your turn, we will inform you by email. Your request was made on {{date}}. In the meantime, you can take part in our group courses."
         },
         "interestconfirmation": {
-            "buttons": [
-                "Yes",
-                "No"
-            ],
+            "buttons": ["Yes", "No"],
             "title": "Do you still need support?",
             "subtitle": "Support",
             "content": "Du bist nun oben auf unserer Warteliste und wir können dich bald mit einem:r Lernpartner:in verbinden. Brauchst du immer noch Hilfe in den Fächern {{subjectSchüler}}. Wenn du “Nein” klickst oder dich nicht innerhalb von  <b>14 Tagen </b> bei uns meldest, vergeben wir deinen Platz an andere Schüler:innen."
         },
         "kontaktSchüler": {
-            "buttons": [
-                "View learning partner"
-            ],
+            "buttons": ["View learning partner"],
             "subtitle": "1:1 learning support",
             "title": "New learning partners",
             "content": "Es ist endlich so weit, wir haben eine:n Lernpartner:in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. "
         },
         "angeforderteBescheinigung": {
-            "buttons": [
-                "Confirm information"
-            ],
+            "buttons": ["Confirm information"],
             "title": "Confirmation",
             "subtitle": "Tutoring with {{nameHelfer}} ",
             "content": "{{nameHelfer}} has asked us for a certificate for your learning support. Only if you confirm this can we fulfill {{nameHelfer}}'s request.",
             "actionDescription": "Confirm information"
         },
         "kennenlernen": {
-            "buttons": [
-                "Select Date"
-            ],
+            "buttons": ["Select Date"],
             "subtitle": "Get to know",
             "title": "We want to get to know you 👋!",
             "content": "Before you can start with us, we would like to get to know you in a 15-minute video conference call. Simply arrange a lecture with us."
         },
         "zeugnis": {
-            "buttons": [
-                "Information on the certificate of good conduct"
-            ],
+            "buttons": ["Information on the certificate of good conduct"],
             "subtitle": "Important!",
             "title": "Extended certificate of good conduct",
             "actionDescription": "Everything about the certificate of good conduct",
             "content": "We require an up-to-date version of the extended certificate of good conduct every 3 years at the latest in order to ensure complete child protection. You can apply for the certificate of good conduct free of charge by submitting the form on site or online. You can continue to support pupils . Please submit your certificate of good conduct in good time - otherwise we will unfortunately have to deactivate your account. Deadline for submitting / deactivating your account: {{cocDate}}"
         },
         "statusStudent": {
-            "buttons": [
-                "Report a problem"
-            ],
+            "buttons": ["Report a problem"],
             "subtitle": "1:1 learning support",
             "title": "We are looking for a learning partner for you!",
             "content": "Thank you for wanting to support a:n pupil at Lern-Fair ! We will put you in touch with someone who:r matches the subjects or year groups you have specified. We will usually get back to you by email within a week with a:r suitable pupil."
         },
         "statusStudent2": {
-            "buttons": [
-                "Another learning pair is formed by",
-                "View group courses"
-            ],
+            "buttons": ["Another learning pair is formed by", "View group courses"],
             "subtitle": "Further engagement opportunities",
             "title": "Fancy more?",
             "content": "Would you like to support more pupils ? Offer a group course or further learning partnerships.",
             "actionDescription": "View options now"
         },
         "kontaktStudent": {
-            "buttons": [
-                "View learning partner"
-            ],
+            "buttons": ["View learning partner"],
             "title": "New learning partners",
             "subtitle": "1:1 learning support",
             "content": "Es ist soweit, wir haben eine:n Schüler:in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen."
         },
         "homeworkHelpStudent": {
-            "buttons": [
-                "To the homework help\n(Zoom registration)"
-            ],
+            "buttons": ["To the homework help\n(Zoom registration)"],
             "title": "Homework help",
             "content": "With <b>homework help</b>, pupils get one-off, spontaneous, direct help with their homework. Do you think that sounds great? Then we'd love you to join us!<br/>Just come to the preliminary meeting <b>from Monday to Thursday at 15:50</b> and help pupils with their homework in your subjects for about 15 minutes each between <b>17:00 and 18</b>:00. Drop by, we look forward to seeing you!"
         },
         "homeworkHelpPupil": {
-            "buttons": [
-                "To the homework help"
-            ],
+            "buttons": ["To the homework help"],
             "title": "Help with your homework",
             "content": "Are you stuck with your homework? We can help you with your <b>homework</b> quickly and easily for 10 to 15 minutes from <b>Monday to Thursday between 4pm and 5pm</b>. We look forward to seeing you!"
         },
         "pupilScreening": {
-            "buttons": [
-                "Select Date"
-            ],
+            "buttons": ["Select Date"],
             "title": "We would like to get to know you!",
             "subtitle": "Get to know",
             "content": "Before we can find you a learning partner, we would like to get to know you. Please book a lecture for this purpose."
@@ -1622,9 +1588,7 @@
             "description": "In order for us to assign you the perfect learning partner, you must first submit a request on our platform. There you can easily specify the subjects that are important to you and in which we can help you. We look forward to getting started with you and beginning your learning journey together!"
         },
         "pupilFirstScreening": {
-            "buttons": [
-                "Select Date"
-            ],
+            "buttons": ["Select Date"],
             "title": "We would like to get to know you!",
             "subtitle": "Get to know",
             "content": "We would like to get to know you before you can use the services offered by Lern-Fair . Please book a lecture for a Zoom call."
@@ -2943,11 +2907,7 @@
             "request": "Request an immediate certificate"
         },
         "participationCertificate": {
-            "bullets": [
-                "must be confirmed by the learning partner",
-                "for each learning partner individually",
-                "The time spent can also be confirmed here"
-            ],
+            "bullets": ["must be confirmed by the learning partner", "for each learning partner individually", "The time spent can also be confirmed here"],
             "title": "Individual certificate"
         },
         "title": "My certificates"
