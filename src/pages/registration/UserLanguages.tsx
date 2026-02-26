@@ -1,10 +1,11 @@
 import { useTranslation } from 'react-i18next';
-import { OptionalBadge, RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
+import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { Language } from '@/gql/graphql';
-import { Typography } from '@/components/Typography';
 import { usePageTitle } from '@/hooks/usePageTitle';
+import { Typography } from '@/components/Typography';
+import { cn } from '@/lib/Tailwind';
 
 interface UserLanguagesProps extends RegistrationStepProps {}
 
@@ -17,11 +18,16 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
         onFormChange({ languages: values });
     };
 
-    const isNextDisabled = form.userType === 'pupil' ? form.languages.length === 0 : false;
+    const isNextDisabled = form.userType === 'pupil' ? form.languages.length === 0 : !form.languages.includes(Language.Deutsch);
 
     return (
-        <RegistrationStep className="px-0" onBack={onBack} onNext={onNext} isNextDisabled={isNextDisabled}>
-            {form.userType === 'student' && <OptionalBadge />}
+        <RegistrationStep
+            className="px-0"
+            onBack={onBack}
+            onNext={onNext}
+            isNextDisabled={isNextDisabled}
+            reasonNextDisabled={isNextDisabled ? t('registration.steps.languages.germanRequiredError') : undefined}
+        >
             <RegistrationStepTitle className="mb-3">
                 {t(form.userType === 'pupil' ? 'registration.steps.languages.titlePupil' : 'registration.steps.languages.titleStudent')}
             </RegistrationStepTitle>
@@ -47,6 +53,14 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
                     setValue={onChange}
                 />
             </div>
+            <Typography
+                variant="sm"
+                className={cn('text-destructive px-1 min-h-5 leading-1 mt-4 text-center', {
+                    invisible: !form.languages.length || form.languages.includes(Language.Deutsch),
+                })}
+            >
+                {t('registration.steps.languages.germanRequiredError')}
+            </Typography>
         </RegistrationStep>
     );
 };
