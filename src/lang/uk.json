@@ -379,7 +379,7 @@
                     "max-requests": "Ви вже у списку очікування.",
                     "deactivated": "Реєстрація на навчальну підтримку 1:1 тимчасово закрита через високий попит. Якщо ви вже подали заявку на навчальну підтримку, ми зв'яжемося з вами найближчим часом, щоб обговорити подальші кроки. Тим часом, будь ласка, скористайтеся іншими нашими пропозиціями. ",
                     "deactivated_tooltip": "Реєстрація тимчасово закрита через високий попит.",
-                    "max-matches": "Наразі ти можеш мати максимум 1 партнера для навчання. Якщо ти більше не працюєш зі своїм партнером для навчання, розірви навчальну пару. Після розірвання навчальної пари чат залишається відкритим ще 3 дні. Протягом цього часу ви ще маєте можливість попрощатися один з одним."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
                 }
             }
         },

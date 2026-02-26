@@ -379,7 +379,7 @@
                     "max-requests": "You are already on the waiting list.",
                     "deactivated": "Registration for 1on1 learning support is temporarily closed due to high demand. If you have already submitted a request for learning support, we will contact you by email in the near future to discuss the next steps. In the meantime, please feel free to take advantage of our other offers. ",
                     "deactivated_tooltip": "Registration is temporarily closed due to high demand.",
-                    "max-matches": "Currently, you can have a maximum of one learning partner. If you no longer wish to work with your learning partner, dissolve the learning pair. The chat will remain open for three days after the learning pair has been dissolved. During this time, you will have the opportunity to say goodbye to each other."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
                 }
             }
         },

@@ -379,7 +379,7 @@
                     "max-requests": "Zaten bekleme listesindesiniz.",
                     "deactivated": "Bire bir öğrenme desteği için kayıtlar yoğun talep nedeniyle geçici olarak kapatılmıştır. Öğrenme desteği için daha önce talepte bulunduysanız, sonraki adımları görüşmek üzere yakın gelecekte sizinle e-posta yoluyla iletişime geçeceğiz. Bu arada, lütfen diğer tekliflerimizden yararlanmaktan çekinmeyin. ",
                     "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır.",
-                    "max-matches": "Şu anda en fazla 1 öğrenme partneriniz olabilir. Öğrenme partnerinizle artık çalışmıyorsanız, öğrenme çiftini sonlandırın. Öğrenme çifti sonlandırıldıktan sonra sohbet 3 gün daha açık kalır. Bu süre içinde birbirinize veda etme fırsatınız olur."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
                 }
             }
         },

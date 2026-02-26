@@ -379,7 +379,7 @@
                     "max-requests": "أنت بالفعل على قائمة الانتظار.",
                     "deactivated": "تم إغلاق التسجيل للحصول على دعم التعلم 1: 1 مؤقتا بسبب ارتفاع الطلب. إذا كنت قد قدمت بالفعل طلبا للحصول على دعم التعلم ، فسنتصل بك برسالة بريد إلكتروني في المستقبل القريب لمناقشة كيفية المتابعة. في غضون ذلك ، لا تتردد في الاستفادة من عروضنا الأخرى. ",
                     "deactivated_tooltip": "التسجيل مغلق مؤقتاً بسبب ارتفاع الطلب على التسجيل.",
-                    "max-matches": "حالياً، يمكنك شريك تعلُّم واحد كحد أقصى. إذا لم تعد شريك تعلُّم مع شريك تعلُّم ، فقم شراكة تعلم . ستظل الدردشة مفتوحة لمدة 3 أيام بعد شراكة تعلم. خلال هذه الفترة، ستتاح لكما فرصة لتوديع بعضكما البعض."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
                 }
             }
         },
