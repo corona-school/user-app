@@ -2151,7 +2151,13 @@
                 "headline": "Done!",
                 "content": "  Thank you, your course has been saved and sent to us. After checking and approving the content, your course will be activated and will be publicly visible. This will happen within the next 7 days."
             },
-            "headline": "General information about your course"
+            "headline": "General information about your course",
+            "restoreModal": {
+                "title": "Restore Draft",
+                "description": "We saved a draft when you were creating the course \"{{courseName}}\". Do you want to restore it?",
+                "restore": "Restore",
+                "discard": "Discard"
+            }
         },
         "unsplash": {
             "heading": "Choose an image",

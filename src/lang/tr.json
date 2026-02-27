@@ -2151,7 +2151,13 @@
                 "headline": "Tamamdır!",
                 "content": "  Teşekkürler, kursunuz kaydedildi ve bize gönderildi. İçeriği kontrol edip onayladıktan sonra kursunuz etkinleştirilecek ve herkes tarafından görülebilecektir. Bu işlem önümüzdeki 7 gün içinde gerçekleşecektir."
             },
-            "headline": "Kursunuz hakkında genel bilgiler"
+            "headline": "Kursunuz hakkında genel bilgiler",
+            "restoreModal": {
+                "title": "Taslağı geri yükle",
+                "description": "“{{courseName}}” kursunu oluştururken bir taslak kaydettik. Geri yüklemek ister misin?",
+                "restore": "Geri yükle",
+                "discard": "İptal et"
+            }
         },
         "unsplash": {
             "heading": "Bir resim seçin",
