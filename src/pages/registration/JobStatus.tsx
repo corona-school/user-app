@@ -1,4 +1,4 @@
-import { Screening_Jobstatus_Enum, Student_Jobstatus_Enum } from '@/gql/graphql';
+import { Student_Jobstatus_Enum } from '@/gql/graphql';
 import { JobStatusSelector } from '@/widgets/screening/JobStatusSelector';
 import { useTranslation } from 'react-i18next';
 import { usePageTitle } from '../../hooks/usePageTitle';
@@ -19,7 +19,7 @@ export const JobStatus = ({ onBack, onNext }: JobStatusProps) => {
             <RegistrationStepDescription className="mb-10">{t('registration.steps.jobStatus.description')}</RegistrationStepDescription>
             <div className="w-full md:pb-0">
                 <JobStatusSelector
-                    value={form.jobStatus as unknown as Screening_Jobstatus_Enum}
+                    value={form.jobStatus}
                     setValue={(jobStatus) => onFormChange({ jobStatus: jobStatus as unknown as Student_Jobstatus_Enum })}
                     className="flex flex-wrap justify-center"
                     toggleConfig={{
