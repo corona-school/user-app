@@ -5,13 +5,11 @@ import { gql } from '@/gql';
 import { StudentScreeningStatus, StudentScreeningType, Student_Screening_Status_Enum } from '@/gql/graphql';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { InstructorScreening, StudentForScreening, TutorScreening } from '@/types';
-import { EditJobStatusModal } from '@/widgets/screening/EditJobStatusModal';
 import { useMutation } from '@apollo/client';
 import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { ButtonField } from '../components/ButtonField';
 import { KnowsUsSelect } from '../components/KnowsUsSelect';
 
 interface ScreenStudentProps {
@@ -123,7 +121,6 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
 
     const [customKnowsFrom, setCustomKnowsFrom] = useState('');
     const [jobStatus, setJobStatus] = useState(screening?.jobStatus ?? undefined);
-    const [showJobStatusModal, setShowJobStatusModal] = useState(false);
     const [showConfirmApprove, setShowConfirmApprove] = useState(false);
     const [showConfirmReject, setShowConfirmReject] = useState(false);
 
@@ -195,11 +192,6 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
                         disabled={decisionTaken}
                     />
                 </div>
-                <div className="flex flex-col gap-y-2 flex-1">
-                    <ButtonField disabled={decisionTaken} className="min-w-full" label="Beruflicher Status" onClick={() => setShowJobStatusModal(true)}>
-                        {jobStatus ? t(`job_status.${jobStatus}`) : ''}
-                    </ButtonField>
-                </div>
             </div>
             <div className="mt-8">
                 <Typography variant="h6" className="mb-5">
@@ -234,7 +226,6 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
                     </div>
                 )}
             </div>
-            <EditJobStatusModal jobStatus={jobStatus} onSave={setJobStatus} isOpen={showJobStatusModal} onOpenChange={setShowJobStatusModal} />
             <ConfirmationModal
                 isOpen={showConfirmApprove}
                 onOpenChange={setShowConfirmApprove}

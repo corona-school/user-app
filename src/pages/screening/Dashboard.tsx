@@ -114,6 +114,7 @@ export function ScreeningDashboard() {
                     descriptionForMatch
                     descriptionForScreening
                     calendarPreferences
+                    jobStatus
                     matches {
                         createdAt
                         pupil { firstname lastname }
