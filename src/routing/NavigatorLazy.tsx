@@ -172,8 +172,7 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                {/*<Route index element={<Navigate to="profile" replace />} />*/}
-                {/*<Route path="profile" element={<div></div>} />*/}
+                {/*Add Routes for Settings outlet here*/}
             </Route>
 
             <Route
