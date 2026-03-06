@@ -174,7 +174,7 @@ const Settings: React.FC = () => {
                     </Button>
                 }
             >
-                <div className={'text-2xl font-bold py-5'}>Meine Einstellungen</div>
+                <div className={'text-2xl font-bold py-5'}>{t('settings.general.mySettings')}</div>
                 <div id={'sidebar'}>
                     <div className="min-w-full md:min-w-72">
                         <nav className="flex md:min-w-72 min-w-full pr-8 flex-col h-[calc(100vh-120px)] overflow-y-auto fixed pb-10 justify-between">
