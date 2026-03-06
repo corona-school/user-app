@@ -1175,6 +1175,7 @@
     "settings": {
         "header": "Einstellungen",
         "general": {
+            "mySettings": "Meine Einstellungen",
             "title": "Allgemein",
             "profile": "Profil",
             "calendarPreferences": "Wann hast du Zeit?",

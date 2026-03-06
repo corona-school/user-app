@@ -1,19 +1,37 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useTheme, VStack, Column, useBreakpointValue } from 'native-base';
-import { useContext, useEffect, useState } from 'react';
+import React, { ReactNode, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
 import useApollo, { useUserType } from '../hooks/useApollo';
 import DeactivateAccountModal from '../modals/DeactivateAccountModal';
-import ListItem from '../widgets/ListItem';
-import ProfileSettingRow from '../widgets/ProfileSettingRow';
 import { SwitchLanguageModal } from '../modals/SwitchLanguageModal';
-import { GAMIFICATION_ACTIVE, LESSON_PLAN_GENERATOR_ACTIVE, REFERRALS_ACTIVE } from '../config';
 import { InstallationContext } from '../context/InstallationProvider';
-import { Breadcrumb } from '@/components/Breadcrumb';
-import { IconX } from '@tabler/icons-react';
+import { GAMIFICATION_ACTIVE, LESSON_PLAN_GENERATOR_ACTIVE, REFERRALS_ACTIVE } from '../config';
+import {
+    IconChevronRight,
+    IconUser,
+    IconX,
+    IconBell,
+    IconCalendarWeek,
+    IconCertificate,
+    IconTrophy,
+    IconHelpCircle,
+    IconDownload,
+    IconSectionSign,
+    IconShieldLock,
+    IconLicense,
+    IconMail,
+    IconPassword,
+    IconUserOff,
+    IconLogout,
+    IconDevices,
+    IconBook2,
+    IconSpeakerphone,
+} from '@tabler/icons-react';
 import { Button } from '@/components/Button';
+import { Separator } from '@/components/Separator';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -24,6 +42,10 @@ const Settings: React.FC = () => {
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
     const { canInstall } = useContext(InstallationContext);
+
+    const location = useLocation();
+    const pathSegments = location.pathname.split('/').filter(Boolean);
+    const lastLinkItem = pathSegments[pathSegments.length - 1];
 
     const [showDeactivate, setShowDeactivate] = useState(false);
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
@@ -49,124 +71,137 @@ const Settings: React.FC = () => {
         navigate('/install');
     };
 
+    interface SettingItemType {
+        title: string;
+        icon: React.ElementType;
+        mobileFallbackLink: string;
+        element?: JSX.Element;
+        pressEvent?: () => void;
+    }
+
+    const profileSettings: SettingItemType[] = [
+        ...(userType !== 'screener'
+            ? [
+                  { title: t('settings.general.profile'), icon: IconUser, mobileFallbackLink: '/profile' },
+                  { title: t('settings.general.notifications'), icon: IconBell, mobileFallbackLink: '/notifications' },
+                  {
+                      title: t('settings.general.calendarPreferences'),
+                      icon: IconCalendarWeek,
+                      mobileFallbackLink: '/calendar-preferences',
+                  },
+              ]
+            : []),
+        ...(userType === 'student' ? [{ title: t('settings.general.certificates'), icon: IconCertificate, mobileFallbackLink: '/certificates' }] : []),
+    ];
+
+    const generalSettings: SettingItemType[] = [
+        ...(GAMIFICATION_ACTIVE
+            ? [
+                  {
+                      title: t('settings.general.progress'),
+                      icon: IconTrophy,
+                      mobileFallbackLink: '/progress',
+                  },
+              ]
+            : []),
+        {
+            title: t('settings.general.faq'),
+            icon: IconHelpCircle,
+            mobileFallbackLink: '/hilfebereich',
+        },
+        {
+            title: t('installation.installTitle'),
+            icon: IconDownload,
+            mobileFallbackLink: '/install',
+        },
+        {
+            title: t('settings.general.manageSessions'),
+            icon: IconDevices,
+            mobileFallbackLink: '/manage-sessions',
+        },
+        ...(userType === 'student' && isMobile ? [{ title: t('settings.general.forStudents'), icon: IconBook2, mobileFallbackLink: '/knowledge-helper' }] : []),
+        ...(userType === 'pupil' && isMobile ? [{ title: t('settings.general.forPupils'), icon: IconBook2, mobileFallbackLink: '/knowledge-pupil' }] : []),
+        ...(LESSON_PLAN_GENERATOR_ACTIVE ? [{ title: t('navigation.label.lesson'), icon: IconDownload, mobileFallbackLink: '/lesson' }] : []),
+        ...(isMobile && REFERRALS_ACTIVE ? [{ title: t('navigation.label.referral'), icon: IconSpeakerphone, mobileFallbackLink: '/referral' }] : []),
+    ];
+
+    const accountSettings: SettingItemType[] = [
+        ...(!roles.includes('SSO_USER')
+            ? [
+                  { title: t('settings.account.changeEmail'), icon: IconMail, mobileFallbackLink: '/new-email' },
+                  { title: t('settings.account.changePassword'), icon: IconPassword, mobileFallbackLink: '/new-password' },
+              ]
+            : []),
+        { title: t('settings.account.deactivateAccount'), icon: IconUserOff, mobileFallbackLink: '#', pressEvent: () => setShowDeactivate(true) },
+        {
+            title: t('settings.account.logout'),
+            icon: IconLogout,
+            mobileFallbackLink: '#',
+            pressEvent: () => {
+                trackEvent({
+                    category: 'profil',
+                    action: 'click-event',
+                    name: 'Abmelden im Account',
+                    documentTitle: 'Logout',
+                });
+                navigate('/logout');
+            },
+        },
+    ];
+
+    const legalSettings: SettingItemType[] = [
+        { title: t('settings.legal.imprint'), icon: IconSectionSign, mobileFallbackLink: '/impressum' },
+        { title: t('settings.legal.datapolicy'), icon: IconShieldLock, mobileFallbackLink: '/datenschutz' },
+        { title: t('settings.legal.agb'), icon: IconLicense, mobileFallbackLink: `/${userType === 'pupil' ? 'agb-schueler' : 'agb-helfer'}` },
+    ];
+
+    const settings = [
+        { title: '', items: profileSettings },
+        { title: t('settings.general.title'), items: generalSettings },
+        { title: t('settings.account.title'), items: accountSettings },
+        { title: t('settings.legal.title'), items: legalSettings },
+    ];
+
     return (
         <>
             <WithNavigation
                 headerTitle={t('settings.header')}
                 hideMenu
-                previousFallbackRoute="/start"
+                previousFallbackRoute="/settings"
                 headerRight={
                     <Button className="rounded-full hover:bg-primary-light hover:brightness-105" variant="none" onClick={() => navigate(-1)} size="icon">
                         <IconX />
                     </Button>
                 }
             >
-                <VStack paddingX={space['1.5']} space={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
-                    <Breadcrumb />
-                    <>
-                        <ProfileSettingRow title={user?.firstname!} isSpace={false}>
-                            {userType !== 'screener' && (
-                                <>
-                                    <Column mb={tabspace}>
-                                        <ListItem label={t('settings.general.profile')} onPress={() => navigate('/profile')} />
-                                    </Column>
-                                    <Column mb={tabspace}>
-                                        <ListItem label={t('settings.general.calendarPreferences')} onPress={() => navigate('/calendar-preferences')} />
-                                    </Column>
-                                    <Column mb={tabspace}>
-                                        <ListItem label={t('settings.general.notifications')} onPress={() => navigate('/notifications')} />
-                                    </Column>
-                                </>
-                            )}
-                            {userType === 'student' && (
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('settings.general.certificates')} onPress={() => navigate('/certificates')} />
-                                </Column>
-                            )}
-                        </ProfileSettingRow>
-                        <ProfileSettingRow title={t('settings.general.title')} isSpace={false}>
-                            {GAMIFICATION_ACTIVE && (
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('settings.general.progress')} onPress={() => navigate('/progress')} />
-                                </Column>
-                            )}
-                            <Column mb={tabspace}>
-                                <ListItem label={t('settings.general.faq')} onPress={() => navigate('/hilfebereich')} />
-                            </Column>
-                            {canInstall && (
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('installation.installTitle')} onPress={handleOnInstall} />
-                                </Column>
-                            )}
-                            <Column mb={tabspace}>
-                                <ListItem label={t('settings.general.manageSessions')} onPress={() => navigate('/manage-sessions')} />
-                            </Column>
-                            {userType === 'student' && isMobile && (
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('settings.general.forStudents')} onPress={() => navigate('/knowledge-helper')} />
-                                </Column>
-                            )}
-                            {userType === 'pupil' && isMobile && (
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('settings.general.forPupils')} onPress={() => navigate('/knowledge-pupil')} />
-                                </Column>
-                            )}
-                            {/* Add Lesson for both desktop and mobile */}
-                            {LESSON_PLAN_GENERATOR_ACTIVE && (
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('navigation.label.lesson')} onPress={() => navigate('/lesson')} />
-                                </Column>
-                            )}
-                            {/* Move Referral to Knowledge Center on Mobile Only */}
-                            {isMobile && REFERRALS_ACTIVE && (
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('navigation.label.referral')} onPress={() => navigate('/referral')} />
-                                </Column>
-                            )}
-                        </ProfileSettingRow>
-                    </>
-                    <ProfileSettingRow title={t('settings.account.title')} isSpace={false}>
-                        {!roles.includes('SSO_USER') && (
-                            <>
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('settings.account.changeEmail')} onPress={() => navigate('/new-email')} />
-                                </Column>
-                                <Column mb={tabspace}>
-                                    <ListItem label={t('settings.account.changePassword')} onPress={() => navigate('/new-password')} />
-                                </Column>
-                            </>
-                        )}
-
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.account.deactivateAccount')} onPress={() => setShowDeactivate(true)} />
-                        </Column>
-                        <Column mb={tabspace}>
-                            <ListItem
-                                label={t('settings.account.logout')}
-                                onPress={() => {
-                                    trackEvent({
-                                        category: 'profil',
-                                        action: 'click-event',
-                                        name: 'Abmelden im Account',
-                                        documentTitle: 'Logout',
-                                    });
-                                    navigate('/logout');
-                                }}
-                            />
-                        </Column>
-                    </ProfileSettingRow>
-                    <ProfileSettingRow title={t('settings.legal.title')} isSpace={false}>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.legal.imprint')} onPress={() => navigate('/impressum')} />
-                        </Column>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.legal.datapolicy')} onPress={() => navigate('/datenschutz')} />
-                        </Column>
-                        <Column mb={tabspace}>
-                            <ListItem label={t('settings.legal.agb')} onPress={() => navigate(`/${userType === 'pupil' ? 'agb-schueler' : 'agb-helfer'}`)} />
-                        </Column>
-                    </ProfileSettingRow>
-                </VStack>
+                <div className={'text-2xl font-bold py-5'}>{t('settings.general.mySettings')}</div>
+                <div id={'sidebar'}>
+                    <div className="min-w-full md:min-w-72">
+                        <nav className="flex md:min-w-72 min-w-full pr-8 flex-col h-[calc(100vh-120px)] overflow-y-auto fixed pb-10 justify-between">
+                            <div className="flex flex-col gap-y-4 ">
+                                {settings.map((group) => {
+                                    return (
+                                        <SettingRow title={group.title}>
+                                            {group.items.map((item) => {
+                                                return (
+                                                    <SettingItem
+                                                        title={item.title}
+                                                        Icon={item.icon}
+                                                        active={'/' + lastLinkItem === item.mobileFallbackLink}
+                                                        pressEvent={item.pressEvent ? item.pressEvent : () => navigate(item.mobileFallbackLink)}
+                                                    />
+                                                );
+                                            })}
+                                        </SettingRow>
+                                    );
+                                })}
+                            </div>
+                        </nav>
+                    </div>
+                </div>
+                <div className={'ml-auto w-full lg:w-[80%] pl-4'}>
+                    <Outlet />
+                </div>
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onOpenChange={setShowDeactivate} />
             <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
@@ -174,3 +209,27 @@ const Settings: React.FC = () => {
     );
 };
 export default Settings;
+
+const SettingRow = ({ title, children }: { title: string; children: ReactNode }) => {
+    return (
+        <div className={'w-full'}>
+            <div className={'text-sm mb-3'}>{title}</div>
+            <div className={'flex flex-col gap-2 mb-5'}>{children}</div>
+        </div>
+    );
+};
+
+const SettingItem = ({ title, Icon, pressEvent, active }: { title: string; Icon: React.ElementType; pressEvent: () => void; active: boolean }) => {
+    return (
+        <div
+            className={`inline-flex items-center gap-3 hover:bg-accent rounded-md px-2 py-1 cursor-pointer ${active ? 'bg-accent text-tertiary' : ''}`}
+            onClick={pressEvent}
+        >
+            <Icon size={22} className="text-primary" />
+            <span>{title}</span>
+            <div className={'ml-auto'}>
+                <IconChevronRight />
+            </div>
+        </div>
+    );
+};
