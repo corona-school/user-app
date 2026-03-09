@@ -116,6 +116,7 @@ export type StudentForScreening = Pick<
     | 'descriptionForMatch'
     | 'descriptionForScreening'
     | 'isAdult'
+    | 'jobStatus'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];

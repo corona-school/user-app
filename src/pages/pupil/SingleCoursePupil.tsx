@@ -95,10 +95,6 @@ query GetSingleSubcoursePupil($subcourseId: Int!) {
             }
             allowContact
         }
-        lectures{
-            start
-            duration
-        }
         canJoin { allowed reason }
         canContactInstructor { allowed reason }
         canJoinWaitinglist { allowed reason }
@@ -181,7 +177,7 @@ const SingleCoursePupil = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
+            subcourse.appointments.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis()),
         [subcourse]
     );
 
@@ -196,7 +192,7 @@ const SingleCoursePupil = () => {
         return !is30DaysBeforeToday;
     }, [appointments, subcourse?.cancelled]);
 
-    const showParticipantsTab = subcourse?.isParticipant;
+    const showParticipantsTab = subcourse?.isParticipant && subcourse.course.category !== Course_Category_Enum.HomeworkHelp;
     const showTabsControls = showParticipantsTab;
 
     useEffect(() => {
@@ -220,7 +216,9 @@ const SingleCoursePupil = () => {
             <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
                 <div>
                     <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name! }]} />
-                    {course && subcourse && <SubcourseData course={course} subcourse={subcourse} isInPast={isInPast} />}
+                    {course && subcourse && (
+                        <SubcourseData course={course} subcourse={{ ...subcourse, lectures: subcourse.appointments }} isInPast={isInPast} />
+                    )}
                 </div>
                 {course && subcourse && !isInPast && (
                     <PupilCourseButtons

@@ -57,9 +57,6 @@ const OnboardingCard: React.FC<CardProps> = ({
                             <Stack space={space['0.5']}>
                                 {showRequestButton && <Button onPress={onRequest}>{requestButtonText}</Button>}
                                 {showRequestBanner && <RequestInstructorTutorBanner headline={bannerHeadline} />}
-                                <Button variant="outline" onPress={onTalkToTeam}>
-                                    {t('introduction.talkWithTeam')}
-                                </Button>
                                 <Button variant="outline" onPress={onMoreInfos}>
                                     {t('introduction.moreInfos')}
                                 </Button>
@@ -95,9 +92,6 @@ const OnboardingCard: React.FC<CardProps> = ({
                             <Stack space={space['0.5']}>
                                 {showRequestButton && <Button onPress={onRequest}>{requestButtonText}</Button>}
                                 {showRequestBanner && <RequestInstructorTutorBanner headline={bannerHeadline} />}
-                                <Button variant="outline" onPress={onTalkToTeam}>
-                                    {t('introduction.talkWithTeam')}
-                                </Button>
                                 <Button variant="outline" onPress={onMoreInfos}>
                                     {t('introduction.moreInfos')}
                                 </Button>

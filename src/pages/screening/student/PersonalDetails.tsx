@@ -23,6 +23,7 @@ import { Input } from '@/components/Input';
 import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityModal';
 import { EditLocationModal } from '../components/EditLocationModal';
 import zipStateMapping from '../../../assets/data/plz_to_state.json';
+import { EditJobStatusModal } from '@/widgets/screening/EditJobStatusModal';
 
 interface PersonalDetailsProps {
     student: StudentForScreening;
@@ -62,6 +63,8 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [location, setLocation] = useState(student.state);
     const [zipCode, setZipCode] = useState(student.zipCode ?? '');
     const [zipCodeError, setZipCodeError] = useState('');
+    const [jobStatus, setJobStatus] = useState(student.jobStatus ?? undefined);
+    const [showJobStatusModal, setShowJobStatusModal] = useState(false);
 
     const [errors, setErrors] = useState<FormErrors>({});
 
@@ -123,6 +126,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         descriptionForScreening,
                         state: location as any,
                         zipCode: zipCode !== '' ? zipCode : null,
+                        jobStatus: jobStatus,
                         calendarPreferences: weeklyAvailability
                             ? {
                                   ...student.calendarPreferences,
@@ -242,6 +246,11 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             )}
                         </ButtonField>
                     </div>
+                    <div className="flex flex-col gap-y-2">
+                        <ButtonField className="min-w-full" label="Beruflicher Status" onClick={() => setShowJobStatusModal(true)}>
+                            {jobStatus ? t(`job_status.${jobStatus}`) : ''}
+                        </ButtonField>
+                    </div>
                     <div className="flex gap-x-7 mt-6">
                         <div className="flex gap-x-2 items-center">
                             <Checkbox id="hasSpecialExperience" checked={hasSpecialExperience} onCheckedChange={setHasSpecialExperience} />{' '}
@@ -300,6 +309,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                     isOpen={showEditAvailability}
                 />
                 <EditLocationModal isOpen={showEditLocation} onOpenChange={setShowEditLocation} state={location as Student_State_Enum} onSave={setLocation} />
+                <EditJobStatusModal jobStatus={jobStatus} onSave={setJobStatus} isOpen={showJobStatusModal} onOpenChange={setShowJobStatusModal} />
             </div>
         </>
     );

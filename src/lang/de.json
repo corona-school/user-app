@@ -403,7 +403,9 @@
             "gesamtschule": "Gesamtschule",
             "berufsschule": "Berufsschule",
             "f_rderschule": "Förderschule",
-            "mittelschule": "Mittelschule / Oberschule / Sekundarschule",
+            "mittelschule": "Mittelschule",
+            "oberschule": "Oberschule",
+            "sekundarschule": "Sekundarschule",
             "stadtteilschule": "Stadtteilschule",
             "berufsfachschule": "Berufsfachschule (BFS)",
             "fachoberschule": "Fachoberschule (FOS)",
@@ -412,6 +414,7 @@
             "fachschule": "Fachschule",
             "abendschule_vhs": "Abendschule / Weiterbildung / VHS",
             "berufskolleg": "Berufskolleg",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
             "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
             "auslandsschule": "Ausländische Schule",
             "privatschule": "Privatschule",
@@ -451,27 +454,14 @@
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
                     "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
                     "max-requests": "Du bist bereits auf der Warteliste.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 3 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
                 }
             }
         }
     },
-    "welcome": {
-        "title": "Herzlich Willkommen bei Lern-Fair",
-        "subtitle": "Hast du bereits ein Nutzerkonto?\nOder bist du neu bei uns und möchtest dich registrieren?",
-        "deactivationAlert": "Dein Nutzerkonto wurde deaktiviert",
-        "needHelp": "Brauchst du Hilfe?",
-        "contactSupport": "Schick uns eine E-Mail"
-    },
     "registration": {
-        "password_repeat": "Passwort wiederholen",
-        "to_login": "Ich habe bereits ein Nutzerkonto",
-        "ageOptions": {
-            "15OrYounger": "Schüler:in ist 15 oder jünger",
-            "16OrOlder": "Schüler:in ist 16 oder älter"
-        },
         "emailOwnerOptions": {
             "pupil": "Schüler:in / Azubi",
             "parent": "Elternteil",
@@ -502,30 +492,6 @@
                 "missing": "Bitte identifiziere deine Rolle"
             }
         },
-        "personal": {
-            "title": "Gib deine persönlichen Daten ein",
-            "pupilSubtitle": "Angaben zu Schüler:in",
-            "about": {
-                "label": "Über mich",
-                "text": "Schreib hier einen kurzen Text zu dir, den andere Nutzer:innen auf deinem Profil sehen können."
-            }
-        },
-        "result": {
-            "success": {
-                "title": "Erledigt!",
-                "text": "Dein Nutzerkonto wurde erfolgreich erstellt. Du kannst nun das Angebot von Lern-Fair nutzen!",
-                "btn": "Zur Anwendung"
-            },
-            "error": {
-                "tryagain": "Erneut versuchen",
-                "message": {
-                    "Email is already used by another account": "Diese E-Mail ist bereits in Verwendung",
-                    "Response not successful: Received status code 400": "Es ist ein Fehler aufgetreten. Bitte versuche es später erneut.",
-                    "RateLimit Enforcement": "Du hast zu viele Anfragen gestellt. Bitte versuche es später erneut.",
-                    "Unknown User Type": "Dein Nutzerkonto-Typ konnte nicht bestimmt werden. Bitte versuche versuche einen einfachen Login."
-                }
-            }
-        },
         "stepStateCount": "{{current}} von {{total}}",
         "steps": {
             "userType": {
@@ -537,7 +503,7 @@
                 "needHelpInSchool": "Ich besuche eine Schule in Deutschland.",
                 "familyCannotHelp": "Meine Familie kann mir nicht bei Schulaufgaben helfen.",
                 "familyCannotAffordTutoring": "Meine Familie kann mir Nachhilfe nicht bezahlen.",
-                "doNotApplyToMe": "Es treffen keine zwei Punkte auf mich zu"
+                "doNotApplyToMe": "Es treffen nicht alle 3 Punkte auf mich zu"
             },
             "acceptanceCheckFailed": {
                 "title": "Wie schade.",
@@ -569,7 +535,8 @@
                 "titlePupil": "Welche Sprachen sprichst du zu Hause?",
                 "titleStudent": "Welche Sprachen sprichst du fließend?",
                 "descriptionPupil": "Wir versuchen, dich mit Helfer:innen zusammenzubringen, die ähnliche Sprachen sprechen.",
-                "descriptionStudent": "Wir versuchen, dich mit Schüler:innen zusammenzubringen, die ähnliche Sprachen sprechen."
+                "descriptionStudent": "Wir versuchen, dich mit Schüler:innen zusammenzubringen, die ähnliche Sprachen sprechen.",
+                "germanRequiredError": "Damit die Unterstützung gut funktioniert, ist Deutsch als gemeinsame Sprache erforderlich. Bitte wähle Deutsch aus."
             },
             "bookAppointment": {
                 "title": "Kennenlern-Gespräch",
@@ -738,6 +705,25 @@
             "legal": {
                 "title": "Einwilligungen",
                 "subtitle": "Einwilligungen"
+            },
+            "jobStatus": {
+                "title": "Was beschreibt dich am besten?",
+                "description": "Durch nachfolgende Angaben können wir Lernpartner einander besser zuordnen."
+            },
+            "hasEducationExperience": {
+                "title": "Studierst oder arbeitest du in einem Bereich speziell für Kinder und Jugendliche?",
+                "description": "Keine Sorge. Du kannst Schülern auch helfen wenn das nicht der Fall ist und du keine Erfahrungen hast."
+            },
+            "formalEducation": {
+                "title": "In welchem?"
+            },
+            "teachingExperience": {
+                "title": "Hast du bereits Unterrichtserfahrungen?",
+                "group": "Gruppenunterricht",
+                "individual": "Einzelunterricht"
+            },
+            "specialTeachingExperience": {
+                "title": "Hast du Kentnisse zu speziellen Förderbedarfen?"
             }
         },
         "pupil": {
@@ -760,30 +746,6 @@
                 "failedAlert": "Leider ist ein Fehler aufgetreten. Bitte versuche es später erneut."
             },
             "backToWelcomeButton": "Zum Login-Bereich"
-        },
-        "legal": {
-            "privacy": "Datenschutz",
-            "whatHappensWithData": "Das passiert mit deinen Daten, wenn du dich bei Lern-Fair registrierst:",
-            "usageBullets": {
-                "1": "Wir speichern deine Daten solange dein Nutzerkonto bei Lern-Fair aktiv ist und löschen diese spätestens 3 Jahre nach der Deaktivierung deines Nutzerkontos",
-                "2": "Wir teilen Informationen zu deiner Person (Name, Schulform, Jahrgangsstufe, Bundesland, Fächer) mit Helfer:innen, die dich unterstützen werden",
-                "3": "Wir nutzen Angebote von Heroku, Mailjet, Datadog und Google zur Verarbeitung deiner Daten, die eventuell das europäische Datenschutzniveau nicht gewährleisten können"
-            },
-            "accept": "Ich habe die Datenschutzbestimmungen zur Kenntnis genommen:",
-            "privacypolicy": "Datenschutzbestimmungen",
-            "accordionUsDataProcessors": {
-                "title": "Datenverarbeitung durch Auftragsverarbeiter in den USA",
-                "body": "Ich nehme zur Kenntnis, dass die Verarbeitung meiner personenbezogenen Daten über unsere in den USA sitzenden Auftragsverarbeiter Google und Heroku erfolgt, die die Einhaltung des europäischen Datenschutzniveaus aufgrund der Möglichkeit von Anfragen von US-Nachrichtendiensten nicht gewährleisten können. Zu diesem Zweck hat Lern-Fair Standardvertragsklauseln abgeschlossen und weitergehende Sicherheitsmaßnahmen vereinbart, Art. 46 Abs. 2 lit. c DSGVO."
-            },
-            "noInvestigation": "Ich versichere, nicht wegen einer in § 72a Abs. 1 Satz 1 SGB VII bezeichneten Straftat rechtskräftig verurteilt worden zu sein und dass derzeit kein Ermittlungsverfahren wegen einer solchen Straftat gegen mich läuft.",
-            "selfCommitment": "Selbstverpflichtungserklärung",
-            "newsletter": "Newsletter",
-            "newsletterAgreement": "Ich möchte von Lern-Fair über Angebote, Aktionen und weitere Unterstützungsmöglichkeiten per E-Mail informiert werden.",
-            "underageDisclaimer": "Hinweis: Für den Fall, dass die einwilligende Person das 18. Lebensjahr noch nicht vollendet hat, hat der Träger der elterlichen Verantwortung für die Person die Einwilligung zu erklären.",
-            "error": {
-                "confirmPolicy": "Bitte bestätige die Datenschutzbestimmungen.",
-                "confirmNoInvestigation": "Bitte bestätige diese Aussage."
-            }
         }
     },
     "forStudents": {
@@ -992,24 +954,16 @@
                     "student": "Sobald du dein Nutzerkonto deaktivierst, werden deine Lernpaare aufgelöst und deine Kurse abgesagt. Wir informieren deine aktiven Lernpartner:innen automatisch über diese Änderung. Falls du zu einem späteren Zeitpunkt wieder Teil von Lern-Fair werden möchtest, kannst du dich jederzeit bei uns melden."
                 }
             },
-            "pupil": {
-                "0": "Ich habe keine Zeit mehr.",
-                "1": "Ich habe kein Interesse mehr.",
-                "2": "Ich habe mich nur zu Testzwecken angemeldet.",
-                "3": "Ich habe eine andere Möglichkeit gefunden, Unterstützung zu erhalten.",
-                "4": "Ich habe mir das Programm anders vorgestellt.",
-                "5": "Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.",
-                "6": "Sonstiges"
-            },
-            "student": {
-                "0": "Ich habe keine Zeit mehr mich zu engagieren.",
-                "1": "Ich konnte/wollte das Kennenlerngespräch nicht wahrnehmen.",
-                "2": "Ich habe kein Interesse mehr.",
-                "3": "Ich habe mich nur zu Testzwecken angemeldet.",
-                "4": "Ich habe eine andere Möglichkeit gefunden mich zu engagieren.",
-                "5": "Ich habe mir das Programm anders vorgestellt.",
-                "6": "Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.",
-                "7": "Sonstiges"
+            "reasons": {
+                "noMoreTime": "Ich habe keine Zeit mehr.",
+                "noMoreInterest": "Ich habe kein Interesse mehr.",
+                "onlyTestAccount": "Ich habe mich nur zu Testzwecken angemeldet.",
+                "expectationsDiffered": "Ich habe mir das Programm anders vorgestellt.",
+                "didntMeetRequirements": "Ich erfülle die Zugangsvoraussetzungen für die Projekte nicht.",
+                "other": "Sonstiges",
+                "otherSupportFound": "Ich habe eine andere Möglichkeit gefunden, Unterstützung zu erhalten.",
+                "otherVolunteerWorkFound": "Ich habe eine andere Möglichkeit gefunden mich zu engagieren.",
+                "couldntAttendMeeting": "Ich konnte/wollte das Kennenlerngespräch nicht wahrnehmen."
             }
         }
     },
@@ -1253,185 +1207,7 @@
         }
     },
     "onboardingList": {
-        "header": "Onboarding-Tour",
-        "title": "Onboarding",
-        "buttontext": "Tour starten",
-        "skip": "Überspringen",
-        "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod",
-        "cards": {
-            "card0": {
-                "title": "Onboarding-Tour allgemein",
-                "content": "Möchtest du wissen, was unsere Plattform alles zu bieten hat? Wir zeigen dir die wichtigsten Funktionen.",
-                "url": "/onboarding/students/"
-            },
-            "card1": {
-                "title": "Onboarding-Tour 1:1 Matching",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/onboarding/helpermatching/"
-            },
-            "card2": {
-                "title": "Onboarding-Tour Gruppenkurs",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            },
-            "card3": {
-                "title": "Onboarding-Tour Hilfebereich",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            },
-            "card4": {
-                "title": "Onboarding-Tour Termine",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            }
-        },
         "Wizard": {
-            "students": {
-                "welcome": {
-                    "title": "Herzlich willkommen bei Lern-Fair",
-                    "content": "Wir freuen uns, dass du unser Angebot nutzt.",
-                    "question": "Möchtest du sehen, was unsere Plattform alles zu bieten hat?",
-                    "answer": "Wir zeigen dir die wichtigsten Funktionen.",
-                    "startTour": "Tour starten",
-                    "skipTour": "Tour überspringen",
-                    "popup": {
-                        "title": "Bist du sicher, dass du die Tour überspringen möchtest?",
-                        "content": "Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt im Hilfebereich unter “Onboarding”.",
-                        "defaultButtonText": "Nein, Tour beginnen",
-                        "outlineButtonText": "Ja, Tour überspringen"
-                    }
-                },
-                "matching": {
-                    "title": "Nachhilfe",
-                    "content": "Wenn du Einzel-Hilfe brauchst, dann ist die Nachhilfe das Richtige für dich. Du bekommst von uns eine:n feste:n Helfer:in."
-                },
-                "groupCourse": {
-                    "title": "Nachhilfe-Kurse",
-                    "content": "In kleinen Gruppen gibt es Hilfe zu verschiedenen Themen."
-                },
-                "appointments": {
-                    "title": "Meine Termine",
-                    "content": "Hier findest du eine Übersicht deiner geplanten Termine."
-                },
-                "helpCenter": {
-                    "title": "Hilfebereich",
-                    "content": "Hier findest du häufig gestellte Fragen mit ihren Antworten. Außerdem kannst du uns hier kontaktieren"
-                },
-                "profile": {
-                    "title": "Profil",
-                    "content": "In deinem Profil kannst du die Fächer, in denen du Hilfe brauchst, ändern."
-                },
-                "settings": {
-                    "title": "Einstellungen",
-                    "content": "In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mail-Adresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform."
-                },
-                "notification": {
-                    "title": "Benachrichtigung",
-                    "content": "Du wirst über Neuigkeiten zu deinem Matching, neue Kontaktaufnahmen, allgemeine Themen informiert. Über die Glocke oben rechts siehtst du, ob du neue Nachrichten hast."
-                },
-                "finisher": {
-                    "title": "Fertig!",
-                    "content": "Einen Moment, dein persönliches Dashboard wird geladen.",
-                    "button": "zum Dashboard"
-                }
-            },
-            "helper": {
-                "welcome": {
-                    "title": "Herzlich Willkommen bei Lern-Fair",
-                    "content": "Wir freuen uns, dass du bildungs-benachteiligte Kinder aktiv unterstützen möchtest.",
-                    "question": "Möchtest du sehen, was unsere Plattform alles zu bieten hat?",
-                    "answer": "Wir zeigen dir die wichtigsten Funktionen.",
-                    "startTour": "Tour starten",
-                    "skipTour": "Tour überspringen",
-                    "popup": {
-                        "title": "Bist du sicher, dass du die Tour überspringen möchtest?",
-                        "content": "Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.",
-                        "defaultButtonText": "Nein, Tour beginnen",
-                        "outlineButtonText": "Ja, Tour überspringen"
-                    }
-                },
-                "matching": {
-                    "title": "Nachhilfe",
-                    "content": "Die Nachhilfe ist eine 1:1-Betreuung für Schüler:innen, die individuelle Hilfe benötigen. Unter diesem Punkt findest du deine Termine, deine Lernparter:innen, siehst deine angefragten Matches und kannst neue Matches anfordern."
-                },
-                "groupCourse": {
-                    "title": "Gruppen-Kurse",
-                    "content": "Gruppen-Kurse bieten eine kurzfristige Unterstützung bei spezifischen Problemen und Fragen. Unter „Meine Kurse“ werden alle deine Gruppen-Kurse angezeigt. Hier hast du auch die Möglichkeit, neue Kurse zu erstellen."
-                },
-                "appointment": {
-                    "title": "Termine",
-                    "content": "Unter „Meine Termine“ werden dir all deine Termine, angeordnet in Tabs und sortiert nach Datum, angezeigt."
-                },
-                "helpCenter": {
-                    "title": "Hilfebereich",
-                    "content": "Solltest du Hilfe benötigen, findest du die wichtigsten Informationen in unserem Hilfebereich."
-                },
-                "profile": {
-                    "title": "Profil",
-                    "content": "In deinem Profil kannst du alles relevanten Daten eingeben."
-                },
-                "settings": {
-                    "title": "Einstellungen",
-                    "content": "In diesem Bereich kannst du allgemeine Änderungen und Änderungen zu deinem Konto (E-Mail-Adresse, Passwort) vornhemen. Zudem findet du hier auch rechliche Hinweise zur Nutzung der Plattform."
-                },
-                "notification": {
-                    "title": "Benachrichtigung",
-                    "content": "Du wirst über Neuigkeiten zu deinem Matching, neue Kontaktaufnahmen, allgemeine Themen informiert. Über die Glocke oben rechts siehtst du, ob du neue Nachrichten hast."
-                },
-                "finisher": {
-                    "title": "Fertig!",
-                    "content": "Einen Moment, dein persönliches Dashboard wird geladen.",
-                    "button": "zum Dashboard"
-                }
-            },
-            "helperMatching": {
-                "welcome": {
-                    "title": "Onboarding-Tour Nachhilfe",
-                    "content": "Wir zeigen dir hier alle wichtigen Informationen, die du über die Nachhilfe wissen musst.",
-                    "question": "Wie fordere ich eine:n Lernpartner:in an? Wie nehme ich Kontakt mit meinem:r Lernpartner:in auf? Wie kann ich ein Lernpaar auflösen?",
-                    "answer": "Wir zeigen dir die wichtigsten Funktionen.",
-                    "startTour": "Tour starten",
-                    "skipTour": "Tour überspringen",
-                    "popup": {
-                        "title": "Bist du sicher, dass du die Tour überspringen möchtest?",
-                        "content": "Du kannst die Tour auch jederzeit neu starten. Du findest den Punkt unter deinen Einstellungen als Punkt „Onboarding-Tour“.",
-                        "defaultButtonText": "Nein, Tour beginnen",
-                        "outlineButtonText": "Ja, Tour überspringen"
-                    }
-                },
-                "matching": {
-                    "title": "Lernpartner:in anfordern",
-                    "content": "Über den Button “Lernpartner:in” anfordern auf dem Dashboard oder im Bereich Einzel kannst du eine:n neue:n Lernpartner:in anfordern."
-                },
-                "request": {
-                    "title": "Anfrage stellen",
-                    "content": "Damit wir dir eine:n Lernpartner:in zuteilen können, benötigen wir ein paar Informationen über dich und dein Angebot."
-                },
-                "match": {
-                    "title": "Zuteilung des Lernpaars",
-                    "content": "Nachdem du deine Anfrage gestellt hast, begeben wir uns auf die Suche nach einem/einer passenden Lernpartner:in für dich.",
-                    "contentsec": "Du kannst deine Anfrage auch jederzeit zurücknehmen. Unter dem Punkt Anfragen im Bereich Einzel sind alle deine Anfragen aufgeführt."
-                },
-                "contact": {
-                    "title": "Kontaktaufnahme",
-                    "content": "Wurdest du gematcht kannst du deine:n Lernpartner:in direkt über den Button „Kontakt aufnehmen“ in der Benachrichtigung kontaktieren.",
-                    "contentsec": "Möchtest du deine:n Lernpartner:in zu einen späteren Zeitpunkt kontaktieren, kannst du dies auch über das Profil deines/deiner Lernpartners/Lernpartnerin tun."
-                },
-                "matchSolve": {
-                    "title": "Lernpaar auflösen",
-                    "content": "Wenn du die Lernpartnerschaft mit einem:r Lernpartner:in auflösen möchtest, kannst du dies unter dem Punkt Einzel unter “Lernpartner:innen” über den Button “Lernpaar auflösen” tun."
-                },
-                "finisher": {
-                    "title": "Geschafft",
-                    "firstContent": "Glückwunsch, du hast die Onboarding-Tour zur Nachhilfe abgeschlossen.",
-                    "headlineContent": "Hast du alles verstanden?",
-                    "answer": "Du kannst dir die Tour nochmal ansehen und in unserem Hilfebereich vorbeischauen. Hier findest du die wichtigsten Informationen und Hilfestellungen für dich als Helfer:in.",
-                    "linkText": "Zum Hilfebereich",
-                    "helpcenter": "Zum Hilfebereich",
-                    "buttonText": "Tour beenden",
-                    "buttonLinkText": "Tour nochmal ansehen"
-                }
-            },
             "ethics": {
                 "welcome": {
                     "title": "Ethische Standards",
@@ -1494,17 +1270,6 @@
             "waitingTimeInfo": "Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in zu längeren Wartezeiten kommt. Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.",
             "removeRequest": "Anfrage zurücknehmen"
         },
-        "supportCategories": {
-            "all": "Alle",
-            "overview": "Übersicht",
-            "kurse": "Kurse",
-            "support": "1:1 Nachhilfe",
-            "pedagogy": "Pädagogik",
-            "tools": "Digitale Tools",
-            "material": "Kostenlose Lehrmaterialien",
-            "daz": "Deutsch als Zweit- oder Fremdsprache",
-            "add_support": "Zusätzliche Unterstützung"
-        },
         "helpers": {
             "headlines": {
                 "course": "Meine Kurse",
@@ -1529,11 +1294,6 @@
                 "requestMoreMatchesPupil": "Weitere Lernpartner:in erhalten",
                 "solveMatch": "Lernpaar auflösen",
                 "recommend": "Jetzt empfehlen"
-            },
-            "channels": {
-                "whatsApp": "WhatsApp",
-                "signal": "Signal",
-                "email": "E-Mail"
             },
             "badges": {
                 "new": "NEU"
@@ -1952,7 +1712,8 @@
                 "title": "Warum möchtest du das Lernpaar auflösen?",
                 "btn": "Lernpaar auflösen",
                 "tooltip": "Du musst einen Grund angeben.",
-                "otherFreeText": "Grund:"
+                "otherFreeText": "Grund:",
+                "infoCallout": "Deine Auswahl und dein Kommentar werden nur an Lern-Fair gesendet. Dein:e Lernpartner:in {{partnerName}} kann diese nicht lesen"
             },
             "warningModal": {
                 "title": "Bist du sicher?",
@@ -2424,7 +2185,6 @@
         "imageMatchText": "Mit nur 1-2 Stunden pro Woche gibst du einem bildungsbenachteiligten Kind die Chance auf eine bessere Zukunft.",
         "becomeAnInstructor": "Jetzt Kursleiter:in werden",
         "becomeTutor": "Jetzt Tutor:in werden",
-        "talkWithTeam": "Kennenlerngespräch vereinbaren",
         "moreInfos": "Mehr Informationen",
         "courseTypes": {
             "groupCourses": "In unseren Kursen hast du die Möglichkeit, mehreren Schüler:innen auf einmal zu helfen. Wir bieten verschiedene Kurs-Formate an:",
@@ -2733,6 +2493,32 @@
         "Retiree": "Rentner:in",
         "Student": "Student:in",
         "Azubi": "Auszubildende:r"
+    },
+    "formalEducation": {
+        "teacher": "Lehrer:in",
+        "specialEducationTeacher": "Sonderpädagoge:in",
+        "earlyChildhoodEducator": "Erzieher:in",
+        "socialWorker": "Sozialpädagoge:in",
+        "childAndAdolescentPsychologist": "Kinder- und Jugendpsychologe:in",
+        "other": "Sonstiges"
+    },
+    "specialTeachingExperience": {
+        "daz": "Deutsch als Zweitsprache (DaZ)",
+        "adhd": "AD(H)S",
+        "dyslexia": "LRS",
+        "dyscalculia": "Rechenschwäche",
+        "autismSpectrumDisorder": "Autismus-Spektrum-Störung",
+        "emotionalAndSocialDevelopment": "Emotionale & soziale Entwicklung",
+        "giftedness": "Hochbegabung",
+        "visualImpairment": "Sehbeeinträchtigung",
+        "hearingImpairment": "Hörbeeinträchtigung",
+        "traumaSensitivePedagogy": "Trauma-sensible Pädagogik",
+        "other": "Sonstiges"
+    },
+    "teachingExperienceLevel": {
+        "none": "Keine",
+        "some": "Etwas",
+        "extensive": "Viel"
     },
     "reasonsDisabled": {
         "loading": "Es werden noch Daten geladen...",

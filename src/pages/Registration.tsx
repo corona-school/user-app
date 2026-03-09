@@ -32,6 +32,11 @@ import { ZipCode } from './registration/ZipCode';
 import { ERole } from '@/types/lernfair/User';
 import { StudentLanguage } from '@/gql/graphql';
 import { UserGender } from './registration/UserGender';
+import { JobStatus } from './registration/JobStatus';
+import { FormalEducation } from './registration/FormalEducation';
+import { HasEducationExperience } from './registration/HasEducationExperience';
+import { TeachingExperienceLevel } from './registration/TeachingExperienceLevel';
+import { SpecialTeachingExperience } from './registration/SpecialTeachingExperience';
 
 export const TRAINEE_GRADE = 14;
 
@@ -253,6 +258,7 @@ const Registration = () => {
                         {form.currentStep === RegistrationStep.dataPrivacy && (
                             <DataPrivacy onBack={goBack} onRegisterWithPassword={handleOnRegisterWithPassword} />
                         )}
+                        {/* Optional SuS steps */}
                         {form.currentStep === RegistrationStep.confirmEmail && <ConfirmEmail retainPath={retainPath} />}
                         {form.currentStep === RegistrationStep.bookAppointment && <BookAppointment onNext={goNext} />}
                         {form.currentStep === RegistrationStep.screeningAppointmentDetail && <ScreeningAppointmentDetail onNext={goNext} />}
@@ -262,6 +268,13 @@ const Registration = () => {
                         {form.currentStep === RegistrationStep.zipCode && <ZipCode onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.notifications && <NotificationPreferences onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.rules && <OurRules onBack={goBack} onNext={goNext} />}
+                        {/* Optional HuH steps */}
+                        {form.currentStep === RegistrationStep.jobStatus && <JobStatus onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.hasEducationExperience && <HasEducationExperience onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.formalEducation && <FormalEducation onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.teachingExperience && <TeachingExperienceLevel onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.hasSpecialNeedsExperience && <SpecialTeachingExperience onBack={goBack} onNext={goNext} />}
+
                         {form.currentStep === RegistrationStep.registrationCompleted && <ScreeningAppointmentDetail variant="completed" />}
                     </>
                 )}

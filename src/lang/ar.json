@@ -345,7 +345,10 @@
             "berufskolleg": "Berufskolleg",
             "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
             "auslandsschule": "Ausländische Schule",
-            "privatschule": "Privatschule"
+            "privatschule": "Privatschule",
+            "sekundarschule": "Sekundarschule",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
+            "oberschule": "Oberschule"
         },
         "reason": {
             "course": {
@@ -376,7 +379,7 @@
                     "max-requests": "أنت بالفعل على قائمة الانتظار.",
                     "deactivated": "تم إغلاق التسجيل للحصول على دعم التعلم 1: 1 مؤقتا بسبب ارتفاع الطلب. إذا كنت قد قدمت بالفعل طلبا للحصول على دعم التعلم ، فسنتصل بك برسالة بريد إلكتروني في المستقبل القريب لمناقشة كيفية المتابعة. في غضون ذلك ، لا تتردد في الاستفادة من عروضنا الأخرى. ",
                     "deactivated_tooltip": "التسجيل مغلق مؤقتاً بسبب ارتفاع الطلب على التسجيل.",
-                    "max-matches": "حالياً، يمكنك شريك تعلُّم واحد كحد أقصى. إذا لم تعد شريك تعلُّم مع شريك تعلُّم ، فقم شراكة تعلم . ستظل الدردشة مفتوحة لمدة 3 أيام بعد شراكة تعلم. خلال هذه الفترة، ستتاح لكما فرصة لتوديع بعضكما البعض."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
                 }
             }
         },
@@ -387,13 +390,6 @@
             "diverse": "متنوع/غير ثنائي",
             "other": "غير محدد"
         }
-    },
-    "welcome": {
-        "title": "مرحباً بك في Lern-Fair",
-        "subtitle": "هل لديك حساب بالفعل؟\nأم أنك جديد علينا وترغب في التسجيل؟",
-        "deactivationAlert": "تم إلغاء تنشيط حسابك",
-        "needHelp": "هل تحتاج إلى مساعدة؟",
-        "contactSupport": "اتصل بنا"
     },
     "registration": {
         "hint": {
@@ -414,30 +410,6 @@
             "name": "الرجاء ادخال الاسم الكامل",
             "radioSelectionMissing": "يرجى تحديد خيار"
         },
-        "personal": {
-            "about": {
-                "label": "معلومات عني",
-                "text": "اكتب نصا قصيرا عن نفسك هنا يمكن للمستخدمين الآخرين رؤيته في ملفك الشخصي."
-            },
-            "title": "أدخل معلوماتك الشخصية",
-            "pupilSubtitle": "تفاصيل التلاميذ: في"
-        },
-        "result": {
-            "success": {
-                "title": "منجز!",
-                "text": "تم إنشاء حسابك بنجاح. Lern-Fair يمكنك الآن استخدام العرض من !",
-                "btn": "إلى التطبيق"
-            },
-            "error": {
-                "message": {
-                    "Email is already used by another account": "هذا البريد الإلكتروني قيد الاستخدام بالفعل",
-                    "Response not successful: Received status code 400": "حدث خطأ. يرجى إعادة المحاولة لاحقا.",
-                    "RateLimit Enforcement": "لقد قدمت الكثير من الطلبات. يرجى إعادة المحاولة لاحقا.",
-                    "Unknown User Type": "تعذر تحديد نوع حسابك. يرجى محاولة تسجيل الدخول البسيط."
-                },
-                "tryagain": "حاول مرة أخرى"
-            }
-        },
         "steps": {
             "userType": {
                 "title": "هل أنت طالب/متدرّب أم مساعد؟"
@@ -448,7 +420,7 @@
                 "needHelpInSchool": "أدرس في ألمانيا",
                 "familyCannotHelp": "عائلتي لا تستطيع مساعدتي في الواجبات المدرسية",
                 "familyCannotAffordTutoring": "عائلتي لا تستطيع دفع تكاليف الدروس الخصوصية لي",
-                "doNotApplyToMe": "لا ينطبق عليّ أي من النقطتين"
+                "doNotApplyToMe": "ليست كل النقاط الثلاث تنطبق عليّ."
             },
             "acceptanceCheckFailed": {
                 "title": "يا للأسف.",
@@ -472,7 +444,8 @@
                 "titlePupil": "ما هي اللغات التي تتحدث بها في المنزل؟",
                 "titleStudent": "ما هي اللغات التي تتحدثينها بطلاقة؟",
                 "descriptionPupil": "نحاول أن نجمعك مع متطوعون يتحدثون لغات متطوعون .",
-                "descriptionStudent": "نحاول أن نجمعك مع تلاميذ يتحدثون لغات متشابهة."
+                "descriptionStudent": "نحاول أن نجمعك مع تلاميذ يتحدثون لغات متشابهة.",
+                "germanRequiredError": "لكي يعمل الدعم بشكل صحيح، فإن اللغة الألمانية مطلوبة كلغة مشتركة. يرجى اختيار اللغة الألمانية."
             },
             "bookAppointment": {
                 "title": "مقابلة تعارف",
@@ -649,6 +622,25 @@
                 "female": "أنثى",
                 "diverse": "متنوع/غير ثنائي",
                 "other": "غير محدد"
+            },
+            "jobStatus": {
+                "title": "Was beschreibt dich am besten?",
+                "description": "Durch nachfolgende Angaben können wir Lernpartner einander besser zuordnen."
+            },
+            "hasEducationExperience": {
+                "title": "Studierst oder arbeitest du in einem Bereich speziell für Kinder und Jugendliche?",
+                "description": "Keine Sorge. Du kannst Schülern auch helfen wenn das nicht der Fall ist und du keine Erfahrungen hast."
+            },
+            "teachingExperience": {
+                "title": "Hast du bereits Unterrichtserfahrungen?",
+                "group": "Gruppenunterricht",
+                "individual": "Einzelunterricht"
+            },
+            "formalEducation": {
+                "title": "In welchem?"
+            },
+            "specialTeachingExperience": {
+                "title": "Hast du Kentnisse zu speziellen Förderbedarfen?"
             }
         },
         "pupil": {
@@ -671,36 +663,6 @@
             "title": "تأكيد عنوان بريدك الإلكتروني",
             "mailsendto": "لقد أرسلنا بريداً إلكترونياً إلى:",
             "description": "بعد تأكيد عنوان بريدك الإلكتروني، ستتم إعادة توجيهك تلقائياً إلى هنا."
-        },
-        "legal": {
-            "usageBullets": {
-                "1": "Lern-Fair نقوم بتخزين بياناتك طالما كان حسابك نشطًا ونحذفها في موعد لا يتجاوز 3 سنوات بعد إلغاء تنشيط حسابك",
-                "2": "نشارك معلوماتك الشخصية (الاسم ونوع المدرسة والصف الدراسي والولاية الفيدرالية والمواد الدراسية) مع المساعدين الذين سيدعمونك",
-                "3": "نحن نستخدم عروضًا من Heroku وMailjet وDatadog وGoogle لمعالجة بياناتك، والتي قد لا تكون قادرة على ضمان المستوى الأوروبي لحماية البيانات"
-            },
-            "accordionUsDataProcessors": {
-                "title": "معالجة البيانات بواسطة المعالجات في الولايات المتحدة الأمريكية",
-                "body": "أقرّ بأن معالجة بياناتي الشخصية تتم بواسطة معالجاتنا في الولايات المتحدة الأمريكية Google وHeroku، والتي لا يمكنها ضمان الامتثال للمستوى الأوروبي لحماية البيانات بسبب إمكانية ورود طلبات من أجهزة الاستخبارات الأمريكية. Lern-Fair ولهذا الغرض، فقد أبرمت بنودًا تعاقدية قياسية ووافقت على مزيد من التدابير الأمنية، المادة 46 الفقرة 2 مضاءة ج من اللائحة العامة لحماية البيانات."
-            },
-            "error": {
-                "confirmPolicy": "يُرجى تأكيد سياسة الخصوصية.",
-                "confirmNoInvestigation": "يرجى تأكيد هذا البيان."
-            },
-            "privacy": "الخصوصيه",
-            "whatHappensWithData": "Lern-Fair هذا ما يحدث لبياناتك عندما تقوم بالتسجيل في :",
-            "accept": "لقد أحطت علماً بلوائح حماية البيانات:",
-            "privacypolicy": "لوائح حماية البيانات",
-            "noInvestigation": "أقر بأنه لم تتم إدانتي بارتكاب جريمة جنائية على النحو المحدد في المادة 72 أ، الفقرة 1 الجملة 1 من القانون الجنائي السابع، وأنه لا توجد حاليًا أي إجراءات أولية ضدي لارتكابي مثل هذه الجريمة.",
-            "selfCommitment": "إعلان الالتزام",
-            "newsletter": "الرساله الاخباريه",
-            "newsletterAgreement": "Lern-Fair أود إبقائي على علم بالعروض والعروض الترويجية وفرص الدعم الأخرى عن طريق البريد الإلكتروني.",
-            "underageDisclaimer": "ملاحظة: في حالة عدم بلوغ الشخص الذي يعطي الموافقة سن 18 عامًا، يجب على صاحب المسؤولية الأبوية للشخص إعطاء موافقته."
-        },
-        "password_repeat": "كرر كلمة المرور",
-        "to_login": "لدي حساب بالفعل",
-        "ageOptions": {
-            "15OrYounger": "طالب يبلغ من العمر 15 عاماً أو أقل",
-            "16OrOlder": "الطالب يبلغ من العمر 16 عاماً أو أكثر"
         },
         "emailOwnerOptions": {
             "pupil": "الطالب: في البريد الإلكتروني",
@@ -890,27 +852,19 @@
                 "btn": "إلغاء تنشيط الحساب",
                 "tooltip": "يجب أن تقدم سبباً."
             },
-            "pupil": {
-                "0": "أنا خارج الوقت.",
-                "1": "لست مهتما بعد الآن.",
-                "2": "لقد قمت بالتسجيل لأغراض الاختبار فقط.",
-                "3": "لقد وجدت طريقة أخرى للحصول على الدعم.",
-                "4": "تخيلت البرنامج بشكل مختلف.",
-                "5": "لا أستوفي متطلبات القبول للمشاريع.",
-                "6": "آخر"
-            },
-            "student": {
-                "0": "ليس لدي وقت للانخراط بعد الآن.",
-                "1": "لم أستطع / لم أرغب في حضور اجتماع التعرف عليك.",
-                "2": "لست مهتما بعد الآن.",
-                "3": "لقد قمت بالتسجيل لأغراض الاختبار فقط.",
-                "4": "لقد وجدت طريقة أخرى للمشاركة.",
-                "5": "تخيلت البرنامج بشكل مختلف.",
-                "6": "لا أستوفي متطلبات القبول للمشاريع.",
-                "7": "آخر"
-            },
             "error": "تعذر إلغاء تنشيط حسابك.",
-            "success": "تم إلغاء تنشيط حسابك."
+            "success": "تم إلغاء تنشيط حسابك.",
+            "reasons": {
+                "noMoreTime": "أنا خارج الوقت.",
+                "noMoreInterest": "لست مهتما بعد الآن.",
+                "onlyTestAccount": "لقد قمت بالتسجيل لأغراض الاختبار فقط.",
+                "expectationsDiffered": "تخيلت البرنامج بشكل مختلف.",
+                "didntMeetRequirements": "لا أستوفي متطلبات القبول للمشاريع.",
+                "other": "آخر",
+                "otherSupportFound": "لقد وجدت طريقة أخرى للحصول على الدعم.",
+                "otherVolunteerWorkFound": "لقد وجدت طريقة أخرى للمشاركة.",
+                "couldntAttendMeeting": "لم أستطع / لم أرغب في حضور اجتماع التعرف عليك."
+            }
         },
         "title": "ملفي الشخصي",
         "successmessage": "تم حفظ التغييرات بنجاح.",
@@ -1167,180 +1121,7 @@
         "header": "اعدادات"
     },
     "onboardingList": {
-        "cards": {
-            "card0": {
-                "title": "جولة الإعداد بشكل عام",
-                "content": "هل تريد أن تعرف ما الذي تقدمه منصتنا؟ سنعرض لك أهم الميزات.",
-                "url": "/الإعداد/الطلاب/"
-            },
-            "card1": {
-                "title": "جولة الإعداد 1: 1 مطابقة",
-                "content": "لوريم إيبسوم دولور سيت أميت, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/الإعداد/المساعد/"
-            },
-            "card2": {
-                "title": "دورة مجموعة جولة الإعداد",
-                "content": "لوريم إيبسوم دولور سيت أميت, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            },
-            "card3": {
-                "title": "مركز مساعدة جولة الإعداد",
-                "content": "لوريم إيبسوم دولور سيت أميت, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            },
-            "card4": {
-                "title": "مواعيد الجولات الداخلية",
-                "content": "لوريم إيبسوم دولور سيت أميت, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            }
-        },
         "Wizard": {
-            "students": {
-                "welcome": {
-                    "popup": {
-                        "title": "هل أنت متأكد من أنك تريد تخطي الجولة؟",
-                        "content": "يمكنك أيضا إعادة تشغيل الجولة في أي وقت. يمكنك العثور على العنصر في قسم المساعدة ضمن \"الإعداد\".",
-                        "defaultButtonText": "لا، ابدأ الجولة",
-                        "outlineButtonText": "نعم ، تخطي الجولة"
-                    },
-                    "title": "ترحيب حار في Lern-Fair",
-                    "content": "يسعدنا أنك تستفيد من عرضنا.",
-                    "question": "هل تريد أن ترى ما تقدمه منصتنا؟",
-                    "answer": "سنعرض لك أهم الميزات.",
-                    "startTour": "ابدأ الجولة",
-                    "skipTour": "تخطي الجولة"
-                },
-                "matching": {
-                    "title": "دعم التعلم",
-                    "content": "إذا كنت بحاجة إلى مساعدة فردية ، فإن دعم التعلم يناسبك. سوف تحصل على مساعد دائم منا."
-                },
-                "groupCourse": {
-                    "title": "دورات الدروس الخصوصية",
-                    "content": "في مجموعات صغيرة ، هناك مساعدة في مواضيع مختلفة."
-                },
-                "appointments": {
-                    "title": "مواعيدي",
-                    "content": "ستجد هنا لمحة عامة عن التواريخ المخطط لها."
-                },
-                "helpCenter": {
-                    "title": "مركز المساعدة",
-                    "content": "ستجد هنا الأسئلة المتداولة مع إجاباتها. يمكنك أيضا الاتصال بنا هنا"
-                },
-                "profile": {
-                    "title": "ملف تعريف",
-                    "content": "في ملفك الشخصي ، يمكنك تغيير الموضوعات التي تحتاج إلى مساعدة بشأنها."
-                },
-                "settings": {
-                    "title": "اعدادات",
-                    "content": "في هذا القسم ، يمكنك إجراء تغييرات عامة وتغييرات على حسابك (عنوان البريد الإلكتروني وكلمة المرور). بالإضافة إلى ذلك ، ستجد أيضا معلومات قانونية حول استخدام النظام الأساسي هنا."
-                },
-                "notification": {
-                    "title": "اخطار",
-                    "content": "سيتم إعلامك بالأخبار حول المطابقة وجهات الاتصال الجديدة والموضوعات العامة. استخدم الجرس في الزاوية العلوية اليسرى لمعرفة ما إذا كان لديك أي رسائل جديدة."
-                },
-                "finisher": {
-                    "title": "جاهز!",
-                    "content": "انتظر دقيقة ، سيتم تحميل لوحة القيادة الشخصية الخاصة بك.",
-                    "button": "إلى لوحة القيادة"
-                }
-            },
-            "helper": {
-                "welcome": {
-                    "popup": {
-                        "title": "هل أنت متأكد من أنك تريد تخطي الجولة؟",
-                        "content": "يمكنك أيضا إعادة تشغيل الجولة في أي وقت. يمكنك العثور على العنصر ضمن إعداداتك باسم \"جولة الإعداد\".",
-                        "defaultButtonText": "لا، ابدأ الجولة",
-                        "outlineButtonText": "نعم ، تخطي الجولة"
-                    },
-                    "title": "مرحباً بك في Lern-Fair",
-                    "content": "يسعدنا أنك ترغب في دعم الأطفال المحرومين تعليميا بنشاط.",
-                    "question": "هل تريد أن ترى ما تقدمه منصتنا؟",
-                    "answer": "سنعرض لك أهم الميزات.",
-                    "startTour": "ابدأ الجولة",
-                    "skipTour": "تخطي الجولة"
-                },
-                "matching": {
-                    "title": "دعم التعلم",
-                    "content": "دعم التعلم هو دعم 1:1 للطلاب الذين يحتاجون إلى مساعدة فردية. هنا يمكنك العثور على مواعيدك وشركاء التعلم الخاصين بك، والاطلاع على التطابقات المطلوبة وطلب تطابقات جديدة."
-                },
-                "groupCourse": {
-                    "title": "الدورات الجماعية",
-                    "content": "تقدم الدورات الجماعية دعما قصير الأجل لمشاكل وأسئلة محددة. ضمن \"دوراتي\" سترى جميع الدورات التدريبية الجماعية الخاصة بك. هنا لديك أيضا خيار إنشاء دورات جديدة."
-                },
-                "appointment": {
-                    "title": "التواريخ",
-                    "content": "يتم عرض جميع مواعيدك ضمن \"مواعيدي\"، مرتبة في علامات تبويب ومصنفة حسب التاريخ."
-                },
-                "helpCenter": {
-                    "title": "مركز المساعدة",
-                    "content": "إذا كنت بحاجة إلى مساعدة، يمكنك العثور على أهم المعلومات في قسم المساعدة."
-                },
-                "profile": {
-                    "title": "ملف تعريف",
-                    "content": "في ملفك الشخصي ، يمكنك إدخال جميع البيانات ذات الصلة."
-                },
-                "settings": {
-                    "title": "اعدادات",
-                    "content": "في هذا القسم ، يمكنك إجراء تغييرات عامة وتغييرات على حسابك (عنوان البريد الإلكتروني وكلمة المرور). بالإضافة إلى ذلك ، ستجد أيضا معلومات قانونية حول استخدام النظام الأساسي هنا."
-                },
-                "notification": {
-                    "title": "اخطار",
-                    "content": "سيتم إعلامك بالأخبار حول المطابقة وجهات الاتصال الجديدة والموضوعات العامة. استخدم الجرس في الزاوية العلوية اليسرى لمعرفة ما إذا كان لديك أي رسائل جديدة."
-                },
-                "finisher": {
-                    "title": "جاهز!",
-                    "content": "انتظر دقيقة ، سيتم تحميل لوحة القيادة الشخصية الخاصة بك.",
-                    "button": "إلى لوحة القيادة"
-                }
-            },
-            "helperMatching": {
-                "welcome": {
-                    "popup": {
-                        "title": "هل أنت متأكد من أنك تريد تخطي الجولة؟",
-                        "content": "يمكنك أيضا إعادة تشغيل الجولة في أي وقت. يمكنك العثور على العنصر ضمن إعداداتك باسم \"جولة الإعداد\".",
-                        "defaultButtonText": "لا، ابدأ الجولة",
-                        "outlineButtonText": "نعم ، تخطي الجولة"
-                    },
-                    "title": "دعم تعلم جولة الإعداد",
-                    "content": "نعرض لك هنا جميع المعلومات المهمة التي تحتاج لمعرفتها حول دعم التعلم.",
-                    "question": "كيف أطلب شريكا في التعلم؟ كيف يمكنني التواصل مع شريكي في التعلم؟ كيف يمكنني حل زوج التعلم؟",
-                    "answer": "سنعرض لك أهم الميزات.",
-                    "startTour": "ابدأ الجولة",
-                    "skipTour": "تخطي الجولة"
-                },
-                "matching": {
-                    "title": "طلب شريك تعليمي",
-                    "content": "يمكنك طلب شريك تعليمي جديد عبر زر \"طلب شريك تعلم\" في لوحة التحكم أو في قسم الفرد."
-                },
-                "request": {
-                    "title": "تقديم استفسار",
-                    "content": "لكي نتمكن من تعيين شريك تعليمي لك ، نحتاج إلى بعض المعلومات عنك وعن عرضك."
-                },
-                "match": {
-                    "title": "تعيين زوج التعلم",
-                    "content": "بعد تقديم طلبك ، سنبدأ في البحث عن شريك تعليمي مناسب لك.",
-                    "contentsec": "يمكنك أيضا سحب طلبك في أي وقت. ضمن العنصر الطلبات في القسم فردي، يتم سرد جميع طلباتك."
-                },
-                "contact": {
-                    "title": "الاتصال",
-                    "content": "إذا تمت مطابقتك ، يمكنك الاتصال بشريكك في التعلم مباشرة عبر زر \"اتصل بنا\" في الإشعار.",
-                    "contentsec": "إذا كنت ترغب في الاتصال بشريكك في التعلم في وقت لاحق ، فيمكنك أيضا القيام بذلك عبر ملف تعريف شريك التعلم الخاص بك."
-                },
-                "matchSolve": {
-                    "title": "حل زوج التعلم",
-                    "content": "إذا كنت ترغب في حل شراكة التعلم مع شريك التعلم ، فيمكنك القيام بذلك تحت العنصر فردي ضمن \"شركاء التعلم\" عبر الزر \"حل زوج التعلم\"."
-                },
-                "finisher": {
-                    "title": "المداره",
-                    "firstContent": "تهانينا، لقد أكملت جولة إعداد دعم التعلم.",
-                    "headlineContent": "هل فهمت كل شيء؟",
-                    "answer": "يمكنك مشاهدة الجولة مرة أخرى والتحقق من قسم المساعدة الخاص بنا. ستجد هنا أهم المعلومات والمساعدة لك كمساعد.",
-                    "linkText": "انتقل إلى مركز المساعدة",
-                    "helpcenter": "انتقل إلى مركز المساعدة",
-                    "buttonText": "إنهاء الجولة",
-                    "buttonLinkText": "عرض الجولة مرة أخرى"
-                }
-            },
             "ethics": {
                 "welcome": {
                     "title": "المعايير الأخلاقية",
@@ -1381,12 +1162,7 @@
                     "checkboxText": "لقد قرأت الإرشادات الأخلاقية بعناية وأوافق على الالتزام بها."
                 }
             }
-        },
-        "header": "جولة على متن الطائرة",
-        "title": "الإعداد",
-        "buttontext": "ابدأ الجولة",
-        "skip": "تخطي",
-        "content": "لوريم إيبسوم دولور سيت أميت, consetetur sadipscing elitr, sed diam nonumy eirmod"
+        }
     },
     "dashboard": {
         "appointmentcard": {
@@ -1407,17 +1183,6 @@
             "requestCreated": "تم إنشاء الطلب في:",
             "waitingTimeInfo": "يرجى ملاحظة أن هناك أوقات انتظار أطول عند البحث عن شريك تعليمي. في غضون ذلك ، استفد من دوراتنا أو مساعدتنا في الواجبات المنزلية.",
             "removeRequest": "سحب الطلب"
-        },
-        "supportCategories": {
-            "all": "كل",
-            "overview": "لمحة عامة",
-            "kurse": "دورات تعليمية",
-            "support": "دعم تعليمي 1:1",
-            "pedagogy": "التربيه",
-            "tools": "الأدوات الرقمية",
-            "material": "مواد تعليمية مجانية",
-            "daz": "الألمانية كلغة ثانية أو أجنبية",
-            "add_support": "دعم إضافي"
         },
         "helpers": {
             "headlines": {
@@ -1443,11 +1208,6 @@
                 "recommend": "يوصي الآن",
                 "requestFirstMatchPupil": "شريك تعلُّم الاستلام",
                 "requestMoreMatchesPupil": "شريك تعلُّم احصل على المزيد"
-            },
-            "channels": {
-                "whatsApp": "واتس اب",
-                "signal": "إشارة",
-                "email": "البريد الإلكتروني"
             },
             "badges": {
                 "new": "جديد"
@@ -1886,7 +1646,8 @@
                 "title": "لماذا تريد حل الشراكة التعليمية؟",
                 "btn": "حل زوج التعلم",
                 "tooltip": "يجب أن تقدم سبباً.",
-                "otherFreeText": "السبب:"
+                "otherFreeText": "السبب:",
+                "infoCallout": "Deine Auswahl und dein Kommentar werden nur an Lern-Fair gesendet. Dein:e Lernpartner:in {{partnerName}} kann diese nicht lesen"
             },
             "warningModal": {
                 "title": "هل أنت متأكد؟",
@@ -2414,7 +2175,6 @@
         "imageMatchText": "بتخصيص ساعة أو ساعتين فقط في الأسبوع ، فإنك تساعد طفلا ذا دعم تعليمي أقل بمنحه فرصة لمستقبل أفضل.",
         "becomeAnInstructor": "اصبح مدربا الآن ",
         "becomeTutor": "اصبح مدرسا الآن",
-        "talkWithTeam": "تحديد مكالمة تعارف",
         "moreInfos": "المزيد من المعلومات",
         "groupRequestedDescription": "شكرا لك على اهتمامك بأن تصبح مدرسا للدورة. قبل أن تتمكن من بدء تقديم الدورة التدريبية الخاصة بك ، لدينا بعض الملاحظات لك:"
     },
@@ -3004,5 +2764,31 @@
         "changePassword": "تغيير كلمة المرور الآن",
         "success": "تم تغيير كلمة المرور الخاصة بك بنجاح. يمكنك الآن تسجيل الدخول باستخدام كلمة المرور الجديدة",
         "error": "حدث خطأ عند تغيير كلمة المرور"
+    },
+    "formalEducation": {
+        "teacher": "Lehrer:in",
+        "specialEducationTeacher": "Sonderpädagoge:in",
+        "earlyChildhoodEducator": "Erzieher:in",
+        "socialWorker": "Sozialpädagoge:in",
+        "childAndAdolescentPsychologist": "Kinder- und Jugendpsychologe:in",
+        "other": "آخر"
+    },
+    "specialTeachingExperience": {
+        "daz": "Deutsch als Zweitsprache (DaZ)",
+        "adhd": "AD(H)S",
+        "dyslexia": "LRS",
+        "dyscalculia": "Rechenschwäche",
+        "autismSpectrumDisorder": "Autismus-Spektrum-Störung",
+        "emotionalAndSocialDevelopment": "Emotionale & soziale Entwicklung",
+        "giftedness": "Hochbegabung",
+        "visualImpairment": "Sehbeeinträchtigung",
+        "hearingImpairment": "Hörbeeinträchtigung",
+        "traumaSensitivePedagogy": "Trauma-sensible Pädagogik",
+        "other": "آخر"
+    },
+    "teachingExperienceLevel": {
+        "none": "Keine",
+        "some": "Etwas",
+        "extensive": "Viel"
     }
 }

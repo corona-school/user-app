@@ -58,7 +58,7 @@ export const Combobox = ({
     const getCurrentValueLabels = () => {
         if (!value) return;
         return options
-            .filter((opt) => value.includes(opt.value))
+            .filter((opt) => (Array.isArray(value) ? value.includes(opt.value) : value === opt.value))
             .map((opt) => opt.label)
             .join(', ');
     };
@@ -96,6 +96,8 @@ export const Combobox = ({
         [options, multiple, value, search]
     );
 
+    const hasSelectedValue = !!getCurrentValueLabels()?.length;
+
     return (
         <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
@@ -104,10 +106,17 @@ export const Combobox = ({
                     size="input"
                     role="combobox"
                     aria-expanded={open}
-                    className={cn('w-full', (!value || !value?.length) && 'text-muted-foreground overflow-hidden', className)}
+                    className={cn(
+                        'w-full bg-white border-none',
+                        {
+                            'text-muted-foreground overflow-hidden': !hasSelectedValue,
+                            'border border-solid border-primary-light bg-accent-dark': hasSelectedValue,
+                        },
+                        className
+                    )}
                     rightIcon={<IconSelector className="ml-2 h-4 w-4 shrink-0 opacity-50" />}
                 >
-                    <div className="text-ellipsis overflow-hidden w-[90%] text-left">{value?.length ? getCurrentValueLabels() : placeholder}</div>
+                    <div className="text-ellipsis overflow-hidden w-[90%] text-left">{getCurrentValueLabels() || placeholder}</div>
                 </Button>
             </PopoverTrigger>
             <PopoverContent className={cn('max-w-full p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]')}>

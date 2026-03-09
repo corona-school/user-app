@@ -19,6 +19,8 @@ export const getSchoolTypesForGrade = (grade: number): SchoolType[] => {
                 SchoolType.Realschule,
                 SchoolType.FRderschule,
                 SchoolType.Mittelschule,
+                SchoolType.Oberschule,
+                SchoolType.Sekundarschule,
                 SchoolType.Stadtteilschule,
                 SchoolType.Privatschule,
                 SchoolType.Auslandsschule,
@@ -34,6 +36,8 @@ export const getSchoolTypesForGrade = (grade: number): SchoolType[] => {
                 SchoolType.Realschule,
                 SchoolType.FRderschule,
                 SchoolType.Mittelschule,
+                SchoolType.Oberschule,
+                SchoolType.Sekundarschule,
                 SchoolType.Stadtteilschule,
                 SchoolType.Privatschule,
                 SchoolType.Auslandsschule,
@@ -47,6 +51,8 @@ export const getSchoolTypesForGrade = (grade: number): SchoolType[] => {
                 SchoolType.Realschule,
                 SchoolType.FRderschule,
                 SchoolType.Mittelschule,
+                SchoolType.Oberschule,
+                SchoolType.Sekundarschule,
                 SchoolType.Stadtteilschule,
                 SchoolType.Berufsfachschule,
                 SchoolType.Privatschule,
@@ -63,7 +69,7 @@ export const getSchoolTypesForGrade = (grade: number): SchoolType[] => {
                 SchoolType.Fachoberschule,
                 SchoolType.Berufskolleg,
                 SchoolType.Oberstufenzentrum,
-                // SchoolType.Beruflichesgymnasium,
+                SchoolType.Beruflichesgymnasium,
                 SchoolType.Privatschule,
                 SchoolType.Auslandsschule,
                 SchoolType.Other,
@@ -80,7 +86,7 @@ export const getSchoolTypesForGrade = (grade: number): SchoolType[] => {
                 SchoolType.Berufsoberschule,
                 SchoolType.Berufskolleg,
                 SchoolType.Oberstufenzentrum,
-                // SchoolType.Beruflichesgymnasium,
+                SchoolType.Beruflichesgymnasium,
                 SchoolType.Privatschule,
                 SchoolType.Auslandsschule,
                 SchoolType.Other,
@@ -104,6 +110,32 @@ export const getSchoolTypesForGrade = (grade: number): SchoolType[] => {
     }
 };
 
+export const schoolTypeSearchStrings: Record<SchoolType, string[]> = {
+    grundschule: ['grundschule'],
+    berufsschule: ['berufsschule'],
+    mittelschule: ['mittelschule', 'mittelstufenschule'],
+    sekundarschule: ['sekundarschule'],
+    stadtteilschule: ['stadtteilschule'],
+    berufsfachschule: ['berufsfachschule', 'bfs'],
+    fachoberschule: ['fachoberschule', 'fos'],
+    berufsoberschule: ['berufsoberschule', 'bos'],
+    oberstufenzentrum: ['oberstufenzentrum'],
+    abendschule_vhs: ['abendschule', 'vhs', 'fernstudium', 'abendgymnasium', 'weiterbildungskolleg'],
+    berufskolleg: ['berufskolleg'],
+    oberschule: ['oberschule'],
+    f_rderschule: ['förderschule'],
+    beruflichesgymnasium: ['beruflichesgymnasium', 'fachgymnasium'],
+    uni_studienkolleg: ['studienkolleg', 'universität'],
+    fachschule: ['fachschule'],
+    hauptschule: ['hauptschule'],
+    gesamtschule: ['gesamtschule', 'integrierte sekundarschule'],
+    realschule: ['realschule'],
+    gymnasium: ['gymnasium'],
+    auslandsschule: [],
+    privatschule: ['montessori', 'waldorf', 'privatschule', 'ersatzschule'],
+    other: [],
+};
+
 export const _SchoolTypeSelector = EnumSelector(
     {
         Grundschule: 'grundschule',
@@ -114,6 +146,8 @@ export const _SchoolTypeSelector = EnumSelector(
         FRderschule: 'f_rderschule',
         Berufsschule: 'berufsschule',
         Mittelschule: 'mittelschule',
+        Oberschule: 'oberschule',
+        Sekundarschule: 'sekundarschule',
         Stadtteilschule: 'stadtteilschule',
         Berufsfachschule: 'berufsfachschule',
         Fachoberschule: 'fachoberschule',
@@ -122,6 +156,7 @@ export const _SchoolTypeSelector = EnumSelector(
         Fachschule: 'fachschule',
         Abendschule_VHS: 'abendschule_vhs',
         Berufskolleg: 'berufskolleg',
+        BeruflichesGymnasium: 'beruflichesgymnasium',
         Uni_Studienkolleg: 'uni_studienkolleg',
         Auslandsschule: 'auslandsschule',
         Privatschule: 'privatschule',
@@ -138,7 +173,6 @@ type SchoolTypeSelectorProps = SelectorProps<SchoolType> & {
 export const SchoolTypeSelector = (props: SchoolTypeSelectorProps) => {
     const { grade, ...selectorProps } = props;
     const allSchoolTypes = Object.values(SchoolType);
-    console.log(allSchoolTypes);
     const availableSchoolTypes = grade ? getSchoolTypesForGrade(grade) : allSchoolTypes;
 
     return EnumSelector(

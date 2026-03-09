@@ -345,7 +345,10 @@
             "berufskolleg": "Berufskolleg",
             "uni_studienkolleg": "Studienkolleg (Hochschule / Uni)",
             "auslandsschule": "Ausländische Schule",
-            "privatschule": "Privatschule"
+            "privatschule": "Privatschule",
+            "sekundarschule": "Sekundarschule",
+            "beruflichesgymnasium": "Berufliches Gymnasium",
+            "oberschule": "Oberschule"
         },
         "reason": {
             "course": {
@@ -376,7 +379,7 @@
                     "max-requests": "You are already on the waiting list.",
                     "deactivated": "Registration for 1on1 learning support is temporarily closed due to high demand. If you have already submitted a request for learning support, we will contact you by email in the near future to discuss the next steps. In the meantime, please feel free to take advantage of our other offers. ",
                     "deactivated_tooltip": "Registration is temporarily closed due to high demand.",
-                    "max-matches": "Currently, you can have a maximum of one learning partner. If you no longer wish to work with your learning partner, dissolve the learning pair. The chat will remain open for three days after the learning pair has been dissolved. During this time, you will have the opportunity to say goodbye to each other."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
                 }
             }
         },
@@ -387,13 +390,6 @@
             "diverse": "Diverse / non-binary",
             "other": "Not specified"
         }
-    },
-    "welcome": {
-        "title": "Welcome to Lern-Fair",
-        "subtitle": "Do you already have an account?\nOr are you new to us and would like to register?",
-        "deactivationAlert": "Your account has been deactivated",
-        "needHelp": "Do you need help?",
-        "contactSupport": "Contact us"
     },
     "registration": {
         "hint": {
@@ -414,30 +410,6 @@
             "name": "Please enter your full name",
             "radioSelectionMissing": "Please select an option"
         },
-        "personal": {
-            "about": {
-                "label": "About me",
-                "text": "Write a short text about yourself here that other users can see on your profile."
-            },
-            "title": "Enter your personal data",
-            "pupilSubtitle": "Pupil Information"
-        },
-        "result": {
-            "success": {
-                "title": "Done!",
-                "text": "Your account has been successfully created. You can now use the offer from Lern-Fair !",
-                "btn": "Application"
-            },
-            "error": {
-                "message": {
-                    "Email is already used by another account": "This email is already in use",
-                    "Response not successful: Received status code 400": "An error has occurred. Please try again later.",
-                    "RateLimit Enforcement": "You have made too many requests. Please try again later.",
-                    "Unknown User Type": "Your account type could not be determined. Please try a simple login."
-                },
-                "tryagain": "Try again"
-            }
-        },
         "steps": {
             "userType": {
                 "title": "Are you a pupil/apprentice or a helper?"
@@ -448,7 +420,7 @@
                 "needHelpInSchool": "I attend a school in Germany",
                 "familyCannotHelp": "My family cannot help me with schoolwork",
                 "familyCannotAffordTutoring": "My family cannot afford tutoring for me",
-                "doNotApplyToMe": "None of these two points apply to me"
+                "doNotApplyToMe": "Not all 3 points apply to me."
             },
             "acceptanceCheckFailed": {
                 "title": "What a pity.",
@@ -472,7 +444,8 @@
                 "titlePupil": "What languages do you speak at home?",
                 "titleStudent": "Which languages do you speak fluently?",
                 "descriptionPupil": "We try to bring you together with volunteers who speak similar languages.",
-                "descriptionStudent": "We try to bring you together with pupils who speak similar languages."
+                "descriptionStudent": "We try to bring you together with pupils who speak similar languages.",
+                "germanRequiredError": "For the support to work properly, German is required as the common language. Please select German."
             },
             "bookAppointment": {
                 "title": "Introductory Meeting",
@@ -649,6 +622,25 @@
                 "female": "Female",
                 "diverse": "Diverse / non-binary",
                 "other": "Not specified"
+            },
+            "jobStatus": {
+                "title": "Was beschreibt dich am besten?",
+                "description": "Durch nachfolgende Angaben können wir Lernpartner einander besser zuordnen."
+            },
+            "hasEducationExperience": {
+                "title": "Studierst oder arbeitest du in einem Bereich speziell für Kinder und Jugendliche?",
+                "description": "Keine Sorge. Du kannst Schülern auch helfen wenn das nicht der Fall ist und du keine Erfahrungen hast."
+            },
+            "teachingExperience": {
+                "title": "Hast du bereits Unterrichtserfahrungen?",
+                "group": "Gruppenunterricht",
+                "individual": "Einzelunterricht"
+            },
+            "formalEducation": {
+                "title": "In welchem?"
+            },
+            "specialTeachingExperience": {
+                "title": "Hast du Kentnisse zu speziellen Förderbedarfen?"
             }
         },
         "pupil": {
@@ -671,36 +663,6 @@
             "title": "Confirm your email address",
             "mailsendto": "We have sent an email to:",
             "description": "After confirming your email address, you will be automatically redirected here."
-        },
-        "legal": {
-            "usageBullets": {
-                "1": "We store your data for as long as your account at Lern-Fair is active and delete it no later than 3 years after your account is deactivated",
-                "2": "We share your personal information (name, school type, grade, state, subjects) with volunteers who will support you",
-                "3": "We use offers from Heroku, Mailjet, Datadog and Google to process your data, which may not be able to guarantee the European level of data protection"
-            },
-            "accordionUsDataProcessors": {
-                "title": "Data processing by processors in the USA",
-                "body": "I acknowledge that the processing of my personal data is carried out by our US-based processors Google and Heroku, which cannot guarantee compliance with the European level of data protection due to the possibility of requests from US intelligence services. For this purpose, Lern-Fair has concluded standard contractual clauses and agreed further security measures, Art. 46 para. 2 lit. c GDPR."
-            },
-            "error": {
-                "confirmPolicy": "Please confirm the privacy policy.",
-                "confirmNoInvestigation": "Please confirm this statement."
-            },
-            "privacy": "Data protection",
-            "whatHappensWithData": "This is what happens to your data when you register at Lern-Fair :",
-            "accept": "I have taken note of the data protection regulations:",
-            "privacypolicy": "Data protection regulations",
-            "noInvestigation": "I declare that I have not been convicted of a criminal offense as defined in § 72a para. 1 sentence 1 SGB VII and that there are currently no preliminary proceedings against me for such an offense.",
-            "selfCommitment": "Declaration of commitment",
-            "newsletter": "Newsletter",
-            "newsletterAgreement": "I would like to receive information about offers, promotions and other support opportunities from Lern-Fair by email.",
-            "underageDisclaimer": "Note: In the event that the person giving consent has not yet reached the age of 18, the holder of parental responsibility for the person must give their consent."
-        },
-        "password_repeat": "Repeat password",
-        "to_login": "I already have an account",
-        "ageOptions": {
-            "15OrYounger": "Pupil is 15 or younger",
-            "16OrOlder": "Pupil is 16 or older"
         },
         "emailOwnerOptions": {
             "pupil": "Pupil email",
@@ -890,27 +852,19 @@
                 "btn": "Deactivate account",
                 "tooltip": "You must give a reason."
             },
-            "pupil": {
-                "0": "I have no more time.",
-                "1": "I am no longer interested.",
-                "2": "I only registered for test purposes.",
-                "3": "I have found another way to get support.",
-                "4": "I imagined the program to be different.",
-                "5": "I do not meet the entry requirements for the projects.",
-                "6": "Other"
-            },
-            "student": {
-                "0": "I no longer have time to get involved.",
-                "1": "I couldn't/wouldn't attend the introductory meeting.",
-                "2": "I am no longer interested.",
-                "3": "I only registered for test purposes.",
-                "4": "I have found another way to get involved.",
-                "5": "I imagined the program to be different.",
-                "6": "I do not meet the entry requirements for the projects.",
-                "7": "Other"
-            },
             "error": "Your account could not be deactivated.",
-            "success": "Your account has been deactivated."
+            "success": "Your account has been deactivated.",
+            "reasons": {
+                "noMoreTime": "I have no more time.",
+                "noMoreInterest": "I am no longer interested.",
+                "onlyTestAccount": "I only registered for test purposes.",
+                "expectationsDiffered": "I imagined the program to be different.",
+                "didntMeetRequirements": "I do not meet the entry requirements for the projects.",
+                "other": "Other",
+                "otherSupportFound": "I have found another way to get support.",
+                "otherVolunteerWorkFound": "I have found another way to get involved.",
+                "couldntAttendMeeting": "I couldn't/wouldn't attend the introductory meeting."
+            }
         },
         "title": "My profile",
         "successmessage": "Changes have been saved successfully.",
@@ -1167,180 +1121,7 @@
         "header": "Settings"
     },
     "onboardingList": {
-        "cards": {
-            "card0": {
-                "title": "General onboarding tour",
-                "content": "Would you like to know what our platform has to offer? We'll show you the most important functions.",
-                "url": "/onboarding/students/"
-            },
-            "card1": {
-                "title": "Onboarding tour 1:1 matching",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/onboarding/helpermatching/"
-            },
-            "card2": {
-                "title": "Onboarding tour group course",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            },
-            "card3": {
-                "title": "Onboarding tour Help section",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            },
-            "card4": {
-                "title": "Onboarding tour lectures",
-                "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod.",
-                "url": "/"
-            }
-        },
         "Wizard": {
-            "students": {
-                "welcome": {
-                    "popup": {
-                        "title": "Are you sure you want to skip the tour?",
-                        "content": "You can also restart the tour at any time. You will find the point in the help area under \"Onboarding\".",
-                        "defaultButtonText": "No, start tour",
-                        "outlineButtonText": "Yes, skip tour"
-                    },
-                    "title": "Welcome to Lern-Fair",
-                    "content": "We are pleased that you are taking advantage of our offer.",
-                    "question": "Would you like to see what our platform has to offer?",
-                    "answer": "We show you the most important functions.",
-                    "startTour": "Start tour",
-                    "skipTour": "Skip tour"
-                },
-                "matching": {
-                    "title": "Learning support",
-                    "content": "If you need one-to-one help, then learning support is the right thing for you. You will receive a:n fixed:n volunteer from us."
-                },
-                "groupCourse": {
-                    "title": "Tutoring courses",
-                    "content": "There is help on various topics in small groups."
-                },
-                "appointments": {
-                    "title": "My lectures",
-                    "content": "Here you will find an overview of your planned lectures."
-                },
-                "helpCenter": {
-                    "title": "Help area",
-                    "content": "Here you will find frequently asked questions and their answers. You can also contact us here"
-                },
-                "profile": {
-                    "title": "Profile",
-                    "content": "You can change the subjects in which you need help in your profile."
-                },
-                "settings": {
-                    "title": "Settings",
-                    "content": "In this section you can make general changes and changes to your account (email address, password). You will also find legal information on using the platform here."
-                },
-                "notification": {
-                    "title": "Notification",
-                    "content": "You will be informed about news about your matching, new contacts and general topics. You can see if you have any new messages by clicking on the bell at the top right."
-                },
-                "finisher": {
-                    "title": "Done!",
-                    "content": "Just a moment, your personal dashboard will load.",
-                    "button": "to the dashboard"
-                }
-            },
-            "helper": {
-                "welcome": {
-                    "popup": {
-                        "title": "Are you sure you want to skip the tour?",
-                        "content": "You can also restart the tour at any time. You will find the item under your settings as \"Onboarding tour\".",
-                        "defaultButtonText": "No, start tour",
-                        "outlineButtonText": "Yes, skip tour"
-                    },
-                    "title": "Welcome to Lern-Fair",
-                    "content": "We are delighted that you would like to actively support educationally disadvantaged children.",
-                    "question": "Would you like to see what our platform has to offer?",
-                    "answer": "We show you the most important functions.",
-                    "startTour": "Start tour",
-                    "skipTour": "Skip tour"
-                },
-                "matching": {
-                    "title": "Learning support",
-                    "content": "Learning support is 1:1 support for pupils who need individual help. Here you can find your lectures, your learning partners, see your requested matches and request new matches."
-                },
-                "groupCourse": {
-                    "title": "Group courses",
-                    "content": "Group courses offer short-term support for specific problems and questions. All your group courses are displayed under \"My courses\". You can also create new courses here."
-                },
-                "appointment": {
-                    "title": "Lectures",
-                    "content": "Under \"My Lectures\" you will see all your lectures, arranged in tabs and sorted by date."
-                },
-                "helpCenter": {
-                    "title": "Help area",
-                    "content": "If you need help, you can find the most important information in our help section."
-                },
-                "profile": {
-                    "title": "Profile",
-                    "content": "You can enter all relevant data in your profile."
-                },
-                "settings": {
-                    "title": "Settings",
-                    "content": "In this section you can make general changes and changes to your account (email address, password). You will also find legal information on using the platform here."
-                },
-                "notification": {
-                    "title": "Notification",
-                    "content": "You will be informed about news about your matching, new contacts and general topics. You can see if you have any new messages by clicking on the bell at the top right."
-                },
-                "finisher": {
-                    "title": "Done!",
-                    "content": "Just a moment, your personal dashboard will load.",
-                    "button": "to the dashboard"
-                }
-            },
-            "helperMatching": {
-                "welcome": {
-                    "popup": {
-                        "title": "Are you sure you want to skip the tour?",
-                        "content": "You can also restart the tour at any time. You will find the item under your settings as \"Onboarding tour\".",
-                        "defaultButtonText": "No, start tour",
-                        "outlineButtonText": "Yes, skip tour"
-                    },
-                    "title": "Onboarding tour Learning support",
-                    "content": "Here we show you all the important information you need to know about learning support.",
-                    "question": "How do I request a learning partner? How do I get in touch with my learning partner? How can I break up a learning pair?",
-                    "answer": "We show you the most important functions.",
-                    "startTour": "Start tour",
-                    "skipTour": "Skip tour"
-                },
-                "matching": {
-                    "title": "Request learning partner",
-                    "content": "You can request a new learning partner via the \"Request learning partner\" button on the dashboard or in the Individual section."
-                },
-                "request": {
-                    "title": "Make a request",
-                    "content": "So that we can assign you a learning partner, we need some information about you and your offer."
-                },
-                "match": {
-                    "title": "Allocation of the learning pair",
-                    "content": "After you have submitted your request, we will start looking for a suitable learning partner for you.",
-                    "contentsec": "You can also cancel your request at any time. All your requests are listed under Requests in the Single section."
-                },
-                "contact": {
-                    "title": "Contact us",
-                    "content": "If you have been matched, you can contact your learning partner directly via the \"Contact us\" button in the notification.",
-                    "contentsec": "If you would like to contact your learning partner at a later date, you can also do this via your learning partner's profile."
-                },
-                "matchSolve": {
-                    "title": "Dissolve learning pair",
-                    "content": "If you would like to dissolve the learning partnership with a learning partner, you can do so under \"Individuals\" under \"Learning partners\" by clicking the \"Dissolve learning pair\" button."
-                },
-                "finisher": {
-                    "title": "Done",
-                    "firstContent": "Congratulations, you have completed the onboarding tour for learning support.",
-                    "headlineContent": "Did you understand everything?",
-                    "answer": "You can watch the tour again and take a look at our help section. Here you will find the most important information and assistance for you as volunteer.",
-                    "linkText": "To the help area",
-                    "helpcenter": "To the help area",
-                    "buttonText": "End tour",
-                    "buttonLinkText": "Watch the tour again"
-                }
-            },
             "ethics": {
                 "welcome": {
                     "title": "Ethical standards",
@@ -1381,12 +1162,7 @@
                     "checkboxText": "I have read the ethics guidelines carefully and agree to them."
                 }
             }
-        },
-        "header": "Onboarding tour",
-        "title": "Onboarding",
-        "buttontext": "Start tour",
-        "skip": "Skip",
-        "content": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod"
+        }
     },
     "dashboard": {
         "appointmentcard": {
@@ -1407,17 +1183,6 @@
             "requestCreated": "Request created on:",
             "waitingTimeInfo": "Please note that there may be longer waiting times when looking for a learning partner. In the meantime, you can also take advantage of our courses or homework help.",
             "removeRequest": "Withdraw request"
-        },
-        "supportCategories": {
-            "all": "All",
-            "overview": "Overview",
-            "kurse": "Courses",
-            "support": "1:1 learning support",
-            "pedagogy": "Pedagogy",
-            "tools": "Digital tools",
-            "material": "Free teaching materials",
-            "daz": "German as a second or foreign language",
-            "add_support": "Additional support"
         },
         "helpers": {
             "headlines": {
@@ -1443,11 +1208,6 @@
                 "recommend": "Recommend now",
                 "requestFirstMatchPupil": "Learning partner:in receive",
                 "requestMoreMatchesPupil": "Receive further learning partners"
-            },
-            "channels": {
-                "whatsApp": "WhatsApp",
-                "signal": "Signal",
-                "email": "email"
             },
             "badges": {
                 "new": "NEW"
@@ -1886,7 +1646,8 @@
                 "title": "Why do you want to dissolve the learning pair?",
                 "btn": "Dissolve learning pair",
                 "tooltip": "You must give a reason.",
-                "otherFreeText": "Reason:"
+                "otherFreeText": "Reason:",
+                "infoCallout": "Deine Auswahl und dein Kommentar werden nur an Lern-Fair gesendet. Dein:e Lernpartner:in {{partnerName}} kann diese nicht lesen"
             },
             "warningModal": {
                 "title": "Are you sure?",
@@ -2414,7 +2175,6 @@
         "imageMatchText": "With just 1-2 hours a week, you can give an educationally disadvantaged child the chance of a better future.",
         "becomeAnInstructor": "Become a course instructor now",
         "becomeTutor": "Become a tutor now",
-        "talkWithTeam": "Arrange an introductory meeting",
         "moreInfos": "More information",
         "groupRequestedDescription": "Thank you for your interest in offering a course. Before you can start your course, we have a few more tips for you:"
     },
@@ -3004,5 +2764,31 @@
         "changePassword": "Change password now",
         "success": "Your password has been successfully changed. You can now log in with the new password",
         "error": "An error occurred when changing the password"
+    },
+    "formalEducation": {
+        "teacher": "Lehrer:in",
+        "specialEducationTeacher": "Sonderpädagoge:in",
+        "earlyChildhoodEducator": "Erzieher:in",
+        "socialWorker": "Sozialpädagoge:in",
+        "childAndAdolescentPsychologist": "Kinder- und Jugendpsychologe:in",
+        "other": "Other"
+    },
+    "specialTeachingExperience": {
+        "daz": "Deutsch als Zweitsprache (DaZ)",
+        "adhd": "AD(H)S",
+        "dyslexia": "LRS",
+        "dyscalculia": "Rechenschwäche",
+        "autismSpectrumDisorder": "Autismus-Spektrum-Störung",
+        "emotionalAndSocialDevelopment": "Emotionale & soziale Entwicklung",
+        "giftedness": "Hochbegabung",
+        "visualImpairment": "Sehbeeinträchtigung",
+        "hearingImpairment": "Hörbeeinträchtigung",
+        "traumaSensitivePedagogy": "Trauma-sensible Pädagogik",
+        "other": "Other"
+    },
+    "teachingExperienceLevel": {
+        "none": "Keine",
+        "some": "Etwas",
+        "extensive": "Viel"
     }
 }

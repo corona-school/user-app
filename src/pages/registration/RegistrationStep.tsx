@@ -12,6 +12,7 @@ interface _RegistrationStepProps {
     isNextDisabled?: boolean;
     isBackDisabled?: boolean;
     className?: string;
+    reasonNextDisabled?: string;
 }
 
 export type RegistrationStepProps = Omit<_RegistrationStepProps, 'children'>;
@@ -46,7 +47,7 @@ export const RegistrationStepDescription = ({ className, variant = 'body-lg', ch
     );
 };
 
-export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisabled, className, children }: _RegistrationStepProps) => {
+export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisabled, className, reasonNextDisabled, children }: _RegistrationStepProps) => {
     const handleOnSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (!isNextDisabled && onNext) {
@@ -81,6 +82,7 @@ export const RegistrationStep = ({ onBack, onNext, isBackDisabled, isNextDisable
                     </Button>
                     <Button
                         disabled={isNextDisabled}
+                        reasonDisabled={reasonNextDisabled}
                         variant="ghost"
                         className={cn(
                             'size-[70px] rounded-full border border-transparent md:hover:border-primary transition-colors duration-300 ease-in-out px-0',

@@ -34,7 +34,7 @@ const SchoolType = ({ onBack, onNext }: SchoolTypeProps) => {
                     maxVisibleItems={7}
                     searchConfig={{
                         containerClassName: 'h-[48px] w-[50%]',
-                        className: 'bg-white h-full border-none font-semibold',
+                        className: 'h-full font-semibold',
                         placeholder: t('registration.steps.schoolType.searchPlaceholder') as string,
                     }}
                 />

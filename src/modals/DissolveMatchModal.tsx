@@ -9,12 +9,15 @@ import { Button } from '@/components/Button';
 import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
 import { Label } from '@/components/Label';
 import { Input } from '@/components/Input';
+import { IconShieldLockFilled } from '@tabler/icons-react';
+import { Alert } from '@/components/Alert';
 
 type DissolveModalProps = {
     showDissolveModal: boolean | undefined;
     alsoShowWarningModal?: boolean | undefined;
     onPressDissolve: (dissolveReasons: Dissolve_Reason[], otherFreeText: string | undefined) => any;
     onPressBack: () => any;
+    matchName?: string | null;
 };
 
 const SupportEmail = () => (
@@ -23,7 +26,7 @@ const SupportEmail = () => (
     </a>
 );
 
-const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack }) => {
+const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, alsoShowWarningModal, onPressDissolve, onPressBack, matchName }) => {
     const [showedWarning, setShowedWarning] = useState<boolean>(false);
     const { t } = useTranslation();
     const userType = useUserType();
@@ -38,19 +41,23 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
         Dissolve_Reason.ScheduleIssues,
         Dissolve_Reason.TechnicalIssues,
         Dissolve_Reason.LanguageIssues,
-        Dissolve_Reason.Other,
         Dissolve_Reason.InternshipEnded,
         Dissolve_Reason.SubjectMismatch,
         Dissolve_Reason.GenderPreference,
         Dissolve_Reason.RepeatedNoShows,
         Dissolve_Reason.NewPartnerFound,
+        Dissolve_Reason.Other,
     ];
 
     return (
         <Modal
             isOpen={!!showDissolveModal}
             onOpenChange={(isOpen) => !isOpen && onPressBack()}
-            className={cn('w-full lg:w-[820px] max-w-[550px] rounded-none lg:rounded-md', 'bg-white')}
+            className={cn(
+                'w-full lg:w-[820px] max-w-[550px] rounded-none lg:rounded-md overflow-y-scroll',
+                'bg-white',
+                alsoShowWarningModal && !showedWarning ? '' : 'h-full md:h-auto'
+            )}
             classes={{
                 closeIcon: 'text-primary',
             }}
@@ -112,11 +119,19 @@ const DissolveMatchModal: React.FC<DissolveModalProps> = ({ showDissolveModal, a
                                 />
                             )}
                         </div>
+
+                        <Alert className="w-full md:w-fit mb-4 mt-2" icon={<IconShieldLockFilled />}>
+                            {t('matching.dissolve.modal.infoCallout', {
+                                partnerName: matchName,
+                            })}
+                        </Alert>
+
                         <ModalFooter variant="default">
-                            <Button onClick={onPressBack} variant="ghost">
+                            <Button onClick={onPressBack} variant="ghost" className="w-1/2 md:w-fit">
                                 {t('back')}
                             </Button>
                             <Button
+                                className="w-1/2 md:w-fit"
                                 disabled={reasons.length === 0 || (reasons.includes(Dissolve_Reason.Other) && !otherFreeText)}
                                 reasonDisabled={t('matching.dissolve.modal.tooltip')}
                                 onClick={() => onPressDissolve(reasons, reasons.includes(Dissolve_Reason.Other) ? otherFreeText : undefined)}
