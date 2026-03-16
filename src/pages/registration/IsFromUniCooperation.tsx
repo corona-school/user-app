@@ -29,7 +29,7 @@ export const IsFromUniCooperation = ({ onNext }: IsFromUniCooperationProps) => {
                     size="2xl"
                     variant="white-primary"
                     pressed={form.isFromUniCooperation === false}
-                    onPressedChange={() => onFormChange({ isFromUniCooperation: false, uniCooperation: '' })}
+                    onPressedChange={() => onFormChange({ isFromUniCooperation: false })}
                 >
                     <IconThumbDown size={32} />
                     {t('no')}

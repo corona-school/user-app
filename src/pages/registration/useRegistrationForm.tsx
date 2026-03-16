@@ -66,7 +66,6 @@ export interface RegistrationForm {
         freeTextValue?: string;
     };
     isFromUniCooperation?: boolean;
-    uniCooperation?: string;
 }
 
 interface RegistrationContextValue {
@@ -160,7 +159,7 @@ const REGISTRATION_PROFILE_QUERY = gql(`
                 jobStatus
                 specialTeachingExperience
                 formalEducation
-                university
+                isFromUniCooperation
             }
         }
     }
@@ -173,8 +172,8 @@ const ME_UPDATE_PUPIL_MUTATION = gql(`
 `);
 
 const ME_UPDATE_STUDENT_MUTATION = gql(`
-    mutation meUpdateStudentRegistrationProfile($jobStatus: student_jobstatus_enum, $formalEducation: String, $specialTeachingExperience: [String!], $university: String) {
-        meUpdate(update: { student: { jobStatus: $jobStatus, formalEducation: $formalEducation, specialTeachingExperience: $specialTeachingExperience, university: $university } })
+    mutation meUpdateStudentRegistrationProfile($jobStatus: student_jobstatus_enum, $formalEducation: String, $specialTeachingExperience: [String!], $isFromUniCooperation: Boolean) {
+        meUpdate(update: { student: { jobStatus: $jobStatus, formalEducation: $formalEducation, specialTeachingExperience: $specialTeachingExperience, isFromUniCooperation: $isFromUniCooperation } })
     }
 `);
 
@@ -238,7 +237,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             if (values.currentStep === RegistrationStep.jobStatus) {
                 await meUpdateStudent({ variables: { jobStatus: values.jobStatus as unknown as Student_Jobstatus_Enum } });
             } else if (values.currentStep === RegistrationStep.uniCooperation) {
-                await meUpdateStudent({ variables: { university: values.uniCooperation ?? undefined } });
+                await meUpdateStudent({ variables: { isFromUniCooperation: values.isFromUniCooperation ?? undefined } });
             } else if (
                 [RegistrationStep.formalEducation, RegistrationStep.teachingExperience, RegistrationStep.hasSpecialNeedsExperience].includes(values.currentStep)
             ) {
@@ -376,8 +375,8 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                     selectValues: specialTeachingExperience,
                     freeTextValue: freeText,
                 },
-                uniCooperation: registrationProfile.student?.university ?? undefined,
-                isFromUniCooperation: registrationProfile.student?.university === null ? undefined : !!registrationProfile.student?.university,
+                isFromUniCooperation:
+                    registrationProfile.student?.isFromUniCooperation === null ? undefined : registrationProfile.student?.isFromUniCooperation,
             });
         }
         // And stop showing the loader, this should trigger the next effect
@@ -433,7 +432,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             }
             // If they are from a cooperation, the other steps are optional and when they come back to the registration
             // let's just show the confirmation..
-            if (values.isFromUniCooperation && values.uniCooperation) {
+            if (values.isFromUniCooperation) {
                 return handleOnChange({ currentStep: RegistrationStep.uniCooperationConfirmation });
             }
         }
