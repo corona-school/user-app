@@ -12,6 +12,7 @@ export enum RegistrationStep {
     authenticationInfo = 'authenticationInfo',
     dataPrivacy = 'dataPrivacy',
     confirmEmail = 'confirmEmail',
+    uniCooperation = 'uniCooperation',
     bookAppointment = 'bookAppointment',
     screeningAppointmentDetail = 'screeningAppointmentDetail',
     grade = 'grade',
@@ -26,6 +27,7 @@ export enum RegistrationStep {
     teachingExperience = 'teachingExperience',
     hasSpecialNeedsExperience = 'hasSpecialNeedsExperience',
     registrationCompleted = 'registrationCompleted',
+    uniCooperationConfirmation = 'uniCooperationConfirmation',
 }
 
 export const STUDENT_FLOW = [
@@ -38,6 +40,7 @@ export const STUDENT_FLOW = [
     RegistrationStep.authenticationInfo,
     RegistrationStep.dataPrivacy,
     RegistrationStep.confirmEmail,
+    RegistrationStep.uniCooperation,
     RegistrationStep.bookAppointment,
     RegistrationStep.screeningAppointmentDetail,
     RegistrationStep.jobStatus,
@@ -46,6 +49,7 @@ export const STUDENT_FLOW = [
     RegistrationStep.teachingExperience,
     RegistrationStep.hasSpecialNeedsExperience,
     RegistrationStep.registrationCompleted,
+    RegistrationStep.uniCooperationConfirmation,
 ];
 
 export const PUPIL_FLOW = [

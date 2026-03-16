@@ -14,7 +14,7 @@ export const SpecialTeachingExperience = ({ onBack, onNext }: SpecialTeachingExp
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>
             <OptionalBadge />
-            <RegistrationStepTitle>{t('registration.steps.specialTeachingExperience.title')} </RegistrationStepTitle>
+            <RegistrationStepTitle className="mb-10">{t('registration.steps.specialTeachingExperience.title')} </RegistrationStepTitle>
             <div className="w-full md:pb-0">
                 <SpecialTeachingExperienceSelector
                     multiple
