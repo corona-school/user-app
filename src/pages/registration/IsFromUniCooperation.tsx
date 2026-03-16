@@ -12,7 +12,6 @@ export const IsFromUniCooperation = ({ onNext }: IsFromUniCooperationProps) => {
     const { form, onFormChange } = useRegistrationForm();
 
     const { t } = useTranslation();
-
     return (
         <RegistrationStep onNext={onNext}>
             <RegistrationStepTitle className="mb-10">{t('registration.steps.isFromUniCooperation.title')}</RegistrationStepTitle>
@@ -21,7 +20,7 @@ export const IsFromUniCooperation = ({ onNext }: IsFromUniCooperationProps) => {
                     size="2xl"
                     variant="white-primary"
                     pressed={form.isFromUniCooperation}
-                    onPressedChange={() => onFormChange({ isFromUniCooperation: !form.isFromUniCooperation })}
+                    onPressedChange={() => onFormChange({ isFromUniCooperation: true })}
                 >
                     <IconThumbUp size={32} />
                     {t('yes')}
@@ -30,7 +29,7 @@ export const IsFromUniCooperation = ({ onNext }: IsFromUniCooperationProps) => {
                     size="2xl"
                     variant="white-primary"
                     pressed={form.isFromUniCooperation === false}
-                    onPressedChange={() => onFormChange({ isFromUniCooperation: !form.isFromUniCooperation, uniCooperation: '' })}
+                    onPressedChange={() => onFormChange({ isFromUniCooperation: false, uniCooperation: '' })}
                 >
                     <IconThumbDown size={32} />
                     {t('no')}
