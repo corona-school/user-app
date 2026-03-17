@@ -32,6 +32,15 @@ import {
 } from '@tabler/icons-react';
 import { Button } from '@/components/Button';
 import { Separator } from '@/components/Separator';
+import { Typography } from '@/components/Typography';
+
+interface SettingItemType {
+    title: string;
+    icon: React.ElementType;
+    mobileFallbackLink: string;
+    element?: JSX.Element;
+    onClick?: () => void;
+}
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -70,14 +79,6 @@ const Settings: React.FC = () => {
     const handleOnInstall = () => {
         navigate('/install');
     };
-
-    interface SettingItemType {
-        title: string;
-        icon: React.ElementType;
-        mobileFallbackLink: string;
-        element?: JSX.Element;
-        pressEvent?: () => void;
-    }
 
     const profileSettings: SettingItemType[] = [
         ...(userType !== 'screener'
@@ -132,12 +133,12 @@ const Settings: React.FC = () => {
                   { title: t('settings.account.changePassword'), icon: IconPassword, mobileFallbackLink: '/new-password' },
               ]
             : []),
-        { title: t('settings.account.deactivateAccount'), icon: IconUserOff, mobileFallbackLink: '#', pressEvent: () => setShowDeactivate(true) },
+        { title: t('settings.account.deactivateAccount'), icon: IconUserOff, mobileFallbackLink: '#', onClick: () => setShowDeactivate(true) },
         {
             title: t('settings.account.logout'),
             icon: IconLogout,
             mobileFallbackLink: '#',
-            pressEvent: () => {
+            onClick: () => {
                 trackEvent({
                     category: 'profil',
                     action: 'click-event',
@@ -174,7 +175,9 @@ const Settings: React.FC = () => {
                     </Button>
                 }
             >
-                <div className={'text-2xl font-bold py-5'}>{t('settings.general.mySettings')}</div>
+                <Typography variant={'h3'} className={'mt-4 mb-11'}>
+                    {t('settings.general.mySettings')}
+                </Typography>
                 <div id={'sidebar'}>
                     <div className="min-w-full md:min-w-72">
                         <nav className="flex md:min-w-72 min-w-full pr-8 flex-col h-[calc(100vh-120px)] overflow-y-auto fixed pb-10 justify-between">
@@ -188,7 +191,7 @@ const Settings: React.FC = () => {
                                                         title={item.title}
                                                         Icon={item.icon}
                                                         active={'/' + lastLinkItem === item.mobileFallbackLink}
-                                                        pressEvent={item.pressEvent ? item.pressEvent : () => navigate(item.mobileFallbackLink)}
+                                                        onClick={item.onClick ? item.onClick : () => navigate(item.mobileFallbackLink)}
                                                     />
                                                 );
                                             })}
@@ -213,20 +216,24 @@ export default Settings;
 const SettingRow = ({ title, children }: { title: string; children: ReactNode }) => {
     return (
         <div className={'w-full'}>
-            <div className={'text-sm mb-3'}>{title}</div>
+            <Typography variant={'sm'} className={'mb-3'}>
+                {title}
+            </Typography>
             <div className={'flex flex-col gap-2 mb-5'}>{children}</div>
         </div>
     );
 };
 
-const SettingItem = ({ title, Icon, pressEvent, active }: { title: string; Icon: React.ElementType; pressEvent: () => void; active: boolean }) => {
+const SettingItem = ({ title, Icon, onClick, active }: { title: string; Icon: React.ElementType; onClick: () => void; active: boolean }) => {
     return (
         <div
             className={`inline-flex items-center gap-3 hover:bg-accent rounded-md px-2 py-1 cursor-pointer ${active ? 'bg-accent text-tertiary' : ''}`}
-            onClick={pressEvent}
+            onClick={onClick}
         >
-            <Icon size={22} className="text-primary" />
-            <span>{title}</span>
+            <Icon size={20} className="text-primary" />
+            <Typography variant={'subtle'} className={'font-medium'}>
+                {title}
+            </Typography>
             <div className={'ml-auto'}>
                 <IconChevronRight />
             </div>
