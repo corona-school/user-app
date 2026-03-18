@@ -44,7 +44,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (null as any),
                         hasSpecialNeeds: hasSpecialNeeds === true,
                         school: {
-                            name: school?.name,
+                            name: school?.name?.split(',')[0] ?? school?.name,
                             schooltype: schoolType as any,
                             state: pupilLocation as any,
                             city: school?.city,

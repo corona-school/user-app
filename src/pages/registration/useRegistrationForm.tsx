@@ -224,7 +224,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                             schooltype: values.school?.schooltype as unknown as SchoolType,
                             zip: values.school?.zip ?? values.zipCode?.toString(),
                             city: values.school?.city,
-                            name: values.school?.name,
+                            name: values.school?.name.split(',')[0] ?? values.school?.name, // we only want to save the name of the school without city and zip, as those are separate fields
                         },
                     },
                 });
