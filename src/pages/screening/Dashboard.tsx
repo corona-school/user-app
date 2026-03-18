@@ -13,6 +13,7 @@ import UserCard from './components/UserCard';
 import { Typography } from '@/components/Typography';
 import PupilDetail from './pupil/PupilDetail';
 import { StudentDetail } from './student/StudentDetail';
+import { useSearchParams } from 'react-router-dom';
 
 const greetings = ['Wilkommen', 'Bonjour', 'Hola', 'Salve', 'asalaam alaikum', 'konnichiwa'];
 
@@ -21,8 +22,8 @@ const greeting = greetings[Math.floor(Math.random() * greetings.length)];
 export function ScreeningDashboard() {
     const user = useUser();
     const { t } = useTranslation();
-
-    const [searchQuery, setSearchQuery] = useState('');
+    const [searchParams] = useSearchParams();
+    const [searchQuery, setSearchQuery] = useState(searchParams.get('search') || '');
     const {
         data: searchResult,
         loading: searchLoading,
