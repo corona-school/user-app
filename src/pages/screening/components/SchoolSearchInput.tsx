@@ -2,10 +2,10 @@ import { Combobox } from '@/components/Combobox';
 import { Label } from '@/components/Label';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/Tooltip';
 import { ExternalSchoolSearch } from '@/gql/graphql';
-import useSchoolSearch from '@/hooks/useExternalSchoolSearch';
+import { useSchoolDetails, useSchoolSearch } from '@/hooks/useExternalSchoolSearch';
 import { cn } from '@/lib/Tailwind';
 import { IconCircleCheckFilled, IconAlertTriangleFilled } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 interface SchoolSearchInputProps {
@@ -17,14 +17,14 @@ interface SchoolSearchInputProps {
 export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolSearchInputProps) => {
     const { t } = useTranslation();
     const [search, setSearch] = useState(defaultValue?.name ?? '');
-    const [school, setSchool] = useState<Partial<ExternalSchoolSearch> | undefined>(defaultValue);
+    const [school, setSchool] = useState<Partial<ExternalSchoolSearch> | undefined>();
     const { schools, isLoading } = useSchoolSearch({ name: search });
+    const { school: schoolDetails } = useSchoolDetails(school?.id ?? '');
 
     const handleOnSelect = (id: string) => {
         const newSelectedSchool = schools.find((e) => e.id === id);
         if (newSelectedSchool) {
             setSchool(newSelectedSchool);
-            onSelect(newSelectedSchool);
         }
     };
 
@@ -32,6 +32,12 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
         setSchool({ name });
         onSelect({ name });
     };
+
+    useEffect(() => {
+        if (schoolDetails) {
+            onSelect(schoolDetails);
+        }
+    }, [schoolDetails]);
 
     const getLabel = (school: Partial<ExternalSchoolSearch>) => {
         let label = school.name;
@@ -51,7 +57,7 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
                     search={search}
                     onCreate={handleOnCreate}
                     onSelect={handleOnSelect}
-                    className={cn('w-[500px]', className)}
+                    className={cn('w-[500px] border border-solid', className)}
                     isLoading={isLoading}
                     searchPlaceholder="z.B Erich-Kästner-Schule"
                     placeholder={defaultValue ? getLabel(defaultValue) : ''}
