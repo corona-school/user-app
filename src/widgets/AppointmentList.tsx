@@ -15,6 +15,7 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { cn } from '@/lib/Tailwind';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import CourseAppointmentForm from '@/pages/course-creation/CourseAppointmentForm';
+import { useUserType } from '@/hooks/useApollo';
 
 interface HeaderProps {
     hasMoreOldAppointments: boolean;
@@ -232,6 +233,7 @@ const AppointmentList = ({
     exhaustive,
 }: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
+    const userType = useUserType();
 
     const scrollId = useMemo(() => {
         return getScrollToId(appointments);
@@ -268,8 +270,16 @@ const AppointmentList = ({
     const canLoadMoreAppointments = !isReadOnlyList && !noNewAppointments && !isLoadingAppointments;
     const isFullHeight = height === '100%';
 
-    const appointmentInPast = (appointment: Appointment) =>
-        DateTime.fromISO(appointment.start).toMillis() + appointment.duration * 60000 < DateTime.now().toMillis();
+    const isAppointmentReadOnly = (appointment: Appointment) => {
+        if (userType === 'screener') {
+            return false; // Screeners can edit all appointments, even past ones
+        }
+        if (!appointment.subcourse?.published) {
+            return false;
+        }
+        const isAppointmentInPast = DateTime.fromISO(appointment.start).toMillis() + appointment.duration * 60000 < DateTime.now().toMillis();
+        return isAppointmentInPast;
+    };
 
     return (
         <div
@@ -301,11 +311,11 @@ const AppointmentList = ({
                         isReadOnly={isReadOnlyList}
                         editingInit={appointment.id === editingIdInit}
                         onBeginEdit={onAppointmentBeginEdit}
-                        onEdit={appointmentInPast(appointment) ? undefined : (updated) => onAppointmentEdited && onAppointmentEdited(updated)}
+                        onEdit={isAppointmentReadOnly(appointment) ? undefined : (updated) => onAppointmentEdited && onAppointmentEdited(updated)}
                         onCancelEdit={() => onAppointmentCanceledEdit && onAppointmentCanceledEdit(appointment)}
                         onDuplicate={onAppointmentDuplicate ? () => onAppointmentDuplicate(appointment) : undefined}
                         onDelete={
-                            appointmentInPast(appointment)
+                            isAppointmentReadOnly(appointment)
                                 ? undefined
                                 : onAppointmentDelete
                                 ? () => onAppointmentDelete && onAppointmentDelete(appointment)
