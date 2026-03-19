@@ -50,7 +50,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => navigate(`/start?${searchParams.toString()}`)}>Daten bearbeiten</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => navigate(`/start?${searchParams.toString()}`)}>Profil anzeigen</DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => {
                             setIsScreeningModalOpen(true);
