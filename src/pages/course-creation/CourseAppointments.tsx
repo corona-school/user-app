@@ -8,6 +8,7 @@ import { Button } from '@/components/Button';
 import RejectAppointmentModal, { RejectType } from '@/modals/RejectAppointmentModal';
 import { Appointment } from '@/types/lernfair/Appointment';
 import { IconCalendarPlus } from '@tabler/icons-react';
+import { useUserType } from '@/hooks/useApollo';
 
 type Props = {
     isEditingCourse?: boolean;
@@ -20,6 +21,7 @@ type Props = {
 
 const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, subcourseId, setAppointments, errors, setAppointmentErrors }) => {
     const { t } = useTranslation();
+    const userType = useUserType();
     // a new appointment which is currently being created (either by clicking on "New Appointment" button or by duplicating another appointment
     const [placeholderId, setPlaceholderId] = useState<number | undefined>(undefined);
     // contrary to duplicated appointments, when creating a blank appointment, it should stick to the bottom
@@ -81,7 +83,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
         }
 
         // check if appointment is at least 7 days in the future
-        if (DateTime.fromISO(appointment.start).endOf('day').diffNow('days').days < 7) {
+        if (userType !== 'screener' && DateTime.fromISO(appointment.start).endOf('day').diffNow('days').days < 7) {
             errors.push('dateNotInOneWeek');
         }
 
@@ -100,14 +102,12 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
 
         if (errors.length > 0) {
             setAppointmentsWithErrors((prev) => [...prev, updated.id]);
-            console.log('Appointment Errors:', errors);
             return { errors };
         } else {
             setAppointmentsWithErrors((prev) => prev.filter((id) => id !== updated.id));
         }
 
         if (updated.id < 0) {
-            console.log('Edited new appointment with id:', updated.id, updated);
             if (placeholderId === updated.id) setPlaceholderId(undefined);
             if (stickyBottomId === updated.id) setStickyBottomId(undefined);
             const edited = getDraftAppointments.findIndex((x) => x.id === updated.id);
