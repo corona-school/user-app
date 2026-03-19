@@ -18,7 +18,7 @@ interface CooperationStudentActionsProps {
 
 const REMOVE_IS_FROM_COOPERATION_MUTATION = gql(`
     mutation RemoveStudentFromCooperation($studentId: Float!) {
-        studentUpdate(studentId: $studentId, data: { isFromUniCooperation: false })
+        studentUpdate(studentId: $studentId, data: { registrationSource: normal })
     }
 `);
 

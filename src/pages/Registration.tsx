@@ -83,7 +83,7 @@ const MUTATION_REGISTER_STUDENT = gql(`
     mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String, $gender: Gender, $languages: [StudentLanguage!], $isAdult: Boolean!) {
         meRegisterStudent(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: other, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
         ) {
             id
         }

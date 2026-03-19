@@ -2,7 +2,7 @@ import { FormalEducationEnum } from '@/components/FormalEducationSelector';
 import { combineSpecialExperience, SpecialTeachingExperienceEnum, splitSpecialExperience } from '@/components/SpecialTeachingExperienceSelector';
 import { TeachingExperienceLevelEnum } from '@/components/TeachingExperienceLevelSelector';
 import { gql } from '@/gql';
-import { Gender, Language, PupilEmailOwner, SchoolType, School_Schooltype_Enum, Student_Jobstatus_Enum } from '@/gql/graphql';
+import { Gender, Language, PupilEmailOwner, RegistrationSource, SchoolType, School_Schooltype_Enum, Student_Jobstatus_Enum } from '@/gql/graphql';
 import useApollo from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Appointment } from '@/types/lernfair/Appointment';
@@ -159,7 +159,7 @@ const REGISTRATION_PROFILE_QUERY = gql(`
                 jobStatus
                 specialTeachingExperience
                 formalEducation
-                isFromUniCooperation
+                registrationSource
             }
         }
     }
@@ -172,8 +172,8 @@ const ME_UPDATE_PUPIL_MUTATION = gql(`
 `);
 
 const ME_UPDATE_STUDENT_MUTATION = gql(`
-    mutation meUpdateStudentRegistrationProfile($jobStatus: student_jobstatus_enum, $formalEducation: String, $specialTeachingExperience: [String!], $isFromUniCooperation: Boolean) {
-        meUpdate(update: { student: { jobStatus: $jobStatus, formalEducation: $formalEducation, specialTeachingExperience: $specialTeachingExperience, isFromUniCooperation: $isFromUniCooperation } })
+    mutation meUpdateStudentRegistrationProfile($jobStatus: student_jobstatus_enum, $formalEducation: String, $specialTeachingExperience: [String!], $registrationSource: RegistrationSource) {
+        meUpdate(update: { student: { jobStatus: $jobStatus, formalEducation: $formalEducation, specialTeachingExperience: $specialTeachingExperience, registrationSource: $registrationSource } })
     }
 `);
 
@@ -237,7 +237,9 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             if (values.currentStep === RegistrationStep.jobStatus) {
                 await meUpdateStudent({ variables: { jobStatus: values.jobStatus as unknown as Student_Jobstatus_Enum } });
             } else if (values.currentStep === RegistrationStep.uniCooperation) {
-                await meUpdateStudent({ variables: { isFromUniCooperation: values.isFromUniCooperation ?? undefined } });
+                await meUpdateStudent({
+                    variables: { registrationSource: values.isFromUniCooperation ? RegistrationSource.Cooperation : RegistrationSource.Normal },
+                });
             } else if (
                 [RegistrationStep.formalEducation, RegistrationStep.teachingExperience, RegistrationStep.hasSpecialNeedsExperience].includes(values.currentStep)
             ) {
@@ -376,7 +378,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                     freeTextValue: freeText,
                 },
                 isFromUniCooperation:
-                    registrationProfile.student?.isFromUniCooperation === null ? undefined : registrationProfile.student?.isFromUniCooperation,
+                    registrationProfile.student?.registrationSource === 'other' ? undefined : registrationProfile.student?.registrationSource === 'cooperation',
             });
         }
         // And stop showing the loader, this should trigger the next effect
