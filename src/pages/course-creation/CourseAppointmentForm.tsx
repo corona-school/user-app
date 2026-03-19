@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { VideoChatTypeEnum } from '@/pages/create-appointment/AppointmentCreation';
 import { Button } from '@/components/Button';
 import { Appointment } from '@/types/lernfair/Appointment';
+import { useUserType } from '@/hooks/useApollo';
 
 type Props = {
     appointmentPrefill: Appointment;
@@ -22,6 +23,7 @@ type Props = {
 
 const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors, setErrors }) => {
     const { t } = useTranslation();
+    const userType = useUserType();
 
     const [title, setTitle] = useState(appointmentPrefill.title ?? '');
     const [description, setDescription] = useState(appointmentPrefill.description ?? '');
@@ -106,7 +108,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         id="date"
                         value={date ? DateTime.fromISO(date).toJSDate() : undefined}
                         onChange={handleDateInput}
-                        disabled={{ before: minDate.toJSDate() }}
+                        disabled={{ before: userType === 'screener' ? new Date() : minDate.toJSDate() }}
                     />
                     {errors && errors.includes('date') && (
                         <Typography variant="sm" className="text-destructive error">
