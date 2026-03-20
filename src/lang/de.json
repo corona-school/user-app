@@ -501,7 +501,7 @@
                 "title": "Bist du bei uns richtig?",
                 "description": "Unsere Angebote richten sich an bildungsbenachteiligte Schüler:innen und Auszubildende in Deutschland.\nWelche Aussagen treffen auf dich zu?",
                 "needHelpInSchool": "Ich besuche eine Schule in Deutschland.",
-                "familyCannotHelp": "Meine Familie kann mir nicht bei Schulaufgaben helfen.",
+                "familyCannotHelp": "Meine Familie kann mir nur wenig oder gar nicht beim Lernen helfen.",
                 "familyCannotAffordTutoring": "Meine Familie kann mir Nachhilfe nicht bezahlen.",
                 "doNotApplyToMe": "Es treffen nicht alle 3 Punkte auf mich zu"
             },
