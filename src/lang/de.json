@@ -638,6 +638,16 @@
                 "resendConfirmation": "Bestätigung nochmal senden",
                 "doYouHaveProblems": "Du hast Probleme mit der Anmeldung?"
             },
+            "isFromUniCooperation": {
+                "title": "Kommst du von einer Uni-Kooperation?"
+            },
+            "uniCooperation": {
+                "title": "Wie heißt die Universität?"
+            },
+            "uniCooperationConfirmation": {
+                "title": "Vielen Dank!",
+                "description": "Wir prüfen deine Angaben und melden uns per E-Mail mit den nächsten Schritten. Bei Rückfragen kannst du dich jederzeit an <supportEmail>support@lern-fair.de</supportEmail> wenden."
+            },
             "appointmentDetails": {
                 "title": "Termin erstellt!",
                 "description": "Es gibt noch ein paar letzte Schritte. Dann können wir richtig gut starten.",

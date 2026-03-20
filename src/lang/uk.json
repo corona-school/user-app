@@ -641,6 +641,16 @@
             },
             "specialTeachingExperience": {
                 "title": "Hast du Kentnisse zu speziellen Förderbedarfen?"
+            },
+            "isFromUniCooperation": {
+                "title": "Ви прийшли через співпрацю з університетом?"
+            },
+            "uniCooperation": {
+                "title": "Як називається університет?"
+            },
+            "uniCooperationConfirmation": {
+                "title": "Дякуємо!",
+                "description": "Ми перевіримо ваші дані та надішлемо вам електронний лист із наступними кроками. Якщо у вас є запитання, ви завжди можете звернутися за адресою <supportEmail>support@lern-fair.de</supportEmail>."
             }
         },
         "pupil": {

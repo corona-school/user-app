@@ -37,6 +37,8 @@ import { FormalEducation } from './registration/FormalEducation';
 import { HasEducationExperience } from './registration/HasEducationExperience';
 import { TeachingExperienceLevel } from './registration/TeachingExperienceLevel';
 import { SpecialTeachingExperience } from './registration/SpecialTeachingExperience';
+import { UniCooperationConfirmation } from './registration/UniCooperationConfirmation';
+import { IsFromUniCooperation } from './registration/IsFromUniCooperation';
 
 export const TRAINEE_GRADE = 14;
 
@@ -81,7 +83,7 @@ const MUTATION_REGISTER_STUDENT = gql(`
     mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String, $gender: Gender, $languages: [StudentLanguage!], $isAdult: Boolean!) {
         meRegisterStudent(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: other, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
         ) {
             id
         }
@@ -258,10 +260,12 @@ const Registration = () => {
                         {form.currentStep === RegistrationStep.dataPrivacy && (
                             <DataPrivacy onBack={goBack} onRegisterWithPassword={handleOnRegisterWithPassword} />
                         )}
-                        {/* Optional SuS steps */}
                         {form.currentStep === RegistrationStep.confirmEmail && <ConfirmEmail retainPath={retainPath} />}
-                        {form.currentStep === RegistrationStep.bookAppointment && <BookAppointment onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.uniCooperation && <IsFromUniCooperation onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.uniCooperationConfirmation && <UniCooperationConfirmation onBack={goBack} />}
+                        {form.currentStep === RegistrationStep.bookAppointment && <BookAppointment onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.screeningAppointmentDetail && <ScreeningAppointmentDetail onNext={goNext} />}
+                        {/* Optional SuS steps */}
                         {form.currentStep === RegistrationStep.grade && <PupilGrade onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.school && <SchoolSearch onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.schoolType && <SchoolType onBack={goBack} onNext={goNext} />}

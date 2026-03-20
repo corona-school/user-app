@@ -21,7 +21,7 @@ import PortraitsPupilScreeners from '@/assets/images/registration/portraits_sus.
 
 interface BookAppointmentProps extends RegistrationStepProps {}
 
-export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
+export const BookAppointment = ({ onNext, onBack }: BookAppointmentProps) => {
     const [showCalendar, setShowCalendar] = useState(false);
     const [isFaqModalOpen, setIsFaqModalOpen] = useState(false);
     const [isLoadingCalendar, setIsLoadingCalendar] = useState(true);
@@ -131,7 +131,7 @@ export const BookAppointment = ({ onNext }: BookAppointmentProps) => {
     });
 
     return (
-        <RegistrationStep>
+        <RegistrationStep onBack={form.userType === 'student' ? onBack : undefined}>
             <RegistrationStepTitle className="mb-4 md:mb-4">{t('registration.steps.bookAppointment.title')}</RegistrationStepTitle>
             <Typography variant="body-lg" className="text-center md:whitespace-pre-line text-balance">
                 {t(form.userType === 'pupil' ? 'registration.steps.bookAppointment.descriptionPupil' : 'registration.steps.bookAppointment.descriptionStudent')}

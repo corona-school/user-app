@@ -15,7 +15,7 @@ export const TeachingExperienceLevel = ({ onBack, onNext }: TeachingExperienceLe
     return (
         <RegistrationStep className="px-0" onBack={onBack} onNext={onNext}>
             <OptionalBadge />
-            <RegistrationStepTitle>{t('registration.steps.teachingExperience.title')}</RegistrationStepTitle>
+            <RegistrationStepTitle className="mb-8">{t('registration.steps.teachingExperience.title')}</RegistrationStepTitle>
             <div className="w-full md:pb-0">
                 <div className="mb-8">
                     <Typography className="font-medium text-center mb-4">{t('registration.steps.teachingExperience.individual')}</Typography>
