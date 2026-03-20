@@ -77,23 +77,11 @@ const ChangeEmail = () => {
     }
 
     return (
-        <WithNavigation
-            hideMenu={isMobileSM}
-            previousFallbackRoute="/settings"
-            headerLeft={
-                !isMobileSM && (
-                    <Stack alignItems="center" direction="row">
-                        <SwitchLanguageButton />
-                        <NotificationAlert />
-                    </Stack>
-                )
-            }
-        >
+        <>
             {loading || !data ? (
                 <CenterLoadingSpinner />
             ) : (
                 <Flex overflowY="auto" height="100dvh">
-                    <Breadcrumb />
                     <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
                         <Logo />
                         <Heading mt={space['1']}>{t('login.setNewEmail')}</Heading>
@@ -123,7 +111,7 @@ const ChangeEmail = () => {
                     </VStack>
                 </Flex>
             )}
-        </WithNavigation>
+        </>
     );
 };
 

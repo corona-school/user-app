@@ -205,140 +205,122 @@ const ProfilePupil: React.FC<Props> = () => {
 
     return (
         <>
-            <WithNavigation
-                isLoading={loading}
-                hideMenu={isMobileSM}
-                previousFallbackRoute="/settings"
-                headerTitle={t('profile.title')}
-                headerLeft={
-                    !isMobileSM && (
-                        <Stack alignItems="center" direction="row">
-                            <SwitchLanguageButton />
-                            <NotificationAlert />
-                        </Stack>
-                    )
-                }
-            >
-                <VStack maxWidth={ContainerWidth} paddingX={space['1']}>
-                    <Breadcrumb />
-                </VStack>
-                {(showSuccessfulChangeAlert || userSettingChanged) && <AlertMessage content={t('profile.successmessage')} />}
-                <VStack space={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
-                    {profileCompleteness !== 100 && (
-                        <VStack paddingX={space['1.5']} space={space['1']}>
-                            <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-                                <UserProgress percent={profileCompleteness} />
-                            </ProfileSettingRow>
-                        </VStack>
-                    )}
+            {(showSuccessfulChangeAlert || userSettingChanged) && <AlertMessage content={t('profile.successmessage')} />}
+            <VStack space={space['1']} width="100%" marginX="auto" maxWidth={ContainerWidth}>
+                {profileCompleteness !== 100 && (
                     <VStack paddingX={space['1.5']} space={space['1']}>
-                        <ProfileSettingRow title={t('profile.PersonalData')}>
-                            <ProfileSettingItem
-                                title={t('profile.UserName.label.title')}
-                                href={() => {
-                                    setNameModalVisible(true);
-                                }}
-                            >
-                                <Text>
-                                    {data?.me.firstname} {data?.me.lastname}
-                                </Text>
-                            </ProfileSettingItem>
-                            {data && nameModalVisible && (
-                                <PupilNameModal
-                                    firstname={data!.me.firstname}
-                                    lastname={data!.me.lastname}
-                                    onSave={onSave}
-                                    onClose={() => setNameModalVisible(false)}
-                                />
-                            )}
+                        <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
+                            <UserProgress percent={profileCompleteness} />
+                        </ProfileSettingRow>
+                    </VStack>
+                )}
+                <VStack paddingX={space['1.5']} space={space['1']}>
+                    <ProfileSettingRow title={t('profile.PersonalData')}>
+                        <ProfileSettingItem
+                            title={t('profile.UserName.label.title')}
+                            href={() => {
+                                setNameModalVisible(true);
+                            }}
+                        >
+                            <Text>
+                                {data?.me.firstname} {data?.me.lastname}
+                            </Text>
+                        </ProfileSettingItem>
+                        {data && nameModalVisible && (
+                            <PupilNameModal
+                                firstname={data!.me.firstname}
+                                lastname={data!.me.lastname}
+                                onSave={onSave}
+                                onClose={() => setNameModalVisible(false)}
+                            />
+                        )}
 
-                            <ProfileSettingItem
-                                title={t('profile.UserName.label.email')}
-                                href={() => {
-                                    navigate('/new-email');
-                                }}
-                            >
-                                <Text>{data?.me?.email}</Text>
-                            </ProfileSettingItem>
-                            <ProfileSettingItem
-                                title={t('profile.AboutMe.label')}
-                                href={() => {
-                                    setAboutMeModalVisible(true);
-                                }}
-                            >
-                                <Text>{data?.me.pupil!.aboutMe}</Text>
-                            </ProfileSettingItem>
-                            {data && aboutMeModalVisible && (
-                                <PupilAboutMeModal aboutMe={data!.me.pupil!.aboutMe} onSave={onSave} onClose={() => setAboutMeModalVisible(false)} />
-                            )}
+                        <ProfileSettingItem
+                            title={t('profile.UserName.label.email')}
+                            href={() => {
+                                navigate('/new-email');
+                            }}
+                        >
+                            <Text>{data?.me?.email}</Text>
+                        </ProfileSettingItem>
+                        <ProfileSettingItem
+                            title={t('profile.AboutMe.label')}
+                            href={() => {
+                                setAboutMeModalVisible(true);
+                            }}
+                        >
+                            <Text>{data?.me.pupil!.aboutMe}</Text>
+                        </ProfileSettingItem>
+                        {data && aboutMeModalVisible && (
+                            <PupilAboutMeModal aboutMe={data!.me.pupil!.aboutMe} onSave={onSave} onClose={() => setAboutMeModalVisible(false)} />
+                        )}
 
-                            <ProfileSettingItem title={t('profile.Languages.labelPupil')} href={() => navigate('/change-setting/language')}>
-                                {(data?.me?.pupil?.languages?.length && (
-                                    <Row flexWrap="wrap" w="100%">
-                                        {data?.me?.pupil?.languages.map((lang: string) => (
-                                            <Column marginRight={3} mb={space['0.5']} key={lang}>
-                                                <CSSWrapper className="profil-tab-link">
-                                                    <IconTagList
-                                                        isDisabled
-                                                        icon={lang.toLowerCase()}
-                                                        text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
-                                                    />
-                                                </CSSWrapper>
-                                            </Column>
-                                        ))}
-                                    </Row>
-                                )) || <Text>{t('profile.Notice.noLanguage')}</Text>}
-                            </ProfileSettingItem>
-
-                            <ProfileSettingItem title={t('profile.State.label')} href={() => navigate('/change-setting/state')}>
+                        <ProfileSettingItem title={t('profile.Languages.labelPupil')} href={() => navigate('/change-setting/language')}>
+                            {(data?.me?.pupil?.languages?.length && (
                                 <Row flexWrap="wrap" w="100%">
-                                    {(data?.me?.pupil?.state && (
-                                        <Column marginRight={3} mb={space['0.5']}>
-                                            {(data?.me?.pupil?.state && (
-                                                <CSSWrapper className="profil-tab-link">
-                                                    <IconTagList
-                                                        isDisabled
-                                                        iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
-                                                        text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
-                                                    />
-                                                </CSSWrapper>
-                                            )) || <Text>{t('profile.noInfo')}</Text>}
-                                        </Column>
-                                    )) || <Text>{t('profile.Notice.noState')}</Text>}
-                                </Row>
-                            </ProfileSettingItem>
-
-                            <ProfileSettingItem title={t('profile.SchoolType.label')} href={() => navigate('/change-setting/school-type')}>
-                                <Row flexWrap="wrap" w="100%">
-                                    {(data?.me?.pupil?.schooltype && (
-                                        <Column marginRight={3} mb={space['0.5']}>
+                                    {data?.me?.pupil?.languages.map((lang: string) => (
+                                        <Column marginRight={3} mb={space['0.5']} key={lang}>
                                             <CSSWrapper className="profil-tab-link">
                                                 <IconTagList
                                                     isDisabled
-                                                    iconPath={`schooltypes/icon_${data.me.pupil?.schooltype}.svg`}
-                                                    text={t(`lernfair.schooltypes.${data?.me?.pupil?.schooltype}`)}
+                                                    icon={lang.toLowerCase()}
+                                                    text={t(`lernfair.languages.${lang.toLowerCase()}` as unknown as TemplateStringsArray)}
                                                 />
                                             </CSSWrapper>
                                         </Column>
-                                    )) || <Text>{t('profile.Notice.noSchoolType')}</Text>}
+                                    ))}
                                 </Row>
-                            </ProfileSettingItem>
+                            )) || <Text>{t('profile.Notice.noLanguage')}</Text>}
+                        </ProfileSettingItem>
 
-                            <ProfileSettingItem title={t('profile.SchoolClass.label')} href={() => navigate('/change-setting/class')}>
-                                <Row flexWrap="wrap" w="100%">
-                                    {(data?.me?.pupil?.gradeAsInt && (
-                                        <Column marginRight={3} mb={space['0.5']}>
+                        <ProfileSettingItem title={t('profile.State.label')} href={() => navigate('/change-setting/state')}>
+                            <Row flexWrap="wrap" w="100%">
+                                {(data?.me?.pupil?.state && (
+                                    <Column marginRight={3} mb={space['0.5']}>
+                                        {(data?.me?.pupil?.state && (
                                             <CSSWrapper className="profil-tab-link">
-                                                <GradeTag grade={data?.me?.pupil?.gradeAsInt} />
+                                                <IconTagList
+                                                    isDisabled
+                                                    iconPath={`states/icon_${data?.me?.pupil?.state}.svg`}
+                                                    text={t(`lernfair.states.${data?.me?.pupil?.state}`)}
+                                                />
                                             </CSSWrapper>
-                                        </Column>
-                                    )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
-                                </Row>
-                            </ProfileSettingItem>
-                        </ProfileSettingRow>
-                    </VStack>
+                                        )) || <Text>{t('profile.noInfo')}</Text>}
+                                    </Column>
+                                )) || <Text>{t('profile.Notice.noState')}</Text>}
+                            </Row>
+                        </ProfileSettingItem>
+
+                        <ProfileSettingItem title={t('profile.SchoolType.label')} href={() => navigate('/change-setting/school-type')}>
+                            <Row flexWrap="wrap" w="100%">
+                                {(data?.me?.pupil?.schooltype && (
+                                    <Column marginRight={3} mb={space['0.5']}>
+                                        <CSSWrapper className="profil-tab-link">
+                                            <IconTagList
+                                                isDisabled
+                                                iconPath={`schooltypes/icon_${data.me.pupil?.schooltype}.svg`}
+                                                text={t(`lernfair.schooltypes.${data?.me?.pupil?.schooltype}`)}
+                                            />
+                                        </CSSWrapper>
+                                    </Column>
+                                )) || <Text>{t('profile.Notice.noSchoolType')}</Text>}
+                            </Row>
+                        </ProfileSettingItem>
+
+                        <ProfileSettingItem title={t('profile.SchoolClass.label')} href={() => navigate('/change-setting/class')}>
+                            <Row flexWrap="wrap" w="100%">
+                                {(data?.me?.pupil?.gradeAsInt && (
+                                    <Column marginRight={3} mb={space['0.5']}>
+                                        <CSSWrapper className="profil-tab-link">
+                                            <GradeTag grade={data?.me?.pupil?.gradeAsInt} />
+                                        </CSSWrapper>
+                                    </Column>
+                                )) || <Text>{t('profile.Notice.noSchoolGrade')}</Text>}
+                            </Row>
+                        </ProfileSettingItem>
+                    </ProfileSettingRow>
                 </VStack>
-            </WithNavigation>
+            </VStack>
         </>
     );
 };

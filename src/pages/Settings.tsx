@@ -83,12 +83,12 @@ const Settings: React.FC = () => {
     const profileSettings: SettingItemType[] = [
         ...(userType !== 'screener'
             ? [
-                  { title: t('settings.general.profile'), icon: IconUser, mobileFallbackLink: '/profile' },
-                  { title: t('settings.general.notifications'), icon: IconBell, mobileFallbackLink: '/notifications' },
+                  { title: t('settings.general.profile'), icon: IconUser, mobileFallbackLink: '/settings/profile' },
+                  { title: t('settings.general.notifications'), icon: IconBell, mobileFallbackLink: '/settings/notifications' },
                   {
                       title: t('settings.general.calendarPreferences'),
                       icon: IconCalendarWeek,
-                      mobileFallbackLink: '/calendar-preferences',
+                      mobileFallbackLink: '/settings/calendar-preferences',
                   },
               ]
             : []),
@@ -108,7 +108,7 @@ const Settings: React.FC = () => {
         {
             title: t('settings.general.faq'),
             icon: IconHelpCircle,
-            mobileFallbackLink: '/hilfebereich',
+            mobileFallbackLink: '/settings/hilfebereich',
         },
         {
             title: t('installation.installTitle'),
@@ -118,7 +118,7 @@ const Settings: React.FC = () => {
         {
             title: t('settings.general.manageSessions'),
             icon: IconDevices,
-            mobileFallbackLink: '/manage-sessions',
+            mobileFallbackLink: '/settings/manage-sessions',
         },
         ...(userType === 'student' && isMobile ? [{ title: t('settings.general.forStudents'), icon: IconBook2, mobileFallbackLink: '/knowledge-helper' }] : []),
         ...(userType === 'pupil' && isMobile ? [{ title: t('settings.general.forPupils'), icon: IconBook2, mobileFallbackLink: '/knowledge-pupil' }] : []),
@@ -129,8 +129,8 @@ const Settings: React.FC = () => {
     const accountSettings: SettingItemType[] = [
         ...(!roles.includes('SSO_USER')
             ? [
-                  { title: t('settings.account.changeEmail'), icon: IconMail, mobileFallbackLink: '/new-email' },
-                  { title: t('settings.account.changePassword'), icon: IconPassword, mobileFallbackLink: '/new-password' },
+                  { title: t('settings.account.changeEmail'), icon: IconMail, mobileFallbackLink: '/settings/new-email' },
+                  { title: t('settings.account.changePassword'), icon: IconPassword, mobileFallbackLink: '/settings/new-password' },
               ]
             : []),
         { title: t('settings.account.deactivateAccount'), icon: IconUserOff, mobileFallbackLink: '#', onClick: () => setShowDeactivate(true) },
@@ -180,7 +180,7 @@ const Settings: React.FC = () => {
                 </Typography>
                 <div id={'sidebar'}>
                     <div className="min-w-full md:min-w-72">
-                        <nav className="flex md:min-w-72 min-w-full pr-8 flex-col h-[calc(100vh-120px)] overflow-y-auto fixed pb-10 justify-between">
+                        <nav className="flex md:min-w-72 min-w-full  flex-col h-[calc(100vh-120px)] overflow-y-auto fixed pb-10 justify-between">
                             <div className="flex flex-col gap-y-4 ">
                                 {settings.map((group) => {
                                     return (
@@ -202,7 +202,7 @@ const Settings: React.FC = () => {
                         </nav>
                     </div>
                 </div>
-                <div className={'ml-auto w-full lg:w-[80%] pl-4'}>
+                <div className={'ml-auto w-full lg:w-[80%] pl-10 h-full'}>
                     <Outlet />
                 </div>
             </WithNavigation>

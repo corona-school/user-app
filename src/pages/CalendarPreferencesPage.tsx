@@ -59,16 +59,7 @@ const CalendarPreferencesPage = () => {
     };
 
     return (
-        <WithNavigation
-            previousFallbackRoute="/settings"
-            headerLeft={
-                <div className="flex items-center flex-row">
-                    <SwitchLanguageButton />
-                    <NotificationAlert />
-                </div>
-            }
-        >
-            <Breadcrumb />
+        <>
             <Typography variant="h4" className="mb-5">
                 {t('navigation.label.calendarPreferences')}
             </Typography>
@@ -84,7 +75,7 @@ const CalendarPreferencesPage = () => {
                     </Button>
                 </div>
             </div>
-        </WithNavigation>
+        </>
     );
 };
 
