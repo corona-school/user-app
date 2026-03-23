@@ -9,6 +9,7 @@ import { Button } from './Button';
 import { Typography } from './Typography';
 import { Badge } from './Badge';
 import { IconStarHalfFilled, IconListCheck } from '@tabler/icons-react';
+import { useCooperations } from '@/pages/screening/useCooperations';
 
 type Props = {
     navItems: NavigationItems;
@@ -21,6 +22,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
     const userType = useUserType();
     const userRoles = useRoles();
     const [isOpen, setIsOpen] = useState(false);
+    const { pendingCooperationStudentsCount } = useCooperations();
 
     const disableGroup: boolean = useMemo(() => {
         if (userType === 'screener') return !userRoles.includes('COURSE_SCREENER');
@@ -90,7 +92,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                             </NavLink>
                         );
                     })}
-                    {userType === 'screener' && (
+                    {userRoles.includes('STUDENT_SCREENER') && (
                         <NavLink
                             className={({ isActive }) =>
                                 `flex items-center px-2 py-2 rounded-md hover:outline-accent hover:outline
@@ -101,6 +103,11 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                         >
                             <IconListCheck />
                             <Typography className="pl-3 mr-auto font-medium">Kooperationen</Typography>
+                            {pendingCooperationStudentsCount > 0 && (
+                                <Badge variant="destructive" shape="rounded" className="mr-2">
+                                    {pendingCooperationStudentsCount}
+                                </Badge>
+                            )}
                         </NavLink>
                     )}
                 </div>
