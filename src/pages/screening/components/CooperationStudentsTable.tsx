@@ -6,8 +6,12 @@ import { CooperationStudentsDropdown } from './CooperationStudentsDropdown';
 import { CooperationStudentActions } from './CooperationStudentActions';
 import { Button } from '@/components/Button';
 import { IconArrowDown, IconArrowsUpDown, IconArrowUp } from '@tabler/icons-react';
+import { Badge } from '@/components/Badge';
 
-export type CooperationStudent = Pick<Student, 'id' | 'createdAt' | 'email' | 'firstname' | 'lastname' | 'cooperationID'>;
+export type CooperationStudent = Pick<Student, 'id' | 'createdAt' | 'email' | 'firstname' | 'lastname' | 'cooperationID'> & {
+    hasTutorScreening: boolean;
+    hasInstructorScreening: boolean;
+};
 
 export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
     {
@@ -41,6 +45,14 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
         header: 'Kooperation',
         cell: ({ row, table }) => {
             return <CooperationStudentsDropdown initialValue={row.original.cooperationID ?? undefined} studentId={row.original.id} />;
+        },
+    },
+    {
+        accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'Ausstehend'),
+        header: 'Status',
+        cell: ({ row, table }) => {
+            const status = row.original.hasInstructorScreening || row.original.hasTutorScreening ? 'Angenommen' : 'Ausstehend';
+            return <Badge variant={status === 'Angenommen' ? 'success' : 'unclear'}>{status}</Badge>;
         },
     },
     {

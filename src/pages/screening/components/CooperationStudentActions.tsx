@@ -12,7 +12,10 @@ import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
 
 interface CooperationStudentActionsProps {
-    student: Pick<Student, 'id' | 'createdAt' | 'email' | 'firstname' | 'lastname' | 'cooperationID'>;
+    student: Pick<Student, 'id' | 'createdAt' | 'email' | 'firstname' | 'lastname' | 'cooperationID'> & {
+        hasTutorScreening: boolean;
+        hasInstructorScreening: boolean;
+    };
 }
 
 const REMOVE_IS_FROM_COOPERATION_MUTATION = gql(`
@@ -54,6 +57,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                         onClick={() => {
                             setIsScreeningModalOpen(true);
                         }}
+                        disabled={student.hasInstructorScreening || student.hasTutorScreening}
                     >
                         Freischalten
                     </DropdownMenuItem>
@@ -61,6 +65,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     <DropdownMenuItem
                         className="text-destructive focus:bg-destructive-lighter focus:text-destructive"
                         onClick={() => setShowConfirmRemoveFromList(true)}
+                        disabled={student.hasInstructorScreening || student.hasTutorScreening}
                     >
                         Aus der Liste entfernen
                     </DropdownMenuItem>
