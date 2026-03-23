@@ -27,7 +27,6 @@ export enum RegistrationStep {
     teachingExperience = 'teachingExperience',
     hasSpecialNeedsExperience = 'hasSpecialNeedsExperience',
     registrationCompleted = 'registrationCompleted',
-    uniCooperationConfirmation = 'uniCooperationConfirmation',
 }
 
 export const STUDENT_FLOW = [
@@ -49,7 +48,6 @@ export const STUDENT_FLOW = [
     RegistrationStep.teachingExperience,
     RegistrationStep.hasSpecialNeedsExperience,
     RegistrationStep.registrationCompleted,
-    RegistrationStep.uniCooperationConfirmation,
 ];
 
 export const PUPIL_FLOW = [

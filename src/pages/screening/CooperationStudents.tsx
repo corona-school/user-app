@@ -1,67 +1,69 @@
 import WithNavigation from '@/components/WithNavigation';
-import { gql } from '@/gql';
-import { useQuery } from '@apollo/client';
 import { cooperationStudentsColumns } from './components/CooperationStudentsTable';
 import { DataTable } from '@/components/DataTable';
 import { CooperationStudentsContext } from './context/CooperationStudentsContext';
 import { Input } from '@/components/Input';
 import { useMemo, useState } from 'react';
 import { Label } from '@/components/Label';
-
-const GET_PENDING_COOPERATION_STUDENTS_QUERY = gql(`
-    query GetPendingCooperationStudents {
-        cooperationStudentsToBeConfirmed {
-            id
-            email
-            firstname
-            lastname
-            cooperationID
-            createdAt
-        }
-    }    
-`);
-
-const GET_COOPERATION_LIST = gql(`
-    query GetCooperations {
-        cooperations {
-            id
-            name
-            type
-        }
-    }    
-`);
+import { useCooperations } from './useCooperations';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/Select';
 
 const CooperationStudents = () => {
-    const { data: pendingCooperationStudentsData, refetch: refetchPending } = useQuery(GET_PENDING_COOPERATION_STUDENTS_QUERY);
-    const { data: cooperationListData } = useQuery(GET_COOPERATION_LIST);
+    const { cooperationStudents, cooperations, refetchCooperationStudents } = useCooperations();
     const [searchTerm, setSearchTerm] = useState('');
+    const [status, setStatus] = useState('all');
 
     const filteredStudents = useMemo(() => {
-        if (!pendingCooperationStudentsData?.cooperationStudentsToBeConfirmed) return [];
-        return pendingCooperationStudentsData.cooperationStudentsToBeConfirmed.filter((student) => {
+        if (!cooperationStudents) return [];
+        return cooperationStudents.filter((student) => {
             const fullName = `${student.firstname} ${student.lastname}`.toLowerCase();
-            return student.email.toLowerCase().includes(searchTerm.toLowerCase()) || fullName.includes(searchTerm.toLowerCase());
+            const matchesSearchTerm = student.email.toLowerCase().includes(searchTerm.toLowerCase()) || fullName.includes(searchTerm.toLowerCase());
+            const studentStatus = student.hasInstructorScreening || student.hasTutorScreening ? 'angenommen' : 'ausstehend';
+            const matchesStatus = status === 'all' || studentStatus === status;
+            return matchesSearchTerm && matchesStatus;
         });
-    }, [pendingCooperationStudentsData, searchTerm]);
+    }, [cooperationStudents, searchTerm, status]);
     return (
         <CooperationStudentsContext.Provider
             value={{
-                cooperations: cooperationListData?.cooperations ?? [],
-                refresh: refetchPending,
+                cooperations: cooperations ?? [],
+                refresh: refetchCooperationStudents,
             }}
         >
             <WithNavigation>
                 <div className="px-2 mx-auto w-full max-w-6xl">
-                    <div className="flex flex-col gap-y-[6px] w-full">
-                        <Label htmlFor="search">Suche</Label>
-                        <Input id="search" placeholder="E-Mail oder Name" className="mb-1 w-[400px]" value={searchTerm} onChangeText={setSearchTerm} />
+                    <div className="flex gap-x-5 items-center justify-normal mb-5">
+                        <div className="flex flex-col gap-y-[6px]">
+                            <Label htmlFor="search">Suche</Label>
+                            <Input
+                                id="search"
+                                placeholder="E-Mail oder Name"
+                                errorMessageClassName="hidden"
+                                className="mb-1 w-[400px]"
+                                value={searchTerm}
+                                onChangeText={setSearchTerm}
+                            />
+                        </div>
+                        <div className="flex flex-col gap-y-[6px]">
+                            <Label htmlFor="status">Status</Label>
+                            <Select value={status} onValueChange={setStatus} defaultValue="all">
+                                <SelectTrigger className="w-[400px]">
+                                    <SelectValue placeholder="Status" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">Alle</SelectItem>
+                                    <SelectItem value="angenommen">Angenommen</SelectItem>
+                                    <SelectItem value="ausstehend">Ausstehend</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        </div>
                     </div>
                     <DataTable
                         columns={cooperationStudentsColumns}
                         data={
                             filteredStudents.map((student) => ({
                                 ...student,
-                                cooperation: cooperationListData?.cooperations.find((c) => c.id === student.cooperationID)?.name ?? '',
+                                cooperation: cooperations.find((c) => c.id === student.cooperationID)?.name ?? '',
                             })) ?? []
                         }
                         initialSorting={[{ id: 'createdAt', desc: false }]}

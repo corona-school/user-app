@@ -276,9 +276,6 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (nextStep === RegistrationStep.formalEducation && shouldSkipFormalEducation) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
-        if (nextStep === RegistrationStep.registrationCompleted && values.isFromUniCooperation) {
-            nextStep = getNextStepFrom(nextStep); // skip;
-        }
 
         handleOnChange({ currentStep: nextStep });
     };
@@ -369,7 +366,8 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                 zipCode: registrationProfile.student?.zipCode ?? registrationProfile.pupil?.school?.zip ?? '',
                 jobStatus: registrationProfile.student?.jobStatus ?? undefined,
                 formalEducation: (registrationProfile.student?.formalEducation as FormalEducationEnum) ?? undefined,
-                hasWorkingExperienceInEducation: !!registrationProfile.student?.formalEducation,
+                hasWorkingExperienceInEducation:
+                    registrationProfile.student?.formalEducation === null ? undefined : !!registrationProfile.student?.formalEducation,
                 // Students don't have a "waiting results" (dispute) state
                 isWaitingScreeningResults: registrationProfile.pupil ? getIsPupilWaitingScreeningResults(registrationProfile.pupil.screenings ?? []) : false,
                 teachingExperience: teachingExperienceLevel,
@@ -435,7 +433,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             // If they are from a cooperation, the other steps are optional and when they come back to the registration
             // let's just show the confirmation..
             if (values.isFromUniCooperation) {
-                return handleOnChange({ currentStep: RegistrationStep.uniCooperationConfirmation });
+                return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
             }
         }
 

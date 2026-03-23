@@ -18,7 +18,7 @@ interface ScreeningAppointmentDetailProps extends RegistrationStepProps {
     variant?: 'registered' | 'completed';
 }
 
-export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: ScreeningAppointmentDetailProps) => {
+export const ScreeningAppointmentDetail = ({ onNext, onBack, variant = 'registered' }: ScreeningAppointmentDetailProps) => {
     const { form } = useRegistrationForm();
     const { t } = useTranslation();
     const pageTitles: Record<string, string> = {
@@ -59,7 +59,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
     const eventAction = `Page "${variant === 'registered' ? 'Appointment confirmed' : 'Funnel completed'}"`;
 
     return (
-        <RegistrationStep onNext={onNext}>
+        <RegistrationStep onNext={onNext} onBack={onBack}>
             {variant === 'registered' ? (
                 <>
                     <div className="bg-green-500 rounded-full w-[100px] h-[100px] flex justify-center items-center mx-auto mb-5">

@@ -7,13 +7,15 @@ import { useContext, useState } from 'react';
 import { CooperationStudentsContext } from '../context/CooperationStudentsContext';
 import { Typography } from '@/components/Typography';
 import { Student } from '@/gql/graphql';
-import { useNavigate } from 'react-router-dom';
 import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
 
 interface CooperationStudentActionsProps {
-    student: Pick<Student, 'id' | 'createdAt' | 'email' | 'firstname' | 'lastname' | 'cooperationID'>;
+    student: Pick<Student, 'id' | 'createdAt' | 'email' | 'firstname' | 'lastname' | 'cooperationID'> & {
+        hasTutorScreening: boolean;
+        hasInstructorScreening: boolean;
+    };
 }
 
 const REMOVE_IS_FROM_COOPERATION_MUTATION = gql(`
@@ -23,7 +25,6 @@ const REMOVE_IS_FROM_COOPERATION_MUTATION = gql(`
 `);
 
 export const CooperationStudentActions = ({ student }: CooperationStudentActionsProps) => {
-    const navigate = useNavigate();
     const { refresh } = useContext(CooperationStudentsContext);
     const [isScreeningModalOpen, setIsScreeningModalOpen] = useState(false);
     const [showConfirmRemoveFromList, setShowConfirmRemoveFromList] = useState(false);
@@ -32,6 +33,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
         variables: {
             studentId: student.id,
         },
+        refetchQueries: ['GetPendingCooperationStudents', 'GetPendingCooperationStudentsCount'],
     });
 
     const onRemoveFromList = async () => {
@@ -50,11 +52,12 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => navigate(`/start?${searchParams.toString()}`)}>Profil anzeigen</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => window.open(`/start?${searchParams.toString()}`, '_blank')}>Profil anzeigen</DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => {
                             setIsScreeningModalOpen(true);
                         }}
+                        disabled={student.hasInstructorScreening || student.hasTutorScreening}
                     >
                         Freischalten
                     </DropdownMenuItem>
@@ -62,6 +65,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     <DropdownMenuItem
                         className="text-destructive focus:bg-destructive-lighter focus:text-destructive"
                         onClick={() => setShowConfirmRemoveFromList(true)}
+                        disabled={student.hasInstructorScreening || student.hasTutorScreening}
                     >
                         Aus der Liste entfernen
                     </DropdownMenuItem>

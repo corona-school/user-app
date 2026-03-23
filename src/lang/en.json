@@ -649,8 +649,10 @@
                 "title": "What is the name of the university?"
             },
             "uniCooperationConfirmation": {
-                "title": "Thank you!",
-                "description": "We will review your information and contact you by email with the next steps. If you have any questions, you can contact <supportEmail>support@lern-fair.de</supportEmail> at any time."
+                "title": "Your registration via your university cooperation is almost complete!",
+                "description": "Our team will review your answers and usually get back to you within a few days via email with the next steps.",
+                "notUniCooperation": "Didn't come through a university cooperation? Then click <navigate>here</navigate> to continue your registration via the regular process.",
+                "support": "If you have any questions, you can reach us anytime at <supportEmail>support@lern-fair.de</supportEmail>."
             }
         },
         "pupil": {

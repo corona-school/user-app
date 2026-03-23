@@ -645,8 +645,10 @@
                 "title": "Wie heißt die Universität?"
             },
             "uniCooperationConfirmation": {
-                "title": "Vielen Dank!",
-                "description": "Wir prüfen deine Angaben und melden uns per E-Mail mit den nächsten Schritten. Bei Rückfragen kannst du dich jederzeit an <supportEmail>support@lern-fair.de</supportEmail> wenden."
+                "title": "Die Registrierung über deine Uni-Kooperation ist fast geschafft!",
+                "description": "Unser Team schaut sich deine Antworten an und meldet sich in der Regel innerhalb weniger Tage per E-Mail mit den nächsten Schritten.",
+                "notUniCooperation": "Nicht über eine Uni-Kooperation gekommen? Dann klicke <navigate>hier</navigate>, um deine Registrierung über den regulären Weg fortzusetzen.",
+                "support": "Bei Fragen erreichst du uns jederzeit unter <supportEmail>support@lern-fair.de</supportEmail>."
             },
             "appointmentDetails": {
                 "title": "Termin erstellt!",

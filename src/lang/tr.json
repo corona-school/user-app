@@ -649,8 +649,10 @@
                 "title": "Üniversitenin adı nedir?"
             },
             "uniCooperationConfirmation": {
-                "title": "Teşekkür ederiz!",
-                "description": "Bilgilerini kontrol edeceğiz ve sonraki adımlarla ilgili sana e-posta yoluyla geri dönüş yapacağız. Soruların olursa her zaman <supportEmail>support@lern-fair.de</supportEmail> adresine ulaşabilirsin."
+                "title": "Üniversite iş birliği üzerinden kaydınız neredeyse tamamlandı!",
+                "description": "Ekibimiz yanıtlarınızı inceleyecek ve genellikle birkaç gün içinde sonraki adımlarla ilgili olarak e-posta yoluyla size geri dönecektir.",
+                "notUniCooperation": "Bir üniversite iş birliği üzerinden mi gelmediniz? O halde kayıt işleminize normal yoldan devam etmek için <navigate>buraya</navigate> tıklayın.",
+                "support": "Herhangi bir sorunuz varsa, bize istediğiniz zaman <supportEmail>support@lern-fair.de</supportEmail> adresinden ulaşabilirsiniz."
             }
         },
         "pupil": {
