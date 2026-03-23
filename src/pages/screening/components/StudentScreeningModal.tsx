@@ -34,6 +34,7 @@ export const StudentScreeningModal = ({ onOpenChange, isOpen, student, onScreeni
                         status: StudentScreeningStatus.Success,
                     },
                 },
+                refetchQueries: ['GetPendingCooperationStudents', 'GetPendingCooperationStudentsCount'],
             })
         );
 

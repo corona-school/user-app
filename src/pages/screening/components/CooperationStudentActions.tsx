@@ -7,7 +7,6 @@ import { useContext, useState } from 'react';
 import { CooperationStudentsContext } from '../context/CooperationStudentsContext';
 import { Typography } from '@/components/Typography';
 import { Student } from '@/gql/graphql';
-import { useNavigate } from 'react-router-dom';
 import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
@@ -23,7 +22,6 @@ const REMOVE_IS_FROM_COOPERATION_MUTATION = gql(`
 `);
 
 export const CooperationStudentActions = ({ student }: CooperationStudentActionsProps) => {
-    const navigate = useNavigate();
     const { refresh } = useContext(CooperationStudentsContext);
     const [isScreeningModalOpen, setIsScreeningModalOpen] = useState(false);
     const [showConfirmRemoveFromList, setShowConfirmRemoveFromList] = useState(false);
@@ -32,6 +30,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
         variables: {
             studentId: student.id,
         },
+        refetchQueries: ['GetPendingCooperationStudents', 'GetPendingCooperationStudentsCount'],
     });
 
     const onRemoveFromList = async () => {
@@ -50,7 +49,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end">
-                    <DropdownMenuItem onClick={() => navigate(`/start?${searchParams.toString()}`)}>Profil anzeigen</DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => window.open(`/start?${searchParams.toString()}`, '_blank')}>Profil anzeigen</DropdownMenuItem>
                     <DropdownMenuItem
                         onClick={() => {
                             setIsScreeningModalOpen(true);

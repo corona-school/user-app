@@ -1,53 +1,28 @@
 import WithNavigation from '@/components/WithNavigation';
-import { gql } from '@/gql';
-import { useQuery } from '@apollo/client';
 import { cooperationStudentsColumns } from './components/CooperationStudentsTable';
 import { DataTable } from '@/components/DataTable';
 import { CooperationStudentsContext } from './context/CooperationStudentsContext';
 import { Input } from '@/components/Input';
 import { useMemo, useState } from 'react';
 import { Label } from '@/components/Label';
-
-const GET_PENDING_COOPERATION_STUDENTS_QUERY = gql(`
-    query GetPendingCooperationStudents {
-        cooperationStudentsToBeConfirmed {
-            id
-            email
-            firstname
-            lastname
-            cooperationID
-            createdAt
-        }
-    }    
-`);
-
-const GET_COOPERATION_LIST = gql(`
-    query GetCooperations {
-        cooperations {
-            id
-            name
-            type
-        }
-    }    
-`);
+import { useCooperations } from './useCooperations';
 
 const CooperationStudents = () => {
-    const { data: pendingCooperationStudentsData, refetch: refetchPending } = useQuery(GET_PENDING_COOPERATION_STUDENTS_QUERY);
-    const { data: cooperationListData } = useQuery(GET_COOPERATION_LIST);
+    const { pendingCooperationStudents, cooperations, refetchPendingCooperationStudents } = useCooperations();
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredStudents = useMemo(() => {
-        if (!pendingCooperationStudentsData?.cooperationStudentsToBeConfirmed) return [];
-        return pendingCooperationStudentsData.cooperationStudentsToBeConfirmed.filter((student) => {
+        if (!pendingCooperationStudents) return [];
+        return pendingCooperationStudents.filter((student) => {
             const fullName = `${student.firstname} ${student.lastname}`.toLowerCase();
             return student.email.toLowerCase().includes(searchTerm.toLowerCase()) || fullName.includes(searchTerm.toLowerCase());
         });
-    }, [pendingCooperationStudentsData, searchTerm]);
+    }, [pendingCooperationStudents, searchTerm]);
     return (
         <CooperationStudentsContext.Provider
             value={{
-                cooperations: cooperationListData?.cooperations ?? [],
-                refresh: refetchPending,
+                cooperations: cooperations ?? [],
+                refresh: refetchPendingCooperationStudents,
             }}
         >
             <WithNavigation>
@@ -61,7 +36,7 @@ const CooperationStudents = () => {
                         data={
                             filteredStudents.map((student) => ({
                                 ...student,
-                                cooperation: cooperationListData?.cooperations.find((c) => c.id === student.cooperationID)?.name ?? '',
+                                cooperation: cooperations.find((c) => c.id === student.cooperationID)?.name ?? '',
                             })) ?? []
                         }
                         initialSorting={[{ id: 'createdAt', desc: false }]}
