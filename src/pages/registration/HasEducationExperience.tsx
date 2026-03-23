@@ -23,7 +23,7 @@ export const HasEducationExperience = ({ onBack, onNext }: HasEducationExperienc
                     size="2xl"
                     variant="white-primary"
                     pressed={form.hasWorkingExperienceInEducation}
-                    onPressedChange={() => onFormChange({ hasWorkingExperienceInEducation: !form.hasWorkingExperienceInEducation })}
+                    onPressedChange={() => onFormChange({ hasWorkingExperienceInEducation: !form.hasWorkingExperienceInEducation, formalEducation: '' })}
                 >
                     <IconThumbUp size={32} />
                     {t('yes')}
@@ -32,7 +32,7 @@ export const HasEducationExperience = ({ onBack, onNext }: HasEducationExperienc
                     size="2xl"
                     variant="white-primary"
                     pressed={form.hasWorkingExperienceInEducation === false}
-                    onPressedChange={() => onFormChange({ hasWorkingExperienceInEducation: !form.hasWorkingExperienceInEducation })}
+                    onPressedChange={() => onFormChange({ hasWorkingExperienceInEducation: !form.hasWorkingExperienceInEducation, formalEducation: '' })}
                 >
                     <IconThumbDown size={32} />
                     {t('no')}

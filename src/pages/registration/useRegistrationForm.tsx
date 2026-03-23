@@ -369,7 +369,8 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                 zipCode: registrationProfile.student?.zipCode ?? registrationProfile.pupil?.school?.zip ?? '',
                 jobStatus: registrationProfile.student?.jobStatus ?? undefined,
                 formalEducation: (registrationProfile.student?.formalEducation as FormalEducationEnum) ?? undefined,
-                hasWorkingExperienceInEducation: !!registrationProfile.student?.formalEducation,
+                hasWorkingExperienceInEducation:
+                    registrationProfile.student?.formalEducation === null ? undefined : !!registrationProfile.student?.formalEducation,
                 // Students don't have a "waiting results" (dispute) state
                 isWaitingScreeningResults: registrationProfile.pupil ? getIsPupilWaitingScreeningResults(registrationProfile.pupil.screenings ?? []) : false,
                 teachingExperience: teachingExperienceLevel,
