@@ -41,7 +41,6 @@ const HelpCenter: React.FC = () => {
         <AsNavigationItem path="hilfebereich">
             <div className="h-full flex flex-col">
                 <div className="w-full max-w-5xl pb-3 px-1.5">
-                    <Breadcrumb />
                     <Typography variant="h4" className="mb-1.5">
                         {t('helpcenter.title')}
                     </Typography>
