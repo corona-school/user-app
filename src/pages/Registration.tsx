@@ -262,7 +262,6 @@ const Registration = () => {
                         )}
                         {form.currentStep === RegistrationStep.confirmEmail && <ConfirmEmail retainPath={retainPath} />}
                         {form.currentStep === RegistrationStep.uniCooperation && <IsFromUniCooperation onBack={goBack} onNext={goNext} />}
-                        {form.currentStep === RegistrationStep.uniCooperationConfirmation && <UniCooperationConfirmation onBack={goBack} />}
                         {form.currentStep === RegistrationStep.bookAppointment && <BookAppointment onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.screeningAppointmentDetail && <ScreeningAppointmentDetail onNext={goNext} />}
                         {/* Optional SuS steps */}
@@ -279,7 +278,12 @@ const Registration = () => {
                         {form.currentStep === RegistrationStep.teachingExperience && <TeachingExperienceLevel onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.hasSpecialNeedsExperience && <SpecialTeachingExperience onBack={goBack} onNext={goNext} />}
 
-                        {form.currentStep === RegistrationStep.registrationCompleted && <ScreeningAppointmentDetail variant="completed" />}
+                        {form.currentStep === RegistrationStep.registrationCompleted &&
+                            (form.isFromUniCooperation ? (
+                                <UniCooperationConfirmation onBack={goBack} />
+                            ) : (
+                                <ScreeningAppointmentDetail variant="completed" onBack={goBack} />
+                            ))}
                     </>
                 )}
             </div>
