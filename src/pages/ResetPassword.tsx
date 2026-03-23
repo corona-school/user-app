@@ -99,7 +99,6 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
                 <>
                     {layout === 'new-pw' ? (
                         <>
-                            <Breadcrumb />
                             <Box paddingY={space['2']} justifyContent="center" alignItems="center">
                                 <Logo />
                                 <Heading mt={space['1']}>{t('set_password.title')}</Heading>
@@ -183,21 +182,6 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
         return Content;
     }
 
-    return (
-        <WithNavigation
-            hideMenu={isMobileSM}
-            previousFallbackRoute={'/settings'}
-            headerLeft={
-                !isMobileSM && (
-                    <Stack alignItems="center" direction="row">
-                        <SwitchLanguageButton />
-                        <NotificationAlert />
-                    </Stack>
-                )
-            }
-        >
-            {Content}
-        </WithNavigation>
-    );
+    return <>{Content}</>;
 };
 export default ResetPassword;

@@ -64,51 +64,36 @@ const NotificationControlPanel = () => {
 
     return (
         <NotificationPreferencesContext.Provider value={{ userPreferences, updateUserPreferences, ...rest, channels }}>
-            <WithNavigation
-                hideMenu={isMobileSM}
-                previousFallbackRoute="/settings"
-                headerTitle={t('notification.controlPanel.title')}
-                headerLeft={
-                    !isMobileSM && (
-                        <Stack alignItems="center" direction="row">
-                            <SwitchLanguageButton />
-                            <NotificationAlert />
-                        </Stack>
-                    )
-                }
-            >
-                <View>
-                    <Breadcrumb />
-                    {!isMobile && (
-                        <Column space={space['1']} marginBottom={space['2']} ml={3}>
-                            <Heading>{t('notification.controlPanel.title')}</Heading>
-                            <Row>
-                                <Text bold>{t('notification.controlPanel.yourMail')}</Text>
-                                <Text> {data?.me?.email}</Text>
-                            </Row>
-                        </Column>
-                    )}
-                    <VStack flex={1}>
-                        <Tabs
-                            removeSpace
-                            currentTabIndex={isNewsletter ? 1 : 0}
-                            onPressTab={(tab) => navigate(`${tab.id}`)}
-                            tabs={[
-                                {
-                                    id: 'system',
-                                    title: t('notification.controlPanel.tabs.system.title'),
-                                    content: <Outlet />,
-                                },
-                                {
-                                    id: 'newsletter',
-                                    title: t('notification.controlPanel.tabs.newsletter.title'),
-                                    content: <Outlet />,
-                                },
-                            ]}
-                        />
-                    </VStack>
-                </View>
-            </WithNavigation>
+            <View>
+                {!isMobile && (
+                    <Column space={space['1']} marginBottom={space['2']} ml={3}>
+                        <Heading>{t('notification.controlPanel.title')}</Heading>
+                        <Row>
+                            <Text bold>{t('notification.controlPanel.yourMail')}</Text>
+                            <Text> {data?.me?.email}</Text>
+                        </Row>
+                    </Column>
+                )}
+                <VStack flex={1}>
+                    <Tabs
+                        removeSpace
+                        currentTabIndex={isNewsletter ? 1 : 0}
+                        onPressTab={(tab) => navigate(`${tab.id}`)}
+                        tabs={[
+                            {
+                                id: 'system',
+                                title: t('notification.controlPanel.tabs.system.title'),
+                                content: <Outlet />,
+                            },
+                            {
+                                id: 'newsletter',
+                                title: t('notification.controlPanel.tabs.newsletter.title'),
+                                content: <Outlet />,
+                            },
+                        ]}
+                    />
+                </VStack>
+            </View>
         </NotificationPreferencesContext.Provider>
     );
 };

@@ -85,59 +85,47 @@ const CertificatesPage: React.FC = () => {
 
     return (
         <>
-            <WithNavigation
-                headerTitle={t('appointment.title')}
-                previousFallbackRoute="/settings"
-                headerLeft={
-                    <div className="flex items-center">
-                        <SwitchLanguageButton />
-                        <NotificationAlert />
-                    </div>
-                }
-            >
-                <Breadcrumb />
-                <Typography variant="h2" className="mb-4">
-                    {t('certificates.title')}
-                </Typography>
-                <Typography variant="h3" className="mb-4">
-                    {t('certificates.instantCertificate.title')}
-                </Typography>
-                <div className="flex flex-col">
-                    <BulletList bulletPoints={t('certificates.instantCertificate.bullets', { returnObjects: true })} />
-                </div>
-                <Button onClick={() => setShowSelectInstantPDFLanguageModal(true)} className="my-2" isLoading={requestInstantCertificateFetching}>
-                    {t('certificates.instantCertificate.request')}
-                </Button>
+            <Typography variant="h2" className="mb-4">
+                {t('certificates.title')}
+            </Typography>
+            <Typography variant="h3" className="mb-4">
+                {t('certificates.instantCertificate.title')}
+            </Typography>
+            <div className="flex flex-col">
+                <BulletList bulletPoints={t('certificates.instantCertificate.bullets', { returnObjects: true })} />
+            </div>
+            <Button onClick={() => setShowSelectInstantPDFLanguageModal(true)} className="my-2" isLoading={requestInstantCertificateFetching}>
+                {t('certificates.instantCertificate.request')}
+            </Button>
 
-                <Modal isOpen={showSelectInstantPDFLanguageModal} onOpenChange={setShowSelectInstantPDFLanguageModal} className="w-[400px]">
-                    <ModalHeader>
-                        <ModalTitle>{t('certificate.download.download_certificate')}</ModalTitle>
-                    </ModalHeader>
-                    <div className="flex flex-col gap-2">
-                        <Button className="w-full" onClick={() => downloadInstantCertificate('de')}>
-                            {t('certificate.download.german_version')}
-                        </Button>
-                        <Button className="w-full" onClick={() => downloadInstantCertificate('en')}>
-                            {t('certificate.download.english_version')}
-                        </Button>
-                    </div>
-                </Modal>
+            <Modal isOpen={showSelectInstantPDFLanguageModal} onOpenChange={setShowSelectInstantPDFLanguageModal} className="w-[400px]">
+                <ModalHeader>
+                    <ModalTitle>{t('certificate.download.download_certificate')}</ModalTitle>
+                </ModalHeader>
+                <div className="flex flex-col gap-2">
+                    <Button className="w-full" onClick={() => downloadInstantCertificate('de')}>
+                        {t('certificate.download.german_version')}
+                    </Button>
+                    <Button className="w-full" onClick={() => downloadInstantCertificate('en')}>
+                        {t('certificate.download.english_version')}
+                    </Button>
+                </div>
+            </Modal>
 
-                <Typography variant="h3" className="mb-4 mt-4">
-                    {t('certificates.participationCertificate.title')}
-                </Typography>
-                <div className="flex flex-col">
-                    <BulletList bulletPoints={t('certificates.participationCertificate.bullets', { returnObjects: true })} />
-                </div>
-                <Button onClick={handleRequestCertificate} className="my-2">
-                    {t('profile.Helper.certificate.button')}
-                </Button>
-                <div className="flex flex-row gap-3">
-                    {data?.me.student?.participationCertificates.map((certificate, i) => (
-                        <MatchCertificateCard certificate={certificate} key={i} />
-                    ))}
-                </div>
-            </WithNavigation>
+            <Typography variant="h3" className="mb-4 mt-4">
+                {t('certificates.participationCertificate.title')}
+            </Typography>
+            <div className="flex flex-col">
+                <BulletList bulletPoints={t('certificates.participationCertificate.bullets', { returnObjects: true })} />
+            </div>
+            <Button onClick={handleRequestCertificate} className="my-2">
+                {t('profile.Helper.certificate.button')}
+            </Button>
+            <div className="flex flex-row gap-3">
+                {data?.me.student?.participationCertificates.map((certificate, i) => (
+                    <MatchCertificateCard certificate={certificate} key={i} />
+                ))}
+            </div>
         </>
     );
 };
