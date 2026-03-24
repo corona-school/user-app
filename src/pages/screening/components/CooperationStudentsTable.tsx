@@ -26,7 +26,7 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
         accessorKey: 'createdAt',
         cell: ({ row }) => {
             const createdAt = row.original.createdAt;
-            return <span>{createdAt ? formatDate(createdAt, DateTime.DATE_MED) : 'Ausstehend'}</span>;
+            return <span>{createdAt ? formatDate(createdAt, DateTime.DATE_MED) : 'offen'}</span>;
         },
         header: ({ column }) => {
             return (
@@ -48,10 +48,10 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
         },
     },
     {
-        accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'Ausstehend'),
+        accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
         header: 'Status',
         cell: ({ row, table }) => {
-            const status = row.original.hasInstructorScreening || row.original.hasTutorScreening ? 'Angenommen' : 'Ausstehend';
+            const status = row.original.hasInstructorScreening || row.original.hasTutorScreening ? 'Angenommen' : 'offen';
             return <Badge variant={status === 'Angenommen' ? 'success' : 'unclear'}>{status}</Badge>;
         },
     },

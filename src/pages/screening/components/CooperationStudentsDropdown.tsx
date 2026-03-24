@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button';
 import { IconCheck } from '@tabler/icons-react';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { SelectInput } from '@/components/Select';
 import { CooperationStudentsContext } from '../context/CooperationStudentsContext';
 import { useMutation } from '@apollo/client';
@@ -33,6 +33,11 @@ export const CooperationStudentsDropdown = ({ initialValue, studentId }: Coopera
         toast.success('Kooperation aktualisiert');
         if (refresh) refresh();
     };
+
+    useEffect(() => {
+        setValue(initialValue?.toString() ?? '');
+    }, [initialValue]);
+
     return (
         <div className="flex gap-x-1">
             <SelectInput
