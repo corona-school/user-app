@@ -21,24 +21,31 @@ export const StudentScreeningModal = ({ onOpenChange, isOpen, student, onScreeni
 
     const handleOnCreateScreenings = async () => {
         if (!student) return;
-        const screeningsToCreate = [];
-        if (approvedForOneToOne) screeningsToCreate.push(StudentScreeningType.Tutor);
-        if (approvedForGroups) screeningsToCreate.push(StudentScreeningType.Instructor);
-
-        const promises = screeningsToCreate.map((type) =>
-            mutationCreateStudentScreening({
+        if (approvedForOneToOne) {
+            await mutationCreateStudentScreening({
                 variables: {
                     studentId: student.id,
-                    type,
+                    type: StudentScreeningType.Tutor,
+                    screening: {
+                        status: StudentScreeningStatus.Success,
+                    },
+                },
+                refetchQueries: approvedForGroups ? [] : ['GetPendingCooperationStudents', 'GetPendingCooperationStudentsCount'],
+            });
+        }
+        if (approvedForGroups) {
+            await mutationCreateStudentScreening({
+                variables: {
+                    studentId: student.id,
+                    type: StudentScreeningType.Instructor,
                     screening: {
                         status: StudentScreeningStatus.Success,
                     },
                 },
                 refetchQueries: ['GetPendingCooperationStudents', 'GetPendingCooperationStudentsCount'],
-            })
-        );
+            });
+        }
 
-        await Promise.all(promises);
         toast.success('Screening(s) erfolgreich erstellt');
         onOpenChange(false);
         if (onScreeningCreated) onScreeningCreated();
