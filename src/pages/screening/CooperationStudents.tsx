@@ -11,14 +11,14 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 const CooperationStudents = () => {
     const { cooperationStudents, cooperations, refetchCooperationStudents } = useCooperations();
     const [searchTerm, setSearchTerm] = useState('');
-    const [status, setStatus] = useState('all');
+    const [status, setStatus] = useState('offen');
 
     const filteredStudents = useMemo(() => {
         if (!cooperationStudents) return [];
         return cooperationStudents.filter((student) => {
             const fullName = `${student.firstname} ${student.lastname}`.toLowerCase();
             const matchesSearchTerm = student.email.toLowerCase().includes(searchTerm.toLowerCase()) || fullName.includes(searchTerm.toLowerCase());
-            const studentStatus = student.hasInstructorScreening || student.hasTutorScreening ? 'angenommen' : 'ausstehend';
+            const studentStatus = student.hasInstructorScreening || student.hasTutorScreening ? 'angenommen' : 'offen';
             const matchesStatus = status === 'all' || studentStatus === status;
             return matchesSearchTerm && matchesStatus;
         });
@@ -46,14 +46,14 @@ const CooperationStudents = () => {
                         </div>
                         <div className="flex flex-col gap-y-[6px]">
                             <Label htmlFor="status">Status</Label>
-                            <Select value={status} onValueChange={setStatus} defaultValue="all">
+                            <Select value={status} onValueChange={setStatus} defaultValue="offen">
                                 <SelectTrigger className="w-[400px]">
                                     <SelectValue placeholder="Status" />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="all">Alle</SelectItem>
                                     <SelectItem value="angenommen">Angenommen</SelectItem>
-                                    <SelectItem value="ausstehend">Ausstehend</SelectItem>
+                                    <SelectItem value="offen">Offen</SelectItem>
                                 </SelectContent>
                             </Select>
                         </div>
