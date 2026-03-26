@@ -56,7 +56,7 @@ export const UserLanguages = ({ onBack, onNext }: UserLanguagesProps) => {
             <Typography
                 variant="sm"
                 className={cn('text-destructive px-1 min-h-5 leading-1 mt-4 text-center', {
-                    invisible: !form.languages.length || form.languages.includes(Language.Deutsch),
+                    invisible: form.userType === 'pupil' || !form.languages.length || form.languages.includes(Language.Deutsch),
                 })}
             >
                 {t('registration.steps.languages.germanRequiredError')}
