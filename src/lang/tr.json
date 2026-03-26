@@ -418,7 +418,7 @@
                 "title": "Doğru yerde misin?",
                 "description": "Tekliflerimiz eğitimde dezavantajlı öğrenciler ve çıraklar içindir.\nSana hangi ifadeler uyuyor?",
                 "needHelpInSchool": "Almanya'da bir okula gidiyorum",
-                "familyCannotHelp": "Ailem bana ödevlerde yardımcı olamıyor",
+                "familyCannotHelp": "Ailem ders çalışmamda bana çok az yardımcı olabilir ya da hiç yardımcı olamaz.",
                 "familyCannotAffordTutoring": "Ailem benim için özel ders karşılayamıyor",
                 "doNotApplyToMe": "Üç maddeden hepsi bana uymuyor."
             },

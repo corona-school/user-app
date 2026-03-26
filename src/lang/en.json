@@ -418,7 +418,7 @@
                 "title": "Are you in the right place?",
                 "description": "Our offers are aimed at educationally disadvantaged pupils and apprentices in Germany.\nWhich statements apply to you?",
                 "needHelpInSchool": "I attend a school in Germany",
-                "familyCannotHelp": "My family cannot help me with schoolwork",
+                "familyCannotHelp": "My family can help me little or not at all with studying.",
                 "familyCannotAffordTutoring": "My family cannot afford tutoring for me",
                 "doNotApplyToMe": "Not all 3 points apply to me."
             },
