@@ -11,7 +11,7 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
-import { Gender, Gender_Enum, Language, StudentLanguage, Student_State_Enum } from '@/gql/graphql';
+import { Gender, Gender_Enum, Language, StudentLanguage, Student_Jobstatus_Enum, Student_State_Enum } from '@/gql/graphql';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { Label } from '@/components/Label';
 import { TextArea } from '@/components/TextArea';
@@ -20,6 +20,16 @@ import { IconEdit, IconInfoCircleFilled } from '@tabler/icons-react';
 import { toast } from 'sonner';
 import { GenderSelector } from '@/components/GenderSelector';
 import { TooltipButton } from '@/components/Tooltip';
+import { JobStatusSelector } from '@/widgets/screening/JobStatusSelector';
+import { FormalEducationEnum, FormalEducationSelector } from '@/components/FormalEducationSelector';
+import { Typography } from '@/components/Typography';
+import { TeachingExperienceLevelEnum, TeachingExperienceLevelSelector } from '@/components/TeachingExperienceLevelSelector';
+import {
+    combineSpecialExperience,
+    SpecialTeachingExperienceEnum,
+    SpecialTeachingExperienceSelector,
+    splitSpecialExperience,
+} from '@/components/SpecialTeachingExperienceSelector';
 
 type Props = {};
 
@@ -51,8 +61,17 @@ const query = gql(`
                     ongoingLessons
                     pupil { firstname lastname }
                 }
+                jobStatus
+                specialTeachingExperience
+                formalEducation
             }
         }
+    }
+`);
+
+const UPDATE_PROFILE_MUTATION = gql(`
+    mutation meUpdateStudentProfile($aboutMe: String!, $languages: [StudentLanguage!], $gender: Gender!, $zipCode: String, $jobStatus: student_jobstatus_enum, $formalEducation: String, $specialTeachingExperience: [String!]) {
+        meUpdate(update: { student: { aboutMe: $aboutMe, languages: $languages, gender: $gender, zipCode: $zipCode, jobStatus: $jobStatus, formalEducation: $formalEducation, specialTeachingExperience: $specialTeachingExperience } })
     }
 `);
 
@@ -66,18 +85,21 @@ const ProfileStudent: React.FC<Props> = () => {
         zipCode: '',
         languages: [] as Language[],
         gender: Gender_Enum.Other,
+        jobStatus: undefined as Student_Jobstatus_Enum | undefined,
+        formalEducation: undefined as string | undefined,
+        teachingExperience: {
+            '1:1': undefined as TeachingExperienceLevelEnum | undefined,
+            group: undefined as TeachingExperienceLevelEnum | undefined,
+        },
+        specialTeachingExperience: {
+            selectValues: [] as SpecialTeachingExperienceEnum[],
+            freeTextValue: '' as string | undefined,
+        },
     });
     const { data, loading } = useQuery(query, {
         fetchPolicy: 'no-cache',
     });
-    const [updateProfile, { loading: isUpdating }] = useMutation(
-        gql(`
-        mutation meUpdateStudentProfile($aboutMe: String!, $languages: [StudentLanguage!], $gender: Gender!, $zipCode: String) {
-            meUpdate(update: { student: { aboutMe: $aboutMe, languages: $languages, gender: $gender, zipCode: $zipCode } })
-        }
-    `),
-        { refetchQueries: [query] }
-    );
+    const [updateProfile, { loading: isUpdating }] = useMutation(UPDATE_PROFILE_MUTATION, { refetchQueries: [query] });
 
     useEffect(() => {
         trackPageView({
@@ -88,11 +110,22 @@ const ProfileStudent: React.FC<Props> = () => {
 
     useEffect(() => {
         if (data) {
+            const { specialTeachingExperience, teachingExperienceLevel, freeText } = splitSpecialExperience(data.me.student?.specialTeachingExperience ?? []);
             setProfile({
                 aboutMe: data.me.student?.aboutMe ?? '',
                 zipCode: data.me.student?.zipCode ?? '',
                 languages: (data.me.student?.languages as unknown as Language[]) ?? [],
                 gender: data.me.student?.gender ?? Gender_Enum.Other,
+                jobStatus: data.me.student?.jobStatus ?? undefined,
+                formalEducation: data.me.student?.formalEducation ?? undefined,
+                teachingExperience: {
+                    '1:1': teachingExperienceLevel?.['1:1'],
+                    group: teachingExperienceLevel?.group,
+                },
+                specialTeachingExperience: {
+                    selectValues: specialTeachingExperience,
+                    freeTextValue: freeText,
+                },
             });
         }
     }, [data]);
@@ -132,6 +165,13 @@ const ProfileStudent: React.FC<Props> = () => {
                 languages: profile.languages as unknown as StudentLanguage[],
                 gender: profile.gender as unknown as Gender,
                 zipCode: profile.zipCode || null,
+                jobStatus: profile.jobStatus || null,
+                formalEducation: profile.formalEducation || null,
+                specialTeachingExperience: combineSpecialExperience(
+                    profile.specialTeachingExperience.selectValues,
+                    profile.specialTeachingExperience.freeTextValue,
+                    profile.teachingExperience
+                ),
             },
         });
         toast.success(t('profile.successmessage'));
@@ -217,7 +257,7 @@ const ProfileStudent: React.FC<Props> = () => {
                             />
                         </div>
                         {/* GENDER */}
-                        <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full mb-3">
+                        <div className="flex flex-col gap-y-1 max-w-[550px] overflow-hidden w-full mb-3">
                             <div className="flex flex-col gap-y-2">
                                 <Label>
                                     {t('registration.steps.userGender.title')}{' '}
@@ -238,7 +278,7 @@ const ProfileStudent: React.FC<Props> = () => {
                             </div>
                         </div>
                         {/* LANGUAGES */}
-                        <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full">
+                        <div className="flex flex-col gap-y-1 max-w-[550px] overflow-hidden w-full">
                             <div className="flex flex-col gap-y-2">
                                 <Label>
                                     {t('profile.Languages.labelStudent')}{' '}
@@ -262,6 +302,127 @@ const ProfileStudent: React.FC<Props> = () => {
                                     multiple
                                     value={profile.languages as unknown as Language[]}
                                     setValue={(languages) => setProfile({ ...profile, languages })}
+                                />
+                            </div>
+                        </div>
+                        {/* JOB STATUS */}
+                        <div className="flex flex-col gap-y-1 max-w-[550px] overflow-hidden w-full my-4">
+                            <div className="flex flex-col gap-y-2">
+                                <Label>
+                                    {t('registration.steps.jobStatus.title')}{' '}
+                                    <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.jobStatus.description')}>
+                                        <IconInfoCircleFilled size="16px" />
+                                    </TooltipButton>
+                                </Label>
+                                <JobStatusSelector
+                                    className="grid grid-cols-2"
+                                    value={profile.jobStatus}
+                                    setValue={(jobStatus) => setProfile({ ...profile, jobStatus })}
+                                    toggleConfig={{
+                                        variant: 'outline',
+                                        size: 'lg',
+                                        className: 'justify-start font-semibold h-[48px]',
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        {/* FORMAL EDUCATION */}
+                        <div className="flex flex-col gap-y-1 max-w-[550px] overflow-hidden w-full my-4">
+                            <div className="flex flex-col gap-y-2">
+                                <Label>
+                                    {t('registration.steps.hasEducationExperience.title')}{' '}
+                                    <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.hasEducationExperience.description')}>
+                                        <IconInfoCircleFilled size="16px" />
+                                    </TooltipButton>
+                                </Label>
+                                <FormalEducationSelector
+                                    value={
+                                        profile.formalEducation?.startsWith(FormalEducationEnum.other)
+                                            ? FormalEducationEnum.other
+                                            : (profile.formalEducation as FormalEducationEnum)
+                                    }
+                                    setValue={(value) => setProfile({ ...profile, formalEducation: value })}
+                                    className="grid grid-cols-2"
+                                    toggleConfig={{
+                                        variant: 'outline',
+                                        size: 'lg',
+                                        className: 'justify-start font-semibold h-[48px]',
+                                    }}
+                                    freeTextConfig={{
+                                        placeholder: t('formalEducation.other'),
+                                        freeTextOption: FormalEducationEnum.other,
+                                        value: profile.formalEducation?.startsWith(`${FormalEducationEnum.other}:`) ? profile.formalEducation : '',
+                                        onChange: (value) => setProfile({ ...profile, formalEducation: value }),
+                                        className: 'border border-gray-300 focus:border-primary-light bg-transparent w-full',
+                                        containerClassName: 'col-span-2',
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        {/* TEACHING EXPERIENCE LEVEL */}
+                        <div className="flex flex-col gap-y-1 max-w-[550px] overflow-hidden w-full my-4">
+                            <div className="flex flex-col gap-y-2">
+                                <Label>{t('registration.steps.teachingExperience.title')} </Label>
+                                <div>
+                                    <div className="mb-4">
+                                        <Typography variant="subtle" className="font-medium mb-2">
+                                            {t('registration.steps.teachingExperience.individual')}
+                                        </Typography>
+                                        <div className="flex gap-x-2">
+                                            <TeachingExperienceLevelSelector
+                                                toggleConfig={{ variant: 'outline', className: 'justify-start font-semibold h-[48px]' }}
+                                                value={profile.teachingExperience['1:1']}
+                                                setValue={(value) =>
+                                                    setProfile({ ...profile, teachingExperience: { ...profile.teachingExperience, '1:1': value } })
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <Typography variant="subtle" className="font-medium mb-2">
+                                            {t('registration.steps.teachingExperience.group')}
+                                        </Typography>
+                                        <div className="flex gap-x-2">
+                                            <TeachingExperienceLevelSelector
+                                                toggleConfig={{ variant: 'outline', className: 'justify-start font-semibold h-[48px]' }}
+                                                value={profile.teachingExperience.group}
+                                                setValue={(value) =>
+                                                    setProfile({ ...profile, teachingExperience: { ...profile.teachingExperience, group: value } })
+                                                }
+                                            />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {/* SPECIAL TEACHING EXPERIENCE */}
+                        <div className="flex flex-col gap-y-1 max-w-[550px] overflow-hidden w-full my-4">
+                            <div className="flex flex-col gap-y-2">
+                                <Label>{t('registration.steps.specialTeachingExperience.title')} </Label>
+                                <SpecialTeachingExperienceSelector
+                                    multiple
+                                    value={profile.specialTeachingExperience.selectValues}
+                                    setValue={(value) =>
+                                        setProfile({ ...profile, specialTeachingExperience: { ...profile.specialTeachingExperience, selectValues: value } })
+                                    }
+                                    className="grid grid-cols-2"
+                                    toggleConfig={{
+                                        variant: 'outline',
+                                        size: 'lg',
+                                        className: 'justify-start font-semibold h-[48px]',
+                                    }}
+                                    freeTextConfig={{
+                                        placeholder: t('specialTeachingExperience.other'),
+                                        freeTextOption: SpecialTeachingExperienceEnum.other,
+                                        value: profile.specialTeachingExperience.freeTextValue,
+                                        onChange: (value) =>
+                                            setProfile({
+                                                ...profile,
+                                                specialTeachingExperience: { ...profile.specialTeachingExperience, freeTextValue: value },
+                                            }),
+                                        className: 'border border-gray-300 focus:border-primary-light bg-transparent w-full',
+                                        containerClassName: 'col-span-2',
+                                    }}
                                 />
                             </div>
                         </div>

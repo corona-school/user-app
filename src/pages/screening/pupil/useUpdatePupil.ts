@@ -31,6 +31,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [weeklyAvailability, setWeeklyAvailability] = useState(pupil.calendarPreferences?.weeklyAvailability);
     const [canHaveMatches, setCanHaveMatches] = useState(pupil.isPupil);
     const [canParticipateInCourses, setCanParticipateInCourses] = useState(pupil.isParticipant);
+    const [age, setAge] = useState(pupil.age);
 
     const updatePupil = async () => {
         try {
@@ -53,6 +54,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         descriptionForMatch,
                         descriptionForScreening,
                         isPupil: canHaveMatches,
+                        age,
                         isParticipant: canParticipateInCourses,
                         calendarPreferences: weeklyAvailability
                             ? {
@@ -99,6 +101,8 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             setCanHaveMatches,
             canParticipateInCourses,
             setCanParticipateInCourses,
+            setAge,
+            age,
         },
     };
 };

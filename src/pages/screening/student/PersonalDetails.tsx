@@ -24,15 +24,15 @@ import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityMod
 import { EditLocationModal } from '../components/EditLocationModal';
 import zipStateMapping from '../../../assets/data/plz_to_state.json';
 import { EditJobStatusModal } from '@/widgets/screening/EditJobStatusModal';
+import { EditFormalEducationModal } from '@/widgets/screening/EditFormalEducationModal';
+import { FormalEducationEnum } from '@/components/FormalEducationSelector';
+import { combineSpecialExperience, SpecialTeachingExperienceEnum, splitSpecialExperience } from '@/components/SpecialTeachingExperienceSelector';
+import { EditSpecialTeachingExperience } from '@/widgets/screening/EdiSpecialTeachingExperienceModal';
+import { EditTeachingExperienceLevelModal } from '@/widgets/screening/EditTeachingExperienceLevel';
 
 interface PersonalDetailsProps {
     student: StudentForScreening;
     refresh: () => Promise<void>;
-}
-
-interface FormErrors {
-    languages?: string;
-    subjects?: string;
 }
 
 const CREATE_LOGIN_TOKEN_MUTATION = gql(`
@@ -46,6 +46,7 @@ const UPDATE_STUDENT_MUTATION = gql(`
 `);
 
 const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
+    const combinedSpecialExperience = splitSpecialExperience(student?.specialTeachingExperience ?? []);
     const myRoles = useRoles();
     const { t } = useTranslation();
     const [showEditSubjects, setShowEditSubjects] = useState(false);
@@ -64,9 +65,16 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [zipCode, setZipCode] = useState(student.zipCode ?? '');
     const [zipCodeError, setZipCodeError] = useState('');
     const [jobStatus, setJobStatus] = useState(student.jobStatus ?? undefined);
+    const [formalEducation, setFormalEducation] = useState(student.formalEducation ?? undefined);
+    const [specialTeachingExperience, setSpecialTeachingExperience] = useState({
+        selectValues: combinedSpecialExperience.specialTeachingExperience,
+        freeTextValue: combinedSpecialExperience.freeText,
+    });
+    const [teachingExperienceLevel, setTeachingExperienceLevel] = useState(combinedSpecialExperience.teachingExperienceLevel);
     const [showJobStatusModal, setShowJobStatusModal] = useState(false);
-
-    const [errors, setErrors] = useState<FormErrors>({});
+    const [showFormalEducationModal, setShowFormalEducationModal] = useState(false);
+    const [showSpecialTeachingExperienceModal, setShowSpecialTeachingExperienceModal] = useState(false);
+    const [showTeachingExperienceLevelModal, setShowTeachingExperienceLevelModal] = useState(false);
 
     const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
@@ -133,6 +141,12 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                                   weeklyAvailability: weeklyAvailability!,
                               }
                             : undefined,
+                        formalEducation: formalEducation,
+                        specialTeachingExperience: combineSpecialExperience(
+                            specialTeachingExperience.selectValues,
+                            specialTeachingExperience.freeTextValue,
+                            teachingExperienceLevel
+                        ),
                     },
                 },
             });
@@ -154,6 +168,12 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
             w.location.href = `${window.location.origin}/login-token?secret_token=${token}&temporary`;
             w.focus();
         }
+    };
+
+    const getFormalEducationLabel = () => {
+        if (!formalEducation) return '';
+        if (formalEducation.startsWith('other:')) return formalEducation.replace('other:', '');
+        return t(asTranslationKey(`formalEducation.${formalEducation as FormalEducationEnum}`));
     };
 
     return (
@@ -221,17 +241,11 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         <ButtonField className="min-w-full" label="Fächer" onClick={() => setShowEditSubjects(true)}>
                             {subjects.map((e) => t(asTranslationKey(`lernfair.subjects.${e.name}`))).join(', ') ?? 'Fächer bearbeiten'}
                         </ButtonField>
-                        <Typography variant="sm" className="text-destructive">
-                            {errors.subjects}
-                        </Typography>
                     </div>
                     <div className="flex flex-col gap-y-2 flex-1">
                         <ButtonField className="min-w-full" label="Gesprochene Sprachen" onClick={() => setShowEditLanguages(true)}>
                             {languages.map((e) => t(asTranslationKey(`lernfair.languages.${e.toLowerCase()}`))).join(', ') ?? 'Sprachen bearbeiten'}
                         </ButtonField>
-                        <Typography variant="sm" className="text-destructive">
-                            {errors.languages}
-                        </Typography>
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-6 mt-6">
@@ -256,6 +270,32 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             <Checkbox id="hasSpecialExperience" checked={hasSpecialExperience} onCheckedChange={setHasSpecialExperience} />{' '}
                             <Label htmlFor="hasSpecialExperience">Besondere Erfahrung</Label>
                         </div>
+                    </div>
+                </div>
+                <div className="flex flex-wrap gap-6 mt-6">
+                    <div className="flex flex-col gap-y-2">
+                        <ButtonField className="min-w-full" label="Arbeit mit Kindern/Jugendlichen" onClick={() => setShowFormalEducationModal(true)}>
+                            {formalEducation ? getFormalEducationLabel() : ''}
+                        </ButtonField>
+                    </div>
+                    <div className="flex flex-col gap-y-2">
+                        <ButtonField className="w-[350px]" label="Besondere Kenntnisse" onClick={() => setShowSpecialTeachingExperienceModal(true)}>
+                            <p className="text-ellipsis overflow-hidden max-w-[300px]">
+                                {specialTeachingExperience.freeTextValue ? specialTeachingExperience.freeTextValue.replace('other:', '').concat(', ') : ''}
+                                {specialTeachingExperience.selectValues
+                                    .filter((e) => e !== SpecialTeachingExperienceEnum.other)
+                                    .map((e) => t(`specialTeachingExperience.${e}`))
+                                    .join(', ')}
+                            </p>
+                        </ButtonField>
+                    </div>
+                    <div className="flex flex-col gap-y-2">
+                        <ButtonField className="w-[350px]" label="Unterrichtserfahrungen" onClick={() => setShowTeachingExperienceLevelModal(true)}>
+                            <p className="text-ellipsis overflow-hidden max-w-[300px]">
+                                {teachingExperienceLevel?.['1:1'] ? `1:1: ${t(`teachingExperienceLevel.${teachingExperienceLevel['1:1']}`)}, ` : ''}
+                                {teachingExperienceLevel?.group ? `Gruppen: ${t(`teachingExperienceLevel.${teachingExperienceLevel.group}`)}` : ''}
+                            </p>
+                        </ButtonField>
                     </div>
                 </div>
                 <div className="flex flex-col gap-6 w-full">
@@ -310,6 +350,27 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                 />
                 <EditLocationModal isOpen={showEditLocation} onOpenChange={setShowEditLocation} state={location as Student_State_Enum} onSave={setLocation} />
                 <EditJobStatusModal jobStatus={jobStatus} onSave={setJobStatus} isOpen={showJobStatusModal} onOpenChange={setShowJobStatusModal} />
+                <EditFormalEducationModal
+                    formalEducation={formalEducation}
+                    onSave={setFormalEducation}
+                    isOpen={showFormalEducationModal}
+                    onOpenChange={setShowFormalEducationModal}
+                />
+                <EditSpecialTeachingExperience
+                    specialTeachingExperience={{
+                        selectValues: specialTeachingExperience.selectValues,
+                        freeTextValue: specialTeachingExperience.freeTextValue,
+                    }}
+                    onSave={(set) => setSpecialTeachingExperience({ selectValues: set?.selectValues ?? [], freeTextValue: set?.freeTextValue ?? '' })}
+                    isOpen={showSpecialTeachingExperienceModal}
+                    onOpenChange={setShowSpecialTeachingExperienceModal}
+                />
+                <EditTeachingExperienceLevelModal
+                    teachingExperienceLevel={teachingExperienceLevel ?? {}}
+                    onSave={(set) => setTeachingExperienceLevel({ '1:1': set?.['1:1'] ?? undefined, group: set?.group ?? undefined })}
+                    isOpen={showTeachingExperienceLevelModal}
+                    onOpenChange={setShowTeachingExperienceLevelModal}
+                />
             </div>
         </>
     );
