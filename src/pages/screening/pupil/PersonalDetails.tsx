@@ -1,5 +1,6 @@
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
+import { Input } from '@/components/Input';
 import { Label } from '@/components/Label';
 import { TextArea } from '@/components/TextArea';
 import { Toggle } from '@/components/Toggle';
@@ -9,7 +10,7 @@ import { ExternalSchoolSearch } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { useRoles } from '@/hooks/useApollo';
 import { PupilForScreening } from '@/types';
-import { getGradeLabel } from '@/Utility';
+import { getGradeLabel, MIN_AGE_PUPIL } from '@/Utility';
 import { EditGradeModal } from '@/widgets/screening/EditGradeModal';
 import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
@@ -32,6 +33,7 @@ interface FormErrors {
     languages?: string;
     grade?: string;
     subjects?: string;
+    age?: string;
 }
 
 interface PersonalDetailsProps {
@@ -74,24 +76,21 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
         setDescriptionForMatch,
         weeklyAvailability,
         setWeeklyAvailability,
+        age,
+        setAge,
     } = form;
 
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
     const [errors, setErrors] = useState<FormErrors>({});
 
     useEffect(() => {
-        const updatedErrors = {};
-        if (!languages || languages.length === 0) {
-            setErrors({ ...updatedErrors, languages: t('screening.errors.language_missing') });
+        let updatedErrors = {};
+        if (!!age && age < MIN_AGE_PUPIL) {
+            updatedErrors = { ...updatedErrors, age: t('registration.steps.userAge.tooYoungError', { minAge: MIN_AGE_PUPIL }) };
         }
-        if (grade === null || grade === undefined) {
-            setErrors({ ...updatedErrors, grade: t('screening.errors.grade_missing') });
-        }
-        if (!subjects || subjects.length === 0) {
-            setErrors({ ...updatedErrors, subjects: t('screening.errors.subjects_missing') });
-        }
+
         setErrors(updatedErrors);
-    }, [languages, grade, subjects, t]);
+    }, [languages, grade, subjects, age, t]);
 
     const impersonate = async () => {
         // We need to work around the popup blocker of modern browsers, as you can only
@@ -109,7 +108,6 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
             w.focus();
         }
     };
-
     const handleOnSelectSchool = (school: Partial<ExternalSchoolSearch>) => {
         setSchool(school);
         if (school.schooltype) {
@@ -119,6 +117,8 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
             setPupilLocation(school.state as any);
         }
     };
+
+    console.log(errors);
     return (
         <>
             <div className="flex w-full justify-between mb-10">
@@ -166,6 +166,19 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     </Typography>
                 </div>
                 <div className="flex flex-col gap-y-2">
+                    <Label>Alter</Label>
+                    <Input
+                        className="w-full max-w-40"
+                        value={age || ''}
+                        onChangeText={(e) => setAge(Number(e.replace(/\D/g, '').substring(0, 2)))}
+                        errorMessage={errors.age}
+                        errorMessageClassName="hidden"
+                        min={MIN_AGE_PUPIL}
+                        type="number"
+                        onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
+                    />
+                </div>
+                <div className="flex flex-col gap-y-2">
                     <ButtonField className="min-w-[350px]" label="Zeitliche Verfügbarkeit" onClick={() => setShowEditAvailability(true)}>
                         {weeklyAvailability ? (
                             <span className="flex items-center justify-center gap-x-1">
@@ -175,11 +188,8 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                             <span>Muss eingerichtet werden</span>
                         )}
                     </ButtonField>
-                    <Typography variant="sm" className="text-destructive">
-                        {errors.languages}
-                    </Typography>
                 </div>
-                <div className="flex gap-x-7 mt-2">
+                <div className="flex gap-x-7 items-center mt-6">
                     <div className="flex gap-x-2 items-center">
                         <Checkbox id="onlyMatchWith" checked={onlyMatchWithWomen} onCheckedChange={setOnlyMatchWithWomen} />{' '}
                         <Label htmlFor="onlyMatchWith">Nur mit Frauen matchen</Label>

@@ -10,6 +10,7 @@ export const TOKEN_LENGTH = 32;
 export const REDIRECT_PASSWORD = `/login`;
 export const MIN_MAX_GRADE_RANGE = { min: 1, max: 14 };
 export const TRAINEE_GRADE = 14;
+export const MIN_AGE_PUPIL = 7;
 
 export const toTimerString = (referenceDate: DateTime, theDate: DateTime) => {
     const inPast = theDate < referenceDate;
