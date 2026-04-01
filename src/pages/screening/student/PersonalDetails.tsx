@@ -170,6 +170,12 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
         }
     };
 
+    const getFormalEducationLabel = () => {
+        if (!formalEducation) return '';
+        if (formalEducation.startsWith('other:')) return formalEducation.replace('other:', '');
+        return t(asTranslationKey(`formalEducation.${formalEducation as FormalEducationEnum}`));
+    };
+
     return (
         <>
             <div className="flex w-full justify-between mb-10">
@@ -269,9 +275,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                 <div className="flex flex-wrap gap-6 mt-6">
                     <div className="flex flex-col gap-y-2">
                         <ButtonField className="min-w-full" label="Arbeit mit Kindern/Jugendlichen" onClick={() => setShowFormalEducationModal(true)}>
-                            {formalEducation && formalEducation.startsWith('other:')
-                                ? formalEducation.replace('other:', '')
-                                : t(`formalEducation.${formalEducation as FormalEducationEnum}`) || ''}
+                            {formalEducation ? getFormalEducationLabel() : ''}
                         </ButtonField>
                     </div>
                     <div className="flex flex-col gap-y-2">
