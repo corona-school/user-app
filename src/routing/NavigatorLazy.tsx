@@ -166,7 +166,9 @@ export default function NavigatorLazy() {
                         <Settings />
                     </RequireAuth>
                 }
-            />
+            >
+                {/*Add Routes for Settings outlet here*/}
+            </Route>
 
             <Route
                 path="/change-setting"
