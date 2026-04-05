@@ -10,7 +10,7 @@ interface UniCooperationConfirmationProps {
 }
 
 export const UniCooperationConfirmation = ({ onBack }: UniCooperationConfirmationProps) => {
-    usePageTitle(`Registrierung: Uni-Kooperation - (Helfer:in)`);
+    usePageTitle(`Registrierung: Uni-Kooperation abgeschlossen - (Helfer:in)`);
     const { t } = useTranslation();
     const { onFormChange } = useRegistrationForm();
 
