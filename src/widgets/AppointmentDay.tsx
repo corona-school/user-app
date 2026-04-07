@@ -4,6 +4,7 @@ import { AppointmentParticipant, Organizer } from '@/gql/graphql';
 import AppointmentTile from './AppointmentTile';
 import { Appointment } from '@/types/lernfair/Appointment';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
+import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
 
 type Props = {
     start: string;
@@ -64,7 +65,7 @@ const AppointmentDay: React.FC<Props> = ({
         return sameMonth && sameYear;
     }, []);
 
-    const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, start, duration);
+    const isCurrent = useCanJoinMeeting(isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES, start, duration);
     const currentMonth = isCurrentMonth(start);
 
     const wasRejected = !!participants?.length && participants?.every((e) => declinedBy?.includes(e.userID!));

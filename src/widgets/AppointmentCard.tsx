@@ -22,7 +22,7 @@ import {
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import { formatDate, getGradeLabel, toTimerString } from '../Utility';
+import { formatDate, getGradeLabel, INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES, toTimerString } from '../Utility';
 import useInterval from '../hooks/useInterval';
 import { TrafficStatus } from '../types/lernfair/Course';
 import { DateTime } from 'luxon';
@@ -173,7 +173,7 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, _dateNext, duration);
+    const isCurrent = useCanJoinMeeting(isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES, _dateNext, duration);
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({

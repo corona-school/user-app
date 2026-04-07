@@ -9,6 +9,7 @@ import { Button } from './Button';
 import { IconVideo } from '@tabler/icons-react';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { toast } from 'sonner';
+import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -85,7 +86,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         }
     };
 
-    const canStartMeeting = useCanJoinMeeting(isInstructor ? 240 : 10, startDateTime, duration);
+    const canStartMeeting = useCanJoinMeeting(isInstructor ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES, startDateTime, duration);
 
     return (
         <>
