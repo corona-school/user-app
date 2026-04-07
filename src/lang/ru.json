@@ -2400,7 +2400,8 @@
         "Pupil": "ученик",
         "Retiree": "пенсионер",
         "Student": "студент",
-        "Azubi": "стажер"
+        "Azubi": "стажер",
+        "SeekingEmployment": "Ищущий работу"
     },
     "reasonsDisabled": {
         "loading": "Данные все еще загружаются...",

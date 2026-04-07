@@ -2503,7 +2503,8 @@
         "Pupil": "Schüler:in",
         "Retiree": "Rentner:in",
         "Student": "Student:in",
-        "Azubi": "Auszubildende:r"
+        "Azubi": "Auszubildende:r",
+        "SeekingEmployment": "Arbeitssuchend"
     },
     "formalEducation": {
         "teacher": "Lehrer:in",

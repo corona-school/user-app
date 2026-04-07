@@ -2396,7 +2396,8 @@
         "Pupil": "طالب",
         "Retiree": "متقاعد",
         "Student": "طالب",
-        "Azubi": "متدرب"
+        "Azubi": "متدرب",
+        "SeekingEmployment": "باحث عن عمل"
     },
     "reasonsDisabled": {
         "loading": "لا تزال البيانات قيد التحميل...",
