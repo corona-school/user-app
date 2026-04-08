@@ -19,10 +19,11 @@ import CourseSettings from './course-creation/CourseSettings';
 import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
-import { getCourseDelta, useUpdateCourse } from './course-creation/update';
+import { getCourseDelta, hasDeltaChanges, useUpdateCourse } from './course-creation/update';
 import { toast } from 'sonner';
 import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
+import RestoreCourseDraftModal from '@/modals/RestoreCourseDraftModal';
 
 export type CreateCourseError =
     | 'course'
@@ -163,6 +164,28 @@ const SUBMIT_COURSE_QUERY = gql(`
     }
 `);
 
+const DEFAULT_SUBCOURSE = {
+    id: -1,
+    lectures: [],
+    course: {
+        name: '',
+        category: Course_Category_Enum.Revision,
+        subject: '',
+        description: '',
+        allowContact: true,
+        tags: [],
+    },
+    maxParticipants: 50,
+    allowChatContactParticipants: true,
+    allowChatContactProspects: true,
+    joinAfterStart: false,
+    maxGrade: 14,
+    minGrade: 1,
+    instructors: [],
+    mentors: [],
+    groupChatType: ChatType.NORMAL,
+};
+
 const CreateCourse: React.FC = () => {
     const userType = useUserType();
     const location = useLocation();
@@ -173,27 +196,7 @@ const CreateCourse: React.FC = () => {
     const state = location.state as { subcourseId?: number; currentStep?: number };
     const prefillSubcourseId = state?.subcourseId;
     const [prefillSubcourse, setPrefillSubcourse] = useState<LFSubCourse | null>(null);
-    const [updatedSubcourse, setUpdatedSubcourse] = useState<LFSubCourse>({
-        id: -1,
-        lectures: [],
-        course: {
-            name: '',
-            category: Course_Category_Enum.Revision,
-            subject: '',
-            description: '',
-            allowContact: true,
-            tags: [],
-        },
-        maxParticipants: 50,
-        allowChatContactParticipants: true,
-        allowChatContactProspects: true,
-        joinAfterStart: false,
-        maxGrade: 14,
-        minGrade: 1,
-        instructors: [],
-        mentors: [],
-        groupChatType: ChatType.NORMAL,
-    });
+    const [updatedSubcourse, setUpdatedSubcourse] = useState<LFSubCourse>(DEFAULT_SUBCOURSE);
 
     const editingExistingCourse = useMemo(() => !!prefillSubcourseId, [prefillSubcourseId]);
 
@@ -214,6 +217,34 @@ const CreateCourse: React.FC = () => {
         }
     }, [user]);
 
+    useEffect(() => {
+        if (prefillSubcourseId) return;
+        if (
+            hasDeltaChanges(
+                getCourseDelta(
+                    {
+                        course: DEFAULT_SUBCOURSE.course,
+                        subcourse: DEFAULT_SUBCOURSE,
+                    },
+                    {
+                        course: updatedSubcourse?.course!,
+                        subcourse: { ...updatedSubcourse!, appointments: courseAppointments }, // here we don't need newId anymore
+                    },
+                    user.student?.id,
+                    userType
+                )
+            )
+        ) {
+            localStorage.setItem(
+                'courseDraft',
+                JSON.stringify({
+                    subcourse: updatedSubcourse,
+                    appointments: courseAppointments,
+                })
+            );
+        }
+    }, [courseAppointments, prefillSubcourseId, updatedSubcourse, user.student?.id, userType]);
+
     const [subcourseQuery, { refetch: refetchSubcourse }] = useLazyQuery(SUBCOURSE_QUERY);
 
     const [submitCourse] = useMutation(SUBMIT_COURSE_QUERY);
@@ -221,6 +252,8 @@ const CreateCourse: React.FC = () => {
     const updateCourse = useUpdateCourse();
 
     const [updatingCourse, setUpdatingCourse] = useState(false);
+
+    const [courseDraft, setCourseDraft] = useState<{ subcourse: LFSubCourse; appointments: Appointment[] } | null>(null);
 
     const queryCourse = useCallback(async () => {
         if (!prefillSubcourseId) return;
@@ -251,7 +284,26 @@ const CreateCourse: React.FC = () => {
     }, [subcourseQuery, prefillSubcourseId, user, userType]);
 
     useEffect(() => {
+        if (errors.length > 0) {
+            // get element with id "form", search for first element with class "error" and scroll its parent into view
+            const formElement = document.getElementById('form');
+            if (formElement) {
+                const errorElement = formElement.querySelector('.error:not(.invisible)');
+                if (errorElement) {
+                    errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+            }
+        }
+    }, [errors]);
+
+    useEffect(() => {
         if (prefillSubcourseId != null) queryCourse();
+        else {
+            const draft = localStorage.getItem('courseDraft');
+            if (draft) {
+                setCourseDraft(JSON.parse(draft));
+            }
+        }
     }, [prefillSubcourseId, queryCourse]);
 
     const save = async (doSubmit: boolean) => {
@@ -280,7 +332,6 @@ const CreateCourse: React.FC = () => {
         if (appointmentErrors) {
             errors.push('unfinished-appointment');
         }
-
         if (errors.length > 0) {
             setErrors(errors);
             return;
@@ -301,7 +352,6 @@ const CreateCourse: React.FC = () => {
         );
 
         console.log('DELTA', delta);
-
         try {
             setUpdatingCourse(true);
             const res = await updateCourse(prefillSubcourseId!, courseId, delta);
@@ -329,19 +379,6 @@ const CreateCourse: React.FC = () => {
             setUpdatingCourse(false);
         }
     };
-
-    useEffect(() => {
-        if (errors.length > 0) {
-            // get element with id "form", search for first element with class "error" and scroll its parent into view
-            const formElement = document.getElementById('form');
-            if (formElement) {
-                const errorElement = formElement.querySelector('.error:not(.invisible)');
-                if (errorElement) {
-                    errorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }
-            }
-        }
-    }, [errors]);
 
     if (loadingCourse || loadingUser) {
         return <CenterLoadingSpinner />;
@@ -392,10 +429,26 @@ const CreateCourse: React.FC = () => {
                         />
                         <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
                         <div className="flex flex-col md:flex-row gap-2 lg:justify-end">
-                            <Button variant="outline" className="w-full lg:w-auto" onClick={() => window.history.back()} isLoading={updatingCourse}>
+                            <Button
+                                variant="outline"
+                                className="w-full lg:w-auto"
+                                onClick={() => {
+                                    localStorage.removeItem('courseDraft');
+                                    window.history.back();
+                                }}
+                                isLoading={updatingCourse}
+                            >
                                 {t('course.CourseDate.Preview.cancel')}
                             </Button>
-                            <Button leftIcon={<IconCheck />} className="w-full lg:w-auto" onClick={() => save(false)} isLoading={updatingCourse}>
+                            <Button
+                                leftIcon={<IconCheck />}
+                                className="w-full lg:w-auto"
+                                onClick={() => {
+                                    save(false);
+                                    localStorage.removeItem('courseDraft');
+                                }}
+                                isLoading={updatingCourse}
+                            >
                                 {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
                             </Button>
                             {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
@@ -403,7 +456,10 @@ const CreateCourse: React.FC = () => {
                                     variant="secondary"
                                     rightIcon={<IconArrowRight />}
                                     className="w-full lg:w-auto"
-                                    onClick={() => save(true)}
+                                    onClick={() => {
+                                        save(true);
+                                        localStorage.removeItem('courseDraft');
+                                    }}
                                     isLoading={updatingCourse}
                                 >
                                     {t('course.CourseDate.Preview.publishCourse')}
@@ -412,6 +468,22 @@ const CreateCourse: React.FC = () => {
                         </div>
                     </div>
                 </div>
+                <RestoreCourseDraftModal
+                    isOpen={!!courseDraft}
+                    courseName={courseDraft?.subcourse.course.name}
+                    onOpenChange={(open, restore) => {
+                        if (!open) {
+                            if (restore) {
+                                setUpdatedSubcourse(courseDraft!.subcourse);
+                                setCourseAppointments(courseDraft!.appointments);
+                                setCourseDraft(null);
+                            } else {
+                                localStorage.removeItem('courseDraft');
+                                setCourseDraft(null);
+                            }
+                        }
+                    }}
+                />
             </WithNavigation>
         </>
     );
