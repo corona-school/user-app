@@ -3,8 +3,6 @@ import { useCallback } from 'react';
 import { AppointmentParticipant, Organizer } from '@/gql/graphql';
 import AppointmentTile from './AppointmentTile';
 import { Appointment } from '@/types/lernfair/Appointment';
-import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
-import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
 
 type Props = {
     start: string;
@@ -65,7 +63,12 @@ const AppointmentDay: React.FC<Props> = ({
         return sameMonth && sameYear;
     }, []);
 
-    const isCurrent = useCanJoinMeeting(isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES, start, duration);
+    const isCurrentlyTakingPlace = useCallback(() => {
+        const now = DateTime.now();
+        const startDate = DateTime.fromISO(start);
+        const endDate = startDate.plus({ minutes: duration });
+        return now >= startDate && now <= endDate;
+    }, [duration, start]);
     const currentMonth = isCurrentMonth(start);
 
     const wasRejected = !!participants?.length && participants?.every((e) => declinedBy?.includes(e.userID!));
@@ -81,7 +84,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 duration={duration}
                                 title={title}
                                 description={description}
-                                isCurrentlyTakingPlace={isCurrent}
+                                isCurrentlyTakingPlace={isCurrentlyTakingPlace()}
                                 organizers={organizers}
                                 participants={participants}
                                 isReadOnly={isReadOnly}
@@ -114,7 +117,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 duration={duration}
                                 title={title}
                                 description={description}
-                                isCurrentlyTakingPlace={isCurrent}
+                                isCurrentlyTakingPlace={isCurrentlyTakingPlace()}
                                 appointmentType={appointmentType}
                                 position={position}
                                 appointmentIndex={index}
