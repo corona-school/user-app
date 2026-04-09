@@ -182,6 +182,8 @@ const AppointmentTile: React.FC<Props> = ({
                             appointmentId={appointmentId}
                             appointmentType={appointmentType}
                             className={cn('w-full lg:w-auto mt-4 ml-auto')}
+                            duration={duration}
+                            startDateTime={start}
                         />
                     ) : (
                         <div />
