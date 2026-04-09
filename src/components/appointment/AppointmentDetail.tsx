@@ -114,11 +114,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHo
     const wasRejectedByMe = appointment.declinedBy?.includes(user?.userID!);
     const wasRejectedByMatch = appointment.appointmentType === 'match' && wasRejected && byMatch;
 
-    const isCurrent = useCanJoinMeeting(
-        appointment.isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
-        appointment.start,
-        appointment.duration
-    );
+    const isCurrent = useCanJoinMeeting({
+        joinBeforeMinutes: appointment.isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
+        appointment: { start: appointment.start, duration: appointment.duration ?? 60 },
+    });
 
     const canAddToCalendar = !wasRejected && !appointment.declinedBy?.length && !isPastAppointment && !isCurrent;
 

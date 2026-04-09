@@ -173,7 +173,10 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = useCanJoinMeeting(isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES, _dateNext, duration);
+    const isCurrent = useCanJoinMeeting({
+        joinBeforeMinutes: isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
+        appointment: { start: _dateNext, duration: duration ?? 60 },
+    });
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({
@@ -444,7 +447,6 @@ const AppointmentCard: React.FC<Props> = ({
                                             startDateTime={_dateNext}
                                             duration={duration}
                                             isInstructor={isOrganizer}
-                                            canJoin={isCurrent}
                                             className="w-full h-[47px] rounded-[4px]"
                                         />
                                     </VStack>

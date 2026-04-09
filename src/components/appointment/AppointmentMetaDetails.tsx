@@ -90,7 +90,10 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const canStartMeeting = useCanJoinMeeting(isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES, startDateTime, duration);
+    const canStartMeeting = useCanJoinMeeting({
+        joinBeforeMinutes: isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
+        appointment: { start: startDateTime, duration },
+    });
 
     useEffect(() => {
         canStartMeeting && createShortTimeLoginData();
