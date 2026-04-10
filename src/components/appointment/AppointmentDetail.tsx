@@ -19,6 +19,7 @@ import { IconInfoCircle, IconClockEdit, IconTrash, IconPencil } from '@tabler/ic
 import { Button } from '../Button';
 import AddToCalendarDropdown from '../AddToCalendarDropdown';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
+import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -113,7 +114,10 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHo
     const wasRejectedByMe = appointment.declinedBy?.includes(user?.userID!);
     const wasRejectedByMatch = appointment.appointmentType === 'match' && wasRejected && byMatch;
 
-    const isCurrent = useCanJoinMeeting(appointment.isOrganizer ? 240 : 10, appointment.start, appointment.duration);
+    const isCurrent = useCanJoinMeeting({
+        joinBeforeMinutes: appointment.isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
+        appointment: { start: appointment.start, duration: appointment.duration ?? 60 },
+    });
 
     const canAddToCalendar = !wasRejected && !appointment.declinedBy?.length && !isPastAppointment && !isCurrent;
 

@@ -3,7 +3,6 @@ import { useCallback } from 'react';
 import { AppointmentParticipant, Organizer } from '@/gql/graphql';
 import AppointmentTile from './AppointmentTile';
 import { Appointment } from '@/types/lernfair/Appointment';
-import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 
 type Props = {
     start: string;
@@ -64,7 +63,12 @@ const AppointmentDay: React.FC<Props> = ({
         return sameMonth && sameYear;
     }, []);
 
-    const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, start, duration);
+    const isCurrentlyTakingPlace = useCallback(() => {
+        const now = DateTime.now();
+        const startDate = DateTime.fromISO(start);
+        const endDate = startDate.plus({ minutes: duration });
+        return now >= startDate && now <= endDate;
+    }, [duration, start]);
     const currentMonth = isCurrentMonth(start);
 
     const wasRejected = !!participants?.length && participants?.every((e) => declinedBy?.includes(e.userID!));
@@ -80,7 +84,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 duration={duration}
                                 title={title}
                                 description={description}
-                                isCurrentlyTakingPlace={isCurrent}
+                                isCurrentlyTakingPlace={isCurrentlyTakingPlace()}
                                 organizers={organizers}
                                 participants={participants}
                                 isReadOnly={isReadOnly}
@@ -113,7 +117,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 duration={duration}
                                 title={title}
                                 description={description}
-                                isCurrentlyTakingPlace={isCurrent}
+                                isCurrentlyTakingPlace={isCurrentlyTakingPlace()}
                                 appointmentType={appointmentType}
                                 position={position}
                                 appointmentIndex={index}

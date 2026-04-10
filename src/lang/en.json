@@ -2400,7 +2400,8 @@
         "Pupil": "pupil",
         "Retiree": "Pensioner",
         "Student": "Student",
-        "Azubi": "Aprentice"
+        "Azubi": "Aprentice",
+        "SeekingEmployment": "Job seeker"
     },
     "reasonsDisabled": {
         "loading": "Data is still being loaded...",

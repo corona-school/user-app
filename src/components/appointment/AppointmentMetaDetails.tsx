@@ -19,6 +19,7 @@ import { IconDeviceMobileMessage, IconPointFilled, IconArrowNarrowRight } from '
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { QRCodeSVG } from 'qrcode.react';
 import { gql } from '../../gql';
+import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
 
 type MetaProps = {
     date: string;
@@ -89,7 +90,10 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const canStartMeeting = useCanJoinMeeting(isOrganizer ? 240 : 10, startDateTime, duration);
+    const canStartMeeting = useCanJoinMeeting({
+        joinBeforeMinutes: isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
+        appointment: { start: startDateTime, duration },
+    });
 
     useEffect(() => {
         canStartMeeting && createShortTimeLoginData();

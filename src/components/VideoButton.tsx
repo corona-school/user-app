@@ -9,6 +9,7 @@ import { Button } from './Button';
 import { IconVideo } from '@tabler/icons-react';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { toast } from 'sonner';
+import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
 
 type VideoButtonProps = {
     isInstructor?: boolean;
@@ -85,7 +86,10 @@ const VideoButton: React.FC<VideoButtonProps> = ({
         }
     };
 
-    const canStartMeeting = useCanJoinMeeting(isInstructor ? 240 : 10, startDateTime, duration);
+    const canStartMeeting = useCanJoinMeeting({
+        joinBeforeMinutes: isInstructor ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
+        appointment: { start: startDateTime, duration: duration ?? 60 },
+    });
 
     return (
         <>
@@ -98,7 +102,7 @@ const VideoButton: React.FC<VideoButtonProps> = ({
             />
             <Button
                 isLoading={isLoadingOverrideMeetingLink || isLoadingZoomMeetingLink}
-                disabled={!(canJoin ?? canStartMeeting) || isOver}
+                disabled={canJoin !== undefined ? !canJoin : !canStartMeeting}
                 reasonDisabled={isInstructor ? t('course.meeting.hint.student') : t('course.meeting.hint.pupil')}
                 onClick={openMeeting}
                 className={className}

@@ -2400,7 +2400,8 @@
         "Pupil": "Öğrenciler",
         "Retiree": "Emekli",
         "Student": "Öğrenci",
-        "Azubi": "Stajyer"
+        "Azubi": "Stajyer",
+        "SeekingEmployment": "İş arayan"
     },
     "reasonsDisabled": {
         "loading": "Veriler hala yükleniyor...",

@@ -11,6 +11,8 @@ export const REDIRECT_PASSWORD = `/login`;
 export const MIN_MAX_GRADE_RANGE = { min: 1, max: 14 };
 export const TRAINEE_GRADE = 14;
 export const MIN_AGE_PUPIL = 7;
+export const INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES = 60 * 48;
+export const PARTICIPANT_JOIN_IN_ADVANCE_MINUTES = 10;
 
 export const toTimerString = (referenceDate: DateTime, theDate: DateTime) => {
     const inPast = theDate < referenceDate;

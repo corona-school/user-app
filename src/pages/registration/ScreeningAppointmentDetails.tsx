@@ -26,7 +26,10 @@ export const ScreeningAppointmentDetail = ({ onNext, onBack, variant = 'register
         completed: `Registrierung: Funnel abgeschlossen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`,
     };
     usePageTitle(pageTitles[variant]);
-    const canStartMeeting = useCanJoinMeeting(5, form.screeningAppointment?.start!, form.screeningAppointment?.duration!);
+    const canStartMeeting = useCanJoinMeeting({
+        joinBeforeMinutes: 5,
+        appointment: { start: form.screeningAppointment?.start!, duration: form.screeningAppointment?.duration! },
+    });
     const { trackEvent } = useMatomo();
 
     useEffect(() => {
