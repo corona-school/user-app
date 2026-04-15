@@ -25,7 +25,7 @@ const NotificationControlPanel = () => {
     const { userPreferences, updateUserPreferences, ...rest } = useUserPreferences();
     const navigate = useNavigate();
     const [searchParams] = useSearchParams();
-    const isNewsletter = useMatch({ path: 'notifications/newsletter' });
+    const isNewsletter = useMatch({ path: 'settings/notifications/newsletter' });
     const shouldUnsubscribe = searchParams.has('unsubscribe');
 
     useEffect(() => {

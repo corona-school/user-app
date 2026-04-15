@@ -94,7 +94,7 @@ const Settings: React.FC = () => {
                   },
               ]
             : []),
-        ...(userType === 'student' ? [{ title: t('settings.general.certificates'), icon: IconCertificate, link: '/certificates' }] : []),
+        ...(userType === 'student' ? [{ title: t('settings.general.certificates'), icon: IconCertificate, link: '/settings/certificates' }] : []),
     ];
 
     const generalSettings: SettingItemType[] = [
@@ -192,7 +192,7 @@ const Settings: React.FC = () => {
                                                     <SettingItem
                                                         title={item.title}
                                                         Icon={item.icon}
-                                                        active={'/' + lastLinkItem === item.link}
+                                                        active={location.pathname.includes(item.link)}
                                                         onClick={item.onClick ? item.onClick : () => navigate(item.link)}
                                                     />
                                                 );
