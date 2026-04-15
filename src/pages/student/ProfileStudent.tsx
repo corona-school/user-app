@@ -139,138 +139,125 @@ const ProfileStudent: React.FC<Props> = () => {
 
     return (
         <>
-            <WithNavigation
-                isLoading={loading}
-                previousFallbackRoute="/settings"
-                headerTitle={t('profile.title')}
-                headerLeft={
-                    <div className="flex items-center">
-                        <SwitchLanguageButton />
-                        <NotificationAlert />
+            <div className="max-w-5xl px-5">
+                {profileCompleteness !== 100 && (
+                    <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
+                        <UserProgress percent={profileCompleteness} />
+                    </ProfileSettingRow>
+                )}
+                <div className="flex flex-col gap-y-2">
+                    {/* NAME */}
+                    <div className="w-full">
+                        <Label htmlFor="name" className="mb-2">
+                            {t('profile.UserName.label.title')}
+                        </Label>
+                        <Input name="name" className="w-full" value={`${data?.me?.firstname ?? ''} ${data?.me?.lastname ?? ''}`} disabled />
                     </div>
-                }
-            >
-                <div className="max-w-5xl px-5">
-                    <Breadcrumb />
-                    {profileCompleteness !== 100 && (
-                        <ProfileSettingRow title={t('profile.ProfileCompletion.name')}>
-                            <UserProgress percent={profileCompleteness} />
-                        </ProfileSettingRow>
-                    )}
-                    <div className="flex flex-col gap-y-2">
-                        {/* NAME */}
-                        <div className="w-full">
-                            <Label htmlFor="name" className="mb-2">
-                                {t('profile.UserName.label.title')}
-                            </Label>
-                            <Input name="name" className="w-full" value={`${data?.me?.firstname ?? ''} ${data?.me?.lastname ?? ''}`} disabled />
-                        </div>
 
-                        {/* E-MAIL */}
-                        <div className="w-full">
-                            <div className="flex items-center mb-2 gap-x-2">
-                                <Label htmlFor="email">{t('profile.UserName.label.email')}</Label>
-                                <Button
-                                    variant="none"
-                                    className="size-auto p-0"
-                                    onClick={() => {
-                                        navigate('/new-email');
-                                    }}
-                                >
-                                    <IconEdit size={18} className="text-primary inline-block" />
-                                </Button>
-                            </div>
-
-                            <Input name="email" className="w-full" value={data?.me?.email ?? ''} disabled />
-                        </div>
-
-                        {/* ABOUT ME */}
-                        <div className="mb-2">
-                            <Label htmlFor="aboutMe" className="mt-2">
-                                {t('profile.AboutMe.label')}
-                            </Label>
-                            <TextArea
-                                className="resize-none h-20 w-full"
-                                id="aboutMe"
-                                value={profile.aboutMe}
-                                onChangeText={(text) => {
-                                    setProfile({ ...profile, aboutMe: text });
+                    {/* E-MAIL */}
+                    <div className="w-full">
+                        <div className="flex items-center mb-2 gap-x-2">
+                            <Label htmlFor="email">{t('profile.UserName.label.email')}</Label>
+                            <Button
+                                variant="none"
+                                className="size-auto p-0"
+                                onClick={() => {
+                                    navigate('/new-email');
                                 }}
-                            />
+                            >
+                                <IconEdit size={18} className="text-primary inline-block" />
+                            </Button>
                         </div>
-                        {/* ZIP CODE */}
-                        <div>
+
+                        <Input name="email" className="w-full" value={data?.me?.email ?? ''} disabled />
+                    </div>
+
+                    {/* ABOUT ME */}
+                    <div className="mb-2">
+                        <Label htmlFor="aboutMe" className="mt-2">
+                            {t('profile.AboutMe.label')}
+                        </Label>
+                        <TextArea
+                            className="resize-none h-20 w-full"
+                            id="aboutMe"
+                            value={profile.aboutMe}
+                            onChangeText={(text) => {
+                                setProfile({ ...profile, aboutMe: text });
+                            }}
+                        />
+                    </div>
+                    {/* ZIP CODE */}
+                    <div>
+                        <Label>
+                            {t('profile.ZipCode.zipCode')}{' '}
+                            <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.zipCode.descriptionStudent')}>
+                                <IconInfoCircleFilled size="16px" />
+                            </TooltipButton>
+                        </Label>
+                        <Input
+                            maxLength={zipCodeLength()}
+                            type="number"
+                            className="w-full max-w-[150px]"
+                            value={profile.zipCode}
+                            onChangeText={(e) => setProfile({ ...profile, zipCode: e.replace(/\D/g, '') })} // Ensures that only digits can pe typed in
+                            onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
+                            errorMessage={showZipcodeError() ? t('profile.ZipCode.requiredLength', { length: zipCodeLength() }) : undefined}
+                        />
+                    </div>
+                    {/* GENDER */}
+                    <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full mb-3">
+                        <div className="flex flex-col gap-y-2">
                             <Label>
-                                {t('profile.ZipCode.zipCode')}{' '}
-                                <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.zipCode.descriptionStudent')}>
+                                {t('registration.steps.userGender.title')}{' '}
+                                <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.userGender.description')}>
                                     <IconInfoCircleFilled size="16px" />
                                 </TooltipButton>
                             </Label>
-                            <Input
-                                maxLength={zipCodeLength()}
-                                type="number"
-                                className="w-full max-w-[150px]"
-                                value={profile.zipCode}
-                                onChangeText={(e) => setProfile({ ...profile, zipCode: e.replace(/\D/g, '') })} // Ensures that only digits can pe typed in
-                                onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
-                                errorMessage={showZipcodeError() ? t('profile.ZipCode.requiredLength', { length: zipCodeLength() }) : undefined}
+                            <GenderSelector
+                                className="flex flex-wrap justify-center p-1"
+                                toggleConfig={{
+                                    variant: 'outline',
+                                    size: 'lg',
+                                    className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
+                                }}
+                                value={profile.gender as unknown as Gender}
+                                setValue={(gender) => setProfile({ ...profile, gender: gender as unknown as Gender_Enum })}
                             />
                         </div>
-                        {/* GENDER */}
-                        <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full mb-3">
-                            <div className="flex flex-col gap-y-2">
-                                <Label>
-                                    {t('registration.steps.userGender.title')}{' '}
-                                    <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.userGender.description')}>
-                                        <IconInfoCircleFilled size="16px" />
-                                    </TooltipButton>
-                                </Label>
-                                <GenderSelector
-                                    className="flex flex-wrap justify-center p-1"
-                                    toggleConfig={{
-                                        variant: 'outline',
-                                        size: 'lg',
-                                        className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
-                                    }}
-                                    value={profile.gender as unknown as Gender}
-                                    setValue={(gender) => setProfile({ ...profile, gender: gender as unknown as Gender_Enum })}
-                                />
-                            </div>
-                        </div>
-                        {/* LANGUAGES */}
-                        <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full">
-                            <div className="flex flex-col gap-y-2">
-                                <Label>
-                                    {t('profile.Languages.labelStudent')}{' '}
-                                    <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.languages.descriptionStudent')}>
-                                        <IconInfoCircleFilled size="16px" />
-                                    </TooltipButton>
-                                </Label>
-                                <LanguageSelector
-                                    maxVisibleItems={8}
-                                    className="flex flex-wrap justify-center p-1"
-                                    searchConfig={{
-                                        containerClassName: 'w-full',
-                                        className: 'bg-white',
-                                        placeholder: t('otherLanguages'),
-                                    }}
-                                    toggleConfig={{
-                                        variant: 'outline',
-                                        size: 'lg',
-                                        className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
-                                    }}
-                                    multiple
-                                    value={profile.languages as unknown as Language[]}
-                                    setValue={(languages) => setProfile({ ...profile, languages })}
-                                />
-                            </div>
-                        </div>
-                        <Button className="mt-6 min-w-[400px]" onClick={handleOnSave} isLoading={isUpdating} disabled={showZipcodeError()}>
-                            {t('save')}
-                        </Button>
                     </div>
+                    {/* LANGUAGES */}
+                    <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full">
+                        <div className="flex flex-col gap-y-2">
+                            <Label>
+                                {t('profile.Languages.labelStudent')}{' '}
+                                <TooltipButton className="max-w-80" tooltipContent={t('registration.steps.languages.descriptionStudent')}>
+                                    <IconInfoCircleFilled size="16px" />
+                                </TooltipButton>
+                            </Label>
+                            <LanguageSelector
+                                maxVisibleItems={8}
+                                className="flex flex-wrap justify-center p-1"
+                                searchConfig={{
+                                    containerClassName: 'w-full',
+                                    className: 'bg-white',
+                                    placeholder: t('otherLanguages'),
+                                }}
+                                toggleConfig={{
+                                    variant: 'outline',
+                                    size: 'lg',
+                                    className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
+                                }}
+                                multiple
+                                value={profile.languages as unknown as Language[]}
+                                setValue={(languages) => setProfile({ ...profile, languages })}
+                            />
+                        </div>
+                    </div>
+                    <Button className="mt-6 min-w-[400px]" onClick={handleOnSave} isLoading={isUpdating} disabled={showZipcodeError()}>
+                        {t('save')}
+                    </Button>
                 </div>
-            </WithNavigation>
+            </div>
         </>
     );
 };
