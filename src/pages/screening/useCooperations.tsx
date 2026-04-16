@@ -1,4 +1,5 @@
 import { gql } from '@/gql';
+import { useRoles } from '@/hooks/useApollo';
 import { useQuery } from '@apollo/client';
 
 const GET_COOPERATION_STUDENTS_QUERY = gql(`
@@ -37,9 +38,11 @@ const GET_COOPERATION_LIST = gql(`
 `);
 
 export const useCooperations = () => {
-    const { data: cooperationStudents, refetch: refetchCooperationStudents } = useQuery(GET_COOPERATION_STUDENTS_QUERY);
-    const { data: pendingCooperationStudentsCountData } = useQuery(GET_PENDING_COOPERATION_STUDENTS_COUNT_QUERY);
-    const { data: cooperationListData } = useQuery(GET_COOPERATION_LIST);
+    const roles = useRoles();
+    const isScreener = roles.includes('STUDENT_SCREENER');
+    const { data: cooperationStudents, refetch: refetchCooperationStudents } = useQuery(GET_COOPERATION_STUDENTS_QUERY, { skip: !isScreener });
+    const { data: pendingCooperationStudentsCountData } = useQuery(GET_PENDING_COOPERATION_STUDENTS_COUNT_QUERY, { skip: !isScreener });
+    const { data: cooperationListData } = useQuery(GET_COOPERATION_LIST, { skip: !isScreener });
 
     return {
         cooperationStudents:
