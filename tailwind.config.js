@@ -18,7 +18,7 @@ module.exports = {
             '2xl': '1.953125rem',
             xl: '1.5625rem',
             lg: '1.25rem',
-            'medium': '1.125rem',
+            medium: '1.125rem',
             base: '1rem',
             subtle: '0.875rem',
             sm: '0.8rem',
@@ -132,7 +132,7 @@ module.exports = {
                     from: { height: 'var(--radix-accordion-content-height)' },
                     to: { height: '0' },
                 },
-                'shine': {
+                shine: {
                     '0%': { transform: 'translateY(0)', opacity: '0' },
                     '10%': { opacity: '1' },
                     '100%': { transform: 'translateY(-200px)', opacity: '0' },
@@ -144,7 +144,7 @@ module.exports = {
                     '20%, 30%, 40%': { transform: 'scale3d(1.1,1.1,1.1) rotate(-5deg)' },
                     '50%': { transform: 'scale3d(1.1,1.1,1.1) rotate(-5deg)' },
                 },
-                'skeleton': {
+                skeleton: {
                     '0%': { backgroundColor: '#222222' },
                     '100%': { backgroundColor: '#2A2A2A' },
                 },
@@ -152,12 +152,13 @@ module.exports = {
             animation: {
                 'accordion-down': 'accordion-down 0.2s ease-out',
                 'accordion-up': 'accordion-up 0.2s ease-out',
-                'shine': 'shine 2s infinite',
+                shine: 'shine 2s infinite',
                 'bell-ring': 'bell-ring 2s infinite',
-                'skeleton': 'skeleton 1s infinite',
+                skeleton: 'skeleton 1s infinite',
             },
             boxShadow: {
                 bottomNavigation: '0px 4px 16px rgba(17,17,26,0.1), 0px 8px 24px rgba(17,17,26,0.1),0px 16px 56px rgba(17,17,26,0.1)',
+                lg: '0px 4px 4px 0px #00000040',
             },
         },
     },
