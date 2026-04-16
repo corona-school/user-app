@@ -196,6 +196,22 @@ export const TIME_SLOTS = [
     `${fromFormatToMinutes('20:00')}-${fromFormatToMinutes('21:00')}`,
 ];
 
+export const getApproxCurrentAge = (createdAt: string, ageAtRegistration: number) => {
+    const now = DateTime.now();
+    const created = DateTime.fromISO(createdAt);
+    const diffYears = Math.floor(now.diff(created, 'years').years);
+    return Math.floor(ageAtRegistration + diffYears);
+};
+
+export const getAgeAtRegistration = (createdAt: string, currentAge: number) => {
+    const now = DateTime.now();
+    const created = DateTime.fromISO(createdAt);
+
+    const diffYears = Math.floor(now.diff(created, 'years').years);
+
+    return Math.floor(currentAge - diffYears);
+};
+
 const Utility = {
     createToken,
     toTimerString,

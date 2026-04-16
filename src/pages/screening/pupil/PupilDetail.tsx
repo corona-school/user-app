@@ -125,7 +125,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                     <span className="font-bold">Registiert</span>: {formatDate(pupil.createdAt, DateTime.DATE_MED)}
                 </Typography>
                 <Typography>
-                    <span className="font-bold">Alter</span>: {getEstimatedAgeRange()}
+                    <span className="font-bold">Alter bei der Registrierung</span>: {!pupil.age ? 'Alter unbekannt' : pupil.age}
                 </Typography>
                 <Typography>
                     <span className="font-bold">Aktiv</span>:{' '}

@@ -76,8 +76,8 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
         setDescriptionForMatch,
         weeklyAvailability,
         setWeeklyAvailability,
-        age,
-        setAge,
+        currentAge,
+        setCurrentAge,
     } = form;
 
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
@@ -85,12 +85,12 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
 
     useEffect(() => {
         let updatedErrors = {};
-        if (!!age && age < MIN_AGE_PUPIL) {
+        if (!!currentAge && currentAge < MIN_AGE_PUPIL) {
             updatedErrors = { ...updatedErrors, age: t('registration.steps.userAge.tooYoungError', { minAge: MIN_AGE_PUPIL }) };
         }
 
         setErrors(updatedErrors);
-    }, [languages, grade, subjects, age, t]);
+    }, [languages, grade, subjects, currentAge, t]);
 
     const impersonate = async () => {
         // We need to work around the popup blocker of modern browsers, as you can only
@@ -118,7 +118,6 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
         }
     };
 
-    console.log(errors);
     return (
         <>
             <div className="flex w-full justify-between mb-10">
@@ -169,8 +168,8 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     <Label>Alter</Label>
                     <Input
                         className="w-full max-w-40"
-                        value={age || ''}
-                        onChangeText={(e) => setAge(Number(e.replace(/\D/g, '').substring(0, 2)))}
+                        value={currentAge || ''}
+                        onChangeText={(e) => setCurrentAge(Number(e.replace(/\D/g, '').substring(0, 2)))}
                         errorMessage={errors.age}
                         errorMessageClassName="hidden"
                         min={MIN_AGE_PUPIL}
