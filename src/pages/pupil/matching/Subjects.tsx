@@ -1,47 +1,40 @@
-import { VStack, useTheme, Heading, Text } from 'native-base';
-import { useContext, useEffect } from 'react';
 import { containsDAZ, DAZ } from '../../../types/subject';
-import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import { SubjectSelector } from '../../../widgets/SubjectSelector';
-import { RequestMatchContext, RequestMatchStep } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
+import { useMatchRequestForm } from './useMatchRequestForm';
+import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
+import { Typography } from '@/components/Typography';
 
 const Subjects: React.FC = () => {
-    const { space } = useTheme();
-    const { matchRequest, setSubject, removeSubject, setCurrentStep, setSkippedSubjectPriority, skippedSubjectPriority, setSubjectPriority, requestMatch } =
-        useContext(RequestMatchContext);
+    const { goNext, goBack, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
+    const isDAZ = containsDAZ(form.subjects);
 
-    const isDAZ = containsDAZ(matchRequest.subjects);
-
-    useEffect(() => {
-        const skipSubjectPriority = isDAZ || matchRequest.subjects.length === 1;
-        setSkippedSubjectPriority(skipSubjectPriority);
-        matchRequest.subjects.forEach((subj) => setSubjectPriority(subj.name, skipSubjectPriority));
-    }, [matchRequest.subjects.length, isDAZ, setSkippedSubjectPriority, setSubjectPriority]);
+    const onAddSubject = (subject: string) => {
+        if (form.learningGermanSince === '2-4') {
+            onFormChange({ subjects: [{ name: subject, mandatory: true }].concat({ name: DAZ, mandatory: true }) });
+        } else {
+            onFormChange({ subjects: form.subjects.concat({ name: subject, mandatory: form.subjects.length === 0 }) });
+        }
+    };
 
     return (
-        <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">{t('matching.wizard.pupil.subjects.heading')}</Heading>
-            <Heading>{t('matching.wizard.pupil.subjects.subheading')}</Heading>
-            {isDAZ && <Text>{t('matching.wizard.pupil.subjects.text')}</Text>}
+        <MatchRequestStep
+            onNext={goNext}
+            onBack={goBack}
+            isNextDisabled={form.subjects.length === 0 || (form.subjects.length === 1 && isDAZ)}
+            reasonNextDisabled={isDAZ ? t('matching.wizard.pupil.subjects.reason_btn_disabled_DAZ') : t('matching.wizard.pupil.subjects.reason_btn_disabled')}
+        >
+            <MatchRequestStepTitle>{t('matching.wizard.pupil.subjects.heading')}</MatchRequestStepTitle>
+            <Typography variant="h5">{t('matching.wizard.pupil.subjects.subheading')}</Typography>
+            {isDAZ && <Typography>{t('matching.wizard.pupil.subjects.text')}</Typography>}
             <SubjectSelector
-                subjects={matchRequest.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
-                addSubject={(it) => setSubject({ name: it, mandatory: skippedSubjectPriority })}
-                removeSubject={removeSubject}
+                subjects={form.subjects.filter((it) => it.name !== DAZ).map((it) => it.name)}
+                addSubject={onAddSubject}
+                removeSubject={(it) => onFormChange({ subjects: form.subjects.filter((s) => s.name !== it) })}
                 limit={isDAZ ? 1 : undefined}
             />
-            <NextPrevButtons
-                disablingNext={{
-                    is: matchRequest.subjects.length === 0 || (matchRequest.subjects.length === 1 && isDAZ),
-                    reason: isDAZ ? t('matching.wizard.pupil.subjects.reason_btn_disabled_DAZ') : t('matching.wizard.pupil.subjects.reason_btn_disabled'),
-                }}
-                onPressPrev={() => setCurrentStep(RequestMatchStep.german)}
-                onPressNext={() => {
-                    skippedSubjectPriority ? requestMatch() : setCurrentStep(RequestMatchStep.priority);
-                }}
-            />
-        </VStack>
+        </MatchRequestStep>
     );
 };
 export default Subjects;
