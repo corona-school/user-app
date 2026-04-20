@@ -67,6 +67,7 @@ import { HOMEWORK_HELP_COURSE } from '@/config';
 import CalendarPreferencesPage from '@/pages/CalendarPreferencesPage';
 import ForgotPassword from '@/pages/ForgotPassword';
 import CooperationStudents from '@/pages/screening/CooperationStudents';
+import { MatchRequestProvider } from '@/pages/pupil/matching/useMatchRequestForm';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -352,7 +353,14 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <RequireRole roles={['TUTOR', 'TUTEE']}>
-                            <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                            <SwitchUserType
+                                pupilComponent={
+                                    <MatchRequestProvider>
+                                        <RequestMatch />
+                                    </MatchRequestProvider>
+                                }
+                                studentComponent={<RequestMatchStudent />}
+                            />
                         </RequireRole>
                     </RequireAuth>
                 }
