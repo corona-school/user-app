@@ -134,7 +134,7 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                <Route index element={<Navigate to={'/settings/profile'} replace />} />
+                <Route index element={isMobileSM ? null : <Navigate to="/settings/profile" replace />} />
                 <Route
                     path="profile"
                     element={
