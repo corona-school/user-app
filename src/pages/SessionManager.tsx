@@ -44,17 +44,7 @@ const SessionManager: React.FC = () => {
     };
 
     return (
-        <WithNavigation
-            previousFallbackRoute="/settings"
-            headerTitle={t('sessionManager.title')}
-            headerLeft={
-                <div className="flex items-center flex-row">
-                    <SwitchLanguageButton />
-                    <NotificationAlert />
-                </div>
-            }
-        >
-            <Breadcrumb />
+        <>
             <Typography variant="h2" className="mb-4">
                 {t('sessionManager.title')}
             </Typography>
@@ -99,7 +89,7 @@ const SessionManager: React.FC = () => {
                         ))
                 )}
             </div>
-        </WithNavigation>
+        </>
     );
 };
 

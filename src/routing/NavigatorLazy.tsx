@@ -117,33 +117,12 @@ export default function NavigatorLazy() {
                 }
             />
 
-            <Route
-                path="/profile"
-                element={
-                    <RequireAuth>
-                        <SwitchUserType pupilComponent={<ProfilePupil />} studentComponent={<ProfileStudent />} />
-                    </RequireAuth>
-                }
-            />
-            <Route
-                path="/certificates"
-                element={
-                    <RequireAuth>
-                        <CertificatesPage />
-                    </RequireAuth>
-                }
-            />
+            <Route path="/profile" element={<Navigate to={'/settings/profile'} replace />} />
+            <Route path="/certificates" element={<Navigate to={'/settings/certificates'} replace />} />
 
-            <Route
-                path="/notifications"
-                element={
-                    <RequireAuth>
-                        <NotficationControlPanel />
-                    </RequireAuth>
-                }
-            >
-                <Route path="system" element={<SystemNotifications />} />
-                <Route path="newsletter" element={<MarketingNotifications />} />
+            <Route path="/notifications" element={<Navigate to={'/settings/notifications'} replace />}>
+                <Route path="system" element={<Navigate to={'/settings/notifications/system'} replace />} />
+                <Route path="newsletter" element={<Navigate to={'/settings/notifications/newsletter'} replace />} />
                 <Route index element={<Navigate to="system" />} />
             </Route>
 
@@ -155,7 +134,69 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             >
-                {/*Add Routes for Settings outlet here*/}
+                <Route index element={isMobileSM ? null : <Navigate to="/settings/profile" replace />} />
+                <Route
+                    path="profile"
+                    element={
+                        <RequireAuth>
+                            <SwitchUserType pupilComponent={<ProfilePupil />} studentComponent={<ProfileStudent />} />
+                        </RequireAuth>
+                    }
+                />
+                <Route
+                    path="notifications"
+                    element={
+                        <RequireAuth>
+                            <NotficationControlPanel />
+                        </RequireAuth>
+                    }
+                >
+                    <Route path="system" element={<SystemNotifications />} />
+                    <Route path="newsletter" element={<MarketingNotifications />} />
+                    <Route index element={<Navigate to="system" />} />
+                </Route>
+                <Route
+                    path="hilfebereich"
+                    element={
+                        <RequireAuth>
+                            <HelpCenter />
+                        </RequireAuth>
+                    }
+                ></Route>
+                <Route
+                    path="new-email"
+                    element={
+                        <RequireAuth>
+                            <ChangeEmail />
+                        </RequireAuth>
+                    }
+                />
+                <Route
+                    path="certificates"
+                    element={
+                        <RequireAuth>
+                            <CertificatesPage />
+                        </RequireAuth>
+                    }
+                />
+                <Route
+                    path="manage-sessions"
+                    element={
+                        <RequireAuth>
+                            <SessionManager />
+                        </RequireAuth>
+                    }
+                />
+                <Route path="new-password" element={<ResetPassword layout="new-pw" />} />
+                <Route path="reset-password" element={<ForgotPassword />} />
+                <Route
+                    path="calendar-preferences"
+                    element={
+                        <RequireAuth>
+                            <CalendarPreferencesPage />
+                        </RequireAuth>
+                    }
+                />
             </Route>
 
             <Route
@@ -172,14 +213,7 @@ export default function NavigatorLazy() {
                 <Route path="class" element={<ChangeSettingSchoolClass />} />
             </Route>
 
-            <Route
-                path="/hilfebereich"
-                element={
-                    <RequireAuth>
-                        <HelpCenter />
-                    </RequireAuth>
-                }
-            ></Route>
+            <Route path="/hilfebereich" element={<Navigate to={'/settings/hilfebereich'} replace />}></Route>
 
             <Route
                 path="/request-certificate"
@@ -416,35 +450,14 @@ export default function NavigatorLazy() {
 
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/verify-email-change" element={<VerifyEmailChange />} />
-            <Route
-                path="/new-email"
-                element={
-                    <RequireAuth>
-                        <ChangeEmail />
-                    </RequireAuth>
-                }
-            />
-            <Route path="/new-password" element={<ResetPassword layout="new-pw" />} />
+            <Route path="/new-email" element={<Navigate to={'/settings/new-email'} replace />} />
+            <Route path="/new-password" element={<Navigate to={'/settings/new-password'} replace />} />
             <Route path="/reset-password" element={<ForgotPassword />} />
 
             <Route path="/install" element={<InstallApp />} />
 
-            <Route
-                path="/manage-sessions"
-                element={
-                    <RequireAuth>
-                        <SessionManager />
-                    </RequireAuth>
-                }
-            />
-            <Route
-                path="/calendar-preferences"
-                element={
-                    <RequireAuth>
-                        <CalendarPreferencesPage />
-                    </RequireAuth>
-                }
-            />
+            <Route path="/manage-sessions" element={<Navigate to={'/settings/manage-sessions'} replace />} />
+            <Route path="/calendar-preferences" element={<Navigate to={'/settings/calendar-preferences'} replace />} />
             <Route
                 path="/datenschutz"
                 element={
