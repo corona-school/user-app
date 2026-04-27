@@ -156,6 +156,7 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHo
                     overrideMeetingLink={appointment.override_meeting_link}
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
                     isHomeworkHelp={isHomeworkHelp}
+                    canJoin={appointment.subcourse?.published === false ? false : undefined}
                 />
                 {wasRejectedByMatch && (
                     <>
