@@ -81,7 +81,7 @@ const AppointmentForm: React.FC<FormProps> = ({
     const getMinForDatePicker = useCallback((type: 'date' | 'time', isCourse: boolean, isToday: boolean) => {
         let date = DateTime.now();
         if (type === 'date') {
-            if (isCourse) date = date.plus({ days: 7 });
+            if (isCourse) date = date.plus({ minutes: 5 });
             return date;
         }
 
