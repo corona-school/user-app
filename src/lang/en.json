@@ -1510,6 +1510,36 @@
                         "ver2": "Your changes have been saved. This will not change your waiting time."
                     },
                     "groupCourses": "To the group courses"
+                },
+                "bookScreeningAppointment": {
+                    "aboutTheAppointment": {
+                        "bullets": [
+                            "Tell us what you Lern-Fair and learned at Lern-Fair .",
+                            "Let's talk about how we can help you.",
+                            "We'll check to see if you can get a new study partner.",
+                            "We'll help you figure out if Lern-Fair is Lern-Fair the right fit for you.",
+                            "Feel free to ask us anything. 🙂"
+                        ],
+                        "title": "That's what it's all about"
+                    },
+                    "importantForAppointment": {
+                        "bullets": [
+                            "You have to be there.",
+                            "Your parents or guardian can be there.",
+                            "The meeting will be held via Zoom.",
+                            "Please make sure you have a good internet connection when you're at home.",
+                            "The conversation is in German."
+                        ],
+                        "title": "Important for the lecture"
+                    },
+                    "reminder": {
+                        "title": "Reminder via text message",
+                        "description": "In the \"Send text message to\" field, you can enter your phone number. You will then receive reminders for the lecture text message."
+                    },
+                    "title": "Learning Support Consultation with Lern-Fair",
+                    "description": "Since we haven't seen each other in a while and you've requested a new study partner, we'd like to invite you to a brief meeting.",
+                    "bookAppointment": "Arrange a meeting",
+                    "alert": "The call will only take {{minutes}} minutes."
                 }
             },
             "student": {

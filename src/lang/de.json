@@ -1602,6 +1602,36 @@
                     "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
                     "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
+                "bookScreeningAppointment": {
+                    "title": "Lernunterstützungsgespräch mit Lern - Fair",
+                    "description": "Weil wir uns länger nicht gesehen haben und du ein neues Lernpaar angefragt hast, wollen wir dich zu einem kurzen Gespräch einladen.",
+                    "aboutTheAppointment": {
+                        "title": "Darum geht es",
+                        "bullets": [
+                            "Du erzählst, was du bei Lern-Fair gemacht und gelernt hast.",
+                            "Wir sprechen darüber, wobei wir dir helfen können.",
+                            "Wir prüfen, ob du ein neues Lernpaar bekommen kannst.",
+                            "Wir klären, ob Lern-Fair noch das Richtige für dich ist.",
+                            "Du kannst uns alles fragen. 🙂"
+                        ]
+                    },
+                    "importantForAppointment": {
+                        "title": "Wichtig für den Termin",
+                        "bullets": [
+                            "Du musst dabei sein.",
+                            "Deine Eltern / Betreuungsperson können dabei sein.",
+                            "Das Gespräch ist per Zoom.",
+                            "Bitte mach das Gespräch zu Hause mit gutem Internet.",
+                            "Das Gespräch ist auf Deutsch."
+                        ]
+                    },
+                    "reminder": {
+                        "title": "Erinnerung per SMS",
+                        "description": "Im Feld ”Textnachricht senden an” kannst du deine Telefonnummer angeben. Dann bekommst du Erinnerungen für den Termin per SMS."
+                    },
+                    "bookAppointment": "Gespräch vereinbaren",
+                    "alert": "Das Gespräch dauert nur {{minutes}} Minuten."
+                },
                 "modalSuccess": {
                     "heading": {
                         "ver1": "Neue Anfrage erstellt",

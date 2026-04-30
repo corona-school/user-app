@@ -1510,6 +1510,36 @@
                         "ver2": "Değişiklikleriniz kaydedildi. Bu, bekleme sürenizi değiştirmeyecektir."
                     },
                     "groupCourses": "Grup kurslarına dön"
+                },
+                "bookScreeningAppointment": {
+                    "aboutTheAppointment": {
+                        "bullets": [
+                            "Lern-Fair 'de neler Lern-Fair ve neler öğrendiğini anlat.",
+                            "Bu konuda sana nasıl yardımcı olabileceğimizi konuşalım.",
+                            "Sana yeni bir öğrenim eşi ayarlanıp ayarlanamayacağını kontrol ediyoruz.",
+                            "Lern-Fair sana uygun olup olmadığını değerlendiriyoruz.",
+                            "Bize her şeyi sorabilirsin. 🙂"
+                        ],
+                        "title": "Konu şu"
+                    },
+                    "importantForAppointment": {
+                        "bullets": [
+                            "Buna katılmalısın.",
+                            "Ailen veya bakıcıların da bu süreçte yanınızda olabilir.",
+                            "Görüşme Zoom üzerinden yapılacak.",
+                            "Lütfen görüşmeyi evde, internet bağlantısı iyi olan bir yerde yap.",
+                            "Sohbet Almanca."
+                        ],
+                        "title": "Randevu için önemli"
+                    },
+                    "reminder": {
+                        "title": "SMS ile hatırlatma",
+                        "description": "\"Metin mesajını gönder\" alanına telefon numaranı girebilirsin. Böylece randevu hatırlatmalarını SMS yoluyla alacaksın."
+                    },
+                    "title": "Lern-Fair ile öğrenme desteği görüşmesi",
+                    "description": "Uzun süredir görüşemedik ve yeni bir öğrenme eşi talep ettiğin için, seni kısa bir görüşmeye davet etmek istiyoruz.",
+                    "bookAppointment": "Bir toplantı düzenleyin",
+                    "alert": "Görüşme sadece {{minutes}} dakika sürecek."
                 }
             },
             "student": {
