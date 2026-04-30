@@ -1537,9 +1537,9 @@
                         "description": "\"Metin mesajını gönder\" alanına telefon numaranı girebilirsin. Böylece randevu hatırlatmalarını SMS yoluyla alacaksın."
                     },
                     "title": "Lern-Fair ile öğrenme desteği görüşmesi",
-                    "description": "Uzun süredir görüşemedik ve yeni bir öğrenme eşi talep ettiğin için, seni kısa bir görüşmeye davet etmek istiyoruz.",
                     "bookAppointment": "Bir toplantı düzenleyin",
-                    "alert": "Görüşme sadece {{minutes}} dakika sürecek."
+                    "alert": "Görüşme sadece {{minutes}} dakika sürecek.",
+                    "description": "Uzun süredir görüşemedik, bu yüzden seni kısa bir görüşmeye davet etmek istiyoruz. Ardından sana yeni bir çalışma arkadaşı bulacağız!"
                 }
             },
             "student": {

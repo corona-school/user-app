@@ -1537,9 +1537,9 @@
                         "description": "In the \"Send text message to\" field, you can enter your phone number. You will then receive reminders for the lecture text message."
                     },
                     "title": "Learning Support Consultation with Lern-Fair",
-                    "description": "Since we haven't seen each other in a while and you've requested a new study partner, we'd like to invite you to a brief meeting.",
                     "bookAppointment": "Arrange a meeting",
-                    "alert": "The call will only take {{minutes}} minutes."
+                    "alert": "The call will only take {{minutes}} minutes.",
+                    "description": "Since we haven't seen each other in a while, we'd like to invite you to a brief chat. After that, we'll find you a new study partner!"
                 }
             },
             "student": {
