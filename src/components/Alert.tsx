@@ -24,15 +24,17 @@ const alertVariants = cva('flex items-center w-fit rounded-lg px-4 py-3 text-bas
 interface AlertProps extends React.HTMLAttributes<HTMLDivElement>, Omit<VariantProps<typeof alertVariants>, 'direction'> {
     icon?: React.ReactNode;
     title?: string;
+    rightElement?: React.ReactNode;
 }
 
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ className, variant, children, title, icon, ...props }, ref) => (
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(({ className, variant, children, title, icon, rightElement, ...props }, ref) => (
     <div ref={ref} role="alert" className={cn(alertVariants({ variant, direction: icon ? 'row' : 'col' }), className)} {...props}>
         {icon && <div className={cn('pt-1', title ? 'self-start' : 'pt-0')}>{icon}</div>}
         <div className="flex flex-col items-start ">
             {title && <AlertTitle>{title}</AlertTitle>}
             <AlertDescription>{children}</AlertDescription>
         </div>
+        {rightElement && <>{rightElement}</>}
     </div>
 ));
 
