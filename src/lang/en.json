@@ -2475,13 +2475,13 @@
         "contactSupport": "Contact support",
         "appointment": {
             "joinMeeting": "Join video chat",
-            "joinMeetingHint": "You can only start the meeting 5 minutes before the start of the appointment.",
             "changeAppointment": "Change appointment",
             "cancelAppointment": "Cancel appointment",
             "title": "Appointment created ✅",
             "yourAppointment": "Your appointment",
             "optionsDescription": "You don't have time and want to postpone or cancel the appointment?",
-            "description": "You will receive an appointment confirmation to your email address. You can add the appointment to your calendar with a click."
+            "description": "You will receive an appointment confirmation to your email address. You can add the appointment to your calendar with a click.",
+            "joinMeetingHint": "You can start the meeting only {{minutes}} minutes before it begins."
         }
     },
     "contactSupport": {

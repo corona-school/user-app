@@ -2604,7 +2604,7 @@
         },
         "appointment": {
             "joinMeeting": "Videochat beitreten",
-            "joinMeetingHint": "Du kannst das Meeting erst 5 Minuten vor Beginn des Termins starten.",
+            "joinMeetingHint": "Du kannst das Meeting erst {{minutes}} Minuten vor Beginn des Termins starten.",
             "changeAppointment": "Termin ändern",
             "cancelAppointment": "Termin absagen",
             "title": "Termin erstellt ✅",

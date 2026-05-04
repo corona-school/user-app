@@ -2475,13 +2475,13 @@
         "contactSupport": "İletişim desteği",
         "appointment": {
             "joinMeeting": "Görüntülü sohbete katıl",
-            "joinMeetingHint": "Toplantıyı yalnızca randevudan 5 dakika önce başlatabilirsin.",
             "changeAppointment": "Randevuyu değiştir",
             "cancelAppointment": "Randevuyu iptal et",
             "title": "Randevu oluşturuldu ✅",
             "yourAppointment": "Randevun",
             "optionsDescription": "Vaktin yok mu? Randevuyu değiştirmek veya iptal etmek mi istiyorsun?",
-            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin."
+            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin.",
+            "joinMeetingHint": "Toplantıyı, randevunun başlamasına {{minutes}} dakika kala başlatabilirsin."
         }
     },
     "contactSupport": {

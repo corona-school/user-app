@@ -91,7 +91,7 @@ export const ScreeningAppointmentDetail = ({ onNext, onBack, variant = 'register
                     />
                     <Button
                         disabled={!form.screeningAppointment?.override_meeting_link || !canStartMeeting}
-                        reasonDisabled={`${t('registration.steps.appointmentDetails.joinMeetingHint')}`}
+                        reasonDisabled={`${t('registration.steps.appointmentDetails.joinMeetingHint', { minutes: 5 })}`}
                         onClick={() =>
                             form.screeningAppointment?.override_meeting_link && window.open(form.screeningAppointment?.override_meeting_link, '_blank')
                         }
