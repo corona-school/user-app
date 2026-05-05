@@ -39,6 +39,7 @@ type MetaProps = {
     overrideMeetingLink?: Appointment['override_meeting_link'];
     zoomMeetingUrl?: Appointment['zoomMeetingUrl'];
     isHomeworkHelp?: boolean;
+    canJoin?: boolean;
 };
 const AppointmentMetaDetails: React.FC<MetaProps> = ({
     date,
@@ -58,6 +59,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     overrideMeetingLink,
     zoomMeetingUrl,
     isHomeworkHelp,
+    canJoin,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [loginURL, setLoginURL] = useState<string>('empty');
@@ -186,6 +188,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                                 width={buttonWidth}
                                 isOver={isAppointmentOver}
                                 overrideLink={overrideMeetingLink ?? undefined}
+                                canJoin={canJoin}
                             />
                         </>
                     )}

@@ -66,6 +66,7 @@ interface AppointmentItemProps {
     onDelete?: () => void;
     clickable: boolean; // If true, the item is clickable and navigates to the appointment detail page
     editable: boolean; // If true, shows buttons for edit, duplicate, and delete
+    minDate?: DateTime; // Minimum date for the appointment, used in the CourseAppointmentForm when editing/creating an appointment. Defaults to now + 7 days.
 }
 
 const AppointmentItem = React.memo(
@@ -84,6 +85,7 @@ const AppointmentItem = React.memo(
         onDelete,
         clickable,
         editable,
+        minDate,
     }: AppointmentItemProps) => {
         const navigate = useNavigate();
         const { i18n } = useTranslation();
@@ -118,6 +120,7 @@ const AppointmentItem = React.memo(
             setEditing(false);
             if (onCancelEdit) onCancelEdit();
         };
+
         return (
             <div>
                 {monthDivider && (
@@ -139,6 +142,7 @@ const AppointmentItem = React.memo(
                                 onCancel={onCancel}
                                 errors={errors}
                                 setErrors={setErrors}
+                                minDate={minDate}
                             />
                         </div>
                     ) : (
@@ -199,6 +203,7 @@ type AppointmentListProps = {
     editingIdInit?: number; // If provided, the appointment with this ID will be in editing mode initially
     clickable: boolean; // If true, the appointment items are clickable and navigate to the appointment detail page
     editable: boolean; // If true, the appointment items show edit, duplicate, and delete buttons
+    minDate?: DateTime; // Minimum date for the appointment, used in the CourseAppointmentForm when editing/creating an appointment. Defaults to now + 7 days
     exhaustive: boolean; // if true, show appointment index. E.g. on general appointments page, we have all kinds of appointments, so we can't show an index that is course-specific
 };
 
@@ -231,6 +236,7 @@ const AppointmentList = ({
     clickable,
     editable,
     exhaustive,
+    minDate,
 }: AppointmentListProps) => {
     const scrollViewRef = useRef<HTMLElement>(null);
     const userType = useUserType();
@@ -323,6 +329,7 @@ const AppointmentList = ({
                         }
                         clickable={clickable}
                         editable={editable}
+                        minDate={minDate}
                     />
                 ))}
             </InfiniteScroll>

@@ -28,6 +28,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
     const [stickyBottomId, setStickyBottomId] = useState<number | undefined>(undefined);
     const [appointmentToDelete, setAppointmentToDelete] = useState<Appointment | undefined>(undefined);
     const [appointmentsWithErrors, setAppointmentsWithErrors] = useState<number[]>([]);
+    const isFromUnpublishedSubcourse = appointments.some((a) => a.subcourse && !a.subcourse.published);
 
     // inform parent about errors
     useEffect(() => {
@@ -62,7 +63,9 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
             const newAppointments = [...getDraftAppointments];
             newAppointments.push({
                 id: newId,
-                start: DateTime.now().plus({ days: 7 }).toISO(),
+                start: DateTime.now()
+                    .plus({ days: isFromUnpublishedSubcourse ? 14 : 7 })
+                    .toISO(),
                 duration: 60,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
                 displayName: '',
@@ -195,6 +198,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                             clickable={false}
                             editable={true}
                             exhaustive={true}
+                            minDate={isFromUnpublishedSubcourse ? DateTime.now().plus({ days: 14 }) : undefined}
                         />
                     </div>
                 )}
