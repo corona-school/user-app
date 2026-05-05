@@ -68,15 +68,15 @@ export const BookScreeningAppointment = () => {
         <MatchRequestStep onBack={goBack} onCancel={() => {}} className="pb-0" isBackDisabled={isLoading}>
             <div className="relative h-full">
                 <Typography variant="h4">{t('matching.wizard.pupil.bookScreeningAppointment.title')}</Typography>
-                <div className="flex flex-col gap-y-9">
-                    <div className="flex gap-x-4 items-center mt-9 w-full">
+                <div className="flex flex-col gap-y-7">
+                    <div className="flex gap-x-4 items-center mt-7 w-full">
                         <Typography className="max-w-[680px]">{t('matching.wizard.pupil.bookScreeningAppointment.description')}</Typography>
                     </div>
                     <Alert icon={<IconTimeDuration10 />} variant="success-outline" className="w-full max-w-[560px]">
                         {t('matching.wizard.pupil.bookScreeningAppointment.alert', { minutes: 10 })}
                     </Alert>
                 </div>
-                <div className="flex flex-col lg:flex-row mt-4 gap-x-4 gap-y-8 mb-8">
+                <div className="flex flex-col lg:flex-row mt-4 gap-x-4 gap-y-8 mb-4">
                     <div className="w-full pt-5 pb-11 px-4 rounded-md border border-solid border-primary-light flex gap-x-6">
                         <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3">
                             <IconInfoCircleFilled size={24} />
