@@ -28,7 +28,7 @@ export const BookScreeningAppointment = () => {
     useCalendlyEventListener({
         onEventScheduled: async (e) => {
             setShouldFetchScreeningAppointment(true);
-            if (e.data.payload.event) {
+            if (e.data.payload.event && !form.isAppointmentStepForced) {
                 await createMatchRequest();
             }
         },

@@ -366,6 +366,18 @@ export default function NavigatorLazy() {
                 }
             />
             <Route
+                path="/request-match/screening-appointment"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['TUTEE']}>
+                            <MatchRequestProvider>
+                                <RequestMatch />
+                            </MatchRequestProvider>
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+            <Route
                 path="/confirm-certificate/:id"
                 element={
                     <RequireAuth>

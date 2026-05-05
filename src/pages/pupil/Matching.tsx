@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Circle, Flex, Stack, Text, useTheme, useToast, VStack } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Circle, Flex, Stack, Text, useTheme, VStack } from 'native-base';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -17,7 +17,6 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Heading, useBreakpointValue } from 'native-base';
 import DisableableButton from '../../components/DisablebleButton';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
-import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
@@ -55,21 +54,42 @@ const query = gql(`
                     reason
                     limit
                 }
+                screenings {
+                    status,
+                    invalidated
+                    appointment {
+                        id,
+                        title,
+                        description,
+                        start,
+                        override_meeting_link,
+                        duration,
+                        actionUrls {
+                            cancelUrl
+                            rescheduleUrl
+                        }
+                        appointmentType
+                    }
+                }
+                nextScreeningAppointment {
+                    start
+                    override_meeting_link
+                    actionUrls {
+                        cancelUrl
+                        rescheduleUrl
+                    }
+                }
             }
         }
     }
 `);
 
 const Matching: React.FC<Props> = () => {
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackPageView } = useMatomo();
     const { space, sizes, colors } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const toast = useToast();
-    const { data } = useQuery(query);
-
-    const [showEditModal, setShowEditModal] = useState<boolean>(false);
-    const [showCancelModal, setShowCancelModal] = useState<boolean>();
+    const { data, refetch } = useQuery(query);
 
     useEffect(() => {
         trackPageView({
@@ -77,34 +97,6 @@ const Matching: React.FC<Props> = () => {
         });
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
-
-    const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
-        gql(`
-            mutation PupilDeleteMatchRequest {
-                pupilDeleteMatchRequest
-            }
-        `),
-        { refetchQueries: [{ query }] }
-    );
-
-    const showCancelMatchRequestModal = useCallback(() => {
-        setShowCancelModal(true);
-    }, []);
-
-    const cancelRequest = useCallback(async () => {
-        setShowCancelModal(false);
-        trackEvent({
-            category: 'matching',
-            action: 'click-event',
-            name: 'Helfer Matching Anfrage löschen',
-            documentTitle: 'Helfer Matching',
-        });
-        const res = await cancelMatchRequest();
-        if (res.data?.pupilDeleteMatchRequest) {
-            toast.show({ description: t('matching.request.check.deleteSucess'), placement: 'top' });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data?.me?.pupil?.id]);
 
     const activeMatches = useMemo(() => {
         return data?.me?.pupil?.matches.filter((match) => match.dissolved === false);
@@ -140,6 +132,8 @@ const Matching: React.FC<Props> = () => {
     };
 
     const matchRequestCount = data?.me?.pupil?.openMatchRequestCount ?? 0;
+
+    const openScreening = data?.me.pupil?.screenings?.find((e) => ['pending', 'dispute'].includes(e.status) && !e.invalidated);
 
     return (
         <AsNavigationItem path="matching">
@@ -224,18 +218,18 @@ const Matching: React.FC<Props> = () => {
                                     <VStack space={space['0.5']}>
                                         <Flex direction="row" flexWrap="wrap">
                                             {(matchRequestCount &&
-                                                new Array(matchRequestCount)
-                                                    .fill('')
-                                                    .map((_, i) => (
-                                                        <OpenMatchRequest
-                                                            cancelLoading={cancelLoading}
-                                                            index={i}
-                                                            key={i}
-                                                            showCancelMatchRequestModal={showCancelMatchRequestModal}
-                                                            subjects={data?.me?.pupil?.subjectsFormatted || []}
-                                                            onEditRequest={() => setShowEditModal(true)}
-                                                        />
-                                                    ))) || <AlertMessage content={t('matching.request.check.noRequestsTutee')} />}
+                                                new Array(matchRequestCount).fill('').map((_, i) => (
+                                                    <OpenMatchRequest
+                                                        index={i}
+                                                        key={i}
+                                                        subjects={data?.me?.pupil?.subjectsFormatted || []}
+                                                        screening={openScreening}
+                                                        variant="pupil"
+                                                        onMatchRequestCancelled={() => {
+                                                            refetch();
+                                                        }}
+                                                    />
+                                                ))) || <AlertMessage content={t('matching.request.check.noRequestsTutee')} />}
                                         </Flex>
                                     </VStack>
                                 </VStack>
@@ -260,27 +254,6 @@ const Matching: React.FC<Props> = () => {
                             ),
                         },
                     ]}
-                />
-                <ConfirmationModal
-                    isOpen={!!showCancelModal}
-                    onOpenChange={setShowCancelModal}
-                    confirmButtonText={t('matching.request.check.deleteRequest')}
-                    headline={t('matching.request.check.deleteRequest')}
-                    description={t('matching.request.check.areyousuretodelete')}
-                    onConfirm={cancelRequest}
-                    variant="destructive"
-                />
-                <ConfirmationModal
-                    isOpen={!!showEditModal}
-                    onOpenChange={setShowEditModal}
-                    confirmButtonText={t('edit')}
-                    headline={t('matching.request.check.editRequest')}
-                    description={t('matching.request.check.editRequestDescription')}
-                    onConfirm={() =>
-                        navigate('/request-match', {
-                            state: { edit: true },
-                        })
-                    }
                 />
             </WithNavigation>
         </AsNavigationItem>

@@ -4,6 +4,7 @@ import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
 import { useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { pupilMatchRequestFlow, MatchRequestStep } from './util';
 
 interface MatchRequestForm {
@@ -25,6 +26,7 @@ interface MatchRequestForm {
     needScreening?: boolean;
     isCompleted?: boolean;
     isEdit?: boolean;
+    isAppointmentStepForced?: boolean;
 }
 
 interface MatchRequestContextValue {
@@ -102,10 +104,12 @@ const CREATE_PUPIL_MATCH_REQUEST_MUTATION = gql(`
 export const MatchRequestProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
     const { data, refetch, networkStatus } = useQuery(MATCH_REQUEST_INFO_QUERY, { notifyOnNetworkStatusChange: true });
-    const [meUpdate, { loading: isUpdating }] = useMutation(ME_UPDATE_MUTATION);
+    const [meUpdate] = useMutation(ME_UPDATE_MUTATION);
     const [createMatchRequest] = useMutation(CREATE_PUPIL_MATCH_REQUEST_MUTATION);
     const [values, setValues] = useState<MatchRequestForm>(emptyState);
     const currentStepIndex = values.currentStep ? pupilMatchRequestFlow.indexOf(values.currentStep) : -1;
+    const location = useLocation();
+    const isAppointmentStepForced = location.pathname.split('/').includes('screening-appointment');
 
     const getNextStepFrom = (step: MatchRequestStep) => {
         const currentIndex = pupilMatchRequestFlow.indexOf(step);
@@ -125,6 +129,9 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
     const hasOnlyOneSubject = values.subjects.length <= 1;
     const handleOnNext = async () => {
         if (currentStepIndex === -1 || !values.currentStep) return;
+        if (isAppointmentStepForced) {
+            handleOnChange({ currentStep: MatchRequestStep.bookScreeningAppointment, isCompleted: true });
+        }
         let nextStep = getNextStepFrom(values.currentStep);
 
         // ------------------------ Logic to determine which step to go to next based on the current values ------------------------
@@ -234,6 +241,9 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
                 form: {
                     ...values,
                     shouldSkipSubjectPriority: values.isNativeGermanSpeaker === false && ['<1', '1-2', '2-4'].includes(values.learningGermanSince!),
+                    isAppointmentStepForced: isAppointmentStepForced,
+                    currentStep: isAppointmentStepForced ? MatchRequestStep.bookScreeningAppointment : values.currentStep,
+                    isCompleted: isAppointmentStepForced && values.screeningAppointment ? true : values.isCompleted,
                 },
                 onFormChange: handleOnChange,
                 isLoading: isLoading,
