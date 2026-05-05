@@ -8,7 +8,7 @@ import { Alert } from '@/components/Alert';
 import { DateTime } from 'luxon';
 import i18next from '@/I18n';
 import ConfirmationModal from '@/modals/ConfirmationModal';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
@@ -43,6 +43,8 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
     const { trackEvent } = useMatomo();
     const [showCancelModal, setShowCancelModal] = useState(false);
     const [showEditModal, setShowEditModal] = useState(false);
+    const [showRescheduleModal, setShowRescheduleModal] = useState(false);
+    const [shouldReload, setShouldReload] = useState(false);
     const [cancelMatchRequest, { loading: isCancelling }] = useMutation(
         variant === 'pupil' ? CANCEL_PUPIL_MATCH_REQUEST_MUTATION : CANCEL_STUDENT_MATCH_REQUEST_MUTATION
     );
@@ -51,6 +53,20 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
         joinBeforeMinutes: 15,
         appointment: { start: screeningAppointment?.start!, duration: screeningAppointment?.duration! },
     });
+
+    useEffect(() => {
+        const onFocus = () => {
+            window.location.reload();
+        };
+
+        if (shouldReload) {
+            window.addEventListener('focus', onFocus);
+        }
+
+        return () => {
+            window.removeEventListener('focus', onFocus);
+        };
+    }, [shouldReload]);
 
     const handleOnCancel = async () => {
         trackEvent({
@@ -93,11 +109,7 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                                         variant="ghost-light"
                                         className="text-primary w-full lg:w-auto lg:ml-auto"
                                         leftIcon={<IconEdit size={18} />}
-                                        onClick={() => {
-                                            if (screeningAppointment?.actionUrls?.rescheduleUrl) {
-                                                window.open(screeningAppointment.actionUrls.rescheduleUrl, '_blank');
-                                            }
-                                        }}
+                                        onClick={() => setShowRescheduleModal(true)}
                                     >
                                         {t('changeAppointment')}
                                     </Button>
@@ -148,7 +160,7 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                         <Button
                             disabled={isCancelling}
                             reasonDisabled={t('reasonsDisabled.loading')}
-                            onClick={() => setShowEditModal(true)}
+                            onClick={() => (screeningAppointment ? setShowEditModal(true) : navigate('/request-match', { state: { edit: true } }))}
                             variant="optional-dark"
                             leftIcon={<IconEdit size={16} />}
                             size="sm"
@@ -188,21 +200,38 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                 onOpenChange={setShowCancelModal}
                 confirmButtonText={t('matching.request.check.deleteRequest')}
                 headline={t('matching.request.check.deleteRequest')}
-                description={t('matching.request.check.areyousuretodelete')}
+                description={t(
+                    screeningAppointment
+                        ? 'matching.request.check.areYouSureToDelete.withAppointment'
+                        : 'matching.request.check.areYouSureToDelete.withoutAppointment'
+                )}
                 onConfirm={handleOnCancel}
-                variant="destructive"
             />
             <ConfirmationModal
                 isOpen={!!showEditModal}
                 onOpenChange={setShowEditModal}
                 confirmButtonText={t('edit')}
                 headline={t('matching.request.check.editRequest')}
-                description={t('matching.request.check.editRequestDescription')}
+                description={t('matching.request.check.editRequestDescription.withAppointment')}
                 onConfirm={() =>
                     navigate('/request-match', {
                         state: { edit: true },
                     })
                 }
+            />
+            <ConfirmationModal
+                isOpen={!!showRescheduleModal}
+                onOpenChange={setShowRescheduleModal}
+                confirmButtonText={t('changeAppointment')}
+                headline={t('matching.request.check.rescheduleAppointmentModal.title')}
+                description={t('matching.request.check.rescheduleAppointmentModal.description')}
+                onConfirm={() => {
+                    if (screeningAppointment?.actionUrls?.rescheduleUrl) {
+                        window.open(screeningAppointment.actionUrls.rescheduleUrl, '_blank');
+                        setShowRescheduleModal(false);
+                        setShouldReload(true);
+                    }
+                }}
             />
         </>
     );

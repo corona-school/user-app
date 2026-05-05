@@ -1564,14 +1564,24 @@
                 "removeRequest": "Anfrage zurücknehmen",
                 "editRequest": "Anfrage bearbeiten",
                 "deleteRequest": "Anfrage löschen",
-                "areyousuretodelete": "Möchtest du die Anfrage wirklich löschen?",
+                "areYouSureToDelete": {
+                    "withAppointment": "Deine 1:1 Anfrage und der Gesprächs-Termin werden gelöscht.",
+                    "withoutAppointment": "Möchtest du die Anfrage wirklich löschen?"
+                },
                 "deleteSucess": "Die Anfrage wurde gelöscht",
                 "noMatches": "Du hast (noch) keine Lernpartner:in.",
                 "noDissolvedMatches": "Du hast keine aufgelösten Lernpaare.",
-                "editRequestDescription": " Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.",
+                "editRequestDescription": {
+                    "withAppointment": "Kein Problem. Der Termin bleibt trotzdem für dich.",
+                    "withoutAppointment": "Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben."
+                },
                 "noRequestsTutee": "Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.",
                 "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf den 'Lernpaar bilden'-Button.",
-                "resolveMatch": "Das Lernpaar wurde aufgelöst"
+                "resolveMatch": "Das Lernpaar wurde aufgelöst",
+                "rescheduleAppointmentModal": {
+                    "title": "Du hast doch keine Zeit?",
+                    "description": "Danke, dass du uns Bescheid gibst.\nSuch dir einen neuen Termin aus der dir besser passt."
+                }
             },
             "updateData": "Deine Daten wurden aktualisiert",
             "daz": {

@@ -1459,11 +1459,21 @@
                 "removeRequest": "Withdraw request",
                 "editRequest": "Edit request",
                 "deleteRequest": "Delete request",
-                "areyousuretodelete": "Do you really want to delete the request?",
+                "areYouSureToDelete": {
+                    "withAppointment": "Your 1:1 request and the scheduled appointment will be deleted.",
+                    "withoutAppointment": "Are you sure you want to delete the request?"
+                },
+                "editRequestDescription": {
+                    "withAppointment": "No problem. The appointment will still remain for you.",
+                    "withoutAppointment": "If you change your details, your waiting time will not be affected. We will notify you by email as soon as it is your turn and we have found a suitable learning partner for you."
+                },
+                "rescheduleAppointmentModal": {
+                    "title": "You don’t have time after all?",
+                    "description": "Thanks for letting us know.\nChoose a new appointment that suits you better."
+                },
                 "deleteSucess": "The request has been deleted",
                 "noMatches": "You do not (yet) have a learning partner.",
                 "noDissolvedMatches": "You have no resolved learning pairs.",
-                "editRequestDescription": " If you change your details, your waiting time will not change. We will inform you by email as soon as it is your turn and we have found a suitable learning partner for you.",
                 "noRequestsTutee": "We are not looking for a learning partner for you right now.",
                 "noRequestsTutor": "We are not currently looking for a new/further learning partner for you. If you would like to be connected with a:r (further) pupil to support them, click on the 'Create learning pair' button.",
                 "resolveMatch": "The learning pair was dissolved"

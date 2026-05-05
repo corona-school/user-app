@@ -1459,11 +1459,21 @@
                 "removeRequest": "Talebi geri çekin",
                 "editRequest": "Talebi düzenle",
                 "deleteRequest": "Talebi sil",
-                "areyousuretodelete": "Talebi gerçekten silmek istiyor musunuz?",
+                "areYouSureToDelete": {
+                    "withAppointment": "1:1 talebiniz ve planlanan randevu silinecektir.",
+                    "withoutAppointment": "Talebi silmek istediğinizden emin misiniz?"
+                },
+                "editRequestDescription": {
+                    "withAppointment": "Sorun değil. Randevu yine de sizin için korunacaktır.",
+                    "withoutAppointment": "Bilgilerinizi değiştirirseniz bekleme süreniz etkilenmez. Sıranız geldiğinde ve sizin için uygun bir öğrenme partneri bulduğumuzda sizi e-posta ile bilgilendireceğiz."
+                },
+                "rescheduleAppointmentModal": {
+                    "title": "Yine de vaktiniz yok mu?",
+                    "description": "Bize haber verdiğiniz için teşekkürler.\nSize daha uygun yeni bir randevu seçin."
+                },
                 "deleteSucess": "Talep silindi",
                 "noMatches": "(Henüz) bir öğrenme ortağınız yok.",
                 "noDissolvedMatches": "Dağıtılmış öğrenme çiftin yok.",
-                "editRequestDescription": " Bilgilerinizi değiştirirseniz bekleme süreniz değişmeyecektir. Sıra size geldiğinde ve sizin için uygun bir öğrenim ortağı bulduğumuzda sizi e-posta ile bilgilendireceğiz.",
                 "noRequestsTutee": "Şu anda sizin için bir öğrenme ortağı aramıyoruz.",
                 "noRequestsTutor": "Şu anda sizin için yeni/daha ileri bir öğrenim ortağı aramıyoruz. Bir (başka) öğrenciye destek olmak için onunla bağlantı kurmak istiyorsanız, 'Öğrenme çifti oluştur' düğmesine tıklayın.",
                 "resolveMatch": "Öğrenme çifti dağıtıldı"
