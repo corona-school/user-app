@@ -117,16 +117,14 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                                 variant="success"
                                 className="border border-solid border-green-300 w-full mb-4 flex-col items-center lg:flex-row"
                             >
-                                <div className="flex flex-col flex-1">
-                                    <Typography variant="subtle" className="text-primary mb-1">
-                                        {t('matching.shared.appointmentBookedHint')}
-                                    </Typography>
-                                    <Typography variant="subtle" className="font-bold text-primary">
-                                        {screeningAppointment &&
-                                            DateTime.fromISO(screeningAppointment.start).toFormat('EEEE, dd. MMMM t', { locale: i18next.language })}{' '}
-                                        {t('clock')}
-                                    </Typography>
-                                </div>
+                                <Typography as="span" variant="subtle" className="text-primary block mb-1">
+                                    {t('matching.shared.appointmentBookedHint')}
+                                </Typography>
+                                <Typography as="span" variant="subtle" className="font-bold text-primary block">
+                                    {screeningAppointment &&
+                                        DateTime.fromISO(screeningAppointment.start).toFormat('EEEE, dd. MMMM t', { locale: i18next.language })}{' '}
+                                    {t('clock')}
+                                </Typography>
                             </Alert>
                         ) : (
                             <Alert
@@ -134,14 +132,12 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                                 variant="destructive"
                                 className="border border-solid border-red-400 w-full mb-4"
                             >
-                                <div className="flex flex-col flex-1">
-                                    <Typography variant="subtle" className="text-primary mb-1 font-bold">
-                                        {t('matching.shared.needsToBookAppointmentHint')}
-                                    </Typography>
-                                    <Typography variant="subtle" className="text-primary">
-                                        {t('matching.shared.needsToBookAppointmentDesc')}
-                                    </Typography>
-                                </div>
+                                <Typography as="span" variant="subtle" className="text-primary block mb-1 font-bold">
+                                    {t('matching.shared.needsToBookAppointmentHint')}
+                                </Typography>
+                                <Typography as="span" variant="subtle" className="text-primary block">
+                                    {t('matching.shared.needsToBookAppointmentDesc')}
+                                </Typography>
                             </Alert>
                         )}
                     </div>
