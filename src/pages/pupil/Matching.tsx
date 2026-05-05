@@ -71,6 +71,7 @@ const query = gql(`
                         appointmentType
                     }
                 }
+                needScreening
             }
         }
     }
@@ -220,6 +221,7 @@ const Matching: React.FC<Props> = () => {
                                                         onMatchRequestCancelled={() => {
                                                             refetch();
                                                         }}
+                                                        needsScreening={data?.me?.pupil?.needScreening || false}
                                                     />
                                                 ))) || <AlertMessage content={t('matching.request.check.noRequestsTutee')} />}
                                         </Flex>

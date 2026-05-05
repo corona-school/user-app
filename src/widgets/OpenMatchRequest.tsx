@@ -35,9 +35,10 @@ interface OpenMatchRequestProps {
     screening?: Partial<PupilScreening> | null;
     onMatchRequestCancelled?: () => void;
     variant: 'pupil' | 'student';
+    needsScreening?: boolean;
 }
 
-const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestCancelled }: OpenMatchRequestProps) => {
+const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestCancelled, needsScreening }: OpenMatchRequestProps) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { trackEvent } = useMatomo();
@@ -96,51 +97,53 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                         <Typography className="font-bold">{t('matching.shared.subjects')}</Typography>
                         {subjects && <SubjectList subjects={subjects} />}
                     </div>
-                    <div className="mt-3">
-                        {screeningAppointment ? (
-                            <Alert
-                                icon={
-                                    <div className="bg-green-500 rounded-full w-[24px] h-[24px] inline-flex justify-center items-center mx-auto mr-1">
-                                        <IconCheck size={12} className="stroke-white !stroke-[2px]" />
-                                    </div>
-                                }
-                                rightElement={
-                                    <Button
-                                        variant="ghost-light"
-                                        className="text-primary w-full lg:w-auto lg:ml-auto"
-                                        leftIcon={<IconEdit size={18} />}
-                                        onClick={() => setShowRescheduleModal(true)}
-                                    >
-                                        {t('changeAppointment')}
-                                    </Button>
-                                }
-                                variant="success"
-                                className="border border-solid border-green-300 w-full mb-4 flex-col items-center lg:flex-row"
-                            >
-                                <Typography as="span" variant="subtle" className="text-primary block mb-1">
-                                    {t('matching.shared.appointmentBookedHint')}
-                                </Typography>
-                                <Typography as="span" variant="subtle" className="font-bold text-primary block">
-                                    {screeningAppointment &&
-                                        DateTime.fromISO(screeningAppointment.start).toFormat('EEEE, dd. MMMM t', { locale: i18next.language })}{' '}
-                                    {t('clock')}
-                                </Typography>
-                            </Alert>
-                        ) : (
-                            <Alert
-                                icon={<IconAlertTriangleFilled size={24} className="text-red-400" />}
-                                variant="destructive"
-                                className="border border-solid border-red-400 w-full mb-4"
-                            >
-                                <Typography as="span" variant="subtle" className="text-primary block mb-1 font-bold">
-                                    {t('matching.shared.needsToBookAppointmentHint')}
-                                </Typography>
-                                <Typography as="span" variant="subtle" className="text-primary block">
-                                    {t('matching.shared.needsToBookAppointmentDesc')}
-                                </Typography>
-                            </Alert>
-                        )}
-                    </div>
+                    {needsScreening && (
+                        <div className="mt-3">
+                            {screeningAppointment ? (
+                                <Alert
+                                    icon={
+                                        <div className="bg-green-500 rounded-full w-[24px] h-[24px] inline-flex justify-center items-center mx-auto mr-1">
+                                            <IconCheck size={12} className="stroke-white !stroke-[2px]" />
+                                        </div>
+                                    }
+                                    rightElement={
+                                        <Button
+                                            variant="ghost-light"
+                                            className="text-primary w-full lg:w-auto lg:ml-auto"
+                                            leftIcon={<IconEdit size={18} />}
+                                            onClick={() => setShowRescheduleModal(true)}
+                                        >
+                                            {t('changeAppointment')}
+                                        </Button>
+                                    }
+                                    variant="success"
+                                    className="border border-solid border-green-300 w-full mb-4 flex-col items-center lg:flex-row"
+                                >
+                                    <Typography as="span" variant="subtle" className="text-primary block mb-1">
+                                        {t('matching.shared.appointmentBookedHint')}
+                                    </Typography>
+                                    <Typography as="span" variant="subtle" className="font-bold text-primary block">
+                                        {screeningAppointment &&
+                                            DateTime.fromISO(screeningAppointment.start).toFormat('EEEE, dd. MMMM t', { locale: i18next.language })}{' '}
+                                        {t('clock')}
+                                    </Typography>
+                                </Alert>
+                            ) : (
+                                <Alert
+                                    icon={<IconAlertTriangleFilled size={24} className="text-red-400" />}
+                                    variant="destructive"
+                                    className="border border-solid border-red-400 w-full mb-4"
+                                >
+                                    <Typography as="span" variant="subtle" className="text-primary block mb-1 font-bold">
+                                        {t('matching.shared.needsToBookAppointmentHint')}
+                                    </Typography>
+                                    <Typography as="span" variant="subtle" className="text-primary block">
+                                        {t('matching.shared.needsToBookAppointmentDesc')}
+                                    </Typography>
+                                </Alert>
+                            )}
+                        </div>
+                    )}
                     <div className="flex flex-col gap-y-3 lg:flex-row lg:gap-x-3">
                         <Button
                             disabled={isCancelling}
@@ -164,7 +167,7 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                         >
                             {t('matching.request.check.editRequest')}
                         </Button>
-                        {!screeningAppointment && (
+                        {!screeningAppointment && needsScreening && (
                             <Button
                                 disabled={isCancelling}
                                 reasonDisabled={t('reasonsDisabled.loading')}
@@ -176,7 +179,7 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                                 {t('bookAppointment')}
                             </Button>
                         )}
-                        {screeningAppointment && (
+                        {screeningAppointment && needsScreening && (
                             <Button
                                 disabled={!canStartMeeting}
                                 reasonDisabled={`${t('requireScreening.appointment.joinMeetingHint', { minutes: 15 })}`}
