@@ -1396,7 +1396,13 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Репетитор:в, руководитель курса",
             "appointmentsHeadline": "Даты",
-            "createAppointment": "Назначить встречу"
+            "createAppointment": "Назначить встречу",
+            "bookAppointment": "Записаться на прием",
+            "joinMeeting": "Запустить Zoom",
+            "changeAppointment": "Изменить дату",
+            "appointmentBookedHint": "Договорились о консультации с репетитором в формате 1:1:",
+            "needsToBookAppointmentHint": "Записаться на индивидуальную консультацию:",
+            "needsToBookAppointmentDesc": "Это важно при поиске партнера по обучению"
         },
         "blocker": {
             "header": "Поддержка обучения",
@@ -2796,5 +2802,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "Записаться на прием",
+    "changeAppointment": "Изменить дату",
+    "joinZoomMeeting": "Запустить Zoom"
 }

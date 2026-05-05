@@ -1396,7 +1396,13 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Tutor, Course leader",
             "appointmentsHeadline": "Lectures",
-            "createAppointment": "Create lecture"
+            "createAppointment": "Create lecture",
+            "bookAppointment": "lecture ",
+            "joinMeeting": "Start Zoom",
+            "changeAppointment": "change lecture",
+            "appointmentBookedHint": "One-on-one tutoring session scheduled:",
+            "needsToBookAppointmentHint": "Schedule a one-on-one tutoring session:",
+            "needsToBookAppointmentDesc": "This is important when looking for a study partner"
         },
         "blocker": {
             "header": "Learning support",
@@ -2792,5 +2798,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "lecture ",
+    "changeAppointment": "change lecture",
+    "joinZoomMeeting": "Start Zoom"
 }

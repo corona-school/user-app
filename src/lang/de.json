@@ -19,6 +19,9 @@
     "close": "Schließen",
     "moreInfos": "Mehr Infos",
     "optional": "Optional",
+    "bookAppointment": "Termin buchen",
+    "changeAppointment": "Termin ändern",
+    "joinZoomMeeting": "Zoom starten",
     "weekdays": {
         "monday": "Montag",
         "tuesday": "Dienstag",
@@ -1482,7 +1485,13 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Tutor:in, Kursleiter:in",
             "appointmentsHeadline": "Termine",
-            "createAppointment": "Termin erstellen"
+            "createAppointment": "Termin erstellen",
+            "bookAppointment": "Termin buchen",
+            "joinMeeting": "Zoom starten",
+            "changeAppointment": "Termin ändern",
+            "appointmentBookedHint": "1:1 Nachhilfe-Gespräch vereinbart:",
+            "needsToBookAppointmentHint": "1:1 Nachhilfe-Gespräch vereinbaren:",
+            "needsToBookAppointmentDesc": "Das ist wichtig, um nach einem Lernpartner zu suchen"
         },
         "availability": {
             "title": "Mögliche Zeitfenster",

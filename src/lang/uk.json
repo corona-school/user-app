@@ -1396,7 +1396,13 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Викладач, керівник курсу",
             "appointmentsHeadline": "Дати",
-            "createAppointment": "Створити зустріч"
+            "createAppointment": "Створити зустріч",
+            "bookAppointment": "Забронювати зустріч",
+            "joinMeeting": "Запустити Zoom",
+            "changeAppointment": "Дата зміни",
+            "appointmentBookedHint": "Домовлено про індивідуальне заняття:",
+            "needsToBookAppointmentHint": "Домовитися про індивідуальне заняття:",
+            "needsToBookAppointmentDesc": "Це важливо для пошуку партнера для навчання"
         },
         "blocker": {
             "header": "Підтримка навчання",
@@ -2796,5 +2802,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "Забронювати зустріч",
+    "changeAppointment": "Дата зміни",
+    "joinZoomMeeting": "Запустити Zoom"
 }

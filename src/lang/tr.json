@@ -1396,7 +1396,13 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Eğitmen, Kurs lideri",
             "appointmentsHeadline": "Tarihler",
-            "createAppointment": "Randevu oluştur"
+            "createAppointment": "Randevu oluştur",
+            "bookAppointment": "Randevu al",
+            "joinMeeting": "Zoom'u başlat",
+            "changeAppointment": "Tarih değiştir",
+            "appointmentBookedHint": "1:1 özel ders görüşmesi ayarlandı:",
+            "needsToBookAppointmentHint": "1:1 özel ders görüşmesi ayarlayın:",
+            "needsToBookAppointmentDesc": "Bu, bir çalışma arkadaşı aramak için önemlidir"
         },
         "blocker": {
             "header": "Öğrenme desteği",
@@ -2788,5 +2794,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "Randevu al",
+    "changeAppointment": "Tarih değiştir",
+    "joinZoomMeeting": "Zoom'u başlat"
 }

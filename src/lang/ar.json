@@ -1392,7 +1392,13 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "مدرس ، مدرب",
             "appointmentsHeadline": "التواريخ",
-            "createAppointment": "إنشاء موعد"
+            "createAppointment": "إنشاء موعد",
+            "bookAppointment": "موعد ",
+            "joinMeeting": "بدء التكبير",
+            "changeAppointment": "تغيير موعد التغيير",
+            "appointmentBookedHint": "تم تحديد موعد لجلسة دروس خصوصية فردية:",
+            "needsToBookAppointmentHint": "تحديد موعد لجلسة دروس خصوصية فردية:",
+            "needsToBookAppointmentDesc": "هذا أمر مهم عند البحث عن شريك في التعلم"
         },
         "blocker": {
             "header": "دعم التعلم",
@@ -2784,5 +2790,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "موعد ",
+    "changeAppointment": "تغيير موعد التغيير",
+    "joinZoomMeeting": "بدء التكبير"
 }
