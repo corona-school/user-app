@@ -71,14 +71,6 @@ const query = gql(`
                         appointmentType
                     }
                 }
-                nextScreeningAppointment {
-                    start
-                    override_meeting_link
-                    actionUrls {
-                        cancelUrl
-                        rescheduleUrl
-                    }
-                }
             }
         }
     }
