@@ -2,14 +2,13 @@ import { Alert } from '@/components/Alert';
 import { Button } from '@/components/Button';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { MatchRequestStep } from '@/components/match-request/MatchRequestStep';
-import { Modal, ModalTitle } from '@/components/Modal';
 import { Typography } from '@/components/Typography';
 import { createPupilScreeningLink } from '@/helper/screening-helper';
 import { useUser } from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { IconCalendar, IconInfoCircleFilled, IconTimeDuration10, IconAlertTriangleFilled, IconBulbFilled } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
-import { InlineWidget, useCalendlyEventListener } from 'react-calendly';
+import { PopupModal, useCalendlyEventListener } from 'react-calendly';
 import { useTranslation } from 'react-i18next';
 import { useMatchRequestForm } from './useMatchRequestForm';
 
@@ -124,37 +123,24 @@ export const BookScreeningAppointment = () => {
                 >
                     {t('matching.wizard.pupil.bookScreeningAppointment.bookAppointment')}
                 </Button>
-                <Modal
-                    isOpen={isCalendarOpen}
-                    onOpenChange={(open) => setIsCalendarOpen(open)}
-                    className="p-0 bg-transparent w-[90%] h-full max-w-[90%] border-none shadow-none"
-                    classes={{ closeIcon: 'text-white p-3 [&>svg]:h-6 [&>svg]:w-6' }}
-                >
-                    <ModalTitle className="sr-only">Kalender</ModalTitle>
-                    {isCalendarLoading && (
+                <PopupModal
+                    rootElement={document.getElementById('root') as HTMLElement}
+                    url={createPupilScreeningLink({
+                        isFirstScreening: false,
+                        firstName: firstname,
+                        lastName: lastname,
+                        email: email,
+                    })}
+                    open={isCalendarOpen}
+                    onModalClose={() => setIsCalendarOpen(false)}
+                    pageSettings={{ primaryColor: '#2A4A50', textColor: '#000000' }}
+                    prefill={{ name: `${firstname} ${lastname}` }}
+                    LoadingSpinner={() => (
                         <div className="absolute inset-0 flex">
-                            <CenterLoadingSpinner className="text-white" />
+                            <CenterLoadingSpinner />
                         </div>
                     )}
-                    {!isLoading && (
-                        <InlineWidget
-                            url={createPupilScreeningLink({
-                                isFirstScreening: false,
-                                firstName: firstname,
-                                lastName: lastname,
-                                email: email,
-                            })}
-                            styles={{ width: '100%', height: '100%', opacity: isCalendarLoading ? 0 : 1 }}
-                            pageSettings={{ primaryColor: '#2A4A50', textColor: '#000000' }}
-                            prefill={{ name: `${firstname} ${lastname}` }}
-                            LoadingSpinner={() => (
-                                <div className="absolute inset-0 flex">
-                                    <CenterLoadingSpinner />
-                                </div>
-                            )}
-                        />
-                    )}
-                </Modal>
+                />
             </div>
         </MatchRequestStep>
     );
