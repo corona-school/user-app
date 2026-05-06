@@ -37,11 +37,20 @@ const GET_COOPERATION_LIST = gql(`
     }    
 `);
 
-export const useCooperations = () => {
+interface UseCooperationArgs {
+    skipPendingCooperationStudents?: boolean;
+    skipCooperationStudents?: boolean;
+}
+
+export const useCooperations = ({ skipPendingCooperationStudents = false, skipCooperationStudents = false }: UseCooperationArgs = {}) => {
     const roles = useRoles();
     const isScreener = roles.includes('STUDENT_SCREENER');
-    const { data: cooperationStudents, refetch: refetchCooperationStudents } = useQuery(GET_COOPERATION_STUDENTS_QUERY, { skip: !isScreener });
-    const { data: pendingCooperationStudentsCountData } = useQuery(GET_PENDING_COOPERATION_STUDENTS_COUNT_QUERY, { skip: !isScreener });
+    const { data: cooperationStudents, refetch: refetchCooperationStudents } = useQuery(GET_COOPERATION_STUDENTS_QUERY, {
+        skip: !isScreener || skipCooperationStudents,
+    });
+    const { data: pendingCooperationStudentsCountData } = useQuery(GET_PENDING_COOPERATION_STUDENTS_COUNT_QUERY, {
+        skip: !isScreener || skipPendingCooperationStudents,
+    });
     const { data: cooperationListData } = useQuery(GET_COOPERATION_LIST, { skip: !isScreener });
 
     return {

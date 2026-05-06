@@ -7,7 +7,7 @@ import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { TEST_STUDENT_ID } from '@/config';
 import { gql } from '@/gql';
-import { Gender, Student_State_Enum } from '@/gql/graphql';
+import { Gender, RegistrationSource, Student_State_Enum } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { useRoles } from '@/hooks/useApollo';
 import { StudentForScreening } from '@/types';
@@ -29,6 +29,7 @@ import { FormalEducationEnum } from '@/components/FormalEducationSelector';
 import { combineSpecialExperience, SpecialTeachingExperienceEnum, splitSpecialExperience } from '@/components/SpecialTeachingExperienceSelector';
 import { EditSpecialTeachingExperience } from '@/widgets/screening/EdiSpecialTeachingExperienceModal';
 import { EditTeachingExperienceLevelModal } from '@/widgets/screening/EditTeachingExperienceLevel';
+import { useCooperations } from '../useCooperations';
 
 interface PersonalDetailsProps {
     student: StudentForScreening;
@@ -66,6 +67,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [zipCodeError, setZipCodeError] = useState('');
     const [jobStatus, setJobStatus] = useState(student.jobStatus ?? undefined);
     const [formalEducation, setFormalEducation] = useState(student.formalEducation ?? undefined);
+    const [cooperationID, setCooperationID] = useState(student.cooperationID ?? undefined);
     const [specialTeachingExperience, setSpecialTeachingExperience] = useState({
         selectValues: combinedSpecialExperience.specialTeachingExperience,
         freeTextValue: combinedSpecialExperience.freeText,
@@ -78,6 +80,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
 
     const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
+    const { cooperations } = useCooperations({ skipCooperationStudents: true, skipPendingCooperationStudents: true });
 
     useEffect(() => {
         if (!location || location === Student_State_Enum.Other) return;
@@ -147,6 +150,8 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             specialTeachingExperience.freeTextValue,
                             teachingExperienceLevel
                         ),
+                        cooperationId: cooperationID ?? null,
+                        registrationSource: cooperationID ? RegistrationSource.Cooperation : RegistrationSource.Normal,
                     },
                 },
             });
@@ -234,6 +239,15 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                         <ButtonField className="min-w-full" label="Ort" onClick={() => setShowEditLocation(true)}>
                             {t(asTranslationKey(`lernfair.states.${location}`))}
                         </ButtonField>
+                    </div>
+                    <div className="flex flex-col gap-y-2 mb-6">
+                        <Label>Kooperation</Label>
+                        <SelectInput
+                            className="w-[200px]"
+                            value={cooperationID?.toString() ?? ''}
+                            onValueChange={(value) => setCooperationID(value ? parseInt(value) : undefined)}
+                            options={cooperations.map((c) => ({ value: c.id.toString(), label: c.name }))}
+                        />
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-6">
