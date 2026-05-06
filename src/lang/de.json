@@ -1282,7 +1282,7 @@
             "noMatching": "Du hast gerade kein aktives Lernpaar",
             "requestCreated": "Anfrage erstellt am:",
             "waitingTimeInfo": "Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in zu längeren Wartezeiten kommt. Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.",
-            "removeRequest": "Anfrage zurücknehmen"
+            "removeRequest": "Anfrage löschen"
         },
         "helpers": {
             "headlines": {
@@ -1346,7 +1346,7 @@
             "title": "Auf der Warteliste ⏳",
             "subtitle": "Neue:r Lernpartner:in",
             "content": "Deine Anfrage wurde am {{date}} gestellt. Wir informieren dich per E-Mail wenn du auf der Warteliste dran bist. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
-            "buttons": ["Kurse ansehen", "Anfrage zurücknehmen"]
+            "buttons": ["Kurse ansehen", "Anfrage löschen"]
         },
         "interestconfirmation": {
             "title": "Bedarf aktuell? 🤷🏽",
@@ -1528,10 +1528,10 @@
         },
         "pending": {
             "modal": {
-                "title": "Anfrage zurücknehmen",
+                "title": "Anfrage löschen",
                 "description": "Möchtest du die Anfrage wirklich löschen? Damit verlierst du deinen Platz in der Warteschlange und wir werden deinen Platz an andere Schüler:innen vergeben.",
                 "buttons": {
-                    "dissolve": "Anfrage zurücknehmen",
+                    "dissolve": "Anfrage löschen",
                     "nothing": "Keine Angabe machen"
                 }
             }
@@ -1562,7 +1562,7 @@
                     "tab3": "Aufgelöste Lernpaare"
                 },
                 "request": "Anfrage",
-                "removeRequest": "Anfrage zurücknehmen",
+                "removeRequest": "Anfrage löschen",
                 "editRequest": "Anfrage bearbeiten",
                 "deleteRequest": "Anfrage löschen",
                 "areYouSureToDelete": {
