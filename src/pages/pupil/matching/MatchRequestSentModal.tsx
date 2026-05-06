@@ -37,19 +37,19 @@ export const MatchRequestSentModal = ({ screeningAppointment, isOpen }: MatchReq
                             <IconCheck size={30} className="stroke-white !stroke-[2px]" />
                         </div>
                         <Typography variant="h3" className="mb-5 text-center">
-                            {t('registration.steps.appointmentDetails.title')}
+                            {t('matching.request.check.creationSuccessModal.title')}
                         </Typography>
                         <Typography variant="h5" className="text-center mb-5 whitespace-pre-line text-balance">
                             {screeningAppointment && DateTime.fromJSDate(screeningAppointment).toFormat('EEEE, dd. MMMM', { locale: i18next.language })} {'\n'}
                             {screeningAppointment && DateTime.fromJSDate(screeningAppointment).toFormat('t', { locale: i18next.language })} {t('clock')}
                         </Typography>
                         <Typography className="text-center max-w-[290px] mx-auto mb-8">
-                            Nach dem Gespräch geht die Suche nach einem Lernpartner für dich sofort los!
+                            {t('matching.request.check.creationSuccessModal.description')}
                         </Typography>
                     </div>
                     <ModalFooter className="lg:justify-center">
                         <Button className="w-full lg:w-fit" onClick={() => handleOnOpenChange(false)}>
-                            {t('done')}
+                            {t('matching.request.check.creationSuccessModal.button')}
                         </Button>
                     </ModalFooter>
                 </>

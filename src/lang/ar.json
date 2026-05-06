@@ -376,10 +376,10 @@
                 "pupil": {
                     "max-dissolved-matches": "لا يمكنك طلب زوج دراسة لأن لديك بالفعل عددا كبيرا جدا من أزواج الدراسة.",
                     "not-tutee": "لا يمكنك طلب زوج تعليمي لأنك غير مسجل للحصول على دعم التعلم.",
-                    "max-requests": "أنت بالفعل على قائمة الانتظار.",
                     "deactivated": "تم إغلاق التسجيل للحصول على دعم التعلم 1: 1 مؤقتا بسبب ارتفاع الطلب. إذا كنت قد قدمت بالفعل طلبا للحصول على دعم التعلم ، فسنتصل بك برسالة بريد إلكتروني في المستقبل القريب لمناقشة كيفية المتابعة. في غضون ذلك ، لا تتردد في الاستفادة من عروضنا الأخرى. ",
                     "deactivated_tooltip": "التسجيل مغلق مؤقتاً بسبب ارتفاع الطلب على التسجيل.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
+                    "max-requests": "لا يمكنك إنشاء طلب آخر."
                 }
             }
         },
@@ -1398,7 +1398,8 @@
             "changeAppointment": "تغيير موعد التغيير",
             "appointmentBookedHint": "تم تحديد موعد لجلسة دروس خصوصية فردية:",
             "needsToBookAppointmentHint": "تحديد موعد لجلسة دروس خصوصية فردية:",
-            "needsToBookAppointmentDesc": "هذا أمر مهم عند البحث عن شريك في التعلم"
+            "needsToBookAppointmentDesc": "هذا أمر مهم عند البحث عن شريك في التعلم",
+            "yourMatchRequest": "طلب شريك تعليمي فردي"
         },
         "blocker": {
             "header": "دعم التعلم",
@@ -1464,15 +1465,20 @@
                     "withoutAppointment": "إذا قمت بتغيير بياناتك، فلن يتغير وقت الانتظار. سنقوم بإعلامك عبر البريد الإلكتروني بمجرد أن يحين دورك ونجد لك شريك تعلم مناسب."
                 },
                 "rescheduleAppointmentModal": {
-                    "title": "ليس لديك وقت بعد الآن؟",
-                    "description": "شكرًا لإبلاغنا.\nاختر موعدًا جديدًا يناسبك بشكل أفضل."
+                    "title": "تغيير موعد التغيير",
+                    "description": "يمكنك موعد دون أن تتعرض لأي عواقب سلبية. سيظل الطلب ساريًا وسيصبح فعالاً بمجرد أن نتواصل معك."
                 },
                 "deleteSucess": "تم حذف الطلب",
                 "noMatches": "ليس لديك (حتى الآن) أي شريك تعلُّم.",
                 "noDissolvedMatches": "ليس لديك شراكات  تعلم محلولة.",
                 "noRequestsTutee": "لا نبحث حالياً عن شريك تعلُّم .",
                 "noRequestsTutor": "نحن لا نبحث حاليًا عن شريك تعلُّم جديد أو إضافي شريك تعلُّم . إذا كنت ترغب في التواصل مع طالب أو طالبة (إضافي) لتقديم الدعم له أو لها، فاضغط علىشراكة تعلم ».",
-                "resolveMatch": "شراكة تعلم حل شراكة تعلم "
+                "resolveMatch": "شراكة تعلم حل شراكة تعلم ",
+                "creationSuccessModal": {
+                    "title": "تم إنشاء موعد !",
+                    "description": "بعد المحادثة، سيبدأ البحث عن شريك تعلم لك على الفور!",
+                    "button": "إلى ملخصي"
+                }
             },
             "daz": {
                 "heading": "الألمانية كلغة ثانية",

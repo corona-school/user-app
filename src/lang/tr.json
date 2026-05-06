@@ -376,10 +376,10 @@
                 "pupil": {
                     "max-dissolved-matches": "Bir öğrenim çifti talep edemezsiniz çünkü zaten çok fazla öğrenim çiftiniz olmuştur.",
                     "not-tutee": "Öğrenme desteği için kayıtlı olmadığınız için bir öğrenme çifti talep edemezsiniz.",
-                    "max-requests": "Zaten bekleme listesindesiniz.",
                     "deactivated": "Bire bir öğrenme desteği için kayıtlar yoğun talep nedeniyle geçici olarak kapatılmıştır. Öğrenme desteği için daha önce talepte bulunduysanız, sonraki adımları görüşmek üzere yakın gelecekte sizinle e-posta yoluyla iletişime geçeceğiz. Bu arada, lütfen diğer tekliflerimizden yararlanmaktan çekinmeyin. ",
                     "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
+                    "max-requests": "Başka bir talep oluşturamazsın."
                 }
             }
         },
@@ -1402,7 +1402,8 @@
             "changeAppointment": "Tarih değiştir",
             "appointmentBookedHint": "1:1 özel ders görüşmesi ayarlandı:",
             "needsToBookAppointmentHint": "1:1 özel ders görüşmesi ayarlayın:",
-            "needsToBookAppointmentDesc": "Bu, bir çalışma arkadaşı aramak için önemlidir"
+            "needsToBookAppointmentDesc": "Bu, bir çalışma arkadaşı aramak için önemlidir",
+            "yourMatchRequest": "1:1 öğrenme ortağı talebin"
         },
         "blocker": {
             "header": "Öğrenme desteği",
@@ -1468,15 +1469,20 @@
                     "withoutAppointment": "Bilgilerinizi değiştirirseniz bekleme süreniz etkilenmez. Sıranız geldiğinde ve sizin için uygun bir öğrenme partneri bulduğumuzda sizi e-posta ile bilgilendireceğiz."
                 },
                 "rescheduleAppointmentModal": {
-                    "title": "Yine de vaktiniz yok mu?",
-                    "description": "Bize haber verdiğiniz için teşekkürler.\nSize daha uygun yeni bir randevu seçin."
+                    "title": "Tarih değiştir",
+                    "description": "Randevuyu herhangi bir dezavantaj yaşamadan değiştirebilirsin. Talebin geçerliliğini korur ve seninle görüştükten sonra aktif hale gelir."
                 },
                 "deleteSucess": "Talep silindi",
                 "noMatches": "(Henüz) bir öğrenme ortağınız yok.",
                 "noDissolvedMatches": "Dağıtılmış öğrenme çiftin yok.",
                 "noRequestsTutee": "Şu anda sizin için bir öğrenme ortağı aramıyoruz.",
                 "noRequestsTutor": "Şu anda sizin için yeni/daha ileri bir öğrenim ortağı aramıyoruz. Bir (başka) öğrenciye destek olmak için onunla bağlantı kurmak istiyorsanız, 'Öğrenme çifti oluştur' düğmesine tıklayın.",
-                "resolveMatch": "Öğrenme çifti dağıtıldı"
+                "resolveMatch": "Öğrenme çifti dağıtıldı",
+                "creationSuccessModal": {
+                    "title": "Randevu oluşturuldu!",
+                    "description": "Görüşmeden sonra, sana uygun bir çalışma arkadaşı arayışımız hemen başlıyor!",
+                    "button": "Özet sayfama"
+                }
             },
             "daz": {
                 "heading": "İkinci dil olarak Almanca",

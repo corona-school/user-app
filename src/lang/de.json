@@ -456,7 +456,7 @@
                 "pupil": {
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
                     "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
-                    "max-requests": "Du bist bereits auf der Warteliste.",
+                    "max-requests": "Du kannst keine weitere Anfrage erstellen.",
                     "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
@@ -1491,7 +1491,8 @@
             "changeAppointment": "Termin ändern",
             "appointmentBookedHint": "1:1 Nachhilfe-Gespräch vereinbart:",
             "needsToBookAppointmentHint": "1:1 Nachhilfe-Gespräch vereinbaren:",
-            "needsToBookAppointmentDesc": "Das ist wichtig, um nach einem Lernpartner zu suchen"
+            "needsToBookAppointmentDesc": "Das ist wichtig, um nach einem Lernpartner zu suchen",
+            "yourMatchRequest": "Deine 1:1 Lernpartner Anfrage"
         },
         "availability": {
             "title": "Mögliche Zeitfenster",
@@ -1579,8 +1580,13 @@
                 "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf den 'Lernpaar bilden'-Button.",
                 "resolveMatch": "Das Lernpaar wurde aufgelöst",
                 "rescheduleAppointmentModal": {
-                    "title": "Du hast doch keine Zeit?",
-                    "description": "Danke, dass du uns Bescheid gibst.\nSuch dir einen neuen Termin aus der dir besser passt."
+                    "title": "Termin ändern",
+                    "description": "Du kannst den Termin ändern, ohne dass du Nachteile hast. Die Anfrage bleibt bestehen und wird aktiv sobald wir mit dir gesprochen haben."
+                },
+                "creationSuccessModal": {
+                    "title": "Termin erstellt!",
+                    "description": "Nach dem Gespräch geht die Suche nach einem Lernpartner für dich sofort los!",
+                    "button": "Zu meiner Übersicht"
                 }
             },
             "updateData": "Deine Daten wurden aktualisiert",

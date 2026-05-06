@@ -376,10 +376,10 @@
                 "pupil": {
                     "max-dissolved-matches": "Вы не можете запросить учебную пару, так как у Вас уже было слишком много учебных пар.",
                     "not-tutee": "Вы не можете запросить учебную пару, так как не зарегистрированы для получения учебной поддержки.",
-                    "max-requests": "Вы уже находитесь в листе ожидания.",
                     "deactivated": "Регистрация на получение учебной поддержки 1:1 временно закрыта в связи с высоким спросом. Если вы уже подали заявку на получение учебной поддержки, мы свяжемся с вами по электронной почте в ближайшее время, чтобы обсудить дальнейшие шаги. Тем временем, пожалуйста, воспользуйтесь другими нашими предложениями. ",
                     "deactivated_tooltip": "Регистрация временно закрыта из-за высокого спроса.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
+                    "max-requests": "Ты не можешь создать новый запрос."
                 }
             }
         },
@@ -1402,7 +1402,8 @@
             "changeAppointment": "Изменить дату",
             "appointmentBookedHint": "Договорились о консультации с репетитором в формате 1:1:",
             "needsToBookAppointmentHint": "Записаться на индивидуальную консультацию:",
-            "needsToBookAppointmentDesc": "Это важно при поиске партнера по обучению"
+            "needsToBookAppointmentDesc": "Это важно при поиске партнера по обучению",
+            "yourMatchRequest": "Твой запрос на поиск партнера для индивидуальных занятий"
         },
         "blocker": {
             "header": "Поддержка обучения",
@@ -1468,15 +1469,20 @@
                     "withoutAppointment": "Если вы измените свои данные, время ожидания не изменится. Мы уведомим вас по электронной почте, как только подойдёт ваша очередь и мы найдём для вас подходящего партнёра для обучения."
                 },
                 "rescheduleAppointmentModal": {
-                    "title": "У вас всё-таки нет времени?",
-                    "description": "Спасибо, что сообщили нам.\nВыберите новое время, которое подходит вам лучше."
+                    "title": "Изменить дату",
+                    "description": "Ты можешь изменить дату без каких-либо последствий. Заявка останется в силе и вступит в силу, как только мы с тобой свяжемся."
                 },
                 "deleteSucess": "Запрос был удален",
                 "noMatches": "У тебя (пока) нет партнёр по обучению.",
                 "noDissolvedMatches": "У тебя нет разбитых пар для обучения.",
                 "noRequestsTutee": "Сейчас мы не ищемпартнёр по обучению тебя одному партнёр по обучению .",
                 "noRequestsTutor": "В данный момент мы не ищем партнёр по обучению тебя одному  партнёр по обучению . Если ты хочешь ученик с одному дополнительным) ученик , чтобы помочь ему, нажми кнопку «Создать пару для обучения».",
-                "resolveMatch": "Пара для совместного обучения была расформирована"
+                "resolveMatch": "Пара для совместного обучения была расформирована",
+                "creationSuccessModal": {
+                    "title": "Встреча создана!",
+                    "description": "После беседы поиск партнера по обучению для тебя начнется сразу же!",
+                    "button": "В мой обзор"
+                }
             },
             "daz": {
                 "heading": "Немецкий как второй язык",

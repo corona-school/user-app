@@ -89,9 +89,7 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
         <>
             <div className="mr-4 mb-4 w-full max-w-[600px]">
                 <div className="bg-primary-lighter p-6 rounded-md">
-                    <Typography variant="h5">
-                        {t('matching.request.check.request')} {`${index + 1}`.padStart(2, '0')}
-                    </Typography>
+                    <Typography variant="h5">{t('matching.shared.yourMatchRequest')}</Typography>
 
                     <div className="mt-3 flex flex-col space-y-2">
                         <Typography className="font-bold">{t('matching.shared.subjects')}</Typography>

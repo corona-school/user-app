@@ -376,10 +376,10 @@
                 "pupil": {
                     "max-dissolved-matches": "You cannot request a learning pair because you have already had too many learning pairs.",
                     "not-tutee": "You cannot request a learning pair as you are not registered for learning support.",
-                    "max-requests": "You are already on the waiting list.",
                     "deactivated": "Registration for 1on1 learning support is temporarily closed due to high demand. If you have already submitted a request for learning support, we will contact you by email in the near future to discuss the next steps. In the meantime, please feel free to take advantage of our other offers. ",
                     "deactivated_tooltip": "Registration is temporarily closed due to high demand.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
+                    "max-matches": "You can currently have a maximum of 1 learning partner. If you are no longer working with your learning partner, dissolve the learning pair. The chat remains open for 7 days after the learning pair is dissolved. During this period, you still have the opportunity to say goodbye to each other.",
+                    "max-requests": "You cannot create another request."
                 }
             }
         },
@@ -1402,7 +1402,8 @@
             "changeAppointment": "change lecture",
             "appointmentBookedHint": "One-on-one tutoring session scheduled:",
             "needsToBookAppointmentHint": "Schedule a one-on-one tutoring session:",
-            "needsToBookAppointmentDesc": "This is important when looking for a study partner"
+            "needsToBookAppointmentDesc": "This is important when looking for a learning partner",
+            "yourMatchRequest": "Your Request for a 1-on-1 learning partner"
         },
         "blocker": {
             "header": "Learning support",
@@ -1468,15 +1469,20 @@
                     "withoutAppointment": "If you change your details, your waiting time will not be affected. We will notify you by email as soon as it is your turn and we have found a suitable learning partner for you."
                 },
                 "rescheduleAppointmentModal": {
-                    "title": "You don’t have time after all?",
-                    "description": "Thanks for letting us know.\nChoose a new appointment that suits you better."
+                    "title": "Change appointment",
+                    "description": "You can change the appointment without any negative consequences. The request will remain active and will take effect as soon as we've spoken with you."
                 },
                 "deleteSucess": "The request has been deleted",
                 "noMatches": "You do not (yet) have a learning partner.",
                 "noDissolvedMatches": "You have no resolved learning pairs.",
                 "noRequestsTutee": "We are not looking for a learning partner for you right now.",
                 "noRequestsTutor": "We are not currently looking for a new/further learning partner for you. If you would like to be connected with a:r (further) pupil to support them, click on the 'Create learning pair' button.",
-                "resolveMatch": "The learning pair was dissolved"
+                "resolveMatch": "The learning pair was dissolved",
+                "creationSuccessModal": {
+                    "title": "Appointment created!",
+                    "description": "After the appointment, the search for a learning partner for you will begin right away!",
+                    "button": "Back to my overview"
+                }
             },
             "daz": {
                 "heading": "German as a second language",
