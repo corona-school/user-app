@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import useLernfair from '../hooks/useLernfair';
 import { NavigationItems } from '../types/navigation';
 import { useRoles, useUserType } from '../hooks/useApollo';
@@ -23,6 +23,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
     const userRoles = useRoles();
     const [isOpen, setIsOpen] = useState(false);
     const { pendingCooperationStudentsCount } = useCooperations();
+    const location = useLocation();
 
     const disableGroup: boolean = useMemo(() => {
         if (userType === 'screener') return !userRoles.includes('COURSE_SCREENER');
@@ -81,7 +82,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                                 onClick={() => setRootPath && setRootPath(`${key}`)}
                                 to={`/${key}`}
                                 key={key}
-                                reloadDocument={userType === 'screener' && key === 'start'}
+                                reloadDocument={userType === 'screener' && key === 'start' && location.pathname === '/start'}
                             >
                                 <Icon />
                                 <Typography className="pl-3 mr-auto font-medium">{label}</Typography>
