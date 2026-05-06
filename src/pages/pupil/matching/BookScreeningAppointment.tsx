@@ -10,6 +10,7 @@ import { IconCalendar, IconInfoCircleFilled, IconTimeDuration10, IconAlertTriang
 import { useEffect, useState } from 'react';
 import { PopupModal, useCalendlyEventListener } from 'react-calendly';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { useMatchRequestForm } from './useMatchRequestForm';
 
 export const BookScreeningAppointment = () => {
@@ -17,6 +18,7 @@ export const BookScreeningAppointment = () => {
     const [isCalendarLoading, setIsCalendarLoading] = useState(true);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const { goBack, goNext, refetch, isRefetching, createMatchRequest, form } = useMatchRequestForm();
     const [shouldFetchScreeningAppointment, setShouldFetchScreeningAppointment] = useLocalStorage({
         key: 'shouldFetchScreeningAppointment',
@@ -64,8 +66,16 @@ export const BookScreeningAppointment = () => {
     const aboutTheAppointmentPoints = t('matching.wizard.pupil.bookScreeningAppointment.aboutTheAppointment.bullets', { returnObjects: true });
     const importantPoints = t('matching.wizard.pupil.bookScreeningAppointment.importantForAppointment.bullets', { returnObjects: true });
 
+    const handleOnBack = () => {
+        if (form.isAppointmentStepForced) {
+            navigate(-1);
+        } else {
+            goBack();
+        }
+    };
+
     return (
-        <MatchRequestStep onBack={goBack} onCancel={() => {}} className="pb-0" isBackDisabled={isLoading}>
+        <MatchRequestStep onBack={handleOnBack} onCancel={() => {}} className="pb-0" isBackDisabled={isLoading}>
             <div className="relative h-full">
                 <Typography variant="h4">{t('matching.wizard.pupil.bookScreeningAppointment.title')}</Typography>
                 <div className="flex flex-col gap-y-7">
@@ -76,9 +86,9 @@ export const BookScreeningAppointment = () => {
                         {t('matching.wizard.pupil.bookScreeningAppointment.alert', { minutes: 10 })}
                     </Alert>
                 </div>
-                <div className="flex flex-col lg:flex-row mt-4 gap-x-4 gap-y-8 mb-4">
+                <div className="flex flex-col lg:flex-row mt-4 gap-x-4 gap-y-8 mb-8 lg:mb-4">
                     <div className="w-full pt-5 pb-11 px-4 rounded-md border border-solid border-primary-light flex gap-x-6">
-                        <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3">
+                        <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3 shrink-0">
                             <IconInfoCircleFilled size={24} />
                         </div>
                         <div>
@@ -91,7 +101,7 @@ export const BookScreeningAppointment = () => {
                         </div>
                     </div>
                     <div className="w-full pt-5 pb-11 px-4 rounded-md border border-solid border-primary-light flex gap-x-6">
-                        <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3">
+                        <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3 shrink-0">
                             <IconAlertTriangleFilled size={24} />
                         </div>
                         <div>
@@ -107,7 +117,7 @@ export const BookScreeningAppointment = () => {
                     </div>
                 </div>
                 <div className="w-full pt-5 pb-6 px-4 rounded-md border border-solid border-primary-light flex gap-x-6">
-                    <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3">
+                    <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3 shrink-0">
                         <IconBulbFilled size={24} />
                     </div>
                     <div>

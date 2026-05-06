@@ -4,7 +4,7 @@ import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
 import { useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Navigate, useLocation } from 'react-router-dom';
 import { pupilMatchRequestFlow, MatchRequestStep } from './util';
 
 interface MatchRequestForm {
@@ -234,6 +234,10 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
         });
         setIsLoading(false);
     }, [data]);
+
+    if (data?.me.pupil?.openMatchRequestCount !== undefined && data?.me.pupil?.openMatchRequestCount === 0 && isAppointmentStepForced) {
+        return <Navigate to="/request-match" replace />;
+    }
 
     return (
         <MatchRequestContext.Provider
