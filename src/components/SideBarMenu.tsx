@@ -81,6 +81,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                                 onClick={() => setRootPath && setRootPath(`${key}`)}
                                 to={`/${key}`}
                                 key={key}
+                                reloadDocument={userType === 'screener' && key === 'start'}
                             >
                                 <Icon />
                                 <Typography className="pl-3 mr-auto font-medium">{label}</Typography>
