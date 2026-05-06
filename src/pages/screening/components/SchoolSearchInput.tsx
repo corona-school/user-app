@@ -61,10 +61,9 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
                     isLoading={isLoading}
                     searchPlaceholder="z.B Erich-Kästner-Schule"
                     placeholder={defaultValue ? getLabel(defaultValue) : ''}
-                    filterSearchResult={(e) => e.label.toLowerCase().includes(search.toLowerCase())}
                 />
 
-                {school?.name && !school.zip && !school.city && (
+                {school?.name && !schoolDetails && (
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
@@ -74,7 +73,7 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
                         </Tooltip>
                     </TooltipProvider>
                 )}
-                {school?.id && school.zip && school.city && (
+                {schoolDetails?.id && schoolDetails.zip && schoolDetails.city && (
                     <TooltipProvider>
                         <Tooltip>
                             <TooltipTrigger asChild>
