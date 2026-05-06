@@ -118,6 +118,7 @@ export function ScreeningDashboard() {
                     jobStatus
                     formalEducation
                     specialTeachingExperience
+                    cooperationID
                     matches {
                         createdAt
                         pupil { firstname lastname }
