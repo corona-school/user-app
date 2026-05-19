@@ -720,7 +720,7 @@
             },
             "jobStatus": {
                 "title": "Was beschreibt dich am besten?",
-                "description": "Durch nachfolgende Angaben können wir Lernpartner einander besser zuordnen."
+                "description": "Durch nachfolgende Angaben können wir Lernpartner:innen einander besser zuordnen."
             },
             "hasEducationExperience": {
                 "title": "Studierst oder arbeitest du in einem Bereich speziell für Kinder und Jugendliche?",
@@ -2762,7 +2762,7 @@
             "title": "Individueller Nachweis",
             "bullets": [
                 "muss durch den/die Lernpartner:in bestätigt werden",
-                "für jeden Lernpartner einzeln",
+                "für jede:n Lernpartner:in einzeln",
                 "zusätzlich kann hier noch die aufgewendete Zeit bestätigt werden"
             ]
         }
