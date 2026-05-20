@@ -1,12 +1,14 @@
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/Accordion';
 import { Alert } from '@/components/Alert';
 import { Button } from '@/components/Button';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { MatchRequestStep } from '@/components/match-request/MatchRequestStep';
+import { Separator } from '@/components/Separator';
 import { Typography } from '@/components/Typography';
 import { createPupilScreeningLink } from '@/helper/screening-helper';
 import { useUser } from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
-import { IconCalendar, IconInfoCircleFilled, IconTimeDuration10, IconAlertTriangleFilled, IconBulbFilled } from '@tabler/icons-react';
+import { IconCalendar, IconTimeDuration10, IconCircleChevronDown, IconArrowLeft } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { PopupModal, useCalendlyEventListener } from 'react-calendly';
 import { useTranslation } from 'react-i18next';
@@ -75,64 +77,93 @@ export const BookScreeningAppointment = () => {
     };
 
     return (
-        <MatchRequestStep onBack={handleOnBack} onCancel={() => {}} className="pb-0" isBackDisabled={isLoading}>
+        <MatchRequestStep className="pb-0">
             <div className="relative h-full">
                 <Typography variant="h4">{t('matching.wizard.pupil.bookScreeningAppointment.title')}</Typography>
-                <div className="flex flex-col gap-y-7">
+                <div className="flex flex-col gap-y-7 mb-4">
                     <div className="flex gap-x-4 items-center mt-7 w-full">
                         <Typography className="max-w-[680px]">{t('matching.wizard.pupil.bookScreeningAppointment.description')}</Typography>
                     </div>
-                    <Alert icon={<IconTimeDuration10 />} variant="success-outline" className="w-full max-w-[560px]">
+                    <Alert icon={<IconTimeDuration10 />} variant="success-outline" className="w-full max-w-[368px]">
                         {t('matching.wizard.pupil.bookScreeningAppointment.alert', { minutes: 10 })}
                     </Alert>
                 </div>
-                <div className="flex flex-col lg:flex-row mt-4 gap-x-4 gap-y-8 mb-8 lg:mb-4">
-                    <div className="w-full pt-5 pb-11 px-4 rounded-md border border-solid border-primary-light flex gap-x-6">
-                        <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3 shrink-0">
-                            <IconInfoCircleFilled size={24} />
-                        </div>
-                        <div>
-                            <Typography className="font-semibold">{t('matching.wizard.pupil.bookScreeningAppointment.aboutTheAppointment.title')}</Typography>
-                            <ul className="list-disc list-inside mt-4 text-pretty">
-                                {aboutTheAppointmentPoints.map((point, index) => (
-                                    <li key={index}>{point}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
-                    <div className="w-full pt-5 pb-11 px-4 rounded-md border border-solid border-primary-light flex gap-x-6">
-                        <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3 shrink-0">
-                            <IconAlertTriangleFilled size={24} />
-                        </div>
-                        <div>
-                            <Typography className="font-semibold">
-                                {t('matching.wizard.pupil.bookScreeningAppointment.importantForAppointment.title')}
-                            </Typography>
-                            <ul className="list-disc list-inside mt-4 text-pretty">
-                                {importantPoints.map((point, index) => (
-                                    <li key={index}>{point}</li>
-                                ))}
-                            </ul>
-                        </div>
-                    </div>
+                <div className="flex flex-col justify-center items-center">
+                    <Accordion type="single" collapsible className="w-full my-4 max-w-[845px] min-h-[350px]">
+                        <AccordionItem className="border-none py-0" value={'about'}>
+                            <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
+                                <Typography variant="body-lg" className="font-medium">
+                                    {t('matching.wizard.pupil.bookScreeningAppointment.aboutTheAppointment.title')}
+                                </Typography>
+                            </AccordionTrigger>
+                            <AccordionContent className="flex flex-col pt-2">
+                                <ul className="list-disc list-inside text-pretty pl-3">
+                                    {aboutTheAppointmentPoints.map((point, index) => (
+                                        <li key={index}>
+                                            <Typography variant="subtle" as="span">
+                                                {point}
+                                            </Typography>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </AccordionContent>
+                        </AccordionItem>
+                        <Separator className="my-4 bg-primary-lighter" />
+                        <AccordionItem className="border-none py-0" value={'important'}>
+                            <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
+                                <Typography variant="body-lg" className="font-medium">
+                                    {t('matching.wizard.pupil.bookScreeningAppointment.importantForAppointment.title')}
+                                </Typography>
+                            </AccordionTrigger>
+                            <AccordionContent className="flex flex-col pt-2">
+                                <ul className="list-disc list-inside text-pretty pl-3">
+                                    {importantPoints.map((point, index) => (
+                                        <li key={index}>
+                                            <Typography variant="subtle" as="span">
+                                                {point}
+                                            </Typography>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </AccordionContent>
+                        </AccordionItem>
+                        <Separator className="my-4 bg-primary-lighter" />
+                        <AccordionItem className="border-none py-0" value={'reminder'}>
+                            <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
+                                <Typography variant="body-lg" className="font-medium">
+                                    <Typography className="font-semibold">{t('matching.wizard.pupil.bookScreeningAppointment.reminder.title')}</Typography>
+                                </Typography>
+                            </AccordionTrigger>
+                            <AccordionContent className="flex flex-col pt-2">
+                                <Typography variant="subtle">{t('matching.wizard.pupil.bookScreeningAppointment.reminder.description')}</Typography>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
                 </div>
-                <div className="w-full pt-5 pb-6 px-4 rounded-md border border-solid border-primary-light flex gap-x-6">
-                    <div className="bg-primary-lighter size-12 flex justify-center items-center rounded-md mb-3 shrink-0">
-                        <IconBulbFilled size={24} />
-                    </div>
-                    <div>
-                        <Typography className="font-semibold">{t('matching.wizard.pupil.bookScreeningAppointment.reminder.title')}</Typography>
-                        <Typography>{t('matching.wizard.pupil.bookScreeningAppointment.reminder.description')}</Typography>
-                    </div>
+                <div className="flex gap-x-4">
+                    {!form.isAppointmentStepForced && (
+                        <Button
+                            leftIcon={<IconArrowLeft size={14} className="!stroke-[2px]" />}
+                            className="min-w-[177px]"
+                            variant="outline"
+                            onClick={handleOnBack}
+                            disabled={isLoading}
+                        >
+                            {t('back')}
+                        </Button>
+                    )}
+                    <Button className="min-w-[177px]" variant="outline" onClick={() => navigate(-1)} disabled={isLoading}>
+                        {t('cancel')}
+                    </Button>
+                    <Button
+                        isLoading={isLoading}
+                        leftIcon={<IconCalendar size={20} />}
+                        onClick={() => setIsCalendarOpen(true)}
+                        className="min-w-[177px] px-[43px]"
+                    >
+                        {t('matching.wizard.pupil.bookScreeningAppointment.bookAppointment')}
+                    </Button>
                 </div>
-                <Button
-                    isLoading={isLoading}
-                    leftIcon={<IconCalendar size={20} />}
-                    onClick={() => setIsCalendarOpen(true)}
-                    className="rounded-full shadow-lg py-6 px-4 absolute -bottom-20 right-0"
-                >
-                    {t('matching.wizard.pupil.bookScreeningAppointment.bookAppointment')}
-                </Button>
                 <PopupModal
                     rootElement={document.getElementById('root') as HTMLElement}
                     url={createPupilScreeningLink({
