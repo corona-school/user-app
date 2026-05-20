@@ -435,10 +435,10 @@
             "userAge": {
                 "title": "How old are you?",
                 "tooYoungError": "{{minAge}} years is the minimum age for which we can offer free tutoring.",
-                "descriptionPupil": "The minimum age is 7. If you are under 18, your parents must give their consent later.",
                 "descriptionStudent": "The minimum age is 14 years. If you are under 18, we will later need the consent of a legal representative (e.g. parent)",
                 "underAgeRange": "14 to 17",
-                "adultAge": "18 or older"
+                "adultAge": "18 or older",
+                "descriptionPupil": "The minimum age is 7, and the maximum age is 27. If you're under 18, your parents will need to give their consent later."
             },
             "languages": {
                 "titlePupil": "What languages do you speak at home?",

@@ -300,8 +300,6 @@ const CreateCourse: React.FC = () => {
             userType
         );
 
-        console.log('DELTA', delta);
-
         try {
             setUpdatingCourse(true);
             const res = await updateCourse(prefillSubcourseId!, courseId, delta);

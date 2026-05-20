@@ -261,11 +261,21 @@ const SingleCourseStudent = () => {
         { variables: { courseId: course?.id! } }
     );
 
-    const submitCourse = useCallback(async () => {
+    const submitCourse = async () => {
+        const now = DateTime.now();
+        const hasAppointmentInNext14Days = appointments.some((appointment) => {
+            const appointmentStart = DateTime.fromISO(appointment.start);
+            return appointmentStart.diff(now, 'days').days < 14;
+        });
+
+        if (hasAppointmentInNext14Days) {
+            toast.error('Der erste Termin muss mindestens 14 Tage in der Zukunft liegen, damit die Teilnehmer:innen genug Zeit haben sich anzumelden.');
+            return;
+        }
         await submit();
         toast.success('Kurs zur Prüfung freigegeben');
         refetchBasics();
-    }, []);
+    };
 
     const [contactParticipant] = useMutation(
         gql(`

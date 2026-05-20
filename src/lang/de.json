@@ -520,7 +520,7 @@
             },
             "userAge": {
                 "title": "Wie alt bist du?",
-                "descriptionPupil": "Das Mindestalter ist 7. Wenn du unter 18 bist, müssen deine Eltern später noch zustimmen.",
+                "descriptionPupil": "Das Mindestalter ist 7, das maximale Alter ist 27. Wenn du unter 18 bist, müssen deine Eltern später noch zustimmen.",
                 "descriptionStudent": "Das Mindestalter ist 14 Jahre. Wenn du unter 18 bist, brauchen wir später das Einverständnis eines gesetzlichen Vertreters (z.B. Elternteil)",
                 "tooYoungError": "{{minAge}} Jahre ist das Mindestalter, für das wir kostenlose Nachhilfe anbieten können.",
                 "underAgeRange": "14 bis 17",
@@ -723,7 +723,7 @@
             },
             "jobStatus": {
                 "title": "Was beschreibt dich am besten?",
-                "description": "Durch nachfolgende Angaben können wir Lernpartner einander besser zuordnen."
+                "description": "Durch nachfolgende Angaben können wir Lernpartner:innen einander besser zuordnen."
             },
             "hasEducationExperience": {
                 "title": "Studierst oder arbeitest du in einem Bereich speziell für Kinder und Jugendliche?",
@@ -2817,7 +2817,7 @@
             "title": "Individueller Nachweis",
             "bullets": [
                 "muss durch den/die Lernpartner:in bestätigt werden",
-                "für jeden Lernpartner einzeln",
+                "für jede:n Lernpartner:in einzeln",
                 "zusätzlich kann hier noch die aufgewendete Zeit bestätigt werden"
             ]
         }
