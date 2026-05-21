@@ -1561,7 +1561,12 @@
                     "title": "Lern-Fair ile öğrenme desteği görüşmesi",
                     "bookAppointment": "Bir toplantı düzenleyin",
                     "alert": "Görüşme sadece {{minutes}} dakika sürecek.",
-                    "description": "Uzun süredir görüşemedik, bu yüzden seni kısa bir görüşmeye davet etmek istiyoruz. Ardından sana yeni bir çalışma arkadaşı bulacağız!"
+                    "description": "Uzun süredir görüşemedik, bu yüzden seni kısa bir görüşmeye davet etmek istiyoruz. Ardından sana yeni bir çalışma arkadaşı bulacağız!",
+                    "cancelProcessModal": {
+                        "title": "Neden gidiyorsun?",
+                        "description": "Eğer bir görüşme ayarlamazsan, maalesef sana bir öğrenim arkadaşı bulamayız.",
+                        "confirmButton": "Anlaşıldı"
+                    }
                 }
             },
             "student": {

@@ -1561,7 +1561,12 @@
                     "title": "Learning Support Consultation with Lern-Fair",
                     "bookAppointment": "Arrange a meeting",
                     "alert": "The call will only take {{minutes}} minutes.",
-                    "description": "Since we haven't seen each other in a while, we'd like to invite you to a brief chat. After that, we'll find you a new study partner!"
+                    "description": "Since we haven't seen each other in a while, we'd like to invite you to a brief chat. After that, we'll find you a new study partner!",
+                    "cancelProcessModal": {
+                        "title": "Why are you leaving?",
+                        "description": "If you don't schedule a consultation, we unfortunately won't be able to find you a study partner.",
+                        "confirmButton": "Got it"
+                    }
                 }
             },
             "student": {

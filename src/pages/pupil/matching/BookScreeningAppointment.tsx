@@ -8,6 +8,7 @@ import { Typography } from '@/components/Typography';
 import { createPupilScreeningLink } from '@/helper/screening-helper';
 import { useUser } from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import ConfirmationModal from '@/modals/ConfirmationModal';
 import { IconCalendar, IconTimeDuration10, IconCircleChevronDown, IconArrowLeft } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { PopupModal, useCalendlyEventListener } from 'react-calendly';
@@ -19,6 +20,7 @@ export const BookScreeningAppointment = () => {
     const { firstname, lastname, email } = useUser();
     const [isCalendarLoading, setIsCalendarLoading] = useState(true);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { goBack, goNext, refetch, isRefetching, createMatchRequest, form } = useMatchRequestForm();
@@ -84,7 +86,7 @@ export const BookScreeningAppointment = () => {
                 </Typography>
                 <div className="flex flex-col gap-y-7 mb-4">
                     <div className="flex gap-x-4 items-center mt-7 w-full">
-                        <Typography className="max-w-[680px]">{t('matching.wizard.pupil.bookScreeningAppointment.description')}</Typography>
+                        <Typography className="max-w-[600px]">{t('matching.wizard.pupil.bookScreeningAppointment.description')}</Typography>
                     </div>
                     <Alert icon={<IconTimeDuration10 />} variant="success-outline" className="w-full max-w-[368px]">
                         {t('matching.wizard.pupil.bookScreeningAppointment.alert', { minutes: 10 })}
@@ -155,7 +157,7 @@ export const BookScreeningAppointment = () => {
                                 {t('back')}
                             </Button>
                         )}
-                        <Button className="md:min-w-[177px] w-full md:w-auto" variant="outline" onClick={() => navigate(-1)} disabled={isLoading}>
+                        <Button className="md:min-w-[177px] w-full md:w-auto" variant="outline" onClick={() => setIsCancelModalOpen(true)} disabled={isLoading}>
                             {t('cancel')}
                         </Button>
                     </div>
@@ -185,6 +187,17 @@ export const BookScreeningAppointment = () => {
                             <CenterLoadingSpinner />
                         </div>
                     )}
+                />
+                <ConfirmationModal
+                    headline={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.title')}
+                    confirmButtonText={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.confirmButton')}
+                    description={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.description')}
+                    onOpenChange={setIsCancelModalOpen}
+                    isOpen={isCancelModalOpen}
+                    onConfirm={() => {
+                        setIsCancelModalOpen(false);
+                        navigate(-1);
+                    }}
                 />
             </div>
         </MatchRequestStep>

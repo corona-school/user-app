@@ -1655,7 +1655,12 @@
                         "description": "Im Feld ”Textnachricht senden an” kannst du deine Telefonnummer angeben. Dann bekommst du Erinnerungen für den Termin per SMS."
                     },
                     "bookAppointment": "Gespräch vereinbaren",
-                    "alert": "Das Gespräch dauert nur {{minutes}} Minuten."
+                    "alert": "Das Gespräch dauert nur {{minutes}} Minuten.",
+                    "cancelProcessModal": {
+                        "title": "Warum gehst du?",
+                        "description": "Wenn du kein Gespräch vereinbarst, können wir dir leider keine:n Lernpartner:in suchen.",
+                        "confirmButton": "Verstanden"
+                    }
                 },
                 "modalSuccess": {
                     "heading": {
