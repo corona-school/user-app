@@ -117,6 +117,9 @@ query GetOnboardingInfos {
       screenings {
          invalidated
          status
+         appointment {
+            id
+         }
       }
     }
   }
@@ -209,9 +212,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- Pupil Screening --------
-        const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
+        const hasScreeningAppointment = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending' && !!s.appointment);
         const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
-        const inviteToScreening = wasInvited || notYetScreened;
+        const inviteToScreening = !hasScreeningAppointment || notYetScreened;
         if (pupil && inviteToScreening) {
             const pupil_url = createPupilScreeningLink({
                 isFirstScreening: notYetScreened,
@@ -253,12 +256,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Open Match Request -----------
-        if (roles.includes('TUTEE') && !inviteToScreening && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
-            infos.push({
-                label: NextStepLabelType.STATUS_PUPIL,
-                btnfn: [() => navigate('/group'), deleteMatchRequest],
-                lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
-            });
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
