@@ -1403,7 +1403,9 @@
             "appointmentBookedHint": "One-on-one tutoring session scheduled:",
             "needsToBookAppointmentHint": "Schedule a one-on-one tutoring session:",
             "needsToBookAppointmentDesc": "This is important when looking for a learning partner",
-            "yourMatchRequest": "Your Request for a 1-on-1 learning partner"
+            "yourMatchRequest": "Your Request for a 1-on-1 learning partner",
+            "waitingForResultsHint": "You'll hear from us!",
+            "waitingForResultsHintDesc": "You'll receive an email as soon as we have news for you."
         },
         "blocker": {
             "header": "Learning support",

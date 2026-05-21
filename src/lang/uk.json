@@ -1403,7 +1403,9 @@
             "appointmentBookedHint": "Домовлено про індивідуальне заняття:",
             "needsToBookAppointmentHint": "Домовитися про індивідуальне заняття:",
             "needsToBookAppointmentDesc": "Це важливо для пошуку партнера для навчання",
-            "yourMatchRequest": "Твій запит на партнера для індивідуального навчання"
+            "yourMatchRequest": "Твій запит на партнера для індивідуального навчання",
+            "waitingForResultsHint": "Ми обов’язково зв’яжемося з тобою!",
+            "waitingForResultsHintDesc": "Ти отримаєш електронного листа, щойно у нас з’являться новини для тебе."
         },
         "blocker": {
             "header": "Підтримка навчання",

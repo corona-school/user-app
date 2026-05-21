@@ -1403,7 +1403,9 @@
             "appointmentBookedHint": "1:1 özel ders görüşmesi ayarlandı:",
             "needsToBookAppointmentHint": "1:1 özel ders görüşmesi ayarlayın:",
             "needsToBookAppointmentDesc": "Bu, bir çalışma arkadaşı aramak için önemlidir",
-            "yourMatchRequest": "1:1 öğrenme ortağı talebin"
+            "yourMatchRequest": "1:1 öğrenme ortağı talebin",
+            "waitingForResultsHint": "Senden haber alacağız!",
+            "waitingForResultsHintDesc": "Senin için yeni haberlerimiz olur olmaz sana bir e-posta göndereceğiz."
         },
         "blocker": {
             "header": "Öğrenme desteği",

@@ -1399,7 +1399,9 @@
             "appointmentBookedHint": "تم تحديد موعد لجلسة دروس خصوصية فردية:",
             "needsToBookAppointmentHint": "تحديد موعد لجلسة دروس خصوصية فردية:",
             "needsToBookAppointmentDesc": "هذا أمر مهم عند البحث عن شريك في التعلم",
-            "yourMatchRequest": "طلب شريك تعليمي فردي"
+            "yourMatchRequest": "طلب شريك تعليمي فردي",
+            "waitingForResultsHint": "سنتصل بك!",
+            "waitingForResultsHintDesc": "ستتلقى رسالة بريد إلكتروني فور توفر أي أخبار جديدة لك."
         },
         "blocker": {
             "header": "دعم التعلم",
