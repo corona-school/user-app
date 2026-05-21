@@ -1492,7 +1492,9 @@
             "appointmentBookedHint": "1:1 Nachhilfe-Gespräch vereinbart:",
             "needsToBookAppointmentHint": "1:1 Nachhilfe-Gespräch vereinbaren:",
             "needsToBookAppointmentDesc": "Das ist wichtig, um nach einem Lernpartner zu suchen",
-            "yourMatchRequest": "Deine 1:1 Lernpartner Anfrage"
+            "yourMatchRequest": "Deine 1:1 Lernpartner Anfrage",
+            "waitingForResultsHint": "Du hörst von uns!",
+            "waitingForResultsHintDesc": "Du erhältst eine E-Mail, sobald wir Neuigkeiten für dich haben."
         },
         "availability": {
             "title": "Mögliche Zeitfenster",

@@ -214,7 +214,7 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         // -------- Pupil Screening --------
         const hasScreeningAppointment = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending' && !!s.appointment);
         const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
-        const inviteToScreening = !hasScreeningAppointment || notYetScreened;
+        const inviteToScreening = !hasScreeningAppointment && notYetScreened;
         if (pupil && inviteToScreening) {
             const pupil_url = createPupilScreeningLink({
                 isFirstScreening: notYetScreened,

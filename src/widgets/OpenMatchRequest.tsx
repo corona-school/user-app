@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { Subject } from '../gql/graphql';
 import SubjectList from './SubjectList';
-import { IconAlertTriangleFilled, IconCalendarPlus, IconCheck, IconEdit, IconTrash, IconVideo } from '@tabler/icons-react';
+import { IconAlertTriangleFilled, IconCalendarPlus, IconCheck, IconEdit, IconTrash, IconVideo, IconHourglassLow } from '@tabler/icons-react';
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
 import { Alert } from '@/components/Alert';
@@ -16,6 +16,7 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { toast } from 'sonner';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { PupilScreening } from '@/types';
+import IconHourGlass from '@/assets/icons/hour_glass.svg';
 
 const CANCEL_PUPIL_MATCH_REQUEST_MUTATION = gql(`
     mutation PupilDeleteMatchRequest {
@@ -85,6 +86,7 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
         onMatchRequestCancelled && onMatchRequestCancelled();
     };
 
+    const isWaitingScreeningResults = screening?.status === 'dispute';
     return (
         <>
             <div className="mr-4 mb-4 w-full max-w-[600px]">
@@ -97,7 +99,7 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                     </div>
                     {needsScreening && (
                         <div className="mt-3">
-                            {screeningAppointment ? (
+                            {screeningAppointment && (
                                 <Alert
                                     icon={
                                         <div className="bg-green-500 rounded-full w-[24px] h-[24px] inline-flex justify-center items-center mx-auto mr-1">
@@ -126,7 +128,8 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                                         {t('clock')}
                                     </Typography>
                                 </Alert>
-                            ) : (
+                            )}
+                            {!screeningAppointment && !isWaitingScreeningResults && (
                                 <Alert
                                     icon={<IconAlertTriangleFilled size={24} className="text-red-400" />}
                                     variant="destructive"
@@ -137,6 +140,20 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                                     </Typography>
                                     <Typography as="span" variant="subtle" className="text-primary block">
                                         {t('matching.shared.needsToBookAppointmentDesc')}
+                                    </Typography>
+                                </Alert>
+                            )}
+                            {!screeningAppointment && isWaitingScreeningResults && (
+                                <Alert
+                                    icon={<IconHourGlass className="text-orange-400" />}
+                                    variant="warning"
+                                    className="border bg-orange-50 border-solid border-orange-400 w-full mb-4"
+                                >
+                                    <Typography as="span" variant="subtle" className="text-primary block mb-1 font-bold">
+                                        {t('matching.shared.waitingForResultsHint')}
+                                    </Typography>
+                                    <Typography as="span" variant="subtle" className="text-primary block">
+                                        {t('matching.shared.waitingForResultsHintDesc')}
                                     </Typography>
                                 </Alert>
                             )}
@@ -165,7 +182,7 @@ const OpenMatchRequest = ({ subjects, index, screening, variant, onMatchRequestC
                         >
                             {t('matching.request.check.editRequest')}
                         </Button>
-                        {!screeningAppointment && needsScreening && (
+                        {!screeningAppointment && needsScreening && !isWaitingScreeningResults && (
                             <Button
                                 disabled={isCancelling}
                                 reasonDisabled={t('reasonsDisabled.loading')}
