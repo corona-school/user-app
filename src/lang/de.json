@@ -1492,7 +1492,7 @@
             "appointmentBookedHint": "1:1 Nachhilfe-Gespräch vereinbart:",
             "needsToBookAppointmentHint": "1:1 Nachhilfe-Gespräch vereinbaren:",
             "needsToBookAppointmentDesc": "Das ist wichtig, um nach einem Lernpartner zu suchen",
-            "yourMatchRequest": "Deine 1:1 Lernpartner Anfrage",
+            "yourMatchRequest": "Dein:e Lernpartner:in Anfrage",
             "waitingForResultsHint": "Du hörst von uns!",
             "waitingForResultsHintDesc": "Du erhältst eine E-Mail, sobald wir Neuigkeiten für dich haben."
         },
@@ -1587,7 +1587,7 @@
                 },
                 "creationSuccessModal": {
                     "title": "Termin erstellt!",
-                    "description": "Nach dem Gespräch geht die Suche nach einem Lernpartner für dich sofort los!",
+                    "description": "Nach dem Gespräch geht die Suche nach einem:r Lernpartner:in für dich sofort los!",
                     "button": "Zu meiner Übersicht"
                 }
             },
