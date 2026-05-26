@@ -1630,15 +1630,15 @@
                     "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "bookScreeningAppointment": {
-                    "title": "Lernunterstützungs-Gespräch mit Lern-Fair",
-                    "description": "Weil wir uns länger nicht mehr gesehen haben, wollen wir dich zu einem kurzen Gespräch  einladen. Danach suchen wir einen neuen Lernpartner für dich!",
+                    "title": "Gespräch mit Lern-Fair",
+                    "description": "Wir haben uns lange nicht mehr gesehen. Deshalb laden wir dich zu einem kurzen Gespräch ein. Danach suchen wir einen neuen Lern-Partner für dich.",
                     "aboutTheAppointment": {
-                        "title": "Darum geht es",
+                        "title": "Das besprechen wir in dem Gespräch:",
                         "bullets": [
-                            "Du erzählst, was du bei Lern-Fair gemacht und gelernt hast.",
-                            "Wir sprechen darüber, wobei wir dir helfen können.",
-                            "Wir prüfen, ob du ein neues Lernpaar bekommen kannst.",
-                            "Wir klären, ob Lern-Fair noch das Richtige für dich ist.",
+                            "Deine bisherigen Erfahrungen",
+                            "Dein Lernfortschritt",
+                            "Wie wir dir helfen können",
+                            "Ob alles noch passt",
                             "Du kannst uns alles fragen. 🙂"
                         ]
                     },
