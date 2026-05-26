@@ -19,6 +19,9 @@
     "close": "Schließen",
     "moreInfos": "Mehr Infos",
     "optional": "Optional",
+    "bookAppointment": "Termin buchen",
+    "changeAppointment": "Termin ändern",
+    "joinZoomMeeting": "Zoom starten",
     "weekdays": {
         "monday": "Montag",
         "tuesday": "Dienstag",
@@ -453,7 +456,7 @@
                 "pupil": {
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
                     "not-tutee": "Bitte melde dich für ein Kennenlerngespräch an. Nur so können wir dich für die Nachhilfe freischalten.",
-                    "max-requests": "Du bist bereits auf der Warteliste.",
+                    "max-requests": "Du kannst keine weitere Anfrage erstellen.",
                     "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
                     "deactivated": "Die Registrierung für die 1:1-Nachhilfe ist aufgrund zu hoher Nachfrage vorübergehend geschlossen. Wenn du bereits eine Anfrage für eine Nachhilfe gestellt hast, melden wir uns in nächster Zeit mit einer E-Mail bei dir zum weiteren Vorgehen. Nutze in der Zwischenzeit gerne unsere anderen Angebote. ",
                     "deactivated_tooltip": "Die Registrierung ist aufgrund zu hoher Nachfrage vorübergehend geschlossen."
@@ -1279,7 +1282,7 @@
             "noMatching": "Du hast gerade kein aktives Lernpaar",
             "requestCreated": "Anfrage erstellt am:",
             "waitingTimeInfo": "Bitte beachte, dass es bei der Suche nach einem:r Lernpartner:in zu längeren Wartezeiten kommt. Nutze in der Zwischenzeit auch unsere Kurse oder unsere Hausaufgabenhilfe.",
-            "removeRequest": "Anfrage zurücknehmen"
+            "removeRequest": "Anfrage löschen"
         },
         "helpers": {
             "headlines": {
@@ -1343,7 +1346,7 @@
             "title": "Auf der Warteliste ⏳",
             "subtitle": "Neue:r Lernpartner:in",
             "content": "Deine Anfrage wurde am {{date}} gestellt. Wir informieren dich per E-Mail wenn du auf der Warteliste dran bist. In der Zwischenzeit kannst du an unseren Gruppen-Kursen teilnehmen.",
-            "buttons": ["Kurse ansehen", "Anfrage zurücknehmen"]
+            "buttons": ["Kurse ansehen", "Anfrage löschen"]
         },
         "interestconfirmation": {
             "title": "Bedarf aktuell? 🤷🏽",
@@ -1482,7 +1485,16 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Tutor:in, Kursleiter:in",
             "appointmentsHeadline": "Termine",
-            "createAppointment": "Termin erstellen"
+            "createAppointment": "Termin erstellen",
+            "bookAppointment": "Termin buchen",
+            "joinMeeting": "Zoom starten",
+            "changeAppointment": "Termin ändern",
+            "appointmentBookedHint": "1:1 Nachhilfe-Gespräch vereinbart:",
+            "needsToBookAppointmentHint": "1:1 Nachhilfe-Gespräch vereinbaren:",
+            "needsToBookAppointmentDesc": "Das ist wichtig, um nach einem Lernpartner zu suchen",
+            "yourMatchRequest": "Dein:e Lernpartner:in Anfrage",
+            "waitingForResultsHint": "Du hörst von uns!",
+            "waitingForResultsHintDesc": "Du erhältst eine E-Mail, sobald wir Neuigkeiten für dich haben."
         },
         "availability": {
             "title": "Mögliche Zeitfenster",
@@ -1518,10 +1530,10 @@
         },
         "pending": {
             "modal": {
-                "title": "Anfrage zurücknehmen",
+                "title": "Anfrage löschen",
                 "description": "Möchtest du die Anfrage wirklich löschen? Damit verlierst du deinen Platz in der Warteschlange und wir werden deinen Platz an andere Schüler:innen vergeben.",
                 "buttons": {
-                    "dissolve": "Anfrage zurücknehmen",
+                    "dissolve": "Anfrage löschen",
                     "nothing": "Keine Angabe machen"
                 }
             }
@@ -1552,17 +1564,32 @@
                     "tab3": "Aufgelöste Lernpaare"
                 },
                 "request": "Anfrage",
-                "removeRequest": "Anfrage zurücknehmen",
+                "removeRequest": "Anfrage löschen",
                 "editRequest": "Anfrage bearbeiten",
                 "deleteRequest": "Anfrage löschen",
-                "areyousuretodelete": "Möchtest du die Anfrage wirklich löschen?",
+                "areYouSureToDelete": {
+                    "withAppointment": "Deine 1:1 Anfrage und der Gesprächs-Termin werden gelöscht.",
+                    "withoutAppointment": "Möchtest du die Anfrage wirklich löschen?"
+                },
                 "deleteSucess": "Die Anfrage wurde gelöscht",
                 "noMatches": "Du hast (noch) keine Lernpartner:in.",
                 "noDissolvedMatches": "Du hast keine aufgelösten Lernpaare.",
-                "editRequestDescription": " Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben.",
+                "editRequestDescription": {
+                    "withAppointment": "Kein Problem. Der Termin bleibt trotzdem für dich.",
+                    "withoutAppointment": "Wenn du deine Angaben änderst, verändert sich deine Wartezeit nicht. Wir informieren dich per E-Mail, sobald du an der Reihe bist und wir eine:n passende:n Lernpartner:in für dich gefunden haben."
+                },
                 "noRequestsTutee": "Wir suchen gerade nicht nach einem:r Lernpartner:in für dich.",
                 "noRequestsTutor": "Wir suchen gerade nicht nach einem:r neuen/weiteren Lernpartner:in für dich. Wenn du mit einem:r (weiteren) Schüler:in verbunden werden möchtest, um sie zu unterstützen, drücke auf den 'Lernpaar bilden'-Button.",
-                "resolveMatch": "Das Lernpaar wurde aufgelöst"
+                "resolveMatch": "Das Lernpaar wurde aufgelöst",
+                "rescheduleAppointmentModal": {
+                    "title": "Termin ändern",
+                    "description": "Du kannst den Termin ändern, ohne dass du Nachteile hast. Die Anfrage bleibt bestehen und wird aktiv sobald wir mit dir gesprochen haben."
+                },
+                "creationSuccessModal": {
+                    "title": "Termin erstellt!",
+                    "description": "Nach dem Gespräch geht die Suche nach einem:r Lernpartner:in für dich sofort los!",
+                    "button": "Zu meiner Übersicht"
+                }
             },
             "updateData": "Deine Daten wurden aktualisiert",
             "daz": {
@@ -1601,6 +1628,41 @@
                     "subheading": "In welchen Fach brauchst du am meisten Hilfe?",
                     "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
                     "reason_btn_disabled": "Bitte wähle ein Fach aus."
+                },
+                "bookScreeningAppointment": {
+                    "title": "Gespräch mit Lern-Fair",
+                    "description": "Wir haben uns lange nicht mehr gesehen. Deshalb laden wir dich zu einem kurzen Gespräch ein. Danach suchen wir einen neuen Lern-Partner für dich.",
+                    "aboutTheAppointment": {
+                        "title": "Das besprechen wir in dem Gespräch:",
+                        "bullets": [
+                            "Deine bisherigen Erfahrungen",
+                            "Dein Lernfortschritt",
+                            "Wie wir dir helfen können",
+                            "Ob alles noch passt",
+                            "Du kannst uns alles fragen. 🙂"
+                        ]
+                    },
+                    "importantForAppointment": {
+                        "title": "Wichtig für den Termin",
+                        "bullets": [
+                            "Du musst dabei sein.",
+                            "Deine Eltern / Betreuungsperson können dabei sein.",
+                            "Das Gespräch ist per Zoom.",
+                            "Bitte mach das Gespräch zu Hause mit gutem Internet.",
+                            "Das Gespräch ist auf Deutsch."
+                        ]
+                    },
+                    "reminder": {
+                        "title": "Erinnerung per SMS",
+                        "description": "Im Feld ”Textnachricht senden an” kannst du deine Telefonnummer angeben. Dann bekommst du Erinnerungen für den Termin per SMS."
+                    },
+                    "bookAppointment": "Gespräch vereinbaren",
+                    "alert": "Das Gespräch dauert nur {{minutes}} Minuten.",
+                    "cancelProcessModal": {
+                        "title": "Warum gehst du?",
+                        "description": "Wenn du kein Gespräch vereinbarst, können wir dir leider keine:n Lernpartner:in suchen.",
+                        "confirmButton": "Verstanden"
+                    }
                 },
                 "modalSuccess": {
                     "heading": {
@@ -2574,7 +2636,7 @@
         },
         "appointment": {
             "joinMeeting": "Videochat beitreten",
-            "joinMeetingHint": "Du kannst das Meeting erst 5 Minuten vor Beginn des Termins starten.",
+            "joinMeetingHint": "Du kannst das Meeting erst {{minutes}} Minuten vor Beginn des Termins starten.",
             "changeAppointment": "Termin ändern",
             "cancelAppointment": "Termin absagen",
             "title": "Termin erstellt ✅",

@@ -376,10 +376,10 @@
                 "pupil": {
                     "max-dissolved-matches": "Ви не можете подати запит на навчальну пару, оскільки у вас вже було занадто багато навчальних пар.",
                     "not-tutee": "Ви не можете запросити навчальну пару, оскільки ви не зареєстровані на навчальну підтримку.",
-                    "max-requests": "Ви вже у списку очікування.",
                     "deactivated": "Реєстрація на навчальну підтримку 1:1 тимчасово закрита через високий попит. Якщо ви вже подали заявку на навчальну підтримку, ми зв'яжемося з вами найближчим часом, щоб обговорити подальші кроки. Тим часом, будь ласка, скористайтеся іншими нашими пропозиціями. ",
                     "deactivated_tooltip": "Реєстрація тимчасово закрита через високий попит.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
+                    "max-requests": "Ти не можеш створити ще один запит."
                 }
             }
         },
@@ -1396,7 +1396,16 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Викладач, керівник курсу",
             "appointmentsHeadline": "Дати",
-            "createAppointment": "Створити зустріч"
+            "createAppointment": "Створити зустріч",
+            "bookAppointment": "Забронювати зустріч",
+            "joinMeeting": "Запустити Zoom",
+            "changeAppointment": "Дата зміни",
+            "appointmentBookedHint": "Домовлено про індивідуальне заняття:",
+            "needsToBookAppointmentHint": "Домовитися про індивідуальне заняття:",
+            "needsToBookAppointmentDesc": "Це важливо для пошуку партнера для навчання",
+            "yourMatchRequest": "Твій запит на партнера для індивідуального навчання",
+            "waitingForResultsHint": "Ми обов’язково зв’яжемося з тобою!",
+            "waitingForResultsHintDesc": "Ти отримаєш електронного листа, щойно у нас з’являться новини для тебе."
         },
         "blocker": {
             "header": "Підтримка навчання",
@@ -1453,14 +1462,29 @@
                 "removeRequest": "Відкликати запит",
                 "editRequest": "Редагувати запит",
                 "deleteRequest": "Видалити запит",
-                "areyousuretodelete": "Ви дійсно хочете видалити запит?",
+                "areYouSureToDelete": {
+                    "withAppointment": "Ваш запит 1:1 та заплановану зустріч буде видалено.",
+                    "withoutAppointment": "Ви впевнені, що хочете видалити запит?"
+                },
+                "editRequestDescription": {
+                    "withAppointment": "Немає проблем. Зустріч усе одно залишиться за вами.",
+                    "withoutAppointment": "Якщо ви зміните свої дані, час очікування не зміниться. Ми повідомимо вас електронною поштою, щойно настане ваша черга і ми знайдемо для вас відповідного навчального партнера."
+                },
+                "rescheduleAppointmentModal": {
+                    "title": "Дата зміни",
+                    "description": "Ти можеш змінити дату без жодних наслідків. Заявка залишається чинною і набуде чинності, щойно ми з тобою поспілкуємося."
+                },
                 "deleteSucess": "Запит видалено",
                 "noMatches": "У вас (поки що) немає партнера по навчанню.",
                 "noDissolvedMatches": "У вас немає вирішених навчальних пар.",
-                "editRequestDescription": " Якщо ви зміните свої дані, час очікування не зміниться. Ми повідомимо вас електронною поштою, як тільки підійде ваша черга і ми знайдемо для вас відповідного партнера по навчанню.",
                 "noRequestsTutee": "Зараз ми не шукаємо для вас партнера для навчання.",
                 "noRequestsTutor": "Наразі ми не шукаємо для вас нового/подальшого партнера по навчанню. Якщо ви хочете бути пов'язаними з (подальшим) студентом, щоб підтримувати його, натисніть на кнопку \"Створити навчальну пару\".",
-                "resolveMatch": "Навчальна пара була розпущена"
+                "resolveMatch": "Навчальна пара була розпущена",
+                "creationSuccessModal": {
+                    "title": "Зустріч створено!",
+                    "description": "Після розмови ми одразу ж почнемо шукати для тебе партнера для навчання!",
+                    "button": "До мого огляду"
+                }
             },
             "daz": {
                 "heading": "Німецька як друга мова",
@@ -1510,6 +1534,41 @@
                         "ver2": "Ваші зміни збережено. Це не вплине на час очікування."
                     },
                     "groupCourses": "На групові курси"
+                },
+                "bookScreeningAppointment": {
+                    "aboutTheAppointment": {
+                        "bullets": [
+                            "Ти розповідаєш, чим ти Lern-Fair та чого навчився на Lern-Fair .",
+                            "Ми обговоримо, у чому ми можемо тобі допомогти.",
+                            "Ми перевіримо, чи можна тобі надати нову пару для навчання.",
+                            "Ми з’ясуємо, чи Lern-Fair те, що тобі потрібно.",
+                            "Ти можеш запитати нас про все. 🙂"
+                        ],
+                        "title": "Ось про що йдеться"
+                    },
+                    "importantForAppointment": {
+                        "bullets": [
+                            "Ти повинен бути там.",
+                            "Твої батьки / опікуни можуть бути присутніми.",
+                            "Розмова відбудеться через Zoom.",
+                            "Будь ласка, проведи розмову вдома, де є хороший інтернет.",
+                            "Розмова ведеться німецькою мовою."
+                        ],
+                        "title": "Важливо знати про зустріч"
+                    },
+                    "reminder": {
+                        "title": "Нагадування у вигляді SMS",
+                        "description": "У полі «Надіслати текстове повідомлення на» ти можеш вказати свій номер телефону. Тоді ти отримаєш нагадування про зустріч у вигляді SMS."
+                    },
+                    "title": "Консультація з питань навчання з «Lern-Fair»",
+                    "bookAppointment": "Домовитися про зустріч",
+                    "alert": "Розмова триватиме лише {{minutes}} хвилин.",
+                    "description": "Оскільки ми давно не бачилися, ми хочемо запросити тебе на коротку розмову. Після цього ми підберемо для тебе нового партнера для навчання!",
+                    "cancelProcessModal": {
+                        "title": "Чому ти йдеш?",
+                        "description": "Якщо ти не домовишся про зустріч, на жаль, ми не зможемо підібрати тобі партнера для навчання.",
+                        "confirmButton": "Зрозуміло"
+                    }
                 }
             },
             "student": {
@@ -2445,13 +2504,13 @@
         "contactSupport": "Зверніться до служби підтримки",
         "appointment": {
             "joinMeeting": "Приєднатися до відеочату",
-            "joinMeetingHint": "Ти можеш почати зустріч лише за 5 хвилин до початку.",
             "changeAppointment": "Змінити зустріч",
             "cancelAppointment": "Скасувати зустріч",
             "title": "Зустріч створена ✅",
             "yourAppointment": "Твоя зустріч",
             "optionsDescription": "Немає часу? Хочеш перенести або скасувати зустріч?",
-            "description": "Підтвердження зустрічі буде надіслано на твою електронну пошту. Ти можеш додати зустріч до календаря одним кліком."
+            "description": "Підтвердження зустрічі буде надіслано на твою електронну пошту. Ти можеш додати зустріч до календаря одним кліком.",
+            "joinMeetingHint": "Ти можеш розпочати зустріч лише за {{minutes}} хвилин до її початку."
         }
     },
     "contactSupport": {
@@ -2766,5 +2825,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "Забронювати зустріч",
+    "changeAppointment": "Дата зміни",
+    "joinZoomMeeting": "Запустити Zoom"
 }

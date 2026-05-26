@@ -39,6 +39,7 @@ export type PupilScreening = Opt<
     Pick<Pupil_Screening, 'id' | 'createdAt' | 'updatedAt' | 'comment' | 'status' | 'invalidated' | 'knowsCoronaSchoolFrom' | 'systemMessages'>
 > & {
     screeners: Pick<Screener, 'firstname' | 'lastname'>[];
+    appointment?: Partial<Lecture> | null;
 };
 
 export type ReceivedScreeningSuggestions = {

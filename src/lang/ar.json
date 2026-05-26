@@ -376,10 +376,10 @@
                 "pupil": {
                     "max-dissolved-matches": "لا يمكنك طلب زوج دراسة لأن لديك بالفعل عددا كبيرا جدا من أزواج الدراسة.",
                     "not-tutee": "لا يمكنك طلب زوج تعليمي لأنك غير مسجل للحصول على دعم التعلم.",
-                    "max-requests": "أنت بالفعل على قائمة الانتظار.",
                     "deactivated": "تم إغلاق التسجيل للحصول على دعم التعلم 1: 1 مؤقتا بسبب ارتفاع الطلب. إذا كنت قد قدمت بالفعل طلبا للحصول على دعم التعلم ، فسنتصل بك برسالة بريد إلكتروني في المستقبل القريب لمناقشة كيفية المتابعة. في غضون ذلك ، لا تتردد في الاستفادة من عروضنا الأخرى. ",
                     "deactivated_tooltip": "التسجيل مغلق مؤقتاً بسبب ارتفاع الطلب على التسجيل.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
+                    "max-requests": "لا يمكنك إنشاء طلب آخر."
                 }
             }
         },
@@ -1392,7 +1392,16 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "مدرس ، مدرب",
             "appointmentsHeadline": "التواريخ",
-            "createAppointment": "إنشاء موعد"
+            "createAppointment": "إنشاء موعد",
+            "bookAppointment": "موعد ",
+            "joinMeeting": "بدء التكبير",
+            "changeAppointment": "تغيير موعد التغيير",
+            "appointmentBookedHint": "تم تحديد موعد لجلسة دروس خصوصية فردية:",
+            "needsToBookAppointmentHint": "تحديد موعد لجلسة دروس خصوصية فردية:",
+            "needsToBookAppointmentDesc": "هذا أمر مهم عند البحث عن شريك في التعلم",
+            "yourMatchRequest": "طلب شريك تعليمي فردي",
+            "waitingForResultsHint": "سنتصل بك!",
+            "waitingForResultsHintDesc": "ستتلقى رسالة بريد إلكتروني فور توفر أي أخبار جديدة لك."
         },
         "blocker": {
             "header": "دعم التعلم",
@@ -1449,14 +1458,29 @@
                 "removeRequest": "سحب الطلب",
                 "editRequest": "تعديل الطلب",
                 "deleteRequest": "حذف طلب",
-                "areyousuretodelete": "هل أنت متأكد من رغبتك في حذف الطلب؟",
+                "areYouSureToDelete": {
+                    "withAppointment": "سيتم حذف طلبك 1:1 والموعد المحدد.",
+                    "withoutAppointment": "هل أنت متأكد أنك تريد حذف الطلب؟"
+                },
+                "editRequestDescription": {
+                    "withAppointment": "لا مشكلة. سيبقى الموعد محفوظًا لك.",
+                    "withoutAppointment": "إذا قمت بتغيير بياناتك، فلن يتغير وقت الانتظار. سنقوم بإعلامك عبر البريد الإلكتروني بمجرد أن يحين دورك ونجد لك شريك تعلم مناسب."
+                },
+                "rescheduleAppointmentModal": {
+                    "title": "تغيير موعد التغيير",
+                    "description": "يمكنك موعد دون أن تتعرض لأي عواقب سلبية. سيظل الطلب ساريًا وسيصبح فعالاً بمجرد أن نتواصل معك."
+                },
                 "deleteSucess": "تم حذف الطلب",
-                "noMatches": "ليس لديك شريك تعلم (حتى الآن).",
-                "noDissolvedMatches": "ليس لديك أزواج دراسة محلولة.",
-                "editRequestDescription": " إذا قمت بتغيير التفاصيل الخاصة بك ، فلن يتغير وقت الانتظار. سنبلغك عن طريق البريد الإلكتروني بمجرد أن يحين دورك ووجدنا شريكا تعليميا مناسبا لك.",
-                "noRequestsTutee": "نحن لا نبحث عن شريك تعليمي لك في الوقت الحالي.",
-                "noRequestsTutor": "نحن لا نبحث حالياً عن شريك تعلُّم جديد/شريك تعلُّم إضافي لك. إذا كنت ترغب في التواصل مع طالب (إضافي) لدعمه، فانقر على زر \"إنشاء زوج تعليمي\".",
-                "resolveMatch": "تم حل الزوجين المتعلمين"
+                "noMatches": "ليس لديك (حتى الآن) أي شريك تعلُّم.",
+                "noDissolvedMatches": "ليس لديك شراكات  تعلم محلولة.",
+                "noRequestsTutee": "لا نبحث حالياً عن شريك تعلُّم .",
+                "noRequestsTutor": "نحن لا نبحث حاليًا عن شريك تعلُّم جديد أو إضافي شريك تعلُّم . إذا كنت ترغب في التواصل مع طالب أو طالبة (إضافي) لتقديم الدعم له أو لها، فاضغط علىشراكة تعلم ».",
+                "resolveMatch": "شراكة تعلم حل شراكة تعلم ",
+                "creationSuccessModal": {
+                    "title": "تم إنشاء موعد !",
+                    "description": "بعد المحادثة، سيبدأ البحث عن شريك تعلم لك على الفور!",
+                    "button": "إلى ملخصي"
+                }
             },
             "daz": {
                 "heading": "الألمانية كلغة ثانية",
@@ -1506,6 +1530,41 @@
                         "ver2": "تم حفظ التغييرات التي أجريتها. هذا لن يغير وقت انتظارك."
                     },
                     "groupCourses": "إلى الدورات الجماعية"
+                },
+                "bookScreeningAppointment": {
+                    "aboutTheAppointment": {
+                        "bullets": [
+                            "تحدث عن ما Lern-Fair وما تعلمته في Lern-Fair .",
+                            "سنتحدث عن ذلك، وسنساعدك في هذا الشأن.",
+                            "سنقوم بالتحقق مما إذا كان بإمكانك شراكة تعلم جديدة.",
+                            "سنحدد ما إذا كان \" Lern-Fair الخيار المناسب لك.",
+                            "يمكنك أن تسألنا عن أي شيء. 🙂"
+                        ],
+                        "title": "هذا هو الموضوع"
+                    },
+                    "importantForAppointment": {
+                        "bullets": [
+                            "يجب أن تكون معنا.",
+                            "يمكن لوالديك أو من يرعونك حضور ذلك.",
+                            "ستجرى المحادثة عبر تطبيق Zoom.",
+                            "يرجى إجراء المكالمة من المنزل باستخدام اتصال إنترنت جيد.",
+                            "المحادثة باللغة الألمانية."
+                        ],
+                        "title": "معلومات مهمة بشأن موعد"
+                    },
+                    "reminder": {
+                        "title": "تذكير عبر رسالة نصية قصيرة",
+                        "description": "في حقل \"إرسال رسالة نصية إلى\"، يمكنك إدخال رقم هاتفك. بعد ذلك، ستتلقى تذكيرات موعد الرسائل القصيرة."
+                    },
+                    "title": "محادثة لدعم التعلم مع «ليرن-فير»",
+                    "bookAppointment": "ترتيب اجتماع",
+                    "alert": "ستستغرق المكالمة {{minutes}} دقيقة فقط.",
+                    "description": "نظرًا لأننا لم نلتقِ منذ فترة طويلة، نود أن ندعوك إلى محادثة قصيرة. وبعد ذلك، سنبحث عن شريك تعليمي جديد لك!",
+                    "cancelProcessModal": {
+                        "title": "لماذا تذهب؟",
+                        "description": "إذا لم تقم بحجز موعد، فلن نتمكن للأسف من شريك تعلُّم لك.",
+                        "confirmButton": "فهمت"
+                    }
                 }
             },
             "student": {
@@ -2441,13 +2500,13 @@
         "contactSupport": "الاتصال بالدعم",
         "appointment": {
             "joinMeeting": "الانضمام إلى الدردشة المرئية",
-            "joinMeetingHint": "يمكنك بدء الاجتماع قبل 5 دقائق فقط من موعده.",
             "changeAppointment": "تغيير الموعد",
             "cancelAppointment": "إلغاء الموعد",
             "title": "تم إنشاء الموعد ✅",
             "yourAppointment": "موعدك",
             "optionsDescription": "هل لا تملك وقتاً وتريد تغيير الموعد أو إلغاؤه؟",
-            "description": "سوف يصلك تأكيد الموعد عبر بريدك الإلكتروني. يمكنك إضافته إلى التقويم بنقرة واحدة."
+            "description": "سوف يصلك تأكيد الموعد عبر بريدك الإلكتروني. يمكنك إضافته إلى التقويم بنقرة واحدة.",
+            "joinMeetingHint": "لا يمكنك بدء الاجتماع إلا قبل {{minutes}} دقيقة من موعد انطلاقه."
         }
     },
     "contactSupport": {
@@ -2754,5 +2813,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "موعد ",
+    "changeAppointment": "تغيير موعد التغيير",
+    "joinZoomMeeting": "بدء التكبير"
 }

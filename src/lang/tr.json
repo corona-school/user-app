@@ -376,10 +376,10 @@
                 "pupil": {
                     "max-dissolved-matches": "Bir öğrenim çifti talep edemezsiniz çünkü zaten çok fazla öğrenim çiftiniz olmuştur.",
                     "not-tutee": "Öğrenme desteği için kayıtlı olmadığınız için bir öğrenme çifti talep edemezsiniz.",
-                    "max-requests": "Zaten bekleme listesindesiniz.",
                     "deactivated": "Bire bir öğrenme desteği için kayıtlar yoğun talep nedeniyle geçici olarak kapatılmıştır. Öğrenme desteği için daha önce talepte bulunduysanız, sonraki adımları görüşmek üzere yakın gelecekte sizinle e-posta yoluyla iletişime geçeceğiz. Bu arada, lütfen diğer tekliflerimizden yararlanmaktan çekinmeyin. ",
                     "deactivated_tooltip": "Yoğun talep nedeniyle kayıtlar geçici olarak kapatılmıştır.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
+                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden.",
+                    "max-requests": "Başka bir talep oluşturamazsın."
                 }
             }
         },
@@ -1396,7 +1396,16 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Eğitmen, Kurs lideri",
             "appointmentsHeadline": "Tarihler",
-            "createAppointment": "Randevu oluştur"
+            "createAppointment": "Randevu oluştur",
+            "bookAppointment": "Randevu al",
+            "joinMeeting": "Zoom'u başlat",
+            "changeAppointment": "Tarih değiştir",
+            "appointmentBookedHint": "1:1 özel ders görüşmesi ayarlandı:",
+            "needsToBookAppointmentHint": "1:1 özel ders görüşmesi ayarlayın:",
+            "needsToBookAppointmentDesc": "Bu, bir çalışma arkadaşı aramak için önemlidir",
+            "yourMatchRequest": "1:1 öğrenme ortağı talebin",
+            "waitingForResultsHint": "Senden haber alacağız!",
+            "waitingForResultsHintDesc": "Senin için yeni haberlerimiz olur olmaz sana bir e-posta göndereceğiz."
         },
         "blocker": {
             "header": "Öğrenme desteği",
@@ -1453,14 +1462,29 @@
                 "removeRequest": "Talebi geri çekin",
                 "editRequest": "Talebi düzenle",
                 "deleteRequest": "Talebi sil",
-                "areyousuretodelete": "Talebi gerçekten silmek istiyor musunuz?",
+                "areYouSureToDelete": {
+                    "withAppointment": "1:1 talebiniz ve planlanan randevu silinecektir.",
+                    "withoutAppointment": "Talebi silmek istediğinizden emin misiniz?"
+                },
+                "editRequestDescription": {
+                    "withAppointment": "Sorun değil. Randevu yine de sizin için korunacaktır.",
+                    "withoutAppointment": "Bilgilerinizi değiştirirseniz bekleme süreniz etkilenmez. Sıranız geldiğinde ve sizin için uygun bir öğrenme partneri bulduğumuzda sizi e-posta ile bilgilendireceğiz."
+                },
+                "rescheduleAppointmentModal": {
+                    "title": "Tarih değiştir",
+                    "description": "Randevuyu herhangi bir dezavantaj yaşamadan değiştirebilirsin. Talebin geçerliliğini korur ve seninle görüştükten sonra aktif hale gelir."
+                },
                 "deleteSucess": "Talep silindi",
                 "noMatches": "(Henüz) bir öğrenme ortağınız yok.",
                 "noDissolvedMatches": "Dağıtılmış öğrenme çiftin yok.",
-                "editRequestDescription": " Bilgilerinizi değiştirirseniz bekleme süreniz değişmeyecektir. Sıra size geldiğinde ve sizin için uygun bir öğrenim ortağı bulduğumuzda sizi e-posta ile bilgilendireceğiz.",
                 "noRequestsTutee": "Şu anda sizin için bir öğrenme ortağı aramıyoruz.",
                 "noRequestsTutor": "Şu anda sizin için yeni/daha ileri bir öğrenim ortağı aramıyoruz. Bir (başka) öğrenciye destek olmak için onunla bağlantı kurmak istiyorsanız, 'Öğrenme çifti oluştur' düğmesine tıklayın.",
-                "resolveMatch": "Öğrenme çifti dağıtıldı"
+                "resolveMatch": "Öğrenme çifti dağıtıldı",
+                "creationSuccessModal": {
+                    "title": "Randevu oluşturuldu!",
+                    "description": "Görüşmeden sonra, sana uygun bir çalışma arkadaşı arayışımız hemen başlıyor!",
+                    "button": "Özet sayfama"
+                }
             },
             "daz": {
                 "heading": "İkinci dil olarak Almanca",
@@ -1510,6 +1534,41 @@
                         "ver2": "Değişiklikleriniz kaydedildi. Bu, bekleme sürenizi değiştirmeyecektir."
                     },
                     "groupCourses": "Grup kurslarına dön"
+                },
+                "bookScreeningAppointment": {
+                    "aboutTheAppointment": {
+                        "bullets": [
+                            "Lern-Fair 'de neler Lern-Fair ve neler öğrendiğini anlat.",
+                            "Bu konuda sana nasıl yardımcı olabileceğimizi konuşalım.",
+                            "Sana yeni bir öğrenim eşi ayarlanıp ayarlanamayacağını kontrol ediyoruz.",
+                            "Lern-Fair sana uygun olup olmadığını değerlendiriyoruz.",
+                            "Bize her şeyi sorabilirsin. 🙂"
+                        ],
+                        "title": "Konu şu"
+                    },
+                    "importantForAppointment": {
+                        "bullets": [
+                            "Buna katılmalısın.",
+                            "Ailen veya bakıcıların da bu süreçte yanınızda olabilir.",
+                            "Görüşme Zoom üzerinden yapılacak.",
+                            "Lütfen görüşmeyi evde, internet bağlantısı iyi olan bir yerde yap.",
+                            "Sohbet Almanca."
+                        ],
+                        "title": "Randevu için önemli"
+                    },
+                    "reminder": {
+                        "title": "SMS ile hatırlatma",
+                        "description": "\"Metin mesajını gönder\" alanına telefon numaranı girebilirsin. Böylece randevu hatırlatmalarını SMS yoluyla alacaksın."
+                    },
+                    "title": "Lern-Fair ile öğrenme desteği görüşmesi",
+                    "bookAppointment": "Bir toplantı düzenleyin",
+                    "alert": "Görüşme sadece {{minutes}} dakika sürecek.",
+                    "description": "Uzun süredir görüşemedik, bu yüzden seni kısa bir görüşmeye davet etmek istiyoruz. Ardından sana yeni bir çalışma arkadaşı bulacağız!",
+                    "cancelProcessModal": {
+                        "title": "Neden gidiyorsun?",
+                        "description": "Eğer bir görüşme ayarlamazsan, maalesef sana bir öğrenim arkadaşı bulamayız.",
+                        "confirmButton": "Anlaşıldı"
+                    }
                 }
             },
             "student": {
@@ -2445,13 +2504,13 @@
         "contactSupport": "İletişim desteği",
         "appointment": {
             "joinMeeting": "Görüntülü sohbete katıl",
-            "joinMeetingHint": "Toplantıyı yalnızca randevudan 5 dakika önce başlatabilirsin.",
             "changeAppointment": "Randevuyu değiştir",
             "cancelAppointment": "Randevuyu iptal et",
             "title": "Randevu oluşturuldu ✅",
             "yourAppointment": "Randevun",
             "optionsDescription": "Vaktin yok mu? Randevuyu değiştirmek veya iptal etmek mi istiyorsun?",
-            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin."
+            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin.",
+            "joinMeetingHint": "Toplantıyı, randevunun başlamasına {{minutes}} dakika kala başlatabilirsin."
         }
     },
     "contactSupport": {
@@ -2758,5 +2817,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "Randevu al",
+    "changeAppointment": "Tarih değiştir",
+    "joinZoomMeeting": "Zoom'u başlat"
 }

@@ -1,7 +1,7 @@
-import { useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -15,7 +15,6 @@ import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches, { MatchCard } from '../match/Matches';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
-import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
@@ -60,10 +59,8 @@ const MatchingStudent: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const toast = useToast();
-    const [showCancelModal, setShowCancelModal] = useState<boolean>();
 
-    const { data, loading } = useQuery(query);
+    const { data, loading, refetch } = useQuery(query);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -74,34 +71,6 @@ const MatchingStudent: React.FC<Props> = () => {
         base: '100%',
         lg: sizes['contentContainerWidth'],
     });
-
-    const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
-        gql(`
-            mutation StudentDeleteMatchRequest {
-                studentDeleteMatchRequest
-            }
-        `),
-        { refetchQueries: [{ query }] }
-    );
-
-    const showCancelMatchRequestModal = useCallback(() => {
-        setShowCancelModal(true);
-    }, []);
-
-    const cancelRequest = useCallback(async () => {
-        setShowCancelModal(false);
-        trackEvent({
-            category: 'matching',
-            action: 'click-event',
-            name: 'Helfer Matching Anfrage löschen',
-            documentTitle: 'Helfer Matching',
-        });
-        const res = await cancelMatchRequest();
-        if (res.data?.studentDeleteMatchRequest) {
-            toast.show({ description: t('matching.request.check.deleteSucess'), placement: 'top' });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data?.me?.student?.id]);
 
     const activeMatches = useMemo(() => {
         return data?.me?.student?.matches.filter((match) => match.dissolved === false);
@@ -184,20 +153,17 @@ const MatchingStudent: React.FC<Props> = () => {
                                             <VStack space={space['0.5']}>
                                                 <Flex direction="row" flexWrap="wrap">
                                                     {(matchRequestCount &&
-                                                        new Array(matchRequestCount).fill('').map((_, i) => (
-                                                            <OpenMatchRequest
-                                                                cancelLoading={cancelLoading}
-                                                                index={i}
-                                                                showCancelMatchRequestModal={showCancelMatchRequestModal}
-                                                                subjects={data?.me?.student?.subjectsFormatted || []}
-                                                                onEditRequest={() =>
-                                                                    navigate('/request-match', {
-                                                                        state: { edit: true },
-                                                                    })
-                                                                }
-                                                                key={i}
-                                                            />
-                                                        ))) || <AlertMessage content={t('matching.request.check.noRequestsTutor')} />}
+                                                        new Array(matchRequestCount)
+                                                            .fill('')
+                                                            .map((_, i) => (
+                                                                <OpenMatchRequest
+                                                                    index={i}
+                                                                    subjects={data?.me?.student?.subjectsFormatted || []}
+                                                                    variant="student"
+                                                                    onMatchRequestCancelled={() => refetch()}
+                                                                    key={i}
+                                                                />
+                                                            ))) || <AlertMessage content={t('matching.request.check.noRequestsTutor')} />}
                                                 </Flex>
                                             </VStack>
                                         </VStack>
@@ -255,15 +221,6 @@ const MatchingStudent: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <ConfirmationModal
-                isOpen={!!showCancelModal}
-                onOpenChange={setShowCancelModal}
-                confirmButtonText={t('matching.request.check.deleteRequest')}
-                headline={t('matching.request.check.deleteRequest')}
-                description={t('matching.request.check.areyousuretodelete')}
-                onConfirm={cancelRequest}
-                variant="destructive"
-            />
         </AsNavigationItem>
     );
 };

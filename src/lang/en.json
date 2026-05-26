@@ -376,10 +376,10 @@
                 "pupil": {
                     "max-dissolved-matches": "You cannot request a learning pair because you have already had too many learning pairs.",
                     "not-tutee": "You cannot request a learning pair as you are not registered for learning support.",
-                    "max-requests": "You are already on the waiting list.",
                     "deactivated": "Registration for 1on1 learning support is temporarily closed due to high demand. If you have already submitted a request for learning support, we will contact you by email in the near future to discuss the next steps. In the meantime, please feel free to take advantage of our other offers. ",
                     "deactivated_tooltip": "Registration is temporarily closed due to high demand.",
-                    "max-matches": "Aktuell kannst du maximal 1 Lernpartner:in haben. Solltest du nicht mehr mit deiner Lernpartner:in arbeiten, löse das Lernpaar auf. Der Chat ist nach Lernpaar-Auflösung noch 7 Tage offen. In dem Zeitraum habt ihr noch Gelegenheit euch voneinander zu verabschieden."
+                    "max-matches": "You can currently have a maximum of 1 learning partner. If you are no longer working with your learning partner, dissolve the learning pair. The chat remains open for 7 days after the learning pair is dissolved. During this period, you still have the opportunity to say goodbye to each other.",
+                    "max-requests": "You cannot create another request."
                 }
             }
         },
@@ -1396,7 +1396,16 @@
             "dissolvedAlert": "Lernpaar wurde aufgelöst: Deine Zusammenarbeit mit {{partnerName}} wurde beendet.",
             "tutorInstructor": "Tutor, Course leader",
             "appointmentsHeadline": "Lectures",
-            "createAppointment": "Create lecture"
+            "createAppointment": "Create lecture",
+            "bookAppointment": "lecture ",
+            "joinMeeting": "Start Zoom",
+            "changeAppointment": "change lecture",
+            "appointmentBookedHint": "One-on-one tutoring session scheduled:",
+            "needsToBookAppointmentHint": "Schedule a one-on-one tutoring session:",
+            "needsToBookAppointmentDesc": "This is important when looking for a learning partner",
+            "yourMatchRequest": "Your Request for a 1-on-1 learning partner",
+            "waitingForResultsHint": "You'll hear from us!",
+            "waitingForResultsHintDesc": "You'll receive an email as soon as we have news for you."
         },
         "blocker": {
             "header": "Learning support",
@@ -1453,14 +1462,29 @@
                 "removeRequest": "Withdraw request",
                 "editRequest": "Edit request",
                 "deleteRequest": "Delete request",
-                "areyousuretodelete": "Do you really want to delete the request?",
+                "areYouSureToDelete": {
+                    "withAppointment": "Your 1:1 request and the scheduled appointment will be deleted.",
+                    "withoutAppointment": "Are you sure you want to delete the request?"
+                },
+                "editRequestDescription": {
+                    "withAppointment": "No problem. The appointment will still remain for you.",
+                    "withoutAppointment": "If you change your details, your waiting time will not be affected. We will notify you by email as soon as it is your turn and we have found a suitable learning partner for you."
+                },
+                "rescheduleAppointmentModal": {
+                    "title": "Change appointment",
+                    "description": "You can change the appointment without any negative consequences. The request will remain active and will take effect as soon as we've spoken with you."
+                },
                 "deleteSucess": "The request has been deleted",
                 "noMatches": "You do not (yet) have a learning partner.",
                 "noDissolvedMatches": "You have no resolved learning pairs.",
-                "editRequestDescription": " If you change your details, your waiting time will not change. We will inform you by email as soon as it is your turn and we have found a suitable learning partner for you.",
                 "noRequestsTutee": "We are not looking for a learning partner for you right now.",
                 "noRequestsTutor": "We are not currently looking for a new/further learning partner for you. If you would like to be connected with a:r (further) pupil to support them, click on the 'Create learning pair' button.",
-                "resolveMatch": "The learning pair was dissolved"
+                "resolveMatch": "The learning pair was dissolved",
+                "creationSuccessModal": {
+                    "title": "Appointment created!",
+                    "description": "After the appointment, the search for a learning partner for you will begin right away!",
+                    "button": "Back to my overview"
+                }
             },
             "daz": {
                 "heading": "German as a second language",
@@ -1510,6 +1534,41 @@
                         "ver2": "Your changes have been saved. This will not change your waiting time."
                     },
                     "groupCourses": "To the group courses"
+                },
+                "bookScreeningAppointment": {
+                    "aboutTheAppointment": {
+                        "bullets": [
+                            "Tell us what you Lern-Fair and learned at Lern-Fair .",
+                            "Let's talk about how we can help you.",
+                            "We'll check to see if you can get a new study partner.",
+                            "We'll help you figure out if Lern-Fair is Lern-Fair the right fit for you.",
+                            "Feel free to ask us anything. 🙂"
+                        ],
+                        "title": "That's what it's all about"
+                    },
+                    "importantForAppointment": {
+                        "bullets": [
+                            "You have to be there.",
+                            "Your parents or guardian can be there.",
+                            "The meeting will be held via Zoom.",
+                            "Please make sure you have a good internet connection when you're at home.",
+                            "The conversation is in German."
+                        ],
+                        "title": "Important for the lecture"
+                    },
+                    "reminder": {
+                        "title": "Reminder via text message",
+                        "description": "In the \"Send text message to\" field, you can enter your phone number. You will then receive reminders for the lecture text message."
+                    },
+                    "title": "Learning Support Consultation with Lern-Fair",
+                    "bookAppointment": "Arrange a meeting",
+                    "alert": "The call will only take {{minutes}} minutes.",
+                    "description": "Since we haven't seen each other in a while, we'd like to invite you to a brief chat. After that, we'll find you a new study partner!",
+                    "cancelProcessModal": {
+                        "title": "Why are you leaving?",
+                        "description": "If you don't schedule a consultation, we unfortunately won't be able to find you a study partner.",
+                        "confirmButton": "Got it"
+                    }
                 }
             },
             "student": {
@@ -2445,13 +2504,13 @@
         "contactSupport": "Contact support",
         "appointment": {
             "joinMeeting": "Join video chat",
-            "joinMeetingHint": "You can only start the meeting 5 minutes before the start of the appointment.",
             "changeAppointment": "Change appointment",
             "cancelAppointment": "Cancel appointment",
             "title": "Appointment created ✅",
             "yourAppointment": "Your appointment",
             "optionsDescription": "You don't have time and want to postpone or cancel the appointment?",
-            "description": "You will receive an appointment confirmation to your email address. You can add the appointment to your calendar with a click."
+            "description": "You will receive an appointment confirmation to your email address. You can add the appointment to your calendar with a click.",
+            "joinMeetingHint": "You can start the meeting only {{minutes}} minutes before it begins."
         }
     },
     "contactSupport": {
@@ -2762,5 +2821,8 @@
         "none": "Keine",
         "some": "Etwas",
         "extensive": "Viel"
-    }
+    },
+    "bookAppointment": "lecture ",
+    "changeAppointment": "change lecture",
+    "joinZoomMeeting": "Start Zoom"
 }
