@@ -2514,7 +2514,8 @@
             "german_version": "Deutsche Version",
             "english_version": "Englische Version",
             "create": "Bescheinigung erstellen",
-            "download_browser": "Bescheinigung in Downloads speichern"
+            "download_browser": "Bescheinigung in Downloads speichern",
+            "trainingCompletedLabel": "Hiermit bestätige ich, dass ich insgesamt 10 Stunden an Fortbildungen absolviert habe."
         }
     },
     "certificateOfConduct": {
@@ -2813,6 +2814,7 @@
         "title": "Meine Bescheinigungen",
         "instantCertificate": {
             "title": "Sofort-Nachweis",
+            "titleForInternship": "Praktikumsbestätigung",
             "bullets": [
                 "sofort verfügbar",
                 "führt keine einzelnen Lernpartner:innen auf",

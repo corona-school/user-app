@@ -2416,7 +2416,8 @@
             "german_version": "German version",
             "english_version": "English version",
             "create": "Create certificate",
-            "download_browser": "Save certificate in downloads"
+            "download_browser": "Save certificate in downloads",
+            "trainingCompletedLabel": "I hereby confirm that I have completed a total of 10 hours of continuing education."
         }
     },
     "certificateOfConduct": {
@@ -2740,7 +2741,8 @@
                 "The type of support, total duration and number of lessons are listed"
             ],
             "title": "Immediate certificate",
-            "request": "Request an immediate certificate"
+            "request": "Request an immediate certificate",
+            "titleForInternship": "Internship Certificate"
         },
         "participationCertificate": {
             "bullets": ["must be confirmed by the learning partner", "for each learning partner individually", "The time spent can also be confirmed here"],

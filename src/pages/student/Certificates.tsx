@@ -16,6 +16,8 @@ import { BACKEND_URL } from '@/config';
 import { Modal, ModalHeader, ModalTitle } from '@/components/Modal';
 import { toast } from 'sonner';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { Checkbox, CheckedState } from '@/components/Checkbox';
+import { Label } from '@/components/Label';
 
 const query = gql(`
 query Certificates {
@@ -33,6 +35,7 @@ query Certificates {
                 state
                 pupil {firstname lastname}
             }
+            isInternship
         }
     }
 }`);
@@ -42,13 +45,14 @@ const CertificatesPage: React.FC = () => {
     const { data } = useQuery(query);
     const navigate = useNavigate();
     const { trackEvent } = useMatomo();
+    const [hasCompletedTraining, setHasCompletedTraining] = useState<CheckedState>(false);
 
     const [showSelectInstantPDFLanguageModal, setShowSelectInstantPDFLanguageModal] = useState<boolean>(false);
 
     const [requestInstantCertificateMutation, { loading: requestInstantCertificateFetching }] = useMutation(
         gql(`
-            mutation RequestInstantCertificate($lang: String!) {
-                instantCertificateCreate(lang: $lang)
+            mutation RequestInstantCertificate($lang: String!, $hasCompletedTraining: Boolean!) {
+                instantCertificateCreate(lang: $lang, hasCompletedTraining: $hasCompletedTraining)
             }
         `)
     );
@@ -64,6 +68,7 @@ const CertificatesPage: React.FC = () => {
         const res = await requestInstantCertificateMutation({
             variables: {
                 lang,
+                hasCompletedTraining: hasCompletedTraining === true,
             },
         });
 
@@ -100,7 +105,7 @@ const CertificatesPage: React.FC = () => {
                     {t('certificates.title')}
                 </Typography>
                 <Typography variant="h3" className="mb-4">
-                    {t('certificates.instantCertificate.title')}
+                    {t(data?.me.student?.isInternship ? 'certificates.instantCertificate.titleForInternship' : 'certificates.instantCertificate.title')}
                 </Typography>
                 <div className="flex flex-col">
                     <BulletList bulletPoints={t('certificates.instantCertificate.bullets', { returnObjects: true })} />
@@ -114,6 +119,12 @@ const CertificatesPage: React.FC = () => {
                         <ModalTitle>{t('certificate.download.download_certificate')}</ModalTitle>
                     </ModalHeader>
                     <div className="flex flex-col gap-2">
+                        {data?.me.student?.isInternship && (
+                            <div className="flex gap-x-2 items-center mb-4">
+                                <Checkbox id="hasCompletedTraining" checked={hasCompletedTraining} onCheckedChange={setHasCompletedTraining} />{' '}
+                                <Label htmlFor="hasCompletedTraining">{t('certificate.download.trainingCompletedLabel')}</Label>
+                            </div>
+                        )}
                         <Button className="w-full" onClick={() => downloadInstantCertificate('de')}>
                             {t('certificate.download.german_version')}
                         </Button>
