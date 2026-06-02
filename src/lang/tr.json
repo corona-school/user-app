@@ -2416,7 +2416,8 @@
             "german_version": "Almanca versiyon",
             "english_version": "İngilizce versiyon",
             "create": "Sertifika oluştur",
-            "download_browser": "Sertifikayı indirilenler bölümüne kaydet"
+            "download_browser": "Sertifikayı indirilenler bölümüne kaydet",
+            "trainingCompletedLabel": "Bu belge ile toplam 10 saatlik mesleki eğitim aldığımı teyit ederim."
         }
     },
     "certificateOfConduct": {
@@ -2736,7 +2737,8 @@
         "instantCertificate": {
             "bullets": ["hemen temin edilebilir", "bireysel öğrenme ortaklarını listelemez", "Destek türü, toplam süre ve ders sayısı listelenmiştir"],
             "title": "Anında kanıt",
-            "request": "Acil sertifika talep edin"
+            "request": "Acil sertifika talep edin",
+            "titleForInternship": "Staj Belgesi"
         },
         "participationCertificate": {
             "bullets": ["öğrenim ortağı tarafından onaylanmalıdır", "her bir öğrenme ortağı için ayrı ayrı", "Harcanan zaman da buradan teyit edilebilir"],
