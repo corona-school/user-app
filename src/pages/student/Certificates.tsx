@@ -18,6 +18,7 @@ import { toast } from 'sonner';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Checkbox, CheckedState } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
+import { DateTime } from 'luxon';
 
 const query = gql(`
 query Certificates {
@@ -73,7 +74,8 @@ const CertificatesPage: React.FC = () => {
         });
 
         if (res?.data?.instantCertificateCreate) {
-            downloadFile(`Lernfair_Zertifikat_${Date.now()}.pdf`, `${BACKEND_URL}${res?.data?.instantCertificateCreate}`);
+            const title = data?.me.student?.isInternship ? 'Praktikumsbescheinigung' : 'Ehrenamtsbescheinigung';
+            downloadFile(`${DateTime.now().toFormat('YYYYMMDD')}__${title}_Lern-Fair.pdf`, `${BACKEND_URL}${res?.data?.instantCertificateCreate}`);
         } else {
             toast.error(t('certificate.download.error'));
         }
