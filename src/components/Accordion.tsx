@@ -18,7 +18,7 @@ function AccordionTrigger({
     children,
     ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger> & {
-    IconComponent?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<Icon>>;
+    IconComponent?: React.ForwardRefExoticComponent<IconProps & React.RefAttributes<SVGSVGElement>>;
     iconClasses?: string;
 }) {
     return (
