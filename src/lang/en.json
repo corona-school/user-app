@@ -2746,7 +2746,8 @@
         },
         "participationCertificate": {
             "bullets": ["must be confirmed by the learning partner", "for each learning partner individually", "The time spent can also be confirmed here"],
-            "title": "Individual certificate"
+            "title": "Individual certificate",
+            "deactivated": "There is no longer an individual record that you need to have confirmed by students. Your activities are automatically recorded in the database, so you can download the current status as an instant record (multiple times) at any time. If you have any questions or problems, you can contact <0 />."
         },
         "title": "My certificates"
     },

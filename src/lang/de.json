@@ -2823,6 +2823,7 @@
             "request": "Jetzt runterladen"
         },
         "participationCertificate": {
+            "deactivated": "Es gibt keinen Individuellen Nachweis mehr, den ihr von Schüler:innen bestätigen lassen musst. Deine Tätigkeiten werden automatisch in der Datenbank erfasst, so dass ihr jederzeit den aktuellen Stand als Sofort-Nachweis (mehrfach) herunterladen könnt. Bei Fragen oder Problemen könnt ihr euch an <0 /> wenden.",
             "title": "Individueller Nachweis",
             "bullets": [
                 "muss durch den/die Lernpartner:in bestätigt werden",

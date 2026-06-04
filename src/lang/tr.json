@@ -2742,7 +2742,8 @@
         },
         "participationCertificate": {
             "bullets": ["öğrenim ortağı tarafından onaylanmalıdır", "her bir öğrenme ortağı için ayrı ayrı", "Harcanan zaman da buradan teyit edilebilir"],
-            "title": "Bireysel kanıt"
+            "title": "Bireysel kanıt",
+            "deactivated": "Artık öğrencilerin onaylaması gereken bireysel bir kayıt bulunmamaktadır. Faaliyetleriniz veritabanında otomatik olarak kaydedilir, böylece güncel durumu anlık kayıt olarak istediğiniz zaman (birden fazla kez) indirebilirsiniz. Sorularınız veya sorunlarınız varsa <0 /> ile iletişime geçebilirsiniz."
         },
         "title": "Sertifikalarım"
     },
