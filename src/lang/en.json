@@ -107,8 +107,6 @@
             "cancelButton": "Cancel lecture",
             "editButton": "Edit lecture",
             "canceledToast": "Lecture was canceled",
-            "zoomTooltipStudent": "If you click on this link, you will join the meeting as a participant. To join the meeting as a host, use the \"Join video chat now\" button.",
-            "zoomTooltipPupil": "Never share this link with other people. This is the only way we can guarantee the security of the platform.",
             "qrcode": {
                 "title": "Log in with your smartphone",
                 "header": "Your advantages",

@@ -107,8 +107,6 @@
             "cancelButton": "Randevuyu iptal et",
             "editButton": "Randevu düzenleme",
             "canceledToast": "Randevu iptal edildi",
-            "zoomTooltipStudent": "Bu bağlantıya tıklarsanız, toplantıya katılımcı olarak katılırsınız. Toplantıya ev sahibi olarak katılmak için \"Video sohbete şimdi katıl\" düğmesini kullanın.",
-            "zoomTooltipPupil": "Bu bağlantıyı asla başkalarıyla paylaşmayın. Platformun güvenliğini ancak bu şekilde garanti edebiliriz.",
             "qrcode": {
                 "title": "Akıllı telefonunuzla giriş yapın",
                 "header": "Avantajlarınız",
