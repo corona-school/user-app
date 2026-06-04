@@ -138,8 +138,6 @@
             "editButton": "Termin bearbeiten",
             "rescheduleButton": "Termin verschieben",
             "canceledToast": "Termin wurde abgesagt",
-            "zoomTooltipStudent": "Wenn du diesen Link aufrufst, trittst du dem Meeting als Teilnehmer:in bei. Um als Host dem Meeting beizutrteten nutze den Button \"Jetzt Videochat beitreten\".",
-            "zoomTooltipPupil": "Teile diesen Link niemals mit anderen Personen. Nur so können wir die Sicherheit der Plattform gewährleisten.",
             "reasonDisabled": {
                 "editBtn": {
                     "isOver": "Dieser Termin ist bereits vorbei und kann daher nicht mehr bearbeitet werden."

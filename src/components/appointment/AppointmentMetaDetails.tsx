@@ -154,27 +154,6 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         )}
                     </Stack>
                     <Spacer py={3} />
-                    {(overrideMeetingLink || zoomMeetingUrl) && (
-                        <HStack space={2} alignItems="center">
-                            <CamerIcon />
-                            <Text fontWeight="normal">{overrideMeetingLink ?? zoomMeetingUrl?.split('?')[0]}</Text>
-                            {zoomMeetingUrl && (
-                                <Tooltip
-                                    maxWidth={270}
-                                    label={isOrganizer ? t('appointment.detail.zoomTooltipStudent') : t('appointment.detail.zoomTooltipPupil')}
-                                    bg={'primary.900'}
-                                    _text={{ textAlign: 'center' }}
-                                    p={3}
-                                    hasArrow
-                                    children={
-                                        <Circle rounded="full" bg="danger.100" size={4} ml={2}>
-                                            <Text color={'white'}>i</Text>
-                                        </Circle>
-                                    }
-                                ></Tooltip>
-                            )}
-                        </HStack>
-                    )}
                     <Spacer py={3} />
                     {appointmentId && appointmentType && (
                         <>
