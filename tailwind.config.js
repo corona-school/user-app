@@ -48,6 +48,7 @@ module.exports = {
                     foreground: 'hsl(var(--primary-foreground))',
                     light: 'hsl(var(--primary-light))',
                     lighter: 'hsl(var(--primary-lighter))',
+                    midnight: 'hsl(var(--primary-midnight))',
                     dark: 'hsl(var(--primary-dark))',
                 },
                 secondary: {
@@ -119,6 +120,7 @@ module.exports = {
             fontSize: {
                 detail: '0.875rem',
                 form: ['0.875rem', { lineHeight: '0.875rem', letterSpacing: '0', fontWeight: '500' }],
+                subtle: ['0.875rem', { lineHeight: '1.125rem', letterSpacing: '0', fontWeight: '400' }],
             },
             lineHeight: {
                 'leading-3': '0.875rem',

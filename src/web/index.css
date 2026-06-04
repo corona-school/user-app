@@ -24,6 +24,7 @@
         --primary: 189 31% 24%;
         --primary-dark: 189 28% 18%;
         --primary-foreground: 210 40% 98%;
+        --primary-midnight: 184 100% 19%;
 
         --secondary: 48 99% 65%;
         --secondary-foreground: var(--foreground);
