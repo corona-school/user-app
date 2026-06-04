@@ -34,8 +34,21 @@ type ConfigurableInfo = {
 } & Pick<Important_Information, 'category' | 'ctaLabel' | 'description' | 'language' | 'navigateTo' | 'title'>;
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
-query GetOnboardingInfos {
-  important_informations {
+query GetOnboardingInfos($todayStart: DateTime!, $todayEnd: DateTime!) {
+  important_informations(where:  {
+     AND: [ {
+        OR: [
+          { activeFrom: { equals: null } }
+          { activeFrom: { lte: $todayEnd } }
+        ]
+      }
+      {
+        OR: [
+          { activeUntil: { equals: null } }
+          { activeUntil: { gte: $todayStart } }
+        ]
+     }]
+  }) {
     title
     description
     navigateTo
@@ -138,7 +151,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
 
     const { show } = useModal();
 
-    const { data } = useQuery(IMPORTANT_INFORMATION_QUERY);
+    const { data } = useQuery(IMPORTANT_INFORMATION_QUERY, {
+        variables: { todayStart: DateTime.now().startOf('day').toISO(), todayEnd: DateTime.now().endOf('day').toISO() },
+    });
 
     const [selectedInformation, setSelectedInformation] = useState<Information>();
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
