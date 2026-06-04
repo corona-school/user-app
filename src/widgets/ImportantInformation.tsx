@@ -10,7 +10,7 @@ import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
-import { Achievement, Achievement_Action_Type_Enum } from '../gql/graphql';
+import { Achievement, Important_Information, Important_Information_Category_Enum } from '../gql/graphql';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
@@ -29,7 +29,9 @@ type Information = {
     key?: string;
 };
 
-type ConfigurableInfo = { title: string; desciption: string; language: string; btnfn: (() => void) | null };
+type ConfigurableInfo = {
+    btnfn: (() => void) | null;
+} & Pick<Important_Information, 'category' | 'ctaLabel' | 'description' | 'language' | 'navigateTo' | 'title'>;
 
 export const IMPORTANT_INFORMATION_QUERY = gql(`
 query GetOnboardingInfos {
@@ -39,6 +41,8 @@ query GetOnboardingInfos {
     navigateTo
     language
     recipients
+    ctaLabel
+    category
   }
   me {
     email
@@ -330,7 +334,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             .forEach((info: any) => {
                 configurableInfos.push({
                     title: info.title,
-                    desciption: info.description,
+                    description: info.description,
+                    category: info.category,
+                    ctaLabel: info.ctaLabel,
                     btnfn: info.navigateTo
                         ? () => {
                               window.location.href = info.navigateTo;
@@ -414,14 +420,13 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     return (
                         <NextStepsCard
                             key={index}
-                            title={`${t('important')}!`}
-                            name={info.title}
-                            description={info.desciption}
-                            actionDescription={t('moreInfoButton')}
-                            actionType={Achievement_Action_Type_Enum.Action}
+                            title={info.title}
+                            description={info.description}
                             onClick={() => {
                                 handleOnConfigurableInfoClick(info);
                             }}
+                            category={info.category}
+                            ctaLabel={info.ctaLabel || t('moreInfoButton')}
                         />
                     );
                 })}
@@ -433,13 +438,12 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     return (
                         <NextStepsCard
                             key={`${config.label}-${index}`}
-                            label={config.label}
-                            title={t(`helperwizard.${config.label}.subtitle` as unknown as TemplateStringsArray, config.lang)}
-                            name={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
+                            title={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
+                            subtitle={t(`helperwizard.${config.label}.subtitle` as unknown as TemplateStringsArray, config.lang)}
                             description={t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
-                            actionDescription={actionDescription}
-                            actionType={Achievement_Action_Type_Enum.Action}
                             onClick={() => handleOnInfoClick({ ...config, btntxt: buttontexts })}
+                            ctaLabel={actionDescription}
+                            category={Important_Information_Category_Enum.Important}
                         />
                     );
                 })}
