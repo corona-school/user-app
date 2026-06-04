@@ -2,7 +2,7 @@ import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
 import React, { useState } from 'react';
 import WithNavigation from '@/components/WithNavigation';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { Typography } from '@/components/Typography';
 import BulletList from '@/components/BulletList';
@@ -19,6 +19,13 @@ import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Checkbox, CheckedState } from '@/components/Checkbox';
 import { Label } from '@/components/Label';
 import { DateTime } from 'luxon';
+import { Alert } from '@/components/Alert';
+
+const SupportEmail = () => (
+    <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
+        support@lern-fair.de
+    </a>
+);
 
 const query = gql(`
 query Certificates {
@@ -136,7 +143,7 @@ const CertificatesPage: React.FC = () => {
                     </div>
                 </Modal>
 
-                <Typography variant="h3" className="mb-4 mt-4">
+                {/* <Typography variant="h3" className="mb-4 mt-4">
                     {t('certificates.participationCertificate.title')}
                 </Typography>
                 <div className="flex flex-col">
@@ -144,7 +151,16 @@ const CertificatesPage: React.FC = () => {
                 </div>
                 <Button onClick={handleRequestCertificate} className="my-2">
                     {t('profile.Helper.certificate.button')}
-                </Button>
+                </Button> */}
+                <Alert className="md:max-w-[80%] my-4" title={t('certificates.participationCertificate.title')} variant="default">
+                    <Typography>
+                        <Trans
+                            i18nKey={'certificates.participationCertificate.deactivated'}
+                            components={[<SupportEmail />]}
+                            values={{ email: 'support@lern-fair.de' }}
+                        ></Trans>
+                    </Typography>
+                </Alert>
                 <div className="flex flex-row gap-3">
                     {data?.me.student?.participationCertificates.map((certificate, i) => (
                         <MatchCertificateCard certificate={certificate} key={i} />
