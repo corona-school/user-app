@@ -1485,14 +1485,14 @@
             "appointmentsHeadline": "Termine",
             "createAppointment": "Termin erstellen",
             "bookAppointment": "Termin buchen",
-            "joinMeeting": "Zoom starten",
+            "joinMeeting": "Zoom-Meeting beitreten",
             "changeAppointment": "Termin ändern",
-            "appointmentBookedHint": "1:1 Nachhilfe-Gespräch vereinbart:",
-            "needsToBookAppointmentHint": "1:1 Nachhilfe-Gespräch vereinbaren:",
-            "needsToBookAppointmentDesc": "Das ist wichtig, um nach einem Lernpartner zu suchen",
+            "appointmentBookedHint": "Lernunterstützungs-Gespräch vereinbart:",
+            "needsToBookAppointmentHint": "Lernunterstützungs-Gespräch vereinbaren:",
+            "needsToBookAppointmentDesc": "Das ist wichtig, damit wir mit der Suche nach einer passenden Person für dich starten können.",
             "yourMatchRequest": "Dein:e Lernpartner:in Anfrage",
             "waitingForResultsHint": "Du hörst von uns!",
-            "waitingForResultsHintDesc": "Du erhältst eine E-Mail, sobald wir Neuigkeiten für dich haben."
+            "waitingForResultsHintDesc": "Du bekommst eine E-Mail, sobald wir Neuigkeiten für dich haben. "
         },
         "availability": {
             "title": "Mögliche Zeitfenster",
@@ -1633,19 +1633,19 @@
                     "aboutTheAppointment": {
                         "title": "Das besprechen wir in dem Gespräch:",
                         "bullets": [
-                            "Deine bisherigen Erfahrungen",
-                            "Dein Lernfortschritt",
-                            "Wie wir dir helfen können",
-                            "Ob alles noch passt",
-                            "Du kannst uns alles fragen. 🙂"
+                            "Was du schon gelernt hast",
+                            "Wie es dir gerade im Lernen geht",
+                            "Wie wir dich noch unterstützen können",
+                            "Du kannst uns alles fragen",
+                            "Eine Person aus dem Lern-Fair Team ist dabei/macht das Gespräch"
                         ]
                     },
                     "importantForAppointment": {
                         "title": "Wichtig für den Termin",
                         "bullets": [
                             "Du musst dabei sein.",
-                            "Deine Eltern / Betreuungsperson können dabei sein.",
-                            "Das Gespräch ist per Zoom.",
+                            "Deine Eltern oder eine Bezugsperson können dabei sein.",
+                            "Das Gespräch findet online über Zoom statt.",
                             "Bitte mach das Gespräch zu Hause mit gutem Internet.",
                             "Das Gespräch ist auf Deutsch."
                         ]
