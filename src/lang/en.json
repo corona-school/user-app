@@ -1135,7 +1135,9 @@
                 "welcome": {
                     "title": "Ethical standards",
                     "content": "This ethics guide provides an overview of the minimum requirements for responsible conduct at Lern-Fair and encourages self-critical reflection when dealing with pupils . Please read the following points carefully and observe them in your work.",
-                    "startTour": "Start tour"
+                    "startTour": "Start tour",
+                    "content1": "This ethics guide provides an overview of the minimum requirements for responsible conduct at Lern-Fair  pupils self-critical reflection when interacting with pupils .",
+                    "content2": "Please read the following points carefully and keep them in mind as you work."
                 },
                 "screen1": {
                     "title": "Interpersonal interaction",
@@ -1168,7 +1170,9 @@
                 "screen5": {
                     "title": "Dealing with inquiries, complaints and violations",
                     "content1": "The Executive Board of Lern-Fair e.V. decides on measures to be taken in the event of breaches of the ethics guidelines. In certain cases, this may mean exclusion from the project, which will be communicated with a reason. Inquiries, complaints or reports of violations can be sent by email to support@lern-fair.de.",
-                    "checkboxText": "I have read the ethics guidelines carefully and agree to them."
+                    "checkboxText": "I have read the ethics guidelines carefully and agree to them.",
+                    "fastFertigTitle": "Almost done!",
+                    "finishButton": "Finished"
                 }
             }
         }

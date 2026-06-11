@@ -1135,7 +1135,9 @@
                 "welcome": {
                     "title": "Etik standartlar",
                     "content": "Lern-Fair Bu etik kılavuzu, sorumlu davranış için asgari gerekliliklere genel bir bakış sağlar ve öğrencilerle ilgilenirken özeleştirel düşünmeyi teşvik eder. Lütfen aşağıdaki noktaları dikkatle okuyun ve çalışmalarınızda bunları dikkate alın.",
-                    "startTour": "Tura başlayın"
+                    "startTour": "Tura başlayın",
+                    "content1": "Bu etik kılavuzu, Lern-Fair de sorumlu davranışa ilişkin asgari gerekliliklere genel bir bakış sunar Lern-Fair öğrencilerle ilişkilerde özeleştirel bir değerlendirme yapmaya teşvik eder.",
+                    "content2": "Lütfen aşağıdaki noktaları dikkatlice okuyun ve çalışmanız sırasında bunlara uyun."
                 },
                 "screen1": {
                     "title": "Kişilerarası etkileşim",
@@ -1168,7 +1170,9 @@
                 "screen5": {
                     "title": "Sorular, şikayetler ve ihlallerle ilgilenmek",
                     "content1": "Lern-Fair Etik kuralların ihlal edilmesi durumunda alınacak önlemlere e.V. Yönetim Kurulu karar verir. Bazı durumlarda bu, bir gerekçeyle birlikte bildirilecek olan projeden çıkarılma anlamına gelebilir.lern-fair Sorular, şikayetler veya ihlal raporları support@ .de adresine e-posta ile gönderilebilir.",
-                    "checkboxText": "Etik kuralları dikkatlice okudum ve bunlara uymayı kabul ediyorum."
+                    "checkboxText": "Etik kuralları dikkatlice okudum ve bunlara uymayı kabul ediyorum.",
+                    "fastFertigTitle": "Neredeyse bitti!",
+                    "finishButton": "Hazır"
                 }
             }
         }
