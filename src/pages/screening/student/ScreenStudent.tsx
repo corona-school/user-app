@@ -1,16 +1,15 @@
 import { Button } from '@/components/Button';
 import { Separator } from '@/components/Separator';
 import { Typography } from '@/components/Typography';
-import { gql } from '@/gql';
 import { StudentScreeningStatus, StudentScreeningType, Student_Screening_Status_Enum } from '@/gql/graphql';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { InstructorScreening, StudentForScreening, TutorScreening } from '@/types';
-import { useMutation } from '@apollo/client';
 import { IconThumbDown, IconThumbUp } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { KnowsUsSelect } from '../components/KnowsUsSelect';
+import { useScreeningMutations } from '../useScreeningMutations';
 
 interface ScreenStudentProps {
     student: StudentForScreening;
@@ -19,30 +18,12 @@ interface ScreenStudentProps {
 
 const CUSTOM_KNOWS_FROM_PREFIX = 'Sonstiges: ';
 
-const CREATE_STUDENT_SCREENING_MUTATION = gql(`
-    mutation ScreenStudent($studentId: Float!, $type: StudentScreeningType!) {
-        studentScreeningCreate(studentId: $studentId, type: $type, screening: {})
-    }
-`);
-
-const UPDATE_STUDENT_SCREENING_MUTATION = gql(`
-    mutation UpdateStudentScreening($screeningId: Float!, $type: StudentScreeningType!, $screening: ScreeningUpdateInput!) {
-        studentScreeningUpdate(screeningId: $screeningId, type: $type, data: $screening)
-    }
-`);
-
-const DELETE_STUDENT_SCREENING_MUTATION = gql(`
-    mutation DeleteStudentScreening($screeningId: Float!, $type: StudentScreeningType!) {
-        studentScreeningDelete(screeningId: $screeningId, type: $type)
-    }
-`);
-
 export const ScreenStudent = ({ student, refresh }: ScreenStudentProps) => {
     const { t } = useTranslation();
-    const [mutationCreateStudentScreening, { loading: isLoading }] = useMutation(CREATE_STUDENT_SCREENING_MUTATION);
+    const { mutationCreateStudentScreening, creatingStudentScreening: isLoading } = useScreeningMutations();
 
     const createStudentScreening = async (type: StudentScreeningType) => {
-        await mutationCreateStudentScreening({ variables: { studentId: student.id, type } });
+        await mutationCreateStudentScreening({ variables: { studentId: student.id, type, screening: { status: StudentScreeningStatus.Pending } } });
         toast.success('Screening wurde erstellt');
         await refresh();
     };
@@ -115,7 +96,7 @@ interface ScreeningFormProps {
     onDecision: () => Promise<void>;
 }
 
-const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, onDecision }: ScreeningFormProps) => {
+export const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, onDecision }: ScreeningFormProps) => {
     const { t } = useTranslation();
     const [knowsFrom, setKnowsFrom] = useState(screening?.knowsCoronaSchoolFrom ?? '');
 
@@ -129,8 +110,7 @@ const ScreeningForm = ({ student, isLoading, screening, currentScreeningType, on
         setJobStatus(screening?.jobStatus ?? undefined);
     }, [screening?.knowsCoronaSchoolFrom, screening?.jobStatus]);
 
-    const [mutationUpdateStudentScreening, { loading: loadingUpdateStudentScreening }] = useMutation(UPDATE_STUDENT_SCREENING_MUTATION);
-    const [mutationDeleteStudentScreening, { loading: deletingStudentScreening }] = useMutation(DELETE_STUDENT_SCREENING_MUTATION);
+    const { mutationUpdateStudentScreening, mutationDeleteStudentScreening, deletingStudentScreening, loadingUpdateStudentScreening } = useScreeningMutations();
 
     const updateStudentScreening = async (status: StudentScreeningStatus) => {
         const computedKnowsFrom = knowsFrom.includes('Sonstiges')

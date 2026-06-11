@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { VideoChatTypeEnum } from '@/pages/create-appointment/AppointmentCreation';
 import { Button } from '@/components/Button';
 import { Appointment } from '@/types/lernfair/Appointment';
+import { useUserType } from '@/hooks/useApollo';
 
 type Props = {
     appointmentPrefill: Appointment;
@@ -18,17 +19,16 @@ type Props = {
     onCancel: () => void;
     errors: string[];
     setErrors?: (errors: string[]) => void;
+    minDate?: DateTime;
 };
 
-const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors, setErrors }) => {
+const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors, setErrors, minDate = DateTime.now().plus({ days: 7 }) }) => {
     const { t } = useTranslation();
-
+    const userType = useUserType();
     const [title, setTitle] = useState(appointmentPrefill.title ?? '');
     const [description, setDescription] = useState(appointmentPrefill.description ?? '');
-    const [date, setDate] = useState(
-        appointmentPrefill.start ? DateTime.fromISO(appointmentPrefill.start).toISODate() : DateTime.now().plus({ days: 7 }).toISODate()
-    );
-    const [time, setTime] = useState(appointmentPrefill.start ? DateTime.fromISO(appointmentPrefill.start).toFormat('HH:mm') : '15:00');
+    const [date, setDate] = useState(appointmentPrefill.start ? DateTime.fromISO(appointmentPrefill.start ?? minDate).toISODate() : minDate.toISODate());
+    const [time, setTime] = useState(appointmentPrefill.start ? DateTime.fromISO(appointmentPrefill.start ?? minDate).toFormat('HH:mm') : '15:00');
     const [duration, setDuration] = useState(appointmentPrefill.duration ?? 60);
     const [meetingLink, setMeetingLink] = useState(appointmentPrefill.override_meeting_link ?? undefined);
 
@@ -62,8 +62,6 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
     const handleVideoInput = (e: any) => {
         setMeetingLink(e.target.value);
     };
-
-    const minDate = DateTime.now().plus({ days: 7 });
 
     const handleOnSubmit = () => {
         if (!time) {
@@ -106,7 +104,7 @@ const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, 
                         id="date"
                         value={date ? DateTime.fromISO(date).toJSDate() : undefined}
                         onChange={handleDateInput}
-                        disabled={{ before: minDate.toJSDate() }}
+                        disabled={{ before: userType === 'screener' ? new Date() : minDate.toJSDate() }}
                     />
                     {errors && errors.includes('date') && (
                         <Typography variant="sm" className="text-destructive error">

@@ -7,12 +7,19 @@ interface UseSchoolSearchArgs {
     skip?: boolean;
 }
 
-const ExternalSchoolSearchQuery = gql(`
+const EXTERNAL_SCHOOL_SEARCH_QUERY = gql(`
     query searchSchools($name: String!) {
-        externalSchoolSearch(
-            filters:  { name: $name },
-            options:  { limit: 20 }
-        )
+        externalSchoolSearch(filters:  { name: $name })
+            {
+            id
+            name
+        }
+    }    
+`);
+
+const EXTERNAL_SCHOOL_DETAIL_QUERY = gql(`
+    query schoolDetails($id: String!) {
+        schoolDetail(schoolId: $id)
             {
             id
             name
@@ -28,7 +35,7 @@ const ExternalSchoolSearchQuery = gql(`
 const useSchoolSearch = ({ name, skip }: UseSchoolSearchArgs) => {
     const debouncedName = useDebounce({ delay: 800, value: name });
     const [isLoading, setIsLoading] = useState(false);
-    const { data, loading: isFetching } = useQuery(ExternalSchoolSearchQuery, {
+    const { data, loading: isFetching } = useQuery(EXTERNAL_SCHOOL_SEARCH_QUERY, {
         variables: { name: debouncedName },
         skip: debouncedName.length < 3 || name.length < 3 || skip,
     });
@@ -39,4 +46,13 @@ const useSchoolSearch = ({ name, skip }: UseSchoolSearchArgs) => {
     return { schools: data?.externalSchoolSearch || [], isLoading: isFetching || isLoading };
 };
 
-export default useSchoolSearch;
+const useSchoolDetails = (id: string) => {
+    const { data, loading } = useQuery(EXTERNAL_SCHOOL_DETAIL_QUERY, {
+        variables: { id },
+        skip: !id,
+    });
+
+    return { school: data?.schoolDetail || null, isLoading: loading };
+};
+
+export { useSchoolDetails, useSchoolSearch };

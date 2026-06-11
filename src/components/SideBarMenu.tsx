@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 import useLernfair from '../hooks/useLernfair';
 import { NavigationItems } from '../types/navigation';
 import { useRoles, useUserType } from '../hooks/useApollo';
@@ -8,7 +8,8 @@ import AppFeedbackModal from '../modals/AppFeedbackModal';
 import { Button } from './Button';
 import { Typography } from './Typography';
 import { Badge } from './Badge';
-import { IconStarHalfFilled } from '@tabler/icons-react';
+import { IconStarHalfFilled, IconListCheck } from '@tabler/icons-react';
+import { useCooperations } from '@/pages/screening/useCooperations';
 
 type Props = {
     navItems: NavigationItems;
@@ -21,6 +22,8 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
     const userType = useUserType();
     const userRoles = useRoles();
     const [isOpen, setIsOpen] = useState(false);
+    const { pendingCooperationStudentsCount } = useCooperations();
+    const location = useLocation();
 
     const disableGroup: boolean = useMemo(() => {
         if (userType === 'screener') return !userRoles.includes('COURSE_SCREENER');
@@ -39,15 +42,22 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
         return false;
     }, [userRoles, userType]);
 
-    const hideForStudents = useMemo(() => {
+    const hideStudentsKnowledgeCenter = useMemo(() => {
         if (['screener', 'pupil'].includes(userType)) return true;
         return false;
     }, [userType]);
 
-    const hideForPupils = useMemo(() => {
+    const hidePupilsKnowledgeCenter = useMemo(() => {
         if (['screener', 'student'].includes(userType)) return true;
         return false;
     }, [userType]);
+
+    const hideNavItemForUserType = (route: string) => {
+        if (userType === 'screener') {
+            return ['matching', 'chat', 'referral', 'appointments'].includes(route);
+        }
+        return false;
+    };
 
     return (
         <div className="hidden md:block min-w-60">
@@ -57,9 +67,10 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                         const disabled =
                             _disabled || (key === 'matching' && disableMatching) || (key === 'group' && disableGroup) || (key === 'chat' && disableChat);
                         const isHidden =
-                            (key === 'knowledge-helper' && hideForStudents) ||
-                            (key === 'knowledge-pupil' && hideForPupils) ||
-                            (key === 'lesson' && userType === 'pupil');
+                            (key === 'knowledge-helper' && hideStudentsKnowledgeCenter) ||
+                            (key === 'knowledge-pupil' && hidePupilsKnowledgeCenter) ||
+                            (key === 'lesson' && userType === 'pupil') ||
+                            hideNavItemForUserType(key);
                         if (isHidden) return null;
                         return (
                             <NavLink
@@ -71,6 +82,7 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                                 onClick={() => setRootPath && setRootPath(`${key}`)}
                                 to={`/${key}`}
                                 key={key}
+                                reloadDocument={userType === 'screener' && key === 'start' && location.pathname === '/start'}
                             >
                                 <Icon />
                                 <Typography className="pl-3 mr-auto font-medium">{label}</Typography>
@@ -82,6 +94,24 @@ const SideBarMenu: React.FC<Props> = ({ navItems, unreadMessagesCount }) => {
                             </NavLink>
                         );
                     })}
+                    {userRoles.includes('STUDENT_SCREENER') && (
+                        <NavLink
+                            className={({ isActive }) =>
+                                `flex items-center px-2 py-2 rounded-md hover:outline-accent hover:outline
+                                            ${isActive || rootPath === 'cooperation-helpers' ? 'bg-accent' : ''}`
+                            }
+                            onClick={() => setRootPath && setRootPath('cooperation-helpers')}
+                            to={`/cooperation-helpers`}
+                        >
+                            <IconListCheck />
+                            <Typography className="pl-3 mr-auto font-medium">Kooperationen</Typography>
+                            {pendingCooperationStudentsCount > 0 && (
+                                <Badge variant="destructive" shape="rounded" className="mr-2">
+                                    {pendingCooperationStudentsCount}
+                                </Badge>
+                            )}
+                        </NavLink>
+                    )}
                 </div>
                 <Button variant="outline" className="w-4/5 self-center" leftIcon={<IconStarHalfFilled size={16} />} onClick={() => setIsOpen(true)}>
                     {t('appFeedback.giveFeedbackButton')}

@@ -1,133 +1,120 @@
-import { VStack, useTheme, Heading, Column, Box } from 'native-base';
-import { useCallback, useContext, useState } from 'react';
-import { containsDAZ, DAZ } from '../../../types/subject';
+import { useState } from 'react';
+import { DAZ } from '../../../types/subject';
 import AlertMessage from '../../../widgets/AlertMessage';
 import IconTagList from '../../../widgets/IconTagList';
-import { NextPrevButtons } from '../../../widgets/NextPrevButtons';
 import TwoColGrid from '../../../widgets/TwoColGrid';
 import { YesNoSelector } from '../../../components/YesNoSelector';
-import { RequestMatchContext, RequestMatchStep } from './RequestMatch';
 import { useTranslation } from 'react-i18next';
+import { useMatchRequestForm } from './useMatchRequestForm';
+import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
+import { Typography } from '@/components/Typography';
 
 const German: React.FC = () => {
-    const { space } = useTheme();
-    const { matchRequest, setSubject, removeSubject, setCurrentStep, setSkippedSubjectPriority, setSkippedSubjectList, requestMatch } =
-        useContext(RequestMatchContext);
+    const { form, goBack, goNext, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
-    const [showSecond, setShowSecond] = useState<boolean>(false);
-    const [isNativeLanguage, setIsNativeLanguage] = useState<boolean | null>(() => (containsDAZ(matchRequest.subjects) ? false : null));
-    const [learningSince, setLearningSince] = useState<'<1' | '1-2' | '2-4' | '>4'>();
+    const [showLearningGermanSince, setShowLearningGermanSince] = useState<boolean>(false);
 
-    const onGoNext = useCallback(() => {
-        if (isNativeLanguage === false) {
-            setShowSecond(true);
+    const onGoNext = async () => {
+        if (showLearningGermanSince) {
+            switch (form.learningGermanSince) {
+                case '<1':
+                case '1-2':
+                    break;
+                case '2-4':
+                    onFormChange({ subjects: [{ name: DAZ, mandatory: true }] });
+                    break;
+                case '>4':
+                default:
+                    onFormChange({ subjects: form.subjects.filter((s) => s.name !== DAZ) });
+                    break;
+            }
+            goNext();
+            return;
+        }
+        if (!form.isNativeGermanSpeaker) {
+            setShowLearningGermanSince(true);
         } else {
-            removeSubject(DAZ);
-            setCurrentStep(RequestMatchStep.subjects);
-            setSkippedSubjectList(false);
+            onFormChange({ learningGermanSince: undefined });
+            goNext();
         }
-    }, [isNativeLanguage, setCurrentStep]);
+    };
 
-    const onSecondNext = useCallback(async () => {
-        switch (learningSince) {
-            case '<1':
-            case '1-2':
-                for (const subject of matchRequest.subjects) removeSubject(subject.name);
-                setSubject({ name: DAZ, mandatory: true });
-                await requestMatch([{ name: DAZ, mandatory: true }]);
-                setSkippedSubjectPriority(true);
-                setSkippedSubjectList(true);
-                break;
-            case '2-4':
-                for (const subject of matchRequest.subjects) removeSubject(subject.name);
-                setSubject({ name: DAZ, mandatory: true });
-                setCurrentStep(RequestMatchStep.subjects);
-                setSkippedSubjectPriority(true);
-                setSkippedSubjectList(false);
-                break;
-            case '>4':
-            default:
-                removeSubject(DAZ);
-                setCurrentStep(RequestMatchStep.subjects);
-                setSkippedSubjectPriority(false);
-                setSkippedSubjectList(false);
-                break;
+    const onGoBack = () => {
+        if (showLearningGermanSince) {
+            setShowLearningGermanSince(false);
+        } else {
+            goBack();
         }
-    }, [matchRequest, learningSince, setCurrentStep, setSubject]);
+    };
 
     return (
-        <VStack paddingX={space['1']} space={space['0.5']}>
-            <Heading fontSize="2xl">{t('matching.wizard.pupil.german.heading')}</Heading>
-            {!showSecond && (
+        <MatchRequestStep
+            onBack={onGoBack}
+            onNext={onGoNext}
+            isNextDisabled={form.isNativeGermanSpeaker === undefined || (showLearningGermanSince && form.learningGermanSince === undefined)}
+            reasonNextDisabled={t('reasonsDisabled.questionUnaswerd')}
+        >
+            <MatchRequestStepTitle>{t('matching.wizard.pupil.german.heading')}</MatchRequestStepTitle>
+            {!showLearningGermanSince && (
                 <>
-                    <Heading>{t('matching.wizard.pupil.german.isNative')}</Heading>
+                    <Typography variant="h5">{t('matching.wizard.pupil.german.isNative')}</Typography>
                     <YesNoSelector
-                        initialYes={isNativeLanguage === true}
-                        initialNo={isNativeLanguage === false}
-                        onPressNo={() => setIsNativeLanguage(false)}
-                        onPressYes={() => setIsNativeLanguage(true)}
+                        initialYes={form.isNativeGermanSpeaker === true}
+                        initialNo={form.isNativeGermanSpeaker === false}
+                        onPressNo={() => onFormChange({ isNativeGermanSpeaker: false })}
+                        onPressYes={() => onFormChange({ isNativeGermanSpeaker: true, subjects: form.subjects.filter((s) => s.name !== DAZ) })}
                         align="left"
-                    />
-                    <Box marginTop={space['1']} borderBottomWidth={1} borderBottomColor="primary.grey" />
-                    <NextPrevButtons
-                        disablingNext={{ is: isNativeLanguage === null, reason: t('reasonsDisabled.questionUnaswerd') }}
-                        onPressPrev={() => setCurrentStep(RequestMatchStep.updateData)}
-                        onPressNext={onGoNext}
                     />
                 </>
             )}
-            {showSecond && (
+            {showLearningGermanSince && (
                 <>
-                    <Heading>{t('matching.wizard.pupil.german.howlong.heading')}</Heading>
+                    <Typography variant="h5">{t('matching.wizard.pupil.german.howlong.heading')}</Typography>
                     <TwoColGrid>
-                        <Column>
+                        <div className="flex flex-col">
                             <IconTagList
-                                initial={learningSince === '<1'}
+                                initial={form.learningGermanSince === '<1'}
                                 variant="selection"
                                 text={t('matching.wizard.pupil.german.howlong.option1')}
                                 textIcon="<1"
-                                onPress={() => setLearningSince('<1')}
+                                onPress={() => onFormChange({ learningGermanSince: '<1', subjects: [{ name: DAZ, mandatory: true }] })}
                             />
-                        </Column>
-                        <Column>
+                        </div>
+                        <div className="flex flex-col">
                             <IconTagList
-                                initial={learningSince === '1-2'}
+                                initial={form.learningGermanSince === '1-2'}
                                 variant="selection"
                                 text={t('matching.wizard.pupil.german.howlong.option2')}
                                 textIcon="1-2"
-                                onPress={() => setLearningSince('1-2')}
+                                onPress={() => onFormChange({ learningGermanSince: '1-2', subjects: [{ name: DAZ, mandatory: true }] })}
                             />
-                        </Column>
-                        <Column>
+                        </div>
+                        <div className="flex flex-col">
                             <IconTagList
-                                initial={learningSince === '2-4'}
+                                initial={form.learningGermanSince === '2-4'}
                                 variant="selection"
                                 text={t('matching.wizard.pupil.german.howlong.option3')}
                                 textIcon="2-4"
-                                onPress={() => setLearningSince('2-4')}
+                                onPress={() => onFormChange({ learningGermanSince: '2-4' })}
                             />
-                        </Column>
-                        <Column>
+                        </div>
+                        <div className="flex flex-col">
                             <IconTagList
-                                initial={learningSince === '>4'}
+                                initial={form.learningGermanSince === '>4'}
                                 variant="selection"
                                 text={t('matching.wizard.pupil.german.howlong.option4')}
                                 textIcon=">4"
-                                onPress={() => setLearningSince('>4')}
+                                onPress={() => onFormChange({ learningGermanSince: '>4' })}
                             />
-                        </Column>
+                        </div>
                     </TwoColGrid>
 
-                    {(learningSince === '<1' || learningSince === '1-2') && <AlertMessage content={t('matching.wizard.pupil.german.howlong.alertmsg')} />}
-
-                    <NextPrevButtons
-                        disablingNext={{ is: !learningSince, reason: t('reasonsDisabled.questionUnaswerd') }}
-                        onPressPrev={() => setShowSecond(false)}
-                        onPressNext={onSecondNext}
-                    />
+                    {(form.learningGermanSince === '<1' || form.learningGermanSince === '1-2') && (
+                        <AlertMessage content={t('matching.wizard.pupil.german.howlong.alertmsg')} />
+                    )}
                 </>
             )}
-        </VStack>
+        </MatchRequestStep>
     );
 };
 export default German;

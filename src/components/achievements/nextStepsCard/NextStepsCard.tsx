@@ -1,104 +1,54 @@
-import { Image, VStack, Text, HStack, Box, Heading } from 'native-base';
-import IndicatorBar from '../progressIndicators/IndicatorBar';
-import { Achievement_Action_Type_Enum } from '../../../gql/graphql';
-import ArrowRight from '../../../assets/icons/icon_arrow_right_yellow.svg';
-import Calendar from '../../../assets/icons/icon_calendar_white.svg';
-import ClocWhite from '../../../assets/icons/icon_clock_white.svg';
-import Info from '../../../assets/icons/icon_info_white.svg';
-import { Pressable } from 'react-native';
-import { NextStepLabelType, getNextStepIcon } from '../../../helper/important-information-helper';
+import { Important_Information_Category_Enum } from '@/gql/graphql';
+import { getImportantInformationLabel } from '@/helper/important-information-helper';
+import { Badge } from '@/components/Badge';
+import { IconAlertTriangle, IconArrowRight, IconDirections, IconFlame, IconScubaMask, IconSparkles2, IconSpeakerphone, IconStar } from '@tabler/icons-react';
+import { Typography } from '@/components/Typography';
+import { Button } from '@/components/Button';
 
 type NextStepsCardProps = {
-    image?: string;
-    label?: NextStepLabelType;
     title?: string;
-    name: string;
-    actionDescription: string;
-    actionType: Achievement_Action_Type_Enum;
+    subtitle?: string;
     onClick?: () => void;
-    maxSteps?: number;
-    currentStep?: number;
     description?: string;
+    category?: Important_Information_Category_Enum;
+    ctaLabel?: string;
 };
 
-const NextStepsCard: React.FC<NextStepsCardProps> = ({
-    image,
-    label,
-    title,
-    name,
-    actionDescription,
-    actionType,
-    onClick,
-    maxSteps,
-    currentStep,
-    description,
-}) => {
-    let icon;
-    switch (actionType) {
-        case Achievement_Action_Type_Enum.Action:
-            icon = <ArrowRight />;
-            break;
-        case Achievement_Action_Type_Enum.Appointment:
-            icon = <Calendar />;
-            break;
-        case Achievement_Action_Type_Enum.Info:
-            icon = <Info />;
-            break;
-        case Achievement_Action_Type_Enum.Wait:
-            icon = <ClocWhite />;
-            break;
-        default:
-            break;
-    }
+const badgeIconMap = {
+    [Important_Information_Category_Enum.HighDemand]: <IconFlame size={16} className="fill-[#DB4A3F] text-[#DB4A3F] mr-1" />,
+    [Important_Information_Category_Enum.Event]: <IconSpeakerphone size={16} className="text-white mr-1" />,
+    [Important_Information_Category_Enum.Important]: <IconAlertTriangle size={16} className="text-white mr-1" />,
+    [Important_Information_Category_Enum.Feedback]: <IconDirections size={16} className="text-white mr-1" />,
+    [Important_Information_Category_Enum.FeatureUpdate]: <IconSparkles2 size={16} className="text-white mr-1" />,
+    [Important_Information_Category_Enum.HolidayInfo]: <IconScubaMask size={16} className="text-white mr-1" />,
+    [Important_Information_Category_Enum.News]: <IconStar size={16} className="text-white mr-1" />,
+};
 
-    const NextStepIcon = label ? getNextStepIcon(label) : getNextStepIcon(NextStepLabelType.DEFAULT);
-
+const NextStepsCard: React.FC<NextStepsCardProps> = ({ title, subtitle, onClick, description, category, ctaLabel }) => {
     return (
-        <Pressable onPress={onClick} disabled={!onClick}>
-            <VStack width="288px" height="288px" padding="24px" backgroundColor="primary.900" borderRadius="8px" justifyContent="space-between">
-                <VStack width="fit-content" borderRadius="8px">
-                    {image ? (
-                        <VStack width="64px" height="64px" borderRadius="4px" justifyContent="center" alignItems="center">
-                            <Image src={image} width="64px" height="64px" />
-                        </VStack>
-                    ) : (
-                        <VStack width="64px" height="64px" borderRadius="50%" justifyContent="center" alignItems="center">
-                            <NextStepIcon />
-                        </VStack>
-                    )}
-                </VStack>
-                <VStack>
-                    {title && (
-                        <Text fontSize={12} color="white" noOfLines={1}>
-                            {title}
-                        </Text>
-                    )}
-                    <Heading color="white" noOfLines={1}>
-                        {name}
-                    </Heading>
-                </VStack>
-                <HStack height="54px" width="100%" justifyContent="flex-start" alignItems="center">
-                    {maxSteps && <IndicatorBar maxSteps={maxSteps} currentStep={currentStep} fullWidth smallText bgDark />}
-                    {description && (
-                        <Text fontSize={12} lineHeight={18} color="white" noOfLines={3}>
-                            {description}
-                        </Text>
-                    )}
-                </HStack>
-                <HStack alignItems="flex-start" space="4px" justifyContent="flex-start">
-                    {actionType && (
-                        <VStack height="19px" position="relative" justifyContent="center">
-                            <Box width="8px" height="8px">
-                                {icon}
-                            </Box>
-                        </VStack>
-                    )}
-                    <Text fontSize={12} color={actionType !== Achievement_Action_Type_Enum.Action ? 'white' : 'secondary.900'} noOfLines={1}>
-                        {actionDescription}
-                    </Text>
-                </HStack>
-            </VStack>
-        </Pressable>
+        <div className="min-w-[335px] md:max-w-[370px] w-full h-[280px] bg-primary flex flex-col p-5 rounded-lg">
+            <Badge className="mb-8 bg-primary-midnight h-6">
+                {category && badgeIconMap[category]}
+                <Typography variant="sm" className="text-white font-semibold uppercase text-xs">
+                    {category ? getImportantInformationLabel(category) : ''}
+                </Typography>
+            </Badge>
+            <Typography variant="h5" className="text-white mb-2 line-clamp-2">
+                {title}
+            </Typography>
+            <Typography className=" text-white leading-[1.125rem] line-clamp-3 mb-auto" variant="subtle">
+                {description}
+            </Typography>
+            <Button
+                variant="link"
+                leftIcon={<IconArrowRight className="text-secondary" size={24} />}
+                className="text-secondary px-0"
+                onClick={onClick}
+                disabled={!onClick}
+            >
+                {ctaLabel}
+            </Button>
+        </div>
     );
 };
 

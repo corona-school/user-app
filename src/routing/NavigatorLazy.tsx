@@ -3,27 +3,11 @@ import Dashboard from '../pages/pupil/Dashboard';
 import ProfilePupil from '../pages/pupil/ProfilePupil';
 
 import Settings from '../pages/Settings';
-import OnboardingTourList from '../pages/OnboardingTourList';
 import HelpCenter from '../pages/Helpcenter';
 import ChangeSettingSchoolType from '../pages/change-setting/ChangeSettingSchoolType';
 import ChangeSettingState from '../pages/change-setting/ChangeSettingState';
 import ChangeSettingLanguage from '../pages/change-setting/ChangeSettingLanguage';
 import ChangeSettingSchoolClass from '../pages/change-setting/ChangeSettingSchoolClass';
-
-// Onboarding Students
-import OnBoardingStudentWelcome from '../pages/onboarding/student/OnBoardingStudentWelcome';
-import OnBoardingStudentSlides from '../pages/onboarding/student/OnBoardingStudentSlides';
-import OnBoardingStudentFinisher from '../pages/onboarding/student/OnBoardingStudentFinisher';
-
-// Onboarding Helper
-import OnBoardingHelperWelcome from '../pages/onboarding/helper/OnBoardingHelperWelcome';
-import OnBoardingHelperSlides from '../pages/onboarding/helper/OnBoardingHelperSlides';
-import OnBoardingHelperFinisher from '../pages/onboarding/helper/OnBoardingHelperFinisher';
-
-// Onboarding Helper Matching
-import OnBoardingHelperMatchingWelcome from '../pages/onboarding/helper-matching/OnBoardingHelperMatchingWelcome';
-import OnBoardingHelperMatchingSlides from '../pages/onboarding/helper-matching/OnBoardingHelperMatchingSlides';
-import OnBoardingHelperMatchingFinisher from '../pages/onboarding/helper-matching/OnBoardingHelperMatchingFinisher';
 
 // Profile
 
@@ -34,7 +18,6 @@ import ProfileStudent from '../pages/student/ProfileStudent';
 import RequestCertificate from '../pages/RequestCertificate';
 import PupilGroup from '../pages/pupil/Group';
 import VerifyEmail from '../pages/VerifyEmail';
-import VerifyEmailModal from '../modals/VerifyEmailModal';
 import ResetPassword from '../pages/ResetPassword';
 import { RequireAuth, RequireRole, SwitchUserType } from '../User';
 import IFrame from '../components/IFrame';
@@ -83,6 +66,8 @@ import CertificatesPage from '@/pages/student/Certificates';
 import { HOMEWORK_HELP_COURSE } from '@/config';
 import CalendarPreferencesPage from '@/pages/CalendarPreferencesPage';
 import ForgotPassword from '@/pages/ForgotPassword';
+import CooperationStudents from '@/pages/screening/CooperationStudents';
+import { MatchRequestProvider } from '@/pages/pupil/matching/useMatchRequestForm';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -115,6 +100,17 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <SwitchUserType pupilComponent={<Dashboard />} studentComponent={<DashboardStudent />} screenerComponent={<ScreeningDashboard />} />
+                    </RequireAuth>
+                }
+            />
+
+            <Route
+                path="/cooperation-helpers"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['STUDENT_SCREENER']}>
+                            <CooperationStudents />
+                        </RequireRole>
                     </RequireAuth>
                 }
             />
@@ -197,15 +193,6 @@ export default function NavigatorLazy() {
             ></Route>
 
             <Route
-                path="/onboarding-list"
-                element={
-                    <RequireAuth>
-                        <OnboardingTourList />
-                    </RequireAuth>
-                }
-            />
-
-            <Route
                 path="/request-certificate"
                 element={
                     <RequireAuth>
@@ -225,21 +212,6 @@ export default function NavigatorLazy() {
                 }
             />
 
-            {/* Onboarding Subpages */}
-            <Route
-                path="/onboarding"
-                element={
-                    <RequireAuth>
-                        <Outlet />
-                    </RequireAuth>
-                }
-            >
-                <Route path="students" element={<OnBoardingStudentWelcome />} />
-                <Route path="helper" element={<OnBoardingHelperWelcome />} />
-                <Route path="helpermatching" element={<OnBoardingHelperMatchingWelcome />} />
-                <Route path="ethics" />
-            </Route>
-
             {/* Ethics Onboarding for HuHs */}
             <Route
                 path="/onboarding/ethics"
@@ -252,52 +224,6 @@ export default function NavigatorLazy() {
                 <Route path="welcome" element={<EthicsOnboardingWelcome />} />
                 <Route path="wizard" element={<EthicsOnboardingSlides />} />
                 <Route path="*" element={<EthicsOnboardingWelcome />} />
-            </Route>
-
-            {/* Onboarding Students */}
-            <Route
-                path="/onboarding/students"
-                element={
-                    <RequireAuth>
-                        <Outlet />
-                    </RequireAuth>
-                }
-            >
-                <Route path="welcome" element={<OnBoardingStudentWelcome />} />
-                <Route path="wizard" element={<OnBoardingStudentSlides />} />
-                <Route path="finish" element={<OnBoardingStudentFinisher />} />
-                <Route path="*" element={<OnBoardingStudentWelcome />} />
-            </Route>
-
-            {/* Onboarding Helper */}
-            <Route
-                path="/onboarding/helper"
-                element={
-                    <RequireAuth>
-                        <Outlet />
-                    </RequireAuth>
-                }
-            >
-                <Route path="welcome" element={<OnBoardingHelperWelcome />} />
-                <Route path="wizard" element={<OnBoardingHelperSlides />} />
-                <Route path="finish" element={<OnBoardingHelperFinisher />} />
-                <Route path="*" element={<OnBoardingHelperWelcome />} />
-            </Route>
-
-            {/* Onboarding Helper Matching */}
-
-            <Route
-                path="/onboarding/helpermatching"
-                element={
-                    <RequireAuth>
-                        <Outlet />
-                    </RequireAuth>
-                }
-            >
-                <Route path="welcome" element={<OnBoardingHelperMatchingWelcome />} />
-                <Route path="wizard" element={<OnBoardingHelperMatchingSlides />} />
-                <Route path="finish" element={<OnBoardingHelperMatchingFinisher />} />
-                <Route path="*" element={<OnBoardingHelperMatchingWelcome />} />
             </Route>
 
             {/* Create Course */}
@@ -427,7 +353,26 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <RequireRole roles={['TUTOR', 'TUTEE']}>
-                            <SwitchUserType pupilComponent={<RequestMatch />} studentComponent={<RequestMatchStudent />} />
+                            <SwitchUserType
+                                pupilComponent={
+                                    <MatchRequestProvider>
+                                        <RequestMatch />
+                                    </MatchRequestProvider>
+                                }
+                                studentComponent={<RequestMatchStudent />}
+                            />
+                        </RequireRole>
+                    </RequireAuth>
+                }
+            />
+            <Route
+                path="/request-match/screening-appointment"
+                element={
+                    <RequireAuth>
+                        <RequireRole roles={['TUTEE']}>
+                            <MatchRequestProvider>
+                                <RequestMatch />
+                            </MatchRequestProvider>
                         </RequireRole>
                     </RequireAuth>
                 }
@@ -501,7 +446,6 @@ export default function NavigatorLazy() {
 
             <Route path="/verify-email" element={<VerifyEmail />} />
             <Route path="/verify-email-change" element={<VerifyEmailChange />} />
-            <Route path="/email-not-verified" element={<VerifyEmailModal />} />
             <Route
                 path="/new-email"
                 element={

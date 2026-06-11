@@ -2,6 +2,7 @@ import { FC } from 'react';
 import EventIcon from '../assets/icons/icon_ereignis.svg';
 import BooksIcon from '../assets/icons/icon_buch.svg';
 import MoreIcon from '../assets/icons/Icon_Einzel.svg';
+import { Important_Information_Category_Enum } from 'gql/graphql';
 
 export enum InformationType {
     COMMUNITY = 'community',
@@ -45,6 +46,27 @@ export enum NextStepLabelType {
 export const getNextStepIcon = (label: NextStepLabelType): FC => {
     const icon = nextStepIcon.hasOwnProperty(label) ? nextStepIcon[label] : nextStepIcon[NextStepLabelType.DEFAULT];
     return icon;
+};
+
+export const getImportantInformationLabel = (label: Important_Information_Category_Enum): string => {
+    switch (label) {
+        case Important_Information_Category_Enum.Important:
+            return 'Wichtig';
+        case Important_Information_Category_Enum.Event:
+            return 'Veranstaltung';
+        case Important_Information_Category_Enum.HighDemand:
+            return 'Hoher Bedarf';
+        case Important_Information_Category_Enum.Feedback:
+            return 'Feedback';
+        case Important_Information_Category_Enum.FeatureUpdate:
+            return 'Neue Funktionen';
+        case Important_Information_Category_Enum.HolidayInfo:
+            return 'Ferien-Info';
+        case Important_Information_Category_Enum.News:
+            return 'Lern-Fair News';
+        default:
+            return 'Information';
+    }
 };
 
 export const nextStepIcon: { [label: string]: FC } = {

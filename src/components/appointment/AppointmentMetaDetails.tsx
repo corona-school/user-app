@@ -19,6 +19,7 @@ import { IconDeviceMobileMessage, IconPointFilled, IconArrowNarrowRight } from '
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { QRCodeSVG } from 'qrcode.react';
 import { gql } from '../../gql';
+import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
 
 type MetaProps = {
     date: string;
@@ -38,6 +39,7 @@ type MetaProps = {
     overrideMeetingLink?: Appointment['override_meeting_link'];
     zoomMeetingUrl?: Appointment['zoomMeetingUrl'];
     isHomeworkHelp?: boolean;
+    canJoin?: boolean;
 };
 const AppointmentMetaDetails: React.FC<MetaProps> = ({
     date,
@@ -57,6 +59,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     overrideMeetingLink,
     zoomMeetingUrl,
     isHomeworkHelp,
+    canJoin,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [loginURL, setLoginURL] = useState<string>('empty');
@@ -89,7 +92,10 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const canStartMeeting = useCanJoinMeeting(isOrganizer ? 240 : 10, startDateTime, duration);
+    const canStartMeeting = useCanJoinMeeting({
+        joinBeforeMinutes: isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
+        appointment: { start: startDateTime, duration },
+    });
 
     useEffect(() => {
         canStartMeeting && createShortTimeLoginData();
@@ -148,27 +154,6 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         )}
                     </Stack>
                     <Spacer py={3} />
-                    {(overrideMeetingLink || zoomMeetingUrl) && (
-                        <HStack space={2} alignItems="center">
-                            <CamerIcon />
-                            <Text fontWeight="normal">{overrideMeetingLink ?? zoomMeetingUrl?.split('?')[0]}</Text>
-                            {zoomMeetingUrl && (
-                                <Tooltip
-                                    maxWidth={270}
-                                    label={isOrganizer ? t('appointment.detail.zoomTooltipStudent') : t('appointment.detail.zoomTooltipPupil')}
-                                    bg={'primary.900'}
-                                    _text={{ textAlign: 'center' }}
-                                    p={3}
-                                    hasArrow
-                                    children={
-                                        <Circle rounded="full" bg="danger.100" size={4} ml={2}>
-                                            <Text color={'white'}>i</Text>
-                                        </Circle>
-                                    }
-                                ></Tooltip>
-                            )}
-                        </HStack>
-                    )}
                     <Spacer py={3} />
                     {appointmentId && appointmentType && (
                         <>
@@ -182,6 +167,7 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                                 width={buttonWidth}
                                 isOver={isAppointmentOver}
                                 overrideLink={overrideMeetingLink ?? undefined}
+                                canJoin={canJoin}
                             />
                         </>
                     )}
