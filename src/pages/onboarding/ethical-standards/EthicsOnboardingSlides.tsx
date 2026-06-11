@@ -76,7 +76,7 @@ const EthicsOnboardingSlides: React.FC = () => {
 
                 {/* Step title */}
                 <div className="px-6 pt-4 pb-2">
-                    <Typography className="hyphens-auto break-words" variant="h2">
+                    <Typography className="hyphens-auto break-words" variant="h4">
                         {stepTitle}
                     </Typography>
                 </div>
@@ -98,9 +98,9 @@ const EthicsOnboardingSlides: React.FC = () => {
                             <div className="absolute inset-0 rounded-2xl bg-white shadow-sm translate-x-3 translate-y-3" />
                             <div className="absolute inset-0 rounded-2xl bg-white shadow-sm translate-x-1.5 translate-y-1.5" />
                             <div className="relative z-10 rounded-2xl bg-white shadow-md p-8 space-y-4">
-                                <Typography variant="h3">{t(`onboardingList.Wizard.ethics.${screenKey}.header1` as any)}</Typography>
+                                <Typography variant="h5">{t(`onboardingList.Wizard.ethics.${screenKey}.header1` as any)}</Typography>
                                 <Typography>{t(`onboardingList.Wizard.ethics.${screenKey}.content1` as any)}</Typography>
-                                <Typography variant="h3">{t(`onboardingList.Wizard.ethics.${screenKey}.header2` as any)}</Typography>
+                                <Typography variant="h5">{t(`onboardingList.Wizard.ethics.${screenKey}.header2` as any)}</Typography>
                                 <Typography>{t(`onboardingList.Wizard.ethics.${screenKey}.content2` as any)}</Typography>
                             </div>
                         </div>
