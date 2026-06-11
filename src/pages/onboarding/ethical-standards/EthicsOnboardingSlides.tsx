@@ -76,7 +76,9 @@ const EthicsOnboardingSlides: React.FC = () => {
 
                 {/* Step title */}
                 <div className="px-6 pt-4 pb-2">
-                    <Typography variant="h2">{stepTitle}</Typography>
+                    <Typography className="hyphens-auto break-words" variant="h2">
+                        {stepTitle}
+                    </Typography>
                 </div>
 
                 {/* Card area */}
