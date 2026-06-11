@@ -10,6 +10,7 @@ import { useChat } from '../context/ChatContext';
 import InstallAppBanner from '../widgets/InstallAppBanner';
 import { IconHome2, IconCalendarClock, IconMessage, IconUsersGroup, IconUsers, IconBook2, IconSpeakerphone } from '@tabler/icons-react';
 import { REFERRALS_ACTIVE } from '@/config';
+import { cn } from '@/lib/Tailwind';
 
 type Props = {
     children?: ReactNode | ReactNode[];
@@ -24,6 +25,9 @@ type Props = {
     isLoading?: boolean;
 
     onBack?: () => any;
+    classes?: {
+        contentContainerClassName?: string;
+    };
 };
 
 const WithNavigation: React.FC<Props> = ({
@@ -37,6 +41,7 @@ const WithNavigation: React.FC<Props> = ({
     hideMenu,
     isLoading,
     previousFallbackRoute,
+    classes: { contentContainerClassName } = { contentContainerClassName: '' },
     onBack,
 }) => {
     const { unreadMessagesCount } = useChat();
@@ -85,7 +90,7 @@ const WithNavigation: React.FC<Props> = ({
                                     </div>
                                 )}
                             </>
-                            <div className="p-4 lg:px-8 lg:py-4 h-full">{children}</div>
+                            <div className={cn('p-4 lg:px-8 lg:py-4 h-full', contentContainerClassName)}>{children}</div>
                         </>
                     )) || <CenterLoadingSpinner />}
                 </div>

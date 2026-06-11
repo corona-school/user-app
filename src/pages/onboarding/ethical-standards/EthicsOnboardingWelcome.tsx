@@ -21,7 +21,7 @@ const EthicsOnboardingWelcome: React.FC = () => {
     };
 
     return (
-        <WithNavigation hideMenu>
+        <WithNavigation hideMenu classes={{ contentContainerClassName: 'bg-accent' }}>
             <div className="flex flex-col items-start justify-center h-full max-w-3xl mx-auto px-8 gap-6">
                 <Typography variant="h1">{t('onboardingList.Wizard.ethics.welcome.title')}</Typography>
                 <Typography>{t('onboardingList.Wizard.ethics.welcome.content1')}</Typography>

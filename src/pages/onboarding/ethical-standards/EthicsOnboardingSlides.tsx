@@ -67,7 +67,7 @@ const EthicsOnboardingSlides: React.FC = () => {
         : `${currentStep + 1}. ${t(`onboardingList.Wizard.ethics.${screenKey}.title` as any)}`;
 
     return (
-        <WithNavigation showBack hideMenu previousFallbackRoute="/onboarding/ethics/welcome">
+        <WithNavigation showBack hideMenu previousFallbackRoute="/onboarding/ethics/welcome" classes={{ contentContainerClassName: 'bg-accent' }}>
             <div className="flex flex-col h-full">
                 {/* Progress bar */}
                 <div className="px-6 pt-6">
@@ -111,19 +111,19 @@ const EthicsOnboardingSlides: React.FC = () => {
                 <div className="flex items-center justify-center gap-3 pb-8">
                     {isLastStep ? (
                         <>
-                            <Button size="icon" variant="secondary" onClick={() => navigate('/onboarding/ethics/welcome')}>
+                            <Button size="icon" onClick={() => navigate('/onboarding/ethics/welcome')}>
                                 <IconPlayerTrackPrev size={18} />
                             </Button>
-                            <Button size="icon" variant="secondary" onClick={goBack}>
+                            <Button size="icon" onClick={goBack}>
                                 <IconArrowLeft size={18} />
                             </Button>
                         </>
                     ) : (
                         <>
-                            <Button size="icon" variant="secondary" onClick={goBack}>
+                            <Button size="icon" onClick={goBack}>
                                 <IconArrowLeft size={18} />
                             </Button>
-                            <Button size="icon" variant="secondary" onClick={goForward}>
+                            <Button size="icon" onClick={goForward}>
                                 <IconArrowRight size={18} />
                             </Button>
                         </>
