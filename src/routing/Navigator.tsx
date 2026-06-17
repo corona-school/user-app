@@ -15,9 +15,6 @@ import LoginWithIDP from '@/pages/LoginWithIDP';
 // All other pages load lazy:
 const RegistrationLazy = lazyWithRetry(() => import('./RegistrationLazy'), { prefetch: false });
 const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: !window.location.pathname.startsWith('/registration') });
-const PupilReferralLP = lazyWithRetry(() => import('../pages/ReferralLandingPage').then((m) => ({ default: m.PupilReferralLandingPage })), { prefetch: false });
-const TutorReferralLP = lazyWithRetry(() => import('../pages/ReferralLandingPage').then((m) => ({ default: m.TutorReferralLandingPage })), { prefetch: false });
-
 // This component only exists to reliably test our support process:
 function CrashMe() {
     return ({} as any).very.stupid;
@@ -38,23 +35,6 @@ export default function Navigator() {
                     element={
                         <Suspense fallback={<CenterLoadingSpinner />}>
                             <RegistrationLazy />
-                        </Suspense>
-                    }
-                />
-
-                <Route
-                    path="/invite/pupil"
-                    element={
-                        <Suspense fallback={<CenterLoadingSpinner />}>
-                            <PupilReferralLP />
-                        </Suspense>
-                    }
-                />
-                <Route
-                    path="/invite/student"
-                    element={
-                        <Suspense fallback={<CenterLoadingSpinner />}>
-                            <TutorReferralLP />
                         </Suspense>
                     }
                 />

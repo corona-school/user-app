@@ -7,20 +7,12 @@ import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'sonner';
 import { IconDownload, IconBrandWhatsapp, IconMail, IconLink, IconPhoto, IconCopy, IconCopyCheck, IconShieldCheck } from '@tabler/icons-react';
 import { QRCodeSVG } from 'qrcode.react';
 
 // Importing Assets
-import Confetti from '../assets/images/referral/Confetti.svg';
-import ConfettiMobile from '../assets/images/referral/ConfettiMobile.svg';
-import BGDesktop from '../assets/images/referral/BGDesktop.svg';
-import LOCK from '../assets/images/referral/Lock.svg';
 import WhatsAppIcon from '../assets/icons/lernfair/referral/Whatsapp.svg';
 
-import { useQuery } from '@apollo/client';
-import { ReferralCountDocument, SupportedHoursDocument } from '@/gql/graphql';
-import Rewards from '@/components/referral/rewards';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useUserType } from '@/hooks/useApollo';
@@ -177,17 +169,6 @@ const Referrals: React.FC<{}> = () => {
         setQrDataUri(`data:image/svg+xml;charset=utf-8,${encodeURIComponent(str)}`);
     }, [qrUrl]); // re-runs when mode or userID changes
 
-    const { data: referralData, error: referralError } = useQuery(ReferralCountDocument);
-    const { data: hoursData, error: hoursError } = useQuery(SupportedHoursDocument);
-
-    useEffect(() => {
-        if (referralError) toast.error(referralError.message);
-        if (hoursError) toast.error(hoursError.message);
-    }, [referralError, hoursError]);
-
-    const referralCount = referralData?.me?.referralCount ?? 0;
-    const supportedHours = hoursData?.me?.supportedHours ?? 0;
-
     const onCopy = async (text: string) => {
         try {
             await navigator.clipboard.writeText(text);
@@ -234,149 +215,132 @@ const Referrals: React.FC<{}> = () => {
                     {t('referral.title')}
                 </Typography>
 
-                {/* ── Desktop: tabs + stats side by side ── */}
-                <div className="lg:flex lg:gap-8 lg:items-start">
-                    {/* ── Tabbed sharing section ── */}
-                    <div className="w-full lg:w-3/5 mb-8">
-                        <Typography variant="h3" className="font-bold mb-4">
-                            Empfiehl uns in deinem Netzwerk
-                        </Typography>
+                {/* ── Tabbed sharing section ── */}
+                <div className="mb-8">
+                    <Typography variant="h3" className="font-bold mb-4">
+                        Empfiehl uns in deinem Netzwerk
+                    </Typography>
 
-                        <TabsPrimitive.Root
-                            defaultValue="nachricht"
-                            onValueChange={(value) =>
-                                trackEvent({ category: eventCategory, action: 'Click Tab', name: `${modeLabel} – ${TAB_LABELS[value] ?? value}` })
-                            }
-                        >
-                            {/* Tab bar */}
-                            <div className="border-b border-gray-200">
-                                <TabsPrimitive.List className="flex">
-                                    <TabsPrimitive.Trigger value="nachricht" className={triggerCls}>
-                                        <IconBrandWhatsapp size={16} />
-                                        WhatsApp
-                                    </TabsPrimitive.Trigger>
-                                    <TabsPrimitive.Trigger value="email" className={triggerCls}>
-                                        <IconMail size={16} />
-                                        E-Mail
-                                    </TabsPrimitive.Trigger>
-                                    <TabsPrimitive.Trigger value="link" className={triggerCls}>
-                                        <IconLink size={16} />
-                                        Link
-                                    </TabsPrimitive.Trigger>
-                                    <TabsPrimitive.Trigger value="bilder" className={triggerCls}>
-                                        <IconPhoto size={16} />
-                                        Sharepics für Status
-                                    </TabsPrimitive.Trigger>
-                                </TabsPrimitive.List>
-                            </div>
-
-                            {/* Tab: Nachricht */}
-                            <TabsPrimitive.Content value="nachricht" className="mt-5 space-y-4">
-                                <Typography className="text-base font-semibold text-gray-700">Nachricht-Vorschau</Typography>
-                                <div className="border-l-4 border-primary pl-4 space-y-2">
-                                    <Typography className="text-sm text-gray-700">{whatsappMessage}</Typography>
-                                    <Typography className="text-sm text-primary font-bold break-all">{referralLink}</Typography>
-                                </div>
-                                <WhatsappShareButton url={referralLink} title={whatsappMessage} className="w-full">
-                                    <button
-                                        className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1da855] text-white font-semibold py-3 px-4 rounded-xl transition-colors"
-                                        onClick={() => trackEvent({ category: eventCategory, action: 'Click CTA', name: `${modeLabel} – WhatsApp öffnen` })}
-                                    >
-                                        <WhatsAppIcon className="w-5 h-5" />
-                                        WhatsApp öffnen
-                                    </button>
-                                </WhatsappShareButton>
-                                <div className="md:hidden">
-                                    <Button className="w-full" onClick={handleShare}>
-                                        {t('referral.share.share')}
-                                    </Button>
-                                </div>
-                            </TabsPrimitive.Content>
-
-                            {/* Tab: E-Mail */}
-                            <TabsPrimitive.Content value="email" className="mt-5 space-y-4">
-                                <Typography className="text-base font-semibold text-gray-700">E-Mail-Vorschau</Typography>
-                                <div className="border-l-4 border-primary pl-4 space-y-2">
-                                    <div>
-                                        <Typography className="text-xs text-gray-400">Betreff:</Typography>
-                                        <Typography className="text-sm font-semibold text-gray-800">{emailSubject}</Typography>
-                                    </div>
-                                    <Typography className="text-sm text-gray-700 italic">{emailPreview}</Typography>
-                                    <Typography className="text-sm text-primary font-bold break-all">{referralLink}</Typography>
-                                </div>
-                                <a
-                                    href={`mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`}
-                                    className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark active:opacity-90 text-primary-foreground font-semibold py-3 px-4 rounded-xl transition-colors"
-                                    onClick={() => trackEvent({ category: eventCategory, action: 'Click CTA', name: `${modeLabel} – Email übernehmen` })}
-                                >
-                                    <IconMail size={18} />
-                                    Email übernehmen
-                                </a>
-                                <ShieldNote />
-                            </TabsPrimitive.Content>
-
-                            {/* Tab: Link */}
-                            <TabsPrimitive.Content value="link" className="mt-5 space-y-3">
-                                <Typography className="text-base font-semibold text-gray-700">Dein persönlicher Link</Typography>
-                                <div className="bg-accent border border-primary/20 rounded-lg p-3">
-                                    <Typography className="text-primary font-bold break-all text-sm">{referralLink}</Typography>
-                                </div>
-                                <Button
-                                    className="w-full"
-                                    variant="outline"
-                                    leftIcon={hasCopied ? <IconCopyCheck size={16} /> : <IconCopy size={16} />}
-                                    onClick={() => {
-                                        onCopy(referralLink);
-                                        trackEvent({ category: eventCategory, action: 'Click CTA', name: `${modeLabel} – Link kopieren` });
-                                    }}
-                                >
-                                    {hasCopied ? 'Kopiert!' : 'Link kopieren'}
-                                </Button>
-                                <ShieldNote />
-                            </TabsPrimitive.Content>
-
-                            {/* Tab: Bilder/Status */}
-                            <TabsPrimitive.Content value="bilder" className="mt-5 space-y-3">
-                                <Typography className="text-base font-semibold text-gray-700">Bilder zum Teilen</Typography>
-                                <Typography className="text-sm text-gray-500">Klicke auf ein Bild zum Vergrößern und Herunterladen.</Typography>
-                                <div className="grid grid-cols-4 gap-2">
-                                    {sharepics.map((pic) => (
-                                        <button
-                                            key={pic.word}
-                                            onClick={() => {
-                                                setSelectedSharepic(pic);
-                                                trackEvent({ category: eventCategory, action: 'Click Sharepic Preview', name: `${modeLabel} – ${pic.label}` });
-                                            }}
-                                            className="flex flex-col items-center group cursor-pointer"
-                                        >
-                                            <div
-                                                className="rounded-md overflow-hidden w-full aspect-square bg-[#3C3489] ring-2 ring-transparent group-hover:ring-primary transition-all [&>svg]:w-full [&>svg]:h-full"
-                                                dangerouslySetInnerHTML={{ __html: generateSharepicSVG(pic.word, pic.subline, true, qrDataUri) }}
-                                            />
-                                        </button>
-                                    ))}
-                                </div>
-                            </TabsPrimitive.Content>
-                        </TabsPrimitive.Root>
-                    </div>
-
-                    {/* ── Stats sidebar — desktop only ── */}
-                    <div className="hidden lg:block w-2/5 flex-shrink-0">
-                        <Typography variant="h3" className="font-bold mb-3">
-                            Dein Beitrag
-                        </Typography>
-                        <div className="relative bg-white rounded-md shadow-lg p-6 pb-0">
-                            <Confetti style={{ position: 'absolute', top: '-5px', right: '-5px', transform: 'scale(.7)', zIndex: 0, pointerEvents: 'none' }} />
-                            <div className="relative z-[1]">
-                                <Rewards referralCount={referralCount} supportedHours={supportedHours} t={t} />
-                            </div>
+                    <TabsPrimitive.Root
+                        defaultValue="nachricht"
+                        onValueChange={(value) =>
+                            trackEvent({ category: eventCategory, action: 'Click Tab', name: `${modeLabel} – ${TAB_LABELS[value] ?? value}` })
+                        }
+                    >
+                        {/* Tab bar */}
+                        <div className="border-b border-gray-200">
+                            <TabsPrimitive.List className="flex">
+                                <TabsPrimitive.Trigger value="nachricht" className={triggerCls}>
+                                    <IconBrandWhatsapp size={16} />
+                                    WhatsApp
+                                </TabsPrimitive.Trigger>
+                                <TabsPrimitive.Trigger value="email" className={triggerCls}>
+                                    <IconMail size={16} />
+                                    E-Mail
+                                </TabsPrimitive.Trigger>
+                                <TabsPrimitive.Trigger value="link" className={triggerCls}>
+                                    <IconLink size={16} />
+                                    Link
+                                </TabsPrimitive.Trigger>
+                                <TabsPrimitive.Trigger value="bilder" className={triggerCls}>
+                                    <IconPhoto size={16} />
+                                    Sharepics für Status
+                                </TabsPrimitive.Trigger>
+                            </TabsPrimitive.List>
                         </div>
-                    </div>
-                </div>
-                {/* end desktop flex row */}
 
-                {/* ── Materials section — desktop ── */}
-                <div className="hidden lg:block mt-2 mb-8">
+                        {/* Tab: Nachricht */}
+                        <TabsPrimitive.Content value="nachricht" className="mt-5 space-y-4">
+                            <Typography className="text-base font-semibold text-gray-700">Nachricht-Vorschau</Typography>
+                            <div className="border-l-4 border-primary pl-4 space-y-2">
+                                <Typography className="text-sm text-gray-700">{whatsappMessage}</Typography>
+                                <Typography className="text-sm text-primary font-bold break-all">{referralLink}</Typography>
+                            </div>
+                            <WhatsappShareButton url={referralLink} title={whatsappMessage} className="w-full">
+                                <button
+                                    className="w-full flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1da855] text-white font-semibold py-3 px-4 rounded-xl transition-colors"
+                                    onClick={() => trackEvent({ category: eventCategory, action: 'Click CTA', name: `${modeLabel} – WhatsApp öffnen` })}
+                                >
+                                    <WhatsAppIcon className="w-5 h-5" />
+                                    WhatsApp öffnen
+                                </button>
+                            </WhatsappShareButton>
+                            <div className="md:hidden">
+                                <Button className="w-full" onClick={handleShare}>
+                                    {t('referral.share.share')}
+                                </Button>
+                            </div>
+                        </TabsPrimitive.Content>
+
+                        {/* Tab: E-Mail */}
+                        <TabsPrimitive.Content value="email" className="mt-5 space-y-4">
+                            <Typography className="text-base font-semibold text-gray-700">E-Mail-Vorschau</Typography>
+                            <div className="border-l-4 border-primary pl-4 space-y-2">
+                                <div>
+                                    <Typography className="text-xs text-gray-400">Betreff:</Typography>
+                                    <Typography className="text-sm font-semibold text-gray-800">{emailSubject}</Typography>
+                                </div>
+                                <Typography className="text-sm text-gray-700 italic">{emailPreview}</Typography>
+                                <Typography className="text-sm text-primary font-bold break-all">{referralLink}</Typography>
+                            </div>
+                            <a
+                                href={`mailto:?subject=${encodeURIComponent(emailSubject)}&body=${encodeURIComponent(emailBody)}`}
+                                className="w-full flex items-center justify-center gap-2 bg-primary hover:bg-primary-dark active:opacity-90 text-primary-foreground font-semibold py-3 px-4 rounded-xl transition-colors"
+                                onClick={() => trackEvent({ category: eventCategory, action: 'Click CTA', name: `${modeLabel} – Email übernehmen` })}
+                            >
+                                <IconMail size={18} />
+                                Email übernehmen
+                            </a>
+                            <ShieldNote />
+                        </TabsPrimitive.Content>
+
+                        {/* Tab: Link */}
+                        <TabsPrimitive.Content value="link" className="mt-5 space-y-3">
+                            <Typography className="text-base font-semibold text-gray-700">Dein persönlicher Link</Typography>
+                            <div className="bg-accent border border-primary/20 rounded-lg p-3">
+                                <Typography className="text-primary font-bold break-all text-sm">{referralLink}</Typography>
+                            </div>
+                            <Button
+                                className="w-full"
+                                variant="outline"
+                                leftIcon={hasCopied ? <IconCopyCheck size={16} /> : <IconCopy size={16} />}
+                                onClick={() => {
+                                    onCopy(referralLink);
+                                    trackEvent({ category: eventCategory, action: 'Click CTA', name: `${modeLabel} – Link kopieren` });
+                                }}
+                            >
+                                {hasCopied ? 'Kopiert!' : 'Link kopieren'}
+                            </Button>
+                            <ShieldNote />
+                        </TabsPrimitive.Content>
+
+                        {/* Tab: Bilder/Status */}
+                        <TabsPrimitive.Content value="bilder" className="mt-5 space-y-3">
+                            <Typography className="text-base font-semibold text-gray-700">Bilder zum Teilen</Typography>
+                            <Typography className="text-sm text-gray-500">Klicke auf ein Bild zum Vergrößern und Herunterladen.</Typography>
+                            <div className="grid grid-cols-4 gap-2">
+                                {sharepics.map((pic) => (
+                                    <button
+                                        key={pic.word}
+                                        onClick={() => {
+                                            setSelectedSharepic(pic);
+                                            trackEvent({ category: eventCategory, action: 'Click Sharepic Preview', name: `${modeLabel} – ${pic.label}` });
+                                        }}
+                                        className="flex flex-col items-center group cursor-pointer"
+                                    >
+                                        <div
+                                            className="rounded-md overflow-hidden w-full aspect-square bg-[#3C3489] ring-2 ring-transparent group-hover:ring-primary transition-all [&>svg]:w-full [&>svg]:h-full"
+                                            dangerouslySetInnerHTML={{ __html: generateSharepicSVG(pic.word, pic.subline, true, qrDataUri) }}
+                                        />
+                                    </button>
+                                ))}
+                            </div>
+                        </TabsPrimitive.Content>
+                    </TabsPrimitive.Root>
+                </div>
+
+                {/* ── Materials section ── */}
+                <div className="mb-8">
                     <Typography variant="h3" className="mb-1.5 font-bold">
                         Flyer & Poster auslegen
                     </Typography>
@@ -384,83 +348,6 @@ const Referrals: React.FC<{}> = () => {
                     <Button className="mt-4" variant="outline" onClick={handleOnShare}>
                         {t('referral.share.materials.button')}
                     </Button>
-                </div>
-
-                {/* ── Mobile: rewards + materials ── */}
-                <div className="block lg:hidden space-y-4">
-                    <div className="relative bg-white rounded-md shadow-lg p-5">
-                        <ConfettiMobile
-                            style={{ position: 'absolute', top: '-30px', right: '-10px', transform: 'scale(.4)', zIndex: 0, pointerEvents: 'none' }}
-                        />
-                        <div className="relative z-[1]">
-                            <Typography variant="h5" className="font-bold mb-3">
-                                {t('referral.reward.title')}
-                            </Typography>
-                            <div className="flex items-center space-x-5">
-                                <Typography className="font-medium text-sm text-gray-500 mb-3">{t('referral.reward.RegisteredUsers')}</Typography>
-                                {referralCount === 0 ? (
-                                    <div className="group relative mb-3">
-                                        <LOCK className="w-[20px] h-[20px]" />
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-[180px] p-3 bg-accent text-primary text-xs rounded-[6px] font-normal z-10">
-                                            <div>Hier kannst du später sehen, wieviele sich mit deinem Link registriert haben.</div>
-                                            <div
-                                                style={{
-                                                    position: 'absolute',
-                                                    left: '50%',
-                                                    transform: 'translateX(-50%)',
-                                                    bottom: '-5px',
-                                                    width: 0,
-                                                    height: 0,
-                                                    borderLeft: '5px solid transparent',
-                                                    borderRight: '5px solid transparent',
-                                                    borderTop: '5px solid #ECF3F2',
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <Typography variant="h5" className="font-bold mb-3 text-primary">
-                                        {referralCount}
-                                    </Typography>
-                                )}
-                            </div>
-                            <div className="flex items-center space-x-5">
-                                <Typography className="font-medium text-sm text-gray-500">{t('referral.reward.HoursSupported')}</Typography>
-                                {referralCount >= 3 ? (
-                                    <Typography variant="h5" className="font-bold text-primary">
-                                        {supportedHours}
-                                    </Typography>
-                                ) : (
-                                    <div className="group relative">
-                                        <LOCK className="w-[20px] h-[20px]" />
-                                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 hidden group-hover:block w-[180px] p-3 bg-accent text-primary text-xs rounded-[6px] font-normal z-10">
-                                            <div>{t('referral.reward.tooltip')}</div>
-                                            <div
-                                                style={{
-                                                    position: 'absolute',
-                                                    left: '50%',
-                                                    transform: 'translateX(-50%)',
-                                                    bottom: '-5px',
-                                                    width: 0,
-                                                    height: 0,
-                                                    borderLeft: '5px solid transparent',
-                                                    borderRight: '5px solid transparent',
-                                                    borderTop: '5px solid #ECF3F2',
-                                                }}
-                                            />
-                                        </div>
-                                    </div>
-                                )}
-                            </div>
-                        </div>
-                    </div>
-                    <div className="bg-white rounded-md shadow-lg p-5">
-                        <Typography className="mb-1.5 font-semibold">{t('referral.share.materials.title')}</Typography>
-                        <Typography>{t('referral.share.materials.description')}</Typography>
-                        <Button className="mt-4 w-full" variant="outline" onClick={handleOnShare}>
-                            {t('referral.share.materials.button')}
-                        </Button>
-                    </div>
                 </div>
             </div>
 
