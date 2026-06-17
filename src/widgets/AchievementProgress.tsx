@@ -13,9 +13,10 @@ import { useTranslation } from 'react-i18next';
 type AchievementProgressProps = {
     achievements: Achievement[];
     inactiveAchievements: Achievement[];
+    hideHeader?: boolean;
 };
 
-const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements, inactiveAchievements }) => {
+const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements, inactiveAchievements, hideHeader = false }) => {
     const [isSeen] = useMutation(
         gql(`
         mutation markAchievementAsSeen($id: Float!) {
@@ -122,7 +123,7 @@ const AchievementProgress: React.FC<AchievementProgressProps> = ({ achievements,
 
     return (
         <Box>
-            <Heading paddingBottom="5">{t('achievement.header')}</Heading>
+            {!hideHeader && <Heading paddingBottom="5">{t('achievement.header')}</Heading>}
             {selectedAchievement && (
                 <AchievementModal
                     tagline={selectedAchievement.tagline ?? undefined}
