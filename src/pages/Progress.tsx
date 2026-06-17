@@ -9,9 +9,6 @@ import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { Achievement } from '../gql/graphql';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import { Typography } from '@/components/Typography';
-import { useUserType } from '@/hooks/useApollo';
-import { TutorStats, PupilStats } from '@/widgets/ProgressStats';
 
 const achievementsQuery = gql(`
     query achievements {
@@ -76,7 +73,6 @@ const Progress = () => {
     const margin = useBreakpointValue({ base: '4', md: '0' });
     const { data, loading } = useQuery(achievementsQuery);
     const { data: inactiveData, loading: inactiveLoading } = useQuery(furtherAchievementsQuery);
-    const userType = useUserType();
     if (loading || inactiveLoading) return <CenterLoadingSpinner />;
     const achievements: Achievement[] = data?.me.achievements ? data?.me.achievements : [];
     const foundFurtherAchievements: Achievement[] = inactiveData?.me.furtherAchievements ? inactiveData?.me.furtherAchievements : [];
@@ -96,28 +92,7 @@ const Progress = () => {
                 >
                     <Box mx={margin}>
                         <Breadcrumb />
-                        <Typography variant="h2" className="font-bold mt-2 mb-6">
-                            Erfolge & Statistiken
-                        </Typography>
-
-                        {/* Statistiken */}
-                        <div className="mb-10">
-                            <Typography variant="h5" className="font-semibold mb-4 text-gray-700">
-                                Statistiken
-                            </Typography>
-                            {userType === 'student' ? <TutorStats /> : <PupilStats />}
-                        </div>
-
-                        {/* Achievements */}
-                        <div>
-                            <Typography variant="h4" className="font-bold mb-1">
-                                Deine Erfolge
-                            </Typography>
-                            <Typography variant="h5" className="font-semibold mb-4 text-gray-600">
-                                Rekorde
-                            </Typography>
-                            <AchievementProgress hideHeader achievements={achievements} inactiveAchievements={foundFurtherAchievements} />
-                        </div>
+                        <AchievementProgress achievements={achievements} inactiveAchievements={foundFurtherAchievements} />
                     </Box>
                 </WithNavigation>
             }

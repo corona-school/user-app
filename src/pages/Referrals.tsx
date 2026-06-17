@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import * as TabsPrimitive from '@radix-ui/react-tabs';
 import { WhatsappShareButton } from 'react-share';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
@@ -123,9 +122,7 @@ const Referrals: React.FC<{}> = () => {
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
 
-    const [searchParams] = useSearchParams();
-    const userOverride = searchParams.get('user'); // 'huh' | 'sus' for testing
-    const sharingMode: SharingMode = userOverride === 'sus' ? 'pupils' : userOverride === 'huh' ? 'volunteers' : userType === 'pupil' ? 'pupils' : 'volunteers';
+    const sharingMode: SharingMode = userType === 'pupil' ? 'pupils' : 'volunteers';
 
     useScrollToTop();
 
