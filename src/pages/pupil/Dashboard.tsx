@@ -27,6 +27,7 @@ import { Typography } from '@/components/Typography';
 import CTACard from '@/widgets/CTACard';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import TruncatedText from '@/components/TruncatedText';
+import OpenMatchRequest from '@/widgets/OpenMatchRequest';
 
 type Props = {};
 
@@ -87,6 +88,27 @@ const query = gql(`
                     published
                     cancelled
                 }
+                subjectsFormatted {
+                    name
+                }
+                screenings {
+                    status,
+                    invalidated
+                    appointment {
+                        id,
+                        title,
+                        description,
+                        start,
+                        override_meeting_link,
+                        duration,
+                        actionUrls {
+                            cancelUrl
+                            rescheduleUrl
+                        }
+                        appointmentType
+                    }
+                }
+                needScreening
             }
             appointments(take: 10, skip: 0) {
                 id
@@ -158,7 +180,7 @@ const query = gql(`
 `);
 
 const Dashboard: React.FC<Props> = () => {
-    const { data, loading, called } = useQuery(query);
+    const { data, loading, called, refetch } = useQuery(query);
     const roles = useRoles();
 
     const { space, sizes } = useTheme();
@@ -241,6 +263,8 @@ const Dashboard: React.FC<Props> = () => {
         });
     };
 
+    const openScreening = data?.me.pupil?.screenings?.find((e) => ['pending', 'dispute'].includes(e.status) && !e.invalidated);
+
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -303,29 +327,16 @@ const Dashboard: React.FC<Props> = () => {
                                             </Button>
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
-                                            <VStack space={2} flexShrink={1} maxWidth="700px">
-                                                {data?.me?.pupil?.firstMatchRequest && (
-                                                    <Text>
-                                                        {t('dashboard.offers.requestCreated')}{' '}
-                                                        {DateTime.fromISO(data?.me?.pupil?.firstMatchRequest).toFormat('dd.MM.yyyy, HH:mm')} {t('clock')}
-                                                    </Text>
-                                                )}
-                                                <Alert maxWidth="520px" alignItems="start" marginY={space['0.5']} colorScheme="info">
-                                                    <HStack space={2} flexShrink={1} alignItems="center">
-                                                        <Alert.Icon color="danger.100" />
-                                                        <Text>{t('dashboard.offers.waitingTimeInfo')}</Text>
-                                                    </HStack>
-                                                </Alert>
-
-                                                <DisableableButton
-                                                    isDisabled={_cancelMatchRequest?.loading}
-                                                    reasonDisabled={t('reasonsDisabled.loading')}
-                                                    width={ButtonContainer}
-                                                    onPress={() => setShowCancelModal(true)}
-                                                >
-                                                    {t('dashboard.offers.removeRequest')}
-                                                </DisableableButton>
-                                            </VStack>
+                                            <OpenMatchRequest
+                                                subjects={data?.me?.pupil?.subjectsFormatted || []}
+                                                screening={openScreening}
+                                                variant="pupil"
+                                                onMatchRequestCancelled={() => {
+                                                    refetch();
+                                                }}
+                                                needsScreening={data?.me?.pupil?.needScreening || false}
+                                                index={0}
+                                            />
                                         )}
                                     </HSection>
                                 )}

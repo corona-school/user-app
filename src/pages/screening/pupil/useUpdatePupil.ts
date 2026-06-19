@@ -2,6 +2,7 @@ import { CheckedState } from '@/components/Checkbox';
 import { gql } from '@/gql';
 import { Gender_Enum as Gender, ExternalSchoolSearch } from '@/gql/graphql';
 import { PupilForScreening } from '@/types';
+import { getAgeAtRegistration, getApproxCurrentAge } from '@/Utility';
 import { useMutation } from '@apollo/client';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -31,6 +32,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [weeklyAvailability, setWeeklyAvailability] = useState(pupil.calendarPreferences?.weeklyAvailability);
     const [canHaveMatches, setCanHaveMatches] = useState(pupil.isPupil);
     const [canParticipateInCourses, setCanParticipateInCourses] = useState(pupil.isParticipant);
+    const [currentAge, setCurrentAge] = useState(pupil.age ? getApproxCurrentAge(pupil.createdAt, pupil.age) : undefined);
 
     const updatePupil = async () => {
         try {
@@ -44,7 +46,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (null as any),
                         hasSpecialNeeds: hasSpecialNeeds === true,
                         school: {
-                            name: school?.name,
+                            name: school?.name?.split(',')[0] ?? school?.name,
                             schooltype: schoolType as any,
                             state: pupilLocation as any,
                             city: school?.city,
@@ -53,6 +55,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         descriptionForMatch,
                         descriptionForScreening,
                         isPupil: canHaveMatches,
+                        age: pupil.age !== currentAge && currentAge ? getAgeAtRegistration(pupil.createdAt, currentAge) : pupil.age,
                         isParticipant: canParticipateInCourses,
                         calendarPreferences: weeklyAvailability
                             ? {
@@ -65,7 +68,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             });
             toast.success(t('changesWereSaved'));
         } catch (error) {
-            toast.success(t('error'));
+            toast.error(t('error'));
         }
     };
 
@@ -99,6 +102,8 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             setCanHaveMatches,
             canParticipateInCourses,
             setCanParticipateInCourses,
+            setCurrentAge,
+            currentAge,
         },
     };
 };

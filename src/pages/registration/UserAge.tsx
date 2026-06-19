@@ -2,14 +2,12 @@ import { useTranslation } from 'react-i18next';
 import { RegistrationStep, RegistrationStepDescription, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
 import { useRegistrationForm } from './useRegistrationForm';
 import { Input } from '@/components/Input';
-import { Typography } from '@/components/Typography';
 import { useState } from 'react';
 import { Toggle } from '@/components/Toggle';
 import { usePageTitle } from '@/hooks/usePageTitle';
+import { MIN_AGE_PUPIL } from '@/Utility';
 
 interface UserAgeProps extends RegistrationStepProps {}
-
-const MIN_AGE_PUPIL = 7;
 
 export const UserAge = ({ onBack, onNext }: UserAgeProps) => {
     const { form, onFormChange } = useRegistrationForm();

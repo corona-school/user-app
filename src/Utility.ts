@@ -10,6 +10,9 @@ export const TOKEN_LENGTH = 32;
 export const REDIRECT_PASSWORD = `/login`;
 export const MIN_MAX_GRADE_RANGE = { min: 1, max: 14 };
 export const TRAINEE_GRADE = 14;
+export const MIN_AGE_PUPIL = 7;
+export const INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES = 60 * 48;
+export const PARTICIPANT_JOIN_IN_ADVANCE_MINUTES = 10;
 
 export const toTimerString = (referenceDate: DateTime, theDate: DateTime) => {
     const inPast = theDate < referenceDate;
@@ -192,6 +195,22 @@ export const TIME_SLOTS = [
     `${fromFormatToMinutes('19:00')}-${fromFormatToMinutes('20:00')}`,
     `${fromFormatToMinutes('20:00')}-${fromFormatToMinutes('21:00')}`,
 ];
+
+export const getApproxCurrentAge = (createdAt: string, ageAtRegistration: number) => {
+    const now = DateTime.now();
+    const created = DateTime.fromISO(createdAt);
+    const diffYears = Math.floor(now.diff(created, 'years').years);
+    return Math.floor(ageAtRegistration + diffYears);
+};
+
+export const getAgeAtRegistration = (createdAt: string, currentAge: number) => {
+    const now = DateTime.now();
+    const created = DateTime.fromISO(createdAt);
+
+    const diffYears = Math.floor(now.diff(created, 'years').years);
+
+    return Math.floor(currentAge - diffYears);
+};
 
 const Utility = {
     createToken,

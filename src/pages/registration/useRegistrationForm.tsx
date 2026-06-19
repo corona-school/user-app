@@ -2,7 +2,7 @@ import { FormalEducationEnum } from '@/components/FormalEducationSelector';
 import { combineSpecialExperience, SpecialTeachingExperienceEnum, splitSpecialExperience } from '@/components/SpecialTeachingExperienceSelector';
 import { TeachingExperienceLevelEnum } from '@/components/TeachingExperienceLevelSelector';
 import { gql } from '@/gql';
-import { Gender, Language, PupilEmailOwner, SchoolType, School_Schooltype_Enum, Screening_Jobstatus_Enum, Student_Jobstatus_Enum } from '@/gql/graphql';
+import { Gender, Language, PupilEmailOwner, RegistrationSource, SchoolType, School_Schooltype_Enum, Student_Jobstatus_Enum } from '@/gql/graphql';
 import useApollo from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
 import { Appointment } from '@/types/lernfair/Appointment';
@@ -65,6 +65,7 @@ export interface RegistrationForm {
         selectValues: SpecialTeachingExperienceEnum[];
         freeTextValue?: string;
     };
+    isFromUniCooperation?: boolean;
 }
 
 interface RegistrationContextValue {
@@ -158,6 +159,7 @@ const REGISTRATION_PROFILE_QUERY = gql(`
                 jobStatus
                 specialTeachingExperience
                 formalEducation
+                registrationSource
             }
         }
     }
@@ -170,8 +172,8 @@ const ME_UPDATE_PUPIL_MUTATION = gql(`
 `);
 
 const ME_UPDATE_STUDENT_MUTATION = gql(`
-    mutation meUpdateStudentRegistrationProfile($jobStatus: student_jobstatus_enum, $formalEducation: String, $specialTeachingExperience: [String!]) {
-        meUpdate(update: { student: { jobStatus: $jobStatus, formalEducation: $formalEducation, specialTeachingExperience: $specialTeachingExperience } })
+    mutation meUpdateStudentRegistrationProfile($jobStatus: student_jobstatus_enum, $formalEducation: String, $specialTeachingExperience: [String!], $registrationSource: RegistrationSource) {
+        meUpdate(update: { student: { jobStatus: $jobStatus, formalEducation: $formalEducation, specialTeachingExperience: $specialTeachingExperience, registrationSource: $registrationSource } })
     }
 `);
 
@@ -224,7 +226,7 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                             schooltype: values.school?.schooltype as unknown as SchoolType,
                             zip: values.school?.zip ?? values.zipCode?.toString(),
                             city: values.school?.city,
-                            name: values.school?.name,
+                            name: values.school?.name.split(',')[0] ?? values.school?.name, // we only want to save the name of the school without city and zip, as those are separate fields
                         },
                     },
                 });
@@ -234,6 +236,10 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         if (values.userType === 'student') {
             if (values.currentStep === RegistrationStep.jobStatus) {
                 await meUpdateStudent({ variables: { jobStatus: values.jobStatus as unknown as Student_Jobstatus_Enum } });
+            } else if (values.currentStep === RegistrationStep.uniCooperation) {
+                await meUpdateStudent({
+                    variables: { registrationSource: values.isFromUniCooperation ? RegistrationSource.Cooperation : RegistrationSource.Normal },
+                });
             } else if (
                 [RegistrationStep.formalEducation, RegistrationStep.teachingExperience, RegistrationStep.hasSpecialNeedsExperience].includes(values.currentStep)
             ) {
@@ -251,14 +257,22 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             }
         }
 
+        /** ------------------------ Handle skip steps from first to last ------------------------------------ */
+        if (nextStep === RegistrationStep.uniCooperation && values.isFromUniCooperation === false) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
+        if (nextStep === RegistrationStep.bookAppointment && values.userType === 'student' && values.isFromUniCooperation) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
+        if (nextStep === RegistrationStep.screeningAppointmentDetail && values.userType === 'student' && values.isFromUniCooperation) {
+            nextStep = getNextStepFrom(nextStep); // skip
+        }
         if (nextStep === RegistrationStep.schoolType && shouldSkipSchoolType) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
-
         if (nextStep === RegistrationStep.zipCode && shouldSkipZipCode) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
-
         if (nextStep === RegistrationStep.formalEducation && shouldSkipFormalEducation) {
             nextStep = getNextStepFrom(nextStep); // skip
         }
@@ -284,6 +298,17 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         const shouldSkipZipCode = values.school.zip && values.zipCode;
         const shouldSkipFormalEducation = !values.hasWorkingExperienceInEducation;
 
+        /** ------------------------ Handle skip steps from last to first ------------------------------------ */
+
+        if (prevStep === RegistrationStep.registrationCompleted && values.userType === 'student' && values.isFromUniCooperation) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
+        if (prevStep === RegistrationStep.screeningAppointmentDetail && values.userType === 'student' && values.isFromUniCooperation) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
+        if (prevStep === RegistrationStep.bookAppointment && values.userType === 'student' && values.isFromUniCooperation) {
+            prevStep = getPrevStepFrom(prevStep); // skip
+        }
         if (prevStep === RegistrationStep.zipCode && shouldSkipZipCode) {
             prevStep = getPrevStepFrom(prevStep); // skip
         }
@@ -341,7 +366,8 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                 zipCode: registrationProfile.student?.zipCode ?? registrationProfile.pupil?.school?.zip ?? '',
                 jobStatus: registrationProfile.student?.jobStatus ?? undefined,
                 formalEducation: (registrationProfile.student?.formalEducation as FormalEducationEnum) ?? undefined,
-                hasWorkingExperienceInEducation: !!registrationProfile.student?.formalEducation,
+                hasWorkingExperienceInEducation:
+                    registrationProfile.student?.formalEducation === null ? undefined : !!registrationProfile.student?.formalEducation,
                 // Students don't have a "waiting results" (dispute) state
                 isWaitingScreeningResults: registrationProfile.pupil ? getIsPupilWaitingScreeningResults(registrationProfile.pupil.screenings ?? []) : false,
                 teachingExperience: teachingExperienceLevel,
@@ -349,6 +375,8 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
                     selectValues: specialTeachingExperience,
                     freeTextValue: freeText,
                 },
+                isFromUniCooperation:
+                    registrationProfile.student?.registrationSource === 'other' ? undefined : registrationProfile.student?.registrationSource === 'cooperation',
             });
         }
         // And stop showing the loader, this should trigger the next effect
@@ -395,6 +423,18 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
         // Blocker to verify email
         if (!isVerified) {
             return handleOnChange({ currentStep: RegistrationStep.confirmEmail });
+        }
+
+        if (values.userType === 'student') {
+            // If we don't know yet, ask the user if they are from a uni cooperation (Only ask those without an appointment)
+            if (values.isFromUniCooperation === undefined && !hasScreeningAppointment) {
+                return handleOnChange({ currentStep: RegistrationStep.uniCooperation });
+            }
+            // If they are from a cooperation, the other steps are optional and when they come back to the registration
+            // let's just show the confirmation..
+            if (values.isFromUniCooperation) {
+                return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
+            }
         }
 
         // Blocker to book a screening appointment

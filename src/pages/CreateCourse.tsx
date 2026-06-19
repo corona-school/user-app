@@ -231,7 +231,7 @@ const CreateCourse: React.FC = () => {
         } = (await subcourseQuery({
             variables: { id: prefillSubcourseId },
         })) as unknown as { data: { subcourse: LFSubCourse } };
-        console.log('PREFILLING', prefillSubcourse);
+
         setPrefillSubcourse(prefillSubcourse);
 
         setCourseId(prefillSubcourse.course.id);
@@ -299,8 +299,6 @@ const CreateCourse: React.FC = () => {
             user.student?.id,
             userType
         );
-
-        console.log('DELTA', delta);
 
         try {
             setUpdatingCourse(true);
@@ -387,7 +385,7 @@ const CreateCourse: React.FC = () => {
                             isEditingCourse={true}
                             errors={errors}
                             setAppointmentErrors={setAppointmentErrors}
-                            appointments={courseAppointments ?? []}
+                            appointments={courseAppointments?.map((e) => ({ ...e, subcourse: { published: updatedSubcourse?.published } })) ?? []}
                             setAppointments={setCourseAppointments}
                         />
                         <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />

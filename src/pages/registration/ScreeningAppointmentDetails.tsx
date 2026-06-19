@@ -18,7 +18,7 @@ interface ScreeningAppointmentDetailProps extends RegistrationStepProps {
     variant?: 'registered' | 'completed';
 }
 
-export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: ScreeningAppointmentDetailProps) => {
+export const ScreeningAppointmentDetail = ({ onNext, onBack, variant = 'registered' }: ScreeningAppointmentDetailProps) => {
     const { form } = useRegistrationForm();
     const { t } = useTranslation();
     const pageTitles: Record<string, string> = {
@@ -26,7 +26,10 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
         completed: `Registrierung: Funnel abgeschlossen (${form.userType === 'pupil' ? 'Schüler:in' : 'Helfer:in'})`,
     };
     usePageTitle(pageTitles[variant]);
-    const canStartMeeting = useCanJoinMeeting(5, form.screeningAppointment?.start!, form.screeningAppointment?.duration!);
+    const canStartMeeting = useCanJoinMeeting({
+        joinBeforeMinutes: 5,
+        appointment: { start: form.screeningAppointment?.start!, duration: form.screeningAppointment?.duration! },
+    });
     const { trackEvent } = useMatomo();
 
     useEffect(() => {
@@ -59,7 +62,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
     const eventAction = `Page "${variant === 'registered' ? 'Appointment confirmed' : 'Funnel completed'}"`;
 
     return (
-        <RegistrationStep onNext={onNext}>
+        <RegistrationStep onNext={onNext} onBack={onBack}>
             {variant === 'registered' ? (
                 <>
                     <div className="bg-green-500 rounded-full w-[100px] h-[100px] flex justify-center items-center mx-auto mb-5">
@@ -88,7 +91,7 @@ export const ScreeningAppointmentDetail = ({ onNext, variant = 'registered' }: S
                     />
                     <Button
                         disabled={!form.screeningAppointment?.override_meeting_link || !canStartMeeting}
-                        reasonDisabled={`${t('registration.steps.appointmentDetails.joinMeetingHint')}`}
+                        reasonDisabled={`${t('registration.steps.appointmentDetails.joinMeetingHint', { minutes: 5 })}`}
                         onClick={() =>
                             form.screeningAppointment?.override_meeting_link && window.open(form.screeningAppointment?.override_meeting_link, '_blank')
                         }

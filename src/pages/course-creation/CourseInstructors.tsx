@@ -99,7 +99,7 @@ const CourseInstructors: React.FC<Props> = ({ subcourse, setSubcourse }) => {
                 <div className="flex gap-2.5">
                     <Combobox
                         placeholder={t('course.CourseDate.form.searchInstructorsPlaceholder')}
-                        className="flex-grow"
+                        className={cn('flex-grow w-[500px] border border-solid')}
                         onSearch={searchInstructors}
                         search={searchString}
                         values={searchResults.map((r) => ({ value: JSON.stringify(r), label: `${r.firstname} ${r.lastname}` }))}
