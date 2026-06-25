@@ -15,7 +15,6 @@ import LoginWithIDP from '@/pages/LoginWithIDP';
 // All other pages load lazy:
 const RegistrationLazy = lazyWithRetry(() => import('./RegistrationLazy'), { prefetch: false });
 const NavigatorLazy = lazyWithRetry(() => import('./NavigatorLazy'), { prefetch: !window.location.pathname.startsWith('/registration') });
-
 // This component only exists to reliably test our support process:
 function CrashMe() {
     return ({} as any).very.stupid;
