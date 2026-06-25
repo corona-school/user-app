@@ -113,59 +113,55 @@ export const WeeklyAvailabilitySelector = ({
                     <IconChevronRight />
                 </Button>
             </div>
-            <div className="block overflow-x-auto" ref={gridRef}>
-                {/* Header row with weekdays */}
-                <div className="grid grid-cols-[100px_repeat(7,40px)] bg-white gap-y-1 gap-x-2 mb-1">
-                    {/* Empty corner cell */}
-                    <div className="w-[100px] h-10 bg-white flex items-center justify-center">{t('time')}</div>
-                    {DAYS.map((day) => (
-                        <Skeleton key={day} isLoading={isLoading}>
-                            <div
-                                role="button"
-                                tabIndex={0}
-                                onClick={() => handleColumnClick(day)}
-                                onMouseEnter={() => setHoveredColumn(day)}
-                                onMouseLeave={() => setHoveredColumn('')}
-                                className={cn(
-                                    'size-10 rounded-md text-center bg-primary-lighter transition-colors flex items-center justify-center gap-y-1 gap-x-2 text-primary',
-                                    {
-                                        'bg-green-200 text-green-800': isColumnSelected(day),
-                                    }
-                                )}
-                            >
-                                <span>{weekdaysLabels[day].substring(0, 2)}</span>
-                            </div>
-                        </Skeleton>
-                    ))}
-                </div>
-
-                {/* Time slots and cells */}
-                <div className="flex flex-col gap-y-1 gap-x-2">
-                    {TIME_SLOTS.map((timeSlot) => (
-                        <div key={`time-slot-${timeSlot}`} className="grid grid-cols-[100px_repeat(7,40px)] gap-y-1 gap-x-2">
-                            {/* Time slot header */}
+            <div className="block overflow-x-hidden md:overflow-x-auto" ref={gridRef}>
+                <div className="inline-grid grid-flow-col auto-cols-max gap-x-2">
+                    <div className="flex sticky left-0 z-10 flex-col gap-y-1 w-[100px]">
+                        <div className="w-[100px] h-10 bg-white flex items-center justify-center text-subtle">{t('time')}</div>
+                        {TIME_SLOTS.map((timeSlot) => (
                             <Skeleton key={timeSlot} isLoading={isLoading}>
                                 <div
                                     onClick={() => handleRowClick(timeSlot)}
                                     onMouseEnter={() => setHoveredRow(timeSlot)}
                                     onMouseLeave={() => setHoveredRow('')}
                                     className={cn(
-                                        'w-[100px] h-10 rounded-md text-center bg-primary-lighter text-primary transition-colors flex items-center justify-center gap-y-1 gap-x-2 cursor-pointer',
+                                        'w-[100px] h-10 rounded-md text-center bg-primary-lighter text-primary transition-colors flex items-center justify-center cursor-pointer',
                                         { 'bg-green-200 text-green-800': isRowSelected(timeSlot) }
                                     )}
                                 >
-                                    {formatTimeSlot(timeSlot)}
+                                    <span className="text-subtle">{formatTimeSlot(timeSlot)}</span>
                                 </div>
                             </Skeleton>
-                            {/* Schedule cells */}
-                            {DAYS.map((day) => (
-                                <Skeleton key={`schedule-cell-${timeSlot}-${day}`} isLoading={isLoading}>
+                        ))}
+                    </div>
+
+                    {DAYS.map((day) => (
+                        <div key={day} className="flex flex-col gap-y-1 w-10 md:w-[139px]">
+                            <Skeleton isLoading={isLoading}>
+                                <div
+                                    role="button"
+                                    tabIndex={0}
+                                    onClick={() => handleColumnClick(day)}
+                                    onMouseEnter={() => setHoveredColumn(day)}
+                                    onMouseLeave={() => setHoveredColumn('')}
+                                    className={cn(
+                                        'h-10 rounded-md text-center bg-primary-lighter transition-colors flex items-center justify-center text-primary',
+                                        {
+                                            'bg-green-200 text-green-800': isColumnSelected(day),
+                                        }
+                                    )}
+                                >
+                                    <span className="hidden md:inline text-subtle">{weekdaysLabels[day]}</span>
+                                    <span className="inline md:hidden text-subtle">{weekdaysLabels[day].substring(0, 2)}</span>
+                                </div>
+                            </Skeleton>
+
+                            {TIME_SLOTS.map((timeSlot) => (
+                                <Skeleton key={`schedule-cell-${day}-${timeSlot}`} isLoading={isLoading}>
                                     <div
                                         role="button"
                                         tabIndex={0}
-                                        key={`${timeSlot}-${day}`}
                                         onClick={() => handleCellClick(timeSlot, day)}
-                                        className={cn('size-10 rounded-md transition-colors flex items-center justify-center group')}
+                                        className={cn('h-10 rounded-md transition-colors flex items-center justify-center group')}
                                     >
                                         <Checkbox
                                             checked={isCellSelected(timeSlot, day)}
