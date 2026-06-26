@@ -61,7 +61,7 @@ export const MatchRequestStep = ({
                 <div className="flex gap-x-4">
                     <Button
                         disabled={isBackDisabled}
-                        className={cn('', {
+                        className={cn('md:w-[224px]', {
                             hidden: !onBack,
                         })}
                         variant="outline"
@@ -73,13 +73,13 @@ export const MatchRequestStep = ({
                     <Button
                         disabled={isNextDisabled}
                         reasonDisabled={reasonNextDisabled}
-                        className={cn('', {
+                        className={cn('md:w-[224px]', {
                             hidden: !onNext,
                         })}
                         onClick={handleOnSubmit}
                     >
                         <IconCheck size={14} className="!stroke-[2px]" />
-                        {nextButtonText || t('next')}
+                        {nextButtonText || t('nextWithSelection')}
                     </Button>
                 </div>
             ) : (

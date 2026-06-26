@@ -272,6 +272,7 @@
     "sendMessage": "Nachricht senden",
     "next": "Weiter",
     "back": "Zurück",
+    "nextWithSelection": "Weiter mit Auswahl",
     "important": "Wichtig",
     "error": "Es ist ein Fehler aufgetreten.",
     "characterLimitNotice": "Max. Zeichenanzahl: {{limit}}",
@@ -876,6 +877,9 @@
                     "placeholder": "Gebe deine Schulform an."
                 }
             }
+        },
+        "Grade": {
+            "label": "In welcher Klasse bist du?"
         },
         "State": {
             "empty": "Keine Angabe",
@@ -1602,7 +1606,7 @@
             "pupil": {
                 "profiledata": {
                     "heading": "Profil aktualisieren",
-                    "text": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
+                    "text": "Bitte prüfe nochmal deine Angaben.",
                     "subheading": "Persönliche Daten"
                 },
                 "german": {
