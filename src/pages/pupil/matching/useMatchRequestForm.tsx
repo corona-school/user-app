@@ -137,9 +137,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
         setValues((values) => ({ ...values, ...data }));
     };
 
-    const needsHelpInGerman =
-        values.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching) ||
-        values.subjects.some((s) => (s.name as SingleSubject) === 'Deutsch als Zweitsprache');
+    const needsHelpInGerman = values.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching);
     const hasOnlyOneSubject = values.subjects.length <= 1;
     const handleOnNext = async () => {
         if (currentStepIndex === -1 || !values.currentStep) return;
