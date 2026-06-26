@@ -3,13 +3,13 @@ import { useTranslation } from 'react-i18next';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { Typography } from '@/components/Typography';
-import { Course_Subject_Enum } from '@/gql/graphql';
+import { SingleSubject } from '@/types/subject';
 
 const Priority: React.FC = () => {
     const { goBack, goNext, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
 
-    const handleOnSubjectsChange = (subject: Course_Subject_Enum) => {
+    const handleOnSubjectsChange = (subject: SingleSubject) => {
         onFormChange({
             subjects: form.subjects.map((s) => ({
                 name: s.name,
@@ -19,7 +19,7 @@ const Priority: React.FC = () => {
     };
 
     const options = (form.subjectsOptions ?? []).filter((it) => form.subjects.some((s) => s.name === it.subject)) as unknown as SubjectOption[];
-    const value = form.subjects.find((s) => s.mandatory)?.name as Course_Subject_Enum;
+    const value = form.subjects.find((s) => s.mandatory)?.name as SingleSubject;
 
     return (
         <MatchRequestStep

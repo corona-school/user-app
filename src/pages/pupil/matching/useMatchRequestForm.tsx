@@ -1,8 +1,8 @@
 import { gql } from '@/gql';
-import { Subject, CalendarPreferences, Language, SchoolType, SubjectDistribution, Learning_Offer_Constraints_Enum, Course_Subject_Enum } from '@/gql/graphql';
+import { Subject, CalendarPreferences, Language, SchoolType, SubjectDistribution, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
 import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
-import { SUBJECT_TO_COURSE_SUBJECT } from '@/types/subject';
+import { SingleSubject } from '@/types/subject';
 import { useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -15,9 +15,6 @@ interface MatchRequestForm {
     calendarPreferences?: CalendarPreferences;
     currentStep?: MatchRequestStep;
     schooltype?: SchoolType;
-    learningGermanSince?: '<1' | '1-2' | '2-4' | '>4';
-    isNativeGermanSpeaker?: boolean;
-    shouldSkipSubjectPriority?: boolean;
     screeningAppointment?: Appointment & {
         actionUrls: {
             cancelUrl?: string | null;
@@ -49,7 +46,6 @@ const emptyState: MatchRequestForm = {
     languages: [],
     grade: 0,
     currentStep: MatchRequestStep.subjects,
-    shouldSkipSubjectPriority: false,
     userType: 'pupil',
     learningOfferConstraints: [],
 };
@@ -143,7 +139,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
 
     const needsHelpInGerman =
         values.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching) ||
-        values.subjects.some((s) => s.name === Course_Subject_Enum.DeutschAlsZweitsprache);
+        values.subjects.some((s) => (s.name as SingleSubject) === 'Deutsch als Zweitsprache');
     const hasOnlyOneSubject = values.subjects.length <= 1;
     const handleOnNext = async () => {
         if (currentStepIndex === -1 || !values.currentStep) return;
@@ -153,14 +149,6 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
         let nextStep = getNextStepFrom(values.currentStep);
 
         // ------------------------ Logic to determine which step to go to next based on the current values ------------------------
-        // 1-2 skip priority / skip list
-        // 2-4 skip priority
-        // >4 no skip
-        if (nextStep === MatchRequestStep.subjects) {
-            if (values.isNativeGermanSpeaker === false && ['<1', '1-2'].includes(values.learningGermanSince!)) {
-                nextStep = getNextStepFrom(nextStep); // skip subjects
-            }
-        }
         if (nextStep === MatchRequestStep.priority) {
             if (needsHelpInGerman || hasOnlyOneSubject) {
                 nextStep = getNextStepFrom(nextStep); // skip priority
@@ -218,12 +206,6 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
                 previousStep = getPrevStepFrom(previousStep); // skip priority
             }
         }
-        if (previousStep === MatchRequestStep.subjects) {
-            if (values.isNativeGermanSpeaker === false && ['<1', '1-2'].includes(values.learningGermanSince!)) {
-                previousStep = getPrevStepFrom(previousStep); // skip subjects
-            }
-        }
-
         handleOnChange({ currentStep: previousStep });
     };
 
@@ -253,14 +235,10 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
             value={{
                 form: {
                     ...values,
-                    shouldSkipSubjectPriority: values.isNativeGermanSpeaker === false && ['<1', '1-2', '2-4'].includes(values.learningGermanSince!),
                     isAppointmentStepForced: isAppointmentStepForced,
                     currentStep: isAppointmentStepForced ? MatchRequestStep.bookScreeningAppointment : values.currentStep,
                     isCompleted: isAppointmentStepForced && values.screeningAppointment ? true : values.isCompleted,
-                    subjectsOptions: ((subjectsData?.subjectsForPupils as SubjectDistribution[]) || []).map((it) => ({
-                        ...it,
-                        subject: SUBJECT_TO_COURSE_SUBJECT[it.subject as keyof typeof SUBJECT_TO_COURSE_SUBJECT],
-                    })),
+                    subjectsOptions: subjectsData?.subjectsForPupils,
                 },
                 onFormChange: handleOnChange,
                 isLoading: isLoading,

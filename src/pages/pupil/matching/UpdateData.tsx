@@ -13,7 +13,8 @@ import { IconLoader } from '@/components/IconLoader';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepDescription, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/Accordion';
-import { IconChevronDown } from '@tabler/icons-react';
+import { IconBulbFilled, IconChevronDown } from '@tabler/icons-react';
+import { Alert } from '@/components/Alert';
 
 type ModalType = 'grade' | 'schoolType' | 'languages';
 
@@ -81,6 +82,13 @@ const UpdateData = () => {
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
+                    <Alert variant="indigo" className="" icon={<IconBulbFilled size={24} className=" text-indigo-500" />}>
+                        <span className="leading-[18px]">
+                            {form.userType === 'pupil'
+                                ? t('matching.wizard.pupil.profiledata.availabilityBanner')
+                                : t('matching.wizard.student.profile.availabilityBanner')}
+                        </span>
+                    </Alert>
                 </div>
                 <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
                     <ModalHeader>

@@ -1610,7 +1610,8 @@
                 "profiledata": {
                     "heading": "Profil aktualisieren",
                     "text": "Bitte prüfe nochmal deine Angaben.",
-                    "subheading": "Persönliche Daten"
+                    "subheading": "Persönliche Daten",
+                    "availabilityBanner": "Wenn du mehr Zeiten auswählst, ist es einfacher, passende Lernpartner:innen zu finden. Du kannst die Zeiten jederzeit in deinem Profil ändern."
                 },
                 "german": {
                     "heading": "Deutschkenntnisse",
@@ -1628,7 +1629,8 @@
                     "heading": "Fächerauswahl",
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
                     "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
-                    "bannerText": "Wähle am besten 1 bis 3 Fächer. Im nächsten Schritt wählst du das Fach aus, bei dem du am meisten Hilfe brauchst. Wenn du in einem weiteren Fach auch viel Hilfe brauchst, empfehlen wir dir, nur zwei Fächer zu wählen."
+                    "bannerText": "Wähle am besten 1 bis 3 Fächer. Im nächsten Schritt wählst du das Fach aus, bei dem du am meisten Hilfe brauchst. Wenn du in einem weiteren Fach auch viel Hilfe brauchst, empfehlen wir dir, nur zwei Fächer zu wählen.",
+                    "dazBannerText": "Wir suchen eine Person für dich, die mit dir Deutsch lernt. Du kannst dir aber Fächer dazu wählen. Vielleicht finden wir jemanden, der beides kann."
                 },
                 "priority": {
                     "heading": "Priorisierung",
@@ -1706,7 +1708,8 @@
                     "title": "Profil aktualisieren",
                     "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
                     "personalData": "Persönliche Daten",
-                    "availabilityRequirement": "Bitte richte zuerst deine Verfügbarkeit ein, um fortzufahren."
+                    "availabilityRequirement": "Bitte richte zuerst deine Verfügbarkeit ein, um fortzufahren.",
+                    "availabilityBanner": "Hier gibst du deine regelmäßigen Zeiten für die nächsten Wochen an. Mit dieser Info können wir dich mit passenden Schüler:innen matchen. \nJe mehr Zeitfenster du angibst, desto einfacher ist es. Du kannst diese Info jederzeit in deinem Profil ändern."
                 },
                 "success": {
                     "title": "Geschafft, du bist ein:e Held:in!",

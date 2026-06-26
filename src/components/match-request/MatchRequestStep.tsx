@@ -58,10 +58,10 @@ export const MatchRequestStep = ({
         <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-full w-full', className)}>
             <div className="flex flex-1 flex-col max-w-full py-[30px]">{children}</div>
             {onBack || onNext ? (
-                <div className="flex gap-x-4">
+                <div className="flex flex-col md:flex-row gap-y-4 gap-x-4">
                     <Button
                         disabled={isBackDisabled}
-                        className={cn('md:w-[224px]', {
+                        className={cn('md:w-[224px] w-full', {
                             hidden: !onBack,
                         })}
                         variant="outline"
@@ -73,7 +73,7 @@ export const MatchRequestStep = ({
                     <Button
                         disabled={isNextDisabled}
                         reasonDisabled={reasonNextDisabled}
-                        className={cn('md:w-[224px]', {
+                        className={cn('md:w-[224px] w-full', {
                             hidden: !onNext,
                         })}
                         onClick={handleOnSubmit}

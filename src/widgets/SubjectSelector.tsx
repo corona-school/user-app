@@ -32,20 +32,11 @@ import {
 import { Box, HStack, useTheme } from 'native-base';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Subject, Course_Subject_Enum } from '../gql/graphql';
-import { DAZ, SUBJECT_TO_ICON, SUBJECTS_MAIN, SUBJECTS_MINOR, SUBJECTS_RARE, courseSubjectToSubject } from '../types/subject';
+import { Subject } from '../gql/graphql';
+import { DAZ, SUBJECT_TO_ICON, SUBJECTS_MAIN, SUBJECTS_MINOR, SUBJECTS_RARE, SingleSubject } from '../types/subject';
 import IconTagList from './IconTagList';
 
-const deprecatedSubjects = [
-    Course_Subject_Enum.Altgriechisch,
-    Course_Subject_Enum.Chinesisch,
-    Course_Subject_Enum.Italienisch,
-    Course_Subject_Enum.Kunst,
-    Course_Subject_Enum.NiederlNdisch,
-    Course_Subject_Enum.Philosophie,
-    Course_Subject_Enum.Religion,
-    Course_Subject_Enum.Russisch,
-] as const;
+const deprecatedSubjects: SingleSubject[] = ['Altgriechisch', 'Chinesisch', 'Italienisch', 'Kunst', 'Niederländisch', 'Philosophie', 'Religion', 'Russisch'];
 
 export const SubjectSelector = ({
     subjects,
@@ -119,21 +110,21 @@ const getGradesLabels = (numbers: number[]) => {
 };
 
 export interface SubjectOption {
-    subject: Course_Subject_Enum;
+    subject: SingleSubject;
     pupilsWaiting?: number;
     waitingDaysRange?: { from: number; to: number };
     gradesAvailable?: number[];
 }
 
 interface SingleProps {
-    value: Course_Subject_Enum;
-    onChange: (it: Course_Subject_Enum) => any;
+    value: SingleSubject;
+    onChange: (it: SingleSubject) => any;
     multiple?: false;
 }
 
 interface MultipleProps {
-    value: Course_Subject_Enum[];
-    onChange: (it: Course_Subject_Enum[]) => any;
+    value: SingleSubject[];
+    onChange: (it: SingleSubject[]) => any;
     multiple?: true;
 }
 
@@ -144,11 +135,19 @@ type SubjectsSelectorProps = (SingleProps | MultipleProps) & {
     showGradesAvailable?: boolean;
 };
 
-export const SubjectsSelector = ({ value, onChange, multiple, options, showGradesAvailable, showPupilsWaiting, showWaitingDays }: SubjectsSelectorProps) => {
+export const SubjectsSelector = ({
+    value,
+    onChange,
+    multiple,
+    options = [],
+    showGradesAvailable,
+    showPupilsWaiting,
+    showWaitingDays,
+}: SubjectsSelectorProps) => {
     const { t } = useTranslation();
     const [showAllSubjects, setShowAllSubjects] = useState(false);
 
-    const handleOnToggle = (subject: Course_Subject_Enum, selected: boolean) => {
+    const handleOnToggle = (subject: SingleSubject, selected: boolean) => {
         if (multiple) {
             onChange(selected ? [...value, subject] : value.filter((s) => s !== subject));
             return;
@@ -164,10 +163,12 @@ export const SubjectsSelector = ({ value, onChange, multiple, options, showGrade
     const mainOptions = filteredOptions.slice(0, 12);
     const rareOptions = filteredOptions.slice(12);
 
+    console.log(mainOptions);
+
     return (
-        <div className="flex flex-wrap gap-2 md:gap-4 justify-start">
+        <div className="flex flex-wrap gap-2 justify-center md:gap-4 md:justify-start">
             {mainOptions.concat(showAllSubjects ? rareOptions : []).map((option) => {
-                const isPressed = multiple ? (value as Course_Subject_Enum[]).some((s) => s === option.subject) : value === option.subject;
+                const isPressed = multiple ? (value as SingleSubject[]).some((s) => s === option.subject) : value === option.subject;
                 return (
                     <Toggle
                         variant="outline-primary-lighter"
@@ -182,7 +183,7 @@ export const SubjectsSelector = ({ value, onChange, multiple, options, showGrade
                             <SubjectIcon subject={option.subject} className={cn('rounded-full size-6 flex-shrink-0')} />
                         </div>
                         <Typography variant="sm" className="font-semibold mb-3 leading-1 mt-1">
-                            {t(`lernfair.subjects.${courseSubjectToSubject(option.subject)}` as unknown as TemplateStringsArray)}
+                            {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
                         </Typography>
                         <div className="flex gap-x-1">
                             {showWaitingDays && (
@@ -209,7 +210,7 @@ export const SubjectsSelector = ({ value, onChange, multiple, options, showGrade
                 );
             })}
             {options.length > 12 && (
-                <div className="w-full flex justify-center pt-10">
+                <div className="w-full flex justify-center pt-6 md:pt-10">
                     <Button
                         leftIcon={showAllSubjects ? <IconChevronUp /> : <IconChevronDown />}
                         variant="outline"
@@ -224,67 +225,67 @@ export const SubjectsSelector = ({ value, onChange, multiple, options, showGrade
     );
 };
 
-export const SubjectIcon = ({ subject, className }: { subject: Course_Subject_Enum; className?: string }) => {
+export const SubjectIcon = ({ subject, className }: { subject: SingleSubject; className?: string }) => {
     switch (subject) {
-        case Course_Subject_Enum.Altgriechisch:
-        case Course_Subject_Enum.Chinesisch:
-        case Course_Subject_Enum.Italienisch:
-        case Course_Subject_Enum.Kunst:
-        case Course_Subject_Enum.NiederlNdisch:
-        case Course_Subject_Enum.Philosophie:
-        case Course_Subject_Enum.Religion:
-        case Course_Subject_Enum.Russisch:
+        case 'Altgriechisch':
+        case 'Chinesisch':
+        case 'Italienisch':
+        case 'Kunst':
+        case 'Niederländisch':
+        case 'Philosophie':
+        case 'Religion':
+        case 'Russisch':
             return <IconQuestionMark className={className} />;
 
-        case Course_Subject_Enum.Arbeitslehre:
+        case 'Arbeitslehre':
             return <IconBriefcase className={className} />;
-        case Course_Subject_Enum.Biologie:
+        case 'Biologie':
             return <IconMicroscope className={className} />;
-        case Course_Subject_Enum.Chemie:
+        case 'Chemie':
             return <IconFlask2 className={className} />;
-        case Course_Subject_Enum.Deutsch:
+        case 'Deutsch':
             return <IconLoader iconPath="subjects/german.svg" className={className} />;
-        case Course_Subject_Enum.DeutschAlsZweitsprache:
+        case 'Deutsch als Zweitsprache':
             return <IconLoader iconPath="subjects/daz.svg" className={className} />;
-        case Course_Subject_Enum.Englisch:
+        case 'Englisch':
             return <IconLoader iconPath="subjects/english.svg" className={className} />;
-        case Course_Subject_Enum.Erdkunde:
+        case 'Erdkunde':
             return <IconGlobe className={className} />;
-        case Course_Subject_Enum.Ethik:
+        case 'Ethik':
             return <IconScale className={className} />;
-        case Course_Subject_Enum.FranzSisch:
+        case 'Französisch':
             return <IconLoader iconPath="subjects/french.svg" className={className} />;
-        case Course_Subject_Enum.Geschichte:
+        case 'Geschichte':
             return <IconTower className={className} />;
-        case Course_Subject_Enum.Gesundheit:
+        case 'Gesundheit':
             return <IconActivity className={className} />;
-        case Course_Subject_Enum.Informatik:
+        case 'Informatik':
             return <IconCode className={className} />;
-        case Course_Subject_Enum.Latein:
+        case 'Latein':
             return <IconLoader iconPath="subjects/latin.svg" className={className} />;
-        case Course_Subject_Enum.LernenLernen:
+        case 'Lernen lernen':
             return <IconFocus2 className={className} />;
-        case Course_Subject_Enum.Mathematik:
+        case 'Mathematik':
             return <IconPlusMinus className={className} />;
-        case Course_Subject_Enum.Musik:
+        case 'Musik':
             return <IconMusic className={className} />;
-        case Course_Subject_Enum.PDagogik:
+        case 'Pädagogik':
             return <IconChalkboard className={className} />;
-        case Course_Subject_Enum.Physik:
+        case 'Physik':
             return <IconPrismLight className={className} />;
-        case Course_Subject_Enum.Politik:
+        case 'Politik':
             return <IconSpeakerphone className={className} />;
-        case Course_Subject_Enum.Rechnungswesen:
+        case 'Rechnungswesen':
             return <IconCalculator className={className} />;
-        case Course_Subject_Enum.Sachkunde:
+        case 'Sachkunde':
             return <IconListSearch className={className} />;
-        case Course_Subject_Enum.Spanisch:
+        case 'Spanisch':
             return <IconLoader iconPath="subjects/spanish.svg" className={className} />;
-        case Course_Subject_Enum.Steuerlehre:
+        case 'Steuerlehre':
             return <IconDeviceAnalytics className={className} />;
-        case Course_Subject_Enum.Technik:
+        case 'Technik':
             return <IconTool className={className} />;
-        case Course_Subject_Enum.Wirtschaft:
+        case 'Wirtschaft':
             return <IconCoins className={className} />;
 
         default:
