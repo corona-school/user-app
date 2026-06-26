@@ -5,7 +5,6 @@ import AsNavigationItem from '../../../components/AsNavigationItem';
 import NotificationAlert from '../../../components/notifications/NotificationAlert';
 import WithNavigation from '../../../components/WithNavigation';
 import { Subject } from '../../../gql/graphql';
-import German from './German';
 import Priority from './Priority';
 import Subjects from './Subjects';
 import UpdateData from './UpdateData';
@@ -59,7 +58,6 @@ const RequestMatch: React.FC = () => {
                         </div>
                         <div className="relative h-full">
                             {form.currentStep === MatchRequestStep.updateData && <UpdateData />}
-                            {form.currentStep === MatchRequestStep.german && <German />}
                             {form.currentStep === MatchRequestStep.subjects && <Subjects />}
                             {form.currentStep === MatchRequestStep.priority && <Priority />}
                             {form.currentStep === MatchRequestStep.bookScreeningAppointment && <BookScreeningAppointment />}
