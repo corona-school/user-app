@@ -1322,8 +1322,8 @@
         }
     },
     "helperwizard": {
-        "nextStep": "Deine nächsten Schritte",
-        "progress": "Alle Fortschritte anzeigen",
+        "nextStep": "Aktuelle Infos für Dich",
+        "progress": "Erfolge und Statistiken anzeigen",
         "verifizierung": {
             "subtitle": "Verifizierung",
             "title": "Verifiziere deine E-Mail-Adresse",
