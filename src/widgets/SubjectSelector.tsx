@@ -163,8 +163,6 @@ export const SubjectsSelector = ({
     const mainOptions = filteredOptions.slice(0, 12);
     const rareOptions = filteredOptions.slice(12);
 
-    console.log(mainOptions);
-
     return (
         <div className="flex flex-wrap gap-2 justify-center md:gap-4 md:justify-start">
             {mainOptions.concat(showAllSubjects ? rareOptions : []).map((option) => {
