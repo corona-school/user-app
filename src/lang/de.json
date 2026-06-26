@@ -22,6 +22,9 @@
     "bookAppointment": "Termin buchen",
     "changeAppointment": "Termin ändern",
     "joinZoomMeeting": "Zoom starten",
+    "lessSubjects": "Weniger Fächer",
+    "moreSubjects": "Weitere Fächer",
+    "waitingTimeInWeeks": "Wartezeit: {{0}} bis {{1}} Wochen",
     "weekdays": {
         "monday": "Montag",
         "tuesday": "Dienstag",
@@ -1625,8 +1628,7 @@
                     "heading": "Fächerauswahl",
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
                     "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
-                    "reason_btn_disabled_DAZ": "Bitte wähle ein Fach aus.",
-                    "text": "Du kannst maximal 1 Fach auswählen."
+                    "bannerText": "Wähle am besten 1 bis 3 Fächer. Im nächsten Schritt wählst du das Fach aus, bei dem du am meisten Hilfe brauchst. Wenn du in einem weiteren Fach auch viel Hilfe brauchst, empfehlen wir dir, nur zwei Fächer zu wählen."
                 },
                 "priority": {
                     "heading": "Priorisierung",
@@ -1686,6 +1688,7 @@
                     "title": "Wähle Fächer aus",
                     "subtitle": "In welchen Fächern möchtest du unterstützen?",
                     "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
+                    "bannerText": "Wenn du mehrere Fächer angibst, wirst du schneller vermittelt. Um nur in deinen präferierten Fächern Lernpartner:innen zu finden, kann es unter Umständen sinnvoll sein, jeweils ein einzelnes Match anzufragen. Du kannst ein weiteres Match anfragen, sobald du mit deiner/deinem Lernpartner:in deinen ersten Termin hattest.",
                     "maincourse": {
                         "title": "Am meisten nachgefragt",
                         "explanation": "Hier kannst du oft sehr schnell vermittelt werden."

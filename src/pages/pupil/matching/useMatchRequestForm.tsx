@@ -1,7 +1,8 @@
 import { gql } from '@/gql';
-import { Subject, CalendarPreferences, Language, SchoolType } from '@/gql/graphql';
+import { Subject, CalendarPreferences, Language, SchoolType, SubjectDistribution, Learning_Offer_Constraints_Enum, Course_Subject_Enum } from '@/gql/graphql';
 import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
+import { SUBJECT_TO_COURSE_SUBJECT } from '@/types/subject';
 import { useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -27,6 +28,9 @@ interface MatchRequestForm {
     isCompleted?: boolean;
     isEdit?: boolean;
     isAppointmentStepForced?: boolean;
+    subjectsOptions?: SubjectDistribution[];
+    userType?: 'pupil' | 'student';
+    learningOfferConstraints?: Learning_Offer_Constraints_Enum[];
 }
 
 interface MatchRequestContextValue {
@@ -44,8 +48,10 @@ const emptyState: MatchRequestForm = {
     subjects: [],
     languages: [],
     grade: 0,
-    currentStep: MatchRequestStep.updateData,
+    currentStep: MatchRequestStep.subjects,
     shouldSkipSubjectPriority: false,
+    userType: 'pupil',
+    learningOfferConstraints: [],
 };
 
 const MatchRequestContext = createContext<MatchRequestContextValue>({
@@ -71,6 +77,7 @@ const MATCH_REQUEST_INFO_QUERY = gql(`
                 calendarPreferences
                 languages
                 needScreening
+                learningOfferConstraints
                 screenings {
                     status,
                     invalidated
@@ -85,6 +92,15 @@ const MATCH_REQUEST_INFO_QUERY = gql(`
                     }
                 }
             }
+        }
+    }
+`);
+
+const PUPIL_SUBJECTS_QUERY = gql(`
+    query PupilSubjects {
+        subjectsForPupils {
+            subject
+            waitingDaysRange { from, to }
         }
     }
 `);
@@ -106,11 +122,11 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
     const { data, refetch, networkStatus } = useQuery(MATCH_REQUEST_INFO_QUERY, { notifyOnNetworkStatusChange: true });
     const [meUpdate] = useMutation(ME_UPDATE_MUTATION);
     const [createMatchRequest] = useMutation(CREATE_PUPIL_MATCH_REQUEST_MUTATION);
+    const { data: subjectsData } = useQuery(PUPIL_SUBJECTS_QUERY, { skip: !data?.me.pupil });
     const [values, setValues] = useState<MatchRequestForm>(emptyState);
     const currentStepIndex = values.currentStep ? pupilMatchRequestFlow.indexOf(values.currentStep) : -1;
     const location = useLocation();
     const isAppointmentStepForced = location.pathname.split('/').includes('screening-appointment');
-
     const getNextStepFrom = (step: MatchRequestStep) => {
         const currentIndex = pupilMatchRequestFlow.indexOf(step);
         return pupilMatchRequestFlow[currentIndex + 1];
@@ -125,7 +141,9 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
         setValues((values) => ({ ...values, ...data }));
     };
 
-    const needsHelpInGerman = values.isNativeGermanSpeaker === false && ['<1', '1-2', '2-4'].includes(values.learningGermanSince!);
+    const needsHelpInGerman =
+        values.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching) ||
+        values.subjects.some((s) => s.name === Course_Subject_Enum.DeutschAlsZweitsprache);
     const hasOnlyOneSubject = values.subjects.length <= 1;
     const handleOnNext = async () => {
         if (currentStepIndex === -1 || !values.currentStep) return;
@@ -158,16 +176,6 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
                         languages: values.languages,
                         gradeAsInt: values.grade,
                         schooltype: values.schooltype,
-                    },
-                });
-            } catch (error: any) {
-                logError('[matchRequest]', error?.message, error);
-            }
-        } else if (values.currentStep === MatchRequestStep.german) {
-            try {
-                await meUpdate({
-                    variables: {
-                        subjects: values.subjects.map((it) => ({ name: it.name, mandatory: it.mandatory })),
                     },
                 });
             } catch (error: any) {
@@ -231,6 +239,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
             schooltype: (pupil?.schooltype as unknown as SchoolType) || undefined,
             screeningAppointment: currentBookedScreening?.appointment as any,
             needScreening: pupil?.needScreening ?? false,
+            learningOfferConstraints: pupil?.learningOfferConstraints,
         });
         setIsLoading(false);
     }, [data]);
@@ -248,6 +257,10 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
                     isAppointmentStepForced: isAppointmentStepForced,
                     currentStep: isAppointmentStepForced ? MatchRequestStep.bookScreeningAppointment : values.currentStep,
                     isCompleted: isAppointmentStepForced && values.screeningAppointment ? true : values.isCompleted,
+                    subjectsOptions: ((subjectsData?.subjectsForPupils as SubjectDistribution[]) || []).map((it) => ({
+                        ...it,
+                        subject: SUBJECT_TO_COURSE_SUBJECT[it.subject as keyof typeof SUBJECT_TO_COURSE_SUBJECT],
+                    })),
                 },
                 onFormChange: handleOnChange,
                 isLoading: isLoading,

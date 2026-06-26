@@ -139,4 +139,11 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in SingleSubject]: Course_Sub
 
 export const DAZ = 'Deutsch als Zweitsprache';
 
+export const courseSubjectToSubject = (courseSubject: Course_Subject_Enum): SingleSubject | undefined => {
+    const entry = Object.entries(SUBJECT_TO_COURSE_SUBJECT).find(([_, v]) => v === courseSubject);
+    if (!entry) {
+        return undefined;
+    }
+    return entry[0] as SingleSubject;
+};
 export const containsDAZ = (subjects: Subject[]) => subjects.some((it) => it.name === DAZ);

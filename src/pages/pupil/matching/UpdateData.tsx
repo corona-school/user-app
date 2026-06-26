@@ -12,23 +12,18 @@ import { getGradeLabel } from '@/Utility';
 import { IconLoader } from '@/components/IconLoader';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepDescription, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/Accordion';
+import { IconChevronDown } from '@tabler/icons-react';
 
 type ModalType = 'grade' | 'schoolType' | 'languages';
 
 const UpdateData = () => {
-    const { goNext, form, isLoading, onFormChange } = useMatchRequestForm();
+    const { goBack, goNext, form, isLoading, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
     const [modalType, setModalType] = useState<ModalType>();
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     const getIsNextDisabled = () => {
-        // const availabilitySlots = Object.values(newCalendarPreferences?.weeklyAvailability ?? {}).some((e) => !!e.length);
-        // if (!isLoading && !availabilitySlots) {
-        //     return {
-        //         is: true,
-        //         reason: t('matching.wizard.student.profile.availabilityRequirement'),
-        //     };
-        // }
         return { is: false, reason: '' };
     };
 
@@ -38,12 +33,27 @@ const UpdateData = () => {
     };
 
     return (
-        <MatchRequestStep onNext={goNext} isNextDisabled={getIsNextDisabled().is || isLoading} reasonNextDisabled={getIsNextDisabled().reason}>
+        <MatchRequestStep onBack={goBack} onNext={goNext} isNextDisabled={getIsNextDisabled().is || isLoading} reasonNextDisabled={getIsNextDisabled().reason}>
             <MatchRequestStepTitle variant="h4">{t('matching.wizard.pupil.profiledata.heading')}</MatchRequestStepTitle>
             <MatchRequestStepDescription>{t('matching.wizard.pupil.profiledata.text')}</MatchRequestStepDescription>
             <div className="flex flex-col gap-y-6">
                 <div></div>
-                <div className="flex flex-col md:flex-row gap-x-5 gap-y-6 max-w-[500px]">
+                <div className="flex flex-col flex-1 md:flex-row gap-x-5 gap-y-6">
+                    <div className="flex flex-col gap-y-1 w-full">
+                        <Label>{t('profile.Languages.labelPupil')}</Label>
+                        <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('languages')}>
+                            <div className="w-full flex items-center gap-x-2 min-w-[200px]">{form.languages.join(', ') || t('edit')}</div>
+                        </Button>
+                    </div>
+                    <div className="flex flex-col gap-y-1 w-full">
+                        <Label>{t('profile.Grade.label')}</Label>
+                        <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('grade')}>
+                            <div className="w-full flex items-center gap-x-2 min-w-[200px]">
+                                {form.grade && <GradeIcon className="size-6" grade={form.grade} />}
+                                {form.grade ? getGradeLabel(form.grade) : t('edit')}
+                            </div>
+                        </Button>
+                    </div>
                     <div className="flex flex-col gap-y-1 w-full">
                         <Label>{t('profile.SchoolType.label')}</Label>
                         <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('schoolType')}>
@@ -53,47 +63,24 @@ const UpdateData = () => {
                             </div>
                         </Button>
                     </div>
-                    <div className="flex flex-col gap-y-1 w-full">
-                        <Label>{t('grade')}</Label>
-                        <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('grade')}>
-                            <div className="w-full flex items-center gap-x-2 min-w-[200px]">
-                                {form.grade && <GradeIcon className="size-6" grade={form.grade} />}
-                                {form.grade ? getGradeLabel(form.grade) : t('edit')}
-                            </div>
-                        </Button>
-                    </div>
-                </div>
-                <div className="flex flex-col gap-y-1 max-w-[500px] overflow-hidden w-full">
-                    <div className="flex flex-col gap-y-2">
-                        <Label>{t('profile.Languages.labelPupil')}</Label>
-                        <LanguageSelector
-                            maxVisibleItems={8}
-                            className="flex flex-wrap justify-center p-1"
-                            searchConfig={{
-                                containerClassName: 'w-full',
-                                className: 'bg-white',
-                                placeholder: t('otherLanguages'),
-                            }}
-                            toggleConfig={{
-                                variant: 'outline',
-                                size: 'lg',
-                                className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
-                            }}
-                            multiple
-                            value={form.languages as unknown as Language[]}
-                            setValue={(languages) => onFormChange({ languages })}
-                        />
-                    </div>
                 </div>
                 <div className="flex flex-col gap-y-2">
-                    <Label>{t('profile.availability')}</Label>
-                    <WeeklyAvailabilitySelector
-                        onChange={(weeklyAvailability) =>
-                            onFormChange({ calendarPreferences: { ...form.calendarPreferences, weeklyAvailability } as CalendarPreferences })
-                        }
-                        availability={form.calendarPreferences?.weeklyAvailability}
-                        isLoading={isLoading}
-                    />
+                    <Accordion type="single" collapsible className="w-full" defaultValue="availability">
+                        <AccordionItem value="availability">
+                            <AccordionTrigger IconComponent={IconChevronDown} iconClasses="w-[22px]" className="py-0 items-center justify-start gap-1">
+                                <Label className="order-2 cursor-pointer">{t('profile.availability')}</Label>
+                            </AccordionTrigger>
+                            <AccordionContent className="flex flex-col gap-4 md:pt-4">
+                                <WeeklyAvailabilitySelector
+                                    onChange={(weeklyAvailability) =>
+                                        onFormChange({ calendarPreferences: { ...form.calendarPreferences, weeklyAvailability } as CalendarPreferences })
+                                    }
+                                    availability={form.calendarPreferences?.weeklyAvailability}
+                                    isLoading={isLoading}
+                                />
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
                 </div>
                 <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
                     <ModalHeader>
@@ -108,8 +95,30 @@ const UpdateData = () => {
                         )}
                         {modalType === 'grade' && (
                             <div className="flex flex-col gap-y-2">
-                                <Label>{t('grade')}</Label>
+                                <Label>{t('profile.Grade.label')}</Label>
                                 <GradeSelector grade={form.grade} onGradeChange={(grade) => onFormChange({ grade })} />
+                            </div>
+                        )}
+                        {modalType === 'languages' && (
+                            <div className="flex flex-col gap-y-2">
+                                <Label>{t('profile.Languages.labelPupil')}</Label>
+                                <LanguageSelector
+                                    maxVisibleItems={8}
+                                    className="flex flex-wrap justify-center p-1"
+                                    searchConfig={{
+                                        containerClassName: 'w-full',
+                                        className: 'bg-white',
+                                        placeholder: t('otherLanguages'),
+                                    }}
+                                    toggleConfig={{
+                                        variant: 'outline',
+                                        size: 'lg',
+                                        className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
+                                    }}
+                                    multiple
+                                    value={form.languages as unknown as Language[]}
+                                    setValue={(languages) => onFormChange({ languages })}
+                                />
                             </div>
                         )}
                     </div>
