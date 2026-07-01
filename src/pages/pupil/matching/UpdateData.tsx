@@ -13,7 +13,7 @@ import { IconLoader } from '@/components/IconLoader';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepDescription, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/Accordion';
-import { IconBulbFilled, IconChevronDown } from '@tabler/icons-react';
+import { IconBulbFilled, IconChevronDown, IconSend } from '@tabler/icons-react';
 import { Alert } from '@/components/Alert';
 
 type ModalType = 'grade' | 'schoolType' | 'languages';
@@ -33,8 +33,17 @@ const UpdateData = () => {
         setIsModalOpen(true);
     };
 
+    const isLastStep = !form.needScreening;
+
     return (
-        <MatchRequestStep onBack={goBack} onNext={goNext} isNextDisabled={getIsNextDisabled().is || isLoading} reasonNextDisabled={getIsNextDisabled().reason}>
+        <MatchRequestStep
+            onBack={goBack}
+            onNext={goNext}
+            isNextDisabled={getIsNextDisabled().is || isLoading}
+            reasonNextDisabled={getIsNextDisabled().reason}
+            nextButtonText={isLastStep ? t('sendRequest') : t('saveAndContinue')}
+            nextButtonIcon={isLastStep ? <IconSend size={20} /> : undefined}
+        >
             <MatchRequestStepTitle variant="h4">{t('matching.wizard.pupil.profiledata.heading')}</MatchRequestStepTitle>
             <MatchRequestStepDescription>{t('matching.wizard.pupil.profiledata.text')}</MatchRequestStepDescription>
             <div className="flex flex-col gap-y-6">

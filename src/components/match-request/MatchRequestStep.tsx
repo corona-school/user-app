@@ -15,6 +15,7 @@ interface _MatchRequestStepProps {
     backButtonText?: string;
     className?: string;
     reasonNextDisabled?: string;
+    nextButtonIcon?: React.ReactNode;
 }
 
 export type MatchRequestStepProps = Omit<_MatchRequestStepProps, 'children'>;
@@ -46,6 +47,7 @@ export const MatchRequestStep = ({
     reasonNextDisabled,
     nextButtonText,
     backButtonText,
+    nextButtonIcon,
 }: _MatchRequestStepProps) => {
     const { t } = useTranslation();
     const handleOnSubmit = () => {
@@ -66,8 +68,9 @@ export const MatchRequestStep = ({
                         })}
                         variant="outline"
                         onClick={onBack}
+                        size="lg"
                     >
-                        <IconArrowLeft size={14} className="!stroke-[2px]" />
+                        <IconArrowLeft size={20} />
                         {backButtonText || t('back')}
                     </Button>
                     <Button
@@ -77,8 +80,9 @@ export const MatchRequestStep = ({
                             hidden: !onNext,
                         })}
                         onClick={handleOnSubmit}
+                        size="lg"
                     >
-                        <IconCheck size={14} className="!stroke-[2px]" />
+                        {nextButtonIcon ? nextButtonIcon : <IconCheck size={20} />}
                         {nextButtonText || t('nextWithSelection')}
                     </Button>
                 </div>

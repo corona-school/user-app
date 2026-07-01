@@ -276,6 +276,8 @@
     "next": "Weiter",
     "back": "Zurück",
     "nextWithSelection": "Weiter mit Auswahl",
+    "saveAndContinue": "Speichern und weiter",
+    "sendRequest": "Anfrage senden",
     "important": "Wichtig",
     "error": "Es ist ein Fehler aufgetreten.",
     "characterLimitNotice": "Max. Zeichenanzahl: {{limit}}",
