@@ -115,7 +115,7 @@ export const WeeklyAvailabilitySelector = ({
             </div>
             <div className="block overflow-x-hidden md:overflow-x-auto" ref={gridRef}>
                 <div className="inline-grid grid-flow-col auto-cols-max gap-x-2">
-                    <div className="flex sticky left-0 z-10 flex-col gap-y-1 w-[100px]">
+                    <div className="flex sticky left-0 flex-col gap-y-1 w-[100px]">
                         <div className="w-[100px] h-10 bg-white flex items-center justify-center text-subtle">{t('time')}</div>
                         {TIME_SLOTS.map((timeSlot) => (
                             <Skeleton key={timeSlot} isLoading={isLoading}>
