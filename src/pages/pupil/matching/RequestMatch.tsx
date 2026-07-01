@@ -36,7 +36,7 @@ const RequestMatch: React.FC = () => {
 
     useEffect(() => {
         if (locationState?.edit) {
-            onFormChange({ currentStep: MatchRequestStep.updateData, isEdit: true });
+            onFormChange({ currentStep: MatchRequestStep.subjects, isEdit: true });
         }
     }, [locationState]);
 

@@ -183,6 +183,7 @@ function fromFormatToMinutes(time: string) {
 }
 
 export const TIME_SLOTS = [
+    `${fromFormatToMinutes('09:00')}-${fromFormatToMinutes('10:00')}`,
     `${fromFormatToMinutes('10:00')}-${fromFormatToMinutes('11:00')}`,
     `${fromFormatToMinutes('11:00')}-${fromFormatToMinutes('12:00')}`,
     `${fromFormatToMinutes('12:00')}-${fromFormatToMinutes('13:00')}`,
