@@ -22,6 +22,7 @@ const buttonVariants = cva(
                 none: 'text-primary',
                 input: 'border border-input justify-between bg-transparent text-form font-normal ring-offset-background placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:w-full [&>span]:justify-between',
                 linkedIn: 'bg-blue-700 text-white hover:bg-blue-600/90',
+                zoom: 'bg-blue-500 text-white hover:bg-blue-600 rounded-full',
                 optional: 'bg-white text-primary border border-primary hover:bg-primary-lighter hover:border-primary-light',
                 'optional-dark': 'bg-white text-primary border border-primary hover:bg-accent-dark hover:border-primary',
                 tertiary: 'bg-gray-100 hover:bg-gray-50 text-primary',
