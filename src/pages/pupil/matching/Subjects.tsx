@@ -50,7 +50,7 @@ const Subjects: React.FC = () => {
             <div className="flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4">
                 <MatchRequestStepTitle className={cn({ 'mb-0': isDAZ })}>{t('matching.wizard.pupil.subjects.heading')}</MatchRequestStepTitle>
                 {isDAZ && (
-                    <Alert variant="warning" className="max-w-[755px] mb-4" icon={<IconInfoCircleFilled size={24} className="text-orange-400" />}>
+                    <Alert variant="amber" className="max-w-[755px] mb-4" icon={<IconInfoCircleFilled size={24} />}>
                         <span className="leading-[18px]">{t('matching.wizard.pupil.subjects.dazBannerText')}</span>
                     </Alert>
                 )}
@@ -68,7 +68,7 @@ const Subjects: React.FC = () => {
                 options={form.subjectsOptions as unknown as SubjectOption[]}
             />
             {!isDAZ && (
-                <Alert variant="indigo" className=" mt-6 md:mt-10" icon={<IconBulbFilled size={24} className=" text-indigo-500" />}>
+                <Alert variant="indigo" className=" mt-6 md:mt-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
                     <span className="leading-[18px]">
                         {form.userType === 'pupil' ? t('matching.wizard.pupil.subjects.bannerText') : t('matching.wizard.student.subjects.bannerText')}
                     </span>

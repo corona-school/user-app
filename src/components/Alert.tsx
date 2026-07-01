@@ -7,10 +7,11 @@ const alertVariants = cva('flex items-center w-fit rounded-lg px-4 py-3 text-bas
         variant: {
             default: 'border-primary bg-primary-lighter text-foreground',
             destructive: 'bg-destructive-lighter text-destructive',
-            warning: 'bg-orange-50 border border-solid border-orange-400',
+            warning: 'bg-orange-50 border border-solid border-orange-300',
             success: 'bg-green-50 text-green-600',
             'success-outline': 'bg-green-50 text-primary border border-solid border-green-300',
-            indigo: 'bg-indigo-50 text-primary border border-solid border-indigo-300',
+            indigo: 'bg-indigo-50 text-primary border border-solid border-indigo-300 [&_svg]:text-indigo-500',
+            amber: 'bg-amber-50 text-primary border border-solid border-amber-300 [&_svg]:text-amber-400',
         },
         direction: {
             row: 'flex-row gap-x-4',
