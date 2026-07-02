@@ -36,6 +36,7 @@ export type SelectorProps<Enum> = (SingleSelectorProps<Enum> | MultiSelectorProp
         size?: ToggleVariants['size'];
     };
     searchConfig?: {
+        container?: HTMLElement | null;
         containerClassName?: string;
         className?: string;
         placeholder?: string;
@@ -144,6 +145,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                                 value={multiple ? value?.filter((e) => !gridItems.includes(e)) : (value as any)}
                                 onSearch={setSearch}
                                 search={search}
+                                container={searchConfig?.container}
                                 multiple={multiple}
                                 onSelect={(e: any) => {
                                     if (multiple) {
