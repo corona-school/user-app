@@ -5,7 +5,7 @@ import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-requ
 import { Typography } from '@/components/Typography';
 import { Learning_Offer_Constraints_Enum } from '@/gql/graphql';
 import { Alert } from '@/components/Alert';
-import { IconBulbFilled, IconInfoCircleFilled } from '@tabler/icons-react';
+import { IconBulbFilled, IconCheckFilled, IconCircleCheckFilled, IconInfoCircleFilled } from '@tabler/icons-react';
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/Tailwind';
@@ -73,6 +73,17 @@ const Subjects: React.FC = () => {
                         {form.userType === 'pupil' ? t('matching.wizard.pupil.subjects.bannerText') : t('matching.wizard.student.subjects.bannerText')}
                     </span>
                 </Alert>
+            )}
+            {form.subjects.length > 0 && (
+                <div className="flex items-center mt-4 md:hidden">
+                    <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
+                    <div>
+                        <Typography variant="subtle">{t('matching.wizard.pupil.subjects.selectedSubjects', { count: form.subjects.length })}:</Typography>
+                        <Typography variant="subtle" className="mt-1">
+                            {form.subjects.map((s) => s.name).join(', ')}
+                        </Typography>
+                    </div>
+                </div>
             )}
         </MatchRequestStep>
     );

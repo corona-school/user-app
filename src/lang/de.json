@@ -1635,7 +1635,8 @@
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
                     "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
                     "bannerText": "Wähle am besten 1 bis 3 Fächer. Im nächsten Schritt wählst du das Fach aus, bei dem du am meisten Hilfe brauchst.\nWenn du in einem weiteren Fach auch viel Hilfe brauchst, empfehlen wir dir, nur zwei Fächer zu wählen.",
-                    "dazBannerText": "Wir suchen eine Person für dich, die mit dir Deutsch lernt. Du kannst dir aber Fächer dazu wählen. Vielleicht finden wir jemanden, der beides kann."
+                    "dazBannerText": "Wir suchen eine Person für dich, die mit dir Deutsch lernt. Du kannst dir aber Fächer dazu wählen. Vielleicht finden wir jemanden, der beides kann.",
+                    "selectedSubjects": "{{count}} Fächer ausgewählt"
                 },
                 "priority": {
                     "heading": "Priorisierung",

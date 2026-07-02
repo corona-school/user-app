@@ -170,7 +170,7 @@ export const SubjectsSelector = ({
                 return (
                     <Toggle
                         variant="outline-primary-green"
-                        className={cn('w-[167px] h-[120px] md:w-full md:max-w-[272px] p-3 flex flex-col text-sm relative ', {
+                        className={cn('w-[167px] h-[120px] md:w-full md:max-w-[272px] py-3 px-1.5 flex flex-col text-sm relative ', {
                             'h-[104px] md:max-w-[176px]': !showGradesAvailable && !showPupilsWaiting && showWaitingDays,
                         })}
                         key={option.subject}
@@ -180,9 +180,11 @@ export const SubjectsSelector = ({
                         <div className="min-w-10 min-h-10 bg-accent-medium rounded-full flex items-center justify-center group-data-[state=on]:bg-green-200">
                             <SubjectIcon subject={option.subject} className={cn('rounded-full size-6 flex-shrink-0')} />
                         </div>
-                        <Typography variant="sm" className="font-semibold mb-3 leading-1 mt-1">
-                            {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
-                        </Typography>
+                        <div className="w-full">
+                            <Typography variant="subtle" className="font-semibold mb-3 leading-1 mt-1 truncate">
+                                {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
+                            </Typography>
+                        </div>
                         <div className="flex gap-x-1">
                             {showWaitingDays && (
                                 <Typography variant="sm" className="text-[12px] text-primary-midnight">
