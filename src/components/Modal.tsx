@@ -37,7 +37,7 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
             <DialogPrimitive.Content
                 ref={ref}
                 className={cn(
-                    'fixed overflow-y-auto left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 pt-[52px] shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg fill-mode-forwards',
+                    'fixed overflow-y-auto left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 pt-[52px] md:pt-14 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg fill-mode-forwards',
                     className
                 )}
                 {...props}
@@ -48,17 +48,19 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
                     }
                 }}
             >
-                {children}
                 <DialogPrimitive.Close
                     className={cn(
-                        'absolute right-6 top-6 rounded-sm ring-offset-background transition-opacity focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground',
+                        'absolute right-6 top-6 size-10 md:size-auto flex items-center justify-center rounded-sm ring-offset-background transition-opacity focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none',
                         classes?.closeIcon
                     )}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <IconX className="h-7 w-7" />
+                    <span className="flex size-8 items-center justify-center rounded-sm hover:bg-primary-lighter data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                        <IconX className="h-7 w-7" />
+                    </span>
                     <span className="sr-only">Close</span>
                 </DialogPrimitive.Close>
+                {children}
             </DialogPrimitive.Content>
         </ModalPortal>
     )
@@ -70,10 +72,21 @@ const ModalHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElemen
 
 interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: 'default' | 'destructive';
+    mobileLayout?: 'row' | 'column';
 }
 
-const ModalFooter = ({ className, variant = 'default', ...props }: ModalFooterProps) => (
-    <div className={cn('flex gap-x-2', variant === 'default' ? 'flex-row md:justify-end' : 'flex-row-reverse lg:justify-start', className)} {...props} />
+const ModalFooter = ({ className, variant = 'default', mobileLayout = 'row', ...props }: ModalFooterProps) => (
+    <div
+        className={cn(
+            'flex gap-x-2 [&>*]:w-full md:justify-end md:flex-row md:[&>*]:w-fit',
+            {
+                'flex-row-reverse': variant === 'destructive',
+                'flex-col gap-y-2': mobileLayout === 'column',
+            },
+            className
+        )}
+        {...props}
+    />
 );
 
 const ModalTitle = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Title>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>>(
