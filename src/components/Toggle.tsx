@@ -11,8 +11,10 @@ const toggleVariants = cva(
                 default: 'hover:bg-accent hover:text-accent-foreground',
                 outline: 'border border-input data-[state=on]:border-primary-light bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground',
                 'outline-primary': 'border border-primary text-primary bg-transparent hover:bg-accent hover:text-accent-foreground',
-                'outline-primary-lighter':
+                'outline-primary-green':
                     'border border-primary-light text-primary bg-transparent hover:bg-primary-lighter hover:border-accent-dark hover:text-accent-foreground data-[state=on]:bg-green-50 data-[state=on]:border-green-500',
+                'outline-accent':
+                    'border border-primary-light text-primary bg-transparent hover:bg-primary-lighter hover:border-accent-dark hover:text-accent-foreground data-[state=on]:bg-accent data-[state=on]:border-primary-light',
                 white: 'bg-white data-[state=on]:border-primary',
                 primary:
                     'border border-gray-300 text-primary bg-transparent hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:border-primary',

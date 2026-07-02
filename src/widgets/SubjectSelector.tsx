@@ -169,7 +169,7 @@ export const SubjectsSelector = ({
                 const isPressed = multiple ? (value as SingleSubject[]).some((s) => s === option.subject) : value === option.subject;
                 return (
                     <Toggle
-                        variant="outline-primary-lighter"
+                        variant="outline-primary-green"
                         className={cn('w-[167px] h-[120px] md:w-full md:max-w-[272px] p-3 flex flex-col text-sm relative ', {
                             'h-[104px] md:max-w-[176px]': !showGradesAvailable && !showPupilsWaiting && showWaitingDays,
                         })}

@@ -1,6 +1,6 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GradeIcon, GradeSelector } from '../../../components/GradeSelector';
+import { GradeSelector } from '../../../components/GradeSelector';
 import { CalendarPreferences, Language } from '@/gql/graphql';
 import { Label } from '@/components/Label';
 import { WeeklyAvailabilitySelector } from '@/components/availability/WeeklyAvailabilitySelector';
@@ -9,11 +9,10 @@ import { SchoolTypeSelector } from '@/components/SchoolTypeSelector';
 import { Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
 import { Button } from '@/components/Button';
 import { getGradeLabel } from '@/Utility';
-import { IconLoader } from '@/components/IconLoader';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepDescription, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/Accordion';
-import { IconBulbFilled, IconChevronDown, IconSend } from '@tabler/icons-react';
+import { IconBulbFilled, IconCheck, IconChevronDown, IconPencil, IconSend } from '@tabler/icons-react';
 import { Alert } from '@/components/Alert';
 
 type ModalType = 'grade' | 'schoolType' | 'languages';
@@ -23,6 +22,7 @@ const UpdateData = () => {
     const { t } = useTranslation();
     const [modalType, setModalType] = useState<ModalType>();
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const dialogContentRef = useRef<HTMLDivElement>(null);
 
     const getIsNextDisabled = () => {
         return { is: false, reason: '' };
@@ -34,6 +34,19 @@ const UpdateData = () => {
     };
 
     const isLastStep = !form.needScreening;
+
+    const getModalTitle = () => {
+        switch (modalType) {
+            case 'grade':
+                return t('grade');
+            case 'schoolType':
+                return t('schoolType');
+            case 'languages':
+                return t('language');
+            default:
+                return '';
+        }
+    };
 
     return (
         <MatchRequestStep
@@ -49,28 +62,40 @@ const UpdateData = () => {
             <div className="flex flex-col gap-y-6">
                 <div></div>
                 <div className="flex flex-col flex-1 md:flex-row gap-x-5 gap-y-6">
-                    <div className="flex flex-col gap-y-1 w-full">
+                    <div className="flex flex-col gap-y-1 flex-1 min-w-0">
                         <Label>{t('profile.Languages.labelPupil')}</Label>
-                        <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('languages')}>
-                            <div className="w-full flex items-center gap-x-2 min-w-[200px]">{form.languages.join(', ') || t('edit')}</div>
+                        <Button
+                            className="w-full"
+                            variant="input"
+                            size="input"
+                            onClick={() => handleOnOpenModal('languages')}
+                            rightIcon={<IconPencil size={20} />}
+                        >
+                            <div className="flex w-full items-center gap-x-2 min-w-0">
+                                <span className="truncate leading-4">
+                                    {form.languages
+                                        .map((language) => t(`lernfair.languages.${language.toLowerCase()}` as unknown as TemplateStringsArray))
+                                        .join(', ') || t('edit')}
+                                </span>
+                            </div>
                         </Button>
                     </div>
-                    <div className="flex flex-col gap-y-1 w-full">
+                    <div className="flex flex-col gap-y-1 flex-1 min-w-0">
                         <Label>{t('profile.Grade.label')}</Label>
-                        <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('grade')}>
-                            <div className="w-full flex items-center gap-x-2 min-w-[200px]">
-                                {form.grade && <GradeIcon className="size-6" grade={form.grade} />}
-                                {form.grade ? getGradeLabel(form.grade) : t('edit')}
-                            </div>
+                        <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('grade')} rightIcon={<IconPencil size={20} />}>
+                            <div className="w-full flex items-center gap-x-2">{form.grade ? getGradeLabel(form.grade) : t('edit')}</div>
                         </Button>
                     </div>
-                    <div className="flex flex-col gap-y-1 w-full">
+                    <div className="flex flex-col gap-y-1 flex-1 min-w-0">
                         <Label>{t('profile.SchoolType.label')}</Label>
-                        <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('schoolType')}>
-                            <div className="w-full flex items-center gap-x-2 min-w-[200px]">
-                                {form.schooltype && <IconLoader iconPath={`schooltypes/icon_${form.schooltype}.svg`} />}
-                                {form.schooltype ? t(`lernfair.schooltypes.${form.schooltype}`) : t('edit')}
-                            </div>
+                        <Button
+                            className="w-full"
+                            variant="input"
+                            size="input"
+                            onClick={() => handleOnOpenModal('schoolType')}
+                            rightIcon={<IconPencil size={20} />}
+                        >
+                            <div className="w-full flex items-center gap-x-2">{form.schooltype ? t(`lernfair.schooltypes.${form.schooltype}`) : t('edit')}</div>
                         </Button>
                     </div>
                 </div>
@@ -99,50 +124,60 @@ const UpdateData = () => {
                         </span>
                     </Alert>
                 </div>
-                <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen}>
+                <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen} size="lg" ref={dialogContentRef}>
                     <ModalHeader>
-                        <ModalTitle>{t('change')}</ModalTitle>
+                        <ModalTitle>{getModalTitle()}</ModalTitle>
                     </ModalHeader>
-                    <div>
-                        {modalType === 'schoolType' && (
-                            <div className="flex flex-col gap-y-2">
-                                <Label>{t('profile.SchoolType.label')}</Label>
-                                <SchoolTypeSelector setValue={(schooltype) => onFormChange({ schooltype })} value={form.schooltype} />
-                            </div>
-                        )}
-                        {modalType === 'grade' && (
-                            <div className="flex flex-col gap-y-2">
-                                <Label>{t('profile.Grade.label')}</Label>
-                                <GradeSelector grade={form.grade} onGradeChange={(grade) => onFormChange({ grade })} />
-                            </div>
-                        )}
-                        {modalType === 'languages' && (
-                            <div className="flex flex-col gap-y-2">
-                                <Label>{t('profile.Languages.labelPupil')}</Label>
+                    <div className="flex justify-center">
+                        <div className="flex flex-col gap-y-2 justify-center max-w-[576px]">
+                            {modalType === 'schoolType' && (
+                                <SchoolTypeSelector
+                                    setValue={(schooltype) => onFormChange({ schooltype })}
+                                    value={form.schooltype}
+                                    className="flex flex-wrap justify-center"
+                                    toggleConfig={{
+                                        variant: 'outline-accent',
+                                        className: 'justify-center w-auto font-semibold h-[40px] px-4',
+                                    }}
+                                />
+                            )}
+                            {modalType === 'grade' && (
+                                <GradeSelector
+                                    grade={form.grade}
+                                    onGradeChange={(grade) => onFormChange({ grade })}
+                                    className="flex flex-wrap justify-center"
+                                    toggleConfig={{
+                                        variant: 'outline-accent',
+                                        className: 'justify-center w-auto font-semibold h-[40px] px-4',
+                                    }}
+                                />
+                            )}
+                            {modalType === 'languages' && (
                                 <LanguageSelector
                                     maxVisibleItems={8}
                                     className="flex flex-wrap justify-center p-1"
                                     searchConfig={{
-                                        containerClassName: 'w-full',
-                                        className: 'bg-white',
+                                        containerClassName: 'w-full flex justify-center',
+                                        className: 'bg-white border border-solid border border-accent-dark max-w-[190px]',
                                         placeholder: t('otherLanguages'),
+                                        container: dialogContentRef.current || undefined,
                                     }}
                                     toggleConfig={{
-                                        variant: 'outline',
+                                        variant: 'outline-accent',
                                         size: 'lg',
-                                        className: 'justify-start w-[48%] md:w-[49%] font-semibold h-[48px]',
+                                        className: 'justify-center w-auto font-semibold h-[40px] [&_svg]:size-5 px-4',
                                     }}
                                     multiple
                                     value={form.languages as unknown as Language[]}
                                     setValue={(languages) => onFormChange({ languages })}
                                 />
-                            </div>
-                        )}
+                            )}
+                        </div>
                     </div>
                     <ModalFooter>
                         <Button
-                            className="w-full lg:w-fit"
-                            variant="outline"
+                            className="w-full md:w-fit"
+                            leftIcon={<IconCheck />}
                             onClick={() => {
                                 setIsModalOpen(false);
                             }}

@@ -57,7 +57,7 @@ export const MatchRequestStep = ({
     };
 
     return (
-        <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-full w-full', className)}>
+        <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-[1135px] w-full', className)}>
             <div className="flex flex-1 flex-col max-w-full py-[30px]">{children}</div>
             {onBack || onNext ? (
                 <div className="flex flex-col md:flex-row gap-y-4 gap-x-4">
