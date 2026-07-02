@@ -32,11 +32,7 @@ const gradesIconsMap = new Array(14).fill(0).reduce((map, _, i) => {
     return { ...map, [`${grade}`]: grade === 14 ? 'A' : `${grade}` };
 }, {});
 
-const Selector = EnumSelector(
-    gradesLabelsMap,
-    (grade) => (grade < 14 ? ['lernfair.schoolclass', { class: grade }] : 'inTraining'),
-    (k) => <GradeIcon grade={k} />
-);
+const Selector = EnumSelector(gradesLabelsMap, (grade) => (grade < 14 ? ['lernfair.schoolclassShort', { class: grade }] : 'inTraining'));
 
 export const GradeIcon = ({ grade, className }: { grade?: number; className?: string }) =>
     grade ? (

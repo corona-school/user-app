@@ -294,6 +294,8 @@
     "required": "erforderlich",
     "inTraining": "in Ausbildung",
     "grade": "Klasse",
+    "language": "Sprache",
+    "schoolType": "Schulform",
     "since": "seit",
     "till": "bis",
     "otherLanguages": "andere Sprachen",
@@ -434,6 +436,7 @@
             "other": "Keine Angabe"
         },
         "schoolclass": "{{class}}. Klasse",
+        "schoolclassShort": "{{class}}.",
         "reason": {
             "course": {
                 "instructor": {
