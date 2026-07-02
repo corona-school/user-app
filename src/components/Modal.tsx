@@ -51,7 +51,7 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
                 {children}
                 <DialogPrimitive.Close
                     className={cn(
-                        'absolute right-6 top-6 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground',
+                        'absolute right-6 top-6 rounded-sm ring-offset-background transition-opacity focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground',
                         classes?.closeIcon
                     )}
                     onClick={(e) => e.stopPropagation()}
@@ -65,7 +65,7 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
 );
 
 const ModalHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
+    <div className={cn('flex flex-col space-y-1.5 text-left', className)} {...props} />
 );
 
 interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -73,7 +73,7 @@ interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 const ModalFooter = ({ className, variant = 'default', ...props }: ModalFooterProps) => (
-    <div className={cn('flex gap-x-2', variant === 'default' ? 'flex-row lg:justify-end' : 'flex-row-reverse lg:justify-start', className)} {...props} />
+    <div className={cn('flex gap-x-2', variant === 'default' ? 'flex-row md:justify-end' : 'flex-row-reverse lg:justify-start', className)} {...props} />
 );
 
 const ModalTitle = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Title>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>>(
@@ -92,13 +92,13 @@ export interface BaseModalProps {
     onOpenChange: (isOpen: boolean) => void;
 }
 
-const modalVariants = cva('', {
+const modalVariants = cva('w-full max-w-[calc(100vw-2rem)] md:max-w-lg', {
     variants: {
         size: {
             unset: '',
-            sm: 'max-w-[560px]',
-            md: 'max-w-[656px]',
-            lg: 'max-w-[752px]',
+            sm: 'md:max-w-[560px]',
+            md: 'md:max-w-[656px]',
+            lg: 'md:max-w-[752px]',
         },
     },
     defaultVariants: {
