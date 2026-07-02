@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Alert } from '@/components/Alert';
 import { Button } from '@/components/Button';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
-import { MatchRequestStep } from '@/components/match-request/MatchRequestStep';
+import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { Separator } from '@/components/Separator';
 import { Typography } from '@/components/Typography';
 import { createPupilScreeningLink } from '@/helper/screening-helper';
@@ -81,9 +81,7 @@ export const BookScreeningAppointment = () => {
     return (
         <MatchRequestStep className="pb-0">
             <div className="relative h-full">
-                <Typography variant="h4" className="text-lg leading-5 md:text-xl md:leading-8">
-                    {t('matching.wizard.pupil.bookScreeningAppointment.title')}
-                </Typography>
+                <MatchRequestStepTitle>{t('matching.wizard.pupil.bookScreeningAppointment.title')}</MatchRequestStepTitle>
                 <div className="flex flex-col gap-y-7 mb-4">
                     <div className="flex gap-x-4 items-center mt-7 w-full">
                         <Typography className="max-w-[600px]">{t('matching.wizard.pupil.bookScreeningAppointment.description')}</Typography>
