@@ -133,6 +133,7 @@ type SubjectsSelectorProps = (SingleProps | MultipleProps) & {
     showPupilsWaiting?: boolean;
     showWaitingDays?: boolean;
     showGradesAvailable?: boolean;
+    initialVisibleOptions?: number;
 };
 
 export const SubjectsSelector = ({
@@ -143,6 +144,7 @@ export const SubjectsSelector = ({
     showGradesAvailable,
     showPupilsWaiting,
     showWaitingDays,
+    initialVisibleOptions = 12,
 }: SubjectsSelectorProps) => {
     const { t } = useTranslation();
     const [showAllSubjects, setShowAllSubjects] = useState(false);
@@ -160,8 +162,8 @@ export const SubjectsSelector = ({
         return options.filter((option) => !deprecatedSubjects.includes(option.subject as any));
     }, [options]);
 
-    const mainOptions = filteredOptions.slice(0, 12);
-    const rareOptions = filteredOptions.slice(12);
+    const mainOptions = filteredOptions.slice(0, initialVisibleOptions);
+    const rareOptions = filteredOptions.slice(initialVisibleOptions);
 
     return (
         <div className="flex flex-wrap gap-2 justify-center md:gap-4 md:justify-start">
@@ -199,7 +201,7 @@ export const SubjectsSelector = ({
                             {showPupilsWaiting && !!option.pupilsWaiting && (
                                 <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">{option.pupilsWaiting} wartend</Badge>
                             )}
-                            {showGradesAvailable && !!option.gradesAvailable && (
+                            {showGradesAvailable && !!option.gradesAvailable?.length && (
                                 <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
                                     Kl. {getGradesLabels(option.gradesAvailable)}
                                 </Badge>
@@ -209,13 +211,13 @@ export const SubjectsSelector = ({
                     </Toggle>
                 );
             })}
-            {options.length > 12 && (
+            {options.length > initialVisibleOptions && (
                 <div className="w-full flex justify-center pt-6 md:pt-10">
                     <Button
                         leftIcon={showAllSubjects ? <IconChevronUp /> : <IconChevronDown />}
                         variant="outline"
                         onClick={() => setShowAllSubjects(!showAllSubjects)}
-                        className="px-11"
+                        className="px-11 max-w-[233px] w-full"
                     >
                         {showAllSubjects ? t('lessSubjects') : t('moreSubjects')}
                     </Button>

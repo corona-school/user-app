@@ -48,7 +48,7 @@ const MatchRequest: React.FC = () => {
                 }
             >
                 {!isLoading && (
-                    <div className="px-2 pb-9 relative h-full">
+                    <div className="pb-9 relative h-full">
                         <div className="h-5">
                             <Breadcrumb />
                         </div>

@@ -1,8 +1,9 @@
 import { gql } from '@/gql';
-import { Subject, CalendarPreferences, Language, SchoolType, SubjectDistribution, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
+import { Subject, CalendarPreferences, Language, SchoolType, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
 import { useUserType } from '@/hooks/useApollo';
 import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
+import { SubjectOption } from '@/widgets/SubjectSelector';
 import { useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -25,7 +26,7 @@ interface MatchRequestForm {
     isCompleted?: boolean;
     isEdit?: boolean;
     isAppointmentStepForced?: boolean;
-    subjectsOptions?: SubjectDistribution[];
+    subjectsOptions: SubjectOption[];
     userType?: 'pupil' | 'student';
     learningOfferConstraints?: Learning_Offer_Constraints_Enum[];
 }
@@ -47,6 +48,7 @@ const emptyState: MatchRequestForm = {
     grade: 0,
     currentStep: MatchRequestStep.subjects,
     learningOfferConstraints: [],
+    subjectsOptions: [],
 };
 
 const MatchRequestContext = createContext<MatchRequestContextValue>({
@@ -61,7 +63,7 @@ const MatchRequestContext = createContext<MatchRequestContextValue>({
 });
 
 const MATCH_REQUEST_INFO_QUERY = gql(`
-    query PupilMatchRequestInfo {
+    query MatchRequestInfo {
         me {
             pupil {
                 schooltype
@@ -87,6 +89,11 @@ const MATCH_REQUEST_INFO_QUERY = gql(`
                     }
                 }
             }
+            student {
+                languages
+                calendarPreferences
+                subjectsFormatted { name grade { min, max } }
+            }
         }
     }
 `);
@@ -96,6 +103,16 @@ const PUPIL_SUBJECTS_QUERY = gql(`
         subjectsForPupils {
             subject
             waitingDaysRange { from, to }
+        }
+    }
+`);
+
+const STUDENT_SUBJECTS_QUERY = gql(`
+    query StudentSubjects {
+        subjectsForStudents {
+            subject
+            pupilsWaiting
+            gradesAvailable
         }
     }
 `);
@@ -117,7 +134,8 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
     const { data, refetch, networkStatus } = useQuery(MATCH_REQUEST_INFO_QUERY, { notifyOnNetworkStatusChange: true });
     const [meUpdate] = useMutation(ME_UPDATE_MUTATION);
     const [createMatchRequest] = useMutation(CREATE_PUPIL_MATCH_REQUEST_MUTATION);
-    const { data: subjectsData } = useQuery(PUPIL_SUBJECTS_QUERY, { skip: !data?.me.pupil });
+    const { data: pupilSubjectsData } = useQuery(PUPIL_SUBJECTS_QUERY, { skip: !data?.me.pupil });
+    const { data: studentSubjectsData } = useQuery(STUDENT_SUBJECTS_QUERY, { skip: !data?.me.student });
     const [values, setValues] = useState<MatchRequestForm>(emptyState);
     const currentStepIndex = values.currentStep ? pupilMatchRequestFlow.indexOf(values.currentStep) : -1;
     const location = useLocation();
@@ -208,14 +226,18 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
     };
 
     useEffect(() => {
-        if (!data) return;
+        if (!data || !userType) return;
         const pupil = data.me.pupil;
+        const student = data.me.student;
         const currentBookedScreening = data?.me.pupil?.screenings?.find((e) => ['pending', 'dispute'].includes(e.status) && !e.invalidated);
+        const subjectsFormatted = pupil?.subjectsFormatted ?? student?.subjectsFormatted ?? [];
+        const languages = pupil?.languages ?? student?.languages ?? [];
+        const calendarPreferences = pupil?.calendarPreferences ?? student?.calendarPreferences ?? undefined;
         handleOnChange({
-            subjects: pupil?.subjectsFormatted.map((it: any) => ({ name: it.name, mandatory: it.mandatory })) ?? [],
-            languages: (pupil?.languages as unknown as Language[]) ?? [],
+            subjects: subjectsFormatted.map((it: any) => ({ name: it.name, mandatory: it.mandatory })) ?? [],
+            languages: (languages as unknown as Language[]) ?? [],
             grade: pupil?.gradeAsInt ?? 0,
-            calendarPreferences: pupil?.calendarPreferences || undefined,
+            calendarPreferences: calendarPreferences,
             schooltype: (pupil?.schooltype as unknown as SchoolType) || undefined,
             screeningAppointment: currentBookedScreening?.appointment as any,
             needScreening: pupil?.needScreening ?? false,
@@ -223,11 +245,18 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
             userType: userType === 'pupil' ? 'pupil' : 'student',
         });
         setIsLoading(false);
-    }, [data]);
+    }, [data, userType]);
 
     if (data?.me.pupil?.openMatchRequestCount !== undefined && data?.me.pupil?.openMatchRequestCount === 0 && isAppointmentStepForced) {
         return <Navigate to="/request-match" replace />;
     }
+
+    const subjectsOptions: SubjectOption[] =
+        pupilSubjectsData?.subjectsForPupils.map((e) => ({ subject: e.subject, waitingDaysRange: e.waitingDaysRange } as SubjectOption)) ??
+        studentSubjectsData?.subjectsForStudents.map(
+            (e) => ({ subject: e.subject, pupilsWaiting: e.pupilsWaiting, gradesAvailable: e.gradesAvailable } as SubjectOption)
+        ) ??
+        [];
 
     return (
         <MatchRequestContext.Provider
@@ -237,7 +266,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
                     isAppointmentStepForced: isAppointmentStepForced,
                     currentStep: isAppointmentStepForced ? MatchRequestStep.bookScreeningAppointment : values.currentStep,
                     isCompleted: isAppointmentStepForced && values.screeningAppointment ? true : values.isCompleted,
-                    subjectsOptions: subjectsData?.subjectsForPupils,
+                    subjectsOptions,
                 },
                 onFormChange: handleOnChange,
                 isLoading: isLoading,

@@ -47,8 +47,8 @@ const PupilSubjects = () => {
 
     return (
         <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0}>
-            <div className="flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4">
-                <MatchRequestStepTitle className={cn({ 'mb-0': isDAZ })}>{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
+            <div className={cn('flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4 mt-11')}>
+                <MatchRequestStepTitle className="mt-0">{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
                 {isDAZ && (
                     <Alert variant="amber" className="max-w-[755px] mb-4" icon={<IconInfoCircleFilled size={24} />}>
                         <span className="leading-[18px]">{t('matching.wizard.subjects.pupil.dazBannerText')}</span>

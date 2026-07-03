@@ -1621,8 +1621,9 @@
                     "dazBannerText": "Wir suchen eine Person für dich, die mit dir Deutsch lernt. Du kannst dir aber Fächer dazu wählen. Vielleicht finden wir jemanden, der beides kann."
                 },
                 "student": {
-                    "subheading": "51 SuS warten insgesamt in 13 Fächern",
-                    "bannerText": "Bitte beachte: DaZ und Deutsch sind unterschiedliche Angebote."
+                    "subheading": "<b>{{pupilCount}}</b> SuS warten insgesamt in <b>{{subjectCount}}</b> Fächern",
+                    "dazBannerText": "Bitte beachte: DaZ und Deutsch sind unterschiedliche Angebote.",
+                    "bannerText": "Wenn du mehrere Fächer angibst, wirst du schneller vermittelt. \nUm nur in deinen präferierten Fächern Lernpartner:innen zu finden, kann es unter Umständen sinnvoll sein, jeweils ein einzelnes Match anzufragen. \nDu kannst ein weiteres Match anfragen, sobald du mit deiner/deinem Lernpartner:in deinen ersten Termin hattest."
                 }
             },
             "pupil": {
