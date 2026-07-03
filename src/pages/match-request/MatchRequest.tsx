@@ -1,44 +1,40 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import AsNavigationItem from '../../../components/AsNavigationItem';
-import NotificationAlert from '../../../components/notifications/NotificationAlert';
-import WithNavigation from '../../../components/WithNavigation';
-import { Subject } from '../../../gql/graphql';
+import AsNavigationItem from '@/components/AsNavigationItem';
+import NotificationAlert from '@/components/notifications/NotificationAlert';
+import WithNavigation from '@/components/WithNavigation';
 import Priority from './Priority';
-import Subjects from './Subjects';
+import PupilSubjects from './PupilSubjects';
 import UpdateData from './UpdateData';
-import SwitchLanguageButton from '../../../components/SwitchLanguageButton';
+import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { BookScreeningAppointment } from './BookScreeningAppointment';
 import { MatchRequestSentModal } from './MatchRequestSentModal';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep } from './util';
+import StudentSubjects from './StudentSubjects';
 
-export type MatchRequest = {
-    subjects: Subject[];
-    appointmentStart?: Date;
-};
-
-const RequestMatch: React.FC = () => {
+const MatchRequest: React.FC = () => {
     const { form, onFormChange, isLoading } = useMatchRequestForm();
     const location = useLocation();
     const locationState = location.state as { edit: boolean };
     const { trackPageView } = useMatomo();
 
     useEffect(() => {
-        trackPageView({
-            documentTitle: 'Schüler Matching',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        if (form.userType) {
+            trackPageView({
+                documentTitle: form.userType === 'pupil' ? 'Schüler Matching' : 'Helfer Matching',
+            });
+        }
+    }, [form.userType, trackPageView]);
 
     useEffect(() => {
         if (locationState?.edit) {
             onFormChange({ currentStep: MatchRequestStep.subjects, isEdit: true });
         }
-    }, [locationState]);
+    }, [locationState, onFormChange]);
 
     return (
         <AsNavigationItem path="matching">
@@ -57,9 +53,9 @@ const RequestMatch: React.FC = () => {
                             <Breadcrumb />
                         </div>
                         <div className="relative h-full">
-                            {form.currentStep === MatchRequestStep.updateData && <UpdateData />}
-                            {form.currentStep === MatchRequestStep.subjects && <Subjects />}
+                            {form.currentStep === MatchRequestStep.subjects && (form.userType === 'pupil' ? <PupilSubjects /> : <StudentSubjects />)}
                             {form.currentStep === MatchRequestStep.priority && <Priority />}
+                            {form.currentStep === MatchRequestStep.updateData && <UpdateData />}
                             {form.currentStep === MatchRequestStep.bookScreeningAppointment && <BookScreeningAppointment />}
                         </div>
                     </div>
@@ -73,4 +69,4 @@ const RequestMatch: React.FC = () => {
         </AsNavigationItem>
     );
 };
-export default RequestMatch;
+export default MatchRequest;

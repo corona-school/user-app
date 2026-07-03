@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { GradeSelector } from '../../../components/GradeSelector';
+import { GradeSelector } from '@/components/GradeSelector';
 import { CalendarPreferences, Language } from '@/gql/graphql';
 import { Label } from '@/components/Label';
 import { WeeklyAvailabilitySelector } from '@/components/availability/WeeklyAvailabilitySelector';
@@ -117,11 +117,7 @@ const UpdateData = () => {
                         </AccordionItem>
                     </Accordion>
                     <Alert variant="indigo" className="" icon={<IconBulbFilled size={24} className=" text-indigo-500" />}>
-                        <span className="leading-[18px]">
-                            {form.userType === 'pupil'
-                                ? t('matching.wizard.pupil.profiledata.availabilityBanner')
-                                : t('matching.wizard.student.profile.availabilityBanner')}
-                        </span>
+                        <span className="leading-[18px]">{t('matching.wizard.pupil.profiledata.availabilityBanner')}</span>
                     </Alert>
                 </div>
                 <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen} size="lg" ref={dialogContentRef}>

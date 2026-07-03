@@ -5,13 +5,13 @@ import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-requ
 import { Typography } from '@/components/Typography';
 import { Learning_Offer_Constraints_Enum } from '@/gql/graphql';
 import { Alert } from '@/components/Alert';
-import { IconBulbFilled, IconCheckFilled, IconCircleCheckFilled, IconInfoCircleFilled } from '@tabler/icons-react';
+import { IconBulbFilled, IconCircleCheckFilled, IconInfoCircleFilled } from '@tabler/icons-react';
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/Tailwind';
 import { SingleSubject } from '@/types/subject';
 
-const Subjects: React.FC = () => {
+const PupilSubjects = () => {
     const { goNext, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
     const navigate = useNavigate();
@@ -48,20 +48,18 @@ const Subjects: React.FC = () => {
     return (
         <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0}>
             <div className="flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4">
-                <MatchRequestStepTitle className={cn({ 'mb-0': isDAZ })}>{t('matching.wizard.pupil.subjects.heading')}</MatchRequestStepTitle>
+                <MatchRequestStepTitle className={cn({ 'mb-0': isDAZ })}>{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
                 {isDAZ && (
                     <Alert variant="amber" className="max-w-[755px] mb-4" icon={<IconInfoCircleFilled size={24} />}>
-                        <span className="leading-[18px]">{t('matching.wizard.pupil.subjects.dazBannerText')}</span>
+                        <span className="leading-[18px]">{t('matching.wizard.subjects.pupil.dazBannerText')}</span>
                     </Alert>
                 )}
             </div>
             <Typography variant="h5" className="mb-4">
-                {t('matching.wizard.pupil.subjects.subheading')}
+                {t('matching.wizard.subjects.pupil.subheading')}
             </Typography>
             <SubjectsSelector
-                showPupilsWaiting={form.userType === 'student'}
-                showGradesAvailable={form.userType === 'student'}
-                showWaitingDays={form.userType === 'pupil'}
+                showWaitingDays
                 onChange={handleOnSubjectsChange}
                 multiple
                 value={value as SingleSubject[]}
@@ -69,16 +67,14 @@ const Subjects: React.FC = () => {
             />
             {!isDAZ && (
                 <Alert variant="indigo" className=" mt-6 md:mt-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
-                    <span className="leading-[18px]">
-                        {form.userType === 'pupil' ? t('matching.wizard.pupil.subjects.bannerText') : t('matching.wizard.student.subjects.bannerText')}
-                    </span>
+                    <span className="leading-[18px]">{t('matching.wizard.subjects.pupil.bannerText')}</span>
                 </Alert>
             )}
             {form.subjects.length > 0 && (
                 <div className="flex items-center mt-4 md:hidden">
                     <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
                     <div>
-                        <Typography variant="subtle">{t('matching.wizard.pupil.subjects.selectedSubjects', { count: form.subjects.length })}:</Typography>
+                        <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}:</Typography>
                         <Typography variant="subtle" className="mt-1">
                             {form.subjects.map((s) => s.name).join(', ')}
                         </Typography>
@@ -88,4 +84,4 @@ const Subjects: React.FC = () => {
         </MatchRequestStep>
     );
 };
-export default Subjects;
+export default PupilSubjects;

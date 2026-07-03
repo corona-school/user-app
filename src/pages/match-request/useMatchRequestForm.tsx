@@ -1,8 +1,8 @@
 import { gql } from '@/gql';
 import { Subject, CalendarPreferences, Language, SchoolType, SubjectDistribution, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
+import { useUserType } from '@/hooks/useApollo';
 import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
-import { SingleSubject } from '@/types/subject';
 import { useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
@@ -46,7 +46,6 @@ const emptyState: MatchRequestForm = {
     languages: [],
     grade: 0,
     currentStep: MatchRequestStep.subjects,
-    userType: 'pupil',
     learningOfferConstraints: [],
 };
 
@@ -122,6 +121,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
     const [values, setValues] = useState<MatchRequestForm>(emptyState);
     const currentStepIndex = values.currentStep ? pupilMatchRequestFlow.indexOf(values.currentStep) : -1;
     const location = useLocation();
+    const userType = useUserType();
     const isAppointmentStepForced = location.pathname.split('/').includes('screening-appointment');
     const getNextStepFrom = (step: MatchRequestStep) => {
         const currentIndex = pupilMatchRequestFlow.indexOf(step);
@@ -220,6 +220,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
             screeningAppointment: currentBookedScreening?.appointment as any,
             needScreening: pupil?.needScreening ?? false,
             learningOfferConstraints: pupil?.learningOfferConstraints,
+            userType: userType === 'pupil' ? 'pupil' : 'student',
         });
         setIsLoading(false);
     }, [data]);
