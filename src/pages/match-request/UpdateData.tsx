@@ -14,8 +14,27 @@ import { MatchRequestStep, MatchRequestStepDescription, MatchRequestStepTitle } 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/Accordion';
 import { IconBulbFilled, IconCheck, IconChevronDown, IconPencil, IconSend } from '@tabler/icons-react';
 import { Alert } from '@/components/Alert';
+import { SpecialTeachingExperienceEnum, SpecialTeachingExperienceSelector } from '@/components/SpecialTeachingExperienceSelector';
 
-type ModalType = 'grade' | 'schoolType' | 'languages';
+type ModalType = 'grade' | 'schoolType' | 'languages' | 'specialTeachingExperience';
+
+interface UpdateDataButtonProps {
+    onClick: () => void;
+    icon: React.ReactNode;
+    label: string;
+    children: React.ReactNode;
+}
+
+const UpdateDataButton = ({ onClick, icon, label, children }: UpdateDataButtonProps) => {
+    return (
+        <div className="flex flex-col gap-y-1 flex-1 min-w-0">
+            <Label>{label}</Label>
+            <Button className="w-full" variant="input" size="input" onClick={onClick} rightIcon={icon}>
+                <div className="max-w-[90%] flex flex-1 items-center gap-x-2">{children}</div>
+            </Button>
+        </div>
+    );
+};
 
 const UpdateData = () => {
     const { goBack, goNext, form, isLoading, onFormChange } = useMatchRequestForm();
@@ -57,47 +76,51 @@ const UpdateData = () => {
             nextButtonText={isLastStep ? t('sendRequest') : t('saveAndContinue')}
             nextButtonIcon={isLastStep ? <IconSend size={20} /> : undefined}
         >
-            <MatchRequestStepTitle variant="h4">{t('matching.wizard.pupil.profiledata.heading')}</MatchRequestStepTitle>
-            <MatchRequestStepDescription>{t('matching.wizard.pupil.profiledata.text')}</MatchRequestStepDescription>
+            <MatchRequestStepTitle variant="h4">{t('matching.wizard.profile.heading')}</MatchRequestStepTitle>
+            <MatchRequestStepDescription>
+                {t(form.userType === 'pupil' ? 'matching.wizard.profile.pupil.text' : 'matching.wizard.profile.student.text')}
+            </MatchRequestStepDescription>
             <div className="flex flex-col gap-y-6">
                 <div></div>
                 <div className="flex flex-col flex-1 md:flex-row gap-x-5 gap-y-6">
-                    <div className="flex flex-col gap-y-1 flex-1 min-w-0">
-                        <Label>{t('profile.Languages.labelPupil')}</Label>
-                        <Button
-                            className="w-full"
-                            variant="input"
-                            size="input"
-                            onClick={() => handleOnOpenModal('languages')}
-                            rightIcon={<IconPencil size={20} />}
+                    <UpdateDataButton
+                        label={t(form.userType === 'pupil' ? 'profile.Languages.labelPupil' : 'profile.Languages.labelStudent')}
+                        onClick={() => handleOnOpenModal('languages')}
+                        icon={<IconPencil size={20} />}
+                    >
+                        <span className="truncate leading-4">
+                            {form.languages
+                                .map((language) => t(`lernfair.languages.${language.toLowerCase()}` as unknown as TemplateStringsArray))
+                                .join(', ') || t('edit')}
+                        </span>
+                    </UpdateDataButton>
+                    {form.userType === 'pupil' && (
+                        <UpdateDataButton label={t('profile.Grade.label')} onClick={() => handleOnOpenModal('grade')} icon={<IconPencil size={20} />}>
+                            {form.grade ? getGradeLabel(form.grade) : t('edit')}
+                        </UpdateDataButton>
+                    )}
+                    {form.userType === 'pupil' && (
+                        <UpdateDataButton label={t('profile.SchoolType.label')} onClick={() => handleOnOpenModal('schoolType')} icon={<IconPencil size={20} />}>
+                            {form.schooltype ? t(`lernfair.schooltypes.${form.schooltype}`) : t('edit')}
+                        </UpdateDataButton>
+                    )}
+                    {form.userType === 'student' && (
+                        <UpdateDataButton
+                            label={t('registration.steps.specialTeachingExperience.title')}
+                            onClick={() => handleOnOpenModal('specialTeachingExperience')}
+                            icon={<IconPencil size={20} />}
                         >
-                            <div className="flex w-full items-center gap-x-2 min-w-0">
-                                <span className="truncate leading-4">
-                                    {form.languages
-                                        .map((language) => t(`lernfair.languages.${language.toLowerCase()}` as unknown as TemplateStringsArray))
-                                        .join(', ') || t('edit')}
-                                </span>
-                            </div>
-                        </Button>
-                    </div>
-                    <div className="flex flex-col gap-y-1 flex-1 min-w-0">
-                        <Label>{t('profile.Grade.label')}</Label>
-                        <Button className="w-full" variant="input" size="input" onClick={() => handleOnOpenModal('grade')} rightIcon={<IconPencil size={20} />}>
-                            <div className="w-full flex items-center gap-x-2">{form.grade ? getGradeLabel(form.grade) : t('edit')}</div>
-                        </Button>
-                    </div>
-                    <div className="flex flex-col gap-y-1 flex-1 min-w-0">
-                        <Label>{t('profile.SchoolType.label')}</Label>
-                        <Button
-                            className="w-full"
-                            variant="input"
-                            size="input"
-                            onClick={() => handleOnOpenModal('schoolType')}
-                            rightIcon={<IconPencil size={20} />}
-                        >
-                            <div className="w-full flex items-center gap-x-2">{form.schooltype ? t(`lernfair.schooltypes.${form.schooltype}`) : t('edit')}</div>
-                        </Button>
-                    </div>
+                            <span className="truncate max-w-[95%] leading-4">
+                                {form.specialTeachingExperience.freeTextValue
+                                    ? form.specialTeachingExperience.freeTextValue.replace('other:', '').concat(', ')
+                                    : ''}
+                                {form.specialTeachingExperience.selectValues
+                                    .filter((e) => e !== SpecialTeachingExperienceEnum.other)
+                                    .map((e) => t(`specialTeachingExperience.${e}`))
+                                    .join(', ')}
+                            </span>
+                        </UpdateDataButton>
+                    )}
                 </div>
                 <div className="flex flex-col gap-y-2">
                     <Accordion type="single" collapsible className="w-full" defaultValue="availability">
@@ -117,7 +140,13 @@ const UpdateData = () => {
                         </AccordionItem>
                     </Accordion>
                     <Alert variant="indigo" className="" icon={<IconBulbFilled size={24} className=" text-indigo-500" />}>
-                        <span className="leading-[18px]">{t('matching.wizard.pupil.profiledata.availabilityBanner')}</span>
+                        <span className="leading-[18px]">
+                            {t(
+                                form.userType === 'pupil'
+                                    ? 'matching.wizard.profile.pupil.availabilityBanner'
+                                    : 'matching.wizard.profile.student.availabilityBanner'
+                            )}
+                        </span>
                     </Alert>
                 </div>
                 <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen} size="lg" ref={dialogContentRef}>
@@ -126,6 +155,26 @@ const UpdateData = () => {
                     </ModalHeader>
                     <div className="flex justify-center">
                         <div className="flex flex-col gap-y-2 justify-center max-w-[576px]">
+                            {modalType === 'languages' && (
+                                <LanguageSelector
+                                    maxVisibleItems={8}
+                                    className="flex flex-wrap justify-center p-1"
+                                    searchConfig={{
+                                        containerClassName: 'w-full flex justify-center',
+                                        className: 'bg-white border border-solid border border-accent-dark max-w-[190px]',
+                                        placeholder: t('otherLanguages'),
+                                        container: dialogContentRef.current || undefined,
+                                    }}
+                                    toggleConfig={{
+                                        variant: 'outline-accent',
+                                        size: 'lg',
+                                        className: 'justify-center w-auto font-semibold h-[40px] [&_svg]:size-5 px-4',
+                                    }}
+                                    multiple
+                                    value={form.languages as unknown as Language[]}
+                                    setValue={(languages) => onFormChange({ languages })}
+                                />
+                            )}
                             {modalType === 'schoolType' && (
                                 <SchoolTypeSelector
                                     setValue={(schooltype) => onFormChange({ schooltype })}
@@ -148,24 +197,34 @@ const UpdateData = () => {
                                     }}
                                 />
                             )}
-                            {modalType === 'languages' && (
-                                <LanguageSelector
-                                    maxVisibleItems={8}
-                                    className="flex flex-wrap justify-center p-1"
-                                    searchConfig={{
-                                        containerClassName: 'w-full flex justify-center',
-                                        className: 'bg-white border border-solid border border-accent-dark max-w-[190px]',
-                                        placeholder: t('otherLanguages'),
-                                        container: dialogContentRef.current || undefined,
-                                    }}
+                            {modalType === 'specialTeachingExperience' && (
+                                <SpecialTeachingExperienceSelector
+                                    multiple
+                                    value={form.specialTeachingExperience.selectValues}
+                                    setValue={(value) =>
+                                        onFormChange({
+                                            specialTeachingExperience: {
+                                                selectValues: value,
+                                                freeTextValue: value.includes(SpecialTeachingExperienceEnum.other)
+                                                    ? form.specialTeachingExperience.freeTextValue
+                                                    : '',
+                                            },
+                                        })
+                                    }
+                                    className="grid md:grid-cols-2"
                                     toggleConfig={{
                                         variant: 'outline-accent',
-                                        size: 'lg',
-                                        className: 'justify-center w-auto font-semibold h-[40px] [&_svg]:size-5 px-4',
+                                        className: 'justify-center w-auto font-semibold h-[40px] px-4',
                                     }}
-                                    multiple
-                                    value={form.languages as unknown as Language[]}
-                                    setValue={(languages) => onFormChange({ languages })}
+                                    freeTextConfig={{
+                                        placeholder: t('specialTeachingExperience.other'),
+                                        freeTextOption: SpecialTeachingExperienceEnum.other,
+                                        value: form.specialTeachingExperience.freeTextValue,
+                                        onChange: (value) =>
+                                            onFormChange({ specialTeachingExperience: { ...form.specialTeachingExperience, freeTextValue: value } }),
+                                        className: 'border border-gray-300 focus:border-primary-light bg-transparent w-full',
+                                        containerClassName: 'md:col-span-2',
+                                    }}
                                 />
                             )}
                         </div>
