@@ -163,7 +163,6 @@ const UpdateData = () => {
                                         containerClassName: 'w-full flex justify-center',
                                         className: 'bg-white border border-solid border border-accent-dark max-w-[190px]',
                                         placeholder: t('otherLanguages'),
-                                        container: dialogContentRef.current || undefined,
                                     }}
                                     toggleConfig={{
                                         variant: 'outline-accent',

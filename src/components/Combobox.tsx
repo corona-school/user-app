@@ -101,7 +101,7 @@ export const Combobox = ({
     const hasSelectedValue = !!getCurrentValueLabels()?.length;
 
     return (
-        <Popover open={open} onOpenChange={setOpen}>
+        <Popover open={open} onOpenChange={setOpen} modal>
             <PopoverTrigger asChild>
                 <Button
                     variant="input"
