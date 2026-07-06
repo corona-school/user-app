@@ -1627,6 +1627,12 @@
                     "bannerText": "Wenn du mehrere Fächer angibst, wirst du schneller vermittelt. \nUm nur in deinen präferierten Fächern Lernpartner:innen zu finden, kann es unter Umständen sinnvoll sein, jeweils ein einzelnes Match anzufragen. \nDu kannst ein weiteres Match anfragen, sobald du mit deiner/deinem Lernpartner:in deinen ersten Termin hattest."
                 }
             },
+            "priority": {
+                "heading": "Priorisierung",
+                "subheading": "In welchem Fach brauchst du am meisten Hilfe?",
+                "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
+                "reason_btn_disabled": "Bitte wähle ein Fach aus."
+            },
             "grades": {
                 "heading": "Auswahl Jahrgangsstufen"
             },
@@ -1636,24 +1642,6 @@
                     "text": "Bitte prüfe nochmal deine Angaben.",
                     "subheading": "Persönliche Daten",
                     "availabilityBanner": "Wenn du mehr Zeiten auswählst, ist es einfacher, passende Lernpartner:innen zu finden. Du kannst die Zeiten jederzeit in deinem Profil ändern."
-                },
-                "german": {
-                    "heading": "Deutschkenntnisse",
-                    "isNative": "Ist Deutsch deine Muttersprache?",
-                    "howlong": {
-                        "heading": "Seit wann lernst du Deutsch?",
-                        "option1": "Weniger als 1 Jahr",
-                        "option2": "1-2 Jahre",
-                        "option3": "2-4 Jahre",
-                        "option4": "Mehr als 4 Jahre",
-                        "alertmsg": "Wir suchen nach einer Person für dich, die dir beim Deutschlernen hilft."
-                    }
-                },
-                "priority": {
-                    "heading": "Priorisierung",
-                    "subheading": "In welchen Fach brauchst du am meisten Hilfe?",
-                    "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
-                    "reason_btn_disabled": "Bitte wähle ein Fach aus."
                 },
                 "bookScreeningAppointment": {
                     "title": "Gespräch mit Lern-Fair",

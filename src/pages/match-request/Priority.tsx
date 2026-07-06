@@ -26,18 +26,11 @@ const Priority: React.FC = () => {
             onNext={goNext}
             onBack={goBack}
             isNextDisabled={form.subjects.every((it) => !it.mandatory)}
-            reasonNextDisabled={t('matching.wizard.pupil.priority.reason_btn_disabled')}
+            reasonNextDisabled={t('matching.wizard.priority.reason_btn_disabled')}
         >
-            <MatchRequestStepTitle>{t('matching.wizard.pupil.priority.subheading')}</MatchRequestStepTitle>
-            <Typography className="mb-10">{t('matching.wizard.pupil.priority.text')}</Typography>
-            <SubjectsSelector
-                showPupilsWaiting={form.userType === 'student'}
-                showGradesAvailable={form.userType === 'student'}
-                showWaitingDays={form.userType === 'pupil'}
-                onChange={handleOnSubjectsChange}
-                value={value}
-                options={options}
-            />
+            <MatchRequestStepTitle>{t('matching.wizard.priority.subheading')}</MatchRequestStepTitle>
+            <Typography className="mb-10">{t('matching.wizard.priority.text')}</Typography>
+            <SubjectsSelector showWaitingDays onChange={handleOnSubjectsChange} value={value} options={options} />
         </MatchRequestStep>
     );
 };
