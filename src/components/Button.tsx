@@ -30,6 +30,7 @@ const buttonVariants = cva(
             },
             size: {
                 default: 'h-10 px-4 text-form',
+                xs: 'h-6 rounded-md px-1.5 text-detail [&_span]:gap-x-1',
                 sm: 'h-9 rounded-md px-3 text-sm',
                 lg: 'h-11 rounded-md px-8 text-base',
                 input: 'h-10 px-3 py-1',
