@@ -166,54 +166,62 @@ export const SubjectsSelector = ({
     const mainOptions = filteredOptions.slice(0, initialVisibleOptions);
     const rareOptions = filteredOptions.slice(initialVisibleOptions);
 
+    const isSmallVariant = !showGradesAvailable && !showPupilsWaiting && showWaitingDays;
+
     return (
-        <div className="flex flex-wrap gap-2 justify-center md:gap-4 md:justify-start">
-            {mainOptions.concat(showAllSubjects ? rareOptions : []).map((option) => {
-                const isPressed = multiple ? (value as SingleSubject[]).some((s) => s === option.subject) : value === option.subject;
-                return (
-                    <Toggle
-                        variant="outline-primary-green"
-                        className={cn('w-[167px] h-[120px] md:w-full md:max-w-[272px] py-3 px-1.5 flex flex-col text-sm relative ', {
-                            'h-[104px] md:max-w-[176px]': !showGradesAvailable && !showPupilsWaiting && showWaitingDays,
-                        })}
-                        key={option.subject}
-                        pressed={isPressed}
-                        onPressedChange={(pressed) => handleOnToggle(option.subject, pressed)}
-                    >
-                        <div className="min-w-10 min-h-10 bg-accent-medium rounded-full flex items-center justify-center group-data-[state=on]:bg-green-200">
-                            <SubjectIcon subject={option.subject} className={cn('rounded-full size-6 flex-shrink-0')} />
-                        </div>
-                        <div className="w-full">
-                            <Typography variant="subtle" className="font-semibold mb-3 leading-1 mt-1 truncate">
-                                {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
-                            </Typography>
-                        </div>
-                        <div className="flex gap-x-1">
-                            {showWaitingDays && (
-                                <Typography variant="sm" className="text-[12px] text-primary-midnight">
-                                    {option?.waitingDaysRange?.from && option?.waitingDaysRange?.to
-                                        ? t('waitingTimeInWeeks', {
-                                              0: Math.ceil(option.waitingDaysRange.from / 7),
-                                              1: Math.ceil(option.waitingDaysRange.to / 7),
-                                          })
-                                        : `Zu wenig Daten`}
+        <div>
+            <div
+                className={cn('grid grid-cols-[repeat(auto-fit,minmax(167px,1fr))] gap-2 md:gap-4', {
+                    'md:grid-cols-[repeat(auto-fit,minmax(272px,1fr))]': !isSmallVariant,
+                })}
+            >
+                {mainOptions.concat(showAllSubjects ? rareOptions : []).map((option) => {
+                    const isPressed = multiple ? (value as SingleSubject[]).some((s) => s === option.subject) : value === option.subject;
+                    return (
+                        <Toggle
+                            variant="outline-primary-green"
+                            className={cn('w-full h-[120px] py-3 px-1.5 flex flex-col text-sm relative', {
+                                'h-[104px]': isSmallVariant,
+                            })}
+                            key={option.subject}
+                            pressed={isPressed}
+                            onPressedChange={(pressed) => handleOnToggle(option.subject, pressed)}
+                        >
+                            <div className="min-w-10 min-h-10 bg-accent-medium rounded-full flex items-center justify-center group-data-[state=on]:bg-green-200">
+                                <SubjectIcon subject={option.subject} className={cn('rounded-full size-6 flex-shrink-0')} />
+                            </div>
+                            <div className="w-full">
+                                <Typography variant="subtle" className="font-semibold mb-3 leading-2 mt-1 truncate">
+                                    {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
                                 </Typography>
-                            )}
-                            {showPupilsWaiting && !!option.pupilsWaiting && (
-                                <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">
-                                    {t('peopleWaiting', { count: option.pupilsWaiting })}
-                                </Badge>
-                            )}
-                            {showGradesAvailable && !!option.gradesAvailable?.length && (
-                                <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
-                                    Kl. {getGradesLabels(option.gradesAvailable)}
-                                </Badge>
-                            )}
-                        </div>
-                        {isPressed && <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />}
-                    </Toggle>
-                );
-            })}
+                            </div>
+                            <div className="flex gap-x-1">
+                                {showWaitingDays && (
+                                    <Typography variant="sm" className="text-[12px] text-primary-midnight">
+                                        {option?.waitingDaysRange?.from && option?.waitingDaysRange?.to
+                                            ? t('waitingTimeInWeeks', {
+                                                  0: Math.ceil(option.waitingDaysRange.from / 7),
+                                                  1: Math.ceil(option.waitingDaysRange.to / 7),
+                                              })
+                                            : `Zu wenig Daten`}
+                                    </Typography>
+                                )}
+                                {showPupilsWaiting && !!option.pupilsWaiting && (
+                                    <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">
+                                        {t('peopleWaiting', { count: option.pupilsWaiting })}
+                                    </Badge>
+                                )}
+                                {showGradesAvailable && !!option.gradesAvailable?.length && (
+                                    <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
+                                        Kl. {getGradesLabels(option.gradesAvailable)}
+                                    </Badge>
+                                )}
+                            </div>
+                            {isPressed && <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />}
+                        </Toggle>
+                    );
+                })}
+            </div>
             {options.length > initialVisibleOptions && (
                 <div className="w-full flex justify-center pt-6 md:pt-10">
                     <Button
