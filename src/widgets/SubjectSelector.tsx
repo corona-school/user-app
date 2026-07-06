@@ -91,18 +91,19 @@ export const SubjectSelector = ({
 const getGradesLabels = (numbers: number[]) => {
     if (!numbers.length) return '';
 
+    const grades = Array.from(new Set(numbers)).sort((a, b) => a - b);
     const result = [];
-    let start = numbers[0];
-    let end = numbers[0];
+    let start = grades[0];
+    let end = grades[0];
 
-    for (let i = 1; i <= numbers.length; i++) {
-        if (numbers[i] === end + 1) {
-            end = numbers[i];
+    for (let i = 1; i <= grades.length; i++) {
+        if (grades[i] === end + 1) {
+            end = grades[i];
         } else {
             result.push(start === end ? `${start}` : `${start}-${end}`);
 
-            start = numbers[i];
-            end = numbers[i];
+            start = grades[i];
+            end = grades[i];
         }
     }
 
@@ -199,7 +200,9 @@ export const SubjectsSelector = ({
                                 </Typography>
                             )}
                             {showPupilsWaiting && !!option.pupilsWaiting && (
-                                <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">{option.pupilsWaiting} wartend</Badge>
+                                <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">
+                                    {t('peopleWaiting', { count: option.pupilsWaiting })}
+                                </Badge>
                             )}
                             {showGradesAvailable && !!option.gradesAvailable?.length && (
                                 <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
