@@ -29,9 +29,16 @@ const SubjectsGrade = () => {
         });
     };
 
+    const ranges = selectedOptions.map((option) => {
+        const subject = form.subjects.find((s) => s.name === option.subject);
+        return { min: subject?.grade?.min ?? 1, max: subject?.grade?.max ?? 14 };
+    });
+
+    const isCopyDisabled = selectedOptions.length <= 1 || ranges.every((range) => range.min === ranges[0].min && range.max === ranges[0].max);
+
     return (
         <MatchRequestStep onNext={goNext} onBack={goBack}>
-            <div className="flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4 mt-11 mb-6">
+            <div className="flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4 mb-6">
                 <MatchRequestStepTitle className="my-0">{t('matching.wizard.grades.heading')}</MatchRequestStepTitle>
             </div>
             <div className="flex gap-4 flex-wrap">
@@ -39,20 +46,32 @@ const SubjectsGrade = () => {
                     const subject = form.subjects.find((s) => s.name === option.subject);
                     return (
                         <div className="w-[560px] rounded-md p-4 gap-2 border border-accent-dark" key={option.subject}>
-                            <div className="flex gap-x-[14px] mb-6">
-                                <div className="w-10 h-10 shrink-0 bg-accent-medium rounded-full flex items-center justify-center group-data-[state=on]:bg-green-200">
-                                    <SubjectIcon subject={option.subject as any} className={cn('rounded-full size-6 flex-shrink-0')} />
+                            <div className="flex justify-between">
+                                <div className="flex gap-x-[14px] mb-6">
+                                    <div className="w-10 h-10 shrink-0 bg-accent-medium rounded-full flex items-center justify-center group-data-[state=on]:bg-green-200">
+                                        <SubjectIcon subject={option.subject as any} className={cn('rounded-full size-6 flex-shrink-0')} />
+                                    </div>
+                                    <div className="w-full">
+                                        <Typography variant="subtle" className="font-semibold leading-1 mb-1 truncate">
+                                            {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
+                                        </Typography>
+                                        <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">
+                                            {t('peopleWaiting', { count: option.pupilsWaiting })}
+                                        </Badge>
+                                    </div>
                                 </div>
-                                <div className="w-full">
-                                    <Typography variant="subtle" className="font-semibold leading-1 mb-1 truncate">
-                                        {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
-                                    </Typography>
-                                    <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">
-                                        {t('peopleWaiting', { count: option.pupilsWaiting })}
-                                    </Badge>
-                                </div>
+                                <Button
+                                    className="hidden md:flex font-normal"
+                                    size="xs"
+                                    variant="ghost"
+                                    leftIcon={<IconCopyPlus size={16} />}
+                                    onClick={() => copyToAllSubjects(subject?.grade?.min ?? 1, subject?.grade?.max ?? 14)}
+                                    disabled={isCopyDisabled}
+                                >
+                                    Für alle Fächer übernehmen
+                                </Button>
                             </div>
-                            <div>
+                            <div className="mb-4">
                                 <Typography variant="subtle" className="mb-3 text-primary-midnight">
                                     {getGradeLabel(subject?.grade?.min ?? 1)} - {getGradeLabel(subject?.grade?.max ?? 14)} (
                                     {t('peopleWaiting', {
@@ -72,15 +91,21 @@ const SubjectsGrade = () => {
                                     value={[subject?.grade?.min ?? 1, subject?.grade?.max ?? 14]}
                                 />
                             </div>
-                            <Button
-                                className="px-2 py-2 mt-6"
-                                size="sm"
-                                variant="ghost"
-                                leftIcon={<IconCopyPlus size={16} />}
+                            <div
+                                className="md:hidden inline-block py-2 h-auto w-auto"
                                 onClick={() => copyToAllSubjects(subject?.grade?.min ?? 1, subject?.grade?.max ?? 14)}
                             >
-                                Für alle Fächer übernehmen
-                            </Button>
+                                <Button
+                                    className="font-normal"
+                                    size="xs"
+                                    variant="ghost"
+                                    leftIcon={<IconCopyPlus size={16} />}
+                                    onClick={() => copyToAllSubjects(subject?.grade?.min ?? 1, subject?.grade?.max ?? 14)}
+                                    disabled={isCopyDisabled}
+                                >
+                                    Für alle Fächer übernehmen
+                                </Button>
+                            </div>
                         </div>
                     );
                 })}
