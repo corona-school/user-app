@@ -171,7 +171,7 @@ export const SubjectsSelector = ({
     return (
         <div>
             <div
-                className={cn('grid grid-cols-[repeat(auto-fit,minmax(167px,1fr))] gap-2 md:gap-4', {
+                className={cn('grid grid-cols-[repeat(auto-fit,minmax(167px,176px))] gap-2 md:gap-4', {
                     'md:grid-cols-[repeat(auto-fit,minmax(272px,1fr))]': isBigVariant,
                 })}
             >

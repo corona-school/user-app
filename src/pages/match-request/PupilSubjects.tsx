@@ -27,13 +27,14 @@ const PupilSubjects = () => {
     }, [isDAZ]);
 
     const handleOnSubjectsChange = (subjects: SingleSubject[]) => {
-        if (isDAZ && !subjects.includes('Deutsch als Zweitsprache')) {
+        if (isDAZ) {
+            const optionalSubjects = subjects.filter((s) => s !== 'Deutsch als Zweitsprache').map((s) => ({ name: s, mandatory: false }));
             onFormChange({
-                subjects: [{ name: 'Deutsch als Zweitsprache', mandatory: true }, ...subjects.map((s) => ({ name: s, mandatory: false }))],
+                subjects: [{ name: 'Deutsch als Zweitsprache', mandatory: true }].concat(optionalSubjects),
             });
             return;
         }
-        onFormChange({ subjects: subjects.map((s) => ({ name: s, mandatory: false })) });
+        onFormChange({ subjects: subjects.map((s) => ({ name: s, mandatory: subjects.length === 1 })) });
     };
 
     const subjectNames = form.subjects.map((s) => s.name as SingleSubject);
