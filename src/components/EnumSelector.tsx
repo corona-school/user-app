@@ -135,6 +135,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                                             freeTextConfig.onChange(formattedFreeText);
                                         }
                                     }}
+                                    errorMessageClassName="hidden"
                                 />
                             </div>
                         )}
