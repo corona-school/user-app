@@ -67,8 +67,8 @@ export const BookScreeningAppointment = () => {
 
     const isLoading = shouldFetchScreeningAppointment || isRefetching;
 
-    const aboutTheAppointmentPoints = t('matching.wizard.pupil.bookScreeningAppointment.aboutTheAppointment.bullets', { returnObjects: true });
-    const importantPoints = t('matching.wizard.pupil.bookScreeningAppointment.importantForAppointment.bullets', { returnObjects: true });
+    const aboutTheAppointmentPoints = t('matching.wizard.bookScreeningAppointment.aboutTheAppointment.bullets', { returnObjects: true });
+    const importantPoints = t('matching.wizard.bookScreeningAppointment.importantForAppointment.bullets', { returnObjects: true });
 
     const handleOnBack = () => {
         if (form.isAppointmentStepForced) {
@@ -81,13 +81,13 @@ export const BookScreeningAppointment = () => {
     return (
         <MatchRequestStep className="pb-0">
             <div className="relative h-full">
-                <MatchRequestStepTitle>{t('matching.wizard.pupil.bookScreeningAppointment.title')}</MatchRequestStepTitle>
+                <MatchRequestStepTitle>{t('matching.wizard.bookScreeningAppointment.title')}</MatchRequestStepTitle>
                 <div className="flex flex-col gap-y-7 mb-4">
                     <div className="flex gap-x-4 items-center mt-7 w-full">
-                        <Typography className="max-w-[600px]">{t('matching.wizard.pupil.bookScreeningAppointment.description')}</Typography>
+                        <Typography className="max-w-[600px]">{t('matching.wizard.bookScreeningAppointment.description')}</Typography>
                     </div>
                     <Alert icon={<IconTimeDuration10 />} variant="success-outline" className="w-full max-w-[368px]">
-                        {t('matching.wizard.pupil.bookScreeningAppointment.alert', { minutes: 10 })}
+                        {t('matching.wizard.bookScreeningAppointment.alert', { minutes: 10 })}
                     </Alert>
                 </div>
                 <div className="flex flex-col justify-center items-center mb-10 md:mb-0">
@@ -95,7 +95,7 @@ export const BookScreeningAppointment = () => {
                         <AccordionItem className="border-none py-0" value={'about'}>
                             <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
                                 <Typography variant="body-lg" className="font-medium">
-                                    {t('matching.wizard.pupil.bookScreeningAppointment.aboutTheAppointment.title')}
+                                    {t('matching.wizard.bookScreeningAppointment.aboutTheAppointment.title')}
                                 </Typography>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col pt-2">
@@ -114,7 +114,7 @@ export const BookScreeningAppointment = () => {
                         <AccordionItem className="border-none py-0" value={'important'}>
                             <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
                                 <Typography variant="body-lg" className="font-medium">
-                                    {t('matching.wizard.pupil.bookScreeningAppointment.importantForAppointment.title')}
+                                    {t('matching.wizard.bookScreeningAppointment.importantForAppointment.title')}
                                 </Typography>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col pt-2">
@@ -133,11 +133,11 @@ export const BookScreeningAppointment = () => {
                         <AccordionItem className="border-none py-0" value={'reminder'}>
                             <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
                                 <Typography variant="body-lg" className="font-medium">
-                                    <Typography className="font-semibold">{t('matching.wizard.pupil.bookScreeningAppointment.reminder.title')}</Typography>
+                                    <Typography className="font-semibold">{t('matching.wizard.bookScreeningAppointment.reminder.title')}</Typography>
                                 </Typography>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col pt-2">
-                                <Typography variant="subtle">{t('matching.wizard.pupil.bookScreeningAppointment.reminder.description')}</Typography>
+                                <Typography variant="subtle">{t('matching.wizard.bookScreeningAppointment.reminder.description')}</Typography>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
@@ -165,7 +165,7 @@ export const BookScreeningAppointment = () => {
                         onClick={() => setIsCalendarOpen(true)}
                         className="min-w-[177px] px-[43px] w-full md:w-auto"
                     >
-                        {t('matching.wizard.pupil.bookScreeningAppointment.bookAppointment')}
+                        {t('matching.wizard.bookScreeningAppointment.bookAppointment')}
                     </Button>
                 </div>
                 <PopupModal
@@ -187,9 +187,9 @@ export const BookScreeningAppointment = () => {
                     )}
                 />
                 <ConfirmationModal
-                    headline={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.title')}
-                    confirmButtonText={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.confirmButton')}
-                    description={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.description')}
+                    headline={t('matching.wizard.bookScreeningAppointment.cancelProcessModal.title')}
+                    confirmButtonText={t('matching.wizard.bookScreeningAppointment.cancelProcessModal.confirmButton')}
+                    description={t('matching.wizard.bookScreeningAppointment.cancelProcessModal.description')}
                     onOpenChange={setIsCancelModalOpen}
                     isOpen={isCancelModalOpen}
                     onConfirm={() => {

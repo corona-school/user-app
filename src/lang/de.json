@@ -1598,11 +1598,6 @@
                 "rescheduleAppointmentModal": {
                     "title": "Termin ändern",
                     "description": "Du kannst den Termin ändern, ohne dass du Nachteile hast. Die Anfrage bleibt bestehen und wird aktiv sobald wir mit dir gesprochen haben."
-                },
-                "creationSuccessModal": {
-                    "title": "Termin erstellt!",
-                    "description": "Nach dem Gespräch geht die Suche nach einem:r Lernpartner:in für dich sofort los!",
-                    "button": "Zu meiner Übersicht"
                 }
             },
             "updateData": "Deine Daten wurden aktualisiert",
@@ -1647,53 +1642,72 @@
                     "availabilityBanner": "Hier gibst du deine regelmäßigen Zeiten für die nächsten Wochen an. Mit dieser Info können wir dich mit passenden Schüler:innen matchen.\nJe mehr Zeitfenster du angibst, desto einfacher ist es. Du kannst diese Info jederzeit in deinem Profil ändern."
                 }
             },
-            "pupil": {
-                "bookScreeningAppointment": {
-                    "title": "Gespräch mit Lern-Fair",
-                    "description": "Wir haben uns lange nicht mehr gesehen. Deshalb laden wir dich zu einem kurzen Gespräch ein. Danach suchen wir einen neuen Lern-Partner für dich.",
-                    "aboutTheAppointment": {
-                        "title": "Das besprechen wir in dem Gespräch:",
-                        "bullets": [
-                            "Was du schon gelernt hast",
-                            "Wie es dir gerade im Lernen geht",
-                            "Wie wir dich noch unterstützen können",
-                            "Du kannst uns alles fragen",
-                            "Eine Person aus dem Lern-Fair Team ist dabei/macht das Gespräch"
-                        ]
+            "bookScreeningAppointment": {
+                "title": "Gespräch mit Lern-Fair",
+                "description": "Wir haben uns lange nicht mehr gesehen. Deshalb laden wir dich zu einem kurzen Gespräch ein. Danach suchen wir einen neuen Lern-Partner für dich.",
+                "aboutTheAppointment": {
+                    "title": "Das besprechen wir in dem Gespräch:",
+                    "bullets": [
+                        "Was du schon gelernt hast",
+                        "Wie es dir gerade im Lernen geht",
+                        "Wie wir dich noch unterstützen können",
+                        "Du kannst uns alles fragen",
+                        "Eine Person aus dem Lern-Fair Team ist dabei/macht das Gespräch"
+                    ]
+                },
+                "importantForAppointment": {
+                    "title": "Wichtig für den Termin",
+                    "bullets": [
+                        "Du musst dabei sein.",
+                        "Deine Eltern oder eine Bezugsperson können dabei sein.",
+                        "Das Gespräch findet online über Zoom statt.",
+                        "Bitte mach das Gespräch zu Hause mit gutem Internet.",
+                        "Das Gespräch ist auf Deutsch."
+                    ]
+                },
+                "reminder": {
+                    "title": "Erinnerung per SMS",
+                    "description": "Im Feld ”Textnachricht senden an” kannst du deine Telefonnummer angeben. Dann bekommst du Erinnerungen für den Termin per SMS."
+                },
+                "bookAppointment": "Gespräch vereinbaren",
+                "alert": "Das Gespräch dauert nur {{minutes}} Minuten.",
+                "cancelProcessModal": {
+                    "title": "Warum gehst du?",
+                    "description": "Wenn du kein Gespräch vereinbarst, können wir dir leider keine:n Lernpartner:in suchen.",
+                    "confirmButton": "Verstanden"
+                }
+            },
+            "modalSuccess": {
+                "pupil": {
+                    "basicRequest": {
+                        "heading": "Lernpartner:in angefragt!",
+                        "text": "Das kann schnell gehen oder länger dauern. Das hängt von deinen Fächern ab. Schaue regelmäßig nach Nachrichten von uns. In der Zwischenzeit kannst du gerne unsere anderen Angebote nutzen.",
+                        "toTheHomeworkHelp": "Zur Hausaufgabenhilfe",
+                        "toTheGroupCourses": "Zu den Gruppen-Kursen"
                     },
-                    "importantForAppointment": {
-                        "title": "Wichtig für den Termin",
-                        "bullets": [
-                            "Du musst dabei sein.",
-                            "Deine Eltern oder eine Bezugsperson können dabei sein.",
-                            "Das Gespräch findet online über Zoom statt.",
-                            "Bitte mach das Gespräch zu Hause mit gutem Internet.",
-                            "Das Gespräch ist auf Deutsch."
-                        ]
+                    "requestWithAppointment": {
+                        "heading": "Termin erstellt!",
+                        "text": "Nach dem Gespräch geht die Suche nach einem:r Lernpartner:in für dich sofort los!",
+                        "button": "Zu meiner Übersicht"
                     },
-                    "reminder": {
-                        "title": "Erinnerung per SMS",
-                        "description": "Im Feld ”Textnachricht senden an” kannst du deine Telefonnummer angeben. Dann bekommst du Erinnerungen für den Termin per SMS."
-                    },
-                    "bookAppointment": "Gespräch vereinbaren",
-                    "alert": "Das Gespräch dauert nur {{minutes}} Minuten.",
-                    "cancelProcessModal": {
-                        "title": "Warum gehst du?",
-                        "description": "Wenn du kein Gespräch vereinbarst, können wir dir leider keine:n Lernpartner:in suchen.",
-                        "confirmButton": "Verstanden"
+                    "editRequest": {
+                        "heading": "Anfrage geändert!",
+                        "text": "Wir haben deine Änderungen erhalten und suchen eine passende Person zum gemeinsamen Lernen."
                     }
                 },
-                "modalSuccess": {
-                    "heading": {
-                        "ver1": "Neue Anfrage erstellt",
-                        "ver2": "Geschafft, Änderungen gespeichert!"
-                    },
-                    "text": {
-                        "ver1": "Als Nächstes laden wir dich per E-Mail zu einem Gespräch ein. Dann besprechen wir alles weitere persönlich. - Schau doch so lange bei unseren Gruppen-Kursen vorbei.",
-                        "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
-                    },
-                    "groupCourses": "Zu den Gruppen-Kursen"
-                }
+                "student": {
+                    "heading": "Du bist ein:e Held:in!",
+                    "text": "Danke, dass du dich für Bildungsgerechtigkeit einsetzt!\n\nSobald wir jemanden für dich gefunden haben, werden wir dich benachrichtigen."
+                },
+                "heading": {
+                    "ver1": "Neue Anfrage erstellt",
+                    "ver2": "Geschafft, Änderungen gespeichert!"
+                },
+                "text": {
+                    "ver1": "Als Nächstes laden wir dich per E-Mail zu einem Gespräch ein. Dann besprechen wir alles weitere persönlich. - Schau doch so lange bei unseren Gruppen-Kursen vorbei.",
+                    "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
+                },
+                "groupCourses": "Zu den Gruppen-Kursen"
             }
         },
         "group": {

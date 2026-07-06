@@ -11,7 +11,7 @@ import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import { BookScreeningAppointment } from './BookScreeningAppointment';
-import { MatchRequestSentModal } from './MatchRequestSentModal';
+import { MatchRequestSentModal, StudentMatchRequestSentModal } from './MatchRequestSentModal';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep } from './util';
 import StudentSubjects from './StudentSubjects';
@@ -35,7 +35,8 @@ const MatchRequest: React.FC = () => {
         if (locationState?.edit) {
             onFormChange({ currentStep: MatchRequestStep.subjects, isEdit: true });
         }
-    }, [locationState, onFormChange]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [locationState]);
 
     return (
         <AsNavigationItem path="matching">
@@ -65,8 +66,9 @@ const MatchRequest: React.FC = () => {
                 {isLoading && <CenterLoadingSpinner />}
                 <MatchRequestSentModal
                     screeningAppointment={form.screeningAppointment ? new Date(form.screeningAppointment.start) : undefined}
-                    isOpen={!!form.isCompleted}
+                    isOpen={!!form.isCompleted && form.userType === 'pupil'}
                 />
+                <StudentMatchRequestSentModal isOpen={!!form.isCompleted && form.userType === 'student'} />
             </WithNavigation>
         </AsNavigationItem>
     );
