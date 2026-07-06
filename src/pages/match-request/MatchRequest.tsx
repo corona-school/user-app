@@ -15,6 +15,7 @@ import { MatchRequestSentModal } from './MatchRequestSentModal';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep } from './util';
 import StudentSubjects from './StudentSubjects';
+import SubjectsGrade from './SubjectsGrade';
 
 const MatchRequest: React.FC = () => {
     const { form, onFormChange, isLoading } = useMatchRequestForm();
@@ -54,6 +55,7 @@ const MatchRequest: React.FC = () => {
                         </div>
                         <div className="relative h-full">
                             {form.currentStep === MatchRequestStep.subjects && (form.userType === 'pupil' ? <PupilSubjects /> : <StudentSubjects />)}
+                            {form.currentStep === MatchRequestStep.grades && <SubjectsGrade />}
                             {form.currentStep === MatchRequestStep.priority && <Priority />}
                             {form.currentStep === MatchRequestStep.updateData && <UpdateData />}
                             {form.currentStep === MatchRequestStep.bookScreeningAppointment && <BookScreeningAppointment />}
