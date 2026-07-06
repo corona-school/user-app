@@ -166,13 +166,13 @@ export const SubjectsSelector = ({
     const mainOptions = filteredOptions.slice(0, initialVisibleOptions);
     const rareOptions = filteredOptions.slice(initialVisibleOptions);
 
-    const isSmallVariant = !showGradesAvailable && !showPupilsWaiting && showWaitingDays;
+    const isBigVariant = showGradesAvailable && showPupilsWaiting && !showWaitingDays;
 
     return (
         <div>
             <div
                 className={cn('grid grid-cols-[repeat(auto-fit,minmax(167px,1fr))] gap-2 md:gap-4', {
-                    'md:grid-cols-[repeat(auto-fit,minmax(272px,1fr))]': !isSmallVariant,
+                    'md:grid-cols-[repeat(auto-fit,minmax(272px,1fr))]': isBigVariant,
                 })}
             >
                 {mainOptions.concat(showAllSubjects ? rareOptions : []).map((option) => {
@@ -180,8 +180,8 @@ export const SubjectsSelector = ({
                     return (
                         <Toggle
                             variant="outline-primary-green"
-                            className={cn('w-full h-[120px] py-3 px-1.5 flex flex-col text-sm relative', {
-                                'h-[104px]': isSmallVariant,
+                            className={cn('w-full h-[104px] py-3 px-1.5 flex flex-col text-sm relative', {
+                                'min-h-[120px] h-auto': isBigVariant,
                             })}
                             key={option.subject}
                             pressed={isPressed}
@@ -191,11 +191,11 @@ export const SubjectsSelector = ({
                                 <SubjectIcon subject={option.subject} className={cn('rounded-full size-6 flex-shrink-0')} />
                             </div>
                             <div className="w-full">
-                                <Typography variant="subtle" className="font-semibold mb-3 leading-2 mt-1 truncate">
+                                <Typography variant="subtle" className={cn('font-semibold leading-2 mt-1 mb-0 truncate', { 'mb-3': isBigVariant })}>
                                     {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
                                 </Typography>
                             </div>
-                            <div className="flex gap-x-1">
+                            <div className={cn('flex gap-x-1', { 'flex-col items-center justify-center gap-y-1 md:flex-row': isBigVariant })}>
                                 {showWaitingDays && (
                                     <Typography variant="sm" className="text-[12px] text-primary-midnight">
                                         {option?.waitingDaysRange?.from && option?.waitingDaysRange?.to
