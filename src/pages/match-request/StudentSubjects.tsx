@@ -28,9 +28,9 @@ const StudentSubjects = () => {
 
     return (
         <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0}>
-            <div className={cn('flex flex-col justify-between md:items-center xl:flex-row gap-y-4 gap-x-4 mt-11')}>
+            <div className={cn('flex flex-col justify-between md:items-center xl:flex-row gap-y-4 gap-x-4')}>
                 <div className="mb-5">
-                    <MatchRequestStepTitle className="mt-0">{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
+                    <MatchRequestStepTitle>{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
                     <Typography variant="subtle">
                         <Trans
                             i18nKey="matching.wizard.subjects.student.subheading"

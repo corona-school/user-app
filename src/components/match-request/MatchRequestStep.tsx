@@ -22,7 +22,7 @@ export type MatchRequestStepProps = Omit<_MatchRequestStepProps, 'children'>;
 
 export const MatchRequestStepTitle = ({ className, variant = 'h4', children, ...rest }: TypographyProps) => {
     return (
-        <Typography className={cn('text-balance mb-2 mt-[30px]', className)} variant={variant} {...rest}>
+        <Typography className={cn('text-balance mb-2', className)} variant={variant} {...rest}>
             {children}
         </Typography>
     );
@@ -57,7 +57,9 @@ export const MatchRequestStep = ({
     };
 
     return (
-        <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-[1140px] w-full gap-y-4 md:gap-y-10', className)}>
+        <div
+            className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-[1140px] w-full gap-y-4 md:gap-y-10 pt-5 md:pt-11', className)}
+        >
             <div className="flex flex-1 flex-col max-w-full">{children}</div>
             {onBack || onNext ? (
                 <div className="flex flex-col md:flex-row gap-y-4 gap-x-4">
