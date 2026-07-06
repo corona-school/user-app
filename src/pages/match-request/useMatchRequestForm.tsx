@@ -1,13 +1,16 @@
+import { combineSpecialExperience, SpecialTeachingExperienceEnum, splitSpecialExperience } from '@/components/SpecialTeachingExperienceSelector';
+import { TeachingExperienceLevelEnum } from '@/components/TeachingExperienceLevelSelector';
 import { gql } from '@/gql';
-import { Subject, CalendarPreferences, Language, SchoolType, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
+import { Subject, CalendarPreferences, Language, SchoolType, Learning_Offer_Constraints_Enum, StudentLanguage } from '@/gql/graphql';
 import { useUserType } from '@/hooks/useApollo';
 import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
+import { MIN_MAX_GRADE_RANGE } from '@/Utility';
 import { SubjectOption } from '@/widgets/SubjectSelector';
 import { useMutation, useQuery } from '@apollo/client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { Navigate, useLocation } from 'react-router-dom';
-import { pupilMatchRequestFlow, MatchRequestStep } from './util';
+import { pupilMatchRequestFlow, studentMatchRequestFlow, MatchRequestStep } from './util';
 
 interface MatchRequestForm {
     subjects: Subject[];
@@ -29,6 +32,14 @@ interface MatchRequestForm {
     subjectsOptions: SubjectOption[];
     userType?: 'pupil' | 'student';
     learningOfferConstraints?: Learning_Offer_Constraints_Enum[];
+    teachingExperience: {
+        '1:1': TeachingExperienceLevelEnum | undefined;
+        group: TeachingExperienceLevelEnum | undefined;
+    };
+    specialTeachingExperience: {
+        selectValues: SpecialTeachingExperienceEnum[];
+        freeTextValue: string;
+    };
 }
 
 interface MatchRequestContextValue {
@@ -49,6 +60,14 @@ const emptyState: MatchRequestForm = {
     currentStep: MatchRequestStep.subjects,
     learningOfferConstraints: [],
     subjectsOptions: [],
+    teachingExperience: {
+        '1:1': undefined,
+        group: undefined,
+    },
+    specialTeachingExperience: {
+        selectValues: [],
+        freeTextValue: '',
+    },
 };
 
 const MatchRequestContext = createContext<MatchRequestContextValue>({
@@ -93,6 +112,7 @@ const MATCH_REQUEST_INFO_QUERY = gql(`
                 languages
                 calendarPreferences
                 subjectsFormatted { name grade { min, max } }
+                specialTeachingExperience
             }
         }
     }
@@ -117,9 +137,15 @@ const STUDENT_SUBJECTS_QUERY = gql(`
     }
 `);
 
-const ME_UPDATE_MUTATION = gql(`
+const ME_UPDATE_PUPIL = gql(`
     mutation changePupilMatchingInfoData($languages: [Language!], $calendarPreferences: CalendarPreferences, $gradeAsInt: Int, $schooltype: SchoolType, $subjects: [SubjectInput!]) {
         meUpdate(update: { pupil: { languages: $languages, calendarPreferences: $calendarPreferences, gradeAsInt: $gradeAsInt, schooltype: $schooltype, subjects: $subjects } })
+    }
+`);
+
+const ME_UPDATE_STUDENT = gql(`
+    mutation changeStudentMatchingInfoData($languages: [StudentLanguage!], $calendarPreferences: CalendarPreferences, $subjects: [SubjectInput!], $specialTeachingExperience: [String!]) {
+        meUpdate(update: { student: { languages: $languages, calendarPreferences: $calendarPreferences, subjects: $subjects, specialTeachingExperience: $specialTeachingExperience } })
     }
 `);
 
@@ -129,34 +155,44 @@ const CREATE_PUPIL_MATCH_REQUEST_MUTATION = gql(`
     }
 `);
 
+const CREATE_STUDENT_MATCH_REQUEST_MUTATION = gql(`
+    mutation StudentCreateMatchRequest {
+        studentCreateMatchRequest
+    }
+`);
+
 export const MatchRequestProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoading, setIsLoading] = useState(true);
     const { data, refetch, networkStatus } = useQuery(MATCH_REQUEST_INFO_QUERY, { notifyOnNetworkStatusChange: true });
-    const [meUpdate] = useMutation(ME_UPDATE_MUTATION);
-    const [createMatchRequest] = useMutation(CREATE_PUPIL_MATCH_REQUEST_MUTATION);
+    const [meUpdatePupil] = useMutation(ME_UPDATE_PUPIL);
+    const [meUpdateStudent] = useMutation(ME_UPDATE_STUDENT);
+    const [createPupilMatchRequest] = useMutation(CREATE_PUPIL_MATCH_REQUEST_MUTATION);
+    const [createStudentMatchRequest] = useMutation(CREATE_STUDENT_MATCH_REQUEST_MUTATION);
     const { data: pupilSubjectsData } = useQuery(PUPIL_SUBJECTS_QUERY, { skip: !data?.me.pupil });
     const { data: studentSubjectsData } = useQuery(STUDENT_SUBJECTS_QUERY, { skip: !data?.me.student });
     const [values, setValues] = useState<MatchRequestForm>(emptyState);
-    const currentStepIndex = values.currentStep ? pupilMatchRequestFlow.indexOf(values.currentStep) : -1;
+    const flow = values.userType === 'pupil' ? pupilMatchRequestFlow : studentMatchRequestFlow;
+    const currentStepIndex = values.currentStep ? flow.indexOf(values.currentStep) : -1;
     const location = useLocation();
     const userType = useUserType();
-    const isAppointmentStepForced = location.pathname.split('/').includes('screening-appointment');
+    const isAppointmentStepForced = location.pathname.split('/').includes('screening-appointment') && values.userType === 'pupil';
+    const needsHelpInGerman = values.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching);
+    const hasOnlyOneSubject = values.subjects.length <= 1;
+
     const getNextStepFrom = (step: MatchRequestStep) => {
-        const currentIndex = pupilMatchRequestFlow.indexOf(step);
-        return pupilMatchRequestFlow[currentIndex + 1];
+        const currentIndex = flow.indexOf(step);
+        return flow[currentIndex + 1];
     };
 
     const getPrevStepFrom = (step: MatchRequestStep) => {
-        const currentIndex = pupilMatchRequestFlow.indexOf(step);
-        return pupilMatchRequestFlow[currentIndex - 1];
+        const currentIndex = flow.indexOf(step);
+        return flow[currentIndex - 1];
     };
 
     const handleOnChange = (data: Partial<MatchRequestForm>) => {
         setValues((values) => ({ ...values, ...data }));
     };
 
-    const needsHelpInGerman = values.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching);
-    const hasOnlyOneSubject = values.subjects.length <= 1;
     const handleOnNext = async () => {
         if (currentStepIndex === -1 || !values.currentStep) return;
         if (isAppointmentStepForced) {
@@ -171,42 +207,59 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
             }
         }
 
-        // ------------------------ Save data from the current step before going to the next one ------------------------
-        if (values.currentStep === MatchRequestStep.updateData) {
+        // ------------------------ Save current form state ------------------------
+        if (values.userType === 'pupil') {
             try {
-                await meUpdate({
+                await meUpdatePupil({
                     variables: {
                         calendarPreferences: values.calendarPreferences,
                         languages: values.languages,
                         gradeAsInt: values.grade,
                         schooltype: values.schooltype,
-                    },
-                });
-            } catch (error: any) {
-                logError('[matchRequest]', error?.message, error);
-            }
-        } else if ([MatchRequestStep.subjects, MatchRequestStep.priority].includes(values.currentStep)) {
-            try {
-                await meUpdate({
-                    variables: {
                         subjects: values.subjects.map((it) => ({ name: it.name, mandatory: it.mandatory })),
                     },
                 });
+
+                // If it's the last step, create the match request and mark the flow as complete
+                if (nextStep === MatchRequestStep.bookScreeningAppointment && (!values.needScreening || values.isEdit)) {
+                    if (!values.needScreening && !data?.me.pupil?.openMatchRequestCount && !values.isEdit) {
+                        await createPupilMatchRequest();
+                    }
+                    handleOnChange({ isCompleted: true });
+                    return;
+                } else if (values.currentStep === MatchRequestStep.bookScreeningAppointment) {
+                    handleOnChange({ isCompleted: true });
+                    return;
+                }
             } catch (error: any) {
                 logError('[matchRequest]', error?.message, error);
             }
         }
 
-        // ------------------------ If needed. Create match request and mark the flow as complete ------------------------
-        if (nextStep === MatchRequestStep.bookScreeningAppointment && (!values.needScreening || values.isEdit)) {
-            if (!values.needScreening && !data?.me.pupil?.openMatchRequestCount && !values.isEdit) {
-                await createMatchRequest();
+        if (values.userType === 'student') {
+            try {
+                await meUpdateStudent({
+                    variables: {
+                        calendarPreferences: values.calendarPreferences,
+                        languages: values.languages as unknown as StudentLanguage[],
+                        subjects: values.subjects.map((it) => ({ name: it.name, grade: it.grade })),
+                        specialTeachingExperience: combineSpecialExperience(
+                            values.specialTeachingExperience.selectValues,
+                            values.specialTeachingExperience.freeTextValue,
+                            values.teachingExperience
+                        ),
+                    },
+                });
+                // If it's the last step, create the match request and mark the flow as complete
+                if (values.currentStep === MatchRequestStep.updateData) {
+                    if (!values.isEdit) {
+                        await createStudentMatchRequest();
+                    }
+                    handleOnChange({ isCompleted: true });
+                }
+            } catch (error: any) {
+                logError('[matchRequest]', error?.message, error);
             }
-            handleOnChange({ isCompleted: true });
-            return;
-        } else if (values.currentStep === MatchRequestStep.bookScreeningAppointment) {
-            handleOnChange({ isCompleted: true });
-            return;
         }
 
         handleOnChange({ currentStep: nextStep });
@@ -214,7 +267,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
 
     const handleOnBack = () => {
         if (currentStepIndex === -1 || !values.currentStep) return;
-        let previousStep = pupilMatchRequestFlow[currentStepIndex - 1];
+        let previousStep = flow[currentStepIndex - 1];
 
         // Do the same logic as in handleOnNext but reversed to determine which step to go back to
         if (previousStep === MatchRequestStep.priority) {
@@ -225,6 +278,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
         handleOnChange({ currentStep: previousStep });
     };
 
+    // Setup the initial state of the form based on the data from the query and the user type
     useEffect(() => {
         if (!data || !userType) return;
         const pupil = data.me.pupil;
@@ -233,8 +287,14 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
         const subjectsFormatted = pupil?.subjectsFormatted ?? student?.subjectsFormatted ?? [];
         const languages = pupil?.languages ?? student?.languages ?? [];
         const calendarPreferences = pupil?.calendarPreferences ?? student?.calendarPreferences ?? undefined;
+        const { specialTeachingExperience, teachingExperienceLevel, freeText } = splitSpecialExperience(data.me.student?.specialTeachingExperience ?? []);
         handleOnChange({
-            subjects: subjectsFormatted.map((it: any) => ({ name: it.name, mandatory: it.mandatory })) ?? [],
+            subjects:
+                subjectsFormatted.map((it: any) => ({
+                    name: it.name,
+                    mandatory: it.mandatory,
+                    grade: { min: it.grade?.min ?? MIN_MAX_GRADE_RANGE.min, max: it.grade?.max ?? MIN_MAX_GRADE_RANGE.max },
+                })) ?? [],
             languages: (languages as unknown as Language[]) ?? [],
             grade: pupil?.gradeAsInt ?? 0,
             calendarPreferences: calendarPreferences,
@@ -242,21 +302,30 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
             screeningAppointment: currentBookedScreening?.appointment as any,
             needScreening: pupil?.needScreening ?? false,
             learningOfferConstraints: pupil?.learningOfferConstraints,
+            specialTeachingExperience: {
+                selectValues: specialTeachingExperience,
+                freeTextValue: freeText ?? '',
+            },
+            teachingExperience: {
+                '1:1': teachingExperienceLevel['1:1'],
+                group: teachingExperienceLevel.group,
+            },
             userType: userType === 'pupil' ? 'pupil' : 'student',
         });
         setIsLoading(false);
     }, [data, userType]);
 
-    if (data?.me.pupil?.openMatchRequestCount !== undefined && data?.me.pupil?.openMatchRequestCount === 0 && isAppointmentStepForced) {
+    if (data?.me.pupil?.openMatchRequestCount === 0 && isAppointmentStepForced) {
         return <Navigate to="/request-match" replace />;
     }
 
-    const subjectsOptions: SubjectOption[] =
-        pupilSubjectsData?.subjectsForPupils.map((e) => ({ subject: e.subject, waitingDaysRange: e.waitingDaysRange } as SubjectOption)) ??
-        studentSubjectsData?.subjectsForStudents.map(
-            (e) => ({ subject: e.subject, pupilsWaiting: e.pupilsWaiting, gradesAvailable: e.gradesAvailable } as SubjectOption)
-        ) ??
-        [];
+    const mappedPupilSubjects = pupilSubjectsData?.subjectsForPupils.map((e) => ({ subject: e.subject, waitingDaysRange: e.waitingDaysRange }));
+    const mappedStudentSubjects = studentSubjectsData?.subjectsForStudents.map((e) => ({
+        subject: e.subject,
+        pupilsWaiting: e.pupilsWaiting,
+        gradesAvailable: e.gradesAvailable,
+    }));
+    const subjectsOptions = (values.userType === 'pupil' ? mappedPupilSubjects ?? [] : mappedStudentSubjects ?? []) as SubjectOption[];
 
     return (
         <MatchRequestContext.Provider
@@ -274,7 +343,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
                 goNext: handleOnNext,
                 goBack: handleOnBack,
                 refetch,
-                createMatchRequest,
+                createMatchRequest: values.userType === 'pupil' ? createPupilMatchRequest : createStudentMatchRequest,
             }}
         >
             {children}
