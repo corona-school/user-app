@@ -36,7 +36,6 @@ type ComboboxProps = (SingleComboboxProps | MultiComboboxProps) & {
     search?: string;
     isLoading?: boolean;
     className?: string;
-    container?: HTMLElement | null;
 };
 
 export const Combobox = ({
@@ -53,7 +52,6 @@ export const Combobox = ({
     onSelect,
     className,
     multiple,
-    container,
 }: ComboboxProps) => {
     const [open, setOpen] = useState(false);
 
@@ -121,10 +119,7 @@ export const Combobox = ({
                     <div className="text-ellipsis overflow-hidden w-[90%] text-left">{getCurrentValueLabels() || placeholder}</div>
                 </Button>
             </PopoverTrigger>
-            <PopoverContent
-                className={cn('max-w-full p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]')}
-                container={container}
-            >
+            <PopoverContent className={cn('max-w-full p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]')}>
                 <Command shouldFilter={false}>
                     <CommandInput placeholder={searchPlaceholder} onValueChange={onSearch} value={search} />
                     <CommandList>

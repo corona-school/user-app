@@ -146,7 +146,6 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                                 value={multiple ? value?.filter((e) => !gridItems.includes(e)) : (value as any)}
                                 onSearch={setSearch}
                                 search={search}
-                                container={searchConfig?.container}
                                 multiple={multiple}
                                 onSelect={(e: any) => {
                                     if (multiple) {
