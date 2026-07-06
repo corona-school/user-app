@@ -4,7 +4,7 @@ import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-requ
 import { Slider } from '@/components/Slider';
 import { Typography } from '@/components/Typography';
 import { cn } from '@/lib/Tailwind';
-import { getGradeLabel } from '@/Utility';
+import { getGradeLabel, MIN_MAX_GRADE_RANGE } from '@/Utility';
 import { SubjectIcon } from '@/widgets/SubjectSelector';
 import { IconCopyPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
@@ -16,22 +16,22 @@ const SubjectsGrade = () => {
 
     const selectedOptions = form.subjectsOptions.filter((o) => form.subjects.some((s) => s.name === o.subject));
 
-    const getWaitingInGradeRange = (subjectName?: string, minGrade: number = 1, maxGrade: number = 14) => {
+    const getWaitingInGradeRange = (subjectName?: string, range: { min: number; max: number } = MIN_MAX_GRADE_RANGE) => {
         if (!subjectName) return 0;
         const subjectOption = form.subjectsOptions.find((o) => o.subject === subjectName);
         if (!subjectOption) return 0;
-        return subjectOption.gradesAvailable?.filter((g) => g >= minGrade && g <= maxGrade).length ?? 0;
+        return subjectOption.gradesAvailable?.filter((g) => g >= range.min && g <= range.max).length ?? 0;
     };
 
-    const copyToAllSubjects = (minGrade: number, maxGrade: number) => {
+    const copyToAllSubjects = (range: { min: number; max: number }) => {
         onFormChange({
-            subjects: form.subjects.map((s) => ({ ...s, grade: { min: minGrade, max: maxGrade } })),
+            subjects: form.subjects.map((s) => ({ ...s, grade: { min: range.min, max: range.max } })),
         });
     };
 
     const ranges = selectedOptions.map((option) => {
         const subject = form.subjects.find((s) => s.name === option.subject);
-        return { min: subject?.grade?.min ?? 1, max: subject?.grade?.max ?? 14 };
+        return { min: subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min, max: subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max };
     });
 
     const isCopyDisabled = selectedOptions.length <= 1 || ranges.every((range) => range.min === ranges[0].min && range.max === ranges[0].max);
@@ -65,7 +65,12 @@ const SubjectsGrade = () => {
                                     size="xs"
                                     variant="ghost"
                                     leftIcon={<IconCopyPlus size={16} />}
-                                    onClick={() => copyToAllSubjects(subject?.grade?.min ?? 1, subject?.grade?.max ?? 14)}
+                                    onClick={() =>
+                                        copyToAllSubjects({
+                                            min: subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min,
+                                            max: subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max,
+                                        })
+                                    }
                                     disabled={isCopyDisabled}
                                 >
                                     Für alle Fächer übernehmen
@@ -73,9 +78,13 @@ const SubjectsGrade = () => {
                             </div>
                             <div className="mb-4">
                                 <Typography variant="subtle" className="mb-3 text-primary-midnight">
-                                    {getGradeLabel(subject?.grade?.min ?? 1)} - {getGradeLabel(subject?.grade?.max ?? 14)} (
+                                    {getGradeLabel(subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min)} -{' '}
+                                    {getGradeLabel(subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max)} (
                                     {t('peopleWaiting', {
-                                        count: getWaitingInGradeRange(subject?.name, subject?.grade?.min, subject?.grade?.max),
+                                        count: getWaitingInGradeRange(subject?.name, {
+                                            min: subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min,
+                                            max: subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max,
+                                        }),
                                     })}
                                     )
                                 </Typography>
@@ -88,19 +97,29 @@ const SubjectsGrade = () => {
                                             subjects: form.subjects.map((s) => (s.name === subject?.name ? { ...s, grade: { min, max } } : s)),
                                         })
                                     }
-                                    value={[subject?.grade?.min ?? 1, subject?.grade?.max ?? 14]}
+                                    value={[subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min, subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max]}
                                 />
                             </div>
                             <div
                                 className="md:hidden inline-block py-2 h-auto w-auto"
-                                onClick={() => copyToAllSubjects(subject?.grade?.min ?? 1, subject?.grade?.max ?? 14)}
+                                onClick={() =>
+                                    copyToAllSubjects({
+                                        min: subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min,
+                                        max: subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max,
+                                    })
+                                }
                             >
                                 <Button
                                     className="font-normal"
                                     size="xs"
                                     variant="ghost"
                                     leftIcon={<IconCopyPlus size={16} />}
-                                    onClick={() => copyToAllSubjects(subject?.grade?.min ?? 1, subject?.grade?.max ?? 14)}
+                                    onClick={() =>
+                                        copyToAllSubjects({
+                                            min: subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min,
+                                            max: subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max,
+                                        })
+                                    }
                                     disabled={isCopyDisabled}
                                 >
                                     Für alle Fächer übernehmen

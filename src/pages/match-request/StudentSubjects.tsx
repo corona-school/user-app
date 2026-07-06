@@ -8,6 +8,7 @@ import { IconBulbFilled, IconCircleCheckFilled, IconInfoCircleFilled } from '@ta
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/Tailwind';
 import { SingleSubject, SUBJECTS } from '@/types/subject';
+import { MIN_MAX_GRADE_RANGE } from '@/Utility';
 
 const StudentSubjects = () => {
     const { goNext, form, onFormChange } = useMatchRequestForm();
@@ -15,7 +16,15 @@ const StudentSubjects = () => {
     const navigate = useNavigate();
 
     const handleOnSubjectsChange = (subjects: SingleSubject[]) => {
-        onFormChange({ subjects: subjects.map((s) => ({ name: s, mandatory: false })) });
+        const updatedSubjects = subjects.map((name) => {
+            const existingSubject = form.subjects.find((subject) => subject.name === name);
+
+            return {
+                name,
+                grade: existingSubject?.grade ?? MIN_MAX_GRADE_RANGE,
+            };
+        });
+        onFormChange({ subjects: updatedSubjects });
     };
 
     const subjectNames = form.subjects.map((s) => s.name as SingleSubject);
