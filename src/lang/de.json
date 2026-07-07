@@ -1618,7 +1618,7 @@
                 },
                 "student": {
                     "subheading": "<b>{{pupilCount}}</b> Schüler:innen warten insgesamt in <b>{{subjectCount}}</b> Fächern",
-                    "dazBannerText": "Bitte beachte: DaZ und Deutsch als Zweitsprache sind unterschiedliche Angebote.",
+                    "dazBannerText": "Bitte beachte: Deutsch als Zweitsprache und Deutsch sind unterschiedliche Angebote.",
                     "bannerText": "Wenn du mehrere Fächer angibst, wirst du schneller vermittelt. \nUm nur in deinen präferierten Fächern Lernpartner:innen zu finden, kann es unter Umständen sinnvoll sein, jeweils ein einzelnes Match anzufragen. \nDu kannst ein weiteres Match anfragen, sobald du mit deiner/deinem Lernpartner:in deinen ersten Termin hattest."
                 }
             },
