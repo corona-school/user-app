@@ -2824,7 +2824,7 @@
             "request": "Jetzt runterladen"
         },
         "participationCertificate": {
-            "deactivated": "Es gibt keinen Individuellen Nachweis mehr, den du von deine(n) Schüler:innen bestätigen lassen musst. Deine geleisteten Stunden werden automatisch in der Datenbank erfasst. Du kannst bald den aktuellen Stand als Sofort-Nachweis - auch mehrfach - herunterladen (Stand 08.06.2026 werden noch nicht alle Stunden korrekt gezählt, wir sind dran...). Bei Fragen oder Problemen kannst du dich an <0 /> wenden.",
+            "deactivated": "Es gibt keinen individuellen Nachweis mehr, den du von deinen Schüler:innen bestätigen lassen kannst. Alle über die Lern-Fair-App geplanten Termine, die in Zoom stattfinden, werden ab sofort automatisch in der Datenbank erfasst. Wenn du einen Sofort-Nachweis herunterlädst, sind die von dir geleisteten Stunden automatisch enthalten. Melde dich unter <0 />, wenn du weitere Fragen hierzu hast.",
             "title": "Individueller Nachweis",
             "bullets": [
                 "muss durch den/die Lernpartner:in bestätigt werden",
