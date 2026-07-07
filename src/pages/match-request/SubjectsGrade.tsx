@@ -14,7 +14,7 @@ const SubjectsGrade = () => {
     const { t } = useTranslation();
     const { form, goNext, goBack, onFormChange } = useMatchRequestForm();
 
-    const selectedOptions = form.subjectsOptions.filter((o) => form.subjects.some((s) => s.name === o.subject));
+    const selectedSubjects = form.subjects;
 
     const getWaitingInGradeRange = (subjectName?: string, range: { min: number; max: number } = MIN_MAX_GRADE_RANGE) => {
         if (!subjectName) return 0;
@@ -29,12 +29,11 @@ const SubjectsGrade = () => {
         });
     };
 
-    const ranges = selectedOptions.map((option) => {
-        const subject = form.subjects.find((s) => s.name === option.subject);
+    const ranges = selectedSubjects.map((subject) => {
         return { min: subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min, max: subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max };
     });
 
-    const isCopyDisabled = selectedOptions.length <= 1 || ranges.every((range) => range.min === ranges[0].min && range.max === ranges[0].max);
+    const isCopyDisabled = form.subjects.length <= 1 || ranges.every((range) => range.min === ranges[0].min && range.max === ranges[0].max);
 
     return (
         <MatchRequestStep onNext={goNext} onBack={goBack}>
@@ -42,22 +41,24 @@ const SubjectsGrade = () => {
                 <MatchRequestStepTitle className="my-0">{t('matching.wizard.grades.heading')}</MatchRequestStepTitle>
             </div>
             <div className="flex gap-4 flex-wrap">
-                {selectedOptions.map((option) => {
-                    const subject = form.subjects.find((s) => s.name === option.subject);
+                {selectedSubjects.map((subject) => {
+                    const option = form.subjectsOptions.find((o) => o.subject === subject.name);
                     return (
-                        <div className="w-[560px] rounded-md p-4 gap-2 border border-accent-dark" key={option.subject}>
+                        <div className="w-[560px] rounded-md p-4 gap-2 border border-accent-dark" key={subject.name}>
                             <div className="flex justify-between">
                                 <div className="flex gap-x-[14px] mb-6">
                                     <div className="w-10 h-10 shrink-0 bg-accent-medium rounded-full flex items-center justify-center group-data-[state=on]:bg-green-200">
-                                        <SubjectIcon subject={option.subject as any} className={cn('rounded-full size-6 flex-shrink-0')} />
+                                        <SubjectIcon subject={subject.name as any} className={cn('rounded-full size-6 flex-shrink-0')} />
                                     </div>
                                     <div className="w-full">
                                         <Typography variant="subtle" className="font-semibold leading-1 mb-1 truncate">
-                                            {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
+                                            {t(`lernfair.subjects.${subject.name}` as unknown as TemplateStringsArray)}
                                         </Typography>
-                                        <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">
-                                            {t('peopleWaiting', { count: option.pupilsWaiting })}
-                                        </Badge>
+                                        {!!option?.pupilsWaiting && (
+                                            <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">
+                                                {t('peopleWaiting', { count: option?.pupilsWaiting })}
+                                            </Badge>
+                                        )}
                                     </div>
                                 </div>
                                 <Button
@@ -79,14 +80,19 @@ const SubjectsGrade = () => {
                             <div className="mb-4">
                                 <Typography variant="subtle" className="mb-3 text-primary-midnight">
                                     {getGradeLabel(subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min)} -{' '}
-                                    {getGradeLabel(subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max)} (
-                                    {t('peopleWaiting', {
-                                        count: getWaitingInGradeRange(subject?.name, {
-                                            min: subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min,
-                                            max: subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max,
-                                        }),
-                                    })}
-                                    )
+                                    {getGradeLabel(subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max)}{' '}
+                                    {!!option?.pupilsWaiting && (
+                                        <span>
+                                            (
+                                            {t('peopleWaiting', {
+                                                count: getWaitingInGradeRange(subject?.name, {
+                                                    min: subject?.grade?.min ?? MIN_MAX_GRADE_RANGE.min,
+                                                    max: subject?.grade?.max ?? MIN_MAX_GRADE_RANGE.max,
+                                                }),
+                                            })}
+                                            )
+                                        </span>
+                                    )}
                                 </Typography>
                                 <Slider
                                     id="gradeSlider"
