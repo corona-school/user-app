@@ -1296,13 +1296,6 @@
             "title": "Sizin için bir öğrenme ortağı arıyoruz!",
             "content": "Lern-Fair 'da bir öğrenciyi desteklemek istediğiniz için teşekkür ederiz. Size belirttiğiniz derslere veya notlara uygun birini bulacağız. Genellikle bir hafta içinde size uygun bir öğrenciyle e-posta yoluyla geri döneceğiz."
         },
-        "statusStudent2": {
-            "buttons": ["Başka bir öğrenme çifti ise şu şekilde oluşur", "Grup kurslarını görüntüleyin"],
-            "subtitle": "Daha fazla destek fırsatı",
-            "title": "Daha fazlasını ister misin?",
-            "content": "Diğer öğrencileri desteklemek ister misiniz? Bir grup kursu veya ileri öğrenme ortaklıkları teklif edin.",
-            "actionDescription": "Seçenekleri şimdi görüntüleyin"
-        },
         "kontaktStudent": {
             "buttons": ["Öğrenme ortağını görüntüle"],
             "title": "Yeni öğrenme ortakları",

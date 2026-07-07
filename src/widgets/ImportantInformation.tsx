@@ -278,12 +278,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
-        if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
-            infos.push({
-                label: NextStepLabelType.STATUS_STUDENT_TWO,
-                btnfn: [() => navigate('/matching'), () => navigate('/group')],
-                lang: {},
-            });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => ['PASSWORD', 'IDP'].includes(secret.type)))
             infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
