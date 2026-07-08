@@ -29,6 +29,7 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
     const activeMatches = (user?.matches as any[])?.filter((it) => !it.dissolved).length;
 
     const isFirstPupilScreening = !user?.pupilScreenings?.some((it) => it!.status === 'success') || !user?.pupilScreenings?.length;
+    const hasPendingScreening = user?.pupilScreenings?.some((it) => ['pending', 'dispute'].includes(it!.status) && !it!.invalidated);
     return (
         <div
             className="flex flex-col items-center w-full h-full py-4 px-4 border-[0.5px] rounded-sm border-primary-light bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground"
@@ -46,12 +47,12 @@ const UserCard = ({ user, type, onClick }: UserCardProps) => {
                 <Typography variant="sm" className="text-center">
                     {user.email}
                 </Typography>
-                {type === 'pupil' && isFirstPupilScreening && (
+                {type === 'pupil' && isFirstPupilScreening && hasPendingScreening && (
                     <div className="flex justify-center mt-2">
                         <Badge className="bg-[#6FA86F]">Kennenlern-Gespräch</Badge>
                     </div>
                 )}
-                {type === 'pupil' && !isFirstPupilScreening && (
+                {type === 'pupil' && !isFirstPupilScreening && hasPendingScreening && (
                     <div className="flex justify-center mt-2">
                         <Badge className="bg-[#A8C686]">LU-Gespräch</Badge>
                     </div>

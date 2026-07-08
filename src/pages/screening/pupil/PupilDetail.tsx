@@ -114,17 +114,18 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
     };
 
     const isFirstPupilScreening = !pupil.screenings?.some((it) => it!.status === 'success') || !pupil.screenings?.length;
+    const hasPendingScreening = pupil?.screenings?.some((it) => ['pending', 'dispute'].includes(it!.status) && !it!.invalidated);
 
     return (
         <div className="mt-8">
             <div className="mb-6">
                 <div>
-                    {isFirstPupilScreening && (
+                    {isFirstPupilScreening && hasPendingScreening && (
                         <div className="flex my-2">
                             <Badge className="bg-[#6FA86F]">Kennenlern-Gespräch</Badge>
                         </div>
                     )}
-                    {!isFirstPupilScreening && (
+                    {!isFirstPupilScreening && hasPendingScreening && (
                         <div className="flex my-2">
                             <Badge className="bg-[#A8C686]">LU-Gespräch</Badge>
                         </div>
