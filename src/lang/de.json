@@ -1387,13 +1387,6 @@
             "content": "Wir warten auf jemanden, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. Je nach Auswahl der Fächer kann das unterschiedlich lang dauern. Bei den am stärksten nachgefragten Fächern wie Deutsch als Zweitsprache, Deutsch oder Mathe sind das oft nur wenige Tage. Bei selteneren Fächern kann es auch einige Wochen dauern. In jedem Fall melden wir uns per E-mail. Du kannst jederzeit deine Anfrage ändern und andere Fächer angeben.",
             "buttons": ["Problem melden"]
         },
-        "statusStudent2": {
-            "subtitle": "Weitere Engagement-Möglichkeiten",
-            "title": "Lust auf mehr?",
-            "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
-            "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
-            "actionDescription": "Möglichkeiten ansehen"
-        },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in 🤗",
             "subtitle": "1:1 Nachhilfe ",
