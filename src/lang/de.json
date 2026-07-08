@@ -1400,13 +1400,6 @@
             "content": "Wir warten auf jemanden, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. Je nach Auswahl der Fächer kann das unterschiedlich lang dauern. Bei den am stärksten nachgefragten Fächern wie Deutsch als Zweitsprache, Deutsch oder Mathe sind das oft nur wenige Tage. Bei selteneren Fächern kann es auch einige Wochen dauern. In jedem Fall melden wir uns per E-mail. Du kannst jederzeit deine Anfrage ändern und andere Fächer angeben.",
             "buttons": ["Problem melden"]
         },
-        "statusStudent2": {
-            "subtitle": "Weitere Engagement-Möglichkeiten",
-            "title": "Lust auf mehr?",
-            "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
-            "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
-            "actionDescription": "Möglichkeiten ansehen"
-        },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in 🤗",
             "subtitle": "1:1 Nachhilfe ",
@@ -2822,7 +2815,7 @@
             "request": "Jetzt runterladen"
         },
         "participationCertificate": {
-            "deactivated": "Es gibt keinen Individuellen Nachweis mehr, den du von deine(n) Schüler:innen bestätigen lassen musst. Deine geleisteten Stunden werden automatisch in der Datenbank erfasst. Du kannst bald den aktuellen Stand als Sofort-Nachweis - auch mehrfach - herunterladen (Stand 08.06.2026 werden noch nicht alle Stunden korrekt gezählt, wir sind dran...). Bei Fragen oder Problemen kannst du dich an <0 /> wenden.",
+            "deactivated": "Es gibt keinen individuellen Nachweis mehr, den du von deinen Schüler:innen bestätigen lassen kannst. Alle über die Lern-Fair-App geplanten Termine, die in Zoom stattfinden, werden ab sofort automatisch in der Datenbank erfasst. Wenn du einen Sofort-Nachweis herunterlädst, sind die von dir geleisteten Stunden automatisch enthalten. Melde dich unter <0 />, wenn du weitere Fragen hierzu hast.",
             "title": "Individueller Nachweis",
             "bullets": [
                 "muss durch den/die Lernpartner:in bestätigt werden",

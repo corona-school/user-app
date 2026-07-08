@@ -278,12 +278,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
-        if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
-            infos.push({
-                label: NextStepLabelType.STATUS_STUDENT_TWO,
-                btnfn: [() => navigate('/matching'), () => navigate('/group')],
-                lang: {},
-            });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => ['PASSWORD', 'IDP'].includes(secret.type)))
             infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
@@ -340,12 +334,25 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         let configurableInfos: ConfigurableInfo[] = [];
 
         // -------- Configurable Important Information -----------
+
         importantInformations
             .filter(
                 (info: any) =>
                     info.language.includes(getI18n().language) &&
                     ((pupil && info.recipients.includes('pupils')) || (student && info.recipients.includes('students')))
             )
+            .sort((a, b) => {
+                const categoryOrder = [
+                    Important_Information_Category_Enum.Important,
+                    Important_Information_Category_Enum.HighDemand,
+                    Important_Information_Category_Enum.HolidayInfo,
+                    Important_Information_Category_Enum.Event,
+                    Important_Information_Category_Enum.FeatureUpdate,
+                    Important_Information_Category_Enum.News,
+                    Important_Information_Category_Enum.Feedback,
+                ];
+                return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
+            })
             .forEach((info: any) => {
                 configurableInfos.push({
                     title: info.title,
@@ -431,20 +438,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 onShowAll={() => navigate('/progress')}
                 showAll={GAMIFICATION_ACTIVE}
             >
-                {configurableInfos.map((info, index) => {
-                    return (
-                        <NextStepsCard
-                            key={index}
-                            title={info.title}
-                            description={info.description}
-                            onClick={() => {
-                                handleOnConfigurableInfoClick(info);
-                            }}
-                            category={info.category}
-                            ctaLabel={info.ctaLabel || t('moreInfoButton')}
-                        />
-                    );
-                })}
                 {infos.map((config, index) => {
                     const buttontexts: string[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
                     const actionDescription = i18n.exists(`helperwizard.${config.label}.actionDescription`)
@@ -459,6 +452,20 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                             onClick={() => handleOnInfoClick({ ...config, btntxt: buttontexts })}
                             ctaLabel={actionDescription}
                             category={Important_Information_Category_Enum.Important}
+                        />
+                    );
+                })}
+                {configurableInfos.map((info, index) => {
+                    return (
+                        <NextStepsCard
+                            key={index}
+                            title={info.title}
+                            description={info.description}
+                            onClick={() => {
+                                handleOnConfigurableInfoClick(info);
+                            }}
+                            category={info.category}
+                            ctaLabel={info.ctaLabel || t('moreInfoButton')}
                         />
                     );
                 })}
