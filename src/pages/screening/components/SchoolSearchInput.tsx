@@ -30,7 +30,7 @@ export const SchoolSearchInput = ({ className, defaultValue, onSelect }: SchoolS
 
     const handleOnCreate = (name: string) => {
         setSchool({ name });
-        onSelect({ name });
+        onSelect({ name, city: null, zip: null });
     };
 
     useEffect(() => {
