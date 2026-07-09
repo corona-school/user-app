@@ -244,7 +244,7 @@ const SingleCoursePupil = () => {
                         </TabsList>
                     )}
                     <TabsContent value="lectures">
-                        <div className="mt-8 max-h-full overflow-y-scroll">
+                        <div className="mt-8 max-h-full overflow-y-auto">
                             <AppointmentList
                                 appointments={appointments as Appointment[]}
                                 isReadOnly={!subcourse?.isParticipant}
