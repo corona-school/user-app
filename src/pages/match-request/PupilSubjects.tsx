@@ -9,7 +9,7 @@ import { IconBulbFilled, IconCircleCheckFilled, IconInfoCircleFilled } from '@ta
 import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/Tailwind';
-import { SingleSubject } from '@/types/subject';
+import { SingleSubject, SUBJECTS } from '@/types/subject';
 
 const PupilSubjects = () => {
     const { goNext, form, onFormChange } = useMatchRequestForm();
@@ -46,6 +46,28 @@ const PupilSubjects = () => {
         return subjectNames;
     }, [subjectNames, isDAZ]);
 
+    const options = SUBJECTS.map((e) => ({
+        subject: e,
+        waitingDaysRange: form.subjectsOptions.find((o) => o.subject === e)?.waitingDaysRange ?? [],
+    })).sort((a, b) => {
+        const aIndex = form.subjectsOptions.findIndex((o) => o.subject === a.subject);
+        const bIndex = form.subjectsOptions.findIndex((o) => o.subject === b.subject);
+
+        if (aIndex === -1 && bIndex === -1) {
+            return 0;
+        }
+
+        if (aIndex === -1) {
+            return 1;
+        }
+
+        if (bIndex === -1) {
+            return -1;
+        }
+
+        return aIndex - bIndex;
+    });
+
     return (
         <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0}>
             <div className={cn('flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4')}>
@@ -64,7 +86,7 @@ const PupilSubjects = () => {
                 onChange={handleOnSubjectsChange}
                 multiple
                 value={value as SingleSubject[]}
-                options={form.subjectsOptions as unknown as SubjectOption[]}
+                options={options as unknown as SubjectOption[]}
             />
             {!isDAZ && (
                 <Alert variant="indigo" className=" mt-6 md:mt-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
