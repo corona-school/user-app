@@ -1,10 +1,9 @@
-import { Circle, HStack, VStack, Modal, Pressable, Spacer, Stack, Text, Tooltip, useBreakpointValue } from 'native-base';
+import { HStack, VStack, Modal, Pressable, Spacer, Stack, Text, useBreakpointValue } from 'native-base';
 import InformationBadge from '../notifications/preferences/InformationBadge';
 import DateIcon from '../../assets/icons/lernfair/appointments/appointment_date.svg';
 import TimeIcon from '../../assets/icons/lernfair/appointments/appointment_time.svg';
 import PersonIcon from '../../assets/icons/lernfair/appointments/appointment_person.svg';
 import RepeatIcon from '../../assets/icons/lernfair/appointments/appointment_repeat.svg';
-import CamerIcon from '../../assets/icons/lf-camera-icon.svg';
 import { useLayoutHelper } from '../../hooks/useLayoutHelper';
 import { useTranslation } from 'react-i18next';
 import AttendeesModal from '../../modals/AttendeesModal';
@@ -135,10 +134,14 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         </HStack>
                         {!isHomeworkHelp && (
                             <>
-                                <HStack space={2} alignItems="center">
-                                    <RepeatIcon />
-                                    <Text fontWeight="normal">{t('appointment.detail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}</Text>
-                                </HStack>
+                                {appointmentType === 'group' && (
+                                    <HStack space={2} alignItems="center">
+                                        <RepeatIcon />
+                                        <Text fontWeight="normal">
+                                            {t('appointment.detail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}
+                                        </Text>
+                                    </HStack>
+                                )}
                                 <HStack space={2} alignItems="center">
                                     <PersonIcon />
                                     <Text fontWeight="normal">

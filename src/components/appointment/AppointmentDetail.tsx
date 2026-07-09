@@ -5,7 +5,6 @@ import { Appointment } from '../../types/lernfair/Appointment';
 import AppointmentMetaDetails from './AppointmentMetaDetails';
 import Header from './Header';
 import Avatars from './Avatars';
-import Description from './Description';
 import { DateTime } from 'luxon';
 import { useMutation } from '@apollo/client';
 import useApollo from '../../hooks/useApollo';
@@ -20,6 +19,7 @@ import { Button } from '../Button';
 import AddToCalendarDropdown from '../AddToCalendarDropdown';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
+import { Separator } from '../Separator';
 
 type AppointmentDetailProps = {
     appointment: Appointment;
@@ -167,7 +167,13 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHo
                         <Typography>{t('appointment.detail.rescheduleDescription', { name: appointment.displayName })}</Typography>
                     </>
                 )}
-                <Description description={appointment.description} />
+                {appointment.description && (
+                    <div className="flex flex-col p-3 mb-4">
+                        <Separator className="my-5" />
+                        <Typography className="font-semibold mb-2">{t('appointment.detail.descriptionHeader')}</Typography>
+                        <Typography>{appointment.description}</Typography>
+                    </div>
+                )}
                 <div className="flex flex-col md:flex-row gap-3">
                     {appointment.isOrganizer && (
                         <>
