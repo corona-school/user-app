@@ -63,7 +63,7 @@ const StudentSubjects = () => {
                 multiple
                 value={subjectNames as SingleSubject[]}
                 options={options}
-                initialVisibleOptions={form.subjectsOptions.length}
+                initialVisibleOptions={form.subjectsOptions.length || 8}
             />
             <Alert variant="indigo" className=" mt-6 md:mt-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
                 <span className="leading-[18px]">{t('matching.wizard.subjects.student.bannerText')}</span>
