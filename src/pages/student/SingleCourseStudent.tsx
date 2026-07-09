@@ -410,7 +410,7 @@ const SingleCourseStudent = () => {
             {subLoading || !course || !subcourse ? (
                 <CenterLoadingSpinner />
             ) : (
-                <div className="flex flex-col gap-y-11 max-w-5xl mx-auto">
+                <div className="flex flex-col gap-y-11 max-w-5xl px-4">
                     <div>
                         <Breadcrumb items={[breadcrumbRoutes.COURSES, { label: course?.name }]} />
                         <SubcourseData

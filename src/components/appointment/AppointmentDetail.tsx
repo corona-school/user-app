@@ -168,13 +168,13 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHo
                     </>
                 )}
                 {appointment.description && (
-                    <div className="flex flex-col p-3 mb-4">
+                    <div className="flex flex-col p-3">
                         <Separator className="my-5" />
                         <Typography className="font-semibold mb-2">{t('appointment.detail.descriptionHeader')}</Typography>
                         <Typography>{appointment.description}</Typography>
                     </div>
                 )}
-                <div className="flex flex-col md:flex-row gap-3">
+                <div className="flex flex-col md:flex-row gap-3 mt-10">
                     {appointment.isOrganizer && (
                         <>
                             <Button
