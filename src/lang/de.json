@@ -24,6 +24,7 @@
     "joinZoomMeeting": "Zoom starten",
     "lessSubjects": "Weniger Fächer",
     "moreSubjects": "Weitere Fächer",
+    "noWaitingTimeInfos": "Wartezeit: keine Infos",
     "waitingTimeInWeeks": "Wartezeit: {{0}} bis {{1}} Wochen",
     "peopleWaiting": "{{count}} wartend",
     "weekdays": {

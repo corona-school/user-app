@@ -203,7 +203,7 @@ export const SubjectsSelector = ({
                                                   0: Math.ceil(option.waitingDaysRange.from / 7),
                                                   1: Math.ceil(option.waitingDaysRange.to / 7),
                                               })
-                                            : `Zu wenig Daten`}
+                                            : t('noWaitingTimeInfos')}
                                     </Typography>
                                 )}
                                 {showPupilsWaiting && !!option.pupilsWaiting && (
