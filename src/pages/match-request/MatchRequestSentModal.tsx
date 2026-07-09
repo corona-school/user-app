@@ -7,6 +7,7 @@ import { DateTime } from 'luxon';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useMatchRequestForm } from './useMatchRequestForm';
+import { useConfetti } from '@/hooks/useConfetti';
 
 interface MatchRequestSentModalProps {
     isOpen: boolean;
@@ -14,6 +15,8 @@ interface MatchRequestSentModalProps {
 }
 
 export const StudentMatchRequestSentModal = ({ isOpen }: Omit<MatchRequestSentModalProps, 'screeningAppointment'>) => {
+    const { form } = useMatchRequestForm();
+    useConfetti(isOpen && !form.isEdit);
     const navigate = useNavigate();
     const { t } = useTranslation();
     const handleOnOpenChange = (open: boolean) => {
@@ -21,6 +24,7 @@ export const StudentMatchRequestSentModal = ({ isOpen }: Omit<MatchRequestSentMo
 
         navigate('/matching', { state: { tabID: 1 } });
     };
+
     return (
         <Modal onOpenChange={handleOnOpenChange} isOpen={isOpen} size="md">
             <div className="flex items-center">
@@ -41,6 +45,7 @@ export const StudentMatchRequestSentModal = ({ isOpen }: Omit<MatchRequestSentMo
 
 export const MatchRequestSentModal = ({ screeningAppointment, isOpen }: MatchRequestSentModalProps) => {
     const { form } = useMatchRequestForm();
+    useConfetti(isOpen && !form.isEdit);
     const { t } = useTranslation();
     const navigate = useNavigate();
 
