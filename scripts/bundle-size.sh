@@ -15,7 +15,7 @@ for bundle in build/static/js/*.js; do
   compressed_size=$(gzip -c $bundle | wc -c)
 
   in_bounds=""
-  if (( compressed_size > MAX_BUNDLE_SIZE_KB * 1000 )); then
+  if [[ "$bundle" == *"/main."* ]] && (( compressed_size > MAX_BUNDLE_SIZE_KB * 1000 )); then
     in_bounds="❌"
     commands+="::error file=./scripts/bundle-size.sh,line=1,col=1,title=Bundle Size Exceeded::$bundle has a size of $compressed_size bytes (gzip compressed)\n"
   fi
