@@ -1,8 +1,8 @@
-import { SubjectOption, SubjectsSelector } from '@/widgets/SubjectSelector';
+import { SubjectsSelector } from '@/widgets/SubjectSelector';
 import { useTranslation } from 'react-i18next';
+import { Typography } from '@/components/Typography';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
-import { Typography } from '@/components/Typography';
 import { SingleSubject } from '@/types/subject';
 
 const Priority: React.FC = () => {
@@ -18,7 +18,10 @@ const Priority: React.FC = () => {
         });
     };
 
-    const options = (form.subjectsOptions ?? []).filter((it) => form.subjects.some((s) => s.name === it.subject)) as unknown as SubjectOption[];
+    const options = form.subjects.map((e) => ({
+        subject: e.name as SingleSubject,
+        waitingDaysRange: form.subjectsOptions.find((o) => o.subject === e.name)?.waitingDaysRange,
+    }));
     const value = form.subjects.find((s) => s.mandatory)?.name as SingleSubject;
 
     return (
