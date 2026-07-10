@@ -82,7 +82,7 @@ const UpdateData = () => {
             </MatchRequestStepDescription>
             <div className="flex flex-col gap-y-6">
                 <div></div>
-                <div className="flex flex-col flex-1 md:flex-row gap-x-5 gap-y-6">
+                <div className="flex flex-col flex-1 md:flex-row gap-x-4 gap-y-6 md:items-end">
                     <UpdateDataButton
                         label={t(form.userType === 'pupil' ? 'profile.Languages.labelPupil' : 'profile.Languages.labelStudent')}
                         onClick={() => handleOnOpenModal('languages')}
@@ -136,18 +136,18 @@ const UpdateData = () => {
                                     availability={form.calendarPreferences?.weeklyAvailability}
                                     isLoading={isLoading}
                                 />
+                                <Alert variant="indigo" className="mt-4" icon={<IconBulbFilled size={24} className=" text-indigo-500" />}>
+                                    <span className="leading-[18px]">
+                                        {t(
+                                            form.userType === 'pupil'
+                                                ? 'matching.wizard.profile.pupil.availabilityBanner'
+                                                : 'matching.wizard.profile.student.availabilityBanner'
+                                        )}
+                                    </span>
+                                </Alert>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
-                    <Alert variant="indigo" className="" icon={<IconBulbFilled size={24} className=" text-indigo-500" />}>
-                        <span className="leading-[18px]">
-                            {t(
-                                form.userType === 'pupil'
-                                    ? 'matching.wizard.profile.pupil.availabilityBanner'
-                                    : 'matching.wizard.profile.student.availabilityBanner'
-                            )}
-                        </span>
-                    </Alert>
                 </div>
                 <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen} size="lg" ref={dialogContentRef}>
                     <ModalHeader>

@@ -105,7 +105,7 @@ export const WeeklyAvailabilitySelector = ({
 
     return (
         <div className="bg-background overflow-x-hidden">
-            <div className="md:hidden flex gap-x-2 justify-end mb-4">
+            <div className="lg:hidden flex gap-x-2 justify-end mb-4">
                 <Button onClick={() => handleOnScroll('start')} size="icon" variant="outline" className="rounded-full border-primary-lighter">
                     <IconChevronLeft />
                 </Button>
@@ -114,7 +114,7 @@ export const WeeklyAvailabilitySelector = ({
                 </Button>
             </div>
             <div className="block overflow-x-hidden md:overflow-x-auto" ref={gridRef}>
-                <div className="inline-grid grid-flow-col auto-cols-max gap-x-2">
+                <div className="inline-grid grid-flow-col auto-cols-max lg:grid-cols-[100px] lg:auto-cols-[minmax(0,139px)] gap-x-2">
                     <div className="flex sticky left-0 flex-col gap-y-1 w-[100px]">
                         <div className="w-[100px] h-10 bg-white flex items-center justify-center text-subtle">{t('time')}</div>
                         {TIME_SLOTS.map((timeSlot) => (
@@ -135,7 +135,7 @@ export const WeeklyAvailabilitySelector = ({
                     </div>
 
                     {DAYS.map((day) => (
-                        <div key={day} className="flex flex-col gap-y-1 w-10 md:w-[139px]">
+                        <div key={day} className="flex flex-col gap-y-1 w-10 md:max-w-[139px] md:w-full">
                             <Skeleton isLoading={isLoading}>
                                 <div
                                     role="button"
@@ -144,7 +144,7 @@ export const WeeklyAvailabilitySelector = ({
                                     onMouseEnter={() => setHoveredColumn(day)}
                                     onMouseLeave={() => setHoveredColumn('')}
                                     className={cn(
-                                        'h-10 rounded-md text-center bg-primary-lighter transition-colors flex items-center justify-center text-primary',
+                                        'h-10 rounded-md text-center bg-primary-lighter transition-colors flex items-center justify-center text-primary px-4',
                                         {
                                             'bg-green-200 text-green-800': isColumnSelected(day),
                                         }
