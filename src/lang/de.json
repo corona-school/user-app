@@ -2367,7 +2367,7 @@
         "no_open_screening_long": "Der Schüler hat kein offenes Screening bei dem eine Fallentscheidung aussteht.",
         "success_screening": "Erfolgreiches Screening",
         "rejection_screening": "Abgelehntes Screening",
-        "dispute_screening": "Unklares Screening",
+        "dispute_screening": "Screening offen",
         "pending_screening": "Ausstehendes Screening",
         "has_matches": "{{count}} Lernpaare",
         "registered_since": "registriert seit",
