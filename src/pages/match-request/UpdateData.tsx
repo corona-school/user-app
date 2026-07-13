@@ -2,7 +2,6 @@ import { useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { GradeSelector } from '@/components/GradeSelector';
 import { CalendarPreferences, Language } from '@/gql/graphql';
-import { Label } from '@/components/Label';
 import { WeeklyAvailabilitySelector } from '@/components/availability/WeeklyAvailabilitySelector';
 import { LanguageSelector } from '@/components/LanguageSelector';
 import { SchoolTypeSelector } from '@/components/SchoolTypeSelector';
@@ -16,6 +15,7 @@ import { IconBulbFilled, IconCheck, IconChevronDown, IconPencil, IconSend } from
 import { Alert } from '@/components/Alert';
 import { SpecialTeachingExperienceEnum, SpecialTeachingExperienceSelector } from '@/components/SpecialTeachingExperienceSelector';
 import { cn } from '@/lib/Tailwind';
+import { Typography } from '@/components/Typography';
 
 type ModalType = 'grade' | 'schoolType' | 'languages' | 'specialTeachingExperience';
 
@@ -29,7 +29,7 @@ interface UpdateDataButtonProps {
 const UpdateDataButton = ({ onClick, icon, label, children }: UpdateDataButtonProps) => {
     return (
         <div className="flex flex-col gap-y-1 flex-1 min-w-0">
-            <Label>{label}</Label>
+            <Typography variant="h6">{label}</Typography>
             <Button className="w-full" variant="input" size="input" onClick={onClick} rightIcon={icon}>
                 <div className="max-w-[90%] flex flex-1 items-center gap-x-2">{children}</div>
             </Button>
@@ -127,7 +127,9 @@ const UpdateData = () => {
                     <Accordion type="single" collapsible className="w-full" defaultValue="availability">
                         <AccordionItem value="availability">
                             <AccordionTrigger IconComponent={IconChevronDown} iconClasses="w-[22px]" className="py-0 items-center justify-start gap-1">
-                                <Label className="order-2 cursor-pointer">{t('profile.availability')}</Label>
+                                <Typography variant="h6" className="order-2 cursor-pointer">
+                                    {t('profile.availability')}
+                                </Typography>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col gap-4 md:pt-4">
                                 <WeeklyAvailabilitySelector

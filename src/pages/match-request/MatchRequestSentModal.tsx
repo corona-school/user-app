@@ -95,12 +95,6 @@ export const MatchRequestSentModal = ({ screeningAppointment, isOpen }: MatchReq
                     </div>
                     <Typography>{t('matching.wizard.modalSuccess.pupil.basicRequest.text')}</Typography>
                     <ModalFooter mobileLayout="column">
-                        <Button variant="outline" onClick={() => navigate('/hausaufgabenhilfe')} leftIcon={<IconArrowRight size={20} />}>
-                            {t('matching.wizard.modalSuccess.pupil.basicRequest.toTheHomeworkHelp')}
-                        </Button>
-                        <Button variant="outline" onClick={() => navigate('/group')} leftIcon={<IconArrowRight size={20} />}>
-                            {t('matching.wizard.modalSuccess.pupil.basicRequest.toTheGroupCourses')}
-                        </Button>
                         <Button onClick={() => handleOnOpenChange(false)} leftIcon={<IconCheck size={20} />}>
                             {t('done')}
                         </Button>

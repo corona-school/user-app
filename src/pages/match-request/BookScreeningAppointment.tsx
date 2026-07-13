@@ -81,17 +81,17 @@ export const BookScreeningAppointment = () => {
     return (
         <MatchRequestStep className="pb-0">
             <div className="relative h-full">
-                <MatchRequestStepTitle>{t('matching.wizard.bookScreeningAppointment.title')}</MatchRequestStepTitle>
+                <MatchRequestStepTitle className="mb-2">{t('matching.wizard.bookScreeningAppointment.title')}</MatchRequestStepTitle>
                 <div className="flex flex-col gap-y-7 mb-4">
-                    <div className="flex gap-x-4 items-center mt-7 w-full">
+                    <div className="flex gap-x-4 items-center w-full">
                         <Typography className="max-w-[600px]">{t('matching.wizard.bookScreeningAppointment.description')}</Typography>
                     </div>
                     <Alert icon={<IconTimeDuration10 />} variant="success-outline" className="w-full max-w-[368px]">
                         {t('matching.wizard.bookScreeningAppointment.alert', { minutes: 10 })}
                     </Alert>
                 </div>
-                <div className="flex flex-col justify-center items-center mb-10 md:mb-0">
-                    <Accordion type="single" collapsible className="w-full my-4 max-w-[845px] md:min-h-[310px]">
+                <div className="flex flex-col mb-10 md:mb-0">
+                    <Accordion type="single" collapsible className="w-full my-4 max-w-[845px]">
                         <AccordionItem className="border-none py-0" value={'about'}>
                             <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
                                 <Typography variant="body-lg" className="font-medium">
@@ -133,16 +133,18 @@ export const BookScreeningAppointment = () => {
                         <AccordionItem className="border-none py-0" value={'reminder'}>
                             <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
                                 <Typography variant="body-lg" className="font-medium">
-                                    <Typography className="font-semibold">{t('matching.wizard.bookScreeningAppointment.reminder.title')}</Typography>
+                                    {t('matching.wizard.bookScreeningAppointment.reminder.title')}
                                 </Typography>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col pt-2">
-                                <Typography variant="subtle">{t('matching.wizard.bookScreeningAppointment.reminder.description')}</Typography>
+                                <Typography className="max-w-[70%]" variant="subtle">
+                                    {t('matching.wizard.bookScreeningAppointment.reminder.description')}
+                                </Typography>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
                 </div>
-                <div className="flex flex-col md:flex-row gap-x-4 gap-y-2">
+                <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 mt-10">
                     <div className="flex flex-row gap-x-4">
                         {!form.isAppointmentStepForced && (
                             <Button
