@@ -15,6 +15,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { IconBulbFilled, IconCheck, IconChevronDown, IconPencil, IconSend } from '@tabler/icons-react';
 import { Alert } from '@/components/Alert';
 import { SpecialTeachingExperienceEnum, SpecialTeachingExperienceSelector } from '@/components/SpecialTeachingExperienceSelector';
+import { cn } from '@/lib/Tailwind';
 
 type ModalType = 'grade' | 'schoolType' | 'languages' | 'specialTeachingExperience';
 
@@ -149,12 +150,18 @@ const UpdateData = () => {
                         </AccordionItem>
                     </Accordion>
                 </div>
-                <Modal isOpen={isModalOpen} onOpenChange={setIsModalOpen} size="lg" ref={dialogContentRef}>
+                <Modal
+                    isOpen={isModalOpen}
+                    onOpenChange={setIsModalOpen}
+                    size="lg"
+                    ref={dialogContentRef}
+                    className={cn({ 'overflow-y-visible': modalType === 'languages' })}
+                >
                     <ModalHeader>
                         <ModalTitle>{getModalTitle()}</ModalTitle>
                     </ModalHeader>
                     <div className="flex justify-center">
-                        <div className="flex flex-col gap-y-2 justify-center max-w-[576px]">
+                        <div className="flex flex-col gap-y-2 justify-center max-w-[576px]" id="languages-modal-content">
                             {modalType === 'languages' && (
                                 <LanguageSelector
                                     maxVisibleItems={8}
@@ -163,6 +170,7 @@ const UpdateData = () => {
                                         containerClassName: 'w-full flex justify-center',
                                         className: 'bg-white border border-solid border border-accent-dark max-w-[190px]',
                                         placeholder: t('otherLanguages'),
+                                        portalContainerId: 'languages-modal-content',
                                     }}
                                     toggleConfig={{
                                         variant: 'outline-accent',

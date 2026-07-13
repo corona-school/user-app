@@ -36,6 +36,7 @@ type ComboboxProps = (SingleComboboxProps | MultiComboboxProps) & {
     search?: string;
     isLoading?: boolean;
     className?: string;
+    portalContainerId?: string;
 };
 
 export const Combobox = ({
@@ -52,6 +53,7 @@ export const Combobox = ({
     onSelect,
     className,
     multiple,
+    portalContainerId,
 }: ComboboxProps) => {
     const [open, setOpen] = useState(false);
 
@@ -99,7 +101,7 @@ export const Combobox = ({
     const hasSelectedValue = !!getCurrentValueLabels()?.length;
 
     return (
-        <Popover open={open} onOpenChange={setOpen} modal>
+        <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
                 <Button
                     variant="input"
@@ -119,7 +121,10 @@ export const Combobox = ({
                     <div className="text-ellipsis overflow-hidden w-[90%] text-left">{getCurrentValueLabels() || placeholder}</div>
                 </Button>
             </PopoverTrigger>
-            <PopoverContent className={cn('max-w-full p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]')}>
+            <PopoverContent
+                className={cn('max-w-full p-0 w-[--radix-popover-trigger-width] max-h-[--radix-popover-content-available-height]')}
+                container={portalContainerId ? document.getElementById(portalContainerId) : undefined}
+            >
                 <Command shouldFilter={false}>
                     <CommandInput placeholder={searchPlaceholder} onValueChange={onSearch} value={search} />
                     <CommandList>

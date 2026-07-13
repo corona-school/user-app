@@ -36,7 +36,7 @@ export type SelectorProps<Enum> = (SingleSelectorProps<Enum> | MultiSelectorProp
         size?: ToggleVariants['size'];
     };
     searchConfig?: {
-        container?: HTMLElement | null;
+        portalContainerId?: string;
         containerClassName?: string;
         className?: string;
         placeholder?: string;
@@ -160,6 +160,7 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
                                 isLoading={false}
                                 placeholder={searchConfig?.placeholder}
                                 filterSearchResult={(e) => e.label.toLowerCase().includes(search.toLowerCase())}
+                                portalContainerId={searchConfig?.portalContainerId}
                             />
                         </div>
                     )}
