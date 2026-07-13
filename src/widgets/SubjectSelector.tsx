@@ -4,6 +4,7 @@ import { IconLoader } from '@/components/IconLoader';
 import { Toggle } from '@/components/Toggle';
 import { Typography } from '@/components/Typography';
 import { cn } from '@/lib/Tailwind';
+import { TRAINEE_GRADE } from '@/Utility';
 import {
     IconActivity,
     IconBriefcase,
@@ -91,23 +92,36 @@ export const SubjectSelector = ({
 const getGradesLabels = (numbers: number[]) => {
     if (!numbers.length) return '';
 
-    const grades = Array.from(new Set(numbers)).sort((a, b) => a - b);
-    const result = [];
-    let start = grades[0];
-    let end = grades[0];
+    const hasAzubi = numbers.includes(TRAINEE_GRADE);
 
-    for (let i = 1; i <= grades.length; i++) {
-        if (grades[i] === end + 1) {
-            end = grades[i];
-        } else {
-            result.push(start === end ? `${start}` : `${start}-${end}`);
+    const grades = Array.from(new Set(numbers.filter((n) => n !== TRAINEE_GRADE))).sort((a, b) => a - b);
 
-            start = grades[i];
-            end = grades[i];
+    const result: string[] = [];
+
+    if (grades.length) {
+        let start = grades[0];
+        let end = grades[0];
+
+        for (let i = 1; i <= grades.length; i++) {
+            if (grades[i] === end + 1) {
+                end = grades[i];
+            } else {
+                result.push(start === end ? `${start}` : `${start}-${end}`);
+                start = grades[i];
+                end = grades[i];
+            }
         }
     }
 
-    return result.join(',');
+    if (hasAzubi) {
+        result.push('Azubi');
+    }
+
+    if (result.length === 1 && result[0] === 'Azubi') {
+        return 'Azubi';
+    }
+
+    return `Kl. ${result.join(', ')}`;
 };
 
 export interface SubjectOption {
@@ -218,7 +232,7 @@ export const SubjectsSelector = ({
                                 )}
                                 {showGradesAvailable && !!option.gradesAvailable?.length && (
                                     <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
-                                        Kl. {getGradesLabels(option.gradesAvailable)}
+                                        {getGradesLabels(option.gradesAvailable)}
                                     </Badge>
                                 )}
                             </div>
