@@ -22,7 +22,7 @@ export type MatchRequestStepProps = Omit<_MatchRequestStepProps, 'children'>;
 
 export const MatchRequestStepTitle = ({ className, variant = 'h4', children, ...rest }: TypographyProps) => {
     return (
-        <Typography className={cn('text-balance mb-2', className)} variant={variant} {...rest}>
+        <Typography className={cn('text-lg leading-5 md:text-xl md:leading-8 text-balance mb-6 md:mb-4', className)} variant={variant} {...rest}>
             {children}
         </Typography>
     );

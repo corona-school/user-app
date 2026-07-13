@@ -78,7 +78,7 @@ const PupilSubjects = () => {
                     </Alert>
                 )}
             </div>
-            <Typography variant="h5" className="mb-4">
+            <Typography variant="h6" className="mb-[10px]">
                 {t('matching.wizard.subjects.pupil.subheading')}
             </Typography>
             <SubjectsSelector

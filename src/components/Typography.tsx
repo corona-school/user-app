@@ -17,7 +17,7 @@ const typographyVariants = cva('text-foreground', {
             'body-lg': 'text-medium leading-5 font-normal tracking-normal',
             body: 'text-base leading-4 font-normal tracking-normal',
             form: 'text-base leading-1 font-medium tracking-normal',
-            subtle: 'text-subtle leading-1 font-normal',
+            subtle: 'text-subtle leading-2 font-normal',
             detail: 'text-detail leading-1 font-normal',
             sm: 'text-sm leading-2 font-normal tracking-normal',
             xs: 'text-xs leading-2 tracking-normal',
