@@ -33,7 +33,15 @@ const StudentSubjects = () => {
         subject: e,
         pupilsWaiting: form.subjectsOptions.find((o) => o.subject === e)?.pupilsWaiting ?? 0,
         gradesAvailable: form.subjectsOptions.find((o) => o.subject === e)?.gradesAvailable ?? [],
-    })).sort((a, b) => (b.pupilsWaiting ?? 0) - (a.pupilsWaiting ?? 0));
+    })).sort((a, b) => {
+        // Keep the order from the subjectsOptions array, but put subjects that are not in the array at the end
+        const indexA = form.subjectsOptions.findIndex((o) => o.subject === a.subject);
+        const indexB = form.subjectsOptions.findIndex((o) => o.subject === b.subject);
+
+        if (indexA === -1) return 1;
+        if (indexB === -1) return -1;
+        return indexA - indexB;
+    });
 
     return (
         <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0}>
@@ -45,7 +53,7 @@ const StudentSubjects = () => {
                             i18nKey="matching.wizard.subjects.student.subheading"
                             values={{
                                 pupilCount: form.subjectsOptions.reduce((acc, s) => acc + (s.pupilsWaiting ?? 0), 0),
-                                subjectCount: form.subjectsOptions.length,
+                                subjectCount: form.subjectsOptions.filter((s) => !!s?.pupilsWaiting).length,
                             }}
                             components={{ b: <b /> }}
                             t={t}

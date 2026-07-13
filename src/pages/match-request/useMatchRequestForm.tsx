@@ -280,7 +280,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
 
     // Setup the initial state of the form based on the data from the query and the user type
     useEffect(() => {
-        if (!data || !userType) return;
+        if (!data || !userType || (!pupilSubjectsData && !studentSubjectsData)) return;
         const pupil = data.me.pupil;
         const student = data.me.student;
         const currentBookedScreening = data?.me.pupil?.screenings?.find((e) => ['pending', 'dispute'].includes(e.status) && !e.invalidated);
@@ -313,7 +313,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
             userType: userType === 'pupil' ? 'pupil' : 'student',
         });
         setIsLoading(false);
-    }, [data, userType]);
+    }, [data, userType, pupilSubjectsData, studentSubjectsData]);
 
     if (data?.me.pupil?.openMatchRequestCount === 0 && isAppointmentStepForced) {
         return <Navigate to="/request-match" replace />;

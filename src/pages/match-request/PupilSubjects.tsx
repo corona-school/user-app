@@ -50,6 +50,7 @@ const PupilSubjects = () => {
         subject: e,
         waitingDaysRange: form.subjectsOptions.find((o) => o.subject === e)?.waitingDaysRange ?? [],
     })).sort((a, b) => {
+        // Keep the order from the subjectsOptions array, but put subjects that are not in the array at the end
         const aIndex = form.subjectsOptions.findIndex((o) => o.subject === a.subject);
         const bIndex = form.subjectsOptions.findIndex((o) => o.subject === b.subject);
 
