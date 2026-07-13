@@ -148,7 +148,19 @@ export const SubjectsSelector = ({
     initialVisibleOptions = 12,
 }: SubjectsSelectorProps) => {
     const { t } = useTranslation();
-    const [showAllSubjects, setShowAllSubjects] = useState(false);
+    const filteredOptions = useMemo(() => {
+        return options.filter((option) => !deprecatedSubjects.includes(option.subject as any));
+    }, [options]);
+
+    const mainOptions = filteredOptions.slice(0, initialVisibleOptions);
+    const rareOptions = filteredOptions.slice(initialVisibleOptions);
+    // If any of the selected options is hidden (is part of rareOptions) we should all subjects by default
+    const [showAllSubjects, setShowAllSubjects] = useState(() => {
+        if (multiple) {
+            return (value as SingleSubject[]).some((s) => rareOptions.some((o) => o.subject === s));
+        }
+        return rareOptions.some((o) => o.subject === value);
+    });
 
     const handleOnToggle = (subject: SingleSubject, selected: boolean) => {
         if (multiple) {
@@ -158,13 +170,6 @@ export const SubjectsSelector = ({
 
         onChange(subject as any);
     };
-
-    const filteredOptions = useMemo(() => {
-        return options.filter((option) => !deprecatedSubjects.includes(option.subject as any));
-    }, [options]);
-
-    const mainOptions = filteredOptions.slice(0, initialVisibleOptions);
-    const rareOptions = filteredOptions.slice(initialVisibleOptions);
 
     const isBigVariant = showGradesAvailable && showPupilsWaiting && !showWaitingDays;
 
