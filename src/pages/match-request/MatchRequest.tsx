@@ -1,5 +1,5 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import AsNavigationItem from '@/components/AsNavigationItem';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
@@ -22,6 +22,7 @@ const MatchRequest: React.FC = () => {
     const location = useLocation();
     const locationState = location.state as { edit: boolean };
     const { trackPageView } = useMatomo();
+    const container = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (form.userType) {
@@ -38,6 +39,10 @@ const MatchRequest: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [locationState]);
 
+    useEffect(() => {
+        container.current?.scrollTo({ top: 0, behavior: 'smooth' });
+    }, [form.currentStep]);
+
     return (
         <AsNavigationItem path="matching">
             <WithNavigation
@@ -48,19 +53,18 @@ const MatchRequest: React.FC = () => {
                         <NotificationAlert />
                     </div>
                 }
+                classes={{ contentContainerClassName: 'overflow-hidden p-0 lg:px-0 lg:py-0' }}
             >
                 {!isLoading && (
-                    <div className="pb-9 relative h-full">
+                    <div className="relative h-full overflow-y-auto flex-1 p-4 pb-9 lg:px-8 lg:py-4" ref={container}>
                         <div className="h-5">
                             <Breadcrumb />
                         </div>
-                        <div className="relative h-full">
-                            {form.currentStep === MatchRequestStep.subjects && (form.userType === 'pupil' ? <PupilSubjects /> : <StudentSubjects />)}
-                            {form.currentStep === MatchRequestStep.grades && <SubjectsGrade />}
-                            {form.currentStep === MatchRequestStep.priority && <Priority />}
-                            {form.currentStep === MatchRequestStep.updateData && <UpdateData />}
-                            {form.currentStep === MatchRequestStep.bookScreeningAppointment && <BookScreeningAppointment />}
-                        </div>
+                        {form.currentStep === MatchRequestStep.subjects && (form.userType === 'pupil' ? <PupilSubjects /> : <StudentSubjects />)}
+                        {form.currentStep === MatchRequestStep.grades && <SubjectsGrade />}
+                        {form.currentStep === MatchRequestStep.priority && <Priority />}
+                        {form.currentStep === MatchRequestStep.updateData && <UpdateData />}
+                        {form.currentStep === MatchRequestStep.bookScreeningAppointment && <BookScreeningAppointment />}
                     </div>
                 )}
                 {isLoading && <CenterLoadingSpinner />}
