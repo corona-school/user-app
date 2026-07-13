@@ -50,7 +50,7 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
             >
                 <DialogPrimitive.Close
                     className={cn(
-                        'absolute right-6 top-6 size-10 md:size-auto flex items-center justify-center rounded-sm ring-offset-background transition-opacity focus:outline-none focus:ring-1 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none',
+                        'absolute right-6 top-5 size-10 md:size-auto flex items-center justify-center rounded-sm ring-offset-background transition-opacity focus:outline-none focus:ring-0 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none',
                         classes?.closeIcon
                     )}
                     onClick={(e) => e.stopPropagation()}
@@ -78,7 +78,7 @@ interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
 const ModalFooter = ({ className, variant = 'default', mobileLayout = 'row', ...props }: ModalFooterProps) => (
     <div
         className={cn(
-            'flex gap-x-2 [&>*]:w-full md:justify-end md:flex-row md:[&>*]:w-fit',
+            'flex gap-x-2 [&>*]:w-full md:justify-end md:flex-row md:[&>*]:w-fit mt-6',
             {
                 'flex-row-reverse': variant === 'destructive',
                 'flex-col gap-y-2': mobileLayout === 'column',
@@ -90,9 +90,7 @@ const ModalFooter = ({ className, variant = 'default', mobileLayout = 'row', ...
 );
 
 const ModalTitle = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Title>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>>(
-    ({ className, ...props }, ref) => (
-        <DialogPrimitive.Title ref={ref} className={cn('text-xl font-semibold leading-none tracking-tight', className)} {...props} />
-    )
+    ({ className, ...props }, ref) => <DialogPrimitive.Title ref={ref} className={cn('text-xl font-semibold leading-7 tracking-tight', className)} {...props} />
 );
 
 const ModalDescription = React.forwardRef<

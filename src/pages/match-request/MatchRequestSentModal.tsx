@@ -74,7 +74,7 @@ export const MatchRequestSentModal = ({ screeningAppointment, isOpen }: MatchReq
                             {screeningAppointment && DateTime.fromJSDate(screeningAppointment).toFormat('EEEE, dd. MMMM', { locale: i18next.language })} {'\n'}
                             {screeningAppointment && DateTime.fromJSDate(screeningAppointment).toFormat('t', { locale: i18next.language })} {t('clock')}
                         </Typography>
-                        <Typography className="text-center max-w-[290px] mx-auto mb-8">
+                        <Typography className="text-center max-w-[290px] mx-auto">
                             {t('matching.wizard.modalSuccess.pupil.requestWithAppointment.text')}
                         </Typography>
                     </div>
@@ -93,7 +93,7 @@ export const MatchRequestSentModal = ({ screeningAppointment, isOpen }: MatchReq
                             <ModalTitle>{t('matching.wizard.modalSuccess.pupil.basicRequest.heading')}</ModalTitle>
                         </div>
                     </div>
-                    <Typography className="mb-5">{t('matching.wizard.modalSuccess.pupil.basicRequest.text')}</Typography>
+                    <Typography>{t('matching.wizard.modalSuccess.pupil.basicRequest.text')}</Typography>
                     <ModalFooter mobileLayout="column">
                         <Button variant="outline" onClick={() => navigate('/hausaufgabenhilfe')} leftIcon={<IconArrowRight size={20} />}>
                             {t('matching.wizard.modalSuccess.pupil.basicRequest.toTheHomeworkHelp')}
