@@ -55,6 +55,7 @@ export function ScreeningDashboard() {
                     calendarPreferences
                     isPupil
                     isParticipant
+                    emailOwner
                     school {
                         id
                         name
@@ -180,6 +181,7 @@ export function ScreeningDashboard() {
                 calendarPreferences
                 isPupil
                 isParticipant
+                emailOwner
                 school {
                     id
                     name

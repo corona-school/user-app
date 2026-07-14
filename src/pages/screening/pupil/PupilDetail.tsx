@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
-import { Pupil_Screening_Status_Enum } from '@/gql/graphql';
+import { Pupil_Email_Owner_Enum, Pupil_Screening_Status_Enum } from '@/gql/graphql';
 import { PupilForScreening, PupilScreening } from '@/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -116,6 +116,19 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
     const isFirstPupilScreening = !pupil.screenings?.some((it) => it!.status === 'success') || !pupil.screenings?.length;
     const hasPendingScreening = pupil?.screenings?.some((it) => ['pending', 'dispute'].includes(it!.status) && !it!.invalidated);
 
+    const getEmailOwnerText = () => {
+        switch (pupil.emailOwner) {
+            case Pupil_Email_Owner_Enum.Pupil:
+                return 'Schüler:in';
+            case Pupil_Email_Owner_Enum.Parent:
+                return 'Elternteil';
+            case Pupil_Email_Owner_Enum.Other:
+                return 'Hilfsperson';
+            default:
+                return '';
+        }
+    };
+
     return (
         <div className="mt-8">
             <div className="mb-6">
@@ -135,7 +148,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                     {pupil.firstname} {pupil.lastname} (Schüler:in)
                 </Typography>
                 <Typography>
-                    <span className="font-bold">E-Mail</span>: {pupil.email}
+                    <span className="font-bold">E-Mail</span>: {pupil.email} {pupil.emailOwner ? `(${getEmailOwnerText()})` : ''}
                 </Typography>
                 <Typography>
                     <span className="font-bold">Registriert am</span>: {formatDate(pupil.createdAt, DateTime.DATE_MED)}
