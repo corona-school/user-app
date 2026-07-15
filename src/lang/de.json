@@ -1322,8 +1322,8 @@
         }
     },
     "helperwizard": {
-        "nextStep": "Deine nächsten Schritte",
-        "progress": "Alle Fortschritte anzeigen",
+        "nextStep": "Aktuelle Infos für Dich",
+        "progress": "Erfolge und Statistiken anzeigen",
         "verifizierung": {
             "subtitle": "Verifizierung",
             "title": "Verifiziere deine E-Mail-Adresse",
@@ -1377,7 +1377,7 @@
         "zeugnis": {
             "subtitle": "Notwendige Unterlage",
             "title": "Führungszeugnis ",
-            "content": "Wir benötigen von dir spätestens alle 3 Jahre eine aktuelle Version des erweiterten Führungszeugnisses, um den lückenlosen Kinderschutz zu gewährleisten. Das Führungszeugnis kannst du unter Vorlage des Vordrucks vor Ort oder online kostenlos beantragen. Du kannst Schüler:innen weiterhin unterstützen. Bitte reiche dein Führungszeugnis rechtzeitig ein – andernfalls müssen wir dein Konto leider deaktivieren. Frist für die Einreichung / Deaktivierung deines Kontos: {{cocDate}}",
+            "content": "Frist für die Einreichung: {{cocDate}} - Wir benötigen von dir spätestens alle 3 Jahre eine aktuelle Version des erweiterten Führungszeugnisses, um den lückenlosen Kinderschutz zu gewährleisten. Das Führungszeugnis kannst du unter Vorlage des Vordrucks vor Ort oder online kostenlos beantragen. Bis zum Ablauf der Frist kannst du Schüler:innen ganz normal unterstützen, danach wird dein Konto automatisch deaktiviert. Bitte melde dich im Support, wenn es sich verzögert.",
             "buttons": ["Infos zu Beantragung & Einreichen"],
             "actionDescription": "Weitere Informationen"
         },
@@ -1386,13 +1386,6 @@
             "title": "Schüler:in gesucht 🔍",
             "content": "Wir warten auf jemanden, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. Je nach Auswahl der Fächer kann das unterschiedlich lang dauern. Bei den am stärksten nachgefragten Fächern wie Deutsch als Zweitsprache, Deutsch oder Mathe sind das oft nur wenige Tage. Bei selteneren Fächern kann es auch einige Wochen dauern. In jedem Fall melden wir uns per E-mail. Du kannst jederzeit deine Anfrage ändern und andere Fächer angeben.",
             "buttons": ["Problem melden"]
-        },
-        "statusStudent2": {
-            "subtitle": "Weitere Engagement-Möglichkeiten",
-            "title": "Lust auf mehr?",
-            "content": "Möchtest du weitere Schüler:innen unterstützen? Biete einen Gruppenkurs oder weitere Lernpartnerschaften an.",
-            "buttons": ["Ein weiteres Lernpaar bilden", "Gruppen-Kurse ansehen"],
-            "actionDescription": "Möglichkeiten ansehen"
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner:in 🤗",
@@ -2374,7 +2367,7 @@
         "no_open_screening_long": "Der Schüler hat kein offenes Screening bei dem eine Fallentscheidung aussteht.",
         "success_screening": "Erfolgreiches Screening",
         "rejection_screening": "Abgelehntes Screening",
-        "dispute_screening": "Unklares Screening",
+        "dispute_screening": "Screening offen",
         "pending_screening": "Ausstehendes Screening",
         "has_matches": "{{count}} Lernpaare",
         "registered_since": "registriert seit",
@@ -2824,7 +2817,7 @@
             "request": "Jetzt runterladen"
         },
         "participationCertificate": {
-            "deactivated": "Es gibt keinen Individuellen Nachweis mehr, den du von deine(n) Schüler:innen bestätigen lassen musst. Deine geleisteten Stunden werden automatisch in der Datenbank erfasst. Du kannst bald den aktuellen Stand als Sofort-Nachweis - auch mehrfach - herunterladen (Stand 08.06.2026 werden noch nicht alle Stunden korrekt gezählt, wir sind dran...). Bei Fragen oder Problemen kannst du dich an <0 /> wenden.",
+            "deactivated": "Es gibt keinen individuellen Nachweis mehr, den du von deinen Schüler:innen bestätigen lassen kannst. Alle über die Lern-Fair-App geplanten Termine, die in Zoom stattfinden, werden ab sofort automatisch in der Datenbank erfasst. Wenn du einen Sofort-Nachweis herunterlädst, sind die von dir geleisteten Stunden automatisch enthalten. Melde dich unter <0 />, wenn du weitere Fragen hierzu hast.",
             "title": "Individueller Nachweis",
             "bullets": [
                 "muss durch den/die Lernpartner:in bestätigt werden",

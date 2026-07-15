@@ -72,8 +72,6 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
         setSchool,
         descriptionForScreening,
         setDescriptionForScreening,
-        descriptionForMatch,
-        setDescriptionForMatch,
         weeklyAvailability,
         setWeeklyAvailability,
         currentAge,
@@ -169,7 +167,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     <Input
                         className="w-full max-w-40"
                         value={currentAge || ''}
-                        onChangeText={(e) => setCurrentAge(Number(e.replace(/\D/g, '').substring(0, 2)))}
+                        onChangeText={(e) => (e ? setCurrentAge(Number(e.replace(/\D/g, '').substring(0, 2))) : setCurrentAge(undefined))}
                         errorMessage={errors.age}
                         errorMessageClassName="hidden"
                         min={MIN_AGE_PUPIL}
@@ -212,26 +210,6 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                                     className="resize-y min-h-24 w-full"
                                     value={descriptionForScreening}
                                     onChange={(e) => setDescriptionForScreening(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                    </div>
-                    <div className="mt-4">
-                        <Typography variant="h5" className="mb-5">
-                            Öffentliche Notizen
-                        </Typography>
-                        <div className="flex flex-col gap-6">
-                            <div className="flex flex-col gap-y-2">
-                                <Label>
-                                    Info für Helfer:in{' - '}
-                                    <span className="font-bold">
-                                        (Sichtbar für Helfer:innen, nicht für Schüler:innen - Fasse zusammen was relevant ist für die Zusammenarbeit)
-                                    </span>
-                                </Label>
-                                <TextArea
-                                    className="resize-y min-h-24 w-full"
-                                    value={descriptionForMatch}
-                                    onChange={(e) => setDescriptionForMatch(e.target.value)}
                                 />
                             </div>
                         </div>

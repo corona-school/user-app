@@ -1296,13 +1296,6 @@
             "title": "We are looking for a learning partner for you!",
             "content": "Thank you for wanting to support a:n pupil at Lern-Fair ! We will put you in touch with someone who:r matches the subjects or year groups you have specified. We will usually get back to you by email within a week with a:r suitable pupil."
         },
-        "statusStudent2": {
-            "buttons": ["Another learning pair is formed by", "View group courses"],
-            "subtitle": "Further engagement opportunities",
-            "title": "Fancy more?",
-            "content": "Would you like to support more pupils ? Offer a group course or further learning partnerships.",
-            "actionDescription": "View options now"
-        },
         "kontaktStudent": {
             "buttons": ["View learning partner"],
             "title": "New learning partners",
