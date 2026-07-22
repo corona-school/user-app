@@ -15,13 +15,14 @@ interface _MatchRequestStepProps {
     backButtonText?: string;
     className?: string;
     reasonNextDisabled?: string;
+    nextButtonIcon?: React.ReactNode;
 }
 
 export type MatchRequestStepProps = Omit<_MatchRequestStepProps, 'children'>;
 
 export const MatchRequestStepTitle = ({ className, variant = 'h4', children, ...rest }: TypographyProps) => {
     return (
-        <Typography className={cn('text-balance mb-2', className)} variant={variant} {...rest}>
+        <Typography className={cn('text-lg leading-5 md:text-xl md:leading-8 text-balance mb-6 md:mb-4', className)} variant={variant} {...rest}>
             {children}
         </Typography>
     );
@@ -46,6 +47,7 @@ export const MatchRequestStep = ({
     reasonNextDisabled,
     nextButtonText,
     backButtonText,
+    nextButtonIcon,
 }: _MatchRequestStepProps) => {
     const { t } = useTranslation();
     const handleOnSubmit = () => {
@@ -55,31 +57,33 @@ export const MatchRequestStep = ({
     };
 
     return (
-        <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-full w-full', className)}>
-            <div className="flex flex-1 flex-col max-w-full py-[30px]">{children}</div>
+        <div className={cn('animate-in fade-in-5 duration-300 relative flex flex-col flex-1 max-w-[1140px] w-full gap-y-10 pt-5 md:pt-11', className)}>
+            <div className="flex flex-1 flex-col max-w-full">{children}</div>
             {onBack || onNext ? (
-                <div className="flex gap-x-4">
+                <div className="flex flex-col md:flex-row gap-y-2 gap-x-4">
                     <Button
                         disabled={isBackDisabled}
-                        className={cn('', {
+                        className={cn('md:w-[224px] w-full', {
                             hidden: !onBack,
                         })}
                         variant="outline"
                         onClick={onBack}
+                        size="lg"
                     >
-                        <IconArrowLeft size={14} className="!stroke-[2px]" />
+                        <IconArrowLeft size={20} />
                         {backButtonText || t('back')}
                     </Button>
                     <Button
                         disabled={isNextDisabled}
                         reasonDisabled={reasonNextDisabled}
-                        className={cn('', {
+                        className={cn('md:w-[224px] w-full', {
                             hidden: !onNext,
                         })}
                         onClick={handleOnSubmit}
+                        size="lg"
                     >
-                        <IconCheck size={14} className="!stroke-[2px]" />
-                        {nextButtonText || t('next')}
+                        {nextButtonIcon ? nextButtonIcon : <IconCheck size={20} />}
+                        {nextButtonText || t('nextWithSelection')}
                     </Button>
                 </div>
             ) : (

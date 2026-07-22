@@ -1,8 +1,43 @@
+import { Badge } from '@/components/Badge';
+import { Button } from '@/components/Button';
+import { IconLoader } from '@/components/IconLoader';
+import { Toggle } from '@/components/Toggle';
+import { Typography } from '@/components/Typography';
+import { cn } from '@/lib/Tailwind';
+import { TRAINEE_GRADE } from '@/Utility';
+import {
+    IconActivity,
+    IconBriefcase,
+    IconCalculator,
+    IconChalkboard,
+    IconChevronDown,
+    IconChevronUp,
+    IconCircleCheckFilled,
+    IconCode,
+    IconCoins,
+    IconDeviceAnalytics,
+    IconFlask2,
+    IconFocus2,
+    IconGlobe,
+    IconListSearch,
+    IconMicroscope,
+    IconMusic,
+    IconPlusMinus,
+    IconPrismLight,
+    IconQuestionMark,
+    IconScale,
+    IconSpeakerphone,
+    IconTool,
+    IconTower,
+} from '@tabler/icons-react';
 import { Box, HStack, useTheme } from 'native-base';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Subject } from '../gql/graphql';
-import { DAZ, SUBJECT_TO_ICON, SUBJECTS_MAIN, SUBJECTS_MINOR, SUBJECTS_RARE } from '../types/subject';
+import { DAZ, SUBJECT_TO_ICON, SUBJECTS_MAIN, SUBJECTS_MINOR, SUBJECTS_RARE, SingleSubject } from '../types/subject';
 import IconTagList from './IconTagList';
+
+const deprecatedSubjects: SingleSubject[] = ['Altgriechisch', 'Chinesisch', 'Italienisch', 'Kunst', 'Niederländisch', 'Philosophie', 'Religion', 'Russisch'];
 
 export const SubjectSelector = ({
     subjects,
@@ -52,4 +87,241 @@ export const SubjectSelector = ({
             ))}
         </HStack>
     );
+};
+
+const getGradesLabels = (numbers: number[]) => {
+    if (!numbers.length) return '';
+
+    const hasAzubi = numbers.includes(TRAINEE_GRADE);
+
+    const grades = Array.from(new Set(numbers.filter((n) => n !== TRAINEE_GRADE))).sort((a, b) => a - b);
+
+    const result: string[] = [];
+
+    if (grades.length) {
+        let start = grades[0];
+        let end = grades[0];
+
+        for (let i = 1; i <= grades.length; i++) {
+            if (grades[i] === end + 1) {
+                end = grades[i];
+            } else {
+                result.push(start === end ? `${start}` : `${start}-${end}`);
+                start = grades[i];
+                end = grades[i];
+            }
+        }
+    }
+
+    if (hasAzubi) {
+        result.push('Azubi');
+    }
+
+    if (result.length === 1 && result[0] === 'Azubi') {
+        return 'Azubi';
+    }
+
+    return `Kl. ${result.join(', ')}`;
+};
+
+export interface SubjectOption {
+    subject: SingleSubject;
+    pupilsWaiting?: number;
+    waitingDaysRange?: { from: number; to: number };
+    gradesAvailable?: number[];
+}
+
+interface SingleProps {
+    value: SingleSubject;
+    onChange: (it: SingleSubject) => any;
+    multiple?: false;
+}
+
+interface MultipleProps {
+    value: SingleSubject[];
+    onChange: (it: SingleSubject[]) => any;
+    multiple?: true;
+}
+
+type SubjectsSelectorProps = (SingleProps | MultipleProps) & {
+    options: SubjectOption[];
+    showPupilsWaiting?: boolean;
+    showWaitingDays?: boolean;
+    showGradesAvailable?: boolean;
+    initialVisibleOptions?: number;
+};
+
+export const SubjectsSelector = ({
+    value,
+    onChange,
+    multiple,
+    options = [],
+    showGradesAvailable,
+    showPupilsWaiting,
+    showWaitingDays,
+    initialVisibleOptions = 12,
+}: SubjectsSelectorProps) => {
+    const { t } = useTranslation();
+    const filteredOptions = useMemo(() => {
+        return options.filter((option) => !deprecatedSubjects.includes(option.subject as any));
+    }, [options]);
+
+    const mainOptions = filteredOptions.slice(0, initialVisibleOptions);
+    const rareOptions = filteredOptions.slice(initialVisibleOptions);
+    // If any of the selected options is hidden (is part of rareOptions) we should all subjects by default
+    const [showAllSubjects, setShowAllSubjects] = useState(() => {
+        if (multiple) {
+            return (value as SingleSubject[]).some((s) => rareOptions.some((o) => o.subject === s));
+        }
+        return rareOptions.some((o) => o.subject === value);
+    });
+
+    const handleOnToggle = (subject: SingleSubject, selected: boolean) => {
+        if (multiple) {
+            onChange(selected ? [...value, subject] : value.filter((s) => s !== subject));
+            return;
+        }
+
+        onChange(subject as any);
+    };
+
+    const isBigVariant = showGradesAvailable && showPupilsWaiting && !showWaitingDays;
+
+    return (
+        <div>
+            <div
+                className={cn('grid grid-cols-[repeat(auto-fit,minmax(167px,1fr))] gap-2 md:gap-4', {
+                    'md:grid-cols-[repeat(auto-fit,minmax(272px,1fr))]': isBigVariant,
+                })}
+            >
+                {mainOptions.concat(showAllSubjects ? rareOptions : []).map((option) => {
+                    const isPressed = multiple ? (value as SingleSubject[]).some((s) => s === option.subject) : value === option.subject;
+                    return (
+                        <Toggle
+                            variant="outline-primary-green"
+                            className={cn('w-full h-[104px] py-3 px-1.5 flex flex-col text-sm relative', {
+                                'min-h-[120px] h-auto': isBigVariant,
+                            })}
+                            key={option.subject}
+                            pressed={isPressed}
+                            onPressedChange={(pressed) => handleOnToggle(option.subject, pressed)}
+                        >
+                            <div className="min-w-10 min-h-10 bg-accent-medium rounded-full flex items-center justify-center group-data-[state=on]:bg-green-200">
+                                <SubjectIcon subject={option.subject} className={cn('rounded-full size-6 flex-shrink-0')} />
+                            </div>
+                            <div className="w-full">
+                                <Typography variant="subtle" className={cn('font-semibold leading-2 mt-1 mb-0 truncate', { 'mb-3': isBigVariant })}>
+                                    {t(`lernfair.subjects.${option.subject}` as unknown as TemplateStringsArray)}
+                                </Typography>
+                            </div>
+                            <div className={cn('flex gap-x-1', { 'flex-col items-center justify-center gap-y-1 md:flex-row': isBigVariant })}>
+                                {showWaitingDays && (
+                                    <Typography variant="sm" className="text-[12px] text-primary-midnight">
+                                        {option?.waitingDaysRange?.from && option?.waitingDaysRange?.to
+                                            ? t('waitingTimeInWeeks', {
+                                                  0: Math.ceil(option.waitingDaysRange.from / 7),
+                                                  1: Math.ceil(option.waitingDaysRange.to / 7),
+                                              })
+                                            : t('noWaitingTimeInfos')}
+                                    </Typography>
+                                )}
+                                {showPupilsWaiting && !!option.pupilsWaiting && (
+                                    <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5">
+                                        {t('peopleWaiting', { count: option.pupilsWaiting })}
+                                    </Badge>
+                                )}
+                                {showGradesAvailable && !!option.gradesAvailable?.length && (
+                                    <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
+                                        {getGradesLabels(option.gradesAvailable)}
+                                    </Badge>
+                                )}
+                            </div>
+                            {isPressed && <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />}
+                        </Toggle>
+                    );
+                })}
+            </div>
+            {options.length > initialVisibleOptions && (
+                <div className="w-full flex justify-center pt-6 md:pt-10">
+                    <Button
+                        leftIcon={showAllSubjects ? <IconChevronUp /> : <IconChevronDown />}
+                        variant="outline"
+                        onClick={() => setShowAllSubjects(!showAllSubjects)}
+                        className="px-11 max-w-[233px] w-full"
+                    >
+                        {showAllSubjects ? t('lessSubjects') : t('moreSubjects')}
+                    </Button>
+                </div>
+            )}
+        </div>
+    );
+};
+
+export const SubjectIcon = ({ subject, className }: { subject: SingleSubject; className?: string }) => {
+    switch (subject) {
+        case 'Altgriechisch':
+        case 'Chinesisch':
+        case 'Italienisch':
+        case 'Kunst':
+        case 'Niederländisch':
+        case 'Philosophie':
+        case 'Religion':
+        case 'Russisch':
+            return <IconQuestionMark className={className} />;
+
+        case 'Arbeitslehre':
+            return <IconBriefcase className={className} />;
+        case 'Biologie':
+            return <IconMicroscope className={className} />;
+        case 'Chemie':
+            return <IconFlask2 className={className} />;
+        case 'Deutsch':
+            return <IconLoader iconPath="subjects/german.svg" className={className} />;
+        case 'Deutsch als Zweitsprache':
+            return <IconLoader iconPath="subjects/daz.svg" className={className} />;
+        case 'Englisch':
+            return <IconLoader iconPath="subjects/english.svg" className={className} />;
+        case 'Erdkunde':
+            return <IconGlobe className={className} />;
+        case 'Ethik':
+            return <IconScale className={className} />;
+        case 'Französisch':
+            return <IconLoader iconPath="subjects/french.svg" className={className} />;
+        case 'Geschichte':
+            return <IconTower className={className} />;
+        case 'Gesundheit':
+            return <IconActivity className={className} />;
+        case 'Informatik':
+            return <IconCode className={className} />;
+        case 'Latein':
+            return <IconLoader iconPath="subjects/latin.svg" className={className} />;
+        case 'Lernen lernen':
+            return <IconFocus2 className={className} />;
+        case 'Mathematik':
+            return <IconPlusMinus className={className} />;
+        case 'Musik':
+            return <IconMusic className={className} />;
+        case 'Pädagogik':
+            return <IconChalkboard className={className} />;
+        case 'Physik':
+            return <IconPrismLight className={className} />;
+        case 'Politik':
+            return <IconSpeakerphone className={className} />;
+        case 'Rechnungswesen':
+            return <IconCalculator className={className} />;
+        case 'Sachkunde':
+            return <IconListSearch className={className} />;
+        case 'Spanisch':
+            return <IconLoader iconPath="subjects/spanish.svg" className={className} />;
+        case 'Steuerlehre':
+            return <IconDeviceAnalytics className={className} />;
+        case 'Technik':
+            return <IconTool className={className} />;
+        case 'Wirtschaft':
+            return <IconCoins className={className} />;
+
+        default:
+            break;
+    }
+    return <IconLoader icon={subject} className={cn('rounded-full size-6 flex-shrink-0', className)} />;
 };

@@ -22,6 +22,11 @@
     "bookAppointment": "Termin buchen",
     "changeAppointment": "Termin ändern",
     "joinZoomMeeting": "Zoom starten",
+    "lessSubjects": "Weniger Fächer",
+    "moreSubjects": "Weitere Fächer",
+    "noWaitingTimeInfos": "Wartezeit: keine Infos",
+    "waitingTimeInWeeks": "Wartezeit: {{0}} bis {{1}} Wochen",
+    "peopleWaiting": "{{count}} wartend",
     "weekdays": {
         "monday": "Montag",
         "tuesday": "Dienstag",
@@ -272,6 +277,9 @@
     "sendMessage": "Nachricht senden",
     "next": "Weiter",
     "back": "Zurück",
+    "nextWithSelection": "Weiter mit Auswahl",
+    "saveAndContinue": "Speichern und weiter",
+    "sendRequest": "Anfrage senden",
     "important": "Wichtig",
     "error": "Es ist ein Fehler aufgetreten.",
     "characterLimitNotice": "Max. Zeichenanzahl: {{limit}}",
@@ -288,6 +296,8 @@
     "required": "erforderlich",
     "inTraining": "in Ausbildung",
     "grade": "Klasse",
+    "language": "Sprache",
+    "schoolType": "Schulform",
     "since": "seit",
     "till": "bis",
     "otherLanguages": "andere Sprachen",
@@ -428,6 +438,7 @@
             "other": "Keine Angabe"
         },
         "schoolclass": "{{class}}. Klasse",
+        "schoolclassShort": "{{class}}.",
         "reason": {
             "course": {
                 "instructor": {
@@ -876,6 +887,9 @@
                     "placeholder": "Gebe deine Schulform an."
                 }
             }
+        },
+        "Grade": {
+            "label": "In welcher Klasse bist du?"
         },
         "State": {
             "empty": "Keine Angabe",
@@ -1578,11 +1592,6 @@
                 "rescheduleAppointmentModal": {
                     "title": "Termin ändern",
                     "description": "Du kannst den Termin ändern, ohne dass du Nachteile hast. Die Anfrage bleibt bestehen und wird aktiv sobald wir mit dir gesprochen haben."
-                },
-                "creationSuccessModal": {
-                    "title": "Termin erstellt!",
-                    "description": "Nach dem Gespräch geht die Suche nach einem:r Lernpartner:in für dich sofort los!",
-                    "button": "Zu meiner Übersicht"
                 }
             },
             "updateData": "Deine Daten wurden aktualisiert",
@@ -1592,117 +1601,107 @@
             }
         },
         "wizard": {
-            "pupil": {
-                "profiledata": {
-                    "heading": "Profil aktualisieren",
-                    "text": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
-                    "subheading": "Persönliche Daten"
-                },
-                "german": {
-                    "heading": "Deutschkenntnisse",
-                    "isNative": "Ist Deutsch deine Muttersprache?",
-                    "howlong": {
-                        "heading": "Seit wann lernst du Deutsch?",
-                        "option1": "Weniger als 1 Jahr",
-                        "option2": "1-2 Jahre",
-                        "option3": "2-4 Jahre",
-                        "option4": "Mehr als 4 Jahre",
-                        "alertmsg": "Wir suchen nach einer Person für dich, die dir beim Deutschlernen hilft."
-                    }
-                },
-                "subjects": {
-                    "heading": "Fächerauswahl",
+            "subjects": {
+                "heading": "Fächerauswahl",
+                "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
+                "selectedSubjects": "{{count}} Fächer ausgewählt",
+                "pupil": {
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
-                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
-                    "reason_btn_disabled_DAZ": "Bitte wähle ein Fach aus.",
-                    "text": "Du kannst maximal 1 Fach auswählen."
+                    "bannerText": "Wähle am besten 1 bis 3 Fächer. Im nächsten Schritt wählst du das Fach aus, bei dem du am meisten Hilfe brauchst.\nWenn du in einem weiteren Fach auch viel Hilfe brauchst, empfehlen wir dir, nur zwei Fächer zu wählen.",
+                    "dazBannerText": "Wir suchen eine Person für dich, die mit dir Deutsch lernt. Du kannst dir aber Fächer dazu wählen. Vielleicht finden wir jemanden, der beides kann."
                 },
-                "priority": {
-                    "heading": "Priorisierung",
-                    "subheading": "In welchen Fach brauchst du am meisten Hilfe?",
-                    "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
-                    "reason_btn_disabled": "Bitte wähle ein Fach aus."
-                },
-                "bookScreeningAppointment": {
-                    "title": "Gespräch mit Lern-Fair",
-                    "description": "Wir haben uns lange nicht mehr gesehen. Deshalb laden wir dich zu einem kurzen Gespräch ein. Danach suchen wir einen neuen Lern-Partner für dich.",
-                    "aboutTheAppointment": {
-                        "title": "Das besprechen wir in dem Gespräch:",
-                        "bullets": [
-                            "Was du schon gelernt hast",
-                            "Wie es dir gerade im Lernen geht",
-                            "Wie wir dich noch unterstützen können",
-                            "Du kannst uns alles fragen",
-                            "Eine Person aus dem Lern-Fair Team ist dabei/macht das Gespräch"
-                        ]
-                    },
-                    "importantForAppointment": {
-                        "title": "Wichtig für den Termin",
-                        "bullets": [
-                            "Du musst dabei sein.",
-                            "Deine Eltern oder eine Bezugsperson können dabei sein.",
-                            "Das Gespräch findet online über Zoom statt.",
-                            "Bitte mach das Gespräch zu Hause mit gutem Internet.",
-                            "Das Gespräch ist auf Deutsch."
-                        ]
-                    },
-                    "reminder": {
-                        "title": "Erinnerung per SMS",
-                        "description": "Im Feld ”Textnachricht senden an” kannst du deine Telefonnummer angeben. Dann bekommst du Erinnerungen für den Termin per SMS."
-                    },
-                    "bookAppointment": "Gespräch vereinbaren",
-                    "alert": "Das Gespräch dauert nur {{minutes}} Minuten.",
-                    "cancelProcessModal": {
-                        "title": "Warum gehst du?",
-                        "description": "Wenn du kein Gespräch vereinbarst, können wir dir leider keine:n Lernpartner:in suchen.",
-                        "confirmButton": "Verstanden"
-                    }
-                },
-                "modalSuccess": {
-                    "heading": {
-                        "ver1": "Neue Anfrage erstellt",
-                        "ver2": "Geschafft, Änderungen gespeichert!"
-                    },
-                    "text": {
-                        "ver1": "Als Nächstes laden wir dich per E-Mail zu einem Gespräch ein. Dann besprechen wir alles weitere persönlich. - Schau doch so lange bei unseren Gruppen-Kursen vorbei.",
-                        "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
-                    },
-                    "groupCourses": "Zu den Gruppen-Kursen"
+                "student": {
+                    "subheading": "<b>{{pupilCount}}</b> Schüler:innen warten insgesamt in <b>{{subjectCount}}</b> Fächern",
+                    "dazBannerText": "Bitte beachte: Deutsch als Zweitsprache und Deutsch sind unterschiedliche Angebote.",
+                    "bannerText": "Wenn du mehrere Fächer angibst, wirst du schneller vermittelt. \nUm nur in deinen präferierten Fächern Lernpartner:innen zu finden, kann es unter Umständen sinnvoll sein, jeweils ein einzelnes Match anzufragen. \nDu kannst ein weiteres Match anfragen, sobald du mit deiner/deinem Lernpartner:in deinen ersten Termin hattest."
                 }
             },
-            "student": {
-                "subjects": {
-                    "title": "Wähle Fächer aus",
-                    "subtitle": "In welchen Fächern möchtest du unterstützen?",
-                    "reason_btn_disabled": "Bitte wähle ein Fach oder mehrere Fächer aus.",
-                    "maincourse": {
-                        "title": "Am meisten nachgefragt",
-                        "explanation": "Hier kannst du oft sehr schnell vermittelt werden."
+            "priority": {
+                "heading": "Priorisierung",
+                "subheading": "In welchem Fach brauchst du am meisten Hilfe?",
+                "text": "Wir versuchen jemanden für dich zu finden der dir in allen Fächern hilft. Das ist aber leider nicht immer möglich. Daher kannst du hier angeben, welches Fach dir am wichtigsten ist.",
+                "reason_btn_disabled": "Bitte wähle ein Fach aus."
+            },
+            "grades": {
+                "heading": "Auswahl Jahrgangsstufen"
+            },
+            "profile": {
+                "heading": "Profil überprüfen",
+                "pupil": {
+                    "text": "Bitte prüfe nochmal deine Angaben.",
+                    "availabilityBanner": "Wenn du mehr Zeiten auswählst, ist es einfacher, passende Lernpartner:innen zu finden. Du kannst die Zeiten jederzeit in deinem Profil ändern."
+                },
+                "student": {
+                    "text": "Damit wir eine passende Person für dich finden können, bitten wir dich, deine Angaben noch einmal zu überprüfen oder zu vervollständigen.",
+                    "availabilityBanner": "Hier gibst du deine regelmäßigen Zeiten für die nächsten Wochen an. Mit dieser Info können wir dich mit passenden Schüler:innen matchen.\nJe mehr Zeitfenster du angibst, desto einfacher ist es. Du kannst diese Info jederzeit in deinem Profil ändern."
+                }
+            },
+            "bookScreeningAppointment": {
+                "title": "Gespräch mit Lern-Fair",
+                "description": "Wir haben uns lange nicht mehr gesehen. Deshalb laden wir dich zu einem kurzen Gespräch ein. Danach suchen wir einen neuen Lern-Partner für dich.",
+                "aboutTheAppointment": {
+                    "title": "Das besprechen wir in dem Gespräch:",
+                    "bullets": [
+                        "Was du schon gelernt hast",
+                        "Wie es dir gerade im Lernen geht",
+                        "Wie wir dich noch unterstützen können",
+                        "Du kannst uns alles fragen",
+                        "Eine Person aus dem Lern-Fair Team ist dabei/macht das Gespräch"
+                    ]
+                },
+                "importantForAppointment": {
+                    "title": "Wichtig für den Termin",
+                    "bullets": [
+                        "Du musst dabei sein.",
+                        "Deine Eltern oder eine Bezugsperson können dabei sein.",
+                        "Das Gespräch findet online über Zoom statt.",
+                        "Bitte mach das Gespräch zu Hause mit gutem Internet.",
+                        "Das Gespräch ist auf Deutsch."
+                    ]
+                },
+                "reminder": {
+                    "title": "Erinnerung per SMS",
+                    "description": "Im Feld ”Textnachricht senden an” kannst du deine Telefonnummer angeben. Dann bekommst du Erinnerungen für den Termin per SMS."
+                },
+                "bookAppointment": "Gespräch vereinbaren",
+                "alert": "Das Gespräch dauert nur {{minutes}} Minuten.",
+                "cancelProcessModal": {
+                    "title": "Warum gehst du?",
+                    "description": "Wenn du kein Gespräch vereinbarst, können wir dir leider keine:n Lernpartner:in suchen.",
+                    "confirmButton": "Verstanden"
+                }
+            },
+            "modalSuccess": {
+                "pupil": {
+                    "basicRequest": {
+                        "heading": "Lernpartner:in angefragt!",
+                        "text": "Das kann schnell gehen oder länger dauern. Das hängt von deinen Fächern ab. Schaue regelmäßig nach Nachrichten von uns. In der Zwischenzeit kannst du gerne unsere anderen Angebote nutzen.",
+                        "toTheHomeworkHelp": "Zur Hausaufgabenhilfe",
+                        "toTheGroupCourses": "Zu den Gruppen-Kursen"
                     },
-                    "minorcourse": {
-                        "title": "Häufig nachgefragt",
-                        "explanation": "Hier kann es mal schnell gehen, aber manchmal auch etwas dauern, bis du vermittelt wirst."
+                    "requestWithAppointment": {
+                        "heading": "Termin erstellt!",
+                        "text": "Nach dem Gespräch geht die Suche nach einem:r Lernpartner:in für dich sofort los!",
+                        "button": "Zu meiner Übersicht"
                     },
-                    "rarecourse": {
-                        "title": "Selten nachgefragt",
-                        "explanation": "Hier dauert es in der Regel deutlich länger, bis jemand das Fach nachfragt."
+                    "editRequest": {
+                        "heading": "Anfrage geändert!",
+                        "text": "Wir haben deine Änderungen erhalten und suchen eine passende Person zum gemeinsamen Lernen."
                     }
                 },
-                "profile": {
-                    "title": "Profil aktualisieren",
-                    "subtitle": "Damit wir dir eine:n optimale:n Lernpartner:in zuteilen können, bitten wir dich deine persönlichen Informationen noch einmal zu überprüfen und zu vervollständigen.",
-                    "personalData": "Persönliche Daten",
-                    "availabilityRequirement": "Bitte richte zuerst deine Verfügbarkeit ein, um fortzufahren."
+                "student": {
+                    "heading": "Du bist ein:e Held:in!",
+                    "text": "Danke, dass du dich für Bildungsgerechtigkeit einsetzt!\n\nSobald wir jemanden für dich gefunden haben, werden wir dich benachrichtigen."
                 },
-                "success": {
-                    "title": "Geschafft, du bist ein:e Held:in!",
-                    "subtitle": "Danke, dass du eine:n (weitere:n) Schüler:in unterstützen möchtest!",
-                    "subtitle2": "Wir suchen nun eine:n geignete:n Schüler:in für dich. Die Suche dauert in der Regel maximal eine Woche. Sobald wir jemanden für dich gefunden haben, werden wir dich direkt per E-Mail benachrichtigen. Solltest du Fragen haben, kannst du dich jederzeit bei uns melden."
+                "heading": {
+                    "ver1": "Neue Anfrage erstellt",
+                    "ver2": "Geschafft, Änderungen gespeichert!"
                 },
-                "grades": {
-                    "title": "Jahrgangsstufen",
-                    "question": "In welchen Jahrgangsstufen möchtest du helfen?"
-                }
+                "text": {
+                    "ver1": "Als Nächstes laden wir dich per E-Mail zu einem Gespräch ein. Dann besprechen wir alles weitere persönlich. - Schau doch so lange bei unseren Gruppen-Kursen vorbei.",
+                    "ver2": "Deine Änderungen wurden gespeichert. Dadurch verändert sich deine Wartezeit nicht."
+                },
+                "groupCourses": "Zu den Gruppen-Kursen"
             }
         },
         "group": {
