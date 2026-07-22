@@ -1,6 +1,6 @@
 import { Button } from '@/components/Button';
 import { Typography } from '@/components/Typography';
-import { Pupil_Screening_Status_Enum } from '@/gql/graphql';
+import { Pupil_Email_Owner_Enum, Pupil_Screening_Status_Enum } from '@/gql/graphql';
 import { PupilForScreening, PupilScreening } from '@/types';
 import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
@@ -17,6 +17,7 @@ import { IconCheck, IconX } from '@tabler/icons-react';
 import { useUpdatePupil } from './useUpdatePupil';
 import { formatDate } from '@/Utility';
 import { DateTime } from 'luxon';
+import { Badge } from '@/components/Badge';
 
 interface PupilDetailProps {
     pupil: PupilForScreening;
@@ -112,17 +113,45 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
         return `${minAge} bis ${maxAge} Jahre alt`;
     };
 
+    const isFirstPupilScreening = !pupil.screenings?.some((it) => it!.status === 'success') || !pupil.screenings?.length;
+    const hasPendingScreening = pupil?.screenings?.some((it) => ['pending', 'dispute'].includes(it!.status) && !it!.invalidated);
+
+    const getEmailOwnerText = () => {
+        switch (pupil.emailOwner) {
+            case Pupil_Email_Owner_Enum.Pupil:
+                return 'Schüler:in';
+            case Pupil_Email_Owner_Enum.Parent:
+                return 'Elternteil';
+            case Pupil_Email_Owner_Enum.Other:
+                return 'Hilfsperson';
+            default:
+                return '';
+        }
+    };
+
     return (
         <div className="mt-8">
             <div className="mb-6">
+                <div>
+                    {isFirstPupilScreening && hasPendingScreening && (
+                        <div className="flex my-2">
+                            <Badge className="bg-[#6FA86F]">Kennenlern-Gespräch</Badge>
+                        </div>
+                    )}
+                    {!isFirstPupilScreening && hasPendingScreening && (
+                        <div className="flex my-2">
+                            <Badge className="bg-[#A8C686]">LU-Gespräch</Badge>
+                        </div>
+                    )}
+                </div>
                 <Typography variant="h3" className="mb-2">
                     {pupil.firstname} {pupil.lastname} (Schüler:in)
                 </Typography>
                 <Typography>
-                    <span className="font-bold">E-Mail</span>: {pupil.email}
+                    <span className="font-bold">E-Mail</span>: {pupil.email} {pupil.emailOwner ? `(${getEmailOwnerText()})` : ''}
                 </Typography>
                 <Typography>
-                    <span className="font-bold">Registiert</span>: {formatDate(pupil.createdAt, DateTime.DATE_MED)}
+                    <span className="font-bold">Registriert am</span>: {formatDate(pupil.createdAt, DateTime.DATE_MED)}
                 </Typography>
                 <Typography>
                     <span className="font-bold">Alter bei der Registrierung</span>: {!pupil.age ? 'Alter unbekannt' : pupil.age}

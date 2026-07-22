@@ -1,12 +1,12 @@
-import { VStack, Heading, Button, Flex, Box, Image, useTheme, useBreakpointValue } from 'native-base';
 import { useEffect, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import Logo from '../assets/icons/lernfair/lf-logo.svg';
+import Logo from '../assets/icons/logo.svg';
 import useApollo from '../hooks/useApollo';
 import { useTranslation } from 'react-i18next';
+import { Button } from '@/components/Button';
+import { Typography } from '@/components/Typography';
 
 const VerifyEmailChange: React.FC = () => {
-    const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const [searchParams] = useSearchParams();
@@ -25,41 +25,23 @@ const VerifyEmailChange: React.FC = () => {
         }
     }, [navigate, sessionState]);
 
-    const ContainerWidth = useBreakpointValue({
-        base: '90%',
-        lg: sizes['formsWidth'],
-    });
-
     return (
-        <Flex overflowY={'auto'} height="100dvh">
-            <>
-                <Box position="relative" paddingY={space['2']} justifyContent="center" alignItems="center">
-                    <Image
-                        alt="Lernfair"
-                        position="absolute"
-                        zIndex="-1"
-                        borderBottomRadius={15}
-                        width="100%"
-                        height="100%"
-                        source={{
-                            uri: require('../assets/images/globals/lf-bg.png'),
-                        }}
-                    />
-                    <Logo />
-                    <Heading mt={space['1']}>{t('login.emailVerification')}</Heading>
-                </Box>
-                <VStack space={space['1']} paddingX={space['1']} mt={space['4']} marginX="auto" width={ContainerWidth} justifyContent="center">
-                    {(showSuccess && (
-                        <VStack>
-                            <Heading></Heading>
-                            <Button marginTop={space['1']} onPress={() => navigate(redirectEncoded, { state: {} })}>
-                                {t('continue')}
-                            </Button>
-                        </VStack>
-                    )) || <Heading>{t('login.invalidToken')}</Heading>}
-                </VStack>
-            </>
-        </Flex>
+        <div className="flex flex-col min-h-dvh bg-primary-lighter p-4">
+            <div className="flex flex-col flex-1 w-full lg:max-w-2xl mx-auto items-center justify-center gap-y-6">
+                <Logo />
+                <Typography variant="h4" className="text-center text-primary">
+                    {t('login.emailVerification')}
+                </Typography>
+                {showSuccess ? (
+                    <>
+                        <Typography className="text-primary text-center">{t('login.succesEmailVerification')}</Typography>
+                        <Button onClick={() => navigate(redirectEncoded, { state: {} })}>{t('continue')}</Button>
+                    </>
+                ) : (
+                    <Typography className="text-primary text-center">{t('login.invalidToken')}</Typography>
+                )}
+            </div>
+        </div>
     );
 };
 export default VerifyEmailChange;

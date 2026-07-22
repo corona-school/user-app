@@ -215,8 +215,8 @@
         "newEmail": "Neue E-Mail",
         "setNewEmail": "E-Mail neu setzen",
         "changeEmail": "E-Mail-Adresse ändern",
-        "emailVerification": "E-Mail Verifizierung",
-        "succesEmailVerification": "Deine E-Mail wurde erfolgreich geändert!",
+        "emailVerification": "E-Mail-Adresse bestätigt",
+        "succesEmailVerification": "Deine E-Mail-Adresse wurde erfolgreich bestätigt.",
         "changeEmailConfirmation": "Wir haben dir an die neue Adresse eine E-Mail zur Bestätigung gesendet",
         "invalidToken": "Token ungültig",
         "needHelp": "Brauchst du Hilfe?",
@@ -1336,8 +1336,8 @@
         }
     },
     "helperwizard": {
-        "nextStep": "Deine nächsten Schritte",
-        "progress": "Alle Fortschritte anzeigen",
+        "nextStep": "Aktuelle Infos für Dich",
+        "progress": "Erfolge und Statistiken anzeigen",
         "verifizierung": {
             "subtitle": "Verifizierung",
             "title": "Verifiziere deine E-Mail-Adresse",
@@ -1391,7 +1391,7 @@
         "zeugnis": {
             "subtitle": "Notwendige Unterlage",
             "title": "Führungszeugnis ",
-            "content": "Wir benötigen von dir spätestens alle 3 Jahre eine aktuelle Version des erweiterten Führungszeugnisses, um den lückenlosen Kinderschutz zu gewährleisten. Das Führungszeugnis kannst du unter Vorlage des Vordrucks vor Ort oder online kostenlos beantragen. Du kannst Schüler:innen weiterhin unterstützen. Bitte reiche dein Führungszeugnis rechtzeitig ein – andernfalls müssen wir dein Konto leider deaktivieren. Frist für die Einreichung / Deaktivierung deines Kontos: {{cocDate}}",
+            "content": "Frist für die Einreichung: {{cocDate}} - Wir benötigen von dir spätestens alle 3 Jahre eine aktuelle Version des erweiterten Führungszeugnisses, um den lückenlosen Kinderschutz zu gewährleisten. Das Führungszeugnis kannst du unter Vorlage des Vordrucks vor Ort oder online kostenlos beantragen. Bis zum Ablauf der Frist kannst du Schüler:innen ganz normal unterstützen, danach wird dein Konto automatisch deaktiviert. Bitte melde dich im Support, wenn es sich verzögert.",
             "buttons": ["Infos zu Beantragung & Einreichen"],
             "actionDescription": "Weitere Informationen"
         },
@@ -2366,7 +2366,7 @@
         "no_open_screening_long": "Der Schüler hat kein offenes Screening bei dem eine Fallentscheidung aussteht.",
         "success_screening": "Erfolgreiches Screening",
         "rejection_screening": "Abgelehntes Screening",
-        "dispute_screening": "Unklares Screening",
+        "dispute_screening": "Screening offen",
         "pending_screening": "Ausstehendes Screening",
         "has_matches": "{{count}} Lernpaare",
         "registered_since": "registriert seit",
