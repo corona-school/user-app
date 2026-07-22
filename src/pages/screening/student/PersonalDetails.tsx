@@ -151,7 +151,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             teachingExperienceLevel
                         ),
                         cooperationId: cooperationID ?? null,
-                        registrationSource: cooperationID ? RegistrationSource.Cooperation : RegistrationSource.Normal,
+                        registrationSource: student.cooperationID && !cooperationID ? RegistrationSource.Normal : RegistrationSource.Cooperation,
                     },
                 },
             });

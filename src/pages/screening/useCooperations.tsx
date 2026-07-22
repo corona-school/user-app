@@ -11,11 +11,31 @@ const GET_COOPERATION_STUDENTS_QUERY = gql(`
             lastname
             cooperationID
             createdAt
+            descriptionForScreening
+            certificateOfConductDeactivationDate
+            certificateOfConduct {
+                dateOfInspection
+            }
+            matches {
+                id
+                dissolved
+            }
             tutorScreenings {
                 id
+                updatedAt
             }
             instructorScreenings {
                 id
+                updatedAt
+            }
+            screeningTags
+            matchesAppointmentStats {
+                plannedAppointments
+                successfulAppointments
+            }
+            groupAppointmentStats {
+                plannedAppointments
+                successfulAppointments
             }
         }
     }    
@@ -59,6 +79,7 @@ export const useCooperations = ({ skipPendingCooperationStudents = false, skipCo
                 ...e,
                 hasInstructorScreening: e.instructorScreenings.some((s) => !!s),
                 hasTutorScreening: e.tutorScreenings.some((s) => !!s),
+                screenedAt: e.instructorScreenings.find((s) => !!s)?.updatedAt ?? e.tutorScreenings.find((s) => !!s)?.updatedAt ?? null,
             })) ?? [],
         pendingCooperationStudentsCount: pendingCooperationStudentsCountData?.cooperationStudentsToBeConfirmedCount ?? 0,
         cooperations: cooperationListData?.cooperations ?? [],

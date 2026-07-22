@@ -34,7 +34,7 @@ const CooperationStudents = () => {
             }}
         >
             <WithNavigation>
-                <div className="px-2 mx-auto w-full max-w-6xl">
+                <div className="px-2 mx-auto w-full">
                     <div className="flex gap-x-5 items-center justify-normal mb-5">
                         <div className="flex flex-col gap-y-[6px]">
                             <Label htmlFor="search">Suche</Label>
@@ -79,12 +79,12 @@ const CooperationStudents = () => {
                     </div>
                     <DataTable
                         columns={cooperationStudentsColumns}
-                        data={
-                            filteredStudents.map((student) => ({
-                                ...student,
-                                cooperation: cooperations.find((c) => c.id === student.cooperationID)?.name ?? '',
-                            })) ?? []
-                        }
+                        data={filteredStudents.map((student) => ({
+                            ...student,
+                            cooperation: cooperations.find((c) => c.id === student.cooperationID)?.name ?? '',
+                            certificateOfConductDateOfInspection: student.certificateOfConduct?.dateOfInspection ?? null,
+                            certificateOfConductDeactivationDate: student.certificateOfConductDeactivationDate ?? null,
+                        }))}
                         initialSorting={[{ id: 'createdAt', desc: false }]}
                     />
                 </div>
