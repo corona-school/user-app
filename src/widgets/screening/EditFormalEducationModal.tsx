@@ -17,6 +17,15 @@ export function EditFormalEducationModal({ formalEducation, onOpenChange, isOpen
         onSave(selectedValue);
         onOpenChange(false);
     };
+
+    const handleOnChange = (value: FormalEducationEnum | string) => {
+        if (value === selectedValue) {
+            setSelectedValue('');
+        } else {
+            setSelectedValue(value);
+        }
+    };
+
     return (
         <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
             <ModalHeader>
@@ -27,7 +36,7 @@ export function EditFormalEducationModal({ formalEducation, onOpenChange, isOpen
                     <div className="w-full md:pb-0">
                         <FormalEducationSelector
                             value={selectedValue?.startsWith(FormalEducationEnum.other) ? FormalEducationEnum.other : (selectedValue as FormalEducationEnum)}
-                            setValue={(value) => setSelectedValue(value)}
+                            setValue={handleOnChange}
                             className="flex flex-wrap justify-center"
                             toggleConfig={{ variant: 'primary' }}
                             freeTextConfig={{
