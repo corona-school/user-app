@@ -124,7 +124,6 @@ export const ParallelMatchesCheckbox = ({ initialValue, studentId }: { initialVa
     );
 
     const handleOnUpdateMaxParallelMatches = async () => {
-        console.log('Updating maxParallelMatches for studentId:', studentId, 'to', canHaveParallelMatches ? null : 1);
         await updateStudentMaxParallelMatches({
             variables: {
                 studentId,
