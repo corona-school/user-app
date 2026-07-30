@@ -44,10 +44,6 @@ const UpdateData = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dialogContentRef = useRef<HTMLDivElement>(null);
 
-    const getIsNextDisabled = () => {
-        return { is: false, reason: '' };
-    };
-
     const handleOnOpenModal = (type: ModalType) => {
         setModalType(type);
         setIsModalOpen(true);
@@ -68,6 +64,17 @@ const UpdateData = () => {
         }
     };
 
+    const selectedAvailabilityCount = form.calendarPreferences?.weeklyAvailability
+        ? Object.values(form.calendarPreferences.weeklyAvailability).reduce((acc, slots) => acc + slots.length, 0)
+        : 0;
+
+    const getIsNextDisabled = () => {
+        if (selectedAvailabilityCount < 3) {
+            return { is: true, reason: t('matching.wizard.profile.availabilityMissing', { missing: 3 - selectedAvailabilityCount }) };
+        }
+        return { is: false, reason: '' };
+    };
+
     return (
         <MatchRequestStep
             onBack={goBack}
@@ -76,6 +83,22 @@ const UpdateData = () => {
             reasonNextDisabled={getIsNextDisabled().reason}
             nextButtonText={isLastStep ? t('sendRequest') : t('saveAndContinue')}
             nextButtonIcon={isLastStep ? <IconSend size={20} /> : undefined}
+            ctaAddon={
+                <div className="flex flex-col gap-y-2 self-center mt-2 md:mt-0">
+                    <Typography className="text-subtle">
+                        {selectedAvailabilityCount >= 3 ? (
+                            <span>
+                                <span className="mr-1">✅</span> {t('matching.wizard.profile.availabilitySelected', { selected: selectedAvailabilityCount })}
+                            </span>
+                        ) : (
+                            <span>
+                                <span className="mr-1">⚠️</span>{' '}
+                                {t('matching.wizard.profile.availabilityMissing', { missing: Math.max(3 - selectedAvailabilityCount, 0) })}
+                            </span>
+                        )}
+                    </Typography>
+                </div>
+            }
         >
             <MatchRequestStepTitle variant="h4">{t('matching.wizard.profile.heading')}</MatchRequestStepTitle>
             <MatchRequestStepDescription>

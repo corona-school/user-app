@@ -1634,7 +1634,9 @@
                 "student": {
                     "text": "Damit wir eine passende Person für dich finden können, bitten wir dich, deine Angaben noch einmal zu überprüfen oder zu vervollständigen.",
                     "availabilityBanner": "Hier gibst du deine regelmäßigen Zeiten für die nächsten Wochen an. Mit dieser Info können wir dich mit passenden Schüler:innen matchen.\nJe mehr Zeitfenster du angibst, desto einfacher ist es. Du kannst diese Info jederzeit in deinem Profil ändern."
-                }
+                },
+                "availabilityMissing": "Noch {{missing}} Zeiten auswählen — mindestens 3 werden benötigt, um passende Lernpartner:innen zu finden.",
+                "availabilitySelected": "{{selected}} Zeiten ausgewählt. Je mehr du wählst, desto einfacher finden wir passende Lernpartner:innen."
             },
             "bookScreeningAppointment": {
                 "title": "Gespräch mit Lern-Fair",

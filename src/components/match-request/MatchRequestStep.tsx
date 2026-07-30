@@ -5,6 +5,7 @@ import { Button } from '../Button';
 import { Typography, TypographyProps } from '../Typography';
 
 interface _MatchRequestStepProps {
+    ctaAddon?: React.ReactNode;
     children: React.ReactNode;
     onBack?: () => void;
     onNext?: () => void;
@@ -48,6 +49,7 @@ export const MatchRequestStep = ({
     nextButtonText,
     backButtonText,
     nextButtonIcon,
+    ctaAddon,
 }: _MatchRequestStepProps) => {
     const { t } = useTranslation();
     const handleOnSubmit = () => {
@@ -85,6 +87,7 @@ export const MatchRequestStep = ({
                         {nextButtonIcon ? nextButtonIcon : <IconCheck size={20} />}
                         {nextButtonText || t('nextWithSelection')}
                     </Button>
+                    {ctaAddon && ctaAddon}
                 </div>
             ) : (
                 <div className="h-3"></div>
