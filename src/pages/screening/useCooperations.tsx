@@ -13,6 +13,8 @@ const GET_COOPERATION_STUDENTS_QUERY = gql(`
             createdAt
             descriptionForScreening
             certificateOfConductDeactivationDate
+            maxParallelMatches
+            furtherTrainingsAttendedCount
             certificateOfConduct {
                 dateOfInspection
             }

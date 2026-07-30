@@ -1,10 +1,10 @@
 import { ColumnDef } from '@tanstack/react-table';
 import { Student } from '@/gql/graphql';
 import { DateTime } from 'luxon';
-import { CooperationStudentsDropdown } from './CooperationStudentsDropdown';
+import { CooperationStudentsDropdown, FurtherTrainingDropdown, IndeterminateCheckbox, ParallelMatchesCheckbox } from './customColumns';
 import { CooperationStudentActions } from './CooperationStudentActions';
 import { Button } from '@/components/Button';
-import { IconArrowDown, IconArrowsUpDown, IconArrowUp, IconFlagFilled, IconLink, IconLinkOff } from '@tabler/icons-react';
+import { IconAlertTriangle, IconArrowDown, IconArrowsUpDown, IconArrowUp, IconCheck, IconFlagFilled, IconId, IconLink, IconLinkOff } from '@tabler/icons-react';
 import { Badge } from '@/components/Badge';
 import { ScreeningNotesButton } from './ScreeningNotesButton';
 
@@ -20,6 +20,8 @@ export type CooperationStudent = Pick<
     | 'screeningTags'
     | 'matchesAppointmentStats'
     | 'groupAppointmentStats'
+    | 'maxParallelMatches'
+    | 'furtherTrainingsAttendedCount'
 > & {
     hasTutorScreening: boolean;
     hasInstructorScreening: boolean;
@@ -34,26 +36,60 @@ export type CooperationStudent = Pick<
 
 export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
     {
-        accessorKey: 'email',
-        header: 'E-Mail',
+        id: 'select',
+        header: ({ table }) => (
+            <IndeterminateCheckbox
+                {...{
+                    checked: table.getIsAllRowsSelected(),
+                    indeterminate: table.getIsSomeRowsSelected(),
+                    onChange: table.getToggleAllRowsSelectedHandler(),
+                }}
+            />
+        ),
+        cell: ({ row }) => (
+            <div className="px-1">
+                <IndeterminateCheckbox
+                    {...{
+                        checked: row.getIsSelected(),
+                        disabled: !row.getCanSelect(),
+                        indeterminate: row.getIsSomeSelected(),
+                        onChange: row.getToggleSelectedHandler(),
+                    }}
+                />
+            </div>
+        ),
     },
     {
-        accessorKey: 'screeningTags',
+        accessorKey: 'email',
+        header: 'E-Mail',
         cell: ({ row }) => {
+            const email = row.original.email;
             const screeningTags = row.original.screeningTags;
-            return <span>{screeningTags.includes('RED_FLAG') && <IconFlagFilled className="text-red-700" />}</span>;
+            return (
+                <div className="flex gap-x-2 items-center text-sm">
+                    <span>{email}</span> {screeningTags.includes('RED_FLAG') && <IconFlagFilled size={16} className="text-red-700" />}
+                </div>
+            );
         },
-        header: '',
     },
     {
         accessorFn: (row) => `${row.firstname} ${row.lastname}`,
         header: 'Name',
+        cell: ({ row }) => {
+            const name = `${row.original.firstname} ${row.original.lastname}`;
+            const screeningTags = row.original.screeningTags;
+            return (
+                <div className="flex gap-x-2 items-center text-sm">
+                    <span>{name}</span> {screeningTags.includes('ID_CONTROLLED') && <IconId size={16} className="text-green-700" />}
+                </div>
+            );
+        },
     },
     {
         accessorKey: 'screenedAt',
         cell: ({ row }) => {
             const screenedAt = row.original.screenedAt;
-            return <span>{screenedAt ? DateTime.fromISO(screenedAt).toFormat('yyyy.MM.dd') : ''}</span>;
+            return <span className="text-sm">{screenedAt ? DateTime.fromISO(screenedAt).toFormat('yyyy.MM.dd') : ''}</span>;
         },
         header: ({ column }) => {
             return (
@@ -68,10 +104,21 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
         enableSorting: true,
     },
     {
-        accessorKey: 'certificateOfConductDateOfInspection',
         cell: ({ row }) => {
-            const cocDateOfInspection = row.original.certificateOfConductDateOfInspection;
-            return <span>{cocDateOfInspection ? DateTime.fromISO(cocDateOfInspection).toFormat('yyyy.MM.dd') : ''}</span>;
+            const { certificateOfConductDeactivationDate, certificateOfConductDateOfInspection } = row.original;
+            if (certificateOfConductDeactivationDate) {
+                return (
+                    <div className="flex gap-x-1 items-center text-amber-500 text-sm">
+                        <IconAlertTriangle size={14} />
+                        <div>{certificateOfConductDeactivationDate ? DateTime.fromISO(certificateOfConductDeactivationDate).toFormat('yyyy.MM.dd') : ''}</div>
+                    </div>
+                );
+            }
+            if (certificateOfConductDateOfInspection) {
+                return <IconCheck className="text-green-600" />;
+            }
+
+            return null;
         },
         header: 'FZ',
     },
@@ -139,7 +186,25 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
         header: 'Status',
         cell: ({ row, table }) => {
             const status = row.original.hasInstructorScreening || row.original.hasTutorScreening ? 'Angenommen' : 'offen';
-            return <Badge variant={status === 'Angenommen' ? 'success' : 'unclear'}>{status}</Badge>;
+            return (
+                <Badge className="px-1" variant={status === 'Angenommen' ? 'success' : 'unclear'}>
+                    {status}
+                </Badge>
+            );
+        },
+    },
+    {
+        accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
+        header: 'Zweitmatches',
+        cell: ({ row, table }) => {
+            return <ParallelMatchesCheckbox initialValue={row.original.maxParallelMatches === null} studentId={row.original.id} />;
+        },
+    },
+    {
+        accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
+        header: 'Fortbildungen',
+        cell: ({ row, table }) => {
+            return <FurtherTrainingDropdown initialValue={row.original.furtherTrainingsAttendedCount ?? undefined} studentId={row.original.id} />;
         },
     },
     {

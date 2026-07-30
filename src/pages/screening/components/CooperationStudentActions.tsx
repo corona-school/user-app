@@ -1,26 +1,29 @@
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/Dropdown';
 import { Button } from '@/components/Button';
-import { IconDotsVertical } from '@tabler/icons-react';
+import { IconCheck, IconDotsVertical } from '@tabler/icons-react';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { StudentScreeningModal } from './StudentScreeningModal';
 import { useContext, useState } from 'react';
 import { CooperationStudentsContext } from '../context/CooperationStudentsContext';
 import { Typography } from '@/components/Typography';
-import { Student } from '@/gql/graphql';
 import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
+import type { CooperationStudent } from './CooperationStudentsTable';
 
 interface CooperationStudentActionsProps {
-    student: Pick<Student, 'id' | 'createdAt' | 'email' | 'firstname' | 'lastname' | 'cooperationID'> & {
-        hasTutorScreening: boolean;
-        hasInstructorScreening: boolean;
-    };
+    student: CooperationStudent;
 }
 
 const REMOVE_IS_FROM_COOPERATION_MUTATION = gql(`
     mutation RemoveStudentFromCooperation($studentId: Float!) {
         studentUpdate(studentId: $studentId, data: { registrationSource: normal })
+    }
+`);
+
+const UPDATE_COOPERATION_SCREENING_TAGS = gql(`
+    mutation UpdateCooperationStudentScreeningTags($studentId: Float!, $screeningTags: [String!]!) {
+        studentUpdate(studentId: $studentId, data: { screeningTags: $screeningTags })
     }
 `);
 
@@ -35,6 +38,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
         },
         refetchQueries: ['GetPendingCooperationStudents', 'GetPendingCooperationStudentsCount'],
     });
+    const [updateCooperationScreeningTags] = useMutation(UPDATE_COOPERATION_SCREENING_TAGS, {});
 
     const onRemoveFromList = async () => {
         await removeStudentFromCooperation();
@@ -42,6 +46,35 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
         setShowConfirmRemoveFromList(false);
         if (refresh) refresh();
     };
+
+    const onIdentificationControlledToggle = async () => {
+        const hasIdentificationControlled = student.screeningTags.includes('ID_CONTROLLED');
+        const newScreeningTags = hasIdentificationControlled
+            ? student.screeningTags.filter((tag) => tag !== 'ID_CONTROLLED')
+            : [...student.screeningTags, 'ID_CONTROLLED'];
+        await updateCooperationScreeningTags({
+            variables: {
+                studentId: student.id,
+                screeningTags: newScreeningTags,
+            },
+        });
+        toast.success(`Ausweis ${hasIdentificationControlled ? 'nicht mehr' : ''} kontrolliert`);
+        if (refresh) refresh();
+    };
+
+    const onRedFlagToggle = async () => {
+        const hasRedMark = student.screeningTags.includes('RED_FLAG');
+        const newScreeningTags = hasRedMark ? student.screeningTags.filter((tag) => tag !== 'RED_FLAG') : [...student.screeningTags, 'RED_FLAG'];
+        await updateCooperationScreeningTags({
+            variables: {
+                studentId: student.id,
+                screeningTags: newScreeningTags,
+            },
+        });
+        toast.success(`Rote Markierung ${hasRedMark ? 'entfernt' : 'gesetzt'}`);
+        if (refresh) refresh();
+    };
+
     return (
         <div>
             <DropdownMenu modal={false}>
@@ -61,6 +94,10 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     >
                         Freischalten
                     </DropdownMenuItem>
+                    <DropdownMenuItem onClick={onIdentificationControlledToggle}>
+                        Ausweis kontrolliert {student.screeningTags.includes('ID_CONTROLLED') ? <IconCheck /> : null}
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={onRedFlagToggle}>Markieren {student.screeningTags.includes('RED_FLAG') ? <IconCheck /> : null}</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         className="text-destructive focus:bg-destructive-lighter focus:text-destructive"
