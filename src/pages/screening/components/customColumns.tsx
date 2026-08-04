@@ -6,7 +6,6 @@ import { CooperationStudentsContext } from '../context/CooperationStudentsContex
 import { useMutation } from '@apollo/client';
 import { gql } from '@/gql';
 import { toast } from 'sonner';
-import { Checkbox } from '@/components/Checkbox';
 import { cn } from '@/lib/Tailwind';
 
 interface CooperationStudentsDropdownProps {

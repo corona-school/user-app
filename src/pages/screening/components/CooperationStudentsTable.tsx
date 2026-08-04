@@ -173,7 +173,7 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
     {
         accessorKey: 'descriptionForScreening',
         header: 'Notiz',
-        cell: ({ row, table }) => {
+        cell: ({ row }) => {
             return (
                 <div>
                     <ScreeningNotesButton studentId={row.original.id} notes={row.original.descriptionForScreening} />
@@ -195,21 +195,21 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
     },
     {
         accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
-        header: 'Zweitmatches',
+        header: '∞ Matches',
         cell: ({ row, table }) => {
             return <ParallelMatchesCheckbox initialValue={row.original.maxParallelMatches === null} studentId={row.original.id} />;
         },
     },
     {
         accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
-        header: 'Fortbildungen',
+        header: 'FoBi',
         cell: ({ row, table }) => {
             return <FurtherTrainingDropdown initialValue={row.original.furtherTrainingsAttendedCount ?? undefined} studentId={row.original.id} />;
         },
     },
     {
         id: 'actions',
-        header: 'Aktionen',
+        header: '',
         cell: ({ row }) => {
             const student = row.original;
             return <CooperationStudentActions student={student} />;
