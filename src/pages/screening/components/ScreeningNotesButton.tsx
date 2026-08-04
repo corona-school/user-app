@@ -3,10 +3,13 @@ import { Label } from '@/components/Label';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
 import { TextArea } from '@/components/TextArea';
 import { TooltipButton } from '@/components/Tooltip';
+import { gql } from '@/gql';
+import { useMutation } from '@apollo/client';
 import { IconNote } from '@tabler/icons-react';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { CooperationStudentsContext } from '../context/CooperationStudentsContext';
 
 interface ScreeningNotesModalProps extends BaseModalProps {
     studentId: number;
@@ -14,16 +17,30 @@ interface ScreeningNotesModalProps extends BaseModalProps {
     onNotesSaved?: () => void;
 }
 
+const UPDATE_NOTES_MUTATION = gql(`
+    mutation UpdateStudentCooperationNotes($studentId: Float!, $notes: String) {
+        studentUpdate(studentId: $studentId, data: { descriptionForScreening: $notes })
+    }
+`);
+
 export const ScreeningNotesModal = ({ onOpenChange, isOpen, studentId, notes: initialNotes, onNotesSaved }: ScreeningNotesModalProps) => {
     const { t } = useTranslation();
     const [notes, setNotes] = useState(initialNotes);
+    const { refresh } = useContext(CooperationStudentsContext);
+    const [updateStudentCooperation, { loading: isUpdatingCooperation }] = useMutation(UPDATE_NOTES_MUTATION);
 
     const handleOnSaveNotes = async () => {
         if (!studentId) return;
 
         toast.success('Notizen werden gespeichert');
         onOpenChange(false);
-        if (onNotesSaved) onNotesSaved();
+        await updateStudentCooperation({
+            variables: {
+                studentId,
+                notes,
+            },
+        });
+        if (refresh) refresh();
     };
 
     return (
@@ -41,7 +58,7 @@ export const ScreeningNotesModal = ({ onOpenChange, isOpen, studentId, notes: in
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
                     {t('cancel')}
                 </Button>
-                <Button className="w-full lg:w-fit" onClick={handleOnSaveNotes} disabled={!notes || !studentId}>
+                <Button className="w-full lg:w-fit" onClick={handleOnSaveNotes} disabled={!notes || !studentId} isLoading={isUpdatingCooperation}>
                     Speichern
                 </Button>
             </ModalFooter>
@@ -58,7 +75,7 @@ export const ScreeningNotesButton = ({ studentId, notes }: ScreeningNotesButtonP
     const [isModalOpen, setIsModalOpen] = useState(false);
     return (
         <>
-            <TooltipButton tooltipContent={notes ?? 'Keine Notiz vorhanden'}>
+            <TooltipButton tooltipContent={notes || 'Keine Notiz vorhanden'}>
                 <div
                     onClick={() => {
                         setIsModalOpen(true);
