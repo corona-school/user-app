@@ -56,6 +56,7 @@ export function ScreeningDashboard() {
                     isPupil
                     isParticipant
                     emailOwner
+                    learningOfferConstraints
                     school {
                         id
                         name
@@ -182,6 +183,7 @@ export function ScreeningDashboard() {
                 isPupil
                 isParticipant
                 emailOwner
+                learningOfferConstraints
                 school {
                     id
                     name
