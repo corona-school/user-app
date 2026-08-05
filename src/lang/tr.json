@@ -387,7 +387,8 @@
             "female": "Kadın",
             "diverse": "Farklı / ikili olmayan",
             "other": "Bilgi yok"
-        }
+        },
+        "schoolclassShort": "{{class}}."
     },
     "registration": {
         "hint": {
@@ -889,7 +890,10 @@
             "zipCode": "Posta kodu",
             "requiredLength": "Posta kodu {{length}} olmalıdır rakamlar."
         },
-        "Gender": "Cinsiyet"
+        "Gender": "Cinsiyet",
+        "Grade": {
+            "label": "Hangi sınıftasın?"
+        }
     },
     "single": {
         "global": {
@@ -1473,12 +1477,7 @@
                 "noDissolvedMatches": "Dağıtılmış öğrenme çiftin yok.",
                 "noRequestsTutee": "Şu anda sizin için bir öğrenme ortağı aramıyoruz.",
                 "noRequestsTutor": "Şu anda sizin için yeni/daha ileri bir öğrenim ortağı aramıyoruz. Bir (başka) öğrenciye destek olmak için onunla bağlantı kurmak istiyorsanız, 'Öğrenme çifti oluştur' düğmesine tıklayın.",
-                "resolveMatch": "Öğrenme çifti dağıtıldı",
-                "creationSuccessModal": {
-                    "title": "Randevu oluşturuldu!",
-                    "description": "Görüşmeden sonra, sana uygun bir çalışma arkadaşı arayışımız hemen başlıyor!",
-                    "button": "Özet sayfama"
-                }
+                "resolveMatch": "Öğrenme çifti dağıtıldı"
             },
             "daz": {
                 "heading": "İkinci dil olarak Almanca",
@@ -1487,117 +1486,109 @@
             "updateData": "Verileriniz güncellendi"
         },
         "wizard": {
-            "pupil": {
-                "profiledata": {
-                    "heading": "Profili güncelle",
-                    "text": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
-                    "subheading": "Kişisel veriler"
-                },
-                "german": {
-                    "howlong": {
-                        "heading": "Almanca öğrenmeye ne zaman başladınız?",
-                        "option1": "1 yıldan az",
-                        "option2": "1-2 yıl",
-                        "option3": "2-4 yıl",
-                        "option4": "4 yıldan fazla",
-                        "alertmsg": "Almanca öğrenmenize yardımcı olacak birini arıyoruz."
-                    },
-                    "heading": "Almanca dil becerileri",
-                    "isNative": "Almanca ana diliniz mi?"
-                },
-                "subjects": {
-                    "heading": "Konu seçimi",
+            "subjects": {
+                "pupil": {
                     "subheading": "Hangi konularda yardıma ihtiyacınız var?",
-                    "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz.",
-                    "reason_btn_disabled_DAZ": "Lütfen bir konu seçiniz.",
-                    "text": "En fazla 1 konu seçebilirsiniz."
+                    "bannerText": "En iyisi 1 ila 3 ders seç. Bir sonraki adımda, en çok yardıma ihtiyacın olan dersi seç.\nBaşka bir derste de çok yardıma ihtiyacın varsa, sadece iki ders seçmeni öneririz.",
+                    "dazBannerText": "Seninle birlikte Almanca öğrenecek birini arıyoruz. Ancak bunun yanı sıra başka dersler de seçebilirsin. Belki her ikisini de bilen birini bulabiliriz."
                 },
-                "priority": {
-                    "heading": "Önceliklendirme",
-                    "subheading": "En çok hangi konuda yardıma ihtiyacınız var?",
-                    "text": "Tüm konularda size yardımcı olacak birini bulmaya çalışacağız. Ne yazık ki bu her zaman mümkün olmuyor. Bu nedenle hangi konunun sizin için en önemli olduğunu burada belirtebilirsiniz.",
-                    "reason_btn_disabled": "Lütfen bir konu seçiniz."
+                "student": {
+                    "subheading": "<b>{{pupilCount}}</b> öğrenci, toplamda <b>{{subjectCount}}</b> derste bekliyor",
+                    "dazBannerText": "Lütfen dikkat: “Almanca İkinci Dil” ve “Almanca” farklı programlardır.",
+                    "bannerText": "Birden fazla ders belirtirsen, daha hızlı eşleştirilirsin.\nSadece tercih ettiğin derslerde çalışma arkadaşı bulmak için, bazı durumlarda her bir ders için ayrı ayrı eşleştirme talebinde bulunmak mantıklı olabilir.\nÇalışma arkadaşınla ilk buluşmanı gerçekleştirdikten sonra, yeni bir eşleştirme talebinde bulunabilirsin."
                 },
-                "modalSuccess": {
-                    "heading": {
-                        "ver1": "Yeni talep oluşturuldu",
-                        "ver2": "Tamam, değişiklikler kaydedildi!"
-                    },
-                    "text": {
-                        "ver1": "Ardından, sizi e-posta yoluyla bir görüşmeye davet edeceğiz. Daha sonra her şeyi yüz yüze görüşeceğiz. - Hazır buradayken neden grup kurslarımıza uğramıyorsunuz?",
-                        "ver2": "Değişiklikleriniz kaydedildi. Bu, bekleme sürenizi değiştirmeyecektir."
-                    },
-                    "groupCourses": "Grup kurslarına dön"
-                },
-                "bookScreeningAppointment": {
-                    "aboutTheAppointment": {
-                        "bullets": [
-                            "Lern-Fair 'de neler Lern-Fair ve neler öğrendiğini anlat.",
-                            "Bu konuda sana nasıl yardımcı olabileceğimizi konuşalım.",
-                            "Sana yeni bir öğrenim eşi ayarlanıp ayarlanamayacağını kontrol ediyoruz.",
-                            "Lern-Fair sana uygun olup olmadığını değerlendiriyoruz.",
-                            "Bize her şeyi sorabilirsin. 🙂"
-                        ],
-                        "title": "Konu şu"
-                    },
-                    "importantForAppointment": {
-                        "bullets": [
-                            "Buna katılmalısın.",
-                            "Ailen veya bakıcıların da bu süreçte yanınızda olabilir.",
-                            "Görüşme Zoom üzerinden yapılacak.",
-                            "Lütfen görüşmeyi evde, internet bağlantısı iyi olan bir yerde yap.",
-                            "Sohbet Almanca."
-                        ],
-                        "title": "Randevu için önemli"
-                    },
-                    "reminder": {
-                        "title": "SMS ile hatırlatma",
-                        "description": "\"Metin mesajını gönder\" alanına telefon numaranı girebilirsin. Böylece randevu hatırlatmalarını SMS yoluyla alacaksın."
-                    },
-                    "title": "Lern-Fair ile öğrenme desteği görüşmesi",
-                    "bookAppointment": "Bir toplantı düzenleyin",
-                    "alert": "Görüşme sadece {{minutes}} dakika sürecek.",
-                    "description": "Uzun süredir görüşemedik, bu yüzden seni kısa bir görüşmeye davet etmek istiyoruz. Ardından sana yeni bir çalışma arkadaşı bulacağız!",
-                    "cancelProcessModal": {
-                        "title": "Neden gidiyorsun?",
-                        "description": "Eğer bir görüşme ayarlamazsan, maalesef sana bir öğrenim arkadaşı bulamayız.",
-                        "confirmButton": "Anlaşıldı"
-                    }
-                }
+                "heading": "Ders Seçimi",
+                "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz.",
+                "selectedSubjects": "{{count}} Ders seçildi"
             },
-            "student": {
-                "subjects": {
-                    "title": "Konu seçimi",
-                    "subtitle": "Hangi konularda destek vermek istersiniz?",
-                    "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz.",
-                    "maincourse": {
-                        "title": "Ana bölmeler",
-                        "explanation": "En çok talep gören."
+            "priority": {
+                "heading": "Önceliklendirme",
+                "subheading": "Hangi derste en çok yardıma ihtiyacın var?",
+                "text": "Tüm konularda size yardımcı olacak birini bulmaya çalışacağız. Ne yazık ki bu her zaman mümkün olmuyor. Bu nedenle hangi konunun sizin için en önemli olduğunu burada belirtebilirsiniz.",
+                "reason_btn_disabled": "Lütfen bir konu seçiniz."
+            },
+            "grades": {
+                "heading": "Sınıf Seviyeleri Seçimi"
+            },
+            "profile": {
+                "pupil": {
+                    "text": "Lütfen bilgilerini bir kez daha kontrol et.",
+                    "availabilityBanner": "Daha fazla zaman aralığı seçersen, uygun çalışma arkadaşları bulman daha kolay olur. Bu zaman aralıklarını profilinden istediğin zaman değiştirebilirsin."
+                },
+                "student": {
+                    "text": "Sana uygun birini bulabilmemiz için, lütfen bilgilerini bir kez daha kontrol et veya eksik kısımları tamamla.",
+                    "availabilityBanner": "Burada önümüzdeki haftalar için düzenli ders saatlerini belirt. Bu bilgiler sayesinde sana uygun öğrencilerle eşleştirebiliriz.\nNe kadar çok zaman aralığı belirtirsen, o kadar kolay olur. Bu bilgileri profilinden istediğin zaman değiştirebilirsin."
+                },
+                "heading": "Profili kontrol et",
+                "availabilityMissing": "Henüz {{missing}} zaman aralığı seçilmedi — uygun öğrenme arkadaşları bulmak için en az 3 zaman aralığı gereklidir.",
+                "availabilitySelected": "{{selected}} Zaman aralıkları seçildi. Ne kadar çok seçenek belirlersen, sana uygun öğrenme arkadaşlarını o kadar kolay bulabiliriz."
+            },
+            "bookScreeningAppointment": {
+                "aboutTheAppointment": {
+                    "bullets": [
+                        "Şimdiye kadar öğrendiklerin",
+                        "Şu anda ders çalışırken nasıl hissediyorsun?",
+                        "Sana başka nasıl destek olabiliriz?",
+                        "Bize her şeyi sorabilirsin",
+                        "Lern-Fair ekibinden bir kişi görüşmeye katılıyor/görüşmeyi yürütüyor"
+                    ],
+                    "title": "Bu görüşmede şu konuları ele alacağız:"
+                },
+                "importantForAppointment": {
+                    "bullets": [
+                        "Buna katılmalısın.",
+                        "Ailen veya sana yakın bir kişi bu süreçte yanında olabilir.",
+                        "Görüşme, Zoom üzerinden çevrimiçi olarak gerçekleştirilecektir.",
+                        "Lütfen görüşmeyi evde, internet bağlantısı iyi olan bir yerde yap.",
+                        "Sohbet Almanca."
+                    ],
+                    "title": "Randevu için önemli"
+                },
+                "reminder": {
+                    "title": "SMS ile hatırlatma",
+                    "description": "\"Metin mesajını gönder\" alanına telefon numaranı girebilirsin. Böylece randevu hatırlatmalarını SMS yoluyla alacaksın."
+                },
+                "cancelProcessModal": {
+                    "title": "Neden gidiyorsun?",
+                    "description": "Eğer bir görüşme ayarlamazsan, maalesef sana bir öğrenim arkadaşı bulamayız.",
+                    "confirmButton": "Anlaşıldı"
+                },
+                "title": "Söyleşi: Lern-Fair",
+                "description": "Uzun zamandır görüşemedik. Bu nedenle seni kısa bir görüşmeye davet ediyoruz. Ardından senin için yeni bir öğrenme arkadaşı arayacağız.",
+                "bookAppointment": "Bir toplantı düzenleyin",
+                "alert": "Görüşme sadece {{minutes}} dakika sürecek."
+            },
+            "modalSuccess": {
+                "pupil": {
+                    "basicRequest": {
+                        "heading": "Öğrenme arkadaşı aranıyor!",
+                        "text": "Bu işlem hızlı bir şekilde gerçekleşebilir ya da biraz daha uzun sürebilir. Bu, seçtiğin derslere bağlıdır. Bizden gelen mesajları düzenli olarak kontrol et. Bu arada, diğer tekliflerimizden de yararlanabilirsin.",
+                        "toTheHomeworkHelp": "Ev ödevi yardımı",
+                        "toTheGroupCourses": "Grup kurslarına dön"
                     },
-                    "minorcourse": {
-                        "title": "Küçük konular",
-                        "explanation": "Sıkça talep ediliyor."
+                    "requestWithAppointment": {
+                        "heading": "Randevu oluşturuldu!",
+                        "text": "Görüşmenin ardından, sana uygun bir öğrenme arkadaşı arayışımız hemen başlıyor!",
+                        "button": "Özet sayfama"
                     },
-                    "rarecourse": {
-                        "title": "Nadir konular",
-                        "explanation": "Nadiren sorulur."
+                    "editRequest": {
+                        "heading": "Talep değiştirildi!",
+                        "text": "Değişikliklerini aldık ve birlikte öğrenebileceğimiz uygun birini arıyoruz."
                     }
                 },
-                "profile": {
-                    "title": "Profili güncelle",
-                    "subtitle": "Size en uygun öğrenim partnerini atayabilmemiz için kişisel bilgilerinizi bir kez daha kontrol etmenizi ve tamamlamanızı rica ediyoruz.",
-                    "personalData": "Kişisel veriler",
-                    "availabilityRequirement": "Devam etmek için lütfen önce müsaitlik durumunuzu ayarlayın."
+                "student": {
+                    "heading": "Sen bir kahramansın!",
+                    "text": "Eğitimde eşitlik için çaba gösterdiğin için teşekkür ederiz!\n\nSenin için uygun birini bulur bulmaz sana haber vereceğiz."
                 },
-                "success": {
-                    "title": "Başardın, sen bir kahramansın!",
-                    "subtitle": "Bir (başka) öğrenciyi de desteklemek istediğiniz için teşekkür ederiz!",
-                    "subtitle2": "Şimdi senin için uygun bir öğrenci arıyoruz. Genellikle arama süreci en fazla bir hafta sürer. Senin için birini bulduğumuzda, seni doğrudan e-posta ile bilgilendireceğiz. Soruların olursa, her zaman bize ulaşabilirsin."
+                "heading": {
+                    "ver1": "Yeni talep oluşturuldu",
+                    "ver2": "Tamam, değişiklikler kaydedildi!"
                 },
-                "grades": {
-                    "title": "Notlar",
-                    "question": "Hangi sınıf seviyelerinde yardımcı olmak istersin?"
-                }
+                "text": {
+                    "ver1": "Ardından, sizi e-posta yoluyla bir görüşmeye davet edeceğiz. Daha sonra her şeyi yüz yüze görüşeceğiz. - Hazır buradayken neden grup kurslarımıza uğramıyorsunuz?",
+                    "ver2": "Değişiklikleriniz kaydedildi. Bu, bekleme sürenizi değiştirmeyecektir."
+                },
+                "groupCourses": "Grup kurslarına dön"
             }
         },
         "group": {
@@ -2817,5 +2808,15 @@
     },
     "bookAppointment": "Randevu al",
     "changeAppointment": "Tarih değiştir",
-    "joinZoomMeeting": "Zoom'u başlat"
+    "joinZoomMeeting": "Zoom'u başlat",
+    "lessSubjects": "Daha az ders",
+    "moreSubjects": "Diğer dersler",
+    "noWaitingTimeInfos": "Bekleme süresi: bilgi yok",
+    "waitingTimeInWeeks": "Bekleme süresi: {{0}} ila {{1}} hafta",
+    "peopleWaiting": "{{count}} bekliyor",
+    "nextWithSelection": "Seçime devam et",
+    "saveAndContinue": "Kaydet ve devam et",
+    "sendRequest": "Talep gönder",
+    "language": "Dil",
+    "schoolType": "Okul türü"
 }
