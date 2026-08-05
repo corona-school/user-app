@@ -145,6 +145,7 @@ const CooperationStudents = () => {
                             getCoreRowModel: getCoreRowModel(),
                             onSortingChange: setSorting,
                             getSortedRowModel: getSortedRowModel(),
+                            getRowId: (row) => row.id.toString(),
                             state: {
                                 sorting,
                                 rowSelection,
