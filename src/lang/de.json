@@ -453,7 +453,8 @@
                     "no-lectures": "Du kannst dich nicht anmelden, da keine Lektionen für diesen Kurs angelegt wurden.",
                     "already-started": "Du kannst dich nicht mehr zum Kurs anmelden, da er bereits gestartet ist.",
                     "already-participant": "Du bist bereits für diesen Kurs angemeldet.",
-                    "not-participant": "Du kannst dich nicht anmelden, weil dein Nutzerkonto für Gruppen-Kurse nicht freigeschaltet ist. Bitte wende dich an support@lern-fair.de, wenn du an diesem Kurs teilnehmen möchtest."
+                    "not-participant": "Du kannst dich nicht anmelden, weil dein Nutzerkonto für Gruppen-Kurse nicht freigeschaltet ist. Bitte wende dich an support@lern-fair.de, wenn du an diesem Kurs teilnehmen möchtest.",
+                    "offer-restriction": "Wenn du an diesen Kursen teilnehmen möchtest, frag in deinem nächsten Lernunterstützungsgespräch danach."
                 }
             },
             "matching": {
