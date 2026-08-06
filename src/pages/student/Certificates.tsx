@@ -43,11 +43,6 @@ query Certificates {
                 state
                 pupil {firstname lastname}
             }
-            instantCertificates {
-                uuid
-                createdAt
-                isInternship
-            }
             isInternship
         }
     }
@@ -170,39 +165,6 @@ const CertificatesPage: React.FC = () => {
                     {data?.me.student?.participationCertificates.map((certificate, i) => (
                         <MatchCertificateCard certificate={certificate} key={i} />
                     ))}
-                </div>
-                <div className="flex flex-wrap gap-x-5">
-                    {data?.me.student?.instantCertificates
-                        .filter((certificate) => certificate.isInternship)
-                        .map((certificate, i) => (
-                            // Style a nice card using tailwind for the instant certificate using only the fields I requested in GraphQL
-                            <div key={i} className="border rounded-lg p-4 mb-4 shadow-md bg-white w-[400px]">
-                                <div className="flex flex-col justify-between items-center flex-wrap gap-y-4">
-                                    <div>
-                                        <Typography variant="h3" className="mb-2">
-                                            {certificate.isInternship
-                                                ? t('certificates.instantCertificate.titleForInternship')
-                                                : t('certificates.instantCertificate.title')}
-                                        </Typography>
-                                        <Typography className="text-gray-600">
-                                            Erstellt am: {DateTime.fromISO(certificate.createdAt).toLocaleString(DateTime.DATE_MED)}
-                                        </Typography>
-                                    </div>
-                                    <Button
-                                        onClick={() =>
-                                            downloadFile(
-                                                `${DateTime.now().toFormat('YYYYMMDD')}__${
-                                                    certificate.isInternship ? 'Praktikumsbescheinigung' : 'Ehrenamtsbescheinigung'
-                                                }_Lern-Fair.pdf`,
-                                                `${BACKEND_URL}/instant-certificates/${certificate.uuid}`
-                                            )
-                                        }
-                                    >
-                                        {t('certificate.download.download')}
-                                    </Button>
-                                </div>
-                            </div>
-                        ))}
                 </div>
             </WithNavigation>
         </>
