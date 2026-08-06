@@ -341,7 +341,7 @@ const ProfileStudent: React.FC<Props> = () => {
                                             ? FormalEducationEnum.other
                                             : (profile.formalEducation as FormalEducationEnum)
                                     }
-                                    setValue={(value) => setProfile({ ...profile, formalEducation: value })}
+                                    setValue={(value) => setProfile({ ...profile, formalEducation: value === profile.formalEducation ? '' : value })}
                                     className="grid grid-cols-2"
                                     toggleConfig={{
                                         variant: 'outline',

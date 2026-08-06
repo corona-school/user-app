@@ -23,7 +23,7 @@ export const FormalEducation = ({ onBack, onNext }: FormalEducationProps) => {
                                 ? FormalEducationEnum.other
                                 : (form.formalEducation as FormalEducationEnum)
                         }
-                        setValue={(value) => onFormChange({ formalEducation: value })}
+                        setValue={(value) => onFormChange({ formalEducation: value === form.formalEducation ? '' : value })}
                         className="flex flex-wrap justify-center"
                         toggleConfig={{
                             variant: 'white-primary',
