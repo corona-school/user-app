@@ -110,7 +110,11 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
                 return (
                     <div className="flex gap-x-1 items-center text-amber-500 text-sm">
                         <IconAlertTriangle size={14} />
-                        <div>{certificateOfConductDeactivationDate ? DateTime.fromISO(certificateOfConductDeactivationDate).toFormat('yyyy.MM.dd') : ''}</div>
+                        <div>
+                            {certificateOfConductDeactivationDate
+                                ? DateTime.fromISO(certificateOfConductDeactivationDate).minus({ days: 1 }).toFormat('yyyy.MM.dd')
+                                : ''}
+                        </div>
                     </div>
                 );
             }
