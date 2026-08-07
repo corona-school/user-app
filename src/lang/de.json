@@ -1608,13 +1608,13 @@
                 "selectedSubjects": "{{count}} Fächer ausgewählt",
                 "pupil": {
                     "subheading": "In welchen Fächern brauchst du Hilfe?",
-                    "bannerText": "Wähle am besten 1 bis 3 Fächer. Im nächsten Schritt wählst du das Fach aus, bei dem du am meisten Hilfe brauchst.\nWenn du in einem weiteren Fach auch viel Hilfe brauchst, empfehlen wir dir, nur zwei Fächer zu wählen.",
+                    "bannerText": "Wähle am besten 1 bis 3 Fächer aus: 1. Das Fach, bei dem du am meisten Hilfe brauchst.\n2. Brauchst du in noch einem Fach viel Unterstützung? Dann wähle noch ein Fach.",
                     "dazBannerText": "Wir suchen eine Person für dich, die mit dir Deutsch lernt. Du kannst dir aber Fächer dazu wählen. Vielleicht finden wir jemanden, der beides kann."
                 },
                 "student": {
                     "subheading": "<b>{{pupilCount}}</b> Schüler:innen warten insgesamt in <b>{{subjectCount}}</b> Fächern",
                     "dazBannerText": "Bitte beachte: Deutsch als Zweitsprache und Deutsch sind unterschiedliche Angebote.",
-                    "bannerText": "Wenn du mehrere Fächer angibst, wirst du schneller vermittelt. \nUm nur in deinen präferierten Fächern Lernpartner:innen zu finden, kann es unter Umständen sinnvoll sein, jeweils ein einzelnes Match anzufragen. \nDu kannst ein weiteres Match anfragen, sobald du mit deiner/deinem Lernpartner:in deinen ersten Termin hattest."
+                    "bannerText": "Wenn du mehrere Fächer auswählst, kommst du für mehr Schülerinnen in Frage. Dadurch kannst du schneller ein Lernpaar bekommen. \nPro Anfrage suchen wir einen Lernpartnerin für ein Fach. Wenn dir ein bestimmtes Fach besonders wichtig ist, kann es deshalb sinnvoll sein, nur dieses Fach auszuwählen. \nEin weiteres Lernpaar kannst du anfragen, sobald du mit deinemr Lernpartner*in euren ersten Termin hattet."
                 }
             },
             "priority": {
@@ -1634,7 +1634,7 @@
                 },
                 "student": {
                     "text": "Damit wir eine passende Person für dich finden können, bitten wir dich, deine Angaben noch einmal zu überprüfen oder zu vervollständigen.",
-                    "availabilityBanner": "Hier gibst du deine regelmäßigen Zeiten für die nächsten Wochen an. Mit dieser Info können wir dich mit passenden Schüler:innen matchen.\nJe mehr Zeitfenster du angibst, desto einfacher ist es. Du kannst diese Info jederzeit in deinem Profil ändern."
+                    "availabilityBanner": "Hier gibst du deine regelmäßigen Zeiten für die nächsten Wochen an. Je mehr Zeiten du angibst, desto leichter ist es, ein passendes Lernpaar für dich zu finden.\nWann ihr euch genau trefft, sprecht ihr später gemeinsam ab. Deine Verfügbarkeiten kannst du jederzeit in deinem Profil ändern."
                 },
                 "availabilityMissing": "Noch {{missing}} Zeiten auswählen — mindestens 3 werden benötigt, um passende Lernpartner:innen zu finden.",
                 "availabilitySelected": "{{selected}} Zeiten ausgewählt. Je mehr du wählst, desto einfacher finden wir passende Lernpartner:innen."
@@ -1694,7 +1694,7 @@
                 },
                 "student": {
                     "heading": "Du bist ein:e Held:in!",
-                    "text": "Danke, dass du dich für Bildungsgerechtigkeit einsetzt!\n\nSobald wir jemanden für dich gefunden haben, werden wir dich benachrichtigen."
+                    "text": "Danke, dass du dich für Bildungsgerechtigkeit einsetzt!\n\nSobald wir jemanden für dich gefunden haben, wirst du per Email und in deinem Profil benachrichtigt."
                 },
                 "heading": {
                     "ver1": "Neue Anfrage erstellt",
