@@ -71,7 +71,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                 screeningTags: newScreeningTags,
             },
         });
-        toast.success(`Rote Markierung ${isBookmarked ? 'entfernt' : 'gesetzt'}`);
+        toast.success(`Änderungen gespeichert: ${isBookmarked ? 'nicht mehr' : ''} markiert`);
         if (refresh) refresh();
     };
 
