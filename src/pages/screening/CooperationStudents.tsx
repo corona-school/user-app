@@ -24,7 +24,7 @@ const CooperationStudents = () => {
             searchTerm: '',
             status: 'offen',
             cooperation: 'all',
-            redFlagged: false,
+            bookmarked: false,
             idNotControlled: false,
             cocNotSubmitted: false,
         },
@@ -39,10 +39,10 @@ const CooperationStudents = () => {
             const studentStatus = student.hasInstructorScreening || student.hasTutorScreening ? 'angenommen' : 'offen';
             const matchesStatus = filters.status === 'all' || studentStatus === filters.status;
             const matchesCooperation = filters.cooperation === 'all' || student.cooperationID?.toString() === filters.cooperation;
-            const matchesRedFlagged = !filters.redFlagged || (filters.redFlagged && student.screeningTags.includes('RED_FLAG'));
+            const matchesBookmarked = !filters.bookmarked || (filters.bookmarked && student.screeningTags.includes('BOOKMARKED'));
             const matchesIdNotControlled = !filters.idNotControlled || (filters.idNotControlled && !student.screeningTags.includes('ID_CONTROLLED'));
             const matchesCocNotSubmitted = !filters.cocNotSubmitted || (filters.cocNotSubmitted && !student.certificateOfConduct?.dateOfInspection);
-            return matchesSearchTerm && matchesStatus && matchesCooperation && matchesRedFlagged && matchesIdNotControlled && matchesCocNotSubmitted;
+            return matchesSearchTerm && matchesStatus && matchesCooperation && matchesBookmarked && matchesIdNotControlled && matchesCocNotSubmitted;
         });
     }, [cooperationStudents, filters]);
 
@@ -110,8 +110,8 @@ const CooperationStudents = () => {
                         <div className="flex items-center justify-center gap-x-2">
                             <Checkbox
                                 id="red-flagged"
-                                checked={filters.redFlagged}
-                                onCheckedChange={(value) => setFilters({ ...filters, redFlagged: !!value })}
+                                checked={filters.bookmarked}
+                                onCheckedChange={(value) => setFilters({ ...filters, bookmarked: !!value })}
                             />
                             <Label htmlFor="red-flagged">Markiert</Label>
                         </div>
@@ -133,7 +133,7 @@ const CooperationStudents = () => {
                         </div>
                     </div>
                     <DataTable
-                        getTableRowClass={(row) => (row.screeningTags.includes('RED_FLAG') ? 'bg-red-50 hover:bg-red-100' : '')}
+                        getTableRowClass={(row) => (row.screeningTags.includes('BOOKMARKED') ? 'bg-red-50 hover:bg-red-100' : '')}
                         config={{
                             data: filteredStudents.map((student) => ({
                                 ...student,

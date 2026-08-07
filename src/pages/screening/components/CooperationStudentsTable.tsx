@@ -67,7 +67,7 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
             const screeningTags = row.original.screeningTags;
             return (
                 <div className="flex gap-x-2 items-center text-sm">
-                    <span>{email}</span> {screeningTags.includes('RED_FLAG') && <IconFlagFilled size={16} className="text-red-700" />}
+                    <span>{email}</span> {screeningTags.includes('BOOKMARKED') && <IconFlagFilled size={16} className="text-red-700" />}
                 </div>
             );
         },

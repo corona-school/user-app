@@ -62,16 +62,16 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
         if (refresh) refresh();
     };
 
-    const onRedFlagToggle = async () => {
-        const hasRedMark = student.screeningTags.includes('RED_FLAG');
-        const newScreeningTags = hasRedMark ? student.screeningTags.filter((tag) => tag !== 'RED_FLAG') : [...student.screeningTags, 'RED_FLAG'];
+    const onBookmarkToggle = async () => {
+        const isBookmarked = student.screeningTags.includes('BOOKMARKED');
+        const newScreeningTags = isBookmarked ? student.screeningTags.filter((tag) => tag !== 'BOOKMARKED') : [...student.screeningTags, 'BOOKMARKED'];
         await updateCooperationScreeningTags({
             variables: {
                 studentId: student.id,
                 screeningTags: newScreeningTags,
             },
         });
-        toast.success(`Rote Markierung ${hasRedMark ? 'entfernt' : 'gesetzt'}`);
+        toast.success(`Rote Markierung ${isBookmarked ? 'entfernt' : 'gesetzt'}`);
         if (refresh) refresh();
     };
 
@@ -97,7 +97,9 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     <DropdownMenuItem onClick={onIdentificationControlledToggle}>
                         Ausweis kontrolliert {student.screeningTags.includes('ID_CONTROLLED') ? <IconCheck /> : null}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={onRedFlagToggle}>Markieren {student.screeningTags.includes('RED_FLAG') ? <IconCheck /> : null}</DropdownMenuItem>
+                    <DropdownMenuItem onClick={onBookmarkToggle}>
+                        Markieren {student.screeningTags.includes('BOOKMARKED') ? <IconCheck /> : null}
+                    </DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         className="text-destructive focus:bg-destructive-lighter focus:text-destructive"
