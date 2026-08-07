@@ -11,6 +11,7 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import { useTranslation } from 'react-i18next';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 export const STUDENT_APPOINTMENT = gql(`
     query appointmentStudent($appointmentId: Float!) {
@@ -106,6 +107,7 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     const appointmentId = parseFloat(id ? id : '');
     const breadcrumbRoutes = useBreadcrumbRoutes();
     const { t } = useTranslation();
+    usePageTitle('Termin-Details | Lern-Fair');
 
     const {
         data: studentAppointment,

@@ -7,6 +7,7 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const tabs = ['handbook', 'mentoring', 'online-training'];
 
@@ -14,6 +15,7 @@ const KnowledgeCenter = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    usePageTitle('Wissenscenter | Lern-Fair');
 
     const path = pathname.split('/').pop() || '';
     const currentTabFromRoute = tabs.includes(path) ? path : tabs[0];
