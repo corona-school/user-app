@@ -121,7 +121,7 @@ const getGradesLabels = (numbers: number[]) => {
         return 'Azubi';
     }
 
-    return `Kl. ${result.join(', ')}`;
+    return `Klasse ${result.join(', ')}`;
 };
 
 export interface SubjectOption {
