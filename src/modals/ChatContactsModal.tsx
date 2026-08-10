@@ -12,7 +12,7 @@ const ChatContactsModal: React.FC<ModalProps> = ({ setChatId, onClose }) => {
         <>
             <Modal.Content minW="400">
                 <Modal.Header>{t('chat.modal.startChat')}</Modal.Header>
-                <Modal.CloseButton />
+                <Modal.CloseButton data-dd-action-name="Close new chat window" />
                 <Modal.Body>
                     <ContactList onClose={onClose} setChatId={(id: string) => setChatId(id)} />
                 </Modal.Body>
