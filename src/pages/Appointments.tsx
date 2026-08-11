@@ -15,6 +15,7 @@ import AppointmentList from '../widgets/AppointmentList';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { toast } from 'sonner';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const getMyAppointments = gql(`
     query myAppointments_NO_CACHE($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
@@ -71,6 +72,7 @@ const Appointments: React.FC = () => {
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const navigate = useNavigate();
     const { client } = useApollo();
+    usePageTitle('Termin-Übersicht | Lern-Fair');
 
     type Appointments = Exclude<QueryResult<typeof getMyAppointments>['me']['appointments'], null | undefined>;
     const [appointments, setAppointments] = useState<Appointments>([]);
