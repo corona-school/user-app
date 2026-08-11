@@ -1,10 +1,10 @@
 import { CheckedState } from '@/components/Checkbox';
 import { gql } from '@/gql';
-import { Gender_Enum as Gender, ExternalSchoolSearch } from '@/gql/graphql';
+import { Gender_Enum as Gender, ExternalSchoolSearch, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
 import { PupilForScreening } from '@/types';
 import { getAgeAtRegistration, getApproxCurrentAge } from '@/Utility';
 import { useMutation } from '@apollo/client';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
@@ -30,9 +30,28 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [descriptionForScreening, setDescriptionForScreening] = useState(pupil.descriptionForScreening);
     const [descriptionForMatch, setDescriptionForMatch] = useState(pupil.descriptionForMatch);
     const [weeklyAvailability, setWeeklyAvailability] = useState(pupil.calendarPreferences?.weeklyAvailability);
-    const [canHaveMatches, setCanHaveMatches] = useState(pupil.isPupil);
-    const [canParticipateInCourses, setCanParticipateInCourses] = useState(pupil.isParticipant);
     const [currentAge, setCurrentAge] = useState(pupil.age ? getApproxCurrentAge(pupil.createdAt, pupil.age) : undefined);
+    const [learningOfferConstraints, setLearningOfferConstraints] = useState(pupil.learningOfferConstraints);
+
+    const germanKnowledge = useMemo(() => {
+        if (learningOfferConstraints.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching)) {
+            return Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching;
+        } else if (learningOfferConstraints.includes(Learning_Offer_Constraints_Enum.OnlyDazCourses)) {
+            return Learning_Offer_Constraints_Enum.OnlyDazCourses;
+        } else {
+            return 'all-offers';
+        }
+    }, [learningOfferConstraints]);
+
+    const onGermanKnowledgeChange = (value: string) => {
+        if (value === Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching) {
+            setLearningOfferConstraints([Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching]);
+        } else if (value === Learning_Offer_Constraints_Enum.OnlyDazCourses) {
+            setLearningOfferConstraints([Learning_Offer_Constraints_Enum.OnlyDazCourses]);
+        } else {
+            setLearningOfferConstraints([]);
+        }
+    };
 
     const updatePupil = async () => {
         try {
@@ -54,9 +73,9 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         },
                         descriptionForMatch,
                         descriptionForScreening,
-                        isPupil: canHaveMatches,
+                        isPupil: !learningOfferConstraints.includes(Learning_Offer_Constraints_Enum.OnlyDazCourses),
                         age: pupil.age !== currentAge && currentAge ? getAgeAtRegistration(pupil.createdAt, currentAge) : pupil.age,
-                        isParticipant: canParticipateInCourses,
+                        learningOfferConstraints: learningOfferConstraints as any,
                         calendarPreferences: weeklyAvailability
                             ? {
                                   ...pupil.calendarPreferences,
@@ -98,12 +117,10 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             setDescriptionForMatch,
             weeklyAvailability,
             setWeeklyAvailability,
-            canHaveMatches,
-            setCanHaveMatches,
-            canParticipateInCourses,
-            setCanParticipateInCourses,
             setCurrentAge,
             currentAge,
+            germanKnowledge,
+            onGermanKnowledgeChange,
         },
     };
 };

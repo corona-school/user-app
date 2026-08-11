@@ -362,7 +362,8 @@
                     "no-lectures": "You cannot register because no lessons have been created for this course.",
                     "already-started": "You can no longer register for the course as it has already started.",
                     "already-participant": "You are already registered for this course.",
-                    "not-participant": "You cannot register because your account is not activated for group courses. Please contact support@lern-fair.de if you would like to take part in this course."
+                    "not-participant": "You cannot register because your account is not activated for group courses. Please contact support@lern-fair.de if you would like to take part in this course.",
+                    "offer-restriction": "If you'd like to take these courses, ask about them during your next academic advising session."
                 }
             },
             "matching": {
@@ -387,7 +388,8 @@
             "female": "Female",
             "diverse": "Diverse / non-binary",
             "other": "Not specified"
-        }
+        },
+        "schoolclassShort": "{{class}}."
     },
     "registration": {
         "hint": {
@@ -889,7 +891,10 @@
             "zipCode": "Zip code",
             "requiredLength": "The zip code must have {{length}} digits."
         },
-        "Gender": "Gender"
+        "Gender": "Gender",
+        "Grade": {
+            "label": "What grade are you in?"
+        }
     },
     "single": {
         "global": {
@@ -1473,12 +1478,7 @@
                 "noDissolvedMatches": "You have no resolved learning pairs.",
                 "noRequestsTutee": "We are not looking for a learning partner for you right now.",
                 "noRequestsTutor": "We are not currently looking for a new/further learning partner for you. If you would like to be connected with a:r (further) pupil to support them, click on the 'Create learning pair' button.",
-                "resolveMatch": "The learning pair was dissolved",
-                "creationSuccessModal": {
-                    "title": "Appointment created!",
-                    "description": "After the appointment, the search for a learning partner for you will begin right away!",
-                    "button": "Back to my overview"
-                }
+                "resolveMatch": "The learning pair was dissolved"
             },
             "daz": {
                 "heading": "German as a second language",
@@ -1487,117 +1487,109 @@
             "updateData": "Your data has been updated"
         },
         "wizard": {
-            "pupil": {
-                "profiledata": {
-                    "heading": "Update profile",
-                    "text": "So that we can assign you an optimal learning partner, we ask you to check and complete your personal information once again.",
-                    "subheading": "Personal data"
-                },
-                "german": {
-                    "howlong": {
-                        "heading": "When did you start learning German?",
-                        "option1": "Less than 1 year",
-                        "option2": "1-2 years",
-                        "option3": "2-4 years",
-                        "option4": "More than 4 years",
-                        "alertmsg": "We are looking for someone to help you learn German."
-                    },
-                    "heading": "German language skills",
-                    "isNative": "Is German your mother tongue?"
-                },
-                "subjects": {
-                    "heading": "Subject selection",
+            "subjects": {
+                "pupil": {
                     "subheading": "In which subjects do you need help?",
-                    "reason_btn_disabled": "Please select one or more subjects.",
-                    "reason_btn_disabled_DAZ": "Please select a subject.",
-                    "text": "You can select a maximum of 1 subject."
+                    "bannerText": "It's best to choose 1 to 3 subjects. In the next step, select the subject in which you need the most help.\nIf you also need a lot of help in another subject, we recommend that you choose only two subjects.",
+                    "dazBannerText": "We're looking for someone to study German with you. You can also choose other subjects to study. Maybe we'll find someone who can do both."
                 },
-                "priority": {
-                    "heading": "Prioritization",
-                    "subheading": "In which subject do you need the most help?",
-                    "text": "We will try to find someone to help you in all subjects. Unfortunately, this is not always possible. You can therefore indicate here which subject is most important to you.",
-                    "reason_btn_disabled": "Please select a subject."
+                "student": {
+                    "subheading": "<b>{{pupilCount}}</b> A total of pupils are waiting in <b>{{subjectCount}}</b> subjects",
+                    "dazBannerText": "Please note: \"German as a Second Language\" and \"German\" are different courses.",
+                    "bannerText": "If you list multiple subjects, you’ll be matched more quickly. \nTo find study partners only in your preferred subjects, it may be a good idea to request a single match at a time. \nYou can request another match as soon as you’ve had your first “ lecture ” with your study partner."
                 },
-                "modalSuccess": {
-                    "heading": {
-                        "ver1": "New request created",
-                        "ver2": "Done, changes saved!"
-                    },
-                    "text": {
-                        "ver1": "Next, we will invite you to an interview by email. Then we'll discuss everything else in person. - Why don't you drop by our group courses while you're here?",
-                        "ver2": "Your changes have been saved. This will not change your waiting time."
-                    },
-                    "groupCourses": "To the group courses"
-                },
-                "bookScreeningAppointment": {
-                    "aboutTheAppointment": {
-                        "bullets": [
-                            "Tell us what you Lern-Fair and learned at Lern-Fair .",
-                            "Let's talk about how we can help you.",
-                            "We'll check to see if you can get a new study partner.",
-                            "We'll help you figure out if Lern-Fair is Lern-Fair the right fit for you.",
-                            "Feel free to ask us anything. 🙂"
-                        ],
-                        "title": "That's what it's all about"
-                    },
-                    "importantForAppointment": {
-                        "bullets": [
-                            "You have to be there.",
-                            "Your parents or guardian can be there.",
-                            "The meeting will be held via Zoom.",
-                            "Please make sure you have a good internet connection when you're at home.",
-                            "The conversation is in German."
-                        ],
-                        "title": "Important for the lecture"
-                    },
-                    "reminder": {
-                        "title": "Reminder via text message",
-                        "description": "In the \"Send text message to\" field, you can enter your phone number. You will then receive reminders for the lecture text message."
-                    },
-                    "title": "Learning Support Consultation with Lern-Fair",
-                    "bookAppointment": "Arrange a meeting",
-                    "alert": "The call will only take {{minutes}} minutes.",
-                    "description": "Since we haven't seen each other in a while, we'd like to invite you to a brief chat. After that, we'll find you a new study partner!",
-                    "cancelProcessModal": {
-                        "title": "Why are you leaving?",
-                        "description": "If you don't schedule a consultation, we unfortunately won't be able to find you a study partner.",
-                        "confirmButton": "Got it"
-                    }
-                }
+                "heading": "Course Selection",
+                "reason_btn_disabled": "Please select one or more subjects.",
+                "selectedSubjects": "{{count}} Subjects selected"
             },
-            "student": {
-                "subjects": {
-                    "title": "Subject selection",
-                    "subtitle": "In which subjects would you like to provide support?",
-                    "reason_btn_disabled": "Please select one or more subjects.",
-                    "maincourse": {
-                        "title": "Main compartments",
-                        "explanation": "Most in demand."
+            "priority": {
+                "heading": "Prioritization",
+                "subheading": "Which subject do you need the most help with?",
+                "text": "We will try to find someone to help you in all subjects. Unfortunately, this is not always possible. You can therefore indicate here which subject is most important to you.",
+                "reason_btn_disabled": "Please select a subject."
+            },
+            "grades": {
+                "heading": "Selection by Grade Level"
+            },
+            "profile": {
+                "pupil": {
+                    "text": "Please double-check your information.",
+                    "availabilityBanner": "If you select more time slots, it will be easier to find suitable study partners. You can change the time slots in your profile at any time."
+                },
+                "student": {
+                    "text": "To help us find the right person for you, please review your information again or fill in any missing details.",
+                    "availabilityBanner": "Here, you can specify your regular availability for the coming weeks. With this information, we can match you with suitable pupils .\nThe more time slots you specify, the easier it is. You can update this information in your profile at any time."
+                },
+                "heading": "Check Profile",
+                "availabilityMissing": "Select {{missing}} more time slots — at least 3 are needed to find suitable study partners.",
+                "availabilitySelected": "{{selected}} Times selected. The more you select, the easier it is for us to find suitable study partners."
+            },
+            "bookScreeningAppointment": {
+                "aboutTheAppointment": {
+                    "bullets": [
+                        "What You've Already Learned",
+                        "How you're doing with your studies right now",
+                        "How else we can support you",
+                        "You can ask us anything",
+                        "A member of the Lern-Fair team is participating in/conducting the interview"
+                    ],
+                    "title": "We'll discuss this during our conversation:"
+                },
+                "importantForAppointment": {
+                    "bullets": [
+                        "You have to be there.",
+                        "Your parents or a caregiver can be there with you.",
+                        "The meeting will take place online via Zoom.",
+                        "Please make sure you have a good internet connection when you're at home.",
+                        "The conversation is in German."
+                    ],
+                    "title": "Important for the lecture"
+                },
+                "reminder": {
+                    "title": "Reminder via text message",
+                    "description": "In the \"Send text message to\" field, you can enter your phone number. You will then receive reminders for the lecture text message."
+                },
+                "cancelProcessModal": {
+                    "title": "Why are you leaving?",
+                    "description": "If you don't schedule a consultation, we unfortunately won't be able to find you a study partner.",
+                    "confirmButton": "Got it"
+                },
+                "title": "Conversation with Lern-Fair",
+                "description": "It's been a while since we last saw each other. That's why we'd like to invite you to a brief conversation. Afterward, we'll find a new study partner for you.",
+                "bookAppointment": "Arrange a meeting",
+                "alert": "The call will only take {{minutes}} minutes."
+            },
+            "modalSuccess": {
+                "pupil": {
+                    "basicRequest": {
+                        "heading": "Looking for a study partner!",
+                        "text": "This may happen quickly or take a while. It depends on your courses. Check back regularly for updates from us. In the meantime, feel free to take advantage of our other offerings.",
+                        "toTheHomeworkHelp": "To the homework help",
+                        "toTheGroupCourses": "To the group courses"
                     },
-                    "minorcourse": {
-                        "title": "Minor subjects",
-                        "explanation": "Frequently requested."
+                    "requestWithAppointment": {
+                        "heading": "lecture created!",
+                        "text": "After the interview, the search for a study partner for you begins right away!",
+                        "button": "Back to my overview"
                     },
-                    "rarecourse": {
-                        "title": "Rare subjects",
-                        "explanation": "Rarely asked."
+                    "editRequest": {
+                        "heading": "Request changed!",
+                        "text": "We've received your changes and are looking for the right person to study with."
                     }
                 },
-                "profile": {
-                    "title": "Update profile",
-                    "subtitle": "So that we can assign you an optimal learning partner, we ask you to check and complete your personal information once again.",
-                    "personalData": "Personal data",
-                    "availabilityRequirement": "Please set up your availability first to continue."
+                "student": {
+                    "heading": "You're a hero!",
+                    "text": "Thank you for your commitment to educational equity!\n\nAs soon as we find someone for you, we'll let you know."
                 },
-                "success": {
-                    "title": "You've done it, you're a hero!",
-                    "subtitle": "Thank you for wanting to support a:n (more:n) pupil !",
-                    "subtitle2": "We are now looking for a:n suitable:n pupil for you. The search usually takes a maximum of one week. As soon as we have found someone for you, we will notify you directly by email. If you have any questions, you can contact us at any time."
+                "heading": {
+                    "ver1": "New request created",
+                    "ver2": "Done, changes saved!"
                 },
-                "grades": {
-                    "title": "Grades",
-                    "question": "In which year groups would you like to help?"
-                }
+                "text": {
+                    "ver1": "Next, we will invite you to an interview by e-mail. Then we'll discuss everything else in person. - Why don't you drop by our group courses while you're here?",
+                    "ver2": "Your changes have been saved. This will not change your waiting time."
+                },
+                "groupCourses": "To the group courses"
             }
         },
         "group": {
@@ -2821,5 +2813,15 @@
     },
     "bookAppointment": "lecture ",
     "changeAppointment": "change lecture",
-    "joinZoomMeeting": "Start Zoom"
+    "joinZoomMeeting": "Start Zoom",
+    "lessSubjects": "Fewer subjects",
+    "moreSubjects": "Other Subjects",
+    "noWaitingTimeInfos": "Waiting time: no information available",
+    "waitingTimeInWeeks": "Waiting time: {{0}} to {{1}} weeks",
+    "peopleWaiting": "{{count}} waiting",
+    "nextWithSelection": "Continue with selection",
+    "saveAndContinue": "Save and Continue",
+    "sendRequest": "Send request",
+    "language": "Language",
+    "schoolType": "Type of school"
 }

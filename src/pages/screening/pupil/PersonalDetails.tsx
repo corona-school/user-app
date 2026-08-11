@@ -2,11 +2,11 @@ import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
 import { Input } from '@/components/Input';
 import { Label } from '@/components/Label';
+import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
 import { TextArea } from '@/components/TextArea';
-import { Toggle } from '@/components/Toggle';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
-import { ExternalSchoolSearch } from '@/gql/graphql';
+import { ExternalSchoolSearch, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { useRoles } from '@/hooks/useApollo';
 import { PupilForScreening } from '@/types';
@@ -76,6 +76,8 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
         setWeeklyAvailability,
         currentAge,
         setCurrentAge,
+        germanKnowledge,
+        onGermanKnowledgeChange,
     } = form;
 
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
@@ -216,48 +218,30 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     </div>
                 </div>
                 <div className="mt-4">
-                    <div className="mb-5">
-                        <Typography variant="h5" className="mb-2">
-                            Rollen
-                        </Typography>
-                        <Typography variant="subtle">
-                            Rollen können jederzeit geändert werden. SuS werden per Email informiert über ihre Rolle wenn Screening abgeschlossen wird
-                        </Typography>
-                    </div>
-                    <div className="flex gap-6 w-full">
-                        <Toggle
-                            variant="outline"
-                            size="lg"
-                            className="p-8 h-auto"
-                            pressed={form.canHaveMatches}
-                            onPressedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}
-                            asChild
-                            role="button"
-                        >
-                            <div className="flex gap-x-4">
-                                <Checkbox checked={form.canHaveMatches} onCheckedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}></Checkbox>
-                                Kann Lernpaare haben
+                    <div className="flex flex-col gap-y-1">
+                        <div className="mb-5">
+                            <Typography variant="h5" className="mb-2">
+                                Deutschkentnisse
+                            </Typography>
+                            <Typography variant="subtle">SuS freigeben für</Typography>
+                        </div>
+                        <RadioGroup value={germanKnowledge} onValueChange={onGermanKnowledgeChange} className="flex flex-row gap-x-4">
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id="all-offers" value="all-offers" />
+                                <Label htmlFor="all-offers">Alle Angebote</Label>
                             </div>
-                        </Toggle>
-                        <Toggle
-                            variant="outline"
-                            size="lg"
-                            className="p-8 h-auto cursor-not-allowed"
-                            pressed={form.canParticipateInCourses}
-                            onPressedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
-                            asChild
-                            role="button"
-                            disabled
-                        >
-                            <div className="flex gap-x-4">
-                                <Checkbox
-                                    disabled
-                                    checked={form.canParticipateInCourses}
-                                    onCheckedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
-                                ></Checkbox>
-                                Kann an Kursen teilnehmen
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem
+                                    id={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}
+                                    value={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}
+                                />
+                                <Label htmlFor={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}>DaZ notwendig</Label>
                             </div>
-                        </Toggle>
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id={Learning_Offer_Constraints_Enum.OnlyDazCourses} value={Learning_Offer_Constraints_Enum.OnlyDazCourses} />
+                                <Label htmlFor={Learning_Offer_Constraints_Enum.OnlyDazCourses}>Nur DaZ-Kurse</Label>
+                            </div>
+                        </RadioGroup>
                     </div>
                 </div>
             </div>

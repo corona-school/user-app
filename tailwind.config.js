@@ -21,6 +21,7 @@ module.exports = {
             medium: '1.125rem',
             base: '1rem',
             subtle: '0.875rem',
+            detail: '0.75rem',
             sm: '0.8rem',
             xs: '0.64rem',
         },
@@ -118,7 +119,7 @@ module.exports = {
                 tight: '-0.012rem',
             },
             fontSize: {
-                detail: '0.875rem',
+                detail: '0.75rem',
                 form: ['0.875rem', { lineHeight: '0.875rem', letterSpacing: '0', fontWeight: '500' }],
                 subtle: ['0.875rem', { lineHeight: '1.125rem', letterSpacing: '0', fontWeight: '400' }],
             },

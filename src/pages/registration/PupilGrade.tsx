@@ -21,11 +21,11 @@ const PupilGrade = ({ onBack, onNext }: PupilGradeProps) => {
             <RegistrationStepTitle className="md:mb-10">{t('registration.steps.grade.title')} </RegistrationStepTitle>
             <div className="w-full md:pb-0">
                 <GradeSelector
-                    className="flex flex-wrap justify-center"
+                    className="mx-auto flex flex-wrap justify-center items-center max-w-[360px]"
                     toggleConfig={{
                         variant: 'white-primary',
                         size: 'lg',
-                        className: 'w-[150px] [&>*:nth-child(1)]:hidden',
+                        className: 'w-[48px] last:w-auto text-base px-4',
                     }}
                     grade={form.grade}
                     onGradeChange={onChange}

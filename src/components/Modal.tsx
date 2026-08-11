@@ -2,6 +2,7 @@ import * as React from 'react';
 import * as DialogPrimitive from '@radix-ui/react-dialog';
 import { IconX } from '@tabler/icons-react';
 import { cn } from '@/lib/Tailwind';
+import { cva, VariantProps } from 'class-variance-authority';
 
 const Dialog = DialogPrimitive.Root;
 
@@ -23,7 +24,6 @@ const ModalOverlay = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Ov
         />
     )
 );
-
 interface ModalContentProps extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content> {
     classes?: {
         closeIcon?: string;
@@ -37,7 +37,7 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
             <DialogPrimitive.Content
                 ref={ref}
                 className={cn(
-                    'fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg fill-mode-forwards',
+                    'fixed overflow-y-auto left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 pt-[52px] md:pt-14 shadow-lg duration-200 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[state=closed]:slide-out-to-left-1/2 data-[state=closed]:slide-out-to-top-[48%] data-[state=open]:slide-in-from-left-1/2 data-[state=open]:slide-in-from-top-[48%] rounded-lg fill-mode-forwards',
                     className
                 )}
                 {...props}
@@ -48,38 +48,49 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
                     }
                 }}
             >
-                {children}
                 <DialogPrimitive.Close
                     className={cn(
-                        'absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground',
+                        'absolute right-6 top-5 size-10 md:size-auto flex items-center justify-center rounded-sm ring-offset-background transition-opacity focus:outline-none focus:ring-0 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none',
                         classes?.closeIcon
                     )}
                     onClick={(e) => e.stopPropagation()}
                 >
-                    <IconX className="h-4 w-4" />
+                    <span className="flex size-8 items-center justify-center rounded-sm hover:bg-primary-lighter data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+                        <IconX className="h-7 w-7" />
+                    </span>
                     <span className="sr-only">Close</span>
                 </DialogPrimitive.Close>
+                {children}
             </DialogPrimitive.Content>
         </ModalPortal>
     )
 );
 
 const ModalHeader = ({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) => (
-    <div className={cn('flex flex-col space-y-1.5 text-center sm:text-left', className)} {...props} />
+    <div className={cn('flex flex-col space-y-1.5 text-left', className)} {...props} />
 );
 
 interface ModalFooterProps extends React.HTMLAttributes<HTMLDivElement> {
     variant?: 'default' | 'destructive';
+    mobileLayout?: 'row' | 'column';
 }
 
-const ModalFooter = ({ className, variant = 'default', ...props }: ModalFooterProps) => (
-    <div className={cn('flex gap-x-2', variant === 'default' ? 'flex-row lg:justify-end' : 'flex-row-reverse lg:justify-start', className)} {...props} />
+const ModalFooter = ({ className, variant = 'default', mobileLayout = 'row', ...props }: ModalFooterProps) => (
+    <div
+        className={cn(
+            'flex gap-x-2 [&>*]:w-full md:justify-end md:flex-row md:[&>*]:w-fit mt-6',
+            {
+                'flex-row-reverse': variant === 'destructive',
+                'flex-col gap-y-2': mobileLayout === 'column',
+            },
+            className
+        )}
+        {...props}
+    />
 );
 
 const ModalTitle = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Title>, React.ComponentPropsWithoutRef<typeof DialogPrimitive.Title>>(
-    ({ className, ...props }, ref) => (
-        <DialogPrimitive.Title ref={ref} className={cn('text-lg font-semibold leading-none tracking-tight', className)} {...props} />
-    )
+    ({ className, ...props }, ref) => <DialogPrimitive.Title ref={ref} className={cn('text-xl font-semibold leading-7 tracking-tight', className)} {...props} />
 );
 
 const ModalDescription = React.forwardRef<
@@ -92,20 +103,34 @@ export interface BaseModalProps {
     onOpenChange: (isOpen: boolean) => void;
 }
 
-interface InternalModalProps extends BaseModalProps {
+const modalVariants = cva('w-full max-w-[calc(100vw-2rem)] md:max-w-lg max-h-[calc(100vh-2rem)]', {
+    variants: {
+        size: {
+            unset: '',
+            sm: 'md:max-w-[560px]',
+            md: 'md:max-w-[656px]',
+            lg: 'md:max-w-[752px]',
+        },
+    },
+    defaultVariants: {
+        size: 'unset',
+    },
+});
+
+interface InternalModalProps extends BaseModalProps, VariantProps<typeof modalVariants> {
     children: React.ReactNode;
     className?: string;
     classes?: ModalContentProps['classes'];
 }
 
-export const Modal = ({ isOpen, children, className, classes, onOpenChange }: InternalModalProps) => {
+export const Modal = React.forwardRef<HTMLDivElement, InternalModalProps>(({ isOpen, children, className, classes, onOpenChange, size }, ref) => {
     return (
         <Dialog open={!!isOpen} modal onOpenChange={onOpenChange}>
-            <ModalContent className={className} classes={classes} aria-describedby={undefined}>
+            <ModalContent ref={ref} className={cn(modalVariants({ size }), className)} classes={classes} aria-describedby={undefined}>
                 {children}
             </ModalContent>
         </Dialog>
     );
-};
+});
 
 export { Dialog, ModalPortal, ModalOverlay, ModalTrigger, ModalClose, ModalContent, ModalHeader, ModalFooter, ModalTitle, ModalDescription };

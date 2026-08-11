@@ -169,7 +169,17 @@ const Settings: React.FC = () => {
                 </VStack>
             </WithNavigation>
             <DeactivateAccountModal isOpen={showDeactivate} onOpenChange={setShowDeactivate} />
-            <SwitchLanguageModal isOpen={showSwitchLanguage} onIsOpenChange={setShowSwitchLanguage} />
+            <SwitchLanguageModal
+                isOpen={showSwitchLanguage}
+                onIsOpenChange={setShowSwitchLanguage}
+                onChange={(value) => {
+                    trackEvent({
+                        category: `${userType === 'pupil' ? 'SuS' : 'HuH'} User Account`,
+                        action: 'Language Switcher',
+                        name: 'selected',
+                    });
+                }}
+            />
         </>
     );
 };
