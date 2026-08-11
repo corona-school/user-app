@@ -39,8 +39,9 @@ const CooperationStudents = () => {
             const studentStatus = student.hasInstructorScreening || student.hasTutorScreening ? 'angenommen' : 'offen';
             const matchesStatus = filters.status === 'all' || studentStatus === filters.status;
             const matchesCooperation = filters.cooperation === 'all' || student.cooperationID?.toString() === filters.cooperation;
-            const matchesBookmarked = !filters.bookmarked || (filters.bookmarked && student.screeningTags.includes('BOOKMARKED'));
-            const matchesIdNotControlled = !filters.idNotControlled || (filters.idNotControlled && !student.screeningTags.includes('ID_CONTROLLED'));
+            const flags = student.adminUserFlags.map((flag) => flag.flag);
+            const matchesBookmarked = !filters.bookmarked || (filters.bookmarked && flags.includes('BOOKMARKED'));
+            const matchesIdNotControlled = !filters.idNotControlled || (filters.idNotControlled && !flags.includes('ID_CONTROLLED'));
             const matchesCocNotSubmitted = !filters.cocNotSubmitted || (filters.cocNotSubmitted && !student.certificateOfConduct?.dateOfInspection);
             return matchesSearchTerm && matchesStatus && matchesCooperation && matchesBookmarked && matchesIdNotControlled && matchesCocNotSubmitted;
         });
@@ -133,7 +134,7 @@ const CooperationStudents = () => {
                         </div>
                     </div>
                     <DataTable
-                        getTableRowClass={(row) => (row.screeningTags.includes('BOOKMARKED') ? 'bg-red-50 hover:bg-red-100' : '')}
+                        getTableRowClass={(row) => (row.adminUserFlags.map((flag) => flag.flag).includes('BOOKMARKED') ? 'bg-red-50 hover:bg-red-100' : '')}
                         config={{
                             data: filteredStudents.map((student) => ({
                                 ...student,

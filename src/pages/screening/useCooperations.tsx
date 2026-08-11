@@ -30,7 +30,10 @@ const GET_COOPERATION_STUDENTS_QUERY = gql(`
                 id
                 updatedAt
             }
-            screeningTags
+            adminUserFlags {
+                id
+                flag
+            }
             matchesAppointmentStats {
                 plannedAppointments
                 successfulAppointments

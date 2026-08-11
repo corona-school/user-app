@@ -21,9 +21,18 @@ const REMOVE_IS_FROM_COOPERATION_MUTATION = gql(`
     }
 `);
 
-const UPDATE_COOPERATION_SCREENING_TAGS = gql(`
-    mutation UpdateCooperationStudentScreeningTags($studentId: Float!, $screeningTags: [String!]!) {
-        studentUpdate(studentId: $studentId, data: { screeningTags: $screeningTags })
+const CREATE_STUDENT_FLAG = gql(`
+    mutation CreateCooperationStudentFlags($userId: String!, $flag: String!) {
+        adminUserFlagCreate(data:  {
+           userId: $userId,
+           flag: $flag
+        }) { id }
+    }
+`);
+
+const DELETE_STUDENT_FLAG = gql(`
+    mutation DeleteCooperationStudentFlags($id: Float!) {
+        adminUserFlagDelete(id: $id)
     }
 `);
 
@@ -38,7 +47,8 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
         },
         refetchQueries: ['GetPendingCooperationStudents', 'GetPendingCooperationStudentsCount'],
     });
-    const [updateCooperationScreeningTags] = useMutation(UPDATE_COOPERATION_SCREENING_TAGS, {});
+    const [createCooperationStudentFlag] = useMutation(CREATE_STUDENT_FLAG, {});
+    const [deleteCooperationStudentFlag] = useMutation(DELETE_STUDENT_FLAG, {});
 
     const onRemoveFromList = async () => {
         await removeStudentFromCooperation();
@@ -48,32 +58,47 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
     };
 
     const onIdentificationControlledToggle = async () => {
-        const hasIdentificationControlled = student.screeningTags.includes('ID_CONTROLLED');
-        const newScreeningTags = hasIdentificationControlled
-            ? student.screeningTags.filter((tag) => tag !== 'ID_CONTROLLED')
-            : [...student.screeningTags, 'ID_CONTROLLED'];
-        await updateCooperationScreeningTags({
-            variables: {
-                studentId: student.id,
-                screeningTags: newScreeningTags,
-            },
-        });
-        toast.success(`Ausweis ${hasIdentificationControlled ? 'nicht mehr' : ''} kontrolliert`);
+        const identificationControlledFlag = student.adminUserFlags.find((flag) => flag.flag === 'ID_CONTROLLED');
+        if (identificationControlledFlag?.id) {
+            await deleteCooperationStudentFlag({
+                variables: {
+                    id: identificationControlledFlag.id,
+                },
+            });
+        } else {
+            await createCooperationStudentFlag({
+                variables: {
+                    userId: `student/${student.id}`,
+                    flag: 'ID_CONTROLLED',
+                },
+            });
+        }
+
+        toast.success(`Ausweis ${identificationControlledFlag ? 'nicht mehr' : ''} kontrolliert`);
         if (refresh) refresh();
     };
 
     const onBookmarkToggle = async () => {
-        const isBookmarked = student.screeningTags.includes('BOOKMARKED');
-        const newScreeningTags = isBookmarked ? student.screeningTags.filter((tag) => tag !== 'BOOKMARKED') : [...student.screeningTags, 'BOOKMARKED'];
-        await updateCooperationScreeningTags({
-            variables: {
-                studentId: student.id,
-                screeningTags: newScreeningTags,
-            },
-        });
-        toast.success(`Änderungen gespeichert: ${isBookmarked ? 'nicht mehr' : ''} markiert`);
+        const bookmarkFlag = student.adminUserFlags.find((flag) => flag.flag === 'BOOKMARKED');
+        if (bookmarkFlag?.id) {
+            await deleteCooperationStudentFlag({
+                variables: {
+                    id: bookmarkFlag.id,
+                },
+            });
+        } else {
+            await createCooperationStudentFlag({
+                variables: {
+                    userId: `student/${student.id}`,
+                    flag: 'BOOKMARKED',
+                },
+            });
+        }
+        toast.success(`Änderungen gespeichert: ${bookmarkFlag ? 'nicht mehr' : ''} markiert`);
         if (refresh) refresh();
     };
+
+    const userFlags = student.adminUserFlags.map((flag) => flag.flag);
 
     return (
         <div>
@@ -95,11 +120,9 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                         Freischalten
                     </DropdownMenuItem>
                     <DropdownMenuItem onClick={onIdentificationControlledToggle}>
-                        Ausweis kontrolliert {student.screeningTags.includes('ID_CONTROLLED') ? <IconCheck /> : null}
+                        Ausweis kontrolliert {userFlags.includes('ID_CONTROLLED') ? <IconCheck /> : null}
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={onBookmarkToggle}>
-                        Markieren {student.screeningTags.includes('BOOKMARKED') ? <IconCheck /> : null}
-                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={onBookmarkToggle}>Markieren {userFlags.includes('BOOKMARKED') ? <IconCheck /> : null}</DropdownMenuItem>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem
                         className="text-destructive focus:bg-destructive-lighter focus:text-destructive"

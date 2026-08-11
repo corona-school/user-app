@@ -17,7 +17,7 @@ export type CooperationStudent = Pick<
     | 'lastname'
     | 'cooperationID'
     | 'descriptionForScreening'
-    | 'screeningTags'
+    | 'adminUserFlags'
     | 'matchesAppointmentStats'
     | 'groupAppointmentStats'
     | 'maxParallelMatches'
@@ -64,10 +64,10 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
         header: 'E-Mail',
         cell: ({ row }) => {
             const email = row.original.email;
-            const screeningTags = row.original.screeningTags;
+            const userFlags = row.original.adminUserFlags.map((flag) => flag.flag);
             return (
                 <div className="flex gap-x-2 items-center text-sm">
-                    <span>{email}</span> {screeningTags.includes('BOOKMARKED') && <IconFlagFilled size={16} className="text-red-700" />}
+                    <span>{email}</span> {userFlags.includes('BOOKMARKED') && <IconFlagFilled size={16} className="text-red-700" />}
                 </div>
             );
         },
@@ -77,10 +77,10 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
         header: 'Name',
         cell: ({ row }) => {
             const name = `${row.original.firstname} ${row.original.lastname}`;
-            const screeningTags = row.original.screeningTags;
+            const userFlags = row.original.adminUserFlags.map((flag) => flag.flag);
             return (
                 <div className="flex gap-x-2 items-center text-sm">
-                    <span>{name}</span> {screeningTags.includes('ID_CONTROLLED') && <IconId size={16} className="text-green-700" />}
+                    <span>{name}</span> {userFlags.includes('ID_CONTROLLED') && <IconId size={16} className="text-green-700" />}
                 </div>
             );
         },
