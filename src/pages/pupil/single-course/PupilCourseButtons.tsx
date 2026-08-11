@@ -15,7 +15,15 @@ import { toast } from 'sonner';
 import { Alert } from '@/components/Alert';
 import { RecommendationEnum, RecommendationsContext } from '@/context/RecommendationsContext';
 
-type CanJoinReason = 'not-participant' | 'no-lectures' | 'already-started' | 'already-participant' | 'grade-to-low' | 'grade-to-high' | 'subcourse-full';
+type CanJoinReason =
+    | 'not-participant'
+    | 'no-lectures'
+    | 'already-started'
+    | 'already-participant'
+    | 'grade-to-low'
+    | 'grade-to-high'
+    | 'subcourse-full'
+    | 'offer-restriction';
 
 type PupilCourseButtonsProps = {
     subcourse: Pick<

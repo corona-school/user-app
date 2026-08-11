@@ -4,13 +4,17 @@ import { cva, type VariantProps } from 'class-variance-authority';
 import { cn } from '@/lib/Tailwind';
 
 const toggleVariants = cva(
-    'inline-flex items-center justify-center rounded-md text-form font-medium transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground',
+    'group inline-flex items-center justify-center rounded-md text-form font-medium transition-colors hover:bg-muted hover:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground',
     {
         variants: {
             variant: {
                 default: 'hover:bg-accent hover:text-accent-foreground',
                 outline: 'border border-input data-[state=on]:border-primary-light bg-transparent shadow-sm hover:bg-accent hover:text-accent-foreground',
                 'outline-primary': 'border border-primary text-primary bg-transparent hover:bg-accent hover:text-accent-foreground',
+                'outline-primary-green':
+                    'border border-primary-light text-primary bg-transparent hover:bg-primary-lighter hover:border-accent-dark hover:text-accent-foreground data-[state=on]:bg-green-50 data-[state=on]:border-green-500',
+                'outline-accent':
+                    'border border-primary-light text-primary bg-transparent hover:bg-primary-lighter hover:border-accent-dark hover:text-accent-foreground data-[state=on]:bg-accent data-[state=on]:border-primary-light',
                 white: 'bg-white data-[state=on]:border-primary',
                 primary:
                     'border border-gray-300 text-primary bg-transparent hover:bg-accent hover:text-accent-foreground data-[state=on]:bg-primary data-[state=on]:text-primary-foreground data-[state=on]:border-primary',

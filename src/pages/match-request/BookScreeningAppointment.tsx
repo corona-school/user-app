@@ -2,7 +2,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { Alert } from '@/components/Alert';
 import { Button } from '@/components/Button';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
-import { MatchRequestStep } from '@/components/match-request/MatchRequestStep';
+import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { Separator } from '@/components/Separator';
 import { Typography } from '@/components/Typography';
 import { createPupilScreeningLink } from '@/helper/screening-helper';
@@ -67,8 +67,8 @@ export const BookScreeningAppointment = () => {
 
     const isLoading = shouldFetchScreeningAppointment || isRefetching;
 
-    const aboutTheAppointmentPoints = t('matching.wizard.pupil.bookScreeningAppointment.aboutTheAppointment.bullets', { returnObjects: true });
-    const importantPoints = t('matching.wizard.pupil.bookScreeningAppointment.importantForAppointment.bullets', { returnObjects: true });
+    const aboutTheAppointmentPoints = t('matching.wizard.bookScreeningAppointment.aboutTheAppointment.bullets', { returnObjects: true });
+    const importantPoints = t('matching.wizard.bookScreeningAppointment.importantForAppointment.bullets', { returnObjects: true });
 
     const handleOnBack = () => {
         if (form.isAppointmentStepForced) {
@@ -81,23 +81,21 @@ export const BookScreeningAppointment = () => {
     return (
         <MatchRequestStep className="pb-0">
             <div className="relative h-full">
-                <Typography variant="h4" className="text-lg leading-5 md:text-xl md:leading-8">
-                    {t('matching.wizard.pupil.bookScreeningAppointment.title')}
-                </Typography>
+                <MatchRequestStepTitle className="mb-2">{t('matching.wizard.bookScreeningAppointment.title')}</MatchRequestStepTitle>
                 <div className="flex flex-col gap-y-7 mb-4">
-                    <div className="flex gap-x-4 items-center mt-7 w-full">
-                        <Typography className="max-w-[600px]">{t('matching.wizard.pupil.bookScreeningAppointment.description')}</Typography>
+                    <div className="flex gap-x-4 items-center w-full">
+                        <Typography className="max-w-[600px]">{t('matching.wizard.bookScreeningAppointment.description')}</Typography>
                     </div>
                     <Alert icon={<IconTimeDuration10 />} variant="success-outline" className="w-full max-w-[368px]">
-                        {t('matching.wizard.pupil.bookScreeningAppointment.alert', { minutes: 10 })}
+                        {t('matching.wizard.bookScreeningAppointment.alert', { minutes: 10 })}
                     </Alert>
                 </div>
-                <div className="flex flex-col justify-center items-center mb-10 md:mb-0">
-                    <Accordion type="single" collapsible className="w-full my-4 max-w-[845px] md:min-h-[310px]">
+                <div className="flex flex-col mb-10 md:mb-0">
+                    <Accordion type="single" collapsible className="w-full my-4 max-w-[845px]">
                         <AccordionItem className="border-none py-0" value={'about'}>
                             <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
                                 <Typography variant="body-lg" className="font-medium">
-                                    {t('matching.wizard.pupil.bookScreeningAppointment.aboutTheAppointment.title')}
+                                    {t('matching.wizard.bookScreeningAppointment.aboutTheAppointment.title')}
                                 </Typography>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col pt-2">
@@ -116,7 +114,7 @@ export const BookScreeningAppointment = () => {
                         <AccordionItem className="border-none py-0" value={'important'}>
                             <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
                                 <Typography variant="body-lg" className="font-medium">
-                                    {t('matching.wizard.pupil.bookScreeningAppointment.importantForAppointment.title')}
+                                    {t('matching.wizard.bookScreeningAppointment.importantForAppointment.title')}
                                 </Typography>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col pt-2">
@@ -135,16 +133,18 @@ export const BookScreeningAppointment = () => {
                         <AccordionItem className="border-none py-0" value={'reminder'}>
                             <AccordionTrigger IconComponent={IconCircleChevronDown} iconClasses="size-10 !stroke-[0.5px]" className="py-0 items-center">
                                 <Typography variant="body-lg" className="font-medium">
-                                    <Typography className="font-semibold">{t('matching.wizard.pupil.bookScreeningAppointment.reminder.title')}</Typography>
+                                    {t('matching.wizard.bookScreeningAppointment.reminder.title')}
                                 </Typography>
                             </AccordionTrigger>
                             <AccordionContent className="flex flex-col pt-2">
-                                <Typography variant="subtle">{t('matching.wizard.pupil.bookScreeningAppointment.reminder.description')}</Typography>
+                                <Typography className="max-w-[70%]" variant="subtle">
+                                    {t('matching.wizard.bookScreeningAppointment.reminder.description')}
+                                </Typography>
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
                 </div>
-                <div className="flex flex-col md:flex-row gap-x-4 gap-y-2">
+                <div className="flex flex-col md:flex-row gap-x-4 gap-y-2 mt-10">
                     <div className="flex flex-row gap-x-4">
                         {!form.isAppointmentStepForced && (
                             <Button
@@ -167,7 +167,7 @@ export const BookScreeningAppointment = () => {
                         onClick={() => setIsCalendarOpen(true)}
                         className="min-w-[177px] px-[43px] w-full md:w-auto"
                     >
-                        {t('matching.wizard.pupil.bookScreeningAppointment.bookAppointment')}
+                        {t('matching.wizard.bookScreeningAppointment.bookAppointment')}
                     </Button>
                 </div>
                 <PopupModal
@@ -189,9 +189,9 @@ export const BookScreeningAppointment = () => {
                     )}
                 />
                 <ConfirmationModal
-                    headline={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.title')}
-                    confirmButtonText={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.confirmButton')}
-                    description={t('matching.wizard.pupil.bookScreeningAppointment.cancelProcessModal.description')}
+                    headline={t('matching.wizard.bookScreeningAppointment.cancelProcessModal.title')}
+                    confirmButtonText={t('matching.wizard.bookScreeningAppointment.cancelProcessModal.confirmButton')}
+                    description={t('matching.wizard.bookScreeningAppointment.cancelProcessModal.description')}
                     onOpenChange={setIsCancelModalOpen}
                     isOpen={isCancelModalOpen}
                     onConfirm={() => {

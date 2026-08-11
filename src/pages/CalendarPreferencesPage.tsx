@@ -58,6 +58,17 @@ const CalendarPreferencesPage = () => {
         }
     };
 
+    const selectedAvailabilityCount = calendarPreferences?.weeklyAvailability
+        ? Object.values(calendarPreferences.weeklyAvailability).reduce((acc, slots) => acc + slots.length, 0)
+        : 0;
+
+    const getIsNextDisabled = () => {
+        if (selectedAvailabilityCount < 3) {
+            return { is: true, reason: t('matching.wizard.profile.availabilityMissing', { missing: 3 - selectedAvailabilityCount }) };
+        }
+        return { is: false, reason: '' };
+    };
+
     return (
         <WithNavigation
             previousFallbackRoute="/settings"
@@ -78,10 +89,31 @@ const CalendarPreferencesPage = () => {
                     availability={calendarPreferences?.weeklyAvailability}
                     isLoading={loading}
                 />
-                <div className="mt-4 md:w-[165px] md:block md:ml-auto w-full">
-                    <Button onClick={handleOnSave} isLoading={updating} disabled={loading || !calendarPreferences} className="w-full">
+                <div className="mt-4">
+                    <Button
+                        onClick={handleOnSave}
+                        isLoading={updating}
+                        disabled={loading || !calendarPreferences || getIsNextDisabled().is}
+                        reasonDisabled={getIsNextDisabled().reason}
+                        className="w-full md:w-[165px] md:block md:ml-auto"
+                    >
                         {t('done')}!
                     </Button>
+                    <div className="flex flex-col gap-y-2 self-center mt-2 md:mt-0">
+                        <Typography className="text-subtle">
+                            {selectedAvailabilityCount >= 3 ? (
+                                <span>
+                                    <span className="mr-1">✅</span>{' '}
+                                    {t('matching.wizard.profile.availabilitySelected', { selected: selectedAvailabilityCount })}
+                                </span>
+                            ) : (
+                                <span>
+                                    <span className="mr-1">⚠️</span>{' '}
+                                    {t('matching.wizard.profile.availabilityMissing', { missing: Math.max(3 - selectedAvailabilityCount, 0) })}
+                                </span>
+                            )}
+                        </Typography>
+                    </div>
                 </div>
             </div>
         </WithNavigation>
