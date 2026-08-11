@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { usePageTitle } from '@/hooks/usePageTitle';
 import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -22,6 +23,7 @@ const Chat: React.FC = () => {
     const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
     const [isSupportContactModalOpen, setIsSupportContactModalOpen] = useState<boolean>(false);
     const [isConverstationSelected, setIsConversationSelected] = useState<boolean>(false);
+    usePageTitle('Chat | Lern-Fair');
     const [reportInfos, setReportInfos] = useState<ReportInfos>({
         message: '',
         messageId: '',

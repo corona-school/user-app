@@ -22,9 +22,7 @@ import ResetPassword from '../pages/ResetPassword';
 import { RequireAuth, RequireRole, SwitchUserType } from '../User';
 import IFrame from '../components/IFrame';
 import WithNavigation from '../components/WithNavigation';
-
-import RequestMatchStudent from '../pages/student/matching/RequestMatch';
-import RequestMatch from '../pages/pupil/matching/RequestMatch';
+import RequestMatch from '../pages/match-request/MatchRequest';
 import Matching from '../pages/pupil/Matching';
 import NotficationControlPanel from '../pages/notification/NotficationControlPanel';
 import Appointments from '../pages/Appointments';
@@ -67,7 +65,7 @@ import { HOMEWORK_HELP_COURSE } from '@/config';
 import CalendarPreferencesPage from '@/pages/CalendarPreferencesPage';
 import ForgotPassword from '@/pages/ForgotPassword';
 import CooperationStudents from '@/pages/screening/CooperationStudents';
-import { MatchRequestProvider } from '@/pages/pupil/matching/useMatchRequestForm';
+import { MatchRequestProvider } from '@/pages/match-request/useMatchRequestForm';
 
 // Zoom loads a lot of large CSS and JS (and adds it inline, which breaks Datadog Session Replay),
 // so we try to load that as late as possible (when a meeting is opened)
@@ -353,14 +351,9 @@ export default function NavigatorLazy() {
                 element={
                     <RequireAuth>
                         <RequireRole roles={['TUTOR', 'TUTEE']}>
-                            <SwitchUserType
-                                pupilComponent={
-                                    <MatchRequestProvider>
-                                        <RequestMatch />
-                                    </MatchRequestProvider>
-                                }
-                                studentComponent={<RequestMatchStudent />}
-                            />
+                            <MatchRequestProvider>
+                                <RequestMatch />
+                            </MatchRequestProvider>
                         </RequireRole>
                     </RequireAuth>
                 }
