@@ -7,7 +7,7 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { Typography } from './Typography';
 import { IconLoader } from './IconLoader';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { useUserType } from '@/hooks/useApollo';
+import { useUser } from '@/hooks/useApollo';
 
 interface SwitchLanguageButtonProps {
     className?: string;
@@ -17,7 +17,7 @@ interface SwitchLanguageButtonProps {
 const SwitchLanguageButton = ({ className, variant = 'modal' }: SwitchLanguageButtonProps) => {
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
     const storageLanguage = localStorage.getItem('lernfair-language');
-    const userType = useUserType();
+    const user = useUser();
     const { trackEvent } = useMatomo();
 
     if (variant === 'modal') {
@@ -38,7 +38,7 @@ const SwitchLanguageButton = ({ className, variant = 'modal' }: SwitchLanguageBu
                     onIsOpenChange={setShowSwitchLanguage}
                     onChange={(value) => {
                         trackEvent({
-                            category: `${userType === 'pupil' ? 'SuS' : 'HuH'} User Account`,
+                            category: `${user?.pupil ? 'SuS' : 'HuH'} User Account`,
                             action: 'Language Switcher',
                             name: 'selected',
                         });
@@ -66,7 +66,7 @@ const SwitchLanguageButton = ({ className, variant = 'modal' }: SwitchLanguageBu
                                 onClick={() => {
                                     switchLanguage(button.short);
                                     trackEvent({
-                                        category: `${userType === 'pupil' ? 'SuS' : 'HuH'} Registration`,
+                                        category: `${user?.pupil ? 'SuS' : 'HuH'} Registration`,
                                         action: 'Language Switcher',
                                         name: 'selected',
                                     });
