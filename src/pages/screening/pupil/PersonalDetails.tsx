@@ -235,7 +235,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                                     id={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}
                                     value={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}
                                 />
-                                <Label htmlFor={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}>DaZ notwendig</Label>
+                                <Label htmlFor={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}>1:1 (DaZ) + HaH + Kurse</Label>
                             </div>
                             <div className="flex gap-x-2 items-center">
                                 <RadioGroupItem id={Learning_Offer_Constraints_Enum.OnlyDazCourses} value={Learning_Offer_Constraints_Enum.OnlyDazCourses} />
