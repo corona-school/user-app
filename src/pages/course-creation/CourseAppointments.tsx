@@ -63,9 +63,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
             const newAppointments = [...getDraftAppointments];
             newAppointments.push({
                 id: newId,
-                start: DateTime.now()
-                    .plus({ days: isFromUnpublishedSubcourse ? 14 : 7 })
-                    .toISO(),
+                start: DateTime.now().plus({ days: 14 }).toISO(),
                 duration: 60,
                 appointmentType: Lecture_Appointmenttype_Enum.Group,
                 displayName: '',
