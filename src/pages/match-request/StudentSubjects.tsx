@@ -64,6 +64,9 @@ const StudentSubjects = () => {
                     {t('matching.wizard.subjects.student.dazBannerText')}
                 </Alert>
             </div>
+            <Alert variant="indigo" className=" mb-6 md:mb-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
+                <span className="leading-[18px]">{t('matching.wizard.subjects.student.bannerText')}</span>
+            </Alert>
             <SubjectsSelector
                 showPupilsWaiting
                 showGradesAvailable
@@ -73,9 +76,6 @@ const StudentSubjects = () => {
                 options={options}
                 initialVisibleOptions={form.subjectsOptions.length || 8}
             />
-            <Alert variant="indigo" className=" mt-6 md:mt-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
-                <span className="leading-[18px]">{t('matching.wizard.subjects.student.bannerText')}</span>
-            </Alert>
 
             {form.subjects.length > 0 && (
                 <div className="flex items-center mt-4">
