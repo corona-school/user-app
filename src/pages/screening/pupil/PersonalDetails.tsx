@@ -221,9 +221,11 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     <div className="flex flex-col gap-y-1">
                         <div className="mb-5">
                             <Typography variant="h5" className="mb-2">
-                                Deutschkentnisse
+                                Freigaben
                             </Typography>
-                            <Typography variant="subtle">SuS freigeben für</Typography>
+                            <Typography variant="subtle">
+                                Freigaben können jederzeit geändert werden. Bestehende Matches und Kurse sind nicht betroffen.
+                            </Typography>
                         </div>
                         <RadioGroup value={germanKnowledge} onValueChange={onGermanKnowledgeChange} className="flex flex-row gap-x-4">
                             <div className="flex gap-x-2 items-center">
@@ -246,7 +248,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                 </div>
             </div>
             <div className="mt-10 flex items-center gap-x-4">
-                <Button variant="outline" onClick={updatePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
+                <Button variant="secondary" onClick={updatePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
                     Speichern
                 </Button>
             </div>
