@@ -431,6 +431,7 @@ const SingleCourseStudent = () => {
                                     refresh={refetchBasics}
                                     appointment={myNextAppointment as Lecture}
                                     isActiveSubcourse={isActiveSubcourse}
+                                    courseState={course?.courseState}
                                 />
                             )}
                             <div className="flex gap-x-4">
