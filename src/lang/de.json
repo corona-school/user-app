@@ -1614,7 +1614,7 @@
                 "student": {
                     "subheading": "<b>{{pupilCount}}</b> Schüler*innen warten insgesamt in <b>{{subjectCount}}</b> Fächern",
                     "dazBannerText": "Bitte beachte: Deutsch als Zweitsprache und Deutsch sind unterschiedliche Angebote.",
-                    "bannerText": "Wenn du mehrere Fächer auswählst, kommst du für mehr Schülerinnen in Frage. Dadurch kannst du schneller ein Lernpaar bekommen. \nPro Anfrage suchen wir einen Lernpartnerin für ein Fach. Wenn dir ein bestimmtes Fach besonders wichtig ist, kann es deshalb sinnvoll sein, nur dieses Fach auszuwählen. \nEin weiteres Lernpaar kannst du anfragen, sobald du mit deinemr Lernpartner*in euren ersten Termin hattet."
+                    "bannerText": "Wenn du mehrere Fächer auswählst, kommst du für mehr Schüler*innen in Frage. Dadurch kannst du schneller ein Lernpaar bekommen. \nPro Anfrage suchen wir eine*n Lernpartner*in für ein Fach. Wenn dir ein bestimmtes Fach besonders wichtig ist, kann es deshalb sinnvoll sein, nur dieses Fach auszuwählen. \nEin weiteres Lernpaar kannst du anfragen, sobald du mit deinem*deiner Lernpartner*in euren ersten Termin hattet."
                 }
             },
             "priority": {
