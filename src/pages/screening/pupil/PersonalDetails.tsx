@@ -233,15 +233,15 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                                 <Label htmlFor={PupilLearningOfferConstraintOptions.AllOffers}>Alle Angebote</Label>
                             </div>
                             <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id={PupilLearningOfferConstraintOptions.OnlyCourses} value={PupilLearningOfferConstraintOptions.OnlyCourses} />
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.OnlyCourses}>Nur Kurse</Label>
+                            </div>
+                            <div className="flex gap-x-2 items-center">
                                 <RadioGroupItem
                                     id={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}
                                     value={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}
                                 />
                                 <Label htmlFor={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}>1:1 (DaZ) + HaH + Kurse</Label>
-                            </div>
-                            <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id={PupilLearningOfferConstraintOptions.OnlyCourses} value={PupilLearningOfferConstraintOptions.OnlyCourses} />
-                                <Label htmlFor={PupilLearningOfferConstraintOptions.OnlyCourses}>Nur Kurse</Label>
                             </div>
                             <div className="flex gap-x-2 items-center">
                                 <RadioGroupItem
