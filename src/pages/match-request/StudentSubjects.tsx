@@ -44,7 +44,21 @@ const StudentSubjects = () => {
     });
 
     return (
-        <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0}>
+        <MatchRequestStep
+            onNext={goNext}
+            onBack={() => navigate(-1)}
+            isNextDisabled={form.subjects.length === 0}
+            ctaAddon={
+                form.subjects.length > 0 && (
+                    <div className="flex items-center mt-4 md:mt-0">
+                        <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
+                        <div>
+                            <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}. </Typography>
+                        </div>
+                    </div>
+                )
+            }
+        >
             <div className={cn('flex flex-col justify-between md:items-center xl:flex-row gap-y-4 gap-x-4')}>
                 <div className="mb-5">
                     <MatchRequestStepTitle>{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
@@ -62,27 +76,29 @@ const StudentSubjects = () => {
                 </div>
                 <Alert
                     variant="warning"
-                    className={cn('max-w-[755px] mb-4 max-h-12 hidden', {
+                    className={cn('max-w-[559px] mb-4 hidden', {
                         flex: subjectNames.includes('Deutsch als Zweitsprache') || subjectNames.includes('Deutsch'),
                     })}
                     icon={<IconInfoCircleFilled size={24} />}
                 >
-                    <Trans
-                        i18nKey="matching.wizard.subjects.student.dazBannerText"
-                        components={{
-                            dazLink: (
-                                <a
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="underline"
-                                    href="https://drive.google.com/file/d/1aCqsoymbSUp9vQRMne5LVJgyoSIZ33yw/preview"
-                                >
-                                    {t('lernfair.subjects.Deutsch als Zweitsprache')}
-                                </a>
-                            ),
-                        }}
-                        t={t}
-                    />
+                    <Typography variant="subtle">
+                        <Trans
+                            i18nKey="matching.wizard.subjects.student.dazBannerText"
+                            components={{
+                                dazLink: (
+                                    <a
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="underline"
+                                        href="https://drive.google.com/file/d/1aCqsoymbSUp9vQRMne5LVJgyoSIZ33yw/preview"
+                                    >
+                                        {t('lernfair.subjects.Deutsch als Zweitsprache')}
+                                    </a>
+                                ),
+                            }}
+                            t={t}
+                        />
+                    </Typography>
                 </Alert>
             </div>
             <Alert variant="indigo" className=" mb-6 md:mb-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
@@ -97,15 +113,6 @@ const StudentSubjects = () => {
                 options={options}
                 initialVisibleOptions={options.length}
             />
-
-            {form.subjects.length > 0 && (
-                <div className="flex items-center mt-4">
-                    <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
-                    <div>
-                        <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })} </Typography>
-                    </div>
-                </div>
-            )}
         </MatchRequestStep>
     );
 };
