@@ -61,7 +61,22 @@ const StudentSubjects = () => {
                     </Typography>
                 </div>
                 <Alert variant="warning" className="max-w-[755px] mb-4 max-h-12" icon={<IconInfoCircleFilled size={24} />}>
-                    {t('matching.wizard.subjects.student.dazBannerText')}
+                    <Trans
+                        i18nKey="matching.wizard.subjects.student.dazBannerText"
+                        components={{
+                            dazLink: (
+                                <a
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="underline"
+                                    href="https://drive.google.com/file/d/1aCqsoymbSUp9vQRMne5LVJgyoSIZ33yw/preview"
+                                >
+                                    {t('lernfair.subjects.Deutsch als Zweitsprache')}
+                                </a>
+                            ),
+                        }}
+                        t={t}
+                    />
                 </Alert>
             </div>
             <Alert variant="indigo" className=" mb-6 md:mb-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>

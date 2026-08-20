@@ -20,6 +20,7 @@ import {
     IconFocus2,
     IconGlobe,
     IconListSearch,
+    IconLockFilled,
     IconMicroscope,
     IconMusic,
     IconPlusMinus,
@@ -129,6 +130,7 @@ export interface SubjectOption {
     pupilsWaiting?: number;
     waitingDaysRange?: { from: number; to: number };
     gradesAvailable?: number[];
+    isDisabled?: boolean;
 }
 
 interface SingleProps {
@@ -236,7 +238,10 @@ export const SubjectsSelector = ({
                                     </Badge>
                                 )}
                             </div>
-                            {isPressed && <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />}
+                            {isPressed && !option.isDisabled && (
+                                <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />
+                            )}
+                            {isPressed && option.isDisabled && <IconLockFilled size={20} className="text-primary absolute top-2 right-2" />}
                         </Toggle>
                     );
                 })}
