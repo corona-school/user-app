@@ -60,7 +60,13 @@ const StudentSubjects = () => {
                         />
                     </Typography>
                 </div>
-                <Alert variant="warning" className="max-w-[755px] mb-4 max-h-12" icon={<IconInfoCircleFilled size={24} />}>
+                <Alert
+                    variant="warning"
+                    className={cn('max-w-[755px] mb-4 max-h-12 hidden', {
+                        flex: subjectNames.includes('Deutsch als Zweitsprache') || subjectNames.includes('Deutsch'),
+                    })}
+                    icon={<IconInfoCircleFilled size={24} />}
+                >
                     <Trans
                         i18nKey="matching.wizard.subjects.student.dazBannerText"
                         components={{
@@ -89,7 +95,7 @@ const StudentSubjects = () => {
                 multiple
                 value={subjectNames as SingleSubject[]}
                 options={options}
-                initialVisibleOptions={form.subjectsOptions.length || 8}
+                initialVisibleOptions={options.length}
             />
 
             {form.subjects.length > 0 && (

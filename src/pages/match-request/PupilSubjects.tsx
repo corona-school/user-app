@@ -93,6 +93,7 @@ const PupilSubjects = () => {
                 multiple
                 value={value as SingleSubject[]}
                 options={(options as unknown as SubjectOption[]).map((o) => ({ ...o, isDisabled: isDAZ && o.subject === 'Deutsch als Zweitsprache' }))}
+                initialVisibleOptions={options.length}
             />
             {form.subjects.length > 0 && (
                 <div className="flex items-center mt-4 md:hidden">
