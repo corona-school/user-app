@@ -27,7 +27,7 @@ const pupilOptions = [
     'ChatGPT',
     'Joblinge',
     'Sonstiges',
-];
+].sort((a, b) => a.localeCompare(b));
 
 const studentOptions = [
     'Persönliche Empfehlung/Freund:innen',
@@ -45,7 +45,7 @@ const studentOptions = [
     'Von Schüler:in zu Helfer:in',
     'ChatGPT',
     'Sonstiges',
-];
+].sort((a, b) => a.localeCompare(b));
 
 export const KnowsUsSelect = ({ value: knowsFrom, customValue: customKnowsFrom, onChange, type, className, disabled }: KnowsUsSelectProps) => {
     const [errorMessage, setErrorMessage] = useState('');
