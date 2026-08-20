@@ -131,6 +131,7 @@ export interface SubjectOption {
     waitingDaysRange?: { from: number; to: number };
     gradesAvailable?: number[];
     isDisabled?: boolean;
+    demandRank?: number;
 }
 
 interface SingleProps {
@@ -235,6 +236,13 @@ export const SubjectsSelector = ({
                                 {showGradesAvailable && !!option.gradesAvailable?.length && (
                                     <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
                                         {getGradesLabels(option.gradesAvailable)}
+                                    </Badge>
+                                )}
+                                {showPupilsWaiting && !option.pupilsWaiting && (
+                                    <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
+                                        {option.demandRank === 0 && '🔥 ständig angefragt'}
+                                        {option.demandRank === 1 && 'manchmal angefragt'}
+                                        {option.demandRank === 2 && 'sehr selten angefragt'}
                                     </Badge>
                                 )}
                             </div>

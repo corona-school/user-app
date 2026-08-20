@@ -33,6 +33,7 @@ const StudentSubjects = () => {
         subject: e,
         pupilsWaiting: form.subjectsOptions.find((o) => o.subject === e)?.pupilsWaiting ?? 0,
         gradesAvailable: form.subjectsOptions.find((o) => o.subject === e)?.gradesAvailable ?? [],
+        demandRank: form.subjectsOptions.find((o) => o.subject === e)?.demandRank ?? 2,
     })).sort((a, b) => {
         // Keep the order from the subjectsOptions array, but put subjects that are not in the array at the end
         const indexA = form.subjectsOptions.findIndex((o) => o.subject === a.subject);
