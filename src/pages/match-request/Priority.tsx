@@ -30,6 +30,7 @@ const Priority: React.FC = () => {
             onBack={goBack}
             isNextDisabled={form.subjects.every((it) => !it.mandatory)}
             reasonNextDisabled={t('matching.wizard.priority.reason_btn_disabled')}
+            className="gap-y-10"
         >
             <MatchRequestStepTitle>{t('matching.wizard.priority.subheading')}</MatchRequestStepTitle>
             <Typography className="mb-10">{t('matching.wizard.priority.text')}</Typography>

@@ -1495,8 +1495,8 @@
                 },
                 "student": {
                     "subheading": "<b>{{pupilCount}}</b> öğrenci, toplamda <b>{{subjectCount}}</b> derste bekliyor",
-                    "dazBannerText": "Lütfen dikkat: “Almanca İkinci Dil” ve “Almanca” farklı programlardır.",
-                    "bannerText": "Birden fazla ders belirtirsen, daha hızlı eşleştirilirsin.\nSadece tercih ettiğin derslerde çalışma arkadaşı bulmak için, bazı durumlarda her bir ders için ayrı ayrı eşleştirme talebinde bulunmak mantıklı olabilir.\nÇalışma arkadaşınla ilk buluşmanı gerçekleştirdikten sonra, yeni bir eşleştirme talebinde bulunabilirsin."
+                    "dazBannerText": "Lütfen dikkat: <dazLink>İkinci Dil Olarak Almanca</dazLink> ve Almanca farklı programlardır.",
+                    "bannerText": "Birden fazla ders seçersen, daha fazla öğrenci için uygun olursun. Böylece daha hızlı bir öğrenme partneri bulabilirsin. Her talep için bir öğrenme partneri arıyoruz. Bu nedenle, belirli bir ders senin için özellikle önemliyse yalnızca o dersi seçmen daha uygun olabilir."
                 },
                 "heading": "Ders Seçimi",
                 "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz.",
