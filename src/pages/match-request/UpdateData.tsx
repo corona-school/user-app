@@ -247,7 +247,7 @@ const UpdateData = () => {
                                             },
                                         })
                                     }
-                                    className="grid md:grid-cols-2"
+                                    className="flex flex-row flex-wrap md:grid md:grid-cols-2"
                                     toggleConfig={{
                                         variant: 'outline-accent',
                                         className: 'justify-center w-auto font-semibold h-[40px] px-4',

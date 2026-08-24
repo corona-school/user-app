@@ -44,7 +44,10 @@ const SubjectsGrade = () => {
                 {selectedSubjects.map((subject) => {
                     const option = form.subjectsOptions.find((o) => o.subject === subject.name);
                     return (
-                        <div className="md:w-[420px] md:max-w-[560px] flex-[1_1_420px] rounded-md p-4 gap-2 border border-accent-dark" key={subject.name}>
+                        <div
+                            className="md:w-[420px] md:max-w-[560px] flex-[1_1_420px] rounded-md p-4 pb-2 md:pb-4 gap-2 border border-accent-dark"
+                            key={subject.name}
+                        >
                             <div className="flex justify-between">
                                 <div className="flex gap-x-[14px] mb-6">
                                     <div className="w-10 h-10 shrink-0 bg-accent-medium rounded-full flex items-center justify-center group-data-[state=on]:bg-green-200">

@@ -70,7 +70,7 @@ const PupilSubjects = () => {
     });
 
     return (
-        <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0}>
+        <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0} className="gap-y-5 md:gap-y-5">
             <div className={cn('flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4')}>
                 <MatchRequestStepTitle>{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
                 {isDAZ && (
@@ -96,7 +96,7 @@ const PupilSubjects = () => {
                 initialVisibleOptions={options.length}
             />
             {form.subjects.length > 0 && (
-                <div className="flex items-center mt-4 md:hidden">
+                <div className="flex items-center mt-10 md:hidden">
                     <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
                     <div>
                         <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}:</Typography>

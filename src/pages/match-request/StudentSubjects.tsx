@@ -45,21 +45,7 @@ const StudentSubjects = () => {
     });
 
     return (
-        <MatchRequestStep
-            onNext={goNext}
-            onBack={() => navigate(-1)}
-            isNextDisabled={form.subjects.length === 0}
-            ctaAddon={
-                form.subjects.length > 0 && (
-                    <div className="flex items-center mt-4 md:mt-0">
-                        <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
-                        <div>
-                            <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}. </Typography>
-                        </div>
-                    </div>
-                )
-            }
-        >
+        <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0} className="gap-y-5 md:gap-y-5">
             <div className={cn('flex flex-col justify-between md:items-center md:flex-row gap-y-4 gap-x-4')}>
                 <div className="mb-5">
                     <MatchRequestStepTitle className="mb-2 md:mb-2">{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
@@ -114,6 +100,14 @@ const StudentSubjects = () => {
                 options={options}
                 initialVisibleOptions={options.length}
             />
+            {form.subjects.length > 0 && (
+                <div className="flex items-center mt-10">
+                    <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
+                    <div>
+                        <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}. </Typography>
+                    </div>
+                </div>
+            )}
         </MatchRequestStep>
     );
 };
