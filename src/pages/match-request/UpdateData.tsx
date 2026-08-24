@@ -139,7 +139,7 @@ const UpdateData = () => {
                                     {t('profile.availability')}
                                 </Typography>
                             </AccordionTrigger>
-                            <AccordionContent className="flex flex-col gap-4 md:pt-4">
+                            <AccordionContent className="flex flex-col gap-4 md:pt-4 pb-0">
                                 <WeeklyAvailabilitySelector
                                     onChange={(weeklyAvailability) =>
                                         onFormChange({ calendarPreferences: { ...form.calendarPreferences, weeklyAvailability } as CalendarPreferences })
