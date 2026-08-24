@@ -79,6 +79,11 @@ const PupilSubjects = () => {
                     </Alert>
                 )}
             </div>
+            {!isDAZ && (
+                <Alert variant="indigo" className="mb-6 md:mb-4 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
+                    <span className="leading-[18px]">{t('matching.wizard.subjects.pupil.bannerText')}</span>
+                </Alert>
+            )}
             <Typography variant="h6" className="mb-[10px]">
                 {t('matching.wizard.subjects.pupil.subheading')}
             </Typography>
@@ -87,13 +92,9 @@ const PupilSubjects = () => {
                 onChange={handleOnSubjectsChange}
                 multiple
                 value={value as SingleSubject[]}
-                options={options as unknown as SubjectOption[]}
+                options={(options as unknown as SubjectOption[]).map((o) => ({ ...o, isDisabled: isDAZ && o.subject === 'Deutsch als Zweitsprache' }))}
+                initialVisibleOptions={options.length}
             />
-            {!isDAZ && (
-                <Alert variant="indigo" className=" mt-6 md:mt-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
-                    <span className="leading-[18px]">{t('matching.wizard.subjects.pupil.bannerText')}</span>
-                </Alert>
-            )}
             {form.subjects.length > 0 && (
                 <div className="flex items-center mt-4 md:hidden">
                     <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />

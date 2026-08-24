@@ -20,6 +20,7 @@ import {
     IconFocus2,
     IconGlobe,
     IconListSearch,
+    IconLockFilled,
     IconMicroscope,
     IconMusic,
     IconPlusMinus,
@@ -129,6 +130,8 @@ export interface SubjectOption {
     pupilsWaiting?: number;
     waitingDaysRange?: { from: number; to: number };
     gradesAvailable?: number[];
+    isDisabled?: boolean;
+    demandRank?: number;
 }
 
 interface SingleProps {
@@ -235,8 +238,18 @@ export const SubjectsSelector = ({
                                         {getGradesLabels(option.gradesAvailable)}
                                     </Badge>
                                 )}
+                                {showPupilsWaiting && !option.pupilsWaiting && (
+                                    <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
+                                        {option.demandRank === 0 && '🔥 ständig angefragt'}
+                                        {option.demandRank === 1 && 'manchmal angefragt'}
+                                        {option.demandRank === 2 && 'sehr selten angefragt'}
+                                    </Badge>
+                                )}
                             </div>
-                            {isPressed && <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />}
+                            {isPressed && !option.isDisabled && (
+                                <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />
+                            )}
+                            {isPressed && option.isDisabled && <IconLockFilled size={20} className="text-primary absolute top-2 right-2" />}
                         </Toggle>
                     );
                 })}
