@@ -60,9 +60,9 @@ const StudentSubjects = () => {
                 )
             }
         >
-            <div className={cn('flex flex-col justify-between md:items-center xl:flex-row gap-y-4 gap-x-4')}>
+            <div className={cn('flex flex-col justify-between md:items-center md:flex-row gap-y-4 gap-x-4')}>
                 <div className="mb-5">
-                    <MatchRequestStepTitle>{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
+                    <MatchRequestStepTitle className="mb-2 md:mb-2">{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
                     <Typography variant="subtle">
                         <Trans
                             i18nKey="matching.wizard.subjects.student.subheading"
@@ -102,7 +102,7 @@ const StudentSubjects = () => {
                     </Typography>
                 </Alert>
             </div>
-            <Alert variant="indigo" className=" mb-6 md:mb-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
+            <Alert variant="indigo" className=" mb-6 md:mb-5 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
                 <span className="leading-[18px]">{t('matching.wizard.subjects.student.bannerText')}</span>
             </Alert>
             <SubjectsSelector

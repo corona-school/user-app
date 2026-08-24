@@ -32,7 +32,7 @@ const Priority: React.FC = () => {
             reasonNextDisabled={t('matching.wizard.priority.reason_btn_disabled')}
             className="gap-y-10"
         >
-            <MatchRequestStepTitle>{t('matching.wizard.priority.subheading')}</MatchRequestStepTitle>
+            <MatchRequestStepTitle className="mb-2 md:mb-2">{t('matching.wizard.priority.subheading')}</MatchRequestStepTitle>
             <Typography className="mb-10">{t('matching.wizard.priority.text')}</Typography>
             <SubjectsSelector showWaitingDays onChange={handleOnSubjectsChange} value={value} options={options} />
         </MatchRequestStep>
