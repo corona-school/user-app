@@ -6,13 +6,14 @@ import PasswordInput from '../components/PasswordInput';
 import Logo from '../assets/icons/lernfair/lf-logo.svg';
 import { gql } from './../gql';
 import { useMutation } from '@apollo/client';
-import useApollo from '../hooks/useApollo';
+import useApollo, { useUserLabel } from '../hooks/useApollo';
 import AlertMessage from '../widgets/AlertMessage';
 import { log } from '../log';
 import WithNavigation from '../components/WithNavigation';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 type Props = {
     layout: 'new-pw' | 'reset-pw';
@@ -31,6 +32,8 @@ const ResetPassword: React.FC<Props> = ({ layout }) => {
     const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
     const [showPasswordLength, setShowPasswordLength] = useState<boolean>(false);
     const [showPasswordConfirmNoMatch, setShowPasswordConfirmNoMatch] = useState(false);
+    const userLabel = useUserLabel();
+    usePageTitle(`Passwort ändern - ${userLabel} (App) | Lern-Fair`);
 
     const [changePassword] = useMutation(
         gql(`

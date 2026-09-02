@@ -5,7 +5,7 @@ import MatchPartner from './match/MatchPartner';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useMutation, useQuery } from '@apollo/client';
 import { gql } from './../gql';
-import useApollo, { QueryResult, useUserType } from '../hooks/useApollo';
+import useApollo, { QueryResult, useUserLabel, useUserType } from '../hooks/useApollo';
 import { DayAvailabilitySlot, Pupil, Student } from '../gql/graphql';
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import AlertMessage from '../widgets/AlertMessage';
@@ -28,6 +28,7 @@ import { Button } from '@/components/Button';
 import { toast } from 'sonner';
 import { MatchAvailabilityStatus } from '@/components/availability/MatchAvailabilityStatus';
 import { pupilIdToUserId, studentIdToUserId } from '@/helper/chat-helper';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 export const singleMatchQuery = gql(`
 query SingleMatch($matchId: Int! ) {
@@ -124,6 +125,8 @@ const SingleMatch = () => {
     const { client } = useApollo();
     const navigate = useNavigate();
     const [createMatchChat, { loading: isContactingMatch }] = useMutation(CREATE_MATCH_CHAT_MUTATION);
+    const userLabel = useUserLabel();
+    usePageTitle(`Matching: Match-Detail - ${userLabel} (App) | Lern-Fair`);
     const { data, refetch: refetchMatchData } = useQuery(singleMatchQuery, {
         variables: {
             matchId,

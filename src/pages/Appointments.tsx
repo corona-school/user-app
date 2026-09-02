@@ -5,7 +5,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import FloatingActionButton from '../components/FloatingActionButton';
-import useApollo, { QueryResult, useUserType } from '../hooks/useApollo';
+import useApollo, { QueryResult, useUserLabel, useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
@@ -72,7 +72,8 @@ const Appointments: React.FC = () => {
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const navigate = useNavigate();
     const { client } = useApollo();
-    usePageTitle('Termin-Übersicht | Lern-Fair');
+    const userLabel = useUserLabel();
+    usePageTitle(`Termine - ${userLabel} (App) | Lern-Fair`);
 
     type Appointments = Exclude<QueryResult<typeof getMyAppointments>['me']['appointments'], null | undefined>;
     const [appointments, setAppointments] = useState<Appointments>([]);

@@ -13,14 +13,16 @@ import DisableableButton from '../components/DisablebleButton';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import useApollo from '@/hooks/useApollo';
+import useApollo, { useUserLabel } from '@/hooks/useApollo';
 import { Navigate } from 'react-router-dom';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const ChangeEmail = () => {
     const [newEmail, setNewEmail] = useState<string>();
     const [showEmailSent, setShowEmailSent] = useState<boolean>();
     const { roles } = useApollo();
-
+    const userLabel = useUserLabel();
+    usePageTitle(`Email ändern - ${userLabel} (App) | Lern-Fair`);
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
 

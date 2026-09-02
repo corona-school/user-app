@@ -5,17 +5,19 @@ import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import SessionCard from '../components/SessionCard';
 import { Secret_Type_Enum } from '@/gql/graphql';
-import { getDeviceId } from '@/hooks/useApollo';
+import { getDeviceId, useUserLabel } from '@/hooks/useApollo';
 import { Typography } from '@/components/Typography';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import React from 'react';
 import { toast } from 'sonner';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const SessionManager: React.FC = () => {
     const { t } = useTranslation();
-
+    const userLabel = useUserLabel();
+    usePageTitle(`Geräte - ${userLabel} (App) | Lern-Fair`);
     const {
         data: sessions,
         loading: fetchingSecrets,
