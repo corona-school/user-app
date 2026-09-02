@@ -16,7 +16,7 @@ interface MatchRequestSentModalProps {
 }
 
 export const StudentMatchRequestSentModal = ({ isOpen }: Omit<MatchRequestSentModalProps, 'screeningAppointment'>) => {
-    usePageTitle(`Neues Lernpaar: Anfrage bestätigt - Helfer*in (App) | Lern-Fair`);
+    usePageTitle(`Neues Lernpaar: Anfrage bestätigt - Helfer*in (App) | Lern-Fair`, { skip: !isOpen });
     const { form } = useMatchRequestForm();
     useConfetti(isOpen && !form.isEdit);
     const navigate = useNavigate();
@@ -50,7 +50,7 @@ export const MatchRequestSentModal = ({ screeningAppointment, isOpen }: MatchReq
     useConfetti(isOpen && !form.isEdit);
     const { t } = useTranslation();
     const navigate = useNavigate();
-    usePageTitle(`Neues Lernpaar: Anfrage bestätigt - Schüler*in (App) | Lern-Fair`);
+    usePageTitle(`Neues Lernpaar: Anfrage bestätigt - Schüler*in (App) | Lern-Fair`, { skip: !isOpen });
 
     const isNewWithAppointment = !form.isEdit && screeningAppointment;
     const isNewWithoutAppointment = !form.isEdit && !screeningAppointment;

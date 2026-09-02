@@ -15,16 +15,12 @@ import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep } from './util';
 import StudentSubjects from './StudentSubjects';
 import SubjectsGrade from './SubjectsGrade';
-import { useUserLabel } from '@/hooks/useApollo';
-import { usePageTitle } from '@/hooks/usePageTitle';
 
 const MatchRequest: React.FC = () => {
     const { form, onFormChange, isLoading } = useMatchRequestForm();
     const location = useLocation();
     const locationState = location.state as { edit: boolean };
     const container = useRef<HTMLDivElement>(null);
-    const userLabel = useUserLabel();
-    usePageTitle(`Neues Lernpaar - ${userLabel} (App) | Lern-Fair`);
 
     useEffect(() => {
         if (locationState?.edit) {
