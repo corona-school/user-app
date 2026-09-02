@@ -1,4 +1,3 @@
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import AsNavigationItem from '@/components/AsNavigationItem';
@@ -16,21 +15,16 @@ import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep } from './util';
 import StudentSubjects from './StudentSubjects';
 import SubjectsGrade from './SubjectsGrade';
+import { useUserLabel } from '@/hooks/useApollo';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const MatchRequest: React.FC = () => {
     const { form, onFormChange, isLoading } = useMatchRequestForm();
     const location = useLocation();
     const locationState = location.state as { edit: boolean };
-    const { trackPageView } = useMatomo();
     const container = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (form.userType) {
-            trackPageView({
-                documentTitle: form.userType === 'pupil' ? 'Schüler Matching' : 'Helfer Matching',
-            });
-        }
-    }, [form.userType, trackPageView]);
+    const userLabel = useUserLabel();
+    usePageTitle(`Neues Lernpaar - ${userLabel} (App) | Lern-Fair`);
 
     useEffect(() => {
         if (locationState?.edit) {

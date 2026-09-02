@@ -9,12 +9,13 @@ import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/Tailwind';
 import { SingleSubject, SUBJECTS } from '@/types/subject';
 import { MIN_MAX_GRADE_RANGE } from '@/Utility';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const StudentSubjects = () => {
     const { goNext, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
     const navigate = useNavigate();
-
+    usePageTitle(`Neues Lernpaar: Fächer - Helfer*in (App) | Lern-Fair`);
     const handleOnSubjectsChange = (subjects: SingleSubject[]) => {
         const updatedSubjects = subjects.map((name) => {
             const existingSubject = form.subjects.find((subject) => subject.name === name);

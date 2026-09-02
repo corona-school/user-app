@@ -2,12 +2,13 @@ import { Button } from '@/components/Button';
 import { Modal, ModalFooter, ModalTitle } from '@/components/Modal';
 import { Typography } from '@/components/Typography';
 import i18next from '@/I18n';
-import { IconArrowRight, IconCheck, IconCircleCheckFilled } from '@tabler/icons-react';
+import { IconCheck, IconCircleCheckFilled } from '@tabler/icons-react';
 import { DateTime } from 'luxon';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { useConfetti } from '@/hooks/useConfetti';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 interface MatchRequestSentModalProps {
     isOpen: boolean;
@@ -15,6 +16,7 @@ interface MatchRequestSentModalProps {
 }
 
 export const StudentMatchRequestSentModal = ({ isOpen }: Omit<MatchRequestSentModalProps, 'screeningAppointment'>) => {
+    usePageTitle(`Neues Lernpaar: Anfrage bestätigt - Helfer*in (App) | Lern-Fair`);
     const { form } = useMatchRequestForm();
     useConfetti(isOpen && !form.isEdit);
     const navigate = useNavigate();
@@ -48,6 +50,7 @@ export const MatchRequestSentModal = ({ screeningAppointment, isOpen }: MatchReq
     useConfetti(isOpen && !form.isEdit);
     const { t } = useTranslation();
     const navigate = useNavigate();
+    usePageTitle(`Neues Lernpaar: Anfrage bestätigt - Schüler*in (App) | Lern-Fair`);
 
     const isNewWithAppointment = !form.isEdit && screeningAppointment;
     const isNewWithoutAppointment = !form.isEdit && !screeningAppointment;
