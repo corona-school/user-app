@@ -9,7 +9,6 @@ export const usePageTitle = (title: string, { skip }: UsePageTitleOptions = { sk
     const { trackPageView } = useMatomo();
     useEffect(() => {
         if (!skip) {
-            console.log({ TRACKING_TEST: title });
             document.title = title;
             trackPageView({ documentTitle: title });
         }
