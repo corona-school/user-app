@@ -10,11 +10,13 @@ import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/Tailwind';
 import { SingleSubject, SUBJECTS } from '@/types/subject';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const PupilSubjects = () => {
     const { goNext, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    usePageTitle(`Neues Lernpaar: Fächer - Schüler*in (App) | Lern-Fair`);
     const isDAZ = form.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching);
 
     useEffect(() => {

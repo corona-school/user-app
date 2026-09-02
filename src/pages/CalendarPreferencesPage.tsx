@@ -12,6 +12,8 @@ import { useMutation, useQuery } from '@apollo/client';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { useUserLabel } from '@/hooks/useApollo';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const GET_CALENDAR_PREFERENCES_QUERY = gql(`
     query GetCalendarPreferences {
@@ -34,6 +36,8 @@ const CalendarPreferencesPage = () => {
     const { data, loading } = useQuery(GET_CALENDAR_PREFERENCES_QUERY);
     const [updateCalendarPreferences, { loading: updating }] = useMutation(UPDATE_CALENDAR_PREFERENCES_MUTATION);
     const { t } = useTranslation();
+    const userLabel = useUserLabel();
+    usePageTitle(`Wann hast du Zeit? - ${userLabel} (App) | Lern-Fair`);
 
     useEffect(() => {
         if (!loading && data) {

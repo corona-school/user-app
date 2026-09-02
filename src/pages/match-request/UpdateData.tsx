@@ -16,6 +16,8 @@ import { Alert } from '@/components/Alert';
 import { SpecialTeachingExperienceEnum, SpecialTeachingExperienceSelector } from '@/components/SpecialTeachingExperienceSelector';
 import { cn } from '@/lib/Tailwind';
 import { Typography } from '@/components/Typography';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useUserLabel } from '@/hooks/useApollo';
 
 type ModalType = 'grade' | 'schoolType' | 'languages' | 'specialTeachingExperience';
 
@@ -43,6 +45,8 @@ const UpdateData = () => {
     const [modalType, setModalType] = useState<ModalType>();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dialogContentRef = useRef<HTMLDivElement>(null);
+    const userLabel = useUserLabel();
+    usePageTitle(`Neues Lernpaar: Profil-Check - ${userLabel} (App) | Lern-Fair`);
 
     const handleOnOpenModal = (type: ModalType) => {
         setModalType(type);
