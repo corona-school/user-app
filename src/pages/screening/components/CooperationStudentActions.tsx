@@ -65,7 +65,6 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     <DropdownMenuItem
                         className="text-destructive focus:bg-destructive-lighter focus:text-destructive"
                         onClick={() => setShowConfirmRemoveFromList(true)}
-                        disabled={student.hasInstructorScreening || student.hasTutorScreening}
                     >
                         Aus der Liste entfernen
                     </DropdownMenuItem>

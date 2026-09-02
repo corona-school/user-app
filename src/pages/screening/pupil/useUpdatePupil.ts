@@ -116,8 +116,6 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
         }
     };
 
-    console.log('restrictions', restrictions);
-
     return {
         updatePupil,
         isUpdating,

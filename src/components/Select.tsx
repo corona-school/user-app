@@ -76,19 +76,30 @@ const SelectItem = React.forwardRef<React.ElementRef<typeof SelectPrimitive.Item
 );
 
 interface SelectInputProps<T> {
-    value: T;
-    onValueChange: (value: T) => void;
+    value: T | '';
+    onValueChange: (value: T | '') => void;
     className?: string;
     options: { value: string; label: string }[] | string[];
     placeholder?: string;
+    allowReset?: boolean;
 }
 
-export const SelectInput = <T extends string>({ value, onValueChange, options, placeholder, className }: SelectInputProps<T>) => (
-    <Select value={value} onValueChange={onValueChange}>
-        <SelectTrigger className={cn('h-10 w-full', className)} placeholder={placeholder}>
-            <SelectValue />
+const RESET_VALUE = '__SELECT_RESET__';
+
+export const SelectInput = <T extends string>({ value, onValueChange, options, placeholder, className, allowReset = false }: SelectInputProps<T>) => (
+    <Select
+        value={value || undefined}
+        onValueChange={(newValue) => {
+            onValueChange(newValue === RESET_VALUE ? '' : (newValue as T));
+        }}
+    >
+        <SelectTrigger className={cn('h-10 w-full', className)}>
+            <SelectValue placeholder={placeholder} />
         </SelectTrigger>
+
         <SelectContent>
+            {allowReset && value && <SelectItem value={RESET_VALUE}>Auswahl zurücksetzen</SelectItem>}
+
             {options.map((option) => {
                 if (typeof option === 'string') {
                     return (
@@ -97,6 +108,7 @@ export const SelectInput = <T extends string>({ value, onValueChange, options, p
                         </SelectItem>
                     );
                 }
+
                 return (
                     <SelectItem key={option.value} value={option.value}>
                         {option.label}
