@@ -1495,8 +1495,8 @@
                 },
                 "student": {
                     "subheading": "<b>{{pupilCount}}</b> A total of pupils are waiting in <b>{{subjectCount}}</b> subjects",
-                    "dazBannerText": "Please note: \"German as a Second Language\" and \"German\" are different courses.",
-                    "bannerText": "If you list multiple subjects, you’ll be matched more quickly. \nTo find study partners only in your preferred subjects, it may be a good idea to request a single match at a time. \nYou can request another match as soon as you’ve had your first “ lecture ” with your study partner."
+                    "dazBannerText": "Please note: <dazLink>German as a Second Language</dazLink> and German are different programs.",
+                    "bannerText": "If you select multiple subjects, you will be eligible for more students. This means you can get a learning partner faster. We look for one learning partner per request. If a particular subject is especially important to you, it may therefore make sense to select only that subject."
                 },
                 "heading": "Course Selection",
                 "reason_btn_disabled": "Please select one or more subjects.",

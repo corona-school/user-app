@@ -1,10 +1,9 @@
 import WithNavigation from '../components/WithNavigation';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import IFrame from '../components/IFrame';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import AsNavigationItem from '../components/AsNavigationItem';
-import { useUserType } from '../hooks/useApollo';
+import { useUserLabel, useUserType } from '../hooks/useApollo';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { SwitchUserType } from '../User';
@@ -12,6 +11,7 @@ import ContactSupportForm from '../components/ContactSupportForm';
 import { Typography } from '@/components/Typography';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const HelpCenter: React.FC = () => {
     const userType = useUserType();
@@ -19,14 +19,8 @@ const HelpCenter: React.FC = () => {
     const { t } = useTranslation();
 
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { trackPageView } = useMatomo();
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Hilfebereich',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const userLabel = useUserLabel();
+    usePageTitle(`Kontakt + FAQ - ${userLabel} (App) | Lern-Fair`);
 
     const isStudent = userType === 'student';
     const isPupil = userType === 'pupil';

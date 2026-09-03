@@ -10,11 +10,13 @@ import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/Tailwind';
 import { SingleSubject, SUBJECTS } from '@/types/subject';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const PupilSubjects = () => {
     const { goNext, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    usePageTitle(`Neues Lernpaar: Fächer - Schüler*in (App) | Lern-Fair`);
     const isDAZ = form.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching);
 
     useEffect(() => {
@@ -70,7 +72,7 @@ const PupilSubjects = () => {
     });
 
     return (
-        <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0}>
+        <MatchRequestStep onNext={goNext} onBack={() => navigate(-1)} isNextDisabled={form.subjects.length === 0} className="gap-y-5 md:gap-y-5">
             <div className={cn('flex flex-col justify-between xl:flex-row gap-y-4 gap-x-4')}>
                 <MatchRequestStepTitle>{t('matching.wizard.subjects.heading')}</MatchRequestStepTitle>
                 {isDAZ && (
@@ -79,6 +81,11 @@ const PupilSubjects = () => {
                     </Alert>
                 )}
             </div>
+            {!isDAZ && (
+                <Alert variant="indigo" className="mb-6 md:mb-4 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
+                    <span className="leading-[18px]">{t('matching.wizard.subjects.pupil.bannerText')}</span>
+                </Alert>
+            )}
             <Typography variant="h6" className="mb-[10px]">
                 {t('matching.wizard.subjects.pupil.subheading')}
             </Typography>
@@ -87,20 +94,20 @@ const PupilSubjects = () => {
                 onChange={handleOnSubjectsChange}
                 multiple
                 value={value as SingleSubject[]}
-                options={options as unknown as SubjectOption[]}
+                options={(options as unknown as SubjectOption[]).map((o) => ({ ...o, isDisabled: isDAZ && o.subject === 'Deutsch als Zweitsprache' }))}
+                initialVisibleOptions={options.length}
             />
-            {!isDAZ && (
-                <Alert variant="indigo" className=" mt-6 md:mt-10 whitespace-break-spaces w-full" icon={<IconBulbFilled size={24} />}>
-                    <span className="leading-[18px]">{t('matching.wizard.subjects.pupil.bannerText')}</span>
-                </Alert>
-            )}
             {form.subjects.length > 0 && (
-                <div className="flex items-center mt-4 md:hidden">
+                <div className="flex items-center mt-10 md:hidden">
                     <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
                     <div>
-                        <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}:</Typography>
-                        <Typography variant="subtle" className="mt-1">
-                            {form.subjects.map((s) => s.name).join(', ')}
+                        <Typography variant="subtle" className="whitespace-pre-wrap">
+                            <Typography variant="subtle" as="span">
+                                {t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}:{'\n'}
+                            </Typography>
+                            <Typography variant="subtle" as="span">
+                                {form.subjects.map((s) => s.name).join(', ')}
+                            </Typography>
                         </Typography>
                     </div>
                 </div>

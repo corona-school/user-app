@@ -11,11 +11,13 @@ import { getGradeLabel } from '@/Utility';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepDescription, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/components/Accordion';
-import { IconBulbFilled, IconCheck, IconChevronDown, IconPencil, IconSend } from '@tabler/icons-react';
+import { IconAlertTriangleFilled, IconBulbFilled, IconCheck, IconChevronDown, IconCircleCheckFilled, IconPencil, IconSend } from '@tabler/icons-react';
 import { Alert } from '@/components/Alert';
 import { SpecialTeachingExperienceEnum, SpecialTeachingExperienceSelector } from '@/components/SpecialTeachingExperienceSelector';
 import { cn } from '@/lib/Tailwind';
 import { Typography } from '@/components/Typography';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useUserLabel } from '@/hooks/useApollo';
 
 type ModalType = 'grade' | 'schoolType' | 'languages' | 'specialTeachingExperience';
 
@@ -43,6 +45,8 @@ const UpdateData = () => {
     const [modalType, setModalType] = useState<ModalType>();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dialogContentRef = useRef<HTMLDivElement>(null);
+    const userLabel = useUserLabel();
+    usePageTitle(`Neues Lernpaar: Profil-Check - ${userLabel} (App) | Lern-Fair`);
 
     const handleOnOpenModal = (type: ModalType) => {
         setModalType(type);
@@ -83,22 +87,7 @@ const UpdateData = () => {
             reasonNextDisabled={getIsNextDisabled().reason}
             nextButtonText={isLastStep ? t('sendRequest') : t('saveAndContinue')}
             nextButtonIcon={isLastStep ? <IconSend size={20} /> : undefined}
-            ctaAddon={
-                <div className="flex flex-col gap-y-2 self-center mt-2 md:mt-0">
-                    <Typography className="text-subtle">
-                        {selectedAvailabilityCount >= 3 ? (
-                            <span>
-                                <span className="mr-1">✅</span> {t('matching.wizard.profile.availabilitySelected', { selected: selectedAvailabilityCount })}
-                            </span>
-                        ) : (
-                            <span>
-                                <span className="mr-1">⚠️</span>{' '}
-                                {t('matching.wizard.profile.availabilityMissing', { missing: Math.max(3 - selectedAvailabilityCount, 0) })}
-                            </span>
-                        )}
-                    </Typography>
-                </div>
-            }
+            className="gap-y-4 md:gap-y-6"
         >
             <MatchRequestStepTitle variant="h4">{t('matching.wizard.profile.heading')}</MatchRequestStepTitle>
             <MatchRequestStepDescription>
@@ -154,7 +143,7 @@ const UpdateData = () => {
                                     {t('profile.availability')}
                                 </Typography>
                             </AccordionTrigger>
-                            <AccordionContent className="flex flex-col gap-4 md:pt-4">
+                            <AccordionContent className="flex flex-col gap-4 md:pt-4 pb-0">
                                 <WeeklyAvailabilitySelector
                                     onChange={(weeklyAvailability) =>
                                         onFormChange({ calendarPreferences: { ...form.calendarPreferences, weeklyAvailability } as CalendarPreferences })
@@ -174,6 +163,20 @@ const UpdateData = () => {
                             </AccordionContent>
                         </AccordionItem>
                     </Accordion>
+                </div>
+                <div className="flex items-center gap-x-2 mt-2 md:mt-0">
+                    {selectedAvailabilityCount >= 3 ? (
+                        <IconCircleCheckFilled size={24} className="text-green-500 inline" />
+                    ) : (
+                        <IconAlertTriangleFilled size={24} className="text-orange-500 inline" />
+                    )}
+                    <Typography className="text-subtle">
+                        {selectedAvailabilityCount >= 3 ? (
+                            <span>{t('matching.wizard.profile.availabilitySelected', { selected: selectedAvailabilityCount })}</span>
+                        ) : (
+                            <span>{t('matching.wizard.profile.availabilityMissing', { missing: Math.max(3 - selectedAvailabilityCount, 0) })}</span>
+                        )}
+                    </Typography>
                 </div>
                 <Modal
                     isOpen={isModalOpen}
@@ -243,7 +246,7 @@ const UpdateData = () => {
                                             },
                                         })
                                     }
-                                    className="grid md:grid-cols-2"
+                                    className="flex flex-row flex-wrap md:grid md:grid-cols-2"
                                     toggleConfig={{
                                         variant: 'outline-accent',
                                         className: 'justify-center w-auto font-semibold h-[40px] px-4',

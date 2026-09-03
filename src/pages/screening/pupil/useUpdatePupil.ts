@@ -4,7 +4,7 @@ import { Gender_Enum as Gender, ExternalSchoolSearch, Learning_Offer_Constraints
 import { PupilForScreening } from '@/types';
 import { getAgeAtRegistration, getApproxCurrentAge } from '@/Utility';
 import { useMutation } from '@apollo/client';
-import { useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
@@ -15,6 +15,13 @@ const UPDATE_PUPIL_MUTATION = gql(`
 `);
 
 export type UpdatePupilFormState = ReturnType<typeof useUpdatePupil>['form'];
+
+export enum PupilLearningOfferConstraintOptions {
+    AllOffers = 'all-offers',
+    OnlyCourses = 'only-courses',
+    DazSubjectRequiredForMatching = 'daz-subject-required-for-matching',
+    OnlyDazCourses = 'only-daz-courses',
+}
 
 export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [mutationUpdatePupil, { loading: isUpdating }] = useMutation(UPDATE_PUPIL_MUTATION);
@@ -32,24 +39,42 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [weeklyAvailability, setWeeklyAvailability] = useState(pupil.calendarPreferences?.weeklyAvailability);
     const [currentAge, setCurrentAge] = useState(pupil.age ? getApproxCurrentAge(pupil.createdAt, pupil.age) : undefined);
     const [learningOfferConstraints, setLearningOfferConstraints] = useState(pupil.learningOfferConstraints);
+    const [restrictions, setRestrictions] = useState<PupilLearningOfferConstraintOptions>();
+    const [isPupil, setIsPupil] = useState(pupil.isPupil);
 
-    const germanKnowledge = useMemo(() => {
+    useEffect(() => {
         if (learningOfferConstraints.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching)) {
-            return Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching;
+            setRestrictions(PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching);
         } else if (learningOfferConstraints.includes(Learning_Offer_Constraints_Enum.OnlyDazCourses)) {
-            return Learning_Offer_Constraints_Enum.OnlyDazCourses;
+            setRestrictions(PupilLearningOfferConstraintOptions.OnlyDazCourses);
+        } else if (!pupil.isPupil) {
+            setRestrictions(PupilLearningOfferConstraintOptions.OnlyCourses);
         } else {
-            return 'all-offers';
+            setRestrictions(PupilLearningOfferConstraintOptions.AllOffers);
         }
-    }, [learningOfferConstraints]);
+    }, []);
 
-    const onGermanKnowledgeChange = (value: string) => {
-        if (value === Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching) {
-            setLearningOfferConstraints([Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching]);
-        } else if (value === Learning_Offer_Constraints_Enum.OnlyDazCourses) {
-            setLearningOfferConstraints([Learning_Offer_Constraints_Enum.OnlyDazCourses]);
-        } else {
-            setLearningOfferConstraints([]);
+    const onRestrictionsChange = (value: string) => {
+        switch (value) {
+            case PupilLearningOfferConstraintOptions.OnlyCourses:
+                setRestrictions(PupilLearningOfferConstraintOptions.OnlyCourses);
+                setLearningOfferConstraints([]);
+                setIsPupil(false);
+                break;
+            case PupilLearningOfferConstraintOptions.OnlyDazCourses:
+                setRestrictions(PupilLearningOfferConstraintOptions.OnlyDazCourses);
+                setLearningOfferConstraints([Learning_Offer_Constraints_Enum.OnlyDazCourses]);
+                setIsPupil(false);
+                break;
+            case PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching:
+                setRestrictions(PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching);
+                setLearningOfferConstraints([Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching]);
+                setIsPupil(true);
+                break;
+            default:
+                setRestrictions(PupilLearningOfferConstraintOptions.AllOffers);
+                setLearningOfferConstraints([]);
+                setIsPupil(true);
         }
     };
 
@@ -73,7 +98,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         },
                         descriptionForMatch,
                         descriptionForScreening,
-                        isPupil: !learningOfferConstraints.includes(Learning_Offer_Constraints_Enum.OnlyDazCourses),
+                        isPupil: isPupil,
                         age: pupil.age !== currentAge && currentAge ? getAgeAtRegistration(pupil.createdAt, currentAge) : pupil.age,
                         learningOfferConstraints: learningOfferConstraints as any,
                         calendarPreferences: weeklyAvailability
@@ -119,8 +144,8 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             setWeeklyAvailability,
             setCurrentAge,
             currentAge,
-            germanKnowledge,
-            onGermanKnowledgeChange,
+            restrictions,
+            onRestrictionsChange,
         },
     };
 };

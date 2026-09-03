@@ -22,7 +22,7 @@ type Props = {
     minDate?: DateTime;
 };
 
-const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors, setErrors, minDate = DateTime.now().plus({ days: 7 }) }) => {
+const CourseAppointmentForm: React.FC<Props> = ({ appointmentPrefill, onSubmit, onCancel, errors, setErrors, minDate = DateTime.now().plus({ days: 14 }) }) => {
     const { t } = useTranslation();
     const userType = useUserType();
     const [title, setTitle] = useState(appointmentPrefill.title ?? '');

@@ -4,10 +4,12 @@ import { Typography } from '@/components/Typography';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { SingleSubject } from '@/types/subject';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const Priority: React.FC = () => {
     const { goBack, goNext, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
+    usePageTitle(`Neues Lernpaar: Prio-Fach - Schüler*in (App) | Lern-Fair`);
 
     const handleOnSubjectsChange = (subject: SingleSubject) => {
         onFormChange({
@@ -30,8 +32,9 @@ const Priority: React.FC = () => {
             onBack={goBack}
             isNextDisabled={form.subjects.every((it) => !it.mandatory)}
             reasonNextDisabled={t('matching.wizard.priority.reason_btn_disabled')}
+            className="gap-y-10"
         >
-            <MatchRequestStepTitle>{t('matching.wizard.priority.subheading')}</MatchRequestStepTitle>
+            <MatchRequestStepTitle className="mb-2 md:mb-2">{t('matching.wizard.priority.subheading')}</MatchRequestStepTitle>
             <Typography className="mb-10">{t('matching.wizard.priority.text')}</Typography>
             <SubjectsSelector showWaitingDays onChange={handleOnSubjectsChange} value={value} options={options} />
         </MatchRequestStep>

@@ -6,7 +6,7 @@ import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
 import { TextArea } from '@/components/TextArea';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
-import { ExternalSchoolSearch, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
+import { ExternalSchoolSearch } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { useRoles } from '@/hooks/useApollo';
 import { PupilForScreening } from '@/types';
@@ -23,7 +23,7 @@ import { EditLocationModal } from '../components/EditLocationModal';
 import { EditSchoolTypeModal } from '../components/EditSchoolTypeModal';
 import { SchoolSearchInput } from '../components/SchoolSearchInput';
 import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityModal';
-import { UpdatePupilFormState } from './useUpdatePupil';
+import { PupilLearningOfferConstraintOptions, UpdatePupilFormState } from './useUpdatePupil';
 
 const CREATE_LOGIN_TOKEN_MUTATION = gql(`
     mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
@@ -76,8 +76,8 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
         setWeeklyAvailability,
         currentAge,
         setCurrentAge,
-        germanKnowledge,
-        onGermanKnowledgeChange,
+        restrictions,
+        onRestrictionsChange,
     } = form;
 
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
@@ -221,32 +221,41 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     <div className="flex flex-col gap-y-1">
                         <div className="mb-5">
                             <Typography variant="h5" className="mb-2">
-                                Deutschkentnisse
+                                Freigaben
                             </Typography>
-                            <Typography variant="subtle">SuS freigeben für</Typography>
+                            <Typography variant="subtle">
+                                Freigaben können jederzeit geändert werden. Bestehende Matches und Kurse sind nicht betroffen.
+                            </Typography>
                         </div>
-                        <RadioGroup value={germanKnowledge} onValueChange={onGermanKnowledgeChange} className="flex flex-row gap-x-4">
+                        <RadioGroup value={restrictions} onValueChange={onRestrictionsChange} className="flex flex-row gap-x-4">
                             <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id="all-offers" value="all-offers" />
-                                <Label htmlFor="all-offers">Alle Angebote</Label>
+                                <RadioGroupItem id={PupilLearningOfferConstraintOptions.AllOffers} value={PupilLearningOfferConstraintOptions.AllOffers} />
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.AllOffers}>Alle Angebote</Label>
+                            </div>
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id={PupilLearningOfferConstraintOptions.OnlyCourses} value={PupilLearningOfferConstraintOptions.OnlyCourses} />
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.OnlyCourses}>Nur Kurse</Label>
                             </div>
                             <div className="flex gap-x-2 items-center">
                                 <RadioGroupItem
-                                    id={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}
-                                    value={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}
+                                    id={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}
+                                    value={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}
                                 />
-                                <Label htmlFor={Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching}>DaZ notwendig</Label>
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}>1:1 (DaZ) + HaH + Kurse</Label>
                             </div>
                             <div className="flex gap-x-2 items-center">
-                                <RadioGroupItem id={Learning_Offer_Constraints_Enum.OnlyDazCourses} value={Learning_Offer_Constraints_Enum.OnlyDazCourses} />
-                                <Label htmlFor={Learning_Offer_Constraints_Enum.OnlyDazCourses}>Nur DaZ-Kurse</Label>
+                                <RadioGroupItem
+                                    id={PupilLearningOfferConstraintOptions.OnlyDazCourses}
+                                    value={PupilLearningOfferConstraintOptions.OnlyDazCourses}
+                                />
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.OnlyDazCourses}>Nur DaZ-Kurse</Label>
                             </div>
                         </RadioGroup>
                     </div>
                 </div>
             </div>
             <div className="mt-10 flex items-center gap-x-4">
-                <Button variant="outline" onClick={updatePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
+                <Button variant="secondary" onClick={updatePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
                     Speichern
                 </Button>
             </div>

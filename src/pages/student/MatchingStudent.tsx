@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -19,6 +18,7 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 type Props = {};
 const query = gql(`
@@ -80,14 +80,7 @@ const MatchingStudent: React.FC<Props> = () => {
         return data?.me?.student?.matches.filter((match) => match.dissolved === true);
     }, [data?.me?.student?.matches]);
 
-    const { trackPageView, trackEvent } = useMatomo();
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Helfer Matching',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    usePageTitle('Helfer Matching');
 
     const matchRequestCount = data?.me?.student?.openMatchRequestCount ?? 0;
 

@@ -20,6 +20,7 @@ import {
     IconFocus2,
     IconGlobe,
     IconListSearch,
+    IconLockFilled,
     IconMicroscope,
     IconMusic,
     IconPlusMinus,
@@ -129,6 +130,8 @@ export interface SubjectOption {
     pupilsWaiting?: number;
     waitingDaysRange?: { from: number; to: number };
     gradesAvailable?: number[];
+    isDisabled?: boolean;
+    demandRank?: number;
 }
 
 interface SingleProps {
@@ -189,18 +192,14 @@ export const SubjectsSelector = ({
 
     return (
         <div>
-            <div
-                className={cn('grid grid-cols-[repeat(auto-fit,minmax(167px,1fr))] gap-2 md:gap-4', {
-                    'md:grid-cols-[repeat(auto-fit,minmax(272px,1fr))]': isBigVariant,
-                })}
-            >
+            <div className={cn('grid gap-2 md:gap-4', 'grid-cols-[repeat(auto-fit,minmax(min(100%,167px),1fr))]', 'md:flex md:flex-wrap')}>
                 {mainOptions.concat(showAllSubjects ? rareOptions : []).map((option) => {
                     const isPressed = multiple ? (value as SingleSubject[]).some((s) => s === option.subject) : value === option.subject;
                     return (
                         <Toggle
                             variant="outline-primary-green"
-                            className={cn('w-full h-[104px] py-3 px-1.5 flex flex-col text-sm relative', {
-                                'min-h-[120px] h-auto': isBigVariant,
+                            className={cn('w-full h-full max-h-[104px] md:w-[176px] py-3 px-1.5 flex flex-col text-sm relative', {
+                                'w-full max-h-[168px] h-[168px] md:w-[272px] md:h-[120px] md:max-h-[120px]': isBigVariant,
                             })}
                             key={option.subject}
                             pressed={isPressed}
@@ -235,8 +234,18 @@ export const SubjectsSelector = ({
                                         {getGradesLabels(option.gradesAvailable)}
                                     </Badge>
                                 )}
+                                {showPupilsWaiting && !option.pupilsWaiting && (
+                                    <Badge className="shadow-none text-[12px] font-normal px-[7px] h-5 bg-accent text-primary group-data-[state=on]:bg-transparent">
+                                        {option.demandRank === 0 && '🔥 ständig angefragt'}
+                                        {option.demandRank === 1 && 'manchmal angefragt'}
+                                        {option.demandRank === 2 && 'sehr selten angefragt'}
+                                    </Badge>
+                                )}
                             </div>
-                            {isPressed && <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />}
+                            {isPressed && !option.isDisabled && (
+                                <IconCircleCheckFilled size={24} className="text-green-500 absolute top-2 right-2 md:-top-2 md:-right-2" />
+                            )}
+                            {isPressed && option.isDisabled && <IconLockFilled size={20} className="text-primary absolute top-2 right-2" />}
                         </Toggle>
                     );
                 })}

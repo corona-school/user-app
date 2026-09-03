@@ -8,7 +8,9 @@ import { Typography } from '@/components/Typography';
 import { createPupilScreeningLink } from '@/helper/screening-helper';
 import { useUser } from '@/hooks/useApollo';
 import { useLocalStorage } from '@/hooks/useLocalStorage';
+import { usePageTitle } from '@/hooks/usePageTitle';
 import ConfirmationModal from '@/modals/ConfirmationModal';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { IconCalendar, IconTimeDuration10, IconCircleChevronDown, IconArrowLeft } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { PopupModal, useCalendlyEventListener } from 'react-calendly';
@@ -17,12 +19,14 @@ import { useNavigate } from 'react-router-dom';
 import { useMatchRequestForm } from './useMatchRequestForm';
 
 export const BookScreeningAppointment = () => {
+    usePageTitle(`Neues Lernpaar: Info zu LU-Gespräch - Schüler*in (App) | Lern-Fair`);
     const { firstname, lastname, email } = useUser();
     const [isCalendarLoading, setIsCalendarLoading] = useState(true);
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [isCancelModalOpen, setIsCancelModalOpen] = useState(false);
     const { t } = useTranslation();
     const navigate = useNavigate();
+    const { trackEvent, trackPageView } = useMatomo();
     const { goBack, goNext, refetch, isRefetching, createMatchRequest, form } = useMatchRequestForm();
     const [shouldFetchScreeningAppointment, setShouldFetchScreeningAppointment] = useLocalStorage({
         key: 'shouldFetchScreeningAppointment',
@@ -31,14 +35,26 @@ export const BookScreeningAppointment = () => {
     const [refetchAttempts, setRefetchAttempts] = useState(0);
 
     useCalendlyEventListener({
+        onEventTypeViewed: () => {
+            setIsCalendarLoading(false);
+            trackEvent({ category: 'Calendly', action: 'EventTypeViewed' });
+            trackPageView({
+                documentTitle: `Neues Lernpaar: Termine anschauen - Schüler*in (App) | Lern-Fair`,
+            });
+        },
+        onDateAndTimeSelected: () => {
+            trackPageView({
+                documentTitle: `Neues Lernpaar: Termin gewählt - Schüler*in (App) | Lern-Fair`,
+            });
+        },
         onEventScheduled: async (e) => {
+            trackPageView({
+                documentTitle: `Neues Lernpaar: Termin bestätigt - Schüler*in (App) | Lern-Fair`,
+            });
             setShouldFetchScreeningAppointment(true);
             if (e.data.payload.event && !form.isAppointmentStepForced) {
                 await createMatchRequest();
             }
-        },
-        onEventTypeViewed: () => {
-            setIsCalendarLoading(false);
         },
     });
 

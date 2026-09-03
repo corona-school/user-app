@@ -8,6 +8,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Typography } from '@/components/Typography';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { usePageTitle } from '@/hooks/usePageTitle';
+import { useUserLabel } from '@/hooks/useApollo';
 
 const tabs = ['handbook', 'mentoring', 'online-training'];
 
@@ -15,7 +16,8 @@ const KnowledgeCenter = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation();
-    usePageTitle('Wissenscenter | Lern-Fair');
+    const userLabel = useUserLabel();
+    usePageTitle(`Wissenscenter - ${userLabel} (App) | Lern-Fair`);
 
     const path = pathname.split('/').pop() || '';
     const currentTabFromRoute = tabs.includes(path) ? path : tabs[0];

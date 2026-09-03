@@ -1,10 +1,10 @@
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useTheme, VStack, Column, useBreakpointValue } from 'native-base';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import WithNavigation from '../components/WithNavigation';
-import useApollo, { useUserType } from '../hooks/useApollo';
+import useApollo, { useUserLabel, useUserType } from '../hooks/useApollo';
 import DeactivateAccountModal from '../modals/DeactivateAccountModal';
 import ListItem from '../widgets/ListItem';
 import ProfileSettingRow from '../widgets/ProfileSettingRow';
@@ -14,6 +14,7 @@ import { InstallationContext } from '../context/InstallationProvider';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { IconX } from '@tabler/icons-react';
 import { Button } from '@/components/Button';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const Settings: React.FC = () => {
     const { space, sizes } = useTheme();
@@ -21,19 +22,14 @@ const Settings: React.FC = () => {
     const navigate = useNavigate();
     const { user, roles } = useApollo();
     const tabspace = 3;
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackEvent } = useMatomo();
     const userType = useUserType();
     const { canInstall } = useContext(InstallationContext);
 
     const [showDeactivate, setShowDeactivate] = useState(false);
     const [showSwitchLanguage, setShowSwitchLanguage] = useState(false);
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Einstellungen',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const userLabel = useUserLabel();
+    usePageTitle(`Einstellungen - ${userLabel} (App) | Lern-Fair`);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',

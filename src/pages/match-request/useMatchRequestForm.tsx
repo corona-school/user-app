@@ -133,6 +133,7 @@ const STUDENT_SUBJECTS_QUERY = gql(`
             subject
             pupilsWaiting
             gradesAvailable
+            demandRank
         }
     }
 `);
@@ -324,6 +325,7 @@ export const MatchRequestProvider = ({ children }: { children: React.ReactNode }
         subject: e.subject,
         pupilsWaiting: e.pupilsWaiting,
         gradesAvailable: e.gradesAvailable,
+        demandRank: e.demandRank,
     }));
     const subjectsOptions = (values.userType === 'pupil' ? mappedPupilSubjects ?? [] : mappedStudentSubjects ?? []) as SubjectOption[];
 

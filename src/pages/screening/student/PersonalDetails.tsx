@@ -151,7 +151,6 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             teachingExperienceLevel
                         ),
                         cooperationId: cooperationID ?? null,
-                        registrationSource: student.cooperationID && !cooperationID ? RegistrationSource.Normal : RegistrationSource.Cooperation,
                     },
                 },
             });
@@ -247,6 +246,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             value={cooperationID?.toString() ?? ''}
                             onValueChange={(value) => setCooperationID(value ? parseInt(value) : undefined)}
                             options={cooperations.map((c) => ({ value: c.id.toString(), label: c.name }))}
+                            allowReset
                         />
                     </div>
                 </div>
@@ -328,29 +328,9 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             </div>
                         </div>
                     </div>
-                    <div className="mt-4">
-                        <Typography variant="h5" className="mb-5">
-                            Öffentliche Notizen
-                        </Typography>
-                        <div className="flex flex-col gap-6">
-                            <div className="flex flex-col gap-y-2">
-                                <Label>
-                                    Info für Schüler:in{' - '}
-                                    <span className="font-bold">
-                                        (Sichtbar für Schüler:innen, nicht für Helfer:innen - Fasse zusammen was relevant ist für die Zusammenarbeit)
-                                    </span>
-                                </Label>
-                                <TextArea
-                                    className="resize-y h-24 w-full"
-                                    value={descriptionForMatch}
-                                    onChange={(e) => setDescriptionForMatch(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div className="mt-10 flex items-center gap-x-4">
-                    <Button variant="outline" onClick={handleOnSaveStudent} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
+                    <Button variant="secondary" onClick={handleOnSaveStudent} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
                         Speichern
                     </Button>
                 </div>

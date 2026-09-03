@@ -24,8 +24,9 @@ import WaitingListProspectList from '../single-course/WaitingListProspectList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import ConfirmationModal from '@/modals/ConfirmationModal';
-import { useRoles } from '@/hooks/useApollo';
+import { useRoles, useUserLabel } from '@/hooks/useApollo';
 import { useJoinCourseAsMentor } from '@/hooks/useJoinCourseAsMentor';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -171,7 +172,8 @@ const SingleCourseStudent = () => {
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const breadcrumbRoutes = useBreadcrumbRoutes();
-
+    const userLabel = useUserLabel();
+    usePageTitle(`Gruppe: Kurs-Detail - ${userLabel} (App) | Lern-Fair`);
     const navigate = useNavigate();
 
     const [mentorLeaveCourseMutation, { loading: isLoadingLeaveCourse }] = useMutation(MUTATION_MENTOR_LEAVE_COURSE);
@@ -431,6 +433,7 @@ const SingleCourseStudent = () => {
                                     refresh={refetchBasics}
                                     appointment={myNextAppointment as Lecture}
                                     isActiveSubcourse={isActiveSubcourse}
+                                    courseState={course?.courseState}
                                 />
                             )}
                             <div className="flex gap-x-4">
