@@ -56,7 +56,7 @@ export const CooperationStudentsDropdown = ({ initialValue, studentId }: Coopera
             />
             <Button
                 isLoading={isUpdatingCooperation}
-                disabled={initialValue?.toString() === value || !value}
+                disabled={initialValue?.toString() === value || (!value && initialValue === undefined)}
                 variant="accent-dark"
                 onClick={handleOnUpdateCooperation}
                 className="h-10 w-5"
@@ -102,7 +102,7 @@ export const FurtherTrainingDropdown = ({ initialValue, studentId }: FurtherTrai
             />
             <Button
                 isLoading={isUpdatingFurtherTrainingCount}
-                disabled={initialValue?.toString() === value || !value}
+                disabled={initialValue?.toString() === value || (!value && initialValue === undefined)}
                 variant="accent-dark"
                 onClick={handleOnUpdateFurtherTrainingCount}
                 className="h-10 w-5"
