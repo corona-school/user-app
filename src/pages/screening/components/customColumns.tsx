@@ -48,6 +48,7 @@ export const CooperationStudentsDropdown = ({ initialValue, studentId }: Coopera
     return (
         <div className="flex gap-x-1">
             <SelectInput
+                allowReset
                 className="w-[150px]"
                 value={value}
                 onValueChange={setValue}
@@ -93,6 +94,7 @@ export const FurtherTrainingDropdown = ({ initialValue, studentId }: FurtherTrai
     return (
         <div className="flex gap-x-1">
             <SelectInput
+                allowReset
                 className="min-w-16"
                 value={value}
                 onValueChange={setValue}
