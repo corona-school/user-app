@@ -1,5 +1,4 @@
 import { Button } from '@/components/Button';
-import { Checkbox } from '@/components/Checkbox';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
 import { Toggle } from '@/components/Toggle';
 import { gql } from '@/gql';
@@ -10,6 +9,12 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { Input } from './Input';
 import { Typography } from './Typography';
+import { useLottie } from 'lottie-react';
+import SadAnimation from '@/assets/animations/sad-animation.json';
+import ThinkAnimation from '@/assets/animations/think-animation.json';
+import NeutralAnimation from '@/assets/animations/neutral-animation.json';
+import HappyAnimation from '@/assets/animations/happy-animation.json';
+import StarAnimation from '@/assets/animations/star-animation.json';
 
 const SUBMIT_FEEDBACK_MUTATION = gql(`
     mutation submitFeedback($feedbackId: Float!, $rating: Float!, $tags: [String!]!) {
@@ -40,10 +45,30 @@ interface StudentScreeningModalProps extends BaseModalProps {
 
 export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, learningPartnerName }: StudentScreeningModalProps) => {
     const [rating, setRating] = useState<Rating>();
+    const sad = useLottie({ src: SadAnimation });
+    const think = useLottie({ src: ThinkAnimation });
+    const neutral = useLottie({ src: NeutralAnimation });
+    const happy = useLottie({ src: HappyAnimation });
+    const star = useLottie({ src: StarAnimation });
+
     const { t } = useTranslation();
     const [submitFeedback] = useMutation(SUBMIT_FEEDBACK_MUTATION);
     const [tags, setTags] = useState<string[]>([]);
     const [comment, setComment] = useState('');
+
+    const handleRatingChange = (newRating: Rating) => {
+        setRating(newRating);
+
+        const animations = {
+            1: sad,
+            2: think,
+            3: neutral,
+            4: happy,
+            5: star,
+        };
+
+        animations[newRating].animationItem?.goToAndPlay(0, true);
+    };
 
     const handleOnTagToggle = (tag: string) => {
         if (tags.includes(tag)) {
@@ -74,39 +99,39 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, learnin
                 </Typography>
                 <div className="flex gap-x-1">
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
                         pressed={rating === 1}
-                        onPressedChange={() => setRating(1)}
+                        onPressedChange={() => handleRatingChange(1)}
                     >
-                        😔
+                        <div ref={sad.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
                         pressed={rating === 2}
-                        onPressedChange={() => setRating(2)}
+                        onPressedChange={() => handleRatingChange(2)}
                     >
-                        🤔
+                        <div ref={think.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
                         pressed={rating === 3}
-                        onPressedChange={() => setRating(3)}
+                        onPressedChange={() => handleRatingChange(3)}
                     >
-                        😐
+                        <div ref={neutral.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
                         pressed={rating === 4}
-                        onPressedChange={() => setRating(4)}
+                        onPressedChange={() => handleRatingChange(4)}
                     >
-                        🙂
+                        <div ref={happy.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
                         pressed={rating === 5}
-                        onPressedChange={() => setRating(5)}
+                        onPressedChange={() => handleRatingChange(5)}
                     >
-                        🤩
+                        <div ref={star.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                 </div>
             </div>
