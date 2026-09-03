@@ -101,9 +101,13 @@ const PupilSubjects = () => {
                 <div className="flex items-center mt-10 md:hidden">
                     <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
                     <div>
-                        <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}:</Typography>
-                        <Typography variant="subtle" className="mt-1">
-                            {form.subjects.map((s) => s.name).join(', ')}
+                        <Typography variant="subtle" className="whitespace-pre-wrap">
+                            <Typography variant="subtle" as="span">
+                                {t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}:{'\n'}
+                            </Typography>
+                            <Typography variant="subtle" as="span">
+                                {form.subjects.map((s) => s.name).join(', ')}
+                            </Typography>
                         </Typography>
                     </div>
                 </div>

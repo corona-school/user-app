@@ -165,12 +165,12 @@ export const WeeklyAvailabilitySelector = ({
                                     >
                                         <Checkbox
                                             checked={isCellSelected(timeSlot, day)}
-                                            className={cn('size-4 data-[state=checked]:bg-green-500', {
+                                            className={cn('size-4 data-[state=checked]:bg-green-500 shadow-none rounded-[2px]', {
                                                 'border-transparent': isCellSelected(timeSlot, day),
                                                 'border-primary group-hover:bg-green-200': !isCellSelected(timeSlot, day),
                                                 'bg-green-200': isCellHovered(timeSlot, day),
                                             })}
-                                            checkClasses={'size-3'}
+                                            checkClasses={'size-3 !stroke-[2px] text-white'}
                                         />
                                     </div>
                                 </Skeleton>

@@ -192,7 +192,7 @@ export const SubjectsSelector = ({
 
     return (
         <div>
-            <div className={cn('grid gap-4', 'grid-cols-[repeat(auto-fit,minmax(min(100%,167px),1fr))]', 'md:flex md:flex-wrap')}>
+            <div className={cn('grid gap-2 md:gap-4', 'grid-cols-[repeat(auto-fit,minmax(min(100%,167px),1fr))]', 'md:flex md:flex-wrap')}>
                 {mainOptions.concat(showAllSubjects ? rareOptions : []).map((option) => {
                     const isPressed = multiple ? (value as SingleSubject[]).some((s) => s === option.subject) : value === option.subject;
                     return (
