@@ -41,9 +41,10 @@ type Rating = 1 | 2 | 3 | 4 | 5;
 interface StudentScreeningModalProps extends BaseModalProps {
     feedbackId: number;
     learningPartnerName: string;
+    onFeedbackSubmitted?: () => Promise<void>;
 }
 
-export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, learningPartnerName }: StudentScreeningModalProps) => {
+export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedbackSubmitted }: StudentScreeningModalProps) => {
     const [rating, setRating] = useState<Rating>();
     const sad = useLottie({ src: SadAnimation });
     const think = useLottie({ src: ThinkAnimation });
@@ -82,6 +83,7 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, learnin
         await submitFeedback({ variables: { feedbackId, rating: rating!, tags } });
         toast.success('Dankeschön!', { description: 'Dein Feedback wurde gesendet' });
         onOpenChange(false);
+        await onFeedbackSubmitted?.();
     };
 
     useEffect(() => {
@@ -94,40 +96,38 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, learnin
                 <ModalTitle>Wie war euer Meeting?</ModalTitle>
             </ModalHeader>
             <div>
-                <Typography className="mb-4 md:mb-8">
-                    Das Feedback geht nur an Lern-Fair. Dein*e Lernpartner*in {learningPartnerName} kann es nicht sehen.
-                </Typography>
+                <Typography className="mb-4 md:mb-8">Das Feedback geht nur an Lern-Fair. Dein*e Lernpartner*in kann es nicht sehen.</Typography>
                 <div className="flex gap-x-1">
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
                         pressed={rating === 1}
                         onPressedChange={() => handleRatingChange(1)}
                     >
                         <div ref={sad.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
                         pressed={rating === 2}
                         onPressedChange={() => handleRatingChange(2)}
                     >
                         <div ref={think.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
                         pressed={rating === 3}
                         onPressedChange={() => handleRatingChange(3)}
                     >
                         <div ref={neutral.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
                         pressed={rating === 4}
                         onPressedChange={() => handleRatingChange(4)}
                     >
                         <div ref={happy.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-50 data-[state=on]:bg-yellow-50 text-3xl"
+                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
                         pressed={rating === 5}
                         onPressedChange={() => handleRatingChange(5)}
                     >
