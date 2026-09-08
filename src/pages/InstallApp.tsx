@@ -2,7 +2,7 @@ import NotificationAlert from '@/components/notifications/NotificationAlert';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import { Typography } from '@/components/Typography';
 import WithNavigation from '@/components/WithNavigation';
-import useApollo from '@/hooks/useApollo';
+import useApollo, { useUserLabel } from '@/hooks/useApollo';
 import Android from '@/assets/images/logos/Android.png';
 import IOS from '@/assets/images/logos/iOS.png';
 import Image1 from '@/assets/screenshots/mobile-1.png';
@@ -13,26 +13,22 @@ import Image5 from '@/assets/screenshots/mobile-5.png';
 import { Button } from '@/components/Button';
 import { IconDownload } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
-import { useContext, useEffect } from 'react';
+import { useContext } from 'react';
 import { InstallationContext } from '@/context/InstallationProvider';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const InstallApp = () => {
     const { t } = useTranslation();
     const { sessionState } = useApollo();
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackEvent } = useMatomo();
     const { canInstall, isInstalled, install } = useContext(InstallationContext);
     const isLoggedIn = sessionState === 'logged-in';
     const props = t('installation.page.pros.list', { returnObjects: true });
     const installationDetails = t('installation.page.installationDetails.list', { returnObjects: true });
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'App installieren',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const userLabel = useUserLabel();
+    usePageTitle(`App installieren - ${userLabel} (App) | Lern-Fair`);
 
     const handleOnInstall = async () => {
         trackEvent({

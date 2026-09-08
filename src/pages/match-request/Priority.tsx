@@ -4,10 +4,12 @@ import { Typography } from '@/components/Typography';
 import { useMatchRequestForm } from './useMatchRequestForm';
 import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { SingleSubject } from '@/types/subject';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const Priority: React.FC = () => {
     const { goBack, goNext, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
+    usePageTitle(`Neues Lernpaar: Prio-Fach - Schüler*in (App) | Lern-Fair`);
 
     const handleOnSubjectsChange = (subject: SingleSubject) => {
         onFormChange({

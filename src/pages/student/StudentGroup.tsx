@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import NavigationTabs from '../../components/NavigationTabs';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useQuery } from '@apollo/client';
 import { sortByDate } from '../../Utility';
@@ -24,6 +24,7 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
 import { DuplicateCourseModal } from '@/modals/DuplicateCourseModal';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -241,14 +242,9 @@ const StudentGroup: React.FC = () => {
         [data?.subcoursesPublic]
     );
 
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackEvent } = useMatomo();
 
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Helfer Gruppe',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    usePageTitle('Helfer Gruppe');
 
     const showSuccess = useMemo(() => {
         if (locState?.errors) {

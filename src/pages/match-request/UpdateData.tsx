@@ -16,6 +16,8 @@ import { Alert } from '@/components/Alert';
 import { SpecialTeachingExperienceEnum, SpecialTeachingExperienceSelector } from '@/components/SpecialTeachingExperienceSelector';
 import { cn } from '@/lib/Tailwind';
 import { Typography } from '@/components/Typography';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { useUserLabel } from '@/hooks/useApollo';
 
 type ModalType = 'grade' | 'schoolType' | 'languages' | 'specialTeachingExperience';
 
@@ -43,6 +45,8 @@ const UpdateData = () => {
     const [modalType, setModalType] = useState<ModalType>();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const dialogContentRef = useRef<HTMLDivElement>(null);
+    const userLabel = useUserLabel();
+    usePageTitle(`Neues Lernpaar: Profil-Check - ${userLabel} (App) | Lern-Fair`);
 
     const handleOnOpenModal = (type: ModalType) => {
         setModalType(type);
@@ -160,22 +164,17 @@ const UpdateData = () => {
                         </AccordionItem>
                     </Accordion>
                 </div>
-                <div className="flex flex-col gap-y-2 mt-2 md:mt-0">
+                <div className="flex items-center gap-x-2 mt-2 md:mt-0">
+                    {selectedAvailabilityCount >= 3 ? (
+                        <IconCircleCheckFilled size={24} className="text-green-500 inline" />
+                    ) : (
+                        <IconAlertTriangleFilled size={24} className="text-orange-500 inline" />
+                    )}
                     <Typography className="text-subtle">
                         {selectedAvailabilityCount >= 3 ? (
-                            <span>
-                                <span className="mr-1">
-                                    <IconCircleCheckFilled size={24} className="text-green-500 inline" />
-                                </span>{' '}
-                                {t('matching.wizard.profile.availabilitySelected', { selected: selectedAvailabilityCount })}
-                            </span>
+                            <span>{t('matching.wizard.profile.availabilitySelected', { selected: selectedAvailabilityCount })}</span>
                         ) : (
-                            <span>
-                                <span className="mr-1">
-                                    <IconAlertTriangleFilled size={24} className="text-orange-500 inline" />
-                                </span>{' '}
-                                {t('matching.wizard.profile.availabilityMissing', { missing: Math.max(3 - selectedAvailabilityCount, 0) })}
-                            </span>
+                            <span>{t('matching.wizard.profile.availabilityMissing', { missing: Math.max(3 - selectedAvailabilityCount, 0) })}</span>
                         )}
                     </Typography>
                 </div>

@@ -1,4 +1,3 @@
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
 import AsNavigationItem from '@/components/AsNavigationItem';
@@ -21,16 +20,7 @@ const MatchRequest: React.FC = () => {
     const { form, onFormChange, isLoading } = useMatchRequestForm();
     const location = useLocation();
     const locationState = location.state as { edit: boolean };
-    const { trackPageView } = useMatomo();
     const container = useRef<HTMLDivElement>(null);
-
-    useEffect(() => {
-        if (form.userType) {
-            trackPageView({
-                documentTitle: form.userType === 'pupil' ? 'Schüler Matching' : 'Helfer Matching',
-            });
-        }
-    }, [form.userType, trackPageView]);
 
     useEffect(() => {
         if (locationState?.edit) {

@@ -45,10 +45,11 @@ export const CooperationStudentsDropdown = ({ initialValue, studentId }: Coopera
                 value={value}
                 onValueChange={setValue}
                 options={cooperations.map((c) => ({ value: c.id.toString(), label: c.name }))}
+                allowReset
             />
             <Button
                 isLoading={isUpdatingCooperation}
-                disabled={initialValue?.toString() === value || !value}
+                disabled={initialValue?.toString() === value || (!value && initialValue === undefined)}
                 size="icon"
                 variant="accent-dark"
                 onClick={handleOnUpdateCooperation}

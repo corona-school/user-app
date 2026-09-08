@@ -21,6 +21,8 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import { Course_Category_Enum, Lecture } from '@/gql/graphql';
 import { toast } from 'sonner';
+import { useUserLabel } from '@/hooks/useApollo';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 function OtherParticipants({ subcourseId }: { subcourseId: number }) {
     const { t } = useTranslation();
@@ -143,7 +145,8 @@ const SingleCoursePupil = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const breadcrumbRoutes = useBreadcrumbRoutes();
-
+    const userLabel = useUserLabel();
+    usePageTitle(`Gruppe: Kurs-Detail - ${userLabel} (App) | Lern-Fair`);
     const { data, loading, refetch } = useQuery(singleSubcoursePupilQuery, {
         variables: {
             subcourseId,

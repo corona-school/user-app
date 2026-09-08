@@ -1,6 +1,6 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading } from 'native-base';
+import { Button, useTheme, VStack, useBreakpointValue, Flex, Box, Stack, Heading } from 'native-base';
 import { Button as NewButton } from '@/components/Button';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import WithNavigation from '../../components/WithNavigation';
@@ -9,7 +9,6 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
-import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -20,7 +19,6 @@ import { gql } from '../../gql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
-import DisableableButton from '../../components/DisablebleButton';
 import { useRoles } from '../../hooks/useApollo';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Typography } from '@/components/Typography';
@@ -28,6 +26,7 @@ import CTACard from '@/widgets/CTACard';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import TruncatedText from '@/components/TruncatedText';
 import OpenMatchRequest from '@/widgets/OpenMatchRequest';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 type Props = {};
 
@@ -188,15 +187,9 @@ const Dashboard: React.FC<Props> = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackEvent } = useMatomo();
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Schüler – Dashboard',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    usePageTitle('Schüler – Dashboard');
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',

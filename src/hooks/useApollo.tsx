@@ -794,6 +794,13 @@ const useApolloInternal = () => {
 
 const useApollo = () => useContext(ExtendedApolloContext)!;
 export const useUser = () => useContext(ExtendedApolloContext)!.user!;
+export const useUserLabel = () => {
+    const { user } = useContext(ExtendedApolloContext)!;
+    if (user?.pupil) return `Schüler*in`;
+    if (user?.student) return `Helfer*in`;
+    if (user?.screener) return `Screener*in`;
+    return '';
+};
 export const useRoles = () => useContext(ExtendedApolloContext)!.roles!;
 export const useUserType = () => {
     const { user } = useContext(ExtendedApolloContext)!;

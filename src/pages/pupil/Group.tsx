@@ -3,8 +3,7 @@ import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import NavigationTabs from '../../components/NavigationTabs';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import SearchBar from '../../components/SearchBar';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -18,6 +17,7 @@ import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 type Props = {};
 
@@ -194,7 +194,6 @@ query GetAllSubcourses($search: String) {
 const PupilGroup: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
     const { t } = useTranslation();
-    const { trackPageView } = useMatomo();
 
     const { data, loading, refetch: refetchOverview } = useQuery(query, { variables: { search: '' } });
     const { data: dataPast, refetch: refetchPast } = useQuery(queryPast, { variables: { search: '' } });
@@ -213,11 +212,7 @@ const PupilGroup: React.FC<Props> = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Schüler Gruppe',
-        });
-    }, [trackPageView]);
+    usePageTitle('Schüler Gruppe');
 
     const search = useCallback(
         async (search: string) => {

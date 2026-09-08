@@ -3,9 +3,11 @@ import { Button } from '@/components/Button';
 import { MatchRequestStep, MatchRequestStepTitle } from '@/components/match-request/MatchRequestStep';
 import { Slider } from '@/components/Slider';
 import { Typography } from '@/components/Typography';
+import { usePageTitle } from '@/hooks/usePageTitle';
 import { cn } from '@/lib/Tailwind';
 import { getGradeLabel, MIN_MAX_GRADE_RANGE } from '@/Utility';
 import { SubjectIcon } from '@/widgets/SubjectSelector';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { IconCopyPlus } from '@tabler/icons-react';
 import { useTranslation } from 'react-i18next';
 import { useMatchRequestForm } from './useMatchRequestForm';
@@ -13,6 +15,8 @@ import { useMatchRequestForm } from './useMatchRequestForm';
 const SubjectsGrade = () => {
     const { t } = useTranslation();
     const { form, goNext, goBack, onFormChange } = useMatchRequestForm();
+    usePageTitle(`Neues Lernpaar: Klassenstufen - Helfer*in (App) | Lern-Fair`);
+    const { trackEvent } = useMatomo();
 
     const selectedSubjects = form.subjects;
 
@@ -24,6 +28,11 @@ const SubjectsGrade = () => {
     };
 
     const copyToAllSubjects = (range: { min: number; max: number }) => {
+        trackEvent({
+            category: 'Match Request',
+            action: 'Page "Select Grade"',
+            name: 'Button Click - Copy Grade to all Subjects',
+        });
         onFormChange({
             subjects: form.subjects.map((s) => ({ ...s, grade: { min: range.min, max: range.max } })),
         });

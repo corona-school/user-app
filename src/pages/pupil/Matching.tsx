@@ -1,7 +1,6 @@
 import { useQuery } from '@apollo/client';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Circle, Flex, Stack, Text, useTheme, VStack } from 'native-base';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -20,6 +19,7 @@ import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 type Props = {};
 
@@ -78,18 +78,11 @@ const query = gql(`
 `);
 
 const Matching: React.FC<Props> = () => {
-    const { trackPageView } = useMatomo();
     const { space, sizes, colors } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { data, refetch } = useQuery(query);
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Schüler Matching',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    usePageTitle('Schüler Matching');
 
     const activeMatches = useMemo(() => {
         return data?.me?.pupil?.matches.filter((match) => match.dissolved === false);

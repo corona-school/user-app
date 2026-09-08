@@ -9,6 +9,8 @@ import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import { Achievement } from '../gql/graphql';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { useUserLabel } from '@/hooks/useApollo';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const achievementsQuery = gql(`
     query achievements {
@@ -71,6 +73,8 @@ const furtherAchievementsQuery = gql(`
 
 const Progress = () => {
     const margin = useBreakpointValue({ base: '4', md: '0' });
+    const userLabel = useUserLabel();
+    usePageTitle(`Erfolge - ${userLabel} (App) | Lern-Fair`);
     const { data, loading } = useQuery(achievementsQuery);
     const { data: inactiveData, loading: inactiveLoading } = useQuery(furtherAchievementsQuery);
     if (loading || inactiveLoading) return <CenterLoadingSpinner />;

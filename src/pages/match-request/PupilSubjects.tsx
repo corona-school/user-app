@@ -10,11 +10,13 @@ import { useEffect, useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { cn } from '@/lib/Tailwind';
 import { SingleSubject, SUBJECTS } from '@/types/subject';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const PupilSubjects = () => {
     const { goNext, form, onFormChange } = useMatchRequestForm();
     const { t } = useTranslation();
     const navigate = useNavigate();
+    usePageTitle(`Neues Lernpaar: Fächer - Schüler*in (App) | Lern-Fair`);
     const isDAZ = form.learningOfferConstraints?.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching);
 
     useEffect(() => {
@@ -99,9 +101,13 @@ const PupilSubjects = () => {
                 <div className="flex items-center mt-10 md:hidden">
                     <IconCircleCheckFilled className="text-green-500 inline-block mr-2" size={20} />
                     <div>
-                        <Typography variant="subtle">{t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}:</Typography>
-                        <Typography variant="subtle" className="mt-1">
-                            {form.subjects.map((s) => s.name).join(', ')}
+                        <Typography variant="subtle" className="whitespace-pre-wrap">
+                            <Typography variant="subtle" as="span">
+                                {t('matching.wizard.subjects.selectedSubjects', { count: form.subjects.length })}:{'\n'}
+                            </Typography>
+                            <Typography variant="subtle" as="span">
+                                {form.subjects.map((s) => s.name).join(', ')}
+                            </Typography>
                         </Typography>
                     </div>
                 </div>

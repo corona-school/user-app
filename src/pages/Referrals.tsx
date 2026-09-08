@@ -20,10 +20,11 @@ import SocialOptions from '@/components/referral/socialOptions';
 import Rewards from '@/components/referral/rewards';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import { Breadcrumb } from '@/components/Breadcrumb';
-import { useUserType } from '@/hooks/useApollo';
+import { useUserLabel, useUserType } from '@/hooks/useApollo';
 import { Button } from '@/components/Button';
 import { SHARING_MATERIALS_URL } from '@/config';
 import { useScrollToTop } from '@/hooks/useScrollRestoration';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const ReferralCountQuery = gql(`
     query ReferralCount {
@@ -46,7 +47,8 @@ const Referrals: React.FC<{}> = () => {
     const [hasCopied, setHasCopied] = useState(false);
     const { trackPageView, trackEvent } = useMatomo();
     const userType = useUserType();
-
+    const userLabel = useUserLabel();
+    usePageTitle(`Hilf uns zu wachsen - ${userLabel} (App) | Lern-Fair`);
     const onCopy = async (text: string) => {
         try {
             await navigator.clipboard.writeText(text);
@@ -58,13 +60,6 @@ const Referrals: React.FC<{}> = () => {
     };
 
     useScrollToTop();
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Referrals',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
     const userID = sessionStorage.getItem('userID');
     const uniqueReferralLink = 'https://app.lern-fair.de/registration?referredById=' + userID;
