@@ -23,6 +23,7 @@ type Props = {
     appointmentId: Appointment['id'];
     declinedBy: Appointment['declinedBy'];
     description?: Appointment['description'];
+    myFeedback?: Appointment['myFeedback'];
     onEdit?: () => void;
     onDuplicate?: () => void;
     onDelete?: () => void;
@@ -35,6 +36,7 @@ const AppointmentDay: React.FC<Props> = ({
     duration,
     title,
     description,
+    myFeedback,
     organizers,
     participants,
     scrollToRef,
@@ -104,6 +106,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 onDelete={onDelete}
                                 clickable={clickable}
                                 editable={editable}
+                                myFeedback={myFeedback}
                             />
                         </div>
                     </div>
@@ -134,6 +137,7 @@ const AppointmentDay: React.FC<Props> = ({
                                 onDelete={onDelete}
                                 clickable={clickable}
                                 editable={editable}
+                                myFeedback={myFeedback}
                             />
                         </div>
                     </div>

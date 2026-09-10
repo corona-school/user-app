@@ -51,6 +51,11 @@ export const STUDENT_APPOINTMENT = gql(`
                     category
                 }
             }
+            myFeedback {
+                id
+                status
+                isReadyForFeedback
+            }
         }
     }
 `);
@@ -93,6 +98,11 @@ export const PUPIL_APPOINTMENT = gql(`
                     category
                 }
             }
+            myFeedback {
+                id
+                status
+                isReadyForFeedback
+            }
         }
     }
 `);
@@ -114,12 +124,14 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
         data: studentAppointment,
         loading: isLoadingStudentAppointment,
         error: studentAppointmentError,
+        refetch: refetchStudentAppointment,
     } = useQuery(STUDENT_APPOINTMENT, { variables: { appointmentId }, skip: userType !== 'student' });
 
     const {
         data: pupilAppointment,
         loading: isLoadingpupilAppointment,
         error: pupilAppointmentError,
+        refetch: refetchPupilAppointment,
     } = useQuery(PUPIL_APPOINTMENT, { variables: { appointmentId }, skip: userType !== 'pupil' });
 
     const data = studentAppointment ?? pupilAppointment;
@@ -156,6 +168,7 @@ const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
                     appointment={data?.appointment}
                     startMeeting={startMeeting}
                     isHomeworkHelp={data?.appointment?.subcourse?.course?.category === Course_Category_Enum.HomeworkHelp}
+                    refetchAppointment={userType === 'student' ? refetchStudentAppointment : refetchPupilAppointment}
                 />
             )}
         </WithNavigation>

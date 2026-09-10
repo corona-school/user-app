@@ -440,7 +440,7 @@ const AppointmentCard: React.FC<Props> = ({
                                 marginBottom={buttonteaser}
                             >
                                 {isTeaser && hasVideoButton && appointmentId && _dateNext && duration && appointmentType && (
-                                    <VStack w="100%" space={space['0.5']} marginTop={space[1]}>
+                                    <div className="flex flex-col w-full gap-0.5 mt-0.5" onClick={(e) => e.stopPropagation()}>
                                         <VideoButton
                                             appointmentId={appointmentId}
                                             appointmentType={appointmentType}
@@ -449,7 +449,7 @@ const AppointmentCard: React.FC<Props> = ({
                                             isInstructor={isOrganizer}
                                             className="w-full h-[47px] rounded-[4px]"
                                         />
-                                    </VStack>
+                                    </div>
                                 )}
                             </Box>
                             {isHorizontalCardCourseChecked && (

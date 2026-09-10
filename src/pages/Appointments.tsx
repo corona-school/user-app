@@ -49,6 +49,11 @@ const getMyAppointments = gql(`
                 subcourse {
                     published
                 }
+                myFeedback {
+                    id
+                    status
+                    isReadyForFeedback
+                }
             }            
         }
     }

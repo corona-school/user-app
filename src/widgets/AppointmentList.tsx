@@ -176,6 +176,7 @@ const AppointmentItem = React.memo(
                             onDelete={onDelete}
                             clickable={clickable}
                             editable={editable}
+                            myFeedback={appointment.myFeedback}
                         />
                     )}
                 </div>
