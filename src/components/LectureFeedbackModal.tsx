@@ -12,9 +12,10 @@ import { Typography } from './Typography';
 import { useLottie } from 'lottie-react';
 import SadAnimation from '@/assets/animations/sad-animation.json';
 import ThinkAnimation from '@/assets/animations/think-animation.json';
-import NeutralAnimation from '@/assets/animations/neutral-animation.json';
+import CryAnimation from '@/assets/animations/cry-animation.json';
 import HappyAnimation from '@/assets/animations/happy-animation.json';
 import StarAnimation from '@/assets/animations/star-animation.json';
+import { cn } from '@/lib/Tailwind';
 
 const SUBMIT_FEEDBACK_MUTATION = gql(`
     mutation submitFeedback($feedbackId: Float!, $rating: Float!, $tags: [String!]!) {
@@ -46,9 +47,9 @@ interface StudentScreeningModalProps extends BaseModalProps {
 
 export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedbackSubmitted }: StudentScreeningModalProps) => {
     const [rating, setRating] = useState<Rating>();
+    const cry = useLottie({ src: CryAnimation });
     const sad = useLottie({ src: SadAnimation });
     const think = useLottie({ src: ThinkAnimation });
-    const neutral = useLottie({ src: NeutralAnimation });
     const happy = useLottie({ src: HappyAnimation });
     const star = useLottie({ src: StarAnimation });
 
@@ -57,13 +58,15 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
     const [tags, setTags] = useState<string[]>([]);
     const [comment, setComment] = useState('');
 
+    const hasOtherTag = tags.some((tag) => tag.startsWith('Sonstiges'));
+
     const handleRatingChange = (newRating: Rating) => {
         setRating(newRating);
 
         const animations = {
-            1: sad,
-            2: think,
-            3: neutral,
+            1: cry,
+            2: sad,
+            3: think,
             4: happy,
             5: star,
         };
@@ -72,11 +75,18 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
     };
 
     const handleOnTagToggle = (tag: string) => {
-        if (tags.includes(tag)) {
-            setTags(tags.filter((t) => t !== tag));
+        if (tags.includes(tag) || (tag.startsWith('Sonstiges') && hasOtherTag)) {
+            setTags(tags.filter((t) => t !== tag && !t.startsWith('Sonstiges')));
         } else {
             setTags([...tags, tag]);
         }
+    };
+
+    const handleOnChangeComment = (newComment: string) => {
+        setComment(newComment);
+        setTags((prevTags) => {
+            return prevTags.map((tag) => (tag.startsWith('Sonstiges') ? `Sonstiges: ${newComment}` : tag));
+        });
     };
 
     const handleOnSubmit = async () => {
@@ -99,35 +109,50 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
                 <Typography className="mb-4 md:mb-8">Das Feedback geht nur an Lern-Fair. Dein*e Lernpartner*in kann es nicht sehen.</Typography>
                 <div className="flex gap-x-1">
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
+                        className={cn(
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            rating === 1 && 'scale-150 z-10'
+                        )}
                         pressed={rating === 1}
                         onPressedChange={() => handleRatingChange(1)}
+                    >
+                        <div ref={cry.setDisplayRef} className="h-[39px]"></div>
+                    </Toggle>
+                    <Toggle
+                        className={cn(
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            rating === 2 && 'scale-150 z-10'
+                        )}
+                        pressed={rating === 2}
+                        onPressedChange={() => handleRatingChange(2)}
                     >
                         <div ref={sad.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
-                        pressed={rating === 2}
-                        onPressedChange={() => handleRatingChange(2)}
+                        className={cn(
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            rating === 3 && 'scale-150 z-10'
+                        )}
+                        pressed={rating === 3}
+                        onPressedChange={() => handleRatingChange(3)}
                     >
                         <div ref={think.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
-                        pressed={rating === 3}
-                        onPressedChange={() => handleRatingChange(3)}
-                    >
-                        <div ref={neutral.setDisplayRef} className="h-[39px]"></div>
-                    </Toggle>
-                    <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
+                        className={cn(
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            rating === 4 && 'scale-150 z-10'
+                        )}
                         pressed={rating === 4}
                         onPressedChange={() => handleRatingChange(4)}
                     >
                         <div ref={happy.setDisplayRef} className="h-[39px]"></div>
                     </Toggle>
                     <Toggle
-                        className="h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] hover:bg-yellow-100 data-[state=on]:bg-yellow-100 text-3xl"
+                        className={cn(
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            rating === 5 && 'scale-150 z-10'
+                        )}
                         pressed={rating === 5}
                         onPressedChange={() => handleRatingChange(5)}
                     >
@@ -152,14 +177,20 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
                         <Toggle
                             className="rounded-full py-[13px] px-[16px]"
                             variant="outline-accent"
-                            pressed={tags.includes('Sonstiges')}
+                            pressed={hasOtherTag}
                             onPressedChange={() => handleOnTagToggle('Sonstiges')}
                         >
                             Sonstiges
                         </Toggle>
                     </div>
-                    {tags.includes('Sonstiges') && (
-                        <Input className="w-full mt-4" placeholder="Dein Kommentar" errorMessageClassName="hidden" value={comment} onChangeText={setComment} />
+                    {hasOtherTag && (
+                        <Input
+                            className="w-full mt-4"
+                            placeholder="Dein Kommentar"
+                            errorMessageClassName="hidden"
+                            value={comment}
+                            onChangeText={handleOnChangeComment}
+                        />
                     )}
                 </div>
             )}
