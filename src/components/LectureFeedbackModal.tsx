@@ -7,7 +7,6 @@ import { IconSend } from '@tabler/icons-react';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { Input } from './Input';
 import { Typography } from './Typography';
 import { useLottie } from 'lottie-react';
 import SadAnimation from '@/assets/animations/sad-animation.json';
@@ -16,6 +15,7 @@ import CryAnimation from '@/assets/animations/cry-animation.json';
 import HappyAnimation from '@/assets/animations/happy-animation.json';
 import StarAnimation from '@/assets/animations/star-animation.json';
 import { cn } from '@/lib/Tailwind';
+import { TextArea } from './TextArea';
 
 const SUBMIT_FEEDBACK_MUTATION = gql(`
     mutation submitFeedback($feedbackId: Float!, $rating: Float!, $tags: [String!]!) {
@@ -107,10 +107,10 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
             </ModalHeader>
             <div>
                 <Typography className="mb-4 md:mb-8">Das Feedback geht nur an Lern-Fair. Dein*e Lernpartner*in kann es nicht sehen.</Typography>
-                <div className="flex gap-x-1">
+                <div className="flex gap-x-1 justify-center">
                     <Toggle
                         className={cn(
-                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[81.6px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
                             rating === 1 && 'scale-150 z-10'
                         )}
                         pressed={rating === 1}
@@ -120,7 +120,7 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
                     </Toggle>
                     <Toggle
                         className={cn(
-                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[81.6px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
                             rating === 2 && 'scale-150 z-10'
                         )}
                         pressed={rating === 2}
@@ -130,7 +130,7 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
                     </Toggle>
                     <Toggle
                         className={cn(
-                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[81.6px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
                             rating === 3 && 'scale-150 z-10'
                         )}
                         pressed={rating === 3}
@@ -140,7 +140,7 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
                     </Toggle>
                     <Toggle
                         className={cn(
-                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[81.6px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
                             rating === 4 && 'scale-150 z-10'
                         )}
                         pressed={rating === 4}
@@ -150,7 +150,7 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
                     </Toggle>
                     <Toggle
                         className={cn(
-                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[99.2px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
+                            'h-[52px] w-[58.8px] md:h-[52px] md:w-[81.6px] text-3xl transition-transform duration-200 data-[state=on]:bg-transparent hover:bg-transparent',
                             rating === 5 && 'scale-150 z-10'
                         )}
                         pressed={rating === 5}
@@ -184,8 +184,8 @@ export const LectureFeedbackModal = ({ feedbackId, onOpenChange, isOpen, onFeedb
                         </Toggle>
                     </div>
                     {hasOtherTag && (
-                        <Input
-                            className="w-full mt-4"
+                        <TextArea
+                            className="w-full mt-4 resize-none"
                             placeholder="Dein Kommentar"
                             errorMessageClassName="hidden"
                             value={comment}
