@@ -2752,8 +2752,8 @@
         "iOSInstallInstructions": {
             "title": "App Installieren",
             "steps": {
-                "first": "Klicke auf <0/> oben oder unten im Browser",
-                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+                "first": "Klicke im Browser oben oder unten auf <0/> \"Teilen\"<br>Diese Option versteckt sich unten manchmal hinter drei Punkten •••",
+                "second": "Wähle <0/> \"Zum Home-Bildschirm\"<br>Du musst dafür vielleicht weit nach unten scrollen"
             }
         },
         "page": {
