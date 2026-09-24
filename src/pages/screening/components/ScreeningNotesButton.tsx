@@ -5,7 +5,7 @@ import { TextArea } from '@/components/TextArea';
 import { TooltipButton } from '@/components/Tooltip';
 import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
-import { IconNote } from '@tabler/icons-react';
+import { IconFileDescription, IconFileDescriptionFilled } from '@tabler/icons-react';
 import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -44,7 +44,7 @@ export const ScreeningNotesModal = ({ onOpenChange, isOpen, studentId, notes: in
     };
 
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="w-full max-w-fit">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="w-full max-w-fit" size="lg">
             <ModalHeader>
                 <ModalTitle>Interne Notizen</ModalTitle>
             </ModalHeader>
@@ -81,7 +81,7 @@ export const ScreeningNotesButton = ({ studentId, notes }: ScreeningNotesButtonP
                         setIsModalOpen(true);
                     }}
                 >
-                    <IconNote />
+                    {notes ? <IconFileDescriptionFilled /> : <IconFileDescription />}
                 </div>
             </TooltipButton>
             <ScreeningNotesModal isOpen={isModalOpen} onOpenChange={setIsModalOpen} studentId={studentId} notes={notes} />

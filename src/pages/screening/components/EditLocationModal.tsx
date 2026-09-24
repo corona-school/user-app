@@ -25,7 +25,7 @@ export function EditLocationModal<T extends State>({ state, onOpenChange, isOpen
         onOpenChange(false);
     };
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max" size="md">
             <ModalHeader>
                 <ModalTitle>Ort bearbeiten</ModalTitle>
             </ModalHeader>

@@ -165,7 +165,7 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
                 </div>
             );
         },
-        header: 'Matches',
+        header: 'Match',
     },
     {
         accessorKey: 'cooperation',
@@ -199,7 +199,7 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
     },
     {
         accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
-        header: '∞ Matches',
+        header: '+Match',
         cell: ({ row, table }) => {
             return <ParallelMatchesCheckbox initialValue={row.original.maxParallelMatches === null} studentId={row.original.id} />;
         },

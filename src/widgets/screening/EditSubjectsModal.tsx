@@ -55,7 +55,7 @@ export const EditSubjectsModal = ({ subjects, onOpenChange, isOpen, type, onSave
     };
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-w-max">
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-w-max" size="lg">
             <ModalHeader>
                 <ModalTitle>Fächer bearbeiten</ModalTitle>
             </ModalHeader>
