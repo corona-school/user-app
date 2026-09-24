@@ -1,34 +1,22 @@
-import { ColumnDef, flexRender, getCoreRowModel, getSortedRowModel, SortingState, useReactTable } from '@tanstack/react-table';
+import { flexRender, TableOptions, useReactTable } from '@tanstack/react-table';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/Table';
-import { useState } from 'react';
 
 interface DataTableProps<TData, TValue> {
-    columns: ColumnDef<TData, TValue>[];
-    data: TData[];
-    initialSorting?: SortingState;
+    getTableRowClass?: (row: TData) => string;
+    config: TableOptions<TData>;
 }
 
-export const DataTable = <TData, TValue>({ columns, data, initialSorting }: DataTableProps<TData, TValue>) => {
-    const [sorting, setSorting] = useState<SortingState>(initialSorting ?? []);
-    const table = useReactTable({
-        data,
-        columns,
-        getCoreRowModel: getCoreRowModel(),
-        onSortingChange: setSorting,
-        getSortedRowModel: getSortedRowModel(),
-        state: {
-            sorting,
-        },
-    });
+export const DataTable = <TData, TValue>({ getTableRowClass, config }: DataTableProps<TData, TValue>) => {
+    const table = useReactTable(config);
 
     return (
-        <Table>
+        <Table className="flex-1 min-h-0 overflow-auto relative">
             <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
                     <TableRow key={headerGroup.id}>
                         {headerGroup.headers.map((header) => {
                             return (
-                                <TableHead key={header.id}>
+                                <TableHead key={header.id} className="sticky top-0 bg-white z-10">
                                     {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                                 </TableHead>
                             );
@@ -39,7 +27,7 @@ export const DataTable = <TData, TValue>({ columns, data, initialSorting }: Data
             <TableBody>
                 {table.getRowModel().rows?.length ? (
                     table.getRowModel().rows.map((row) => (
-                        <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'}>
+                        <TableRow key={row.id} data-state={row.getIsSelected() && 'selected'} className={getTableRowClass?.(row.original) ?? ''}>
                             {row.getVisibleCells().map((cell) => (
                                 <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
                             ))}
@@ -47,7 +35,7 @@ export const DataTable = <TData, TValue>({ columns, data, initialSorting }: Data
                     ))
                 ) : (
                     <TableRow>
-                        <TableCell colSpan={columns.length} className="h-24 text-center">
+                        <TableCell colSpan={config.columns.length} className="h-24 text-center">
                             No results.
                         </TableCell>
                     </TableRow>
