@@ -87,12 +87,10 @@ interface SelectInputProps<T> {
 const RESET_VALUE = '__SELECT_RESET__';
 
 export const SelectInput = <T extends string>({ value, onValueChange, options, placeholder, className, allowReset = false }: SelectInputProps<T>) => {
-    console.log('SelectInput.value:', value);
     return (
         <Select
             value={value || undefined}
             onValueChange={(newValue) => {
-                console.log('onValueChange.newValue:', newValue);
                 onValueChange(newValue === RESET_VALUE ? (RESET_VALUE as T) : (newValue as T));
             }}
         >
@@ -105,7 +103,6 @@ export const SelectInput = <T extends string>({ value, onValueChange, options, p
                     <SelectItem
                         value={RESET_VALUE}
                         onClick={() => {
-                            console.log('Resetting selection');
                             onValueChange(RESET_VALUE as T);
                         }}
                     >
