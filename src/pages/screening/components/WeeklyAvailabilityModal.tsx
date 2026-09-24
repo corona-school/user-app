@@ -20,7 +20,7 @@ export function EditWeeklyAvailabilityModal({ weeklyAvailability: defaultAvailab
         onOpenChange(false);
     };
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max" size="lg">
             <ModalHeader>
                 <ModalTitle>Zeitliche Verfügbarkeit</ModalTitle>
             </ModalHeader>

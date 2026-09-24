@@ -52,7 +52,7 @@ export const StudentScreeningModal = ({ onOpenChange, isOpen, student, onScreeni
     };
 
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="w-full max-w-fit">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="w-full max-w-fit" size="md">
             <ModalHeader>
                 <ModalTitle>Screening</ModalTitle>
             </ModalHeader>
