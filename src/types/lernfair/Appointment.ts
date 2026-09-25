@@ -30,6 +30,11 @@ export type Appointment = {
             category: Course_Category_Enum;
         };
     };
+    myFeedback?: {
+        id: number;
+        status: string;
+        isReadyForFeedback: boolean;
+    };
 };
 
 // type of appointments to send to the BE

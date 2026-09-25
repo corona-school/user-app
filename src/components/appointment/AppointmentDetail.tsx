@@ -25,9 +25,10 @@ type AppointmentDetailProps = {
     appointment: Appointment;
     startMeeting?: boolean;
     isHomeworkHelp?: boolean;
+    refetchAppointment?: () => void;
 };
 
-const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHomeworkHelp }) => {
+const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHomeworkHelp, refetchAppointment }) => {
     const { t, i18n } = useTranslation();
     const toast = useToast();
     const { space, sizes } = useTheme();
@@ -157,6 +158,8 @@ const AppointmentDetail: React.FC<AppointmentDetailProps> = ({ appointment, isHo
                     zoomMeetingUrl={appointment.zoomMeetingUrl}
                     isHomeworkHelp={isHomeworkHelp}
                     canJoin={appointment.subcourse?.published === false ? false : undefined}
+                    myFeedback={appointment.myFeedback}
+                    refetchAppointment={refetchAppointment}
                 />
                 {wasRejectedByMatch && (
                     <>
