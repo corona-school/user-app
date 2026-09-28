@@ -461,7 +461,7 @@
                 "tutor": {
                     "not-screened": "Du kannst noch kein Lernpaar bilden. Bitte führe zuerst dein Kennenlerngespräch mit uns.",
                     "not-tutor": "Du kannst kein Lernpaar bilden, da du nicht für die Nachhilfe registriert bist.",
-                    "max-requests": "Du hast die maximale Zahl an erlaubten Anfragen erreichst und kannst daher keine weitere stellen."
+                    "max-requests": "Du kannst immer nur eine Lernpaar-Anfrage gleichzeitig stellen. Sobald du eine*n Lernpartner*in erhalten oder deine aktuelle Anfrage gelöscht hast, kannst du eine neue Anfrage stellen."
                 },
                 "pupil": {
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",

@@ -370,7 +370,7 @@
                 "tutor": {
                     "not-screened": "You cannot form a learning pair yet. Please have your introductory meeting with us first.",
                     "not-tutor": "You cannot create a learning pair because you are not registered for learning support.",
-                    "max-requests": "You have reached the maximum number of permitted requests and therefore cannot make any more."
+                    "max-requests": "You can only submit one study partner request at a time. Once you've been matched with a study partner or have deleted your current request, you can submit a new one."
                 },
                 "pupil": {
                     "max-dissolved-matches": "You cannot request a learning pair because you have already had too many learning pairs.",

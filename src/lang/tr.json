@@ -370,7 +370,7 @@
                 "tutor": {
                     "not-screened": "Henüz bir öğrenme çifti oluşturamazsınız. Lütfen önce bizimle tanışma toplantınızı yapın.",
                     "not-tutor": "Öğrenim desteği için kayıtlı olmadığınız için bir öğrenim çifti oluşturamazsınız.",
-                    "max-requests": "İzin verilen maksimum talep sayısına ulaştınız ve bu nedenle daha fazla talepte bulunamazsınız."
+                    "max-requests": "Aynı anda yalnızca bir öğrenme arkadaşı talebinde bulunabilirsin. Bir öğrenme arkadaşı bulduğunda veya mevcut talebini sildiğinde, yeni bir talepte bulunabilirsin."
                 },
                 "pupil": {
                     "max-dissolved-matches": "Bir öğrenim çifti talep edemezsiniz çünkü zaten çok fazla öğrenim çiftiniz olmuştur.",
