@@ -149,6 +149,7 @@ export function ScreeningDashboard() {
                             }
                         }
                     }
+                    registrationSource
                 }
             }
         }

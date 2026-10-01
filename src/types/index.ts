@@ -123,6 +123,7 @@ export type StudentForScreening = Pick<
     | 'formalEducation'
     | 'specialTeachingExperience'
     | 'cooperationID'
+    | 'registrationSource'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];
