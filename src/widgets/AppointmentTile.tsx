@@ -4,15 +4,16 @@ import { AppointmentParticipant, Organizer } from '../gql/graphql';
 import { useTranslation } from 'react-i18next';
 import { Appointment } from '../types/lernfair/Appointment';
 import VideoButton from '../components/VideoButton';
-import { IconBook, IconClock, IconCopy, IconHourglass, IconInfoCircle, IconPencil, IconPointFilled, IconTrash } from '@tabler/icons-react';
+import { IconBook, IconClock, IconCopy, IconHourglass, IconInfoCircle, IconMoodSmile, IconPencil, IconPointFilled, IconTrash } from '@tabler/icons-react';
 import { Typography } from '@/components/Typography';
 import { cn } from '@/lib/Tailwind';
 import { useUser } from '@/hooks/useApollo';
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import AppointmentDate from '@/widgets/AppointmentDate';
 import { DateTime } from 'luxon';
 import { Button } from '@/components/Button';
 import AddToCalendarDropdown from '@/components/AddToCalendarDropdown';
+import { LectureFeedbackModal } from '@/components/LectureFeedbackModal';
 
 type Props = {
     title: string;
@@ -24,6 +25,7 @@ type Props = {
     onPress?: () => void;
     appointmentType: Appointment['appointmentType'];
     position: Appointment['position'];
+    myFeedback?: Appointment['myFeedback'];
     appointmentIndex?: number;
     total: Appointment['total'];
     isOrganizer: Appointment['isOrganizer'];
@@ -40,6 +42,7 @@ type Props = {
     start: Appointment['start'];
     editable: boolean;
     clickable: boolean;
+    refresh?: () => void;
 };
 
 const AppointmentTile: React.FC<Props> = ({
@@ -65,9 +68,13 @@ const AppointmentTile: React.FC<Props> = ({
     title,
     editable,
     clickable,
+    myFeedback,
+    refresh,
 }) => {
     const { t } = useTranslation();
     const { userID } = useUser();
+    const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState<boolean>(false);
+    const [wasFeedbackSubmitted, setWasFeedbackSubmitted] = useState<boolean>(false);
 
     const byMatch = !declinedBy?.includes(userID);
     const isHighlighted = !isReadOnly && isCurrentlyTakingPlace && !wasRejected;
@@ -95,6 +102,12 @@ const AppointmentTile: React.FC<Props> = ({
     const isPastAppointment = useMemo(() => {
         return DateTime.fromISO(start).toMillis() + duration * 60000 < DateTime.now().toMillis();
     }, [duration, start]);
+
+    const handleOnFeedbackClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        setIsFeedbackModalOpen(true);
+    };
 
     return (
         <div className={cn('w-full', clickable ? 'cursor-pointer' : 'cursor-auto')} onClick={clickable ? onPress : undefined}>
@@ -187,6 +200,23 @@ const AppointmentTile: React.FC<Props> = ({
                         />
                     ) : (
                         <div />
+                    )}
+
+                    {isPastAppointment && myFeedback?.isReadyForFeedback && !wasFeedbackSubmitted && (
+                        <Button variant="outline" leftIcon={<IconMoodSmile size={16} />} onClick={handleOnFeedbackClick}>
+                            Wie war eure Lektion?
+                        </Button>
+                    )}
+                    {myFeedback && myFeedback.isReadyForFeedback && (
+                        <LectureFeedbackModal
+                            feedbackId={myFeedback?.id}
+                            learningPartnerName={'[TODO]'}
+                            isOpen={isFeedbackModalOpen}
+                            onOpenChange={setIsFeedbackModalOpen}
+                            onFeedbackSubmitted={async () => {
+                                setWasFeedbackSubmitted(true);
+                            }}
+                        />
                     )}
                     {appointmentId && appointmentId > 0 && !wasRejected && !declinedBy?.length && !isPastAppointment && !isCurrentlyTakingPlace && (
                         <AddToCalendarDropdown

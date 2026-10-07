@@ -15,11 +15,13 @@ import { Appointment } from '../../types/lernfair/Appointment';
 import { DateTime } from 'luxon';
 import useInterval from '../../hooks/useInterval';
 import VideoButton from '../VideoButton';
-import { IconDeviceMobileMessage, IconPointFilled, IconArrowNarrowRight } from '@tabler/icons-react';
+import { IconDeviceMobileMessage, IconPointFilled, IconArrowNarrowRight, IconMoodSmile } from '@tabler/icons-react';
 import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { QRCodeSVG } from 'qrcode.react';
 import { gql } from '../../gql';
 import { INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES } from '@/Utility';
+import { Button } from '../Button';
+import { LectureFeedbackModal } from '../LectureFeedbackModal';
 
 type MetaProps = {
     date: string;
@@ -40,6 +42,8 @@ type MetaProps = {
     zoomMeetingUrl?: Appointment['zoomMeetingUrl'];
     isHomeworkHelp?: boolean;
     canJoin?: boolean;
+    myFeedback: Appointment['myFeedback'];
+    refetchAppointment?: () => void;
 };
 const AppointmentMetaDetails: React.FC<MetaProps> = ({
     date,
@@ -60,8 +64,11 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
     zoomMeetingUrl,
     isHomeworkHelp,
     canJoin,
+    myFeedback,
+    refetchAppointment,
 }) => {
     const [showModal, setShowModal] = useState<boolean>(false);
+    const [isFeedbackModalOpen, setIsFeedbackModalOpen] = useState<boolean>(false);
     const [loginURL, setLoginURL] = useState<string>('empty');
     const [, setCurrentTime] = useState(0);
     const { isMobile } = useLayoutHelper();
@@ -155,56 +162,71 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                     </Stack>
                     <Spacer py={3} />
                     <Spacer py={3} />
-                    {appointmentId && appointmentType && (
-                        <>
-                            <VideoButton
-                                isInstructor={isOrganizer}
-                                appointmentId={appointmentId}
-                                appointmentType={appointmentType}
-                                startDateTime={startDateTime}
-                                duration={duration}
-                                buttonText={t('appointment.detail.videochatButton')}
-                                width={buttonWidth}
-                                isOver={isAppointmentOver}
-                                overrideLink={overrideMeetingLink ?? undefined}
-                                canJoin={canJoin}
-                            />
-                        </>
+                    <div className="flex gap-x-2">
+                        {appointmentId && appointmentType && (
+                            <>
+                                <VideoButton
+                                    isInstructor={isOrganizer}
+                                    appointmentId={appointmentId}
+                                    appointmentType={appointmentType}
+                                    startDateTime={startDateTime}
+                                    duration={duration}
+                                    buttonText={t('appointment.detail.videochatButton')}
+                                    width={buttonWidth}
+                                    isOver={isAppointmentOver}
+                                    overrideLink={overrideMeetingLink ?? undefined}
+                                    canJoin={canJoin}
+                                />
+                            </>
+                        )}
+                        {myFeedback?.isReadyForFeedback && (
+                            <Button variant="outline" leftIcon={<IconMoodSmile size={16} />} onClick={() => setIsFeedbackModalOpen(true)}>
+                                Wie war eure Lektion?
+                            </Button>
+                        )}
+                    </div>
+                    {myFeedback && myFeedback.isReadyForFeedback && (
+                        <LectureFeedbackModal
+                            feedbackId={myFeedback?.id}
+                            learningPartnerName={'[TODO]'}
+                            isOpen={isFeedbackModalOpen}
+                            onOpenChange={setIsFeedbackModalOpen}
+                            onFeedbackSubmitted={async () => refetchAppointment?.()}
+                        />
+                    )}
+                    {!isMobilePhone && (
+                        <HStack backgroundColor={'primary.100'} padding="16px" borderRadius="15px" space={4} mt="20px" flexWrap="wrap">
+                            <VStack>
+                                <HStack alignItems={'center'} space={2} mb={2} ml={-1}>
+                                    <IconDeviceMobileMessage />
+                                    <Text fontSize="sm" fontWeight={'bold'}>
+                                        {t('appointment.detail.qrcode.title')}
+                                    </Text>
+                                </HStack>
+                                <Text fontSize="xs">{t('appointment.detail.qrcode.header')}</Text>
+                                <HStack space={2} alignItems={'center'}>
+                                    <IconPointFilled size="6" />
+                                    <Text fontSize="xs">{t('appointment.detail.qrcode.bp1')}</Text>
+                                </HStack>
+                                <HStack space={2} alignItems={'center'}>
+                                    <IconPointFilled size="6" />
+                                    <Text fontSize="xs">{t('appointment.detail.qrcode.bp2')}</Text>
+                                </HStack>
+                                <HStack space={2} alignItems={'center'}>
+                                    <IconPointFilled size="6" />
+                                    <Text fontSize="xs">{t('appointment.detail.qrcode.bp3')}</Text>
+                                </HStack>
+                                <HStack space={2} alignItems={'center'} mt={2}>
+                                    <Text fontSize="xs">{t('appointment.detail.qrcode.footer')}</Text>
+                                    <IconArrowNarrowRight size="24" stroke={2} />
+                                </HStack>
+                            </VStack>
+                            <VStack>
+                                <QRCodeSVG value={loginURL} />
+                            </VStack>
+                        </HStack>
                     )}
                 </VStack>
-                {/* QR Code */}
-                {!isMobilePhone && (
-                    <HStack backgroundColor={'primary.100'} padding="16px" borderRadius="15px" space={4} mt="20px" flexWrap="wrap">
-                        <VStack>
-                            <HStack alignItems={'center'} space={2} mb={2} ml={-1}>
-                                <IconDeviceMobileMessage />
-                                <Text fontSize="sm" fontWeight={'bold'}>
-                                    {t('appointment.detail.qrcode.title')}
-                                </Text>
-                            </HStack>
-                            <Text fontSize="xs">{t('appointment.detail.qrcode.header')}</Text>
-                            <HStack space={2} alignItems={'center'}>
-                                <IconPointFilled size="6" />
-                                <Text fontSize="xs">{t('appointment.detail.qrcode.bp1')}</Text>
-                            </HStack>
-                            <HStack space={2} alignItems={'center'}>
-                                <IconPointFilled size="6" />
-                                <Text fontSize="xs">{t('appointment.detail.qrcode.bp2')}</Text>
-                            </HStack>
-                            <HStack space={2} alignItems={'center'}>
-                                <IconPointFilled size="6" />
-                                <Text fontSize="xs">{t('appointment.detail.qrcode.bp3')}</Text>
-                            </HStack>
-                            <HStack space={2} alignItems={'center'} mt={2}>
-                                <Text fontSize="xs">{t('appointment.detail.qrcode.footer')}</Text>
-                                <IconArrowNarrowRight size="24" stroke={2} />
-                            </HStack>
-                        </VStack>
-                        <VStack>
-                            <QRCodeSVG value={loginURL} />
-                        </VStack>
-                    </HStack>
-                )}
             </HStack>
         </>
     );

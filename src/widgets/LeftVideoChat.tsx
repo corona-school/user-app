@@ -1,10 +1,12 @@
 // eslint-disable-next-line lernfair-app-linter/typed-gql
 import { gql, useMutation, useQuery } from '@apollo/client';
-import { Box, Button, Heading, Stack, Text, useBreakpointValue, useTheme, View } from 'native-base';
-import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { LectureFeedbackModal } from '@/components/LectureFeedbackModal';
 import PartyIcon from '../assets/icons/lernfair/lf-party.svg';
-import { useEffect } from 'react';
+import { Button } from '@/components/Button';
+import { useTranslation } from 'react-i18next';
+import { Typography } from '@/components/Typography';
 
 // Duplicated from ZoomMeeting.tsx to avoid the dependency to the lazy loaded component
 export function removeZoomStyles() {
@@ -16,28 +18,24 @@ query appointmentOrganizer($appointmentId: Float!) {
     appointment(appointmentId: $appointmentId) {
         isOrganizer
         zoomMeetingId
+        myFeedback {
+            id
+            status
+            isReadyForFeedback
+        }
     }
 }`);
 
 const LeftVideoChat: React.FC = () => {
     const { id: appointmentId, type } = useParams();
     const idAsInt = appointmentId ? parseInt(appointmentId) : null;
+    const { t } = useTranslation();
+    const [isOpen, setIsOpen] = useState(false);
 
     const { data, loading } = useQuery(getAppointmentOrganizer, { variables: { appointmentId: idAsInt } });
     const isOrganizer = data?.appointment.isOrganizer;
 
-    const width = useBreakpointValue({
-        base: '100%',
-        lg: '90%',
-    });
-    const buttonWidth = useBreakpointValue({
-        base: '100%',
-        md: '300px',
-    });
-    const { t } = useTranslation();
     const navigate = useNavigate();
-
-    const { space } = useTheme();
 
     const chatType = type === 'course' ? 'course' : 'oneOnOne';
 
@@ -72,25 +70,39 @@ const LeftVideoChat: React.FC = () => {
         navigate('/');
     };
 
+    const shouldShowFeedbackModal = data?.appointment?.myFeedback?.isReadyForFeedback && chatType === 'oneOnOne';
+
+    const handleOnOpenChange = (open: boolean) => {
+        setIsOpen(open);
+        if (!open) {
+            navigate('/');
+        }
+    };
+
+    useEffect(() => {
+        if (shouldShowFeedbackModal) {
+            setIsOpen(true);
+        }
+    }, [shouldShowFeedbackModal]);
+
     return (
-        <View position="fixed" top="0" left="0" right="0" w="100vw" h="100dvh" background="primary.900">
-            <Stack w={width} h="inherit" padding="24px" flex={1} space={space['1']} direction="column" justifyContent="center">
-                <Box alignSelf="center">
-                    <PartyIcon />
-                </Box>
-                <Stack space={space['1']} direction="column">
-                    <Heading fontWeight="700" lineHeight="md" fontSize="lg" color="white" textAlign="center">
-                        {t(`chat.${chatType}.leftVideoChat.title`)}
-                    </Heading>
-                    <Text fontWeight="normal" fontSize="xs" color="white" textAlign="center">
-                        {t(`chat.${chatType}.leftVideoChat.subtitle`)}
-                    </Text>
-                </Stack>
-                <Button alignSelf="center" width={buttonWidth} onPress={() => saveAndFinish()}>
-                    <Text fontSize="sm">{t(`chat.${chatType}.leftVideoChat.button`)}</Text>
-                </Button>
-            </Stack>
-        </View>
+        <div className="h-dvh w-dvw fixed bg-primary-midnight flex flex-1 flex-col justify-center items-center p-6 gap-y-3 gap-x-3">
+            <LectureFeedbackModal feedbackId={data.appointment.myFeedback.id} isOpen={isOpen} onOpenChange={handleOnOpenChange} learningPartnerName="Max" />
+            <div className="mb-2">
+                <PartyIcon />
+            </div>
+            <div className="flex flex-col">
+                <Typography variant="h4" className="text-center font-bold leading-normal text-white">
+                    {t(`chat.${chatType}.leftVideoChat.title`)}
+                </Typography>
+
+                <Typography className="text-center font-normal text-white">{t(`chat.${chatType}.leftVideoChat.subtitle`)}</Typography>
+            </div>
+
+            <Button variant="secondary" type="button" onClick={saveAndFinish}>
+                <span className="text-sm">{t(`chat.${chatType}.leftVideoChat.button`)}</span>
+            </Button>
+        </div>
     );
 };
 
