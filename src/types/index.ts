@@ -4,6 +4,7 @@ import {
     Course,
     Course_Tag,
     Instructor_Screening,
+    Internship,
     Lecture,
     Match,
     Pupil,
@@ -134,4 +135,5 @@ export type StudentForScreening = Pick<
         receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
     };
     calendarPreferences?: CalendarPreferences;
+    internship?: Opt<Pick<Internship, 'id' | 'startDate' | 'endDate' | 'status'>>;
 };

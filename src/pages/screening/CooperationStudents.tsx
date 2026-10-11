@@ -13,6 +13,10 @@ import { getCoreRowModel, getSortedRowModel, SortingState } from '@tanstack/reac
 import { Button } from '@/components/Button';
 import { toast } from 'sonner';
 import { IconCopy } from '@tabler/icons-react';
+import { getSemesters, isDateInRange, getSemesterRange } from '@/Utility';
+import { DateTime } from 'luxon';
+
+const semesters = getSemesters();
 
 const CooperationStudents = () => {
     const { cooperationStudents, cooperations, refetchCooperationStudents } = useCooperations();
@@ -27,6 +31,7 @@ const CooperationStudents = () => {
             bookmarked: false,
             idNotControlled: false,
             cocNotSubmitted: false,
+            semester: 'all',
         },
     });
 
@@ -38,12 +43,23 @@ const CooperationStudents = () => {
                 student.email.toLowerCase().includes(filters.searchTerm.toLowerCase()) || fullName.includes(filters.searchTerm.toLowerCase());
             const studentStatus = student.hasInstructorScreening || student.hasTutorScreening ? 'angenommen' : 'offen';
             const matchesStatus = filters.status === 'all' || studentStatus === filters.status;
+            const studentSemesterStart = student.internship?.startDate;
             const matchesCooperation = filters.cooperation === 'all' || student.cooperationID?.toString() === filters.cooperation;
             const flags = student.adminUserFlags.map((flag) => flag.flag);
             const matchesBookmarked = !filters.bookmarked || (filters.bookmarked && flags.includes('BOOKMARKED'));
             const matchesIdNotControlled = !filters.idNotControlled || (filters.idNotControlled && !flags.includes('ID_CONTROLLED'));
             const matchesCocNotSubmitted = !filters.cocNotSubmitted || (filters.cocNotSubmitted && !student.certificateOfConduct?.dateOfInspection);
-            return matchesSearchTerm && matchesStatus && matchesCooperation && matchesBookmarked && matchesIdNotControlled && matchesCocNotSubmitted;
+            const isAnySemester = filters.semester === 'all' || !filters.semester;
+            const matchesSemester = isAnySemester || isDateInRange(DateTime.fromISO(studentSemesterStart), getSemesterRange(filters.semester));
+            return (
+                matchesSearchTerm &&
+                matchesStatus &&
+                matchesCooperation &&
+                matchesBookmarked &&
+                matchesIdNotControlled &&
+                matchesCocNotSubmitted &&
+                matchesSemester
+            );
         });
     }, [cooperationStudents, filters]);
 
@@ -101,6 +117,22 @@ const CooperationStudents = () => {
                                     {cooperations.map((cooperation) => (
                                         <SelectItem key={cooperation.id} value={cooperation.id.toString()}>
                                             {cooperation.name}
+                                        </SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                        <div className="flex flex-col gap-y-[6px]">
+                            <Label htmlFor="cooperation">Semester</Label>
+                            <Select value={filters.semester} onValueChange={(value) => setFilters({ ...filters, semester: value })} defaultValue="all">
+                                <SelectTrigger className="w-[200px]">
+                                    <SelectValue placeholder="Semester" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="all">Alle</SelectItem>
+                                    {semesters.map((semester) => (
+                                        <SelectItem key={semester} value={semester}>
+                                            {semester}
                                         </SelectItem>
                                     ))}
                                 </SelectContent>

@@ -10,6 +10,7 @@ import { gql } from '@/gql';
 import { useMutation } from '@apollo/client';
 import { toast } from 'sonner';
 import type { CooperationStudent } from './CooperationStudentsTable';
+import { EditInternshipModal } from './EditInternshipModal';
 
 interface CooperationStudentActionsProps {
     student: CooperationStudent;
@@ -39,6 +40,7 @@ const DELETE_STUDENT_FLAG = gql(`
 export const CooperationStudentActions = ({ student }: CooperationStudentActionsProps) => {
     const { refresh } = useContext(CooperationStudentsContext);
     const [isScreeningModalOpen, setIsScreeningModalOpen] = useState(false);
+    const [isEditInternshipModalOpen, setIsEditInternshipModalOpen] = useState(false);
     const [showConfirmRemoveFromList, setShowConfirmRemoveFromList] = useState(false);
     const searchParams = new URLSearchParams({ search: student.email });
     const [removeStudentFromCooperation] = useMutation(REMOVE_IS_FROM_COOPERATION_MUTATION, {
@@ -119,6 +121,14 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                     >
                         Freischalten
                     </DropdownMenuItem>
+                    <DropdownMenuItem
+                        onClick={() => {
+                            setIsEditInternshipModalOpen(true);
+                        }}
+                        disabled={!student.cooperationID}
+                    >
+                        Praktikum bearbeiten
+                    </DropdownMenuItem>
                     <DropdownMenuItem onClick={onIdentificationControlledToggle}>
                         Ausweis kontrolliert {userFlags.includes('ID_CONTROLLED') ? <IconCheck /> : null}
                     </DropdownMenuItem>
@@ -143,8 +153,10 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                         <b>
                             {student?.firstname} {student?.lastname}
                         </b>{' '}
-                        wirklich aus der Liste entfernen? Er/Sie wird dann weder für 1:1 noch für Gruppenkurse freigeschaltet und muss einen Screening-Termin
-                        buchen.
+                        wirklich aus der Liste entfernen?{' '}
+                        {!student.hasTutorScreening && !student.hasInstructorScreening && (
+                            <>Er/Sie wird dann weder für 1:1 noch für Gruppenkurse freigeschaltet und muss einen Screening-Termin buchen.</>
+                        )}
                     </Typography>
                 }
                 confirmButtonText="Aus der Liste entfernen"
@@ -154,6 +166,7 @@ export const CooperationStudentActions = ({ student }: CooperationStudentActions
                 }}
             />
             <StudentScreeningModal student={student} isOpen={isScreeningModalOpen} onOpenChange={setIsScreeningModalOpen} onScreeningCreated={refresh} />
+            <EditInternshipModal student={student} isOpen={isEditInternshipModalOpen} onOpenChange={setIsEditInternshipModalOpen} onSaved={refresh} />
         </div>
     );
 };

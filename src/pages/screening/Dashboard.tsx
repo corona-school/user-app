@@ -150,6 +150,12 @@ export function ScreeningDashboard() {
                         }
                     }
                     registrationSource
+                    internship {
+                        id
+                        startDate
+                        endDate
+                        status
+                    }
                 }
             }
         }
