@@ -42,6 +42,12 @@ const GET_COOPERATION_STUDENTS_QUERY = gql(`
                 plannedAppointments
                 successfulAppointments
             }
+            internship {
+                id
+                startDate
+                endDate
+                status
+            }
         }
     }    
 `);

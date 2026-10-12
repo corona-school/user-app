@@ -213,6 +213,62 @@ export const getAgeAtRegistration = (createdAt: string, currentAge: number) => {
     return Math.floor(currentAge - diffYears);
 };
 
+export const getSemesters = (fromYear = 2026) => {
+    const now = DateTime.now();
+    const semesters = [];
+
+    for (let year = fromYear; year <= now.year; year++) {
+        if (now >= DateTime.local(year, 4, 1)) {
+            semesters.push(`SoSe ${year}`);
+        }
+
+        if (now >= DateTime.local(year, 10, 1)) {
+            semesters.push(`WiSe ${year}/${year + 1}`);
+        }
+    }
+
+    semesters.sort((a, b) => {
+        const getYear = (label: string) => {
+            const match = label.match(/^(SoSe|WiSe)\s+(\d{4})(?:\/(\d{4}))?/);
+            if (!match) return 0;
+            const [, , startYear, endYear] = match;
+            return endYear ? Number(endYear) : Number(startYear);
+        };
+        return getYear(b) - getYear(a);
+    });
+
+    return semesters;
+};
+
+export const getSemesterRange = (label: string) => {
+    if (!label) return { start: DateTime.fromMillis(0), end: DateTime.fromMillis(0) };
+    const match = label.match(/^(SoSe|WiSe)\s+(\d{4})(?:\/(\d{4}))?$/);
+
+    if (!match) {
+        throw new Error(`Invalid semester label: ${label}`);
+    }
+
+    const [, type, startYearString, endYearString] = match;
+    const startYear = Number(startYearString);
+    const endYear = endYearString ? Number(endYearString) : undefined;
+
+    if (type === 'SoSe') {
+        return {
+            start: DateTime.local(startYear, 4, 1),
+            end: DateTime.local(startYear, 9, 30),
+        };
+    }
+
+    return {
+        start: DateTime.local(startYear, 10, 1),
+        end: DateTime.local(endYear ?? startYear + 1, 3, 31),
+    };
+};
+
+export const isDateInRange = (date: DateTime, { start, end }: { start: DateTime; end: DateTime }) => {
+    return date >= start && date <= end;
+};
+
 const Utility = {
     createToken,
     toTimerString,

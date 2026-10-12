@@ -1,5 +1,5 @@
 import { ColumnDef } from '@tanstack/react-table';
-import { Student } from '@/gql/graphql';
+import { Internship, Student } from '@/gql/graphql';
 import { DateTime } from 'luxon';
 import { CooperationStudentsDropdown, FurtherTrainingDropdown, IndeterminateCheckbox, ParallelMatchesCheckbox } from './customColumns';
 import { CooperationStudentActions } from './CooperationStudentActions';
@@ -7,6 +7,7 @@ import { Button } from '@/components/Button';
 import { IconAlertTriangle, IconArrowDown, IconArrowsUpDown, IconArrowUp, IconCheck, IconFlagFilled, IconId, IconLink, IconLinkOff } from '@tabler/icons-react';
 import { Badge } from '@/components/Badge';
 import { ScreeningNotesButton } from './ScreeningNotesButton';
+import { Opt } from '@/types';
 
 export type CooperationStudent = Pick<
     Student,
@@ -32,6 +33,7 @@ export type CooperationStudent = Pick<
         id: number;
         dissolved: boolean;
     }[];
+    internship?: Opt<Pick<Internship, 'id' | 'startDate' | 'endDate' | 'status'>>;
 };
 
 export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
