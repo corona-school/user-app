@@ -1,4 +1,4 @@
-import { ColumnDef } from '@tanstack/react-table';
+import { Column, ColumnDef } from '@tanstack/react-table';
 import { Internship, Student } from '@/gql/graphql';
 import { DateTime } from 'luxon';
 import { CooperationStudentsDropdown, FurtherTrainingDropdown, IndeterminateCheckbox, ParallelMatchesCheckbox } from './customColumns';
@@ -36,6 +36,26 @@ export type CooperationStudent = Pick<
     internship?: Opt<Pick<Internship, 'id' | 'startDate' | 'endDate' | 'status'>>;
 };
 
+const SortableHeader = ({ column, label }: { column: Column<CooperationStudent, unknown>; label: string }) => {
+    return (
+        <Button variant="none" size="auto" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+            {label}
+            {column.getIsSorted() === 'asc' && <IconArrowDown className="size-4" />}
+            {column.getIsSorted() === 'desc' && <IconArrowUp className="size-4" />}
+            {!column.getIsSorted() && <IconArrowsUpDown className="size-4 invisible" />}
+        </Button>
+    );
+};
+
+// Ascending: upcoming deactivation deadlines (closest first), then valid certificates
+// Descending: valid certificates first, then deactivation deadlines
+// Students without certificate always stay at the bottom
+const getCertificateOfConductSortValue = (row: CooperationStudent) => {
+    if (row.certificateOfConductDeactivationDate) return `1-${row.certificateOfConductDeactivationDate}`;
+    if (row.certificateOfConductDateOfInspection) return `2-${row.certificateOfConductDateOfInspection}`;
+    return undefined;
+};
+
 export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
     {
         id: 'select',
@@ -63,7 +83,9 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
     },
     {
         accessorKey: 'email',
-        header: 'E-Mail',
+        header: ({ column }) => <SortableHeader column={column} label="E-Mail" />,
+        sortingFn: 'text',
+        enableSorting: true,
         cell: ({ row }) => {
             const email = row.original.email;
             const userFlags = row.original.adminUserFlags.map((flag) => flag.flag);
@@ -75,8 +97,11 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
         },
     },
     {
+        id: 'name',
         accessorFn: (row) => `${row.firstname} ${row.lastname}`,
-        header: 'Name',
+        header: ({ column }) => <SortableHeader column={column} label="Name" />,
+        sortingFn: 'text',
+        enableSorting: true,
         cell: ({ row }) => {
             const name = `${row.original.firstname} ${row.original.lastname}`;
             const userFlags = row.original.adminUserFlags.map((flag) => flag.flag);
@@ -93,19 +118,12 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
             const screenedAt = row.original.screenedAt;
             return <span className="text-sm">{screenedAt ? DateTime.fromISO(screenedAt).toFormat('yyyy.MM.dd') : ''}</span>;
         },
-        header: ({ column }) => {
-            return (
-                <Button variant="none" size="auto" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
-                    Gescreent
-                    {column.getIsSorted() === 'asc' && <IconArrowDown className="size-4" />}
-                    {column.getIsSorted() === 'desc' && <IconArrowUp className="size-4" />}
-                    {!column.getIsSorted() && <IconArrowsUpDown className="size-4 invisible" />}
-                </Button>
-            );
-        },
+        header: ({ column }) => <SortableHeader column={column} label="Gescreent" />,
         enableSorting: true,
     },
     {
+        id: 'certificateOfConduct',
+        accessorFn: getCertificateOfConductSortValue,
         cell: ({ row }) => {
             const { certificateOfConductDeactivationDate, certificateOfConductDateOfInspection } = row.original;
             if (certificateOfConductDeactivationDate) {
@@ -126,7 +144,10 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
 
             return null;
         },
-        header: 'FZ',
+        header: ({ column }) => <SortableHeader column={column} label="FZ" />,
+        enableSorting: true,
+        sortingFn: 'basic',
+        sortUndefined: 'last',
     },
     {
         accessorKey: 'matchesAppointmentStats',
