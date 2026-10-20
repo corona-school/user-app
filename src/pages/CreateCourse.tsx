@@ -14,7 +14,7 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import CourseDetails from '@/pages/course-creation/CourseDetails';
 import { FileItem } from '@/components/Dropzone';
 import CourseAppointments from '@/pages/course-creation/CourseAppointments';
-import { Course_Category_Enum, Course_Coursestate_Enum, Instructor } from '@/gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum, Course_Subject_Enum, Instructor } from '@/gql/graphql';
 import CourseSettings from './course-creation/CourseSettings';
 import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
@@ -23,6 +23,7 @@ import { getCourseDelta, useUpdateCourse } from './course-creation/update';
 import { toast } from 'sonner';
 import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
+import { courseSubjectToSubject } from '@/types/subject';
 
 export type CreateCourseError =
     | 'course'
@@ -232,11 +233,23 @@ const CreateCourse: React.FC = () => {
             variables: { id: prefillSubcourseId },
         })) as unknown as { data: { subcourse: LFSubCourse } };
 
-        setPrefillSubcourse(prefillSubcourse);
+        setPrefillSubcourse({
+            ...prefillSubcourse,
+            course: {
+                ...prefillSubcourse.course,
+                subject: courseSubjectToSubject(prefillSubcourse.course.subject as Course_Subject_Enum) ?? prefillSubcourse.course.subject,
+            },
+        });
 
         setCourseId(prefillSubcourse.course.id);
 
-        let updatedCourse = { ...prefillSubcourse };
+        let updatedCourse = {
+            ...prefillSubcourse,
+            course: {
+                ...prefillSubcourse.course,
+                subject: courseSubjectToSubject(prefillSubcourse.course.subject as Course_Subject_Enum) ?? prefillSubcourse.course.subject,
+            },
+        };
         setCourseAppointments((userType === 'student' ? prefillSubcourse.joinedAppointments : prefillSubcourse.appointments) ?? []);
 
         if (prefillSubcourse.instructors && Array.isArray(prefillSubcourse.instructors)) {
