@@ -44,10 +44,6 @@ export const ScreeningAppointmentDetail = ({ onNext, onBack, variant = 'register
         };
     }, []);
 
-    if (!form.screeningAppointment) {
-        return <CenterLoadingSpinner />;
-    }
-
     if (form.isWaitingScreeningResults) {
         return (
             <RegistrationStep>
@@ -56,6 +52,10 @@ export const ScreeningAppointmentDetail = ({ onNext, onBack, variant = 'register
                 <Typography>{t('registration.steps.screeningInProgress.description')}</Typography>
             </RegistrationStep>
         );
+    }
+
+    if (!form.screeningAppointment) {
+        return <CenterLoadingSpinner />;
     }
 
     const eventCategory = `${form.userType === 'pupil' ? 'SuS' : 'HuH'} Registration`;

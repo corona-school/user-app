@@ -437,6 +437,10 @@ export const RegistrationProvider = ({ children }: { children: React.ReactNode }
             }
         }
 
+        if (values.isWaitingScreeningResults) {
+            return handleOnChange({ currentStep: RegistrationStep.registrationCompleted });
+        }
+
         // Blocker to book a screening appointment
         if (!hasScreeningAppointment) {
             return handleOnChange({ currentStep: RegistrationStep.bookAppointment });
