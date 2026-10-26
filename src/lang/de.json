@@ -1883,6 +1883,17 @@
             "_3hour": "3 Stunden",
             "_4hour": "4 Stunden"
         },
+        "actions": {
+            "menu": "Menü öffnen",
+            "duplicate": "Duplizieren",
+            "delete": "Löschen"
+        },
+        "deleteModal": {
+            "title": "Entwurf löschen?",
+            "description": "Bist du dir sicher, dass du diesen Entwurf für einen Kurs löschen möchtest?",
+            "success": "Dein Entwurf wurde gelöscht.",
+            "error": "Der Entwurf konnte nicht gelöscht werden."
+        },
         "duplicateModal": {
             "title": "Möchtest du diese Vorlage kopieren?",
             "description": "Du findest deine Kopie im Bereich \"Meine Kurse\".",
