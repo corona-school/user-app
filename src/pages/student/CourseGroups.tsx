@@ -1,7 +1,7 @@
 import { Box, Stack } from 'native-base';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Course_Category_Enum, Subcourse } from '../../gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum, Subcourse } from '../../gql/graphql';
 import { getTrafficStatus, getTrafficStatusText } from '../../Utility';
 import AlertMessage from '../../widgets/AlertMessage';
 import AppointmentCard from '../../widgets/AppointmentCard';
@@ -13,9 +13,10 @@ type GroupProps = {
     pastCourses: Subcourse[] | undefined;
     homeworkHelpCourses: Subcourse[] | undefined;
     onPressDuplicate: (subcourse: Subcourse) => any;
+    onPressDelete: (subcourse: Subcourse) => any;
 };
 
-const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses, homeworkHelpCourses, onPressDuplicate }) => {
+const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, pastCourses, homeworkHelpCourses, onPressDuplicate, onPressDelete }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -40,6 +41,7 @@ const CourseGroups: React.FC<GroupProps> = ({ currentCourses, draftCourses, past
                 trafficLightStatus={getTrafficStatus(subcourse.participantsCount || 0, subcourse.maxParticipants || 0)}
                 onPressToCourse={readonly ? undefined : () => navigate(`/single-course/${subcourse.id}`)}
                 onPressDuplicate={subcourse.course.category !== Course_Category_Enum.HomeworkHelp ? () => onPressDuplicate(subcourse) : undefined}
+                onPressDelete={subcourse.course.courseState === Course_Coursestate_Enum.Created ? () => onPressDelete(subcourse) : undefined}
                 showSchoolclass
             />
         </div>
