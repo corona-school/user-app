@@ -1,7 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
 import { useMemo } from 'react';
-import { Trans, useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -119,18 +119,9 @@ const MatchingStudent: React.FC<Props> = () => {
                                                     </Button>
                                                 )) || (
                                                     <AlertMessage
-                                                        content={
-                                                            <Trans
-                                                                i18nKey={`lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as any}
-                                                                components={{
-                                                                    supportEmail: (
-                                                                        <a className="inline underline text-primary" href="mailto:praktikum@lern-fair.de">
-                                                                            praktikum@lern-fair.de
-                                                                        </a>
-                                                                    ),
-                                                                }}
-                                                            />
-                                                        }
+                                                        content={t(
+                                                            `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
+                                                        )}
                                                     />
                                                 )}
                                             </VStack>

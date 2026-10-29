@@ -370,8 +370,7 @@
                 "tutor": {
                     "not-screened": "You cannot form a learning pair yet. Please have your introductory meeting with us first.",
                     "not-tutor": "You cannot create a learning pair because you are not registered for learning support.",
-                    "max-requests": "You can only submit one study partner request at a time. Once you've been matched with a study partner or have deleted your current request, you can submit a new one.",
-                    "max-matches": "You can only have one learning partner. If you have any questions or problems, contact us at <supportEmail>praktikum@lern-fair.de<supportEmail>."
+                    "max-requests": "You can only submit one study partner request at a time. Once you've been matched with a study partner or have deleted your current request, you can submit a new one."
                 },
                 "pupil": {
                     "max-dissolved-matches": "You cannot request a learning pair because you have already had too many learning pairs.",
@@ -1993,17 +1992,6 @@
             "name": "Name of the copied course",
             "error": "The course could not be duplicated.",
             "success": "Your course has been successfully copied."
-        },
-        "actions": {
-            "menu": "Open Menu",
-            "duplicate": "Duplicate",
-            "delete": "Delete"
-        },
-        "deleteModal": {
-            "title": "Delete draft?",
-            "description": "Are you sure you want to delete this course draft?",
-            "success": "Your draft has been deleted.",
-            "error": "The draft could not be deleted."
         }
     },
     "notification": {
