@@ -49,6 +49,7 @@ declare interface Window {
         readonly RUNTIME_LESSON_PLAN_GENERATOR_ACTIVE: string;
         readonly RUNTIME_HOMEWORK_HELP_COURSE: string;
         readonly RUNTIME_TEST_STUDENT_ID: string;
+        readonly RUNTIME_EMAIL_VERIFICATION_UNAVAILABLE: string;
 
         readonly RUNTIME_WEBPUSH_ROLLOUT_RATIO?: string;
     };
