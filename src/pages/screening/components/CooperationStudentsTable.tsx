@@ -1,13 +1,28 @@
 import { Column, ColumnDef } from '@tanstack/react-table';
-import { Internship, Student } from '@/gql/graphql';
+import { Internship, Internship_Status_Enum, Student } from '@/gql/graphql';
 import { DateTime } from 'luxon';
 import { CooperationStudentsDropdown, FurtherTrainingDropdown, IndeterminateCheckbox, ParallelMatchesCheckbox } from './customColumns';
 import { CooperationStudentActions } from './CooperationStudentActions';
 import { Button } from '@/components/Button';
-import { IconAlertTriangle, IconArrowDown, IconArrowsUpDown, IconArrowUp, IconCheck, IconFlagFilled, IconId, IconLink, IconLinkOff } from '@tabler/icons-react';
+import {
+    IconAlertTriangle,
+    IconArrowDown,
+    IconArrowsUpDown,
+    IconArrowUp,
+    IconCheck,
+    IconCircleCheckFilled,
+    IconCircleXFilled,
+    IconFlagFilled,
+    IconId,
+    IconLink,
+    IconLinkOff,
+    IconPointFilled,
+} from '@tabler/icons-react';
 import { Badge } from '@/components/Badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/Tooltip';
 import { ScreeningNotesButton } from './ScreeningNotesButton';
 import { Opt } from '@/types';
+import { cn } from '@/lib/Tailwind';
 
 export type CooperationStudent = Pick<
     Student,
@@ -54,6 +69,12 @@ const getCertificateOfConductSortValue = (row: CooperationStudent) => {
     if (row.certificateOfConductDeactivationDate) return `1-${row.certificateOfConductDeactivationDate}`;
     if (row.certificateOfConductDateOfInspection) return `2-${row.certificateOfConductDateOfInspection}`;
     return undefined;
+};
+
+const INTERNSHIP_STATUS_DISPLAY: Record<Internship_Status_Enum, { label: string; icon: typeof IconPointFilled; className: string; pulse?: boolean }> = {
+    [Internship_Status_Enum.InProgress]: { label: 'Laufend', icon: IconPointFilled, className: 'text-green-400', pulse: true },
+    [Internship_Status_Enum.Completed]: { label: 'Abgeschlossen', icon: IconCircleCheckFilled, className: 'text-green-600' },
+    [Internship_Status_Enum.Cancelled]: { label: 'Abgebrochen', icon: IconCircleXFilled, className: 'text-red-700' },
 };
 
 export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
@@ -205,6 +226,37 @@ export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
                 <div>
                     <ScreeningNotesButton studentId={row.original.id} notes={row.original.descriptionForScreening} />
                 </div>
+            );
+        },
+    },
+    {
+        id: 'internship',
+        accessorFn: (row) => row.internship?.status,
+        header: 'Praktikum',
+        cell: ({ row }) => {
+            const internship = row.original.internship;
+            if (!internship) return null;
+            const { label, icon: Icon, className, pulse } = INTERNSHIP_STATUS_DISPLAY[internship.status];
+            const start = DateTime.fromISO(internship.startDate).toFormat('dd.MM.yyyy');
+            const end = internship.endDate ? DateTime.fromISO(internship.endDate).toFormat('dd.MM.yyyy') : 'offen';
+            return (
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span className="inline-flex">
+                                {pulse ? (
+                                    <div className="relative flex items-center justify-center">
+                                        <span className="absolute animate-[ping_1.5s_infinite] size-4 rounded-full bg-green-300 opacity-75" />
+                                        <Icon size={18} className={cn('relative', className)} />
+                                    </div>
+                                ) : (
+                                    <Icon size={18} className={className} />
+                                )}
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent>{`${label}: ${start} – ${end}`}</TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
             );
         },
     },
