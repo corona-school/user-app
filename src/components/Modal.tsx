@@ -47,6 +47,7 @@ const ModalContent = React.forwardRef<React.ElementRef<typeof DialogPrimitive.Co
                         e.preventDefault();
                     }
                 }}
+                onClick={(e) => e.stopPropagation()}
             >
                 <DialogPrimitive.Close
                     className={cn(
