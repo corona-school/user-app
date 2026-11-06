@@ -137,6 +137,12 @@ export const SUBJECT_TO_COURSE_SUBJECT: { [subject in SingleSubject]: Course_Sub
     Rechnungswesen: Course_Subject_Enum.Rechnungswesen,
 };
 
+export const courseSubjectToSubject = (courseSubject: Course_Subject_Enum): SingleSubject | undefined => {
+    return Object.keys(SUBJECT_TO_COURSE_SUBJECT).find((key) => SUBJECT_TO_COURSE_SUBJECT[key as keyof typeof SUBJECT_TO_COURSE_SUBJECT] === courseSubject) as
+        | SingleSubject
+        | undefined;
+};
+
 export const DAZ = 'Deutsch als Zweitsprache';
 
 export const containsDAZ = (subjects: Subject[]) => subjects.some((it) => it.name === DAZ);

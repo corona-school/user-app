@@ -77,13 +77,17 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
     const [showFormalEducationModal, setShowFormalEducationModal] = useState(false);
     const [showSpecialTeachingExperienceModal, setShowSpecialTeachingExperienceModal] = useState(false);
     const [showTeachingExperienceLevelModal, setShowTeachingExperienceLevelModal] = useState(false);
+    const [markedAsUniCooperation, setMarkedAsUniCooperation] = useState<CheckedState>(student.registrationSource === 'cooperation');
 
     const [mutationUpdateStudent, { loading: isUpdating }] = useMutation(UPDATE_STUDENT_MUTATION);
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
     const { cooperations } = useCooperations({ skipCooperationStudents: true, skipPendingCooperationStudents: true });
 
     useEffect(() => {
-        if (!location || location === Student_State_Enum.Other) return;
+        if (!location || location === Student_State_Enum.Other) {
+            setZipCodeError('');
+            return;
+        }
 
         if (zipCode.length !== zipCodeLength()) {
             setZipCodeError(`Postleitzahl für ${t(asTranslationKey(`lernfair.states.${location}`))} muss ${zipCodeLength()} Ziffern haben.`);
@@ -151,8 +155,10 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             teachingExperienceLevel
                         ),
                         cooperationId: cooperationID ?? null,
+                        registrationSource: markedAsUniCooperation ? RegistrationSource.Cooperation : RegistrationSource.Normal,
                     },
                 },
+                refetchQueries: markedAsUniCooperation ? ['GetPendingCooperationStudents', 'GetPendingCooperationStudentsCount'] : [],
             });
             toast.success(t('changesWereSaved'));
             await refresh();
@@ -208,6 +214,22 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                 {!student.active && <InfoCard icon="loki" title={t('screening.account_deactivated')} message={t('screening.account_deactivated_details')} />}
                 <div className="flex flex-wrap gap-6">
                     <div className="flex flex-col gap-y-2 mb-6">
+                        <Label>Kooperation</Label>
+                        <SelectInput
+                            className="w-[200px]"
+                            value={cooperationID?.toString() ?? ''}
+                            onValueChange={(value) => setCooperationID(value ? parseInt(value) : undefined)}
+                            options={cooperations.map((c) => ({ value: c.id.toString(), label: c.name }))}
+                            allowReset
+                        />
+                    </div>
+                    <div className="flex gap-x-2 items-center">
+                        <Checkbox id="markedAsUniCooperation" checked={markedAsUniCooperation} onCheckedChange={setMarkedAsUniCooperation} />{' '}
+                        <Label htmlFor="markedAsUniCooperation">Als Uni-Kooperation markieren</Label>
+                    </div>
+                </div>
+                <div className="flex flex-wrap gap-6">
+                    <div className="flex flex-col gap-y-2 mb-4">
                         <Label>Geschlecht</Label>
                         <SelectInput
                             className="w-[200px]"
@@ -220,7 +242,7 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                             ]}
                         />
                     </div>
-                    <div className="flex flex-col gap-y-2 mb-6">
+                    <div className="flex flex-col gap-y-2 mb-4 max-w-[200px]">
                         <Label>Postleitzahl</Label>
                         <Input
                             maxLength={zipCodeLength() ?? undefined}
@@ -229,25 +251,13 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                                 setZipCode(e.target.value.replace(/\D/g, '')); // Ensures that only digits can be typed in
                                 zipCodeToState(e.target.value);
                             }}
+                            errorMessage={zipCodeError}
                         />
-                        <Typography variant="sm" className="text-destructive max-w-60">
-                            {zipCodeError}
-                        </Typography>
                     </div>
-                    <div className="flex flex-col gap-y-2 mb-6">
+                    <div className="flex flex-col gap-y-2 mb-4">
                         <ButtonField className="min-w-full" label="Ort" onClick={() => setShowEditLocation(true)}>
                             {t(asTranslationKey(`lernfair.states.${location}`))}
                         </ButtonField>
-                    </div>
-                    <div className="flex flex-col gap-y-2 mb-6">
-                        <Label>Kooperation</Label>
-                        <SelectInput
-                            className="w-[200px]"
-                            value={cooperationID?.toString() ?? ''}
-                            onValueChange={(value) => setCooperationID(value ? parseInt(value) : undefined)}
-                            options={cooperations.map((c) => ({ value: c.id.toString(), label: c.name }))}
-                            allowReset
-                        />
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-6">

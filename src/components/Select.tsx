@@ -86,37 +86,48 @@ interface SelectInputProps<T> {
 
 const RESET_VALUE = '__SELECT_RESET__';
 
-export const SelectInput = <T extends string>({ value, onValueChange, options, placeholder, className, allowReset = false }: SelectInputProps<T>) => (
-    <Select
-        value={value || undefined}
-        onValueChange={(newValue) => {
-            onValueChange(newValue === RESET_VALUE ? '' : (newValue as T));
-        }}
-    >
-        <SelectTrigger className={cn('h-10 w-full', className)}>
-            <SelectValue placeholder={placeholder} />
-        </SelectTrigger>
+export const SelectInput = <T extends string>({ value, onValueChange, options, placeholder, className, allowReset = false }: SelectInputProps<T>) => {
+    return (
+        <Select
+            value={value || undefined}
+            onValueChange={(newValue) => {
+                onValueChange(newValue === RESET_VALUE ? (RESET_VALUE as T) : (newValue as T));
+            }}
+        >
+            <SelectTrigger className={cn('h-10 w-full', className)}>
+                {value === RESET_VALUE ? <span>{placeholder}</span> : <SelectValue placeholder={placeholder} />}
+            </SelectTrigger>
 
-        <SelectContent>
-            {allowReset && value && <SelectItem value={RESET_VALUE}>Auswahl zurücksetzen</SelectItem>}
+            <SelectContent>
+                {allowReset && value && (
+                    <SelectItem
+                        value={RESET_VALUE}
+                        onClick={() => {
+                            onValueChange(RESET_VALUE as T);
+                        }}
+                    >
+                        Auswahl zurücksetzen
+                    </SelectItem>
+                )}
 
-            {options.map((option) => {
-                if (typeof option === 'string') {
+                {options.map((option) => {
+                    if (typeof option === 'string') {
+                        return (
+                            <SelectItem key={option} value={option}>
+                                {option}
+                            </SelectItem>
+                        );
+                    }
+
                     return (
-                        <SelectItem key={option} value={option}>
-                            {option}
+                        <SelectItem key={option.value} value={option.value}>
+                            {option.label}
                         </SelectItem>
                     );
-                }
-
-                return (
-                    <SelectItem key={option.value} value={option.value}>
-                        {option.label}
-                    </SelectItem>
-                );
-            })}
-        </SelectContent>
-    </Select>
-);
+                })}
+            </SelectContent>
+        </Select>
+    );
+};
 
 export { Select, SelectValue, SelectTrigger, SelectContent, SelectItem };

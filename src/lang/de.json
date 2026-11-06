@@ -461,7 +461,8 @@
                 "tutor": {
                     "not-screened": "Du kannst noch kein Lernpaar bilden. Bitte führe zuerst dein Kennenlerngespräch mit uns.",
                     "not-tutor": "Du kannst kein Lernpaar bilden, da du nicht für die Nachhilfe registriert bist.",
-                    "max-requests": "Du hast die maximale Zahl an erlaubten Anfragen erreichst und kannst daher keine weitere stellen."
+                    "max-requests": "Du kannst immer nur eine Lernpaar-Anfrage gleichzeitig stellen. Sobald du eine*n Lernpartner*in erhalten oder deine aktuelle Anfrage gelöscht hast, kannst du eine neue Anfrage stellen.",
+                    "max-matches": "Du kannst nur eine*n Lernpartner*in haben. Bei Fragen oder Problemen schreibe uns an <supportEmail>praktikum@lern-fair.de<supportEmail>."
                 },
                 "pupil": {
                     "max-dissolved-matches": "Du kannst kein Lernpaar anfordern, weil du bereits zu viele Lernpaare hattest.",
@@ -1883,6 +1884,17 @@
             "_3hour": "3 Stunden",
             "_4hour": "4 Stunden"
         },
+        "actions": {
+            "menu": "Menü öffnen",
+            "duplicate": "Duplizieren",
+            "delete": "Löschen"
+        },
+        "deleteModal": {
+            "title": "Entwurf löschen?",
+            "description": "Bist du dir sicher, dass du diesen Entwurf für einen Kurs löschen möchtest?",
+            "success": "Dein Entwurf wurde gelöscht.",
+            "error": "Der Entwurf konnte nicht gelöscht werden."
+        },
         "duplicateModal": {
             "title": "Möchtest du diese Vorlage kopieren?",
             "description": "Du findest deine Kopie im Bereich \"Meine Kurse\".",
@@ -2520,7 +2532,7 @@
         "deadline": "<strong>Frist zur Einreichung:</strong> {{cocDate}}",
         "tooltip": "Nach diesem Datum wird dein Nutzerkonto bei uns automatisch deaktiviert. \nSolltest du mehr Zeit für die Beantragung benötigen, schreibe uns eine E-Mail an support@lern-fair.de.",
         "alert_message": "<strong>Achtung:</strong> Die Beantragung eines erweiterten Führungszeugnis kann in manchen Fällen mehrere Wochen dauern!",
-        "download": "Antrag auf Gebührenbefreiung runterladen",
+        "download": "Schriftliche Anforderung & Gebührenbefreiung runterladen",
         "reason_download_disabled": "Bitte warte kurz, der Download sollte gleich starten.",
         "upload": "Per E-Mail einreichen",
         "request_header": "Wie beantrage ich ein erweitertes Führungszeugnis?",
@@ -2752,8 +2764,8 @@
         "iOSInstallInstructions": {
             "title": "App Installieren",
             "steps": {
-                "first": "Klicke auf <0/> oben oder unten im Browser",
-                "second": "Wähle <0/> \"Zum Home-Bildschirm\""
+                "first": "Klicke im Browser oben oder unten auf <0/> \"Teilen\"<br>Diese Option versteckt sich unten manchmal hinter drei Punkten •••",
+                "second": "Wähle <0/> \"Zum Home-Bildschirm\"<br>Du musst dafür vielleicht weit nach unten scrollen"
             }
         },
         "page": {

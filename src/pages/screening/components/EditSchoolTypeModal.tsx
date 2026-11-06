@@ -19,7 +19,7 @@ export function EditSchoolTypeModal({ schoolType, onOpenChange, onSave, isOpen }
         onOpenChange(false);
     };
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-4xl">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-4xl" size="md">
             <ModalHeader>
                 <ModalTitle>Schulform bearbeiten</ModalTitle>
             </ModalHeader>

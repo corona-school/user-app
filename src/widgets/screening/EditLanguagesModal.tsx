@@ -23,7 +23,7 @@ export function EditLanguagesModal<T extends Language>({ languages, onOpenChange
     };
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-w-max">
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-w-max" size="lg">
             <ModalHeader>
                 <ModalTitle>Sprachen bearbeiten</ModalTitle>
             </ModalHeader>

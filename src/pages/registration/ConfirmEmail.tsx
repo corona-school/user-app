@@ -9,6 +9,9 @@ import { toast } from 'sonner';
 import ChangeEmailModal from '@/modals/ChangeEmailModal';
 import { useEffect, useState } from 'react';
 import { usePageTitle } from '@/hooks/usePageTitle';
+import { Alert } from '@/components/Alert';
+import { IconAlertTriangle } from '@tabler/icons-react';
+import { EMAIL_VERIFICATION_UNAVAILABLE } from '@/config';
 
 interface ConfirmEmailProps extends RegistrationStepProps {
     retainPath: string;
@@ -26,7 +29,6 @@ export const ConfirmEmail = ({ onNext, retainPath }: ConfirmEmailProps) => {
     const { t } = useTranslation();
     const [sendVerification, { loading: isSendingVerification }] = useMutation(SEND_VERIFICATION_MUTATION);
     const [isOpen, setIsOpen] = useState(false);
-
     const requestEmailVerification = async () => {
         const res = await sendVerification({
             variables: {
@@ -62,6 +64,14 @@ export const ConfirmEmail = ({ onNext, retainPath }: ConfirmEmailProps) => {
         <RegistrationStep onNext={onNext} isNextDisabled>
             <div className="flex flex-col gap-y-10 justify-center items-center">
                 <RegistrationStepTitle className="md:mb-0 mb-0">{t('registration.steps.confirmEmail.title')}</RegistrationStepTitle>
+                {EMAIL_VERIFICATION_UNAVAILABLE && (
+                    <Alert variant="destructive" title="Aktuell kann E-Mail nicht bestätigt werden" icon={<IconAlertTriangle />}>
+                        <span className="leading-3">
+                            Leider können wir seit dem 28.10. keine Bestätigungs-E-Mails versenden. Wir arbeiten bereits an einer Lösung. Sobald das Problem
+                            behoben ist, erhältst du automatisch deine Bestätigungs-E-Mail.
+                        </span>
+                    </Alert>
+                )}
                 <Typography variant="body-lg" className="text-center md:whitespace-pre-line text-balance">
                     <Trans
                         t={t}

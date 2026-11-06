@@ -196,7 +196,7 @@ const CourseAppointments: React.FC<Props> = ({ isEditingCourse, appointments, su
                             clickable={false}
                             editable={true}
                             exhaustive={true}
-                            minDate={isFromUnpublishedSubcourse ? DateTime.now().plus({ days: 14 }) : undefined}
+                            minDate={isFromUnpublishedSubcourse ? DateTime.now().plus({ days: 14 }) : DateTime.now()}
                         />
                     </div>
                 )}
