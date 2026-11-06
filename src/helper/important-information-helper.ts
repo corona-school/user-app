@@ -2,6 +2,7 @@ import { FC } from 'react';
 import EventIcon from '../assets/icons/icon_ereignis.svg';
 import BooksIcon from '../assets/icons/icon_buch.svg';
 import MoreIcon from '../assets/icons/Icon_Einzel.svg';
+import { Important_Information_Category_Enum } from 'gql/graphql';
 
 export enum InformationType {
     COMMUNITY = 'community',
@@ -31,7 +32,6 @@ export enum NextStepLabelType {
     INTEREST_CONFIRMATION = 'interestconfirmation',
     STATUS_PUPIL = 'statusSchüler',
     STATUS_STUDENT = 'statusStudent',
-    STATUS_STUDENT_TWO = 'statusStudent2',
     PASSWORD = 'passwort',
     CONTACT_PUPIL = 'kontaktSchüler',
     CONTACT_STUDENT = 'kontaktStudent',
@@ -47,6 +47,27 @@ export const getNextStepIcon = (label: NextStepLabelType): FC => {
     return icon;
 };
 
+export const getImportantInformationLabel = (label: Important_Information_Category_Enum): string => {
+    switch (label) {
+        case Important_Information_Category_Enum.Important:
+            return 'Wichtig';
+        case Important_Information_Category_Enum.Event:
+            return 'Veranstaltung';
+        case Important_Information_Category_Enum.HighDemand:
+            return 'Hoher Bedarf';
+        case Important_Information_Category_Enum.Feedback:
+            return 'Feedback';
+        case Important_Information_Category_Enum.FeatureUpdate:
+            return 'Neue Funktionen';
+        case Important_Information_Category_Enum.HolidayInfo:
+            return 'Ferien-Info';
+        case Important_Information_Category_Enum.News:
+            return 'Lern-Fair News';
+        default:
+            return 'Information';
+    }
+};
+
 export const nextStepIcon: { [label: string]: FC } = {
     willkommen: EventIcon,
     verifizierung: BooksIcon,
@@ -55,7 +76,6 @@ export const nextStepIcon: { [label: string]: FC } = {
     interestconfirmation: MoreIcon,
     statusSchüler: MoreIcon,
     statusStudent: MoreIcon,
-    statusStudent2: MoreIcon,
     passwort: MoreIcon,
     kontaktSchüler: MoreIcon,
     kontaktStudent: MoreIcon,

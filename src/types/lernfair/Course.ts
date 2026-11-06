@@ -1,4 +1,4 @@
-import { Course_Coursestate_Enum, Instructor } from '../../gql/graphql';
+import { Course_Coursestate_Enum, Instructor, SchoolType } from '../../gql/graphql';
 import { Pupil, Participant } from '../../gql/graphql';
 import { ChatType } from '../../pages/CreateCourse';
 import { Appointment } from './Appointment';
@@ -68,8 +68,9 @@ export type LFInstructor = {
 
 export type LFPupilsOnWaitinglist = PupilOnWaitinglist[] | undefined;
 
-export type PupilOnWaitinglist = Pick<Pupil, 'id' | 'firstname' | 'lastname' | 'schooltype' | 'grade' | 'gradeAsInt'> & { conversationId?: string };
+export type PupilOnWaitinglist = Pick<Pupil, 'id' | 'firstname' | 'lastname' | 'grade' | 'gradeAsInt'> & { conversationId?: string; schooltype: SchoolType };
 
-export type SubcourseParticipant = Pick<Participant, 'id' | 'firstname' | 'grade' | 'gradeAsInt'> & Partial<Pick<Participant, 'lastname' | 'schooltype'>>;
+export type SubcourseParticipant = Pick<Participant, 'id' | 'firstname' | 'grade' | 'gradeAsInt'> &
+    Partial<Pick<Participant, 'lastname'>> & { schooltype?: SchoolType };
 
 export type TrafficStatus = 'full' | 'last' | 'free';

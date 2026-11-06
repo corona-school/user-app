@@ -127,7 +127,6 @@ const ZoomMeeting: React.FC = () => {
 
         const credentials = {
             authEndpoint: '',
-            sdkKey: ZOOM_MEETING_SDK_KEY,
             password: '',
             meetingNumber: meetingId,
             signature: me?.zoomSDKJWT,
@@ -143,7 +142,6 @@ const ZoomMeeting: React.FC = () => {
             success: () => {
                 ZoomMtg.join({
                     signature: credentials.signature!,
-                    sdkKey: credentials.sdkKey,
                     meetingNumber: credentials.meetingNumber,
                     passWord: appointmentMeetingData.appointment.zoomMeetingPassword ?? '',
                     userName: credentials.userName || '',

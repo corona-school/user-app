@@ -12,6 +12,7 @@ export enum RegistrationStep {
     authenticationInfo = 'authenticationInfo',
     dataPrivacy = 'dataPrivacy',
     confirmEmail = 'confirmEmail',
+    uniCooperation = 'uniCooperation',
     bookAppointment = 'bookAppointment',
     screeningAppointmentDetail = 'screeningAppointmentDetail',
     grade = 'grade',
@@ -20,6 +21,11 @@ export enum RegistrationStep {
     zipCode = 'zipCode',
     notifications = 'notifications',
     rules = 'rules',
+    jobStatus = 'jobStatus',
+    hasEducationExperience = 'hasEducationExperience',
+    formalEducation = 'formalEducation',
+    teachingExperience = 'teachingExperience',
+    hasSpecialNeedsExperience = 'hasSpecialNeedsExperience',
     registrationCompleted = 'registrationCompleted',
 }
 
@@ -33,7 +39,14 @@ export const STUDENT_FLOW = [
     RegistrationStep.authenticationInfo,
     RegistrationStep.dataPrivacy,
     RegistrationStep.confirmEmail,
+    RegistrationStep.uniCooperation,
     RegistrationStep.bookAppointment,
+    RegistrationStep.screeningAppointmentDetail,
+    RegistrationStep.jobStatus,
+    RegistrationStep.hasEducationExperience,
+    RegistrationStep.formalEducation,
+    RegistrationStep.teachingExperience,
+    RegistrationStep.hasSpecialNeedsExperience,
     RegistrationStep.registrationCompleted,
 ];
 

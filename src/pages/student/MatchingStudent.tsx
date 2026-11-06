@@ -1,8 +1,7 @@
-import { useMutation, useQuery } from '@apollo/client';
-import { useMatomo } from '@jonkoops/matomo-tracker-react';
-import { Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, useToast, VStack } from 'native-base';
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useQuery } from '@apollo/client';
+import { Circle, Flex, Heading, Stack, Text, useBreakpointValue, useTheme, VStack } from 'native-base';
+import { useMemo } from 'react';
+import { Trans, useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import AsNavigationItem from '../../components/AsNavigationItem';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
@@ -15,11 +14,11 @@ import OpenMatchRequest from '../../widgets/OpenMatchRequest';
 import Matches, { MatchCard } from '../match/Matches';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import { gql } from '../../gql';
-import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 type Props = {};
 const query = gql(`
@@ -60,10 +59,8 @@ const MatchingStudent: React.FC<Props> = () => {
     const { space, sizes } = useTheme();
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const toast = useToast();
-    const [showCancelModal, setShowCancelModal] = useState<boolean>();
 
-    const { data, loading } = useQuery(query);
+    const { data, loading, refetch } = useQuery(query);
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -75,34 +72,6 @@ const MatchingStudent: React.FC<Props> = () => {
         lg: sizes['contentContainerWidth'],
     });
 
-    const [cancelMatchRequest, { loading: cancelLoading }] = useMutation(
-        gql(`
-            mutation StudentDeleteMatchRequest {
-                studentDeleteMatchRequest
-            }
-        `),
-        { refetchQueries: [{ query }] }
-    );
-
-    const showCancelMatchRequestModal = useCallback(() => {
-        setShowCancelModal(true);
-    }, []);
-
-    const cancelRequest = useCallback(async () => {
-        setShowCancelModal(false);
-        trackEvent({
-            category: 'matching',
-            action: 'click-event',
-            name: 'Helfer Matching Anfrage löschen',
-            documentTitle: 'Helfer Matching',
-        });
-        const res = await cancelMatchRequest();
-        if (res.data?.studentDeleteMatchRequest) {
-            toast.show({ description: t('matching.request.check.deleteSucess'), placement: 'top' });
-        }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [data?.me?.student?.id]);
-
     const activeMatches = useMemo(() => {
         return data?.me?.student?.matches.filter((match) => match.dissolved === false);
     }, [data?.me?.student?.matches]);
@@ -111,14 +80,7 @@ const MatchingStudent: React.FC<Props> = () => {
         return data?.me?.student?.matches.filter((match) => match.dissolved === true);
     }, [data?.me?.student?.matches]);
 
-    const { trackPageView, trackEvent } = useMatomo();
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Helfer Matching',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    usePageTitle('Helfer Matching');
 
     const matchRequestCount = data?.me?.student?.openMatchRequestCount ?? 0;
 
@@ -157,9 +119,18 @@ const MatchingStudent: React.FC<Props> = () => {
                                                     </Button>
                                                 )) || (
                                                     <AlertMessage
-                                                        content={t(
-                                                            `lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as unknown as TemplateStringsArray
-                                                        )}
+                                                        content={
+                                                            <Trans
+                                                                i18nKey={`lernfair.reason.matching.tutor.${data?.me?.student?.canRequestMatch?.reason}` as any}
+                                                                components={{
+                                                                    supportEmail: (
+                                                                        <a className="inline underline text-primary" href="mailto:praktikum@lern-fair.de">
+                                                                            praktikum@lern-fair.de
+                                                                        </a>
+                                                                    ),
+                                                                }}
+                                                            />
+                                                        }
                                                     />
                                                 )}
                                             </VStack>
@@ -184,20 +155,17 @@ const MatchingStudent: React.FC<Props> = () => {
                                             <VStack space={space['0.5']}>
                                                 <Flex direction="row" flexWrap="wrap">
                                                     {(matchRequestCount &&
-                                                        new Array(matchRequestCount).fill('').map((_, i) => (
-                                                            <OpenMatchRequest
-                                                                cancelLoading={cancelLoading}
-                                                                index={i}
-                                                                showCancelMatchRequestModal={showCancelMatchRequestModal}
-                                                                subjects={data?.me?.student?.subjectsFormatted || []}
-                                                                onEditRequest={() =>
-                                                                    navigate('/request-match', {
-                                                                        state: { edit: true },
-                                                                    })
-                                                                }
-                                                                key={i}
-                                                            />
-                                                        ))) || <AlertMessage content={t('matching.request.check.noRequestsTutor')} />}
+                                                        new Array(matchRequestCount)
+                                                            .fill('')
+                                                            .map((_, i) => (
+                                                                <OpenMatchRequest
+                                                                    index={i}
+                                                                    subjects={data?.me?.student?.subjectsFormatted || []}
+                                                                    variant="student"
+                                                                    onMatchRequestCancelled={() => refetch()}
+                                                                    key={i}
+                                                                />
+                                                            ))) || <AlertMessage content={t('matching.request.check.noRequestsTutor')} />}
                                                 </Flex>
                                             </VStack>
                                         </VStack>
@@ -255,15 +223,6 @@ const MatchingStudent: React.FC<Props> = () => {
                     </VStack>
                 )}
             </WithNavigation>
-            <ConfirmationModal
-                isOpen={!!showCancelModal}
-                onOpenChange={setShowCancelModal}
-                confirmButtonText={t('matching.request.check.deleteRequest')}
-                headline={t('matching.request.check.deleteRequest')}
-                description={t('matching.request.check.areyousuretodelete')}
-                onConfirm={cancelRequest}
-                variant="destructive"
-            />
         </AsNavigationItem>
     );
 };

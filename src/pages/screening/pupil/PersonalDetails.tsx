@@ -1,15 +1,16 @@
 import { Button } from '@/components/Button';
 import { Checkbox } from '@/components/Checkbox';
+import { Input } from '@/components/Input';
 import { Label } from '@/components/Label';
+import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
 import { TextArea } from '@/components/TextArea';
-import { Toggle } from '@/components/Toggle';
 import { Typography } from '@/components/Typography';
 import { gql } from '@/gql';
 import { ExternalSchoolSearch } from '@/gql/graphql';
 import { asTranslationKey } from '@/helper/string-helper';
 import { useRoles } from '@/hooks/useApollo';
 import { PupilForScreening } from '@/types';
-import { getGradeLabel } from '@/Utility';
+import { getGradeLabel, MIN_AGE_PUPIL } from '@/Utility';
 import { EditGradeModal } from '@/widgets/screening/EditGradeModal';
 import { EditLanguagesModal } from '@/widgets/screening/EditLanguagesModal';
 import { EditSubjectsModal } from '@/widgets/screening/EditSubjectsModal';
@@ -22,7 +23,7 @@ import { EditLocationModal } from '../components/EditLocationModal';
 import { EditSchoolTypeModal } from '../components/EditSchoolTypeModal';
 import { SchoolSearchInput } from '../components/SchoolSearchInput';
 import { EditWeeklyAvailabilityModal } from '../components/WeeklyAvailabilityModal';
-import { UpdatePupilFormState } from './useUpdatePupil';
+import { PupilLearningOfferConstraintOptions, UpdatePupilFormState } from './useUpdatePupil';
 
 const CREATE_LOGIN_TOKEN_MUTATION = gql(`
     mutation AdminAccess($userId: String!) { tokenCreateAdmin(userId: $userId) }
@@ -32,6 +33,7 @@ interface FormErrors {
     languages?: string;
     grade?: string;
     subjects?: string;
+    age?: string;
 }
 
 interface PersonalDetailsProps {
@@ -70,28 +72,25 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
         setSchool,
         descriptionForScreening,
         setDescriptionForScreening,
-        descriptionForMatch,
-        setDescriptionForMatch,
         weeklyAvailability,
         setWeeklyAvailability,
+        currentAge,
+        setCurrentAge,
+        restrictions,
+        onRestrictionsChange,
     } = form;
 
     const [mutationCreateLoginToken] = useMutation(CREATE_LOGIN_TOKEN_MUTATION);
     const [errors, setErrors] = useState<FormErrors>({});
 
     useEffect(() => {
-        const updatedErrors = {};
-        if (!languages || languages.length === 0) {
-            setErrors({ ...updatedErrors, languages: t('screening.errors.language_missing') });
+        let updatedErrors = {};
+        if (!!currentAge && currentAge < MIN_AGE_PUPIL) {
+            updatedErrors = { ...updatedErrors, age: t('registration.steps.userAge.tooYoungError', { minAge: MIN_AGE_PUPIL }) };
         }
-        if (grade === null || grade === undefined) {
-            setErrors({ ...updatedErrors, grade: t('screening.errors.grade_missing') });
-        }
-        if (!subjects || subjects.length === 0) {
-            setErrors({ ...updatedErrors, subjects: t('screening.errors.subjects_missing') });
-        }
+
         setErrors(updatedErrors);
-    }, [languages, grade, subjects, t]);
+    }, [languages, grade, subjects, currentAge, t]);
 
     const impersonate = async () => {
         // We need to work around the popup blocker of modern browsers, as you can only
@@ -109,7 +108,6 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
             w.focus();
         }
     };
-
     const handleOnSelectSchool = (school: Partial<ExternalSchoolSearch>) => {
         setSchool(school);
         if (school.schooltype) {
@@ -119,6 +117,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
             setPupilLocation(school.state as any);
         }
     };
+
     return (
         <>
             <div className="flex w-full justify-between mb-10">
@@ -166,6 +165,19 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     </Typography>
                 </div>
                 <div className="flex flex-col gap-y-2">
+                    <Label>Alter</Label>
+                    <Input
+                        className="w-full max-w-40"
+                        value={currentAge || ''}
+                        onChangeText={(e) => (e ? setCurrentAge(Number(e.replace(/\D/g, '').substring(0, 2))) : setCurrentAge(undefined))}
+                        errorMessage={errors.age}
+                        errorMessageClassName="hidden"
+                        min={MIN_AGE_PUPIL}
+                        type="number"
+                        onKeyDown={(evt) => ['e', 'E', '+', '-'].includes(evt.key) && evt.preventDefault()}
+                    />
+                </div>
+                <div className="flex flex-col gap-y-2">
                     <ButtonField className="min-w-[350px]" label="Zeitliche Verfügbarkeit" onClick={() => setShowEditAvailability(true)}>
                         {weeklyAvailability ? (
                             <span className="flex items-center justify-center gap-x-1">
@@ -175,11 +187,8 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                             <span>Muss eingerichtet werden</span>
                         )}
                     </ButtonField>
-                    <Typography variant="sm" className="text-destructive">
-                        {errors.languages}
-                    </Typography>
                 </div>
-                <div className="flex gap-x-7 mt-2">
+                <div className="flex gap-x-7 items-center mt-6">
                     <div className="flex gap-x-2 items-center">
                         <Checkbox id="onlyMatchWith" checked={onlyMatchWithWomen} onCheckedChange={setOnlyMatchWithWomen} />{' '}
                         <Label htmlFor="onlyMatchWith">Nur mit Frauen matchen</Label>
@@ -200,82 +209,53 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                                     Gespeicherte Notiz - <span className="font-bold">(Wird für spätere Screenings gespeichert)</span>
                                 </Label>
                                 <TextArea
-                                    className="resize-none h-24 w-full"
+                                    className="resize-y min-h-24 w-full"
                                     value={descriptionForScreening}
                                     onChange={(e) => setDescriptionForScreening(e.target.value)}
                                 />
                             </div>
                         </div>
                     </div>
-                    <div className="mt-4">
-                        <Typography variant="h5" className="mb-5">
-                            Öffentliche Notizen
-                        </Typography>
-                        <div className="flex flex-col gap-6">
-                            <div className="flex flex-col gap-y-2">
-                                <Label>
-                                    Info für Helfer:in{' - '}
-                                    <span className="font-bold">
-                                        (Sichtbar für Helfer:innen, nicht für Schüler:innen - Fasse zusammen was relevant ist für die Zusammenarbeit)
-                                    </span>
-                                </Label>
-                                <TextArea
-                                    className="resize-none h-24 w-full"
-                                    value={descriptionForMatch}
-                                    onChange={(e) => setDescriptionForMatch(e.target.value)}
-                                />
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 <div className="mt-4">
-                    <div className="mb-5">
-                        <Typography variant="h5" className="mb-2">
-                            Rollen
-                        </Typography>
-                        <Typography variant="subtle">
-                            Rollen können jederzeit geändert werden. SuS werden per Email informiert über ihre Rolle wenn Screening abgeschlossen wird
-                        </Typography>
-                    </div>
-                    <div className="flex gap-6 w-full">
-                        <Toggle
-                            variant="outline"
-                            size="lg"
-                            className="p-8 h-auto"
-                            pressed={form.canHaveMatches}
-                            onPressedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}
-                            asChild
-                            role="button"
-                        >
-                            <div className="flex gap-x-4">
-                                <Checkbox checked={form.canHaveMatches} onCheckedChange={() => form.setCanHaveMatches(!form.canHaveMatches)}></Checkbox>
-                                Kann Lernpaare haben
+                    <div className="flex flex-col gap-y-1">
+                        <div className="mb-5">
+                            <Typography variant="h5" className="mb-2">
+                                Freigaben
+                            </Typography>
+                            <Typography variant="subtle">
+                                Freigaben können jederzeit geändert werden. Bestehende Matches und Kurse sind nicht betroffen.
+                            </Typography>
+                        </div>
+                        <RadioGroup value={restrictions} onValueChange={onRestrictionsChange} className="flex flex-row gap-x-4">
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id={PupilLearningOfferConstraintOptions.AllOffers} value={PupilLearningOfferConstraintOptions.AllOffers} />
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.AllOffers}>Alle Angebote</Label>
                             </div>
-                        </Toggle>
-                        <Toggle
-                            variant="outline"
-                            size="lg"
-                            className="p-8 h-auto cursor-not-allowed"
-                            pressed={form.canParticipateInCourses}
-                            onPressedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
-                            asChild
-                            role="button"
-                            disabled
-                        >
-                            <div className="flex gap-x-4">
-                                <Checkbox
-                                    disabled
-                                    checked={form.canParticipateInCourses}
-                                    onCheckedChange={() => form.setCanParticipateInCourses(!form.canParticipateInCourses)}
-                                ></Checkbox>
-                                Kann an Kursen teilnehmen
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem id={PupilLearningOfferConstraintOptions.OnlyCourses} value={PupilLearningOfferConstraintOptions.OnlyCourses} />
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.OnlyCourses}>Nur Kurse</Label>
                             </div>
-                        </Toggle>
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem
+                                    id={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}
+                                    value={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}
+                                />
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching}>1:1 (DaZ) + HaH + Kurse</Label>
+                            </div>
+                            <div className="flex gap-x-2 items-center">
+                                <RadioGroupItem
+                                    id={PupilLearningOfferConstraintOptions.OnlyDazCourses}
+                                    value={PupilLearningOfferConstraintOptions.OnlyDazCourses}
+                                />
+                                <Label htmlFor={PupilLearningOfferConstraintOptions.OnlyDazCourses}>Nur DaZ-Kurse</Label>
+                            </div>
+                        </RadioGroup>
                     </div>
                 </div>
             </div>
             <div className="mt-10 flex items-center gap-x-4">
-                <Button variant="outline" onClick={updatePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
+                <Button variant="secondary" onClick={updatePupil} isLoading={isUpdating} leftIcon={<IconDeviceFloppy />} className="w-80">
                     Speichern
                 </Button>
             </div>

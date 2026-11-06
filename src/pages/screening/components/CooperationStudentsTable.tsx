@@ -1,0 +1,297 @@
+import { Column, ColumnDef } from '@tanstack/react-table';
+import { Internship, Internship_Status_Enum, Student } from '@/gql/graphql';
+import { DateTime } from 'luxon';
+import { CooperationStudentsDropdown, FurtherTrainingDropdown, IndeterminateCheckbox, ParallelMatchesCheckbox } from './customColumns';
+import { CooperationStudentActions } from './CooperationStudentActions';
+import { Button } from '@/components/Button';
+import {
+    IconAlertTriangle,
+    IconArrowDown,
+    IconArrowsUpDown,
+    IconArrowUp,
+    IconCheck,
+    IconCircleCheckFilled,
+    IconCircleXFilled,
+    IconFlagFilled,
+    IconId,
+    IconLink,
+    IconLinkOff,
+    IconPointFilled,
+} from '@tabler/icons-react';
+import { Badge } from '@/components/Badge';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/Tooltip';
+import { ScreeningNotesButton } from './ScreeningNotesButton';
+import { Opt } from '@/types';
+import { cn } from '@/lib/Tailwind';
+
+export type CooperationStudent = Pick<
+    Student,
+    | 'id'
+    | 'createdAt'
+    | 'email'
+    | 'firstname'
+    | 'lastname'
+    | 'cooperationID'
+    | 'descriptionForScreening'
+    | 'adminUserFlags'
+    | 'matchesAppointmentStats'
+    | 'groupAppointmentStats'
+    | 'maxParallelMatches'
+    | 'furtherTrainingsAttendedCount'
+> & {
+    hasTutorScreening: boolean;
+    hasInstructorScreening: boolean;
+    screenedAt: string | null;
+    certificateOfConductDeactivationDate: string | null;
+    certificateOfConductDateOfInspection: string | null;
+    matches: {
+        id: number;
+        dissolved: boolean;
+    }[];
+    internship?: Opt<Pick<Internship, 'id' | 'startDate' | 'endDate' | 'status'>>;
+};
+
+const SortableHeader = ({ column, label }: { column: Column<CooperationStudent, unknown>; label: string }) => {
+    return (
+        <Button variant="none" size="auto" onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}>
+            {label}
+            {column.getIsSorted() === 'asc' && <IconArrowDown className="size-4" />}
+            {column.getIsSorted() === 'desc' && <IconArrowUp className="size-4" />}
+            {!column.getIsSorted() && <IconArrowsUpDown className="size-4 invisible" />}
+        </Button>
+    );
+};
+
+// Ascending: upcoming deactivation deadlines (closest first), then valid certificates
+// Descending: valid certificates first, then deactivation deadlines
+// Students without certificate always stay at the bottom
+const getCertificateOfConductSortValue = (row: CooperationStudent) => {
+    if (row.certificateOfConductDeactivationDate) return `1-${row.certificateOfConductDeactivationDate}`;
+    if (row.certificateOfConductDateOfInspection) return `2-${row.certificateOfConductDateOfInspection}`;
+    return undefined;
+};
+
+const INTERNSHIP_STATUS_DISPLAY: Record<Internship_Status_Enum, { label: string; icon: typeof IconPointFilled; className: string; pulse?: boolean }> = {
+    [Internship_Status_Enum.InProgress]: { label: 'Laufend', icon: IconPointFilled, className: 'text-green-400', pulse: true },
+    [Internship_Status_Enum.Completed]: { label: 'Abgeschlossen', icon: IconCircleCheckFilled, className: 'text-green-600' },
+    [Internship_Status_Enum.Cancelled]: { label: 'Abgebrochen', icon: IconCircleXFilled, className: 'text-red-700' },
+};
+
+export const cooperationStudentsColumns: ColumnDef<CooperationStudent>[] = [
+    {
+        id: 'select',
+        header: ({ table }) => (
+            <IndeterminateCheckbox
+                {...{
+                    checked: table.getIsAllRowsSelected(),
+                    indeterminate: table.getIsSomeRowsSelected(),
+                    onChange: table.getToggleAllRowsSelectedHandler(),
+                }}
+            />
+        ),
+        cell: ({ row }) => (
+            <div className="px-1">
+                <IndeterminateCheckbox
+                    {...{
+                        checked: row.getIsSelected(),
+                        disabled: !row.getCanSelect(),
+                        indeterminate: row.getIsSomeSelected(),
+                        onChange: row.getToggleSelectedHandler(),
+                    }}
+                />
+            </div>
+        ),
+    },
+    {
+        accessorKey: 'email',
+        header: ({ column }) => <SortableHeader column={column} label="E-Mail" />,
+        sortingFn: 'text',
+        enableSorting: true,
+        cell: ({ row }) => {
+            const email = row.original.email;
+            const userFlags = row.original.adminUserFlags.map((flag) => flag.flag);
+            return (
+                <div className="flex gap-x-2 items-center text-sm">
+                    <span>{email}</span> {userFlags.includes('BOOKMARKED') && <IconFlagFilled size={16} className="text-red-700" />}
+                </div>
+            );
+        },
+    },
+    {
+        id: 'name',
+        accessorFn: (row) => `${row.firstname} ${row.lastname}`,
+        header: ({ column }) => <SortableHeader column={column} label="Name" />,
+        sortingFn: 'text',
+        enableSorting: true,
+        cell: ({ row }) => {
+            const name = `${row.original.firstname} ${row.original.lastname}`;
+            const userFlags = row.original.adminUserFlags.map((flag) => flag.flag);
+            return (
+                <div className="flex gap-x-2 items-center text-sm">
+                    <span>{name}</span> {userFlags.includes('ID_CONTROLLED') && <IconId size={16} className="text-green-700" />}
+                </div>
+            );
+        },
+    },
+    {
+        accessorKey: 'screenedAt',
+        cell: ({ row }) => {
+            const screenedAt = row.original.screenedAt;
+            return <span className="text-sm">{screenedAt ? DateTime.fromISO(screenedAt).toFormat('yyyy.MM.dd') : ''}</span>;
+        },
+        header: ({ column }) => <SortableHeader column={column} label="Gescreent" />,
+        enableSorting: true,
+    },
+    {
+        id: 'certificateOfConduct',
+        accessorFn: getCertificateOfConductSortValue,
+        cell: ({ row }) => {
+            const { certificateOfConductDeactivationDate, certificateOfConductDateOfInspection } = row.original;
+            if (certificateOfConductDeactivationDate) {
+                return (
+                    <div className="flex gap-x-1 items-center text-amber-500 text-sm">
+                        <IconAlertTriangle size={14} />
+                        <div>
+                            {certificateOfConductDeactivationDate
+                                ? DateTime.fromISO(certificateOfConductDeactivationDate).minus({ days: 1 }).toFormat('yyyy.MM.dd')
+                                : ''}
+                        </div>
+                    </div>
+                );
+            }
+            if (certificateOfConductDateOfInspection) {
+                return <IconCheck className="text-green-600" />;
+            }
+
+            return null;
+        },
+        header: ({ column }) => <SortableHeader column={column} label="FZ" />,
+        enableSorting: true,
+        sortingFn: 'basic',
+        sortUndefined: 'last',
+    },
+    {
+        accessorKey: 'matchesAppointmentStats',
+        cell: ({ row }) => {
+            const matchAppointmentsStats = row.original.matchesAppointmentStats;
+            return (
+                <span>{matchAppointmentsStats ? `${matchAppointmentsStats.successfulAppointments}/${matchAppointmentsStats.plannedAppointments}` : ''}</span>
+            );
+        },
+        header: '1:1',
+    },
+    {
+        accessorKey: 'groupAppointmentStats',
+        cell: ({ row }) => {
+            const groupAppointmentsStats = row.original.groupAppointmentStats;
+            return (
+                <span>{groupAppointmentsStats ? `${groupAppointmentsStats.successfulAppointments}/${groupAppointmentsStats.plannedAppointments}` : ''}</span>
+            );
+        },
+        header: 'Kurse',
+    },
+    {
+        accessorKey: 'matches',
+        cell: ({ row }) => {
+            const matches = row.original.matches;
+            const dissolvedMatches = matches.filter((e) => e?.dissolved).length;
+            const activeMatches = matches.filter((e) => !e?.dissolved).length;
+            return (
+                <div className="flex gap-x-2 items-center">
+                    <div className="flex items-center">
+                        <IconLinkOff size={14} className="text-red-700" />
+                        {dissolvedMatches}
+                    </div>
+                    <div className="flex items-center ">
+                        <IconLink size={14} className="text-green-600" />
+                        {activeMatches}
+                    </div>
+                </div>
+            );
+        },
+        header: 'Match',
+    },
+    {
+        accessorKey: 'cooperation',
+        header: 'Kooperation',
+        cell: ({ row, table }) => {
+            return <CooperationStudentsDropdown initialValue={row.original.cooperationID ?? undefined} studentId={row.original.id} />;
+        },
+    },
+    {
+        accessorKey: 'descriptionForScreening',
+        header: 'Notiz',
+        cell: ({ row }) => {
+            return (
+                <div>
+                    <ScreeningNotesButton studentId={row.original.id} notes={row.original.descriptionForScreening} />
+                </div>
+            );
+        },
+    },
+    {
+        id: 'internship',
+        accessorFn: (row) => row.internship?.status,
+        header: 'Praktikum',
+        cell: ({ row }) => {
+            const internship = row.original.internship;
+            if (!internship) return null;
+            const { label, icon: Icon, className, pulse } = INTERNSHIP_STATUS_DISPLAY[internship.status];
+            const start = DateTime.fromISO(internship.startDate).toFormat('dd.MM.yyyy');
+            const end = internship.endDate ? DateTime.fromISO(internship.endDate).toFormat('dd.MM.yyyy') : 'offen';
+            return (
+                <TooltipProvider>
+                    <Tooltip>
+                        <TooltipTrigger asChild>
+                            <span className="inline-flex">
+                                {pulse ? (
+                                    <div className="relative flex items-center justify-center">
+                                        <span className="absolute animate-[ping_1.5s_infinite] size-4 rounded-full bg-green-300 opacity-75" />
+                                        <Icon size={18} className={cn('relative', className)} />
+                                    </div>
+                                ) : (
+                                    <Icon size={18} className={className} />
+                                )}
+                            </span>
+                        </TooltipTrigger>
+                        <TooltipContent>{`${label}: ${start} – ${end}`}</TooltipContent>
+                    </Tooltip>
+                </TooltipProvider>
+            );
+        },
+    },
+    {
+        accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
+        header: 'Status',
+        cell: ({ row, table }) => {
+            const status = row.original.hasInstructorScreening || row.original.hasTutorScreening ? 'Angenommen' : 'offen';
+            return (
+                <Badge className="px-1" variant={status === 'Angenommen' ? 'success' : 'unclear'}>
+                    {status}
+                </Badge>
+            );
+        },
+    },
+    {
+        accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
+        header: '+Match',
+        cell: ({ row, table }) => {
+            return <ParallelMatchesCheckbox initialValue={row.original.maxParallelMatches === null} studentId={row.original.id} />;
+        },
+    },
+    {
+        accessorFn: (row) => (row.hasInstructorScreening || row.hasTutorScreening ? 'Angenommen' : 'offen'),
+        header: 'FoBi',
+        cell: ({ row, table }) => {
+            return <FurtherTrainingDropdown initialValue={row.original.furtherTrainingsAttendedCount ?? undefined} studentId={row.original.id} />;
+        },
+    },
+    {
+        id: 'actions',
+        header: '',
+        cell: ({ row }) => {
+            const student = row.original;
+            return <CooperationStudentActions student={student} />;
+        },
+    },
+];

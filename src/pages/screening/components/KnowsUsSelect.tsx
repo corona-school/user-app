@@ -24,8 +24,11 @@ const pupilOptions = [
     'Print (Flyer, Poster etc.)',
     'Suchmaschine (Google)',
     'Website',
+    'ChatGPT',
+    'Joblinge',
     'Sonstiges',
-];
+    'Plakatwerbung',
+].sort((a, b) => a.localeCompare(b));
 
 const studentOptions = [
     'Persönliche Empfehlung/Freund:innen',
@@ -41,8 +44,10 @@ const studentOptions = [
     'Unternehmenskooperation',
     'Universität',
     'Von Schüler:in zu Helfer:in',
+    'ChatGPT',
     'Sonstiges',
-];
+    'Plakatwerbung',
+].sort((a, b) => a.localeCompare(b));
 
 export const KnowsUsSelect = ({ value: knowsFrom, customValue: customKnowsFrom, onChange, type, className, disabled }: KnowsUsSelectProps) => {
     const [errorMessage, setErrorMessage] = useState('');

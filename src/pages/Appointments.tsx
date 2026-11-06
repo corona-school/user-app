@@ -5,7 +5,7 @@ import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
 import WithNavigation from '../components/WithNavigation';
 import FloatingActionButton from '../components/FloatingActionButton';
-import useApollo, { QueryResult, useUserType } from '../hooks/useApollo';
+import useApollo, { QueryResult, useUserLabel, useUserType } from '../hooks/useApollo';
 import { useQuery } from '@apollo/client';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import AppointmentsEmptyState from '../widgets/AppointmentsEmptyState';
@@ -15,6 +15,7 @@ import AppointmentList from '../widgets/AppointmentList';
 import SwitchLanguageButton from '../components/SwitchLanguageButton';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { toast } from 'sonner';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const getMyAppointments = gql(`
     query myAppointments_NO_CACHE($take: Float!, $skip: Float!, $cursor: Float, $direction: String) {
@@ -71,6 +72,8 @@ const Appointments: React.FC = () => {
     const [isFetchingMoreAppointments, setIsFetchingMoreAppointments] = useState(false);
     const navigate = useNavigate();
     const { client } = useApollo();
+    const userLabel = useUserLabel();
+    usePageTitle(`Termine - ${userLabel} (App) | Lern-Fair`);
 
     type Appointments = Exclude<QueryResult<typeof getMyAppointments>['me']['appointments'], null | undefined>;
     const [appointments, setAppointments] = useState<Appointments>([]);

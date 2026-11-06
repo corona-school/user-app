@@ -23,7 +23,7 @@ export const useLastTimeCheckedNotifications = () => {
 
     const updateLastTimeChecked = () => {
         const now = new Date().toISOString();
-        updateLastTimeCheckedNotifications({
+        return updateLastTimeCheckedNotifications({
             variables: { lastTimeCheckedNotifications: now },
         }).then(() => setLastTimeCheckedNotifications(now));
     };

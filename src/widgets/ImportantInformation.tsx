@@ -10,11 +10,12 @@ import { useEffect, useMemo, useState } from 'react';
 import useModal from '../hooks/useModal';
 import { SuccessModal } from '../modals/SuccessModal';
 import NextStepsCard from '../components/achievements/nextStepsCard/NextStepsCard';
-import { Achievement, Achievement_Action_Type_Enum } from '../gql/graphql';
+import { Achievement, Important_Information, Important_Information_Category_Enum } from '../gql/graphql';
 import AchievementModal from '../components/achievements/modals/AchievementModal';
 import NextStepModal from '../components/achievements/modals/NextStepModal';
 import { NextStepLabelType } from '../helper/important-information-helper';
 import { createPupilScreeningLink, createStudentScreeningLink } from '../helper/screening-helper';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 type Props = {
     variant?: 'normal' | 'dark';
@@ -28,14 +29,33 @@ type Information = {
     key?: string;
 };
 
+type ConfigurableInfo = {
+    btnfn: (() => void) | null;
+} & Pick<Important_Information, 'category' | 'ctaLabel' | 'description' | 'language' | 'navigateTo' | 'title'>;
+
 export const IMPORTANT_INFORMATION_QUERY = gql(`
-query GetOnboardingInfos {
-  important_informations {
+query GetOnboardingInfos($todayStart: DateTime!, $todayEnd: DateTime!) {
+  important_informations(where:  {
+     AND: [ {
+        OR: [
+          { activeFrom: { equals: null } }
+          { activeFrom: { lte: $todayEnd } }
+        ]
+      }
+      {
+        OR: [
+          { activeUntil: { equals: null } }
+          { activeUntil: { gte: $todayStart } }
+        ]
+     }]
+  }) {
     title
     description
     navigateTo
     language
     recipients
+    ctaLabel
+    category
   }
   me {
     email
@@ -114,6 +134,9 @@ query GetOnboardingInfos {
       screenings {
          invalidated
          status
+         appointment {
+            id
+         }
       }
     }
   }
@@ -123,11 +146,14 @@ query GetOnboardingInfos {
 
 const ImportantInformation: React.FC<Props> = ({ variant }) => {
     const { t, i18n } = useTranslation();
+    const { trackEvent } = useMatomo();
     const navigate = useNavigate();
 
     const { show } = useModal();
 
-    const { data } = useQuery(IMPORTANT_INFORMATION_QUERY);
+    const { data } = useQuery(IMPORTANT_INFORMATION_QUERY, {
+        variables: { todayStart: DateTime.now().startOf('day').toISO(), todayEnd: DateTime.now().endOf('day').toISO() },
+    });
 
     const [selectedInformation, setSelectedInformation] = useState<Information>();
     const [selectedAchievement, setSelectedAchievement] = useState<Achievement | undefined>();
@@ -205,9 +231,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
         }
 
         // -------- Pupil Screening --------
-        const wasInvited = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending');
+        const hasScreeningAppointment = pupil?.screenings.some((s) => !s.invalidated && s.status === 'pending' && !!s.appointment);
         const notYetScreened = !roles.includes('TUTEE') && !roles.includes('PARTICIPANT');
-        const inviteToScreening = wasInvited || notYetScreened;
+        const inviteToScreening = !hasScreeningAppointment && notYetScreened;
         if (pupil && inviteToScreening) {
             const pupil_url = createPupilScreeningLink({
                 isFirstScreening: notYetScreened,
@@ -249,21 +275,9 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
             });
 
         // -------- Open Match Request -----------
-        if (roles.includes('TUTEE') && !inviteToScreening && (pupil?.openMatchRequestCount ?? 0) > 0 && !showInterestConfirmation)
-            infos.push({
-                label: NextStepLabelType.STATUS_PUPIL,
-                btnfn: [() => navigate('/group'), deleteMatchRequest],
-                lang: { date: DateTime.fromISO(pupil?.firstMatchRequest ?? pupil?.createdAt).toFormat('dd.MM.yyyy') },
-            });
         if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
             infos.push({ label: NextStepLabelType.STATUS_STUDENT, btnfn: [() => (window.location.href = 'mailto:support@lern-fair.de')], lang: {} });
 
-        if (roles.includes('TUTOR') && (student?.openMatchRequestCount ?? 0) > 0)
-            infos.push({
-                label: NextStepLabelType.STATUS_STUDENT_TWO,
-                btnfn: [() => navigate('/matching'), () => navigate('/group')],
-                lang: {},
-            });
         // -------- Password Login Promotion -----------
         if (data && !data?.me?.secrets?.some((secret: any) => ['PASSWORD', 'IDP'].includes(secret.type)))
             infos.push({ label: NextStepLabelType.PASSWORD, btnfn: [() => navigate('/new-password')], lang: {} });
@@ -317,30 +331,64 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
     }, [student, sendMail, email, pupil, roles, confirmInterest, refuseInterest, deleteMatchRequest, data, navigate]);
 
     const configurableInfos = useMemo(() => {
-        let configurableInfos: { title: string; desciption: string; btnfn: (() => void) | null }[] = [];
+        let configurableInfos: ConfigurableInfo[] = [];
 
         // -------- Configurable Important Information -----------
+
         importantInformations
             .filter(
                 (info: any) =>
                     info.language.includes(getI18n().language) &&
                     ((pupil && info.recipients.includes('pupils')) || (student && info.recipients.includes('students')))
             )
+            .sort((a, b) => {
+                const categoryOrder = [
+                    Important_Information_Category_Enum.Important,
+                    Important_Information_Category_Enum.HighDemand,
+                    Important_Information_Category_Enum.HolidayInfo,
+                    Important_Information_Category_Enum.Event,
+                    Important_Information_Category_Enum.FeatureUpdate,
+                    Important_Information_Category_Enum.News,
+                    Important_Information_Category_Enum.Feedback,
+                ];
+                return categoryOrder.indexOf(a.category) - categoryOrder.indexOf(b.category);
+            })
             .forEach((info: any) => {
                 configurableInfos.push({
                     title: info.title,
-                    desciption: info.description,
+                    description: info.description,
+                    category: info.category,
+                    ctaLabel: info.ctaLabel,
                     btnfn: info.navigateTo
                         ? () => {
                               window.location.href = info.navigateTo;
                           }
                         : null,
+                    language: info.language,
                 });
             });
         return configurableInfos;
     }, [importantInformations, pupil, student]);
 
     if (!infos.length && !configurableInfos.length) return null;
+
+    const handleOnConfigurableInfoClick = (info: ConfigurableInfo) => {
+        trackEvent({
+            category: 'dashboard',
+            action: 'Click Important Information Card',
+            name: `${pupil ? 'SuS' : 'HuH'} - ${info.title} - ${info.language}`,
+        });
+        info.btnfn && info.btnfn();
+    };
+
+    const handleOnInfoClick = (info: Information) => {
+        trackEvent({
+            category: 'dashboard',
+            action: 'Click Important Information Card',
+            name: `${pupil ? 'SuS' : 'HuH'} - ${t(`helperwizard.${info.label}.title` as unknown as TemplateStringsArray, { lng: 'de' })}`,
+        });
+        setSelectedInformation(info);
+    };
 
     return (
         <Box>
@@ -390,21 +438,6 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                 onShowAll={() => navigate('/progress')}
                 showAll={GAMIFICATION_ACTIVE}
             >
-                {configurableInfos.map((info, index) => {
-                    return (
-                        <NextStepsCard
-                            key={index}
-                            title={`${t('important')}!`}
-                            name={info.title}
-                            description={info.desciption}
-                            actionDescription={t('moreInfoButton')}
-                            actionType={Achievement_Action_Type_Enum.Action}
-                            onClick={() => {
-                                info.btnfn && info.btnfn();
-                            }}
-                        />
-                    );
-                })}
                 {infos.map((config, index) => {
                     const buttontexts: string[] = t(`helperwizard.${config.label}.buttons` as unknown as TemplateStringsArray, { returnObjects: true });
                     const actionDescription = i18n.exists(`helperwizard.${config.label}.actionDescription`)
@@ -413,13 +446,26 @@ const ImportantInformation: React.FC<Props> = ({ variant }) => {
                     return (
                         <NextStepsCard
                             key={`${config.label}-${index}`}
-                            label={config.label}
-                            title={t(`helperwizard.${config.label}.subtitle` as unknown as TemplateStringsArray, config.lang)}
-                            name={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
+                            title={t(`helperwizard.${config.label}.title` as unknown as TemplateStringsArray, config.lang)}
+                            subtitle={t(`helperwizard.${config.label}.subtitle` as unknown as TemplateStringsArray, config.lang)}
                             description={t(`helperwizard.${config.label}.content` as unknown as TemplateStringsArray, config.lang)}
-                            actionDescription={actionDescription}
-                            actionType={Achievement_Action_Type_Enum.Action}
-                            onClick={() => setSelectedInformation({ ...config, btntxt: buttontexts })}
+                            onClick={() => handleOnInfoClick({ ...config, btntxt: buttontexts })}
+                            ctaLabel={actionDescription}
+                            category={Important_Information_Category_Enum.Important}
+                        />
+                    );
+                })}
+                {configurableInfos.map((info, index) => {
+                    return (
+                        <NextStepsCard
+                            key={index}
+                            title={info.title}
+                            description={info.description}
+                            onClick={() => {
+                                handleOnConfigurableInfoClick(info);
+                            }}
+                            category={info.category}
+                            ctaLabel={info.ctaLabel || t('moreInfoButton')}
                         />
                     );
                 })}

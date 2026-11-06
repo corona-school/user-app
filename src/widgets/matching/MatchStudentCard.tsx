@@ -40,6 +40,7 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
         if (reason === Dissolve_Reason.Other) {
             return `${reasonText} (${match?.otherDissolveReason})`;
         }
+        return reasonText;
     };
 
     return (

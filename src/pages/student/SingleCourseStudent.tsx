@@ -24,8 +24,9 @@ import WaitingListProspectList from '../single-course/WaitingListProspectList';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import ConfirmationModal from '@/modals/ConfirmationModal';
-import { useRoles } from '@/hooks/useApollo';
+import { useRoles, useUserLabel } from '@/hooks/useApollo';
 import { useJoinCourseAsMentor } from '@/hooks/useJoinCourseAsMentor';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const basicSubcourseQuery = gql(`
 query GetBasicSubcourseStudent($subcourseId: Int!) {
@@ -69,10 +70,6 @@ query GetBasicSubcourseStudent($subcourseId: Int!) {
             }
             isInstructor
             allowContact
-        }
-        lectures{
-            start
-            duration
         }
         appointments {
               id
@@ -175,7 +172,8 @@ const SingleCourseStudent = () => {
     const subcourseId = parseInt(_subcourseId ?? '', 10);
     const { t } = useTranslation();
     const breadcrumbRoutes = useBreadcrumbRoutes();
-
+    const userLabel = useUserLabel();
+    usePageTitle(`Gruppe: Kurs-Detail - ${userLabel} (App) | Lern-Fair`);
     const navigate = useNavigate();
 
     const [mentorLeaveCourseMutation, { loading: isLoadingLeaveCourse }] = useMutation(MUTATION_MENTOR_LEAVE_COURSE);
@@ -265,11 +263,21 @@ const SingleCourseStudent = () => {
         { variables: { courseId: course?.id! } }
     );
 
-    const submitCourse = useCallback(async () => {
+    const submitCourse = async () => {
+        const now = DateTime.now();
+        const hasAppointmentInNext14Days = appointments.some((appointment) => {
+            const appointmentStart = DateTime.fromISO(appointment.start);
+            return appointmentStart.diff(now, 'days').days < 14;
+        });
+
+        if (hasAppointmentInNext14Days) {
+            toast.error('Der erste Termin muss mindestens 14 Tage in der Zukunft liegen, damit die Teilnehmer:innen genug Zeit haben sich anzumelden.');
+            return;
+        }
         await submit();
         toast.success('Kurs zur Prüfung freigegeben');
         refetchBasics();
-    }, []);
+    };
 
     const [contactParticipant] = useMutation(
         gql(`
@@ -312,8 +320,8 @@ const SingleCourseStudent = () => {
     const isInPast = useMemo(
         () =>
             !subcourse ||
-            (subcourse.lectures.length !== 0 &&
-                subcourse.lectures.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis())),
+            (subcourse.appointments.length !== 0 &&
+                subcourse.appointments.every((lecture) => DateTime.fromISO(lecture.start).toMillis() + lecture.duration * 60000 < DateTime.now().toMillis())),
         [subcourse]
     );
 
@@ -410,7 +418,9 @@ const SingleCourseStudent = () => {
                         <SubcourseData
                             course={course}
                             subcourse={
-                                isInstructorOfSubcourse && instructorSubcourse && !subLoading ? { ...subcourse, ...instructorSubcourse.subcourse } : subcourse
+                                isInstructorOfSubcourse && instructorSubcourse && !subLoading
+                                    ? { ...subcourse, ...instructorSubcourse.subcourse, lectures: subcourse.appointments }
+                                    : { ...subcourse, lectures: subcourse.appointments }
                             }
                             isInPast={isInPast}
                         />
@@ -423,6 +433,7 @@ const SingleCourseStudent = () => {
                                     refresh={refetchBasics}
                                     appointment={myNextAppointment as Lecture}
                                     isActiveSubcourse={isActiveSubcourse}
+                                    courseState={course?.courseState}
                                 />
                             )}
                             <div className="flex gap-x-4">

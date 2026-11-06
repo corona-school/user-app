@@ -26,10 +26,17 @@ const SchoolType = ({ onBack, onNext }: SchoolTypeProps) => {
                     toggleConfig={{
                         variant: 'white-primary',
                         size: 'lg',
-                        className: 'justify-start w-fit h-[48px] px-4 [&>*:nth-child(1)]:hidden font-semibold',
+                        className: 'justify-start w-fit h-[48px] px-4 font-semibold',
                     }}
                     value={form.school.schooltype as unknown as ISchoolType}
                     setValue={onChange}
+                    grade={form.grade ?? undefined}
+                    maxVisibleItems={7}
+                    searchConfig={{
+                        containerClassName: 'h-[48px] w-[50%]',
+                        className: 'h-full font-semibold',
+                        placeholder: t('registration.steps.schoolType.searchPlaceholder') as string,
+                    }}
                 />
             </div>
         </RegistrationStep>

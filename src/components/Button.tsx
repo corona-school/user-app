@@ -6,7 +6,7 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './Tool
 import { IconLoader2 } from '@tabler/icons-react';
 
 const buttonVariants = cva(
-    'w-fit inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
+    'w-fit inline-flex items-center justify-center whitespace-nowrap rounded-md font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
     {
         variants: {
             variant: {
@@ -22,6 +22,7 @@ const buttonVariants = cva(
                 none: 'text-primary',
                 input: 'border border-input justify-between bg-transparent text-form font-normal ring-offset-background placeholder:text-gray-400 focus:outline-none focus:ring-1 focus:ring-ring disabled:cursor-not-allowed disabled:opacity-50 [&>span]:w-full [&>span]:justify-between',
                 linkedIn: 'bg-blue-700 text-white hover:bg-blue-600/90',
+                zoom: 'bg-blue-500 text-white hover:bg-blue-600 rounded-full',
                 optional: 'bg-white text-primary border border-primary hover:bg-primary-lighter hover:border-primary-light',
                 'optional-dark': 'bg-white text-primary border border-primary hover:bg-accent-dark hover:border-primary',
                 tertiary: 'bg-gray-100 hover:bg-gray-50 text-primary',
@@ -29,6 +30,7 @@ const buttonVariants = cva(
             },
             size: {
                 default: 'h-10 px-4 text-form',
+                xs: 'h-6 rounded-md px-1.5 text-detail [&_span]:gap-x-1',
                 sm: 'h-9 rounded-md px-3 text-sm',
                 lg: 'h-11 rounded-md px-8 text-base',
                 input: 'h-10 px-3 py-1',

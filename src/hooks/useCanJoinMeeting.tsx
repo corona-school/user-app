@@ -1,25 +1,34 @@
+import { Lecture } from '@/gql/graphql';
 import { DateTime } from 'luxon';
 import { useMemo, useState } from 'react';
 import useInterval from './useInterval';
 
-export const useCanJoinMeeting = (joinBeforeMinutes: number, start?: string, duration?: number) => {
+interface UseCanJoinMeetingProps {
+    joinBeforeMinutes: number;
+    appointment: Pick<Lecture, 'start' | 'duration'>;
+}
+
+export const useCanJoinMeeting = ({ joinBeforeMinutes, appointment }: UseCanJoinMeetingProps) => {
     const [now, setNow] = useState(DateTime.now());
 
     useInterval(() => {
         setNow(DateTime.now());
     }, 60000);
 
-    const valCanJoinMeeting = useMemo(() => canJoinMeeting(joinBeforeMinutes, now, start, duration), [duration, joinBeforeMinutes, start, now]) as boolean;
+    const canJoinMeeting = useMemo(() => {
+        const end = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
+        const isAppointmentInTheFuture = DateTime.now() <= end;
+        // Allow users to join meetings that are already over. (only if it was in the last 30 days).
+        if (!isAppointmentInTheFuture && DateTime.fromISO(appointment.start).diffNow('days').days > -30) return true;
 
-    return valCanJoinMeeting;
-};
+        if (appointment.start && appointment.duration) {
+            const startDate = DateTime.fromISO(appointment.start).minus({ minutes: joinBeforeMinutes });
+            const end = DateTime.fromISO(appointment.start).plus({ minutes: appointment.duration });
+            return now.toUnixInteger() >= startDate.toUnixInteger() && now.toUnixInteger() <= end.toUnixInteger();
+        } else {
+            return false;
+        }
+    }, [appointment.duration, joinBeforeMinutes, appointment.start, now]) as boolean;
 
-const canJoinMeeting = (joinBeforeMinutes: number, now: DateTime, start?: string, duration?: number): boolean => {
-    if (start && duration) {
-        const startDate = DateTime.fromISO(start).minus({ minutes: joinBeforeMinutes });
-        const end = DateTime.fromISO(start).plus({ minutes: duration });
-        return now.toUnixInteger() >= startDate.toUnixInteger() && now.toUnixInteger() <= end.toUnixInteger();
-    } else {
-        return false;
-    }
+    return canJoinMeeting;
 };

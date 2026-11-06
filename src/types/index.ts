@@ -4,6 +4,7 @@ import {
     Course,
     Course_Tag,
     Instructor_Screening,
+    Internship,
     Lecture,
     Match,
     Pupil,
@@ -39,6 +40,7 @@ export type PupilScreening = Opt<
     Pick<Pupil_Screening, 'id' | 'createdAt' | 'updatedAt' | 'comment' | 'status' | 'invalidated' | 'knowsCoronaSchoolFrom' | 'systemMessages'>
 > & {
     screeners: Pick<Screener, 'firstname' | 'lastname'>[];
+    appointment?: Partial<Lecture> | null;
 };
 
 export type ReceivedScreeningSuggestions = {
@@ -71,10 +73,12 @@ export type PupilForScreening = Pick<
     | 'isPupil'
     | 'isParticipant'
     | 'age'
+    | 'emailOwner'
+    | 'learningOfferConstraints'
 > & {
     screenings?: PupilScreening[];
     matches?: MatchWithStudent[];
-    school?: Pick<School, 'name'> | null;
+    school?: Pick<School, 'name' | 'city' | 'zip'> | null;
     user?: {
         receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
     };
@@ -116,6 +120,11 @@ export type StudentForScreening = Pick<
     | 'descriptionForMatch'
     | 'descriptionForScreening'
     | 'isAdult'
+    | 'jobStatus'
+    | 'formalEducation'
+    | 'specialTeachingExperience'
+    | 'cooperationID'
+    | 'registrationSource'
 > & {
     instructorScreenings?: InstructorScreening[];
     tutorScreenings?: TutorScreening[];
@@ -126,4 +135,5 @@ export type StudentForScreening = Pick<
         receivedScreeningSuggestions: ReceivedScreeningSuggestions[];
     };
     calendarPreferences?: CalendarPreferences;
+    internship?: Opt<Pick<Internship, 'id' | 'startDate' | 'endDate' | 'status'>>;
 };

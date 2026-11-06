@@ -12,6 +12,8 @@ import { Outlet, useNavigate, useMatch, useSearchParams } from 'react-router-dom
 import { getAllPreferencesInCategorySetToValue } from '../../helper/notification-helper';
 import { marketingNotificationCategories } from '../../helper/notification-preferences';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { useUserLabel } from '@/hooks/useApollo';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const channels = ['email', 'push'];
 
@@ -27,6 +29,8 @@ const NotificationControlPanel = () => {
     const [searchParams] = useSearchParams();
     const isNewsletter = useMatch({ path: 'notifications/newsletter' });
     const shouldUnsubscribe = searchParams.has('unsubscribe');
+    const userLabel = useUserLabel();
+    usePageTitle(`Benachrichtigungen - ${userLabel} (App) | Lern-Fair`);
 
     useEffect(() => {
         const hasPreferences = Object.keys(userPreferences).length > 0;

@@ -1,0 +1,99 @@
+import { gql } from '@/gql';
+import { useRoles } from '@/hooks/useApollo';
+import { useQuery } from '@apollo/client';
+
+const GET_COOPERATION_STUDENTS_QUERY = gql(`
+    query GetPendingCooperationStudents {
+        cooperationStudentsToBeConfirmed {
+            id
+            email
+            firstname
+            lastname
+            cooperationID
+            createdAt
+            descriptionForScreening
+            certificateOfConductDeactivationDate
+            maxParallelMatches
+            furtherTrainingsAttendedCount
+            certificateOfConduct {
+                dateOfInspection
+            }
+            matches {
+                id
+                dissolved
+            }
+            tutorScreenings {
+                id
+                updatedAt
+            }
+            instructorScreenings {
+                id
+                updatedAt
+            }
+            adminUserFlags {
+                id
+                flag
+            }
+            matchesAppointmentStats {
+                plannedAppointments
+                successfulAppointments
+            }
+            groupAppointmentStats {
+                plannedAppointments
+                successfulAppointments
+            }
+            internship {
+                id
+                startDate
+                endDate
+                status
+            }
+        }
+    }    
+`);
+
+const GET_PENDING_COOPERATION_STUDENTS_COUNT_QUERY = gql(`
+    query GetPendingCooperationStudentsCount {
+        cooperationStudentsToBeConfirmedCount
+    }    
+`);
+
+const GET_COOPERATION_LIST = gql(`
+    query GetCooperations {
+        cooperations {
+            id
+            name
+            type
+        }
+    }    
+`);
+
+interface UseCooperationArgs {
+    skipPendingCooperationStudents?: boolean;
+    skipCooperationStudents?: boolean;
+}
+
+export const useCooperations = ({ skipPendingCooperationStudents = false, skipCooperationStudents = false }: UseCooperationArgs = {}) => {
+    const roles = useRoles();
+    const isScreener = roles.includes('STUDENT_SCREENER');
+    const { data: cooperationStudents, refetch: refetchCooperationStudents } = useQuery(GET_COOPERATION_STUDENTS_QUERY, {
+        skip: !isScreener || skipCooperationStudents,
+    });
+    const { data: pendingCooperationStudentsCountData } = useQuery(GET_PENDING_COOPERATION_STUDENTS_COUNT_QUERY, {
+        skip: !isScreener || skipPendingCooperationStudents,
+    });
+    const { data: cooperationListData } = useQuery(GET_COOPERATION_LIST, { skip: !isScreener });
+
+    return {
+        cooperationStudents:
+            cooperationStudents?.cooperationStudentsToBeConfirmed.map((e) => ({
+                ...e,
+                hasInstructorScreening: e.instructorScreenings.some((s) => !!s),
+                hasTutorScreening: e.tutorScreenings.some((s) => !!s),
+                screenedAt: e.instructorScreenings.find((s) => !!s)?.updatedAt ?? e.tutorScreenings.find((s) => !!s)?.updatedAt ?? null,
+            })) ?? [],
+        pendingCooperationStudentsCount: pendingCooperationStudentsCountData?.cooperationStudentsToBeConfirmedCount ?? 0,
+        cooperations: cooperationListData?.cooperations ?? [],
+        refetchCooperationStudents: refetchCooperationStudents,
+    };
+};

@@ -1,14 +1,13 @@
 import { useTranslation } from 'react-i18next';
-import useSchoolSearch from '../../hooks/useExternalSchoolSearch';
-import { School_Schooltype_Enum } from '../../gql/graphql';
+import { useSchoolDetails, useSchoolSearch } from '../../hooks/useExternalSchoolSearch';
+import { ExternalSchoolSearch, School_Schooltype_Enum } from '../../gql/graphql';
 import { usePageTitle } from '../../hooks/usePageTitle';
 import { OptionalBadge, RegistrationStep, RegistrationStepProps, RegistrationStepTitle } from './RegistrationStep';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { RegistrationForm, useRegistrationForm } from './useRegistrationForm';
 import { Combobox } from '@/components/Combobox';
 import { cn } from '@/lib/Tailwind';
 import { Typography } from '@/components/Typography';
-import { schooltypes } from '@/types/lernfair/SchoolType';
 import { Maybe } from 'graphql/jsutils/Maybe';
 
 interface SchoolSearchProps extends RegistrationStepProps {}
@@ -19,28 +18,29 @@ const SchoolSearch = ({ onBack, onNext }: SchoolSearchProps) => {
     usePageTitle('Registrierung: Schule - optional');
     const [search, setSearch] = useState(form.school.name ?? '');
     const { schools, isLoading } = useSchoolSearch({ name: search });
+    const [school, setSchool] = useState<Partial<ExternalSchoolSearch> | undefined>();
+    const { school: schoolDetails } = useSchoolDetails(school?.id ?? '');
 
     const handleOnSelect = (id: string) => {
         const newSelectedSchool = schools.find((e) => e.id === id);
         if (newSelectedSchool) {
-            let schoolType: Maybe<string> = newSelectedSchool.schooltype;
-            if (!schoolType) {
-                schoolType = schooltypes.find((e) => {
-                    const schoolTypeLabel = e.label.toLowerCase();
-                    const selectedSchoolName = newSelectedSchool.name.toLowerCase();
-                    return selectedSchoolName.includes(schoolTypeLabel);
-                })?.key;
-            }
-            onFormChange({
-                school: { ...newSelectedSchool, schooltype: schoolType as School_Schooltype_Enum },
-                zipCode: newSelectedSchool.zip ?? undefined,
-            });
+            setSchool(newSelectedSchool);
         }
     };
 
     const handleOnCreate = (name: string) => {
         onFormChange({ school: { name }, zipCode: undefined });
     };
+
+    useEffect(() => {
+        if (schoolDetails) {
+            let schoolType: Maybe<string> = schoolDetails.schooltype;
+            onFormChange({
+                school: { ...schoolDetails, schooltype: schoolType as School_Schooltype_Enum },
+                zipCode: schoolDetails.zip ?? undefined,
+            });
+        }
+    }, [schoolDetails]);
 
     const getLabel = (school: Pick<RegistrationForm['school'], 'name' | 'city'>) => {
         let label = school.name;

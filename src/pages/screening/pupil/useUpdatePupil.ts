@@ -1,9 +1,10 @@
 import { CheckedState } from '@/components/Checkbox';
 import { gql } from '@/gql';
-import { Gender_Enum as Gender, ExternalSchoolSearch } from '@/gql/graphql';
+import { Gender_Enum as Gender, ExternalSchoolSearch, Learning_Offer_Constraints_Enum } from '@/gql/graphql';
 import { PupilForScreening } from '@/types';
+import { getAgeAtRegistration, getApproxCurrentAge } from '@/Utility';
 import { useMutation } from '@apollo/client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
@@ -14,6 +15,13 @@ const UPDATE_PUPIL_MUTATION = gql(`
 `);
 
 export type UpdatePupilFormState = ReturnType<typeof useUpdatePupil>['form'];
+
+export enum PupilLearningOfferConstraintOptions {
+    AllOffers = 'all-offers',
+    OnlyCourses = 'only-courses',
+    DazSubjectRequiredForMatching = 'daz-subject-required-for-matching',
+    OnlyDazCourses = 'only-daz-courses',
+}
 
 export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [mutationUpdatePupil, { loading: isUpdating }] = useMutation(UPDATE_PUPIL_MUTATION);
@@ -29,8 +37,46 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
     const [descriptionForScreening, setDescriptionForScreening] = useState(pupil.descriptionForScreening);
     const [descriptionForMatch, setDescriptionForMatch] = useState(pupil.descriptionForMatch);
     const [weeklyAvailability, setWeeklyAvailability] = useState(pupil.calendarPreferences?.weeklyAvailability);
-    const [canHaveMatches, setCanHaveMatches] = useState(pupil.isPupil);
-    const [canParticipateInCourses, setCanParticipateInCourses] = useState(pupil.isParticipant);
+    const [currentAge, setCurrentAge] = useState(pupil.age ? getApproxCurrentAge(pupil.createdAt, pupil.age) : undefined);
+    const [learningOfferConstraints, setLearningOfferConstraints] = useState(pupil.learningOfferConstraints);
+    const [restrictions, setRestrictions] = useState<PupilLearningOfferConstraintOptions>();
+    const [isPupil, setIsPupil] = useState(pupil.isPupil);
+
+    useEffect(() => {
+        if (learningOfferConstraints.includes(Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching)) {
+            setRestrictions(PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching);
+        } else if (learningOfferConstraints.includes(Learning_Offer_Constraints_Enum.OnlyDazCourses)) {
+            setRestrictions(PupilLearningOfferConstraintOptions.OnlyDazCourses);
+        } else if (!pupil.isPupil) {
+            setRestrictions(PupilLearningOfferConstraintOptions.OnlyCourses);
+        } else {
+            setRestrictions(PupilLearningOfferConstraintOptions.AllOffers);
+        }
+    }, []);
+
+    const onRestrictionsChange = (value: string) => {
+        switch (value) {
+            case PupilLearningOfferConstraintOptions.OnlyCourses:
+                setRestrictions(PupilLearningOfferConstraintOptions.OnlyCourses);
+                setLearningOfferConstraints([]);
+                setIsPupil(false);
+                break;
+            case PupilLearningOfferConstraintOptions.OnlyDazCourses:
+                setRestrictions(PupilLearningOfferConstraintOptions.OnlyDazCourses);
+                setLearningOfferConstraints([Learning_Offer_Constraints_Enum.OnlyDazCourses]);
+                setIsPupil(false);
+                break;
+            case PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching:
+                setRestrictions(PupilLearningOfferConstraintOptions.DazSubjectRequiredForMatching);
+                setLearningOfferConstraints([Learning_Offer_Constraints_Enum.DazSubjectRequiredForMatching]);
+                setIsPupil(true);
+                break;
+            default:
+                setRestrictions(PupilLearningOfferConstraintOptions.AllOffers);
+                setLearningOfferConstraints([]);
+                setIsPupil(true);
+        }
+    };
 
     const updatePupil = async () => {
         try {
@@ -41,10 +87,10 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         gradeAsInt: grade,
                         subjects: subjects.map((e) => ({ name: e.name, grade: e.grade, mandatory: e.mandatory })),
                         languages: languages as any,
-                        onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (undefined as any),
+                        onlyMatchWith: onlyMatchWithWomen === true ? Gender.Female : (null as any),
                         hasSpecialNeeds: hasSpecialNeeds === true,
                         school: {
-                            name: school?.name,
+                            name: school?.name?.split(',')[0] ?? school?.name,
                             schooltype: schoolType as any,
                             state: pupilLocation as any,
                             city: school?.city,
@@ -52,9 +98,10 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
                         },
                         descriptionForMatch,
                         descriptionForScreening,
-                        isPupil: canHaveMatches,
-                        isParticipant: canParticipateInCourses,
-                        calendarPreferences: pupil.calendarPreferences
+                        isPupil: isPupil,
+                        age: pupil.age !== currentAge && currentAge ? getAgeAtRegistration(pupil.createdAt, currentAge) : pupil.age,
+                        learningOfferConstraints: learningOfferConstraints as any,
+                        calendarPreferences: weeklyAvailability
                             ? {
                                   ...pupil.calendarPreferences,
                                   weeklyAvailability: weeklyAvailability!,
@@ -65,7 +112,7 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             });
             toast.success(t('changesWereSaved'));
         } catch (error) {
-            toast.success(t('error'));
+            toast.error(t('error'));
         }
     };
 
@@ -95,10 +142,10 @@ export const useUpdatePupil = (pupil: PupilForScreening) => {
             setDescriptionForMatch,
             weeklyAvailability,
             setWeeklyAvailability,
-            canHaveMatches,
-            setCanHaveMatches,
-            canParticipateInCourses,
-            setCanParticipateInCourses,
+            setCurrentAge,
+            currentAge,
+            restrictions,
+            onRestrictionsChange,
         },
     };
 };

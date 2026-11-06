@@ -8,8 +8,8 @@ const textAreaVariants = cva(
     {
         variants: {
             variant: {
-                default: 'border border-input bg-transparent',
-                white: 'bg-white',
+                default: 'border border-input bg-transparent focus:border-primary-light',
+                white: 'bg-white focus:border-primary-light',
             },
         },
         defaultVariants: {

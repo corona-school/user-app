@@ -2,7 +2,7 @@ import { ReactElement, ReactNode, useMemo, useRef, useState } from 'react';
 import {
     Badge,
     Box,
-    Button,
+    Button as NativeBaseButton,
     CheckCircleIcon,
     Column,
     Flex,
@@ -22,7 +22,7 @@ import {
 } from 'native-base';
 import Card from '../components/Card';
 import Tag from '../components/Tag';
-import { formatDate, getGradeLabel, toTimerString } from '../Utility';
+import { formatDate, getGradeLabel, INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES, PARTICIPANT_JOIN_IN_ADVANCE_MINUTES, toTimerString } from '../Utility';
 import useInterval from '../hooks/useInterval';
 import { TrafficStatus } from '../types/lernfair/Course';
 import { DateTime } from 'luxon';
@@ -40,7 +40,9 @@ import { useCanJoinMeeting } from '@/hooks/useCanJoinMeeting';
 import { useScrollRestoration } from '../hooks/useScrollRestoration';
 import { Typography } from '@/components/Typography';
 import { asTranslationKey } from '@/helper/string-helper';
-import { IconCopy } from '@tabler/icons-react';
+import { IconCopyPlus, IconDotsVertical, IconTrash } from '@tabler/icons-react';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/Dropdown';
+import { Button } from '@/components/Button';
 
 type Props = {
     appointmentId?: number;
@@ -72,6 +74,7 @@ type Props = {
     isMatch?: boolean;
     onPressToCourse?: () => any;
     onPressDuplicate?: () => any;
+    onPressDelete?: () => any;
     hasVideoButton?: boolean;
     countCourse?: number;
     statusText?: string;
@@ -117,6 +120,7 @@ const AppointmentCard: React.FC<Props> = ({
     isMatch,
     onPressToCourse,
     onPressDuplicate,
+    onPressDelete,
     showTrafficLight,
     showStatus,
     showCourseTraffic,
@@ -172,7 +176,10 @@ const AppointmentCard: React.FC<Props> = ({
         return maxParticipants - participantsCount;
     }, [maxParticipants, participantsCount]);
 
-    const isCurrent = useCanJoinMeeting(isOrganizer ? 240 : 10, _dateNext, duration);
+    const isCurrent = useCanJoinMeeting({
+        joinBeforeMinutes: isOrganizer ? INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES : PARTICIPANT_JOIN_IN_ADVANCE_MINUTES,
+        appointment: { start: _dateNext, duration: duration ?? 60 },
+    });
     const textColor = useMemo(() => (isTeaser && isCurrent ? 'lightText' : 'darkText'), [isCurrent, isTeaser]);
 
     const CardMobileDirection = useBreakpointValue({
@@ -243,21 +250,37 @@ const AppointmentCard: React.FC<Props> = ({
                         <VStack w="100%" flexDirection={isTeaser ? CardMobileDirection : 'column'}>
                             <Box w={isTeaser ? CardMobileImage : 'auto'} h={isTeaser ? teaserImage : '121'} padding={space['1']} mt={isMatch ? '3' : 0}>
                                 <VStack position="absolute" left={0} right={0} top={0} width="100%" height="100%">
-                                    {onPressDuplicate && (
-                                        <Button
-                                            position="absolute"
-                                            variant="subtle"
-                                            opacity={0.5}
-                                            top={4}
-                                            right={4}
-                                            zIndex={10}
-                                            borderRadius={1000}
-                                            width={10}
-                                            height={10}
-                                            onPress={onPressDuplicate}
-                                        >
-                                            <IconCopy />
-                                        </Button>
+                                    {(onPressDuplicate || onPressDelete) && (
+                                        <div onClick={(e) => e.stopPropagation()}>
+                                            <DropdownMenu modal={false}>
+                                                <DropdownMenuTrigger asChild>
+                                                    <Button
+                                                        className="absolute top-4 right-4 z-10 rounded-full w-10 h-10 bg-black/20 hover:bg-black/40 active:bg-black/60"
+                                                        variant="none"
+                                                    >
+                                                        <IconDotsVertical className="stroke-white" />
+                                                        <span className="sr-only">{t('course.actions.menu')}</span>
+                                                    </Button>
+                                                </DropdownMenuTrigger>
+                                                <DropdownMenuContent align="end">
+                                                    {onPressDuplicate && (
+                                                        <DropdownMenuItem onClick={onPressDuplicate}>
+                                                            <IconCopyPlus />
+                                                            {t('course.actions.duplicate')}
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                    {onPressDelete && (
+                                                        <DropdownMenuItem
+                                                            className="text-destructive focus:bg-destructive-lighter focus:text-destructive"
+                                                            onClick={onPressDelete}
+                                                        >
+                                                            <IconTrash />
+                                                            {t('course.actions.delete')}
+                                                        </DropdownMenuItem>
+                                                    )}
+                                                </DropdownMenuContent>
+                                            </DropdownMenu>
+                                        </div>
                                     )}
                                     {!isMatch && (
                                         <Image
@@ -426,9 +449,9 @@ const AppointmentCard: React.FC<Props> = ({
 
                                 {button && (
                                     <Link href={buttonlink}>
-                                        <Button width={ButtonContainer} paddingTop={space['1.5']} paddingBottom={space['1.5']}>
+                                        <NativeBaseButton width={ButtonContainer} paddingTop={space['1.5']} paddingBottom={space['1.5']}>
                                             {button}
-                                        </Button>
+                                        </NativeBaseButton>
                                     </Link>
                                 )}
                             </Stack>
@@ -450,7 +473,6 @@ const AppointmentCard: React.FC<Props> = ({
                                             startDateTime={_dateNext}
                                             duration={duration}
                                             isInstructor={isOrganizer}
-                                            canJoin={isCurrent}
                                             className="w-full h-[47px] rounded-[4px]"
                                         />
                                     </VStack>

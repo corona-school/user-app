@@ -40,6 +40,7 @@ export function MatchPupilCard({ match }: { match: MatchWithPupil }) {
         if (reason === Dissolve_Reason.Other) {
             return `${reasonText} (${match?.otherDissolveReason})`;
         }
+        return reasonText;
     };
 
     return (

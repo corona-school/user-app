@@ -36,13 +36,13 @@ const ConfirmationModal = ({
             <div>
                 <Typography className="mb-1">{description}</Typography>
             </div>
-            <ModalFooter variant={variant}>
+            <ModalFooter variant={variant} mobileLayout="row">
                 {showCancelButton && (
-                    <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>
+                    <Button variant="outline" onClick={() => onOpenChange(false)}>
                         {cancelButtonText ? cancelButtonText : t('cancel')}
                     </Button>
                 )}
-                <Button className="w-full lg:w-fit" variant={variant} onClick={onConfirm} isLoading={isLoading}>
+                <Button variant={variant} onClick={onConfirm} isLoading={isLoading}>
                     {confirmButtonText}
                 </Button>
             </ModalFooter>

@@ -10,6 +10,9 @@ export const TOKEN_LENGTH = 32;
 export const REDIRECT_PASSWORD = `/login`;
 export const MIN_MAX_GRADE_RANGE = { min: 1, max: 14 };
 export const TRAINEE_GRADE = 14;
+export const MIN_AGE_PUPIL = 7;
+export const INSTRUCTOR_JOIN_IN_ADVANCE_MINUTES = 60 * 48;
+export const PARTICIPANT_JOIN_IN_ADVANCE_MINUTES = 10;
 
 export const toTimerString = (referenceDate: DateTime, theDate: DateTime) => {
     const inPast = theDate < referenceDate;
@@ -86,9 +89,9 @@ export const findMinMaxClassRange: (nums: number[]) => ClassRange = (nums: numbe
     return { min: minClass, max: maxClass } as ClassRange;
 };
 
-export const getGradeLabel = (grade: number) => {
+export const getGradeLabel = (grade: number, short?: boolean) => {
     if (grade === TRAINEE_GRADE) return i18next.t('inTraining');
-    return i18next.t('lernfair.schoolclass', { class: grade });
+    return i18next.t(short ? 'lernfair.schoolclassShort' : 'lernfair.schoolclass', { class: grade });
 };
 
 export const formatDate: (date: Date | string, format?: Intl.DateTimeFormatOptions, locale?: string) => string = (
@@ -180,6 +183,7 @@ function fromFormatToMinutes(time: string) {
 }
 
 export const TIME_SLOTS = [
+    `${fromFormatToMinutes('09:00')}-${fromFormatToMinutes('10:00')}`,
     `${fromFormatToMinutes('10:00')}-${fromFormatToMinutes('11:00')}`,
     `${fromFormatToMinutes('11:00')}-${fromFormatToMinutes('12:00')}`,
     `${fromFormatToMinutes('12:00')}-${fromFormatToMinutes('13:00')}`,
@@ -192,6 +196,78 @@ export const TIME_SLOTS = [
     `${fromFormatToMinutes('19:00')}-${fromFormatToMinutes('20:00')}`,
     `${fromFormatToMinutes('20:00')}-${fromFormatToMinutes('21:00')}`,
 ];
+
+export const getApproxCurrentAge = (createdAt: string, ageAtRegistration: number) => {
+    const now = DateTime.now();
+    const created = DateTime.fromISO(createdAt);
+    const diffYears = Math.floor(now.diff(created, 'years').years);
+    return Math.floor(ageAtRegistration + diffYears);
+};
+
+export const getAgeAtRegistration = (createdAt: string, currentAge: number) => {
+    const now = DateTime.now();
+    const created = DateTime.fromISO(createdAt);
+
+    const diffYears = Math.floor(now.diff(created, 'years').years);
+
+    return Math.floor(currentAge - diffYears);
+};
+
+export const getSemesters = (fromYear = 2026) => {
+    const now = DateTime.now();
+    const semesters = [];
+
+    for (let year = fromYear; year <= now.year; year++) {
+        if (now >= DateTime.local(year, 4, 1)) {
+            semesters.push(`SoSe ${year}`);
+        }
+
+        if (now >= DateTime.local(year, 10, 1)) {
+            semesters.push(`WiSe ${year}/${year + 1}`);
+        }
+    }
+
+    semesters.sort((a, b) => {
+        const getYear = (label: string) => {
+            const match = label.match(/^(SoSe|WiSe)\s+(\d{4})(?:\/(\d{4}))?/);
+            if (!match) return 0;
+            const [, , startYear, endYear] = match;
+            return endYear ? Number(endYear) : Number(startYear);
+        };
+        return getYear(b) - getYear(a);
+    });
+
+    return semesters;
+};
+
+export const getSemesterRange = (label: string) => {
+    if (!label) return { start: DateTime.fromMillis(0), end: DateTime.fromMillis(0) };
+    const match = label.match(/^(SoSe|WiSe)\s+(\d{4})(?:\/(\d{4}))?$/);
+
+    if (!match) {
+        throw new Error(`Invalid semester label: ${label}`);
+    }
+
+    const [, type, startYearString, endYearString] = match;
+    const startYear = Number(startYearString);
+    const endYear = endYearString ? Number(endYearString) : undefined;
+
+    if (type === 'SoSe') {
+        return {
+            start: DateTime.local(startYear, 4, 1),
+            end: DateTime.local(startYear, 9, 30),
+        };
+    }
+
+    return {
+        start: DateTime.local(startYear, 10, 1),
+        end: DateTime.local(endYear ?? startYear + 1, 3, 31),
+    };
+};
+
+export const isDateInRange = (date: DateTime, { start, end }: { start: DateTime; end: DateTime }) => {
+    return date >= start && date <= end;
+};
 
 const Utility = {
     createToken,

@@ -1,8 +1,6 @@
-import { Flex, Row, Box, Pressable, Link, Modal, useBreakpointValue, useTheme } from 'native-base';
+import { Flex, Row, Box, Pressable, useBreakpointValue, useTheme } from 'native-base';
 import { createContext, Dispatch, ReactNode, SetStateAction, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
-import OnBoardingSkipModal from '../widgets/OnBoardingSkipModal';
 import LfPrev from '../assets/icons/lernfair/lf-back.svg';
 import LfNext from '../assets/icons/lernfair/lf-next.svg';
 
@@ -40,11 +38,8 @@ const ViewPager: React.FC<Props> = ({
     showNavigation = true,
     hideNextOnLast = false,
 }) => {
-    const navigate = useNavigate();
-
     const isMultiple = Array.isArray(children);
     const [currentIndex, setCurrentIndex] = useState<number>(0);
-    const [cancelModal, setCancelModal] = useState<boolean>(false);
     const { t } = useTranslation();
 
     const { sizes } = useTheme();
@@ -96,20 +91,6 @@ const ViewPager: React.FC<Props> = ({
                                     <LfPrev />
                                 </Box>
                             </Pressable>
-                            {isOnboarding && (
-                                <Box>
-                                    <Link
-                                        onPress={() => setCancelModal(true)}
-                                        _text={{
-                                            color: 'lightText',
-                                            fontWeight: '700',
-                                            textDecoration: 'none',
-                                        }}
-                                    >
-                                        {t('skip')}
-                                    </Link>
-                                </Box>
-                            )}
                             {/* NEXT BUTTON */}
                             {hideNextOnLast && currentIndex + 1 === children?.length ? (
                                 <></>
@@ -146,13 +127,6 @@ const ViewPager: React.FC<Props> = ({
                         </Box>
                     </Row>
                 )}
-                <Modal bg="modalbg" isOpen={cancelModal} onClose={() => setCancelModal(false)}>
-                    <OnBoardingSkipModal
-                        onPressClose={() => setCancelModal(false)}
-                        onPressDefaultButton={() => setCancelModal(false)}
-                        onPressOutlineButton={() => navigate('/onboarding-list')}
-                    />
-                </Modal>
             </Flex>
         </ViewPagerContext.Provider>
     );

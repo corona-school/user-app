@@ -32,6 +32,13 @@ import { ZipCode } from './registration/ZipCode';
 import { ERole } from '@/types/lernfair/User';
 import { StudentLanguage } from '@/gql/graphql';
 import { UserGender } from './registration/UserGender';
+import { JobStatus } from './registration/JobStatus';
+import { FormalEducation } from './registration/FormalEducation';
+import { HasEducationExperience } from './registration/HasEducationExperience';
+import { TeachingExperienceLevel } from './registration/TeachingExperienceLevel';
+import { SpecialTeachingExperience } from './registration/SpecialTeachingExperience';
+import { UniCooperationConfirmation } from './registration/UniCooperationConfirmation';
+import { IsFromUniCooperation } from './registration/IsFromUniCooperation';
 
 export const TRAINEE_GRADE = 14;
 
@@ -76,7 +83,7 @@ const MUTATION_REGISTER_STUDENT = gql(`
     mutation registerStudent($firstname: String!, $lastname: String!, $email: String!, $zipCode: String, $cooperationTag: String, $referredById: String, $gender: Gender, $languages: [StudentLanguage!], $isAdult: Boolean!) {
         meRegisterStudent(
             noEmail: true
-            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: normal, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
+            data: { firstname: $firstname, lastname: $lastname, email: $email, newsletter: false, registrationSource: other, cooperationTag: $cooperationTag, referredById: $referredById isAdult: $isAdult }
         ) {
             id
         }
@@ -254,15 +261,29 @@ const Registration = () => {
                             <DataPrivacy onBack={goBack} onRegisterWithPassword={handleOnRegisterWithPassword} />
                         )}
                         {form.currentStep === RegistrationStep.confirmEmail && <ConfirmEmail retainPath={retainPath} />}
-                        {form.currentStep === RegistrationStep.bookAppointment && <BookAppointment onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.uniCooperation && <IsFromUniCooperation onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.bookAppointment && <BookAppointment onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.screeningAppointmentDetail && <ScreeningAppointmentDetail onNext={goNext} />}
+                        {/* Optional SuS steps */}
                         {form.currentStep === RegistrationStep.grade && <PupilGrade onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.school && <SchoolSearch onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.schoolType && <SchoolType onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.zipCode && <ZipCode onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.notifications && <NotificationPreferences onBack={goBack} onNext={goNext} />}
                         {form.currentStep === RegistrationStep.rules && <OurRules onBack={goBack} onNext={goNext} />}
-                        {form.currentStep === RegistrationStep.registrationCompleted && <ScreeningAppointmentDetail variant="completed" />}
+                        {/* Optional HuH steps */}
+                        {form.currentStep === RegistrationStep.jobStatus && <JobStatus onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.hasEducationExperience && <HasEducationExperience onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.formalEducation && <FormalEducation onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.teachingExperience && <TeachingExperienceLevel onBack={goBack} onNext={goNext} />}
+                        {form.currentStep === RegistrationStep.hasSpecialNeedsExperience && <SpecialTeachingExperience onBack={goBack} onNext={goNext} />}
+
+                        {form.currentStep === RegistrationStep.registrationCompleted &&
+                            (form.isFromUniCooperation ? (
+                                <UniCooperationConfirmation onBack={goBack} />
+                            ) : (
+                                <ScreeningAppointmentDetail variant="completed" onBack={goBack} />
+                            ))}
                     </>
                 )}
             </div>

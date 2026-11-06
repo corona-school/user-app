@@ -12,18 +12,26 @@ import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
 import { Label } from '@/components/Label';
 import { TextArea } from '@/components/TextArea';
 import { toast } from 'sonner';
+import { DeactivationReason } from '@/gql/graphql';
 
+const commonReasons = [
+    DeactivationReason.NoMoreTime,
+    DeactivationReason.NoMoreInterest,
+    DeactivationReason.OnlyTestAccount,
+    DeactivationReason.ExpectationsDiffered,
+    DeactivationReason.DidntMeetRequirements,
+];
 // corresponding dissolve reason ids in translation file
 // for now just loop through 0-5 and 0-6 (+1 in loop)
-const pupilReasons = new Array(6).fill(0);
-const studentReasons = new Array(7).fill(0);
+const pupilReasons = [...commonReasons, DeactivationReason.OtherSupportFound, DeactivationReason.Other];
+const studentReasons = [...commonReasons, DeactivationReason.OtherVolunteerWorkFound, DeactivationReason.CouldntAttendMeeting, DeactivationReason.Other];
 
 interface DeactivateAccountModalProps extends BaseModalProps {
     onDeactivated?: () => void;
 }
 
 const DeactivateAccountModal = ({ isOpen, onOpenChange, onDeactivated }: DeactivateAccountModalProps) => {
-    const [reason, setReason] = useState('');
+    const [reason, setReason] = useState<DeactivationReason | undefined>(undefined);
     const [other, setOther] = useState('');
     const navigate = useNavigate();
     const { trackEvent } = useMatomo();
@@ -32,8 +40,8 @@ const DeactivateAccountModal = ({ isOpen, onOpenChange, onDeactivated }: Deactiv
 
     const [deactivateAccount, { loading: loadingDeactivate }] = useMutation(
         gql(`
-        mutation deactiveAccount($reason: String) {
-            meDeactivate(reason: $reason)
+        mutation deactiveAccount($reason: DeactivationReason, $otherReason: String) {
+            meDeactivate(reason: $reason, otherReason: $otherReason)
         }
     `)
     );
@@ -45,7 +53,7 @@ const DeactivateAccountModal = ({ isOpen, onOpenChange, onDeactivated }: Deactiv
 
     const reasons = useMemo(() => (userType === 'student' ? studentReasons : pupilReasons), [userType]);
 
-    const isOther = useMemo(() => reason === `${reasons.length}`, [reason, reasons.length]);
+    const isOther = useMemo(() => reason === DeactivationReason.Other, [reason]);
 
     useEffect(() => {
         !isOther && setOther('');
@@ -56,7 +64,8 @@ const DeactivateAccountModal = ({ isOpen, onOpenChange, onDeactivated }: Deactiv
         try {
             const res = await deactivateAccount({
                 variables: {
-                    reason: !isOther ? `${t(`profile.Deactivate.${userType}.${parseInt(reason)}` as unknown as TemplateStringsArray)}` : other,
+                    reason: !isOther ? reason : DeactivationReason.Other,
+                    otherReason: other.length > 0 ? other : undefined,
                 },
             });
 
@@ -97,12 +106,12 @@ const DeactivateAccountModal = ({ isOpen, onOpenChange, onDeactivated }: Deactiv
                 </ModalHeader>
                 <div className="flex flex-col gap-y-1 pt-4">
                     <Typography className="mb-6 text-pretty">{desc}</Typography>
-                    <RadioGroup name="reasons" value={reason} onValueChange={setReason} className="flex flex-col gap-y-4">
-                        {reasons.map((_, index) => (
-                            <div className="flex gap-x-2 items-center" key={`content-${index}`}>
-                                <RadioGroupItem id={`item-${index}`} value={`${index + 1}`} />
-                                <Label htmlFor={`item-${index}`} className="cursor-pointer">
-                                    {t(`profile.Deactivate.${userType}.${index + 1}` as unknown as TemplateStringsArray)}
+                    <RadioGroup name="reasons" value={reason} onValueChange={(x) => setReason(x as DeactivationReason)} className="flex flex-col gap-y-4">
+                        {reasons.map((r) => (
+                            <div className="flex gap-x-2 items-center" key={`content-${r}`}>
+                                <RadioGroupItem id={`item-${r}`} value={r} />
+                                <Label htmlFor={`item-${r}`} className="cursor-pointer">
+                                    {t(`profile.Deactivate.reasons.${r}` as unknown as TemplateStringsArray)}
                                 </Label>
                             </div>
                         ))}

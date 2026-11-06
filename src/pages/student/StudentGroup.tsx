@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import WithNavigation from '../../components/WithNavigation';
 import NotificationAlert from '../../components/notifications/NotificationAlert';
 import NavigationTabs from '../../components/NavigationTabs';
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { gql } from '../../gql';
 import { useQuery } from '@apollo/client';
 import { sortByDate } from '../../Utility';
@@ -24,6 +24,8 @@ import { Breadcrumb } from '@/components/Breadcrumb';
 import TruncatedText from '@/components/TruncatedText';
 import { Typography } from '@/components/Typography';
 import { DuplicateCourseModal } from '@/modals/DuplicateCourseModal';
+import { usePageTitle } from '@/hooks/usePageTitle';
+import { DeleteCourseModal } from '@/modals/DeleteCourseModal';
 
 const StudentGroup: React.FC = () => {
     const { data, loading } = useQuery(
@@ -102,6 +104,7 @@ const StudentGroup: React.FC = () => {
                                 duration
                             }
                             course {
+                                id
                                 courseState
                                 name
                                 description
@@ -166,6 +169,7 @@ const StudentGroup: React.FC = () => {
     const { isMobile } = useLayoutHelper();
     const { t } = useTranslation();
     const [duplicateCourse, setDuplicateCourse] = useState<undefined | Subcourse>(undefined);
+    const [courseToDelete, setCourseToDelete] = useState<undefined | Subcourse>(undefined);
 
     const location = useLocation();
     const locState = location?.state as {
@@ -241,14 +245,9 @@ const StudentGroup: React.FC = () => {
         [data?.subcoursesPublic]
     );
 
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackEvent } = useMatomo();
 
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Helfer Gruppe',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    usePageTitle('Helfer Gruppe');
 
     const showSuccess = useMemo(() => {
         if (locState?.errors) {
@@ -341,6 +340,7 @@ const StudentGroup: React.FC = () => {
                                                         pastCourses={pastOrCancelledSubcourses as Subcourse[]}
                                                         homeworkHelpCourses={mentoringCourses as Subcourse[]}
                                                         onPressDuplicate={(c) => setDuplicateCourse(c)}
+                                                        onPressDelete={(c) => setCourseToDelete(c)}
                                                     />
                                                 </>
                                             ),
@@ -364,7 +364,12 @@ const StudentGroup: React.FC = () => {
                         </VStack>
                     )}
                 </VStack>
-                <DuplicateCourseModal isOpen={!!duplicateCourse} onOpenChange={(x) => !x && setDuplicateCourse(undefined)} subcourse={duplicateCourse} />
+                <DeleteCourseModal isOpen={!!courseToDelete} onOpenChange={(isOpen) => !isOpen && setCourseToDelete(undefined)} subcourse={courseToDelete} />
+                <DuplicateCourseModal
+                    isOpen={!!duplicateCourse}
+                    onOpenChange={(isOpen) => !isOpen && setDuplicateCourse(undefined)}
+                    subcourse={duplicateCourse}
+                />
             </WithNavigation>
         </AsNavigationItem>
     );

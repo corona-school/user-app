@@ -14,7 +14,7 @@ interface Props {
 const CourseSettings: React.FC<Props> = ({ subcourse, setSubcourse }) => {
     const { t } = useTranslation();
     return (
-        <div className="flex flex-col gap-2.5 w-full">
+        <div className="flex flex-col gap-8 w-full">
             <Typography variant="h5">{t('course.CourseDate.form.otherHeadline')}</Typography>
             <div className="flex justify-between">
                 <div className="inline-flex align-baseline gap-1.5">
@@ -30,38 +30,40 @@ const CourseSettings: React.FC<Props> = ({ subcourse, setSubcourse }) => {
                     onCheckedChange={(c) => setSubcourse((s) => ({ ...s, joinAfterStart: c }))}
                 />
             </div>
-            <div className="flex justify-between">
-                <Label htmlFor="2" className="inline flex-grow text-base font-medium">
-                    {t('course.CourseDate.form.otherOptionContact')}
-                </Label>
-            </div>
-            <div className="flex justify-between ml-5">
-                <div className="inline-flex flex-grow align-baseline gap-1.5 text-end mr-20">
-                    <Label htmlFor="3" className="inline flex-grow text-base font-medium">
-                        {t('course.CourseDate.form.otherProspects')}
+            <div className="flex flex-col gap-4">
+                <div className="flex justify-between">
+                    <Label htmlFor="2" className="inline flex-grow text-base font-medium">
+                        {t('course.CourseDate.form.otherOptionContact')}
                     </Label>
-                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.prospectContactTooltip')} />
                 </div>
-                <Switch
-                    id="3"
-                    className="flex-shrink-0"
-                    checked={!!subcourse.allowChatContactProspects}
-                    onCheckedChange={(c) => setSubcourse((s) => ({ ...s, allowChatContactProspects: c }))}
-                />
-            </div>
-            <div className="flex justify-between ml-5">
-                <div className="inline-flex flex-grow align-baseline gap-1.5 text-end mr-20">
-                    <Label htmlFor="4" className="inline flex-grow text-base font-medium">
-                        {t('course.CourseDate.form.otherParticipants')}
-                    </Label>
-                    <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.participantsContactTooltip')} />
+                <div className="flex justify-between ml-5">
+                    <div className="inline-flex flex-grow align-baseline gap-1.5 text-end mr-20">
+                        <Label htmlFor="3" className="inline flex-grow text-base font-medium">
+                            {t('course.CourseDate.form.otherProspects')}
+                        </Label>
+                        <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.prospectContactTooltip')} />
+                    </div>
+                    <Switch
+                        id="3"
+                        className="flex-shrink-0"
+                        checked={!!subcourse.allowChatContactProspects}
+                        onCheckedChange={(c) => setSubcourse((s) => ({ ...s, allowChatContactProspects: c }))}
+                    />
                 </div>
-                <Switch
-                    id="4"
-                    className="flex-shrink-0"
-                    checked={!!subcourse.allowChatContactParticipants}
-                    onCheckedChange={(c) => setSubcourse((s) => ({ ...s, allowChatContactParticipants: c }))}
-                />
+                <div className="flex justify-between ml-5">
+                    <div className="inline-flex flex-grow align-baseline gap-1.5 text-end mr-20">
+                        <Label htmlFor="4" className="inline flex-grow text-base font-medium">
+                            {t('course.CourseDate.form.otherParticipants')}
+                        </Label>
+                        <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.participantsContactTooltip')} />
+                    </div>
+                    <Switch
+                        id="4"
+                        className="flex-shrink-0"
+                        checked={!!subcourse.allowChatContactParticipants}
+                        onCheckedChange={(c) => setSubcourse((s) => ({ ...s, allowChatContactParticipants: c }))}
+                    />
+                </div>
             </div>
             <div className="flex justify-between">
                 <div className="inline-flex align-baseline gap-1.5">

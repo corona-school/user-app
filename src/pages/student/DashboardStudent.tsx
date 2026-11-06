@@ -1,5 +1,5 @@
 import { Heading, useTheme, VStack, useBreakpointValue, Stack } from 'native-base';
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import CTACard from '../../widgets/CTACard';
@@ -26,6 +26,7 @@ import { useUserType } from '../../hooks/useApollo';
 import { Typography } from '@/components/Typography';
 import { Button } from '@/components/Button';
 import TruncatedText from '@/components/TruncatedText';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 type Props = {};
 
@@ -139,14 +140,8 @@ const DashboardStudent: React.FC<Props> = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { trackPageView, trackEvent } = useMatomo();
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Helfer Dashboard',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { trackEvent } = useMatomo();
+    usePageTitle('Helfer Dashboard');
 
     const startSummerVacation = new Date('2024-06-10');
     const endSummerVacation = new Date('2024-09-02');

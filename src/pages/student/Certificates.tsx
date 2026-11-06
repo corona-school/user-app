@@ -2,7 +2,7 @@ import SwitchLanguageButton from '@/components/SwitchLanguageButton';
 import NotificationAlert from '@/components/notifications/NotificationAlert';
 import React, { useState } from 'react';
 import WithNavigation from '@/components/WithNavigation';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { Typography } from '@/components/Typography';
 import BulletList from '@/components/BulletList';
@@ -16,6 +16,16 @@ import { BACKEND_URL } from '@/config';
 import { Modal, ModalHeader, ModalTitle } from '@/components/Modal';
 import { toast } from 'sonner';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
+import { Checkbox, CheckedState } from '@/components/Checkbox';
+import { Label } from '@/components/Label';
+import { DateTime } from 'luxon';
+import { Alert } from '@/components/Alert';
+
+const SupportEmail = () => (
+    <a className="inline underline text-primary" href="mailto:support@lern-fair.de">
+        support@lern-fair.de
+    </a>
+);
 
 const query = gql(`
 query Certificates {
@@ -33,6 +43,7 @@ query Certificates {
                 state
                 pupil {firstname lastname}
             }
+            isInternship
         }
     }
 }`);
@@ -42,13 +53,14 @@ const CertificatesPage: React.FC = () => {
     const { data } = useQuery(query);
     const navigate = useNavigate();
     const { trackEvent } = useMatomo();
+    const [hasCompletedTraining, setHasCompletedTraining] = useState<CheckedState>(false);
 
     const [showSelectInstantPDFLanguageModal, setShowSelectInstantPDFLanguageModal] = useState<boolean>(false);
 
     const [requestInstantCertificateMutation, { loading: requestInstantCertificateFetching }] = useMutation(
         gql(`
-            mutation RequestInstantCertificate($lang: String!) {
-                instantCertificateCreate(lang: $lang)
+            mutation RequestInstantCertificate($lang: String!, $hasCompletedTraining: Boolean!) {
+                instantCertificateCreate(lang: $lang, hasCompletedTraining: $hasCompletedTraining)
             }
         `)
     );
@@ -64,11 +76,13 @@ const CertificatesPage: React.FC = () => {
         const res = await requestInstantCertificateMutation({
             variables: {
                 lang,
+                hasCompletedTraining: hasCompletedTraining === true,
             },
         });
 
         if (res?.data?.instantCertificateCreate) {
-            downloadFile(`Lernfair_Zertifikat_${Date.now()}.pdf`, `${BACKEND_URL}${res?.data?.instantCertificateCreate}`);
+            const title = data?.me.student?.isInternship ? 'Praktikumsbescheinigung' : 'Ehrenamtsbescheinigung';
+            downloadFile(`${DateTime.now().toFormat('YYYYMMDD')}__${title}_Lern-Fair.pdf`, `${BACKEND_URL}${res?.data?.instantCertificateCreate}`);
         } else {
             toast.error(t('certificate.download.error'));
         }
@@ -100,7 +114,7 @@ const CertificatesPage: React.FC = () => {
                     {t('certificates.title')}
                 </Typography>
                 <Typography variant="h3" className="mb-4">
-                    {t('certificates.instantCertificate.title')}
+                    {t(data?.me.student?.isInternship ? 'certificates.instantCertificate.titleForInternship' : 'certificates.instantCertificate.title')}
                 </Typography>
                 <div className="flex flex-col">
                     <BulletList bulletPoints={t('certificates.instantCertificate.bullets', { returnObjects: true })} />
@@ -114,6 +128,12 @@ const CertificatesPage: React.FC = () => {
                         <ModalTitle>{t('certificate.download.download_certificate')}</ModalTitle>
                     </ModalHeader>
                     <div className="flex flex-col gap-2">
+                        {data?.me.student?.isInternship && (
+                            <div className="flex gap-x-2 items-center mb-4">
+                                <Checkbox id="hasCompletedTraining" checked={hasCompletedTraining} onCheckedChange={setHasCompletedTraining} />{' '}
+                                <Label htmlFor="hasCompletedTraining">{t('certificate.download.trainingCompletedLabel')}</Label>
+                            </div>
+                        )}
                         <Button className="w-full" onClick={() => downloadInstantCertificate('de')}>
                             {t('certificate.download.german_version')}
                         </Button>
@@ -123,7 +143,7 @@ const CertificatesPage: React.FC = () => {
                     </div>
                 </Modal>
 
-                <Typography variant="h3" className="mb-4 mt-4">
+                {/* <Typography variant="h3" className="mb-4 mt-4">
                     {t('certificates.participationCertificate.title')}
                 </Typography>
                 <div className="flex flex-col">
@@ -131,7 +151,16 @@ const CertificatesPage: React.FC = () => {
                 </div>
                 <Button onClick={handleRequestCertificate} className="my-2">
                     {t('profile.Helper.certificate.button')}
-                </Button>
+                </Button> */}
+                <Alert className="md:max-w-[80%] my-4" title={t('certificates.participationCertificate.title')} variant="default">
+                    <Typography>
+                        <Trans
+                            i18nKey={'certificates.participationCertificate.deactivated'}
+                            components={[<SupportEmail />]}
+                            values={{ email: 'support@lern-fair.de' }}
+                        ></Trans>
+                    </Typography>
+                </Alert>
                 <div className="flex flex-row gap-3">
                     {data?.me.student?.participationCertificates.map((certificate, i) => (
                         <MatchCertificateCard certificate={certificate} key={i} />

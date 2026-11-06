@@ -10,9 +10,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '../Too
 import { GlobalModalsContext } from '@/context/GlobalModalsProvider';
 import { IconX } from '@tabler/icons-react';
 import { Button } from '../Button';
+import { useMatomo } from '@jonkoops/matomo-tracker-react';
 
 interface MessageBoxProps {
-    userNotification: Concrete_Notification;
+    userNotification: Pick<Concrete_Notification, 'id' | 'sentAt' | 'message'>;
     isStandalone?: boolean;
     isRead?: boolean;
     updateLastTimeChecked?: () => void;
@@ -24,6 +25,7 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
     const [notificationModalOpen, setNotificationModalOpen] = useState<boolean>(false);
     const navigate = useNavigate();
     const { openLeavePageModal, openAchievementModal } = useContext(GlobalModalsContext);
+    const { trackEvent } = useMatomo();
 
     if (!userNotification || !userNotification.message || !isMessageValid(userNotification.message)) return null;
 
@@ -31,6 +33,11 @@ const MessageBox = ({ userNotification, isStandalone, isRead, updateLastTimeChec
     const { headline, body, type, navigateTo, modalText } = userNotification.message;
 
     const navigateToLink = () => {
+        trackEvent({
+            category: 'notification',
+            action: `${userNotification.message?.type} notification clicked`,
+            name: userNotification.message?.headline,
+        });
         if (modalText) {
             setNotificationModalOpen(true);
         }

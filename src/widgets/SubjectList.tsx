@@ -11,6 +11,7 @@ const SubjectList = ({ subjects }: { subjects: Subject[] }) => {
         <Row flexWrap="wrap" flexDirection="row">
             {subjects.map((sub) => (
                 <Tag
+                    key={sub.name}
                     text={t(`lernfair.subjects.${sub.name}` as unknown as TemplateStringsArray) + (sub.mandatory ? ' (priorisiert)' : '')}
                     variant="secondary-light"
                     marginRight={space['0.5']}

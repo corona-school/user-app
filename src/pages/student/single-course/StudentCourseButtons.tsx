@@ -1,7 +1,7 @@
 import { ApolloQueryResult } from '@apollo/client';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { Lecture, Subcourse } from '../../../gql/graphql';
+import { Course_Coursestate_Enum, Lecture, Subcourse } from '../../../gql/graphql';
 import OpenCourseChatButton from '../../subcourse/OpenCourseChatButton';
 import VideoButton from '@/components/VideoButton';
 import { Button } from '@/components/Button';
@@ -24,9 +24,10 @@ type ActionButtonProps = {
     appointment: Lecture;
     refresh: () => Promise<ApolloQueryResult<unknown>>;
     isActiveSubcourse?: boolean;
+    courseState?: Course_Coursestate_Enum;
 };
 
-const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, appointment, isActiveSubcourse }) => {
+const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh, appointment, isActiveSubcourse, courseState }) => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
@@ -44,7 +45,7 @@ const StudentCourseButtons: React.FC<ActionButtonProps> = ({ subcourse, refresh,
                         className="w-full  md:w-fit"
                     />
                 )}
-                {subcourse?.canEdit?.allowed && (
+                {subcourse?.canEdit?.allowed && courseState !== Course_Coursestate_Enum.Denied && (
                     <>
                         <Button
                             onClick={() => {

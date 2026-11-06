@@ -1,6 +1,6 @@
-import { Text, Button, HStack, useTheme, VStack, useBreakpointValue, Flex, Alert, Box, Stack, Heading } from 'native-base';
+import { Button, useTheme, VStack, useBreakpointValue, Flex, Box, Stack, Heading } from 'native-base';
 import { Button as NewButton } from '@/components/Button';
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 import AppointmentCard from '../../widgets/AppointmentCard';
 import HSection from '../../widgets/HSection';
 import WithNavigation from '../../components/WithNavigation';
@@ -9,7 +9,6 @@ import NotificationAlert from '../../components/notifications/NotificationAlert'
 import { useTranslation } from 'react-i18next';
 import { useMutation, useQuery } from '@apollo/client';
 import { DEACTIVATE_PUPIL_MATCH_REQUESTS } from '../../config';
-import { DateTime } from 'luxon';
 import { useMatomo } from '@jonkoops/matomo-tracker-react';
 import CenterLoadingSpinner from '../../components/CenterLoadingSpinner';
 import AsNavigationItem from '../../components/AsNavigationItem';
@@ -20,13 +19,14 @@ import { gql } from '../../gql';
 import SwitchLanguageButton from '../../components/SwitchLanguageButton';
 import NextAppointmentCard from '../../widgets/NextAppointmentCard';
 import { Lecture } from '../../gql/graphql';
-import DisableableButton from '../../components/DisablebleButton';
 import { useRoles } from '../../hooks/useApollo';
 import ConfirmationModal from '@/modals/ConfirmationModal';
 import { Typography } from '@/components/Typography';
 import CTACard from '@/widgets/CTACard';
 import BooksIcon from '../../assets/icons/lernfair/lf-books.svg';
 import TruncatedText from '@/components/TruncatedText';
+import OpenMatchRequest from '@/widgets/OpenMatchRequest';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 type Props = {};
 
@@ -87,6 +87,27 @@ const query = gql(`
                     published
                     cancelled
                 }
+                subjectsFormatted {
+                    name
+                }
+                screenings {
+                    status,
+                    invalidated
+                    appointment {
+                        id,
+                        title,
+                        description,
+                        start,
+                        override_meeting_link,
+                        duration,
+                        actionUrls {
+                            cancelUrl
+                            rescheduleUrl
+                        }
+                        appointmentType
+                    }
+                }
+                needScreening
             }
             appointments(take: 10, skip: 0) {
                 id
@@ -158,7 +179,7 @@ const query = gql(`
 `);
 
 const Dashboard: React.FC<Props> = () => {
-    const { data, loading, called } = useQuery(query);
+    const { data, loading, called, refetch } = useQuery(query);
     const roles = useRoles();
 
     const { space, sizes } = useTheme();
@@ -166,15 +187,9 @@ const Dashboard: React.FC<Props> = () => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { trackPageView, trackEvent } = useMatomo();
+    const { trackEvent } = useMatomo();
     const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
-
-    useEffect(() => {
-        trackPageView({
-            documentTitle: 'Schüler – Dashboard',
-        });
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    usePageTitle('Schüler – Dashboard');
 
     const ContainerWidth = useBreakpointValue({
         base: '100%',
@@ -241,6 +256,8 @@ const Dashboard: React.FC<Props> = () => {
         });
     };
 
+    const openScreening = data?.me.pupil?.screenings?.find((e) => ['pending', 'dispute'].includes(e.status) && !e.invalidated);
+
     return (
         <AsNavigationItem path="start">
             <WithNavigation
@@ -303,29 +320,16 @@ const Dashboard: React.FC<Props> = () => {
                                             </Button>
                                         )}
                                         {(data?.me?.pupil?.openMatchRequestCount ?? 0) > 0 && (
-                                            <VStack space={2} flexShrink={1} maxWidth="700px">
-                                                {data?.me?.pupil?.firstMatchRequest && (
-                                                    <Text>
-                                                        {t('dashboard.offers.requestCreated')}{' '}
-                                                        {DateTime.fromISO(data?.me?.pupil?.firstMatchRequest).toFormat('dd.MM.yyyy, HH:mm')} {t('clock')}
-                                                    </Text>
-                                                )}
-                                                <Alert maxWidth="520px" alignItems="start" marginY={space['0.5']} colorScheme="info">
-                                                    <HStack space={2} flexShrink={1} alignItems="center">
-                                                        <Alert.Icon color="danger.100" />
-                                                        <Text>{t('dashboard.offers.waitingTimeInfo')}</Text>
-                                                    </HStack>
-                                                </Alert>
-
-                                                <DisableableButton
-                                                    isDisabled={_cancelMatchRequest?.loading}
-                                                    reasonDisabled={t('reasonsDisabled.loading')}
-                                                    width={ButtonContainer}
-                                                    onPress={() => setShowCancelModal(true)}
-                                                >
-                                                    {t('dashboard.offers.removeRequest')}
-                                                </DisableableButton>
-                                            </VStack>
+                                            <OpenMatchRequest
+                                                subjects={data?.me?.pupil?.subjectsFormatted || []}
+                                                screening={openScreening}
+                                                variant="pupil"
+                                                onMatchRequestCancelled={() => {
+                                                    refetch();
+                                                }}
+                                                needsScreening={data?.me?.pupil?.needScreening || false}
+                                                index={0}
+                                            />
                                         )}
                                     </HSection>
                                 )}

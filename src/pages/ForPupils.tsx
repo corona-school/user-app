@@ -7,6 +7,8 @@ import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Typography } from '@/components/Typography';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/Panels';
 import { Breadcrumb } from '@/components/Breadcrumb';
+import { useUserLabel } from '@/hooks/useApollo';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 const tabs = ['learn-methods'];
 
@@ -14,6 +16,8 @@ const ForPupils = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const { pathname } = useLocation();
+    const userLabel = useUserLabel();
+    usePageTitle(`Wissenscenter - ${userLabel} (App) | Lern-Fair`);
 
     const path = pathname.split('/').pop() || '';
     const currentTabFromRoute = tabs.includes(path) ? path : tabs[0];

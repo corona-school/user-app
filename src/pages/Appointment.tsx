@@ -4,13 +4,14 @@ import { useParams } from 'react-router-dom';
 import AppointmentDetail from '../components/appointment/AppointmentDetail';
 import WithNavigation from '../components/WithNavigation';
 import NotificationAlert from '../components/notifications/NotificationAlert';
-import { useUserType } from '../hooks/useApollo';
+import { useUserLabel, useUserType } from '../hooks/useApollo';
 import CenterLoadingSpinner from '../components/CenterLoadingSpinner';
 import { Course_Category_Enum, Lecture_Appointmenttype_Enum } from '../gql/graphql';
 import { Breadcrumb } from '@/components/Breadcrumb';
 import { useBreadcrumbRoutes } from '@/hooks/useBreadcrumb';
 import { useTranslation } from 'react-i18next';
 import SwitchLanguageButton from '@/components/SwitchLanguageButton';
+import { usePageTitle } from '@/hooks/usePageTitle';
 
 export const STUDENT_APPOINTMENT = gql(`
     query appointmentStudent($appointmentId: Float!) {
@@ -102,10 +103,12 @@ type AppointmentParams = {
 
 const Appointment: React.FC<AppointmentParams> = ({ startMeeting }) => {
     const userType = useUserType();
+    const userLabel = useUserLabel();
     const { id } = useParams();
     const appointmentId = parseFloat(id ? id : '');
     const breadcrumbRoutes = useBreadcrumbRoutes();
     const { t } = useTranslation();
+    usePageTitle(`Termin-Detail - ${userLabel} (App) | Lern-Fair`);
 
     const {
         data: studentAppointment,

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { usePageTitle } from '@/hooks/usePageTitle';
 import { useTranslation } from 'react-i18next';
 import AsNavigationItem from '../components/AsNavigationItem';
 import NotificationAlert from '../components/notifications/NotificationAlert';
@@ -14,7 +15,7 @@ import { useLayoutHelper } from '../hooks/useLayoutHelper';
 import { ChatContactSupportModal, ReportInfos } from '../modals/ChatContactSupportModal';
 import { Inbox, MessageActionEvent } from 'talkjs/all';
 import { DateTime } from 'luxon';
-import { useUser } from '@/hooks/useApollo';
+import { useUser, useUserLabel } from '@/hooks/useApollo';
 
 const Chat: React.FC = () => {
     const inboxRef = useRef(null);
@@ -22,6 +23,9 @@ const Chat: React.FC = () => {
     const [isContactModalOpen, setIsContactModalOpen] = useState<boolean>(false);
     const [isSupportContactModalOpen, setIsSupportContactModalOpen] = useState<boolean>(false);
     const [isConverstationSelected, setIsConversationSelected] = useState<boolean>(false);
+    const { firstname } = useUser();
+    const userLabel = useUserLabel();
+    usePageTitle(`Chat - ${userLabel} (App) | Lern-Fair`);
     const [reportInfos, setReportInfos] = useState<ReportInfos>({
         message: '',
         messageId: '',
@@ -40,7 +44,6 @@ const Chat: React.FC = () => {
     const [searchParams] = useSearchParams();
     const conversationIdParam = searchParams.get('conversationId');
     const messageTemplateId = searchParams.get('messageTemplateId');
-    const { firstname } = useUser();
 
     const messageTemplates: Record<string, (params: any) => string> = {
         setupCalendarPreferences: (params) => t('matching.availability.setupPreferencesChatMessage', params),

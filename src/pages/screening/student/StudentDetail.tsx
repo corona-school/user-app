@@ -27,7 +27,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
                     <span className="font-bold">E-Mail</span>: {student.email}
                 </Typography>
                 <Typography>
-                    <span className="font-bold">Registiert</span>: {formatDate(student.createdAt, DateTime.DATE_MED)}
+                    <span className="font-bold">Registriert am</span>: {formatDate(student.createdAt, DateTime.DATE_MED)}
                 </Typography>
                 <Typography>
                     <span className="font-bold">Alter</span>: {student.isAdult ? '18 oder älter' : '14 bis 17'}

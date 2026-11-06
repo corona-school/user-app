@@ -1,13 +1,13 @@
 import { Button } from '@/components/Button';
 import { BaseModalProps, Modal, ModalFooter, ModalHeader, ModalTitle } from '@/components/Modal';
-import { Screening_Jobstatus_Enum } from '@/gql/graphql';
+import { Student_Jobstatus_Enum } from '@/gql/graphql';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { JobStatusSelector } from './JobStatusSelector';
 
 interface EditJobStatusModalProps extends BaseModalProps {
-    jobStatus?: Screening_Jobstatus_Enum;
-    onSave: (jobStatus?: Screening_Jobstatus_Enum) => void;
+    jobStatus?: Student_Jobstatus_Enum;
+    onSave: (jobStatus?: Student_Jobstatus_Enum) => void;
 }
 
 export function EditJobStatusModal({ jobStatus, onOpenChange, isOpen, onSave }: EditJobStatusModalProps) {

@@ -14,7 +14,7 @@ import { useLazyQuery, useMutation } from '@apollo/client';
 import CourseDetails from '@/pages/course-creation/CourseDetails';
 import { FileItem } from '@/components/Dropzone';
 import CourseAppointments from '@/pages/course-creation/CourseAppointments';
-import { Course_Category_Enum, Course_Coursestate_Enum, Instructor } from '@/gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum, Course_Subject_Enum, Instructor } from '@/gql/graphql';
 import CourseSettings from './course-creation/CourseSettings';
 import { Button } from '@/components/Button';
 import { IconArrowRight, IconCheck } from '@tabler/icons-react';
@@ -23,6 +23,7 @@ import { getCourseDelta, useUpdateCourse } from './course-creation/update';
 import { toast } from 'sonner';
 import { logError } from '@/log';
 import { Appointment } from '@/types/lernfair/Appointment';
+import { courseSubjectToSubject } from '@/types/subject';
 
 export type CreateCourseError =
     | 'course'
@@ -231,12 +232,24 @@ const CreateCourse: React.FC = () => {
         } = (await subcourseQuery({
             variables: { id: prefillSubcourseId },
         })) as unknown as { data: { subcourse: LFSubCourse } };
-        console.log('PREFILLING', prefillSubcourse);
-        setPrefillSubcourse(prefillSubcourse);
+
+        setPrefillSubcourse({
+            ...prefillSubcourse,
+            course: {
+                ...prefillSubcourse.course,
+                subject: courseSubjectToSubject(prefillSubcourse.course.subject as Course_Subject_Enum) ?? prefillSubcourse.course.subject,
+            },
+        });
 
         setCourseId(prefillSubcourse.course.id);
 
-        let updatedCourse = { ...prefillSubcourse };
+        let updatedCourse = {
+            ...prefillSubcourse,
+            course: {
+                ...prefillSubcourse.course,
+                subject: courseSubjectToSubject(prefillSubcourse.course.subject as Course_Subject_Enum) ?? prefillSubcourse.course.subject,
+            },
+        };
         setCourseAppointments((userType === 'student' ? prefillSubcourse.joinedAppointments : prefillSubcourse.appointments) ?? []);
 
         if (prefillSubcourse.instructors && Array.isArray(prefillSubcourse.instructors)) {
@@ -256,10 +269,10 @@ const CreateCourse: React.FC = () => {
 
     const save = async (doSubmit: boolean) => {
         const errors: CreateCourseError[] = [];
-        if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 3) {
+        if (!updatedSubcourse?.course.name || updatedSubcourse?.course.name.length < 5) {
             errors.push('course-name');
         }
-        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 100) {
+        if (!updatedSubcourse?.course.description || updatedSubcourse?.course.description.length < 5) {
             errors.push('description');
         }
         if (!updatedSubcourse?.course.category) {
@@ -299,8 +312,6 @@ const CreateCourse: React.FC = () => {
             user.student?.id,
             userType
         );
-
-        console.log('DELTA', delta);
 
         try {
             setUpdatingCourse(true);
@@ -387,22 +398,22 @@ const CreateCourse: React.FC = () => {
                             isEditingCourse={true}
                             errors={errors}
                             setAppointmentErrors={setAppointmentErrors}
-                            appointments={courseAppointments ?? []}
+                            appointments={courseAppointments?.map((e) => ({ ...e, subcourse: { published: updatedSubcourse?.published } })) ?? []}
                             setAppointments={setCourseAppointments}
                         />
                         <CourseSettings subcourse={updatedSubcourse!} setSubcourse={setUpdatedSubcourse} />
-                        <div className="flex flex-col md:flex-row gap-2">
-                            <Button variant="outline" className="w-full" onClick={() => window.history.back()} isLoading={updatingCourse}>
+                        <div className="flex flex-col md:flex-row gap-2 lg:justify-end">
+                            <Button variant="outline" className="w-full lg:w-auto" onClick={() => window.history.back()} isLoading={updatingCourse}>
                                 {t('course.CourseDate.Preview.cancel')}
                             </Button>
-                            <Button leftIcon={<IconCheck />} className="w-full" onClick={() => save(false)} isLoading={updatingCourse}>
+                            <Button leftIcon={<IconCheck />} className="w-full lg:w-auto" onClick={() => save(false)} isLoading={updatingCourse}>
                                 {prefillSubcourse ? t('course.CourseDate.Preview.saveCourse') : t('course.CourseDate.Preview.saveDraft')}
                             </Button>
                             {(!prefillSubcourse || prefillSubcourse?.course?.courseState === Course_Coursestate_Enum.Created) && (
                                 <Button
                                     variant="secondary"
                                     rightIcon={<IconArrowRight />}
-                                    className="w-full"
+                                    className="w-full lg:w-auto"
                                     onClick={() => save(true)}
                                     isLoading={updatingCourse}
                                 >

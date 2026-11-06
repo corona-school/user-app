@@ -4,6 +4,7 @@ import { ReactNode, useMemo, useState } from 'react';
 import { TFuncKey, useTranslation } from 'react-i18next';
 import { asTranslationKey } from '../helper/string-helper';
 import { Combobox } from './Combobox';
+import { Input } from './Input';
 import { Toggle, ToggleVariants } from './Toggle';
 
 // Given an enum:
@@ -35,9 +36,18 @@ export type SelectorProps<Enum> = (SingleSelectorProps<Enum> | MultiSelectorProp
         size?: ToggleVariants['size'];
     };
     searchConfig?: {
+        portalContainerId?: string;
         containerClassName?: string;
         className?: string;
         placeholder?: string;
+    };
+    freeTextConfig?: {
+        freeTextOption: Enum;
+        containerClassName?: string;
+        className?: string;
+        placeholder?: string;
+        value?: string;
+        onChange?: (value: string) => void;
     };
 };
 
@@ -58,11 +68,13 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
         },
         maxVisibleItems,
         searchConfig,
+        freeTextConfig,
     }: SelectorProps<Enum>) {
         const { t } = useTranslation();
         const gridItemsCount = maxVisibleItems ?? Object.values(values).length;
         const gridItems = Object.values(values).slice(0, gridItemsCount);
         const [search, setSearch] = useState('');
+        const shouldShowSearch = maxVisibleItems && Object.values(values).length > maxVisibleItems;
 
         const memoizedSearchItems = useMemo(() => {
             const searchItems = Object.values(values).slice(gridItemsCount, Object.values(values).length);
@@ -75,64 +87,85 @@ export function EnumSelector<EnumValue extends Record<string, string>, Enum exte
         }, [search, gridItemsCount]);
 
         return (
-            <div className={cn('flex flex-wrap gap-2', className)}>
-                {gridItems.map((it) => {
-                    const enumValue = it as Enum;
-                    const translation = getTranslation(enumValue);
+            <>
+                <div className={cn('flex flex-wrap gap-2', className)}>
+                    {gridItems.map((it) => {
+                        const enumValue = it as Enum;
+                        const translation = getTranslation(enumValue);
 
-                    const isSelected = multiple ? (value as Enum[] | undefined)?.includes(enumValue) : enumValue === value;
-                    const handleChange = () => {
-                        if (multiple) {
-                            const current = (value as Enum[] | null) ?? [];
-                            const exists = current.includes(enumValue);
-                            const updated = exists ? current.filter((v) => v !== enumValue) : [...current, enumValue];
-                            setValue(updated);
-                        } else {
-                            setValue(enumValue);
-                        }
-                    };
+                        const isSelected = multiple ? (value as Enum[] | undefined)?.includes(enumValue) : enumValue === value;
+                        const handleChange = () => {
+                            if (multiple) {
+                                const current = (value as Enum[] | null) ?? [];
+                                const exists = current.includes(enumValue);
+                                const updated = exists ? current.filter((v) => v !== enumValue) : [...current, enumValue];
+                                setValue(updated);
+                            } else {
+                                setValue(enumValue);
+                            }
+                        };
 
-                    return (
-                        <Toggle
-                            pressed={isSelected}
-                            variant={toggleConfig.variant}
-                            onPressedChange={handleChange}
-                            key={it}
-                            size={toggleConfig.size}
-                            className={cn('justify-center gap-2', toggleConfig.className)}
-                        >
-                            <>
-                                {getIcon && getIcon(it as Enum)}
-                                <span>{Array.isArray(translation) ? (t(...translation) as any) : t(asTranslationKey(translation))}</span>
-                            </>
-                        </Toggle>
-                    );
-                })}
-                {searchConfig && (
-                    <div className={searchConfig?.containerClassName}>
-                        <Combobox
-                            values={memoizedSearchItems}
-                            value={multiple ? value?.filter((e) => !gridItems.includes(e)) : (value as any)}
-                            onSearch={setSearch}
-                            search={search}
-                            multiple={multiple}
-                            onSelect={(e: any) => {
-                                if (multiple) {
-                                    const selectedItemsFromGrid = (value ?? []).filter((e) => gridItems.includes(e));
-                                    setValue(selectedItemsFromGrid.concat(e));
-                                } else {
-                                    setValue(e);
-                                }
-                                setSearch('');
-                            }}
-                            className={cn(searchConfig?.className)}
-                            isLoading={false}
-                            placeholder={searchConfig?.placeholder}
-                            filterSearchResult={(e) => e.label.toLowerCase().includes(search.toLowerCase())}
-                        />
-                    </div>
-                )}
-            </div>
+                        return (
+                            <Toggle
+                                pressed={isSelected}
+                                variant={toggleConfig.variant}
+                                onPressedChange={handleChange}
+                                key={it}
+                                size={toggleConfig.size}
+                                className={cn('justify-center gap-2', toggleConfig.className)}
+                            >
+                                <>
+                                    {getIcon && getIcon(it as Enum)}
+                                    <span>{Array.isArray(translation) ? (t(...translation) as any) : t(asTranslationKey(translation))}</span>
+                                </>
+                            </Toggle>
+                        );
+                    })}
+                    {freeTextConfig &&
+                        (Array.isArray(value) ? value.includes(freeTextConfig.freeTextOption as unknown as Enum) : value === freeTextConfig.freeTextOption) && (
+                            <div className={cn('flex justify-center w-full my-2', freeTextConfig?.containerClassName)}>
+                                <Input
+                                    variant="white"
+                                    placeholder={freeTextConfig.placeholder}
+                                    value={freeTextConfig.value?.replaceAll(`${freeTextConfig.freeTextOption}:`, '')}
+                                    className={cn('w-[50%]', freeTextConfig?.className)}
+                                    onChangeText={(freeText) => {
+                                        const formattedFreeText = `${freeTextConfig.freeTextOption}:${freeText}`;
+                                        if (freeTextConfig.onChange) {
+                                            freeTextConfig.onChange(formattedFreeText);
+                                        }
+                                    }}
+                                    errorMessageClassName="hidden"
+                                />
+                            </div>
+                        )}
+                    {searchConfig && shouldShowSearch && (
+                        <div className={searchConfig?.containerClassName}>
+                            <Combobox
+                                values={memoizedSearchItems}
+                                value={multiple ? value?.filter((e) => !gridItems.includes(e)) : (value as any)}
+                                onSearch={setSearch}
+                                search={search}
+                                multiple={multiple}
+                                onSelect={(e: any) => {
+                                    if (multiple) {
+                                        const selectedItemsFromGrid = (value ?? []).filter((e) => gridItems.includes(e));
+                                        setValue(selectedItemsFromGrid.concat(e));
+                                    } else {
+                                        setValue(e);
+                                    }
+                                    setSearch('');
+                                }}
+                                className={cn(searchConfig?.className)}
+                                isLoading={false}
+                                placeholder={searchConfig?.placeholder}
+                                filterSearchResult={(e) => e.label.toLowerCase().includes(search.toLowerCase())}
+                                portalContainerId={searchConfig?.portalContainerId}
+                            />
+                        </div>
+                    )}
+                </div>
+            </>
         );
     };
 }

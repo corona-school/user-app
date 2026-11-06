@@ -6,9 +6,10 @@ import { IconLoader } from '@/components/IconLoader';
 type Props = {
     isOpen: boolean;
     onIsOpenChange: (value: boolean) => void;
+    onChange: (value: string) => void;
 };
 
-export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onIsOpenChange }) => {
+export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onIsOpenChange, onChange }) => {
     const storageLanguage = localStorage.getItem('lernfair-language');
     return (
         <Modal onOpenChange={onIsOpenChange} isOpen={isOpen}>
@@ -25,6 +26,7 @@ export const SwitchLanguageModal: React.FC<Props> = ({ isOpen, onIsOpenChange })
                             onPressedChange={() => {
                                 switchLanguage(button.short);
                                 onIsOpenChange(false);
+                                onChange(button.short);
                             }}
                             key={i}
                             className="justify-center pl-[5%]"
