@@ -2961,45 +2961,6 @@
                     "labelForStudent": "İdeal öğrenme ortamı"
                 }
             },
-            "language_barriers": {
-                "1": {
-                    "labelForStudent": "Anlaşılma imkânı neredeyse yok",
-                    "labelForPupil": "Anlaşılma imkânı neredeyse yok"
-                },
-                "2": {
-                    "labelForStudent": "İletişimde zorluklar",
-                    "labelForPupil": "İletişimde zorluklar"
-                },
-                "3": {
-                    "labelForStudent": "Yardımlarla İletişim",
-                    "labelForPupil": "Yardımlarla İletişim"
-                },
-                "4": {
-                    "labelForStudent": "İletişim iyi gidiyor",
-                    "labelForPupil": "İletişim iyi gidiyor"
-                },
-                "5": {
-                    "labelForStudent": "Zahmetsiz iletişim",
-                    "labelForPupil": "Zahmetsiz iletişim"
-                }
-            },
-            "support_needed": {
-                "1": {
-                    "labelForStudent": "Kendimi bunalmış hissediyorum"
-                },
-                "2": {
-                    "labelForStudent": "Ekipten tavsiyeye ihtiyacım var"
-                },
-                "3": {
-                    "labelForStudent": "Fikir ve malzemeye ihtiyacım var"
-                },
-                "4": {
-                    "labelForStudent": "Tek başıma gayet iyi idare ediyorum"
-                },
-                "5": {
-                    "labelForStudent": "Gönüllü çalışırken kendimi güvende hissediyorum"
-                }
-            },
             "pupil_preparedness": {
                 "1": {
                     "labelForStudent": "Hiç hazırlıksız gelmiş"
@@ -3015,23 +2976,6 @@
                 },
                 "5": {
                     "labelForStudent": "Çok iyi hazırlanmış"
-                }
-            },
-            "punctuality_time": {
-                "1": {
-                    "labelForPupil": "Daha erken bitmiş"
-                },
-                "2": {
-                    "labelForPupil": "Uzun süre beklemek zorunda kalmak"
-                },
-                "3": {
-                    "labelForPupil": "Biraz geç başladım"
-                },
-                "4": {
-                    "labelForPupil": "Zamanında başladı"
-                },
-                "5": {
-                    "labelForPupil": "Zamanında ve zamanı iyi değerlendirilmiş"
                 }
             },
             "pupil_wellbeing": {

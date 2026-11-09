@@ -2884,33 +2884,12 @@
                 "2": { "labelForStudent": "Viel Ablenkung ringsum" },
                 "1": { "labelForStudent": "Kein ruhiger Lernort" }
             },
-            "language_barriers": {
-                "5": { "labelForStudent": "Verständigung mühelos", "labelForPupil": "Verständigung mühelos" },
-                "4": { "labelForStudent": "Verständigung klappt gut", "labelForPupil": "Verständigung klappt gut" },
-                "3": { "labelForStudent": "Verständigung mit Hilfen", "labelForPupil": "Verständigung mit Hilfen" },
-                "2": { "labelForStudent": "Schwierige Verständigung", "labelForPupil": "Schwierige Verständigung" },
-                "1": { "labelForStudent": "Kaum Verständigung möglich", "labelForPupil": "Kaum Verständigung möglich" }
-            },
-            "support_needed": {
-                "5": { "labelForStudent": "Fühle mich im Ehrenamt sicher" },
-                "4": { "labelForStudent": "Komme gut allein klar" },
-                "3": { "labelForStudent": "Brauche Ideen/Material" },
-                "2": { "labelForStudent": "Brauche Rat vom Team" },
-                "1": { "labelForStudent": "Fühle mich überfordert" }
-            },
             "pupil_preparedness": {
                 "5": { "labelForStudent": "Sehr gut vorbereitet" },
                 "4": { "labelForStudent": "Material & Aufgaben dabei" },
                 "3": { "labelForStudent": "Nur teils Material dabei" },
                 "2": { "labelForStudent": "Wichtiges Material fehlte" },
                 "1": { "labelForStudent": "Ganz unvorbereitet gekommen" }
-            },
-            "punctuality_time": {
-                "5": { "labelForPupil": "Pünktlich & Zeit gut genutzt" },
-                "4": { "labelForPupil": "Pünktlich angefangen" },
-                "3": { "labelForPupil": "Etwas später angefangen" },
-                "2": { "labelForPupil": "Lange warten müssen" },
-                "1": { "labelForPupil": "Früher aufgehört" }
             },
             "pupil_wellbeing": {
                 "5": { "labelForStudent": "Wirkt glücklich" },

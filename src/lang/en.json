@@ -2965,45 +2965,6 @@
                     "labelForStudent": "Ideal Learning Environment"
                 }
             },
-            "language_barriers": {
-                "1": {
-                    "labelForStudent": "Communication is virtually impossible",
-                    "labelForPupil": "Communication is virtually impossible"
-                },
-                "2": {
-                    "labelForStudent": "Communication Difficulties",
-                    "labelForPupil": "Communication Difficulties"
-                },
-                "3": {
-                    "labelForStudent": "Communication with Assistance",
-                    "labelForPupil": "Communication with Assistance"
-                },
-                "4": {
-                    "labelForStudent": "Communication is going well",
-                    "labelForPupil": "Communication is going well"
-                },
-                "5": {
-                    "labelForStudent": "Effortless Communication",
-                    "labelForPupil": "Effortless Communication"
-                }
-            },
-            "support_needed": {
-                "1": {
-                    "labelForStudent": "I feel overwhelmed"
-                },
-                "2": {
-                    "labelForStudent": "I need some advice from the team"
-                },
-                "3": {
-                    "labelForStudent": "Need ideas/materials"
-                },
-                "4": {
-                    "labelForStudent": "I get along just fine on my own"
-                },
-                "5": {
-                    "labelForStudent": "I feel safe doing volunteer work"
-                }
-            },
             "pupil_preparedness": {
                 "1": {
                     "labelForStudent": "Came completely unprepared"
@@ -3019,23 +2980,6 @@
                 },
                 "5": {
                     "labelForStudent": "Very well prepared"
-                }
-            },
-            "punctuality_time": {
-                "1": {
-                    "labelForPupil": "Quit earlier"
-                },
-                "2": {
-                    "labelForPupil": "Having to wait a long time"
-                },
-                "3": {
-                    "labelForPupil": "Started a little later"
-                },
-                "4": {
-                    "labelForPupil": "Started on time"
-                },
-                "5": {
-                    "labelForPupil": "On Time & Time Well Spent"
                 }
             },
             "pupil_wellbeing": {

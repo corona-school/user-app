@@ -37,10 +37,7 @@ const LECTURE_FEEDBACK_TAG_KEYS = [
     'emotional_safety',
     'tech_reliability',
     'learning_environment',
-    'language_barriers',
-    'support_needed',
     'pupil_preparedness',
-    'punctuality_time',
     'pupil_wellbeing',
 ] as const;
 

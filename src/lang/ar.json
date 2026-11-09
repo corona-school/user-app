@@ -2957,45 +2957,6 @@
                     "labelForStudent": "بيئة تعليمية مثالية"
                 }
             },
-            "language_barriers": {
-                "1": {
-                    "labelForStudent": "يكاد يكون التواصل مستحيلاً",
-                    "labelForPupil": "يكاد يكون التواصل مستحيلاً"
-                },
-                "2": {
-                    "labelForStudent": "صعوبة في التفاهم",
-                    "labelForPupil": "صعوبة في التفاهم"
-                },
-                "3": {
-                    "labelForStudent": "التواصل بمساعدة الوسائل المساعدة",
-                    "labelForPupil": "التواصل بمساعدة الوسائل المساعدة"
-                },
-                "4": {
-                    "labelForStudent": "التواصل يسير على ما يرام",
-                    "labelForPupil": "التواصل يسير على ما يرام"
-                },
-                "5": {
-                    "labelForStudent": "التواصل بسهولة",
-                    "labelForPupil": "التواصل بسهولة"
-                }
-            },
-            "support_needed": {
-                "1": {
-                    "labelForStudent": "أشعر بأنني غير قادر على تحمل الأمر"
-                },
-                "2": {
-                    "labelForStudent": "أحتاج إلى نصيحة من الفريق"
-                },
-                "3": {
-                    "labelForStudent": "أحتاج إلى أفكار/مواد"
-                },
-                "4": {
-                    "labelForStudent": "أستطيع تدبر أموري بنفسي"
-                },
-                "5": {
-                    "labelForStudent": "أشعر بالأمان في العمل التطوعي"
-                }
-            },
             "pupil_preparedness": {
                 "1": {
                     "labelForStudent": "جاء دون أي استعداد مسبق"
@@ -3011,23 +2972,6 @@
                 },
                 "5": {
                     "labelForStudent": "مُعدّ بشكل ممتاز"
-                }
-            },
-            "punctuality_time": {
-                "1": {
-                    "labelForPupil": "توقف مبكرًا"
-                },
-                "2": {
-                    "labelForPupil": "الاضطرار إلى الانتظار لفترة طويلة"
-                },
-                "3": {
-                    "labelForPupil": "بدأوا متأخرين قليلاً"
-                },
-                "4": {
-                    "labelForPupil": "بدأ في الموعد المحدد"
-                },
-                "5": {
-                    "labelForPupil": "في الموعد المحدد واستغلال الوقت بشكل جيد"
                 }
             },
             "pupil_wellbeing": {
