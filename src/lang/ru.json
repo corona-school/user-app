@@ -2839,5 +2839,234 @@
     "saveAndContinue": "Сохранить и далее",
     "sendRequest": "Отправить запрос",
     "language": "Язык",
-    "schoolType": "Тип школы"
+    "schoolType": "Тип школы",
+    "lectureFeedback": {
+        "tags": {
+            "learning_progress": {
+                "1": {
+                    "labelForStudent": "Отсутствие прогресса в обучении",
+                    "labelForPupil": "Ничему не научился"
+                },
+                "2": {
+                    "labelForStudent": "Практически отсутствуют успехи в обучении",
+                    "labelForPupil": "Практически ничего не выучил"
+                },
+                "3": {
+                    "labelForStudent": "Небольшие шаги в обучении",
+                    "labelForPupil": "Немного поучился"
+                },
+                "4": {
+                    "labelForStudent": "Видимый прогресс в обучении",
+                    "labelForPupil": "Многому научился"
+                },
+                "5": {
+                    "labelForStudent": "Значительные успехи",
+                    "labelForPupil": "По-настоящему многому научился"
+                }
+            },
+            "relationship_tone": {
+                "1": {
+                    "labelForStudent": "Неуважительно",
+                    "labelForPupil": "Нелюбезно со мной"
+                },
+                "2": {
+                    "labelForStudent": "Отчасти невежливо",
+                    "labelForPupil": "Не будь со мной терпеливым"
+                },
+                "3": {
+                    "labelForStudent": "Немного отстраненно",
+                    "labelForPupil": "Иногда нетерпеливый"
+                },
+                "4": {
+                    "labelForStudent": "Дружелюбный и вежливый",
+                    "labelForPupil": "Вежливый и терпеливый"
+                },
+                "5": {
+                    "labelForStudent": "Очень вежливо и дружелюбно",
+                    "labelForPupil": "Очень терпеливая и милая"
+                }
+            },
+            "pupil_motivation": {
+                "1": {
+                    "labelForStudent": "Выглядел рассеянным/отвлеченным",
+                    "labelForPupil": "Не хотелось учиться."
+                },
+                "2": {
+                    "labelForStudent": "Выглядел пассивно",
+                    "labelForPupil": "скучный / маломотивированный"
+                },
+                "3": {
+                    "labelForStudent": "Выглядел спокойным",
+                    "labelForPupil": "Было нормально"
+                },
+                "4": {
+                    "labelForStudent": "Хорошо провел время и активно провел время",
+                    "labelForPupil": "Было весело"
+                },
+                "5": {
+                    "labelForStudent": "Был очень целеустремленным и активным",
+                    "labelForPupil": "Сразу же продолжу"
+                }
+            },
+            "emotional_safety": {
+                "1": {
+                    "labelForStudent": "Мне было очень не по себе",
+                    "labelForPupil": "Мне было очень не по себе"
+                },
+                "2": {
+                    "labelForStudent": "Мне стало плохо",
+                    "labelForPupil": "Мне стало плохо"
+                },
+                "3": {
+                    "labelForStudent": "Чувствовал себя нормально",
+                    "labelForPupil": "Чувствовал себя нормально"
+                },
+                "4": {
+                    "labelForStudent": "Мне было комфортно",
+                    "labelForPupil": "Мне было комфортно"
+                },
+                "5": {
+                    "labelForStudent": "Мне было очень комфортно",
+                    "labelForPupil": "Мне было очень комфортно"
+                }
+            },
+            "tech_reliability": {
+                "1": {
+                    "labelForStudent": "Техника вообще не сработала",
+                    "labelForPupil": "Техника вообще не сработала"
+                },
+                "2": {
+                    "labelForStudent": "Часто возникают технические проблемы",
+                    "labelForPupil": "Часто возникают технические проблемы"
+                },
+                "3": {
+                    "labelForStudent": "Незначительные технические проблемы",
+                    "labelForPupil": "Незначительные технические проблемы"
+                },
+                "4": {
+                    "labelForStudent": "Техника работала без сбоев",
+                    "labelForPupil": "Техника работала без сбоев"
+                },
+                "5": {
+                    "labelForStudent": "Техника работала отлично",
+                    "labelForPupil": "Техника работала отлично"
+                }
+            },
+            "learning_environment": {
+                "1": {
+                    "labelForStudent": "Неспокойное место для учебы"
+                },
+                "2": {
+                    "labelForStudent": "Вокруг много отвлекающих факторов"
+                },
+                "3": {
+                    "labelForStudent": "Немного неспокойная обстановка"
+                },
+                "4": {
+                    "labelForStudent": "Спокойная обстановка для обучения"
+                },
+                "5": {
+                    "labelForStudent": "Идеальная среда для обучения"
+                }
+            },
+            "language_barriers": {
+                "1": {
+                    "labelForStudent": "Общение практически невозможно",
+                    "labelForPupil": "Общение практически невозможно"
+                },
+                "2": {
+                    "labelForStudent": "Трудности в общении",
+                    "labelForPupil": "Трудности в общении"
+                },
+                "3": {
+                    "labelForStudent": "Общение с помощью вспомогательных средств",
+                    "labelForPupil": "Общение с помощью вспомогательных средств"
+                },
+                "4": {
+                    "labelForStudent": "Общение складывается хорошо",
+                    "labelForPupil": "Общение складывается хорошо"
+                },
+                "5": {
+                    "labelForStudent": "Легкое взаимопонимание",
+                    "labelForPupil": "Легкое взаимопонимание"
+                }
+            },
+            "support_needed": {
+                "1": {
+                    "labelForStudent": "Чувствую себя перегруженным"
+                },
+                "2": {
+                    "labelForStudent": "Мне нужен совет от команды"
+                },
+                "3": {
+                    "labelForStudent": "Нужны идеи/материалы"
+                },
+                "4": {
+                    "labelForStudent": "Хорошо справляюсь в одиночку"
+                },
+                "5": {
+                    "labelForStudent": "Чувствую себя в волонтерской деятельности в безопасности"
+                }
+            },
+            "pupil_preparedness": {
+                "1": {
+                    "labelForStudent": "Приехал совершенно неожиданно"
+                },
+                "2": {
+                    "labelForStudent": "Не хватало важных материалов"
+                },
+                "3": {
+                    "labelForStudent": "Материалы приложены лишь частично"
+                },
+                "4": {
+                    "labelForStudent": "Материалы и задания прилагаются"
+                },
+                "5": {
+                    "labelForStudent": "Отлично подготовлен"
+                }
+            },
+            "punctuality_time": {
+                "1": {
+                    "labelForPupil": "Закончил раньше"
+                },
+                "2": {
+                    "labelForPupil": "Придется долго ждать"
+                },
+                "3": {
+                    "labelForPupil": "Начал чуть позже"
+                },
+                "4": {
+                    "labelForPupil": "Началось точно в срок"
+                },
+                "5": {
+                    "labelForPupil": "Пунктуальность и эффективное использование времени"
+                }
+            },
+            "pupil_wellbeing": {
+                "1": {
+                    "labelForStudent": "Выглядит подавленным/грустным"
+                },
+                "2": {
+                    "labelForStudent": "Выглядит утомлённым"
+                },
+                "3": {
+                    "labelForStudent": "Никаких отклонений"
+                },
+                "4": {
+                    "labelForStudent": "Выглядит довольным"
+                },
+                "5": {
+                    "labelForStudent": "Выглядит счастливым"
+                }
+            }
+        },
+        "title": "Как прошла ваша встреча?",
+        "disclaimer": "Отзыв отправляется только на адрес Lern-Fair. Твой партнер по обучению его не увидит.",
+        "otherTag": "Разное",
+        "commentPlaceholder": "Твой комментарий",
+        "submitSuccessTitle": "Спасибо!",
+        "submitSuccessDescription": "Ваш отзыв отправлен",
+        "skip": "Пропустить",
+        "submit": "Отправить отзыв"
+    }
 }

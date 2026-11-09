@@ -2827,5 +2827,234 @@
     "saveAndContinue": "حفظ والمتابعة",
     "sendRequest": "إرسال استفسار",
     "language": "اللغة",
-    "schoolType": "نوع المدرسة"
+    "schoolType": "نوع المدرسة",
+    "lectureFeedback": {
+        "tags": {
+            "learning_progress": {
+                "1": {
+                    "labelForStudent": "عدم إحراز تقدم في التعلم",
+                    "labelForPupil": "لم يتعلم شيئًا"
+                },
+                "2": {
+                    "labelForStudent": "تقدم ضئيل في التعلم",
+                    "labelForPupil": "لم أتعلم شيئًا يذكر"
+                },
+                "3": {
+                    "labelForStudent": "خطوات تعليمية صغيرة",
+                    "labelForPupil": "تعلمتُ شيئًا بسيطًا"
+                },
+                "4": {
+                    "labelForStudent": "تقدم التعلم واضح للعيان",
+                    "labelForPupil": "تعلمت الكثير"
+                },
+                "5": {
+                    "labelForStudent": "تقدم كبير",
+                    "labelForPupil": "تعلمت الكثير حقًا"
+                }
+            },
+            "relationship_tone": {
+                "1": {
+                    "labelForStudent": "غير محترم",
+                    "labelForPupil": "غير لطيف معي"
+                },
+                "2": {
+                    "labelForStudent": "غير مهذب في بعض الأحيان",
+                    "labelForPupil": "لا تتحلى بالصبر معي"
+                },
+                "3": {
+                    "labelForStudent": "بعض الشيء متحفظ",
+                    "labelForPupil": "أحيانًا غير صبور"
+                },
+                "4": {
+                    "labelForStudent": "ودود ومهذب",
+                    "labelForPupil": "ودود وصبور"
+                },
+                "5": {
+                    "labelForStudent": "محترم للغاية وودود",
+                    "labelForPupil": "صبورة للغاية ولطيفة"
+                }
+            },
+            "pupil_motivation": {
+                "1": {
+                    "labelForStudent": "بدا غير مركز/ مشتت الانتباه",
+                    "labelForPupil": "لم أكن أرغب في الدراسة."
+                },
+                "2": {
+                    "labelForStudent": "بدا سلبيًا",
+                    "labelForPupil": "ممل / قليل الحماس"
+                },
+                "3": {
+                    "labelForStudent": "بدا هادئًا",
+                    "labelForPupil": "كان جيدًا"
+                },
+                "4": {
+                    "labelForStudent": "استمتعت بوقتي وكنت نشطًا",
+                    "labelForPupil": "كان الأمر ممتعًا"
+                },
+                "5": {
+                    "labelForStudent": "كان متحمسًا جدًّا ونشطًا",
+                    "labelForPupil": "سأواصل بعد قليل"
+                }
+            },
+            "emotional_safety": {
+                "1": {
+                    "labelForStudent": "شعرت بعدم ارتياح شديد",
+                    "labelForPupil": "شعرت بعدم ارتياح شديد"
+                },
+                "2": {
+                    "labelForStudent": "شعرت بعدم الراحة",
+                    "labelForPupil": "شعرت بعدم الراحة"
+                },
+                "3": {
+                    "labelForStudent": "شعرت أنني بخير",
+                    "labelForPupil": "شعرت أنني بخير"
+                },
+                "4": {
+                    "labelForStudent": "شعرت بالراحة",
+                    "labelForPupil": "شعرت بالراحة"
+                },
+                "5": {
+                    "labelForStudent": "شعرت براحة تامة",
+                    "labelForPupil": "شعرت براحة تامة"
+                }
+            },
+            "tech_reliability": {
+                "1": {
+                    "labelForStudent": "التقنية لم تعمل على الإطلاق",
+                    "labelForPupil": "التقنية لم تعمل على الإطلاق"
+                },
+                "2": {
+                    "labelForStudent": "مشاكل تقنية متكررة",
+                    "labelForPupil": "مشاكل تقنية متكررة"
+                },
+                "3": {
+                    "labelForStudent": "مشاكل تقنية بسيطة",
+                    "labelForPupil": "مشاكل تقنية بسيطة"
+                },
+                "4": {
+                    "labelForStudent": "سارت الأمور على ما يرام من الناحية التقنية",
+                    "labelForPupil": "سارت الأمور على ما يرام من الناحية التقنية"
+                },
+                "5": {
+                    "labelForStudent": "كان الأداء التقني رائعًا",
+                    "labelForPupil": "كان الأداء التقني رائعًا"
+                }
+            },
+            "learning_environment": {
+                "1": {
+                    "labelForStudent": "ليس مكانًا هادئًا للدراسة"
+                },
+                "2": {
+                    "labelForStudent": "الكثير من عوامل التشتيت في كل مكان"
+                },
+                "3": {
+                    "labelForStudent": "بيئة غير مستقرة بعض الشيء"
+                },
+                "4": {
+                    "labelForStudent": "بيئة تعليمية هادئة"
+                },
+                "5": {
+                    "labelForStudent": "بيئة تعليمية مثالية"
+                }
+            },
+            "language_barriers": {
+                "1": {
+                    "labelForStudent": "يكاد يكون التواصل مستحيلاً",
+                    "labelForPupil": "يكاد يكون التواصل مستحيلاً"
+                },
+                "2": {
+                    "labelForStudent": "صعوبة في التفاهم",
+                    "labelForPupil": "صعوبة في التفاهم"
+                },
+                "3": {
+                    "labelForStudent": "التواصل بمساعدة الوسائل المساعدة",
+                    "labelForPupil": "التواصل بمساعدة الوسائل المساعدة"
+                },
+                "4": {
+                    "labelForStudent": "التواصل يسير على ما يرام",
+                    "labelForPupil": "التواصل يسير على ما يرام"
+                },
+                "5": {
+                    "labelForStudent": "التواصل بسهولة",
+                    "labelForPupil": "التواصل بسهولة"
+                }
+            },
+            "support_needed": {
+                "1": {
+                    "labelForStudent": "أشعر بأنني غير قادر على تحمل الأمر"
+                },
+                "2": {
+                    "labelForStudent": "أحتاج إلى نصيحة من الفريق"
+                },
+                "3": {
+                    "labelForStudent": "أحتاج إلى أفكار/مواد"
+                },
+                "4": {
+                    "labelForStudent": "أستطيع تدبر أموري بنفسي"
+                },
+                "5": {
+                    "labelForStudent": "أشعر بالأمان في العمل التطوعي"
+                }
+            },
+            "pupil_preparedness": {
+                "1": {
+                    "labelForStudent": "جاء دون أي استعداد مسبق"
+                },
+                "2": {
+                    "labelForStudent": "كانت هناك مواد مهمة مفقودة"
+                },
+                "3": {
+                    "labelForStudent": "المواد موجودة جزئيًا فقط"
+                },
+                "4": {
+                    "labelForStudent": "المواد والمهام المطلوبة"
+                },
+                "5": {
+                    "labelForStudent": "مُعدّ بشكل ممتاز"
+                }
+            },
+            "punctuality_time": {
+                "1": {
+                    "labelForPupil": "توقف مبكرًا"
+                },
+                "2": {
+                    "labelForPupil": "الاضطرار إلى الانتظار لفترة طويلة"
+                },
+                "3": {
+                    "labelForPupil": "بدأوا متأخرين قليلاً"
+                },
+                "4": {
+                    "labelForPupil": "بدأ في الموعد المحدد"
+                },
+                "5": {
+                    "labelForPupil": "في الموعد المحدد واستغلال الوقت بشكل جيد"
+                }
+            },
+            "pupil_wellbeing": {
+                "1": {
+                    "labelForStudent": "يبدو مكتئبًا/حزينًا"
+                },
+                "2": {
+                    "labelForStudent": "يبدو متوتراً"
+                },
+                "3": {
+                    "labelForStudent": "لا توجد أي ملاحظات"
+                },
+                "4": {
+                    "labelForStudent": "يبدو راضياً"
+                },
+                "5": {
+                    "labelForStudent": "يبدو سعيدًا"
+                }
+            }
+        },
+        "title": "كيف كان اجتماعكم؟",
+        "disclaimer": "يتم إرسال التعليقات حصريًّا إلى Lern-Fair. ولا يمكن لشريكك في التعلم رؤيتها.",
+        "otherTag": "آخر",
+        "commentPlaceholder": "تعليقك",
+        "submitSuccessTitle": "شكرًا جزيلاً!",
+        "submitSuccessDescription": "تم إرسال تعليقاتك",
+        "skip": "تخطي",
+        "submit": "إرسال الملاحظات"
+    }
 }

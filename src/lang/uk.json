@@ -2839,5 +2839,234 @@
     "saveAndContinue": "Зберегти та далі",
     "sendRequest": "Надіслати запит",
     "language": "Мова",
-    "schoolType": "Тип школи"
+    "schoolType": "Тип школи",
+    "lectureFeedback": {
+        "tags": {
+            "learning_progress": {
+                "1": {
+                    "labelForStudent": "Відсутність прогресу в навчанні",
+                    "labelForPupil": "Нічого не навчився"
+                },
+                "2": {
+                    "labelForStudent": "Практично відсутній прогрес у навчанні",
+                    "labelForPupil": "Майже нічого не вивчив"
+                },
+                "3": {
+                    "labelForStudent": "Невеликі кроки у навчанні",
+                    "labelForPupil": "Трохи чогось навчився"
+                },
+                "4": {
+                    "labelForStudent": "Видимий прогрес у навчанні",
+                    "labelForPupil": "Багато чого навчився"
+                },
+                "5": {
+                    "labelForStudent": "Значні успіхи",
+                    "labelForPupil": "Дійсно багато навчився"
+                }
+            },
+            "relationship_tone": {
+                "1": {
+                    "labelForStudent": "Неповага",
+                    "labelForPupil": "Непривітний до мене"
+                },
+                "2": {
+                    "labelForStudent": "Частково нечемний",
+                    "labelForPupil": "Не майте до мене терпіння"
+                },
+                "3": {
+                    "labelForStudent": "Трохи відсторонено",
+                    "labelForPupil": "Іноді нетерплячий"
+                },
+                "4": {
+                    "labelForStudent": "Привітні та ввічливі",
+                    "labelForPupil": "Ввічливий і терплячий"
+                },
+                "5": {
+                    "labelForStudent": "Дуже ввічливий і привітний",
+                    "labelForPupil": "Дуже терпляча та приємна"
+                }
+            },
+            "pupil_motivation": {
+                "1": {
+                    "labelForStudent": "Виглядав розсіяним/відволіканим",
+                    "labelForPupil": "Не хотілося вчитися."
+                },
+                "2": {
+                    "labelForStudent": "Виглядав пасивним",
+                    "labelForPupil": "нудний / маломотивований"
+                },
+                "3": {
+                    "labelForStudent": "Виглядав спокійним",
+                    "labelForPupil": "Було нормально"
+                },
+                "4": {
+                    "labelForStudent": "Добре провів час і був активним",
+                    "labelForPupil": "Було весело"
+                },
+                "5": {
+                    "labelForStudent": "Був дуже мотивованим і активним",
+                    "labelForPupil": "Зараз продовжу"
+                }
+            },
+            "emotional_safety": {
+                "1": {
+                    "labelForStudent": "Мені було дуже некомфортно",
+                    "labelForPupil": "Мені було дуже некомфортно"
+                },
+                "2": {
+                    "labelForStudent": "Мені стало зле",
+                    "labelForPupil": "Мені стало зле"
+                },
+                "3": {
+                    "labelForStudent": "Почувався нормально",
+                    "labelForPupil": "Почувався нормально"
+                },
+                "4": {
+                    "labelForStudent": "Мені було комфортно",
+                    "labelForPupil": "Мені було комфортно"
+                },
+                "5": {
+                    "labelForStudent": "Мені було дуже комфортно",
+                    "labelForPupil": "Мені було дуже комфортно"
+                }
+            },
+            "tech_reliability": {
+                "1": {
+                    "labelForStudent": "Техніка взагалі не працювала",
+                    "labelForPupil": "Техніка взагалі не працювала"
+                },
+                "2": {
+                    "labelForStudent": "Часті технічні проблеми",
+                    "labelForPupil": "Часті технічні проблеми"
+                },
+                "3": {
+                    "labelForStudent": "Незначні технічні проблеми",
+                    "labelForPupil": "Незначні технічні проблеми"
+                },
+                "4": {
+                    "labelForStudent": "Техніка працювала добре",
+                    "labelForPupil": "Техніка працювала добре"
+                },
+                "5": {
+                    "labelForStudent": "Техніка працювала чудово",
+                    "labelForPupil": "Техніка працювала чудово"
+                }
+            },
+            "learning_environment": {
+                "1": {
+                    "labelForStudent": "Це не тихе місце для навчання"
+                },
+                "2": {
+                    "labelForStudent": "Навколо багато відволікаючих факторів"
+                },
+                "3": {
+                    "labelForStudent": "Трохи неспокійне оточення"
+                },
+                "4": {
+                    "labelForStudent": "Спокійне навчальне середовище"
+                },
+                "5": {
+                    "labelForStudent": "Ідеальне навчальне середовище"
+                }
+            },
+            "language_barriers": {
+                "1": {
+                    "labelForStudent": "Зрозумітися практично неможливо",
+                    "labelForPupil": "Зрозумітися практично неможливо"
+                },
+                "2": {
+                    "labelForStudent": "Складнощі у спілкуванні",
+                    "labelForPupil": "Складнощі у спілкуванні"
+                },
+                "3": {
+                    "labelForStudent": "Розуміння за допомогою підказок",
+                    "labelForPupil": "Розуміння за допомогою підказок"
+                },
+                "4": {
+                    "labelForStudent": "Спілкування налагоджується добре",
+                    "labelForPupil": "Спілкування налагоджується добре"
+                },
+                "5": {
+                    "labelForStudent": "Зрозуміле спілкування без зусиль",
+                    "labelForPupil": "Зрозуміле спілкування без зусиль"
+                }
+            },
+            "support_needed": {
+                "1": {
+                    "labelForStudent": "Відчуваю, що це для мене занадто"
+                },
+                "2": {
+                    "labelForStudent": "Потрібна порада від команди"
+                },
+                "3": {
+                    "labelForStudent": "Потрібні ідеї/матеріали"
+                },
+                "4": {
+                    "labelForStudent": "Добре справляюся самостійно"
+                },
+                "5": {
+                    "labelForStudent": "Я почуваюся в безпеці, займаючись волонтерською діяльністю"
+                }
+            },
+            "pupil_preparedness": {
+                "1": {
+                    "labelForStudent": "Прийшов зовсім непідготовленим"
+                },
+                "2": {
+                    "labelForStudent": "Не вистачало важливих матеріалів"
+                },
+                "3": {
+                    "labelForStudent": "Матеріал є лише частково"
+                },
+                "4": {
+                    "labelForStudent": "Матеріали та завдання"
+                },
+                "5": {
+                    "labelForStudent": "Дуже добре підготовлений"
+                }
+            },
+            "punctuality_time": {
+                "1": {
+                    "labelForPupil": "Закінчив раніше"
+                },
+                "2": {
+                    "labelForPupil": "Доведеться довго чекати"
+                },
+                "3": {
+                    "labelForPupil": "Почав трохи пізніше"
+                },
+                "4": {
+                    "labelForPupil": "Почалося вчасно"
+                },
+                "5": {
+                    "labelForPupil": "Вчасно та раціональне використання часу"
+                }
+            },
+            "pupil_wellbeing": {
+                "1": {
+                    "labelForStudent": "Виглядає пригніченим/сумним"
+                },
+                "2": {
+                    "labelForStudent": "Виглядає напруженим"
+                },
+                "3": {
+                    "labelForStudent": "Ніяких відхилень"
+                },
+                "4": {
+                    "labelForStudent": "Виглядає задоволеним"
+                },
+                "5": {
+                    "labelForStudent": "Виглядає щасливим"
+                }
+            }
+        },
+        "title": "Як пройшла ваша зустріч?",
+        "disclaimer": "Відгук надсилається виключно на адресу Lern-Fair. Твій партнер по навчанню його не бачить.",
+        "otherTag": "Різне",
+        "commentPlaceholder": "Твій коментар",
+        "submitSuccessTitle": "Дякую!",
+        "submitSuccessDescription": "Ваш відгук було надіслано",
+        "skip": "Пропустити.",
+        "submit": "Надіслати відгук"
+    }
 }

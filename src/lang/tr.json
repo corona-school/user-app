@@ -2831,5 +2831,234 @@
     "saveAndContinue": "Kaydet ve devam et",
     "sendRequest": "Talep gönder",
     "language": "Dil",
-    "schoolType": "Okul türü"
+    "schoolType": "Okul türü",
+    "lectureFeedback": {
+        "tags": {
+            "learning_progress": {
+                "1": {
+                    "labelForStudent": "Öğrenmede ilerleme yok",
+                    "labelForPupil": "Hiçbir şey öğrenmemiş"
+                },
+                "2": {
+                    "labelForStudent": "Öğrenmede neredeyse hiç ilerleme yok",
+                    "labelForPupil": "Neredeyse hiçbir şey öğrenmedim"
+                },
+                "3": {
+                    "labelForStudent": "Küçük öğrenme adımları",
+                    "labelForPupil": "Biraz bir şeyler öğrendim"
+                },
+                "4": {
+                    "labelForStudent": "Öğrenme sürecindeki ilerleme gözle görülür",
+                    "labelForPupil": "Çok şey öğrendim"
+                },
+                "5": {
+                    "labelForStudent": "Büyük ilerlemeler",
+                    "labelForPupil": "Gerçekten çok şey öğrendim"
+                }
+            },
+            "relationship_tone": {
+                "1": {
+                    "labelForStudent": "Saygısız",
+                    "labelForPupil": "Bana kaba davranıyor"
+                },
+                "2": {
+                    "labelForStudent": "Kısmen kaba",
+                    "labelForPupil": "Bana karşı hiç sabır göstermiyor"
+                },
+                "3": {
+                    "labelForStudent": "Biraz mesafeli",
+                    "labelForPupil": "Bazen sabırsız"
+                },
+                "4": {
+                    "labelForStudent": "Güler yüzlü ve nazik",
+                    "labelForPupil": "Güler yüzlü ve sabırlı"
+                },
+                "5": {
+                    "labelForStudent": "Son derece saygılı ve güler yüzlü",
+                    "labelForPupil": "Son derece sabırlı ve nazik"
+                }
+            },
+            "pupil_motivation": {
+                "1": {
+                    "labelForStudent": "Dikkatini toplayamamış/dalgın görünüyordu",
+                    "labelForPupil": "Çalışmak istemiyordum."
+                },
+                "2": {
+                    "labelForStudent": "Pasif bir izlenim bıraktı",
+                    "labelForPupil": "sıkıcı / motivasyonu düşük"
+                },
+                "3": {
+                    "labelForStudent": "Sakin bir izlenim bıraktı",
+                    "labelForPupil": "Fena değildi"
+                },
+                "4": {
+                    "labelForStudent": "Eğlendim ve aktif oldum",
+                    "labelForPupil": "Eğlenceliydi"
+                },
+                "5": {
+                    "labelForStudent": "Çok istekli ve aktifti",
+                    "labelForPupil": "Hemen devam edeceğim"
+                }
+            },
+            "emotional_safety": {
+                "1": {
+                    "labelForStudent": "Kendimi çok rahatsız hissettim",
+                    "labelForPupil": "Kendimi çok rahatsız hissettim"
+                },
+                "2": {
+                    "labelForStudent": "Kendimi rahatsız hissettim",
+                    "labelForPupil": "Kendimi rahatsız hissettim"
+                },
+                "3": {
+                    "labelForStudent": "Kendimi fena hissetmedim",
+                    "labelForPupil": "Kendimi fena hissetmedim"
+                },
+                "4": {
+                    "labelForStudent": "Kendimi rahat hissettim",
+                    "labelForPupil": "Kendimi rahat hissettim"
+                },
+                "5": {
+                    "labelForStudent": "Kendimi çok rahat hissettim",
+                    "labelForPupil": "Kendimi çok rahat hissettim"
+                }
+            },
+            "tech_reliability": {
+                "1": {
+                    "labelForStudent": "Teknik hiç işe yaramadı",
+                    "labelForPupil": "Teknik hiç işe yaramadı"
+                },
+                "2": {
+                    "labelForStudent": "Sık sık teknik sorunlar",
+                    "labelForPupil": "Sık sık teknik sorunlar"
+                },
+                "3": {
+                    "labelForStudent": "Küçük teknik sorunlar",
+                    "labelForPupil": "Küçük teknik sorunlar"
+                },
+                "4": {
+                    "labelForStudent": "Teknik açıdan her şey yolunda gitti",
+                    "labelForPupil": "Teknik açıdan her şey yolunda gitti"
+                },
+                "5": {
+                    "labelForStudent": "Teknik açıdan her şey harika gitti",
+                    "labelForPupil": "Teknik açıdan her şey harika gitti"
+                }
+            },
+            "learning_environment": {
+                "1": {
+                    "labelForStudent": "Huzurlu bir öğrenme ortamı değil"
+                },
+                "2": {
+                    "labelForStudent": "Etrafta pek çok dikkat dağıtıcı şey var"
+                },
+                "3": {
+                    "labelForStudent": "Biraz gürültülü bir ortam"
+                },
+                "4": {
+                    "labelForStudent": "Sakin bir öğrenme ortamı"
+                },
+                "5": {
+                    "labelForStudent": "İdeal öğrenme ortamı"
+                }
+            },
+            "language_barriers": {
+                "1": {
+                    "labelForStudent": "Anlaşılma imkânı neredeyse yok",
+                    "labelForPupil": "Anlaşılma imkânı neredeyse yok"
+                },
+                "2": {
+                    "labelForStudent": "İletişimde zorluklar",
+                    "labelForPupil": "İletişimde zorluklar"
+                },
+                "3": {
+                    "labelForStudent": "Yardımlarla İletişim",
+                    "labelForPupil": "Yardımlarla İletişim"
+                },
+                "4": {
+                    "labelForStudent": "İletişim iyi gidiyor",
+                    "labelForPupil": "İletişim iyi gidiyor"
+                },
+                "5": {
+                    "labelForStudent": "Zahmetsiz iletişim",
+                    "labelForPupil": "Zahmetsiz iletişim"
+                }
+            },
+            "support_needed": {
+                "1": {
+                    "labelForStudent": "Kendimi bunalmış hissediyorum"
+                },
+                "2": {
+                    "labelForStudent": "Ekipten tavsiyeye ihtiyacım var"
+                },
+                "3": {
+                    "labelForStudent": "Fikir ve malzemeye ihtiyacım var"
+                },
+                "4": {
+                    "labelForStudent": "Tek başıma gayet iyi idare ediyorum"
+                },
+                "5": {
+                    "labelForStudent": "Gönüllü çalışırken kendimi güvende hissediyorum"
+                }
+            },
+            "pupil_preparedness": {
+                "1": {
+                    "labelForStudent": "Hiç hazırlıksız gelmiş"
+                },
+                "2": {
+                    "labelForStudent": "Önemli malzemeler eksikti"
+                },
+                "3": {
+                    "labelForStudent": "Malzeme sadece kısmen mevcut"
+                },
+                "4": {
+                    "labelForStudent": "Malzemeler ve görevler dahil"
+                },
+                "5": {
+                    "labelForStudent": "Çok iyi hazırlanmış"
+                }
+            },
+            "punctuality_time": {
+                "1": {
+                    "labelForPupil": "Daha erken bitmiş"
+                },
+                "2": {
+                    "labelForPupil": "Uzun süre beklemek zorunda kalmak"
+                },
+                "3": {
+                    "labelForPupil": "Biraz geç başladım"
+                },
+                "4": {
+                    "labelForPupil": "Zamanında başladı"
+                },
+                "5": {
+                    "labelForPupil": "Zamanında ve zamanı iyi değerlendirilmiş"
+                }
+            },
+            "pupil_wellbeing": {
+                "1": {
+                    "labelForStudent": "Depresif/üzgün bir izlenim bırakıyor"
+                },
+                "2": {
+                    "labelForStudent": "Yorgun görünüyor"
+                },
+                "3": {
+                    "labelForStudent": "Herhangi bir anormallik yok"
+                },
+                "4": {
+                    "labelForStudent": "Memnun görünüyor"
+                },
+                "5": {
+                    "labelForStudent": "Mutlu görünüyor"
+                }
+            }
+        },
+        "title": "Toplantınız nasıl geçti?",
+        "disclaimer": "Geri bildirim yalnızca Lern-Fair adresine gönderilir. Öğrenme arkadaşın bunu göremez.",
+        "otherTag": "Diğer",
+        "commentPlaceholder": "Yorumun",
+        "submitSuccessTitle": "Teşekkürler!",
+        "submitSuccessDescription": "Geri bildirimin gönderildi",
+        "skip": "Atla",
+        "submit": "Geri bildirim gönderin"
+    }
 }
