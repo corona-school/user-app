@@ -1,4 +1,4 @@
-import { Text } from 'native-base';
+import { Typography } from '@/components/Typography';
 
 type Props = {
     bulletPoints: String[];
@@ -8,7 +8,9 @@ const BulletList: React.FC<Props> = ({ bulletPoints }) => {
     return (
         <>
             {bulletPoints.map((bullet, index) => (
-                <Text key={index}>● {bullet}</Text>
+                <Typography variant="subtle" key={index}>
+                    ● {bullet}
+                </Typography>
             ))}
         </>
     );
