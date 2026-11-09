@@ -2415,7 +2415,7 @@
             "english_version": "İngilizce versiyon",
             "create": "Sertifika oluştur",
             "download_browser": "Sertifikayı indirilenler bölümüne kaydet",
-            "trainingCompletedLabel": "Bu belge ile toplam 10 saatlik mesleki eğitim aldığımı teyit ederim."
+            "confirmationText": "Ich bestätige, dass ich die Praktikumsmappe gelesen habe und den <link>Praktikumskonditionen von Lern-Fair e.V.</link> zustimme."
         }
     },
     "certificateOfConduct": {
@@ -2736,14 +2736,30 @@
             "bullets": ["hemen temin edilebilir", "bireysel öğrenme ortaklarını listelemez", "Destek türü, toplam süre ve ders sayısı listelenmiştir"],
             "title": "Anında kanıt",
             "request": "Acil sertifika talep edin",
-            "titleForInternship": "Staj Belgesi"
+            "unavailableDuringInternship": "Stajın biter bitmez kullanılabilir."
         },
         "participationCertificate": {
             "bullets": ["öğrenim ortağı tarafından onaylanmalıdır", "her bir öğrenme ortağı için ayrı ayrı", "Harcanan zaman da buradan teyit edilebilir"],
             "title": "Bireysel kanıt",
             "deactivated": "Artık öğrencilerin onaylaması gereken bireysel bir kayıt bulunmamaktadır. Faaliyetleriniz veritabanında otomatik olarak kaydedilir, böylece güncel durumu anlık kayıt olarak istediğiniz zaman (birden fazla kez) indirebilirsiniz. Sorularınız veya sorunlarınız varsa <0 /> ile iletişime geçebilirsiniz."
         },
-        "title": "Sertifikalarım"
+        "title": "Sertifikalarım",
+        "internshipCertificate": {
+            "bullets": [
+                "Güncel belgeni istediğin zaman indirebilirsin",
+                "Tek tek öğrenme ortaklarını listelemez",
+                "Destek türü, toplam süre ve ders sayısı listelenmiştir"
+            ],
+            "title": "Staj Belgesi",
+            "download": "Staj belgesi indirme",
+            "status": "Durum",
+            "statusActive": "Aktif Staj",
+            "statusCompleted": "Staj tamamlandı",
+            "winterSemester": "Kış Dönemi {{year}}",
+            "summerSemester": "Yaz Dönemi {{year}}",
+            "createdAt": "Oluşturulma tarihi: {{date}}",
+            "downloadFinal": "İndir"
+        }
     },
     "weekdays": {
         "monday": "Pazartesi",

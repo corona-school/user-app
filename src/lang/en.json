@@ -2415,7 +2415,7 @@
             "english_version": "English version",
             "create": "Create certificate",
             "download_browser": "Save certificate in downloads",
-            "trainingCompletedLabel": "I hereby confirm that I have completed a total of 10 hours of continuing education."
+            "confirmationText": "Ich bestätige, dass ich die Praktikumsmappe gelesen habe und den <link>Praktikumskonditionen von Lern-Fair e.V.</link> zustimme."
         }
     },
     "certificateOfConduct": {
@@ -2740,14 +2740,30 @@
             ],
             "title": "Immediate certificate",
             "request": "Request an immediate certificate",
-            "titleForInternship": "Internship Certificate"
+            "unavailableDuringInternship": "Available as soon as you complete your internship."
         },
         "participationCertificate": {
             "bullets": ["must be confirmed by the learning partner", "for each learning partner individually", "The time spent can also be confirmed here"],
             "title": "Individual certificate",
             "deactivated": "There is no longer an individual record that you need to have confirmed by students. Your activities are automatically recorded in the database, so you can download the current status as an instant record (multiple times) at any time. If you have any questions or problems, you can contact <0 />."
         },
-        "title": "My certificates"
+        "title": "My certificates",
+        "internshipCertificate": {
+            "bullets": [
+                "You can download your current certificate at any time",
+                "Does not list individual study partners",
+                "The type of support, total duration and number of lessons are listed"
+            ],
+            "title": "Internship Certificate",
+            "download": "Download Internship Certificate",
+            "status": "Status",
+            "statusActive": "Active Internship",
+            "statusCompleted": "Internship Completed",
+            "winterSemester": "Winter Semester {{year}}",
+            "summerSemester": "Summer Semester {{year}}",
+            "createdAt": "Created on {{date}}",
+            "downloadFinal": "Download"
+        }
     },
     "weekdays": {
         "monday": "Monday",
