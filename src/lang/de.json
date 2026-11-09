@@ -2839,5 +2839,94 @@
                 "zusätzlich kann hier noch die aufgewendete Zeit bestätigt werden"
             ]
         }
+    },
+    "lectureFeedback": {
+        "tags": {
+            "learning_progress": {
+                "5": { "labelForStudent": "Große Fortschritte", "labelForPupil": "Richtig viel gelernt" },
+                "4": { "labelForStudent": "Lernfortschritt sichtbar", "labelForPupil": "Viel gelernt" },
+                "3": { "labelForStudent": "Kleine Lernschritte", "labelForPupil": "Bisschen was gelernt" },
+                "2": { "labelForStudent": "Kaum Lernfortschritt", "labelForPupil": "Kaum was gelernt" },
+                "1": { "labelForStudent": "Kein Lernfortschritt", "labelForPupil": "Nichts gelernt" }
+            },
+            "relationship_tone": {
+                "5": { "labelForStudent": "Sehr respektvoll & freundlich", "labelForPupil": "Super geduldig & nett" },
+                "4": { "labelForStudent": "Freundlich & höflich", "labelForPupil": "Freundlich & geduldig" },
+                "3": { "labelForStudent": "Etwas distanziert", "labelForPupil": "Manchmal ungeduldig" },
+                "2": { "labelForStudent": "Teils unhöflich", "labelForPupil": "Keine Geduld mit mir" },
+                "1": { "labelForStudent": "Respektlos", "labelForPupil": "Unfreundlich zu mir" }
+            },
+            "pupil_motivation": {
+                "5": { "labelForStudent": "War sehr motiviert & aktiv", "labelForPupil": "Will gleich weitermachen" },
+                "4": { "labelForStudent": "Hatte Spaß & war aktiv", "labelForPupil": "Hat Spaß gemacht" },
+                "3": { "labelForStudent": "Wirkte ruhig", "labelForPupil": "War okay" },
+                "2": { "labelForStudent": "Wirkte passiv", "labelForPupil": "langweiliges / wenig motiviert" },
+                "1": { "labelForStudent": "Wirkte unkonzentriert/ abgelenkt", "labelForPupil": "Hatte keine Lust auf Lernen." }
+            },
+            "emotional_safety": {
+                "5": { "labelForStudent": "Habe mich sehr wohl gefühlt", "labelForPupil": "Habe mich sehr wohl gefühlt" },
+                "4": { "labelForStudent": "Habe mich wohl gefühlt", "labelForPupil": "Habe mich wohl gefühlt" },
+                "3": { "labelForStudent": "Habe mich okay gefühlt", "labelForPupil": "Habe mich okay gefühlt" },
+                "2": { "labelForStudent": "Habe mich unwohl gefühlt", "labelForPupil": "Habe mich unwohl gefühlt" },
+                "1": { "labelForStudent": "Habe mich sehr unwohl gefühlt", "labelForPupil": "Habe mich sehr unwohl gefühlt" }
+            },
+            "tech_reliability": {
+                "5": { "labelForStudent": "Technik lief super", "labelForPupil": "Technik lief super" },
+                "4": { "labelForStudent": "Technik lief gut", "labelForPupil": "Technik lief gut" },
+                "3": { "labelForStudent": "Kleine Technikprobleme", "labelForPupil": "Kleine Technikprobleme" },
+                "2": { "labelForStudent": "Oft Technikprobleme", "labelForPupil": "Oft Technikprobleme" },
+                "1": { "labelForStudent": "Technik ging gar nicht", "labelForPupil": "Technik ging gar nicht" }
+            },
+            "learning_environment": {
+                "5": { "labelForStudent": "Ideale Lernumgebung" },
+                "4": { "labelForStudent": "Ruhige Lernumgebung" },
+                "3": { "labelForStudent": "Etwas unruhige Umgebung" },
+                "2": { "labelForStudent": "Viel Ablenkung ringsum" },
+                "1": { "labelForStudent": "Kein ruhiger Lernort" }
+            },
+            "language_barriers": {
+                "5": { "labelForStudent": "Verständigung mühelos", "labelForPupil": "Verständigung mühelos" },
+                "4": { "labelForStudent": "Verständigung klappt gut", "labelForPupil": "Verständigung klappt gut" },
+                "3": { "labelForStudent": "Verständigung mit Hilfen", "labelForPupil": "Verständigung mit Hilfen" },
+                "2": { "labelForStudent": "Schwierige Verständigung", "labelForPupil": "Schwierige Verständigung" },
+                "1": { "labelForStudent": "Kaum Verständigung möglich", "labelForPupil": "Kaum Verständigung möglich" }
+            },
+            "support_needed": {
+                "5": { "labelForStudent": "Fühle mich im Ehrenamt sicher" },
+                "4": { "labelForStudent": "Komme gut allein klar" },
+                "3": { "labelForStudent": "Brauche Ideen/Material" },
+                "2": { "labelForStudent": "Brauche Rat vom Team" },
+                "1": { "labelForStudent": "Fühle mich überfordert" }
+            },
+            "pupil_preparedness": {
+                "5": { "labelForStudent": "Sehr gut vorbereitet" },
+                "4": { "labelForStudent": "Material & Aufgaben dabei" },
+                "3": { "labelForStudent": "Nur teils Material dabei" },
+                "2": { "labelForStudent": "Wichtiges Material fehlte" },
+                "1": { "labelForStudent": "Ganz unvorbereitet gekommen" }
+            },
+            "punctuality_time": {
+                "5": { "labelForPupil": "Pünktlich & Zeit gut genutzt" },
+                "4": { "labelForPupil": "Pünktlich angefangen" },
+                "3": { "labelForPupil": "Etwas später angefangen" },
+                "2": { "labelForPupil": "Lange warten müssen" },
+                "1": { "labelForPupil": "Früher aufgehört" }
+            },
+            "pupil_wellbeing": {
+                "5": { "labelForStudent": "Wirkt glücklich" },
+                "4": { "labelForStudent": "Wirkt zufrieden" },
+                "3": { "labelForStudent": "Keine Auffälligkeiten" },
+                "2": { "labelForStudent": "Wirkt belastet" },
+                "1": { "labelForStudent": "Wirkt depressiv/traurig" }
+            }
+        },
+        "title": "Wie war euer Meeting?",
+        "disclaimer": "Das Feedback geht nur an Lern-Fair. Dein*e Lernpartner*in kann es nicht sehen.",
+        "otherTag": "Sonstiges",
+        "commentPlaceholder": "Dein Kommentar",
+        "submitSuccessTitle": "Dankeschön!",
+        "submitSuccessDescription": "Dein Feedback wurde gesendet",
+        "skip": "Überspringen",
+        "submit": "Feedback senden"
     }
 }

@@ -2835,5 +2835,234 @@
     "saveAndContinue": "Save and Continue",
     "sendRequest": "Send request",
     "language": "Language",
-    "schoolType": "Type of school"
+    "schoolType": "Type of school",
+    "lectureFeedback": {
+        "tags": {
+            "learning_progress": {
+                "1": {
+                    "labelForStudent": "No Progress in Learning",
+                    "labelForPupil": "Haven't learned a thing"
+                },
+                "2": {
+                    "labelForStudent": "Very little progress in learning",
+                    "labelForPupil": "I hardly learned anything"
+                },
+                "3": {
+                    "labelForStudent": "Small Steps in Learning",
+                    "labelForPupil": "Learned a little something"
+                },
+                "4": {
+                    "labelForStudent": "Visible Learning Progress",
+                    "labelForPupil": "Learned a lot"
+                },
+                "5": {
+                    "labelForStudent": "Significant Progress",
+                    "labelForPupil": "I learned a lot"
+                }
+            },
+            "relationship_tone": {
+                "1": {
+                    "labelForStudent": "Disrespectful",
+                    "labelForPupil": "Unfriendly toward me"
+                },
+                "2": {
+                    "labelForStudent": "Sometimes rude",
+                    "labelForPupil": "No patience with me"
+                },
+                "3": {
+                    "labelForStudent": "Somewhat distant",
+                    "labelForPupil": "Sometimes impatient"
+                },
+                "4": {
+                    "labelForStudent": "Friendly & polite",
+                    "labelForPupil": "Friendly & patient"
+                },
+                "5": {
+                    "labelForStudent": "Very respectful & friendly",
+                    "labelForPupil": "Super patient & nice"
+                }
+            },
+            "pupil_motivation": {
+                "1": {
+                    "labelForStudent": "Seemed unfocused/distracted",
+                    "labelForPupil": "I didn't feel like studying."
+                },
+                "2": {
+                    "labelForStudent": "Seemed passive",
+                    "labelForPupil": "bored / unmotivated"
+                },
+                "3": {
+                    "labelForStudent": "Seemed calm",
+                    "labelForPupil": "It was okay"
+                },
+                "4": {
+                    "labelForStudent": "Had fun & stayed active",
+                    "labelForPupil": "That was fun"
+                },
+                "5": {
+                    "labelForStudent": "Was very motivated and active",
+                    "labelForPupil": "I'm going to get right back to it"
+                }
+            },
+            "emotional_safety": {
+                "1": {
+                    "labelForStudent": "I felt very uncomfortable",
+                    "labelForPupil": "I felt very uncomfortable"
+                },
+                "2": {
+                    "labelForStudent": "I felt unwell",
+                    "labelForPupil": "I felt unwell"
+                },
+                "3": {
+                    "labelForStudent": "I felt okay",
+                    "labelForPupil": "I felt okay"
+                },
+                "4": {
+                    "labelForStudent": "I felt comfortable",
+                    "labelForPupil": "I felt comfortable"
+                },
+                "5": {
+                    "labelForStudent": "I felt very comfortable",
+                    "labelForPupil": "I felt very comfortable"
+                }
+            },
+            "tech_reliability": {
+                "1": {
+                    "labelForStudent": "The technology just didn't work",
+                    "labelForPupil": "The technology just didn't work"
+                },
+                "2": {
+                    "labelForStudent": "Frequent technical problems",
+                    "labelForPupil": "Frequent technical problems"
+                },
+                "3": {
+                    "labelForStudent": "Minor technical issues",
+                    "labelForPupil": "Minor technical issues"
+                },
+                "4": {
+                    "labelForStudent": "The technology worked well",
+                    "labelForPupil": "The technology worked well"
+                },
+                "5": {
+                    "labelForStudent": "The technology worked great",
+                    "labelForPupil": "The technology worked great"
+                }
+            },
+            "learning_environment": {
+                "1": {
+                    "labelForStudent": "Not a quiet place to study"
+                },
+                "2": {
+                    "labelForStudent": "Lots of distractions all around"
+                },
+                "3": {
+                    "labelForStudent": "A somewhat noisy environment"
+                },
+                "4": {
+                    "labelForStudent": "Quiet learning environment"
+                },
+                "5": {
+                    "labelForStudent": "Ideal Learning Environment"
+                }
+            },
+            "language_barriers": {
+                "1": {
+                    "labelForStudent": "Communication is virtually impossible",
+                    "labelForPupil": "Communication is virtually impossible"
+                },
+                "2": {
+                    "labelForStudent": "Communication Difficulties",
+                    "labelForPupil": "Communication Difficulties"
+                },
+                "3": {
+                    "labelForStudent": "Communication with Assistance",
+                    "labelForPupil": "Communication with Assistance"
+                },
+                "4": {
+                    "labelForStudent": "Communication is going well",
+                    "labelForPupil": "Communication is going well"
+                },
+                "5": {
+                    "labelForStudent": "Effortless Communication",
+                    "labelForPupil": "Effortless Communication"
+                }
+            },
+            "support_needed": {
+                "1": {
+                    "labelForStudent": "I feel overwhelmed"
+                },
+                "2": {
+                    "labelForStudent": "I need some advice from the team"
+                },
+                "3": {
+                    "labelForStudent": "Need ideas/materials"
+                },
+                "4": {
+                    "labelForStudent": "I get along just fine on my own"
+                },
+                "5": {
+                    "labelForStudent": "I feel safe doing volunteer work"
+                }
+            },
+            "pupil_preparedness": {
+                "1": {
+                    "labelForStudent": "Came completely unprepared"
+                },
+                "2": {
+                    "labelForStudent": "Important material was missing"
+                },
+                "3": {
+                    "labelForStudent": "Only some of the materials are included"
+                },
+                "4": {
+                    "labelForStudent": "Materials & Assignments Included"
+                },
+                "5": {
+                    "labelForStudent": "Very well prepared"
+                }
+            },
+            "punctuality_time": {
+                "1": {
+                    "labelForPupil": "Quit earlier"
+                },
+                "2": {
+                    "labelForPupil": "Having to wait a long time"
+                },
+                "3": {
+                    "labelForPupil": "Started a little later"
+                },
+                "4": {
+                    "labelForPupil": "Started on time"
+                },
+                "5": {
+                    "labelForPupil": "On Time & Time Well Spent"
+                }
+            },
+            "pupil_wellbeing": {
+                "1": {
+                    "labelForStudent": "Seems depressed/sad"
+                },
+                "2": {
+                    "labelForStudent": "Seems stressed"
+                },
+                "3": {
+                    "labelForStudent": "No abnormalities"
+                },
+                "4": {
+                    "labelForStudent": "Seems satisfied"
+                },
+                "5": {
+                    "labelForStudent": "Seems happy"
+                }
+            }
+        },
+        "title": "How was your meeting?",
+        "disclaimer": "Feedback is sent only to Lern-Fair. Your study partner cannot see it.",
+        "otherTag": "Other",
+        "commentPlaceholder": "Your comment",
+        "submitSuccessTitle": "Thank you!",
+        "submitSuccessDescription": "Your feedback has been sent",
+        "skip": "Skip",
+        "submit": "Send feedback"
+    }
 }
