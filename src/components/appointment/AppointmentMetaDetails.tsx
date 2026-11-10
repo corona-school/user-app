@@ -188,7 +188,6 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                     {myFeedback && myFeedback.isReadyForFeedback && (
                         <LectureFeedbackModal
                             feedbackId={myFeedback?.id}
-                            learningPartnerName={'[TODO]'}
                             isOpen={isFeedbackModalOpen}
                             onOpenChange={setIsFeedbackModalOpen}
                             onFeedbackSubmitted={async () => refetchAppointment?.()}

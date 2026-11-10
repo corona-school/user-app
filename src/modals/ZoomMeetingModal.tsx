@@ -125,7 +125,6 @@ const ZoomMeetingModal: React.FC<ZoomMeetingModalProps> = ({ isOpen, onOpenChang
                     isOpen={showLectureFeedbackModal}
                     onOpenChange={setShowLectureFeedbackModal}
                     feedbackId={data?.appointment?.myFeedback?.id!}
-                    learningPartnerName="Max"
                 />
             )}
         </>

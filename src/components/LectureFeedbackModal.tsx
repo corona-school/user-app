@@ -48,7 +48,6 @@ const DESKTOP_MEDIA_QUERY = '(min-width: 1024px)';
 
 interface StudentScreeningModalProps extends BaseModalProps {
     feedbackId: number;
-    learningPartnerName: string;
     onFeedbackSubmitted?: () => Promise<void>;
 }
 

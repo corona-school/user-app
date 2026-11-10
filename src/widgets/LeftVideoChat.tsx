@@ -32,7 +32,7 @@ const LeftVideoChat: React.FC = () => {
     const { t } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
 
-    const { data, loading } = useQuery(getAppointmentOrganizer, { variables: { appointmentId: idAsInt } });
+    const { data } = useQuery(getAppointmentOrganizer, { variables: { appointmentId: idAsInt } });
     const isOrganizer = data?.appointment.isOrganizer;
 
     const navigate = useNavigate();
@@ -49,27 +49,19 @@ const LeftVideoChat: React.FC = () => {
 
     useEffect(() => {
         removeZoomStyles();
-        (async () => {
-            if (isOrganizer) {
-                await appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
-            }
-        })();
     }, []);
 
     useEffect(() => {
-        if (!loading && data) {
-            (async () => {
-                if (isOrganizer) {
-                    await appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
-                }
-            })();
+        if (isOrganizer) {
+            appointmentSaveMeetingReport({ variables: { appointmentId: idAsInt } });
         }
-    }, [loading]);
+    }, [isOrganizer]);
 
     const saveAndFinish = async () => {
         navigate('/');
     };
 
+    const feedbackId = data?.appointment?.myFeedback?.id;
     const shouldShowFeedbackModal = data?.appointment?.myFeedback?.isReadyForFeedback && chatType === 'oneOnOne';
 
     const handleOnOpenChange = (open: boolean) => {
@@ -87,7 +79,7 @@ const LeftVideoChat: React.FC = () => {
 
     return (
         <div className="h-dvh w-dvw fixed bg-primary-midnight flex flex-1 flex-col justify-center items-center p-6 gap-y-3 gap-x-3">
-            <LectureFeedbackModal feedbackId={data.appointment.myFeedback.id} isOpen={isOpen} onOpenChange={handleOnOpenChange} learningPartnerName="Max" />
+            {feedbackId != null && <LectureFeedbackModal feedbackId={feedbackId} isOpen={isOpen} onOpenChange={handleOnOpenChange} />}
             <div className="mb-2">
                 <PartyIcon />
             </div>

@@ -210,7 +210,6 @@ const AppointmentTile: React.FC<Props> = ({
                     {myFeedback && myFeedback.isReadyForFeedback && (
                         <LectureFeedbackModal
                             feedbackId={myFeedback?.id}
-                            learningPartnerName={'[TODO]'}
                             isOpen={isFeedbackModalOpen}
                             onOpenChange={setIsFeedbackModalOpen}
                             onFeedbackSubmitted={async () => {
