@@ -2411,7 +2411,7 @@
             "english_version": "النسخة الإنجليزية",
             "create": "إنشاء شهادة",
             "download_browser": "حفظ الشهادة في التنزيلات",
-            "confirmationText": "Ich bestätige, dass ich die Praktikumsmappe gelesen habe und den <link>Praktikumskonditionen von Lern-Fair e.V.</link> zustimme."
+            "confirmationText": "أؤكد أنني قرأت ملف التدريب وأوافق على <link>شروط التدريب الخاصة بـ Lern-Fair e.V.</link>."
         }
     },
     "certificateOfConduct": {

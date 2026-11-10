@@ -2415,7 +2415,7 @@
             "english_version": "İngilizce versiyon",
             "create": "Sertifika oluştur",
             "download_browser": "Sertifikayı indirilenler bölümüne kaydet",
-            "confirmationText": "Ich bestätige, dass ich die Praktikumsmappe gelesen habe und den <link>Praktikumskonditionen von Lern-Fair e.V.</link> zustimme."
+            "confirmationText": "Staj dosyasını okuduğumu ve <link>Lern-Fair e.V. staj koşullarını</link> kabul ettiğimi onaylıyorum."
         }
     },
     "certificateOfConduct": {

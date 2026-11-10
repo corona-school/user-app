@@ -2415,7 +2415,7 @@
             "english_version": "English version",
             "create": "Create certificate",
             "download_browser": "Save certificate in downloads",
-            "confirmationText": "Ich bestätige, dass ich die Praktikumsmappe gelesen habe und den <link>Praktikumskonditionen von Lern-Fair e.V.</link> zustimme."
+            "confirmationText": "I confirm that I have read the internship documentation and agree to the <link>internship terms and conditions of Lern-Fair e.V.</link>."
         }
     },
     "certificateOfConduct": {

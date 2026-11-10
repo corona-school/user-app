@@ -2415,7 +2415,7 @@
             "english_version": "Английская версия",
             "create": "Создать сертификат",
             "download_browser": "Сохранить сертификат в загрузках",
-            "confirmationText": "Ich bestätige, dass ich die Praktikumsmappe gelesen habe und den <link>Praktikumskonditionen von Lern-Fair e.V.</link> zustimme."
+            "confirmationText": "Я подтверждаю, что ознакомился(-лась) с документацией по стажировке и согласен(-на) с <link>условиями стажировки Lern-Fair e.V.</link>."
         }
     },
     "certificateOfConduct": {
