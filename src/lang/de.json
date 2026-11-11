@@ -726,7 +726,7 @@
             "state": {
                 "title": "Schulort",
                 "subtitle": "Wo gehst du zur Schule?",
-                "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner*in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein*e zukünftige:r Lernpartner*in aus einer anderen Region kommt."
+                "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines*r Lernpartner*in nur als optionales Kriterium. Je nach Verfügbarkeit kann es passieren, dass dein*e zukünftige*r Lernpartner*in aus einer anderen Region kommt."
             },
             "legal": {
                 "title": "Einwilligungen",
@@ -896,7 +896,7 @@
         "State": {
             "empty": "Keine Angabe",
             "label": "Schulort",
-            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines:r Lernpartner*in nur als optionales Kriterium. Je nach kann es passieren, dass dein*e zukünftig*:r Lernpartner*in aus einer anderen Region kommt.",
+            "weightingNote": "Wir berücksichtigen den Schulort bei der Vermittlung eines*r Lernpartner*in nur als optionales Kriterium. Je nach kann es passieren, dass dein*e zukünftige*r Lernpartner*in aus einer anderen Region kommt.",
             "single": {
                 "selectedStates": "Mein Schulort",
                 "otherStates": "Weitere (Bundes-)Länder",
@@ -1374,7 +1374,7 @@
         "kontaktSchüler": {
             "subtitle": "Neue*r Lernpartner*in",
             "title": "Hilfe gefunden 🤗",
-            "content": "Es ist endlich so weit, wir haben eine:n Lernpartner*in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
+            "content": "Es ist endlich so weit, wir haben eine*n Lernpartner*in für dich gefunden! {{nameHelfer}} kann dich ab sofort in {{subjectHelfer}} unterstützen. Bitte nehme Kontakt mit {{nameHelfer}} auf und vereinbare ein erstes Treffen. ",
             "buttons": ["Lernpartner*in ansehen"]
         },
         "angeforderteBescheinigung": {
@@ -1400,13 +1400,13 @@
         "statusStudent": {
             "subtitle": "Neue Lernpartner*in",
             "title": "Schüler*in gesucht 🔍",
-            "content": "Wir warten auf jemanden, der:die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. Je nach Auswahl der Fächer kann das unterschiedlich lang dauern. Bei den am stärksten nachgefragten Fächern wie Deutsch als Zweitsprache, Deutsch oder Mathe sind das oft nur wenige Tage. Bei selteneren Fächern kann es auch einige Wochen dauern. In jedem Fall melden wir uns per E-mail. Du kannst jederzeit deine Anfrage ändern und andere Fächer angeben.",
+            "content": "Wir warten auf jemanden, der*die zu den von dir angegebenen Fächern bzw. Jahrgangsstufen passt. Je nach Auswahl der Fächer kann das unterschiedlich lang dauern. Bei den am stärksten nachgefragten Fächern wie Deutsch als Zweitsprache, Deutsch oder Mathe sind das oft nur wenige Tage. Bei selteneren Fächern kann es auch einige Wochen dauern. In jedem Fall melden wir uns per E-mail. Du kannst jederzeit deine Anfrage ändern und andere Fächer angeben.",
             "buttons": ["Problem melden"]
         },
         "kontaktStudent": {
             "title": "Neue Lernpartner*in 🤗",
             "subtitle": "1:1 Nachhilfe ",
-            "content": "Es ist soweit, wir haben eine:n Schüler*in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
+            "content": "Es ist soweit, wir haben eine*n Schüler*in für dich gefunden! {{nameSchüler}} freut sich schon sehr auf deine Unterstützung. Bitte nehme Kontakt mit {{nameSchüler}} auf und vereinbare ein erstes Treffen.",
             "buttons": ["Lernpartner*in ansehen"]
         },
         "homeworkHelpStudent": {
@@ -1422,7 +1422,7 @@
         "pupilScreening": {
             "title": "Wir möchten dich kennenlernen!",
             "subtitle": "Kennenlernen",
-            "content": "Bevor wir dir eine:n Lernpartner*in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
+            "content": "Bevor wir dir eine*n Lernpartner*in vermitteln können, möchten wir dich kennenlernen. Bitte buche dir dafür einen Termin.",
             "buttons": ["Termin vereinbaren"]
         },
         "courseOffer": {
@@ -1456,7 +1456,7 @@
             "subtitle": "Nachhilfe",
             "actionName": "Match-Anfrage stellen",
             "alternativText": "Fünf Puzzleteile",
-            "description": "Damit wir dir den:die perfekte:n Lernpartner*in zuweisen können, musst du zunächst eine Anfrage auf unserer Plattform stellen. Dort kannst du ganz einfach die Fächer angeben, die für dich wichtig sind und in denen wir dir helfen können. Wir freuen uns darauf, mit dir gemeinsam durchzustarten und die Lernreise zu beginnen!",
+            "description": "Damit wir dir den*die perfekte*n Lernpartner*in zuweisen können, musst du zunächst eine Anfrage auf unserer Plattform stellen. Dort kannst du ganz einfach die Fächer angeben, die für dich wichtig sind und in denen wir dir helfen können. Wir freuen uns darauf, mit dir gemeinsam durchzustarten und die Lernreise zu beginnen!",
             "stepname": {
                 "one": "Match-Anfrage gestellt",
                 "two": "Screening absolviert",
@@ -1794,7 +1794,7 @@
             "newMatch": {
                 "title": "Neues Lernpaar bilden",
                 "descriptionPupil": "Möchtest du mit einem*r neuen Lernpartner*in verbunden werden? Beachte bitte, dass es wieder einige Zeit dauert bis wir jemanden für dich finden können.",
-                "descriptionStudent": "Möchtest du mit einem*r neuen Lernpartner*in verbunden werden? Wir freuen uns, wenn du (noch) eine:n Schüler*in unterstützt. Danke für dein Engagement!"
+                "descriptionStudent": "Möchtest du mit einem*r neuen Lernpartner*in verbunden werden? Wir freuen uns, wenn du (noch) eine*n Schüler*in unterstützt. Danke für dein Engagement!"
             }
         },
         "dissolveReasons": {
@@ -1824,7 +1824,7 @@
                 "scheduleIssues": "Wir konnten keine gemeinsamen Termine finden",
                 "technicalIssues": "Wir hatten technische Schwierigkeiten",
                 "languageIssues": "Wir hatten sprachliche Schwierigkeiten",
-                "internshipEnded": "Das Praktikum zur Lernunterstützung meine:s:r Lernpartner*in ist beendet",
+                "internshipEnded": "Das Praktikum zur Lernunterstützung meines*r Lernpartner*in ist beendet",
                 "subjectMismatch": "Unsere Fächer stimmen nicht (mehr) überein",
                 "genderPreference": "Wunsch nach weiblicher Unterstützung",
                 "repeatedNoShows": "Mein*e Lernpartner*in ist oft nicht erschienen",
@@ -2471,7 +2471,7 @@
             "part1_title": "1. Bestätigung durch Lern-Fair",
             "part1_1": "Registrieren auf unserer Plattform",
             "part1_2": "Durchlaufen eines Eignungsgesprächs",
-            "part1_3": "Vermittlung an eine:n Schüler*in",
+            "part1_3": "Vermittlung an eine*n Schüler*in",
             "part2_title": "2. Bestätigung durch Schüler*in",
             "part2_1": "Ausmaß der Tätigkeit",
             "part2_2": "Inhalte der Tätigkeit",
@@ -2481,11 +2481,11 @@
         "request_page2": {
             "title": "Bei welchen Schüler*innen möchtest du eine Bescheinigung beantragen?",
             "card_content": "Bescheinigung beantragen",
-            "reason_btn_disabled": "Du musst eine:n Schüler*in auswählen."
+            "reason_btn_disabled": "Du musst eine*n Schüler*in auswählen."
         },
         "request_for_match": {
             "title": "Angaben",
-            "subtitle": "Gebe für jede:n Schüler*in an, in welchem Unfang du sie:ihn unterstützt hast.",
+            "subtitle": "Gebe für jede*n Schüler*in an, in welchem Unfang du sie*ihn unterstützt hast.",
             "step": "Schüler*in {{current}} von {{total}}",
             "from": "vom Zeitraum",
             "to": "bis zum",
@@ -2835,7 +2835,7 @@
             "title": "Individueller Nachweis",
             "bullets": [
                 "muss durch den/die Lernpartner*in bestätigt werden",
-                "für jede:n Lernpartner*in einzeln",
+                "für jede*n Lernpartner*in einzeln",
                 "zusätzlich kann hier noch die aufgewendete Zeit bestätigt werden"
             ]
         }

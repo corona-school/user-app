@@ -271,7 +271,7 @@ const SingleCourseStudent = () => {
         });
 
         if (hasAppointmentInNext14Days) {
-            toast.error('Der erste Termin muss mindestens 14 Tage in der Zukunft liegen, damit die Teilnehmer:innen genug Zeit haben sich anzumelden.');
+            toast.error('Der erste Termin muss mindestens 14 Tage in der Zukunft liegen, damit die Teilnehmer*innen genug Zeit haben sich anzumelden.');
             return;
         }
         await submit();

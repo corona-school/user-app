@@ -26,9 +26,9 @@ export function MatchStudentCard({ match }: { match: MatchWithStudent }) {
             case Dissolved_By_Enum.Admin:
                 return 'Admin';
             case Dissolved_By_Enum.Pupil:
-                return 'Schüler:in';
+                return 'Schüler*in';
             case Dissolved_By_Enum.Student:
-                return 'Helfer:in';
+                return 'Helfer*in';
             case Dissolved_By_Enum.Unknown:
                 return 'Unbekannt';
         }

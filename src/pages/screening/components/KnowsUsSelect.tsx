@@ -49,6 +49,12 @@ const studentOptions = [
     'Plakatwerbung',
 ].sort((a, b) => a.localeCompare(b));
 
+// The option values are persisted with the screening, so only the displayed text uses the current gendering style
+const optionLabels: Record<string, string> = {
+    'Persönliche Empfehlung/Freund:innen': 'Persönliche Empfehlung/Freund*innen',
+    'Von Schüler:in zu Helfer:in': 'Von Schüler*in zu Helfer*in',
+};
+
 export const KnowsUsSelect = ({ value: knowsFrom, customValue: customKnowsFrom, onChange, type, className, disabled }: KnowsUsSelectProps) => {
     const [errorMessage, setErrorMessage] = useState('');
     const options = type === 'pupil' ? pupilOptions : studentOptions;
@@ -75,7 +81,7 @@ export const KnowsUsSelect = ({ value: knowsFrom, customValue: customKnowsFrom, 
                 <SelectContent>
                     {options.map((option) => (
                         <SelectItem key={option} value={option}>
-                            {option}
+                            {optionLabels[option] ?? option}
                         </SelectItem>
                     ))}
                 </SelectContent>

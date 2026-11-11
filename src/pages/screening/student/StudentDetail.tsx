@@ -21,7 +21,7 @@ export const StudentDetail = ({ student, refresh }: StudentDetailProps) => {
         <div className="mt-8">
             <div className="mb-6">
                 <Typography variant="h3" className="mb-2">
-                    {student.firstname} {student.lastname} (Helfer:in)
+                    {student.firstname} {student.lastname} (Helfer*in)
                 </Typography>
                 <Typography>
                     <span className="font-bold">E-Mail</span>: {student.email}

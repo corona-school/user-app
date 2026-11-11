@@ -97,7 +97,7 @@ const RequestCertificate: React.FC<Props> = () => {
             { variant: 'dark', closeable: true },
             <SuccessModal
                 title="Geschafft"
-                content="Wir haben deine Anfrage erhalten und leiten die Informationen an deine:n Schüler:in weiter, um uns eine Bestätigung durch den/die Erziehungsberechtigte:n einzuholen. Anschließend erhälst du eine automatisierte E-Mail von uns mit deiner Bescheinigung"
+                content="Wir haben deine Anfrage erhalten und leiten die Informationen an deine*n Schüler*in weiter, um uns eine Bestätigung durch den/die Erziehungsberechtigte*n einzuholen. Anschließend erhälst du eine automatisierte E-Mail von uns mit deiner Bescheinigung"
             />
         );
     }, [state, show]);

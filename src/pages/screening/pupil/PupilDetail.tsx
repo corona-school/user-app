@@ -119,7 +119,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
     const getEmailOwnerText = () => {
         switch (pupil.emailOwner) {
             case Pupil_Email_Owner_Enum.Pupil:
-                return 'Schüler:in';
+                return 'Schüler*in';
             case Pupil_Email_Owner_Enum.Parent:
                 return 'Elternteil';
             case Pupil_Email_Owner_Enum.Other:
@@ -145,7 +145,7 @@ const PupilDetail = ({ pupil, refresh }: PupilDetailProps) => {
                     )}
                 </div>
                 <Typography variant="h3" className="mb-2">
-                    {pupil.firstname} {pupil.lastname} (Schüler:in)
+                    {pupil.firstname} {pupil.lastname} (Schüler*in)
                 </Typography>
                 <Typography>
                     <span className="font-bold">E-Mail</span>: {pupil.email} {pupil.emailOwner ? `(${getEmailOwnerText()})` : ''}
