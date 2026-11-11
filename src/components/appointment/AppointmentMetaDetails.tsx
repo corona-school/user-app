@@ -142,10 +142,14 @@ const AppointmentMetaDetails: React.FC<MetaProps> = ({
                         </HStack>
                         {!isHomeworkHelp && (
                             <>
-                                <HStack space={2} alignItems="center">
-                                    <RepeatIcon />
-                                    <Text fontWeight="normal">{t('appointment.detail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}</Text>
-                                </HStack>
+                                {appointmentType === Lecture_Appointmenttype_Enum.Group && (
+                                    <HStack space={2} alignItems="center">
+                                        <RepeatIcon />
+                                        <Text fontWeight="normal">
+                                            {t('appointment.detail.repeatDate', { appointmentCount: count, appointmentsTotal: total })}
+                                        </Text>
+                                    </HStack>
+                                )}
                                 <HStack space={2} alignItems="center">
                                     <PersonIcon />
                                     <Text fontWeight="normal">
