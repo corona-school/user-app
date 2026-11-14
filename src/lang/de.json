@@ -2523,7 +2523,7 @@
             "english_version": "Englische Version",
             "create": "Bescheinigung erstellen",
             "download_browser": "Bescheinigung in Downloads speichern",
-            "trainingCompletedLabel": "Hiermit bestätige ich, dass ich insgesamt 10 Stunden an Fortbildungen absolviert habe."
+            "confirmationText": "Ich bestätige, dass ich die Praktikumsmappe gelesen habe und den <link>Praktikumskonditionen von Lern-Fair e.V.</link> zustimme."
         }
     },
     "certificateOfConduct": {
@@ -2822,13 +2822,29 @@
         "title": "Meine Bescheinigungen",
         "instantCertificate": {
             "title": "Sofort-Nachweis",
-            "titleForInternship": "Praktikumsbestätigung",
             "bullets": [
                 "sofort verfügbar",
                 "führt keine einzelnen Lernpartner*innen auf",
                 "Art der Unterstützung, Gesamtdauer und Anzahl der Lektionen werden aufgeführt"
             ],
-            "request": "Jetzt runterladen"
+            "request": "Sofort-Nachweis runterladen",
+            "unavailableDuringInternship": "Verfügbar, sobald dein Praktikum abgeschlossen ist."
+        },
+        "internshipCertificate": {
+            "title": "Praktikums-Nachweis",
+            "bullets": [
+                "Du kannst jederzeit deine aktuelle Bescheinigung herunterladen",
+                "Führt keine einzelnen Lernpartner*innen auf",
+                "Art der Unterstützung, Gesamtdauer und Anzahl der Lektionen werden aufgeführt"
+            ],
+            "download": "Praktikums-Nachweis herunterladen",
+            "status": "Status",
+            "statusActive": "Praktikum Aktiv",
+            "statusCompleted": "Praktikum abgeschlossen",
+            "winterSemester": "WiSe {{year}}",
+            "summerSemester": "SoSe {{year}}",
+            "createdAt": "Erstellt am {{date}}",
+            "downloadFinal": "Herunterladen"
         },
         "participationCertificate": {
             "deactivated": "Es gibt keinen individuellen Nachweis mehr, den du von deinen Schüler*innen bestätigen lassen kannst. Alle über die Lern-Fair-App geplanten Termine, die in Zoom stattfinden, werden ab sofort automatisch in der Datenbank erfasst. Wenn du einen Sofort-Nachweis herunterlädst, sind die von dir geleisteten Stunden automatisch enthalten. Melde dich unter <0 />, wenn du weitere Fragen hierzu hast.",
