@@ -265,7 +265,14 @@
             "ungarisch": "هنغارية",
             "urdu": "أوردية",
             "vietnamesisch": "فيتنامية",
-            "other": "أخرى"
+            "other": "أخرى",
+            "dari": "داري",
+            "deutsche_geb_rdensprache": "لغة الإشارة الألمانية",
+            "igbo": "الإيغبو",
+            "japanisch": "اليابانية",
+            "paschtu": "الباشتو",
+            "s_dkoreanisch": "الكورية الجنوبية",
+            "yoruba": "اليوروبا"
         },
         "subjects": {
             "Altgriechisch": "اليونانية القديمة",

@@ -265,7 +265,14 @@
             "ungarisch": "Macarca",
             "urdu": "Urduca",
             "vietnamesisch": "Vietnamca",
-            "other": "Diğer"
+            "other": "Diğer",
+            "dari": "Dari",
+            "deutsche_geb_rdensprache": "Alman İşaret Dili",
+            "igbo": "İgbo",
+            "japanisch": "Japonca",
+            "paschtu": "Peştuca",
+            "s_dkoreanisch": "Güney Kore dili",
+            "yoruba": "Yoruba"
         },
         "subjects": {
             "Altgriechisch": "Antik Yunan",

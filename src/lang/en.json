@@ -265,7 +265,14 @@
             "ungarisch": "Hungarian",
             "urdu": "Urdu",
             "vietnamesisch": "Vietnamese",
-            "other": "Other"
+            "other": "Other",
+            "dari": "Dari",
+            "deutsche_geb_rdensprache": "German Sign Language",
+            "igbo": "Igbo",
+            "japanisch": "Japanese",
+            "paschtu": "Pashto",
+            "s_dkoreanisch": "South Korean",
+            "yoruba": "Yoruba"
         },
         "subjects": {
             "Altgriechisch": "Ancient Greek",

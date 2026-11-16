@@ -265,7 +265,14 @@
             "ungarisch": "Угорська",
             "urdu": "Урду",
             "vietnamesisch": "В’єтнамська",
-            "other": "Інше"
+            "other": "Інше",
+            "dari": "Дарі",
+            "deutsche_geb_rdensprache": "Німецька мова жестів",
+            "igbo": "Ігбо",
+            "japanisch": "Японська",
+            "paschtu": "Пушту",
+            "s_dkoreanisch": "Південнокорейська",
+            "yoruba": "Йоруба"
         },
         "subjects": {
             "Altgriechisch": "Давньогрецька",
