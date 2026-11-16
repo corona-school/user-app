@@ -268,7 +268,7 @@ const PupilCourseButtons = ({ subcourse, refresh, isActiveSubcourse, appointment
                         {t('single.actions.contactInstructor')}
                     </Button>
                 )}
-                {!subcourse.isParticipant && subcourse.allowChatContactProspects && isActiveSubcourse && (
+                {!subcourse.isParticipant && subcourse.allowChatContactProspects && isActiveSubcourse && subcourse.canJoin.allowed && (
                     <Button variant="outline" onClick={() => contactInstructorAsProspect()} leftIcon={<IconMessage2 size={16} />} className="w-full  md:w-fit">
                         {t('single.actions.contactInstructor')}
                     </Button>

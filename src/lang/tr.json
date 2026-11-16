@@ -363,7 +363,8 @@
                     "already-started": "Kurs çoktan başladığı için artık kayıt yaptıramazsınız.",
                     "already-participant": "Bu kurs için zaten kayıtlısınız.",
                     "not-participant": "Hesabınız grup kursları için etkinleştirilmediğinden kayıt olamazsınız.lern-fair Bu kursa katılmak istiyorsanız lütfen support@ .de ile iletişime geçin.",
-                    "offer-restriction": "Bu kurslara katılmak istiyorsan, bir sonraki öğrenme desteği görüşmende bu konuyu sor."
+                    "offer-restriction": "Bu kurslara katılmak istiyorsan, bir sonraki öğrenme desteği görüşmende bu konuyu sor.",
+                    "too-many-courses": "Aynı anda en fazla 3 derse kayıt olabilirsiniz. Bu derse katılmak istiyorsanız, başka bir dersten kaydınızı silin."
                 }
             },
             "matching": {

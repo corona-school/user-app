@@ -363,7 +363,8 @@
                     "already-started": "You can no longer register for the course as it has already started.",
                     "already-participant": "You are already registered for this course.",
                     "not-participant": "You cannot register because your account is not activated for group courses. Please contact support@lern-fair.de if you would like to take part in this course.",
-                    "offer-restriction": "If you'd like to take these courses, ask about them during your next academic advising session."
+                    "offer-restriction": "If you'd like to take these courses, ask about them during your next academic advising session.",
+                    "too-many-courses": "You can only be enrolled in 3 courses at a time. Drop another course if you want to take this one."
                 }
             },
             "matching": {
