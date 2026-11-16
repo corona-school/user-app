@@ -25,12 +25,20 @@ export function EditLocationModal<T extends State>({ state, onOpenChange, isOpen
         onOpenChange(false);
     };
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max" size="md">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} size="lg">
             <ModalHeader>
                 <ModalTitle>Ort bearbeiten</ModalTitle>
             </ModalHeader>
-            <div className="flex flex-col gap-y-4">
-                <LocationSelector className="grid grid-cols-4" value={selectedValue as any} setValue={setSelectedValue as any} />
+            <div className="flex justify-center">
+                <LocationSelector
+                    className="flex flex-wrap justify-center max-w-[576px]"
+                    toggleConfig={{
+                        variant: 'outline-accent',
+                        className: 'justify-center w-auto font-semibold h-[40px] px-4',
+                    }}
+                    value={selectedValue as any}
+                    setValue={setSelectedValue as any}
+                />
             </div>
             <ModalFooter>
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>

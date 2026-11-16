@@ -6,7 +6,8 @@ import { Subject } from '@/gql/graphql';
 import { getGradeLabel, MIN_MAX_GRADE_RANGE } from '@/Utility';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { SubjectSelector } from '../SubjectSelector';
+import { SubjectOption, SubjectsSelector } from '../SubjectSelector';
+import { SingleSubject, SUBJECTS } from '@/types/subject';
 
 interface EditSubjectsModalProps extends BaseModalProps {
     subjects: Subject[];
@@ -45,6 +46,18 @@ export const EditSubjectsModal = ({ subjects, onOpenChange, isOpen, type, onSave
     const [editedSubjects, setEditedSubjects] = useState<Subject[]>(subjects);
     const { t } = useTranslation();
 
+    const subjectOptions: SubjectOption[] = SUBJECTS.map((subject) => ({ subject }));
+    const selectedSubjectNames = editedSubjects.map((it) => it.name as SingleSubject);
+    const prioritizedSubject = editedSubjects.find((it) => it.mandatory)?.name as SingleSubject;
+
+    const handleOnSubjectsChange = (names: SingleSubject[]) => {
+        setEditedSubjects((prev) => names.map((name) => prev.find((it) => it.name === name) ?? { name, mandatory: false, grade: MIN_MAX_GRADE_RANGE }));
+    };
+
+    const handleOnPrioritizedChange = (name: SingleSubject) => {
+        setEditedSubjects((prev) => prev.map((it) => ({ ...it, mandatory: it.name === name })));
+    };
+
     const handleOnSave = async () => {
         if (type === 'pupil') {
             onSave(editedSubjects.map((it) => ({ name: it.name, mandatory: it.mandatory })));
@@ -55,20 +68,17 @@ export const EditSubjectsModal = ({ subjects, onOpenChange, isOpen, type, onSave
     };
 
     return (
-        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="max-w-max" size="lg">
+        <Modal isOpen={isOpen} onOpenChange={onOpenChange} className="md:max-w-[1300px]" size="md">
             <ModalHeader>
                 <ModalTitle>Fächer bearbeiten</ModalTitle>
             </ModalHeader>
-            <div className="flex flex-col gap-y-4 max-w-[1000px] overflow-y-auto max-h-[550px]">
-                <SubjectSelector
-                    subjects={editedSubjects.map((it) => it.name)}
-                    includeDaz
-                    addSubject={(it) => {
-                        setEditedSubjects((prev) => [...prev, { name: it, mandatory: false, grade: MIN_MAX_GRADE_RANGE }]);
-                    }}
-                    removeSubject={(it) => {
-                        setEditedSubjects((prev) => prev.filter((s) => s.name !== it));
-                    }}
+            <div className="flex flex-col gap-y-4 overflow-y-auto max-h-[550px] p-2">
+                <SubjectsSelector
+                    multiple
+                    value={selectedSubjectNames}
+                    onChange={handleOnSubjectsChange}
+                    options={subjectOptions}
+                    initialVisibleOptions={subjectOptions.length}
                 />
                 {type === 'student' && (
                     <div className="flex flex-col gap-y-4">
@@ -87,13 +97,11 @@ export const EditSubjectsModal = ({ subjects, onOpenChange, isOpen, type, onSave
                 {type === 'pupil' && (
                     <>
                         <Typography className="font-bold">Priorisiertes Fach:</Typography>
-                        <SubjectSelector
-                            selectable={editedSubjects.map((it) => it.name)}
-                            subjects={editedSubjects.filter((it) => it.mandatory).map((it) => it.name)}
-                            limit={1}
-                            addSubject={(it) => setEditedSubjects((prev) => prev.map(({ name }) => ({ name, mandatory: name === it })))}
-                            removeSubject={() => setEditedSubjects((prev) => prev.map(({ name }) => ({ name, mandatory: false })))}
-                            justifyContent="left"
+                        <SubjectsSelector
+                            value={prioritizedSubject}
+                            onChange={handleOnPrioritizedChange}
+                            options={selectedSubjectNames.map((subject) => ({ subject }))}
+                            initialVisibleOptions={selectedSubjectNames.length}
                         />
                     </>
                 )}

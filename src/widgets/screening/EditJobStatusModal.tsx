@@ -19,7 +19,7 @@ export function EditJobStatusModal({ jobStatus, onOpenChange, isOpen, onSave }: 
         onOpenChange(false);
     };
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="md:max-w-auto" size="lg">
             <ModalHeader>
                 <ModalTitle>Beruflicher Status bearbeiten</ModalTitle>
             </ModalHeader>
