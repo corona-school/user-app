@@ -50,6 +50,9 @@ import {
     ET,
     IQ,
     PS,
+    AF,
+    JP,
+    KR,
 } from 'country-flag-icons/react/1x1';
 
 const languageIcons = {
@@ -61,7 +64,9 @@ const languageIcons = {
     bs: BA, // Bosnian -> Bosnia
     bg: BG, // Bulgarian -> Bulgaria
     zh: CN, // Chinese -> China
+    prs: AF, // Dari -> Afghanistan
     de: DE, // German -> Germany
+    gsg: DE, // German Sign Language -> Germany
     en: GB, // English -> Great Britain
     et: EE, // Estonian -> Estonia
     fr: FR, // French -> France
@@ -70,7 +75,9 @@ const languageIcons = {
     ha: NG, // Hausa -> Nigeria
     he: IL, // Hebrew -> Israel
     hi: IN, // Hindi -> India
+    ig: NG, // Igbo -> Nigeria
     it: IT, // Italian -> Italy
+    ja: JP, // Japanese -> Japan
     kk: KZ, // Kazakh -> Kazakhstan
     hr: HR, // Croatian -> Croatia
     ku: IQ, // Kurdish -> Iraq
@@ -79,6 +86,7 @@ const languageIcons = {
     ml: IN, // Malayalam -> India
     mk: MK, // Macedonian -> North Macedonia
     nl: NL, // Dutch -> Netherlands
+    ps: AF, // Pashto -> Afghanistan
     fa: IR, // Persian -> Iran
     pl: PL, // Polish -> Poland
     pt: PT, // Portuguese -> Portugal
@@ -88,6 +96,7 @@ const languageIcons = {
     sk: SK, // Slovak -> Slovakia
     so: SO, // Somali -> Somalia
     es: ES, // Spanish -> Spain
+    ko: KR, // Korean -> South Korea
     tg: TJ, // Tajik -> Tajikistan
     th: TH, // Thai -> Thailand
     ti: ER, // Tigrinya -> Eritrea
@@ -97,6 +106,7 @@ const languageIcons = {
     hu: HU, // Hungarian -> Hungary
     ur: PK, // Urdu -> Pakistan
     vi: VN, // Vietnamese -> Vietnam
+    yo: NG, // Yoruba -> Nigeria
 };
 
 // DO NOT USE THIS DIRECTLY, only use the <IconLoader />!

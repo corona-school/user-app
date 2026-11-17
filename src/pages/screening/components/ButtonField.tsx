@@ -15,9 +15,16 @@ export const ButtonField = ({ onClick, children, label, disabled, className }: B
     return (
         <>
             <Label>{label}</Label>
-            <Button variant="input" size="input" onClick={onClick} className={cn(className)} disabled={disabled}>
-                <span className="w-full flex items-center justify-between min-w-[200px]">
-                    <span>{children}</span> <IconPencil className="text-gray-400" />
+            <Button
+                variant="input"
+                size="input"
+                onClick={onClick}
+                className={cn('max-w-full', className)}
+                disabled={disabled}
+                title={typeof children === 'string' ? children : undefined}
+            >
+                <span className="w-full flex items-center justify-between gap-x-2 min-w-[200px]">
+                    <span className="truncate min-w-0 text-left">{children}</span> <IconPencil className="text-gray-400 shrink-0" />
                 </span>
             </Button>
         </>

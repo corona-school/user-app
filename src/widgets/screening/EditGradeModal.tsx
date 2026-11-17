@@ -18,12 +18,20 @@ export function EditGradeModal({ grade, onOpenChange, isOpen, onSave }: EditGrad
         onOpenChange(false);
     };
     return (
-        <Modal onOpenChange={onOpenChange} isOpen={isOpen} className="max-w-max">
+        <Modal onOpenChange={onOpenChange} isOpen={isOpen} size="lg">
             <ModalHeader>
                 <ModalTitle>Klasse bearbeiten</ModalTitle>
             </ModalHeader>
-            <div className="flex flex-col gap-y-4">
-                <GradeSelector className="grid grid-cols-5" grade={selectedGrade} onGradeChange={setSelectedGrade} />
+            <div className="flex justify-center">
+                <GradeSelector
+                    className="flex flex-wrap justify-center max-w-[576px]"
+                    grade={selectedGrade}
+                    onGradeChange={setSelectedGrade}
+                    toggleConfig={{
+                        variant: 'outline-accent',
+                        className: 'justify-center w-auto font-semibold h-[40px] px-4',
+                    }}
+                />
             </div>
             <ModalFooter>
                 <Button className="w-full lg:w-fit" variant="outline" onClick={() => onOpenChange(false)}>

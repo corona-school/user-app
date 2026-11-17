@@ -149,7 +149,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     </Typography>
                 </div>
                 <div className="flex flex-col gap-y-2">
-                    <ButtonField className="min-w-[350px]" label="Fächer" onClick={() => setShowEditSubjects(true)}>
+                    <ButtonField className="w-[350px]" label="Fächer" onClick={() => setShowEditSubjects(true)}>
                         {subjects.map((e) => t(asTranslationKey(`lernfair.subjects.${e.name}`))).join(', ') ?? 'Fächer bearbeiten'}
                     </ButtonField>
                     <Typography variant="sm" className="text-destructive">
@@ -157,7 +157,7 @@ const PersonalDetails = ({ pupil, refresh, form, isUpdating, updatePupil }: Pers
                     </Typography>
                 </div>
                 <div className="flex flex-col gap-y-2">
-                    <ButtonField className="min-w-[350px]" label="Gesprochene Sprachen" onClick={() => setShowEditLanguages(true)}>
+                    <ButtonField className="w-[350px]" label="Gesprochene Sprachen" onClick={() => setShowEditLanguages(true)}>
                         {languages.map((e) => t(asTranslationKey(`lernfair.languages.${e.toLowerCase()}`))).join(', ') ?? 'Sprachen bearbeiten'}
                     </ButtonField>
                     <Typography variant="sm" className="text-destructive">

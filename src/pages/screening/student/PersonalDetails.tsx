@@ -261,12 +261,12 @@ const PersonalDetails = ({ student, refresh }: PersonalDetailsProps) => {
                     </div>
                 </div>
                 <div className="flex flex-wrap gap-6">
-                    <div className="flex flex-col gap-y-2 flex-1">
+                    <div className="flex flex-col gap-y-2 flex-1 min-w-0">
                         <ButtonField className="min-w-full" label="Fächer" onClick={() => setShowEditSubjects(true)}>
                             {subjects.map((e) => t(asTranslationKey(`lernfair.subjects.${e.name}`))).join(', ') ?? 'Fächer bearbeiten'}
                         </ButtonField>
                     </div>
-                    <div className="flex flex-col gap-y-2 flex-1">
+                    <div className="flex flex-col gap-y-2 flex-1 min-w-0">
                         <ButtonField className="min-w-full" label="Gesprochene Sprachen" onClick={() => setShowEditLanguages(true)}>
                             {languages.map((e) => t(asTranslationKey(`lernfair.languages.${e.toLowerCase()}`))).join(', ') ?? 'Sprachen bearbeiten'}
                         </ButtonField>

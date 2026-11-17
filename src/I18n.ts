@@ -31,7 +31,9 @@ export const languageList = [
     { short: 'bs', long: 'bosnisch' },
     { short: 'bg', long: 'bulgarisch' },
     { short: 'zh', long: 'chinesisch' },
+    { short: 'prs', long: 'dari' },
     { short: 'de', long: 'deutsch' },
+    { short: 'gsg', long: 'deutsche_geb_rdensprache' },
     { short: 'en', long: 'englisch' },
     { short: 'et', long: 'estnisch' },
     { short: 'fr', long: 'franz_sisch' },
@@ -40,7 +42,9 @@ export const languageList = [
     { short: 'ha', long: 'hausa' },
     { short: 'he', long: 'hebr_isch' },
     { short: 'hi', long: 'hindi' },
+    { short: 'ig', long: 'igbo' },
     { short: 'it', long: 'italienisch' },
+    { short: 'ja', long: 'japanisch' },
     { short: 'kk', long: 'kasachisch' },
     { short: 'hr', long: 'kroatisch' },
     { short: 'ku', long: 'kurdisch' },
@@ -49,6 +53,7 @@ export const languageList = [
     { short: 'ml', long: 'malayalam' },
     { short: 'mk', long: 'mazedonisch' },
     { short: 'nl', long: 'niederl_ndisch' },
+    { short: 'ps', long: 'paschtu' },
     { short: 'fa', long: 'persisch' },
     { short: 'pl', long: 'polnisch' },
     { short: 'pt', long: 'portugiesisch' },
@@ -58,6 +63,7 @@ export const languageList = [
     { short: 'sk', long: 'slowakisch' },
     { short: 'so', long: 'somali' },
     { short: 'es', long: 'spanisch' },
+    { short: 'ko', long: 's_dkoreanisch' },
     { short: 'tg', long: 'tadschikisch' },
     { short: 'th', long: 'thail_ndisch' },
     { short: 'ti', long: 'tigrinya' },
@@ -67,6 +73,7 @@ export const languageList = [
     { short: 'hu', long: 'ungarisch' },
     { short: 'ur', long: 'urdu' },
     { short: 'vi', long: 'vietnamesisch' },
+    { short: 'yo', long: 'yoruba' },
 ];
 
 export const defaultLang = 'de';
