@@ -15,7 +15,6 @@ import CreateCourse from '../pages/CreateCourse';
 import DashboardStudent from '../pages/student/DashboardStudent';
 
 import ProfileStudent from '../pages/student/ProfileStudent';
-import RequestCertificate from '../pages/RequestCertificate';
 import PupilGroup from '../pages/pupil/Group';
 import VerifyEmail from '../pages/VerifyEmail';
 import ResetPassword from '../pages/ResetPassword';
@@ -189,15 +188,6 @@ export default function NavigatorLazy() {
                     </RequireAuth>
                 }
             ></Route>
-
-            <Route
-                path="/request-certificate"
-                element={
-                    <RequireAuth>
-                        <RequestCertificate />
-                    </RequireAuth>
-                }
-            />
 
             <Route
                 path="/certificate-of-conduct"

@@ -2364,51 +2364,6 @@
         "header": "Your successes"
     },
     "certificate": {
-        "request": {
-            "title": "Apply for a certificate",
-            "subtitle": "We would like to thank you for your commitment at Lern-Fair ! We will be happy to issue you with a certificate for your work.",
-            "subtitle2": "A detailed Lern-Fair certificate consists of the following two parts:",
-            "part1_title": "1. confirmation by Lern-Fair",
-            "part1_1": "Register on our platform",
-            "part1_2": "Going through a screening interview",
-            "part1_3": "Referral to a:n pupil",
-            "part2_title": "2. confirmation by pupil",
-            "part2_1": "Extent of the activity",
-            "part2_2": "Contents of the activity",
-            "procedure": "You can apply for the certificate here and will receive a notification as soon as your commitment has been confirmed by your learning partner. From then on, you will also find the certificate in your profile.",
-            "apply": "Apply for a detailed certificate"
-        },
-        "request_page2": {
-            "title": "At which pupils would you like to apply for a certificate?",
-            "card_content": "Apply for a certificate",
-            "reason_btn_disabled": "You must select a:n pupil ."
-        },
-        "request_for_match": {
-            "activities": {
-                "title": "Activity",
-                "subtitle": "Select the activities with which you supported your learning partners",
-                "preparation": "Preparation, planning and organization of lessons",
-                "visualization": "Processing and communicating lesson content",
-                "visualization_digital": "Digital preparation and illustration of lesson content",
-                "repetition": "Consolidation and repetition of lesson content",
-                "homework": "Working on exercises and homework together",
-                "correct_homework": "Correction of exercises and homework",
-                "prepare_exam": "Digital support for exam preparation",
-                "help_learning": "Digital support for learning",
-                "other": "Other"
-            },
-            "title": "Details",
-            "subtitle": "For each pupil, indicate the extent to which you have supported them.",
-            "step": "Schüler:in {{current}} von {{total}}",
-            "from": "from the period",
-            "to": "until",
-            "continues": "Support is still ongoing",
-            "not_a_number": "You must enter a number here.",
-            "hours_per_week": "Hours per week (average)",
-            "hours_total": "Total hours",
-            "next_pupil": "Next pupil",
-            "submit": "Request now"
-        },
         "download": {
             "state": "Status",
             "state_manual": "Manual",

@@ -2364,51 +2364,6 @@
         "header": "Başarılarınız"
     },
     "certificate": {
-        "request": {
-            "title": "Sertifika için başvurun",
-            "subtitle": "Lern-Fair 'daki bağlılığınız için size teşekkür etmek isteriz. Çalışmalarınız için size bir sertifika vermekten mutluluk duyacağız.",
-            "subtitle2": "Eksiksiz bir Lern Fair sertifikası aşağıdaki iki bölümden oluşur:",
-            "part1_title": "1. tarafından onaylanması Lern-Fair",
-            "part1_1": "Platformumuza kaydolun",
-            "part1_2": "Uygunluk mülakatına katılma",
-            "part1_3": "Bir öğrenciye rehberlik etme",
-            "part2_title": "Öğrenci tarafından 2. onay",
-            "part2_1": "Faaliyetin kapsamı",
-            "part2_2": "Faaliyetin içeriği",
-            "procedure": "Sertifika için buradan başvurabilirsiniz ve taahhüdünüz öğrenciniz tarafından onaylanır onaylanmaz bir bildirim alacaksınız. O andan itibaren sertifikayı profilinizde de bulacaksınız.",
-            "apply": "Tam belge için talep edin"
-        },
-        "request_page2": {
-            "title": "Hangi öğrenciler için sertifika başvurusunda bulunmak istersiniz?",
-            "card_content": "Sertifika için başvurun",
-            "reason_btn_disabled": "Bir öğrenci seçmelisiniz."
-        },
-        "request_for_match": {
-            "activities": {
-                "title": "Faaliyet",
-                "subtitle": "Öğrenme ortaklarınızı desteklediğiniz etkinlikleri seçin",
-                "preparation": "Derslerin hazırlanması, planlanması ve düzenlenmesi",
-                "visualization": "Ders içeriğinin işlenmesi ve iletilmesi",
-                "visualization_digital": "Ders içeriğinin dijital olarak hazırlanması ve görselleştirilmesi",
-                "repetition": "Ders içeriğinin pekiştirilmesi ve tekrarı",
-                "homework": "Alıştırmalar ve ev ödevleri üzerinde birlikte çalışmak",
-                "correct_homework": "Alıştırma ve ev ödevlerinin düzeltilmesi",
-                "prepare_exam": "Sınav hazırlığı için dijital destek",
-                "help_learning": "Öğrenim için dijital destek",
-                "other": "Diğer"
-            },
-            "title": "Detaylar",
-            "subtitle": "Her bir öğrenci için, onları ne ölçüde desteklediğinizi belirtiniz.",
-            "step": "Schüler:in {{current}} von {{total}}",
-            "from": "döneminden itibaren",
-            "to": "kadar",
-            "continues": "Destek hala devam ediyor",
-            "not_a_number": "Buraya bir sayı girmelisiniz.",
-            "hours_per_week": "Haftalık saat (ortalama)",
-            "hours_total": "Toplam saat",
-            "next_pupil": "Sonraki öğrenci",
-            "submit": "Şimdi talep edin"
-        },
         "download": {
             "state": "Durum",
             "state_manual": "Manuel",
