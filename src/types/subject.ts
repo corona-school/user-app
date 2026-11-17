@@ -39,8 +39,6 @@ export const SUBJECTS = [
 
 export type SingleSubject = typeof SUBJECTS[number];
 
-export const SUBJECTS_MAIN: SingleSubject[] = ['Deutsch', 'Deutsch als Zweitsprache', 'Englisch', 'Mathematik'];
-
 export const SUBJECTS_MINOR: SingleSubject[] = ['Französisch', 'Biologie', 'Physik', 'Chemie'];
 
 export const SUBJECTS_RARE: SingleSubject[] = [
