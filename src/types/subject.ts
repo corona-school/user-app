@@ -39,8 +39,6 @@ export const SUBJECTS = [
 
 export type SingleSubject = typeof SUBJECTS[number];
 
-export const SUBJECTS_MAIN: SingleSubject[] = ['Deutsch', 'Deutsch als Zweitsprache', 'Englisch', 'Mathematik'];
-
 export const SUBJECTS_MINOR: SingleSubject[] = ['Französisch', 'Biologie', 'Physik', 'Chemie'];
 
 export const SUBJECTS_RARE: SingleSubject[] = [
@@ -62,43 +60,6 @@ export const SUBJECTS_RARE: SingleSubject[] = [
     'Steuerlehre',
     'Rechnungswesen',
 ];
-
-// Unfortunately this mapping is necessary as paths need to be ASCII to work reliably in the build setup
-export const SUBJECT_TO_ICON: { [subject in SingleSubject]: string } = {
-    'Deutsch als Zweitsprache': 'deutsch_als_zweitsprache',
-    Deutsch: 'deutsch',
-    Altgriechisch: 'altgriechisch',
-    Arbeitslehre: 'arbeitslehre',
-    Biologie: 'biologie',
-    Chemie: 'chemie',
-    Chinesisch: 'chinesisch',
-    Englisch: 'englisch',
-    Erdkunde: 'erdkunde',
-    Ethik: 'ethik',
-    Französisch: 'franzoesisch',
-    Geschichte: 'geschichte',
-    Gesundheit: 'gesundheit',
-    Informatik: 'informatik',
-    Italienisch: 'italienisch',
-    Kunst: 'kunst',
-    Latein: 'latein',
-    Mathematik: 'mathematik',
-    Musik: 'musik',
-    Niederländisch: 'niederlaendisch',
-    Philosophie: 'philosophie',
-    Physik: 'physik',
-    Politik: 'politik',
-    Pädagogik: 'paedagogik',
-    Religion: 'religion',
-    Russisch: 'russisch',
-    Sachkunde: 'sachkunde',
-    Spanisch: 'spanisch',
-    Technik: 'technik',
-    Wirtschaft: 'wirtschaft',
-    'Lernen lernen': 'lernen_lernen',
-    Steuerlehre: 'sachkunde',
-    Rechnungswesen: 'wirtschaft',
-};
 
 // Unfortunately this mapping is necessary as our two ORMs have problems with non ASCII chars:
 export const SUBJECT_TO_COURSE_SUBJECT: { [subject in SingleSubject]: Course_Subject_Enum } = {

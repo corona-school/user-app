@@ -10,7 +10,6 @@ import { MatchCertificateCard } from '@/widgets/certificates/MatchCertificateCar
 import { gql } from '@/gql';
 import { useMutation, useQuery } from '@apollo/client';
 import { Button } from '@/components/Button';
-import { useNavigate } from 'react-router-dom';
 import { downloadFile } from '@/helper/download-file';
 import { BACKEND_URL } from '@/config';
 import { Modal, ModalHeader, ModalTitle } from '@/components/Modal';
@@ -51,7 +50,6 @@ query Certificates {
 const CertificatesPage: React.FC = () => {
     const { t } = useTranslation();
     const { data } = useQuery(query);
-    const navigate = useNavigate();
     const { trackEvent } = useMatomo();
     const [hasCompletedTraining, setHasCompletedTraining] = useState<CheckedState>(false);
 
@@ -86,15 +84,6 @@ const CertificatesPage: React.FC = () => {
         } else {
             toast.error(t('certificate.download.error'));
         }
-    };
-
-    const handleRequestCertificate = () => {
-        trackEvent({
-            category: 'HuH Certificates',
-            action: 'Certificate requested',
-            name: 'Customized Certificate requested',
-        });
-        navigate('/request-certificate');
     };
 
     return (
@@ -143,15 +132,6 @@ const CertificatesPage: React.FC = () => {
                     </div>
                 </Modal>
 
-                {/* <Typography variant="h3" className="mb-4 mt-4">
-                    {t('certificates.participationCertificate.title')}
-                </Typography>
-                <div className="flex flex-col">
-                    <BulletList bulletPoints={t('certificates.participationCertificate.bullets', { returnObjects: true })} />
-                </div>
-                <Button onClick={handleRequestCertificate} className="my-2">
-                    {t('profile.Helper.certificate.button')}
-                </Button> */}
                 <Alert className="md:max-w-[80%] my-4" title={t('certificates.participationCertificate.title')} variant="default">
                     <Typography>
                         <Trans

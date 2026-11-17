@@ -8,13 +8,7 @@
             "noAppointments": "Tarih yok",
             "noAppointmentsDesc": "Size henüz herhangi bir tarih atanmadı.",
             "noFurtherAppointments": "Başka tarih yok",
-            "noFurtherDesc": "Geçmiş tarihleri görmek için yukarı kaydırın.",
-            "createNewAppointmentDesc": "Şimdi ilk kurs tarihini oluşturun.",
-            "noPublishedAppointmentsDesc": "Henüz herhangi bir tarih yayınlanmamıştır."
-        },
-        "tile": {
-            "videoButton": "Görüntülü sohbete katılın",
-            "clock": "Saat"
+            "noFurtherDesc": "Geçmiş tarihleri görmek için yukarı kaydırın."
         },
         "clock": {
             "startToEnd": "{{start}} - {{end}} Saat",
@@ -68,13 +62,11 @@
             "descriptionPlaceholder": "Kısa ve anlaşılır bir açıklama ekleyin...",
             "inputPlaceholder": "Konu (isteğe bağlı)",
             "weeklyRepeat": "Haftalık tekrarlayın...",
-            "emptyFieldError": "Başlık boş olmamalıdır",
             "emptySelectError": "Seçim boş olmamalıdır",
             "emptyDateError": "Tarih boş olmamalıdır",
             "wrongDateError": "Tarih en erken bir hafta içinde olabilir",
             "emptyTimeError": "Zaman boş olmamalı",
             "wrongVideoUrlError": "Lütfen geçerli bir video bağlantısı girin.",
-            "courseImageAltText": "Kurs görüntüsü",
             "videoChatLabel": "Görüntülü sohbet",
             "videoChatPlaceholder": "Görüntülü sohbete kendi bağlantınızı ekleyin",
             "save": "Randevuyu kaydet",
@@ -94,11 +86,7 @@
                     "isCancelled": "Bu randevuyu zaten iptal etmiştiniz."
                 }
             },
-            "group": "{{instructor}} ile grup randevusu",
-            "oneToOne": "{{instructor}} ile tek randevu",
-            "without": "{{instructor}} ile randevu",
             "appointmentTitle": "{{appointmentTitle}}",
-            "courseName": "Kurs: {{courseName}}",
             "time": "{{start}} - {{end}} Saat ({{duration}} dakika)",
             "repeatDate": "{{appointmentCount}}. toplam {{appointmentsTotal}} üzerinden randevular",
             "videochatButton": "Görüntülü sohbete şimdi katılın",
@@ -140,23 +128,18 @@
             "pupil": "Öğrenciler"
         },
         "errors": {
-            "title": "Başlık boş olmamalıdır",
             "date": "Tarih boş olmamalıdır",
             "dateMinOneWeek": "Tarih en erken bir hafta içinde olabilir",
             "timeNotInFiveMin": "Zaman en erken 5 dakika sonra olabilir.",
             "time": "Zaman boş olmamalı",
-            "duration": "Süre boş olmamalıdır",
-            "videoChat": "Görüntülü sohbet seçilmelidir"
+            "duration": "Süre boş olmamalıdır"
         },
         "title": "Tarihler",
         "saveChanges": "Değişiklikleri kaydet",
         "editSuccess": "Tarih başarıyla değiştirildi",
-        "deleteAppointment": "Randevu sil",
         "goBack": "önceki sayfaya",
         "loadPastAppointments": "Geçmiş tarihleri yükle",
         "loadedPastAppointments": "Geçmiş tarihler yüklendi",
-        "courseNotPublished": "Bu tarihle ilişkili kurs henüz inceleme için yayınlanmamıştır.",
-        "noNextAppointment": "Bir sonraki randevu yok.",
         "addToCalendar": "Takvime ekle"
     },
     "login": {
@@ -182,7 +165,6 @@
             }
         },
         "accountNotFound": {
-            "title": "Giriş başarısız",
             "alert_html": "Bu e-posta adresine sahip bir hesap bulunamadı."
         },
         "accountDeactivated": {
@@ -195,21 +177,18 @@
         "title": "Kayıt",
         "error": "Giriş bilgileriniz bizim bilgilerimizle eşleşmiyor. Lütfen bilgilerinizi kontrol edin.",
         "forgotPassword": "Şifrenizi mi unuttunuz?",
-        "signupNew": "Yeni kayıt oluştur",
         "currentEmail": "Güncel e-posta",
         "setNewEmail": "E-postayı yeniden ayarla",
         "changeEmail": "E-posta değiştir",
         "emailVerification": "Email bestätigt",
         "succesEmailVerification": "Du kannst deine E-Mail-Adresse später in deinem Profil ändern.",
         "invalidToken": "Belirteç geçersiz",
-        "invalidMailMessage": "Girdiğiniz e-posta adresi yanlış.",
         "newEmail": "Yeni e-posta",
         "changeEmailConfirmation": "Yeni e-posta adresinize bir onay e-postası gönderdik",
         "reauthenticate": {
             "title": "Tekrar kaydolun",
             "passwordDescription": "Bağlama işlemini tamamlamak için lütfen şifrenizle tekrar giriş yapın. Lütfen bunu yalnızca bir kez yapmanız gerektiğini unutmayın."
         },
-        "continueWith": "{{idp}} ile devam edin",
         "linkAccountWithIdpError": "Hesabınızı bir kimlik sağlayıcısına bağlamak için bir parola gerekir. Lütfen önce bir parola belirleyin",
         "loginWith": "{{method}} ile giriş yap",
         "noaccount": "Henüz bir hesabınız yok mu?",
@@ -357,11 +336,6 @@
         },
         "reason": {
             "course": {
-                "instructor": {
-                    "not-instructor": "Henüz bir kurs eğitmeni olarak kayıtlı değilsiniz.",
-                    "not-screened": "Henüz bir kurs eğitmeni olarak etkinleştirilmediniz. Lütfen önce bizimle tanışma toplantınızı yapın.",
-                    "null": "Aslında yeni kurslar oluşturmanıza izin veriliyor ... Tekrar kayıt olmayı deneyin ..."
-                },
                 "pupil": {
                     "subcourse-full": "Maalesef bu kurs tamamen doludur.",
                     "grade-to-high": "Belirlenen sınıf seviyesinde olmadığınız için bu kursa kayıt yaptıramazsınız. Kurs daha küçük öğrenciler için tasarlanmıştır.",
@@ -402,9 +376,6 @@
     },
     "registration": {
         "hint": {
-            "schoolClassSelectionMissing": "Lütfen bir okul sınıfı seçin.",
-            "schoolTypeSelectionMissing": "Lütfen bir okul türü seçiniz.",
-            "userStateSelectionMissing": "Lütfen bir okul konumu seçin.",
             "password": {
                 "length": "Parola en az 6 karakter içermelidir.",
                 "nomatch": "Parolalar eşleşmiyor"
@@ -412,12 +383,7 @@
             "email": {
                 "invalid": "Geçersiz e-posta adresi",
                 "unavailable": "Bu e-posta adresi zaten girilmis"
-            },
-            "userType": {
-                "missing": "Lütfen rolünüzü tanımlayın"
-            },
-            "name": "Lütfen tam adınızı girin",
-            "radioSelectionMissing": "Lütfen bir seçenek seçin"
+            }
         },
         "steps": {
             "userType": {
@@ -572,10 +538,6 @@
                 "title": "Yakında senden haber alacaksın!",
                 "description": "Genelde yaklaşık bir hafta sürüyor..."
             },
-            "personalData": {
-                "title": "Kişisel Bilgiler",
-                "subtitle": "Kişisel Bilgiler"
-            },
             "grade": {
                 "title": "Hangi sınıftasın?"
             },
@@ -591,7 +553,6 @@
             },
             "zipCode": {
                 "title": "Posta kodun nedir?",
-                "doNotKnow": "Bilmiyorum",
                 "descriptionPupil": "Posta kodu bize hangi bölgeden kayıt yaptırdığınızı gösterir. Posta kodunuz gizli kalacaktır. Yardımcılar bunu görmeyecektir.",
                 "descriptionStudent": "Bu bilgileri asla öğrencilere aktarmayız. Posta kodunuz iç değerlendirmede bize yardımcı olur."
             },
@@ -615,22 +576,9 @@
                 ],
                 "acceptLabel": "Kurallara uymayı kabul ediyorum."
             },
-            "state": {
-                "title": "Okul Yeri",
-                "subtitle": "Nerede okula gidiyorsun?",
-                "weightingNote": "Okul yerini sadece opsiyonel bir kriter olarak dikkate alıyoruz. Uygunluğa göre, öğrenme partnerin başka bir bölgeden olabilir."
-            },
-            "legal": {
-                "title": "Onaylar",
-                "subtitle": "Onaylar"
-            },
             "userGender": {
                 "title": "Kendinizi hangi cinsiyette görüyorsunuz?",
-                "description": "Bu bilgileri, belirli öğrencileri bireysel durumlarda yalnızca istenen cinsiyetteki yardımcılarla eşleştirmek için kullanıyoruz. Bu bilgi gönüllülük esasına dayanmaktadır.",
-                "male": "Erkek",
-                "female": "Kadın",
-                "diverse": "Farklı / ikili olmayan",
-                "other": "Bilgi yok"
+                "description": "Bu bilgileri, belirli öğrencileri bireysel durumlarda yalnızca istenen cinsiyetteki yardımcılarla eşleştirmek için kullanıyoruz. Bu bilgi gönüllülük esasına dayanmaktadır."
             },
             "jobStatus": {
                 "title": "Was beschreibt dich am besten?",
@@ -654,9 +602,6 @@
             "isFromUniCooperation": {
                 "title": "Bir üniversite iş birliğinden mi geliyorsun?"
             },
-            "uniCooperation": {
-                "title": "Üniversitenin adı nedir?"
-            },
             "uniCooperationConfirmation": {
                 "title": "Üniversite iş birliği üzerinden kaydınız neredeyse tamamlandı!",
                 "description": "Ekibimiz yanıtlarınızı inceleyecek ve genellikle birkaç gün içinde sonraki adımlarla ilgili olarak e-posta yoluyla size geri dönecektir.",
@@ -673,17 +618,8 @@
         "verifyemail": {
             "resend": {
                 "successAlert": "Size onay e-postasını yeniden gönderdik. Lütfen gelen kutunuzu ve ayrıca spam kutunuzu kontrol edin.",
-                "failedAlert": "Maalesef bir hata oluştu. Lütfen daha sonra tekrar deneyin.",
-                "button": "Onay e-postasını tekrar gönder"
-            },
-            "backToWelcomeButton": "Giriş alanına",
-            "notreceived": {
-                "title": "E-posta alınmadı mı?",
-                "description": "Ayrıca spam klasörünüzü de kontrol edin"
-            },
-            "title": "E-posta adresinizi onaylayın",
-            "mailsendto": "Bir e-posta gönderdik:",
-            "description": "E-posta adresinizi onayladıktan sonra otomatik olarak buraya yönlendirileceksiniz."
+                "failedAlert": "Maalesef bir hata oluştu. Lütfen daha sonra tekrar deneyin."
+            }
         },
         "emailOwnerOptions": {
             "pupil": "Öğrenci: E-postada",
@@ -703,11 +639,6 @@
         "subtitle": {
             "pupil": "Sıkça sorulan sorular için buraya tıklayın veya ekibimizle iletişime geçin.",
             "student": "Pedagojik ve teknik yardımlarımızı, sıkça sorulan sorularımızı görmek için buraya tıklayın veya ekibimize ulaşın."
-        },
-        "onboarding": {
-            "title": "Onboarding",
-            "content": "Onboarding için buraya tıklayın.",
-            "button": "Onboarding  için"
         },
         "faq": {
             "tabName": "Sıkça sorulan sorular"
@@ -733,9 +664,6 @@
             "tabName": "Bize ulaşın",
             "title": "İletişim formu",
             "content": "Herhangi bir sorunuz veya yardıma ihtiyacınız mı var? İletişim formunu kullanarak bize yazın, size yardımcı olmaktan mutluluk duyacağız.",
-            "popupTitle": "Çok teşekkürler!",
-            "popupContent": "Lern-Fair Ekibimize ilettiğiniz mesajınızı aldık. En kısa sürede size geri dönüş yapacağız.",
-            "popupBtn": "Kullanıcı alanına geri dön",
             "success": "Mesajınız başarıyla gönderildi",
             "error": "Üzgünüz, mesajınız gönderilemedi"
         },
@@ -763,8 +691,7 @@
                 "email": "E-posta adresiniz"
             },
             "popup": {
-                "header": "İsim değiştir",
-                "label": "Senin adın"
+                "header": "İsim değiştir"
             }
         },
         "AboutMe": {
@@ -772,20 +699,14 @@
                 "header": "Hakkımda Metnini değiştir",
                 "label": "Sizin metniniz"
             },
-            "label": "Benim hakkımda",
-            "empty": "Bilgi yok"
+            "label": "Benim hakkımda"
         },
         "Languages": {
             "single": {
-                "optional": {
-                    "label": "Diğer okul türleri",
-                    "placeholder": "Okul türünüzü girin."
-                },
                 "header": "Dili değiştir",
                 "title": "Benim dillerim",
                 "others": "Diğer diller"
             },
-            "empty": "Bilgi yok",
             "labelPupil": "Evde hangi dilleri konuşuyorsunuz?",
             "labelStudent": "Hangi dillerde yardımcı olabilirsiniz?"
         },
@@ -793,26 +714,17 @@
             "single": {
                 "selectedStates": "Okul konumum",
                 "otherStates": "Diğer (federal) eyaletler",
-                "header": "Okul yerini değiştirin",
-                "title": "Okul konumum",
-                "others": "Okul yerini seçin"
+                "header": "Okul yerini değiştirin"
             },
-            "empty": "Bilgi yok",
-            "label": "Okul konumu",
-            "weightingNote": "Bir öğrenim partneri yerleştirirken okulun bulunduğu yeri yalnızca isteğe bağlı bir kriter olarak değerlendiriyoruz. Müsaitlik durumuna bağlı olarak, gelecekteki öğrenim ortağınız farklı bir bölgeden gelebilir."
+            "label": "Okul konumu"
         },
         "SchoolType": {
             "single": {
-                "optional": {
-                    "label": "Diğer okul türleri",
-                    "placeholder": "Okul türünüzü girin."
-                },
                 "header": "Okul türünü değiştir",
                 "title": "Benim okul türüm",
                 "others": "Diğer okul türleri"
             },
-            "label": "Okul türü",
-            "empty": "Bilgi yok"
+            "label": "Okul türü"
         },
         "SchoolClass": {
             "single": {
@@ -824,41 +736,13 @@
                 "title": "Seçilen okul sınıfı",
                 "others": "Diğer sınıflar"
             },
-            "label": "Sınıf",
-            "empty": "Bilgi yok"
-        },
-        "subjects": {
-            "single": {
-                "title": "Benim konularım"
-            },
-            "label": "Benim konularım",
-            "empty": "Belirtilen konu yok"
-        },
-        "NeedHelpIn": {
-            "single": {
-                "optional": {
-                    "label": "Diğer konu",
-                    "placeholder": "Hangi konuları seçmek istersiniz?"
-                },
-                "header": "Konulari değiştirin",
-                "title": "Yardım almak istediğim konular",
-                "others": "Diğer konuları seçin"
-            },
-            "label": "Yardım almak istediğim konular",
-            "empty": "Hiçbir konu belirtilmemiştir"
-        },
-        "Helper": {
-            "certificate": {
-                "title": "Sertifikalarım",
-                "button": "Sertifika talep edin"
-            }
+            "label": "Sınıf"
         },
         "Notice": {
             "noLanguage": "Herhangi bir dil belirtilmemiştir",
             "noState": "Okul yeri belirtilmemiştir",
             "noSchoolType": "Herhangi bir okul türü belirtilmemiştir",
-            "noSchoolGrade": "Sınıf belirtilmedi",
-            "noSchoolSubject": "Hiçbir konu belirtilmemiştir"
+            "noSchoolGrade": "Sınıf belirtilmedi"
         },
         "Deactivate": {
             "modal": {
@@ -870,8 +754,7 @@
                     "student": "Hesabınızı devre dışı bıraktığınız anda öğrenim çiftleriniz feshedilecek ve kurslarınız iptal edilecektir. Aktif öğrenim ortaklarınızı bu değişiklik hakkında otomatik olarak bilgilendireceğiz. Lern-Fair Daha sonraki bir tarihte tekrar bir parçası olmak isterseniz, istediğiniz zaman bizimle iletişime geçebilirsiniz."
                 },
                 "title": "Hesabı devre dışı bırak",
-                "btn": "Hesabı devre dışı bırak",
-                "tooltip": "Bir sebep göstermelisiniz."
+                "btn": "Hesabı devre dışı bırak"
             },
             "error": "Hesabınız devre dışı bırakılamadı.",
             "success": "Hesabınız devre dışı bırakıldı.",
@@ -890,9 +773,6 @@
         "title": "Benim profilim",
         "successmessage": "Değişiklikler başarıyla kaydedildi.",
         "errormessage": "Değişiklikleriniz kaydedilemedi.",
-        "editprofile": "Profil resmini değiştir",
-        "birthday": "Doğum tarihini değiştir",
-        "type": "Destek türü:",
         "noInfo": "Bilgi yok",
         "PersonalData": "Kişisel veriler",
         "availability": "Ne zaman vaktin var?",
@@ -900,7 +780,6 @@
             "zipCode": "Posta kodu",
             "requiredLength": "Posta kodu {{length}} olmalıdır rakamlar."
         },
-        "Gender": "Cinsiyet",
         "Grade": {
             "label": "Hangi sınıftasın?"
         }
@@ -921,22 +800,9 @@
                 "submitted": "İnceleme altında"
             },
             "clockFrom": "daha",
-            "from": "gelen",
             "clock": "Saat",
-            "category": "Kategori",
-            "participating": "Katılımcılar",
-            "quantity": "Sayı",
-            "lesson": "Ders",
-            "lessons": "Dersler",
-            "duration": "Süre",
-            "tutor": "Eğitmen",
-            "more_tutors": "Diğer eğitmenler",
-            "hours": "Saat(ler)",
             "state": "Durum:",
-            "noMembers": "Henüz katılımcı yok.",
-            "noLections": "Hiçbir ders girilmemiştir.",
-            "leaveCourse": "Kurstan ayrılın",
-            "signOut": "Kursunuzdan ayrılın"
+            "noMembers": "Henüz katılımcı yok."
         },
         "tabs": {
             "description": "Açıklama",
@@ -962,9 +828,7 @@
                 "ongoing": "O zamandan beri çalışıyor",
                 "ended": "Çoktan bitti"
             },
-            "expandCardButton": "Daha fazla bilgi",
             "alreadyRegistered": "Bu kurs için zaten kayıtlısınız.",
-            "waitingListMember": "Bu kurs için zaten bekleme listesindesiniz",
             "appointments": "{{count}} Tarih(ler)"
         },
         "contact": {
@@ -975,11 +839,7 @@
         "actions": {
             "leaveSubcourse": "Kurstan ayrılın",
             "joinWaitinglist": " Bekleme listesine alın",
-            "leaveWaitinglist": "Bekleme listesinden çıkın",
-            "contactInstructor": "Kurs eğitmeniyle iletişime geçin",
-            "videochat": "Görüntülü sohbeti başlat",
-            "videochatShouldOpen": "Görüntülü sohbet icin yeni bir sekmede açılmalıdır. Açılmazsa, aşağıdaki düğmeyi deneyin:",
-            "openVideochatAgain": "Görüntülü sohbeti tekrar açın"
+            "contactInstructor": "Kurs eğitmeniyle iletişime geçin"
         },
         "modals": {
             "contactMessage": {
@@ -996,8 +856,7 @@
             "freeTitle": "Boş yerlere dikkat çekilsin mi?",
             "freeDescription": "Uygun öğrencileri (bir kez) bilgilendir.",
             "promotedTitle": "Kursunuz tekrar tanıtıldı!",
-            "promotedDescription": "İlgili ilgi alanlarına sahip öğrenciler bilgilendirilmiştir.",
-            "participant": "Katılımcılar"
+            "promotedDescription": "İlgili ilgi alanlarına sahip öğrenciler bilgilendirilmiştir."
         },
         "banner": {
             "created": {
@@ -1039,7 +898,6 @@
             "toast": "Bekleme listesindesiniz!"
         },
         "leave": {
-            "course": "Kurstan ayrılın",
             "signOut": "Kursunuzdan ayrılın",
             "description": "Bu kursdan çıkmak istediğinizden emin misiniz? Artık kursa katılamayacaksınız.",
             "toast": "Kurstan kaydınızı başarıyla sildiniz."
@@ -1050,18 +908,9 @@
             "toast": "Bekleme listesinden başarıyla çıktınız."
         },
         "waitinglist": {
-            "modal": {
-                "info": "Bu kursta sizin için bir yer açılması durumunda sizi e-posta ile bilgilendireceğiz. Bekleme listesine alınmak ister misiniz?",
-                "success": "Bekleme listesindesiniz!",
-                "button": "Bekleme listesinde",
-                "cancel": "İptal et"
-            },
             "toast": "Öğrenci kursa eklenmiştir.",
             "error": "Öğrenci eklenemedi.",
-            "onwaitinglist": "Bekleme listesine alın",
             "leaveWaitinglist": "Bekleme listesinden çıkın",
-            "leaveSuccess": "Bekleme listesinden başarıyla çıktınız.",
-            "joined": "Bu kurs için bekleme listesine başarıyla eklendiniz.",
             "joinMember": "Bu kurs için bekleme listesindesiniz.",
             "noPupilsOnWaitinglist": "Bekleme listesinde öğrenci yok."
         },
@@ -1114,13 +963,10 @@
         "general": {
             "title": "Genel",
             "profile": "Profil",
-            "languageVersion": "Dil versiyonu",
             "notifications": "Bildirimleri",
-            "onboarding": "Onboarding turu",
             "progress": "Başarılar ve ilerleme",
             "forStudents": "Yardımcılar için",
             "forPupils": "Öğrenciler için",
-            "push": "Uygulama mesajları",
             "faq": "SSS & İletişim",
             "manageSessions": "Cihazları yönetme",
             "certificates": "Sertifikalar",
@@ -1130,7 +976,6 @@
             "title": "Hesap",
             "changeEmail": "E-posta değiştir",
             "changePassword": "Şifre değiştirme",
-            "changeUser": "Kullanıcı değiştir",
             "deactivateAccount": "Hesabı devre dışı bırak",
             "logout": "Oturumu kapat"
         },
@@ -1138,7 +983,6 @@
             "title": "Yasal konular",
             "imprint": "Künye",
             "datapolicy": "Veri koruma",
-            "terms": "Kullanım Koşulları",
             "agb": "Genel Hüküm ve Koşullar"
         },
         "header": "Ayarlar"
@@ -1153,35 +997,30 @@
                     "content2": "Lütfen aşağıdaki noktaları dikkatlice okuyun ve çalışmanız sırasında bunlara uyun."
                 },
                 "screen1": {
-                    "title": "Kişilerarası etkileşim",
                     "header1": "Genel kullanım ve kabul",
                     "content1": "Lern-Fair 'de güvenilirlik, saygı ve takdir ön plandadır. Yaşı, cinsiyeti, kökeni, kültürü, statüsü, yönelimi, ideolojisi veya dini ne olursa olsun herkes eşit olarak kabul edilir.",
                     "header2": "Kısıtlama",
                     "content2": "Farklı siyasi ve dini görüşlere saygı duyuyorum ve öğrencileri belirli bir yönde etkilemekten kaçınıyorum. Aynı zamanda, yasalarımızın ve demokratik değerlerimizin yanındayım ve hoşgörüden yanayım ve ayrımcılığa karşıyım."
                 },
                 "screen2": {
-                    "title": "Güvenlik",
                     "header1": "Reşit olmayanlarla çalışma",
                     "content1": "Reşit olmayanların refahı benim en önemli önceliğimdir. Güvenli ve güvenilir bir ortam yaratmak için her zaman mesafeyi korur, kişisel sınırlara ve öğrencilerin mahremiyetine saygı gösteririm. İhmal veya şiddet şüphesi durumunda, web sitemiz danışmanlık hizmetleri sunmaktadır.",
                     "header2": "Gizlilik ve veri koruma",
                     "content2": "Tüm veri ve bilgiler gizli tutulmalıdır. Kişisel veriler özel olarak bile aktarılamaz. Erişim verileri ve görüntülü sohbet bağlantıları üçüncü taraflarla paylaşılmaz."
                 },
                 "screen3": {
-                    "title": "Davranışsal kılavuzlar",
                     "header1": "Öz bakım",
                     "content1": "İş yükümü gerçekçi bir şekilde değerlendiriyorum ve çok zorlayıcı olması halinde iş yükümü ayarlıyorum. Lern-Fair Ekip beni desteklemek için orada.",
                     "header2": "Gönüllülük",
                     "content2": "İşbirliği gönüllülük esasına dayanır ve herhangi bir zamanda sonlandırılabilir, uyarlanabilir veya değiştirilebilir."
                 },
                 "screen4": {
-                    "title": "Pedagojik ve mesleki uzmanlık",
                     "header1": "Yardımlar",
                     "content1": "Öğrencileri mümkün olan en iyi şekilde desteklemek için eylemlerimi, mesleki ve medya becerilerimi bilinçli olarak gözden geçiririm. Gerekirse, kullanıcı alanından ipuçları ve pedagojik destek ararım.",
                     "header2": "Şeffaflık",
                     "content2": "Desteğimin niteliği ve kapsamı hakkında açık bir şekilde iletişim kurarım. Zaman, teknik veya başka nedenlerle bunu sağlayamayacaksam, öğrencileri zamanında bilgilendiririm."
                 },
                 "screen5": {
-                    "title": "Sorular, şikayetler ve ihlallerle ilgilenmek",
                     "content1": "Lern-Fair Etik kuralların ihlal edilmesi durumunda alınacak önlemlere e.V. Yönetim Kurulu karar verir. Bazı durumlarda bu, bir gerekçeyle birlikte bildirilecek olan projeden çıkarılma anlamına gelebilir.lern-fair Sorular, şikayetler veya ihlal raporları support@ .de adresine e-posta ile gönderilebilir.",
                     "checkboxText": "Etik kuralları dikkatlice okudum ve bunlara uymayı kabul ediyorum.",
                     "fastFertigTitle": "Neredeyse bitti!",
@@ -1194,43 +1033,23 @@
         "appointmentcard": {
             "header": "Sonraki randevu"
         },
-        "myappointments": {
-            "header": "Randevularım",
-            "noappointments": "Herhangi bir randevu bulunamadı."
-        },
         "learningpartner": {
             "header": "Öğrenme ortağınız"
         },
         "relatedcontent": {
             "header": "Sizin için öneriler"
         },
-        "offers": {
-            "noMatching": "Şu anda aktif bir öğrenme çiftiniz yok",
-            "requestCreated": "Talep şu tarihte oluşturuldu:",
-            "waitingTimeInfo": "Bir öğrenim ortağı ararken daha uzun bekleme süreleri olabileceğini lütfen unutmayın. Bu süre zarfında kurslarımızdan veya ev ödevi yardımımızdan da yararlanabilirsiniz.",
-            "removeRequest": "Talebi geri çekin"
-        },
         "helpers": {
             "headlines": {
                 "course": "Kurslarım",
-                "importantNews": "Önemli bildirimler",
-                "myLearningPartner": "Öğrenme ortaklarım",
-                "openedRequests": "Öğrenme ortakları için arama yapın",
-                "support": "Yardımlarımız",
                 "recommend": "Bizi başkalarına tavsiye edin",
                 "recommendFriends": "Lern-Fair Arkadaşlarınıza anlatın"
             },
             "contents": {
-                "recommendFriends": "Lern-Fair Almanya'da daha fazla eğitim eşitliği için 'nin misyonunu destekliyor musunuz? Lern-Fair O zaman arkadaşlarınıza anlatın ve daha fazla dezavantajlı çocuk ve gence yardım etmek için birlikte çalışalım.",
-                "recommendText": "Lern-Fair Hey, Almanya'da daha fazla eğitim fırsatı ve adalet için e.V.'de gönüllü olarak çalışıyorum. Belki bu sizin için de bir şey olabilir? Her şey çevrimiçi gerçekleştiği ve evinizden katılabileceğiniz için gerçekten kolay ve tamamen esnek. Bize katılırsanız çok memnun olurum!lern-fair Tüm bilgileri web sitesinde bulabilirsiniz: www. .de",
-                "recommendSubject": "Lern-FairSiz de katılın!",
-                "toast": "Panoya metin kopyalandi."
+                "recommendFriends": "Lern-Fair Almanya'da daha fazla eğitim eşitliği için 'nin misyonunu destekliyor musunuz? Lern-Fair O zaman arkadaşlarınıza anlatın ve daha fazla dezavantajlı çocuk ve gence yardım etmek için birlikte çalışalım."
             },
             "buttons": {
-                "course": "Yeni bir kurs girin",
-                "offer": "Önemli bildirimler",
                 "requestMatchStudent": "Yeni bir öğrenme çifti oluşturun",
-                "solveMatch": "Çifti iptal et",
                 "recommend": "Şimdi tavsiye et",
                 "requestFirstMatchPupil": "Öğrenme ortağı: alındı",
                 "requestMoreMatchesPupil": "Daha fazla öğrenme ortağı edinin"
@@ -1241,9 +1060,7 @@
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
-            "catcher": "Ev ödeviniz için yardıma mı ihtiyacınız var?",
-            "catcherHelper": "Öğrencilere ev ödevlerinde yardımcı olmak ister misiniz?",
-            "text": "Her gün Pazartesi - Perşembe 17:00 - 18:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz."
+            "catcherHelper": "Öğrencilere ev ödevlerinde yardımcı olmak ister misiniz?"
         }
     },
     "helperwizard": {
@@ -1333,44 +1150,13 @@
             "content": "Size bir öğrenim ortağı bulmadan önce sizi tanımak isteriz. Lütfen bunun için bir randevu alın."
         },
         "courseOffer": {
-            "stepname": {
-                "one": "Tasarım kursu",
-                "two": "Sınav için kursu serbest bırakın",
-                "three": "Serbest bırakma alındı"
-            },
-            "name": "Bir kurs sunun",
-            "subtitle": "Kurs adı",
-            "actionName": "Denetim için şimdi serbest bırakın",
-            "alternativText": "Bulmacanın üç parçası",
-            "description": "Platformumuzda bir kurs sunmak isterseniz çok memnun oluruz! Yardım bölümünde, başlamanıza yardımcı olacak bilgilendirici eğitimlerimizi ve açıklayıcı videolarımızı bulacaksınız. Desteğe ihtiyacınız varsa, pedagojik ekibimizle bir danışma randevusu alabilirsiniz. Kursunuzu tasarlamanıza yardımcı olmak ve size değerli ipuçları vermek için hazırız. Bağlılığınız bizim için çok önemli - yeni kurslar geliştirmek ve platformu zenginleştirmek için sizinle birlikte çalışmak için sabırsızlanıyoruz!"
+            "subtitle": "Kurs adı"
         },
         "studentNewMatch": {
-            "stepname": {
-                "one": "Eşleşme talebi gönderildi",
-                "two": "Öğrenme ortağı: alındı",
-                "three": "Lenpartner:in ile iletişime geçin",
-                "four": "İlk randevuyu oluşturun",
-                "five": "Bir tanıtım görüşmesini tamamlayın"
-            },
-            "name": "Yeni öğrenme desteği",
-            "subtitle": "Özel Ders",
-            "actionName": "Eşleşme talebinde bulunun",
-            "alternativText": "Beş yapboz parçası",
-            "description": "Sizi daha yakından tanımak harikaydı ve öğrencilerin eğitim fırsatlarını iyileştirmek için bizimle çalışmak istemenizden mutluluk duyuyoruz. Size uygun bir öğrenme ortağı atayabilmek için öncelikle platformumuza bir talep göndermenizi rica ediyoruz. Burada sizin için uygun olan konuları ve sınıf seviyesini belirtebilirsiniz. Başlamak için sabırsızlanıyoruz!"
+            "subtitle": "Özel Ders"
         },
         "pupilNewMatch": {
-            "stepname": {
-                "one": "Eşleşme talebi gönderildi",
-                "two": "Tarama tamamlandı",
-                "three": "Görevlendirme gerçekleşir",
-                "four": "Temasa geçilen öğrenim ortağı",
-                "five": "Mülakat tamamlandı"
-            },
-            "name": "Yeni öğrenme desteği",
-            "subtitle": "Özel Ders",
-            "actionName": "Eşleşme talebinde bulunun",
-            "alternativText": "Beş yapboz parçası",
-            "description": "Size mükemmel bir öğrenme ortağı atayabilmemiz için öncelikle platformumuz üzerinden bir talep göndermeniz gerekmektedir. Orada sizin için önemli olan ve size yardımcı olabileceğimiz konuları kolayca belirtebilirsiniz. Sizinle birlikte başlamak ve öğrenme yolculuğunuza birlikte başlamak için sabırsızlanıyoruz!"
+            "subtitle": "Özel Ders"
         },
         "pupilFirstScreening": {
             "buttons": ["Randevu alın"],
@@ -1384,18 +1170,8 @@
     "matching": {
         "shared": {
             "subjects": "Konular:",
-            "schooltype": "Okul türü:",
-            "class": "Sınıf:",
-            "state": "Durum:",
-            "videochat": "Görüntülü sohbet",
-            "contact": "Bize ulaşın",
-            "dissolve": "Çifti iptal et",
-            "active": "aktif",
-            "inactive": "aktif olmayan",
             "activeMatches": "Aktif öğrenme çiftleri",
             "schoolGrade": "{{schooltype}} - {{grade}} ",
-            "showMore": "Daha fazla göster",
-            "showLess": "Daha az göster",
             "contactViaChat": "Sohbet yoluyla bize ulaşın",
             "reportProblem": "Sorun bildir",
             "directCall": "Hemen toplantıya başlayın",
@@ -1405,9 +1181,6 @@
             "tutorInstructor": "Eğitmen, Kurs lideri",
             "appointmentsHeadline": "Tarihler",
             "createAppointment": "Randevu oluştur",
-            "bookAppointment": "Randevu al",
-            "joinMeeting": "Zoom'u başlat",
-            "changeAppointment": "Tarih değiştir",
             "appointmentBookedHint": "1:1 özel ders görüşmesi ayarlandı:",
             "needsToBookAppointmentHint": "1:1 özel ders görüşmesi ayarlayın:",
             "needsToBookAppointmentDesc": "Bu, bir çalışma arkadaşı aramak için önemlidir",
@@ -1416,17 +1189,10 @@
             "waitingForResultsHintDesc": "Senin için yeni haberlerimiz olur olmaz sana bir e-posta göndereceğiz."
         },
         "blocker": {
-            "header": "Öğrenme desteği",
-            "title": "Destek talep edin",
-            "button": "Destek talep edin",
-            "ctaCardHeader": "Grup kursları",
-            "ctaCardContent": "Almanca, Matematik, İngilizce konularında çeşitli konularda kurslar ...",
-            "ctaCardButton": "Grup kurslarına dön",
             "firstContent": "İki tür özel ders sunuyoruz: Günlük, açık ev ödevi yardımı ve 1:1 öğrenme desteği. 1:1 öğrenme desteğinde, bir kişi boş zamanlarında ev ödevi, sınav hazırlığı ve tartışmak istediğiniz diğer her konuda size ücretsiz olarak yardımcı olur."
         },
         "homeworkhelp": {
             "title": "Ev ödevi yardımı",
-            "textpupil": "Her gün Pazartesi - Perşembe 17:00 - 18:00 saatleri arasında Zoom üzerinden ev ödevi yardımı sunuyoruz. Ödevinizle ilgili yardıma ihtiyacınız varsa her gün katılabilirsiniz.",
             "texthelper": "Ev ödevi yardiminda, öğrencilere bir rehberlik saatinde olduğu gibi anlık olarak ödevlerinde yardımcı olabilirsin. Ev ödevi yardimi, Pazartesi'den Perşembe'ye saat 17:00 ile 18:00 arasında gerçekleşmektedir. Kendi takdirine göre burada istediğin sıklıkta ve bağlayıcılık olmadan katılım gösterebilirsin.",
             "button": "Ev ödevi yardımı",
             "buttonSummerVacation": "Yaz tatilinin sona ereceği {{endSummerVacation}} tarihine kadar ev ödevi yardımı yapılmayacaktır"
@@ -1434,8 +1200,7 @@
         "pending": {
             "modal": {
                 "buttons": {
-                    "dissolve": "Talebi geri çekin",
-                    "nothing": "Herhangi bir bilgi vermeme"
+                    "dissolve": "Talebi geri çekin"
                 },
                 "title": "Talebi geri çekin",
                 "description": "Talebi gerçekten silmek istiyor musunuz? Sıradaki yerinizi kaybedeceksiniz ve yerinizi başka bir öğrenciye vereceğiz."
@@ -1466,7 +1231,6 @@
                 "header": "Öğrenme desteği",
                 "title": "Öğrenme desteği",
                 "content": "Öğrenme desteğinde, eğitimde dezavantajlı öğrencilere bireysel ve kişisel olarak yardımcı olursunuz. Online buluşmalarınızın zamanı, süresi ve içeriğini öğrenme çiftinizle beraber belirlersiniz. Birden fazla öğrenme çifti oluşturabilir ve zamanınızın izin verdiği ölçüde başka bir öğrenciyi desteklemekten memnuniyet duyarız. Bir öğrenme desteğini artık sürdüremiyorsanız veya istemiyorsanız, ilgili öğrenme çiftini buradan iptal edebilirsiniz.",
-                "request": "Talep",
                 "removeRequest": "Talebi geri çekin",
                 "editRequest": "Talebi düzenle",
                 "deleteRequest": "Talebi sil",
@@ -1475,8 +1239,7 @@
                     "withoutAppointment": "Talebi silmek istediğinizden emin misiniz?"
                 },
                 "editRequestDescription": {
-                    "withAppointment": "Sorun değil. Randevu yine de sizin için korunacaktır.",
-                    "withoutAppointment": "Bilgilerinizi değiştirirseniz bekleme süreniz etkilenmez. Sıranız geldiğinde ve sizin için uygun bir öğrenme partneri bulduğumuzda sizi e-posta ile bilgilendireceğiz."
+                    "withAppointment": "Sorun değil. Randevu yine de sizin için korunacaktır."
                 },
                 "rescheduleAppointmentModal": {
                     "title": "Tarih değiştir",
@@ -1486,14 +1249,8 @@
                 "noMatches": "(Henüz) bir öğrenme ortağınız yok.",
                 "noDissolvedMatches": "Dağıtılmış öğrenme çiftin yok.",
                 "noRequestsTutee": "Şu anda sizin için bir öğrenme ortağı aramıyoruz.",
-                "noRequestsTutor": "Şu anda sizin için yeni/daha ileri bir öğrenim ortağı aramıyoruz. Bir (başka) öğrenciye destek olmak için onunla bağlantı kurmak istiyorsanız, 'Öğrenme çifti oluştur' düğmesine tıklayın.",
-                "resolveMatch": "Öğrenme çifti dağıtıldı"
-            },
-            "daz": {
-                "heading": "İkinci dil olarak Almanca",
-                "description": "Almancayı ikinci dil olarak konuşan ve Almanca bilgisi sınırlı olan öğrencileri desteklemeyi istiyor musunuz?"
-            },
-            "updateData": "Verileriniz güncellendi"
+                "noRequestsTutor": "Şu anda sizin için yeni/daha ileri bir öğrenim ortağı aramıyoruz. Bir (başka) öğrenciye destek olmak için onunla bağlantı kurmak istiyorsanız, 'Öğrenme çifti oluştur' düğmesine tıklayın."
+            }
         },
         "wizard": {
             "subjects": {
@@ -1508,11 +1265,9 @@
                     "bannerText": "Birden fazla ders seçersen, daha fazla öğrenci için uygun olursun. Böylece daha hızlı bir öğrenme partneri bulabilirsin. Her talep için bir öğrenme partneri arıyoruz. Bu nedenle, belirli bir ders senin için özellikle önemliyse yalnızca o dersi seçmen daha uygun olabilir."
                 },
                 "heading": "Ders Seçimi",
-                "reason_btn_disabled": "Lütfen bir veya daha fazla konu seçiniz.",
                 "selectedSubjects": "{{count}} Ders seçildi"
             },
             "priority": {
-                "heading": "Önceliklendirme",
                 "subheading": "Hangi derste en çok yardıma ihtiyacın var?",
                 "text": "Tüm konularda size yardımcı olacak birini bulmaya çalışacağız. Ne yazık ki bu her zaman mümkün olmuyor. Bu nedenle hangi konunun sizin için en önemli olduğunu burada belirtebilirsiniz.",
                 "reason_btn_disabled": "Lütfen bir konu seçiniz."
@@ -1572,9 +1327,7 @@
                 "pupil": {
                     "basicRequest": {
                         "heading": "Öğrenme arkadaşı aranıyor!",
-                        "text": "Bu işlem hızlı bir şekilde gerçekleşebilir ya da biraz daha uzun sürebilir. Bu, seçtiğin derslere bağlıdır. Bizden gelen mesajları düzenli olarak kontrol et. Bu arada, diğer tekliflerimizden de yararlanabilirsin.",
-                        "toTheHomeworkHelp": "Ev ödevi yardımı",
-                        "toTheGroupCourses": "Grup kurslarına dön"
+                        "text": "Bu işlem hızlı bir şekilde gerçekleşebilir ya da biraz daha uzun sürebilir. Bu, seçtiğin derslere bağlıdır. Bizden gelen mesajları düzenli olarak kontrol et. Bu arada, diğer tekliflerimizden de yararlanabilirsin."
                     },
                     "requestWithAppointment": {
                         "heading": "Randevu oluşturuldu!",
@@ -1589,36 +1342,10 @@
                 "student": {
                     "heading": "Sen bir kahramansın!",
                     "text": "Eğitimde eşitlik için çaba gösterdiğin için teşekkür ederiz!\n\nSenin için uygun birini bulur bulmaz sana haber vereceğiz."
-                },
-                "heading": {
-                    "ver1": "Yeni talep oluşturuldu",
-                    "ver2": "Tamam, değişiklikler kaydedildi!"
-                },
-                "text": {
-                    "ver1": "Ardından, sizi e-posta yoluyla bir görüşmeye davet edeceğiz. Daha sonra her şeyi yüz yüze görüşeceğiz. - Hazır buradayken neden grup kurslarımıza uğramıyorsunuz?",
-                    "ver2": "Değişiklikleriniz kaydedildi. Bu, bekleme sürenizi değiştirmeyecektir."
-                },
-                "groupCourses": "Grup kurslarına dön"
+                }
             }
         },
         "group": {
-            "tabs": {
-                "tab1": {
-                    "title": "Kurslarım",
-                    "content": "Önerilerimiz profilinizdeki bilgilere dayanmaktadır."
-                },
-                "tab2": {
-                    "title": "Tavsiyeler",
-                    "content": "Önerilerimiz profilinizdeki bilgilere dayanmaktadır."
-                },
-                "tab3": {
-                    "title": "Tüm teklifler",
-                    "content": "Önerilerimiz profilinizdeki bilgilere dayanmaktadır."
-                }
-            },
-            "error": {
-                "nofound": "Hiçbir kurs bulunamadı. Lütfen aramanızı ayarlayın."
-            },
             "pupil": {
                 "tabs": {
                     "tab1": {
@@ -1651,11 +1378,7 @@
                         "tab2": {
                             "title": "Tüm kurslar"
                         }
-                    },
-                    "title": "Kurslarım"
-                },
-                "otherCourses": {
-                    "title": " Başkalarının kursları"
+                    }
                 },
                 "alert": {
                     "successfulEditing": "Kursunuz başarıyla tamamlanmıştır.",
@@ -1666,9 +1389,6 @@
                 "content": "Kurslarımızda aynı anda birden fazla öğrenciye yardımcı olma fırsatına sahipsiniz. Farklı kurs formatları sunuyoruz: Özel dersler, odak kursları ve 'Yeni başlayanlar için Almanca'.",
                 "button": "Kurs oluşturun"
             }
-        },
-        "status": {
-            "dissolved": "Öğrenme çifti iptal edildi."
         },
         "dissolve": {
             "modal": {
@@ -1683,11 +1403,6 @@
                 "btn": "Yine de sonlandır",
                 "studentDescription": "Bazen muhatabınızın size geri dönmesi biraz zaman alabilir. Tüm öğrencilerle tanışma görüşmeleri gerçekleştirdik ve özel ders ihtiyaçlarını değerlendirdik. Bu nedenle, öğrenim çiftini iptal etmeden önce geri bildirim için en az 14 gün beklemenizi öneririz.",
                 "pupilDescription": "Bazen yardımcıların sohbet yoluyla size geri dönmesi biraz zaman alabilir, bu nedenle yaklaşık 14 gün beklemenizi öneririz. İstediğiniz zaman <0/> adresinden bizimle iletişime geçebilirsiniz."
-            },
-            "newMatch": {
-                "title": "Yeni bir öğrenme çifti oluşturun",
-                "descriptionPupil": "Yeni bir öğrenme ortağıyla bağlantı kurmak ister misin? Lütfen unutma ki senin için birini bulana kadar biraz zaman alabilir.",
-                "descriptionStudent": "Yeni bir öğrenme ortağıyla bağlantı kurmak ister misin? Bir öğrenciyi (daha) desteklediğin için mutluluk duyarız. Katkınız için teşekkür ederiz!"
             }
         },
         "dissolveReasons": {
@@ -1727,7 +1442,6 @@
             }
         },
         "certificate": {
-            "titleRequest": "Sertifikayı onaylayın",
             "title": "{{firstname}}'dan öğrenme desteği",
             "from": "den itibaren",
             "to": "kadar",
@@ -1753,7 +1467,6 @@
         "adHocMeeting": {
             "title": "Hemen toplantıya başlayın",
             "infoText": " Toplantıya başlar başlamaz öğrencinizi e-posta ile bilgilendireceğiz.",
-            "startMeeting": "Toplantıya başlayın",
             "browser": "Tarayıcıda devam et",
             "zoomClient": "Yakınlaştırmada Aç"
         },
@@ -1790,46 +1503,13 @@
                 "pupil": "Görüntülü sohbete katılın",
                 "student": "Görüntülü sohbeti başlat"
             },
-            "result": {
-                "success": "Video konferansınız başarıyla kaydedildi.",
-                "error": "Video konferansınıza giriş yapılamadı."
-            },
-            "modal": {
-                "title": "Görüntülü aramayı başlat",
-                "button": "Şimdi başlayın",
-                "text": "Video konferans bağlantısını buraya girin"
-            },
             "hint": {
                 "pupil": "Toplantıyı sadece bir terminin başlamasından 10 dakika önce başlatabilirsiniz",
                 "student": "Toplantıyı randevunun başlamasından 4 saat önce başlatabilirsiniz."
-            },
-            "videotext": "Görüntülü sohbet henüz başlamadı."
-        },
-        "blocker": {
-            "student": {
-                "cta": {
-                    "title": "Grup Kursları Onboarding Turu",
-                    "content": "Eğer ders formatının gerçekten sana uygun olup olmadığından emin değilsen, grup dersleri için Onboarding'e tıklayarak faaliyet hakkında daha net bir fikir edinebilirsin.",
-                    "button": "Tura başlayın"
-                },
-                "header": "Kurs oluşturun",
-                "title": "Grup kursları",
-                "firstContent": "Grup formatında eğitimde dezavantajlı bir öğrenciye bilgi eksikliklerini kapatmada yardımcı oluyorsunuz. Dijital buluşmaların sıklığı, sıklığı ve süresi tamamen size bağlı.",
-                "here": "Burada",
-                "secContent": "Özel ders kurslarımız hakkında daha fazla bilgi bulabilirsiniz",
-                "thrContent": "Web sitemizde.",
-                "contentHeadline": "Önemli",
-                "content": "Şu anda grup kursları için henüz etkinleştirilmemişsin, ancak bunu nasıl değiştireceğini öğrenmek için buradan ilerle."
             }
         },
         "appointments": {
-            "headline": "Kurs ne zaman yapılmalıdır?",
-            "content": "Randevu oluştur",
             "addOtherAppointment": "Başka bir randevu oluşturun",
-            "check": "Bilgileri kontrol edin",
-            "saveDraft": "Taslak olarak kaydet",
-            "prevPage": " Önceki sayfaya dön",
-            "existingAppointments": "Mevcut tarih(ler)",
             "addFirstAppointment": "İlk randevuyu oluşturun"
         },
         "error": {
@@ -1853,42 +1533,28 @@
         "CourseDate": {
             "step": {
                 "general": "Genel bilgiler",
-                "subject": "Sınıflandırma",
                 "attendees": "Katılımcılar",
-                "appointments": "Tarih(ler)",
-                "settings": "Ayarlar",
-                "checker": "İnceleme"
+                "appointments": "Tarih(ler)"
             },
             "form": {
                 "courseNameHeadline": "Kurs adı",
                 "courseNamePlaceholder": "Kurs adını girin",
                 "courseCategory": "Kategori",
-                "categoryPlaceholder": "Lütfen bir kategori seçin",
                 "revision": "Özel ders",
                 "language": "Yeni başlayanlar için Almanca kursu",
                 "focus": "Odak kursu",
                 "courseSubjectLabel": "Alan",
                 "coursePhotoLabel": "Fotoğraf",
-                "changeImage": "Resmi değiştir",
                 "courseAlreadyaAddedLead": "Bu kişiyi zaten eklemişsiniz.",
-                "shortDescriptionLabel": "Kısa açıklama",
-                "shortDescriptionPlaceholder": "Kursunuzun ne hakkında olduğuna dair kısa bir cümle ...",
                 "descriptionLabel": "Açıklama",
                 "tagsLabel": "Etiketler",
-                "tagsEdit": "Etiketleri düzenle",
-                "tagsPlaceholder": "Kursunuzun daha kolay bulunabilmesi için",
-                "tagsInfo": "Her bir etiket virgül (,) ile ayrılmalıdır",
-                "detailsHeadline": "Detaylar",
                 "detailsContent": "Bu kurs hangi sınıflar için uygundur?",
                 "classRange": "{{minRange}} - {{maxRange}}",
-                "maxMembersLabel": "Maks. katılımcı sayısı",
                 "otherHeadline": "Diğer",
-                "otherContactHeadline": "iletişim kurun",
                 "otherOptionStart": "Öğrenciler ilk kurs tarihinden sonra kayıt yaptırabilirler",
                 "otherProspects": "İlgilenenler",
                 "otherParticipants": "Katılımcılar",
                 "otherOptionContact": "İletişim kurulmasına izin ver",
-                "otherGroupChatHeadline": "Grup veya duyuru sohbeti",
                 "allowChatContact": "Katılımcıların sohbette yazmasına izin verin",
                 "prospectContactTooltip": "Kursunuzla ilgilenen öğrenciler ve yardımcılar (kurs başlamadan önce)",
                 "participantsContactTooltip": "Kursunuz için kayıt yaptıran öğrenciler",
@@ -1919,50 +1585,12 @@
                 "furtherTags": "Daha fazla etiket",
                 "noTagsFound": "Etiket bulunamadı"
             },
-            "Wizard": {
-                "headline": "Randevu",
-                "date": "Tarih",
-                "dateInfo": "Bir kurs, kursun başlamasından 7 gün önce oluşturulmalıdır.",
-                "durationPlaceholder": "Kullanıcı deneyimiyle daha iyi iletişim",
-                "repeatAppoint": "Randevuyu tekrarlamak"
-            },
-            "Image": {
-                "resetPhoto": "Görüntüyü sıfırla",
-                "deletePhoto": "Görüntüyü sil"
-            },
             "Preview": {
-                "yes": "Evet",
-                "no": "Hayır",
-                "headline": "Bilgileri kontrol edin",
-                "content": "Lütfen kursunuzu yayınlamadan önce bilgileri tekrar kontrol edin.",
-                "infoHeadline": "Kursunuz hakkında genel bilgiler",
-                "courseName": "Kurs adı:",
-                "courseSubject": "Alan",
-                "shortDesc": "Kısa açıklama",
-                "desc": "Açıklama",
-                "tagHeadline": "Etiketler",
-                "image": "Resim",
-                "notags": "Herhangi bir etiket belirtilmemiştir.",
-                "jahrgangsstufe": "Sınıf seviyesi",
-                "membersCountLabel": "Katılımcı sayısı:",
-                "membersCountMaxLabel": "Maks. {{membersCount}}",
-                "startDateLabel": "Kurs başladıktan sonra katılın:",
-                "allowContactLabel": "Iletisim kurmaya izin ver:",
-                "appointmentHeadline": "Kurs için tarih(ler)",
-                "appointmentLabel": "Randevu",
-                "appointmentDate": "Tarih:",
                 "publishCourse": "Incelemeye gönder",
                 "saveCourse": "Kurs oluşturun ve daha sonra yayınlayın",
-                "editCourse": "Verileri düzenle",
-                "updateCourse": "Değişiklikleri kaydet",
                 "saveDraft": "Taslağı kaydet",
                 "cancel": "İptal et"
-            },
-            "modal": {
-                "headline": "Tamamdır!",
-                "content": "  Teşekkürler, kursunuz kaydedildi ve bize gönderildi. İçeriği kontrol edip onayladıktan sonra kursunuz etkinleştirilecek ve herkes tarafından görülebilecektir. Bu işlem önümüzdeki 7 gün içinde gerçekleşecektir."
-            },
-            "headline": "Kursunuz hakkında genel bilgiler"
+            }
         },
         "unsplash": {
             "heading": "Bir resim seçin",
@@ -1987,9 +1615,6 @@
         },
         "header": "Kurs oluşturun",
         "edit": "Kursu düzenle",
-        "uploadImage": "Fotoğraf yükle",
-        "noticeDate": "Lütfen tüm alanları doğru şekilde doldurun",
-        "selectPlaceHolderDuration": "Süre seçin",
         "cancelation_success": "Kurs başarıyla iptal edildi",
         "select_participant": "Katılımcı seçin",
         "all_participants": "tüm katılımcılar",
@@ -2018,8 +1643,6 @@
         "timedifference": {
             "yesterday": "Dün",
             "dayBeforeYesterday": "Dünden önceki gün",
-            "lastWeek": "geçen hafta",
-            "lastMonth": "geçen ay",
             "now": "Şimdi.",
             "beforeMinutes": "{{minutes}} Dakika"
         },
@@ -2092,12 +1715,7 @@
                     "push": "Uygulama mesajı"
                 },
                 "pushNotifications": "Uygulama mesajları",
-                "pushNotificationTooltip": "Uygulama bildirimleri, uygulama açık değilken bile önemli olaylar veya bilgiler hakkında sizi bilgilendirir. Hangi mesajları uygulama bildirimi olarak almak istediğinizi ayrı ayrı seçebilirsiniz.",
-                "pushNotificationsStatus": {
-                    "not-supported": "Maalesef bu cihazda uygulama bildirimleri desteklenmiyor",
-                    "user-denied": "Maalesef, bize izin vermediğiniz için size herhangi bir uygulama mesajı gönderemiyoruz",
-                    "error": "Bir hata oluştu"
-                }
+                "pushNotificationTooltip": "Uygulama bildirimleri, uygulama açık değilken bile önemli olaylar veya bilgiler hakkında sizi bilgilendirir. Hangi mesajları uygulama bildirimi olarak almak istediğinizi ayrı ayrı seçebilirsiniz."
             },
             "tabs": {
                 "system": {
@@ -2113,7 +1731,6 @@
             "yourMail": "E-postanız: ",
             "closeButton": "Kapat"
         },
-        "send": "Bildirim gönderildi",
         "activateNotificationsModal": {
             "title": "Yeni mesajla ilgili not",
             "description": "Sohbetteki yeni mesajlar veya yeni randevularla ilgili bildirimleri doğrudan cihazınızdan alabilirsiniz (\"anlık bildirim\").",
@@ -2149,7 +1766,6 @@
         "hint": "Grup sohbetini yalnızca kursunuza en az iki öğrenci kayıt yaptırmışsa açabilirsiniz.",
         "instructor": "Eğitmen",
         "participant": "Kurs katılımcısı",
-        "prospect": "İlgilenen taraf",
         "matchee": " \tçalışma ortağı",
         "noContactOptions": "Iletişim seçeneği yok",
         "noContactOptionsHint": "Burada sohbet edebileceğin öğrenme çiftlerin ve grup sohbetlerin listelenir.",
@@ -2211,12 +1827,9 @@
         },
         "groupCourses": "Grup kursları",
         "match": "Birebir öğrenme desteği",
-        "imageGroupText": "Bilgilerinizi aktarın ve grup kurslarına liderlik edin.",
-        "imageMatchText": "Haftada sadece 1-2 saatinizi ayırarak, eğitim açısından dezavantajlı bir çocuğa daha iyi bir gelecek şansı verebilirsiniz.",
         "becomeAnInstructor": "Şimdi kurs eğitmeni olun",
         "becomeTutor": "Şimdi öğretmen olun",
-        "moreInfos": "Daha fazla bilgi",
-        "groupRequestedDescription": "Kurs liderliği için ilgilendiğiniz için teşekkür ederiz. Kursunuz başlamadan önce, sizin için bazı ipuçlarımız var:"
+        "moreInfos": "Daha fazla bilgi"
     },
     "navigation": {
         "label": {
@@ -2233,8 +1846,6 @@
             "editAppointment": "Randevu düzenleme",
             "settings": "Ayarlar",
             "notifications": "Bildirimler",
-            "systemNotifications": "Sistem bildirimleri",
-            "newsletterNotifications": "Bülten bildirimleri",
             "profile": "Profil",
             "manageSessions": "Cihazları yönetme",
             "helpCenter": "Yardım alanı",
@@ -2288,20 +1899,12 @@
         "disputed_screenings": "Açık kararlı öğrenci taramaları",
         "four_eyes": "Dört göz",
         "was_screened_but_no_decision": "Bu öğrenci halihazırda taramadan geçmiştir, ancak bir karar verilmesi beklenmektedir",
-        "save": "Kaydet",
-        "recommend_acceptance": "Kabul edilmesini önerin",
-        "recommend_rejection": "Reddedilmesini önerin",
         "screening_saved": "Tarama kaydedildi",
         "account_deactivated": "Hesap devre dışı bırakıldı",
-        "save_and_four_eyes": "Kaydet & Dört Göz",
-        "success": "Kabul et",
-        "rejection": "Reddet",
         "deactivate": "Hesabı devre dışı bırak",
-        "missed": "Tarama kaçırıldı",
         "confirm_success": "Kabul ediyor musun {{firstname}} {{lastname}}?",
         "confirm_rejection": "Gerçekten {{firstname}} i{{lastname}} reddediyor musunuz?",
         "confirm_deactivate": "Istiyor musun {{firstname}} i{{lastname}} gerçekten devre dışı birakmayi?",
-        "matches": "Görevler",
         "active_matches": "Aktif görevler",
         "dissolved_matches": "Çözülen görevler",
         "previous_screenings": "Önceki gösterimler",
@@ -2312,12 +1915,9 @@
         "dispute_screening": "Belirsiz tarama",
         "pending_screening": "Tarama bekleniyor",
         "has_matches": "Öğrenme çifti var",
-        "registered_since": "o zamandan beri kayıtlı",
         "dissolved_by": "Aufgelöst von: {{dissolver}}",
-        "login_as_user": "Kullanıcı olarak oturum açın",
         "screen_as_instructor": "Kurs eğitmeni olarak tarama",
         "screen_as_tutor": "Birebir tarama",
-        "their_courses": "Kurslar",
         "successful_instructor_screening": "Başarılı kurs eğitmeni taraması",
         "rejected_instructor_screening": "Reddedilen eğitmen taraması",
         "successful_tutor_screening": "Başarılı birebir tarama",
@@ -2330,11 +1930,6 @@
         "certificateOfConductWasProvided": "İyi hal belgesi ibraz edilmiştir",
         "certificateOfConductWasNotProvided": "İyi hal belgesi henüz teslim edilmemiştir",
         "comment": "Yorum",
-        "errors": {
-            "grade_missing": "Lütfen bir okul sınıfı seçin.",
-            "language_missing": "Lütfen en az 1 dil ekleyin.",
-            "subjects_missing": "Lütfen en az 1 okul dersi ekleyin."
-        },
         "account_deactivated_details": "Kullanıcı artık kullanıcı alanında oturum açamaz. Destek, hesapları yeniden etkinleştirebilir."
     },
     "achievement": {
@@ -2364,58 +1959,12 @@
         "header": "Başarılarınız"
     },
     "certificate": {
-        "request": {
-            "title": "Sertifika için başvurun",
-            "subtitle": "Lern-Fair 'daki bağlılığınız için size teşekkür etmek isteriz. Çalışmalarınız için size bir sertifika vermekten mutluluk duyacağız.",
-            "subtitle2": "Eksiksiz bir Lern Fair sertifikası aşağıdaki iki bölümden oluşur:",
-            "part1_title": "1. tarafından onaylanması Lern-Fair",
-            "part1_1": "Platformumuza kaydolun",
-            "part1_2": "Uygunluk mülakatına katılma",
-            "part1_3": "Bir öğrenciye rehberlik etme",
-            "part2_title": "Öğrenci tarafından 2. onay",
-            "part2_1": "Faaliyetin kapsamı",
-            "part2_2": "Faaliyetin içeriği",
-            "procedure": "Sertifika için buradan başvurabilirsiniz ve taahhüdünüz öğrenciniz tarafından onaylanır onaylanmaz bir bildirim alacaksınız. O andan itibaren sertifikayı profilinizde de bulacaksınız.",
-            "apply": "Tam belge için talep edin"
-        },
-        "request_page2": {
-            "title": "Hangi öğrenciler için sertifika başvurusunda bulunmak istersiniz?",
-            "card_content": "Sertifika için başvurun",
-            "reason_btn_disabled": "Bir öğrenci seçmelisiniz."
-        },
-        "request_for_match": {
-            "activities": {
-                "title": "Faaliyet",
-                "subtitle": "Öğrenme ortaklarınızı desteklediğiniz etkinlikleri seçin",
-                "preparation": "Derslerin hazırlanması, planlanması ve düzenlenmesi",
-                "visualization": "Ders içeriğinin işlenmesi ve iletilmesi",
-                "visualization_digital": "Ders içeriğinin dijital olarak hazırlanması ve görselleştirilmesi",
-                "repetition": "Ders içeriğinin pekiştirilmesi ve tekrarı",
-                "homework": "Alıştırmalar ve ev ödevleri üzerinde birlikte çalışmak",
-                "correct_homework": "Alıştırma ve ev ödevlerinin düzeltilmesi",
-                "prepare_exam": "Sınav hazırlığı için dijital destek",
-                "help_learning": "Öğrenim için dijital destek",
-                "other": "Diğer"
-            },
-            "title": "Detaylar",
-            "subtitle": "Her bir öğrenci için, onları ne ölçüde desteklediğinizi belirtiniz.",
-            "step": "Schüler:in {{current}} von {{total}}",
-            "from": "döneminden itibaren",
-            "to": "kadar",
-            "continues": "Destek hala devam ediyor",
-            "not_a_number": "Buraya bir sayı girmelisiniz.",
-            "hours_per_week": "Haftalık saat (ortalama)",
-            "hours_total": "Toplam saat",
-            "next_pupil": "Sonraki öğrenci",
-            "submit": "Şimdi talep edin"
-        },
         "download": {
             "state": "Durum",
             "state_manual": "Manuel",
             "state_awaiting": "Onay için bekliyorum",
             "state_approved": "Onaylandı",
             "reasonBtnDisabled": "Öğrenciniz yine de sertifikanızı onaylamalıdır.",
-            "loading": "Sertifikanız indirilecektir",
             "error": "İndirme sırasında bir hata oluştu",
             "download": "İndir",
             "download_certificate": "Sertifika indir",
@@ -2445,12 +1994,6 @@
         "contactSupport": "İletişim desteği",
         "continue": "Yine de devam edin"
     },
-    "verify_email": {
-        "title": "E-posta doğrulama",
-        "success": "Hesabınız etkinleştirildi!",
-        "proceed": "Devam et",
-        "invalid": "Belirteç geçersiz"
-    },
     "set_password": {
         "title": "Şifreyi sıfırla",
         "change": "Şifre değiştirme",
@@ -2474,49 +2017,20 @@
         "invalidEMail": "Lütfen geçerli bir e-posta adresi girin.",
         "formIncomplete": "Tüm alanları doldurmanız gerekmektedir.",
         "fieldEmpty": "Bu alana bir şey girin.",
-        "questionUnaswerd": "Lütfen soruya cevap verin.",
-        "questionsUnaswerd": "Lütfen soruları yanıtlayın.",
-        "newFieldSameAsOld": "Bunu zaten seçtiniz.",
         "missingSignature": "Bir imza eksik."
     },
     "requireScreening": {
         "pupil": {
             "noScreening": {
-                "makeAppointment": "Randevu alın",
-                "title": "Hoş geldin, {{firstname}}! 👋 Yakında birbirimizi tanıyacağız 🤗",
-                "content": "Sizi, {{firstname}}, uygun bir yardımcı ile şimdi temasa geçirebilmemiz için, sizinle 15 dakikalık bir video görüşmesi yapmak istiyoruz. Görüşme Almanca dilinde yapılacaktır.\n Takvimden bir randevu seçebilirsiniz ve randevu onaylandıktan sonra {{email}} adresine bir e-posta alacaksınız. Randevuyu istediğiniz zaman değiştirebilir veya iptal edebilirsiniz. Lern-Fair- Telefon görüşmesi sırasında, mevcut zorluklarınız hakkında konuşacağız ve açıklayacağız. Yalnız veya ebeveynlerinizle gelebilirsiniz. Almancanız iyi değilse endişelenmeyin, yine de telefon görüşmesi yapabiliriz. Hiçbir koşulda görüntülü arama yapmak istemiyorsanız, lütfen iletişime geçin ve başka bir çözüm bulalım.",
-                "footer": "Kendinize güveniniz yok mu? Almanca bilmiyor musunuz? Ya da başka sorularınız mı var? O zaman bizimle iletişime geçin"
-            },
-            "hasScreening": {
-                "title": "Lütfen biraz bekleyin",
-                "content": "Sizinle tanıştığımıza çok memnun olduk. Hesabınız henüz etkinleştirilmedi. Bir karar verdiğimizde sizi e-posta ile bilgilendireceğiz.",
-                "makeAnotherAppointment": "Başka bir randevu alın"
-            },
-            "rejectedScreening": {
-                "title": "Maalesef size yardımcı olamayız, {{firstname}}",
-                "content": "Lern-Fair Ne yazık ki, bu teklifi size sunamayacağımıza karar verdik. Kararla ilgili herhangi bir sorunuz varsa lütfen bizimle iletişime geçin."
+                "title": "Hoş geldin, {{firstname}}! 👋 Yakında birbirimizi tanıyacağız 🤗"
             }
         },
         "student": {
             "noScreening": {
-                "title": "Lütfen randevu alın, {{firstname}}!",
-                "content": "Lern-Fair 'de çalışmaya başlamadan önce kısa bir mülakatla sizi tanımak istiyoruz. Zoom görüşmesi için lütfen randevu alınız.",
-                "makeAppointment": "Randevu alın"
-            },
-            "rejectedScreening": {
-                "title": "Ne yazık ki, uymadı.",
-                "content": "Lern-Fair Ne yazık ki, bu taahhüdün size uygun olmadığına karar verdik. Kararla ilgili herhangi bir sorunuz varsa bizimle iletişime geçin."
+                "title": "Lütfen randevu alın, {{firstname}}!"
             }
         },
-        "contactSupport": "İletişim desteği",
         "appointment": {
-            "joinMeeting": "Görüntülü sohbete katıl",
-            "changeAppointment": "Randevuyu değiştir",
-            "cancelAppointment": "Randevuyu iptal et",
-            "title": "Randevu oluşturuldu ✅",
-            "yourAppointment": "Randevun",
-            "optionsDescription": "Vaktin yok mu? Randevuyu değiştirmek veya iptal etmek mi istiyorsun?",
-            "description": "Randevu onayı e-posta adresine gönderilecek. Randevunu tek tıkla takvimine ekleyebilirsin.",
             "joinMeetingHint": "Toplantıyı, randevunun başlamasına {{minutes}} dakika kala başlatabilirsin."
         }
     },
@@ -2527,7 +2041,6 @@
         "contentLabel": "Mesajınız",
         "contentPlaceholder": "Bize mesajınız",
         "submit": "Talep gönder",
-        "disabled": "Lütfen formu doldurunuz",
         "success": "Mesajınız başarıyla gönderildi",
         "failure": "Bir hata oluştu",
         "legal": "Ich bin damit einverstanden, dass Lern-Fair die hier gemachten Angaben entsprechend meines Anliegens verarbeitet und nehme die Übermittlung an unsere Dienstleister in die USA und die <privacy>Datenschutzerklärung</privacy> zur Kenntnis."
@@ -2538,28 +2051,18 @@
     "clock": "Saat",
     "time": "Günün saati",
     "duration": "Süre",
-    "further_details": "Daha fazla ayrıntı",
-    "copy_text": "Metni kopyala",
-    "copied_text": "Metin kopyalandı!",
     "select": "Seçiniz",
     "change": "Değişitir",
-    "helper": "Yardımcı",
     "to": "için",
-    "visitcourse": "kursa",
-    "openchat": "Sohbet başlat",
-    "openmatch": "Görünüm",
-    "begin": "daha",
     "all": "Tümü",
     "cancel": "İptal et",
     "continue": "Devam et",
     "from": "daha",
     "firstname": "İlk isim",
     "lastname": "Soyadı",
-    "skip": "Atla",
     "send": "Gönder",
     "save": "Kaydet",
     "edit": "Düzenle",
-    "signup": "Kayıt Olun",
     "signin": "Giriş yap",
     "done": "Hazır",
     "saveSelection": "Seçimi kaydet",
@@ -2568,9 +2071,7 @@
     "back": "Geri",
     "important": "Önemli",
     "error": "Bir hata oluştu.",
-    "characterLimitNotice": "Max. Zeichenanzahl: {{limit}}",
     "datepickerPlaceholder": "Bir tarih seçin...",
-    "timepickerPlaceholder": "00:00",
     "registrationTitle": "Kayıt",
     "deregistrationTitle": "Çıkış",
     "moreInfoButton": "Daha fazla bilgi edinin",
@@ -2608,8 +2109,6 @@
             "notesLabel": "Sizin yorumunuz",
             "notesPlaceholder": "örn. eleştiri, fikirler, yorumlar",
             "screenshotLabel": "Ekran görüntüsü (isteğe bağlı)",
-            "screenshotContent": "Ekran görüntüsünü buraya çekin",
-            "screenshotFromDevice": "Cihazdan yükleme",
             "canWeContactPerMailLabel": "Sizinle e-posta yoluyla iletişime geçebilir miyiz?",
             "canWeContactPerMailHelperText": "Sorunları / fikirleri daha iyi anlamak için. Bunu sadece gerekli olduğunda yapıyoruz.",
             "sendFeedback": "Geri bildirim gönderin"
@@ -2642,7 +2141,6 @@
             "title": "Lern-Fair Uygulama",
             "description": "Lern-Fair Sohbetlere ve randevulara her zaman erişebilmek için uygulamayı tüm cihazlarınıza indirin.",
             "install": "Uygulamayı yükleyin",
-            "not-supported": "Ne yazık ki, uygulamanın bu cihaza yüklenmesi desteklenmiyor.",
             "installed": "Uygulama zaten yüklü."
         },
         "iOSInstallInstructions": {
@@ -2678,7 +2176,6 @@
         "chooseSubject": "Konu seçiniz",
         "chooseGrade": "Sınıf seçin",
         "chooseDuration": "Süre seçin",
-        "lessonTitle": "Ders başlığı",
         "lessonPlan": "Ders planı:",
         "lessonAgenda": "Öğretim gündemi",
         "learningGoals": "Öğrenme hedefleri",
@@ -2687,13 +2184,11 @@
         "uploadHere": "Buraya yükleyin",
         "browseButton": "Gözat",
         "tryExample": "Bir örnek deneyin",
-        "copyOutput": "Çıktıyı kopyala",
         "assessment": "Değerleme",
         "homework": "Ev Ödevi",
         "resources": "Kaynaklar",
         "copyButton": "Anlaşıldı",
         "resetLesson": "Sıfırla",
-        "generatePlan": "Plan oluşturun",
         "acceptTermsCheckbox": "Genel hüküm ve koşulları kabul edin:",
         "acceptTCText": "Metin alanına herhangi bir kişisel veri girmedim ve Open AI'nın bu verileri Avrupa veri koruma standartları olmadan kullanabileceğinin farkındayım. Lern-Fair  Lern-Fair Yüklenen belgeler üzerinde herhangi bir hakkım olmadığı için herhangi biri aleyhime hak iddia ederse, tazmin etmeyi taahhüt ederim.",
         "fileUploadTooltip": "Buraya ek dosyalar yükleyerek AI çıktısını iyileştirin",
@@ -2747,7 +2242,6 @@
             "titleForInternship": "Staj Belgesi"
         },
         "participationCertificate": {
-            "bullets": ["öğrenim ortağı tarafından onaylanmalıdır", "her bir öğrenme ortağı için ayrı ayrı", "Harcanan zaman da buradan teyit edilebilir"],
             "title": "Bireysel kanıt",
             "deactivated": "Artık öğrencilerin onaylaması gereken bireysel bir kayıt bulunmamaktadır. Faaliyetleriniz veritabanında otomatik olarak kaydedilir, böylece güncel durumu anlık kayıt olarak istediğiniz zaman (birden fazla kez) indirebilirsiniz. Sorularınız veya sorunlarınız varsa <0 /> ile iletişime geçebilirsiniz."
         },
