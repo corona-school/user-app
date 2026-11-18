@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Trans, useTranslation } from 'react-i18next';
 import { RadioGroup, RadioGroupItem } from '@/components/RadioGroup';
-import { Course_Category_Enum } from '@/gql/graphql';
+import { Course_Category_Enum, Course_Coursestate_Enum } from '@/gql/graphql';
 import { Label } from '@/components/Label';
 import { Input } from '@/components/Input';
 import { TextArea } from '@/components/TextArea';
@@ -18,6 +18,9 @@ import CenterLoadingSpinner from '@/components/CenterLoadingSpinner';
 import CourseInstructors from '@/pages/course-creation/CourseInstructors';
 import { Toggle } from '@/components/Toggle';
 import { cn } from '@/lib/Tailwind';
+import { useUserType } from '@/hooks/useApollo';
+import { Alert } from '@/components/Alert';
+import { IconLockFilled } from '@tabler/icons-react';
 
 const TAGS_QUERY = gql(`
     query GetCourseTags($category: String!) {
@@ -42,6 +45,14 @@ const PREDEFINED_PARTICIPANTS = [5, 10, 20, 30, 40, 50, 100];
 
 const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, setPickedPhoto, errors }) => {
     const { t } = useTranslation();
+    const userType = useUserType();
+
+    // Once a course is approved, students can no longer change its content (title, description, image, category, subject/tags).
+    // Homework help courses are the only exception.
+    const isContentLocked =
+        userType === 'student' &&
+        (subcourse.course.courseState === Course_Coursestate_Enum.Allowed || subcourse.course.courseState === Course_Coursestate_Enum.Cancelled) &&
+        subcourse.course.category !== Course_Category_Enum.HomeworkHelp;
 
     const [draftMaxParticipantCount, setDraftMaxParticipantCount] = useState<string>(
         subcourse.maxParticipants && PREDEFINED_PARTICIPANTS.includes(subcourse.maxParticipants) ? subcourse.maxParticipants.toString() : 'custom'
@@ -61,12 +72,29 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
     return (
         <>
             <Typography variant="h5">{t('course.CourseDate.step.general')}</Typography>
+            {isContentLocked && (
+                <Alert variant="warning" icon={<IconLockFilled size={20} />} className="max-w-[520px]">
+                    <span className="leading-[18px]">
+                        <Trans
+                            i18nKey="course.CourseDate.form.contentLockedAfterApproval"
+                            components={{
+                                mail: (
+                                    <a className="underline" href="mailto:support@lern-fair.de">
+                                        Support-Team
+                                    </a>
+                                ),
+                            }}
+                        />
+                    </span>
+                </Alert>
+            )}
             {/*Don't allow homework help courses to change category, as they cannot change it back (hidden category)*/}
             {subcourse.course.category !== Course_Category_Enum.HomeworkHelp && (
                 <div className="flex flex-col gap-2.5">
                     <Label htmlFor="courseCategory">{t('course.CourseDate.form.courseCategory')}</Label>
                     <RadioGroup
                         id="courseCategory"
+                        disabled={isContentLocked}
                         value={subcourse.course.category}
                         onValueChange={(v) =>
                             setSubcourse((s) => ({ ...s, course: { ...s.course, category: v as Course_Category_Enum, tags: [], subject: '' } }))
@@ -109,6 +137,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             value={subcourse.course.name}
                             placeholder={t('course.CourseDate.form.courseNamePlaceholder')}
                             onChange={(e) => setSubcourse((s) => ({ ...s, course: { ...s.course, name: e.target.value } }))}
+                            disabled={isContentLocked}
                             className="w-full"
                             errorMessage={errors.includes('course-name') ? t('course.error.course-name') : undefined}
                             errorMessageClassName="error"
@@ -125,6 +154,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                             value={subcourse.course.description}
                             placeholder={t('course.CourseDate.form.descriptionPlaceholder')}
                             onChange={(e) => setSubcourse((s) => ({ ...s, course: { ...s.course, description: e.target.value } }))}
+                            disabled={isContentLocked}
                             className="resize-none h-full flex-grow w-full"
                             errorMessage={errors.includes('description') ? t('course.error.description') : undefined}
                             errorMessageClassName="error"
@@ -176,6 +206,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                                     <Toggle
                                         key={s}
                                         pressed={s === subcourse.course.subject}
+                                        disabled={isContentLocked}
                                         variant="primary"
                                         onPressedChange={() => setSubcourse((sc) => ({ ...sc, course: { ...sc.course, subject: s } }))}
                                     >
@@ -207,6 +238,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                                             key={tag.id}
                                             variant="primary"
                                             pressed={subcourse.course.tags?.some((x) => x.id === tag.id)}
+                                            disabled={isContentLocked}
                                             onPressedChange={() => {
                                                 if (subcourse.course.tags?.some((x) => x.id === tag.id)) {
                                                     setSubcourse((s) => ({
@@ -257,6 +289,7 @@ const CourseDetails: React.FC<Props> = ({ subcourse, setSubcourse, pickedPhoto, 
                         <InfoTooltipButton className="size-4" tooltipContent={t('course.CourseDate.form.coursePhotoTooltip')} />
                     </div>
                     <Dropzone
+                        disabled={isContentLocked}
                         onUpload={(file) => setPickedPhoto && setPickedPhoto(file)}
                         file={pickedPhoto === undefined ? (subcourse.course.image?.default ? undefined : subcourse.course.image?.url) : pickedPhoto}
                     />

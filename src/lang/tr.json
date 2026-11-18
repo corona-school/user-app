@@ -1577,7 +1577,8 @@
                 "otherInstructorsTooltip": "Sen otomatik olarak kurs yöneticisisin. Burada tam haklara sahip diğer yöneticileri girebilirsin. Alanına tam e-posta adresini veya adı ve soyadını gir.",
                 "coursePhotoTooltip": "Yalnızca gerekli haklara sahip olduğunuz veya serbestçe kullanılabilen resimleri yükleyin. Açık izin olmadan yabancı kişiler, markalar veya korunan içerikler kullanmayın.",
                 "allowChatContactTooltip": "Bu işlevi etkinleştirirsen, öğrenciler de kurs sohbetinde yazabilirler. Bu işlev devre dışı bırakılırsa, kurs yöneticisi olarak yalnızca sen duyuru sohbetinde mesaj gönderebilirsin.",
-                "descriptionPlaceholder": "Beschreibe kurz, worum es im Kurs geht, welche Themen ihr gemeinsam bearbeitet, wie sich die Teilnehmenden einbringen sollen und was sie nach dem Kurs besser können."
+                "descriptionPlaceholder": "Kursun konusunu, birlikte hangi konuları ele alacağınızı, katılımcıların nasıl katkıda bulunmalarının beklendiğini ve kursun sonunda hangi becerilerini geliştirmiş olacaklarını kısaca açıklayın.",
+                "contentLockedAfterApproval": "Onaylandıktan sonra bazı bilgiler artık değiştirilemez. Ancak <mail>Destek Ekibi</mail> gerekli değişiklikleri yapabilir."
             },
             "tags": {
                 "header": "Etiketleri seçin",

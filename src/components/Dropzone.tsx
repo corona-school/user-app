@@ -16,9 +16,10 @@ export interface FileItem {
 interface DropzoneProps {
     onUpload: (file: FileItem | null) => void;
     file?: FileItem | string | null;
+    disabled?: boolean;
 }
 
-const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
+const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file, disabled }) => {
     const [isDragging, setIsDragging] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -28,6 +29,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
     const handleDragEnter = (e: DragEvent<HTMLDivElement>): void => {
         e.preventDefault();
         e.stopPropagation();
+        if (disabled) return;
         setIsDragging(true);
     };
 
@@ -41,6 +43,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
     const handleDragOver = (e: DragEvent<HTMLDivElement>): void => {
         e.preventDefault();
         e.stopPropagation();
+        if (disabled) return;
         if (!isDragging) setIsDragging(true);
         // if filetype is not image, set error
         if (e.dataTransfer.items.length === 1) {
@@ -87,6 +90,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
         e.stopPropagation();
         setIsDragging(false);
         setError(null);
+        if (disabled) return;
         if (e.dataTransfer.items.length === 1) {
             const item = e.dataTransfer.items[0];
             if (item.kind === 'file') {
@@ -121,15 +125,17 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
     return (
         <div className="w-full max-w-2xl mx-auto p-6">
             <div
-                className={`border-2 border-dashed rounded-lg text-center transition-colors ${
-                    isDragging ? (error ? 'border-red-500 bg-red-50' : 'border-blue-500 bg-blue-50') : 'border-gray-300 hover:border-gray-400'
-                }`}
+                className={cn(
+                    'border-2 border-dashed rounded-lg text-center transition-colors',
+                    isDragging ? (error ? 'border-red-500 bg-red-50' : 'border-blue-500 bg-blue-50') : 'border-gray-300',
+                    disabled ? 'opacity-50 cursor-not-allowed' : !isDragging && 'hover:border-gray-400'
+                )}
                 onDragEnter={handleDragEnter}
                 onDragOver={handleDragOver}
                 onDragLeave={handleDragLeave}
                 onDrop={handleDrop}
             >
-                <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={handleFileInput} multiple />
+                <input type="file" accept="image/*" ref={fileInputRef} className="hidden" onChange={handleFileInput} multiple disabled={disabled} />
 
                 <div>
                     {error ? (
@@ -147,10 +153,10 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                             <p className="font-medium text-gray-700">{t('single.dropzone.description')}</p>
 
                             <div className="mt-2 flex space-x-4 justify-center">
-                                <Button variant="outline" onClick={openFilePicker}>
+                                <Button variant="outline" onClick={openFilePicker} disabled={disabled}>
                                     {t('single.dropzone.customImage')}
                                 </Button>
-                                <Button variant="outline" onClick={() => setShowModal(true)}>
+                                <Button variant="outline" onClick={() => setShowModal(true)} disabled={disabled}>
                                     {t('single.dropzone.database')}
                                 </Button>
                             </div>
@@ -169,7 +175,7 @@ const Dropzone: React.FC<DropzoneProps> = ({ onUpload, file }) => {
                                         <span className="text-sm text-gray-500">{Math.round(file.size / 1024)} KiB</span>
                                     </>
                                 )}
-                                <Button onClick={() => onUpload(null)} variant="destructive">
+                                <Button onClick={() => onUpload(null)} variant="destructive" disabled={disabled}>
                                     {t('single.dropzone.changeImage')}
                                 </Button>
                             </div>
