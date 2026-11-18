@@ -1650,6 +1650,7 @@
                 "courseNameHeadline": "Kurstitel",
                 "courseNamePlaceholder": "Gebe einen Titel ein (85 Zeichen max.)",
                 "courseCategory": "Kategorie",
+                "contentLockedAfterApproval": "Einige Angaben können nicht mehr verändert werden nach der Freigabe. Das <mail>Support-Team</mail> kann aber Änderungen vornehmen.",
                 "revision": "Nachhilfe-Kurs",
                 "revisionTooltip": "Du unterstützt deine Teilnehmer*innen bei den klassischen Schulfächern. In den Kursen wiederholt und übt ihr gemeinsam spezielle Themen aus der Schule.",
                 "language": "Deutsch für Anfänger Kurs",
