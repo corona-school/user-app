@@ -34,6 +34,7 @@ const query = gql(`
     query PupilDashboard {
         me {
             firstname
+            lastname
             pupil {
                 matches {
                     id
@@ -273,7 +274,7 @@ const Dashboard: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                         <div>
                             <Typography className="mb-4" variant="h3" as="p">
-                                {t('hallo')} {data?.me.firstname}&nbsp;&nbsp;👋
+                                {t('hallo')} {data?.me.firstname} {process.env.NODE_ENV === 'development' ? data?.me.lastname : ''}&nbsp;&nbsp;👋
                             </Typography>
                         </div>
                         <ImportantInformation variant="dark" />

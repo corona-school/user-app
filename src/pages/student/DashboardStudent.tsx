@@ -34,6 +34,7 @@ const query = gql(`
     query StudentDashboard {
         me {
             firstname
+            lastname
             student {
                 firstMatchRequest
                 openMatchRequestCount
@@ -208,7 +209,7 @@ const DashboardStudent: React.FC<Props> = () => {
                     <VStack paddingX={space['1']} marginX="auto" width="100%" maxWidth={ContainerWidth}>
                         <div>
                             <Typography variant="h3" as="p">
-                                {t('hallo')} {data?.me.firstname}&nbsp;&nbsp;👋
+                                {t('hallo')} {data?.me.firstname} {process.env.NODE_ENV === 'development' ? data?.me.lastname : ''}&nbsp;&nbsp;👋
                             </Typography>
                         </div>
                         <VStack>
