@@ -6,6 +6,7 @@ import { IconChevronRight, IconDots, IconSlash } from '@tabler/icons-react';
 import { Typography } from './Typography';
 import { useTranslation } from 'react-i18next';
 import { useBreadcrumb } from '@/hooks/useBreadcrumb';
+import { useBreadcrumbBackContext } from '@/context/BreadcrumbBackContext';
 
 const BreadcrumbContainer = React.forwardRef<
     HTMLElement,
@@ -85,10 +86,33 @@ interface BreadcrumbProps {
     items?: BreadcrumbItem[];
 }
 
+/**
+ * Route of the current page parent: the second to last item, or "Start" if the page is the only item.
+ * Returns empty string if no parent route
+ */
+const getBackRoute = (items: BreadcrumbItem[], includeHome: boolean): string => {
+    if (items.length > 1) {
+        const route = items[items.length - 2]?.route;
+        if (!route) return '';
+        return route.startsWith('/') ? route : `/${route}`;
+    }
+    if (includeHome) return '/start';
+    return '';
+};
+
 export const Breadcrumb = ({ className, includeHome = true, items = [] }: BreadcrumbProps) => {
     const { t } = useTranslation();
     const defaultItems = useBreadcrumb();
     const breadcrumb = defaultItems || items;
+
+    const backRoute = getBackRoute(breadcrumb, includeHome);
+    const backContext = useBreadcrumbBackContext();
+    const setBreadcrumbBackRoute = backContext?.setBreadcrumbBackRoute;
+    // Layout effect so the header switches to the back button before the first paint (avoids a logo flicker)
+    React.useLayoutEffect(() => {
+        setBreadcrumbBackRoute?.(backRoute);
+    }, [setBreadcrumbBackRoute, backRoute]);
+
     return (
         <BreadcrumbContainer className={cn('mb-4', className)}>
             <BreadcrumbList>

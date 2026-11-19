@@ -206,6 +206,7 @@ const ProfilePupil: React.FC<Props> = () => {
     return (
         <>
             <WithNavigation
+                showBackOnMobile
                 isLoading={loading}
                 hideMenu={isMobileSM}
                 previousFallbackRoute="/settings"
