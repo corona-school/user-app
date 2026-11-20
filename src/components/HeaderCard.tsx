@@ -11,7 +11,7 @@ type Props = {
     rightContent?: ReactNode | ReactNode[];
     onBack?: () => any;
     showBack?: boolean;
-    // Shows the back button instead of the logo on mobile only (e.g. on pages with a breadcrumb)
+    // Shows the back button next to the logo on mobile only (e.g. on pages with a breadcrumb)
     showBackOnMobile?: boolean;
     previousFallbackRoute?: string;
 };
@@ -20,7 +20,7 @@ type Props = {
  * Is used to display views below the scrollable header seamlessly.
  * -  use `leftContent`and `rightContent` to display content on either side
  * - `showBack` / `onBack` to use navigation in here
- * - `showBackOnMobile` to only show the back button on mobile, desktop keeps the logo
+ * - `showBackOnMobile` to show the back button next to the logo on mobile, desktop only shows the logo
  */
 const HeaderCard: React.FC<Props> = ({ children, leftContent, rightContent, onBack, showBack, showBackOnMobile, previousFallbackRoute }) => {
     return (
@@ -32,7 +32,7 @@ const HeaderCard: React.FC<Props> = ({ children, leftContent, rightContent, onBa
                             <BackButton onPress={onBack} previousFallbackRoute={previousFallbackRoute} />
                         </div>
                         {!showBack && (
-                            <NavLink to="/start" className={cn('ml-1', showBackOnMobile && 'hidden md:block')}>
+                            <NavLink to="/start" className="ml-1">
                                 <Loki className="w-[106px] h-[34px] lg:w-[125px] lg:h-[40px]" />
                             </NavLink>
                         )}
