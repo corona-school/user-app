@@ -206,6 +206,7 @@ const SingleCoursePupil = () => {
     }, [loading, isInPast, subcourse?.isParticipant]);
     return (
         <WithNavigation
+            showBackOnMobile
             headerTitle={course?.name.substring(0, 20)}
             previousFallbackRoute="/group"
             isLoading={loading}

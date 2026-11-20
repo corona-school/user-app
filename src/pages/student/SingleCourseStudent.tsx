@@ -399,6 +399,7 @@ const SingleCourseStudent = () => {
 
     return (
         <WithNavigation
+            showBackOnMobile
             headerTitle={course?.name.substring(0, 20)}
             previousFallbackRoute="/group"
             isLoading={loading}

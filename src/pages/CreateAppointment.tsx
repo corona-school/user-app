@@ -72,7 +72,7 @@ const CreateAppointment = () => {
 
     return (
         <AsNavigationItem path="appointments">
-            <WithNavigation headerLeft={<NotificationAlert />} isLoading={isLoading} previousFallbackRoute="/appointments">
+            <WithNavigation showBackOnMobile headerLeft={<NotificationAlert />} isLoading={isLoading} previousFallbackRoute="/appointments">
                 <CreateAppointmentProvider>
                     <Box mx="4" flex={1}>
                         <Breadcrumb />

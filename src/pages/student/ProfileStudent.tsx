@@ -180,6 +180,7 @@ const ProfileStudent: React.FC<Props> = () => {
     return (
         <>
             <WithNavigation
+                showBackOnMobile
                 isLoading={loading}
                 previousFallbackRoute="/settings"
                 headerTitle={t('profile.title')}

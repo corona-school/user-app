@@ -1,7 +1,8 @@
 import HeaderCard from './HeaderCard';
 import { NavigationItems } from '../types/navigation';
 import BottomNavigationBar from './BottomNavigationBar';
-import { ReactNode } from 'react';
+import { ReactNode, useMemo, useState } from 'react';
+import { BreadcrumbBackContext } from '@/context/BreadcrumbBackContext';
 import SideBarMenu from './SideBarMenu';
 import SettingsButton from './SettingsButton';
 import CenterLoadingSpinner from './CenterLoadingSpinner';
@@ -20,6 +21,11 @@ type Props = {
     headerTitle?: string;
     isSidebarMenu?: boolean;
     showBack?: boolean;
+    /**
+     * Shows the back button on mobile right away. Pages with a Breadcrumb get it automatically,
+     * this is only needed for pages whose breadcrumb is not rendered yet while `isLoading` is set.
+     */
+    showBackOnMobile?: boolean;
     previousFallbackRoute?: string;
     hideMenu?: boolean;
     isLoading?: boolean;
@@ -38,6 +44,7 @@ const WithNavigation: React.FC<Props> = ({
     headerTitle,
     isSidebarMenu = true,
     showBack,
+    showBackOnMobile,
     hideMenu,
     isLoading,
     previousFallbackRoute,
@@ -47,6 +54,10 @@ const WithNavigation: React.FC<Props> = ({
     const { unreadMessagesCount } = useChat();
 
     const { t } = useTranslation();
+    // Set by a rendered Breadcrumb: undefined = no breadcrumb, '' = breadcrumb without a parent route
+    const [breadcrumbBackRoute, setBreadcrumbBackRoute] = useState<string | undefined>(undefined);
+    const breadcrumbBackContext = useMemo(() => ({ setBreadcrumbBackRoute }), []);
+    const hasBreadcrumb = breadcrumbBackRoute !== undefined || !!showBackOnMobile;
 
     const navItems: NavigationItems = {
         start: { label: t('navigation.label.start'), icon: IconHome2 },
@@ -66,37 +77,40 @@ const WithNavigation: React.FC<Props> = ({
     };
 
     return (
-        <div className="flex flex-col flex-1 min-h-0">
-            <HeaderCard
-                onBack={onBack}
-                showBack={showBack}
-                leftContent={headerLeft}
-                rightContent={headerRight || (isSidebarMenu && !hideMenu ? <SettingsButton /> : '')}
-                title={headerTitle}
-                previousFallbackRoute={previousFallbackRoute}
-            >
-                {headerContent}
-            </HeaderCard>
-            <div className="flex flex-1 min-h-0">
-                {!hideMenu && <SideBarMenu navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
-                <div className="overflow-x-auto overflow-y-hidden flex-1">
-                    {(!isLoading && (
-                        <>
+        <BreadcrumbBackContext.Provider value={breadcrumbBackContext}>
+            <div className="flex flex-col flex-1 min-h-0">
+                <HeaderCard
+                    onBack={onBack}
+                    showBack={showBack}
+                    showBackOnMobile={hasBreadcrumb}
+                    leftContent={headerLeft}
+                    rightContent={headerRight || (isSidebarMenu && !hideMenu ? <SettingsButton /> : '')}
+                    title={headerTitle}
+                    previousFallbackRoute={breadcrumbBackRoute || previousFallbackRoute}
+                >
+                    {headerContent}
+                </HeaderCard>
+                <div className="flex flex-1 min-h-0">
+                    {!hideMenu && <SideBarMenu navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
+                    <div className="overflow-x-auto overflow-y-hidden flex-1">
+                        {(!isLoading && (
                             <>
-                                <div className="lg:hidden">{headerContent}</div>
-                                {!hideMenu && (
-                                    <div className="lg:hidden">
-                                        <InstallAppBanner />
-                                    </div>
-                                )}
+                                <>
+                                    <div className="lg:hidden">{headerContent}</div>
+                                    {!hideMenu && (
+                                        <div className="lg:hidden">
+                                            <InstallAppBanner />
+                                        </div>
+                                    )}
+                                </>
+                                <div className={cn('p-4 lg:px-8 lg:py-4 h-full overflow-y-auto', contentContainerClassName)}>{children}</div>
                             </>
-                            <div className={cn('p-4 lg:px-8 lg:py-4 h-full overflow-y-auto', contentContainerClassName)}>{children}</div>
-                        </>
-                    )) || <CenterLoadingSpinner />}
+                        )) || <CenterLoadingSpinner />}
+                    </div>
                 </div>
+                {!hideMenu && <BottomNavigationBar navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
             </div>
-            {!hideMenu && <BottomNavigationBar navItems={navItems} unreadMessagesCount={unreadMessagesCount} />}
-        </div>
+        </BreadcrumbBackContext.Provider>
     );
 };
 export default WithNavigation;
